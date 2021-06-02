@@ -1,0 +1,45 @@
+name: SCore
+author: Ssomar
+version: ${project.version}
+main: com.ssomar.score.SCore
+api-version: 1.13
+softdepend: [PlaceholderAPI]
+commands:
+  score:
+    aliases: [parkour]
+    description: Parkour Core Plugin
+    usage: /<command>  [ reload | editor | join | leave | create | delete | rate ]
+permissions:
+  sparkour.*:
+   description: SParkour permission
+   default: op
+   children:
+     sparkour.cmds: true
+  sparkour.cmds:
+   description: Allows SParkour commands
+   default: op
+   children:
+     sparkour.cmd.reload: true
+     sparkour.cmd.editor: true
+     sparkour.cmd.join: true
+     sparkour.cmd.leave: true
+     sparkour.cmd.create: true
+     sparkour.cmd.delete: true
+     sparkour.cmd.rate: true
+     sparkour.cmd.copy-armor: true
+  sparkour.cmd.reload:
+    description: Allows the command /sparkour reload
+  sparkour.cmd.editor:
+    description: Allows the command /sparkour editor
+  sparkour.cmd.join:
+    description: Allows the command /sparkour join
+  sparkour.cmd.leave:
+    description: Allows the command /sparkour leave
+  sparkour.cmd.create:
+    description: Allows the command /sparkour create {id}
+  sparkour.cmd.delete:
+    description: Allows the command /sparkour delete {id}
+  sparkour.cmd.rate:
+    description: Allows the command /sparkour rate {id} {rate}
+  sparkour.cmd.copy-armor:
+    description: Allows the command /sparkour copy-armor

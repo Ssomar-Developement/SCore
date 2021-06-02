@@ -1,0 +1,60 @@
+commands:
+  reload:
+    reloadMessage: "&2&l[SParkour] &aSuccessfully reload !"
+  rate:
+    invalidParkour: "&4&l[Sparkour] &cERROR You enter an invalid parkour id: %parkour_id%"
+    parkourMustBeFinished: "&4&l[Sparkour] &cERROR You can't rate a parkour that you have not finish !"
+    alreadyRated: "&4&l[Sparkour] &cERROR You have already rated this parkour !"
+    invalidRate: "&4&l[Sparkour] &cERROR You enter an invalid rate, ENTER A NUMBER [0;5]"
+    invalidRateValue: "&4&l[Sparkour] &cERROR rate must be > 0 and <= 5 !"
+    successRate: "&2&l[Sparkour] &aPERFECT you rated &e%parkour_name% &a with a rate of &e%rate% &a! "
+  commandMustBeExecutedByPlayer: "&4&l[Sparkour] &cERROR This command must be executed by a player"
+menu:
+  categories:
+    titleCategories: "&8&lCategories"
+    clickToOpen: "&aClick to open"
+    rewardsCategories: "&7• Rewards: "
+    category: "&2&l✦ Category: &a"
+  parkours:
+    titleParkours: "&8&lParkours: "
+    clickToJoin: "&aLeft click to join"
+    description: "&7• Description: &e"
+    globalCompetions: "&7• Global Completions: &e%amount%"
+    rewardsParkour: "&7• Rewards: &e"
+    creators: "&7• Creators: &e"
+    averageRate: "&7• Avg Rate: &e"
+    timesCompleted: "&7• Times Completed: &e%amount%"
+    myBestTime: "&7• My best time: &e%time%"
+    myRank: "&7• My rank: &e%rank%"
+    worldRecords: "&7• World records: &e"
+    worldRecordsNoPlayer: "&7- &cNO PLAYER"
+    worldRecordsPlayer: "&7- &e%player% : &a%time%"
+    modeStats: "&e&oRight click: &aMODE STATS"
+    modeInfos: "&e&oRight click: &aMODE INFOS"
+    parkour: "&2&l✦ Parkour: &a"
+    categoryBook: "&6&l▶ &eCategory"
+  trades:
+    titleNormalToParkourInv: "&8&lSParkour - Trades N -> P";
+    titleParkourToNormalInv: "&8&lSParkour - Trades P -> N";
+  page: "- Page "
+  nextPage: "&5&l▶ &dNext page "
+  previousPage : "&dPrevious page &5&l◀"
+  close: "&4&l✘ &cClose"
+  closeLore: "&c&oClick here to close"
+run:
+  preInstall:
+    titlePreInstall: "Hey ! Ready ?"
+    subtitlePreInstall: "Sneak to start !"
+    actionbarPreInstall: "Sneak to start !"
+  start:
+    titleStart: "LETS GO"
+    subtitleStart: "Go go go !"
+  run:
+    runCheckpoint: "NEW CHECKPOINT !"
+  customItems:
+    leaveItem: "&4&lLEAVE"
+    resetItem: "&a&lRESET"
+    hidePlayersItem: "&e&lHIDE / SHOW PLAYERS"
+  errorCommands: "&4&l[SParkour] &cYou can't execute command when you are in a parkour ! (you must leave it firt &6/sparkour leave&c)"
+  displayTime: "&a&lTime &6H: &e%H% &6M: &e%M% &6S: &e%S% &6N: &e%N%"
+  shortDisplayTime: "&a&lTime &6M: &e%M% &6S: &e%S% &6N: &e%N%"
