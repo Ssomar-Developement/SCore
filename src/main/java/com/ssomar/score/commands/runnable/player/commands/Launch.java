@@ -111,7 +111,7 @@ public class Launch extends PlayerCommandTemplate{
 
 				}
 
-				if(entity!=null && SCore.isHasExecutableItems() && aInfo.getItem()!=null) {
+				if(entity!=null && SCore.hasExecutableItems && aInfo.getItem()!=null) {
 					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, aInfo.getItem(), aInfo.getSlot());
 					ProjectilesEvt.getInstance().addProjectileInfo(pInfo);
 				}

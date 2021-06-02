@@ -27,7 +27,7 @@ public class MineInCube extends BlockCommandTemplate{
 						for(int z= -Integer.valueOf(radius); z<Integer.valueOf(radius)+1; z++) {
 							if(block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).getType()!=Material.BEDROCK) {
 
-								if(SCore.isHasWorldGuard()) {
+								if(SCore.hasWorldGuard) {
 									if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z))) {
 										if(drop) block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).breakNaturally(p.getInventory().getItemInMainHand());
 										else block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).setType(Material.AIR);

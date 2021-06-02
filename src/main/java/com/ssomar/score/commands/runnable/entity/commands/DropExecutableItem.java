@@ -17,7 +17,7 @@ public class DropExecutableItem extends EntityCommandTemplate{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		try {
-			if(SCore.isHasExecutableItems() && ExecutableItemsAPI.isValidID(args.get(0))) {
+			if(SCore.hasExecutableItems && ExecutableItemsAPI.isValidID(args.get(0))) {
 				int amount = Integer.valueOf(args.get(1));
 				if(amount>0 && !entity.isDead()) { 
 					Item item = ExecutableItemsAPI.getExecutableItemConfig(ExecutableItemsAPI.getExecutableItem(args.get(0)));
@@ -34,7 +34,7 @@ public class DropExecutableItem extends EntityCommandTemplate{
 		String dropei= "DROPEXECUTABLEITEM {id} [quantity}";
 		if(args.size()<2) error = notEnoughArgs+dropei;
 		else if(args.size()==2) {
-			if(!SCore.isHasExecutableItems() || !ExecutableItemsAPI.isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
+			if(!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
 			else {
 				try {
 					Integer.valueOf(args.get(1));

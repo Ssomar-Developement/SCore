@@ -33,7 +33,7 @@ public class SetBlock extends PlayerCommandTemplate{
 
 				block = block.getRelative(BlockFace.valueOf(args.get(0)));	
 				if(Material.matchMaterial(args.get(1).toUpperCase())!=null) {
-					if(SCore.isHasWorldGuard()) {
+					if(SCore.hasWorldGuard) {
 						if(new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 							block.setType(Material.valueOf(args.get(1)));
 						}

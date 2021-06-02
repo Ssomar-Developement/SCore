@@ -20,7 +20,7 @@ public class SetBlock extends BlockCommandTemplate{
 		try {
 			String mat = args.get(0).toUpperCase();
 			if(Material.matchMaterial(mat)!=null) {
-				if(SCore.isHasWorldGuard()) {
+				if(SCore.hasWorldGuard) {
 					if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 						block.setType(Material.valueOf(mat));
 					}

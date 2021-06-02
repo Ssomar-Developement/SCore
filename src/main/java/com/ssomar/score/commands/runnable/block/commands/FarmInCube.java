@@ -60,7 +60,7 @@ public class FarmInCube extends BlockCommandTemplate{
 		if(ToolsListMaterial.getInstance().getPlantWithGrowth().contains(toDestroy.getType())) {
 			ItemStack itemInMainHand = p.getInventory().getItemInMainHand();
 			boolean destroy = false;
-			if(SCore.isHasWorldGuard()) {
+			if(SCore.hasWorldGuard) {
 				if(new WorldGuardAPI().canBuild(p, toDestroy.getLocation())) destroy = true;
 				else return;
 			}

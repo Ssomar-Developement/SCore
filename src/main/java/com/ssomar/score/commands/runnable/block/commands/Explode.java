@@ -18,7 +18,7 @@ public class Explode extends BlockCommandTemplate{
 
 	@Override
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
-		if(SCore.isHasWorldGuard()) {
+		if(SCore.hasWorldGuard) {
 			if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 				block.breakNaturally();
 				block.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);

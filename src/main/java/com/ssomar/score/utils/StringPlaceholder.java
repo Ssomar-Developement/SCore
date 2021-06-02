@@ -169,7 +169,7 @@ public class StringPlaceholder {
 		if(this.hasPlayerUUID()) {
 			Player p;
 			//SsomarDev.testMsg("REPLACE PLACE 2 : "+((p = Bukkit.getPlayer(UUID.fromString(playerUUID)))!=null)+ " &&&&&&& "+ExecutableItems.hasPlaceholderAPI());
-			if((p = Bukkit.getPlayer(UUID.fromString(playerUUID)))!=null && SCore.hasPlaceholderAPI()) replace = PlaceholderAPI.setPlaceholders(p, replace);
+			if((p = Bukkit.getPlayer(UUID.fromString(playerUUID)))!=null && SCore.hasPlaceholderAPI) replace = PlaceholderAPI.setPlaceholders(p, replace);
 		}
 		return replace;
 	}

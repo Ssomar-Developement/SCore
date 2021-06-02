@@ -23,7 +23,7 @@ public class ReplaceBlock extends PlayerCommandTemplate{
 
 			if(block.getType()!=Material.AIR) {
 				if(Material.matchMaterial(args.get(0).toUpperCase())!=null) {
-					if(SCore.isHasWorldGuard()) {
+					if(SCore.hasWorldGuard) {
 						if(new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 							block.setType(Material.valueOf(args.get(0)));
 						}
