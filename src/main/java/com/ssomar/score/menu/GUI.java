@@ -17,34 +17,38 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.utils.StringConverter;
 
 public abstract class GUI {
-	
-	public final static String PARKOUR_ID = "✚ PARKOUR ID:";
 
-	public final static String CHECKPOINT_ID = "✚ CHECKPOINT ID:";
-	
-	//public final static String CATEGORY_ID = MessageMain.getInstance().getMessage(Message.M_categoryBook);
-	
-	public Material WRITABLE_BOOK = null;
-	
-	public Material CLOCK = null;
-	
-	public Material ENCHANTING_TABLE = null;
+	public final static String DEFAULT_ITEM_NAME = "&e&lDefault Name";
+
+	public final static String CLICK_HERE_TO_CHANGE = "&a✎ Click here to change";
+
+	public final static String TITLE_COLOR= "&e&l";
+
+	public final static String PAGE = " - Page ";
 	
 	public Material NEXT_PAGE_MAT = null;
+
+	public Material PREVIOUS_PAGE_MAT = null;	
+
+	public Material WRITABLE_BOOK = null;
+
+	public Material CLOCK = null;
+
+	public Material ENCHANTING_TABLE = null;
 	
-	public Material PREVIOUS_PAGE_MAT = null;
+	public Material HEAD = null;
 	
 	public Material RED = null;
 	
-	public final static String TITLE_COLOR= "&e&l";
+	public Material ORANGE = null;
 	
-	//public final static String CLOSE = MessageMain.getInstance().getMessage(Message.close);
+	public Material GREEN = null;
 	
-	public final static String CLICK_HERE_TO_CHANGE = "&a✎ Click here to change";
+	public Material YELLOW = null;
 	
-	//public final static String BACK_TO_CATEGORIES = MessageMain.getInstance().getMessage(Message.backToCategories);
+	public Material PURPLE = null;
 	
-	//public static String PAGE = MessageMain.getInstance().getMessage(Message.M_page);
+	public Material BLUE = null;
 
 	private Inventory inv;
 
@@ -53,10 +57,10 @@ public abstract class GUI {
 		inv = Bukkit.createInventory(null, size, StringConverter.coloredString(name));
 		if(!SCore.is1v12()) {
 			for(int j=0; j<size; j++) {
-				//createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 	1 , j, 	"&7", 	GeneralConfig.getInstance().isEnchantItemsInGUI(), false);
+				createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 	1 , j, 	"&7", 	true, false);
 			}
 		}
-		this.init();
+		init();
 	}
 	
 	public GUI(Inventory inv) {
@@ -71,15 +75,28 @@ public abstract class GUI {
 			ENCHANTING_TABLE = Material.valueOf("ENCHANTMENT_TABLE");
 			NEXT_PAGE_MAT = Material.ARROW;
 			PREVIOUS_PAGE_MAT = Material.ARROW;
-			RED = Material.BARRIER;
+			HEAD = Material.valueOf("SKULL_ITEM");
+			RED = Material.REDSTONE_BLOCK;
+			ORANGE = Material.BARRIER;
+			GREEN = Material.EMERALD;
+			YELLOW = Material.HOPPER;
+			PURPLE = Material.HOPPER;
+			BLUE = Material.ANVIL;
 		}
+		
 		else {
 			WRITABLE_BOOK = Material.WRITABLE_BOOK;
 			CLOCK = Material.CLOCK;
 			ENCHANTING_TABLE = Material.ENCHANTING_TABLE;
 			NEXT_PAGE_MAT = Material.PURPLE_STAINED_GLASS_PANE;
 			PREVIOUS_PAGE_MAT = Material.PURPLE_STAINED_GLASS_PANE;
+			HEAD = Material.PLAYER_HEAD;
 			RED = Material.RED_STAINED_GLASS_PANE;
+			ORANGE = Material.ORANGE_STAINED_GLASS_PANE;
+			GREEN = Material.LIME_STAINED_GLASS_PANE;
+			YELLOW = Material.YELLOW_STAINED_GLASS_PANE;
+			PURPLE = Material.MAGENTA_STAINED_GLASS_PANE;
+			BLUE = Material.BLUE_STAINED_GLASS_PANE;
 		}
 	}
 
@@ -106,31 +123,7 @@ public abstract class GUI {
 		inv.setItem(invSlot, item);	
 
 	}
-	
-	public void createItem(Material material, int amount, int invSlot, String displayName, String localizedName, boolean glow, boolean haveEnchant, String... loreString) {
 
-		ItemStack item= new ItemStack(material,amount);
-		ItemMeta meta= item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-
-		meta.setLocalizedName(localizedName);
-		if(glow || haveEnchant) {
-			meta.addEnchant(Enchantment.PROTECTION_FALL, 6, true);
-			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		}
-
-		//meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-		meta.setDisplayName(StringConverter.coloredString(displayName));
-
-		for(String s : loreString) lore.add(StringConverter.coloredString(s));
-
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		inv.setItem(invSlot, item);	
-
-	}
-	
 	public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, int customTextureTag, String... loreString) {
 
 		ItemStack item= new ItemStack(material,amount);
@@ -179,16 +172,6 @@ public abstract class GUI {
 		inv.setItem(invSlot, item);	
 
 	}
-	
-	public void createItem(ItemStack itemS, int amount, int invSlot, String displayName, String localizedName, boolean glow, boolean haveEnchant, String... loreString) {
-		ItemStack item= itemS;
-		ItemMeta meta= item.getItemMeta();
-		meta.setLocalizedName(localizedName);
-		item.setItemMeta(meta);
-		
-		this.createItem(item, amount, invSlot, displayName, glow, haveEnchant, loreString);
-	}
-	
 
 	public void removeItem(int invSlot) {
 
@@ -240,7 +223,7 @@ public abstract class GUI {
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
-	
+
 	public String getActually(String itemName) {
 		return this.getActually(this.getByName(itemName));
 	}
@@ -262,6 +245,34 @@ public abstract class GUI {
 	public String getCondition(String name) {
 		if(this.getActually(this.getByName(name)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(name));
+	}
+
+	public void updateConditionList(String name, List<String> list, String emptyStr) {
+		ItemStack item = this.getByName(name);
+		ItemMeta toChange = item.getItemMeta();
+		List<String> loreUpdate= toChange.getLore().subList(0, 3);
+		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString(emptyStr));
+		else {
+			for(String str: list) {
+				loreUpdate.add(StringConverter.coloredString("&6➤ &e"+str));
+			}
+		}
+		toChange.setLore(loreUpdate);
+		item.setItemMeta(toChange);
+	}
+
+	public List<String> getConditionList(String name, String emptyStr){
+		ItemStack item = this.getByName(name);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate= iM.getLore().subList(3, iM.getLore().size());
+		List<String> result = new ArrayList<>();
+		for(String line: loreUpdate) {
+			line=StringConverter.decoloredString(line);
+			if(line.contains(emptyStr)) {
+				return new ArrayList<>();
+			}else result.add(line.replaceAll("➤ ", ""));
+		}
+		return result;
 	}
 
 	public Inventory getInv() {
@@ -292,7 +303,7 @@ public abstract class GUI {
 		ItemStack item = this.getByName(itemName);
 		return getActually(item).contains("True");	
 	}
-	
+
 	public void updateInt(String itemName, int value) {
 		ItemStack item = this.getByName(itemName);
 		updateActually(item, value+"");
@@ -302,7 +313,7 @@ public abstract class GUI {
 		ItemStack item = this.getByName(itemName);
 		return Integer.valueOf(getActually(item));	
 	}
-	
+
 	public void updateDouble(String itemName, double value) {
 		ItemStack item = this.getByName(itemName);
 		updateActually(item, value+"");
@@ -312,17 +323,5 @@ public abstract class GUI {
 		ItemStack item = this.getByName(itemName);
 		return Double.valueOf(getActually(item));	
 	}
-	
-	public String getParkourID() {
-		return this.getActually(this.getByName(PARKOUR_ID));
-	}
-	
-	public String getCheckpointID() {
-		return this.getActually(this.getByName(CHECKPOINT_ID));
-	}
-	
-//	public String getCategoryID() {
-//		return this.getActually(this.getByName(CATEGORY_ID));
-//	}
-	
+
 }

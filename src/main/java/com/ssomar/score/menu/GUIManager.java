@@ -82,9 +82,7 @@ public abstract class GUIManager<T> {
 		p.spigot().sendMessage(message);
 	}
 	
-	public void resetAllRequestWriting(Player p) {
-		//ParkourGUIManager.getInstance().getRequestWriting().remove(p);
-	}
+	public abstract void resetAllRequestWriting(Player p);
 	
 	public void deleteLine(String message, Player p) {
 		space(p);

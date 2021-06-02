@@ -72,9 +72,7 @@ public class MessageMain {
 		for(MessageInterface msgI : messagesEnum) {
 			formMessages.put(msgI, this.loadMessage(plugin, pdfile, config, msgI.getName()));
 		}
-		
 		messages.put(plugin, formMessages);
-		
 	}
 	
 	
@@ -88,8 +86,8 @@ public class MessageMain {
 
 		String insert="Can't load the string ("+what+") for the plugin > "+plugin.getName()+" in language: "+GeneralConfig.getInstance().getLocale()+", contact the developper";
 		try{
-
-			InputStream flux= SCore.class.getResourceAsStream("/com/ssomar/"+plugin.getName().toLowerCase()+"/configs/locale/Locale_"+GeneralConfig.getInstance().getLocale()+".yml");
+			
+			InputStream flux= plugin.getClass().getResourceAsStream("/com/ssomar/"+plugin.getName().toLowerCase()+"/configs/locale/Locale_"+GeneralConfig.getInstance().getLocale()+".yml");
 			InputStreamReader lecture=new InputStreamReader(flux, StandardCharsets.UTF_8);
 			BufferedReader buff=new BufferedReader(lecture);
 			String ligne;
@@ -109,10 +107,20 @@ public class MessageMain {
 			}
 		}		
 		catch (Exception e){
-			SCore.plugin.getServer().getLogger().severe(SCore.NAME_2+" ERROR LOAD MESSAGE "+e.toString());
+			SCore.plugin.getServer().getLogger().severe(SCore.NAME_2+" ERROR LOAD MESSAGE ");
+			e.printStackTrace();
 		}
 
 		return insert;
+	}
+	
+	public String getMessage(Plugin plugin, MessageInterface message) {	
+		if(messages.containsKey(plugin)) {
+			if(messages.get(plugin).containsKey(message)) {
+				return messages.get(plugin).get(message);
+			}
+		}
+		return "";
 	}
 	
 	public static MessageMain getInstance() {
