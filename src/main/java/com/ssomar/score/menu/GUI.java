@@ -25,7 +25,13 @@ public abstract class GUI {
 	public final static String TITLE_COLOR= "&e&l";
 
 	public final static String PAGE = " - Page ";
-	
+
+	public final static String NEXT_PAGE = "&5&l▶ &dNext page";
+
+	public final static String PREVIOUS_PAGE = "&dPrevious page &5&l◀";
+
+	public final static String EXIT = "&4&l▶ &cExit";
+
 	public Material NEXT_PAGE_MAT = null;
 
 	public Material PREVIOUS_PAGE_MAT = null;	
@@ -35,19 +41,19 @@ public abstract class GUI {
 	public Material CLOCK = null;
 
 	public Material ENCHANTING_TABLE = null;
-	
+
 	public Material HEAD = null;
-	
+
 	public Material RED = null;
-	
+
 	public Material ORANGE = null;
-	
+
 	public Material GREEN = null;
-	
+
 	public Material YELLOW = null;
-	
+
 	public Material PURPLE = null;
-	
+
 	public Material BLUE = null;
 
 	private Inventory inv;
@@ -62,12 +68,12 @@ public abstract class GUI {
 		}
 		init();
 	}
-	
+
 	public GUI(Inventory inv) {
 		this.inv = inv;
 		this.init();
 	}
-	
+
 	public void init() {
 		if(SCore.is1v12()) {
 			WRITABLE_BOOK = Material.valueOf("BOOK_AND_QUILL");
@@ -83,7 +89,7 @@ public abstract class GUI {
 			PURPLE = Material.HOPPER;
 			BLUE = Material.ANVIL;
 		}
-		
+
 		else {
 			WRITABLE_BOOK = Material.WRITABLE_BOOK;
 			CLOCK = Material.CLOCK;
