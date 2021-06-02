@@ -140,6 +140,7 @@
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
 			<version>master-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

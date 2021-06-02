@@ -15,6 +15,7 @@ import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.data.CommandsQuery;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
+import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.utils.Utils;
 
 public final class SCore extends JavaPlugin {
@@ -52,6 +53,9 @@ public final class SCore extends JavaPlugin {
 
 		/* Database */
 		Database.getInstance().load();
+		
+		/* Events instance part */	
+		EventsHandler.getInstance().setup(this);
 		
 
 
