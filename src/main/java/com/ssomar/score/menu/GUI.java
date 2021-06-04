@@ -204,7 +204,13 @@ public abstract class GUI {
 	public String getActually(ItemStack item) {
 		List<String> lore = item.getItemMeta().getLore();
 		for(String s: lore) {
-			if(StringConverter.decoloredString(s).contains("actually: ")) return StringConverter.decoloredString(s).split("actually: ")[1];
+			if(StringConverter.decoloredString(s).contains("actually: ")) {
+				try {
+				return StringConverter.decoloredString(s).split("actually: ")[1];
+				}catch(ArrayIndexOutOfBoundsException e) {
+					return "";
+				}
+			}
 		}
 		return null;
 	}

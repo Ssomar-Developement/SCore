@@ -11,6 +11,8 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
 import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.configs.messages.Message;
+import com.ssomar.score.configs.messages.MessageInterface;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.data.CommandsQuery;
 import com.ssomar.score.data.Database;
@@ -37,6 +39,8 @@ public final class SCore extends JavaPlugin {
 	public static boolean hasSParkour = false;
 	
 	public static boolean hasWorldGuard = false;
+	
+	public static boolean hasVault = false;
 
 	
 	@Override
@@ -47,6 +51,8 @@ public final class SCore extends JavaPlugin {
 		
 		this.loadDependency();
 
+		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+		
 		GeneralConfig.getInstance();
 		MessageMain.getInstance().load();
 		
@@ -105,6 +111,11 @@ public final class SCore extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] WorldGuard hooked !");
 			hasWorldGuard = true;
+		}
+		
+		if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] Vault hooked !");
+			hasVault = true;
 		}
 	}
 

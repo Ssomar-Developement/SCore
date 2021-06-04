@@ -90,9 +90,7 @@ public class SecurityOPQuery {
 			pstmt.setString(1, p.getName());
 			rs    = pstmt.executeQuery();
 
-			while (rs.next()) {
-				return true;
-			}
+			if (rs.next()) return true;
 		} catch (SQLException e) {
 			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		} finally {

@@ -61,7 +61,8 @@ public class StringPlaceholder {
 	private String projectileY="";
 	private String projectileZ="";
 
-	public String replacePlaceholder(String s) {
+	public String replacePlaceholder(String str) {
+		String s = str;
 		if(this.hasPlayer()) {
 			s=s.replaceAll("%player%", this.getPlayer());
 		}

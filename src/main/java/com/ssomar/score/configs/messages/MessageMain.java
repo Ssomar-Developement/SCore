@@ -115,10 +115,8 @@ public class MessageMain {
 	}
 	
 	public String getMessage(Plugin plugin, MessageInterface message) {	
-		if(messages.containsKey(plugin)) {
-			if(messages.get(plugin).containsKey(message)) {
-				return messages.get(plugin).get(message);
-			}
+		if(messages.containsKey(plugin) && messages.get(plugin).containsKey(message)) {
+			return messages.get(plugin).get(message);
 		}
 		return "";
 	}

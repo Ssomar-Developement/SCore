@@ -124,8 +124,9 @@ public class StringConverter {
 		System.out.println(s);
 	}
 
-	public static String replaceHexCodes (String textToTranslate) {
+	public static String replaceHexCodes (String s) {
 
+		String textToTranslate = s;
 		boolean start1 = false;
 		boolean startValid = false;
 		boolean requireET = false;

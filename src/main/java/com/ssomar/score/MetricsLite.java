@@ -55,7 +55,7 @@ public class MetricsLite {
     private boolean enabled;
 
     // Should failed requests be logged?
-    private static boolean logFailedRequests;
+    private boolean logFailedRequests;
 
     // Should the sent data be logged?
     private static boolean logSentData;
