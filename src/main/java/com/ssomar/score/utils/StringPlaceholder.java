@@ -20,6 +20,10 @@ public class StringPlaceholder {
 	private String world="";
 	private String slot="";
 	
+	/* placeholders of the owner */
+	private String owner= "";
+	private String ownerUUID="";
+	
 	/* placeholders of the item */
 	private String activator= "";
 	private String item= "";
@@ -39,7 +43,7 @@ public class StringPlaceholder {
 	private String targetUUID="";
 	private String target= "";
 	
-	/* placeholders of the target block */
+	/* placeholders of the block */
 	private String block= "";
 	private String blockX= "";
 	private String blockY= "";
@@ -47,6 +51,15 @@ public class StringPlaceholder {
 	private String blockXInt= "";
 	private String blockYInt= "";
 	private String blockZInt= "";
+	
+	/* placeholders of the target block */
+	private String targetBlock= "";
+	private String targetBlockX= "";
+	private String targetBlockY= "";
+	private String targetBlockZ= "";
+	private String targetBlockXInt= "";
+	private String targetBlockYInt= "";
+	private String targetBlockZInt= "";
 	
 	/* placeholders tools */
 	private String launcher="";
@@ -80,6 +93,9 @@ public class StringPlaceholder {
 		}
 		if(this.hasBlock()) {
 			s=s.replaceAll("%block%", this.getBlock());
+		}
+		if(this.hasTargetBlock()) {
+			s=s.replaceAll("%targte_block%", this.getTargetBlock());
 		}
 		if(this.hasTarget()) {
 			s=s.replaceAll("%target%", this.getTarget());
@@ -155,6 +171,24 @@ public class StringPlaceholder {
 		}
 		if(this.hasBlockZInt()) {
 			s=this.replaceCalculPlaceholder(s, "%block_z_int%", this.getBlockZInt());
+		}
+		if(this.hasTargetBlockX()) {
+			s=this.replaceCalculPlaceholder(s, "%target_block_x%", this.getTargetBlockX());
+		}
+		if(this.hasTargetBlockY()) {
+			s=this.replaceCalculPlaceholder(s, "%target_block_y%", this.getTargetBlockY());
+		}
+		if(this.hasTargetBlockZ()) {
+			s=this.replaceCalculPlaceholder(s, "%target_block_z%", this.getTargetBlockZ());
+		}
+		if(this.hasTargetBlockXInt()) {
+			s=this.replaceCalculPlaceholder(s, "%target_block_x_int%", this.getTargetBlockXInt());
+		}
+		if(this.hasTargetBlockYInt()) {
+			s=this.replaceCalculPlaceholder(s, "%target_block_y_int%", this.getTargetBlockYInt());
+		}
+		if(this.hasTargetBlockZInt()) {
+			s=this.replaceCalculPlaceholder(s, "%target_block_z_int%", this.getTargetBlockZInt());
 		}
 		if(this.hasMaxUsePerDayActivator()) {
 			s=s.replaceAll("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
@@ -236,6 +270,15 @@ public class StringPlaceholder {
 	}
 	public boolean hasPlayer() {
 		return player.length()!=0;
+	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String player) {
+		this.owner = player;
+	}
+	public boolean hasOwner() {
+		return owner.length()!=0;
 	}
 	public String getLauncher() {
 		return launcher;
@@ -327,6 +370,15 @@ public class StringPlaceholder {
 	}
 	public boolean hasPlayerUUID() {
 		return this.playerUUID.length()!=0;
+	}
+	public String getOwnerUUID() {
+		return ownerUUID;
+	}
+	public void setOwnerUUID(String playerUUID) {
+		this.ownerUUID = playerUUID;
+	}
+	public boolean hasOwnerUUID() {
+		return this.ownerUUID.length()!=0;
 	}
 	public String getTargetUUID() {
 		return targetUUID;
@@ -578,6 +630,92 @@ public class StringPlaceholder {
 	public void setBlockZInt(String blockZInt) {
 		this.blockZInt = blockZInt;
 	}
+
+	public String getTargetBlock() {
+		return targetBlock;
+	}
+
+	public void setTargetBlock(String targetBlock) {
+		this.targetBlock = targetBlock;
+	}
+	
+	public boolean hasTargetBlock() {
+		return targetBlock.length()!=0;
+	}
+
+	public String getTargetBlockX() {
+		return targetBlockX;
+	}
+
+	public void setTargetBlockX(String targetBlockX) {
+		this.targetBlockX = targetBlockX;
+	}
+	
+	public boolean hasTargetBlockX() {
+		return this.targetBlockX.length()!=0;
+	}
+
+	public String getTargetBlockY() {
+		return targetBlockY;
+	}
+
+	public void setTargetBlockY(String targetBlockY) {
+		this.targetBlockY = targetBlockY;
+	}
+	
+	public boolean hasTargetBlockY() {
+		return this.targetBlockY.length()!=0;
+	}
+
+	public String getTargetBlockZ() {
+		return targetBlockZ;
+	}
+
+	public void setTargetBlockZ(String targetBlockZ) {
+		this.targetBlockZ = targetBlockZ;
+	}
+	
+	public boolean hasTargetBlockZ() {
+		return this.targetBlockZ.length()!=0;
+	}
+
+	public String getTargetBlockXInt() {
+		return targetBlockXInt;
+	}
+
+	public void setTargetBlockXInt(String targetBlockXInt) {
+		this.targetBlockXInt = targetBlockXInt;
+	}
+	
+	public boolean hasTargetBlockXInt() {
+		return this.targetBlockXInt.length()!=0;
+	}
+
+	public String getTargetBlockYInt() {
+		return targetBlockYInt;
+	}
+
+	public void setTargetBlockYInt(String targetBlockYInt) {
+		this.targetBlockYInt = targetBlockYInt;
+	}
+	
+	public boolean hasTargetBlockYInt() {
+		return this.targetBlockYInt.length()!=0;
+	}
+
+	public String getTargetBlockZInt() {
+		return targetBlockZInt;
+	}
+
+	public void setTargetBlockZInt(String targetBlockZInt) {
+		this.targetBlockZInt = targetBlockZInt;
+	}
+	
+	public boolean hasTargetBlockZInt() {
+		return this.targetBlockZInt.length()!=0;
+	}
+	
+	
 		
 	
 }

@@ -30,7 +30,7 @@ public class Database {
 
 		try (Connection conn = DriverManager.getConnection(url)) {
 			if (conn != null) {
-				System.out.println("[ExecutableItems] "+"Connexion to the db...");
+				System.out.println(SCore.NAME_2+" Connexion to the db...");
 			}
 
 		} catch (SQLException e) {
@@ -46,7 +46,7 @@ public class Database {
 			conn = DriverManager.getConnection(url);
 			//System.out.println("[ExecutableItems] "+"Connexion OKAY");
 		} catch (SQLException e) {
-			System.out.println("[ExecutableItems] "+e.getMessage());
+			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		}
 		return conn;
 	}

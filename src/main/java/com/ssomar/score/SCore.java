@@ -50,11 +50,12 @@ public final class SCore extends JavaPlugin {
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 		
 		this.loadDependency();
-
-		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 		
 		GeneralConfig.getInstance();
+		
 		MessageMain.getInstance().load();
+
+		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 		
 
 		/* Database */

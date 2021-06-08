@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.0</version>
+	<version>1.2-ALPHA</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -18,6 +18,27 @@
 	</properties>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+		
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources/</directory>
+				<includes>
+					<include>*.yml</include>
+				</includes>
+			</resource>
+			<resource>
+				<targetPath>com/ssomar/score/configs/locale</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources/locale/</directory>
+				<includes>
+					<include>Locale*.yml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -65,16 +86,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<targetPath>.</targetPath>
-				<filtering>true</filtering>
-				<directory>${basedir}/src/main/resources/</directory>
-				<includes>
-					<include>*.yml</include>
-				</includes>
-			</resource>
-		</resources>
 	</build>
 
 	<repositories>

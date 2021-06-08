@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.ssomar.score.SCore;
+
 public class CommandsQuery {
 
 	private final static String TABLE_COMMANDS = "commands";
@@ -23,10 +25,10 @@ public class CommandsQuery {
 	
 	public static void createNewTable(Connection conn) {
 		try (Statement stmt = conn.createStatement()) {
-			System.out.println("[ExecutableItems] "+"Verification of the table "+TABLE_COMMANDS_NAME+"...");
+			System.out.println(SCore.NAME_2+"  Verification of the table "+TABLE_COMMANDS_NAME+"...");
 			stmt.execute(CREATE_TABLE);
 		} catch (SQLException e) {
-			System.out.println("[ExecutableItems] "+e.getMessage());
+			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		}
 	}
 
@@ -43,7 +45,7 @@ public class CommandsQuery {
 			pstmt.setString(2, command);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("[ExecutableItems] "+e.getMessage());
+			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		}
 		finally {
 	        if(pstmt != null){
@@ -68,7 +70,7 @@ public class CommandsQuery {
 			pstmt.setString(1, player.getName());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("[ExecutableItems] "+e.getMessage());
+			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		}
 		finally {
 	        if(pstmt != null){
@@ -96,7 +98,7 @@ public class CommandsQuery {
 				list.add(rs.getString(COL_COMMAND));
 			}
 		} catch (SQLException e) {
-			System.out.println("[ExecutableItems] "+e.getMessage());
+			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		} finally {
 	        if(rs != null){
 	             try{

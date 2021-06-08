@@ -19,8 +19,6 @@ public class FertilizeInCube extends BlockCommandTemplate{
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
-		if(!validMaterial.contains(oldMaterial)) return;
-
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			

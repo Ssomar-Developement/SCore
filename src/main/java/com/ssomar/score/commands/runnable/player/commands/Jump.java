@@ -39,7 +39,7 @@ public class Jump extends PlayerCommandTemplate{
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+				NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
 			}
 		};
 		BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);

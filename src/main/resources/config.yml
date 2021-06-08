@@ -1,7 +1,1 @@
 locale: EN
-voidCommands:
- - tp %player% 0 50 0
-blacklistTradeItems:
- - STONE
-enchantItemsInGUI: true
-glassPaneInGUI: true
