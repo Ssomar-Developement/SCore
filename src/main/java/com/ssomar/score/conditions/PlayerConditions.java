@@ -1,0 +1,995 @@
+package com.ssomar.score.conditions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import com.ssomar.executableitems.api.ExecutableItemsAPI;
+import com.ssomar.executableitems.items.Item;
+import com.ssomar.score.SCore;
+import com.ssomar.score.usedapi.WorldGuardAPI;
+import com.ssomar.score.utils.StringCalculation;
+
+public class PlayerConditions extends Conditions{
+
+	private boolean ifSneaking;
+	private static final String IF_SNEAKING_MSG = " &cYou must sneak to active the activator: &6%activator% &cof this item!";
+	private String ifSneakingMsg;
+
+	private boolean ifNotSneaking;
+	private static final String IF_NOT_SNEAKING_MSG = " &cYou must not sneak to active the activator: &6%activator% &cof this item!";
+	private String ifNotSneakingMsg;
+
+	private boolean ifSwimming;
+	private static final String IF_SWIMMING_MSG = " &cYou must swin to active the activator: &6%activator% &cof this item!";
+	private String ifSwimmingMsg;
+
+	private boolean ifGliding;
+	private static final String IF_GLIDING_MSG = " &cYou must glide to active the activator: &6%activator% &cof this item!";
+	private String ifGlidingMsg;
+
+	private boolean ifFlying;
+	private static final String IF_FLYING_MSG = " &cYou must fly to active the activator: &6%activator% &cof this item!";
+	private String ifFlyingMsg;
+
+	private List<String> ifInWorld;
+	private static final String IF_IN_WORLD_MSG = " &cYou aren't in the good world to active the activator: &6%activator% &cof this item!";
+	private String ifInWorldMsg;
+
+	private List<String> ifNotInWorld;
+	private static final String IF_NOT_IN_WORLD_MSG = " &cYou aren't in the good world to active the activator: &6%activator% &cof this item!";
+	private String ifNotInWorldMsg;
+
+	private List<String> ifInBiome;
+	private static final String IF_IN_BIOME_MSG = " &cYou aren't in the good biome to active the activator: &6%activator% &cof this item!";
+	private String ifInBiomeMsg;
+
+	private List<String> ifNotInBiome;
+	private static final String IF_NOT_IN_BIOME_MSG = " &cYou aren't in the good biome to active the activator: &6%activator% &cof this item!";
+	private String ifNotInBiomeMsg;
+
+	private List<String> ifInRegion;
+	private static final String IF_IN_REGION_MSG = " &cYou aren't in the good region to active the activator: &6%activator% &cof this item!";
+	private String ifInRegionMsg;
+
+	private List<String> ifNotInRegion;
+	private static final String IF_NOT_IN_REGION_MSG = " &cYou are in blacklisted region to active the activator: &6%activator% &cof this item!";
+	private String ifNotInRegionMsg;
+
+	private List<String> ifHasPermission;
+	private static final String IF_HAS_PERMISSION_MSG = " &cYou doesn't have the permission to active the activator: &6%activator% &cof this item!";
+	private String ifHasPermissionMsg;
+
+	private List<String> ifNotHasPermission;
+	private static final String IF_NOT_HAS_PERMISSION_MSG = " &cYou have a blacklisted permission to active the activator: &6%activator% &cof this item!";
+	private String ifNotHasPermissionMsg;
+
+	private List<Material> ifTargetBlock;
+	private static final String IF_TARGET_BLOCK_MSG = " &cYou don't target the good type of block to active the activator: &6%activator% &cof this item!";
+	private String ifTargetBlockMsg;
+
+	private List<Material> ifNotTargetBlock;
+	private static final String IF_NOT_TARGET_BLOCK_MSG = " &cYou don't target the good type of block to active the activator: &6%activator% &cof this item!";
+	private String ifNotTargetBlockMsg;
+
+	private String ifPlayerHealth;
+	private static final String IF_PLAYER_HEALTH_MSG = " &cYour health is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerHealthMsg;
+
+	private String ifPlayerFoodLevel;
+	private static final String IF_PLAYER_FOOD_LEVEL_MSG = " &cYour food is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerFoodLevelMsg;
+
+	private String ifPlayerEXP;
+	private static final String IF_PLAYER_EXP_MSG = " &cYour EXP is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerEXPMsg;
+
+	private String ifPlayerLevel;
+	private static final String IF_PLAYER_LEVEL_MSG = " &cYour level is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerLevelMsg;
+
+	private String ifLightLevel;
+	private static final String IF_LIGHT_LEVEL_MSG = " &cLight level is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifLightLevelMsg;
+
+	private String ifPosX;
+	private static final String IF_POS_X_MSG = " &cCoordinate X is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPosXMsg;
+
+	private String ifPosY;
+	private static final String IF_POS_Y_MSG = " &cCoordinate Y is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPosYMsg;
+
+	private String ifPosZ;
+	private static final String IF_POS_Z_MSG = " &cCoordinate Z is not valid to active the activator: &6%activator% &cof this item!";
+	private String ifPosZMsg;
+
+	private Map<String, Integer> ifPlayerHasExecutableItem;
+	private static final String IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG = " &cYou don't have all correct ExecutableItems to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerHasExecutableItemMsg;
+
+	private Map<Material, Integer> ifPlayerHasItem;
+	private static final String IF_PLAYER_HAS_ITEM_MSG = " &cYou don't have all correct Items to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerHasItemMsg;
+
+
+	public boolean verifConditions(Player p) {
+
+		if(this.hasIfHasPermission()) {
+			boolean valid= true;
+			for(String perm : this.getIfHasPermission()) {
+				if(!p.hasPermission(perm)) {
+					valid=false;
+					break;
+				}
+			}
+			if(!valid) {
+				this.getSm().sendMessage(p, this.getIfHasPermissionMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfNotHasPermission()) {
+			for(String perm : this.getIfNotHasPermission()) {
+				if(p.hasPermission(perm)) {
+					this.getSm().sendMessage(p, this.getIfNotHasPermissionMsg());
+					return false;
+				}
+			}
+		}
+
+		if(this.hasIfSneaking() && ifSneaking && !p.isSneaking()) {
+			this.getSm().sendMessage(p, this.getIfSneakingMsg());
+			return false;
+		}
+
+		if(this.hasIfNotSneaking() && ifNotSneaking && p.isSneaking()) {
+			this.getSm().sendMessage(p, this.getIfNotSneakingMsg());
+			return false;
+		}
+
+		if(this.hasIfSwimming() && ifSwimming && !p.isSwimming()) {
+			this.getSm().sendMessage(p, (this.getIfSwimmingMsg()));
+			return false;
+		}
+
+		if(this.hasIfGliding() && ifGliding && !p.isGliding()) {
+			this.getSm().sendMessage(p, this.getIfGlidingMsg());
+			return false;
+		}
+
+		if(this.hasIfFlying() && ifFlying && !p.isFlying()) {
+			this.getSm().sendMessage(p, this.getIfFlyingMsg());
+			return false;
+		}
+
+		if(this.hasIfInWorld()) {
+			boolean notValid=true;
+			for(String s: this.ifInWorld) {
+				if(p.getWorld().getName().equalsIgnoreCase(s)) {
+					notValid=false;
+					break;
+				}
+			}
+			if(notValid) {
+				this.getSm().sendMessage(p, this.getIfInWorldMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfNotInWorld()) {
+			boolean notValid=false;
+			for(String s: this.ifNotInWorld) {
+				if(p.getWorld().getName().equalsIgnoreCase(s)) {
+					notValid=true;
+					break;
+				}
+			}
+			if(notValid) {
+				this.getSm().sendMessage(p, this.getIfNotInWorldMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfInBiome()) {
+			boolean notValid=true;
+			for(String s: this.ifInBiome) {
+				if(p.getLocation().getBlock().getBiome().toString().equalsIgnoreCase(s)) {
+					notValid=false;
+					break;
+				}
+			}
+			if(notValid) {
+				this.getSm().sendMessage(p, this.getIfInBiomeMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfNotInBiome()) {
+			boolean notValid=false;
+			for(String s: this.ifNotInBiome) {
+				if(p.getLocation().getBlock().getBiome().toString().equalsIgnoreCase(s)) {
+					notValid=true;
+					break;
+				}
+			}
+			if(notValid) {
+				this.getSm().sendMessage(p, this.getIfNotInBiomeMsg());
+				return false;
+			}
+		}		
+
+		if(SCore.hasWorldGuard) {
+			if(this.hasIfInRegion() && !new WorldGuardAPI().isInRegion(p, this.ifInRegion)) {
+				this.getSm().sendMessage(p, this.getIfInRegionMsg());
+				return false;
+			}
+
+			if(this.hasIfNotInRegion() && new WorldGuardAPI().isInRegion(p, this.ifNotInRegion)) {
+				this.getSm().sendMessage(p, this.getIfNotInRegionMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfTargetBlock()) {
+			Block block = p.getTargetBlock(null, 5);
+			/* take only the fix block, not hte falling block */
+			if((block.getType()==Material.WATER || block.getType()==Material.LAVA) && !block.getBlockData().getAsString().contains("level=0")) {
+				this.getSm().sendMessage(p, this.getIfTargetBlockMsg());
+				return false;
+			}
+			if(!this.getIfTargetBlock().contains(block.getType())) {
+				this.getSm().sendMessage(p, this.getIfTargetBlockMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfNotTargetBlock()) {
+			Block block = p.getTargetBlock(null, 5);
+			/* take only the fix block, not hte falling block */
+			if((block.getType().equals(Material.WATER) || block.getType().equals(Material.LAVA)) && !block.getBlockData().getAsString().contains("level=0")) {
+				this.getSm().sendMessage(p, this.getIfNotTargetBlockMsg());
+				return false;
+			}
+			if(this.getIfNotTargetBlock().contains(block.getType())) {
+				this.getSm().sendMessage(p, this.getIfNotTargetBlockMsg());
+				return false;
+			}
+		}
+
+		if(this.hasIfPlayerHealth() && !StringCalculation.calculation(this.ifPlayerHealth, p.getHealth())) {
+			this.getSm().sendMessage(p, this.getIfPlayerHealthMsg());
+			return false;
+		}
+
+		if(this.hasIfPlayerFoodLevel() && !StringCalculation.calculation(this.ifPlayerFoodLevel, p.getFoodLevel())) {
+			this.getSm().sendMessage(p, this.getIfPlayerFoodLevelMsg());
+			return false;
+		}
+
+		if(this.hasIfPlayerEXP() && !StringCalculation.calculation(this.ifPlayerEXP, p.getExp())) {
+			this.getSm().sendMessage(p, this.getIfPlayerEXPMsg());
+			return false;
+		}
+
+		if(this.hasIfPlayerLevel() && !StringCalculation.calculation(this.ifPlayerLevel, p.getLevel())) {
+			this.getSm().sendMessage(p, this.getIfPlayerLevelMsg());
+			return false;
+		}	
+
+		if(this.hasIfLightLevel() && !StringCalculation.calculation(this.ifLightLevel, p.getEyeLocation().getBlock().getLightLevel())) {
+			this.getSm().sendMessage(p, this.getIfLightLevelMsg());
+			return false;
+		}	
+
+		if(this.hasIfPosX() && !StringCalculation.calculation(this.ifPosX, p.getLocation().getX())) {
+			this.getSm().sendMessage(p, this.getIfPosXMsg());
+			return false;
+		}
+
+		if(this.hasIfPosY() && !StringCalculation.calculation(this.ifPosY, p.getLocation().getY())) {
+			this.getSm().sendMessage(p, this.getIfPosYMsg());
+			return false;
+		}
+
+		if(this.hasIfPosZ() && !StringCalculation.calculation(this.ifPosZ, p.getLocation().getZ())) {
+			this.getSm().sendMessage(p, this.getIfPosZMsg());
+			return false;
+		}
+
+		if(this.hasIfPlayerHasExecutableItem() || this.hasIfPlayerHasItem()) {
+			ItemStack[] content = p.getInventory().getContents();
+			Map<String, Integer> verifEI = new HashMap<>();
+			verifEI.putAll(this.getIfPlayerHasExecutableItem());
+
+			Map<Material, Integer> verifI = new HashMap<>();
+			verifI.putAll(this.getIfPlayerHasItem());
+
+			int cpt = -1;
+			for(ItemStack is : content) {
+				cpt++;
+				if(is == null) continue;
+
+				if(SCore.hasExecutableItems) {
+					Item item;
+					if((item = ExecutableItemsAPI.getExecutableItemConfig(is))!=null && !verifEI.isEmpty() && verifEI.containsKey(item.getIdentification()) && verifEI.get(item.getIdentification())==cpt) 
+						verifEI.remove(item.getIdentification());
+				}
+
+				if(verifI.containsKey(is.getType()) && verifI.get(is.getType())==cpt) {
+					verifI.remove(is.getType());
+				}
+			}
+
+			if(!verifEI.isEmpty()) {
+				this.getSm().sendMessage(p, this.getIfPlayerHasExecutableItemMsg());
+				return false;
+			}
+
+			if(!verifI.isEmpty()) {
+				this.getSm().sendMessage(p, this.getIfPlayerHasItemMsg());
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static PlayerConditions getPlayerConditions(ConfigurationSection playerCdtSection, List<String> errorList, String pluginName) {
+
+		PlayerConditions pCdt = new PlayerConditions();
+
+		pCdt.setIfSneaking(playerCdtSection.getBoolean("ifSneaking", false));
+		pCdt.setIfSneakingMsg(playerCdtSection.getString("ifSneakingMsg", "&4&l"+pluginName+IF_SNEAKING_MSG));
+
+		pCdt.setIfNotSneaking(playerCdtSection.getBoolean("ifNotSneaking", false));
+		pCdt.setIfNotSneakingMsg(playerCdtSection.getString("ifNotSneakingMsg", "&4&l"+pluginName+IF_NOT_SNEAKING_MSG));
+
+		pCdt.setIfSwimming(playerCdtSection.getBoolean("ifSwimming", false));
+		pCdt.setIfSwimmingMsg(playerCdtSection.getString("ifSwimmingMsg", "&4&l"+pluginName+IF_SWIMMING_MSG));
+
+		pCdt.setIfGliding(playerCdtSection.getBoolean("ifGliding", false));
+		pCdt.setIfGlidingMsg(playerCdtSection.getString("ifGlidingMsg", "&4&l"+pluginName+IF_GLIDING_MSG));
+
+		pCdt.setIfFlying(playerCdtSection.getBoolean("ifFlying", false));
+		pCdt.setIfFlyingMsg(playerCdtSection.getString("ifFlyingMsg", "&4&l"+pluginName+IF_FLYING_MSG));
+
+		pCdt.setIfInWorld(playerCdtSection.getStringList("ifInWorld"));
+		pCdt.setIfInWorldMsg(playerCdtSection.getString("ifInWorldMsg", "&4&l"+pluginName+IF_IN_WORLD_MSG));
+
+		pCdt.setIfNotInWorld(playerCdtSection.getStringList("ifNotInWorld"));
+		pCdt.setIfNotInWorldMsg(playerCdtSection.getString("ifNotInWorldMsg", "&4&l"+pluginName+IF_NOT_IN_WORLD_MSG));
+
+		pCdt.setIfInBiome(playerCdtSection.getStringList("ifInBiome"));
+		pCdt.setIfInBiomeMsg(playerCdtSection.getString("ifInBiomeMsg", "&4&l"+pluginName+IF_IN_BIOME_MSG));
+
+		pCdt.setIfNotInBiome(playerCdtSection.getStringList("ifNotInBiome"));
+		pCdt.setIfNotInBiomeMsg(playerCdtSection.getString("ifNotInBiomeMsg", "&4&l"+pluginName+IF_NOT_IN_BIOME_MSG));
+
+		if (playerCdtSection.contains("ifInRegion") || playerCdtSection.contains("ifNotInRegion")) {
+
+			if (SCore.is1v12()) {
+				errorList.add(pluginName+" Error the conditions ifInRegion and ifNotInRegion are not available in 1.12 due to a changement of worldguard API ");
+			} 
+			else {
+				pCdt.setIfInRegion(playerCdtSection.getStringList("ifInRegion"));
+				pCdt.setIfInRegionMsg(playerCdtSection.getString("ifInRegionMsg", "&4&l"+pluginName+IF_IN_REGION_MSG));
+
+				pCdt.setIfNotInRegion(playerCdtSection.getStringList("ifNotInRegion"));
+				pCdt.setIfNotInRegionMsg(playerCdtSection.getString("ifNotInRegionMsg", "&4&l"+pluginName+IF_NOT_IN_REGION_MSG));
+			}
+		}
+
+		pCdt.setIfHasPermission(playerCdtSection.getStringList("ifHasPermission"));
+		pCdt.setIfHasPermissionMsg(playerCdtSection.getString("ifHasPermissionMsg", "&4&l"+pluginName+IF_HAS_PERMISSION_MSG));
+
+		pCdt.setIfNotHasPermission(playerCdtSection.getStringList("ifNotHasPermission"));
+		pCdt.setIfNotHasPermissionMsg(playerCdtSection.getString("ifNotHasPermissionMsg", "&4&l"+pluginName+IF_NOT_HAS_PERMISSION_MSG));
+
+		List<Material> mat = new ArrayList<>();
+		for (String s : playerCdtSection.getStringList("ifTargetBlock")) {
+			try {
+				mat.add(Material.valueOf(s.toUpperCase()));
+			} catch (Exception e) {}
+		}
+		pCdt.setIfTargetBlock(mat);
+		pCdt.setIfTargetBlockMsg(playerCdtSection.getString("ifTargetBlockMsg", "&4&l"+pluginName+IF_TARGET_BLOCK_MSG));
+
+		mat = new ArrayList<>();
+		for (String s : playerCdtSection.getStringList("ifNotTargetBlock")) {
+			try {
+				mat.add(Material.valueOf(s.toUpperCase()));
+			} catch (Exception e) {}
+		}
+		pCdt.setIfNotTargetBlock(mat);
+		pCdt.setIfNotTargetBlockMsg(playerCdtSection.getString("ifNotTargetBlockMsg", "&4&l"+pluginName+IF_NOT_TARGET_BLOCK_MSG));
+
+		pCdt.setIfPlayerHealth(playerCdtSection.getString("ifPlayerHealth", ""));
+		pCdt.setIfPlayerHealthMsg(playerCdtSection.getString("ifPlayerHealthMsg", "&4&l"+pluginName+IF_PLAYER_HEALTH_MSG));
+
+		pCdt.setIfPlayerFoodLevel(playerCdtSection.getString("ifPlayerFoodLevel", ""));
+		pCdt.setIfPlayerFoodLevelMsg(playerCdtSection.getString("ifPlayerFoodLevelMsg", "&4&l"+pluginName+IF_PLAYER_FOOD_LEVEL_MSG));
+
+		pCdt.setIfPlayerEXP(playerCdtSection.getString("ifPlayerEXP", ""));
+		pCdt.setIfPlayerEXPMsg(playerCdtSection.getString("ifPlayerEXPMsg", "&4&l"+pluginName+IF_PLAYER_EXP_MSG));
+
+		pCdt.setIfPlayerLevel(playerCdtSection.getString("ifPlayerLevel", ""));
+		pCdt.setIfPlayerLevelMsg(playerCdtSection.getString("ifPlayerLevelMsg", "&4&l"+pluginName+IF_PLAYER_LEVEL_MSG));
+
+		pCdt.setIfLightLevel(playerCdtSection.getString("ifLightLevel", ""));
+		pCdt.setIfLightLevelMsg(playerCdtSection.getString("ifLightLevelMsg", "&4&l"+pluginName+IF_LIGHT_LEVEL_MSG));
+
+		pCdt.setIfPosX(playerCdtSection.getString("ifPosX", ""));
+		pCdt.setIfPosXMsg(playerCdtSection.getString("ifPosXMsg", "&4&l"+pluginName+IF_POS_X_MSG));
+
+		pCdt.setIfPosY(playerCdtSection.getString("ifPosY", ""));
+		pCdt.setIfPosYMsg(playerCdtSection.getString("ifPosYMsg", "&4&l"+pluginName+IF_POS_Y_MSG));
+
+		pCdt.setIfPosZ(playerCdtSection.getString("ifPosZ", ""));
+		pCdt.setIfPosZMsg(playerCdtSection.getString("ifPosZMsg", "&4&l"+pluginName+IF_POS_Z_MSG));
+
+		Map<String, Integer> verifEI = new HashMap<>();
+		for (String s : playerCdtSection.getStringList("ifPlayerHasExecutableItem")) {
+			if (s.contains(":")) {
+				String[] spliter = s.split(":");
+				int slot = 0;
+				try {
+					slot = Integer.valueOf(spliter[1]);
+				} catch (Exception e) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasExecutableItem condition: " + s + " correct form > ID:SLOT  example> test:5 !");
+					continue;
+				}
+				verifEI.put(spliter[0], slot);
+			}
+		}
+		pCdt.setIfPlayerHasExecutableItem(verifEI);
+		pCdt.setIfPlayerHasExecutableItemMsg(playerCdtSection.getString("ifPlayerHasExecutableItemMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG));
+
+		Map<Material, Integer> verifI = new HashMap<>();
+		for (String s : playerCdtSection.getStringList("ifPlayerHasItem")) {
+			if (s.contains(":")) {
+				String[] spliter = s.split(":");
+				int slot = 0;
+				Material material = null;
+				try {
+					material = Material.valueOf(spliter[0]);
+				} catch (Exception e) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasItem condition: " + s+ " correct form > MATERIAL:SLOT  example> DIAMOND:5 !");
+					continue;
+				}
+				try {
+					slot = Integer.valueOf(spliter[1]);
+				} catch (Exception e) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasItem condition: " + s+ " correct form > MATERIAL:SLOT  example> DIAMOND:5 !");
+					continue;
+				}
+				verifI.put(material, slot);
+			}
+		}
+		pCdt.setIfPlayerHasItem(verifI);
+		pCdt.setIfPlayerHasItemMsg(playerCdtSection.getString("ifPlayerHasItemMsg", "&4&l"+pluginName+IF_PLAYER_HAS_ITEM_MSG));
+
+		return pCdt;
+
+	}
+
+	public boolean isIfSneaking() {
+		return ifSneaking;
+	}
+
+	public void setIfSneaking(boolean ifSneaking) {
+		this.ifSneaking = ifSneaking;
+	}
+
+	public boolean hasIfSneaking() {
+		return ifSneaking;
+	}
+
+	public boolean isIfNotSneaking() {
+		return ifNotSneaking;
+	}
+
+	public void setIfNotSneaking(boolean ifNotSneaking) {
+		this.ifNotSneaking = ifNotSneaking;
+	}
+
+	public boolean hasIfNotSneaking() {
+		return ifNotSneaking;
+	}
+
+	public boolean isIfSwimming() {
+		return ifSwimming;
+	}
+
+	public void setIfSwimming(boolean ifSwimming) {
+		this.ifSwimming = ifSwimming;
+	}
+
+	public boolean hasIfSwimming() {
+		return ifSwimming;
+	}
+
+	public boolean isIfGliding() {
+		return ifGliding;
+	}
+
+	public void setIfGliding(boolean ifGliding) {
+		this.ifGliding = ifGliding;
+	}
+
+	public boolean hasIfGliding() {
+		return ifGliding;
+	}
+
+	public boolean isIfFlying() {
+		return ifFlying;
+	}
+
+	public void setIfFlying(boolean ifFlying) {
+		this.ifFlying = ifFlying;
+	}
+
+	public boolean hasIfFlying() {
+		return ifFlying; 
+	}
+
+	public List<String> getIfInWorld() {
+		return ifInWorld;
+	}
+
+	public void setIfInWorld(List<String> ifInWorld) {
+		this.ifInWorld = ifInWorld;
+	}
+
+	public boolean hasIfInWorld() {
+		return ifInWorld.size()!=0;
+	}
+
+	public List<String> getIfNotInWorld() {
+		return ifNotInWorld;
+	}
+
+	public void setIfNotInWorld(List<String> ifNotInWorld) {
+		this.ifNotInWorld = ifNotInWorld;
+	}
+
+	public boolean hasIfNotInWorld() {
+		return ifNotInWorld.size()!=0;
+	}
+
+	public List<String> getIfInBiome() {
+		return ifInBiome;
+	}
+
+	public void setIfInBiome(List<String> ifInBiome) {
+		this.ifInBiome = ifInBiome;
+	}
+
+	public boolean hasIfInBiome() {
+		return ifInBiome.size()!=0;
+	}
+
+	public List<String> getIfNotInBiome() {
+		return ifNotInBiome;
+	}
+
+	public void setIfNotInBiome(List<String> ifNotInBiome) {
+		this.ifNotInBiome = ifNotInBiome;
+	}
+
+	public boolean hasIfNotInBiome() {
+		return ifNotInBiome.size()!=0;
+	}
+
+	public List<String> getIfInRegion() {
+		return ifInRegion;
+	}
+
+	public void setIfInRegion(List<String> ifInRegion) {
+		this.ifInRegion = ifInRegion;
+	}
+
+	public boolean hasIfInRegion() {
+		return ifInRegion.size()!=0;
+	}
+
+	public List<String> getIfNotInRegion() {
+		return ifNotInRegion;
+	}
+
+	public void setIfNotInRegion(List<String> ifNotInRegion) {
+		this.ifNotInRegion = ifNotInRegion;
+	}
+
+	public boolean hasIfNotInRegion() {
+		return ifNotInRegion.size()!=0;
+	}
+
+	public List<String> getIfHasPermission() {
+		return ifHasPermission;
+	}
+
+	public void setIfHasPermission(List<String> ifHasPermission) {
+		this.ifHasPermission = ifHasPermission;
+	}
+
+	public boolean hasIfHasPermission() {
+		return ifHasPermission.size()!=0;
+	}
+
+	public List<String> getIfNotHasPermission() {
+		return ifNotHasPermission;
+	}
+
+	public void setIfNotHasPermission(List<String> ifNotHasPermission) {
+		this.ifNotHasPermission = ifNotHasPermission;
+	}
+
+	public boolean hasIfNotHasPermission() {
+		return ifNotHasPermission.size()!=0;
+	}
+
+	public List<Material> getIfTargetBlock() {
+		return ifTargetBlock;
+	}
+	public void setIfTargetBlock(List<Material> ifTargetBlock) {
+		this.ifTargetBlock = ifTargetBlock;
+	}
+	public boolean hasIfTargetBlock() {
+		return ifTargetBlock.size()!=0;
+	}
+
+
+	public List<Material> getIfNotTargetBlock() {
+		return ifNotTargetBlock;
+	}
+	public void setIfNotTargetBlock(List<Material> ifNotTargetBlock) {
+		this.ifNotTargetBlock = ifNotTargetBlock;
+	}
+	public boolean hasIfNotTargetBlock() {
+		return ifNotTargetBlock.size()!=0;
+	}
+
+	public String getIfPlayerHealth() {
+		return ifPlayerHealth;
+	}
+
+	public void setIfPlayerHealth(String ifPlayerHealth) {
+		this.ifPlayerHealth = ifPlayerHealth;
+	}
+
+	public boolean hasIfPlayerHealth() {
+		return  ifPlayerHealth.length()!=0;
+	}
+
+	public String getIfPlayerFoodLevel() {
+		return ifPlayerFoodLevel;
+	}
+
+	public void setIfPlayerFoodLevel(String ifPlayerFoodLevel) {
+		this.ifPlayerFoodLevel = ifPlayerFoodLevel;
+	}
+
+	public boolean hasIfPlayerFoodLevel() {
+		return  ifPlayerFoodLevel.length()!=0;
+	}
+
+	public String getIfPlayerEXP() {
+		return ifPlayerEXP;
+	}
+
+	public void setIfPlayerEXP(String ifPlayerEXP) {
+		this.ifPlayerEXP = ifPlayerEXP;
+	}
+
+	public boolean hasIfPlayerEXP() {
+		return  ifPlayerEXP.length()!=0;
+	}
+
+	public String getIfPlayerLevel() {
+		return ifPlayerLevel;
+	}
+	public void setIfPlayerLevel(String ifPlayerLevel) {
+		this.ifPlayerLevel = ifPlayerLevel;
+	}
+
+	public boolean hasIfPlayerLevel() {
+		return  ifPlayerLevel.length()!=0;
+	}
+
+	public boolean hasIfLightLevel() {
+		return ifLightLevel.length()!=0;
+	}
+
+	public String getIfLightLevel() {
+		return ifLightLevel;
+	}
+
+	public void setIfLightLevel(String x) {
+		this.ifLightLevel = x;
+	}
+
+	public boolean hasIfPosX() {
+		return ifPosX.length()!=0;
+	}
+
+	public String getIfPosX() {
+		return ifPosX;
+	}
+
+	public void setIfPosX(String ifPosX) {
+		this.ifPosX = ifPosX;
+	}
+
+	public boolean hasIfPosY() {
+		return ifPosY.length()!=0;
+	}
+
+	public String getIfPosY() {
+		return ifPosY;
+	}
+
+	public void setIfPosY(String ifPosY) {
+		this.ifPosY = ifPosY;
+	}
+
+	public boolean hasIfPosZ() {
+		return ifPosZ.length()!=0;
+	}
+
+	public String getIfPosZ() {
+		return ifPosZ;
+	}
+
+	public void setIfPosZ(String ifPosZ) {
+		this.ifPosZ = ifPosZ;
+	}
+
+	public Map<String, Integer> getIfPlayerHasExecutableItem() {
+		return ifPlayerHasExecutableItem;
+	}
+	public void setIfPlayerHasExecutableItem(Map<String, Integer> ifPlayerHasExecutableItem) {
+		this.ifPlayerHasExecutableItem = ifPlayerHasExecutableItem;
+	}
+	public boolean hasIfPlayerHasExecutableItem() {
+		return !ifPlayerHasExecutableItem.isEmpty();
+	}
+
+
+	public Map<Material, Integer> getIfPlayerHasItem() {
+		return ifPlayerHasItem;
+	}
+	public void setIfPlayerHasItem(Map<Material, Integer> ifPlayerHasItem) {
+		this.ifPlayerHasItem = ifPlayerHasItem;
+	}
+	public boolean hasIfPlayerHasItem() {
+		return !ifPlayerHasItem.isEmpty();
+	}
+
+
+
+
+
+
+
+	public synchronized String getIfSneakingMsg() {
+		return ifSneakingMsg;
+	}
+
+	public synchronized void setIfSneakingMsg(String ifSneakingMsg) {
+		this.ifSneakingMsg = ifSneakingMsg;
+	}
+
+	public synchronized String getIfNotSneakingMsg() {
+		return ifNotSneakingMsg;
+	}
+
+	public synchronized void setIfNotSneakingMsg(String ifNotSneakingMsg) {
+		this.ifNotSneakingMsg = ifNotSneakingMsg;
+	}
+
+	public synchronized String getIfSwimmingMsg() {
+		return ifSwimmingMsg;
+	}
+
+	public synchronized void setIfSwimmingMsg(String ifSwimmingMsg) {
+		this.ifSwimmingMsg = ifSwimmingMsg;
+	}
+
+	public synchronized String getIfGlidingMsg() {
+		return ifGlidingMsg;
+	}
+
+	public synchronized void setIfGlidingMsg(String ifGlidingMsg) {
+		this.ifGlidingMsg = ifGlidingMsg;
+	}
+
+	public synchronized String getIfFlyingMsg() {
+		return ifFlyingMsg;
+	}
+
+	public synchronized void setIfFlyingMsg(String ifFlyingMsg) {
+		this.ifFlyingMsg = ifFlyingMsg;
+	}
+
+	public synchronized String getIfInWorldMsg() {
+		return ifInWorldMsg;
+	}
+
+	public synchronized void setIfInWorldMsg(String ifInWorldMsg) {
+		this.ifInWorldMsg = ifInWorldMsg;
+	}
+
+	public synchronized void setIfNotInWorldMsg(String ifNotInWorldMsg) {
+		this.ifNotInWorldMsg = ifNotInWorldMsg;
+	}
+
+	public synchronized String getIfNotInWorldMsg() {
+		return ifNotInWorldMsg;
+	}
+
+	public synchronized String getIfInBiomeMsg() {
+		return ifInBiomeMsg;
+	}
+
+	public synchronized void setIfInBiomeMsg(String ifInBiomeMsg) {
+		this.ifInBiomeMsg = ifInBiomeMsg;
+	}
+
+	public synchronized void setIfNotInBiomeMsg(String ifNotInBiomeMsg) {
+		this.ifNotInBiomeMsg = ifNotInBiomeMsg;
+	}
+
+	public synchronized String getIfNotInBiomeMsg() {
+		return ifNotInBiomeMsg;
+	}
+
+	public synchronized String getIfInRegionMsg() {
+		return ifInRegionMsg;
+	}
+
+	public synchronized void setIfInRegionMsg(String ifInRegionMsg) {
+		this.ifInRegionMsg = ifInRegionMsg;
+	}
+
+	public synchronized String getIfNotInRegionMsg() {
+		return ifNotInRegionMsg;
+	}
+
+	public synchronized void setIfNotInRegionMsg(String ifNotInRegionMsg) {
+		this.ifNotInRegionMsg = ifNotInRegionMsg;
+	}
+
+	public synchronized String getIfHasPermissionMsg() {
+		return ifHasPermissionMsg;
+	}
+
+	public synchronized void setIfHasPermissionMsg(String ifHasPermissionMsg) {
+		this.ifHasPermissionMsg = ifHasPermissionMsg;
+	}
+
+	public synchronized String getIfNotHasPermissionMsg() {
+		return ifNotHasPermissionMsg;
+	}
+
+	public synchronized void setIfNotHasPermissionMsg(String ifNotHasPermissionMsg) {
+		this.ifNotHasPermissionMsg = ifNotHasPermissionMsg;
+	}
+
+	public synchronized String getIfPlayerHealthMsg() {
+		return ifPlayerHealthMsg;
+	}
+
+	public synchronized void setIfPlayerHealthMsg(String ifPlayerHealthMsg) {
+		this.ifPlayerHealthMsg = ifPlayerHealthMsg;
+	}
+
+	public synchronized String getIfPlayerFoodLevelMsg() {
+		return ifPlayerFoodLevelMsg;
+	}
+
+	public synchronized void setIfPlayerFoodLevelMsg(String ifPlayerFoodLevelMsg) {
+		this.ifPlayerFoodLevelMsg = ifPlayerFoodLevelMsg;
+	}
+
+	public synchronized String getIfPlayerEXPMsg() {
+		return ifPlayerEXPMsg;
+	}
+
+	public synchronized void setIfPlayerEXPMsg(String ifPlayerExpMsg) {
+		this.ifPlayerEXPMsg = ifPlayerExpMsg;
+	}
+
+	public synchronized String getIfPlayerLevelMsg() {
+		return ifPlayerLevelMsg;
+	}
+
+	public synchronized void setIfPlayerLevelMsg(String ifPlayerLevelMsg) {
+		this.ifPlayerLevelMsg = ifPlayerLevelMsg;
+	}
+
+
+	public String getIfTargetBlockMsg() {
+		return ifTargetBlockMsg;
+	}
+
+
+	public void setIfTargetBlockMsg(String ifTargetBlockMsg) {
+		this.ifTargetBlockMsg = ifTargetBlockMsg;
+	}
+
+
+	public String getIfPosXMsg() {
+		return ifPosXMsg;
+	}
+
+
+	public void setIfPosXMsg(String ifPosXMsg) {
+		this.ifPosXMsg = ifPosXMsg;
+	}
+
+
+	public String getIfPosYMsg() {
+		return ifPosYMsg;
+	}
+
+
+	public void setIfPosYMsg(String ifPosYMsg) {
+		this.ifPosYMsg = ifPosYMsg;
+	}
+
+
+	public String getIfPosZMsg() {
+		return ifPosZMsg;
+	}
+
+
+	public void setIfPosZMsg(String ifPosZMsg) {
+		this.ifPosZMsg = ifPosZMsg;
+	}
+
+
+	public String getIfNotTargetBlockMsg() {
+		return ifNotTargetBlockMsg;
+	}
+
+
+	public void setIfNotTargetBlockMsg(String ifNotTargetBlockMsg) {
+		this.ifNotTargetBlockMsg = ifNotTargetBlockMsg;
+	}
+
+
+	public String getIfPlayerHasExecutableItemMsg() {
+		return ifPlayerHasExecutableItemMsg;
+	}
+
+
+	public void setIfPlayerHasExecutableItemMsg(String ifPlayerHasExecutableItemMsg) {
+		this.ifPlayerHasExecutableItemMsg = ifPlayerHasExecutableItemMsg;
+	}
+
+
+	public String getIfPlayerHasItemMsg() {
+		return ifPlayerHasItemMsg;
+	}
+
+
+	public void setIfPlayerHasItemMsg(String ifPlayerHasItemMsg) {
+		this.ifPlayerHasItemMsg = ifPlayerHasItemMsg;
+	}
+
+	public String getIfLightLevelMsg() {
+		return ifLightLevelMsg;
+	}
+
+	public void setIfLightLevelMsg(String ifLightLevelMsg) {
+		this.ifLightLevelMsg = ifLightLevelMsg;
+	}
+
+}

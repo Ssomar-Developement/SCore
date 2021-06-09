@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
@@ -41,6 +42,8 @@ public final class SCore extends JavaPlugin {
 	public static boolean hasWorldGuard = false;
 	
 	public static boolean hasVault = false;
+	
+	public static boolean hasIridiumSkyblock = false;
 
 	
 	@Override
@@ -117,6 +120,10 @@ public final class SCore extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Vault hooked !");
 			hasVault = true;
+		}
+		if(Bukkit.getPluginManager().getPlugin("IridiumSkyblock")!=null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] IridiumSkyblock hooked !");
+			hasIridiumSkyblock = true;
 		}
 	}
 
