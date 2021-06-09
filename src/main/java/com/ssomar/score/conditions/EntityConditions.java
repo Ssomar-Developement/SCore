@@ -3,6 +3,8 @@ package com.ssomar.score.conditions;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creeper;
@@ -51,8 +53,8 @@ public class EntityConditions extends Conditions{
 	private static final String IF_BABY_MSG = " &cThe entity must being baby to active the activator: &6%activator% &cof this item!";
 	private String ifBabyMsg = "";
 
-	public boolean verifConditions(Entity e, Player p) {
-		
+	public boolean verifConditions(Entity e, @Nullable Player p) {
+
 		if(this.hasIfGlowing()) {
 			boolean hasError= false;
 			if(!e.isGlowing()) {
@@ -66,22 +68,22 @@ public class EntityConditions extends Conditions{
 				else hasError=false;
 			}catch(Exception err) {}
 			if(hasError) {
-				this.getSm().sendMessage(p, this.getIfGlowingMsg());
+				if(p != null) this.getSm().sendMessage(p, this.getIfGlowingMsg());
 				return false;
 			}
 		}
 
 		if(this.hasIfEntityHealth() && e instanceof LivingEntity) {
 			LivingEntity lE = (LivingEntity) e;
-				if(!StringCalculation.calculation(this.ifEntityHealth, lE.getHealth())) {
-					this.getSm().sendMessage(p, this.getIfEntityHealthMsg());
-					return false;
-				}
+			if(!StringCalculation.calculation(this.ifEntityHealth, lE.getHealth())) {
+				if(p != null) this.getSm().sendMessage(p, this.getIfEntityHealthMsg());
+				return false;
+			}
 		}
 
 		if(this.hasIfInvulnerable() && !e.isInvulnerable()) {
-				this.getSm().sendMessage(p, this.getIfInvulnerableMsg());
-				return false;
+			if(p != null) this.getSm().sendMessage(p, this.getIfInvulnerableMsg());
+			return false;
 		}
 
 		if(this.hasIfName()) {
@@ -93,7 +95,7 @@ public class EntityConditions extends Conditions{
 				}
 			}
 			if(notValid) {
-				this.getSm().sendMessage(p, this.getIfNameMsg());
+				if(p != null) this.getSm().sendMessage(p, this.getIfNameMsg());
 				return false;
 			}
 		}
@@ -106,23 +108,23 @@ public class EntityConditions extends Conditions{
 
 
 		if(this.hasIfAdult() && e instanceof Ageable && !((Ageable)e).isAdult()) {
-			this.getSm().sendMessage(p, this.getIfAdultMsg());
+			if(p != null) this.getSm().sendMessage(p, this.getIfAdultMsg());
 			return false;
 		}
 
 		if(this.hasIfBaby() && e instanceof Ageable && ((Ageable)e).isAdult()) {
-			this.getSm().sendMessage(p, this.getIfBabyMsg());
+			if(p != null) this.getSm().sendMessage(p, this.getIfBabyMsg());
 			return false;
 		}
 
 		if(this.hasIfPowered() && e instanceof Creeper && !((Creeper)e).isPowered()) {
-			this.getSm().sendMessage(p, this.getIfPoweredMsg());
+			if(p != null) this.getSm().sendMessage(p, this.getIfPoweredMsg());
 			return false;
 		}
 
 		return true;
 	}
-	
+
 	public static EntityConditions getEntityConditions(ConfigurationSection entityCdtSection, List<String> errorList, String pluginName) {
 
 		EntityConditions eCdt = new EntityConditions();

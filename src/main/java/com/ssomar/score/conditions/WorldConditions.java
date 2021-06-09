@@ -2,7 +2,10 @@ package com.ssomar.score.conditions;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.WeatherType;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -19,22 +22,22 @@ public class WorldConditions extends Conditions{
 	private static final String IF_WORLD_TIME_MSG = " &cThe world time is not valid to active the activator: &6%activator% &cof this item!";
 	private String ifWorldTimeMsg;
 	
-	public boolean verifConditions(Player p) {
+	public boolean verifConditions(World world, @Nullable Player p) {
 		
 		if(this.hasIfWorldTime()) {
-			if(!StringCalculation.calculation(this.ifWorldTime, p.getWorld().getTime())) {
-				this.getSm().sendMessage(p, this.getIfWorldTimeMsg());
+			if(!StringCalculation.calculation(this.ifWorldTime, world.getTime())) {
+				if(p != null) this.getSm().sendMessage(p, this.getIfWorldTimeMsg());
 				return false;
 			}
 		}
 		if(this.hasIfWeather()) {
 			String currentW="";
-			if(p.getWorld().isThundering() || p.getWorld().isThundering()) currentW="STORM";
-			else if(p.getPlayerWeather()==WeatherType.DOWNFALL) currentW= "RAIN";
+			if(world.isThundering()) currentW = "STORM";
+			else if(p != null && p.getPlayerWeather().equals(WeatherType.DOWNFALL)) currentW = "RAIN";
 			else currentW="CLEAR";
 			
 			if(!this.ifWeather.contains(currentW)) {
-				this.getSm().sendMessage(p, this.getIfWeatherMsg());
+				if(p != null) this.getSm().sendMessage(p, this.getIfWeatherMsg());
 				return false;
 			}
 		}
