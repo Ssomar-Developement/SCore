@@ -32,7 +32,7 @@ public class CustomConditions extends Conditions{
 		return true;
 	}
 	
-	public CustomConditions getCustomConditions(ConfigurationSection customCdtSection, List<String> errorList, String pluginName) {
+	public static CustomConditions getCustomConditions(ConfigurationSection customCdtSection, List<String> errorList, String pluginName) {
 
 		CustomConditions cCdt = new CustomConditions();
 
