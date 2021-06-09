@@ -101,7 +101,13 @@ public abstract class GUIManager<T> {
 	}
 
 	public void editLine(Player p, int nb, String edition) {
-		if(currentWriting.containsKey(p)) currentWriting.get(p).set(nb, edition);
+		
+		if(currentWriting.containsKey(p)) {
+			if(nb >= currentWriting.get(p).size()) {
+				currentWriting.get(p).add(edition);
+			}
+			else currentWriting.get(p).set(nb, edition);
+		}
 	}
 	
 	public void space(Player p) {

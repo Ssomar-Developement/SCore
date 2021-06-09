@@ -94,8 +94,14 @@ public class StringPlaceholder {
 		if(this.hasBlock()) {
 			s=s.replaceAll("%block%", this.getBlock());
 		}
+		if(this.hasBlock()) {
+			s=s.replaceAll("%block_lower%", this.getBlock().toLowerCase());
+		}
 		if(this.hasTargetBlock()) {
-			s=s.replaceAll("%targte_block%", this.getTargetBlock());
+			s=s.replaceAll("%target_block%", this.getTargetBlock());
+		}
+		if(this.hasTargetBlock()) {
+			s=s.replaceAll("%target_block_lower%", this.getTargetBlock().toLowerCase());
 		}
 		if(this.hasTarget()) {
 			s=s.replaceAll("%target%", this.getTarget());
@@ -195,6 +201,12 @@ public class StringPlaceholder {
 		}
 		if(this.hasMaxUsePerDayItem()) {
 			s=s.replaceAll("%max_use_per_day_item%", this.getMaxUsePerDayItem());
+		}
+		if(this.hasOwner()) {
+			s = s.replaceAll("%owner%", this.getOwner());
+		}
+		if(this.hasOwnerUUID()) {
+			s = s.replaceAll("%owner_uuid%", this.getOwnerUUID());
 		}
 		return replacePlaceholderOfPAPI(s);
 	}
