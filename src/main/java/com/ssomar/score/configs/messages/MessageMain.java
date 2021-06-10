@@ -32,6 +32,7 @@ public class MessageMain {
 	private Map<Plugin, Map<MessageInterface, String>> messages = new HashMap<>();
 
 	public void load() {
+		messages = new HashMap<>();
 		SCore.plugin.getServer().getLogger().info(SCore.NAME_2+" Language setup on "+GeneralConfig.getInstance().getLocale());
 		fileName = "/locale/Locale_"+GeneralConfig.getInstance().getLocale()+".yml";
 	}

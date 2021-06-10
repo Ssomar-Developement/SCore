@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
@@ -142,6 +141,10 @@ public final class SCore extends JavaPlugin {
 	public void onReload() {
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 		GeneralConfig.getInstance().reload();
+		
+		MessageMain.getInstance().load();
+
+		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 	}

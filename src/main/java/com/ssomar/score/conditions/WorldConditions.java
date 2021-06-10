@@ -67,7 +67,7 @@ public class WorldConditions extends Conditions{
 	}
 
 	public boolean hasIfWeather() {
-		return ifWeather.size()!=0;
+		return ifWeather != null && ifWeather.size()!=0;
 	}
 	
 	public String getIfWorldTime() {
@@ -79,9 +79,8 @@ public class WorldConditions extends Conditions{
 	}
 
 	public boolean hasIfWorldTime() {
-		return ifWorldTime.length()!=0;
+		return ifWorldTime != null && ifWorldTime.length()!=0;
 	}
-	
 	
 	
 	public String getIfWeatherMsg() {

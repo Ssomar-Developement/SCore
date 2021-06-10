@@ -26,8 +26,7 @@ public abstract class Config {
 	}
 
 	public void setup(Plugin plugin) {
-		if (!plugin.getDataFolder().exists())
-			plugin.getDataFolder().mkdir(); 
+		if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdir(); 
 		this.pdfile = new File(plugin.getDataFolder(), this.fileName);
 		if (!this.pdfile.exists()) {
 			try {

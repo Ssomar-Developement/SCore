@@ -1,10 +1,19 @@
 package com.ssomar.score.conditions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
+import com.google.common.base.Charsets;
 import com.ssomar.score.SCore;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
 
@@ -47,6 +56,45 @@ public class CustomConditions extends Conditions{
 		return cCdt;
 
 	}	
+	/*
+	 *  @param plugin The plugin of the conditions
+	 *  @param path The path of the file where we save the conditions
+	 *  @param ojectID The ID of the object that contains the conditions
+	 *  @param actiID  The ID of the activator that contains the conditions
+	 *  @param cC the custom conditions object
+	 */
+	public static void saveCustomConditions(Plugin plugin, String path, String objectID, String actID, CustomConditions cC) {
+
+		if(!new File(path).exists()) {
+			plugin.getLogger().severe("["+plugin.getName()+"] Error can't find the file in the folder ("+objectID+".yml)");
+			return;
+		}
+		File file = new File(path);
+		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+actID);
+		activatorConfig.set("conditions.customConditions.ifNeedPlayerConfirmation", false);
+
+		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+actID+".conditions.customConditions");
+
+		if(cC.hasIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true); 
+		else cCConfig.set("ifNeedPlayerConfirmation", null);
+		
+		if(cC.isIfPlayerMustBeOnHisIsland()) cCConfig.set("ifPlayerMustBeOnHisIsland", true); 
+		else cCConfig.set("ifPlayerMustBeOnHisIsland", null);
+
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+			try {
+				writer.write(config.saveToString());
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public boolean hasCustomCondition() {
 		return this.ifNeedPlayerConfirmation || this.ifPlayerMustBeOnHisIsland;

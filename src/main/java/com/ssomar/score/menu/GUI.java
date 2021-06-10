@@ -3,6 +3,8 @@ package com.ssomar.score.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,9 +13,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.linkedplugins.LinkedPlugins;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.utils.StringConverter;
 
 public abstract class GUI {
@@ -31,6 +37,14 @@ public abstract class GUI {
 	public final static String PREVIOUS_PAGE = "&dPrevious page &5&l◀";
 
 	public final static String EXIT = "&4&l▶ &cExit";
+	
+	public final static String OBJECT_ID = "✚ OBJECT ID:";
+	
+	public final static String COLOR_OBJECT_ID = "&2&l✚ &a&lOBJECT ID:";
+	
+	public final static String ACTIVATOR_ID = "✚ ACTIVATOR ID:";
+	
+	public final static String COLOR_ACTIVATOR_ID = "&2&l✚ &a&lACTIVATOR ID:";
 
 	public Material NEXT_PAGE_MAT = null;
 
@@ -199,6 +213,38 @@ public abstract class GUI {
 			}
 		};
 		runnable.runTask(SCore.getPlugin());
+	}
+	
+	public String getObjectID() {
+		return this.getActually(this.getByName(OBJECT_ID));
+	}
+	
+	@Nullable
+	public SObject getSObject(Plugin plugin) {
+		try {
+			return LinkedPlugins.getSObject(plugin, this.getObjectID());
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public String getActivatorID() {
+		return this.getActually(this.getByName(ACTIVATOR_ID));
+	}
+	
+	@Nullable
+	public SActivator getActivator(Plugin plugin) {
+		try {
+			SObject sObject = this.getSObject(plugin);
+			for(SActivator act : sObject.getActivators()){
+				if(act.getID().equals(this.getActivatorID())) {
+					return act;
+				}
+			}
+			return null;
+		}catch(Exception e) {
+			return null;
+		}
 	}
 
 	public String getActually(ItemStack item) {

@@ -548,7 +548,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfInWorld() {
-		return ifInWorld.size()!=0;
+		return ifInWorld != null && ifInWorld.size()!=0;
 	}
 
 	public List<String> getIfNotInWorld() {
@@ -560,7 +560,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfNotInWorld() {
-		return ifNotInWorld.size()!=0;
+		return ifNotInWorld != null && ifNotInWorld.size()!=0;
 	}
 
 	public List<String> getIfInBiome() {
@@ -572,7 +572,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfInBiome() {
-		return ifInBiome.size()!=0;
+		return ifInBiome != null && ifInBiome.size()!=0;
 	}
 
 	public List<String> getIfNotInBiome() {
@@ -584,7 +584,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfNotInBiome() {
-		return ifNotInBiome.size()!=0;
+		return ifNotInBiome != null && ifNotInBiome.size()!=0;
 	}
 
 	public List<String> getIfInRegion() {
@@ -596,7 +596,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfInRegion() {
-		return ifInRegion.size()!=0;
+		return ifInRegion != null && ifInRegion.size()!=0;
 	}
 
 	public List<String> getIfNotInRegion() {
@@ -608,7 +608,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfNotInRegion() {
-		return ifNotInRegion.size()!=0;
+		return ifNotInRegion != null && ifNotInRegion.size()!=0;
 	}
 
 	public List<String> getIfHasPermission() {
@@ -620,7 +620,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfHasPermission() {
-		return ifHasPermission.size()!=0;
+		return ifHasPermission != null && ifHasPermission.size()!=0;
 	}
 
 	public List<String> getIfNotHasPermission() {
@@ -632,7 +632,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfNotHasPermission() {
-		return ifNotHasPermission.size()!=0;
+		return ifNotHasPermission != null && ifNotHasPermission.size()!=0;
 	}
 
 	public List<Material> getIfTargetBlock() {
@@ -642,9 +642,8 @@ public class PlayerConditions extends Conditions{
 		this.ifTargetBlock = ifTargetBlock;
 	}
 	public boolean hasIfTargetBlock() {
-		return ifTargetBlock.size()!=0;
+		return ifTargetBlock != null && ifTargetBlock.size()!=0;
 	}
-
 
 	public List<Material> getIfNotTargetBlock() {
 		return ifNotTargetBlock;
@@ -653,7 +652,7 @@ public class PlayerConditions extends Conditions{
 		this.ifNotTargetBlock = ifNotTargetBlock;
 	}
 	public boolean hasIfNotTargetBlock() {
-		return ifNotTargetBlock.size()!=0;
+		return ifNotTargetBlock != null && ifNotTargetBlock.size()!=0;
 	}
 
 	public String getIfPlayerHealth() {
@@ -665,7 +664,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPlayerHealth() {
-		return  ifPlayerHealth.length()!=0;
+		return  ifPlayerHealth != null && ifPlayerHealth.length()!=0;
 	}
 
 	public String getIfPlayerFoodLevel() {
@@ -677,7 +676,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPlayerFoodLevel() {
-		return  ifPlayerFoodLevel.length()!=0;
+		return  ifPlayerFoodLevel != null && ifPlayerFoodLevel.length()!=0;
 	}
 
 	public String getIfPlayerEXP() {
@@ -689,7 +688,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPlayerEXP() {
-		return  ifPlayerEXP.length()!=0;
+		return  ifPlayerEXP != null && ifPlayerEXP.length()!=0;
 	}
 
 	public String getIfPlayerLevel() {
@@ -700,11 +699,11 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPlayerLevel() {
-		return  ifPlayerLevel.length()!=0;
+		return  ifPlayerLevel != null && ifPlayerLevel.length()!=0;
 	}
 
 	public boolean hasIfLightLevel() {
-		return ifLightLevel.length()!=0;
+		return ifLightLevel != null && ifLightLevel.length()!=0;
 	}
 
 	public String getIfLightLevel() {
@@ -716,7 +715,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPosX() {
-		return ifPosX.length()!=0;
+		return ifPosX != null && ifPosX.length()!=0;
 	}
 
 	public String getIfPosX() {
@@ -728,7 +727,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPosY() {
-		return ifPosY.length()!=0;
+		return ifPosY != null && ifPosY.length()!=0;
 	}
 
 	public String getIfPosY() {
@@ -740,7 +739,7 @@ public class PlayerConditions extends Conditions{
 	}
 
 	public boolean hasIfPosZ() {
-		return ifPosZ.length()!=0;
+		return ifPosZ != null && ifPosZ.length()!=0;
 	}
 
 	public String getIfPosZ() {
@@ -758,9 +757,8 @@ public class PlayerConditions extends Conditions{
 		this.ifPlayerHasExecutableItem = ifPlayerHasExecutableItem;
 	}
 	public boolean hasIfPlayerHasExecutableItem() {
-		return !ifPlayerHasExecutableItem.isEmpty();
+		return ifPlayerHasExecutableItem != null && !ifPlayerHasExecutableItem.isEmpty();
 	}
-
 
 	public Map<Material, Integer> getIfPlayerHasItem() {
 		return ifPlayerHasItem;
@@ -769,7 +767,7 @@ public class PlayerConditions extends Conditions{
 		this.ifPlayerHasItem = ifPlayerHasItem;
 	}
 	public boolean hasIfPlayerHasItem() {
-		return !ifPlayerHasItem.isEmpty();
+		return ifPlayerHasItem != null && !ifPlayerHasItem.isEmpty();
 	}
 
 

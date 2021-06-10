@@ -80,7 +80,7 @@ public class TargetConditions extends Conditions{
 	}
 
 	public boolean hasIfTargetHealth() {
-		return this.ifTargetHealth.length()!=0;
+		return ifTargetHealth != null && this.ifTargetHealth.length()!=0;
 	}
 
 	public String getIfTargetFoodLevel() {
@@ -91,7 +91,7 @@ public class TargetConditions extends Conditions{
 		this.ifTargetFoodLevel = ifTargetFoodLevel;
 	}
 	public boolean hasIfTargetFoodLevel() {
-		return this.ifTargetFoodLevel.length()!=0;
+		return ifTargetFoodLevel != null && this.ifTargetFoodLevel.length()!=0;
 	}
 
 	public String getIfTargetEXP() {
@@ -103,7 +103,7 @@ public class TargetConditions extends Conditions{
 	}
 
 	public boolean hasIfTargetEXP() {
-		return this.ifTargetEXP.length()!=0;
+		return ifTargetEXP!= null && this.ifTargetEXP.length()!=0;
 	}
 
 	public String getIfTargetLevel() {
@@ -115,14 +115,8 @@ public class TargetConditions extends Conditions{
 	}
 
 	public boolean hasIfTargetLevel() {
-		return this.ifTargetLevel.length()!=0;
+		return ifTargetLevel != null && this.ifTargetLevel.length()!=0;
 	}
-
-
-
-
-
-
 
 	public String getIfTargetHealthMsg() {
 		return ifTargetHealthMsg;
