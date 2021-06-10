@@ -1,4 +1,4 @@
-package com.ssomar.score.conditions.placeholders;
+package com.ssomar.score.sobject.sactivator.conditions.placeholders;
 
 public enum Comparator {
 

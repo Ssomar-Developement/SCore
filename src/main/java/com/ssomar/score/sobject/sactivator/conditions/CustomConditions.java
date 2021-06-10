@@ -1,4 +1,4 @@
-package com.ssomar.score.conditions;
+package com.ssomar.score.sobject.sactivator.conditions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,10 +11,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import com.google.common.base.Charsets;
 import com.ssomar.score.SCore;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
 
 public class CustomConditions extends Conditions{
@@ -57,25 +59,24 @@ public class CustomConditions extends Conditions{
 
 	}	
 	/*
-	 *  @param plugin The plugin of the conditions
-	 *  @param path The path of the file where we save the conditions
-	 *  @param ojectID The ID of the object that contains the conditions
-	 *  @param actiID  The ID of the activator that contains the conditions
+	 *  @param sPlugin The plugin of the conditions
+	 *  @param sObject The object
+	 *  @param sActivator The activator that contains the conditions
 	 *  @param cC the custom conditions object
 	 */
-	public static void saveCustomConditions(Plugin plugin, String path, String objectID, String actID, CustomConditions cC) {
+	public static void saveCustomConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomConditions cC) {
 
-		if(!new File(path).exists()) {
-			plugin.getLogger().severe("["+plugin.getName()+"] Error can't find the file in the folder ("+objectID+".yml)");
+		if(!new File(sObject.getPath()).exists()) {
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ("+sObject.getID()+".yml)");
 			return;
 		}
-		File file = new File(path);
+		File file = new File(sObject.getPath());
 		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
 
-		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+actID);
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions.customConditions.ifNeedPlayerConfirmation", false);
 
-		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+actID+".conditions.customConditions");
+		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions.customConditions");
 
 		if(cC.hasIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true); 
 		else cCConfig.set("ifNeedPlayerConfirmation", null);

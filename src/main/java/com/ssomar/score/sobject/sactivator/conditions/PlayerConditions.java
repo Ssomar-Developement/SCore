@@ -1,5 +1,10 @@
-package com.ssomar.score.conditions;
+package com.ssomar.score.sobject.sactivator.conditions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +13,19 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.base.Charsets;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.api.ExecutableItemsAPI;
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.StringCalculation;
 
@@ -119,6 +131,9 @@ public class PlayerConditions extends Conditions{
 	private static final String IF_PLAYER_HAS_ITEM_MSG = " &cYou don't have all correct Items to active the activator: &6%activator% &cof this item!";
 	private String ifPlayerHasItemMsg;
 
+	public PlayerConditions() {
+		
+	}
 
 	public boolean verifConditions(Player p) {
 
@@ -477,6 +492,108 @@ public class PlayerConditions extends Conditions{
 
 		return pCdt;
 
+	}
+	
+	/*
+	 *  @param sPlugin The plugin of the conditions
+	 *  @param sObject The object
+	 *  @param sActivator The activator that contains the conditions
+	 *  @param pC the player conditions object
+	 */
+	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions pC, String detail) {
+
+		if(!new File(sObject.getPath()).exists()) {
+			ExecutableItems.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			return;
+		}
+		File file = new File(sObject.getPath());
+		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
+		activatorConfig.set("conditions."+detail+".ifSneaking", false);
+
+
+		ConfigurationSection pCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
+
+		if(pC.hasIfSneaking()) pCConfig.set("ifSneaking", true); 
+		else pCConfig.set("ifSneaking", null);
+
+		if(pC.hasIfNotSneaking()) pCConfig.set("ifNotSneaking", true); 
+		else pCConfig.set("ifNotSneaking", null);
+
+		if(pC.hasIfSwimming()) pCConfig.set("ifSwimming", true); 
+		else pCConfig.set("ifSwimming", null);
+
+		if(pC.hasIfGliding()) pCConfig.set("ifGliding", true); 
+		else pCConfig.set("ifGliding", null);
+
+		if(pC.hasIfFlying()) pCConfig.set("ifFlying", true); 
+		else pCConfig.set("ifFlying", null);
+
+		if(pC.hasIfInWorld()) pCConfig.set("ifInWorld", pC.getIfInWorld()); 
+		else pCConfig.set("ifInWorld", null);
+		
+		if(pC.hasIfNotInWorld()) pCConfig.set("ifNotInWorld", pC.getIfNotInWorld()); 
+		else pCConfig.set("ifNotInWorld", null);
+		
+		if(pC.hasIfInBiome()) pCConfig.set("ifInBiome", pC.getIfInBiome()); 
+		else pCConfig.set("ifInBiome", null);
+		
+		if(pC.hasIfNotInBiome()) pCConfig.set("ifNotInBiome", pC.getIfNotInBiome()); 
+		else pCConfig.set("ifNotInBiome", null);
+
+		if(pC.hasIfInRegion()) pCConfig.set("ifInRegion", pC.getIfInRegion()); 
+		else pCConfig.set("ifInRegion", null);
+
+		if(pC.hasIfNotInRegion()) pCConfig.set("ifNotInRegion", pC.getIfNotInRegion()); 
+		else pCConfig.set("ifNotInRegion", null);
+
+		if(pC.hasIfHasPermission()) pCConfig.set("ifHasPermission", pC.getIfHasPermission()); 
+		else pCConfig.set("ifHasPermission", null);
+
+		if(pC.hasIfNotHasPermission()) pCConfig.set("ifNotHasPermission", pC.getIfNotHasPermission()); 
+		else pCConfig.set("ifNotHasPermission", null);
+		
+		List<String> convert = new ArrayList<>();
+		for(Material mat : pC.getIfTargetBlock()) {
+			convert.add(mat.toString());
+		}
+		if(pC.hasIfTargetBlock()) pCConfig.set("ifTargetBlock",convert); 
+		else pCConfig.set("ifTargetBlock", null);
+		
+		convert = new ArrayList<>();
+		for(Material mat : pC.getIfNotTargetBlock()) {
+			convert.add(mat.toString());
+		}
+		if(pC.hasIfNotTargetBlock()) pCConfig.set("ifNotTargetBlock", convert); 
+		else pCConfig.set("ifNotTargetBlock", null);
+
+		if(pC.hasIfPlayerHealth()) pCConfig.set("ifPlayerHealth", pC.getIfPlayerHealth()); 
+		else pCConfig.set("ifPlayerHealth", null);
+		
+		if(pC.hasIfLightLevel()) pCConfig.set("ifLightLevel", pC.getIfLightLevel()); 
+		else pCConfig.set("ifLightLevel", null);
+
+		if(pC.hasIfPlayerFoodLevel()) pCConfig.set("ifPlayerFoodLevel", pC.getIfPlayerFoodLevel());
+		else pCConfig.set("ifPlayerFoodLevel", null);
+
+		if(pC.hasIfPlayerEXP()) pCConfig.set("ifPlayerEXP", pC.getIfPlayerEXP()); 
+		else pCConfig.set("ifPlayerEXP", null);
+
+		if(pC.hasIfPlayerLevel()) pCConfig.set("ifPlayerLevel", pC.getIfPlayerLevel()); 
+		else pCConfig.set("ifPlayerLevel", null);
+
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+			try {
+				writer.write(config.saveToString());
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isIfSneaking() {

@@ -1,5 +1,10 @@
-package com.ssomar.score.conditions;
+package com.ssomar.score.sobject.sactivator.conditions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -7,8 +12,15 @@ import javax.annotation.Nullable;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Charsets;
+import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 
 public class WorldConditions extends Conditions{
@@ -56,6 +68,46 @@ public class WorldConditions extends Conditions{
 
 		return wCdt;
 
+	}
+	
+	/*
+	 *  @param sPlugin The plugin of the conditions
+	 *  @param sObject The object
+	 *  @param sActivator The activator that contains the conditions
+	 *  @param pC the player conditions object
+	 */
+	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions wC) {
+
+		if(!new File(sObject.getPath()).exists()) {
+			ExecutableItems.plugin.getLogger().severe("[ExecutableItems] Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			return;
+		}
+		File file = new File(sObject.getPath());
+		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
+		activatorConfig.set("conditions.worldConditions.ifWorldTime", "<=0");
+
+
+		ConfigurationSection wCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions.worldConditions");
+
+		if(wC.hasIfWeather()) wCConfig.set("ifWeather", wC.getIfWeather()); 
+		else wCConfig.set("ifWeather", null);
+
+		if(wC.hasIfWorldTime()) wCConfig.set("ifWorldTime", wC.getIfWorldTime()); 
+		else wCConfig.set("ifWorldTime", null);
+
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+			try {
+				writer.write(config.saveToString());
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public List<String> getIfWeather() {

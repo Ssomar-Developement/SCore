@@ -2,6 +2,7 @@ package com.ssomar.score.events;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.SecurityOPCommands;
+import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
 
 public class EventsHandler {
@@ -19,6 +20,8 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new SecurityOPCommands(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new NoFallDamageEvt(), main);
+		
+		main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
 	}
 
 	public static EventsHandler getInstance() {

@@ -13,13 +13,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
 public abstract class GUI {
@@ -220,7 +220,7 @@ public abstract class GUI {
 	}
 	
 	@Nullable
-	public SObject getSObject(Plugin plugin) {
+	public SObject getSObject(SPlugin plugin) {
 		try {
 			return LinkedPlugins.getSObject(plugin, this.getObjectID());
 		}catch(Exception e) {
@@ -233,7 +233,7 @@ public abstract class GUI {
 	}
 	
 	@Nullable
-	public SActivator getActivator(Plugin plugin) {
+	public SActivator getActivator(SPlugin plugin) {
 		try {
 			SObject sObject = this.getSObject(plugin);
 			for(SActivator act : sObject.getActivators()){

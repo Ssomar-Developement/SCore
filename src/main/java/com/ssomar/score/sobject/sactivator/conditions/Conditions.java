@@ -1,4 +1,4 @@
-package com.ssomar.score.conditions;
+package com.ssomar.score.sobject.sactivator.conditions;
 
 import org.bukkit.entity.Player;
 

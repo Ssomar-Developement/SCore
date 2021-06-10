@@ -1,11 +1,18 @@
-package com.ssomar.score.conditions;
+package com.ssomar.score.sobject.sactivator.conditions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -14,6 +21,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.base.Charsets;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
@@ -160,6 +171,68 @@ public class EntityConditions extends Conditions{
 		eCdt.setIfEntityHealthMsg(entityCdtSection.getString("ifEntityHealthMsg", "&4&l"+pluginName+IF_ENTITY_HEALTH_MSG));
 
 		return eCdt;
+	}
+	
+	/*
+	 *  @param sPlugin The plugin of the conditions
+	 *  @param sObject The object
+	 *  @param sActivator The activator that contains the conditions
+	 *  @param eC the custom conditions object
+	 */
+	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, EntityConditions eC, String detail) {
+
+		if(!new File(sObject.getPath()).exists()) {
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			return;
+		}
+		File file = new File(sObject.getPath());
+		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
+		activatorConfig.set("conditions."+detail+".ifGlowing", false);
+
+		ConfigurationSection eCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
+
+		if(eC.hasIfGlowing()) eCConfig.set("ifGlowing", true); 
+		else eCConfig.set("ifGlowing", null);
+
+		if(eC.hasIfInvulnerable()) eCConfig.set("ifInvulnerable", true); 
+		else eCConfig.set("ifInvulnerable", null);
+
+		if(eC.hasIfAdult()) eCConfig.set("ifAdult", true); 
+		else eCConfig.set("ifAdult", null);
+
+		if(eC.hasIfBaby()) eCConfig.set("ifBaby", true); 
+		else eCConfig.set("ifBaby", null);
+
+		if(eC.hasIfPowered()) eCConfig.set("ifPowered", true); 
+		else eCConfig.set("ifPowered", null);
+
+		if(eC.hasIfName()) eCConfig.set("ifName", eC.getIfName()); 
+		else eCConfig.set("ifName", null);
+
+		List<String> convert= new ArrayList<>();
+		for(EntityType eT : eC.getIfNotEntityType()) {
+			convert.add(eT.toString());
+		}
+
+		if(eC.hasIfNotEntityType()) eCConfig.set("ifNotEntityType", convert); 
+		else eCConfig.set("ifNotEntityType", null);
+
+		if(eC.hasIfEntityHealth()) eCConfig.set("ifEntityHealth", eC.getIfEntityHealth()); 
+		else eCConfig.set("ifEntityHealth", null);
+
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+			try {
+				writer.write(config.saveToString());
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

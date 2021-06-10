@@ -82,8 +82,6 @@ public abstract class GUIManager<T> {
 		p.spigot().sendMessage(message);
 	}
 	
-	public abstract void resetAllRequestWriting(Player p);
-	
 	public void deleteLine(String message, Player p) {
 		space(p);
 		space(p);
