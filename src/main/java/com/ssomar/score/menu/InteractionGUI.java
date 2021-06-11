@@ -145,5 +145,9 @@ public class InteractionGUI implements Listener{
 			e.setCancelled(true);
 			WorldConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
+		else if(PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
 	}	
 }

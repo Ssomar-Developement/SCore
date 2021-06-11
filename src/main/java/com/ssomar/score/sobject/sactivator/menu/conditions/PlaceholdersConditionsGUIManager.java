@@ -45,7 +45,7 @@ public class PlaceholdersConditionsGUIManager extends GUIManager<PlaceholdersCon
 					PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail());
 				} 
 				else if(name.contains("Back")) {
-					LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);
 				}
 				else {
 					PlaceholdersCondition pC = null;

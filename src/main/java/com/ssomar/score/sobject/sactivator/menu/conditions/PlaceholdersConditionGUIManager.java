@@ -103,7 +103,8 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 					
 					savePlaceholdersCondition(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+					sAct = sObject.getActivator(sAct.getID());
+					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sAct.getPlaceholdersConditions(), cache.get(p).getDetail());
 				}
 
 				else if(name.contains("Exit")) {
@@ -111,7 +112,7 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 				}
 
 				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sAct.getPlaceholdersConditions(), cache.get(p).getDetail());
 				}
 			}
 		}
