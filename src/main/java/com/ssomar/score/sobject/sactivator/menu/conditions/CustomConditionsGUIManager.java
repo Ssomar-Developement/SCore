@@ -48,7 +48,7 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 					p.closeInventory();
 					saveCustomConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					new ConditionsGUI(sPlugin, sObject, sObject.getActivator(sAct.getID())).openGUISync(p);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
 
 				else if(name.contains("Exit")) {
@@ -56,8 +56,7 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 				}
 
 				else if(name.contains("Back")) {
-					p.closeInventory();
-					new ConditionsGUI(sPlugin, sObject, sAct).openGUISync(p);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
 				}
 			}
 		}

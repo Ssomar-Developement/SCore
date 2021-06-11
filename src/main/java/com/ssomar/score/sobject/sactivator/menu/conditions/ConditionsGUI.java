@@ -9,15 +9,22 @@ import com.ssomar.score.splugin.SPlugin;
 
 public class ConditionsGUI extends ConditionGUIAbstract{
 	
+	public static final String OWNER_CONDITIONS = "Owner Conditions";
 	public static final String PLAYER_CONDITIONS = "Player Conditions";
 	public static final String WORLD_CONDITIONS = "World Conditions";
 	public static final String ENTITY_CONDITIONS = "Entity Conditions";
+	public static final String PLACEHOLDERS_CONDITIONS = "Placeholders Conditions";
 
 	public ConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Conditions", 3*9, sPlugin, sObject, sAct, "null");
 
 		SOption sOp = sAct.getOption();
 		int i=0;
+		
+		if(sOp.getOptionWithOwner().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+OWNER_CONDITIONS, 	false,	false, "&7&oThe owner condtions", "&a✎ Click here to change");
+			i++;
+		}
 
 		if(sOp.getOptionWithPlayer().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLAYER_CONDITIONS, 	false,	false, "&7&oThe player condtions", "&a✎ Click here to change");
@@ -31,6 +38,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 
 		if(sOp.getOptionWithTargetEntity().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+ENTITY_CONDITIONS, 	false,	false, "&7&oThe entity condtions", "&a✎ Click here to change");
+			i++;
+		}
+		
+		if(sOp.getOptionWithOwner().contains(sOp) || sOp.getOptionWithPlayer().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLACEHOLDERS_CONDITIONS, 	false,	false, "&7&oThe placeholders condtions", "&a✎ Click here to change");
 			i++;
 		}
 

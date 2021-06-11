@@ -90,7 +90,7 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 					p.closeInventory();
 					saveEntityConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					new ConditionsGUI(sPlugin, sObject, sObject.getActivator(sAct.getID())).openGUISync(p);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
 
 				else if(name.contains("Exit")) {
@@ -98,8 +98,7 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 				}
 
 				else if(name.contains("Back")) {
-					p.closeInventory();
-					new ConditionsGUI(sPlugin, sObject, sAct).openGUISync(p);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
 				}
 			}
 		}

@@ -68,7 +68,7 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 					p.closeInventory();
 					saveWorldConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					new ConditionsGUI(sPlugin, sObject, sObject.getActivator(sAct.getID())).openGUISync(p);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
 
 				else if(name.contains("Exit")) {
@@ -76,8 +76,7 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 				}
 
 				else if(name.contains("Back")) {
-					p.closeInventory();
-					new ConditionsGUI(sPlugin, sObject, sAct).openGUISync(p);
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
 				}
 			}
 		}

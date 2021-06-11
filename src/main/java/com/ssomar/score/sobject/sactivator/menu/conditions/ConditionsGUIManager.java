@@ -28,20 +28,25 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 				SActivator sActivator = cache.get(p).getSAct();
 				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
 				//String plName = sPlugin.getNameDesign();
+				
+				if(name.contains(ConditionsGUI.OWNER_CONDITIONS)) {
+					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getOwnerConditions(), "ownerConditions");
+				}
 
-				if(name.contains(ConditionsGUI.PLAYER_CONDITIONS)) {
-					p.closeInventory();
+				else if(name.contains(ConditionsGUI.PLAYER_CONDITIONS)) {
 					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlayerConditions(), "playerConditions");
 				}
 				
 				else if(name.contains(ConditionsGUI.WORLD_CONDITIONS)) {
-					p.closeInventory();
 					WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getWorldConditions(), "worldConditions");
 				}
 				
 				else if(name.contains(ConditionsGUI.ENTITY_CONDITIONS)) {
-					p.closeInventory();
 					EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getEntityConditions(), "entityConditions");
+				}
+				
+				else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
+					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
 				}
 
 				if(name.contains("Back")) {

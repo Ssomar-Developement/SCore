@@ -1,12 +1,24 @@
 package com.ssomar.score.sobject.sactivator.conditions.placeholders;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Charsets;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.NTools;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -25,9 +37,19 @@ public class PlaceholdersCondition {
 
 	private String part2String;
 
-	private double part2Number = -1;
+	private double part2Number;
 	
-	private boolean cancelEvent = false;
+	private boolean cancelEvent;
+	
+	public PlaceholdersCondition(String id) {
+		this.id = id;
+		this.type = PlaceholdersCdtType.PLAYER_STRING;
+		this.message = "";
+		this.part1 = "";
+		this.comparator = Comparator.EQUALS;
+		this.part2String = "";
+		this.cancelEvent = false;
+	}
 
 	public PlaceholdersCondition(String id, PlaceholdersCdtType type, String message, String part1, Comparator comparator,
 			String part2String) {
@@ -162,6 +184,79 @@ public class PlaceholdersCondition {
 		}
 
 		return list;
+
+	}
+	
+	/*
+	 *  @param sPlugin The plugin of the conditions
+	 *  @param sObject The object
+	 *  @param sActivator The activator that contains the conditions
+	 *  @param pC the player conditions object
+	 */
+	public static void savePlaceholdersCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlaceholdersCondition pC, String detail) {
+
+		if(!new File(sObject.getPath()).exists()) {
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			return;
+		}
+		File file = new File(sObject.getPath());
+		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
+
+		activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".type", pC.getType().toString());
+		activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".part1", pC.getPart1());
+		activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".comparator", pC.getComparator().toString());
+		
+		if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(pC.getType())) {
+			activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".part2", pC.getPart2Number());
+		}
+		else activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".part2", pC.getPart2String());
+		activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".messageIfNotValid", pC.getMessage());
+		activatorConfig.set("conditions.placeholdersConditions."+pC.getId()+".cancelEventIfNotValid", pC.isCancelEvent());
+
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+			try {
+				writer.write(config.saveToString());
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 *  @param sPlugin The plugin of the conditions
+	 *  @param sObject The object
+	 *  @param sActivator The activator that contains the conditions
+	 *  @param pC the player conditions object
+	 */
+	public static void deletePlaceholdersCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, String id, String detail) {
+
+		if(!new File(sObject.getPath()).exists()) {
+			ExecutableItems.plugin.getLogger().severe("[ExecutableItems] Error can't find the file the folder ! ("+sObject.getID()+".yml)");
+			return;
+		}
+		File file = new File(sObject.getPath());
+		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
+		activatorConfig.set("conditions."+detail+"."+id, null);
+
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+			try {
+				writer.write(config.saveToString());
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 

@@ -30,39 +30,65 @@ import com.ssomar.score.utils.StringConverter;
 
 public class EntityConditions extends Conditions{
 
-	private boolean ifGlowing = false;
+	private boolean ifGlowing;
 	private static final String IF_GLOWING_MSG = " &cThe entity must glowing to active the activator: &6%activator% &cof this item!";
-	private String ifGlowingMsg = "";
+	private String ifGlowingMsg;
 
-	private boolean ifInvulnerable = false;
+	private boolean ifInvulnerable;
 	private static final String IF_INVULNERABLE_MSG = " &cThe entity must being invulnerable to active the activator: &6%activator% &cof this item!";
-	private String ifInvulnerableMsg = "";
+	private String ifInvulnerableMsg;
 
-	private List<String> ifName = new ArrayList<>();
+	private List<String> ifName;
 	private static final String IF_NAME_MSG = " &cThe entity doesn't have a valid name to active the activator: &6%activator% &cof this item!";
-	private String ifNameMsg = "";
+	private String ifNameMsg;
 
-	private List<EntityType> ifNotEntityType = new ArrayList<>();
+	private List<EntityType> ifNotEntityType;
 	private static final String IF_NOT_ENTITY_TYPE_MSG = " &cThe entity hasn't the good type to active the activator: &6%activator% &cof this item!";
-	private String ifNotEntityTypeMsg = "";
+	private String ifNotEntityTypeMsg;
 
-	private String ifEntityHealth = "";
+	private String ifEntityHealth;
 	private static final String IF_ENTITY_HEALTH_MSG = " &cThe health of the entity is not valid to active the activator: &6%activator% &cof this item!";
-	private String ifEntityHealthMsg = "";
+	private String ifEntityHealthMsg;
 
 	//Creeper
-	private boolean ifPowered = false;
+	private boolean ifPowered;
 	private static final String IF_POWERED_MSG = " &cThe entity must being powered to active the activator: &6%activator% &cof this item!";
-	private String ifPoweredMsg = "";
+	private String ifPoweredMsg;
 
 	//Ageable
-	private boolean ifAdult = false;
+	private boolean ifAdult;
 	private static final String IF_ADULT_MSG = " &cThe entity must being adult to active the activator: &6%activator% &cof this item!";
-	private String ifAdultMsg = "";
+	private String ifAdultMsg;
 
-	private boolean ifBaby = false;
+	private boolean ifBaby;
 	private static final String IF_BABY_MSG = " &cThe entity must being baby to active the activator: &6%activator% &cof this item!";
-	private String ifBabyMsg = "";
+	private String ifBabyMsg;
+
+	public EntityConditions() {
+		this.ifGlowing = false;
+		this.ifGlowingMsg = "";
+
+		this.ifInvulnerable = false;
+		this.ifInvulnerableMsg = "";
+
+		this.ifName = new ArrayList<>();
+		this.ifNameMsg = "";
+
+		this.ifNotEntityType = new ArrayList<>();
+		this.ifNotEntityTypeMsg = "";
+
+		this.ifEntityHealth = "";
+		this.ifEntityHealthMsg = "";
+
+		this.ifPowered = false;
+		this.ifPoweredMsg = "";
+
+		this.ifAdult = false;
+		this.ifAdultMsg = "";
+
+		this.ifBaby = false;
+		this.ifBabyMsg = "";
+	}
 
 	public boolean verifConditions(Entity e, @Nullable Player p) {
 
@@ -172,7 +198,7 @@ public class EntityConditions extends Conditions{
 
 		return eCdt;
 	}
-	
+
 	/*
 	 *  @param sPlugin The plugin of the conditions
 	 *  @param sObject The object

@@ -9,10 +9,14 @@ import org.bukkit.entity.Player;
 
 public class BlockConditions extends Conditions{
 
-	private boolean ifPlantFullyGrown = false;
+	private boolean ifPlantFullyGrown;
 	public static final String IF_PLANT_FULLY_GROWN_MSG = " &cThe plant must be fully grown to active the activator: &6%activator% &cof this item!";
-	private String ifPlantFullyGrownMsg = "";
+	private String ifPlantFullyGrownMsg;
 
+	public BlockConditions() {
+		this.ifPlantFullyGrown = false;
+		this.ifPlantFullyGrownMsg = "";
+	}
 
 	public boolean verifConditions(Block b, Player p) {
 

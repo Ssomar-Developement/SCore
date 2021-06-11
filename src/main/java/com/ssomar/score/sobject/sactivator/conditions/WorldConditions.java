@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -17,7 +18,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
@@ -33,6 +33,14 @@ public class WorldConditions extends Conditions{
 	private String ifWorldTime;
 	private static final String IF_WORLD_TIME_MSG = " &cThe world time is not valid to active the activator: &6%activator% &cof this item!";
 	private String ifWorldTimeMsg;
+	
+	public  WorldConditions() {
+		this.ifWeather = new ArrayList<>();
+		this.ifWeatherMsg = "";
+		
+		this.ifWorldTime = "";
+		this.ifWorldTimeMsg = "";
+	}
 	
 	public boolean verifConditions(World world, @Nullable Player p) {
 		
@@ -79,7 +87,7 @@ public class WorldConditions extends Conditions{
 	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions wC) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			ExecutableItems.plugin.getLogger().severe("[ExecutableItems] Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe("[ExecutableItems] Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

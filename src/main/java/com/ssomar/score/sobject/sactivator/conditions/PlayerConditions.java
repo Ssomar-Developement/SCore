@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.api.ExecutableItemsAPI;
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
@@ -132,7 +131,80 @@ public class PlayerConditions extends Conditions{
 	private String ifPlayerHasItemMsg;
 
 	public PlayerConditions() {
+		this.ifSneaking = false;
+		this.ifSneakingMsg = "";
 		
+		this.ifNotSneaking = false;
+		this.ifNotSneakingMsg ="";
+		
+		this.ifSwimming = false;
+		this.ifSwimmingMsg = "";
+		
+		this.ifGliding = false;
+		this.ifGlidingMsg = "";
+		
+		this.ifFlying = false;
+		this.ifFlyingMsg = "";
+		
+		this.ifInWorld = new ArrayList<>();
+		this.ifInWorldMsg = "";
+		
+		this.ifNotInWorld = new ArrayList<>();
+		this.ifNotInWorldMsg = "";
+		
+		this.ifInBiome = new ArrayList<>();
+		this.ifInBiomeMsg = "";
+		
+		this.ifNotInBiome = new ArrayList<>();
+		this.ifNotInBiomeMsg = "";
+		
+		this.ifInRegion = new ArrayList<>();
+		this.ifInRegionMsg = "";
+		
+		this.ifNotInRegion = new ArrayList<>();
+		this.ifNotInRegionMsg = "";
+		
+		this.ifHasPermission = new ArrayList<>();
+		this.ifHasPermissionMsg = "";
+		
+		this.ifNotHasPermission = new ArrayList<>();
+		this.ifNotHasPermissionMsg = "";
+		
+		this.ifTargetBlock = new ArrayList<>();
+		this.ifTargetBlockMsg = "";
+		
+		this.ifNotTargetBlock = new ArrayList<>();
+		this.ifNotTargetBlockMsg = "";
+		
+		this.ifPlayerHealth = "";
+		this.ifPlayerHealthMsg = "";
+		
+		this.ifPlayerFoodLevel = "";
+		this.ifPlayerFoodLevelMsg= "";
+		
+		this.ifPlayerEXP = "";
+		this.ifPlayerEXPMsg = "";
+		
+		this.ifPlayerLevel = "";
+		this.ifPlayerLevelMsg = "";
+		
+		this.ifLightLevel = "";
+		this.ifLightLevelMsg = "";
+		
+		this.ifPosX = "";
+		this.ifPosXMsg = "";
+		
+		this.ifPosY = "";
+		this.ifPosYMsg = "";
+		
+		this.ifPosZ = "";
+		this.ifPosZMsg = "";
+		
+		this.ifPlayerHasItem = new HashMap<>();
+		this.ifPlayerHasItemMsg = "";
+		
+		this.ifPlayerHasExecutableItem = new HashMap<>();
+		this.ifPlayerHasExecutableItemMsg = "";
 	}
 
 	public boolean verifConditions(Player p) {
@@ -503,7 +575,7 @@ public class PlayerConditions extends Conditions{
 	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions pC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			ExecutableItems.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

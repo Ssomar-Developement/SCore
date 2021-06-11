@@ -22,13 +22,21 @@ import com.ssomar.score.usedapi.IridiumSkyblockTool;
 public class CustomConditions extends Conditions{
 
 	//Custom
-	private boolean ifNeedPlayerConfirmation = false;
+	private boolean ifNeedPlayerConfirmation;
 	private static final String IF_NEED_PLAYER_CONFIRMATION_MSG = " &7➤ Click again to confirm the use of this item";
-	private String ifNeedPlayerConfirmationMsg = "";
+	private String ifNeedPlayerConfirmationMsg;
 
-	private boolean ifPlayerMustBeOnHisIsland = false;
+	private boolean ifPlayerMustBeOnHisIsland;
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG = " &cTo active this activator/item, you must be on your Island !";
-	private String ifPlayerMustBeOnHisIslandMsg = "";
+	private String ifPlayerMustBeOnHisIslandMsg;
+	
+	public CustomConditions() {
+		this.ifNeedPlayerConfirmation = false;
+		this.ifNeedPlayerConfirmationMsg = "";
+		
+		this.ifPlayerMustBeOnHisIsland = false;
+		this.ifNeedPlayerConfirmationMsg = "";
+	}
 
 
 	public boolean verifConditions(Player p, Player target) {
