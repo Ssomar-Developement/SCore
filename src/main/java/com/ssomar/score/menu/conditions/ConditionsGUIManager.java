@@ -1,4 +1,4 @@
-package com.ssomar.score.sobject.sactivator.menu.conditions;
+package com.ssomar.score.menu.conditions;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

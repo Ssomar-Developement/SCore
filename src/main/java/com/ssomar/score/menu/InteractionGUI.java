@@ -12,12 +12,12 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.score.sobject.sactivator.menu.conditions.ConditionsGUIManager;
-import com.ssomar.score.sobject.sactivator.menu.conditions.EntityConditionsGUIManager;
-import com.ssomar.score.sobject.sactivator.menu.conditions.PlaceholdersConditionGUIManager;
-import com.ssomar.score.sobject.sactivator.menu.conditions.PlaceholdersConditionsGUIManager;
-import com.ssomar.score.sobject.sactivator.menu.conditions.PlayerConditionsGUIManager;
-import com.ssomar.score.sobject.sactivator.menu.conditions.WorldConditionsGUIManager;
+import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.EntityConditionsGUIManager;
+import com.ssomar.score.menu.conditions.PlaceholdersConditionGUIManager;
+import com.ssomar.score.menu.conditions.PlaceholdersConditionsGUIManager;
+import com.ssomar.score.menu.conditions.PlayerConditionsGUIManager;
+import com.ssomar.score.menu.conditions.WorldConditionsGUIManager;
 import com.ssomar.score.utils.StringConverter;
 
 

@@ -3,6 +3,8 @@ package com.ssomar.score.configs.messages;
 public enum Message implements MessageInterface{
 
 	/* commands */
+	ACTIONBAR_MESSAGE ("actionbarMessage"),
+	ACTIONBAR_END ("actionbarEnd"),
 	SET_ACTIONBAR_ON ("setActionbarOn"),
 	SET_ACTIONBAR_OFF ("setActionbarOff"),
 	HAVE_ACTIONBAR_ON ("haveActionbarOn"),

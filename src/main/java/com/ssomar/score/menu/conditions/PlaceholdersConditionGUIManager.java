@@ -1,4 +1,4 @@
-package com.ssomar.score.sobject.sactivator.menu.conditions;
+package com.ssomar.score.menu.conditions;
 
 import java.util.List;
 
@@ -150,8 +150,11 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 		String part1 = cache.get(p).getActually(PlaceholdersConditionGUI.PART1);
 		String part2 = cache.get(p).getActually(PlaceholdersConditionGUI.PART2);
 		Comparator comp = cache.get(p).getComparator();
-
-		PlaceholdersCondition pC = new PlaceholdersCondition(id, type, message, part1, comp, part2);
+		PlaceholdersCondition pC;
+		if(type.equals(PlaceholdersCdtType.PLAYER_NUMBER) || type.equals(PlaceholdersCdtType.TARGET_NUMBER)) {
+			pC = new PlaceholdersCondition(id, type, message, part1, comp, Integer.valueOf(part2));
+		}
+		else pC = new PlaceholdersCondition(id, type, message, part1, comp, part2);
 		pC.setCancelEvent(cache.get(p).getBoolean(PlaceholdersConditionGUI.CANCEL_EVENT));
 
 		PlaceholdersCondition.savePlaceholdersCdt(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());

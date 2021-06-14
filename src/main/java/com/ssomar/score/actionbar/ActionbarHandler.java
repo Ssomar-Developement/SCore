@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.configs.messages.Message;
+import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.utils.StringPlaceholder;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -113,7 +115,7 @@ public class ActionbarHandler {
 				items= items+" "+a.getName();
 			}
 			sp.setItem(items);
-			String message = sp.replacePlaceholder("actionbar end message (to edit) sCore");
+			String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_END));
 			Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 			
 		}
@@ -157,7 +159,7 @@ public class ActionbarHandler {
 		sp.setItem(actionbar.getName());
 		sp.setTime(actionbar.getTime()+"");
 		sp.setPlayer(p.getName());
-		String message = sp.replacePlaceholder("actionbar message (to edit) sCore");
+		String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_MESSAGE));
 		Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 		
 	}

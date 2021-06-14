@@ -1,4 +1,4 @@
-package com.ssomar.score.sobject.sactivator.menu.conditions;
+package com.ssomar.score.menu.conditions;
 
 import java.util.ArrayList;
 import java.util.HashMap;

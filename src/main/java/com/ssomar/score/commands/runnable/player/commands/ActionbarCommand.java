@@ -18,7 +18,6 @@ public class ActionbarCommand extends PlayerCommandTemplate{
 		if(args.size() == 2) {
 			try {
 				int time = Integer.valueOf(args.get(1));
-				SsomarDev.testMsg("passe actionbar: "+time+ " first: "+args.get(0));
 				ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(args.get(0), time));
 			}catch(Exception e) {
 				e.printStackTrace();
