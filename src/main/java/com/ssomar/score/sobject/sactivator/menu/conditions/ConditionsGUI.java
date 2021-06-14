@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator.menu.conditions;
 
 import org.bukkit.Material;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.SOption;
@@ -42,7 +43,8 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 		}
 		
 		if(sOp.getOptionWithOwner().contains(sOp) || sOp.getOptionWithPlayer().contains(sOp)) {
-			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLACEHOLDERS_CONDITIONS, 	false,	false, "&7&oThe placeholders condtions", "&a✎ Click here to change");
+			if(SCore.hasExecutableBlocks) createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLACEHOLDERS_CONDITIONS, 	false,	false, "&7&oThe placeholders condtions", "&6For EB: &eowner = &aplayer &6& &etarget player = &atarget", "&a✎ Click here to change");
+			else createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLACEHOLDERS_CONDITIONS, 	false,	false, "&7&oThe placeholders condtions", "&a✎ Click here to change");
 			i++;
 		}
 

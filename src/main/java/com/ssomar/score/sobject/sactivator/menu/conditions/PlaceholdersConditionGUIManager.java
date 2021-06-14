@@ -100,11 +100,11 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 						return;
 					}
 					
-					
+					String detail = cache.get(p).getDetail();
 					savePlaceholdersCondition(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 					sAct = sObject.getActivator(sAct.getID());
-					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sAct.getPlaceholdersConditions(), cache.get(p).getDetail());
+					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sAct.getPlaceholdersConditions(), detail);
 				}
 
 				else if(name.contains("Exit")) {
@@ -135,6 +135,7 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 		}
 
 		cache.get(p).openGUISync(p);
+		requestWriting.remove(p);
 	}
 
 	public void savePlaceholdersCondition(Player p) {

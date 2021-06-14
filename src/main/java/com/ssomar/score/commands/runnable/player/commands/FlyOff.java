@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.ssomar.executableitems.fly.FlyManager;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 
@@ -31,6 +32,7 @@ public class FlyOff extends PlayerCommandTemplate{
 		}
 		receiver.setAllowFlight(false);
 		receiver.setFlying(false);
+		FlyManager.getInstance().removePlayerWithFly(p);
 	}
 
 	@Override

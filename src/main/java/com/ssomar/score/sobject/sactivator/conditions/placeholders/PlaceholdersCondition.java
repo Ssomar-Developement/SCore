@@ -81,13 +81,13 @@ public class PlaceholdersCondition {
 		if(!SCore.hasPlaceholderAPI) return false;
 
 		// replace placeholders in first part
-		if(PlaceholdersCdtType.getpCdtTypeWithPlayer().contains(type)) {
+		if(PlaceholdersCdtType.getpCdtTypeWithPlayer().contains(type) && player != null) {
 			aPart1 = PlaceholderAPI.setPlaceholders(player, part1);
 		}
 		else if(target != null) aPart1 = PlaceholderAPI.setPlaceholders(target, part1);
 
 		// replace placeholders in second part
-		if(PlaceholdersCdtType.PLAYER_PLAYER.equals(type)) {
+		if(PlaceholdersCdtType.PLAYER_PLAYER.equals(type) && player != null) {
 			aPart2 = PlaceholderAPI.setPlaceholders(player, part2String);
 		}
 		else if((PlaceholdersCdtType.TARGET_TARGET.equals(type) || PlaceholdersCdtType.PLAYER_TARGET.equals(type)) && target != null){	
@@ -108,6 +108,7 @@ public class PlaceholdersCondition {
 		case PLAYER_STRING: case TARGET_STRING:
 			if(!comparator.verify(aPart1, part2String)) return false;
 			break;
+			
 		case PLAYER_PLAYER: case TARGET_TARGET: case PLAYER_TARGET:
 			if(NTools.isNumber(aPart1) && NTools.isNumber(aPart2)) {
 				double nPart1 = Double.valueOf(aPart1);
