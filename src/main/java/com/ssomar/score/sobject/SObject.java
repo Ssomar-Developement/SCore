@@ -17,7 +17,6 @@ public interface SObject {
 	
 	public List<SActivator> getActivators();
 	
-	
 	public ItemStack formItem(int quantity, Player p);
 	
 	@Nullable

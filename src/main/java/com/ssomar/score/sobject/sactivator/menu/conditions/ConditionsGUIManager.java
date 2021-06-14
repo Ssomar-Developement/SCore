@@ -42,13 +42,18 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 				}
 				
 				else if(name.contains(ConditionsGUI.ENTITY_CONDITIONS)) {
-					EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getEntityConditions(), "entityConditions");
+					EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetEntityConditions(), "entityConditions");
+				}
+				
+				else if(name.contains(ConditionsGUI.BLOCK_CONDITIONS)) {
+					//BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getBlockConditions(), "blockConditions");
 				}
 				
 				else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
 					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
 				}
 
+				
 				if(name.contains("Back")) {
 					LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
 				}

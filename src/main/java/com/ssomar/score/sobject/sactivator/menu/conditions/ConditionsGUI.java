@@ -14,6 +14,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	public static final String PLAYER_CONDITIONS = "Player Conditions";
 	public static final String WORLD_CONDITIONS = "World Conditions";
 	public static final String ENTITY_CONDITIONS = "Entity Conditions";
+	public static final String BLOCK_CONDITIONS = "Block Conditions";
 	public static final String PLACEHOLDERS_CONDITIONS = "Placeholders Conditions";
 
 	public ConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct) {
@@ -39,6 +40,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 
 		if(sOp.getOptionWithTargetEntity().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+ENTITY_CONDITIONS, 	false,	false, "&7&oThe entity condtions", "&a✎ Click here to change");
+			i++;
+		}
+		
+		if(sOp.getOptionWithTargetBlock().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_CONDITIONS, 	false,	false, "&7&oThe block condtions", "&a✎ Click here to change");
 			i++;
 		}
 		
