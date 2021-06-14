@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
@@ -59,7 +60,8 @@ public final class SCore extends JavaPlugin {
 
 		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 		
-
+		ActionbarHandler.getInstance().load();
+		
 		/* Database */
 		Database.getInstance().load();
 		

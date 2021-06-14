@@ -32,22 +32,22 @@ public class ActionbarHandler {
 
 			@Override
 			public void run() {
-				List<Player> playerEmpty= new ArrayList<>();
+				List<Player> playerEmpty = new ArrayList<>();
 				for(Player player : actionbarHandler.keySet()) {
 					List<Actionbar> actionbars = actionbarHandler.get(player);
-					if(player.isOnline()) {				
+					if(player.isOnline()) {		
 						if(!hideActionbar.contains(player)) displayDesactivationActionbars(actionbars, player);
-						boolean oneIsRemove= false;
-						if(removeDesactionActionabars(actionbars)!=0) oneIsRemove=true;
-						if(actionbars.size()==0) {
+						boolean oneIsRemove = false;
+						if(removeDesactionActionabars(actionbars) != 0) oneIsRemove = true;
+						if(actionbars.size() == 0) {
 							playerEmpty.add(player);
 							continue;
 						}
 						activeActionbarIfNotExist(actionbars);
 						
-						if(cpt==10) {
+						if(cpt == 10) {
 							activeNextActionbar(actionbars);
-							cpt=1;
+							cpt = 1;
 						}
 						else cpt++;
 						
