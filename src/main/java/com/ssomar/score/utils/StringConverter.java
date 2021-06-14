@@ -20,6 +20,14 @@ public class StringConverter {
 		if(SCore.is1v16() || SCore.is1v17()) convert=translateHexCodes(convert);
 		return convert;
 	}
+	
+	public static List<String> coloredString(List<String> list) {
+		List<String> convert = new ArrayList<>();
+		for(String s : list) {
+			convert.add(coloredString(s));
+		}
+		return convert;
+	}
 
 	public static List<String> replaceVariable(List<String> list, String player, String item, String quantity, int time) {
 		List<String> newList= new ArrayList<>();
@@ -78,7 +86,7 @@ public class StringConverter {
 		return removeHexCodes(sb.toString());
 	}
 
-	public List<String> deconvertColor(List<String> list) {
+	public static List<String> deconvertColor(List<String> list) {
 		List<String> result= new ArrayList<>();
 		for(String s: list) {
 			result.add(deconvertColor(s));

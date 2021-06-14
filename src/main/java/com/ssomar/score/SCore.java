@@ -129,7 +129,7 @@ public final class SCore extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		/* Save all delayed commands in BDD */
-		HashMap<String,List<String>> saveCommands= CommandsManager.getInstance().getServerOffPlayerCommands();
+		HashMap<String,List<String>> saveCommands = CommandsManager.getInstance().getServerOffPlayerCommands();
 		for(String playerName: saveCommands.keySet()) {
 			Player player = Bukkit.getPlayer(playerName);
 			for(String command: saveCommands.get(playerName)) {

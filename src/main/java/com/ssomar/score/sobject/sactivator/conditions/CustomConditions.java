@@ -29,17 +29,17 @@ public class CustomConditions extends Conditions{
 	private boolean ifPlayerMustBeOnHisIsland;
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG = " &cTo active this activator/item, you must be on your Island !";
 	private String ifPlayerMustBeOnHisIslandMsg;
-	
+
 	public CustomConditions() {
 		this.ifNeedPlayerConfirmation = false;
 		this.ifNeedPlayerConfirmationMsg = "";
-		
+
 		this.ifPlayerMustBeOnHisIsland = false;
 		this.ifNeedPlayerConfirmationMsg = "";
 	}
 
-
-	public boolean verifConditions(Player p, Player target) {
+	@Override
+	public boolean verifConditions(Player p) {
 		if(SCore.hasIridiumSkyblock) {
 			if(this.ifPlayerMustBeOnHisIsland) {
 				if(!IridiumSkyblockTool.playerIsOnHisIsland(p)) {
@@ -50,7 +50,7 @@ public class CustomConditions extends Conditions{
 		}
 		return true;
 	}
-	
+
 	public static CustomConditions getCustomConditions(ConfigurationSection customCdtSection, List<String> errorList, String pluginName) {
 
 		CustomConditions cCdt = new CustomConditions();
@@ -88,7 +88,7 @@ public class CustomConditions extends Conditions{
 
 		if(cC.hasIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true); 
 		else cCConfig.set("ifNeedPlayerConfirmation", null);
-		
+
 		if(cC.isIfPlayerMustBeOnHisIsland()) cCConfig.set("ifPlayerMustBeOnHisIsland", true); 
 		else cCConfig.set("ifPlayerMustBeOnHisIsland", null);
 
