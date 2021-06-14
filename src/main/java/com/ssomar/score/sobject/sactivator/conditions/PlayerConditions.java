@@ -207,7 +207,7 @@ public class PlayerConditions extends Conditions{
 		this.ifPlayerHasExecutableItemMsg = "";
 	}
 
-	public boolean verifConditions(Player p) {
+	public boolean verifConditions(Player p, Player toMsg) {
 
 		if(this.hasIfHasPermission()) {
 			boolean valid= true;
@@ -218,7 +218,7 @@ public class PlayerConditions extends Conditions{
 				}
 			}
 			if(!valid) {
-				this.getSm().sendMessage(p, this.getIfHasPermissionMsg());
+				this.getSm().sendMessage(toMsg, this.getIfHasPermissionMsg());
 				return false;
 			}
 		}
@@ -226,34 +226,34 @@ public class PlayerConditions extends Conditions{
 		if(this.hasIfNotHasPermission()) {
 			for(String perm : this.getIfNotHasPermission()) {
 				if(p.hasPermission(perm)) {
-					this.getSm().sendMessage(p, this.getIfNotHasPermissionMsg());
+					this.getSm().sendMessage(toMsg, this.getIfNotHasPermissionMsg());
 					return false;
 				}
 			}
 		}
 
 		if(this.hasIfSneaking() && ifSneaking && !p.isSneaking()) {
-			this.getSm().sendMessage(p, this.getIfSneakingMsg());
+			this.getSm().sendMessage(toMsg, this.getIfSneakingMsg());
 			return false;
 		}
 
 		if(this.hasIfNotSneaking() && ifNotSneaking && p.isSneaking()) {
-			this.getSm().sendMessage(p, this.getIfNotSneakingMsg());
+			this.getSm().sendMessage(toMsg, this.getIfNotSneakingMsg());
 			return false;
 		}
 
 		if(this.hasIfSwimming() && ifSwimming && !p.isSwimming()) {
-			this.getSm().sendMessage(p, (this.getIfSwimmingMsg()));
+			this.getSm().sendMessage(toMsg, (this.getIfSwimmingMsg()));
 			return false;
 		}
 
 		if(this.hasIfGliding() && ifGliding && !p.isGliding()) {
-			this.getSm().sendMessage(p, this.getIfGlidingMsg());
+			this.getSm().sendMessage(toMsg, this.getIfGlidingMsg());
 			return false;
 		}
 
 		if(this.hasIfFlying() && ifFlying && !p.isFlying()) {
-			this.getSm().sendMessage(p, this.getIfFlyingMsg());
+			this.getSm().sendMessage(toMsg, this.getIfFlyingMsg());
 			return false;
 		}
 
@@ -266,7 +266,7 @@ public class PlayerConditions extends Conditions{
 				}
 			}
 			if(notValid) {
-				this.getSm().sendMessage(p, this.getIfInWorldMsg());
+				this.getSm().sendMessage(toMsg, this.getIfInWorldMsg());
 				return false;
 			}
 		}
@@ -280,7 +280,7 @@ public class PlayerConditions extends Conditions{
 				}
 			}
 			if(notValid) {
-				this.getSm().sendMessage(p, this.getIfNotInWorldMsg());
+				this.getSm().sendMessage(toMsg, this.getIfNotInWorldMsg());
 				return false;
 			}
 		}
@@ -294,7 +294,7 @@ public class PlayerConditions extends Conditions{
 				}
 			}
 			if(notValid) {
-				this.getSm().sendMessage(p, this.getIfInBiomeMsg());
+				this.getSm().sendMessage(toMsg, this.getIfInBiomeMsg());
 				return false;
 			}
 		}
@@ -308,19 +308,19 @@ public class PlayerConditions extends Conditions{
 				}
 			}
 			if(notValid) {
-				this.getSm().sendMessage(p, this.getIfNotInBiomeMsg());
+				this.getSm().sendMessage(toMsg, this.getIfNotInBiomeMsg());
 				return false;
 			}
 		}		
 
 		if(SCore.hasWorldGuard) {
 			if(this.hasIfInRegion() && !new WorldGuardAPI().isInRegion(p, this.ifInRegion)) {
-				this.getSm().sendMessage(p, this.getIfInRegionMsg());
+				this.getSm().sendMessage(toMsg, this.getIfInRegionMsg());
 				return false;
 			}
 
 			if(this.hasIfNotInRegion() && new WorldGuardAPI().isInRegion(p, this.ifNotInRegion)) {
-				this.getSm().sendMessage(p, this.getIfNotInRegionMsg());
+				this.getSm().sendMessage(toMsg, this.getIfNotInRegionMsg());
 				return false;
 			}
 		}
@@ -328,12 +328,12 @@ public class PlayerConditions extends Conditions{
 		if(this.hasIfTargetBlock()) {
 			Block block = p.getTargetBlock(null, 5);
 			/* take only the fix block, not hte falling block */
-			if((block.getType()==Material.WATER || block.getType()==Material.LAVA) && !block.getBlockData().getAsString().contains("level=0")) {
-				this.getSm().sendMessage(p, this.getIfTargetBlockMsg());
+			if((block.getType().equals(Material.WATER) || block.getType().equals(Material.LAVA)) && !block.getBlockData().getAsString().contains("level=0")) {
+				this.getSm().sendMessage(toMsg, this.getIfTargetBlockMsg());
 				return false;
 			}
 			if(!this.getIfTargetBlock().contains(block.getType())) {
-				this.getSm().sendMessage(p, this.getIfTargetBlockMsg());
+				this.getSm().sendMessage(toMsg, this.getIfTargetBlockMsg());
 				return false;
 			}
 		}
@@ -342,52 +342,52 @@ public class PlayerConditions extends Conditions{
 			Block block = p.getTargetBlock(null, 5);
 			/* take only the fix block, not hte falling block */
 			if((block.getType().equals(Material.WATER) || block.getType().equals(Material.LAVA)) && !block.getBlockData().getAsString().contains("level=0")) {
-				this.getSm().sendMessage(p, this.getIfNotTargetBlockMsg());
+				this.getSm().sendMessage(toMsg, this.getIfNotTargetBlockMsg());
 				return false;
 			}
 			if(this.getIfNotTargetBlock().contains(block.getType())) {
-				this.getSm().sendMessage(p, this.getIfNotTargetBlockMsg());
+				this.getSm().sendMessage(toMsg, this.getIfNotTargetBlockMsg());
 				return false;
 			}
 		}
 
 		if(this.hasIfPlayerHealth() && !StringCalculation.calculation(this.ifPlayerHealth, p.getHealth())) {
-			this.getSm().sendMessage(p, this.getIfPlayerHealthMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPlayerHealthMsg());
 			return false;
 		}
 
 		if(this.hasIfPlayerFoodLevel() && !StringCalculation.calculation(this.ifPlayerFoodLevel, p.getFoodLevel())) {
-			this.getSm().sendMessage(p, this.getIfPlayerFoodLevelMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPlayerFoodLevelMsg());
 			return false;
 		}
 
 		if(this.hasIfPlayerEXP() && !StringCalculation.calculation(this.ifPlayerEXP, p.getExp())) {
-			this.getSm().sendMessage(p, this.getIfPlayerEXPMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPlayerEXPMsg());
 			return false;
 		}
 
 		if(this.hasIfPlayerLevel() && !StringCalculation.calculation(this.ifPlayerLevel, p.getLevel())) {
-			this.getSm().sendMessage(p, this.getIfPlayerLevelMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPlayerLevelMsg());
 			return false;
 		}	
 
 		if(this.hasIfLightLevel() && !StringCalculation.calculation(this.ifLightLevel, p.getEyeLocation().getBlock().getLightLevel())) {
-			this.getSm().sendMessage(p, this.getIfLightLevelMsg());
+			this.getSm().sendMessage(toMsg, this.getIfLightLevelMsg());
 			return false;
 		}	
 
 		if(this.hasIfPosX() && !StringCalculation.calculation(this.ifPosX, p.getLocation().getX())) {
-			this.getSm().sendMessage(p, this.getIfPosXMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPosXMsg());
 			return false;
 		}
 
 		if(this.hasIfPosY() && !StringCalculation.calculation(this.ifPosY, p.getLocation().getY())) {
-			this.getSm().sendMessage(p, this.getIfPosYMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPosYMsg());
 			return false;
 		}
 
 		if(this.hasIfPosZ() && !StringCalculation.calculation(this.ifPosZ, p.getLocation().getZ())) {
-			this.getSm().sendMessage(p, this.getIfPosZMsg());
+			this.getSm().sendMessage(toMsg, this.getIfPosZMsg());
 			return false;
 		}
 
@@ -416,12 +416,12 @@ public class PlayerConditions extends Conditions{
 			}
 
 			if(!verifEI.isEmpty()) {
-				this.getSm().sendMessage(p, this.getIfPlayerHasExecutableItemMsg());
+				this.getSm().sendMessage(toMsg, this.getIfPlayerHasExecutableItemMsg());
 				return false;
 			}
 
 			if(!verifI.isEmpty()) {
-				this.getSm().sendMessage(p, this.getIfPlayerHasItemMsg());
+				this.getSm().sendMessage(toMsg, this.getIfPlayerHasItemMsg());
 				return false;
 			}
 		}
