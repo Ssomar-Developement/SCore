@@ -21,7 +21,7 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item!=null) {
+		if(item != null) {
 			if(item.hasItemMeta()) {
 				SPlugin sPlugin = cache.get(p).getsPlugin();
 				SObject sObject = cache.get(p).getSObject();

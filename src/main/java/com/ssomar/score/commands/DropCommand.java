@@ -64,7 +64,7 @@ public class DropCommand {
 				return;
 			}	
 			runDrop(sObject, qty, new Location( Bukkit.getServer().getWorld(args[2]), Double.valueOf(args[3]), Double.valueOf(args[4]), Double.valueOf(args[5])));
-			ExecutableItems.getPlugin().getLogger().fine(sPlugin.getNameDesign()+" Succesfully run /"+sPlugin.getShortName().toLowerCase()+" drop "+args[0]+" "+qty+" "+args[2]+" "+args[3]+" "+args[4]+" "+args[5]+" ");
+			ExecutableItems.plugin.getLogger().fine(sPlugin.getNameDesign()+" Succesfully run /"+sPlugin.getShortName().toLowerCase()+" drop "+args[0]+" "+qty+" "+args[2]+" "+args[3]+" "+args[4]+" "+args[5]+" ");
 			return;
 		}
 		catch (ArrayIndexOutOfBoundsException error) {

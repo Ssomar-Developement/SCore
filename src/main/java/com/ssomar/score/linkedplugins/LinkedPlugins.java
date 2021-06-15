@@ -25,6 +25,12 @@ public class LinkedPlugins {
 				return ExecutableBlockManager.getInstance().getLoadedBlockWithID(objectID);
 			}
 			break;
+			
+		case "EXECUTABLEITEMS":
+			if(SCore.hasExecutableItems) {
+				//return ItemManager.getInstance().getLoadedItemWithID(objectID);
+			}
+			break;
 
 		default:
 			return null;
