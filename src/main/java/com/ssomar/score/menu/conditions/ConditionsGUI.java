@@ -13,9 +13,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	public static final String OWNER_CONDITIONS = "Owner Conditions";
 	public static final String PLAYER_CONDITIONS = "Player Conditions";
 	public static final String WORLD_CONDITIONS = "World Conditions";
+	public static final String ITEM_CONDITIONS = "Item Conditions";
 	public static final String ENTITY_CONDITIONS = "Entity Conditions";
 	public static final String BLOCK_CONDITIONS = "Block Conditions";
 	public static final String PLACEHOLDERS_CONDITIONS = "Placeholders Conditions";
+	public static final String CUSTOM_EI_CONDITIONS = "Custom EI Conditions";
 
 	public ConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Conditions", 3*9, sPlugin, sObject, sAct, "null");
@@ -37,6 +39,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+WORLD_CONDITIONS, 	false,	false, "&7&oThe world condtions", "&a✎ Click here to change");
 			i++;
 		}
+		
+		if(sOp.getOptionWithItem().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+ITEM_CONDITIONS, 	false,	false, "&7&oThe item condtions", "&a✎ Click here to change");
+			i++;
+		}
 
 		if(sOp.getOptionWithTargetEntity().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+ENTITY_CONDITIONS, 	false,	false, "&7&oThe entity condtions", "&a✎ Click here to change");
@@ -51,6 +58,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 		if(sOp.getOptionWithOwner().contains(sOp) || sOp.getOptionWithPlayer().contains(sOp)) {
 			if(SCore.hasExecutableBlocks) createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLACEHOLDERS_CONDITIONS, 	false,	false, "&7&oThe placeholders condtions", "&6For EB: &eowner = &aplayer &6& &etarget player = &atarget", "&a✎ Click here to change");
 			else createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLACEHOLDERS_CONDITIONS, 	false,	false, "&7&oThe placeholders condtions", "&a✎ Click here to change");
+			i++;
+		}
+		
+		if(SCore.hasExecutableItems && sOp.getOptionWithPlayer().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+CUSTOM_EI_CONDITIONS, 	false,	false, "&7&oThe custom condtions", "&a✎ Click here to change");
 			i++;
 		}
 

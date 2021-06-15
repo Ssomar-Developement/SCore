@@ -41,6 +41,10 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 					WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getWorldConditions(), "worldConditions");
 				}
 				
+				else if(name.contains(ConditionsGUI.ITEM_CONDITIONS)) {
+					ItemConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getItemConditions(), "itemConditions");
+				}
+				
 				else if(name.contains(ConditionsGUI.ENTITY_CONDITIONS)) {
 					EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetEntityConditions(), "entityConditions");
 				}
@@ -51,6 +55,10 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 				
 				else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
 					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
+				}
+				
+				else if(name.contains(ConditionsGUI.CUSTOM_EI_CONDITIONS)) {
+					CustomConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getCustomEIConditions(), "customConditions");
 				}
 
 				

@@ -19,7 +19,7 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
 
-public class CustomConditions extends Conditions{
+public class CustomEIConditions extends Conditions{
 
 	//Custom
 	private boolean ifNeedPlayerConfirmation;
@@ -30,7 +30,7 @@ public class CustomConditions extends Conditions{
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG = " &cTo active this activator/item, you must be on your Island !";
 	private String ifPlayerMustBeOnHisIslandMsg;
 
-	public CustomConditions() {
+	public CustomEIConditions() {
 		this.ifNeedPlayerConfirmation = false;
 		this.ifNeedPlayerConfirmationMsg = "";
 
@@ -51,9 +51,9 @@ public class CustomConditions extends Conditions{
 		return true;
 	}
 
-	public static CustomConditions getCustomConditions(ConfigurationSection customCdtSection, List<String> errorList, String pluginName) {
+	public static CustomEIConditions getCustomConditions(ConfigurationSection customCdtSection, List<String> errorList, String pluginName) {
 
-		CustomConditions cCdt = new CustomConditions();
+		CustomEIConditions cCdt = new CustomEIConditions();
 
 		cCdt.setIfNeedPlayerConfirmation(customCdtSection.getBoolean("ifNeedPlayerConfirmation", false));
 		cCdt.setIfNeedPlayerConfirmationMsg(customCdtSection.getString("ifNeedPlayerConfirmationMsg",
@@ -72,7 +72,7 @@ public class CustomConditions extends Conditions{
 	 *  @param sActivator The activator that contains the conditions
 	 *  @param cC the custom conditions object
 	 */
-	public static void saveCustomConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomConditions cC) {
+	public static void saveCustomConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomEIConditions cC) {
 
 		if(!new File(sObject.getPath()).exists()) {
 			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ("+sObject.getID()+".yml)");

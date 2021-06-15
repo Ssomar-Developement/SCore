@@ -8,7 +8,7 @@ import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.CustomConditions;
+import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -17,13 +17,13 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 	
 	private static CustomConditionsGUIManager instance;
 
-	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sAct, CustomConditions cC, String detail) {
+	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions cC, String detail) {
 		cache.put(p, new CustomConditionsGUI(sPlugin, sObject, sAct, cC, detail));
 		cache.get(p).openGUISync(p);
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item!=null) {
+		if(item != null) {
 			if(item.hasItemMeta()) {
 				SPlugin sPlugin = cache.get(p).getsPlugin();
 				SObject sObject = cache.get(p).getSObject();
@@ -39,13 +39,11 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 				}
 
 				else if(name.contains("Reset")) {
-					p.closeInventory();
-					cache.replace(p, new CustomConditionsGUI(sPlugin, sObject, sAct, new CustomConditions(), cache.get(p).getDetail()));
+					cache.replace(p, new CustomConditionsGUI(sPlugin, sObject, sAct, new CustomEIConditions(), cache.get(p).getDetail()));
 					cache.get(p).openGUISync(p);
 				}
 
 				else if(name.contains("Save")) {
-					p.closeInventory();
 					saveCustomConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
@@ -70,12 +68,12 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		CustomConditions cC = new CustomConditions();
+		CustomEIConditions cC = new CustomEIConditions();
 
 		cC.setIfNeedPlayerConfirmation(cache.get(p).getBoolean(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION));
 		cC.setIfPlayerMustBeOnHisIsland(cache.get(p).getBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND));
 
-		CustomConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC);
+		CustomEIConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC);
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());

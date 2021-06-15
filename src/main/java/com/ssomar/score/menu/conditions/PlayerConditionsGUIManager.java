@@ -226,7 +226,6 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				}	
 
 				else if(name.contains("Reset")) {
-					p.closeInventory();
 					cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
 					cache.get(p).openGUISync(p);
 				}

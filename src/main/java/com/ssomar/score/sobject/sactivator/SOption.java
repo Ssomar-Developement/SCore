@@ -8,6 +8,8 @@ public interface SOption {
 	
 	public List<SOption> getOptionWithWorld();
 	
+	public List<SOption> getOptionWithItem();
+	
 	public List<SOption> getOptionWithOwner();
 	
 	public List<SOption> getOptionWithBlock();

@@ -4,7 +4,7 @@ import org.bukkit.Material;
 
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.CustomConditions;
+import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 public class CustomConditionsGUI extends ConditionGUIAbstract{
@@ -12,7 +12,7 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_NEED_PLAYER_CONFIRMATION = "ifNeedPlayerConfirmation";
 	public static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND = "ifPlayerMustBeOnHisIsland";
 	
-	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomConditions conditions, String detail) {
+	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions", 3*9, sPlugin, sObject, sAct, detail);
 		
 		int i =0;

@@ -8,6 +8,9 @@ import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
 import com.ssomar.executableblocks.menu.blocks.activators.ActivatorGUIManager;
+import com.ssomar.executableitems.items.Item;
+import com.ssomar.executableitems.items.ItemManager;
+import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -28,7 +31,7 @@ public class LinkedPlugins {
 			
 		case "EXECUTABLEITEMS":
 			if(SCore.hasExecutableItems) {
-				//return ItemManager.getInstance().getLoadedItemWithID(objectID);
+				return ItemManager.getInstance().getLoadedItemWithID(objectID);
 			}
 			break;
 
@@ -48,6 +51,12 @@ public class LinkedPlugins {
 				ExecutableBlockManager.getInstance().reloadBlock(objectID);
 			}
 			break;
+			
+		case "EXECUTABLEITEMS":
+			if(SCore.hasExecutableItems) {
+				ItemManager.getInstance().reloadItem(objectID);
+			}
+			break;
 
 		default:
 			break;
@@ -62,6 +71,12 @@ public class LinkedPlugins {
 		case "EXECUTABLEBLOCKS":
 			if(SCore.hasExecutableBlocks) {	
 				ActivatorGUIManager.getInstance().startEditing(p, (ActivatorEB) sActivator, (ExecutableBlock) sObject);
+			}
+			break;
+			
+		case "EXECUTABLEITEMS":
+			if(SCore.hasExecutableItems) {	
+				com.ssomar.executableitems.configs.ingame.activators.ActivatorGUIManager.getInstance().startEditing(p, (ActivatorEI) sActivator, (Item) sObject);
 			}
 			break;
 
