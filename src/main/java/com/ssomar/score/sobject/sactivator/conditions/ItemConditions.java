@@ -110,7 +110,6 @@ public class ItemConditions extends Conditions{
 		iCdt.setIfUsage2(itemCdtSection.getString("ifUsage2", ""));
 		iCdt.setIfUsage2Msg(itemCdtSection.getString("ifUsage2Msg", "&4&l"+pluginName+IF_USAGE_MSG));
 
-		
 		return iCdt;
 	}
 	

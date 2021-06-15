@@ -15,7 +15,7 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions", 3*9, sPlugin, sObject, sAct, detail);
 		
-		int i =0;
+		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NEED_PLAYER_CONFIRMATION, 	false,	false, "&7&oThe player must double click?", "&a✎ Click here to change", "&7actually:");
 		i++;

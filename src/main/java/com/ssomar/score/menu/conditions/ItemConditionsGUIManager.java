@@ -22,7 +22,7 @@ public class ItemConditionsGUIManager extends GUIManager<ItemConditionsGUI>{
 	private static ItemConditionsGUIManager instance;
 
 	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions iC, String detail) {
-		cache.put(p, new ItemConditionsGUI(sPlugin, sObject, sActivator, new ItemConditions(), detail));
+		cache.put(p, new ItemConditionsGUI(sPlugin, sObject, sActivator, iC, detail));
 		cache.get(p).openGUISync(p);
 	}
 

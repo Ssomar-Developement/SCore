@@ -8,7 +8,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandsManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
 import com.ssomar.score.data.CommandsQuery;
@@ -36,7 +35,6 @@ public class PlayerReconnexion implements Listener {
 			p.setOp(false);
 		}
 		
-		SsomarDev.testMsg("reco contaisn fly: "+FlyManager.getInstance().isPlayerWithFly(p));
 		if(FlyManager.getInstance().isPlayerWithFly(p)) {
 			p.setAllowFlight(true);
 		}

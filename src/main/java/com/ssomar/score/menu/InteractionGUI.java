@@ -13,7 +13,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.EntityConditionsGUIManager;
+import com.ssomar.score.menu.conditions.ItemConditionsGUIManager;
 import com.ssomar.score.menu.conditions.PlaceholdersConditionGUIManager;
 import com.ssomar.score.menu.conditions.PlaceholdersConditionsGUIManager;
 import com.ssomar.score.menu.conditions.PlayerConditionsGUIManager;
@@ -65,6 +67,14 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Plch condition"))) {
 				this.manage(player, itemS, title, "PlaceholdersConditionGUIManager", e);
 			}
+			
+			else if(title.contains(StringConverter.coloredString("Editor - Item Conditions"))) {
+				this.manage(player, itemS, title, "ItemConditionGUIManager", e);
+			}
+			
+			else if(title.contains(StringConverter.coloredString("Editor - Custom Conditions"))) {
+				this.manage(player, itemS, title, "CustomConditionsGUIManager", e);
+			}
 
 		}catch (NullPointerException error) {
 			error.printStackTrace();
@@ -113,6 +123,14 @@ public class InteractionGUI implements Listener{
 			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS);
 			break;
 			
+		case "ItemConditionGUIManager":
+			ItemConditionsGUIManager.getInstance().clicked(player, itemS);
+			break;
+			
+		case "CustomConditionsGUIManager":
+			CustomConditionsGUIManager.getInstance().clicked(player, itemS);
+			break;
+			
 		default:
 			break;
 		}
@@ -148,6 +166,10 @@ public class InteractionGUI implements Listener{
 		else if(PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
+		else if(ItemConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			ItemConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
 	}	
 }

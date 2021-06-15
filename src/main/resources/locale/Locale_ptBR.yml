@@ -1,0 +1,8 @@
+errorMoneyMsg: "&4&l[SCore] &cVocê não tem: &6%amount%$ &con sua conta: ! &6(&eActually: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &eTransação: &c-%amount%$ &eNovo balanço em conta: &a%balance%$"
+setActionbarOn: '&aVocê definiu a actionbar como ligado &a&lON &apara o ExecutableItems'
+haveActionbarOn: '&aA actionbar já está ligada &a&lON &apara o ExecutableItems'
+setActionbarOff: '&cVocê definiu a actionbar como desligado &4&lOFF &cpara o ExecutableItems'
+haveActionbarOff: '&cA actionbar já está desligada &4&lOFF &cpara o ExecutableItems'
+actionbarMessage: '&a&lTempo restante para &e&l%item% &a&l: &e&l%time%'
+actionbarEnd: '&c&lDESATIVAÇÃO DE &e&l%item%'

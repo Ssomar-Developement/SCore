@@ -1,0 +1,8 @@
+errorMoneyMsg: "&4&l[SCore] &cYou dont have: &6%amount%$ &con your account ! &6(&eActually: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &eTransaction: &c-%amount%$ &eNew balance: &a%balance%$"
+setActionbarOn: "&aHas puesto tu barra de acción &a&lActiva"
+haveActionbarOn: "&aYa tienes la barra de acción &a&lON"
+setActionbarOff: "&cHas puesto tu barra de acción en &4&lOFF"
+haveActionbarOff: "&cYa tienes la barra de acción &4&lOFF"
+actionbarMessage: "&c&lEsperando &e&l%item% &a&l: &e&l%time%"
+actionbarEnd: "&a&lListo para usar: &e&l%item%"
