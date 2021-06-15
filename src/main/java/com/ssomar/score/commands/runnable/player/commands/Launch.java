@@ -24,6 +24,7 @@ import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
 import com.ssomar.executableitems.projectiles.CustomProjectileTemplate;
 import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 
@@ -111,7 +112,7 @@ public class Launch extends PlayerCommandTemplate{
 
 				}
 
-				if(entity!=null && SCore.hasExecutableItems && aInfo.getItem()!=null) {
+				if(entity != null && SCore.hasExecutableItems && aInfo.getItem() != null) {
 					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, aInfo.getItem(), aInfo.getSlot());
 					ProjectilesEvt.getInstance().addProjectileInfo(pInfo);
 				}

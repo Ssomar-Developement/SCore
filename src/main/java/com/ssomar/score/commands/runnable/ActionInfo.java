@@ -4,19 +4,17 @@ import com.ssomar.executableitems.items.Item;
 
 public class ActionInfo {
 	
-	private Item item;
-	
 	private String name;
 	
 	private Integer slot;
 	
+	private Item item;
+	
 	public ActionInfo(String name, Integer slot) {
-		super();
 		this.name = name;
 		this.slot = slot;
 	}
 	
-
 	public Item getItem() {
 		return item;
 	}

@@ -75,10 +75,12 @@ public class WorldTeleport extends PlayerCommandTemplate{
 					if(newLoc.getBlock().getType().equals(Material.LAVA)) {
 						continue;
 					}
-					if(newLoc.getBlock().isEmpty()) continue;
-					newLoc.add(0, 1, 0);
-					receiver.teleport(newLoc);
-					teleport = true;
+					if(newLoc.getBlock().isEmpty() && newLoc.getY() > 0) continue;
+					else if(!newLoc.getBlock().isEmpty()) {
+						newLoc.add(0, 1, 0);
+						receiver.teleport(newLoc);
+						teleport = true;
+					}
 				}
 				i++;
 			}

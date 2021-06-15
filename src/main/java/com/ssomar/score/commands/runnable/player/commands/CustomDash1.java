@@ -42,7 +42,16 @@ public class CustomDash1 extends PlayerCommandTemplate{
 		double y;
 		double z;
 
-		if(args.size()==3) {
+		boolean fallDamage = false;
+		if(args.size() == 4) {
+			try {
+				fallDamage = Boolean.valueOf(args.get(3));
+			}
+			catch(Exception e) {
+
+			}
+		}
+		if(args.size() >= 3) {
 			try {
 				x = Double.valueOf(args.get(0));
 				y = Double.valueOf(args.get(1));
@@ -55,19 +64,21 @@ public class CustomDash1 extends PlayerCommandTemplate{
 
 			Location loc = new Location(receiver.getWorld(), x, y, z);
 			pullEntityToLocation(receiver, loc);
-			
-			
+
+
 			UUID uuid = UUID.randomUUID();
 
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
-				}
-			};
-			BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
-			
-			NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<UUID, BukkitTask>(uuid, task));
+			if(!fallDamage) {
+				BukkitRunnable runnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+						NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+					}
+				};
+				BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
+
+				NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<UUID, BukkitTask>(uuid, task));
+			}
 		}
 		else return;
 	}
@@ -78,7 +89,7 @@ public class CustomDash1 extends PlayerCommandTemplate{
 
 		String customDash1= "CUSTOMDASH1 {x} {y} {z}";
 
-		if(args.size()>3) {
+		if(args.size()>4) {
 			error = tooManyArgs+customDash1;
 			return error;
 		}
