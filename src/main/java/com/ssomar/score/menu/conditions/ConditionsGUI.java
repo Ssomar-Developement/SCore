@@ -12,6 +12,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String OWNER_CONDITIONS = "Owner Conditions";
 	public static final String PLAYER_CONDITIONS = "Player Conditions";
+	public static final String TARGET_CONDITIONS = "Target Conditions";
 	public static final String WORLD_CONDITIONS = "World Conditions";
 	public static final String ITEM_CONDITIONS = "Item Conditions";
 	public static final String ENTITY_CONDITIONS = "Entity Conditions";
@@ -32,6 +33,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 
 		if(sOp.getOptionWithPlayer().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+PLAYER_CONDITIONS, 	false,	false, "&7&oThe player condtions", "&a✎ Click here to change");
+			i++;
+		}
+		
+		if(sOp.getOptionWithTargetPlayer().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+TARGET_CONDITIONS, 	false,	false, "&7&oThe target player condtions", "&a✎ Click here to change");
 			i++;
 		}
 

@@ -37,6 +37,10 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlayerConditions(), "playerConditions");
 				}
 				
+				else if(name.contains(ConditionsGUI.TARGET_CONDITIONS)) {
+					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetPlayerConditions(), "targetConditions");
+				}
+				
 				else if(name.contains(ConditionsGUI.WORLD_CONDITIONS)) {
 					WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getWorldConditions(), "worldConditions");
 				}
@@ -50,6 +54,7 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 				}
 				
 				else if(name.contains(ConditionsGUI.BLOCK_CONDITIONS)) {
+					return;
 					//BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getBlockConditions(), "blockConditions");
 				}
 				

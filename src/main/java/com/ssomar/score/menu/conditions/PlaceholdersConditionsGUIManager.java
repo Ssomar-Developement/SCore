@@ -47,6 +47,9 @@ public class PlaceholdersConditionsGUIManager extends GUIManager<PlaceholdersCon
 				else if(name.contains("Back")) {
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);
 				}
+				else if(name.isEmpty()){
+					return;
+				}
 				else {
 					PlaceholdersCondition pC = null;
 					for (PlaceholdersCondition place :  cache.get(p).getList()) {
