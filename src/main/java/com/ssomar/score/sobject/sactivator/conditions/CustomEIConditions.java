@@ -6,13 +6,19 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import com.google.common.base.Charsets;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -26,6 +32,14 @@ public class CustomEIConditions extends Conditions{
 	private static final String IF_NEED_PLAYER_CONFIRMATION_MSG = " &7➤ Click again to confirm the use of this item";
 	private String ifNeedPlayerConfirmationMsg;
 
+	private boolean ifOwnerOfTheEI;
+	private static final String IF_OWNER_OF_THE_EI_MSG = " &cYou must be the owner of the item to active the activator: &6%activator% &c!";
+	private String ifOwnerOfTheEIMsg;
+
+	private boolean ifNotOwnerOfTheEI;
+	private static final String IF_NOT_OWNER_OF_THE_EI_MSG = " &cYou must not be the owner of the item to active the activator: &6%activator% &c!";
+	private String ifNotOwnerOfTheEIMsg;
+
 	private boolean ifPlayerMustBeOnHisIsland;
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG = " &cTo active this activator/item, you must be on your Island !";
 	private String ifPlayerMustBeOnHisIslandMsg;
@@ -36,14 +50,57 @@ public class CustomEIConditions extends Conditions{
 
 		this.ifPlayerMustBeOnHisIsland = false;
 		this.ifNeedPlayerConfirmationMsg = "";
+
+		this.ifOwnerOfTheEI = false;
+		this.ifOwnerOfTheEIMsg = "";
+
+		this.ifNotOwnerOfTheEI = false;
+		this.ifNotOwnerOfTheEIMsg = "";
 	}
 
-	@Override
-	public boolean verifConditions(Player p) {
+	public boolean verifConditions(Player p, ItemStack item) {
 		if(SCore.hasIridiumSkyblock) {
 			if(this.ifPlayerMustBeOnHisIsland) {
 				if(!IridiumSkyblockTool.playerIsOnHisIsland(p)) {
 					this.getSm().sendMessage(p, this.getIfPlayerMustBeOnHisIslandMsg());
+					return false;
+				}
+			}
+		}
+		if(this.isIfOwnerOfTheEI()) {
+			if(item.hasItemMeta()) {
+				ItemMeta iM = item.getItemMeta();
+
+				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-OWNER");
+				String uuidStr = iM.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+				boolean invalid = false;
+				UUID uuid = null;
+				try {
+					uuid = UUID.fromString(uuidStr);
+				}catch(Exception e ) {
+					invalid = true;
+				}
+				if(invalid || !uuid.equals(p.getUniqueId())) {
+					this.getSm().sendMessage(p, this.ifOwnerOfTheEIMsg);
+					return false;
+				}
+			}
+		}
+		if(this.isIfNotOwnerOfTheEI()) {
+			if(item.hasItemMeta()) {
+				ItemMeta iM = item.getItemMeta();
+
+				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-OWNER");
+				String uuidStr = iM.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+				boolean invalid = false;
+				UUID uuid = null;
+				try {
+					uuid = UUID.fromString(uuidStr);
+				}catch(Exception e ) {
+					invalid = true;
+				}
+				if(!invalid && uuid.equals(p.getUniqueId())) {
+					this.getSm().sendMessage(p, this.ifNotOwnerOfTheEIMsg);
 					return false;
 				}
 			}
@@ -58,6 +115,12 @@ public class CustomEIConditions extends Conditions{
 		cCdt.setIfNeedPlayerConfirmation(customCdtSection.getBoolean("ifNeedPlayerConfirmation", false));
 		cCdt.setIfNeedPlayerConfirmationMsg(customCdtSection.getString("ifNeedPlayerConfirmationMsg",
 				"&8&l"+pluginName+IF_NEED_PLAYER_CONFIRMATION_MSG));
+
+		cCdt.setIfOwnerOfTheEI(customCdtSection.getBoolean("ifOwnerOfTheEI", false));
+		cCdt.setIfOwnerOfTheEIMsg(customCdtSection.getString("ifOwnerOfTheEIMsg", "&4&l"+pluginName+IF_OWNER_OF_THE_EI_MSG));
+
+		cCdt.setIfNotOwnerOfTheEI(customCdtSection.getBoolean("ifNotOwnerOfTheEI", false));
+		cCdt.setIfNotOwnerOfTheEIMsg(customCdtSection.getString("ifNotOwnerOfTheEIMsg", "&4&l"+pluginName+IF_NOT_OWNER_OF_THE_EI_MSG));
 
 		cCdt.setIfPlayerMustBeOnHisIsland(customCdtSection.getBoolean("ifPlayerMustBeOnHisIsland", false));
 		cCdt.setIfPlayerMustBeOnHisIslandMsg(customCdtSection.getString("ifPlayerMustBeOnHisIslandMsg",
@@ -88,6 +151,13 @@ public class CustomEIConditions extends Conditions{
 
 		if(cC.hasIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true); 
 		else cCConfig.set("ifNeedPlayerConfirmation", null);
+
+
+		if(cC.isIfOwnerOfTheEI()) cCConfig.set("ifOwnerOfTheEI", true); 
+		else cCConfig.set("ifOwnerOfTheEI", null);
+
+		if(cC.isIfNotOwnerOfTheEI()) cCConfig.set("ifNotOwnerOfTheEI", true); 
+		else cCConfig.set("ifNotOwnerOfTheEI", null);
 
 		if(cC.isIfPlayerMustBeOnHisIsland()) cCConfig.set("ifPlayerMustBeOnHisIsland", true); 
 		else cCConfig.set("ifPlayerMustBeOnHisIsland", null);
@@ -142,6 +212,38 @@ public class CustomEIConditions extends Conditions{
 
 	public void setIfPlayerMustBeOnHisIslandMsg(String ifPlayerMustBeOnHisIslandMsg) {
 		this.ifPlayerMustBeOnHisIslandMsg = ifPlayerMustBeOnHisIslandMsg;
+	}
+
+	public boolean isIfOwnerOfTheEI() {
+		return ifOwnerOfTheEI;
+	}
+
+	public void setIfOwnerOfTheEI(boolean ifOwnerOfTheEI) {
+		this.ifOwnerOfTheEI = ifOwnerOfTheEI;
+	}
+
+	public String getIfOwnerOfTheEIMsg() {
+		return ifOwnerOfTheEIMsg;
+	}
+
+	public void setIfOwnerOfTheEIMsg(String ifOwnerOfTheEIMsg) {
+		this.ifOwnerOfTheEIMsg = ifOwnerOfTheEIMsg;
+	}
+
+	public boolean isIfNotOwnerOfTheEI() {
+		return ifNotOwnerOfTheEI;
+	}
+
+	public void setIfNotOwnerOfTheEI(boolean ifNotOwnerOfTheEI) {
+		this.ifNotOwnerOfTheEI = ifNotOwnerOfTheEI;
+	}
+
+	public String getIfNotOwnerOfTheEIMsg() {
+		return ifNotOwnerOfTheEIMsg;
+	}
+
+	public void setIfNotOwnerOfTheEIMsg(String ifNotOwnerOfTheEIMsg) {
+		this.ifNotOwnerOfTheEIMsg = ifNotOwnerOfTheEIMsg;
 	}
 
 }

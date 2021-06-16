@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ssomar.score.commands.runnable.entity.commands.Burn;
 import com.ssomar.score.commands.runnable.entity.commands.ChangeTo;
+import com.ssomar.score.commands.runnable.entity.commands.CustomDash1;
 import com.ssomar.score.commands.runnable.entity.commands.Damage;
 import com.ssomar.score.commands.runnable.entity.commands.DropExecutableItem;
 import com.ssomar.score.commands.runnable.entity.commands.DropItem;
@@ -33,7 +34,7 @@ public enum EntityCommand {
 	TELEPORT_PLAYER_TO_ENTITY ("TELEPORT PLAYER TO ENTITY"),
 	PARTICLE ("PARTICLE"),
 	SENDMESSAGE ("SENDMESSAGE"),
-	KILL ("kill"),
+	KILL ("KILL"),
 	CHANGETO ("CHANGETO"),
 	DROPITEM ("DROPITEM"),
 	DROPEXECUTABLEITEM ("DROPEXECUTABLEITEM"),
@@ -43,6 +44,7 @@ public enum EntityCommand {
 	SETADULT ("SETADULT"),
 	SETNAME ("SETNAME"),
 	BURN ("BURN"),
+	CUSTOMDASH1 ("CUSTOMDASH1"),
 	SETGLOW ("SETGLOW"),
 	REMOVEGLOW ("REMOVEGLOW"),
 	STRIKELIGHTNING ("STRIKELIGHTNING");
@@ -50,7 +52,7 @@ public enum EntityCommand {
 	private String[] names;
 
 	EntityCommand(String... names) {
-		this.names=names;
+		this.names = names;
 	}
 	
 	public static Map<EntityCommand, EntityCommandTemplate> getReferences(){
@@ -71,6 +73,7 @@ public enum EntityCommand {
 		references.put(SETADULT, new SetAdult());
 		references.put(SETNAME, new SetName());
 		references.put(BURN, new Burn());
+		references.put(CUSTOMDASH1, new CustomDash1());
 		references.put(SETGLOW, new SetGlow());
 		references.put(REMOVEGLOW, new RemoveGlow());
 		references.put(STRIKELIGHTNING, new StrikeLightning());

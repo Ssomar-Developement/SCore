@@ -10,6 +10,8 @@ import com.ssomar.score.splugin.SPlugin;
 public class CustomConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_NEED_PLAYER_CONFIRMATION = "ifNeedPlayerConfirmation";
+	public static final String IF_OWNER_OF_THE_EI = "if owner of the EI";
+	public static final String IF_NOT_OWNER_OF_THE_EI = "if not owner of the EI";
 	public static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND = "ifPlayerMustBeOnHisIsland";
 	
 	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
@@ -20,6 +22,14 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NEED_PLAYER_CONFIRMATION, 	false,	false, "&7&oThe player must double click?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_NEED_PLAYER_CONFIRMATION, conditions.isIfNeedPlayerConfirmation());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_OWNER_OF_THE_EI, 	false,	false, "&7&oThe player must be the owner?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_OWNER_OF_THE_EI, conditions.isIfOwnerOfTheEI());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_OWNER_OF_THE_EI, 	false,	false, "&7&oThe player must not be the owner?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_NOT_OWNER_OF_THE_EI, conditions.isIfNotOwnerOfTheEI());
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_MUST_BE_ON_HIS_ISLAND, 	false,	false, "&7&oThe player must be on his island?", "&a✎ Click here to change", "&7actually:");
 		i++;

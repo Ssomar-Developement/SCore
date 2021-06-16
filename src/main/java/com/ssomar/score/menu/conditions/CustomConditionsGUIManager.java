@@ -33,6 +33,10 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 
 				if(name.contains(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION)) cache.get(p).changeBoolean(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION);
 				
+				else if(name.contains(CustomConditionsGUI.IF_OWNER_OF_THE_EI)) cache.get(p).changeBoolean(CustomConditionsGUI.IF_OWNER_OF_THE_EI);
+				
+				else if(name.contains(CustomConditionsGUI.IF_NOT_OWNER_OF_THE_EI)) cache.get(p).changeBoolean(CustomConditionsGUI.IF_NOT_OWNER_OF_THE_EI);
+				
 				if(name.contains(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND)) {
 					if(SCore.hasIridiumSkyblock) cache.get(p).changeBoolean(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION);
 					else p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &cYou haven't a compatible skyblock plugin to change this option ! (IridiumSkyblock"));
@@ -71,6 +75,8 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 		CustomEIConditions cC = new CustomEIConditions();
 
 		cC.setIfNeedPlayerConfirmation(cache.get(p).getBoolean(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION));
+		cC.setIfOwnerOfTheEI(cache.get(p).getBoolean(CustomConditionsGUI.IF_OWNER_OF_THE_EI));
+		cC.setIfNotOwnerOfTheEI(cache.get(p).getBoolean(CustomConditionsGUI.IF_NOT_OWNER_OF_THE_EI));
 		cC.setIfPlayerMustBeOnHisIsland(cache.get(p).getBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND));
 
 		CustomEIConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC);
