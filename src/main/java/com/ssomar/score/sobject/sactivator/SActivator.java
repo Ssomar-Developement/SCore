@@ -16,6 +16,10 @@ public interface SActivator {
 
 	public SOption getOption(); 
 	
+	public boolean isDelayInTick();
+	
+	public int getDelay();
+	
 	public PlayerConditions getOwnerConditions();
 	
 	public PlayerConditions getPlayerConditions();

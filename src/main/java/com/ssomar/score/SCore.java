@@ -19,6 +19,7 @@ import com.ssomar.score.data.CommandsQuery;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
 import com.ssomar.score.events.EventsHandler;
+import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.utils.Utils;
 
 public final class SCore extends JavaPlugin {
@@ -59,6 +60,9 @@ public final class SCore extends JavaPlugin {
 		MessageMain.getInstance().load();
 
 		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+		
+		/* Loop instance part */	
+		LoopManager.getInstance().setup();
 		
 		ActionbarHandler.getInstance().load();
 		

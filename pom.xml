@@ -166,7 +166,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-460f13bd72-1</version>
+			<version>main-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
