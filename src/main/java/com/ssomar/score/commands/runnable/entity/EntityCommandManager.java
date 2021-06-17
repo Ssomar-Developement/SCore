@@ -74,7 +74,7 @@ public class EntityCommandManager {
 	}
 
 
-	public boolean isValidBlockCommads(String entry) {
+	public boolean isValidEntityCommand(String entry) {
 		for(EntityCommandTemplate cmd : commands) {
 			for(String name: cmd.getNames()) {
 				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
@@ -130,7 +130,7 @@ public class EntityCommandManager {
 			 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
 			 */
 
-			if (EntityCommandManager.getInstance().isValidBlockCommads(commands.get(i)) && !commands.get(i).contains("//")) {
+			if (EntityCommandManager.getInstance().isValidEntityCommand(commands.get(i)) && !commands.get(i).contains("//")) {
 				EntityCommandTemplate eC = this.getEntityCommand(command);
 				List<String> args = this.getECArgs(command);
 
