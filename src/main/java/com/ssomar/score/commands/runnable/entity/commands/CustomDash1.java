@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -94,5 +95,17 @@ public class CustomDash1 extends EntityCommandTemplate{
 			pullEntityToLocation(entity, loc);
 		}
 		else return;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("CUSTOMDASH1");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "CUSTOMDASH1 {x} {y} {z}";
 	}
 }

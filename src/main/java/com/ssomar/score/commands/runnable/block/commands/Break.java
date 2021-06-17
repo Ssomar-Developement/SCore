@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -24,9 +25,7 @@ public class Break extends BlockCommandTemplate{
 				this.validBreak(block);
 			}
 		}
-		else {
-			this.validBreak(block);
-		}
+		else this.validBreak(block);
 	}
 	
 	public void validBreak(Block block) {
@@ -46,6 +45,18 @@ public class Break extends BlockCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		return "";
+	}
+
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("BREAK");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "BREAK";
 	}
 
 }

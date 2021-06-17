@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.attribute.Attribute;
@@ -64,6 +65,18 @@ public class Heal extends EntityCommandTemplate{
 		}
 
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("HEAL");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "HEAL {amount}";
 	}
 
 }

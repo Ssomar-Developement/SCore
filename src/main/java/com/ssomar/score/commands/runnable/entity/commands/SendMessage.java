@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Entity;
@@ -26,4 +27,15 @@ public class SendMessage extends EntityCommandTemplate{
 		return "";
 	}
 
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("SENDMESSAGE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "SENDMESSAGE {you msg here}";
+	}
 }

@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Particle;
@@ -28,6 +29,18 @@ public class ParticleCommand extends EntityCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		return "";
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("PARTICLE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "PARTICLE {type} {quantity} {offset} {speed}";
 	}
 
 }

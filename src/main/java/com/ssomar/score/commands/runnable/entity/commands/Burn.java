@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Entity;
@@ -39,6 +40,18 @@ public class Burn extends EntityCommandTemplate{
 		}
 		
 		return error;
+	}
+
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("BURN");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "BURN {timeinsecs}";
 	}
 
 }

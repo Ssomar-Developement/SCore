@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -77,6 +78,18 @@ public class FarmInCube extends BlockCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		return "";
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("FARMINCUBE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "FARMINCUBE {radius} {ActiveDrop true or false}";
 	}
 
 }

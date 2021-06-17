@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Ageable;
@@ -22,4 +23,15 @@ public class SetBaby extends EntityCommandTemplate{
 		return "";
 	}
 
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("SETBABY");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "SETBABY";
+	}
 }

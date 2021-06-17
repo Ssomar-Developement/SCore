@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -48,6 +49,18 @@ public class Explode extends BlockCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		return "";
+	}
+
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("EXPLODE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "EXPLODE";
 	}
 
 }

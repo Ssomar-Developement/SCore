@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Entity;
@@ -30,6 +31,18 @@ public class ChangeTo extends EntityCommandTemplate{
 		else error= tooManyArgs+changeto;
 		
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("CHANGETO");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "CHANGETO {entityType}";
 	}
 
 }

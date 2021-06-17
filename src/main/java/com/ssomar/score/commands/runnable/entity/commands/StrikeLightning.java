@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Creeper;
@@ -25,6 +26,18 @@ public class StrikeLightning extends EntityCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		return "";
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("STRIKELIGHTNING");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "STRIKELIGHTNING";
 	}
 
 }

@@ -49,8 +49,6 @@ public class BlockCommandsExecutor extends CommandsExecutor{
 			for(String commandz : this.getFinalCommands().get(d)) {
 
 				UUID uuid = UUID.randomUUID();
-				
-				//SsomarDev.testMsg("block type3:"+ block.getType());
 
 				int id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask( SCore.getPlugin() , new Runnable(){
 
@@ -67,23 +65,23 @@ public class BlockCommandsExecutor extends CommandsExecutor{
 							}catch(Exception e) {}
 						}
 
-						BlockCommand bC = BlockCommand.getBlockCommand(command);
+						BlockCommandTemplate bC = BlockCommandManager.getInstance().getBlockCommand(command);
 
-						List<String> args = BlockCommand.getBCArgs(command);
+						List<String> args = BlockCommandManager.getInstance().getBCArgs(command);
 
-						if(bC!=null) {
-							BlockCommand.getReferences().get(bC).run(getPlayer(), block, blockType, args, getActionInfo(), silenceOutput);	
+						if(bC != null) {
+							bC.run(getPlayer(), block, blockType, args, getActionInfo(), silenceOutput);	
 						}
 						else {
-							if(command.charAt(0)=='/') {
-								command=  command.substring(1, command.length());
+							if(command.charAt(0) == '/') {
+								command = command.substring(1, command.length());
 							}
 							RunConsoleCommand.runConsoleCommand(command, silenceOutput);
 						}
-						CommandsManager.getInstance().removeDelayedCommand(getPlayer(), uuid);
+						if(getPlayer() != null) CommandsManager.getInstance().removeDelayedCommand(getPlayer(), uuid);
 					}
 				}, d);
-				CommandsManager.getInstance().addDelayedCommand(getPlayer(), uuid, id);
+				if(getPlayer() != null) CommandsManager.getInstance().addDelayedCommand(getPlayer(), uuid, id);
 			}
 		}
 

@@ -26,6 +26,7 @@ public class LogFilter implements Filter {
 		messageToHide.add("Summoned new");
 		messageToHide.add("Played sound");
 		messageToHide.add("Teleported");
+		messageToHide.add("Could not set the block");
 	}
 
 

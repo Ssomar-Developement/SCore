@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -25,6 +26,18 @@ public class DropItem extends EntityCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		return "";
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("DROPITEM");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "DROPITEM {material} {quantity}";
 	}
 
 }

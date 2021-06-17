@@ -62,13 +62,13 @@ public class EntityCommandsExecutor extends CommandsExecutor{
 								}catch(Exception e) {}
 							}
 
-							EntityCommand eC = EntityCommand.getEntityCommand(command);
+							EntityCommandTemplate eC = EntityCommandManager.getInstance().getEntityCommand(command);
 
-							List<String> args = EntityCommand.getECArgs(command);
+							List<String> args = EntityCommandManager.getInstance().getECArgs(command);
 
 							if(eC!=null) {
 	
-								if(eC==EntityCommand.CHANGETO) {
+								if(eC.getNames().contains("CHANGETO")) {
 									try {
 										if(!entity.isDead()) {
 											Entity newEnt = entity.getWorld().spawnEntity(entity.getLocation(), EntityType.valueOf(command.split(" ")[1]));
@@ -83,7 +83,7 @@ public class EntityCommandsExecutor extends CommandsExecutor{
 									}catch(Exception e) {}
 								}
 								else {
-									EntityCommand.getReferences().get(eC).run(getPlayer(), entity, args, getActionInfo(), silenceOutput);
+									eC.run(getPlayer(), entity, args, getActionInfo(), silenceOutput);
 								}
 								
 							}
@@ -93,11 +93,11 @@ public class EntityCommandsExecutor extends CommandsExecutor{
 								}
 								RunConsoleCommand.runConsoleCommand(command, silenceOutput);
 							}
-							CommandsManager.getInstance().removeDelayedCommand(getPlayer(), uuid);
+							if(getPlayer() != null) CommandsManager.getInstance().removeDelayedCommand(getPlayer(), uuid);
 						}
 					}
 				}, d);
-				CommandsManager.getInstance().addDelayedCommand(getPlayer(), uuid, id);
+				if(getPlayer() != null) CommandsManager.getInstance().addDelayedCommand(getPlayer(), uuid, id);
 			}
 		}
 

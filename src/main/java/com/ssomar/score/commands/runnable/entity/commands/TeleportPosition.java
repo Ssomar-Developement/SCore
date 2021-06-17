@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -48,6 +49,18 @@ public class TeleportPosition extends EntityCommandTemplate{
 		else error= tooManyArgs+tppos;
 		
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("TELEPORT POSITION");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "TELEPORT POSITION {x} {y} {z}";
 	}
 
 }

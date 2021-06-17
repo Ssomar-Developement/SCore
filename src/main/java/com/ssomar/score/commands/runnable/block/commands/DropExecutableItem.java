@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -47,6 +48,18 @@ public class DropExecutableItem extends BlockCommandTemplate{
 			else error= tooManyArgs+dropei;
 
 			return error;
+		}
+
+		@Override
+		public List<String> getNames() {
+			List<String> names = new ArrayList<>();
+			names.add("DROPEXECUTABLEITEM");
+			return names;
+		}
+
+		@Override
+		public String getTemplate() {
+			return "DROPEXECUTABLEITEM {id} [quantity}";
 		}
 
 }

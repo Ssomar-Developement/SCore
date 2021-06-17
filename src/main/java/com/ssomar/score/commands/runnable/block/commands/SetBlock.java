@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -39,12 +40,24 @@ public class SetBlock extends BlockCommandTemplate{
 	@Override
 	public String verify(List<String> args) {
 		String error = "";
-		
-		String setblock = "SETBLOCK {material}";
-		if(args.size()<1) error = notEnoughArgs+setblock;
-		else if(args.size()>1)error= tooManyArgs+setblock;
+		/* Delete verification to not interfer with the vanilla setblock command */
+//		String setblock = "SETBLOCK {material}";
+//		if(args.size()<1) error = notEnoughArgs+setblock;
+//		else if(args.size()>1)error = tooManyArgs+setblock;
 		
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("SETBLOCK");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "SETBLOCK {material}";
 	}
 
 }

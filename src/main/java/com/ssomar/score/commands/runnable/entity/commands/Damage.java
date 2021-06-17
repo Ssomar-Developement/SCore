@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Entity;
@@ -39,6 +40,18 @@ public class Damage extends EntityCommandTemplate{
 		else error= tooManyArgs+damage;
 
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("DAMAGE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "DAMAGE {amount}";
 	}
 
 }
