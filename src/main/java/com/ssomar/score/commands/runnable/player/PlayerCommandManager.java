@@ -1,8 +1,13 @@
 package com.ssomar.score.commands.runnable.player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.bukkit.ChatColor;
+
+import com.ssomar.score.commands.runnable.Command;
 import com.ssomar.score.commands.runnable.player.commands.ActionbarCommand;
 import com.ssomar.score.commands.runnable.player.commands.Around;
 import com.ssomar.score.commands.runnable.player.commands.BackDash;
@@ -42,18 +47,18 @@ public class PlayerCommandManager {
 	
 	public PlayerCommandManager() {
 		List<PlayerCommandTemplate> commands = new ArrayList<>();
-		commands.add(new SudoOp());
-		commands.add(new Sudo());
+		commands.add(new ActionbarCommand());
 		commands.add(new Around());
 		commands.add(new MobAround());
-		commands.add(new SendMessage());
 		commands.add(new SendBlankMessage());
+		commands.add(new SendMessage());
+		commands.add(new Sudo());
+		commands.add(new SudoOp());
 		commands.add(new FlyOn());
 		commands.add(new FlyOff());
 		commands.add(new SetBlock());
 		commands.add(new ReplaceBlock());
 		commands.add(new ParticleCommand());
-		commands.add(new ActionbarCommand());
 		commands.add(new CustomDash1());
 		commands.add(new FrontDash());
 		commands.add(new BackDash());
@@ -162,6 +167,21 @@ public class PlayerCommandManager {
 
 	public List<PlayerCommandTemplate> getCommands() {
 		return commands;
+	}
+	
+	public Map<String, String> getCommandsDisplay() {
+		Map<String, String> result = new HashMap<>();
+		for(Command c : this.commands) {
+
+			ChatColor extra = c.getExtraColor();
+			if(extra == null) extra = ChatColor.DARK_PURPLE;
+
+			ChatColor color = c.getColor();
+			if(color == null) color = ChatColor.LIGHT_PURPLE;
+
+			result.put(extra+"["+color+c.getNames().get(0)+extra+"]", c.getTemplate());
+		}
+		return result;
 	}
 
 

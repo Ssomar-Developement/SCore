@@ -1,8 +1,13 @@
 package com.ssomar.score.commands.runnable.block;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.bukkit.ChatColor;
+
+import com.ssomar.score.commands.runnable.Command;
 import com.ssomar.score.commands.runnable.block.commands.Break;
 import com.ssomar.score.commands.runnable.block.commands.DropExecutableItem;
 import com.ssomar.score.commands.runnable.block.commands.DropItem;
@@ -118,6 +123,22 @@ public class BlockCommandManager {
 		return commands;
 	}
 
+	public Map<String, String> getCommandsDisplay() {
+		Map<String, String> result = new HashMap<>();
+		for(Command c : this.commands) {
+
+			ChatColor extra = c.getExtraColor();
+			if(extra == null) extra = ChatColor.DARK_PURPLE;
+
+			ChatColor color = c.getColor();
+			if(color == null) color = ChatColor.LIGHT_PURPLE;
+
+			result.put(extra+"["+color+c.getNames().get(0)+extra+"]", c.getTemplate());
+		}
+		return result;
+	}
+	
+	
 	public void setCommands(List<BlockCommandTemplate> commands) {
 		this.commands = commands;
 	}
