@@ -149,4 +149,13 @@ public class EntityCommandManager {
 		if(instance == null) instance = new EntityCommandManager();
 		return instance;
 	}
+
+	public List<EntityCommandTemplate> getCommands() {
+		return commands;
+	}
+
+	public void setCommands(List<EntityCommandTemplate> commands) {
+		this.commands = commands;
+	}
+
 }

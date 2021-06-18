@@ -113,4 +113,12 @@ public class BlockCommandManager {
 		if(instance == null) instance = new BlockCommandManager();
 		return instance;
 	}
+
+	public List<BlockCommandTemplate> getCommands() {
+		return commands;
+	}
+
+	public void setCommands(List<BlockCommandTemplate> commands) {
+		this.commands = commands;
+	}
 }

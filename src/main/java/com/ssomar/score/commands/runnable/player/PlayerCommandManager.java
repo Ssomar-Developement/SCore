@@ -159,4 +159,14 @@ public class PlayerCommandManager {
 		return instance;
 	}
 
+
+	public List<PlayerCommandTemplate> getCommands() {
+		return commands;
+	}
+
+
+	public void setCommands(List<PlayerCommandTemplate> commands) {
+		this.commands = commands;
+	}	
+
 }
