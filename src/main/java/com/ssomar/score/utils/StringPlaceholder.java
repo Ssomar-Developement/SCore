@@ -46,6 +46,7 @@ public class StringPlaceholder {
 	
 	/* placeholders of the block */
 	private String block= "";
+	private String blockWorld = "";
 	private String blockX= "";
 	private String blockY= "";
 	private String blockZ= "";
@@ -160,6 +161,9 @@ public class StringPlaceholder {
 		}
 		if(this.hasProjectileZ()) {
 			s=this.replaceCalculPlaceholder(s, "%projectile_z%", this.getProjectileZ());
+		}
+		if(this.hasBlockWorld()) {
+			s=this.replaceCalculPlaceholder(s, "%block_world%", this.getBlockWorld());
 		}
 		if(this.hasBlockX()) {
 			s=this.replaceCalculPlaceholder(s, "%block_x%", this.getBlockX());
@@ -728,7 +732,17 @@ public class StringPlaceholder {
 		return this.targetBlockZInt.length()!=0;
 	}
 	
-	
+	public boolean hasBlockWorld() {
+		return blockWorld.length()!=0;
+	}
+
+	public String getBlockWorld() {
+		return blockWorld;
+	}
+
+	public void setBlockWorld(String blockWorld) {
+		this.blockWorld = blockWorld;
+	}
 		
 	
 }
