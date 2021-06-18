@@ -1,7 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -29,5 +31,30 @@ public class SendMessage extends PlayerCommandTemplate{
 		if(args.size()<1) error = notEnoughArgs+message;
 
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("SENDMESSAGE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		// TODO Auto-generated method stub
+		return "SENDMESSAGE {message}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

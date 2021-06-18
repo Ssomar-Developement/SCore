@@ -1,9 +1,11 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -60,5 +62,30 @@ public class SetBlock extends PlayerCommandTemplate{
 		else if(args.size()!=1) error= tooManyArgs+setblock;
 
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("SETBLOCK");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		// TODO Auto-generated method stub
+		return "SETBLOCK {material}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

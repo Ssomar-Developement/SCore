@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -59,6 +60,18 @@ public class DropExecutableItem extends EntityCommandTemplate{
 	@Override
 	public String getTemplate() {
 		return "DROPEXECUTABLEITEM {id} [quantity}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -84,6 +85,18 @@ public class FertilizeInCube extends BlockCommandTemplate{
 	@Override
 	public String getTemplate() {
 		return "FERTILIZEINCUBE {radius}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

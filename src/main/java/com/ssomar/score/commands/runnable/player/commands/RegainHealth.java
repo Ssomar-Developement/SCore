@@ -1,7 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
@@ -36,6 +38,31 @@ public class RegainHealth extends PlayerCommandTemplate{
 		}
 
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("REGAIN HEATH");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		// TODO Auto-generated method stub
+		return "REGAIN HEATH {amount}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

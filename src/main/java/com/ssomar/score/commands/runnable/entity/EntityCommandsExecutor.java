@@ -89,7 +89,7 @@ public class EntityCommandsExecutor extends CommandsExecutor{
 							}
 							else {
 								if(command.charAt(0)=='/') {
-									command=  command.substring(1, command.length());
+									command = command.substring(1, command.length());
 								}
 								RunConsoleCommand.runConsoleCommand(command, silenceOutput);
 							}

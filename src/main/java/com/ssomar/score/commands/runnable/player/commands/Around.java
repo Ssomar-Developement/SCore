@@ -1,8 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -85,6 +87,28 @@ public class Around extends PlayerCommandTemplate{
 		}
 
 		return error;
+	}
+
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("AROUND");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		return "AROUND {distance} {true or false} {Your commands here}";
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.FUCHSIA;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		return Color.PURPLE;
 	}
 
 }

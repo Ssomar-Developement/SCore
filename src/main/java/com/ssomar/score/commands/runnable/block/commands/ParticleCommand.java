@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -47,6 +48,18 @@ public class ParticleCommand extends BlockCommandTemplate{
 	@Override
 	public String getTemplate() {
 		return "PARTICLE {type} {quantity} {offset} {speed}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,8 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -100,6 +102,31 @@ public class WorldTeleport extends PlayerCommandTemplate{
 		}
 
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("WORLDTELEPORT");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		// TODO Auto-generated method stub
+		return "WORLDTELEPORT {world}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

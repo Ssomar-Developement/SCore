@@ -66,12 +66,12 @@ public class PlayerCommandsExecutor extends CommandsExecutor{
 							}
 
 
-							PlayerCommand pC = PlayerCommand.getPlayerCommand(command);
+							PlayerCommandTemplate pC = PlayerCommandManager.getInstance().getPlayerCommand(command);
 
-							List<String> args = PlayerCommand.getPCArgs(command);
+							List<String> args = PlayerCommandManager.getInstance().getPCArgs(command);
 
 							if(pC!=null) {
-								PlayerCommand.getReferences().get(pC).run(getPlayer(), receiver, args, getActionInfo(), silenceOutput);
+								pC.run(getPlayer(), receiver, args, getActionInfo(), silenceOutput);
 							}
 							else {
 								if(command.charAt(0)=='/') command=  command.substring(1, command.length());

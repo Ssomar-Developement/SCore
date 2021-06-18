@@ -1,7 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -76,5 +78,30 @@ public class TeleportOnCursor extends PlayerCommandTemplate{
 			}
 		}
 		return error;
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("TELEPORTONCURSOR");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		// TODO Auto-generated method stub
+		return "TELEPORTONCURSOR {maxRange} {acceptAir true or false}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

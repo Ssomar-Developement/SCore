@@ -1,7 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
@@ -28,6 +30,31 @@ public class ParticleCommand extends PlayerCommandTemplate{
 	public String verify(List<String> args) {
 		// TODO Auto-generated method stub
 		return "";
+	}
+	
+	@Override
+	public List<String> getNames() {
+		List<String> names = new ArrayList<>();
+		names.add("PARTICLE");
+		return names;
+	}
+
+	@Override
+	public String getTemplate() {
+		// TODO Auto-generated method stub
+		return "PARTICLE {type} {quantity} {offset} {speed}";
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getExtraColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
