@@ -18,6 +18,7 @@ import com.ssomar.score.commands.runnable.block.commands.MineInCube;
 import com.ssomar.score.commands.runnable.block.commands.ParticleCommand;
 import com.ssomar.score.commands.runnable.block.commands.SendMessage;
 import com.ssomar.score.commands.runnable.block.commands.SetBlock;
+import com.ssomar.score.commands.runnable.block.commands.SetExecutableBlock;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -30,6 +31,7 @@ public class BlockCommandManager {
 	public BlockCommandManager() {
 		List<BlockCommandTemplate> references = new ArrayList<>();
 		references.add(new SetBlock());
+		references.add(new SetExecutableBlock());
 		references.add(new ParticleCommand());
 		references.add(new SendMessage());
 		references.add(new Explode());

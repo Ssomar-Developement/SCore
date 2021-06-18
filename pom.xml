@@ -118,6 +118,10 @@
 			<id>savagelabs</id>
 			<url>https://nexus.savagelabs.net/repository/maven-releases/</url>
 		</repository>
+		<repository>
+            <id>OnARandomBox</id>
+            <url>http://repo.onarandombox.com/content/groups/public</url>
+        </repository>
 	</repositories>
 
 	<dependencies>
@@ -181,5 +185,11 @@
 			<version>3.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+            <groupId>com.onarandombox.multiversecore</groupId>
+            <artifactId>Multiverse-Core</artifactId>
+            <version>4.2.2</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 </project>

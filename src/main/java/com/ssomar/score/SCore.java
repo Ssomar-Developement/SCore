@@ -45,6 +45,8 @@ public final class SCore extends JavaPlugin {
 	public static boolean hasVault = false;
 	
 	public static boolean hasIridiumSkyblock = false;
+	
+	public static boolean hasMultiverse = false;
 
 	
 	@Override
@@ -129,6 +131,10 @@ public final class SCore extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("IridiumSkyblock")!=null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] IridiumSkyblock hooked !");
 			hasIridiumSkyblock = true;
+		}
+		if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
+			Utils.sendConsoleMsg("[SParkour] Multiverse-Core hooked !");
+			hasMultiverse = true;	
 		}
 	}
 

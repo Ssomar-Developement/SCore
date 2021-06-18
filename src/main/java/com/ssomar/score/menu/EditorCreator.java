@@ -175,10 +175,10 @@ public class EditorCreator {
 				listItems.add(newText);
 			}
 			
-			for(int i =0 ; i<listItems.size(); i++) {
+			for(int i = 0 ; i<listItems.size(); i++) {
 				TextComponent result;
-				if(i+1!=listItems.size()) {
-					(result= listItems.get(i)).addExtra("  ");
+				if(i+1 != listItems.size()) {
+					(result = listItems.get(i)).addExtra("  ");
 					result.addExtra(listItems.get(i+1));
 					i++;
 				}

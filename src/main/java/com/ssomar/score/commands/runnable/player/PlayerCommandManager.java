@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.Command;
 import com.ssomar.score.commands.runnable.player.commands.ActionbarCommand;
+import com.ssomar.score.commands.runnable.player.commands.ActionbarCommandOff;
 import com.ssomar.score.commands.runnable.player.commands.Around;
 import com.ssomar.score.commands.runnable.player.commands.BackDash;
 import com.ssomar.score.commands.runnable.player.commands.Burn;
@@ -48,6 +49,7 @@ public class PlayerCommandManager {
 	public PlayerCommandManager() {
 		List<PlayerCommandTemplate> commands = new ArrayList<>();
 		commands.add(new ActionbarCommand());
+		commands.add(new ActionbarCommandOff());
 		commands.add(new Around());
 		commands.add(new MobAround());
 		commands.add(new SendBlankMessage());
