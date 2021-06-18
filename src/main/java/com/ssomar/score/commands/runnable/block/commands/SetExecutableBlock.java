@@ -69,14 +69,20 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 				}
 			}	
 			
+			boolean replace = true;
+			try {
+				replace = Boolean.valueOf(args.get(5));
+			}
+			catch(Exception e) {}
+			
 			UUID ownerUUID = null;
 			try {
-				ownerUUID = UUID.fromString(args.get(5));
+				ownerUUID = UUID.fromString(args.get(6));
 			}
 			catch(Exception e) {}
 			
 			Location loc = new Location(world, x, y , z);
-			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc);
+			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
 		}
 	}
 
@@ -86,11 +92,11 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 
 		String setEB = this.getTemplate();
 
-		if(args.size()>6) {
+		if(args.size()>7) {
 			error = tooManyArgs+setEB;
 			return error;
 		}
-		else if(args.size()<4) {
+		else if(args.size()<6) {
 			error = notEnoughArgs+setEB;
 		}
 		else {
