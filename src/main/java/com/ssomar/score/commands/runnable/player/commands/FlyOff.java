@@ -59,12 +59,11 @@ public class FlyOff extends PlayerCommandTemplate{
 	@Override
 	public ChatColor getColor() {
 		// TODO Auto-generated method stub
-		return null;
+		return ChatColor.BLUE;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return ChatColor.AQUA;
 	}
 }

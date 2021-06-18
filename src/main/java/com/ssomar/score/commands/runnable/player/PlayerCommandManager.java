@@ -179,7 +179,7 @@ public class PlayerCommandManager {
 			ChatColor color = c.getColor();
 			if(color == null) color = ChatColor.LIGHT_PURPLE;
 
-			result.put(extra+"["+color+c.getNames().get(0)+extra+"]", c.getTemplate());
+			result.put(extra+"["+color+"&l"+c.getNames().get(0)+extra+"]", c.getTemplate());
 		}
 		return result;
 	}
