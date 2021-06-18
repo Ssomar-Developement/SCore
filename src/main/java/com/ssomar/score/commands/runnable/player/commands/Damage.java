@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -52,13 +52,13 @@ public class Damage extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public Color getColor() {
+	public ChatColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Color getExtraColor() {
+	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}

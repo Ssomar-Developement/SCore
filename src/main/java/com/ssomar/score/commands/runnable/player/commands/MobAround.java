@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -102,13 +102,13 @@ public class MobAround extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public Color getColor() {
+	public ChatColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Color getExtraColor() {
+	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}

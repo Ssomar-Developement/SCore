@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -78,13 +78,13 @@ public class SetBlock extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public Color getColor() {
+	public ChatColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Color getExtraColor() {
+	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}

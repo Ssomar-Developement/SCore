@@ -168,7 +168,7 @@ public class EditorCreator {
 			for(String s : suggestions.keySet()) {
 				TextComponent newText;
 
-				newText = new TextComponent( StringConverter.coloredString("&5&l[&d&l"+s+"&5&l]"));
+				newText = new TextComponent( StringConverter.coloredString(s));
 				newText.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, suggestions.get(s) ));
 				newText.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&aAdd the command: &e"+s) ).create() ) );
 

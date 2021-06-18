@@ -2,7 +2,7 @@ package com.ssomar.score.commands.runnable;
 
 import java.util.List;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 
 public interface Command {
 	
@@ -10,8 +10,8 @@ public interface Command {
 	
 	public String getTemplate();
 	
-	public Color getColor();
+	public ChatColor getColor();
 	
-	public Color getExtraColor();
+	public ChatColor getExtraColor();
 
 }

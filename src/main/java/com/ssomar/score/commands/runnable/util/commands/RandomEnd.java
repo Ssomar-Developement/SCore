@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.util.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.Command;
 
@@ -23,13 +23,13 @@ public class RandomEnd implements Command{
 	}
 
 	@Override
-	public Color getColor() {
+	public ChatColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Color getExtraColor() {
+	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}

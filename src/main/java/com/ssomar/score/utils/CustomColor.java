@@ -6,8 +6,7 @@ public class CustomColor {
 
 	public static Color valueOf(String s) {
 
-		s=s.toUpperCase();
-
+		s = s.toUpperCase();
 		switch(s) {
 		case "AQUA":
 			return Color.AQUA;

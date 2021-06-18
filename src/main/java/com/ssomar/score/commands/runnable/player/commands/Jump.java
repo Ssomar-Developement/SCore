@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
@@ -80,13 +81,13 @@ public class Jump extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public Color getColor() {
+	public ChatColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Color getExtraColor() {
+	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}

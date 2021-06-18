@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.actionbar.Actionbar;
@@ -44,13 +44,13 @@ public class ActionbarCommand extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public Color getColor() {
-		return Color.GREEN;
+	public ChatColor getColor() {
+		return ChatColor.GREEN;
 	}
 
 	@Override
-	public Color getExtraColor() {
-		return Color.OLIVE;
+	public ChatColor getExtraColor() {
+		return ChatColor.DARK_GREEN;
 	}
 
 }

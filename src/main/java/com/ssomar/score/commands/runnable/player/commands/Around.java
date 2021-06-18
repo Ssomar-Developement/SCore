@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -102,13 +102,13 @@ public class Around extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public Color getColor() {
-		return Color.FUCHSIA;
+	public ChatColor getColor() {
+		return ChatColor.LIGHT_PURPLE;
 	}
 
 	@Override
-	public Color getExtraColor() {
-		return Color.PURPLE;
+	public ChatColor getExtraColor() {
+		return ChatColor.DARK_PURPLE;
 	}
 
 }
