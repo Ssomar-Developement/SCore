@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.runnable.block.commands;
+package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.onarandombox.MultiverseCore.api.Core;
@@ -19,72 +17,9 @@ import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 
-public class SetExecutableBlock extends BlockCommandTemplate{
-
-	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo,
-			boolean silenceOutput) {
-
-		if(SCore.hasExecutableBlocks) {
-
-			double x;
-			double y;
-			double z;
-			try {
-				x = Double.valueOf(args.get(1));
-			}catch(Exception e) {
-				return ;
-			}
-
-			try {
-				y = Double.valueOf(args.get(2));
-			}catch(Exception e) {
-
-				return;
-			}
-
-			try {
-				z = Double.valueOf(args.get(3));
-			}catch(Exception e) {
-				return;
-			}
-			
-			World world = null;
-			String worldStr = args.get(4);
-			if(worldStr.isEmpty()) return;
-			else {
-				if(SCore.hasMultiverse) {
-					 Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-					 MVWorldManager multiverseManager = core.getMVWorldManager();
-					 MultiverseWorld mv;
-					 if((mv = multiverseManager.getMVWorld(worldStr)) == null) {
-						 return;
-					 }
-					 else world = mv.getCBWorld();
-				}
-				else {
-					if((world = Bukkit.getWorld(worldStr)) == null) return;
-				}
-			}	
-			
-			boolean replace = false;
-			try {
-				replace = Boolean.valueOf(args.get(5));
-			}
-			catch(Exception e) {}
-			
-			UUID ownerUUID = null;
-			try {
-				ownerUUID = UUID.fromString(args.get(6));
-			}
-			catch(Exception e) {}
-			
-			Location loc = new Location(world, x, y , z);
-			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
-		}
-	}
+public class SetExecutableBlock extends PlayerCommandTemplate{
 
 	@Override
 	public String verify(List<String> args) {
@@ -186,6 +121,67 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+		if(SCore.hasExecutableBlocks) {
+
+			double x;
+			double y;
+			double z;
+			try {
+				x = Double.valueOf(args.get(1));
+			}catch(Exception e) {
+				return ;
+			}
+
+			try {
+				y = Double.valueOf(args.get(2));
+			}catch(Exception e) {
+
+				return;
+			}
+
+			try {
+				z = Double.valueOf(args.get(3));
+			}catch(Exception e) {
+				return;
+			}
+			
+			World world = null;
+			String worldStr = args.get(4);
+			if(worldStr.isEmpty()) return;
+			else {
+				if(SCore.hasMultiverse) {
+					 Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+					 MVWorldManager multiverseManager = core.getMVWorldManager();
+					 MultiverseWorld mv;
+					 if((mv = multiverseManager.getMVWorld(worldStr)) == null) {
+						 return;
+					 }
+					 else world = mv.getCBWorld();
+				}
+				else {
+					if((world = Bukkit.getWorld(worldStr)) == null) return;
+				}
+			}	
+			
+			boolean replace = false;
+			try {
+				replace = Boolean.valueOf(args.get(5));
+			}
+			catch(Exception e) {}
+			
+			UUID ownerUUID = null;
+			try {
+				ownerUUID = UUID.fromString(args.get(6));
+			}
+			catch(Exception e) {}
+			
+			Location loc = new Location(world, x, y , z);
+			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
+		}
 	}
 
 }

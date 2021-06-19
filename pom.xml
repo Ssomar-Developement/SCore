@@ -170,7 +170,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-3caa34626a-1</version>
+			<version>main-185c498738-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

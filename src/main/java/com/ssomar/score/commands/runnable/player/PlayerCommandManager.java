@@ -30,6 +30,7 @@ import com.ssomar.score.commands.runnable.player.commands.ReplaceBlock;
 import com.ssomar.score.commands.runnable.player.commands.SendBlankMessage;
 import com.ssomar.score.commands.runnable.player.commands.SendMessage;
 import com.ssomar.score.commands.runnable.player.commands.SetBlock;
+import com.ssomar.score.commands.runnable.player.commands.SetExecutableBlock;
 import com.ssomar.score.commands.runnable.player.commands.SetHealth;
 import com.ssomar.score.commands.runnable.player.commands.SpawnEntityOnCursor;
 import com.ssomar.score.commands.runnable.player.commands.StrikeLightning;
@@ -74,6 +75,7 @@ public class PlayerCommandManager {
 		commands.add(new Jump());
 		commands.add(new RemoveBurn());
 		commands.add(new SetHealth());
+		commands.add(new SetExecutableBlock());
 		commands.add(new StrikeLightning());
 		commands.add(new RegainHealth());
 		commands.add(new RegainFood());
