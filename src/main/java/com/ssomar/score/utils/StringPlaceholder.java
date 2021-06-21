@@ -3,6 +3,7 @@ package com.ssomar.score.utils;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
@@ -40,9 +41,14 @@ public class StringPlaceholder {
 	private String entityZ="";
 	
 	/* placeholders of the target player */
-	private String targetUUID="";
-	private String target= "";
-	
+	private String targetUUID ="";
+	private String target = "";
+	private String targetX = "";
+	private String targetY = "";
+	private String targetZ = "";
+	private String targetXInt = "";
+	private String targetYInt = "";
+	private String targetZInt = "";	
 	
 	/* placeholders of the block */
 	private String block= "";
@@ -75,6 +81,18 @@ public class StringPlaceholder {
 	private String projectileX="";
 	private String projectileY="";
 	private String projectileZ="";
+	
+	public void setTargetPlcHldr(Player p) {
+		this.setTargetUUID(p.getUniqueId().toString());
+		this.setTarget(p.getDisplayName());
+		Location pLoc = p.getLocation();
+		this.setTargetX(pLoc.getX()+"");
+		this.setTargetY(pLoc.getY()+"");
+		this.setTargetZ(pLoc.getZ()+"");
+		this.setTargetXInt((int) pLoc.getX()+"");
+		this.setTargetYInt((int) pLoc.getY()+"");
+		this.setTargetZInt((int)pLoc.getZ()+"");
+	}
 
 	public String replacePlaceholder(String str) {
 		String s = str;
@@ -242,7 +260,7 @@ public class StringPlaceholder {
 		
 		String result = s;
 		
-		if (result.contains(placeholder+"+")) {
+		while (result.contains(placeholder+"+")) {
 			String suit = result.split(placeholder+"\\+")[1];
 			StringBuilder sb = new StringBuilder();
 			for (char c : suit.toCharArray()) {
@@ -257,7 +275,8 @@ public class StringPlaceholder {
 				result = result.replaceAll(placeholder+"\\+" + sb.toString(), value);
 			} 
 		}
-		else if (result.contains(placeholder+"-")) {
+		
+		while (result.contains(placeholder+"-")) {
 			String suit = result.split(placeholder+"\\-")[1];
 			StringBuilder sb = new StringBuilder();
 			for (char c : suit.toCharArray()) {
@@ -272,7 +291,7 @@ public class StringPlaceholder {
 				result = result.replaceAll(placeholder+"\\-" + sb.toString(), value);
 			} 
 		}
-		else if (result.contains(placeholder)) {
+		while (result.contains(placeholder)) {
 			result = result.replaceAll(placeholder, value);
 		} 
 		return result;
@@ -742,6 +761,78 @@ public class StringPlaceholder {
 
 	public void setBlockWorld(String blockWorld) {
 		this.blockWorld = blockWorld;
+	}
+	
+	public boolean hasTargetX() {
+		return targetX.length()!=0;
+	}
+
+	public String getTargetX() {
+		return targetX;
+	}
+
+	public void setTargetX(String targetX) {
+		this.targetX = targetX;
+	}
+	
+	public boolean hasTargetY() {
+		return targetX.length()!=0;
+	}
+
+	public String getTargetY() {
+		return targetY;
+	}
+
+	public void setTargetY(String targetY) {
+		this.targetY = targetY;
+	}
+	
+	public boolean hasTargetZ() {
+		return targetX.length()!=0;
+	}
+
+	public String getTargetZ() {
+		return targetZ;
+	}
+
+	public void setTargetZ(String targetZ) {
+		this.targetZ = targetZ;
+	}
+	
+	public boolean hasTargetXInt() {
+		return targetXInt.length()!=0;
+	}
+
+	public String getTargetXInt() {
+		return targetXInt;
+	}
+
+	public void setTargetXInt(String targetXInt) {
+		this.targetXInt = targetXInt;
+	}
+	
+	public boolean hasTargetYInt() {
+		return targetXInt.length()!=0;
+	}
+
+	public String getTargetYInt() {
+		return targetYInt;
+	}
+
+	public void setTargetYInt(String targetYInt) {
+		this.targetYInt = targetYInt;
+	}
+	
+	public boolean hasTargetZInt() {
+		return targetXInt.length()!=0;
+	}
+
+	public String getTargetZInt() {
+		return targetZInt;
+	}
+
+	public void setTargetZInt(String targetZInt) {
+		this.targetZInt = targetZInt;
 	}
 		
 	

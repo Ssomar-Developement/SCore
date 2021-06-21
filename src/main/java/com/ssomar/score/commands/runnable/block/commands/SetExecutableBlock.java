@@ -50,37 +50,37 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 			}catch(Exception e) {
 				return;
 			}
-			
+
 			World world = null;
 			String worldStr = args.get(4);
 			if(worldStr.isEmpty()) return;
 			else {
 				if(SCore.hasMultiverse) {
-					 Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-					 MVWorldManager multiverseManager = core.getMVWorldManager();
-					 MultiverseWorld mv;
-					 if((mv = multiverseManager.getMVWorld(worldStr)) == null) {
-						 return;
-					 }
-					 else world = mv.getCBWorld();
+					Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+					MVWorldManager multiverseManager = core.getMVWorldManager();
+					MultiverseWorld mv;
+					if((mv = multiverseManager.getMVWorld(worldStr)) == null) {
+						return;
+					}
+					else world = mv.getCBWorld();
 				}
 				else {
 					if((world = Bukkit.getWorld(worldStr)) == null) return;
 				}
 			}	
-			
+
 			boolean replace = false;
 			try {
 				replace = Boolean.valueOf(args.get(5));
 			}
 			catch(Exception e) {}
-			
+
 			UUID ownerUUID = null;
 			try {
 				ownerUUID = UUID.fromString(args.get(6));
 			}
 			catch(Exception e) {}
-			
+
 			Location loc = new Location(world, x, y , z);
 			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
 		}
@@ -136,22 +136,24 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 					return error;
 				}
 			}
-			
+
 			String worldStr = args.get(4);
-			if(worldStr.isEmpty()) return invalidWorld+args.get(4)+" for the command: "+setEB;
-			else {
-				if(SCore.hasMultiverse) {
-					 Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-					 MVWorldManager multiverseManager = core.getMVWorldManager();
-					 if(multiverseManager.getMVWorld(worldStr) == null) {
-						 return invalidWorld+args.get(4)+" for the command: "+setEB;
-					 }
-				}
+			if(!args.get(4).contains("%")) {
+				if(worldStr.isEmpty()) return invalidWorld+args.get(4)+" for the command: "+setEB;
 				else {
-					if(Bukkit.getWorld(worldStr) == null) return invalidWorld+args.get(4)+" for the command: "+setEB;
-				}
-			}	
-			
+					if(SCore.hasMultiverse) {
+						Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+						MVWorldManager multiverseManager = core.getMVWorldManager();
+						if(multiverseManager.getMVWorld(worldStr) == null) {
+							return invalidWorld+args.get(4)+" for the command: "+setEB;
+						}
+					}
+					else {
+						if(Bukkit.getWorld(worldStr) == null) return invalidWorld+args.get(4)+" for the command: "+setEB;
+					}
+				}	
+			}
+
 			try {
 				Boolean.valueOf(args.get(5));
 			}
