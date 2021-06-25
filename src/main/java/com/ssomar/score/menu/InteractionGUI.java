@@ -12,6 +12,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
+import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customCdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customCdt.ei.CustomConditionsMessagesGUIManager;
@@ -52,6 +54,14 @@ public class InteractionGUI implements Listener{
 			if(title.contains(StringConverter.coloredString("Editor - Conditions"))) {
 				this.manage(player, itemS, title, "ConditionsGUIManager", e);
 			}
+
+			else if(title.contains(StringConverter.coloredString("Editor - RequiredEIs"))) {
+				this.manage(player, itemS, title, "RequiredEIsGUIManager", e);
+			}
+			
+			else if(title.contains(StringConverter.coloredString("Editor - RequiredEI"))) {
+				this.manage(player, itemS, title, "RequiredEIGUIManager", e);
+			}
 			
 			else if(title.contains(StringConverter.coloredString("Editor - Player Conditions Messages"))) {
 				this.manage(player, itemS, title, "PlayerConditionsMessagesGUIManager", e);
@@ -60,7 +70,7 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Player Conditions"))) {
 				this.manage(player, itemS, title, "PlayerConditionsGUIManager", e);
 			}
-			
+
 			else if(title.contains(StringConverter.coloredString("Editor - World Conditions Messages"))) {
 				this.manage(player, itemS, title, "WorldConditionsMessagesGUIManager", e);
 			}
@@ -68,7 +78,7 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - World Conditions"))) {
 				this.manage(player, itemS, title, "WorldConditionsGUIManager", e);
 			}
-			
+
 			else if(title.contains(StringConverter.coloredString("Editor - Entity Conditions Messages"))) {
 				this.manage(player, itemS, title, "EntityConditionsMessagesGUIManager", e);
 			}
@@ -84,19 +94,19 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Plch condition"))) {
 				this.manage(player, itemS, title, "PlaceholdersConditionGUIManager", e);
 			}
-			
+
 			else if(title.contains(StringConverter.coloredString("Editor - Item Conditions Messages"))) {
 				this.manage(player, itemS, title, "ItemConditionMessagesGUIManager", e);
 			}
-			
+
 			else if(title.contains(StringConverter.coloredString("Editor - Item Conditions"))) {
 				this.manage(player, itemS, title, "ItemConditionGUIManager", e);
 			}
-			
+
 			else if(title.contains(StringConverter.coloredString("Editor - Custom Conditions Messages"))) {
 				this.manage(player, itemS, title, "CustomConditionsMessagesGUIManager", e);
 			}
-			
+
 			else if(title.contains(StringConverter.coloredString("Editor - Custom Conditions"))) {
 				this.manage(player, itemS, title, "CustomConditionsGUIManager", e);
 			}
@@ -119,95 +129,106 @@ public class InteractionGUI implements Listener{
 		//String itemName = itemS.getItemMeta().getDisplayName();
 
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
-		
+
 		boolean isShiftRight = e.getClick().equals(ClickType.SHIFT_RIGHT);
 
 		switch (guiType) {
 		case "ConditionsGUIManager":
 			ConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
+
+		case "RequiredEIsGUIManager":
+			if(isShiftLeft) {
+				RequiredEIsGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
+			}
+			else RequiredEIsGUIManager.getInstance().clicked(player, itemS, title);
+			break;
 			
+		case "RequiredEIGUIManager":
+			RequiredEIGUIManager.getInstance().clicked(player, itemS);
+			break;
+
 		case "EntityConditionsGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				EntityConditionsGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else EntityConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "EntityConditionsMessagesGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				EntityConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else EntityConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "WorldConditionsMessagesGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				WorldConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else WorldConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "WorldConditionsGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				WorldConditionsGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else WorldConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "PlayerConditionsMessagesGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				PlayerConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else PlayerConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "PlayerConditionsGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				PlayerConditionsGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else PlayerConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "PlaceholdersConditionsGUIManager":
 			if(isShiftLeft) {
 				PlaceholdersConditionsGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
 			}
 			else PlaceholdersConditionsGUIManager.getInstance().clicked(player, itemS, title);
 			break;
-			
+
 		case "PlaceholdersConditionGUIManager":
 			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "ItemConditionMessagesGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				ItemConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else ItemConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "ItemConditionGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				ItemConditionsGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else ItemConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "CustomConditionsMessagesGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				CustomConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else CustomConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		case "CustomConditionsGUIManager":
 			if(isShiftRight || isShiftLeft) {
 				CustomConditionsGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else CustomConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
-			
+
 		default:
 			break;
 		}
@@ -271,6 +292,10 @@ public class InteractionGUI implements Listener{
 		else if(CustomConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			CustomConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
+		else if(RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			RequiredEIGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
 	}	
 }

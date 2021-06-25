@@ -10,7 +10,6 @@ import com.ssomar.executableitems.items.Item;
 import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
@@ -121,7 +120,7 @@ public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
 				else if(name.contains("Save") || name.contains("Create this required EI")) {
 					saveRequiredEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+					RequiredEIsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
 
 				else if(name.contains("Exit")) {

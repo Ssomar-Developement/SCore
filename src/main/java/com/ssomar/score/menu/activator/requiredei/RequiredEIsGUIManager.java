@@ -13,7 +13,7 @@ import com.ssomar.score.utils.StringConverter;
 
 
 public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
-	
+
 	private static RequiredEIsGUIManager instance;
 
 	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sAct) {
@@ -30,7 +30,7 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
 				//String plName = sPlugin.getNameDesign();
 				String currentPage = StringConverter.decoloredString(guiTitle);
-				
+
 				if(name.contains("Next page")) {
 					new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
 				}
@@ -48,14 +48,17 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 					RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);	
 				}
 				else {
-					RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getRequiredEI(name.split("ID: ")[1]));
+					try {
+						RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getRequiredEI(name.split("ID: ")[1]));
+					}
+					catch(Exception e) {}
 				}
 
 				cache.remove(p);
 			}
 		}
 	}
-	
+
 	public void shiftLeftClicked(Player p, ItemStack item, String guiTitle) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
@@ -63,14 +66,34 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 		String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
 		//String plName = sPlugin.getNameDesign();
 		String currentPage = StringConverter.decoloredString(guiTitle);
-		
 
-		RequiredEIManager.deleteRequiredEI(sPlugin, sObject, sActivator, name.split("ID: ")[1]);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-		sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-		sActivator = sObject.getActivator(sActivator.getID());
-		cache.put(p, new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1]), p, sPlugin, sObject, sActivator));
-		cache.get(p).openGUISync(p);
+		if(name.contains("Next page")) {
+			new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
+		}
+		else if(name.contains("Previous page")) {
+			p.closeInventory();
+			new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
+		}
+		else if(name.contains("Return")) {
+			RequiredEIGUIManager.getInstance().getCache().get(p).openGUISync(p);
+		}
+		else if(name.contains("Back")) {
+			LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
+		}
+		else if(name.contains("New RequiredEI")) {
+			RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);	
+		}
+		else if(!name.isEmpty()) {
+			try {
+				RequiredEIManager.deleteRequiredEI(sPlugin, sObject, sActivator, name.split("ID: ")[1]);
+				LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				sActivator = sObject.getActivator(sActivator.getID());
+				cache.put(p, new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1]), p, sPlugin, sObject, sActivator));
+				cache.get(p).openGUISync(p);
+			}
+			catch(Exception e) {}
+		}
 	}
 
 	public static RequiredEIsGUIManager getInstance() {

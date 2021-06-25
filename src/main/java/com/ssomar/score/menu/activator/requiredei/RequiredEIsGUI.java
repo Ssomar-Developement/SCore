@@ -66,13 +66,9 @@ public class RequiredEIsGUI extends GUIAbstract {
 		}
 	
 		//other button
-		if(total>27 && index*27<total) {
-			createItem(PURPLE, 	1 , 44, 	"&5&l▶ &dNext page ", 	false, false);
-		}
-		
-		if(index>1) {
-			createItem(PURPLE, 	1 , 37, 	"&dPrevious page &5&l◀", 	false, false);
-		}
+		if(total>27 && index*27<total) createItem(PURPLE, 	1 , 44, 	"&5&l▶ &dNext page ", 	false, false);
+
+		if(index>1) createItem(PURPLE, 	1 , 37, 	"&dPrevious page &5&l◀", 	false, false);
 
 		createItem(RED, 	1 , 36, 	"&4&l▶ &cBack to activator config", 	false, false);
 
