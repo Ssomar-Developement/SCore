@@ -24,6 +24,7 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
+import com.ssomar.score.usedapi.LandsIntegrationAPI;
 
 public class CustomEIConditions extends Conditions{
 
@@ -43,19 +44,26 @@ public class CustomEIConditions extends Conditions{
 	private boolean ifPlayerMustBeOnHisIsland;
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG = " &cTo active this activator/item, you must be on your Island !";
 	private String ifPlayerMustBeOnHisIslandMsg;
+	
+	private boolean ifPlayerMustBeOnHisClaim;
+	private static final String IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG = " &cTo active this activator/item, you must be on your Claim or friend claim !";
+	private String ifPlayerMustBeOnHisClaimMsg;
 
 	public CustomEIConditions() {
 		this.ifNeedPlayerConfirmation = false;
-		this.ifNeedPlayerConfirmationMsg = "";
+		this.ifNeedPlayerConfirmationMsg = IF_NEED_PLAYER_CONFIRMATION_MSG;
 
 		this.ifPlayerMustBeOnHisIsland = false;
-		this.ifNeedPlayerConfirmationMsg = "";
+		this.ifPlayerMustBeOnHisIslandMsg = IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG;
 
 		this.ifOwnerOfTheEI = false;
-		this.ifOwnerOfTheEIMsg = "";
+		this.ifOwnerOfTheEIMsg = IF_OWNER_OF_THE_EI_MSG;
 
 		this.ifNotOwnerOfTheEI = false;
-		this.ifNotOwnerOfTheEIMsg = "";
+		this.ifNotOwnerOfTheEIMsg = IF_NOT_OWNER_OF_THE_EI_MSG;
+		
+		this.ifPlayerMustBeOnHisClaim = false;
+		this.ifPlayerMustBeOnHisClaimMsg = IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG;
 	}
 
 	public boolean verifConditions(Player p, ItemStack item) {
@@ -63,6 +71,15 @@ public class CustomEIConditions extends Conditions{
 			if(this.ifPlayerMustBeOnHisIsland) {
 				if(!IridiumSkyblockTool.playerIsOnHisIsland(p)) {
 					this.getSm().sendMessage(p, this.getIfPlayerMustBeOnHisIslandMsg());
+					return false;
+				}
+			}
+		}
+		if(SCore.hasLands) {
+			if(this.isIfPlayerMustBeOnHisClaim()) {
+				LandsIntegrationAPI lands = new LandsIntegrationAPI(SCore.plugin);
+				if(!lands.playerIsInHisClaim(p, p.getLocation())) {
+					this.getSm().sendMessage(p, this.getIfPlayerMustBeOnHisClaimMsg());
 					return false;
 				}
 			}
@@ -125,6 +142,10 @@ public class CustomEIConditions extends Conditions{
 		cCdt.setIfPlayerMustBeOnHisIsland(customCdtSection.getBoolean("ifPlayerMustBeOnHisIsland", false));
 		cCdt.setIfPlayerMustBeOnHisIslandMsg(customCdtSection.getString("ifPlayerMustBeOnHisIslandMsg",
 				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
+		
+		cCdt.setIfPlayerMustBeOnHisClaim(customCdtSection.getBoolean("ifPlayerMustBeOnHisClaim", false));
+		cCdt.setIfPlayerMustBeOnHisClaimMsg(customCdtSection.getString("ifPlayerMustBeOnHisClaimMsg",
+				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
 
 		return cCdt;
 
@@ -135,7 +156,7 @@ public class CustomEIConditions extends Conditions{
 	 *  @param sActivator The activator that contains the conditions
 	 *  @param cC the custom conditions object
 	 */
-	public static void saveCustomConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomEIConditions cC) {
+	public static void saveCustomConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomEIConditions cC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
 			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ("+sObject.getID()+".yml)");
@@ -145,23 +166,31 @@ public class CustomEIConditions extends Conditions{
 		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-		activatorConfig.set("conditions.customConditions.ifNeedPlayerConfirmation", false);
+		activatorConfig.set("conditions."+detail+".ifNeedPlayerConfirmation", false);
 
-		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions.customConditions");
+		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(cC.hasIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true); 
 		else cCConfig.set("ifNeedPlayerConfirmation", null);
+		cCConfig.set("ifNeedPlayerConfirmationMsg", cC.getIfNeedPlayerConfirmationMsg());
 
 
 		if(cC.isIfOwnerOfTheEI()) cCConfig.set("ifOwnerOfTheEI", true); 
 		else cCConfig.set("ifOwnerOfTheEI", null);
+		cCConfig.set("ifOwnerOfTheEIMsg", cC.getIfOwnerOfTheEIMsg()); 
 
 		if(cC.isIfNotOwnerOfTheEI()) cCConfig.set("ifNotOwnerOfTheEI", true); 
 		else cCConfig.set("ifNotOwnerOfTheEI", null);
+		cCConfig.set("ifNotOwnerOfTheEIMsg", cC.getIfNotOwnerOfTheEIMsg()); 
 
 		if(cC.isIfPlayerMustBeOnHisIsland()) cCConfig.set("ifPlayerMustBeOnHisIsland", true); 
 		else cCConfig.set("ifPlayerMustBeOnHisIsland", null);
+		cCConfig.set("ifPlayerMustBeOnHisIslandMsg", cC.getIfPlayerMustBeOnHisIslandMsg()); 
 
+		if(cC.isIfPlayerMustBeOnHisClaim()) cCConfig.set("ifPlayerMustBeOnHisClaim", true); 
+		else cCConfig.set("ifPlayerMustBeOnHisClaim", null);
+		cCConfig.set("ifPlayerMustBeOnHisClaimMsg", cC.getIfPlayerMustBeOnHisClaimMsg()); 
+		
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 
@@ -244,6 +273,22 @@ public class CustomEIConditions extends Conditions{
 
 	public void setIfNotOwnerOfTheEIMsg(String ifNotOwnerOfTheEIMsg) {
 		this.ifNotOwnerOfTheEIMsg = ifNotOwnerOfTheEIMsg;
+	}
+
+	public boolean isIfPlayerMustBeOnHisClaim() {
+		return ifPlayerMustBeOnHisClaim;
+	}
+
+	public void setIfPlayerMustBeOnHisClaim(boolean ifPlayerMustBeOnHisClaim) {
+		this.ifPlayerMustBeOnHisClaim = ifPlayerMustBeOnHisClaim;
+	}
+
+	public String getIfPlayerMustBeOnHisClaimMsg() {
+		return ifPlayerMustBeOnHisClaimMsg;
+	}
+
+	public void setIfPlayerMustBeOnHisClaimMsg(String ifPlayerMustBeOnHisClaimMsg) {
+		this.ifPlayerMustBeOnHisClaimMsg = ifPlayerMustBeOnHisClaimMsg;
 	}
 
 }

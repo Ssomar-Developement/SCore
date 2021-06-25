@@ -72,9 +72,6 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 			i++;
 		}
 
-		createItem(Material.PAPER,							1 , i, 	"&e&lEdition of messages", 	false,	false, "&8&oNOT IN GUI", "&7&oYou need to go in your item file", "&7&oBelow your condition exemple:", "&eIfSneaking: true", "&7&oAdd new line", "&eIfSneaking&e&lMsg&e: 'YOUR MESSAGE'", "&7&o empty= no message");
-		i++;
-
 		createItem(RED, 									1 , 18, 	"&4&l▶ &cBack to activator config", 	false, false);
 
 		createItem(Material.BOOK, 							1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());

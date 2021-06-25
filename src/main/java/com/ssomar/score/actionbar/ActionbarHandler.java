@@ -109,7 +109,7 @@ public class ActionbarHandler {
 			if(actionbar.isDesactivation()) desactivation.add(actionbar);
 		}
 		
-		if(desactivation.size()>=1) {
+		if(desactivation.size() >= 1) {
 			String items="";
 			for(Actionbar a : desactivation) {
 				items= items+" "+a.getName();

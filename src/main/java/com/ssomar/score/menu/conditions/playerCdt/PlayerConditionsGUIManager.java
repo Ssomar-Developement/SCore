@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.playerCdt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
@@ -197,6 +198,36 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 					space(p);
 				}
 				
+				else if(name.contains(PlayerConditionsGUI.IF_POS_X)) {
+					requestWriting.put(p, PlayerConditionsGUI.IF_POS_X);
+					p.closeInventory();
+					space(p);
+					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS X:"));
+
+					this.showCalculationGUI(p, "Pos X", cache.get(p).getIfPosX());
+					space(p);
+				}
+				
+				else if(name.contains(PlayerConditionsGUI.IF_POS_Y)) {
+					requestWriting.put(p, PlayerConditionsGUI.IF_POS_Y);
+					p.closeInventory();
+					space(p);
+					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Y:"));
+
+					this.showCalculationGUI(p, "Pos Y", cache.get(p).getIfPosY());
+					space(p);
+				}
+				
+				else if(name.contains(PlayerConditionsGUI.IF_POS_Z)) {
+					requestWriting.put(p, PlayerConditionsGUI.IF_POS_Z);
+					p.closeInventory();
+					space(p);
+					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Z:"));
+
+					this.showCalculationGUI(p, "Pos Z", cache.get(p).getIfPosZ());
+					space(p);
+				}
+				
 				else if(name.contains(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
 					requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL);
 					p.closeInventory();
@@ -231,7 +262,6 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				}
 
 				else if(name.contains("Save")) {
-					p.closeInventory();
 					savePlayerConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
@@ -243,6 +273,45 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 
 				else if(name.contains("Back")) {
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+				}
+			}
+		}
+	}
+	
+	public void shiftClicked(Player p, ItemStack item) {
+		if(item != null) {
+			if(item.hasItemMeta()) {
+				SPlugin sPlugin = cache.get(p).getsPlugin();
+				SObject sObject = cache.get(p).getSObject();
+				SActivator sAct = cache.get(p).getSAct();
+				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+				//String plName = sPlugin.getNameDesign();
+
+				if(name.contains("Reset")) {
+					cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
+					cache.get(p).openGUISync(p);
+				}
+
+				else if(name.contains("Save")) {
+					savePlayerConditionsEI(p);
+					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+				}
+
+				else if(name.contains("Exit")) {
+					p.closeInventory();
+				}
+
+				else if(name.contains("Back")) {
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+				}
+				else {
+					String detail = cache.get(p).getDetail();
+					savePlayerConditionsEI(p);
+					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+					if(detail.contains("owner"))PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getOwnerConditions(), detail);
+					else if(detail.contains("target")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetPlayerConditions(), detail);
+					else if(detail.contains("player")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getPlayerConditions(), detail);
 				}
 			}
 		}
@@ -263,6 +332,15 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_LIGHT_LEVEL)) {
 					cache.get(p).updateIfLightLevel("");
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_X)) {
+					cache.get(p).updateIfPosX("");
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_Y)) {
+					cache.get(p).updateIfPosY("");
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_Z)) {
+					cache.get(p).updateIfPosZ("");
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
 					cache.get(p).updateIfPlayerFoodLevel("");
@@ -485,6 +563,36 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 					this.showCalculationGUI(p, "Light level", cache.get(p).getIfLightLevel());
 				}
 			}
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_X)) {
+				if(StringCalculation.isStringCalculation(message)) {
+					cache.get(p).updateIfPosX(message);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for pos X please !"));
+					this.showCalculationGUI(p, "Pos X", cache.get(p).getIfPosX());
+				}
+			}
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_Y)) {
+				if(StringCalculation.isStringCalculation(message)) {
+					cache.get(p).updateIfPosY(message);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for pos Y please !"));
+					this.showCalculationGUI(p, "Pos Y", cache.get(p).getIfPosY());
+				}
+			}
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_Z)) {
+				if(StringCalculation.isStringCalculation(message)) {
+					cache.get(p).updateIfPosZ(message);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for pos Z please !"));
+					this.showCalculationGUI(p, "Pos Z", cache.get(p).getIfPosZ());
+				}
+			}
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
 				if(StringCalculation.isStringCalculation(message)) {
 					cache.get(p).updateIfPlayerFoodLevel(message);
@@ -672,7 +780,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		PlayerConditions pC = new PlayerConditions();
+		PlayerConditions pC = cache.get(p).getConditions();
 
 		pC.setIfSneaking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SNEAKING));
 		pC.setIfNotSneaking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING));
@@ -694,8 +802,11 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		pC.setIfPlayerLevel(cache.get(p).getIfPlayerLevel());
 		pC.setIfTargetBlock(cache.get(p).getIfTargetBlock());
 		pC.setIfNotTargetBlock(cache.get(p).getIfNotTargetBlock());
+		pC.setIfPosX(cache.get(p).getIfPosX());
+		pC.setIfPosY(cache.get(p).getIfPosY());
+		pC.setIfPosZ(cache.get(p).getIfPosZ());
 
-		PlayerConditions.saveEntityConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
+		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());

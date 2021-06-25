@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.Command;
 import com.ssomar.score.commands.runnable.player.commands.ActionbarCommand;
-import com.ssomar.score.commands.runnable.player.commands.ActionbarCommandOff;
 import com.ssomar.score.commands.runnable.player.commands.Around;
 import com.ssomar.score.commands.runnable.player.commands.BackDash;
 import com.ssomar.score.commands.runnable.player.commands.Burn;
@@ -50,13 +49,13 @@ public class PlayerCommandManager {
 	public PlayerCommandManager() {
 		List<PlayerCommandTemplate> commands = new ArrayList<>();
 		commands.add(new ActionbarCommand());
-		commands.add(new ActionbarCommandOff());
 		commands.add(new Around());
 		commands.add(new MobAround());
 		commands.add(new SendBlankMessage());
 		commands.add(new SendMessage());
-		commands.add(new Sudo());
+		/* SUDOOP MUST BE BEFORE SUDO */
 		commands.add(new SudoOp());
+		commands.add(new Sudo());
 		commands.add(new FlyOn());
 		commands.add(new FlyOff());
 		commands.add(new SetBlock());
@@ -121,8 +120,7 @@ public class PlayerCommandManager {
 		List<String> args = new ArrayList<>();
 		boolean first = true;
 		boolean second = false;
-		if(entry.toUpperCase().startsWith("ACTIONBAR ON")
-				|| entry.toUpperCase().startsWith("FLY ON")
+		if(entry.toUpperCase().startsWith("FLY ON")
 				|| entry.toUpperCase().startsWith("FLY OFF")
 				|| entry.toUpperCase().startsWith("REGAIN HEALTH")
 				|| entry.toUpperCase().startsWith("REGAIN FOOD")) second = true;

@@ -19,8 +19,18 @@ public class MobAround extends PlayerCommandTemplate{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		try {
-			double distance=  Double.valueOf(args.get(0));
+			double distance =  Double.valueOf(args.get(0));
 			int cpt = 0;
+			
+			int startForCommand = 1;
+			boolean mute = false;
+			if(args.get(1).equalsIgnoreCase("true")) {
+				startForCommand = 2;
+				mute = true;
+			}
+			else if( args.get(1).equalsIgnoreCase("false")) {
+				startForCommand = 2;
+			}
 
 			for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
 				if(!(e instanceof Player)) {
@@ -29,7 +39,7 @@ public class MobAround extends PlayerCommandTemplate{
 					
 					/* regroup the last args that correspond to the commands */
 					StringBuilder prepareCommands = new StringBuilder();
-					for(String s: args.subList(1, args.size())) {
+					for(String s: args.subList(startForCommand, args.size())) {
 						prepareCommands.append(s);
 						prepareCommands.append(" ");
 					}
@@ -63,7 +73,7 @@ public class MobAround extends PlayerCommandTemplate{
 					cpt++;
 				}
 			}
-			if(cpt == 0) sm.sendMessage(receiver, "&cNo entity has been hit");
+			if(cpt == 0 && !mute) sm.sendMessage(receiver, "&cNo entity has been hit");
 
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -74,7 +84,7 @@ public class MobAround extends PlayerCommandTemplate{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String around= "MOB_AROUND {distance} {Your commands here}";
+		String around= "MOB_AROUND {distance} {muteMsgIfNoEntity true or false} {Your commands here}";
 		if(args.size()<2) error = notEnoughArgs+around;
 		else if(args.size()>2) { 
 			try {

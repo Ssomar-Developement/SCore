@@ -132,79 +132,79 @@ public class PlayerConditions extends Conditions{
 
 	public PlayerConditions() {
 		this.ifSneaking = false;
-		this.ifSneakingMsg = "";
+		this.ifSneakingMsg = IF_SNEAKING_MSG;
 		
 		this.ifNotSneaking = false;
-		this.ifNotSneakingMsg ="";
+		this.ifNotSneakingMsg = IF_NOT_SNEAKING_MSG;
 		
 		this.ifSwimming = false;
-		this.ifSwimmingMsg = "";
+		this.ifSwimmingMsg = IF_SWIMMING_MSG;
 		
 		this.ifGliding = false;
-		this.ifGlidingMsg = "";
+		this.ifGlidingMsg = IF_GLIDING_MSG;
 		
 		this.ifFlying = false;
-		this.ifFlyingMsg = "";
+		this.ifFlyingMsg = IF_FLYING_MSG;
 		
 		this.ifInWorld = new ArrayList<>();
-		this.ifInWorldMsg = "";
+		this.ifInWorldMsg = IF_IN_WORLD_MSG;
 		
 		this.ifNotInWorld = new ArrayList<>();
-		this.ifNotInWorldMsg = "";
+		this.ifNotInWorldMsg = IF_NOT_IN_WORLD_MSG;
 		
 		this.ifInBiome = new ArrayList<>();
-		this.ifInBiomeMsg = "";
+		this.ifInBiomeMsg = IF_IN_BIOME_MSG;
 		
 		this.ifNotInBiome = new ArrayList<>();
-		this.ifNotInBiomeMsg = "";
+		this.ifNotInBiomeMsg = IF_NOT_IN_BIOME_MSG;
 		
 		this.ifInRegion = new ArrayList<>();
-		this.ifInRegionMsg = "";
+		this.ifInRegionMsg = IF_IN_REGION_MSG;
 		
 		this.ifNotInRegion = new ArrayList<>();
-		this.ifNotInRegionMsg = "";
+		this.ifNotInRegionMsg = IF_NOT_IN_REGION_MSG;
 		
 		this.ifHasPermission = new ArrayList<>();
-		this.ifHasPermissionMsg = "";
+		this.ifHasPermissionMsg = IF_HAS_PERMISSION_MSG;
 		
 		this.ifNotHasPermission = new ArrayList<>();
-		this.ifNotHasPermissionMsg = "";
+		this.ifNotHasPermissionMsg = IF_NOT_HAS_PERMISSION_MSG;
 		
 		this.ifTargetBlock = new ArrayList<>();
-		this.ifTargetBlockMsg = "";
+		this.ifTargetBlockMsg = IF_TARGET_BLOCK_MSG;
 		
 		this.ifNotTargetBlock = new ArrayList<>();
-		this.ifNotTargetBlockMsg = "";
+		this.ifNotTargetBlockMsg = IF_NOT_TARGET_BLOCK_MSG;
 		
 		this.ifPlayerHealth = "";
-		this.ifPlayerHealthMsg = "";
+		this.ifPlayerHealthMsg = IF_PLAYER_HEALTH_MSG;
 		
 		this.ifPlayerFoodLevel = "";
-		this.ifPlayerFoodLevelMsg= "";
+		this.ifPlayerFoodLevelMsg= IF_PLAYER_FOOD_LEVEL_MSG;
 		
 		this.ifPlayerEXP = "";
-		this.ifPlayerEXPMsg = "";
+		this.ifPlayerEXPMsg = IF_PLAYER_EXP_MSG;
 		
 		this.ifPlayerLevel = "";
-		this.ifPlayerLevelMsg = "";
+		this.ifPlayerLevelMsg = IF_PLAYER_LEVEL_MSG;;
 		
 		this.ifLightLevel = "";
-		this.ifLightLevelMsg = "";
+		this.ifLightLevelMsg = IF_LIGHT_LEVEL_MSG;
 		
 		this.ifPosX = "";
-		this.ifPosXMsg = "";
+		this.ifPosXMsg = IF_POS_X_MSG;
 		
 		this.ifPosY = "";
-		this.ifPosYMsg = "";
+		this.ifPosYMsg = IF_POS_Y_MSG;
 		
 		this.ifPosZ = "";
-		this.ifPosZMsg = "";
+		this.ifPosZMsg = IF_POS_Z_MSG;
 		
 		this.ifPlayerHasItem = new HashMap<>();
-		this.ifPlayerHasItemMsg = "";
+		this.ifPlayerHasItemMsg = IF_PLAYER_HAS_ITEM_MSG;
 		
 		this.ifPlayerHasExecutableItem = new HashMap<>();
-		this.ifPlayerHasExecutableItemMsg = "";
+		this.ifPlayerHasExecutableItemMsg = IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG;
 	}
 
 	public boolean verifConditions(Player p, Player toMsg) {
@@ -572,7 +572,7 @@ public class PlayerConditions extends Conditions{
 	 *  @param sActivator The activator that contains the conditions
 	 *  @param pC the player conditions object
 	 */
-	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions pC, String detail) {
+	public static void savePlayerConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions pC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
 			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
@@ -589,42 +589,55 @@ public class PlayerConditions extends Conditions{
 
 		if(pC.hasIfSneaking()) pCConfig.set("ifSneaking", true); 
 		else pCConfig.set("ifSneaking", null);
+		pCConfig.set("ifSneakingMsg", pC.getIfSneakingMsg()); 
 
 		if(pC.hasIfNotSneaking()) pCConfig.set("ifNotSneaking", true); 
 		else pCConfig.set("ifNotSneaking", null);
+		pCConfig.set("ifNotSneakingMsg", pC.getIfNotSneakingMsg()); 
 
 		if(pC.hasIfSwimming()) pCConfig.set("ifSwimming", true); 
 		else pCConfig.set("ifSwimming", null);
+		pCConfig.set("ifSwimmingMsg", pC.getIfSwimmingMsg()); 
 
 		if(pC.hasIfGliding()) pCConfig.set("ifGliding", true); 
 		else pCConfig.set("ifGliding", null);
+		pCConfig.set("ifGlidingMsg", pC.getIfGlidingMsg()); 
 
 		if(pC.hasIfFlying()) pCConfig.set("ifFlying", true); 
 		else pCConfig.set("ifFlying", null);
+		pCConfig.set("ifFlyingMsg", pC.getIfFlyingMsg()); 
 
 		if(pC.hasIfInWorld()) pCConfig.set("ifInWorld", pC.getIfInWorld()); 
 		else pCConfig.set("ifInWorld", null);
+		pCConfig.set("ifInWorldMsg", pC.getIfInWorldMsg()); 
 		
 		if(pC.hasIfNotInWorld()) pCConfig.set("ifNotInWorld", pC.getIfNotInWorld()); 
 		else pCConfig.set("ifNotInWorld", null);
+		pCConfig.set("ifNotInWorldMsg", pC.getIfNotInWorldMsg()); 
 		
 		if(pC.hasIfInBiome()) pCConfig.set("ifInBiome", pC.getIfInBiome()); 
 		else pCConfig.set("ifInBiome", null);
+		pCConfig.set("ifInBiomeMsg", pC.getIfInBiomeMsg()); 
 		
 		if(pC.hasIfNotInBiome()) pCConfig.set("ifNotInBiome", pC.getIfNotInBiome()); 
 		else pCConfig.set("ifNotInBiome", null);
+		pCConfig.set("ifNotInBiomeMsg", pC.getIfNotInBiomeMsg()); 
 
 		if(pC.hasIfInRegion()) pCConfig.set("ifInRegion", pC.getIfInRegion()); 
 		else pCConfig.set("ifInRegion", null);
+		pCConfig.set("ifInRegionMsg", pC.getIfInRegionMsg()); 
 
 		if(pC.hasIfNotInRegion()) pCConfig.set("ifNotInRegion", pC.getIfNotInRegion()); 
 		else pCConfig.set("ifNotInRegion", null);
+		pCConfig.set("ifNotInRegionMsg", pC.getIfNotInRegionMsg()); 
 
 		if(pC.hasIfHasPermission()) pCConfig.set("ifHasPermission", pC.getIfHasPermission()); 
 		else pCConfig.set("ifHasPermission", null);
-
+		pCConfig.set("ifHasPermissionMsg", pC.getIfHasPermissionMsg()); 
+		
 		if(pC.hasIfNotHasPermission()) pCConfig.set("ifNotHasPermission", pC.getIfNotHasPermission()); 
 		else pCConfig.set("ifNotHasPermission", null);
+		pCConfig.set("ifNotHasPermissionMsg", pC.getIfNotHasPermissionMsg()); 
 		
 		List<String> convert = new ArrayList<>();
 		for(Material mat : pC.getIfTargetBlock()) {
@@ -632,6 +645,7 @@ public class PlayerConditions extends Conditions{
 		}
 		if(pC.hasIfTargetBlock()) pCConfig.set("ifTargetBlock",convert); 
 		else pCConfig.set("ifTargetBlock", null);
+		pCConfig.set("ifTargetBlockMsg", pC.getIfTargetBlockMsg()); 
 		
 		convert = new ArrayList<>();
 		for(Material mat : pC.getIfNotTargetBlock()) {
@@ -639,21 +653,39 @@ public class PlayerConditions extends Conditions{
 		}
 		if(pC.hasIfNotTargetBlock()) pCConfig.set("ifNotTargetBlock", convert); 
 		else pCConfig.set("ifNotTargetBlock", null);
+		pCConfig.set("ifNotTargetBlockMsg", pC.getIfNotTargetBlockMsg()); 
 
 		if(pC.hasIfPlayerHealth()) pCConfig.set("ifPlayerHealth", pC.getIfPlayerHealth()); 
 		else pCConfig.set("ifPlayerHealth", null);
+		pCConfig.set("ifPlayerHealthMsg", pC.getIfPlayerHealthMsg()); 
 		
 		if(pC.hasIfLightLevel()) pCConfig.set("ifLightLevel", pC.getIfLightLevel()); 
 		else pCConfig.set("ifLightLevel", null);
+		pCConfig.set("ifLightLevelMsg", pC.getIfLightLevelMsg()); 
 
 		if(pC.hasIfPlayerFoodLevel()) pCConfig.set("ifPlayerFoodLevel", pC.getIfPlayerFoodLevel());
 		else pCConfig.set("ifPlayerFoodLevel", null);
+		pCConfig.set("ifPlayerFoodLevelMsg", pC.getIfPlayerFoodLevelMsg());
 
 		if(pC.hasIfPlayerEXP()) pCConfig.set("ifPlayerEXP", pC.getIfPlayerEXP()); 
 		else pCConfig.set("ifPlayerEXP", null);
+		pCConfig.set("ifPlayerEXPMsg", pC.getIfPlayerEXPMsg()); 
 
 		if(pC.hasIfPlayerLevel()) pCConfig.set("ifPlayerLevel", pC.getIfPlayerLevel()); 
 		else pCConfig.set("ifPlayerLevel", null);
+		pCConfig.set("ifPlayerLevelMsg", pC.getIfPlayerLevelMsg()); 
+		
+		if(pC.hasIfPosX()) pCConfig.set("ifPosX", pC.getIfPosX()); 
+		else pCConfig.set("ifPosX", null);
+		pCConfig.set("ifPosXMsg", pC.getIfPosXMsg());
+		
+		if(pC.hasIfPosY()) pCConfig.set("ifPosY", pC.getIfPosY()); 
+		else pCConfig.set("ifPosY", null);
+		pCConfig.set("ifPosYMsg", pC.getIfPosYMsg());
+		
+		if(pC.hasIfPosZ()) pCConfig.set("ifPosZ", pC.getIfPosZ()); 
+		else pCConfig.set("ifPosZ", null);
+		pCConfig.set("ifPosZMsg", pC.getIfPosZMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

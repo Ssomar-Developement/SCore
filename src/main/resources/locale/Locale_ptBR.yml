@@ -6,3 +6,4 @@ setActionbarOff: '&cVocê definiu a actionbar como desligado &4&lOFF &cpara o Ex
 haveActionbarOff: '&cA actionbar já está desligada &4&lOFF &cpara o ExecutableItems'
 actionbarMessage: '&a&lTempo restante para &e&l%item% &a&l: &e&l%time%'
 actionbarEnd: '&c&lDESATIVAÇÃO DE &e&l%item%'
+damageCommandKill: "&8%target% &7is dead by a damage command"

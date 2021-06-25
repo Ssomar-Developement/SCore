@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.playerCdt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
@@ -35,9 +36,16 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_PLAYER_FOOD_LEVEL = "ifPlayerFoodLevel";
 	public static final String IF_PLAYER_EXP = "ifPlayerEXP";
 	public static final String IF_PLAYER_LEVEL = "ifPlayerLevel";
+	public static final String IF_POS_X = "ifPosX";
+	public static final String IF_POS_Y = "ifPosY";
+	public static final String IF_POS_Z = "ifPosZ";
+	
+	
+	private PlayerConditions conditions;
 
 	public PlayerConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 4*9, sPlugin, sObject, sActivator, detail);
+		this.conditions = conditions;
 
 		int i =0;
 		//Main Options
@@ -120,6 +128,20 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_LEVEL, 	false,	false, "&7&oThe player level must be..", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateIfPlayerLevel(conditions.getIfPlayerLevel());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POS_X, 	false,	false, "&7&oThe player coord X must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosX(conditions.getIfPosX());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POS_Y, 	false,	false, "&7&oThe player coord Y must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosY(conditions.getIfPosY());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POS_Z, 	false,	false, "&7&oThe player coord Z must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosZ(conditions.getIfPosZ());
+		
+		
 
 		createItem(RED, 					1 , 27, "&4&l▶ &cBack to conditions config", 	false, false);
 
@@ -127,6 +149,8 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 
 		createItem(GREEN, 					1 , 35, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of player conditions" );
 
+		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
+		
 		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
 		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
 	}
@@ -476,6 +500,43 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		if(this.getActually(this.getByName(IF_PLAYER_LEVEL)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(IF_PLAYER_LEVEL));
 	}
+	
+	public void updateIfPosX(String condition){
+		ItemStack item = this.getByName(IF_POS_X);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfPosX() {
+		if(this.getActually(this.getByName(IF_POS_X)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_POS_X));
+	}
+	
+	public void updateIfPosY(String condition){
+		ItemStack item = this.getByName(IF_POS_Y);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfPosY() {
+		if(this.getActually(this.getByName(IF_POS_Y)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_POS_Y));
+	}
+	
+	public void updateIfPosZ(String condition){
+		ItemStack item = this.getByName(IF_POS_Z);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfPosZ() {
+		if(this.getActually(this.getByName(IF_POS_Z)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_POS_Z));
+	}
+	
 
 
+	public PlayerConditions getConditions() {
+		return conditions;
+	}
 }

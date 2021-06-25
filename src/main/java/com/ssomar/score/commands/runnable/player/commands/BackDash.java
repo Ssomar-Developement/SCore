@@ -23,11 +23,11 @@ public class BackDash extends PlayerCommandTemplate{
 			return;
 		}
 		
-		Location pLoc = p.getLocation();
+		Location pLoc = receiver.getLocation();
 		pLoc.setPitch(0);
 		Vector v = pLoc.getDirection();
 		v.multiply(-amount);
-		p.setVelocity(v);
+		receiver.setVelocity(v);
 		
 	}
 

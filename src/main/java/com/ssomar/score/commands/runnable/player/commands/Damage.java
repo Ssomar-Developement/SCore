@@ -7,8 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.configs.messages.Message;
+import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.StringPlaceholder;
 
@@ -19,12 +22,14 @@ public class Damage extends PlayerCommandTemplate{
 		try {
 			int amount= Integer.valueOf(args.get(0));
 			if(amount>0 && !receiver.isDead()) {
-				if(receiver.getHealth()<=Integer.valueOf(amount)) {
+				if(receiver.getHealth() <= Integer.valueOf(amount)) {
 					StringPlaceholder sp = new StringPlaceholder();
 					sp.setPlayer(p.getName());
 					sp.setTarget(receiver.getName());
 					sp.setItem(aInfo.getName());
-					Bukkit.getServer().broadcastMessage(StringConverter.coloredString(sp.replacePlaceholder("Someone is dead by a damage command (to edit SCore)")));
+					String message = MessageMain.getInstance().getMessage(SCore.plugin, Message.DAMAGE_COMMAND_KILL);
+					if(!StringConverter.decoloredString(message).isEmpty())
+					Bukkit.getServer().broadcastMessage(StringConverter.coloredString(sp.replacePlaceholder(message)));
 				}
 				receiver.damage(Integer.valueOf(amount));
 			}

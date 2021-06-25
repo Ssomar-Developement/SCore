@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.placeholderCdt;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;

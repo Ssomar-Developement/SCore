@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
+import com.ssomar.score.commands.CommandsClass;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
@@ -30,6 +31,8 @@ public final class SCore extends JavaPlugin {
 	
 	public static final String NAME_2 = "[SCore]";
 	
+	private CommandsClass commandClass;
+	
 	public static boolean hasPlaceholderAPI = false;
 	
 	public static boolean hasExecutableItems = false;
@@ -47,12 +50,15 @@ public final class SCore extends JavaPlugin {
 	public static boolean hasIridiumSkyblock = false;
 	
 	public static boolean hasMultiverse = false;
+	
+	public static boolean hasLands = false;
 
 	
 	@Override
 	public void onEnable() {
 		plugin = this;
-
+		commandClass = new CommandsClass(this);
+		
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 		
 		this.loadDependency();
@@ -73,6 +79,9 @@ public final class SCore extends JavaPlugin {
 		
 		/* Events instance part */	
 		EventsHandler.getInstance().setup(this);
+		
+		/* Commands part */
+		this.getCommand("score").setExecutor(commandClass);
 		
 
 
@@ -133,8 +142,13 @@ public final class SCore extends JavaPlugin {
 			hasIridiumSkyblock = true;
 		}
 		if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-			Utils.sendConsoleMsg("[SParkour] Multiverse-Core hooked !");
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] Multiverse-Core hooked !");
 			hasMultiverse = true;	
+		}
+		
+		if (Bukkit.getPluginManager().getPlugin("Lands") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] Lands hooked !");
+			hasLands = true;	
 		}
 	}
 
@@ -153,8 +167,6 @@ public final class SCore extends JavaPlugin {
 	public void onReload() {
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 		GeneralConfig.getInstance().reload();
-		
-		MessageMain.getInstance().load();
 
 		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 

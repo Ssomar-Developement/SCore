@@ -3,5 +3,22 @@ author: Ssomar
 version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
-softdepend: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core]
+softdepend: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, PlaceholderAPI]
 loadbefore: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades]
+commands:
+  score:
+    description: score command
+    usage: /<command> [ reload ]
+permissions:
+  score.*:
+   description: SCore permission
+   default: op
+   children:
+     ei.cmds: true
+  score.cmds:
+   description: Allows SCore commands
+   default: op
+   children:
+     score.cmd.reload: true
+  score.cmd.reload:
+    description: Allows the command /score reload

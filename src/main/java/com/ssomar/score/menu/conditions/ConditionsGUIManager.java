@@ -5,6 +5,12 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.conditions.customCdt.ei.CustomConditionsGUIManager;
+import com.ssomar.score.menu.conditions.entityCdt.EntityConditionsGUIManager;
+import com.ssomar.score.menu.conditions.itemCdt.ItemConditionsGUIManager;
+import com.ssomar.score.menu.conditions.placeholderCdt.PlaceholdersConditionsGUIManager;
+import com.ssomar.score.menu.conditions.playerCdt.PlayerConditionsGUIManager;
+import com.ssomar.score.menu.conditions.worldCdt.WorldConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;

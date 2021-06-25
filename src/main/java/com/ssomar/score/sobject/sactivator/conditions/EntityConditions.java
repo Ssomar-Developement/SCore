@@ -66,28 +66,28 @@ public class EntityConditions extends Conditions{
 
 	public EntityConditions() {
 		this.ifGlowing = false;
-		this.ifGlowingMsg = "";
+		this.ifGlowingMsg = IF_GLOWING_MSG;
 
 		this.ifInvulnerable = false;
-		this.ifInvulnerableMsg = "";
+		this.ifInvulnerableMsg = IF_INVULNERABLE_MSG;
 
 		this.ifName = new ArrayList<>();
-		this.ifNameMsg = "";
+		this.ifNameMsg = IF_NAME_MSG;
 
 		this.ifNotEntityType = new ArrayList<>();
-		this.ifNotEntityTypeMsg = "";
+		this.ifNotEntityTypeMsg = IF_NOT_ENTITY_TYPE_MSG;
 
 		this.ifEntityHealth = "";
-		this.ifEntityHealthMsg = "";
+		this.ifEntityHealthMsg = IF_ENTITY_HEALTH_MSG;
 
 		this.ifPowered = false;
-		this.ifPoweredMsg = "";
+		this.ifPoweredMsg = IF_POWERED_MSG;
 
 		this.ifAdult = false;
-		this.ifAdultMsg = "";
+		this.ifAdultMsg = IF_ADULT_MSG;
 
 		this.ifBaby = false;
-		this.ifBabyMsg = "";
+		this.ifBabyMsg = IF_BABY_MSG;
 	}
 
 	public boolean verifConditions(Entity e, @Nullable Player p) {
@@ -221,21 +221,27 @@ public class EntityConditions extends Conditions{
 
 		if(eC.hasIfGlowing()) eCConfig.set("ifGlowing", true); 
 		else eCConfig.set("ifGlowing", null);
+		eCConfig.set("ifGlowingMsg", eC.getIfGlowingMsg()); 
 
 		if(eC.hasIfInvulnerable()) eCConfig.set("ifInvulnerable", true); 
 		else eCConfig.set("ifInvulnerable", null);
+		eCConfig.set("ifInvulnerableMsg", eC.getIfInvulnerableMsg()); 
 
 		if(eC.hasIfAdult()) eCConfig.set("ifAdult", true); 
 		else eCConfig.set("ifAdult", null);
+		eCConfig.set("ifAdultMsg", eC.getIfAdultMsg()); 
 
 		if(eC.hasIfBaby()) eCConfig.set("ifBaby", true); 
 		else eCConfig.set("ifBaby", null);
+		eCConfig.set("ifBabyMsg", eC.getIfBabyMsg()); 
 
 		if(eC.hasIfPowered()) eCConfig.set("ifPowered", true); 
 		else eCConfig.set("ifPowered", null);
+		eCConfig.set("ifPoweredMsg", eC.getIfPoweredMsg()); 
 
 		if(eC.hasIfName()) eCConfig.set("ifName", eC.getIfName()); 
 		else eCConfig.set("ifName", null);
+		eCConfig.set("ifNameMsg", eC.getIfNameMsg()); 
 
 		List<String> convert= new ArrayList<>();
 		for(EntityType eT : eC.getIfNotEntityType()) {
@@ -244,9 +250,11 @@ public class EntityConditions extends Conditions{
 
 		if(eC.hasIfNotEntityType()) eCConfig.set("ifNotEntityType", convert); 
 		else eCConfig.set("ifNotEntityType", null);
+		eCConfig.set("ifNotEntityTypeMsg", eC.getIfNotEntityTypeMsg()); 
 
 		if(eC.hasIfEntityHealth()) eCConfig.set("ifEntityHealth", eC.getIfEntityHealth()); 
 		else eCConfig.set("ifEntityHealth", null);
+		eCConfig.set("ifEntityHealthMsg", eC.getIfEntityHealthMsg()); 
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

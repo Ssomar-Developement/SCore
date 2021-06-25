@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.entityCdt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
@@ -28,7 +29,7 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item!=null) {
+		if(item != null) {
 			if(item.hasItemMeta()) {
 				SPlugin sPlugin = cache.get(p).getsPlugin();
 				SObject sObject = cache.get(p).getSObject();
@@ -79,7 +80,7 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 					this.showCalculationGUI(p, "Health", cache.get(p).getIfEntityHealth());
 					space(p);
 				}
-				
+
 				else if(name.contains("Reset")) {
 					p.closeInventory();
 					cache.replace(p, new EntityConditionsGUI(sPlugin, sObject, sAct, new EntityConditions(), cache.get(p).getDetail()));
@@ -99,6 +100,43 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 
 				else if(name.contains("Back")) {
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+				}
+			}
+		}
+	}
+
+	public void shiftClicked(Player p, ItemStack item) {
+		if(item != null) {
+			if(item.hasItemMeta()) {
+				SPlugin sPlugin = cache.get(p).getsPlugin();
+				SObject sObject = cache.get(p).getSObject();
+				SActivator sAct = cache.get(p).getSAct();
+				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+				//String plName = sPlugin.getNameDesign();
+				if(name.contains("Reset")) {
+					p.closeInventory();
+					cache.replace(p, new EntityConditionsGUI(sPlugin, sObject, sAct, new EntityConditions(), cache.get(p).getDetail()));
+					cache.get(p).openGUISync(p);
+				}
+
+				else if(name.contains("Save")) {
+					saveEntityConditionsEI(p);
+					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+				}
+
+				else if(name.contains("Exit")) {
+					p.closeInventory();
+				}
+
+				else if(name.contains("Back")) {
+					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+				}
+				else {
+					String detail = cache.get(p).getDetail();
+					saveEntityConditionsEI(p);
+					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+					EntityConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetEntityConditions(), detail);
 				}
 			}
 		}
@@ -217,9 +255,9 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 	public void showIfNameEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifName: &7&0(No color)");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Namne", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -227,9 +265,9 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 	public void showIfNotEntityTypeEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifNotEntityType: ");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Not entity type", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -238,7 +276,7 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		EntityConditions eC = new EntityConditions();
+		EntityConditions eC = cache.get(p).getConditions();
 
 		eC.setIfGlowing(cache.get(p).getBoolean(EntityConditionsGUI.IF_GLOWING));
 		eC.setIfInvulnerable(cache.get(p).getBoolean(EntityConditionsGUI.IF_INVULNERABLE));

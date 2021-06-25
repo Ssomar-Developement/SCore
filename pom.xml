@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.1.4</version>
+	<version>1.1.8</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -119,9 +119,9 @@
 			<url>https://nexus.savagelabs.net/repository/maven-releases/</url>
 		</repository>
 		<repository>
-            <id>OnARandomBox</id>
-            <url>http://repo.onarandombox.com/content/groups/public</url>
-        </repository>
+			<id>OnARandomBox</id>
+			<url>http://repo.onarandombox.com/content/groups/public</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -186,10 +186,16 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-            <groupId>com.onarandombox.multiversecore</groupId>
-            <artifactId>Multiverse-Core</artifactId>
-            <version>4.2.2</version>
-            <scope>provided</scope>
-        </dependency>
+			<groupId>com.onarandombox.multiversecore</groupId>
+			<artifactId>Multiverse-Core</artifactId>
+			<version>4.2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.angeschossen</groupId>
+			<artifactId>LandsAPI</artifactId>
+			<version>5.10.2</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

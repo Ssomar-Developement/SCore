@@ -31,14 +31,7 @@ public class Damage extends EntityCommandTemplate{
 
 		String damage= "DAMAGE {amount}";
 		if(args.size()<1) error = notEnoughArgs+damage;
-		else if(args.size()==1) {	
-			try {
-				Integer.valueOf(args.get(0));
-			}catch(NumberFormatException e){
-				error = invalidQuantity+args.get(0)+" for command: "+damage;
-			}
-		}
-		else error= tooManyArgs+damage;
+		else if(args.size()!=1) error= tooManyArgs+damage;
 
 		return error;
 	}

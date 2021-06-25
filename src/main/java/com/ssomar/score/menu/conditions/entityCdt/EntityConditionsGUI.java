@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.entityCdt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
@@ -24,9 +25,12 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_NAME = "ifName";
 	public static final String IF_NOT_ENTITY_TYPE = "ifNotEntityType";
 	public static final String IF_ENTITY_HEALTH = "ifEntityHealth";
+	
+	private EntityConditions conditions;
 
 	public EntityConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, EntityConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Entity Conditions", 4*9, sPlugin, sObject, sAct, detail);
+		this.conditions = conditions;
 		
 		int i =0;
 		//Main Options
@@ -67,6 +71,9 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 		createItem(ORANGE, 			1 , 28, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of entity conditions" );
 		
 		createItem(GREEN, 			1 , 35, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of entity conditions" );
+		
+		
+		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
 		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
 		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sAct.getID());
@@ -118,5 +125,9 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 	
 	public String getIfEntityHealth() {
 		return this.getCondition(IF_ENTITY_HEALTH);
+	}
+
+	public EntityConditions getConditions() {
+		return conditions;
 	}
 }

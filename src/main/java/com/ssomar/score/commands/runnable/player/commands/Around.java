@@ -73,7 +73,7 @@ public class Around extends PlayerCommandTemplate{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String around= "AROUND {distance} {msgPlayerAffected true or false} {Your commands here}";
+		String around= "AROUND {distance} {DisplayMsgIfNoPlayer true or false} {Your commands here}";
 		if(args.size()<3) error = notEnoughArgs+around;
 		else if(args.size()>3) { 
 			try {
@@ -98,7 +98,7 @@ public class Around extends PlayerCommandTemplate{
 
 	@Override
 	public String getTemplate() {
-		return "AROUND {distance} {true or false} {Your commands here}";
+		return "AROUND {distance} {DisplayMsgIfNoPlayer true or false} {Your commands here}";
 	}
 
 	@Override

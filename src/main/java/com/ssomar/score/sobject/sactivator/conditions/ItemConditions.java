@@ -45,13 +45,13 @@ public class ItemConditions extends Conditions{
 	
 	public ItemConditions() {
 		this.ifDurability = "";
-		this.ifDurabilityMsg = "";
+		this.ifDurabilityMsg = IF_DURABILITY_MSG;
 		
 		this.ifUsage = "";
-		this.ifUsageMsg = "";
+		this.ifUsageMsg = IF_USAGE_MSG;
 		
 		this.ifUsage2 = "";
-		this.ifUsage2Msg = "";
+		this.ifUsage2Msg = IF_USAGE_MSG;
 	}
 
 	
@@ -136,13 +136,15 @@ public class ItemConditions extends Conditions{
 
 		if(iC.hasIfDurability()) pCConfig.set("ifDurability", iC.getIfDurability()); 
 		else pCConfig.set("ifDurability", null);
+		pCConfig.set("ifDurabilityMsg", iC.getIfDurabilityMsg()); 
 		
 		if(iC.hasIfUsage()) pCConfig.set("ifUsage", iC.getIfUsage()); 
 		else pCConfig.set("ifUsage", null);
+		pCConfig.set("ifUsageMsg", iC.getIfUsageMsg()); 
 		
 		if(iC.hasIfUsage2()) pCConfig.set("ifUsage2", iC.getIfUsage2()); 
 		else pCConfig.set("ifUsage2", null);
-
+		pCConfig.set("ifUsage2Msg", iC.getIfUsage2Msg()); 
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

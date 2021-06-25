@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import com.onarandombox.MultiverseCore.api.Core;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
@@ -28,6 +29,11 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 			boolean silenceOutput) {
 
 		if(SCore.hasExecutableBlocks) {
+			
+			if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
+				ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command SETEXECUTABLEBLOCK (object: "+aInfo.getName()+")");
+				return;
+			}
 
 			double x;
 			double y;
@@ -102,10 +108,11 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 		else {
 
 			if(SCore.hasExecutableBlocks) {
-				if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
-					error = "There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command"+setEB;
-					return error;
-				}
+				/* Ne pas verif car ca peut bloquer si on veut poser le block qui est associé à l'activator */
+//				if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
+//					error = "There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command"+setEB;
+//					return error;
+//				}
 			}
 			else {
 				error = "You must have ExecutableBlock for the command"+setEB;
@@ -175,7 +182,7 @@ public class SetExecutableBlock extends BlockCommandTemplate{
 	@Override
 	public String getTemplate() {
 		// TODO Auto-generated method stub
-		return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} [ownerUUID]";
+		return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} {replace true or false} [ownerUUID]";
 	}
 
 	@Override

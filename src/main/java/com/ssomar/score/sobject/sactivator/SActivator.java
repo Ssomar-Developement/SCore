@@ -9,6 +9,7 @@ import com.ssomar.score.sobject.sactivator.conditions.ItemConditions;
 import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
 import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
 import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
+import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
 
 public interface SActivator {
 	
@@ -37,4 +38,8 @@ public interface SActivator {
 	public CustomEIConditions getCustomEIConditions();
 	
 	public List<PlaceholdersCondition> getPlaceholdersConditions();
+	
+	public List<RequiredEI> getRequiredExecutableItems();
+	
+	public RequiredEI getRequiredEI(String id);
 }

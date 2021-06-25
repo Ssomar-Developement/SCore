@@ -10,7 +10,8 @@ public enum Message implements MessageInterface{
 	HAVE_ACTIONBAR_ON ("haveActionbarOn"),
 	HAVE_ACTIONBAR_OFF ("haveActionbarOff"),
 	ERROR_MONEY ("errorMoneyMsg"),
-	NEW_BALANCE ("newBalanceMsg");
+	NEW_BALANCE ("newBalanceMsg"),
+	DAMAGE_COMMAND_KILL("damageCommandKill");
 
 	private String name;
 

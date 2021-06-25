@@ -43,14 +43,14 @@ public class RegainHealth extends PlayerCommandTemplate{
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();
-		names.add("REGAIN HEATH");
+		names.add("REGAIN HEALTH");
 		return names;
 	}
 
 	@Override
 	public String getTemplate() {
 		// TODO Auto-generated method stub
-		return "REGAIN HEATH {amount}";
+		return "REGAIN HEALTH {amount}";
 	}
 
 	@Override

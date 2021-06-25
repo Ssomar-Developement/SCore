@@ -1,10 +1,11 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.worldCdt;
 
 import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
@@ -14,9 +15,12 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_WEATHER = "ifWeather";
 	public static final String IF_WORLD_TIME = "ifWorldTime";
+	
+	private WorldConditions conditions;
 
 	public WorldConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - World Conditions", 3*9, sPlugin, sObject, sActivator, detail);
+		this.conditions = conditions;
 
 		int i =0;
 		//Main Options
@@ -34,8 +38,10 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(GREEN, 				1 , 26, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of world conditions" );
 
-		createItem(Material.BOOK, 							1 , 24, "&2&l✚ &aITEM ID:", 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 25, "&2&l✚ &aACTIVATOR ID:", 	false, false, "", "&7actually: &e"+sActivator.getID());
+		createItem(WRITABLE_BOOK, 			1 , 22, "&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
+		
+		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
+		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
 	
 	}
 	
@@ -57,5 +63,8 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 		if(this.getActually(this.getByName(IF_WORLD_TIME)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(IF_WORLD_TIME));
 	}
-	
+
+	public WorldConditions getConditions() {
+		return conditions;
+	}
 }

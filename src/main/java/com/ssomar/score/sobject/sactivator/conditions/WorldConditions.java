@@ -36,10 +36,10 @@ public class WorldConditions extends Conditions{
 	
 	public  WorldConditions() {
 		this.ifWeather = new ArrayList<>();
-		this.ifWeatherMsg = "";
+		this.ifWeatherMsg = IF_WEATHER_MSG;
 		
 		this.ifWorldTime = "";
-		this.ifWorldTimeMsg = "";
+		this.ifWorldTimeMsg = IF_WORLD_TIME_MSG;
 	}
 	
 	public boolean verifConditions(World world, @Nullable Player p) {
@@ -84,7 +84,7 @@ public class WorldConditions extends Conditions{
 	 *  @param sActivator The activator that contains the conditions
 	 *  @param pC the player conditions object
 	 */
-	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions wC) {
+	public static void saveWorldConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions wC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
 			sPlugin.getPlugin().getLogger().severe("[ExecutableItems] Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
@@ -94,16 +94,18 @@ public class WorldConditions extends Conditions{
 		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-		activatorConfig.set("conditions.worldConditions.ifWorldTime", "<=0");
+		activatorConfig.set("conditions."+detail+".ifWorldTime", "<=0");
 
 
-		ConfigurationSection wCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions.worldConditions");
+		ConfigurationSection wCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(wC.hasIfWeather()) wCConfig.set("ifWeather", wC.getIfWeather()); 
 		else wCConfig.set("ifWeather", null);
+		wCConfig.set("ifWeatherMsg", wC.getIfWeatherMsg()); 
 
 		if(wC.hasIfWorldTime()) wCConfig.set("ifWorldTime", wC.getIfWorldTime()); 
 		else wCConfig.set("ifWorldTime", null);
+		wCConfig.set("ifWorldTimeMsg", wC.getIfWorldTimeMsg()); 
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

@@ -201,6 +201,24 @@ public class StringPlaceholder {
 		if(this.hasBlockZInt()) {
 			s=this.replaceCalculPlaceholder(s, "%block_z_int%", this.getBlockZInt());
 		}
+		if(this.hasTargetX()) {
+			s=this.replaceCalculPlaceholder(s, "%target_x%", this.getTargetX());
+		}
+		if(this.hasTargetY()) {
+			s=this.replaceCalculPlaceholder(s, "%target_y%", this.getTargetY());
+		}
+		if(this.hasTargetZ()) {
+			s=this.replaceCalculPlaceholder(s, "%target_z%", this.getTargetZ());
+		}
+		if(this.hasTargetXInt()) {
+			s=this.replaceCalculPlaceholder(s, "%target_x_int%", this.getTargetXInt());
+		}
+		if(this.hasTargetYInt()) {
+			s=this.replaceCalculPlaceholder(s, "%target_y_int%", this.getTargetYInt());
+		}
+		if(this.hasTargetZInt()) {
+			s=this.replaceCalculPlaceholder(s, "%target_z_int%", this.getTargetZInt());
+		}
 		if(this.hasTargetBlockX()) {
 			s=this.replaceCalculPlaceholder(s, "%target_block_x%", this.getTargetBlockX());
 		}
