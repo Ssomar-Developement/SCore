@@ -11,4 +11,6 @@ public interface SPlugin {
 	public String getNameDesign();
 	
 	public Plugin getPlugin();
+	
+	public boolean isLotOfWork();
 }

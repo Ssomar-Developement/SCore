@@ -11,22 +11,29 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.configs.api.PlaceholderAPI;
+import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.executableitems.configs.Message;
+import com.ssomar.executableitems.items.Item;
+import com.ssomar.executableitems.items.ItemManager;
+import com.ssomar.score.SCore;
+import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 
 public class RequiredEIManager {
 
 
 	/* GUI method */
-	public void updateRequiredExecutableItems(GUI gui, String itemName, List<RequiredEI> rEIs) {
+	public static void updateRequiredExecutableItems(GUI gui, String itemName, List<RequiredEI> rEIs) {
 
 		List<String> convert = new ArrayList<>();
 		for (RequiredEI rEI : rEIs) {
@@ -118,7 +125,7 @@ public class RequiredEIManager {
 
 				for (String rID : requiredEISection.getKeys(false)) {
 
-					if (PlaceholderAPI.isLotOfWork() && !isDefaultObject) {
+					if (sPlugin.isLotOfWork() && !isDefaultObject) {
 						error.add(sPlugin.getNameDesign()+" " + sObject.getID()+ " REQUIRE PREMIUM: required ExecutableItems is only in the premium version");
 						break;
 					}
@@ -132,5 +139,126 @@ public class RequiredEIManager {
 			}
 		}
 		return requiredExecutableItems;
+	}
+
+	/* VERIF */
+
+	public static boolean verifyRequiredExecutableItems(SActivator activator, Player p, String errorMsg) {
+
+		if(SCore.hasExecutableItems && activator.getRequiredExecutableItems() != null) {
+			boolean oneIsNeeded = false;
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_FIRST_PART));
+			for(RequiredEI rEI : activator.getRequiredExecutableItems()) {
+
+				if(rEI.getItem()==null) {
+					if(!ItemManager.getInstance().containsLoadedItemWithID(rEI.getEI_ID())) continue;
+					else rEI.setItem(ItemManager.getInstance().getLoadedItemWithID(rEI.getEI_ID()));
+				}
+
+				int needed = rEI.getAmount();
+				List<Integer> validUsages = rEI.getValidUsages();
+
+				for(ItemStack it : p.getInventory().getContents()) {
+					if(it==null) continue;
+					Item cIt = null;
+					if((cIt = ItemManager.getInstance().getExecutableItem(it)) != null && rEI.getEI_ID().equals(cIt.getIdentification())){
+						if(validUsages.isEmpty() || cIt.getUse()==0 || cIt.getUse()==-1) {
+							if(needed<=it.getAmount()) {
+								needed=0;
+							}else {
+								needed=needed-it.getAmount();
+							}
+						}
+						else {
+							ItemMeta itemMeta2=it.getItemMeta();
+							List<String> lore= itemMeta2.getLore();
+
+							if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) {
+								int use= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+								if(validUsages.contains(use)) {
+									if(needed<=it.getAmount()) {
+										needed=0;
+									}else {
+										needed=needed-it.getAmount();
+									}
+								}
+							}
+						}
+					}
+				}
+				if(needed>0) {
+					if(rEI.getValidUsages().isEmpty() || rEI.getItem().getUse() == 0 || rEI.getItem().getUse() == -1) sb.append("&c"+rEI.getItem().getName()+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_QUANTITY)+needed+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR));
+					else sb.append("&c"+rEI.getItem().getName()+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_QUANTITY)+needed+" &8&o(Require '"+StringConverter.decoloredString(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))+"' &7&o"+rEI.getValidUsages().toString()+"&8&o)"+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR));
+					oneIsNeeded=true;
+				}
+
+			}
+			if(oneIsNeeded) {
+				for(int k=0; k<MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR).length();k++) {
+					sb.deleteCharAt(sb.length()-1);
+				}
+				if(!errorMsg.isEmpty()) new SendMessage().sendMessage(p, StringConverter.coloredString(errorMsg));
+				else new SendMessage().sendMessage(p, StringConverter.coloredString(sb.toString()));
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/* TAKE */
+
+	public static void takeExecutableItems(SActivator activator, Player p) {
+		if(SCore.hasExecutableItems && activator.getRequiredExecutableItems() != null) {
+
+			for(RequiredEI rEI : activator.getRequiredExecutableItems()) {
+
+				if(rEI.getItem()==null) {
+					if(!ItemManager.getInstance().containsLoadedItemWithID(rEI.getEI_ID())) continue;
+					else rEI.setItem(ItemManager.getInstance().getLoadedItemWithID(rEI.getEI_ID()));
+				}
+
+				if(!rEI.isConsume()) continue;
+				int needed = rEI.getAmount();
+				List<Integer> validUsages = rEI.getValidUsages();
+
+				for(ItemStack it : p.getInventory().getContents()) {
+					if(it == null) continue;
+					Item cIt = null;
+					if(ItemManager.getInstance().getExecutableItem(it) != null){
+						cIt = ItemManager.getInstance().getExecutableItem(it);
+						if(rEI.getEI_ID().equals(cIt.getIdentification())) {
+							if(validUsages.isEmpty() || cIt.getUse()==0 || cIt.getUse()==-1) {
+								if(needed<=it.getAmount()) {
+									it.setAmount(it.getAmount()-needed);
+									break;
+								}else {
+									it.setAmount(0);
+									needed=needed-it.getAmount();
+								}
+							}
+							else {
+								ItemMeta itemMeta2 = it.getItemMeta();
+								List<String> lore = itemMeta2.getLore();
+
+								if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) {
+									int use= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+									if(validUsages.contains(use)) {
+										if(needed<=it.getAmount()) {
+											it.setAmount(it.getAmount()-needed);
+											break;
+										}else {
+											it.setAmount(0);
+											needed=needed-it.getAmount();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
