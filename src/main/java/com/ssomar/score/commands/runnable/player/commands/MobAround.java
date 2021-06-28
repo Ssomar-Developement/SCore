@@ -108,7 +108,7 @@ public class MobAround extends PlayerCommandTemplate{
 	@Override
 	public String getTemplate() {
 		// TODO Auto-generated method stub
-		return "MOB_AROUND {distance} {Your commands here}";
+		return "MOB_AROUND {distance} {muteMsgIfNoEntity true or false} {Your commands here}";
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package com.ssomar.score.menu.conditions.entityCdt;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -58,42 +57,42 @@ public class EntityConditionsMessagesGUIManager extends GUIManager<EntityConditi
 
 					if(name.contains(EntityConditionsMessagesGUI.IF_ADULT_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_ADULT_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_ADULT_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_ADULT_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_BABY_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_BABY_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_BABY_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_BABY_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_GLOWING_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_GLOWING_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_GLOWING_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_GLOWING_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_NAME_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_NAME_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_NAME_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_NAME_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG));
 					}
 
 					else if(name.contains(EntityConditionsMessagesGUI.IF_POWERED_MSG)) {
 						requestWriting.put(p, EntityConditionsMessagesGUI.IF_POWERED_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_POWERED_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_POWERED_MSG));
 					}	
 				}
 			}
@@ -101,12 +100,12 @@ public class EntityConditionsMessagesGUIManager extends GUIManager<EntityConditi
 	}
 
 	@SuppressWarnings("deprecation")
-	public void sendRequestMessage(Player p, String actualMsg) {
+	public void sendRequestMessage(SPlugin sPlugin, Player p, String actualMsg) {
 		p.closeInventory();
 		space(p);
 
 		TextComponent message = new TextComponent(
-				StringConverter.coloredString("&a&l"+ExecutableBlocks.NAME_2+" &aEnter a new message or &aedit &athe &amessage: "));
+				StringConverter.coloredString("&a&l"+sPlugin.getNameDesign()+" &aEnter a new message or &aedit &athe &amessage: "));
 
 		TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
 		edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(actualMsg)));

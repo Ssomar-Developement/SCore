@@ -3,7 +3,6 @@ package com.ssomar.score.menu.conditions.playerCdt;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -60,117 +59,117 @@ public class PlayerConditionsMessagesGUIManager extends GUIManager<PlayerConditi
 
 					if(name.contains(PlayerConditionsMessagesGUI.IF_FLYING_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_FLYING_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_FLYING_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_FLYING_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_GLIDING_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_GLIDING_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_GLIDING_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_GLIDING_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_HAS_PERMISSION_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_HAS_PERMISSION_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_HAS_PERMISSION_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_HAS_PERMISSION_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_IN_BIOME_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_IN_BIOME_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_IN_BIOME_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_IN_BIOME_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_IN_REGION_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_IN_REGION_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_IN_REGION_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_IN_REGION_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_IN_WORLD_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_IN_WORLD_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_IN_WORLD_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_IN_WORLD_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_LIGHT_LEVEL_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_LIGHT_LEVEL_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_LIGHT_LEVEL_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_LIGHT_LEVEL_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_HAS_PERMISSION_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_HAS_PERMISSION_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_HAS_PERMISSION_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_HAS_PERMISSION_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_IN_BIOME_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_IN_BIOME_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_IN_BIOME_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_IN_BIOME_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_IN_REGION_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_IN_REGION_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_IN_REGION_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_IN_REGION_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_IN_WORLD_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_IN_WORLD_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_IN_WORLD_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_IN_WORLD_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_SNEAKING_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_SNEAKING_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_SNEAKING_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_SNEAKING_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_TARGET_BLOCK_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_TARGET_BLOCK_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_TARGET_BLOCK_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_TARGET_BLOCK_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_PLAYER_EXP_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_PLAYER_EXP_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_EXP_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_EXP_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_PLAYER_FOOD_LEVEL_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_PLAYER_FOOD_LEVEL_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_FOOD_LEVEL_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_FOOD_LEVEL_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_PLAYER_HEALTH_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_PLAYER_HEALTH_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_HEALTH_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_HEALTH_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_PLAYER_LEVEL_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_PLAYER_LEVEL_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_LEVEL_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_PLAYER_LEVEL_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_SNEAKING_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_SNEAKING_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_SNEAKING_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_SNEAKING_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_SWIMMING_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_SWIMMING_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_SWIMMING_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_SWIMMING_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_TARGET_BLOCK_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_TARGET_BLOCK_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_TARGET_BLOCK_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_TARGET_BLOCK_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_POS_X_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_POS_X_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_POS_X_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_POS_X_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_POS_Y_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_POS_Y_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_POS_Y_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_POS_Y_MSG));
 					}
 					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_POS_Z_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_POS_Z_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_POS_Z_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_POS_Z_MSG));
 					}
 				}
 			}
@@ -178,12 +177,12 @@ public class PlayerConditionsMessagesGUIManager extends GUIManager<PlayerConditi
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void sendRequestMessage(Player p, String actualMsg) {
+	public void sendRequestMessage(SPlugin sPlugin, Player p, String actualMsg) {
 		p.closeInventory();
 		space(p);
 
 		TextComponent message = new TextComponent(
-				StringConverter.coloredString("&a&l"+ExecutableBlocks.NAME_2+" &aEnter a new message or &aedit &athe &amessage: "));
+				StringConverter.coloredString("&a&l"+sPlugin.getNameDesign()+" &aEnter a new message or &aedit &athe &amessage: "));
 
 		TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
 		edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(actualMsg)));

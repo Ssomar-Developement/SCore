@@ -3,7 +3,6 @@ package com.ssomar.score.menu.conditions.customCdt.ei;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -59,27 +58,27 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 
 					if(name.contains(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG)) {
 						requestWriting.put(p, CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG));
 					}
 					
 					else if(name.contains(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG)) {
 						requestWriting.put(p, CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG));
 					}
 					
 					else if(name.contains(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG)) {
 						requestWriting.put(p, CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG));
 					}
 					
 					else if(name.contains(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG)) {
 						requestWriting.put(p, CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
 					}
 					
 					else if(name.contains(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG)) {
 						requestWriting.put(p, CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
 					}
 				}
 			}
@@ -87,12 +86,12 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void sendRequestMessage(Player p, String actualMsg) {
+	public void sendRequestMessage(SPlugin sPlugin, Player p, String actualMsg) {
 		p.closeInventory();
 		space(p);
 
 		TextComponent message = new TextComponent(
-				StringConverter.coloredString("&a&l"+ExecutableBlocks.NAME_2+" &aEnter a new message or &aedit &athe &amessage: "));
+				StringConverter.coloredString("&a&l"+sPlugin.getNameDesign()+" &aEnter a new message or &aedit &athe &amessage: "));
 
 		TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
 		edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(actualMsg)));

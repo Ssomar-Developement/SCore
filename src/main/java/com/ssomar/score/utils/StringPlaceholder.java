@@ -163,7 +163,7 @@ public class StringPlaceholder {
 			s=this.replaceCalculPlaceholder(s, "%z%", z);
 		}
 		if(this.hasWorld()) {
-			s=s.replaceAll("%world%", this.getZ());
+			s=s.replaceAll("%world%", this.getWorld());
 		}
 		if(this.hasBlockFace()) {
 			s=s.replaceAll("%blockface%", this.getBlockface());

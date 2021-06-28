@@ -18,6 +18,7 @@ import com.google.common.base.Charsets;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.executableitems.items.Item;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -65,13 +66,15 @@ public class ItemConditions extends Conditions{
 		}
 		
 		if(this.hasIfUsage()) {
-			ItemMeta itemMeta =i.getItemMeta();
+			ItemMeta itemMeta = i.getItemMeta();
 			List<String> lore = itemMeta.getLore();
 			int usage;
 
-			if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+			if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage = -1;
 			else usage = 1;
+			
+			SsomarDev.testMsg("usage: "+usage+ " / ifUsage: "+this.ifUsage);
 			
 			if(!StringCalculation.calculation(this.ifUsage, usage)) {
 				this.getSm().sendMessage(p, this.getIfUsageMsg());

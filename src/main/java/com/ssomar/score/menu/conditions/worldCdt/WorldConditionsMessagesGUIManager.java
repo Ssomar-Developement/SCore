@@ -3,7 +3,6 @@ package com.ssomar.score.menu.conditions.worldCdt;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -59,12 +58,12 @@ public class WorldConditionsMessagesGUIManager extends GUIManager<WorldCondition
 
 					if(name.contains(WorldConditionsMessagesGUI.IF_WEATHER_MSG)) {
 						requestWriting.put(p, WorldConditionsMessagesGUI.IF_WEATHER_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(WorldConditionsMessagesGUI.IF_WEATHER_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(WorldConditionsMessagesGUI.IF_WEATHER_MSG));
 					}
 					
 					else if(name.contains(WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG)) {
 						requestWriting.put(p, WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG);
-						this.sendRequestMessage(p, cache.get(p).getActuallyWithColor(WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG));
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG));
 					}
 				}
 			}
@@ -72,12 +71,12 @@ public class WorldConditionsMessagesGUIManager extends GUIManager<WorldCondition
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void sendRequestMessage(Player p, String actualMsg) {
+	public void sendRequestMessage(SPlugin sPlugin, Player p, String actualMsg) {
 		p.closeInventory();
 		space(p);
 
 		TextComponent message = new TextComponent(
-				StringConverter.coloredString("&a&l"+ExecutableBlocks.NAME_2+" &aEnter a new message or &aedit &athe &amessage: "));
+				StringConverter.coloredString("&a&l"+sPlugin.getNameDesign()+" &aEnter a new message or &aedit &athe &amessage: "));
 
 		TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
 		edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(actualMsg)));
