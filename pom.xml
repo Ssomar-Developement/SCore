@@ -164,13 +164,13 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-SNAPSHOT</version>
+			<version>master-45a6164118-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-SNAPSHOT</version>
+			<version>main-821f06260a-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
