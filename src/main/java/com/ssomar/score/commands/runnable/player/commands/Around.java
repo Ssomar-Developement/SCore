@@ -9,9 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
+import com.ssomar.score.configs.messages.Message;
+import com.ssomar.score.configs.messages.MessageMain;
 
 /* AROUND {distance} {true or false} {Your commands here} */
 public class Around extends PlayerCommandTemplate{
@@ -62,7 +65,7 @@ public class Around extends PlayerCommandTemplate{
 					cpt++;
 				}
 			}
-			if(cpt == 0 && Boolean.valueOf(args.get(1))) sm.sendMessage(receiver, "&cNo player has been hit");
+			if(cpt == 0 && Boolean.valueOf(args.get(1))) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
 
 		}catch(Exception e) {
 			e.printStackTrace();

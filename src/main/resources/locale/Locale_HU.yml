@@ -7,3 +7,5 @@ haveActionbarOff: '&cMár kikapcsoltad az action bar opciót.'
 actionbarMessage: '&a&lHátralévő idő: &e&l%item% &a&l: &e&l%time%'
 actionbarEnd: '&c&lKikapcsolás: &e&l%item%'
 damageCommandKill: "&8%target% &7is dead by a damage command"
+noPlayerHit: "&cNo player has been hit"
+noEntityHit: "&cNo entity has been hit"

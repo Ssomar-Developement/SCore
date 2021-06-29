@@ -9,9 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommandsExecutor;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.configs.messages.Message;
+import com.ssomar.score.configs.messages.MessageMain;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends PlayerCommandTemplate{
@@ -73,7 +76,7 @@ public class MobAround extends PlayerCommandTemplate{
 					cpt++;
 				}
 			}
-			if(cpt == 0 && !mute) sm.sendMessage(receiver, "&cNo entity has been hit");
+			if(cpt == 0 && !mute) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
 
 		}catch(Exception e) {
 			e.printStackTrace();
