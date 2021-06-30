@@ -1,7 +1,5 @@
 package com.ssomar.score.commands.runnable;
 
-import org.bukkit.event.Event;
-
 import com.ssomar.executableitems.items.Item;
 
 public class ActionInfo {
@@ -12,7 +10,7 @@ public class ActionInfo {
 	
 	private Item item;
 	
-	private Event event;
+	private boolean isEventCallByMineInCube = false;
 	
 	public ActionInfo(String name, Integer slot) {
 		this.name = name;
@@ -43,11 +41,11 @@ public class ActionInfo {
 		this.slot = slot;
 	}
 
-	public Event getEvent() {
-		return event;
+	public boolean isEventCallByMineInCube() {
+		return isEventCallByMineInCube;
 	}
 
-	public void setEvent(Event e) {
-		this.event = e;
+	public void setEventCallByMineInCube(boolean isEventCallByMineInCube) {
+		this.isEventCallByMineInCube = isEventCallByMineInCube;
 	}
 }

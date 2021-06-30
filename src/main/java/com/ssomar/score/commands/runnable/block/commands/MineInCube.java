@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import com.ssomar.score.SCore;
@@ -23,10 +22,7 @@ public class MineInCube extends BlockCommandTemplate{
 	@Override
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
-		Event e = aInfo.getEvent();
-		if(e != null && e instanceof BlockBreakEvent) {
-			if(((BlockBreakEvent)e).getExpToDrop() == -666666) return;
-		}
+		if(aInfo.isEventCallByMineInCube()) return;
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;
