@@ -67,7 +67,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 			i++;
 		}
 		
-		if(SCore.hasExecutableItems && sOp.getOptionWithPlayer().contains(sOp)) {
+		if(sPlugin.getShortName().equalsIgnoreCase("ei") && sOp.getOptionWithPlayer().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+CUSTOM_EI_CONDITIONS, 	false,	false, "&7&oThe custom condtions", "&a✎ Click here to change");
 			i++;
 		}

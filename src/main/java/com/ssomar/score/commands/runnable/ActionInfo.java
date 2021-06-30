@@ -1,5 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
+import org.bukkit.event.Event;
+
 import com.ssomar.executableitems.items.Item;
 
 public class ActionInfo {
@@ -9,6 +11,8 @@ public class ActionInfo {
 	private Integer slot;
 	
 	private Item item;
+	
+	private Event event;
 	
 	public ActionInfo(String name, Integer slot) {
 		this.name = name;
@@ -37,5 +41,13 @@ public class ActionInfo {
 
 	public void setSlot(Integer slot) {
 		this.slot = slot;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event e) {
+		this.event = e;
 	}
 }

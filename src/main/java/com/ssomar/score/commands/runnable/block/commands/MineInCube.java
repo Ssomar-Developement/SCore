@@ -3,11 +3,14 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -19,40 +22,51 @@ public class MineInCube extends BlockCommandTemplate{
 
 	@Override
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
+		Event e = aInfo.getEvent();
+		if(e != null && e instanceof BlockBreakEvent) {
+			if(((BlockBreakEvent)e).getExpToDrop() == -666666) return;
+		}
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;
 			if(args.size()==2) drop= Boolean.valueOf(args.get(1));
 			if(radius<10) {
-				for(int y= -radius; y<Integer.valueOf(radius)+1; y++) {
-					for(int x= -Integer.valueOf(radius); x<Integer.valueOf(radius)+1; x++) {
-						for(int z= -Integer.valueOf(radius); z<Integer.valueOf(radius)+1; z++) {
-							if(block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).getType()!=Material.BEDROCK) {
+				for(int y = -radius; y<Integer.valueOf(radius)+1; y++) {
+					for(int x = -Integer.valueOf(radius); x<Integer.valueOf(radius)+1; x++) {
+						for(int z = -Integer.valueOf(radius); z<Integer.valueOf(radius)+1; z++) {
 
-								if(SCore.hasWorldGuard) {
-									if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z))) {
-										if(drop) block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).breakNaturally(p.getInventory().getItemInMainHand());
-										else block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).setType(Material.AIR);
+							Location toBreakLoc = new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z);
+							Block toBreak = block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z);
+
+							if(!toBreak.getType().equals(Material.BEDROCK)) {
+
+								if((SCore.hasWorldGuard && new WorldGuardAPI().canBuild(p, toBreakLoc)) || !SCore.hasWorldGuard ) {
+									BlockBreakEvent bbE = new BlockBreakEvent(toBreak, p);
+									bbE.setCancelled(false);
+									/* */
+									bbE.setExpToDrop(-666666);
+									Bukkit.getPluginManager().callEvent(bbE);
+
+									if(!bbE.isCancelled()) {
+										if(drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
+										else toBreak.setType(Material.AIR);
 									}
-									else continue;
 								}
-								else {
-									if(drop) block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).breakNaturally(p.getInventory().getItemInMainHand());
-									else block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z).setType(Material.AIR);
-								}
+								else continue;
 							}
 						}
 					}
 				}
 			}
-		}catch(Exception e) {}
+		}catch(Exception err) {}
 	}
 
 	@Override
 	public String verify(List<String> args) {
 		return "";
 	}
-	
+
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();
