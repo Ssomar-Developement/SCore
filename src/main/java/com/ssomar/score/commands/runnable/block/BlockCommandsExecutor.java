@@ -68,7 +68,9 @@ public class BlockCommandsExecutor extends CommandsExecutor{
 						BlockCommandTemplate bC = BlockCommandManager.getInstance().getBlockCommand(command);
 
 						List<String> args = BlockCommandManager.getInstance().getBCArgs(command);
-
+						
+						if(getActionInfo().isEventCallByMineInCube()) return;
+						
 						if(bC != null) {
 							bC.run(getPlayer(), block, blockType, args, getActionInfo(), silenceOutput);	
 						}

@@ -28,10 +28,12 @@ public class ActionbarHandler {
 		startActionbarDisplay();
 	}
 
+	/**
+	 * Start the loop for the display on Actionbar (delay 1 sec)
+	 */
 	public void startActionbarDisplay() {
 		BukkitRunnable runnable = new BukkitRunnable() {
-			int cpt=1;
-
+			int cpt = 1;
 			@Override
 			public void run() {
 				List<Player> playerEmpty = new ArrayList<>();
@@ -54,12 +56,8 @@ public class ActionbarHandler {
 						else cpt++;
 						
 						if(!oneIsRemove && !hideActionbar.contains(player)) displayActiveActionbar(actionbars, player);
-						decrementTimeActionbars(actionbars);
 					}
-					else {
-						decrementTimeActionbars(actionbars);
-					}
-
+					decrementTimeActionbars(actionbars);
 				}
 			}
 		};
@@ -84,9 +82,9 @@ public class ActionbarHandler {
 	public void activeActionbarIfNotExist(List<Actionbar> actionbars) {
 		boolean existActiveActionbar = false;
 		for(Actionbar actionbar : actionbars) {
-			if(actionbar.isActive()) existActiveActionbar=true;
+			if(actionbar.isActive()) existActiveActionbar = true;
 		}
-		if(!existActiveActionbar && actionbars.size()>=1) actionbars.get(0).setActive(true);
+		if(!existActiveActionbar && actionbars.size() >= 1) actionbars.get(0).setActive(true);
 	}
 	
 	public int removeDesactionActionabars(List<Actionbar> actionbars) {
@@ -104,15 +102,15 @@ public class ActionbarHandler {
 		StringPlaceholder sp = new StringPlaceholder();
 		sp.setPlayer(p.getName());
 		
-		List<Actionbar> desactivation= new ArrayList<>();
+		List<Actionbar> desactivation = new ArrayList<>();
 		for(Actionbar actionbar : actionbars) {
 			if(actionbar.isDesactivation()) desactivation.add(actionbar);
 		}
 		
 		if(desactivation.size() >= 1) {
-			String items="";
+			String items = "";
 			for(Actionbar a : desactivation) {
-				items= items+" "+a.getName();
+				items = items+" "+a.getName();
 			}
 			sp.setItem(items);
 			String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_END));
@@ -123,7 +121,7 @@ public class ActionbarHandler {
 	
 	public void decrementTimeActionbars(List<Actionbar> actionbars) {
 		for(Actionbar actionbar : actionbars) {
-			if(actionbar.getTime()-1==0) {
+			if(actionbar.getTime()-1 == 0) {
 				actionbar.setDesactivation(true);
 				actionbar.setTime(-1);
 			}	
@@ -133,7 +131,7 @@ public class ActionbarHandler {
 
 	public void activeNextActionbar(List<Actionbar> actionbars) {
 		int activeAB = this.getActiveActionbar(actionbars);
-		if(activeAB+1>actionbars.size()-1) {
+		if(activeAB+1 > actionbars.size()-1) {
 			actionbars.get(activeAB).setActive(false);
 			actionbars.get(0).setActive(true);
 		}
@@ -144,7 +142,7 @@ public class ActionbarHandler {
 	}
 
 	public int getActiveActionbar(List<Actionbar> actionbars) {
-		int cpt=0;
+		int cpt = 0;
 		for(Actionbar actionbar : actionbars) {
 			if(actionbar.isActive()) return cpt;
 			cpt++;
@@ -154,7 +152,7 @@ public class ActionbarHandler {
 	}
 	
 	public void displayActiveActionbar(List<Actionbar> actionbars, Player p) {
-		Actionbar actionbar=  actionbars.get(this.getActiveActionbar(actionbars));
+		Actionbar actionbar =  actionbars.get(this.getActiveActionbar(actionbars));
 		StringPlaceholder sp = new StringPlaceholder();
 		sp.setItem(actionbar.getName());
 		sp.setTime(actionbar.getTime()+"");

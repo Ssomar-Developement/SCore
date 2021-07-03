@@ -38,14 +38,9 @@ public class CustomConditionsGUIManager extends GUIManager<CustomConditionsGUI>{
 				
 				else if(name.contains(CustomConditionsGUI.IF_NOT_OWNER_OF_THE_EI)) cache.get(p).changeBoolean(CustomConditionsGUI.IF_NOT_OWNER_OF_THE_EI);
 				
-				if(name.contains(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND)) {
-					if(SCore.hasIridiumSkyblock) cache.get(p).changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND);
-					else p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &cYou haven't a compatible skyblock plugin to change this option ! (IridiumSkyblock)"));
-				}
-				
-				if(name.contains(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM)) {
-					if(SCore.hasLands) cache.get(p).changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM);
-					else p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &cYou haven't a compatible claim plugin to change this option ! (Lands)"));
+				else if(name.contains(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND)) {
+					if(SCore.hasIridiumSkyblock || SCore.hasGriefPrevention) cache.get(p).changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND);
+					else p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &cYou haven't a compatible skyblock plugin to change this option ! (IridiumSkyblock, GriefPrevention)"));
 				}
 
 				else if(name.contains("Reset")) {

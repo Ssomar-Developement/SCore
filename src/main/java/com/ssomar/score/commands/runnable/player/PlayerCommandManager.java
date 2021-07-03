@@ -22,6 +22,7 @@ import com.ssomar.score.commands.runnable.player.commands.Launch;
 import com.ssomar.score.commands.runnable.player.commands.LaunchEntity;
 import com.ssomar.score.commands.runnable.player.commands.MobAround;
 import com.ssomar.score.commands.runnable.player.commands.ParticleCommand;
+import com.ssomar.score.commands.runnable.player.commands.ProjectileCustomDash1;
 import com.ssomar.score.commands.runnable.player.commands.RegainFood;
 import com.ssomar.score.commands.runnable.player.commands.RegainHealth;
 import com.ssomar.score.commands.runnable.player.commands.RemoveBurn;
@@ -62,6 +63,7 @@ public class PlayerCommandManager {
 		commands.add(new ReplaceBlock());
 		commands.add(new ParticleCommand());
 		commands.add(new CustomDash1());
+		commands.add(new ProjectileCustomDash1());
 		commands.add(new FrontDash());
 		commands.add(new BackDash());
 		commands.add(new TeleportOnCursor());

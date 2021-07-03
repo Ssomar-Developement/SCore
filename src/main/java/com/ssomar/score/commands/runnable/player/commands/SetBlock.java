@@ -49,7 +49,7 @@ public class SetBlock extends PlayerCommandTemplate{
 				}
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

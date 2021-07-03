@@ -1,10 +1,9 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringConverter;
 
 public abstract class CustomCommand {
-	
+
 	protected static String tooManyArgs= "There is too many args for the command: ";
 	protected static String notEnoughArgs= "There is not enough args for the command: ";
 	protected static String invalidMaterial= "Command contains an invalid material: ";
@@ -18,8 +17,5 @@ public abstract class CustomCommand {
 	protected static String invalidBoolean= "Command contains an invalid boolean: ";
 	protected static String invalidExecutableItems= "Command contains an invalid id of ExecutableItems: ";
 
-	public static SendMessage sm = new SendMessage();
-	
-	public static StringConverter sc = new StringConverter();
-	
+	public static SendMessage sm = new SendMessage();	
 }

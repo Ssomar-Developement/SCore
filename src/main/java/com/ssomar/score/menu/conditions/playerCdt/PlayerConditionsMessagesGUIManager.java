@@ -62,6 +62,16 @@ public class PlayerConditionsMessagesGUIManager extends GUIManager<PlayerConditi
 						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_FLYING_MSG));
 					}
 					
+					else if(name.contains(PlayerConditionsMessagesGUI.IF_BLOCKING_MSG)) {
+						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_BLOCKING_MSG);
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_BLOCKING_MSG));
+					}
+					
+					else if(name.contains(PlayerConditionsMessagesGUI.IF_NOT_BLOCKING_MSG)) {
+						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_NOT_BLOCKING_MSG);
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_NOT_BLOCKING_MSG));
+					}
+					
 					else if(name.contains(PlayerConditionsMessagesGUI.IF_GLIDING_MSG)) {
 						requestWriting.put(p, PlayerConditionsMessagesGUI.IF_GLIDING_MSG);
 						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(PlayerConditionsMessagesGUI.IF_GLIDING_MSG));
@@ -267,6 +277,8 @@ public class PlayerConditionsMessagesGUIManager extends GUIManager<PlayerConditi
 		SActivator sActivator = cache.get(p).getSAct();
 		PlayerConditions pC = cache.get(p).getConditions();
 
+		pC.setIfBlockingMsg(cache.get(p).getMessage(PlayerConditionsMessagesGUI.IF_BLOCKING_MSG));
+		pC.setIfNotBlockingMsg(cache.get(p).getMessage(PlayerConditionsMessagesGUI.IF_NOT_BLOCKING_MSG));
 		pC.setIfFlyingMsg(cache.get(p).getMessage(PlayerConditionsMessagesGUI.IF_FLYING_MSG));
 		pC.setIfGlidingMsg(cache.get(p).getMessage(PlayerConditionsMessagesGUI.IF_GLIDING_MSG));
 		pC.setIfHasPermissionMsg(cache.get(p).getMessage(PlayerConditionsMessagesGUI.IF_HAS_PERMISSION_MSG));

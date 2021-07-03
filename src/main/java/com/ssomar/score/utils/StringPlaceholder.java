@@ -84,7 +84,7 @@ public class StringPlaceholder {
 	
 	public void setTargetPlcHldr(Player p) {
 		this.setTargetUUID(p.getUniqueId().toString());
-		this.setTarget(p.getDisplayName());
+		this.setTarget(p.getName());
 		Location pLoc = p.getLocation();
 		this.setTargetX(pLoc.getX()+"");
 		this.setTargetY(pLoc.getY()+"");
@@ -145,22 +145,22 @@ public class StringPlaceholder {
 			s=s.replaceAll("%entity%", this.getEntity().replaceAll("%monster%", this.getEntity()));
 		}
 		if(this.hasEntityX()) {
-			s=this.replaceCalculPlaceholder(s, "%entity_x%", entityX);
+			s = replaceCalculPlaceholder(s, "%entity_x%", entityX);
 		}
 		if(this.hasEntityY()) {
-			s=this.replaceCalculPlaceholder(s, "%entity_y%", entityY);
+			s = replaceCalculPlaceholder(s, "%entity_y%", entityY);
 		}
 		if(this.hasEntityZ()) {
-			s=this.replaceCalculPlaceholder(s, "%entity_z%", entityZ);
+			s = replaceCalculPlaceholder(s, "%entity_z%", entityZ);
 		}
 		if(this.hasX()) {
-			s=this.replaceCalculPlaceholder(s, "%x%", x);
+			s = replaceCalculPlaceholder(s, "%x%", x);
 		}
 		if(this.hasY()) {
-			s=this.replaceCalculPlaceholder(s, "%y%", y);
+			s = replaceCalculPlaceholder(s, "%y%", y);
 		}
 		if(this.hasZ()) {
-			s=this.replaceCalculPlaceholder(s, "%z%", z);
+			s = replaceCalculPlaceholder(s, "%z%", z);
 		}
 		if(this.hasWorld()) {
 			s=s.replaceAll("%world%", this.getWorld());
@@ -169,73 +169,73 @@ public class StringPlaceholder {
 			s=s.replaceAll("%blockface%", this.getBlockface());
 		}
 		if(this.hasUsage()) {
-			s=this.replaceCalculPlaceholder(s, "%usage%", usage);
+			s = replaceCalculPlaceholder(s, "%usage%", usage);
 		}
 		if(this.hasProjectileX()) {
-			s=this.replaceCalculPlaceholder(s, "%projectile_x%", this.getProjectileX());
+			s = replaceCalculPlaceholder(s, "%projectile_x%", this.getProjectileX());
 		}
 		if(this.hasProjectileY()) {
-			s=this.replaceCalculPlaceholder(s, "%projectile_y%", this.getProjectileY());
+			s = replaceCalculPlaceholder(s, "%projectile_y%", this.getProjectileY());
 		}
 		if(this.hasProjectileZ()) {
-			s=this.replaceCalculPlaceholder(s, "%projectile_z%", this.getProjectileZ());
+			s = replaceCalculPlaceholder(s, "%projectile_z%", this.getProjectileZ());
 		}
 		if(this.hasBlockWorld()) {
-			s=this.replaceCalculPlaceholder(s, "%block_world%", this.getBlockWorld());
+			s = replaceCalculPlaceholder(s, "%block_world%", this.getBlockWorld());
 		}
 		if(this.hasBlockX()) {
-			s=this.replaceCalculPlaceholder(s, "%block_x%", this.getBlockX());
+			s = replaceCalculPlaceholder(s, "%block_x%", this.getBlockX());
 		}
 		if(this.hasBlockY()) {
-			s=this.replaceCalculPlaceholder(s, "%block_y%", this.getBlockY());
+			s = replaceCalculPlaceholder(s, "%block_y%", this.getBlockY());
 		}
 		if(this.hasBlockZ()) {
-			s=this.replaceCalculPlaceholder(s, "%block_z%", this.getBlockZ());
+			s = replaceCalculPlaceholder(s, "%block_z%", this.getBlockZ());
 		}
 		if(this.hasBlockXInt()) {
-			s=this.replaceCalculPlaceholder(s, "%block_x_int%", this.getBlockXInt());
+			s = replaceCalculPlaceholder(s, "%block_x_int%", this.getBlockXInt());
 		}
 		if(this.hasBlockYInt()) {
-			s=this.replaceCalculPlaceholder(s, "%block_y_int%", this.getBlockYInt());
+			s = replaceCalculPlaceholder(s, "%block_y_int%", this.getBlockYInt());
 		}
 		if(this.hasBlockZInt()) {
-			s=this.replaceCalculPlaceholder(s, "%block_z_int%", this.getBlockZInt());
+			s = replaceCalculPlaceholder(s, "%block_z_int%", this.getBlockZInt());
 		}
 		if(this.hasTargetX()) {
-			s=this.replaceCalculPlaceholder(s, "%target_x%", this.getTargetX());
+			s = replaceCalculPlaceholder(s, "%target_x%", this.getTargetX());
 		}
 		if(this.hasTargetY()) {
-			s=this.replaceCalculPlaceholder(s, "%target_y%", this.getTargetY());
+			s = replaceCalculPlaceholder(s, "%target_y%", this.getTargetY());
 		}
 		if(this.hasTargetZ()) {
-			s=this.replaceCalculPlaceholder(s, "%target_z%", this.getTargetZ());
+			s = replaceCalculPlaceholder(s, "%target_z%", this.getTargetZ());
 		}
 		if(this.hasTargetXInt()) {
-			s=this.replaceCalculPlaceholder(s, "%target_x_int%", this.getTargetXInt());
+			s = replaceCalculPlaceholder(s, "%target_x_int%", this.getTargetXInt());
 		}
 		if(this.hasTargetYInt()) {
-			s=this.replaceCalculPlaceholder(s, "%target_y_int%", this.getTargetYInt());
+			s = replaceCalculPlaceholder(s, "%target_y_int%", this.getTargetYInt());
 		}
 		if(this.hasTargetZInt()) {
-			s=this.replaceCalculPlaceholder(s, "%target_z_int%", this.getTargetZInt());
+			s = replaceCalculPlaceholder(s, "%target_z_int%", this.getTargetZInt());
 		}
 		if(this.hasTargetBlockX()) {
-			s=this.replaceCalculPlaceholder(s, "%target_block_x%", this.getTargetBlockX());
+			s = replaceCalculPlaceholder(s, "%target_block_x%", this.getTargetBlockX());
 		}
 		if(this.hasTargetBlockY()) {
-			s=this.replaceCalculPlaceholder(s, "%target_block_y%", this.getTargetBlockY());
+			s = replaceCalculPlaceholder(s, "%target_block_y%", this.getTargetBlockY());
 		}
 		if(this.hasTargetBlockZ()) {
-			s=this.replaceCalculPlaceholder(s, "%target_block_z%", this.getTargetBlockZ());
+			s = replaceCalculPlaceholder(s, "%target_block_z%", this.getTargetBlockZ());
 		}
 		if(this.hasTargetBlockXInt()) {
-			s=this.replaceCalculPlaceholder(s, "%target_block_x_int%", this.getTargetBlockXInt());
+			s = replaceCalculPlaceholder(s, "%target_block_x_int%", this.getTargetBlockXInt());
 		}
 		if(this.hasTargetBlockYInt()) {
-			s=this.replaceCalculPlaceholder(s, "%target_block_y_int%", this.getTargetBlockYInt());
+			s = replaceCalculPlaceholder(s, "%target_block_y_int%", this.getTargetBlockYInt());
 		}
 		if(this.hasTargetBlockZInt()) {
-			s=this.replaceCalculPlaceholder(s, "%target_block_z_int%", this.getTargetBlockZInt());
+			s = replaceCalculPlaceholder(s, "%target_block_z_int%", this.getTargetBlockZInt());
 		}
 		if(this.hasMaxUsePerDayActivator()) {
 			s=s.replaceAll("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
@@ -274,7 +274,7 @@ public class StringPlaceholder {
 		return true;
 	}
 	
-	public String replaceCalculPlaceholder(String s, String placeholder, String value) {
+	public static String replaceCalculPlaceholder(String s, String placeholder, String value) {
 		
 		String result = s;
 		

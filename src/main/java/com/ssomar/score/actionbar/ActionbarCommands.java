@@ -14,29 +14,25 @@ public class ActionbarCommands {
 	private static SendMessage sm = new SendMessage();
 	
 	public static void manageCommand(Player p, String arg) {
+		
 		List<Player> hideActionbar = ActionbarHandler.getInstance().getHideActionbar();
+		
 		if(arg.equalsIgnoreCase("on")) {
 			if(hideActionbar.contains(p)){
 				hideActionbar.remove(p);
 				sm.sendMessage(p, MessageMain.getInstance().getMessage(SCore.plugin, Message.SET_ACTIONBAR_ON));
 			}
-			else {
-				sm.sendMessage(p, MessageMain.getInstance().getMessage(SCore.plugin, Message.HAVE_ACTIONBAR_ON));
-			}
+			else sm.sendMessage(p, MessageMain.getInstance().getMessage(SCore.plugin, Message.HAVE_ACTIONBAR_ON));
 		}
 		else if(arg.equalsIgnoreCase("off")) {
-			if(hideActionbar.contains(p)){
-				sm.sendMessage(p, MessageMain.getInstance().getMessage(SCore.plugin, Message.HAVE_ACTIONBAR_OFF));
-			}
+			if(hideActionbar.contains(p)) sm.sendMessage(p, MessageMain.getInstance().getMessage(SCore.plugin, Message.HAVE_ACTIONBAR_OFF));
 			else {
 				sm.sendMessage(p, MessageMain.getInstance().getMessage(SCore.plugin, Message.SET_ACTIONBAR_OFF));
 				hideActionbar.add(p);
 			}
 		}
-		else {
-			return;
-		}
+		else return;
+		
 		ActionbarHandler.getInstance().setHideActionbar(hideActionbar);
 	}
-
 }

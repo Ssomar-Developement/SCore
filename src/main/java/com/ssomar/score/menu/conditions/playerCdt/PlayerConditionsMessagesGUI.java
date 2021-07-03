@@ -12,6 +12,8 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_SNEAKING_MSG = "ifSneaking message";
 	public static final String IF_NOT_SNEAKING_MSG = "ifNotSneaking message";
+	public static final String IF_BLOCKING_MSG = "ifBlocking message";
+	public static final String IF_NOT_BLOCKING_MSG = "ifNotBlocking message";
 	public static final String IF_SWIMMING_MSG = "ifSwimming message";
 	public static final String IF_GLIDING_MSG = "ifGliding message";
 	public static final String IF_FLYING_MSG = "ifFlying message";
@@ -49,6 +51,14 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_SNEAKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(IF_NOT_SNEAKING_MSG, conditions.getIfNotSneakingMsg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_BLOCKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(IF_BLOCKING_MSG, conditions.getIfBlockingMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_BLOCKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(IF_NOT_BLOCKING_MSG, conditions.getIfNotBlockingMsg());
 
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_SWIMMING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;

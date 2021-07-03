@@ -4,18 +4,20 @@ public class Actionbar {
 
 	private String name;
 
-	private boolean Active= false;
+	private boolean active;
 	
-	private boolean desactivation= false;
+	private boolean desactivation;
 
 	private Integer time;
 
-
+	
 	public Actionbar(String name, Integer time) {
 		this.name = name;
 		this.time = time;
+		this.active = false;
+		this.desactivation = false;
 	}
-
+	
 
 	public boolean isDesactivation() {
 		return desactivation;
@@ -29,18 +31,16 @@ public class Actionbar {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public boolean isActive() {
-		return Active;
+		return active;
 	}
 
 	public void setActive(boolean active) {
-		Active = active;
+		this.active = active;
 	}
 
 	public Integer getTime() {
@@ -50,7 +50,4 @@ public class Actionbar {
 	public void setTime(Integer time) {
 		this.time = time;
 	}
-
-
-
 }

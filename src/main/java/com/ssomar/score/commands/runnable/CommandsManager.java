@@ -19,19 +19,26 @@ public class CommandsManager {
 	
 	private static CommandsManager instance;
 	
-	private HashMap<String, List<String>> disconnectedPlayerCommands= new HashMap<>();
+	private HashMap<String, List<String>> disconnectedPlayerCommands;
 
-	private HashMap<String, List<String>> serverOffPlayerCommands= new HashMap<>();
+	private HashMap<String, List<String>> serverOffPlayerCommands;
 
-	private HashMap<String,Map<UUID, Integer>> delayedCommands= new HashMap<>();
+	private HashMap<String,Map<UUID, Integer>> delayedCommands;
 
-	//for "morph item" timing between delete item and regive item (2 ticks)  player
-	private List<Player> stopPickup = new ArrayList<>();
+	/* for "morph item" timing between delete item and regive item (2 ticks)  player */
+	private List<Player> stopPickup;
+	
+	public CommandsManager() {
+		disconnectedPlayerCommands = new HashMap<>();
+		serverOffPlayerCommands = new HashMap<>();
+		delayedCommands = new HashMap<>();
+		stopPickup = new ArrayList<>();
+	}
 
 
 	public boolean runServerOffCommands(Player p) {
 		if(serverOffPlayerCommands.containsKey(p.getName())) {
-			List<String> commands= serverOffPlayerCommands.get(p.getName());
+			List<String> commands = serverOffPlayerCommands.get(p.getName());
 			new PlayerCommandsExecutor(commands, p, true, p, null).runPlayerCommands(true);
 			serverOffPlayerCommands.remove(p.getName());
 		}
@@ -40,23 +47,9 @@ public class CommandsManager {
 
 	public boolean runDisconnectedCommands(Player p) {
 		if(disconnectedPlayerCommands.containsKey(p.getName())) {
-			List<String> commands= disconnectedPlayerCommands.get(p.getName());
+			List<String> commands = disconnectedPlayerCommands.get(p.getName());
 			new PlayerCommandsExecutor(commands, p, true, p, null).runPlayerCommands(true);
 			disconnectedPlayerCommands.remove(p.getName());
-		}
-		return true;
-	}
-
-
-	public static boolean isNumeric(String strNum) {
-		if (strNum == null) {
-			return false;
-		}
-		try {
-			@SuppressWarnings("unused")
-			double d = Double.parseDouble(strNum);
-		} catch (NumberFormatException nfe) {
-			return false;
 		}
 		return true;
 	}
@@ -136,7 +129,7 @@ public class CommandsManager {
 			serverOffPlayerCommands.get(p.getName()).add(command);
 		}else {
 			List<String> list = new ArrayList<>();
-			list .add(command);
+			list.add(command);
 			serverOffPlayerCommands.put(p.getName(), list);
 		}
 	}

@@ -43,6 +43,10 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				if(name.contains(PlayerConditionsGUI.IF_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SNEAKING);
 
 				else if(name.contains(PlayerConditionsGUI.IF_NOT_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING);
+				
+				else if(name.contains(PlayerConditionsGUI.IF_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_BLOCKING);
+
+				else if(name.contains(PlayerConditionsGUI.IF_NOT_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING);
 
 				else if(name.contains(PlayerConditionsGUI.IF_SWIMMING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SWIMMING);
 
@@ -784,6 +788,8 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 
 		pC.setIfSneaking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SNEAKING));
 		pC.setIfNotSneaking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING));
+		pC.setIfBlocking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_BLOCKING));
+		pC.setIfNotBlocking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING));
 		pC.setIfSwimming(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SWIMMING));
 		pC.setIfGliding(cache.get(p).getBoolean(PlayerConditionsGUI.IF_GLIDING));
 		pC.setIfFlying(cache.get(p).getBoolean(PlayerConditionsGUI.IF_FLYING));

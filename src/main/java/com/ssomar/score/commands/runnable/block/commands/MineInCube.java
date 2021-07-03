@@ -26,18 +26,19 @@ public class MineInCube extends BlockCommandTemplate{
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;
-			if(args.size()==2) drop= Boolean.valueOf(args.get(1));
+			if(args.size()==2) drop = Boolean.valueOf(args.get(1));
 			if(radius<10) {
-				for(int y = -radius; y<Integer.valueOf(radius)+1; y++) {
-					for(int x = -Integer.valueOf(radius); x<Integer.valueOf(radius)+1; x++) {
-						for(int z = -Integer.valueOf(radius); z<Integer.valueOf(radius)+1; z++) {
+				for(int y = -radius; y < Integer.valueOf(radius)+1; y++) {
+					for(int x = -Integer.valueOf(radius); x < Integer.valueOf(radius)+1; x++) {
+						for(int z = -Integer.valueOf(radius); z < Integer.valueOf(radius)+1; z++) {
 
 							Location toBreakLoc = new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z);
 							Block toBreak = block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z);
 
-							if(!toBreak.getType().equals(Material.BEDROCK)) {
+							if(!toBreak.getType().equals(Material.BEDROCK) && !toBreak.getType().equals(Material.AIR)) {
 
 								if((SCore.hasWorldGuard && new WorldGuardAPI().canBuild(p, toBreakLoc)) || !SCore.hasWorldGuard ) {
+									
 									BlockBreakEvent bbE = new BlockBreakEvent(toBreak, p);
 									bbE.setCancelled(false);
 									/* */

@@ -37,6 +37,14 @@ public class PlayerConditions extends Conditions{
 	private boolean ifNotSneaking;
 	private static final String IF_NOT_SNEAKING_MSG = " &cYou must not sneak to active the activator: &6%activator% &cof this item!";
 	private String ifNotSneakingMsg;
+	
+	private boolean ifBlocking;
+	private static final String IF_BLOCKING_MSG = " &cYou must block damage with shield to active the activator: &6%activator% &cof this item!";
+	private String ifBlockingMsg;
+
+	private boolean ifNotBlocking;
+	private static final String IF_NOT_BLOCKING_MSG = " &cYou must not block damage with shield to active the activator: &6%activator% &cof this item!";
+	private String ifNotBlockingMsg;
 
 	private boolean ifSwimming;
 	private static final String IF_SWIMMING_MSG = " &cYou must swin to active the activator: &6%activator% &cof this item!";
@@ -136,6 +144,12 @@ public class PlayerConditions extends Conditions{
 		
 		this.ifNotSneaking = false;
 		this.ifNotSneakingMsg = IF_NOT_SNEAKING_MSG;
+		
+		this.ifBlocking = false;
+		this.ifBlockingMsg = IF_BLOCKING_MSG;
+		
+		this.ifNotBlocking = false;
+		this.ifNotBlockingMsg = IF_NOT_BLOCKING_MSG;
 		
 		this.ifSwimming = false;
 		this.ifSwimmingMsg = IF_SWIMMING_MSG;
@@ -239,6 +253,16 @@ public class PlayerConditions extends Conditions{
 
 		if(this.hasIfNotSneaking() && ifNotSneaking && p.isSneaking()) {
 			this.getSm().sendMessage(toMsg, this.getIfNotSneakingMsg());
+			return false;
+		}
+		
+		if(ifBlocking && !p.isBlocking()) {
+			this.getSm().sendMessage(toMsg, this.getIfBlockingMsg());
+			return false;
+		}
+
+		if(ifNotBlocking && p.isBlocking()) {
+			this.getSm().sendMessage(toMsg, this.getIfNotBlockingMsg());
 			return false;
 		}
 
@@ -437,6 +461,12 @@ public class PlayerConditions extends Conditions{
 
 		pCdt.setIfNotSneaking(playerCdtSection.getBoolean("ifNotSneaking", false));
 		pCdt.setIfNotSneakingMsg(playerCdtSection.getString("ifNotSneakingMsg", "&4&l"+pluginName+IF_NOT_SNEAKING_MSG));
+		
+		pCdt.setIfBlocking(playerCdtSection.getBoolean("ifBlocking", false));
+		pCdt.setIfBlockingMsg(playerCdtSection.getString("ifBlockingMsg", "&4&l"+pluginName+IF_BLOCKING_MSG));
+
+		pCdt.setIfNotBlocking(playerCdtSection.getBoolean("ifNotBlocking", false));
+		pCdt.setIfNotBlockingMsg(playerCdtSection.getString("ifNotBlockingMsg", "&4&l"+pluginName+IF_NOT_BLOCKING_MSG));
 
 		pCdt.setIfSwimming(playerCdtSection.getBoolean("ifSwimming", false));
 		pCdt.setIfSwimmingMsg(playerCdtSection.getString("ifSwimmingMsg", "&4&l"+pluginName+IF_SWIMMING_MSG));
@@ -594,6 +624,14 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfNotSneaking()) pCConfig.set("ifNotSneaking", true); 
 		else pCConfig.set("ifNotSneaking", null);
 		pCConfig.set("ifNotSneakingMsg", pC.getIfNotSneakingMsg()); 
+		
+		if(pC.ifBlocking) pCConfig.set("ifBlocking", true); 
+		else pCConfig.set("ifBlocking", null);
+		pCConfig.set("ifBlockingMsg", pC.getIfBlockingMsg()); 
+
+		if(pC.ifNotBlocking) pCConfig.set("ifNotBlocking", true); 
+		else pCConfig.set("ifNotBlocking", null);
+		pCConfig.set("ifNotBlockingMsg", pC.getIfNotBlockingMsg()); 
 
 		if(pC.hasIfSwimming()) pCConfig.set("ifSwimming", true); 
 		else pCConfig.set("ifSwimming", null);
@@ -1209,6 +1247,38 @@ public class PlayerConditions extends Conditions{
 
 	public void setIfLightLevelMsg(String ifLightLevelMsg) {
 		this.ifLightLevelMsg = ifLightLevelMsg;
+	}
+
+	public boolean isIfBlocking() {
+		return ifBlocking;
+	}
+
+	public void setIfBlocking(boolean ifBlocking) {
+		this.ifBlocking = ifBlocking;
+	}
+
+	public String getIfBlockingMsg() {
+		return ifBlockingMsg;
+	}
+
+	public void setIfBlockingMsg(String ifBlockingMsg) {
+		this.ifBlockingMsg = ifBlockingMsg;
+	}
+
+	public boolean isIfNotBlocking() {
+		return ifNotBlocking;
+	}
+
+	public void setIfNotBlocking(boolean ifNotBlocking) {
+		this.ifNotBlocking = ifNotBlocking;
+	}
+
+	public String getIfNotBlockingMsg() {
+		return ifNotBlockingMsg;
+	}
+
+	public void setIfNotBlockingMsg(String ifNotBlockingMsg) {
+		this.ifNotBlockingMsg = ifNotBlockingMsg;
 	}
 
 }

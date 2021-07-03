@@ -11,30 +11,24 @@ import com.ssomar.score.data.SecurityOPQuery;
 
 public class SUDOOPManager {
 
-	private HashMap<Player,List<String>> commandsAsOP = new HashMap<>();
+	private HashMap<Player,List<String>> commandsAsOP;
 
 	private static SUDOOPManager instance;
+	
+	public SUDOOPManager() {
+		commandsAsOP = new HashMap<>();
+	}
 
 	public void runOPCommand(Player player, String cmd) {
 		String command = this.verifyCommand(cmd);
-		if(player.isOp()) {
-			player.chat(command);
-		}
+		if(player.isOp()) player.chat(command);
 		else {
-			/*
-			try {
-				player.setOp(true);
-				player.chat(command);
-			}
-			finally {
-				player.setOp(false);
-			}*/
 			try {
 				if(commandsAsOP.containsKey(player)) {
 					commandsAsOP.get(player).add(command);
 				}
 				else {
-					ArrayList<String> cList= new ArrayList<>();
+					ArrayList<String> cList = new ArrayList<>();
 					cList.add(command);
 					commandsAsOP.put(player, cList);
 				}
@@ -45,19 +39,15 @@ public class SUDOOPManager {
 			} finally {
 				player.setOp(false);
 				SecurityOPQuery.deletePlayerOP(Database.getInstance().connect(), player);
-				if(commandsAsOP.get(player).size()==1) {
-					commandsAsOP.remove(player);
-				}
-				else {
-					commandsAsOP.get(player).remove(command);
-				}
+				if(commandsAsOP.get(player).size() == 1) commandsAsOP.remove(player);
+				else commandsAsOP.get(player).remove(command);
 			}
 		}
 	}
 
 	public String verifyCommand(String cmd) {
 		String command = cmd.trim();
-		if(command.charAt(0)!='/') {
+		if(command.charAt(0) != '/') {
 			command= "/"+ command;
 		}
 		return command;

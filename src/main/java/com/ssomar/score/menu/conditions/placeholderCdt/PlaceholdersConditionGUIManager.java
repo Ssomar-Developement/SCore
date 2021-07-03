@@ -152,7 +152,7 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 		Comparator comp = cache.get(p).getComparator();
 		PlaceholdersCondition pC;
 		if(type.equals(PlaceholdersCdtType.PLAYER_NUMBER) || type.equals(PlaceholdersCdtType.TARGET_NUMBER)) {
-			pC = new PlaceholdersCondition(id, type, message, part1, comp, Integer.valueOf(part2));
+			pC = new PlaceholdersCondition(id, type, message, part1, comp, Double.valueOf(part2));
 		}
 		else pC = new PlaceholdersCondition(id, type, message, part1, comp, part2);
 		pC.setCancelEvent(cache.get(p).getBoolean(PlaceholdersConditionGUI.CANCEL_EVENT));

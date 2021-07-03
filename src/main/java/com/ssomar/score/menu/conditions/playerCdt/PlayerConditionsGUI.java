@@ -18,6 +18,8 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_SNEAKING = "ifSneaking";
 	public static final String IF_NOT_SNEAKING = "ifNotSneaking";
+	public static final String IF_BLOCKING = "ifBlocking";
+	public static final String IF_NOT_BLOCKING = "ifNotBlocking";
 	public static final String IF_SWIMMING = "ifSwimming";
 	public static final String IF_GLIDING = "ifGliding";
 	public static final String IF_FLYING = "ifFlying";
@@ -56,6 +58,14 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_SNEAKING, 	false,	false, "&7&oThe player must not sneak ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_NOT_SNEAKING, conditions.isIfNotSneaking());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_BLOCKING, 	false,	false, "&7&oThe player must block with shield ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_BLOCKING, conditions.isIfBlocking());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_BLOCKING, 	false,	false, "&7&oThe player must not block with shield ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_NOT_BLOCKING, conditions.isIfNotBlocking());
 
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_SWIMMING, 	false,	false, "&7&oThe player must swim ?", "&a✎ Click here to change", "&7actually:");
 		i++;

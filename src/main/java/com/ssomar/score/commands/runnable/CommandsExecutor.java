@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.StringPlaceholder;
@@ -40,15 +40,15 @@ public abstract class CommandsExecutor{
 	}
 
 	public void init(List<String> commands, Player player, boolean silenceOutput, ActionInfo actionInfo) {
-		this.commands=commands;
-		this.player=player;
-		this.actionInfo=actionInfo;
+		this.commands = commands;
+		this.player = player;
+		this.actionInfo = actionInfo;
 		this.replaceLoop();
 		this.initFinalCommands();
 	}
 
 	public String replacePlaceholder(String command) {
-		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) return PlaceholderAPI.setPlaceholders(player, command);
+		if (SCore.hasPlaceholderAPI) return PlaceholderAPI.setPlaceholders(player, command);
 		else return command;
 	}
 
@@ -59,9 +59,9 @@ public abstract class CommandsExecutor{
 
 		List<String> result = new ArrayList<>();
 
-		for(int i=0; i<amount; i++) {
-			if(commandsList.size()==0) return result;
-			int rdn=(int)(Math.random()*commandsList.size());
+		for(int i = 0; i < amount; i++) {
+			if(commandsList.size() == 0) return result;
+			int rdn = (int)(Math.random()*commandsList.size());
 			result.add(commandsList.get(rdn));
 			commandsList.remove(rdn);
 		}		
@@ -71,10 +71,9 @@ public abstract class CommandsExecutor{
 	public void replaceLoop() {
 
 		List<String> result = new ArrayList<>();
-
-		boolean isInLoop= false;
-		int loopAmount=0;
-		List<String> commandsInLoop= new ArrayList<>();
+		boolean isInLoop = false;
+		int loopAmount = 0;
+		List<String> commandsInLoop = new ArrayList<>();
 
 		for (int i = 0; i < commands.size(); i++) {
 
@@ -83,7 +82,7 @@ public abstract class CommandsExecutor{
 			if(command.contains("LOOP START: ")) {
 				try {
 					loopAmount = Integer.valueOf(command.split("LOOP START: ")[1]);
-					isInLoop= true;
+					isInLoop = true;
 					continue;
 				}catch(Exception e) {
 					loopAmount=0;
@@ -92,13 +91,13 @@ public abstract class CommandsExecutor{
 				}
 			}
 			else if(command.contains("LOOP END")) {
-				for(int k=0; k<loopAmount; k++) {
+				for(int k = 0; k < loopAmount; k++) {
 					for(String str: commandsInLoop) {
 						result.add(str);
 					}
 				}
-				loopAmount=0;
-				isInLoop= false;
+				loopAmount = 0;
+				isInLoop = false;
 				commandsInLoop.clear();
 				continue;
 			}
@@ -106,7 +105,7 @@ public abstract class CommandsExecutor{
 			if(isInLoop) commandsInLoop.add(command);
 			else result.add(command);
 		}
-		commands= result;
+		commands = result;
 	}
 
 
@@ -135,10 +134,10 @@ public abstract class CommandsExecutor{
 		if(command.contains("nothing*")) {
 			try {
 				int m=0;
-				if(command.contains("//"))  m=Integer.valueOf(command.split("nothing\\*")[1].split("//")[0].trim());
+				if(command.contains("//")) m = Integer.valueOf(command.split("nothing\\*")[1].split("//")[0].trim());
 				else m = Integer.valueOf(command.split("nothing\\*")[1]);
 
-				for(int k=0; k<m; k++) {
+				for(int k = 0; k < m; k++) {
 					if(command.contains("//")) result.add("SENDMESSAGE "+command.split("//")[1]);
 					else result.add("");
 				}
@@ -149,11 +148,11 @@ public abstract class CommandsExecutor{
 		}
 		else if(command.contains("NOTHING*")) {
 			try {
-				int m=0;
+				int m = 0;
 				if(command.contains("//")) m=Integer.valueOf(command.split("NOTHING\\*")[1].split("//")[0].trim());
 				else m = Integer.valueOf(command.split("NOTHING\\*")[1]);
 
-				for(int k=0; k<m; k++) {
+				for(int k = 0; k < m; k++) {
 					if(command.contains("//")) result.add("SENDMESSAGE "+command.split("//")[1]);
 					else result.add("");
 				}
@@ -168,10 +167,10 @@ public abstract class CommandsExecutor{
 
 	public boolean initFinalCommands() {
 
-		Integer delay= 0;
-		boolean inRandom=false;
-		int nbRandom=0;
-		ArrayList<String> commandsRandom= new ArrayList<String>();
+		Integer delay = 0;
+		boolean inRandom = false;
+		int nbRandom = 0;
+		ArrayList<String> commandsRandom = new ArrayList<String>();
 
 
 		for(String command: commands) {
@@ -181,8 +180,8 @@ public abstract class CommandsExecutor{
 			//SsomarDev.testMsg("cmdall> "+command);
 			if(command.contains("RANDOM RUN:")) {
 				//SsomarDev.testMsg("cmdrdn> "+command);
-				nbRandom= Integer.valueOf(command.split("RANDOM RUN:")[1].replaceAll(" ",""));
-				inRandom=true;
+				nbRandom = Integer.valueOf(command.split("RANDOM RUN:")[1].replaceAll(" ",""));
+				inRandom = true;
 				continue;
 			}
 
@@ -195,9 +194,9 @@ public abstract class CommandsExecutor{
 
 				//SsomarDev.testMsg("size> "+commandsRandom.size()+" amount>"+nbRandom);
 				this.inserFinalCommands(delay, this.selectRandomCommands(commandsRandom, nbRandom));
-				inRandom=false;
+				inRandom = false;
 				commandsRandom.clear();
-				nbRandom=0;
+				nbRandom = 0;
 				continue;
 			}
 
@@ -207,16 +206,16 @@ public abstract class CommandsExecutor{
 			}
 
 			else if(command.contains("DELAYTICK ")) {
-				delay=delay+(Integer.valueOf(command.replaceAll("DELAYTICK ", "")));
+				delay = delay+(Integer.valueOf(command.replaceAll("DELAYTICK ", "")));
 			}
 			else if(command.contains("DELAY ")) {
-				delay=delay+(Integer.valueOf(command.replaceAll("DELAY ", ""))*20);
+				delay = delay+(Integer.valueOf(command.replaceAll("DELAY ", ""))*20);
 			}
 			else {
 				this.inserFinalCommands(delay, command);
 			}
 		}
-		if(commandsRandom.size()>0) {
+		if(commandsRandom.size() > 0) {
 			this.inserFinalCommands(delay, this.selectRandomCommands(commandsRandom, nbRandom));
 		}
 
@@ -229,11 +228,11 @@ public abstract class CommandsExecutor{
 	}
 
 	public void clearFinalCommands() {
-		for(Integer d: finalCommands.keySet()) {
+		for(Integer d : finalCommands.keySet()) {
 			List<String> gCommands = finalCommands.get(d);
 			ArrayList<String> result = new ArrayList<>();
-			for(String command: gCommands) {
-				if(command.trim().length()==0) continue;
+			for(String command : gCommands) {
+				if(command.trim().length() == 0) continue;
 				result.addAll(this.decompMsgInCommand(command));
 			}
 			finalCommands.put(d, new ArrayList<String>());
@@ -246,7 +245,7 @@ public abstract class CommandsExecutor{
 
 		String [] tab;
 
-		if(command.contains("+++")) tab =command.split("\\+\\+\\+");
+		if(command.contains("+++")) tab = command.split("\\+\\+\\+");
 		else {
 			tab = new String[1];
 			tab[0] = command;
@@ -271,14 +270,14 @@ public abstract class CommandsExecutor{
 		if(s.contains("//")) {
 			String [] spliter = s.split("//");
 
-			String commandF= spliter[0];
+			String commandF = spliter[0];
 			result.add(commandF);
-			String message= "";
-			if(spliter.length>=2) {
-				if(spliter[1].charAt(0)!=' ') {
-					message= "SENDMESSAGE "+spliter[1];
+			String message = "";
+			if(spliter.length >= 2) {
+				if(spliter[1].charAt(0) != ' ') {
+					message = "SENDMESSAGE "+spliter[1];
 				}
-				else message= "SENDMESSAGE"+spliter[1];
+				else message = "SENDMESSAGE"+spliter[1];
 				result.add(message);
 			}
 
@@ -290,82 +289,18 @@ public abstract class CommandsExecutor{
 		}
 	}
 
-	
+
 
 	public String replaceLocation(String command, double x, double y, double z, World world) {
-		
+
 		String prepareCommand = command;
 
-		if (prepareCommand.contains("%x%+")) {
-			String suit = prepareCommand.split("%x%\\+")[1];
-			StringBuilder sb = new StringBuilder();
-			for (char c : suit.toCharArray()) {
-				if (c == ' ')
-					break; 
-				sb.append(c);
-			} 
-			if (isNumeric(sb.toString())) {
-				double d = Double.parseDouble(sb.toString()) + x;
-				prepareCommand = prepareCommand.replaceAll("%x%\\+" + sb.toString(), "" + d);
-			} else {
-				prepareCommand = prepareCommand.replaceAll("%x%\\+" + sb.toString(), x + "");
-			} 
-		} else if (prepareCommand.contains("%x%")) {
-			prepareCommand = prepareCommand.replaceAll("%x%", x + "");
-		} 
-		if (prepareCommand.contains("%y%+")) {
-			String suit = prepareCommand.split("%y%\\+")[1];
-			StringBuilder sb = new StringBuilder();
-			for (char c : suit.toCharArray()) {
-				if (c == ' ')
-					break; 
-				sb.append(c);
-			} 
-			if (isNumeric(sb.toString())) {
-				double d = Double.parseDouble(sb.toString()) + y;
-				prepareCommand = prepareCommand.replaceAll("%y%\\+" + sb.toString(), "" + d);
-			} else {
-				prepareCommand = prepareCommand.replaceAll("%y%\\+" + sb.toString(), y + "");
-			} 
-		} else if (prepareCommand.contains("%y%")) {
-			prepareCommand = prepareCommand.replaceAll("%y%", y + "");
-		} 
-		if (prepareCommand.contains("%z%+")) {
-			String suit = prepareCommand.split("%z%\\+")[1];
-			StringBuilder sb = new StringBuilder();
-			for (char c : suit.toCharArray()) {
-				if (c == ' ')
-					break; 
-				sb.append(c);
-			} 
-			if (isNumeric(sb.toString())) {
-				double d = Double.parseDouble(sb.toString()) + z;
-				prepareCommand = prepareCommand.replaceAll("%z%\\+" + sb.toString(), "" + d);
-			} else {
-				prepareCommand = prepareCommand.replaceAll("%z%\\+" + sb.toString(), z + "");
-			} 
-		} else if (prepareCommand.contains("%z%")) {
-			prepareCommand = prepareCommand.replaceAll("%z%", z + "");
-		}
-
-		StringPlaceholder sp = new StringPlaceholder();
-		sp.setX(x+"");
-		sp.setY(y+"");
-		sp.setZ(z+"");
-		sp.setWorld(world.getName());
-		return sp.replacePlaceholder(prepareCommand);
-	}
-
-	public static boolean isNumeric(String strNum) {
-		if (strNum == null)
-			return false; 
-		try {
-			@SuppressWarnings("unused")
-			double d = Double.parseDouble(strNum);
-		} catch (NumberFormatException nfe) {
-			return false;
-		} 
-		return true;
+		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%x%", x+"");
+		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%y%", y+"");
+		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%z%", z+"");
+		prepareCommand = prepareCommand.replaceAll("%world%", world.getName());
+		
+		return prepareCommand;
 	}
 
 	public List<String> getCommands() {
@@ -407,8 +342,4 @@ public abstract class CommandsExecutor{
 	public void setActionInfo(ActionInfo actionInfo) {
 		this.actionInfo = actionInfo;
 	}
-
-
-
-
 }

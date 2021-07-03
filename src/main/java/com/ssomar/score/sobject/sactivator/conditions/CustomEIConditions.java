@@ -23,6 +23,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.GriefPreventionAPI;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
 import com.ssomar.score.usedapi.LandsIntegrationAPI;
 
@@ -79,6 +80,14 @@ public class CustomEIConditions extends Conditions{
 			if(this.isIfPlayerMustBeOnHisClaim()) {
 				LandsIntegrationAPI lands = new LandsIntegrationAPI(SCore.plugin);
 				if(!lands.playerIsInHisClaim(p, p.getLocation())) {
+					this.getSm().sendMessage(p, this.getIfPlayerMustBeOnHisClaimMsg());
+					return false;
+				}
+			}
+		}
+		if(SCore.hasGriefPrevention) {
+			if(this.isIfPlayerMustBeOnHisClaim()) {
+				if(!GriefPreventionAPI.playerIsInHisClaim(p, p.getLocation())) {
 					this.getSm().sendMessage(p, this.getIfPlayerMustBeOnHisClaimMsg());
 					return false;
 				}

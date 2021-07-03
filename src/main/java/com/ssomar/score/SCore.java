@@ -52,6 +52,8 @@ public final class SCore extends JavaPlugin {
 	public static boolean hasMultiverse = false;
 	
 	public static boolean hasLands = false;
+	
+	public static boolean hasGriefPrevention = false;
 
 	
 	@Override
@@ -149,6 +151,11 @@ public final class SCore extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("Lands") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Lands hooked !");
 			hasLands = true;	
+		}
+		
+		if (Bukkit.getPluginManager().getPlugin("GriefPrevention") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] GriefPrevention hooked !");
+			hasGriefPrevention = true;	
 		}
 	}
 

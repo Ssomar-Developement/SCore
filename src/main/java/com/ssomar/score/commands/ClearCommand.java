@@ -27,7 +27,7 @@ public class ClearCommand {
 			else name = ((Player)sender).getName();
 		}
 		else {
-			if(args.length<1) {
+			if(args.length < 1) {
 				sender.sendMessage(StringConverter.coloredString("&4"+sPlugin.getNameDesign()+" &c/ei clear {playername}."));	
 				return;
 			}
