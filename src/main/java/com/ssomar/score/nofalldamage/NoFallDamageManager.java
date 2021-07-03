@@ -69,6 +69,7 @@ public class NoFallDamageManager {
 		return false;
 	}
 
+	
 	public static NoFallDamageManager getInstance() {
 		if(instance == null) instance = new NoFallDamageManager();
 		return instance;
