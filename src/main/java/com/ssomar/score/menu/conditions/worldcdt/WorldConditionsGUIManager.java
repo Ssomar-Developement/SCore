@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.worldCdt;
+package com.ssomar.score.menu.conditions.worldcdt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,109 +29,105 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sAct = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			//String plName = sPlugin.getNameDesign();
 
-				if(name.contains(WorldConditionsGUI.IF_WEATHER)) {
-					requestWriting.put(p, WorldConditionsGUI.IF_WEATHER);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfWeather());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WEATHER:"));
-					this.showIfWeatherEditor(p);
-					space(p);
+			if(name.contains(WorldConditionsGUI.IF_WEATHER)) {
+				requestWriting.put(p, WorldConditionsGUI.IF_WEATHER);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfWeather());
 				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WEATHER:"));
+				this.showIfWeatherEditor(p);
+				space(p);
+			}
 
-				else if(name.contains(WorldConditionsGUI.IF_WORLD_TIME)) {
-					requestWriting.put(p, WorldConditionsGUI.IF_WORLD_TIME);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WORLD TIME:"));
+			else if(name.contains(WorldConditionsGUI.IF_WORLD_TIME)) {
+				requestWriting.put(p, WorldConditionsGUI.IF_WORLD_TIME);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WORLD TIME:"));
 
-					this.showCalculationGUI(p, "World time", cache.get(p).getIfWorlTime());
-					space(p);
-				}
-				
-				else if(name.contains("Reset")) {
-					p.closeInventory();
-					cache.replace(p, new WorldConditionsGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+				this.showCalculationGUI(p, "World time", cache.get(p).getIfWorlTime());
+				space(p);
+			}
 
-				else if(name.contains("Save")) {
-					p.closeInventory();
-					saveWorldConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+			else if(name.contains("Reset")) {
+				p.closeInventory();
+				cache.replace(p, new WorldConditionsGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
+			}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+			else if(name.contains("Save")) {
+				p.closeInventory();
+				saveWorldConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+			}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
+			else if(name.contains("Exit")) {
+				p.closeInventory();
+			}
+
+			else if(name.contains("Back")) {
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
 			}
 		}
 	}
-	
+
 	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sAct = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			//String plName = sPlugin.getNameDesign();
 
-				if(name.contains("Reset")) {
-					cache.replace(p, new WorldConditionsGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+			if(name.contains("Reset")) {
+				cache.replace(p, new WorldConditionsGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
+			}
 
-				else if(name.contains("Save")) {
-					saveWorldConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+			else if(name.contains("Save")) {
+				saveWorldConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+			}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+			else if(name.contains("Exit")) {
+				p.closeInventory();
+			}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					saveWorldConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					WorldConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getWorldConditions(), detail);
-				}
+			else if(name.contains("Back")) {
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+			}
+			else {
+				String detail = cache.get(p).getDetail();
+				saveWorldConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				WorldConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getWorldConditions(), detail);
 			}
 		}
 	}
 
 	public void receivedMessage(Player p, String message) {
-		boolean notExit= true;
-		String prepareMsg=  message.trim();
+		boolean notExit = true;
+		String prepareMsg = message.trim();
 		if(prepareMsg.contains("exit")) {
-			boolean pass=false;
+			boolean pass = false;
 			if(StringConverter.decoloredString(prepareMsg).equals("exit with delete")) {
 				if(requestWriting.get(p).equals(WorldConditionsGUI.IF_WORLD_TIME)) {
 					cache.get(p).updateIfWorldTime("");
 					requestWriting.remove(p);
 					cache.get(p).openGUISync(p);
 				}
-				pass=true;
+				pass = true;
 			}
 			if(StringConverter.decoloredString(prepareMsg).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(WorldConditionsGUI.IF_WEATHER)) {
@@ -144,7 +140,7 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 				currentWriting.remove(p);
 				requestWriting.remove(p);
 				cache.get(p).openGUISync(p);
-				notExit=false;
+				notExit = false;
 			}
 		}
 		if(notExit) {
@@ -193,9 +189,9 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 	public void showIfWeatherEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifWeather: (RAIN, CLEAR, or STORM)");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Weather", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}

@@ -6,9 +6,9 @@ import com.ssomar.score.splugin.SPlugin;
 
 public abstract class GUIAbstract extends GUI{
 	
-	SPlugin sPlugin;
-	SObject sObject;
-	SActivator sAct;
+	private SPlugin sPlugin;
+	private SObject sObject;
+	private SActivator sAct;
 
 	public GUIAbstract(String name, int size, SPlugin sPlugin, SObject sObject, SActivator sAct) {
 		super(name, size);	

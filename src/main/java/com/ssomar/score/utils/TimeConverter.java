@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class TimeConverter {
 
 	@SuppressWarnings("deprecation")
-	public static String LongToText(long time) {
+	public static String longToText(long time) {
 		Timestamp ts = new Timestamp(time);
 		String nanos = ts.getNanos()+"";
 		nanos = nanos.substring(0, 1);

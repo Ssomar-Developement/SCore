@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.placeholderCdt;
+package com.ssomar.score.menu.conditions.placeholdercdt;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import com.ssomar.score.utils.StringConverter;
 
 
 public class PlaceholdersConditionsGUIManager extends GUIManager<PlaceholdersConditionsGUI>{
-	
+
 	private static PlaceholdersConditionsGUIManager instance;
 
 	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
@@ -26,55 +26,52 @@ public class PlaceholdersConditionsGUIManager extends GUIManager<PlaceholdersCon
 
 	public void clicked(Player p, ItemStack item, String title) {
 		String cPage  = StringConverter.decoloredString(title);
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sActivator = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				String plName = sPlugin.getNameDesign();
-				
-				if (name.contains("Next page")) {
-					cache.replace(p, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]) + 1, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				} else if (name.contains("Previous page")) {
-					cache.replace(p, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]) - 1, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
-				else if (name.contains("New Placeholders cdt")) {
-					p.closeInventory();
-					PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail());
-				} 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);
-				}
-				else if(name.isEmpty()){
-					return;
-				}
-				else {
-					PlaceholdersCondition pC = null;
-					for (PlaceholdersCondition place :  cache.get(p).getList()) {
-						if (place.getId().equals(StringConverter.decoloredString(name).split("✦ ID: ")[1]))
-							pC = place;
-					}
-					if (pC != null)
-						PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
-					else {
-						p.sendMessage(StringConverter.coloredString(
-								"&4&l"+plName+" &cCan't load this placeholder cdt, pls contact the developper on discord if you see this message"));
-						PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail());
-					}
-				}
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sActivator = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			String plName = sPlugin.getNameDesign();
 
-				
-				cache.remove(p);
+			if (name.contains("Next page")) {
+				cache.replace(p, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]) + 1, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
+			} else if (name.contains("Previous page")) {
+				cache.replace(p, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]) - 1, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
 			}
+			else if (name.contains("New Placeholders cdt")) {
+				p.closeInventory();
+				PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail());
+			} 
+			else if(name.contains("Back")) {
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);
+			}
+			else if(name.isEmpty()){
+				return;
+			}
+			else {
+				PlaceholdersCondition pC = null;
+				for (PlaceholdersCondition place :  cache.get(p).getList()) {
+					if (place.getId().equals(StringConverter.decoloredString(name).split("✦ ID: ")[1]))
+						pC = place;
+				}
+				if (pC != null)
+					PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
+				else {
+					p.sendMessage(StringConverter.coloredString(
+							"&4&l"+plName+" &cCan't load this placeholder cdt, pls contact the developper on discord if you see this message"));
+					PlaceholdersConditionGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, cache.get(p).getList(), cache.get(p).getDetail());
+				}
+			}
+
+			cache.remove(p);
 		}
 	}
 
 	public void shiftLeftClicked(Player p, ItemStack item, String title) {
 		String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-		String cPage  = StringConverter.decoloredString(title);
+		String cPage = StringConverter.decoloredString(title);
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -88,11 +85,11 @@ public class PlaceholdersConditionsGUIManager extends GUIManager<PlaceholdersCon
 			cache.get(p).openGUISync(p);
 		}
 		catch(Exception e) {
-			
+
 		}
-		
+
 	}
-	
+
 	public static PlaceholdersConditionsGUIManager getInstance() {
 		if(instance == null) instance = new PlaceholdersConditionsGUIManager();
 		return instance;

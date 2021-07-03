@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.placeholderCdt;
+package com.ssomar.score.menu.conditions.placeholdercdt;
 
 import java.util.List;
 

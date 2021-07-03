@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.customCdt.ei;
+package com.ssomar.score.menu.conditions.worldcdt;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,7 +8,7 @@ import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
+import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -18,18 +18,17 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 
-public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditionsMessagesGUI>{
+public class WorldConditionsMessagesGUIManager extends GUIManager<WorldConditionsMessagesGUI>{
 
-	private static CustomConditionsMessagesGUIManager instance;	
+	private static WorldConditionsMessagesGUIManager instance;	
 
-	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomEIConditions cC, String detail) {
-		cache.put(p, new CustomConditionsMessagesGUI(sPlugin, sObject, sActivator, cC, detail));
+	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions wC, String detail) {
+		cache.put(p, new WorldConditionsMessagesGUI(sPlugin, sObject, sActivator, wC, detail));
 		cache.get(p).openGUISync(p);
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
+		if(item != null && item.hasItemMeta()) {
 				SPlugin sPlugin = cache.get(p).getsPlugin();
 				SObject sObject = cache.get(p).getSObject();
 				SActivator sAct = cache.get(p).getSAct();
@@ -37,12 +36,12 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 				//String plName = sPlugin.getNameDesign();
 
 				if(name.contains("Reset")) {
-					cache.replace(p, new CustomConditionsMessagesGUI(sPlugin, sObject, sAct, new CustomEIConditions(), cache.get(p).getDetail()));
+					cache.replace(p, new WorldConditionsMessagesGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
 					cache.get(p).openGUISync(p);
 				}
 
 				else if(name.contains("Save")) {
-					saveCustomConditionsEI(p);
+					saveWorldConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
@@ -56,32 +55,16 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 				}
 				else if(!name.isEmpty()) {
 
-					if(name.contains(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG));
+					if(name.contains(WorldConditionsMessagesGUI.IF_WEATHER_MSG)) {
+						requestWriting.put(p, WorldConditionsMessagesGUI.IF_WEATHER_MSG);
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(WorldConditionsMessagesGUI.IF_WEATHER_MSG));
 					}
 					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
+					else if(name.contains(WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG)) {
+						requestWriting.put(p, WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG);
+						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG));
 					}
 				}
-			}
 		}
 	}
 	
@@ -127,12 +110,12 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 				//String plName = sPlugin.getNameDesign();
 
 				if(name.contains("Reset")) {
-					cache.replace(p, new CustomConditionsMessagesGUI(sPlugin, sObject, sAct, new CustomEIConditions(), cache.get(p).getDetail()));
+					cache.replace(p, new WorldConditionsMessagesGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
 					cache.get(p).openGUISync(p);
 				}
 
 				else if(name.contains("Save")) {
-					saveCustomConditionsEI(p);
+					saveWorldConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
@@ -146,9 +129,9 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 				}
 				else {
 					String detail = cache.get(p).getDetail();
-					saveCustomConditionsEI(p);
+					saveWorldConditionsEI(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					CustomConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getCustomEIConditions(), detail);
+					WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getWorldConditions(), detail);
 				}
 			}
 		}
@@ -168,27 +151,24 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 		cache.get(p).openGUISync(p);
 	}
 
-	public void saveCustomConditionsEI(Player p) {
+	public void saveWorldConditionsEI(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		CustomEIConditions cC = cache.get(p).getConditions();
+		WorldConditions wC = cache.get(p).getConditions();
 
-		cC.setIfNeedPlayerConfirmationMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG));
-		cC.setIfNotOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG));
-		cC.setIfOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG));
-		cC.setIfPlayerMustBeOnHisIslandMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
-		cC.setIfPlayerMustBeOnHisClaimMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
+		wC.setIfWeatherMsg(cache.get(p).getMessage(WorldConditionsMessagesGUI.IF_WEATHER_MSG));
+		wC.setIfWorldTimeMsg(cache.get(p).getMessage(WorldConditionsMessagesGUI.IF_WORLD_TIME_MSG));
 		
-		CustomEIConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC, cache.get(p).getDetail());
+		WorldConditions.saveWorldConditions(sPlugin, sObject, sActivator, wC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
 	}
 
 
-	public static CustomConditionsMessagesGUIManager getInstance() {
-		if(instance == null) instance = new CustomConditionsMessagesGUIManager();
+	public static WorldConditionsMessagesGUIManager getInstance() {
+		if(instance == null) instance = new WorldConditionsMessagesGUIManager();
 		return instance;
 	}
 }

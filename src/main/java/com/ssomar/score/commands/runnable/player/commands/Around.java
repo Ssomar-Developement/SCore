@@ -22,17 +22,17 @@ public class Around extends PlayerCommandTemplate{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		try {
-			double distance=  Double.valueOf(args.get(0));
+			double distance = Double.valueOf(args.get(0));
 			int cpt = 0;
 
 			for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
 				if(e instanceof Player) {
-					Player target=  (Player) e;
+					Player target =  (Player) e;
 					if(target.hasMetadata("NPC") || target.equals(receiver)) continue;
 					
 					/* regroup the last args that correspond to the commands */
 					StringBuilder prepareCommands = new StringBuilder();
-					for(String s: args.subList(2, args.size())) {
+					for(String s : args.subList(2, args.size())) {
 						prepareCommands.append(s);
 						prepareCommands.append(" ");
 					}
@@ -56,10 +56,10 @@ public class Around extends PlayerCommandTemplate{
 
 						Location loc = target.getLocation();
 
-						s =s.replaceAll("%target_x%", loc.getX()+"");
-						s =s.replaceAll("%target_y%", loc.getY()+"");
-						s =s.replaceAll("%target_z%", loc.getZ()+"");
-						s= s.replaceAll("%target%", target.getName());
+						s = s.replaceAll("%target_x%", loc.getX()+"");
+						s = s.replaceAll("%target_y%", loc.getY()+"");
+						s = s.replaceAll("%target_z%", loc.getZ()+"");
+						s = s.replaceAll("%target%", target.getName());
 						new PlayerCommandsExecutor(Arrays.asList(s), p, silenceOutput, target, aInfo).runPlayerCommands(silenceOutput);		
 					}				
 					cpt++;
@@ -82,7 +82,7 @@ public class Around extends PlayerCommandTemplate{
 			try {
 				Double.valueOf(args.get(0));
 
-				if(Boolean.valueOf(args.get(1))==null) error = invalidBoolean+args.get(1)+" for command: "+around;
+				if(Boolean.valueOf(args.get(1)) == null) error = invalidBoolean+args.get(1)+" for command: "+around;
 
 			}catch(NumberFormatException e){
 				error = invalidDistance+args.get(0)+" for command: "+around;

@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.entityCdt;
+package com.ssomar.score.menu.conditions.entitycdt;
 
 import java.util.ArrayList;
 import java.util.List;

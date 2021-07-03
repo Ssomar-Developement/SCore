@@ -7,7 +7,7 @@ import com.ssomar.score.splugin.SPlugin;
 
 public abstract class ConditionGUIAbstract extends GUIAbstract{
 	
-	String detail;
+	private String detail;
 
 	public ConditionGUIAbstract(String name, int size, SPlugin sPlugin, SObject sObject, SActivator sAct, String detail) {
 		super(name, size, sPlugin, sObject, sAct);	

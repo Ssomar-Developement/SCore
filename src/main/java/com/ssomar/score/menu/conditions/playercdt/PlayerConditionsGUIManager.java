@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.playerCdt;
+package com.ssomar.score.menu.conditions.playercdt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,304 +32,300 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				String plName = sPlugin.getNameDesign();
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sAct = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			String plName = sPlugin.getNameDesign();
 
-				if(name.contains(PlayerConditionsGUI.IF_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SNEAKING);
+			if(name.contains(PlayerConditionsGUI.IF_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SNEAKING);
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING);
-				
-				else if(name.contains(PlayerConditionsGUI.IF_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_BLOCKING);
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING);
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING);
+			else if(name.contains(PlayerConditionsGUI.IF_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_BLOCKING);
 
-				else if(name.contains(PlayerConditionsGUI.IF_SWIMMING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SWIMMING);
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING);
 
-				else if(name.contains(PlayerConditionsGUI.IF_GLIDING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_GLIDING);
+			else if(name.contains(PlayerConditionsGUI.IF_SWIMMING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SWIMMING);
 
-				else if(name.contains(PlayerConditionsGUI.IF_FLYING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_FLYING);
+			else if(name.contains(PlayerConditionsGUI.IF_GLIDING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_GLIDING);
 
-				else if(name.contains(PlayerConditionsGUI.IF_IN_WORLD)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_IN_WORLD);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfInWorld());
+			else if(name.contains(PlayerConditionsGUI.IF_FLYING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_FLYING);
+
+			else if(name.contains(PlayerConditionsGUI.IF_IN_WORLD)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_IN_WORLD);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfInWorld());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN WORLD:"));
+				this.showIfInWorldEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_WORLD);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfNotInWorld());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN NOT WORLD:"));
+				this.showIfNotInWorldEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_IN_BIOME)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_IN_BIOME);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfInBiome());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN BIOME:"));
+				this.showIfInBiomeEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_BIOME);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfNotInBiome());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN NOT BIOME:"));
+				this.showIfNotInBiomeEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_IN_REGION)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_IN_REGION);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfInRegion());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN REGION:"));
+				this.showIfInRegionEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_REGION);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfNotInRegion());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT IN REGION:"));
+				this.showIfNotInRegionEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_HAS_PERMISSION);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfHasPermission());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF HAS PERMISSION:"));
+				this.showIfHasPermissionEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_HAS_PERMISSION);
+				if(!currentWriting.containsKey(p)) {
+					currentWriting.put(p, cache.get(p).getIfNotHasPermission());
+				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT HAS PERMISSION:"));
+				this.showIfNotHasPermissionEditor(p);
+				space(p);
+			}
+
+			else if(name.contains(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_TARGET_BLOCK);
+				if(!currentWriting.containsKey(p)) {
+					List<String> convert = new ArrayList<>();
+					for(Material mat : cache.get(p).getIfTargetBlock()) {
+						convert.add(mat.toString());
 					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN WORLD:"));
-					this.showIfInWorldEditor(p);
-					space(p);
+					currentWriting.put(p, convert);
 				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF TARGET BLOCK:"));
+				this.showIfTargetBlockEditor(p);
+				space(p);
+			}
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_WORLD);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfNotInWorld());
+			else if(name.contains(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_TARGET_BLOCK);
+				if(!currentWriting.containsKey(p)) {	
+					List<String> convert = new ArrayList<>();
+					for(Material mat : cache.get(p).getIfNotTargetBlock()) {
+						convert.add(mat.toString());
 					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN NOT WORLD:"));
-					this.showIfNotInWorldEditor(p);
-					space(p);
+					currentWriting.put(p, convert);
 				}
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT TARGET BLOCK:"));
+				this.showIfNotTargetBlockEditor(p);
+				space(p);
+			}
 
-				else if(name.contains(PlayerConditionsGUI.IF_IN_BIOME)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_IN_BIOME);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfInBiome());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN BIOME:"));
-					this.showIfInBiomeEditor(p);
-					space(p);
-				}
+			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_HEALTH)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_HEALTH);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER HEALTH:"));
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_BIOME);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfNotInBiome());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN NOT BIOME:"));
-					this.showIfNotInBiomeEditor(p);
-					space(p);
-				}
+				this.showCalculationGUI(p, "Health", cache.get(p).getIfPlayerHealth());
+				space(p);
+			}
 
-				else if(name.contains(PlayerConditionsGUI.IF_IN_REGION)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_IN_REGION);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfInRegion());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN REGION:"));
-					this.showIfInRegionEditor(p);
-					space(p);
-				}
+			else if(name.contains(PlayerConditionsGUI.IF_LIGHT_LEVEL)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_LIGHT_LEVEL);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF LIGHT LEVEL:"));
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_REGION);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfNotInRegion());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT IN REGION:"));
-					this.showIfNotInRegionEditor(p);
-					space(p);
-				}
+				this.showCalculationGUI(p, "Light level", cache.get(p).getIfLightLevel());
+				space(p);
+			}
 
-				else if(name.contains(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_HAS_PERMISSION);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfHasPermission());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF HAS PERMISSION:"));
-					this.showIfHasPermissionEditor(p);
-					space(p);
-				}
+			else if(name.contains(PlayerConditionsGUI.IF_POS_X)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_POS_X);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS X:"));
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_NOT_HAS_PERMISSION);
-					if(!currentWriting.containsKey(p)) {
-						currentWriting.put(p, cache.get(p).getIfNotHasPermission());
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT HAS PERMISSION:"));
-					this.showIfNotHasPermissionEditor(p);
-					space(p);
-				}
+				this.showCalculationGUI(p, "Pos X", cache.get(p).getIfPosX());
+				space(p);
+			}
 
-				else if(name.contains(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_TARGET_BLOCK);
-					if(!currentWriting.containsKey(p)) {
-						List<String> convert = new ArrayList<>();
-						for(Material mat : cache.get(p).getIfTargetBlock()) {
-							convert.add(mat.toString());
-						}
-						currentWriting.put(p, convert);
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF TARGET BLOCK:"));
-					this.showIfTargetBlockEditor(p);
-					space(p);
-				}
+			else if(name.contains(PlayerConditionsGUI.IF_POS_Y)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_POS_Y);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Y:"));
 
-				else if(name.contains(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_NOT_TARGET_BLOCK);
-					if(!currentWriting.containsKey(p)) {	
-						List<String> convert = new ArrayList<>();
-						for(Material mat : cache.get(p).getIfNotTargetBlock()) {
-							convert.add(mat.toString());
-						}
-						currentWriting.put(p, convert);
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT TARGET BLOCK:"));
-					this.showIfNotTargetBlockEditor(p);
-					space(p);
-				}
+				this.showCalculationGUI(p, "Pos Y", cache.get(p).getIfPosY());
+				space(p);
+			}
 
-				else if(name.contains(PlayerConditionsGUI.IF_PLAYER_HEALTH)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_HEALTH);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER HEALTH:"));
+			else if(name.contains(PlayerConditionsGUI.IF_POS_Z)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_POS_Z);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Z:"));
 
-					this.showCalculationGUI(p, "Health", cache.get(p).getIfPlayerHealth());
-					space(p);
-				}
-				
-				else if(name.contains(PlayerConditionsGUI.IF_LIGHT_LEVEL)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_LIGHT_LEVEL);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF LIGHT LEVEL:"));
+				this.showCalculationGUI(p, "Pos Z", cache.get(p).getIfPosZ());
+				space(p);
+			}
 
-					this.showCalculationGUI(p, "Light level", cache.get(p).getIfLightLevel());
-					space(p);
-				}
-				
-				else if(name.contains(PlayerConditionsGUI.IF_POS_X)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_POS_X);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS X:"));
+			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER FOOD LEVEL:"));
 
-					this.showCalculationGUI(p, "Pos X", cache.get(p).getIfPosX());
-					space(p);
-				}
-				
-				else if(name.contains(PlayerConditionsGUI.IF_POS_Y)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_POS_Y);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Y:"));
+				this.showCalculationGUI(p, "Food level", cache.get(p).getIfPlayerFoodLevel());
+				space(p);
+			}
+			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_EXP)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_EXP);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER EXP:"));
 
-					this.showCalculationGUI(p, "Pos Y", cache.get(p).getIfPosY());
-					space(p);
-				}
-				
-				else if(name.contains(PlayerConditionsGUI.IF_POS_Z)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_POS_Z);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Z:"));
+				this.showCalculationGUI(p, "EXP", cache.get(p).getIfPlayerEXP());
+				space(p);
+			}
+			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_LEVEL)) {
+				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_LEVEL);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER LEVEL:"));
 
-					this.showCalculationGUI(p, "Pos Z", cache.get(p).getIfPosZ());
-					space(p);
-				}
-				
-				else if(name.contains(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER FOOD LEVEL:"));
+				this.showCalculationGUI(p, "Level", cache.get(p).getIfPlayerLevel());
+				space(p);
+			}	
 
-					this.showCalculationGUI(p, "Food level", cache.get(p).getIfPlayerFoodLevel());
-					space(p);
-				}
-				else if(name.contains(PlayerConditionsGUI.IF_PLAYER_EXP)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_EXP);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER EXP:"));
+			else if(name.contains("Reset")) {
+				cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
+			}
 
-					this.showCalculationGUI(p, "EXP", cache.get(p).getIfPlayerEXP());
-					space(p);
-				}
-				else if(name.contains(PlayerConditionsGUI.IF_PLAYER_LEVEL)) {
-					requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_LEVEL);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER LEVEL:"));
+			else if(name.contains("Save")) {
+				savePlayerConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+			}
 
-					this.showCalculationGUI(p, "Level", cache.get(p).getIfPlayerLevel());
-					space(p);
-				}	
+			else if(name.contains("Exit")) {
+				p.closeInventory();
+			}
 
-				else if(name.contains("Reset")) {
-					cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
-
-				else if(name.contains("Save")) {
-					savePlayerConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
-
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
-
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
+			else if(name.contains("Back")) {
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
 			}
 		}
 	}
-	
+
 	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sAct = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			//String plName = sPlugin.getNameDesign();
 
-				if(name.contains("Reset")) {
-					cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+			if(name.contains("Reset")) {
+				cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
+			}
 
-				else if(name.contains("Save")) {
-					savePlayerConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+			else if(name.contains("Save")) {
+				savePlayerConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+			}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+			else if(name.contains("Exit")) {
+				p.closeInventory();
+			}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					savePlayerConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					if(detail.contains("owner"))PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getOwnerConditions(), detail);
-					else if(detail.contains("target")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetPlayerConditions(), detail);
-					else if(detail.contains("player")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getPlayerConditions(), detail);
-				}
+			else if(name.contains("Back")) {
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
+			}
+			else {
+				String detail = cache.get(p).getDetail();
+				savePlayerConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				if(detail.contains("owner"))PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getOwnerConditions(), detail);
+				else if(detail.contains("target")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetPlayerConditions(), detail);
+				else if(detail.contains("player")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getPlayerConditions(), detail);
 			}
 		}
 	}
 
 	public void receivedMessage(Player p, String message) {
-		boolean notExit= true;
+		boolean notExit = true;
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		//SObject sObject = cache.get(p).getSObject();
 		//SActivator sAct = cache.get(p).getSAct();
 		String plName = sPlugin.getNameDesign();
 
 		if(message.contains("exit")) {
-			boolean pass=false;
+			boolean pass = false;
 			if(StringConverter.decoloredString(message).equals("exit with delete")) {
 				if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_PLAYER_HEALTH)) {
 					cache.get(p).updateIfPlayerHealth("");
@@ -357,7 +353,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				}
 				requestWriting.remove(p);
 				cache.get(p).openGUISync(p);
-				pass=true;
+				pass = true;
 			}
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD)) {
@@ -464,7 +460,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				}
 				this.showTheGoodEditor(requestWriting.get(p), p);
 			}
-			
+
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_BIOME) ||  requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
 
 				if(currentWriting.containsKey(p)) {
@@ -501,7 +497,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 					this.showTheGoodEditor(requestWriting.get(p), p);
 				}
 			}
-			
+
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_PERMISSION) || requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
 				if(message.isEmpty() || message.equals(" ")) {
 					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid permission please !"));
@@ -544,8 +540,8 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 				}
 				this.showTheGoodEditor(requestWriting.get(p), p);
 			}
-			
-			
+
+
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_PLAYER_HEALTH)) {
 				if(StringCalculation.isStringCalculation(message)) {
 					cache.get(p).updateIfPlayerHealth(message);
@@ -556,7 +552,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 					this.showCalculationGUI(p, "Health", cache.get(p).getIfPlayerHealth());
 				}
 			}
-			
+
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_LIGHT_LEVEL)) {
 				if(StringCalculation.isStringCalculation(message)) {
 					cache.get(p).updateIfLightLevel(message);
@@ -634,9 +630,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfInWorldEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifInWorld:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "World:", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -644,9 +640,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfNotInWorldEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifNotInWorld:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Not world:", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -654,9 +650,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfInBiomeEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifInBiome:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Biome:", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -664,9 +660,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfNotInBiomeEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifNotInBiome:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Not biome:", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -674,9 +670,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfNotInRegionEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifNotInRegion:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Not region", false, true, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -684,9 +680,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfInRegionEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifInRegion:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Region", false, true, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -694,9 +690,9 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfNotHasPermissionEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifNotHasPermission:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Not has permission", false, true, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
@@ -704,33 +700,33 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 	public void showIfHasPermissionEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifHasPermission:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Has permission", false, true, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
-	
+
 	public void showIfTargetBlockEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifTargetBlock:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Target block", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
-	
+
 	public void showIfNotTargetBlockEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifNotTargetBlock:");
-		
+
 		HashMap<String, String> suggestions = new HashMap<>();
-		
+
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Not target block", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
-	
+
 	public void showTheGoodEditor(String value, Player p) {
 
 		switch(value) {
@@ -738,43 +734,43 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		case PlayerConditionsGUI.IF_NOT_TARGET_BLOCK:
 			showIfNotTargetBlockEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_TARGET_BLOCK:
 			showIfTargetBlockEditor(p);
 			break;
-		
+
 		case PlayerConditionsGUI.IF_HAS_PERMISSION:
 			showIfHasPermissionEditor(p);
 			break;
-		
+
 		case PlayerConditionsGUI.IF_NOT_HAS_PERMISSION:
 			showIfNotHasPermissionEditor(p);
 			break;
-		
+
 		case PlayerConditionsGUI.IF_IN_REGION:
 			showIfInRegionEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_NOT_IN_REGION:
 			showIfNotInRegionEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_NOT_IN_BIOME:
 			showIfNotInBiomeEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_IN_BIOME:
 			showIfInBiomeEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_IN_WORLD:
 			showIfInWorldEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_NOT_IN_WORLD:
 			showIfNotInWorldEditor(p);
 			break;
-		
+
 		default:
 			break;
 		}

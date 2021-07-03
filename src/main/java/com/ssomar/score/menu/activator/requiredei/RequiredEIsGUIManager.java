@@ -22,40 +22,38 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item, String guiTitle) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sActivator = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
-				String currentPage = StringConverter.decoloredString(guiTitle);
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sActivator = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			//String plName = sPlugin.getNameDesign();
+			String currentPage = StringConverter.decoloredString(guiTitle);
 
-				if(name.contains("Next page")) {
-					new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
-				}
-				else if(name.contains("Previous page")) {
-					p.closeInventory();
-					new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
-				}
-				else if(name.contains("Return")) {
-					RequiredEIGUIManager.getInstance().getCache().get(p).openGUISync(p);
-				}
-				else if(name.contains("Back")) {
-					LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
-				}
-				else if(name.contains("New RequiredEI")) {
-					RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);	
-				}
-				else {
-					try {
-						RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getRequiredEI(name.split("ID: ")[1]));
-					}
-					catch(Exception e) {}
-				}
-
-				cache.remove(p);
+			if(name.contains("Next page")) {
+				new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
 			}
+			else if(name.contains("Previous page")) {
+				p.closeInventory();
+				new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
+			}
+			else if(name.contains("Return")) {
+				RequiredEIGUIManager.getInstance().getCache().get(p).openGUISync(p);
+			}
+			else if(name.contains("Back")) {
+				LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
+			}
+			else if(name.contains("New RequiredEI")) {
+				RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator);	
+			}
+			else {
+				try {
+					RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getRequiredEI(name.split("ID: ")[1]));
+				}
+				catch(Exception e) {}
+			}
+
+			cache.remove(p);
 		}
 	}
 

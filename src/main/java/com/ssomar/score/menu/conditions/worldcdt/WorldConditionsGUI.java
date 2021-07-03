@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.worldCdt;
+package com.ssomar.score.menu.conditions.worldcdt;
 
 import java.util.List;
 

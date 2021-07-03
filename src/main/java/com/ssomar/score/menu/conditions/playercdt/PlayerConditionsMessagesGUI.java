@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.playerCdt;
+package com.ssomar.score.menu.conditions.playercdt;
 
 import org.bukkit.Material;
 

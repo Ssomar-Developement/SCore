@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.itemCdt;
+package com.ssomar.score.menu.conditions.itemcdt;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,74 +23,72 @@ public class ItemConditionsGUIManager extends GUIManager<ItemConditionsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				String plName = sPlugin.getNameDesign();
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sAct = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			String plName = sPlugin.getNameDesign();
 
-				if(name.contains(ItemConditionsGUI.IF_DURABILITY)) {
-					requestWriting.put(p, ItemConditionsGUI.IF_DURABILITY);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF DURABILITY:"));
+			if(name.contains(ItemConditionsGUI.IF_DURABILITY)) {
+				requestWriting.put(p, ItemConditionsGUI.IF_DURABILITY);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF DURABILITY:"));
 
-					this.showCalculationGUI(p, "Durability", cache.get(p).getIfDurability());
-					space(p);
-				}
-				else if(name.contains(ItemConditionsGUI.IF_USAGE)) {
-					requestWriting.put(p, ItemConditionsGUI.IF_USAGE);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF USAGE:"));
+				this.showCalculationGUI(p, "Durability", cache.get(p).getIfDurability());
+				space(p);
+			}
+			else if(name.contains(ItemConditionsGUI.IF_USAGE)) {
+				requestWriting.put(p, ItemConditionsGUI.IF_USAGE);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF USAGE:"));
 
-					this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage());
-					space(p);
-				}
-				else if(name.contains(ItemConditionsGUI.IF_USAGE2)) {
-					requestWriting.put(p, ItemConditionsGUI.IF_USAGE2);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF USAGE2:"));
+				this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage());
+				space(p);
+			}
+			else if(name.contains(ItemConditionsGUI.IF_USAGE2)) {
+				requestWriting.put(p, ItemConditionsGUI.IF_USAGE2);
+				p.closeInventory();
+				space(p);
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF USAGE2:"));
 
-					this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage2());
-					space(p);
-				}
-				else if(name.contains("Reset")) {
-					cache.replace(p, new ItemConditionsGUI(sPlugin, sObject, sAct, new ItemConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+				this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage2());
+				space(p);
+			}
+			else if(name.contains("Reset")) {
+				cache.replace(p, new ItemConditionsGUI(sPlugin, sObject, sAct, new ItemConditions(), cache.get(p).getDetail()));
+				cache.get(p).openGUISync(p);
+			}
 
-				else if(name.contains("Save")) {
-					saveItemConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+			else if(name.contains("Save")) {
+				saveItemConditionsEI(p);
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
+			}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+			else if(name.contains("Exit")) {
+				p.closeInventory();
+			}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
+			else if(name.contains("Back")) {
+				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
 			}
 		}
 	}
 
 	public void receivedMessage(Player p, String message) {
-		boolean notExit= true;
-		
+		boolean notExit = true;
+
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		//SObject sObject = cache.get(p).getSObject();
 		//SActivator sAct = cache.get(p).getSAct();
 		String plName = sPlugin.getNameDesign();
-		
+
 		String editMessage = message.trim();
 		if(editMessage.contains("exit")) {
-			boolean pass=false;
+			boolean pass = false;
 			if(StringConverter.decoloredString(editMessage).equals("exit with delete")) {
 				if(requestWriting.get(p).equals(ItemConditionsGUI.IF_DURABILITY)) {
 					cache.get(p).updateIfDurability("");
@@ -120,7 +118,7 @@ public class ItemConditionsGUIManager extends GUIManager<ItemConditionsGUI>{
 				currentWriting.remove(p);
 				requestWriting.remove(p);
 				cache.get(p).openGUISync(p);
-				notExit=false;
+				notExit = false;
 			}
 		}
 		if(notExit) {
@@ -162,7 +160,7 @@ public class ItemConditionsGUIManager extends GUIManager<ItemConditionsGUI>{
 			}
 		}
 	}
-	
+
 	public void shiftClicked(Player p, ItemStack item) {
 		if(item != null) {
 			if(item.hasItemMeta()) {
@@ -206,7 +204,7 @@ public class ItemConditionsGUIManager extends GUIManager<ItemConditionsGUI>{
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sAct = cache.get(p).getSAct();
 		//String plName = sPlugin.getNameDesign();
-		
+
 		ItemConditions iC = cache.get(p).getConditions();
 
 		iC.setIfDurability(cache.get(p).getIfDurability());

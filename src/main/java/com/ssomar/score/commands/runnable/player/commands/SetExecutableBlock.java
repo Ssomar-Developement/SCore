@@ -37,17 +37,20 @@ public class SetExecutableBlock extends PlayerCommandTemplate{
 		}
 		else {
 
-			if(SCore.hasExecutableBlocks) {
-				/* Ne pas verif car ca peut bloquer si on veut poser le block qui est associé à l'activator */
-//				if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
-//					error = "There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command"+setEB;
-//					return error;
-//				}
+			/* Ne pas verif car ca peut bloquer si on veut poser le block qui est associé à l'activator */
+			
+			/*
+			 if(SCore.hasExecutableBlocks) {
+				if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
+					error = "There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command"+setEB;
+					return error;
+				}
 			}
 			else {
 				error = "You must have ExecutableBlock for the command"+setEB;
 				return error;
 			}
+			*/
 
 			if(!args.get(1).contains("%")) {
 				try {

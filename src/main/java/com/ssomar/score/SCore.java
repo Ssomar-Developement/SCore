@@ -183,6 +183,10 @@ public final class SCore extends JavaPlugin {
 	public static SCore getPlugin() {
 		return plugin;
 	}
+	
+	public CommandsClass getCommandClass() {
+		return commandClass;
+	}
 
 	/* The server is in 1.12 ? */
 	public static boolean is1v12() {

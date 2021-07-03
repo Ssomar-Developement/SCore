@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions.customCdt.ei;
+package com.ssomar.score.menu.conditions.customcdt.ei;
 
 import org.bukkit.Material;
 

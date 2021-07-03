@@ -45,9 +45,9 @@ public class NoFallDamageManager {
 						toRemove = c;
 					}
 				}
-				if(toRemove!=null) tasks.remove(toRemove);
+				if(toRemove != null) tasks.remove(toRemove);
 
-				emptyList = tasks.size()==0;
+				emptyList = tasks.size() == 0;
 
 				break;
 			}
@@ -70,7 +70,7 @@ public class NoFallDamageManager {
 	}
 
 	public static NoFallDamageManager getInstance() {
-		if(instance==null) instance = new NoFallDamageManager();
+		if(instance == null) instance = new NoFallDamageManager();
 		return instance;
 	}
 
