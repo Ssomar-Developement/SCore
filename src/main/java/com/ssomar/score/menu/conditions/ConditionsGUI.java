@@ -21,9 +21,12 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	public static final String CUSTOM_EI_CONDITIONS = "Custom EI Conditions";
 
 	public ConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Conditions", 3*9, sPlugin, sObject, sAct, "null");
+		super("&8&l"+sPlugin.getShortName()+" Editor - Conditions", 3*9, sPlugin, sObject, sAct, "null", null);
+	}
 
-		SOption sOp = sAct.getOption();
+	@Override
+	public void loadTheGUI() {
+		SOption sOp = this.getSAct().getOption();
 		int i=0;
 		
 		if(sOp.getOptionWithOwner().contains(sOp)) {
@@ -67,17 +70,16 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 			i++;
 		}
 		
-		if(sPlugin.getShortName().equalsIgnoreCase("ei") && sOp.getOptionWithPlayer().contains(sOp)) {
+		if(this.getsPlugin().getShortName().equalsIgnoreCase("ei") && sOp.getOptionWithPlayer().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+CUSTOM_EI_CONDITIONS, 	false,	false, "&7&oThe custom condtions", "&a✎ Click here to change");
 			i++;
 		}
 
 		createItem(RED, 									1 , 18, 	"&4&l▶ &cBack to activator config", 	false, false);
 
-		createItem(Material.BOOK, 							1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sAct.getID());
+		createItem(Material.BOOK, 							1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		return;
 	}
-
 }

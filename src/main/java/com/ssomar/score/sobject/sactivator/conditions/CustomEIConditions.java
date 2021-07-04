@@ -49,8 +49,9 @@ public class CustomEIConditions extends Conditions{
 	private boolean ifPlayerMustBeOnHisClaim;
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG = " &cTo active this activator/item, you must be on your Claim or friend claim !";
 	private String ifPlayerMustBeOnHisClaimMsg;
-
-	public CustomEIConditions() {
+	
+	@Override
+	public void init() {
 		this.ifNeedPlayerConfirmation = false;
 		this.ifNeedPlayerConfirmationMsg = IF_NEED_PLAYER_CONFIRMATION_MSG;
 

@@ -4,20 +4,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.RequestMessage;
+import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsMessagesGUI.EntityConditionsMessages;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-
-public class EntityConditionsMessagesGUIManager extends GUIManager<EntityConditionsMessagesGUI>{
+public class EntityConditionsMessagesGUIManager extends GUIManagerSCore<EntityConditionsMessagesGUI>{
 
 	private static EntityConditionsMessagesGUIManager instance;
 
@@ -26,110 +24,28 @@ public class EntityConditionsMessagesGUIManager extends GUIManager<EntityConditi
 		cache.get(p).openGUISync(p);
 	}
 
-	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+	@Override
+	public void clicked(InteractionClickedGUIManager<EntityConditionsMessagesGUI> i) {
+		
+		if(i.name.contains("Save")) {
+			saveEntityConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
 
-				if(name.contains("Reset")) {
-					cache.replace(p, new EntityConditionsMessagesGUI(sPlugin, sObject, sAct, new EntityConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
-
-				else if(name.contains("Save")) {
-					saveEntityConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
-
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
-
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else if(!name.isEmpty()) {
-
-					if(name.contains(EntityConditionsMessagesGUI.IF_ADULT_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_ADULT_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_ADULT_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_BABY_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_BABY_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_BABY_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_GLOWING_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_GLOWING_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_GLOWING_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_NAME_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_NAME_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_NAME_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG));
-					}
-
-					else if(name.contains(EntityConditionsMessagesGUI.IF_POWERED_MSG)) {
-						requestWriting.put(p, EntityConditionsMessagesGUI.IF_POWERED_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(EntityConditionsMessagesGUI.IF_POWERED_MSG));
-					}	
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		else if(!i.name.isEmpty()) {
+			for(EntityConditionsMessages ecMsg : EntityConditionsMessages.values()) {
+				if(i.name.contains(ecMsg.name)) {
+					requestWriting.put(i.player, ecMsg.name);
+					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(ecMsg.name);
+					RequestMessage.sendRequestMessage(i.msgInfos);
 				}
 			}
 		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public void sendRequestMessage(SPlugin sPlugin, Player p, String actualMsg) {
-		p.closeInventory();
-		space(p);
-
-		TextComponent message = new TextComponent(
-				StringConverter.coloredString("&a&l"+sPlugin.getNameDesign()+" &aEnter a new message or &aedit &athe &amessage: "));
-
-		TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-		edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(actualMsg)));
-		edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current message")).create()));
-
-		TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));
-		newName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "Type the new message here.."));
-		newName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder(StringConverter.coloredString("&aClick here to set new message")).create()));
-
-		TextComponent noMsg = new TextComponent(StringConverter.coloredString("&c&l[NO MSG]"));
-		noMsg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "NO MESSAGE"));
-		noMsg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder(StringConverter.coloredString("&cClick here to set no msg")).create()));
-
-		
-		message.addExtra(new TextComponent(" "));
-		message.addExtra(edit);
-		message.addExtra(new TextComponent(" "));
-		message.addExtra(newName);
-		message.addExtra(new TextComponent(" "));
-		message.addExtra(noMsg);
-
-		p.spigot().sendMessage(message);
-		space(p);
-	}
+	}	
 
 	public void shiftClicked(Player p, ItemStack item) {
 		if(item != null) {
@@ -188,15 +104,15 @@ public class EntityConditionsMessagesGUIManager extends GUIManager<EntityConditi
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
 		
-		EntityConditions eC = cache.get(p).getConditions();
-		eC.setIfAdultMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_ADULT_MSG));
-		eC.setIfBabyMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_BABY_MSG));
-		eC.setIfEntityHealthMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_ENTITY_HEALTH_MSG));
-		eC.setIfGlowingMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_GLOWING_MSG));
-		eC.setIfInvulnerableMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_INVULNERABLE_MSG));
-		eC.setIfNameMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_NAME_MSG));
-		eC.setIfNotEntityTypeMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_NOT_ENTITY_TYPE_MSG));
-		eC.setIfPoweredMsg(cache.get(p).getMessage(EntityConditionsMessagesGUI.IF_POWERED_MSG));
+		EntityConditions eC = (EntityConditions) cache.get(p).getConditions();
+		eC.setIfAdultMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_ADULT_MSG.name));
+		eC.setIfBabyMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_BABY_MSG.name));
+		eC.setIfEntityHealthMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_ENTITY_HEALTH_MSG.name));
+		eC.setIfGlowingMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_GLOWING_MSG.name));
+		eC.setIfInvulnerableMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_INVULNERABLE_MSG.name));
+		eC.setIfNameMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_NAME_MSG.name));
+		eC.setIfNotEntityTypeMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_NOT_ENTITY_TYPE_MSG.name));
+		eC.setIfPoweredMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_POWERED_MSG.name));
 
 		EntityConditions.saveEntityConditions(sPlugin, sObject, sActivator, eC, cache.get(p).getDetail());
 		cache.remove(p);
@@ -208,5 +124,5 @@ public class EntityConditionsMessagesGUIManager extends GUIManager<EntityConditi
 	public static EntityConditionsMessagesGUIManager getInstance() {
 		if(instance == null) instance = new EntityConditionsMessagesGUIManager();
 		return instance;
-	}	
+	}
 }

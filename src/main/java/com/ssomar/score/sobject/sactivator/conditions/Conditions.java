@@ -3,13 +3,16 @@ package com.ssomar.score.sobject.sactivator.conditions;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringConverter;
 
 public abstract class Conditions {
 	
 	private SendMessage sm = new SendMessage();
 	
-	public static StringConverter sc = new StringConverter();	
+	public Conditions() {
+		init();
+	}
+	
+	public abstract void init();
 
 	public boolean verifConditions(Player p) {
 		return false;

@@ -27,9 +27,12 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 	public final static String MESSAGE = "Message if not valid";
 	public final static String CANCEL_EVENT = "Cancel event if not valid";
 	public final static String CDT_ID = "Cdt ID:";
+	
+	private PlaceholdersCondition pC;
 
 	public PlaceholdersConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
-		super(TITLE, 6 * 9, sPlugin, sObject, sActivator, detail);
+		super(TITLE, 6 * 9, sPlugin, sObject, sActivator, detail, new PlaceholdersCondition("null"));
+		
 		newPlaceholdersCondition = true;
 
 		int id = 1;
@@ -42,32 +45,32 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		}
 		String idStr = "plchC" + id;
 
-		PlaceholdersCondition pC = new PlaceholdersCondition(idStr, PlaceholdersCdtType.PLAYER_NUMBER, "", "", Comparator.EQUALS, 0);
-
-		this.fillTheGUI(sPlugin, sObject, sActivator, pC, true);
+		PlaceholdersCondition pC = (PlaceholdersCondition)this.getConditions();
+		pC.setId(idStr);
+		this.pC = pC;
 	}
 
 	public PlaceholdersConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlaceholdersCondition pC, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" "+TITLE, 6 * 9, sPlugin, sObject, sActivator, detail);
-		this.fillTheGUI(sPlugin, sObject, sActivator, pC, false);
+		super("&8&l"+sPlugin.getShortName()+" "+TITLE, 6 * 9, sPlugin, sObject, sActivator, detail, pC);
+		this.pC = pC;
 	}
 
-	public void fillTheGUI(SPlugin sPlugi, SObject sObject, SActivator sActivator, PlaceholdersCondition pC, boolean newPlaceholdersCondition) {
-
+	@Override
+	public void loadTheGUI() {
 		//String str = "";
 		//if (PlaceholderAPI.isLotOfWork()) str = "&7&oPremium";
-		
+
 		// Main Options
 		createItem(Material.NAME_TAG, 				1, 0, TITLE_COLOR+TYPE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		this.updateType(pC.getType());
-		
+
 		createItem(Material.PAPER, 					1, 1, TITLE_COLOR+PART1, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart1());
 
 		createItem(Material.ARROW, 				    1, 2, TITLE_COLOR+COMPARATOR, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		this.updateComparator(pC.getComparator());
-		
+
 		if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(pC.getType()))
-		createItem(Material.PAPER, 					1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart2Number());
+			createItem(Material.PAPER, 					1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart2Number());
 
 		else createItem(Material.PAPER, 			1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart2String());
 
@@ -76,7 +79,7 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		createItem(Material.LEVER, 					1, 5, TITLE_COLOR+CANCEL_EVENT, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		this.updateBoolean(CANCEL_EVENT, pC.isCancelEvent());
 
-		
+
 		// exit
 		createItem(RED, 	1, 45, "&4&l▶&c Back to Placeholders Conditions", false, false);
 
@@ -84,10 +87,10 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		createItem(ORANGE, 			1, 46, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall options of this Placeholders Condition");
 
 		createItem(Material.BOOK, 					1, 49, TITLE_COLOR+CDT_ID, false, false, "", "&7actually: &e" + pC.getId());
-		
-		createItem(Material.BOOK, 					1, 50, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + sActivator.getID());
 
-		createItem(Material.BOOK, 					1, 51, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + sObject.getID());
+		createItem(Material.BOOK, 					1, 50, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
+
+		createItem(Material.BOOK, 					1, 51, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getID());
 
 		// Save menu
 		if(newPlaceholdersCondition) {
@@ -96,7 +99,8 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		else {
 			createItem(GREEN, 1, 53, "&2&l✔ &aSave this Placeholders Condition", false, false, "", "&a&oClick here to save this", "&a&oPlaceholders Condition");
 		}
-	}
+	}	
+
 
 	public void changeType() {
 		ItemStack item = this.getByName(TYPE);
@@ -114,18 +118,18 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 	}
 
 	public void updateType(PlaceholdersCdtType option) {
-//		if (SsomarDev.isLotOfWork() && Option.getPremiumOption().contains(option)) {
-//			this.updateOption(option.getNext());
-//			return;
-//		}
+		//		if (SsomarDev.isLotOfWork() && Option.getPremiumOption().contains(option)) {
+		//			this.updateOption(option.getNext());
+		//			return;
+		//		}
 		ItemStack item = this.getByName(TYPE);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore().subList(0, 2);
 		boolean find = false;
-		
+
 		int cast =17;
 		if(PlaceholdersCdtType.values().length+2<17) cast = PlaceholdersCdtType.values().length+2;
-		
+
 		for (PlaceholdersCdtType opt : PlaceholdersCdtType.values()) {
 			if (option.equals(opt)) {
 				lore.add(StringConverter.coloredString("&2➤ &a" + option));
@@ -158,7 +162,7 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		}
 		return null;
 	}
-	
+
 	public void changeComparator() {
 		ItemStack item = this.getByName(COMPARATOR);
 		ItemMeta meta = item.getItemMeta();
@@ -175,18 +179,18 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 	}
 
 	public void updateComparator(Comparator option) {
-//		if (SsomarDev.isLotOfWork() && Option.getPremiumOption().contains(option)) {
-//			this.updateOption(option.getNext());
-//			return;
-//		}
+		//		if (SsomarDev.isLotOfWork() && Option.getPremiumOption().contains(option)) {
+		//			this.updateOption(option.getNext());
+		//			return;
+		//		}
 		ItemStack item = this.getByName(COMPARATOR);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore().subList(0, 2);
 		boolean find = false;
-		
+
 		int cast =17;
 		if(Comparator.values().length+2<17) cast = Comparator.values().length+2;
-		
+
 		for (Comparator opt : Comparator.values()) {
 			if (option.equals(opt)) {
 				lore.add(StringConverter.coloredString("&2➤ &a" + option));
@@ -226,6 +230,6 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 
 	public void setNewPlaceholdersCondition(boolean newPlaceholdersCondition) {
 		this.newPlaceholdersCondition = newPlaceholdersCondition;
-	}	
-	
+	}
+
 }

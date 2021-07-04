@@ -137,8 +137,9 @@ public class PlayerConditions extends Conditions{
 	private Map<Material, Integer> ifPlayerHasItem;
 	private static final String IF_PLAYER_HAS_ITEM_MSG = " &cYou don't have all correct Items to active the activator: &6%activator% &cof this item!";
 	private String ifPlayerHasItemMsg;
-
-	public PlayerConditions() {
+	
+	@Override
+	public void init() {
 		this.ifSneaking = false;
 		this.ifSneakingMsg = IF_SNEAKING_MSG;
 		

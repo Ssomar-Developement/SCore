@@ -44,7 +44,8 @@ public class ItemConditions extends Conditions{
 
 	//private String ifBlockBreakWithItem="";
 	
-	public ItemConditions() {
+	@Override
+	public void init() {
 		this.ifDurability = "";
 		this.ifDurabilityMsg = IF_DURABILITY_MSG;
 		
@@ -54,7 +55,6 @@ public class ItemConditions extends Conditions{
 		this.ifUsage2 = "";
 		this.ifUsage2Msg = IF_USAGE_MSG;
 	}
-
 	
 	@SuppressWarnings("deprecation")
 	public boolean verifConditions(ItemStack i, Item infoItem, Player p) {		

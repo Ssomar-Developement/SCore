@@ -18,10 +18,13 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 	private ItemConditions conditions;
 	
 	public ItemConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions", 3*9, sPlugin, sObject, sActivator, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
 		this.conditions = conditions;
-
-		int i =0;
+	}
+	
+	@Override
+	public void loadTheGUI() {
+		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_DURABILITY, 	false,	false, "&7&oThe durability must be..", "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -43,9 +46,8 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 
 		createItem(WRITABLE_BOOK, 			1 , 22, "&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 			1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 			1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
-	
+		createItem(Material.BOOK, 			1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 			1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 		
 	public void updateIfDurability(String condition){
@@ -79,9 +81,5 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 	public String getIfUsage2() {
 		if(this.getActually(this.getByName(IF_USAGE2)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(IF_USAGE2));
-	}
-
-	public ItemConditions getConditions() {
-		return conditions;
 	}
 }

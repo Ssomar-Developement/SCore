@@ -10,8 +10,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
@@ -19,7 +20,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
-public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
+public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditionsGUI>{
 
 	private static EntityConditionsGUIManager instance;
 
@@ -27,81 +28,64 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 		cache.put(p, new EntityConditionsGUI(sPlugin, sObject, sAct, conditions, detail));
 		cache.get(p).openGUISync(p);
 	}
+	
+	@Override
+	public void clicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		if(i.name.contains(EntityConditionsGUI.IF_GLOWING)) i.gui.changeBoolean(EntityConditionsGUI.IF_GLOWING);
 
-	public void clicked(Player p, ItemStack item) {
-		if(item != null && item.hasItemMeta()) {
-			SPlugin sPlugin = cache.get(p).getsPlugin();
-			SObject sObject = cache.get(p).getSObject();
-			SActivator sAct = cache.get(p).getSAct();
-			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			String plName = sPlugin.getNameDesign();
+		else if(i.name.contains(EntityConditionsGUI.IF_INVULNERABLE)) i.gui.changeBoolean(EntityConditionsGUI.IF_INVULNERABLE);
 
-			if(name.contains(EntityConditionsGUI.IF_GLOWING)) cache.get(p).changeBoolean(EntityConditionsGUI.IF_GLOWING);
+		else if(i.name.contains(EntityConditionsGUI.IF_ADULT)) i.gui.changeBoolean(EntityConditionsGUI.IF_ADULT);
 
-			else if(name.contains(EntityConditionsGUI.IF_INVULNERABLE)) cache.get(p).changeBoolean(EntityConditionsGUI.IF_INVULNERABLE);
+		else if(i.name.contains(EntityConditionsGUI.IF_BABY)) i.gui.changeBoolean(EntityConditionsGUI.IF_BABY);
 
-			else if(name.contains(EntityConditionsGUI.IF_ADULT)) cache.get(p).changeBoolean(EntityConditionsGUI.IF_ADULT);
+		else if(i.name.contains(EntityConditionsGUI.IF_POWERED)) i.gui.changeBoolean(EntityConditionsGUI.IF_POWERED);
 
-			else if(name.contains(EntityConditionsGUI.IF_BABY)) cache.get(p).changeBoolean(EntityConditionsGUI.IF_BABY);
-
-			else if(name.contains(EntityConditionsGUI.IF_POWERED)) cache.get(p).changeBoolean(EntityConditionsGUI.IF_POWERED);
-
-			else if(name.contains(EntityConditionsGUI.IF_NAME)) {
-				requestWriting.put(p, EntityConditionsGUI.IF_NAME);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfName());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NAME:"));
-				this.showIfNameEditor(p);
-				space(p);
+		else if(i.name.contains(EntityConditionsGUI.IF_NAME)) {
+			requestWriting.put(i.player, EntityConditionsGUI.IF_NAME);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfName());
 			}
-
-			else if(name.contains(EntityConditionsGUI.IF_NOT_ENTITY_TYPE)) {
-				requestWriting.put(p, EntityConditionsGUI.IF_NOT_ENTITY_TYPE);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfName());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT ENTITYTYPE:"));
-				this.showIfNotEntityTypeEditor(p);
-				space(p);
-			}
-
-			else if(name.contains(EntityConditionsGUI.IF_ENTITY_HEALTH)) {
-				requestWriting.put(p, EntityConditionsGUI.IF_ENTITY_HEALTH);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF ENTITY HEALTH:"));
-
-				this.showCalculationGUI(p, "Health", cache.get(p).getIfEntityHealth());
-				space(p);
-			}
-
-			else if(name.contains("Reset")) {
-				p.closeInventory();
-				cache.replace(p, new EntityConditionsGUI(sPlugin, sObject, sAct, new EntityConditions(), cache.get(p).getDetail()));
-				cache.get(p).openGUISync(p);
-			}
-
-			else if(name.contains("Save")) {
-				p.closeInventory();
-				saveEntityConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-			}
-
-			else if(name.contains("Exit")) {
-				p.closeInventory();
-			}
-
-			else if(name.contains("Back")) {
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF NAME:"));
+			this.showIfNameEditor(i.player);
+			space(i.player);
 		}
-	}
+
+		else if(i.name.contains(EntityConditionsGUI.IF_NOT_ENTITY_TYPE)) {
+			requestWriting.put(i.player, EntityConditionsGUI.IF_NOT_ENTITY_TYPE);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfName());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF NOT ENTITYTYPE:"));
+			this.showIfNotEntityTypeEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(EntityConditionsGUI.IF_ENTITY_HEALTH)) {
+			requestWriting.put(i.player, EntityConditionsGUI.IF_ENTITY_HEALTH);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF ENTITY HEALTH:"));
+
+			this.showCalculationGUI(i.player, "Health", cache.get(i.player).getIfEntityHealth());
+			space(i.player);
+		}
+
+		else if(i.name.contains("Save")) {
+			i.player.closeInventory();
+			saveEntityConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
+
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+	}	
 
 	public void shiftClicked(Player p, ItemStack item) {
 		if(item != null && item.hasItemMeta()) {
@@ -272,7 +256,7 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		EntityConditions eC = cache.get(p).getConditions();
+		EntityConditions eC = (EntityConditions) cache.get(p).getConditions();
 
 		eC.setIfGlowing(cache.get(p).getBoolean(EntityConditionsGUI.IF_GLOWING));
 		eC.setIfInvulnerable(cache.get(p).getBoolean(EntityConditionsGUI.IF_INVULNERABLE));
@@ -292,5 +276,5 @@ public class EntityConditionsGUIManager extends GUIManager<EntityConditionsGUI>{
 	public static EntityConditionsGUIManager getInstance() {
 		if(instance == null) instance = new EntityConditionsGUIManager();
 		return instance;
-	}	
+	}
 }

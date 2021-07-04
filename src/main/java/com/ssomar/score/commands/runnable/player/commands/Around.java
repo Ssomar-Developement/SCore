@@ -60,6 +60,7 @@ public class Around extends PlayerCommandTemplate{
 						s = s.replaceAll("%target_y%", loc.getY()+"");
 						s = s.replaceAll("%target_z%", loc.getZ()+"");
 						s = s.replaceAll("%target%", target.getName());
+						s = s.replaceAll("%target_uuid%", target.getUniqueId()+"");
 						new PlayerCommandsExecutor(Arrays.asList(s), p, silenceOutput, target, aInfo).runPlayerCommands(silenceOutput);		
 					}				
 					cpt++;

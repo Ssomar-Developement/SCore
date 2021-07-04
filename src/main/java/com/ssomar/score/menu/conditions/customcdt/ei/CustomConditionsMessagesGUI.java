@@ -9,40 +9,36 @@ import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 public class CustomConditionsMessagesGUI extends ConditionGUIAbstract{
-	
-	public static final String IF_NEED_PLAYER_CONFIRMATION_MSG = "ifNeedPlayerConfirmation message";
-	public static final String IF_OWNER_OF_THE_EI_MSG = "if owner of the EI message";
-	public static final String IF_NOT_OWNER_OF_THE_EI_MSG = "if not owner of the EI message";
-	public static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG = "ifPlayerMustBeOnHisIsland message";
-	public static final String IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG = "if Player Must Be On His Claim message";
-	
 	private CustomEIConditions conditions;
 	
 	public CustomConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions Messages", 3*9, sPlugin, sObject, sAct, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions Messages", 3*9, sPlugin, sObject, sAct, detail, conditions);
 		this.conditions = conditions;
-		
+	}
+
+	@Override
+	public void loadTheGUI() {
 		int i = 0;
 		//Main Options
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NEED_PLAYER_CONFIRMATION_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_NEED_PLAYER_CONFIRMATION_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_NEED_PLAYER_CONFIRMATION_MSG, conditions.getIfNeedPlayerConfirmationMsg());
+		this.updateMessage(CustomConditionsMessages.IF_NEED_PLAYER_CONFIRMATION_MSG.name, conditions.getIfNeedPlayerConfirmationMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_OWNER_OF_THE_EI_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_OWNER_OF_THE_EI_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_OWNER_OF_THE_EI_MSG, conditions.getIfOwnerOfTheEIMsg());
+		this.updateMessage(CustomConditionsMessages.IF_OWNER_OF_THE_EI_MSG.name, conditions.getIfOwnerOfTheEIMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_OWNER_OF_THE_EI_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_NOT_OWNER_OF_THE_EI_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_NOT_OWNER_OF_THE_EI_MSG, conditions.getIfNotOwnerOfTheEIMsg());
+		this.updateMessage(CustomConditionsMessages.IF_NOT_OWNER_OF_THE_EI_MSG.name, conditions.getIfNotOwnerOfTheEIMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG, conditions.getIfPlayerMustBeOnHisIslandMsg());
+		this.updateMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG.name, conditions.getIfPlayerMustBeOnHisIslandMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG, conditions.getIfPlayerMustBeOnHisClaimMsg());
+		this.updateMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG.name, conditions.getIfPlayerMustBeOnHisClaimMsg());
 		
 		createItem(RED, 				1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
@@ -52,11 +48,21 @@ public class CustomConditionsMessagesGUI extends ConditionGUIAbstract{
 		
 		createItem(WRITABLE_BOOK, 	1 , 22, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 	1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sAct.getID());
+		createItem(Material.BOOK, 	1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
+	
+	public enum CustomConditionsMessages{
+		IF_NEED_PLAYER_CONFIRMATION_MSG ("ifNeedPlayerConfirmation message"),
+		IF_OWNER_OF_THE_EI_MSG ("if owner of the EI message"),
+		IF_NOT_OWNER_OF_THE_EI_MSG ("if not owner of the EI message"),
+		IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG ("ifPlayerMustBeOnHisIsland message"),
+		IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG ("if Player Must Be On His Claim message");
+		
+		public String name;
 
-	public CustomEIConditions getConditions() {
-		return conditions;
+		CustomConditionsMessages(String name) {
+			this.name = name;
+		}
 	}
 }

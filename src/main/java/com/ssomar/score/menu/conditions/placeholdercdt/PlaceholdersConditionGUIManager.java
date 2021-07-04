@@ -3,10 +3,10 @@ package com.ssomar.score.menu.conditions.placeholdercdt;
 import java.util.List;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.placeholders.Comparator;
@@ -16,7 +16,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.NTools;
 import com.ssomar.score.utils.StringConverter;
 
-public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersConditionGUI>{
+public class PlaceholdersConditionGUIManager extends GUIManagerSCore<PlaceholdersConditionGUI>{
 
 	private static PlaceholdersConditionGUIManager instance;
 
@@ -29,92 +29,77 @@ public class PlaceholdersConditionGUIManager extends GUIManager<PlaceholdersCond
 		cache.put(p, new PlaceholdersConditionGUI(sPlugin, sObject, sActivator, pC, detail));
 		cache.get(p).openGUISync(p);
 	}
+	
+	@Override
+	public void clicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		PlaceholdersConditionGUI gui = cache.get(i.player);
 
-	public void clicked(Player p, ItemStack item) {
-		if(item != null && item.hasItemMeta()) {
-			SPlugin sPlugin = cache.get(p).getsPlugin();
-			SObject sObject = cache.get(p).getSObject();
-			SActivator sAct = cache.get(p).getSAct();
-			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			String plName = sPlugin.getNameDesign();
+		if(i.name.contains(PlaceholdersConditionGUI.TYPE)) gui.changeType();
 
-			PlaceholdersConditionGUI gui = cache.get(p);
+		else if(i.name.contains(PlaceholdersConditionGUI.COMPARATOR)) gui.changeComparator();
 
-			if(name.contains(PlaceholdersConditionGUI.TYPE)) gui.changeType();
+		else if(i.name.contains(PlaceholdersConditionGUI.CANCEL_EVENT)) gui.changeBoolean(PlaceholdersConditionGUI.CANCEL_EVENT);
 
-			else if(name.contains(PlaceholdersConditionGUI.COMPARATOR)) gui.changeComparator();
+		else if(i.name.contains(PlaceholdersConditionGUI.PART1)) {
+			requestWriting.put(i.player, PlaceholdersConditionGUI.PART1);
+			i.player.closeInventory();
+			space(i.player);
 
-			else if(name.contains(PlaceholdersConditionGUI.CANCEL_EVENT)) gui.changeBoolean(PlaceholdersConditionGUI.CANCEL_EVENT);
+			String message = StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &aEnter your first part: (example: %player_health%)");
+			i.player.sendMessage(message);
+			space(i.player);
+		}
 
-			else if(name.contains(PlaceholdersConditionGUI.PART1)) {
-				requestWriting.put(p, PlaceholdersConditionGUI.PART1);
-				p.closeInventory();
-				space(p);
+		else if(i.name.contains(PlaceholdersConditionGUI.PART2)) {
+			requestWriting.put(i.player, PlaceholdersConditionGUI.PART2);
+			i.player.closeInventory();
+			space(i.player);
 
-				String message = StringConverter.coloredString("&a&l"+plName+" &aEnter your first part: (example: %player_health%)");
-				p.sendMessage(message);
-				space(p);
+			String message = StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &aEnter your second part: (example: 5, or %player_health%, or TEAM_BLUE)");
+			i.player.sendMessage(message);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlaceholdersConditionGUI.MESSAGE)) {
+			requestWriting.put(i.player, PlaceholdersConditionGUI.MESSAGE);
+			i.player.closeInventory();
+			space(i.player);
+
+			String message = StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &aEnter your not valid message here:");
+			i.player.sendMessage(message);
+			space(i.player);
+		}
+
+		else if(i.name.contains("Save") || i.name.contains("Create this Placeholders Condition")) {
+			try {
+				cache.get(i.player).getActually(PlaceholdersConditionGUI.PART1);
+				cache.get(i.player).getActually(PlaceholdersConditionGUI.PART2);
+			}
+			catch(ArrayIndexOutOfBoundsException e) {
+				String message = StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cERROR the first part and the second part can't be empty !");
+				i.player.sendMessage(message);
+				return;
 			}
 
-			else if(name.contains(PlaceholdersConditionGUI.PART2)) {
-				requestWriting.put(p, PlaceholdersConditionGUI.PART2);
-				p.closeInventory();
-				space(p);
-
-				String message = StringConverter.coloredString("&a&l"+plName+" &aEnter your second part: (example: 5, or %player_health%, or TEAM_BLUE)");
-				p.sendMessage(message);
-				space(p);
+			if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(cache.get(i.player).getType()) && !NTools.isNumber(cache.get(i.player).getActually(PlaceholdersConditionGUI.PART2))){
+				String message = StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cERROR the second par must be a number");
+				i.player.sendMessage(message);
+				return;
 			}
 
-			else if(name.contains(PlaceholdersConditionGUI.MESSAGE)) {
-				requestWriting.put(p, PlaceholdersConditionGUI.MESSAGE);
-				p.closeInventory();
-				space(p);
+			String detail = cache.get(i.player).getDetail();
+			savePlaceholdersCondition(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
+			PlaceholdersConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), detail);
+		}
 
-				String message = StringConverter.coloredString("&a&l"+plName+" &aEnter your not valid message here:");
-				p.sendMessage(message);
-				space(p);
-			}
-
-			else if(name.contains("Reset")) {
-				p.closeInventory();
-				cache.replace(p, new PlaceholdersConditionGUI(sPlugin, sObject, sAct, new PlaceholdersCondition(cache.get(p).getActually(PlaceholdersConditionGUI.CDT_ID)), cache.get(p).getDetail()));
-				cache.get(p).openGUISync(p);
-			}
-
-			else if(name.contains("Save") || name.contains("Create this Placeholders Condition")) {
-				try {
-					cache.get(p).getActually(PlaceholdersConditionGUI.PART1);
-					cache.get(p).getActually(PlaceholdersConditionGUI.PART2);
-				}
-				catch(ArrayIndexOutOfBoundsException e) {
-					String message = StringConverter.coloredString("&4&l"+plName+" &cERROR the first part and the second part can't be empty !");
-					p.sendMessage(message);
-					return;
-				}
-
-				if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(cache.get(p).getType()) && !NTools.isNumber(cache.get(p).getActually(PlaceholdersConditionGUI.PART2))){
-					String message = StringConverter.coloredString("&4&l"+plName+" &cERROR the second par must be a number");
-					p.sendMessage(message);
-					return;
-				}
-
-				String detail = cache.get(p).getDetail();
-				savePlaceholdersCondition(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				sAct = sObject.getActivator(sAct.getID());
-				PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sAct.getPlaceholdersConditions(), detail);
-			}
-
-			else if(name.contains("Exit")) {
-				p.closeInventory();
-			}
-
-			else if(name.contains("Back")) {
-				PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sAct.getPlaceholdersConditions(), cache.get(p).getDetail());
-			}
+		else if(i.name.contains("Back")) {
+			PlaceholdersConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), cache.get(i.player).getDetail());
 		}
 	}
+
+	
 
 	public void receivedMessage(Player p, String message) {
 		switch(requestWriting.get(p)) {

@@ -29,9 +29,12 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 	private EntityConditions conditions;
 
 	public EntityConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, EntityConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Entity Conditions", 4*9, sPlugin, sObject, sAct, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Entity Conditions", 4*9, sPlugin, sObject, sAct, detail, conditions);
 		this.conditions = conditions;
-		
+	}	
+	
+	@Override
+	public void loadTheGUI() {
 		int i =0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_GLOWING, 	false,	false, "&7&oThe entity must glow ?", "&a✎ Click here to change", "&7actually:");
@@ -75,9 +78,9 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sAct.getID());
-	}	
+		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
+	}
 	
 	public void updateIfNotEntityType(List<EntityType> list) {
 		ItemStack item = this.getByName(IF_NOT_ENTITY_TYPE);
@@ -125,9 +128,5 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 	
 	public String getIfEntityHealth() {
 		return this.getCondition(IF_ENTITY_HEALTH);
-	}
-
-	public EntityConditions getConditions() {
-		return conditions;
 	}
 }

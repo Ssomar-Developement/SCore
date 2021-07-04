@@ -10,29 +10,28 @@ import com.ssomar.score.splugin.SPlugin;
 
 public class ItemConditionsMessagesGUI extends ConditionGUIAbstract{
 	
-	public static final String IF_DURABILITY_MSG = "ifDurability message";
-	public static final String IF_USAGE_MSG = "ifUsage message";
-	public static final String IF_USAGE2_MSG = "ifUsage2 message";
-
 	private ItemConditions conditions;
 	
 	public ItemConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions Messages", 3*9, sPlugin, sObject, sActivator, detail);
-		this.conditions = conditions;
+		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions Messages", 3*9, sPlugin, sObject, sActivator, detail, conditions);
+		this.conditions = conditions;	
+	}
 
+	@Override
+	public void loadTheGUI() {
 		int i = 0;
 		//Main Options
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_DURABILITY_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_DURABILITY_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_DURABILITY_MSG, conditions.getIfDurabilityMsg());
+		this.updateMessage(ItemConditionsMessages.IF_DURABILITY_MSG.name, conditions.getIfDurabilityMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_USAGE_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_USAGE_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_USAGE_MSG, conditions.getIfUsageMsg());
+		this.updateMessage(ItemConditionsMessages.IF_USAGE_MSG.name, conditions.getIfUsageMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_USAGE2_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_USAGE2_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_USAGE2_MSG, conditions.getIfUsage2Msg());
+		this.updateMessage(ItemConditionsMessages.IF_USAGE2_MSG.name, conditions.getIfUsage2Msg());
 		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
@@ -42,12 +41,19 @@ public class ItemConditionsMessagesGUI extends ConditionGUIAbstract{
 
 		createItem(WRITABLE_BOOK, 	1 , 22, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
-	
-	}
-
-	public ItemConditions getConditions() {
-		return conditions;
+		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}	
+	
+	public enum ItemConditionsMessages{
+		IF_DURABILITY_MSG ("ifDurability message"),
+		IF_USAGE_MSG ("ifUsage message"),
+		IF_USAGE2_MSG ("ifUsage2 message");
+		
+		public String name;
+
+		ItemConditionsMessages(String name) {
+			this.name = name;
+		}
+	}
 }

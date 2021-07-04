@@ -19,30 +19,8 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 	private WorldConditions conditions;
 
 	public WorldConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - World Conditions", 3*9, sPlugin, sObject, sActivator, detail);
-		this.conditions = conditions;
-
-		int i =0;
-		//Main Options
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_WEATHER, 	false,	false, "&7&oThe weather must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfWeather(conditions.getIfWeather());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_WORLD_TIME, 	false,	false, "&7&oThe worldTime must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfWorldTime(conditions.getIfWorldTime());
-		
-		createItem(RED, 				1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
-		
-		createItem(ORANGE, 				1 , 19, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of world conditions" );
-		
-		createItem(GREEN, 				1 , 26, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of world conditions" );
-
-		createItem(WRITABLE_BOOK, 			1 , 22, "&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
-		
-		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
-	
+		super("&8&l"+sPlugin.getShortName()+" Editor - World Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
+		this.conditions = conditions;	
 	}
 	
 	public void updateIfWeather(List<String> list) {
@@ -66,5 +44,29 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 
 	public WorldConditions getConditions() {
 		return conditions;
+	}
+
+	@Override
+	public void loadTheGUI() {
+		int i = 0;
+		//Main Options
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_WEATHER, 	false,	false, "&7&oThe weather must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfWeather(conditions.getIfWeather());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_WORLD_TIME, 	false,	false, "&7&oThe worldTime must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfWorldTime(conditions.getIfWorldTime());
+		
+		createItem(RED, 				1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
+		
+		createItem(ORANGE, 				1 , 19, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of world conditions" );
+		
+		createItem(GREEN, 				1 , 26, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of world conditions" );
+
+		createItem(WRITABLE_BOOK, 			1 , 22, "&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
+		
+		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 }

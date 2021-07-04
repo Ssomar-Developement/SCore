@@ -12,10 +12,11 @@ public class BlockConditions extends Conditions{
 	private boolean ifPlantFullyGrown;
 	public static final String IF_PLANT_FULLY_GROWN_MSG = " &cThe plant must be fully grown to active the activator: &6%activator% &cof this item!";
 	private String ifPlantFullyGrownMsg;
-
-	public BlockConditions() {
+	
+	@Override
+	public void init() {
 		this.ifPlantFullyGrown = false;
-		this.ifPlantFullyGrownMsg = "";
+		this.ifPlantFullyGrownMsg = "";	
 	}
 
 	public boolean verifConditions(Block b, Player p) {

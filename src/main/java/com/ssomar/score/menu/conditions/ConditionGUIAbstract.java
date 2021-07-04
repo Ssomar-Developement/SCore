@@ -3,15 +3,26 @@ package com.ssomar.score.menu.conditions;
 import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.sobject.sactivator.conditions.Conditions;
 import com.ssomar.score.splugin.SPlugin;
 
 public abstract class ConditionGUIAbstract extends GUIAbstract{
 	
 	private String detail;
-
-	public ConditionGUIAbstract(String name, int size, SPlugin sPlugin, SObject sObject, SActivator sAct, String detail) {
+	
+	private Conditions conditions;
+	
+	public ConditionGUIAbstract(String name, int size, SPlugin sPlugin, SObject sObject, SActivator sAct, String detail, Conditions conditions) {
 		super(name, size, sPlugin, sObject, sAct);	
+		this.conditions = conditions;
 		this.detail = detail;
+		this.loadTheGUI();
+	}
+	
+	public abstract void loadTheGUI();
+	
+	public void reloadGUI() {
+		conditions.init();
 	}
 	
 	public void updateMessage(String itemName, String message) {
@@ -32,6 +43,14 @@ public abstract class ConditionGUIAbstract extends GUIAbstract{
 
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public Conditions getConditions() {
+		return conditions;
+	}
+
+	public void setConditions(Conditions conditions) {
+		this.conditions = conditions;
 	}
 	
 }

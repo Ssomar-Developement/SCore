@@ -34,7 +34,8 @@ public class WorldConditions extends Conditions{
 	private static final String IF_WORLD_TIME_MSG = " &cThe world time is not valid to active the activator: &6%activator% &cof this item!";
 	private String ifWorldTimeMsg;
 	
-	public  WorldConditions() {
+	@Override
+	public void init() {
 		this.ifWeather = new ArrayList<>();
 		this.ifWeatherMsg = IF_WEATHER_MSG;
 		

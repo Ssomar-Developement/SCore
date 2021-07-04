@@ -63,8 +63,9 @@ public class EntityConditions extends Conditions{
 	private boolean ifBaby;
 	private static final String IF_BABY_MSG = " &cThe entity must being baby to active the activator: &6%activator% &cof this item!";
 	private String ifBabyMsg;
-
-	public EntityConditions() {
+	
+	@Override
+	public void init() {
 		this.ifGlowing = false;
 		this.ifGlowingMsg = IF_GLOWING_MSG;
 

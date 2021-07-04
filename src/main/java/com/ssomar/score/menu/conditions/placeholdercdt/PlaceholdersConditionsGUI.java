@@ -21,7 +21,7 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 	// Page 1
 	public PlaceholdersConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Placeholders Conditions - Page 1", 5 * 9, sPlugin, sObject, sActivator, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Placeholders Conditions - Page 1", 5 * 9, sPlugin, sObject, sActivator, detail, null);
 		this.list = list;
 		setIndex(1);
 		loadCdts(sObject, sActivator, list);
@@ -29,10 +29,16 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 	// other pages
 	public PlaceholdersConditionsGUI(int index, SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
-		super("&8&l"+sPlugin.getShortName()+"Editor - Placeholders Conditions - Page " + index, 5 * 9, sPlugin, sObject, sActivator, detail);
+		super("&8&l"+sPlugin.getShortName()+"Editor - Placeholders Conditions - Page " + index, 5 * 9, sPlugin, sObject, sActivator, detail, null);
 		this.list = list;
 		setIndex(index);
 		loadCdts(sObject, sActivator, list);
+	}
+	
+	@Override
+	public void loadTheGUI() {
+		/* DO NOTHING THERE IS NO RESET HERE */
+		loadCdts(this.getSObject(), this.getSAct(), list);
 	}
 
 	public void loadCdts(SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list) {

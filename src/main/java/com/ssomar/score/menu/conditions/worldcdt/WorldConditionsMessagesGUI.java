@@ -16,10 +16,17 @@ public class WorldConditionsMessagesGUI extends ConditionGUIAbstract{
 	private WorldConditions conditions;
 
 	public WorldConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - World Conditions Messages", 3*9, sPlugin, sObject, sActivator, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - World Conditions Messages", 3*9, sPlugin, sObject, sActivator, detail, conditions);
 		this.conditions = conditions;
+	}
 
-		int i =0;
+	public WorldConditions getConditions() {
+		return conditions;
+	}
+
+	@Override
+	public void loadTheGUI() {
+		int i = 0;
 		//Main Options
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_WEATHER_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -37,12 +44,8 @@ public class WorldConditionsMessagesGUI extends ConditionGUIAbstract{
 
 		createItem(WRITABLE_BOOK, 	1 , 22, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
+		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	
-	}
-
-	public WorldConditions getConditions() {
-		return conditions;
 	}
 }

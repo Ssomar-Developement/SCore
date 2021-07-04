@@ -18,12 +18,13 @@ import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.sobject.sactivator.conditions.Conditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.NTools;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
-public class PlaceholdersCondition {
+public class PlaceholdersCondition extends Conditions{
 	
 	private String id;
 
@@ -43,12 +44,7 @@ public class PlaceholdersCondition {
 	
 	public PlaceholdersCondition(String id) {
 		this.id = id;
-		this.type = PlaceholdersCdtType.PLAYER_STRING;
-		this.message = "";
-		this.part1 = "";
-		this.comparator = Comparator.EQUALS;
-		this.part2String = "";
-		this.cancelEvent = false;
+		init();
 	}
 
 	public PlaceholdersCondition(String id, PlaceholdersCdtType type, String message, String part1, Comparator comparator,
@@ -71,6 +67,16 @@ public class PlaceholdersCondition {
 		this.part1 = part1;
 		this.comparator = comparator;
 		this.part2Number = part2Number;
+	}
+	
+	@Override
+	public void init() {
+		this.type = PlaceholdersCdtType.PLAYER_STRING;
+		this.message = "";
+		this.part1 = "";
+		this.comparator = Comparator.EQUALS;
+		this.part2String = "";
+		this.cancelEvent = false;
 	}
 
 
@@ -324,6 +330,5 @@ public class PlaceholdersCondition {
 	public void setId(String id) {
 		this.id = id;
 	}
-
 
 }

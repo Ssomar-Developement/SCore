@@ -19,9 +19,12 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 	private CustomEIConditions conditions;
 	
 	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions", 3*9, sPlugin, sObject, sAct, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions", 3*9, sPlugin, sObject, sAct, detail, conditions);
 		this.conditions = conditions;
-		
+	}
+
+	@Override
+	public void loadTheGUI() {
 		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NEED_PLAYER_CONFIRMATION, 	false,	false, "&7&oThe player must double click?", "&a✎ Click here to change", "&7actually:");
@@ -52,11 +55,7 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(WRITABLE_BOOK, 	1 , 22, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 	1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sAct.getID());
-	}
-
-	public CustomEIConditions getConditions() {
-		return conditions;
+		createItem(Material.BOOK, 	1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 }

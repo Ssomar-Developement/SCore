@@ -39,9 +39,16 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 	private PlayerConditions conditions;
 
 	public PlayerConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions Messages", 4*9, sPlugin, sObject, sActivator, detail);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions Messages", 4*9, sPlugin, sObject, sActivator, detail, conditions);
 		this.conditions = conditions;
+	}
 
+	public PlayerConditions getConditions() {
+		return conditions;
+	}
+
+	@Override
+	public void loadTheGUI() {
 		int i =0;
 		//Main Options
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_SNEAKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
@@ -153,11 +160,7 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 
 		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
-	}
-
-	public PlayerConditions getConditions() {
-		return conditions;
+		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 }

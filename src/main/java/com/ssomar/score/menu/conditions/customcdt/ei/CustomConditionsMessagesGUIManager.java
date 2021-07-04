@@ -4,21 +4,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.RequestMessage;
+import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUI.CustomConditionsMessages;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
-
-public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditionsMessagesGUI>{
+public class CustomConditionsMessagesGUIManager extends GUIManagerSCore<CustomConditionsMessagesGUI>{
 
 	private static CustomConditionsMessagesGUIManager instance;	
 
@@ -26,95 +24,28 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 		cache.put(p, new CustomConditionsMessagesGUI(sPlugin, sObject, sActivator, cC, detail));
 		cache.get(p).openGUISync(p);
 	}
+	
+	@Override
+	public void clicked(InteractionClickedGUIManager<CustomConditionsMessagesGUI> i) {
+		
+		if(i.name.contains("Save")) {
+			saveCustomConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
 
-	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
-
-				if(name.contains("Reset")) {
-					cache.replace(p, new CustomConditionsMessagesGUI(sPlugin, sObject, sAct, new CustomEIConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
-
-				else if(name.contains("Save")) {
-					saveCustomConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
-
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
-
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else if(!name.isEmpty()) {
-
-					if(name.contains(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
-					}
-					
-					else if(name.contains(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG)) {
-						requestWriting.put(p, CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG);
-						this.sendRequestMessage(sPlugin, p, cache.get(p).getActuallyWithColor(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
-					}
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		else if(!i.name.isEmpty()) {
+			for(CustomConditionsMessages ccMsg : CustomConditionsMessages.values()) {
+				if(i.name.contains(ccMsg.name)) {
+					requestWriting.put(i.player, ccMsg.name);
+					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(ccMsg.name);
+					RequestMessage.sendRequestMessage(i.msgInfos);
 				}
 			}
 		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	public void sendRequestMessage(SPlugin sPlugin, Player p, String actualMsg) {
-		p.closeInventory();
-		space(p);
-
-		TextComponent message = new TextComponent(
-				StringConverter.coloredString("&a&l"+sPlugin.getNameDesign()+" &aEnter a new message or &aedit &athe &amessage: "));
-
-		TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-		edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(actualMsg)));
-		edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current message")).create()));
-
-		TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));
-		newName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "Type the new message here.."));
-		newName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder(StringConverter.coloredString("&aClick here to set new message")).create()));
-
-		TextComponent noMsg = new TextComponent(StringConverter.coloredString("&c&l[NO MSG]"));
-		noMsg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "NO MESSAGE"));
-		noMsg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,new ComponentBuilder(StringConverter.coloredString("&cClick here to set no msg")).create()));
-
-		
-		message.addExtra(new TextComponent(" "));
-		message.addExtra(edit);
-		message.addExtra(new TextComponent(" "));
-		message.addExtra(newName);
-		message.addExtra(new TextComponent(" "));
-		message.addExtra(noMsg);
-
-		p.spigot().sendMessage(message);
-		space(p);
 	}
 	
 	public void shiftClicked(Player p, ItemStack item) {
@@ -172,13 +103,13 @@ public class CustomConditionsMessagesGUIManager extends GUIManager<CustomConditi
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		CustomEIConditions cC = cache.get(p).getConditions();
+		CustomEIConditions cC = (CustomEIConditions) cache.get(p).getConditions();
 
-		cC.setIfNeedPlayerConfirmationMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_NEED_PLAYER_CONFIRMATION_MSG));
-		cC.setIfNotOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_NOT_OWNER_OF_THE_EI_MSG));
-		cC.setIfOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_OWNER_OF_THE_EI_MSG));
-		cC.setIfPlayerMustBeOnHisIslandMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
-		cC.setIfPlayerMustBeOnHisClaimMsg(cache.get(p).getMessage(CustomConditionsMessagesGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
+		cC.setIfNeedPlayerConfirmationMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_NEED_PLAYER_CONFIRMATION_MSG.name));
+		cC.setIfNotOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_NOT_OWNER_OF_THE_EI_MSG.name));
+		cC.setIfOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_OWNER_OF_THE_EI_MSG.name));
+		cC.setIfPlayerMustBeOnHisIslandMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG.name));
+		cC.setIfPlayerMustBeOnHisClaimMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG.name));
 		
 		CustomEIConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC, cache.get(p).getDetail());
 		cache.remove(p);
