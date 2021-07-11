@@ -27,8 +27,6 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 	public final static String MESSAGE = "Message if not valid";
 	public final static String CANCEL_EVENT = "Cancel event if not valid";
 	public final static String CDT_ID = "Cdt ID:";
-	
-	private PlaceholdersCondition pC;
 
 	public PlaceholdersConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
 		super(TITLE, 6 * 9, sPlugin, sObject, sActivator, detail, new PlaceholdersCondition("null"));
@@ -47,16 +45,17 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 
 		PlaceholdersCondition pC = (PlaceholdersCondition)this.getConditions();
 		pC.setId(idStr);
-		this.pC = pC;
+		this.setConditions(pC);
+		this.loadTheGUI();
 	}
 
 	public PlaceholdersConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlaceholdersCondition pC, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" "+TITLE, 6 * 9, sPlugin, sObject, sActivator, detail, pC);
-		this.pC = pC;
 	}
 
 	@Override
 	public void loadTheGUI() {
+		PlaceholdersCondition pC = (PlaceholdersCondition)this.getConditions();
 		//String str = "";
 		//if (PlaceholderAPI.isLotOfWork()) str = "&7&oPremium";
 

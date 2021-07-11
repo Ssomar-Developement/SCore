@@ -16,7 +16,7 @@ import com.ssomar.score.splugin.SPlugin;
 public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 	private static int index;
-	
+
 	private List<PlaceholdersCondition> list;
 
 	// Page 1
@@ -34,7 +34,7 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 		setIndex(index);
 		loadCdts(sObject, sActivator, list);
 	}
-	
+
 	@Override
 	public void loadTheGUI() {
 		/* DO NOTHING THERE IS NO RESET HERE */
@@ -44,39 +44,40 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 	public void loadCdts(SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list) {
 		int i = 0;
 		int total = 0;
-		for (PlaceholdersCondition pC : list) {
-			if ((index - 1) * 36 <= total && total < index * 36) {
-				ItemStack itemS = new ItemStack(Material.NAME_TAG);
+		if(list != null) {
+			for (PlaceholdersCondition pC : list) {
+				if ((index - 1) * 36 <= total && total < index * 36) {
+					ItemStack itemS = new ItemStack(Material.NAME_TAG);
 
-				List<String> desc = new ArrayList<>();
-				desc.add("");
-				desc.add("&4(shift + left click to delete)");
-				desc.add("&7(click to edit)");
-				desc.add("&7• Type: " + pC.getType().toString());
-				desc.add("&7• Part1: &e" + pC.getPart1());
-				desc.add("&7• Comparator: &e" + pC.getComparator().toString());
-				if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(pC.getType())) {
-					desc.add("&7• Part2: &e" + pC.getPart2Number());
+					List<String> desc = new ArrayList<>();
+					desc.add("");
+					desc.add("&4(shift + left click to delete)");
+					desc.add("&7(click to edit)");
+					desc.add("&7• Type: " + pC.getType().toString());
+					desc.add("&7• Part1: &e" + pC.getPart1());
+					desc.add("&7• Comparator: &e" + pC.getComparator().toString());
+					if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(pC.getType())) {
+						desc.add("&7• Part2: &e" + pC.getPart2Number());
+					}
+					else desc.add("&7• Part2: &e" + pC.getPart2String());
+
+					desc.add("&7• Message: &e" + pC.getMessage());
+					desc.add("&7• cancelEvent: &e" + pC.isCancelEvent());
+
+
+					String[] descArray = new String[desc.size()];
+					for (int j = 0; j < desc.size(); j++) {
+						if (desc.get(j).length() > 40)
+							descArray[j] = desc.get(j).substring(0, 39) + "...";
+						else
+							descArray[j] = desc.get(j);
+					}
+					createItem(itemS, 1, i, "&2&l✦ ID: &a" + pC.getId(), true, false, descArray);
+					i++;
 				}
-				else desc.add("&7• Part2: &e" + pC.getPart2String());
-
-				desc.add("&7• Message: &e" + pC.getMessage());
-				desc.add("&7• cancelEvent: &e" + pC.isCancelEvent());
-
-
-				String[] descArray = new String[desc.size()];
-				for (int j = 0; j < desc.size(); j++) {
-					if (desc.get(j).length() > 40)
-						descArray[j] = desc.get(j).substring(0, 39) + "...";
-					else
-						descArray[j] = desc.get(j);
-				}
-				createItem(itemS, 1, i, "&2&l✦ ID: &a" + pC.getId(), true, false, descArray);
-				i++;
+				total++;
 			}
-			total++;
 		}
-
 		// other button
 		if (total > 27 && index * 27 < total) {
 			createItem(NEXT_PAGE_MAT, 1, 44, "&5&l▶ &dNext page ", false, false);

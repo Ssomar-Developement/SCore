@@ -25,17 +25,15 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_NAME = "ifName";
 	public static final String IF_NOT_ENTITY_TYPE = "ifNotEntityType";
 	public static final String IF_ENTITY_HEALTH = "ifEntityHealth";
-	
-	private EntityConditions conditions;
 
 	public EntityConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, EntityConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Entity Conditions", 4*9, sPlugin, sObject, sAct, detail, conditions);
-		this.conditions = conditions;
 	}	
 	
 	@Override
 	public void loadTheGUI() {
-		int i =0;
+		EntityConditions conditions = (EntityConditions) this.getConditions();
+		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_GLOWING, 	false,	false, "&7&oThe entity must glow ?", "&a✎ Click here to change", "&7actually:");
 		i++;

@@ -23,6 +23,8 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_SWIMMING = "ifSwimming";
 	public static final String IF_GLIDING = "ifGliding";
 	public static final String IF_FLYING = "ifFlying";
+	public static final String IF_IS_IN_THE_AIR = "if is in the air";
+	public static final String IF_IS_ON_THE_BLOCK = "if is on the block";
 	public static final String IF_IN_WORLD = "ifInWorld";
 	public static final String IF_NOT_IN_WORLD = "ifNotInWorld";
 	public static final String IF_IN_BIOME = "ifInBiome";
@@ -41,132 +43,14 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_POS_X = "ifPosX";
 	public static final String IF_POS_Y = "ifPosY";
 	public static final String IF_POS_Z = "ifPosZ";
-	
-	
-	private PlayerConditions conditions;
 
 	public PlayerConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 4*9, sPlugin, sObject, sActivator, detail, conditions);
-		this.conditions = conditions;
-
-		int i =0;
-		//Main Options
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_SNEAKING, 	false,	false, "&7&oThe player must sneak ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_SNEAKING, conditions.isIfSneaking());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_SNEAKING, 	false,	false, "&7&oThe player must not sneak ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_NOT_SNEAKING, conditions.isIfNotSneaking());
-		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_BLOCKING, 	false,	false, "&7&oThe player must block with shield ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_BLOCKING, conditions.isIfBlocking());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_BLOCKING, 	false,	false, "&7&oThe player must not block with shield ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_NOT_BLOCKING, conditions.isIfNotBlocking());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_SWIMMING, 	false,	false, "&7&oThe player must swim ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_SWIMMING, conditions.isIfSwimming());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_GLIDING, 	false,	false, "&7&oThe player must glide ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_GLIDING, conditions.isIfGliding());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_FLYING, 	false,	false, "&7&oThe player must fly ?", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateBoolean(IF_FLYING, conditions.isIfFlying());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IN_WORLD, 	false,	false, "&7&oThe player must be in this world", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfInWorld(conditions.getIfInWorld());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_IN_WORLD, 	false,	false, "&7&oThe player must not be in this world", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfNotInWorld(conditions.getIfNotInWorld());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IN_BIOME, 	false,	false, "&7&oThe player must be in this biome", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfInBiome(conditions.getIfInBiome());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_IN_BIOME, 	false,	false, "&7&oThe player must not be in this biome", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfNotInBiome(conditions.getIfNotInBiome());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IN_REGION, 	false,	false, "&7&oThe player must be in WorldGuard region", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfInRegion(conditions.getIfInRegion());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_IN_REGION, 	false,	false, "&7&oThe player must not be in WorldGuard region", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfNotInRegion(conditions.getIfNotInRegion());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_PERMISSION, 	false,	false, "&7&oThe player must have the permission(s)..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfHasPermission(conditions.getIfHasPermission());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_HAS_PERMISSION, 	false,	false, "&7&oThe player must not have the permission(s)..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfNotHasPermission(conditions.getIfNotHasPermission());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_TARGET_BLOCK, 	false,	false, "&7&oThe player must target one of this blocks.", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfTargetBlock(conditions.getIfTargetBlock());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_TARGET_BLOCK, 	false,	false, "&7&oThe player must not target one of this blocks.", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfNotTargetBlock(conditions.getIfNotTargetBlock());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_HEALTH, 	false,	false, "&7&oThe player health must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPlayerHealth(conditions.getIfPlayerHealth());
-		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_LIGHT_LEVEL, 	false,	false, "&7&oThe light level must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfLightLevel(conditions.getIfLightLevel());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_FOOD_LEVEL, 	false,	false, "&7&oThe player food level must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPlayerFoodLevel(conditions.getIfPlayerFoodLevel());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_EXP, 	false,	false, "&7&oThe player EXP must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPlayerEXP(conditions.getIfPlayerEXP());
-
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_LEVEL, 	false,	false, "&7&oThe player level must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPlayerLevel(conditions.getIfPlayerLevel());
-		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POS_X, 	false,	false, "&7&oThe player coord X must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPosX(conditions.getIfPosX());
-		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POS_Y, 	false,	false, "&7&oThe player coord Y must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPosY(conditions.getIfPosY());
-		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POS_Z, 	false,	false, "&7&oThe player coord Z must be..", "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateIfPosZ(conditions.getIfPosZ());
-		
-		
-
-		createItem(RED, 					1 , 27, "&4&l▶ &cBack to conditions config", 	false, false);
-
-		createItem(ORANGE, 					1 , 28, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of player conditions" );
-
-		createItem(GREEN, 					1 , 35, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of player conditions" );
-
-		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
-		
-		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
 	}
 	
 	@Override
 	public void loadTheGUI() {
+		PlayerConditions conditions = (PlayerConditions)this.getConditions();
 		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_SNEAKING, 	false,	false, "&7&oThe player must sneak ?", "&a✎ Click here to change", "&7actually:");
@@ -196,6 +80,14 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_FLYING, 	false,	false, "&7&oThe player must fly ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_FLYING, conditions.isIfFlying());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IS_IN_THE_AIR, 	false,	false, "&7&oThe player must be in the air ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_IS_IN_THE_AIR, conditions.isIfIsInTheAir());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IS_ON_THE_BLOCK, 	false,	false, "&7&oThe player must be on ceartain block ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfIsOnTheBlock(conditions.getIfIsOnTheBlock());
 
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IN_WORLD, 	false,	false, "&7&oThe player must be in this world", "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -509,6 +401,38 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		}
 		return result;
 	}
+	
+	public void updateIfIsOnTheBlock(List<Material> list) {
+		ItemStack item = this.getByName(IF_IS_ON_THE_BLOCK);
+		ItemMeta toChange = item.getItemMeta();
+		List<String> loreUpdate= toChange.getLore().subList(0, 3);
+		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &eNO BLOCK IS REQUIRED"));
+		else {
+			for(Material mat: list) {
+				loreUpdate.add(StringConverter.coloredString("&6➤ &e"+mat));
+			}
+		}
+		toChange.setLore(loreUpdate);
+		item.setItemMeta(toChange);
+	}
+
+	public List<Material> getIfIsOnTheBlock(){
+		ItemStack item = this.getByName(IF_IS_ON_THE_BLOCK);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate= iM.getLore().subList(3, iM.getLore().size());
+		List<Material> result = new ArrayList<>();
+		for(String line: loreUpdate) {
+			line=StringConverter.decoloredString(line);
+			if(line.contains("NO BLOCK IS REQUIRED")) {
+				return new ArrayList<>();
+			}else {
+				try {
+					result.add(Material.valueOf(line.replaceAll("➤ ", "")));
+				}catch(Exception e) {}
+			}
+		}
+		return result;
+	}
 
 	public void updateIfTargetBlock(List<Material> list) {
 		ItemStack item = this.getByName(IF_TARGET_BLOCK);
@@ -662,10 +586,4 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		else return this.getActually(this.getByName(IF_POS_Z));
 	}
 	
-
-
-	public PlayerConditions getConditions() {
-		return conditions;
-	}
-
 }

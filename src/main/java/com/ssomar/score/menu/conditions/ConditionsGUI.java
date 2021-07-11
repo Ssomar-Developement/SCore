@@ -60,7 +60,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 		}
 		
 		if(sOp.getOptionWithTargetBlock().contains(sOp)) {
-			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_CONDITIONS, 	false,	false, "&7&oThe block condtions", "&a✎ Click here to change");
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_CONDITIONS, 	false,	false, "&7&oThe block condtions", "&cNOT AVAILABLE");
 			i++;
 		}
 		

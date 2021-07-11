@@ -10,16 +10,14 @@ import com.ssomar.score.splugin.SPlugin;
 
 public class EntityConditionsMessagesGUI extends ConditionGUIAbstract{
 	
-	private EntityConditions conditions;
-
 	public EntityConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, EntityConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Entity Conditions Messages", 4*9, sPlugin, sObject, sAct, detail, conditions);
-		this.conditions = conditions;
 	}
 	
 	@Override
 	public void loadTheGUI() {
-		int i =0;
+		EntityConditions conditions = (EntityConditions)this.getConditions();
+		int i = 0;
 		//Main Options
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+EntityConditionsMessages.IF_GLOWING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;

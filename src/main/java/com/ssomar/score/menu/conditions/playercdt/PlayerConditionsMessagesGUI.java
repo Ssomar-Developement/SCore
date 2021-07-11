@@ -10,146 +10,122 @@ import com.ssomar.score.splugin.SPlugin;
 
 public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 	
-	public static final String IF_SNEAKING_MSG = "ifSneaking message";
-	public static final String IF_NOT_SNEAKING_MSG = "ifNotSneaking message";
-	public static final String IF_BLOCKING_MSG = "ifBlocking message";
-	public static final String IF_NOT_BLOCKING_MSG = "ifNotBlocking message";
-	public static final String IF_SWIMMING_MSG = "ifSwimming message";
-	public static final String IF_GLIDING_MSG = "ifGliding message";
-	public static final String IF_FLYING_MSG = "ifFlying message";
-	public static final String IF_IN_WORLD_MSG = "ifInWorld message";
-	public static final String IF_NOT_IN_WORLD_MSG = "ifNotInWorld message";
-	public static final String IF_IN_BIOME_MSG = "ifInBiome message";
-	public static final String IF_NOT_IN_BIOME_MSG = "ifNotInBiome message";
-	public static final String IF_IN_REGION_MSG = "ifInRegion message";
-	public static final String IF_NOT_IN_REGION_MSG = "ifNotInRegion message";
-	public static final String IF_HAS_PERMISSION_MSG = "ifHasPermission message";
-	public static final String IF_NOT_HAS_PERMISSION_MSG = "ifNotHasPermission message";
-	public static final String IF_TARGET_BLOCK_MSG = "ifTargetBlock message";
-	public static final String IF_NOT_TARGET_BLOCK_MSG = "ifNotTargetBlock message";
-	public static final String IF_PLAYER_HEALTH_MSG = "ifPlayerHealth message";
-	public static final String IF_LIGHT_LEVEL_MSG = "ifLightLevel message";
-	public static final String IF_PLAYER_FOOD_LEVEL_MSG = "ifPlayerFoodLevel message";
-	public static final String IF_PLAYER_EXP_MSG = "ifPlayerEXP message";
-	public static final String IF_PLAYER_LEVEL_MSG = "ifPlayerLevel message";
-	public static final String IF_POS_X_MSG = "ifPosX message";
-	public static final String IF_POS_Y_MSG = "ifPosY message";
-	public static final String IF_POS_Z_MSG = "ifPosZ message";
-	
-	private PlayerConditions conditions;
-
 	public PlayerConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions Messages", 4*9, sPlugin, sObject, sActivator, detail, conditions);
-		this.conditions = conditions;
-	}
-
-	public PlayerConditions getConditions() {
-		return conditions;
 	}
 
 	@Override
 	public void loadTheGUI() {
-		int i =0;
+		PlayerConditions conditions = (PlayerConditions)this.getConditions();
+		int i = 0;
 		//Main Options
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_SNEAKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_SNEAKING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_SNEAKING_MSG, conditions.getIfSneakingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_SNEAKING_MSG.name, conditions.getIfSneakingMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_SNEAKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_SNEAKING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_NOT_SNEAKING_MSG, conditions.getIfNotSneakingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_SNEAKING_MSG.name, conditions.getIfNotSneakingMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_BLOCKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_BLOCKING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_BLOCKING_MSG, conditions.getIfBlockingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_BLOCKING_MSG.name, conditions.getIfBlockingMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_BLOCKING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_BLOCKING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_NOT_BLOCKING_MSG, conditions.getIfNotBlockingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_BLOCKING_MSG.name, conditions.getIfNotBlockingMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_SWIMMING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_SWIMMING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_SWIMMING_MSG, conditions.getIfSwimmingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_SWIMMING_MSG.name, conditions.getIfSwimmingMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_GLIDING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_GLIDING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_GLIDING_MSG, conditions.getIfGlidingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_GLIDING_MSG.name, conditions.getIfGlidingMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_FLYING_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_FLYING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_FLYING_MSG, conditions.getIfFlyingMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_FLYING_MSG.name, conditions.getIfFlyingMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_IN_WORLD_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IS_IN_THE_AIR_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_IN_WORLD_MSG, conditions.getIfInWorldMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_IS_IN_THE_AIR_MSG.name, conditions.getIfIsInTheAirMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_IN_WORLD_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IS_ON_THE_BLOCK_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_NOT_IN_WORLD_MSG, conditions.getIfNotInWorldMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_IN_BIOME_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_IN_BIOME_MSG, conditions.getIfInBiomeMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_IN_BIOME_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_NOT_IN_BIOME_MSG, conditions.getIfNotInBiomeMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_IN_REGION_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_IN_REGION_MSG, conditions.getIfInRegionMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_IN_REGION_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_NOT_IN_REGION_MSG, conditions.getIfNotInRegionMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_HAS_PERMISSION_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_HAS_PERMISSION_MSG, conditions.getIfHasPermissionMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_HAS_PERMISSION_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_NOT_HAS_PERMISSION_MSG, conditions.getIfNotHasPermissionMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_TARGET_BLOCK_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_TARGET_BLOCK_MSG, conditions.getIfTargetBlockMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_NOT_TARGET_BLOCK_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_NOT_TARGET_BLOCK_MSG, conditions.getIfNotTargetBlockMsg());
-
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_PLAYER_HEALTH_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
-		i++;
-		this.updateMessage(IF_PLAYER_HEALTH_MSG, conditions.getIfPlayerHealthMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_IS_ON_THE_BLOCK_MSG.name, conditions.getIfIsOnTheBlockMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_LIGHT_LEVEL_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IN_WORLD_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_LIGHT_LEVEL_MSG, conditions.getIfLightLevelMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_IN_WORLD_MSG.name, conditions.getIfInWorldMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_PLAYER_FOOD_LEVEL_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_IN_WORLD_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_PLAYER_FOOD_LEVEL_MSG, conditions.getIfPlayerFoodLevelMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_IN_WORLD_MSG.name, conditions.getIfNotInWorldMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_PLAYER_EXP_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IN_BIOME_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_PLAYER_EXP_MSG, conditions.getIfPlayerEXPMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_IN_BIOME_MSG.name, conditions.getIfInBiomeMsg());
 
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_PLAYER_LEVEL_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_IN_BIOME_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_PLAYER_LEVEL_MSG, conditions.getIfPlayerLevelMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_IN_BIOME_MSG.name, conditions.getIfNotInBiomeMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IN_REGION_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_IN_REGION_MSG.name, conditions.getIfInRegionMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_IN_REGION_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_IN_REGION_MSG.name, conditions.getIfNotInRegionMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_HAS_PERMISSION_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_HAS_PERMISSION_MSG.name, conditions.getIfHasPermissionMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_HAS_PERMISSION_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_HAS_PERMISSION_MSG.name, conditions.getIfNotHasPermissionMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_TARGET_BLOCK_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_TARGET_BLOCK_MSG.name, conditions.getIfTargetBlockMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_NOT_TARGET_BLOCK_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_NOT_TARGET_BLOCK_MSG.name, conditions.getIfNotTargetBlockMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_PLAYER_HEALTH_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_PLAYER_HEALTH_MSG.name, conditions.getIfPlayerHealthMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_POS_X_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_LIGHT_LEVEL_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_POS_X_MSG, conditions.getIfPosXMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_LIGHT_LEVEL_MSG.name, conditions.getIfLightLevelMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_PLAYER_FOOD_LEVEL_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_PLAYER_FOOD_LEVEL_MSG.name, conditions.getIfPlayerFoodLevelMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_PLAYER_EXP_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_PLAYER_EXP_MSG.name, conditions.getIfPlayerEXPMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_PLAYER_LEVEL_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_PLAYER_LEVEL_MSG.name, conditions.getIfPlayerLevelMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_POS_Y_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_POS_X_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_POS_Y_MSG, conditions.getIfPosYMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_POS_X_MSG.name, conditions.getIfPosXMsg());
 		
-		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+IF_POS_Z_MSG, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_POS_Y_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateMessage(IF_POS_Z_MSG, conditions.getIfPosZMsg());
+		this.updateMessage(PlayerConditionsMessages.IF_POS_Y_MSG.name, conditions.getIfPosYMsg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_POS_Z_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_POS_Z_MSG.name, conditions.getIfPosZMsg());
 		
 
 		createItem(RED, 					1 , 27, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -162,5 +138,41 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
 		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
+	}
+	
+	public enum PlayerConditionsMessages{
+		IF_SNEAKING_MSG ("ifSneaking message"),
+		IF_NOT_SNEAKING_MSG ("ifNotSneaking message"),
+		IF_BLOCKING_MSG ("ifBlocking message"),
+		IF_NOT_BLOCKING_MSG ("ifNotBlocking message"),
+		IF_SWIMMING_MSG ("ifSwimming message"),
+		IF_GLIDING_MSG ("ifGliding message"),
+		IF_FLYING_MSG ("ifFlying message"),
+		IF_IS_IN_THE_AIR_MSG ("ifIsInTheAir message"),
+		IF_IS_ON_THE_BLOCK_MSG ("ifIsOnTheBlock message"),
+		IF_IN_WORLD_MSG ("ifInWorld message"),
+		IF_NOT_IN_WORLD_MSG ("ifNotInWorld message"),
+		IF_IN_BIOME_MSG ("ifInBiome message"),
+		IF_NOT_IN_BIOME_MSG ("ifNotInBiome message"),
+		IF_IN_REGION_MSG ("ifInRegion message"),
+		IF_NOT_IN_REGION_MSG ("ifNotInRegion message"),
+		IF_HAS_PERMISSION_MSG ("ifHasPermission message"),
+		IF_NOT_HAS_PERMISSION_MSG ("ifNotHasPermission message"),
+		IF_TARGET_BLOCK_MSG ("ifTargetBlock message"),
+		IF_NOT_TARGET_BLOCK_MSG ("ifNotTargetBlock message"),
+		IF_PLAYER_HEALTH_MSG ("ifPlayerHealth message"),
+		IF_LIGHT_LEVEL_MSG ("ifLightLevel message"),
+		IF_PLAYER_FOOD_LEVEL_MSG ("ifPlayerFoodLevel message"),
+		IF_PLAYER_EXP_MSG ("ifPlayerEXP message"),
+		IF_PLAYER_LEVEL_MSG ("ifPlayerLevel message"),
+		IF_POS_X_MSG ("ifPosX message"),
+		IF_POS_Y_MSG ("ifPosY message"),
+		IF_POS_Z_MSG ("ifPosZ message");
+		
+		public String name;
+
+		PlayerConditionsMessages(String name) {
+			this.name = name;
+		}
 	}
 }

@@ -10,15 +10,13 @@ import com.ssomar.score.splugin.SPlugin;
 
 public class ItemConditionsMessagesGUI extends ConditionGUIAbstract{
 	
-	private ItemConditions conditions;
-	
 	public ItemConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions Messages", 3*9, sPlugin, sObject, sActivator, detail, conditions);
-		this.conditions = conditions;	
 	}
 
 	@Override
 	public void loadTheGUI() {
+		ItemConditions conditions = (ItemConditions)this.getConditions();
 		int i = 0;
 		//Main Options
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_DURABILITY_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");

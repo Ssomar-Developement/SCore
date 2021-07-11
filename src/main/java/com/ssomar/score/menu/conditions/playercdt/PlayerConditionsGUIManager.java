@@ -12,8 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
@@ -22,7 +23,7 @@ import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
 
-public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
+public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditionsGUI>{
 
 	private static PlayerConditionsGUIManager instance;	
 
@@ -30,253 +31,256 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		cache.put(p, new PlayerConditionsGUI(sPlugin, sObject, sActivator, pC, detail));
 		cache.get(p).openGUISync(p);
 	}
+	
+	@Override
+	public void clicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		
+		if(i.name.contains(PlayerConditionsGUI.IF_SNEAKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_SNEAKING);
 
-	public void clicked(Player p, ItemStack item) {
-		if(item != null && item.hasItemMeta()) {
-			SPlugin sPlugin = cache.get(p).getsPlugin();
-			SObject sObject = cache.get(p).getSObject();
-			SActivator sAct = cache.get(p).getSAct();
-			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			String plName = sPlugin.getNameDesign();
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_SNEAKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING);
 
-			if(name.contains(PlayerConditionsGUI.IF_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SNEAKING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_BLOCKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_BLOCKING);
 
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_SNEAKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_BLOCKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING);
 
-			else if(name.contains(PlayerConditionsGUI.IF_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_BLOCKING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_SWIMMING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_SWIMMING);
 
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_BLOCKING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_GLIDING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_GLIDING);
 
-			else if(name.contains(PlayerConditionsGUI.IF_SWIMMING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_SWIMMING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_FLYING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_FLYING);
 
-			else if(name.contains(PlayerConditionsGUI.IF_GLIDING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_GLIDING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_IS_IN_THE_AIR)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_IS_IN_THE_AIR);
+		
+		else if(i.name.contains(PlayerConditionsGUI.IF_IN_WORLD)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_IN_WORLD);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfInWorld());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IN WORLD:"));
+			this.showIfInWorldEditor(i.player);
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_FLYING)) cache.get(p).changeBoolean(PlayerConditionsGUI.IF_FLYING);
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_NOT_IN_WORLD);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfNotInWorld());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IN NOT WORLD:"));
+			this.showIfNotInWorldEditor(i.player);
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_IN_WORLD)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_IN_WORLD);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfInWorld());
+		else if(i.name.contains(PlayerConditionsGUI.IF_IN_BIOME)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_IN_BIOME);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfInBiome());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IN BIOME:"));
+			this.showIfInBiomeEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_NOT_IN_BIOME);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfNotInBiome());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IN NOT BIOME:"));
+			this.showIfNotInBiomeEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_IN_REGION)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_IN_REGION);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfInRegion());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IN REGION:"));
+			this.showIfInRegionEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_NOT_IN_REGION);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfNotInRegion());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF NOT IN REGION:"));
+			this.showIfNotInRegionEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_HAS_PERMISSION);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfHasPermission());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS PERMISSION:"));
+			this.showIfHasPermissionEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_NOT_HAS_PERMISSION);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfNotHasPermission());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF NOT HAS PERMISSION:"));
+			this.showIfNotHasPermissionEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_TARGET_BLOCK);
+			if(!currentWriting.containsKey(i.player)) {
+				List<String> convert = new ArrayList<>();
+				for(Material mat : cache.get(i.player).getIfTargetBlock()) {
+					convert.add(mat.toString());
 				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN WORLD:"));
-				this.showIfInWorldEditor(p);
-				space(p);
+				currentWriting.put(i.player, convert);
 			}
-
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_WORLD);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfNotInWorld());
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF TARGET BLOCK:"));
+			this.showIfTargetBlockEditor(i.player);
+			space(i.player);
+		}
+		
+		else if(i.name.contains(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_IS_ON_THE_BLOCK);
+			if(!currentWriting.containsKey(i.player)) {
+				List<String> convert = new ArrayList<>();
+				for(Material mat : cache.get(i.player).getIfIsOnTheBlock()) {
+					convert.add(mat.toString());
 				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN NOT WORLD:"));
-				this.showIfNotInWorldEditor(p);
-				space(p);
+				currentWriting.put(i.player, convert);
 			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IS ON THE BLOCK:"));
+			this.showIfIsOnTheBlockEditor(i.player);
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_IN_BIOME)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_IN_BIOME);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfInBiome());
+		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_NOT_TARGET_BLOCK);
+			if(!currentWriting.containsKey(i.player)) {	
+				List<String> convert = new ArrayList<>();
+				for(Material mat : cache.get(i.player).getIfNotTargetBlock()) {
+					convert.add(mat.toString());
 				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN BIOME:"));
-				this.showIfInBiomeEditor(p);
-				space(p);
+				currentWriting.put(i.player, convert);
 			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF NOT TARGET BLOCK:"));
+			this.showIfNotTargetBlockEditor(i.player);
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_BIOME);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfNotInBiome());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN NOT BIOME:"));
-				this.showIfNotInBiomeEditor(p);
-				space(p);
-			}
+		else if(i.name.contains(PlayerConditionsGUI.IF_PLAYER_HEALTH)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_PLAYER_HEALTH);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF PLAYER HEALTH:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_IN_REGION)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_IN_REGION);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfInRegion());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF IN REGION:"));
-				this.showIfInRegionEditor(p);
-				space(p);
-			}
+			this.showCalculationGUI(i.player, "Health", cache.get(i.player).getIfPlayerHealth());
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_IN_REGION);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfNotInRegion());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT IN REGION:"));
-				this.showIfNotInRegionEditor(p);
-				space(p);
-			}
+		else if(i.name.contains(PlayerConditionsGUI.IF_LIGHT_LEVEL)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_LIGHT_LEVEL);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF LIGHT LEVEL:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_HAS_PERMISSION);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfHasPermission());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF HAS PERMISSION:"));
-				this.showIfHasPermissionEditor(p);
-				space(p);
-			}
+			this.showCalculationGUI(i.player, "Light level", cache.get(i.player).getIfLightLevel());
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_HAS_PERMISSION);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfNotHasPermission());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT HAS PERMISSION:"));
-				this.showIfNotHasPermissionEditor(p);
-				space(p);
-			}
+		else if(i.name.contains(PlayerConditionsGUI.IF_POS_X)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_POS_X);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF POS X:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_TARGET_BLOCK);
-				if(!currentWriting.containsKey(p)) {
-					List<String> convert = new ArrayList<>();
-					for(Material mat : cache.get(p).getIfTargetBlock()) {
-						convert.add(mat.toString());
-					}
-					currentWriting.put(p, convert);
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF TARGET BLOCK:"));
-				this.showIfTargetBlockEditor(p);
-				space(p);
-			}
+			this.showCalculationGUI(i.player, "Pos X", cache.get(i.player).getIfPosX());
+			space(i.player);
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_NOT_TARGET_BLOCK);
-				if(!currentWriting.containsKey(p)) {	
-					List<String> convert = new ArrayList<>();
-					for(Material mat : cache.get(p).getIfNotTargetBlock()) {
-						convert.add(mat.toString());
-					}
-					currentWriting.put(p, convert);
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF NOT TARGET BLOCK:"));
-				this.showIfNotTargetBlockEditor(p);
-				space(p);
-			}
+		else if(i.name.contains(PlayerConditionsGUI.IF_POS_Y)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_POS_Y);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF POS Y:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_HEALTH)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_HEALTH);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER HEALTH:"));
+			this.showCalculationGUI(i.player, "Pos Y", cache.get(i.player).getIfPosY());
+			space(i.player);
+		}
 
-				this.showCalculationGUI(p, "Health", cache.get(p).getIfPlayerHealth());
-				space(p);
-			}
+		else if(i.name.contains(PlayerConditionsGUI.IF_POS_Z)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_POS_Z);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF POS Z:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_LIGHT_LEVEL)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_LIGHT_LEVEL);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF LIGHT LEVEL:"));
+			this.showCalculationGUI(i.player, "Pos Z", cache.get(i.player).getIfPosZ());
+			space(i.player);
+		}
 
-				this.showCalculationGUI(p, "Light level", cache.get(p).getIfLightLevel());
-				space(p);
-			}
+		else if(i.name.contains(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF PLAYER FOOD LEVEL:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_POS_X)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_POS_X);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS X:"));
+			this.showCalculationGUI(i.player, "Food level", cache.get(i.player).getIfPlayerFoodLevel());
+			space(i.player);
+		}
+		else if(i.name.contains(PlayerConditionsGUI.IF_PLAYER_EXP)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_PLAYER_EXP);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF PLAYER EXP:"));
 
-				this.showCalculationGUI(p, "Pos X", cache.get(p).getIfPosX());
-				space(p);
-			}
+			this.showCalculationGUI(i.player, "EXP", cache.get(i.player).getIfPlayerEXP());
+			space(i.player);
+		}
+		else if(i.name.contains(PlayerConditionsGUI.IF_PLAYER_LEVEL)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_PLAYER_LEVEL);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF PLAYER LEVEL:"));
 
-			else if(name.contains(PlayerConditionsGUI.IF_POS_Y)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_POS_Y);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Y:"));
+			this.showCalculationGUI(i.player, "Level", cache.get(i.player).getIfPlayerLevel());
+			space(i.player);
+		}	
 
-				this.showCalculationGUI(p, "Pos Y", cache.get(p).getIfPosY());
-				space(p);
-			}
+		else if(i.name.contains("Save")) {
+			savePlayerConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
 
-			else if(name.contains(PlayerConditionsGUI.IF_POS_Z)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_POS_Z);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF POS Z:"));
-
-				this.showCalculationGUI(p, "Pos Z", cache.get(p).getIfPosZ());
-				space(p);
-			}
-
-			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER FOOD LEVEL:"));
-
-				this.showCalculationGUI(p, "Food level", cache.get(p).getIfPlayerFoodLevel());
-				space(p);
-			}
-			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_EXP)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_EXP);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER EXP:"));
-
-				this.showCalculationGUI(p, "EXP", cache.get(p).getIfPlayerEXP());
-				space(p);
-			}
-			else if(name.contains(PlayerConditionsGUI.IF_PLAYER_LEVEL)) {
-				requestWriting.put(p, PlayerConditionsGUI.IF_PLAYER_LEVEL);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION IF PLAYER LEVEL:"));
-
-				this.showCalculationGUI(p, "Level", cache.get(p).getIfPlayerLevel());
-				space(p);
-			}	
-
-			else if(name.contains("Reset")) {
-				cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
-				cache.get(p).openGUISync(p);
-			}
-
-			else if(name.contains("Save")) {
-				savePlayerConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-			}
-
-			else if(name.contains("Exit")) {
-				p.closeInventory();
-			}
-
-			else if(name.contains("Back")) {
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-			}
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
 	}
 
@@ -286,7 +290,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 			SObject sObject = cache.get(p).getSObject();
 			SActivator sAct = cache.get(p).getSAct();
 			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			//String plName = sPlugin.getNameDesign();
+			//String i.sPlugin.getNameDesign() = sPlugin.getNameDesign();
 
 			if(name.contains("Reset")) {
 				cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
@@ -385,28 +389,28 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 					cache.get(p).updateIfNotInBiome(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_REGION)) {
-					List<String> result= new ArrayList<>();
+					List<String> result = new ArrayList<>();
 					for(String str : currentWriting.get(p)) {
 						result.add(str);
 					}
 					cache.get(p).updateIfInRegion(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
-					List<String> result= new ArrayList<>();
+					List<String> result = new ArrayList<>();
 					for(String str : currentWriting.get(p)) {
 						result.add(str);
 					}
 					cache.get(p).updateIfNotInRegion(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
-					List<String> result= new ArrayList<>();
+					List<String> result = new ArrayList<>();
 					for(String str : currentWriting.get(p)) {
 						result.add(str);
 					}
 					cache.get(p).updateIfHasPermission(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
-					List<Material> result= new ArrayList<>();
+					List<Material> result = new ArrayList<>();
 					try {
 						for(String str : currentWriting.get(p)) {
 							result.add(Material.valueOf(str));
@@ -414,8 +418,17 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 					}catch(Exception e) {}
 					cache.get(p).updateIfTargetBlock(result);
 				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
+					List<Material> result = new ArrayList<>();
+					try {
+						for(String str : currentWriting.get(p)) {
+							result.add(Material.valueOf(str));
+						}
+					}catch(Exception e) {}
+					cache.get(p).updateIfIsOnTheBlock(result);
+				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
-					List<Material> result= new ArrayList<>();
+					List<Material> result = new ArrayList<>();
 					try {
 						for(String str : currentWriting.get(p)) {
 							result.add(Material.valueOf(str));
@@ -537,6 +550,31 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 						currentWriting.put(p, list);
 					}
 					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have added new target block!"));
+				}
+				this.showTheGoodEditor(requestWriting.get(p), p);
+			}
+			
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
+				if(message.isEmpty() || message.equals(" ")) {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid block please !"));
+				}
+				else {
+					try {
+						Material.valueOf(message.toUpperCase());
+					}catch(Exception e) {
+						p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid block please !"));
+						p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&l> https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html !"));
+						return;
+					}
+					if(currentWriting.containsKey(p)) {
+						currentWriting.get(p).add(message.toUpperCase());
+					}
+					else {
+						ArrayList<String> list = new ArrayList<>();
+						list.add(message);
+						currentWriting.put(p, list);
+					}
+					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have added new block!"));
 				}
 				this.showTheGoodEditor(requestWriting.get(p), p);
 			}
@@ -716,6 +754,16 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Target block", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
+	
+	public void showIfIsOnTheBlockEditor(Player p) {
+		List<String> beforeMenu = new ArrayList<>();
+		beforeMenu.add("&7➤ ifIsOnTheBlock:");
+
+		HashMap<String, String> suggestions = new HashMap<>();
+
+		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Is on the block", false, false, false, true, true, true, false, "", suggestions);		
+		editor.generateTheMenuAndSendIt(p);
+	}
 
 	public void showIfNotTargetBlockEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
@@ -737,6 +785,10 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 
 		case PlayerConditionsGUI.IF_TARGET_BLOCK:
 			showIfTargetBlockEditor(p);
+			break;
+			
+		case PlayerConditionsGUI.IF_IS_ON_THE_BLOCK:
+			showIfIsOnTheBlockEditor(p);
 			break;
 
 		case PlayerConditionsGUI.IF_HAS_PERMISSION:
@@ -780,7 +832,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		PlayerConditions pC = cache.get(p).getConditions();
+		PlayerConditions pC = (PlayerConditions)cache.get(p).getConditions();
 
 		pC.setIfSneaking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SNEAKING));
 		pC.setIfNotSneaking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING));
@@ -789,6 +841,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		pC.setIfSwimming(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SWIMMING));
 		pC.setIfGliding(cache.get(p).getBoolean(PlayerConditionsGUI.IF_GLIDING));
 		pC.setIfFlying(cache.get(p).getBoolean(PlayerConditionsGUI.IF_FLYING));
+		pC.setIfIsInTheAir(cache.get(p).getBoolean(PlayerConditionsGUI.IF_IS_IN_THE_AIR));
 		pC.setIfInWorld(cache.get(p).getIfInWorld());
 		pC.setIfNotInWorld(cache.get(p).getIfNotInWorld());
 		pC.setIfInBiome(cache.get(p).getIfInBiome());
@@ -807,6 +860,7 @@ public class PlayerConditionsGUIManager extends GUIManager<PlayerConditionsGUI>{
 		pC.setIfPosX(cache.get(p).getIfPosX());
 		pC.setIfPosY(cache.get(p).getIfPosY());
 		pC.setIfPosZ(cache.get(p).getIfPosZ());
+		pC.setIfIsOnTheBlock(cache.get(p).getIfIsOnTheBlock());
 
 		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);

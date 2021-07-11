@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -57,6 +58,14 @@ public class PlayerConditions extends Conditions{
 	private boolean ifFlying;
 	private static final String IF_FLYING_MSG = " &cYou must fly to active the activator: &6%activator% &cof this item!";
 	private String ifFlyingMsg;
+	
+	private boolean ifIsInTheAir;
+	private static final String IF_IS_IN_THE_AIR_MSG = " &cYou must be in the air to active the activator: &6%activator% &cof this item!";
+	private String ifIsInTheAirMsg;
+	
+	private List<Material> ifIsOnTheBlock;
+	private static final String IF_IS_ON_THE_BLOCK_MSG = " &cYou are not on the good type of block to active the activator: &6%activator% &cof this item!";
+	private String ifIsOnTheBlockMsg;
 
 	private List<String> ifInWorld;
 	private static final String IF_IN_WORLD_MSG = " &cYou aren't in the good world to active the activator: &6%activator% &cof this item!";
@@ -160,6 +169,12 @@ public class PlayerConditions extends Conditions{
 		
 		this.ifFlying = false;
 		this.ifFlyingMsg = IF_FLYING_MSG;
+		
+		ifIsInTheAir = false;
+		ifIsInTheAirMsg = IF_IS_IN_THE_AIR_MSG;
+		
+		ifIsOnTheBlock = new ArrayList<>();
+		ifIsOnTheBlockMsg = IF_IS_ON_THE_BLOCK_MSG;
 		
 		this.ifInWorld = new ArrayList<>();
 		this.ifInWorldMsg = IF_IN_WORLD_MSG;
@@ -280,6 +295,23 @@ public class PlayerConditions extends Conditions{
 		if(this.hasIfFlying() && ifFlying && !p.isFlying()) {
 			this.getSm().sendMessage(toMsg, this.getIfFlyingMsg());
 			return false;
+		}
+		
+		if(this.ifIsInTheAir || this.ifIsOnTheBlock.size() != 0) {
+			Location pLoc = p.getLocation();
+			pLoc.subtract(0, 1, 0);
+			
+			Block block = pLoc.getBlock();
+			Material type = block.getType();
+			if(!type.equals(Material.AIR) && this.ifIsInTheAir) {
+				this.getSm().sendMessage(toMsg, this.getIfIsInTheAirMsg());
+				return false;
+			}
+			
+			if(this.ifIsOnTheBlock.size() != 0 && !ifIsOnTheBlock.contains(type)) {
+				this.getSm().sendMessage(toMsg, this.getIfIsOnTheBlockMsg());
+				return false;
+			}
 		}
 
 		if(this.hasIfInWorld()) {
@@ -477,6 +509,18 @@ public class PlayerConditions extends Conditions{
 
 		pCdt.setIfFlying(playerCdtSection.getBoolean("ifFlying", false));
 		pCdt.setIfFlyingMsg(playerCdtSection.getString("ifFlyingMsg", "&4&l"+pluginName+IF_FLYING_MSG));
+		
+		pCdt.setIfIsInTheAir(playerCdtSection.getBoolean("ifIsInTheAir", false));
+		pCdt.setIfIsInTheAirMsg(playerCdtSection.getString("ifIsInTheAirMsg", "&4&l"+pluginName+IF_IS_IN_THE_AIR_MSG));
+		
+		List<Material> mat = new ArrayList<>();
+		for (String s : playerCdtSection.getStringList("ifIsOnTheBlock")) {
+			try {
+				mat.add(Material.valueOf(s.toUpperCase()));
+			} catch (Exception e) {}
+		}
+		pCdt.setIfIsOnTheBlock(mat);
+		pCdt.setIfIsOnTheBlockMsg(playerCdtSection.getString("ifIsOnTheBlockMsg", "&4&l"+pluginName+IF_IS_ON_THE_BLOCK_MSG));
 
 		pCdt.setIfInWorld(playerCdtSection.getStringList("ifInWorld"));
 		pCdt.setIfInWorldMsg(playerCdtSection.getString("ifInWorldMsg", "&4&l"+pluginName+IF_IN_WORLD_MSG));
@@ -510,7 +554,7 @@ public class PlayerConditions extends Conditions{
 		pCdt.setIfNotHasPermission(playerCdtSection.getStringList("ifNotHasPermission"));
 		pCdt.setIfNotHasPermissionMsg(playerCdtSection.getString("ifNotHasPermissionMsg", "&4&l"+pluginName+IF_NOT_HAS_PERMISSION_MSG));
 
-		List<Material> mat = new ArrayList<>();
+		mat = new ArrayList<>();
 		for (String s : playerCdtSection.getStringList("ifTargetBlock")) {
 			try {
 				mat.add(Material.valueOf(s.toUpperCase()));
@@ -645,6 +689,18 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfFlying()) pCConfig.set("ifFlying", true); 
 		else pCConfig.set("ifFlying", null);
 		pCConfig.set("ifFlyingMsg", pC.getIfFlyingMsg()); 
+		
+		if(pC.ifIsInTheAir) pCConfig.set("ifIsInTheAir", true); 
+		else pCConfig.set("ifIsInTheAir", null);
+		pCConfig.set("ifIsInTheAirMsg", pC.getIfIsInTheAirMsg()); 
+		
+		List<String> convert = new ArrayList<>();
+		for(Material mat : pC.getIfIsOnTheBlock()) {
+			convert.add(mat.toString());
+		}
+		if(pC.getIfIsOnTheBlock().size() != 0) pCConfig.set("ifIsOnTheBlock",convert); 
+		else pCConfig.set("ifIsOnTheBlock", null);
+		pCConfig.set("ifIsOnTheBlockMsg", pC.getIfIsOnTheBlockMsg()); 
 
 		if(pC.hasIfInWorld()) pCConfig.set("ifInWorld", pC.getIfInWorld()); 
 		else pCConfig.set("ifInWorld", null);
@@ -678,7 +734,7 @@ public class PlayerConditions extends Conditions{
 		else pCConfig.set("ifNotHasPermission", null);
 		pCConfig.set("ifNotHasPermissionMsg", pC.getIfNotHasPermissionMsg()); 
 		
-		List<String> convert = new ArrayList<>();
+		convert = new ArrayList<>();
 		for(Material mat : pC.getIfTargetBlock()) {
 			convert.add(mat.toString());
 		}
@@ -1280,6 +1336,38 @@ public class PlayerConditions extends Conditions{
 
 	public void setIfNotBlockingMsg(String ifNotBlockingMsg) {
 		this.ifNotBlockingMsg = ifNotBlockingMsg;
+	}
+
+	public boolean isIfIsInTheAir() {
+		return ifIsInTheAir;
+	}
+
+	public void setIfIsInTheAir(boolean ifIsInTheAir) {
+		this.ifIsInTheAir = ifIsInTheAir;
+	}
+
+	public String getIfIsInTheAirMsg() {
+		return ifIsInTheAirMsg;
+	}
+
+	public void setIfIsInTheAirMsg(String ifIsInTheAirMsg) {
+		this.ifIsInTheAirMsg = ifIsInTheAirMsg;
+	}
+
+	public List<Material> getIfIsOnTheBlock() {
+		return ifIsOnTheBlock;
+	}
+
+	public void setIfIsOnTheBlock(List<Material> ifIsOnTheBlock) {
+		this.ifIsOnTheBlock = ifIsOnTheBlock;
+	}
+
+	public String getIfIsOnTheBlockMsg() {
+		return ifIsOnTheBlockMsg;
+	}
+
+	public void setIfIsOnTheBlockMsg(String ifIsOnTheBlockMsg) {
+		this.ifIsOnTheBlockMsg = ifIsOnTheBlockMsg;
 	}
 
 }

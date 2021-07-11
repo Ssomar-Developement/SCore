@@ -14,16 +14,14 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_DURABILITY = "ifDurability";
 	public static final String IF_USAGE = "ifUsage";
 	public static final String IF_USAGE2 = "ifUsage2";
-
-	private ItemConditions conditions;
 	
 	public ItemConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
-		this.conditions = conditions;
 	}
 	
 	@Override
 	public void loadTheGUI() {
+		ItemConditions conditions = (ItemConditions)this.getConditions();
 		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_DURABILITY, 	false,	false, "&7&oThe durability must be..", "&a✎ Click here to change", "&7actually:");

@@ -30,10 +30,13 @@ public abstract class GUIManagerSCore<T extends GUIAbstract> extends GUIManager<
 			interact.sObject = cache.get(interact.player).getSObject();
 			interact.sActivator = cache.get(interact.player).getSAct();
 			interact.name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			interact.gui = cache.get(interact.player);
 			
 			RequestMessageInfo msgInfos = new RequestMessageInfo();
 			msgInfos.player = interact.player;
 			msgInfos.sPlugin = interact.sPlugin;
+			
+			interact.msgInfos = msgInfos;
 			
 			if(interact.name.contains("Reset")) {
 				interact.resetGUI();

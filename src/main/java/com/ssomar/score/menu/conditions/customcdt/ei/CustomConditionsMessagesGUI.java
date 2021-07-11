@@ -9,15 +9,14 @@ import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 public class CustomConditionsMessagesGUI extends ConditionGUIAbstract{
-	private CustomEIConditions conditions;
 	
 	public CustomConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions Messages", 3*9, sPlugin, sObject, sAct, detail, conditions);
-		this.conditions = conditions;
 	}
 
 	@Override
 	public void loadTheGUI() {
+		CustomEIConditions conditions = (CustomEIConditions)this.getConditions();
 		int i = 0;
 		//Main Options
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_NEED_PLAYER_CONFIRMATION_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");

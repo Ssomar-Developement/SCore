@@ -57,9 +57,9 @@ public class PlayerCommandsExecutor extends CommandsExecutor{
 							/* to make sure that the player variable is correct, deco/reco can disturb the variable */
 							receiver = Bukkit.getPlayer(receiver.getUniqueId());
 
-							if(command.contains("ei-giveslot")) {
+							if(command.contains("ei giveslot")) {
 								try {
-									String playeName= command.split("ei-giveslot ")[1].split(" ")[0];
+									String playeName= command.split("ei giveslot ")[1].split(" ")[0];
 									Player pgive = Bukkit.getPlayer(playeName);
 									CommandsManager.getInstance().addStopPickup(pgive, 20);
 								}catch(Exception e) {}

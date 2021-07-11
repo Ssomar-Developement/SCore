@@ -9,8 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
@@ -19,7 +20,7 @@ import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
 
-public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
+public class WorldConditionsGUIManager extends GUIManagerSCore<WorldConditionsGUI>{
 
 	private static WorldConditionsGUIManager instance;
 
@@ -27,57 +28,40 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 		cache.put(p, new WorldConditionsGUI(sPlugin, sObject, sActivator, wC, detail));
 		cache.get(p).openGUISync(p);
 	}
-
-	public void clicked(Player p, ItemStack item) {
-		if(item != null && item.hasItemMeta()) {
-			SPlugin sPlugin = cache.get(p).getsPlugin();
-			SObject sObject = cache.get(p).getSObject();
-			SActivator sAct = cache.get(p).getSAct();
-			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			//String plName = sPlugin.getNameDesign();
-
-			if(name.contains(WorldConditionsGUI.IF_WEATHER)) {
-				requestWriting.put(p, WorldConditionsGUI.IF_WEATHER);
-				if(!currentWriting.containsKey(p)) {
-					currentWriting.put(p, cache.get(p).getIfWeather());
-				}
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WEATHER:"));
-				this.showIfWeatherEditor(p);
-				space(p);
+	
+	@Override
+	public void clicked(InteractionClickedGUIManager<WorldConditionsGUI> i) {
+		if(i.name.contains(WorldConditionsGUI.IF_WEATHER)) {
+			requestWriting.put(i.player, WorldConditionsGUI.IF_WEATHER);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfWeather());
 			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WEATHER:"));
+			this.showIfWeatherEditor(i.player);
+			space(i.player);
+		}
 
-			else if(name.contains(WorldConditionsGUI.IF_WORLD_TIME)) {
-				requestWriting.put(p, WorldConditionsGUI.IF_WORLD_TIME);
-				p.closeInventory();
-				space(p);
-				p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WORLD TIME:"));
+		else if(i.name.contains(WorldConditionsGUI.IF_WORLD_TIME)) {
+			requestWriting.put(i.player, WorldConditionsGUI.IF_WORLD_TIME);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION IF WORLD TIME:"));
 
-				this.showCalculationGUI(p, "World time", cache.get(p).getIfWorlTime());
-				space(p);
-			}
+			this.showCalculationGUI(i.player, "World time", cache.get(i.player).getIfWorlTime());
+			space(i.player);
+		}
 
-			else if(name.contains("Reset")) {
-				p.closeInventory();
-				cache.replace(p, new WorldConditionsGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
-				cache.get(p).openGUISync(p);
-			}
+		else if(i.name.contains("Save")) {
+			i.player.closeInventory();
+			saveWorldConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
 
-			else if(name.contains("Save")) {
-				p.closeInventory();
-				saveWorldConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-			}
-
-			else if(name.contains("Exit")) {
-				p.closeInventory();
-			}
-
-			else if(name.contains("Back")) {
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-			}
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
 	}
 
@@ -201,7 +185,7 @@ public class WorldConditionsGUIManager extends GUIManager<WorldConditionsGUI>{
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
-		WorldConditions wC = cache.get(p).getConditions();
+		WorldConditions wC = (WorldConditions)cache.get(p).getConditions();
 
 		wC.setIfWeather(cache.get(p).getIfWeather());
 		wC.setIfWorldTime(cache.get(p).getIfWorlTime());

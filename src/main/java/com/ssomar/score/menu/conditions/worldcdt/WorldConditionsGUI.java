@@ -16,38 +16,13 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_WEATHER = "ifWeather";
 	public static final String IF_WORLD_TIME = "ifWorldTime";
 	
-	private WorldConditions conditions;
-
 	public WorldConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - World Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
-		this.conditions = conditions;	
 	}
 	
-	public void updateIfWeather(List<String> list) {
-		this.updateConditionList(IF_WEATHER, list, "&6➤ &eNO WEATHER IS REQUIRED");
-	}
-	
-	public List<String> getIfWeather(){
-		return this.getConditionList(IF_WEATHER, "NO WEATHER IS REQUIRED");
-	}	
-	
-	public void updateIfWorldTime(String condition){
-		ItemStack item = this.getByName(IF_WORLD_TIME);
-		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
-		else this.updateActually(item, condition);
-	}
-	
-	public String getIfWorlTime() {
-		if(this.getActually(this.getByName(IF_WORLD_TIME)).contains("NO CONDITION")) return "";
-		else return this.getActually(this.getByName(IF_WORLD_TIME));
-	}
-
-	public WorldConditions getConditions() {
-		return conditions;
-	}
-
 	@Override
 	public void loadTheGUI() {
+		WorldConditions conditions = (WorldConditions)this.getConditions();
 		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_WEATHER, 	false,	false, "&7&oThe weather must be..", "&a✎ Click here to change", "&7actually:");
@@ -68,5 +43,24 @@ public class WorldConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.BOOK, 							1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
 		createItem(Material.BOOK, 							1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
+	}
+	
+	public void updateIfWeather(List<String> list) {
+		this.updateConditionList(IF_WEATHER, list, "&6➤ &eNO WEATHER IS REQUIRED");
+	}
+	
+	public List<String> getIfWeather(){
+		return this.getConditionList(IF_WEATHER, "NO WEATHER IS REQUIRED");
+	}	
+	
+	public void updateIfWorldTime(String condition){
+		ItemStack item = this.getByName(IF_WORLD_TIME);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+	
+	public String getIfWorlTime() {
+		if(this.getActually(this.getByName(IF_WORLD_TIME)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_WORLD_TIME));
 	}
 }

@@ -23,6 +23,8 @@ public class EventsHandler {
 		
 		main.getServer().getPluginManager().registerEvents(new PlayerReconnexion(), main);
 		
+		main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
+		
 		main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
 	}
 

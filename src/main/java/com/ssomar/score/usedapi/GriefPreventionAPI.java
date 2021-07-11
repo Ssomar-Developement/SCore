@@ -16,6 +16,7 @@ public class GriefPreventionAPI {
 
 		DataStore dataStore = GriefPrevention.instance.dataStore;
 		Claim claim = dataStore.getClaimAt(location, false, null);
+		if(claim == null) return false;
 		
 		UUID pUUID = p.getUniqueId();
 

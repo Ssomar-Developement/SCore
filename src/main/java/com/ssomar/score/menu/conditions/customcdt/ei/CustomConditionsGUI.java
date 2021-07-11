@@ -16,15 +16,13 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND = "ifPlayerMustBeOnHisIsland";
 	public static final String IF_PLAYER_MUST_BE_ON_HIS_CLAIM = "if Player Must Be On His Claim";
 	
-	private CustomEIConditions conditions;
-	
 	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions", 3*9, sPlugin, sObject, sAct, detail, conditions);
-		this.conditions = conditions;
 	}
 
 	@Override
 	public void loadTheGUI() {
+		CustomEIConditions conditions = (CustomEIConditions) this.getConditions();
 		int i = 0;
 		//Main Options
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NEED_PLAYER_CONFIRMATION, 	false,	false, "&7&oThe player must double click?", "&a✎ Click here to change", "&7actually:");
