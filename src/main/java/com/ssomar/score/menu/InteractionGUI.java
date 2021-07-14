@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
+import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
@@ -101,6 +103,14 @@ public class InteractionGUI implements Listener{
 
 			else if(title.contains(StringConverter.coloredString("Editor - Item Conditions"))) {
 				this.manage(player, itemS, title, "ItemConditionGUIManager", e);
+			}
+			
+			else if(title.contains(StringConverter.coloredString("Editor - Block Conditions Messages"))) {
+				this.manage(player, itemS, title, "BlockConditionMessagesGUIManager", e);
+			}
+
+			else if(title.contains(StringConverter.coloredString("Editor - Block Conditions"))) {
+				this.manage(player, itemS, title, "BlockConditionGUIManager", e);
 			}
 
 			else if(title.contains(StringConverter.coloredString("Editor - Custom Conditions Messages"))) {
@@ -213,6 +223,20 @@ public class InteractionGUI implements Listener{
 				ItemConditionsGUIManager.getInstance().shiftClicked(player, itemS);
 			}
 			else ItemConditionsGUIManager.getInstance().clicked(player, itemS);
+			break;
+			
+		case "BlockConditionMessagesGUIManager":
+			if(isShiftRight || isShiftLeft) {
+				BlockConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
+			}
+			else BlockConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			break;
+
+		case "BlockConditionGUIManager":
+			if(isShiftRight || isShiftLeft) {
+				BlockConditionsGUIManager.getInstance().shiftClicked(player, itemS);
+			}
+			else BlockConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;
 
 		case "CustomConditionsMessagesGUIManager":
