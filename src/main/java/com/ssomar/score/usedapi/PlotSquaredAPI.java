@@ -10,7 +10,7 @@ public class PlotSquaredAPI {
 
 	public boolean playerIsInHisPlot(@NotNull Player p, Location location) {
 
-		 //PlotAreaManager.
+//		 PlotAreaManager.
 		
 		return false;
 

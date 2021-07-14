@@ -20,6 +20,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.entity.SplashPotion;
 import org.bukkit.entity.Trident;
 import org.bukkit.entity.WitherSkull;
+import org.bukkit.util.Vector;
 
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
@@ -30,19 +31,25 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 
 /* LAUNCH {projectileType} */
-@SuppressWarnings({ "deprecation", "unused" })
+@SuppressWarnings("deprecation")
 public class Launch extends PlayerCommandTemplate{
-	
+
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
-		if(args.size()==0) {
-			//need add a target
-			ShulkerBullet sb =receiver.launchProjectile(ShulkerBullet.class);
+
+		double rotation = 0;
+
+		if(args.size() == 0) {
+			receiver.launchProjectile(Arrow.class);
 		}
 		else {
 			try {
+				rotation = Double.valueOf(args.get(1));
+				rotation = rotation * Math.PI/180;
+			}catch(Exception e) {}
+			try {
 				ProjectilesEvt.getInstance().getPlayerHasLauchedProjectileByLaunchCommand().add(receiver.getUniqueId());
-				Entity entity=null;
+				Entity entity = null;
 
 				if(args.get(0).equalsIgnoreCase("ARROW")) entity = receiver.launchProjectile(Arrow.class);
 				else if(args.get(0).equalsIgnoreCase("DRAGONFIREBALL")) entity = receiver.launchProjectile(DragonFireball.class);
@@ -113,9 +120,15 @@ public class Launch extends PlayerCommandTemplate{
 
 				}
 
-				if(entity != null && SCore.hasExecutableItems && aInfo.getItem() != null) {
-					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, aInfo.getItem(), aInfo.getSlot());
-					ProjectilesEvt.getInstance().addProjectileInfo(pInfo);
+				if(entity != null) {
+					Vector v = entity.getVelocity();
+					v.rotateAroundY(rotation);
+					entity.setVelocity(v);
+
+					if(SCore.hasExecutableItems && aInfo.getItem() != null) {
+						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, aInfo.getItem(), aInfo.getSlot());
+						ProjectilesEvt.getInstance().addProjectileInfo(pInfo);
+					}
 				}
 
 			}catch(Exception e) {
@@ -123,18 +136,16 @@ public class Launch extends PlayerCommandTemplate{
 			}
 		}
 	}
-	
+
 	@Override
 	public String verify(List<String> args) {	
-		String error ="";
-		
-		String launch= "LAUNCH {projectileType}";
+		String error = "";
+		String launch = "LAUNCH {projectileType} [angle rotation y]";
 		if(args.size()<1) error = notEnoughArgs+launch;
-		else if(args.size()!=1) error= tooManyArgs+launch;
-		
+
 		return error;
 	}
-	
+
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();
@@ -145,7 +156,7 @@ public class Launch extends PlayerCommandTemplate{
 	@Override
 	public String getTemplate() {
 		// TODO Auto-generated method stub
-		return "LAUNCH {projectileType}";
+		return "LAUNCH {projectileType} [angle rotation y]";
 	}
 
 	@Override

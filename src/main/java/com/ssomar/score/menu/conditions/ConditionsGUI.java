@@ -17,6 +17,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	public static final String ITEM_CONDITIONS = "Item Conditions";
 	public static final String ENTITY_CONDITIONS = "Entity Conditions";
 	public static final String BLOCK_CONDITIONS = "Block Conditions";
+	public static final String TARGET_BLOCK_CONDITIONS = "Target block Conditions";
 	public static final String PLACEHOLDERS_CONDITIONS = "Placeholders Conditions";
 	public static final String CUSTOM_EI_CONDITIONS = "Custom EI Conditions";
 
@@ -27,7 +28,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	@Override
 	public void loadTheGUI() {
 		SOption sOp = this.getSAct().getOption();
-		int i=0;
+		int i = 0;
 		
 		if(sOp.getOptionWithOwner().contains(sOp)) {
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+OWNER_CONDITIONS, 	false,	false, "&7&oThe owner condtions", "&a✎ Click here to change");
@@ -59,8 +60,13 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 			i++;
 		}
 		
+		if(sOp.getOptionWithBlock().contains(sOp)) {
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_CONDITIONS, 	false,	false, "&7&oThe block condtions", "&a✎ Click here to change");
+			i++;
+		}
+		
 		if(sOp.getOptionWithTargetBlock().contains(sOp)) {
-			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_CONDITIONS, 	false,	false, "&7&oThe block condtions", "&cNOT AVAILABLE");
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+TARGET_BLOCK_CONDITIONS, 	false,	false, "&7&oThe target block condtions", "&a✎ Click here to change");
 			i++;
 		}
 		

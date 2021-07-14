@@ -7,12 +7,14 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import com.google.common.base.Charsets;
 import com.ssomar.executableitems.ExecutableItems;
@@ -72,6 +74,13 @@ public class ItemConditions extends Conditions{
 
 			if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage = -1;
+			else if(infoItem.isHideUse()) {
+				usage = 1;
+				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
+				if(itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != null) {
+					usage = itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
+				}
+			}
 			else usage = 1;
 			
 			SsomarDev.testMsg("usage: "+usage+ " / ifUsage: "+this.ifUsage);

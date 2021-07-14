@@ -122,10 +122,10 @@
 			<id>OnARandomBox</id>
 			<url>http://repo.onarandombox.com/content/groups/public</url>
 		</repository>
-<!-- 		<repository> -->
-<!-- 			<id>IntellectualSites</id> -->
-<!-- 			<url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
-<!-- 		</repository> -->
+		<!-- <repository> -->
+		<!-- <id>IntellectualSites</id> -->
+		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
+		<!-- </repository> -->
 	</repositories>
 
 	<dependencies>
@@ -168,7 +168,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-45a6164118-1</version>
+			<version>master-41d03f93c1-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -207,10 +207,16 @@
 			<version>16.17.1</version>
 			<scope>provided</scope>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.plotsquared</groupId> -->
-<!-- 			<artifactId>PlotSquared-Core</artifactId> -->
-<!-- 			<version>6.0.6-SNAPSHOT</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.plotsquared</groupId> -->
+		<!-- <artifactId>PlotSquared-Core</artifactId> -->
+		<!-- <version>6.0.6-SNAPSHOT</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>com.github.bloodmc</groupId>
+			<artifactId>GriefDefenderAPI</artifactId>
+			<version>dd5aa2224c</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

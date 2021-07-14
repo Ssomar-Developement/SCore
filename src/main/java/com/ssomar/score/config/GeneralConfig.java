@@ -21,7 +21,7 @@ public class GeneralConfig extends Config {
 	public void load() {
 		/* Locale config (language) */
 		locale = config.getString("locale", "EN");
-		if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU")) {
+		if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU") || locale.equals("ptBR") || locale.equals("DE")) {
 			SCore.plugin.getServer().getLogger().info("[SCore] Locale setup: " + locale);
 		} else {
 			SCore.plugin.getServer().getLogger().severe("[SCore] Invalid locale name: " + locale);

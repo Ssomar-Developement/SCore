@@ -39,8 +39,8 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 		}
 		
 		else if(i.name.contains(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM)) {
-			if(SCore.hasLands || SCore.hasGriefPrevention) i.gui.changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM);
-			else i.player.sendMessage(StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cYou haven't a compatible claim plugin to change this option ! (Lands, GriefPrevention)"));
+			if(SCore.hasLands || SCore.hasGriefPrevention || SCore.hasGriefDefender) i.gui.changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM);
+			else i.player.sendMessage(StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cYou haven't a compatible claim plugin to change this option ! (Lands, GriefPrevention, GriefDefender)"));
 		}
 
 		else if(i.name.contains("Save")) {

@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
 import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsGUIManager;
@@ -60,8 +61,11 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 				}
 				
 				else if(name.contains(ConditionsGUI.BLOCK_CONDITIONS)) {
-					return;
-					//BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getBlockConditions(), "blockConditions");
+					BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getBlockConditions(), "blockConditions");
+				}
+				
+				else if(name.contains(ConditionsGUI.TARGET_BLOCK_CONDITIONS)) {
+					BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetBlockConditions(), "targetBlockConditions");
 				}
 				
 				else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {

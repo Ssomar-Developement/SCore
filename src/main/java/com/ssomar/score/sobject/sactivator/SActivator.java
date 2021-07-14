@@ -31,6 +31,8 @@ public interface SActivator {
 	
 	public ItemConditions getItemConditions();
 	
+	public BlockConditions getBlockConditions();
+	
 	public EntityConditions getTargetEntityConditions();
 	
 	public BlockConditions getTargetBlockConditions();
