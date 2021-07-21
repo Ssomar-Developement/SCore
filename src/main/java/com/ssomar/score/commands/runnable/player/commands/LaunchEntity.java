@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 
@@ -47,7 +48,7 @@ public class LaunchEntity extends PlayerCommandTemplate{
 		Entity entity = receiver.getWorld().spawnEntity(loc, entityType);
 		Vector v = receiver.getEyeLocation().getDirection();
 		v.multiply(speed);
-		v.rotateAroundY(rotation);
+		if(!SCore.is1v12() && !SCore.is1v13()) v.rotateAroundY(rotation);
 		entity.setVelocity(v);
 	}
 

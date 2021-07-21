@@ -33,7 +33,7 @@ public class DropExecutableItem extends EntityCommandTemplate{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String dropei= "DROPEXECUTABLEITEM {id} [quantity}";
+		String dropei= "DROPEXECUTABLEITEM {id} {quantity}";
 		if(args.size()<2) error = notEnoughArgs+dropei;
 		else if(args.size()==2) {
 			if(!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
@@ -59,7 +59,7 @@ public class DropExecutableItem extends EntityCommandTemplate{
 
 	@Override
 	public String getTemplate() {
-		return "DROPEXECUTABLEITEM {id} [quantity}";
+		return "DROPEXECUTABLEITEM {id} {quantity}";
 	}
 
 	@Override

@@ -97,10 +97,10 @@ public class StringPlaceholder {
 	public String replacePlaceholder(String str) {
 		String s = str;
 		if(this.hasPlayer()) {
-			s=s.replaceAll("%player%", this.getPlayer());
+			s = s.replaceAll("%player%", this.getPlayer());
 		}
 		if(this.hasActivator()) {
-			s=s.replaceAll("%activator%", this.getActivator());
+			s = s.replaceAll("%activator%", this.getActivator());
 		}
 		if(this.hasItem()) {
 			s=s.replaceAll("%item%", this.getItem());
@@ -145,22 +145,22 @@ public class StringPlaceholder {
 			s=s.replaceAll("%entity%", this.getEntity().replaceAll("%monster%", this.getEntity()));
 		}
 		if(this.hasEntityX()) {
-			s = replaceCalculPlaceholder(s, "%entity_x%", entityX);
+			s = replaceCalculPlaceholder(s, "%entity_x%", entityX, false);
 		}
 		if(this.hasEntityY()) {
-			s = replaceCalculPlaceholder(s, "%entity_y%", entityY);
+			s = replaceCalculPlaceholder(s, "%entity_y%", entityY, false);
 		}
 		if(this.hasEntityZ()) {
-			s = replaceCalculPlaceholder(s, "%entity_z%", entityZ);
+			s = replaceCalculPlaceholder(s, "%entity_z%", entityZ, false);
 		}
 		if(this.hasX()) {
-			s = replaceCalculPlaceholder(s, "%x%", x);
+			s = replaceCalculPlaceholder(s, "%x%", x, false);
 		}
 		if(this.hasY()) {
-			s = replaceCalculPlaceholder(s, "%y%", y);
+			s = replaceCalculPlaceholder(s, "%y%", y, false);
 		}
 		if(this.hasZ()) {
-			s = replaceCalculPlaceholder(s, "%z%", z);
+			s = replaceCalculPlaceholder(s, "%z%", z, false);
 		}
 		if(this.hasWorld()) {
 			s=s.replaceAll("%world%", this.getWorld());
@@ -169,73 +169,73 @@ public class StringPlaceholder {
 			s=s.replaceAll("%blockface%", this.getBlockface());
 		}
 		if(this.hasUsage()) {
-			s = replaceCalculPlaceholder(s, "%usage%", usage);
+			s = replaceCalculPlaceholder(s, "%usage%", usage, true);
 		}
 		if(this.hasProjectileX()) {
-			s = replaceCalculPlaceholder(s, "%projectile_x%", this.getProjectileX());
+			s = replaceCalculPlaceholder(s, "%projectile_x%", this.getProjectileX(), false);
 		}
 		if(this.hasProjectileY()) {
-			s = replaceCalculPlaceholder(s, "%projectile_y%", this.getProjectileY());
+			s = replaceCalculPlaceholder(s, "%projectile_y%", this.getProjectileY(), false);
 		}
 		if(this.hasProjectileZ()) {
-			s = replaceCalculPlaceholder(s, "%projectile_z%", this.getProjectileZ());
+			s = replaceCalculPlaceholder(s, "%projectile_z%", this.getProjectileZ(), false);
 		}
 		if(this.hasBlockWorld()) {
-			s = replaceCalculPlaceholder(s, "%block_world%", this.getBlockWorld());
+			s = s.replaceAll("%block_world%", this.getBlockWorld());
 		}
 		if(this.hasBlockX()) {
-			s = replaceCalculPlaceholder(s, "%block_x%", this.getBlockX());
+			s = replaceCalculPlaceholder(s, "%block_x%", this.getBlockX(), false);
 		}
 		if(this.hasBlockY()) {
-			s = replaceCalculPlaceholder(s, "%block_y%", this.getBlockY());
+			s = replaceCalculPlaceholder(s, "%block_y%", this.getBlockY(), false);
 		}
 		if(this.hasBlockZ()) {
-			s = replaceCalculPlaceholder(s, "%block_z%", this.getBlockZ());
+			s = replaceCalculPlaceholder(s, "%block_z%", this.getBlockZ(), false);
 		}
 		if(this.hasBlockXInt()) {
-			s = replaceCalculPlaceholder(s, "%block_x_int%", this.getBlockXInt());
+			s = replaceCalculPlaceholder(s, "%block_x_int%", this.getBlockXInt(), true);
 		}
 		if(this.hasBlockYInt()) {
-			s = replaceCalculPlaceholder(s, "%block_y_int%", this.getBlockYInt());
+			s = replaceCalculPlaceholder(s, "%block_y_int%", this.getBlockYInt(), true);
 		}
 		if(this.hasBlockZInt()) {
-			s = replaceCalculPlaceholder(s, "%block_z_int%", this.getBlockZInt());
+			s = replaceCalculPlaceholder(s, "%block_z_int%", this.getBlockZInt(), true);
 		}
 		if(this.hasTargetX()) {
-			s = replaceCalculPlaceholder(s, "%target_x%", this.getTargetX());
+			s = replaceCalculPlaceholder(s, "%target_x%", this.getTargetX(), false);
 		}
 		if(this.hasTargetY()) {
-			s = replaceCalculPlaceholder(s, "%target_y%", this.getTargetY());
+			s = replaceCalculPlaceholder(s, "%target_y%", this.getTargetY(), false);
 		}
 		if(this.hasTargetZ()) {
-			s = replaceCalculPlaceholder(s, "%target_z%", this.getTargetZ());
+			s = replaceCalculPlaceholder(s, "%target_z%", this.getTargetZ(), false);
 		}
 		if(this.hasTargetXInt()) {
-			s = replaceCalculPlaceholder(s, "%target_x_int%", this.getTargetXInt());
+			s = replaceCalculPlaceholder(s, "%target_x_int%", this.getTargetXInt(), true);
 		}
 		if(this.hasTargetYInt()) {
-			s = replaceCalculPlaceholder(s, "%target_y_int%", this.getTargetYInt());
+			s = replaceCalculPlaceholder(s, "%target_y_int%", this.getTargetYInt(), true);
 		}
 		if(this.hasTargetZInt()) {
-			s = replaceCalculPlaceholder(s, "%target_z_int%", this.getTargetZInt());
+			s = replaceCalculPlaceholder(s, "%target_z_int%", this.getTargetZInt(), true);
 		}
 		if(this.hasTargetBlockX()) {
-			s = replaceCalculPlaceholder(s, "%target_block_x%", this.getTargetBlockX());
+			s = replaceCalculPlaceholder(s, "%target_block_x%", this.getTargetBlockX(), false);
 		}
 		if(this.hasTargetBlockY()) {
-			s = replaceCalculPlaceholder(s, "%target_block_y%", this.getTargetBlockY());
+			s = replaceCalculPlaceholder(s, "%target_block_y%", this.getTargetBlockY(), false);
 		}
 		if(this.hasTargetBlockZ()) {
-			s = replaceCalculPlaceholder(s, "%target_block_z%", this.getTargetBlockZ());
+			s = replaceCalculPlaceholder(s, "%target_block_z%", this.getTargetBlockZ(), false);
 		}
 		if(this.hasTargetBlockXInt()) {
-			s = replaceCalculPlaceholder(s, "%target_block_x_int%", this.getTargetBlockXInt());
+			s = replaceCalculPlaceholder(s, "%target_block_x_int%", this.getTargetBlockXInt(), true);
 		}
 		if(this.hasTargetBlockYInt()) {
-			s = replaceCalculPlaceholder(s, "%target_block_y_int%", this.getTargetBlockYInt());
+			s = replaceCalculPlaceholder(s, "%target_block_y_int%", this.getTargetBlockYInt(), true);
 		}
 		if(this.hasTargetBlockZInt()) {
-			s = replaceCalculPlaceholder(s, "%target_block_z_int%", this.getTargetBlockZInt());
+			s = replaceCalculPlaceholder(s, "%target_block_z_int%", this.getTargetBlockZInt(), true);
 		}
 		if(this.hasMaxUsePerDayActivator()) {
 			s=s.replaceAll("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
@@ -274,7 +274,7 @@ public class StringPlaceholder {
 		return true;
 	}
 	
-	public static String replaceCalculPlaceholder(String s, String placeholder, String value) {
+	public static String replaceCalculPlaceholder(String s, String placeholder, String value, boolean isInteger) {
 		
 		String result = s;
 		
@@ -287,8 +287,9 @@ public class StringPlaceholder {
 				sb.append(c);
 			} 
 			if (isNumeric(sb.toString())) {
-				int d = (int) (Double.parseDouble(sb.toString()) + Double.valueOf(value));
-				result = result.replaceAll(placeholder+"\\+" + sb.toString(), "" + d);
+				double d = Double.parseDouble(sb.toString()) + Double.valueOf(value);
+				if(isInteger) result = result.replaceAll(placeholder+"\\+" + sb.toString(), "" + (int) d);
+				else result = result.replaceAll(placeholder+"\\+" + sb.toString(), "" + d);
 			} else {
 				result = result.replaceAll(placeholder+"\\+" + sb.toString(), value);
 			} 
@@ -303,8 +304,9 @@ public class StringPlaceholder {
 				sb.append(c);
 			} 
 			if (isNumeric(sb.toString())) {
-				int d = (int) (Double.valueOf(value) - Double.parseDouble(sb.toString()));
-				result = result.replaceAll(placeholder+"\\-" + sb.toString(), "" + d);
+				double d = Double.valueOf(value) - Double.parseDouble(sb.toString());
+				if(isInteger) result = result.replaceAll(placeholder+"\\-" + sb.toString(), "" + (int) d);
+				else result = result.replaceAll(placeholder+"\\-" + sb.toString(), "" + d);
 			} else {
 				result = result.replaceAll(placeholder+"\\-" + sb.toString(), value);
 			} 

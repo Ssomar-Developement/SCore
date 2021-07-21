@@ -20,7 +20,6 @@ import com.google.common.base.Charsets;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.executableitems.items.Item;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -83,7 +82,7 @@ public class ItemConditions extends Conditions{
 			}
 			else usage = 1;
 			
-			SsomarDev.testMsg("usage: "+usage+ " / ifUsage: "+this.ifUsage);
+			//SsomarDev.testMsg("usage: "+usage+ " / ifUsage: "+this.ifUsage);
 			
 			if(!StringCalculation.calculation(this.ifUsage, usage)) {
 				this.getSm().sendMessage(p, this.getIfUsageMsg());
@@ -98,6 +97,13 @@ public class ItemConditions extends Conditions{
 
 			if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage2 = -1;
+			else if(infoItem.isHideUse()) {
+				usage2 = 1;
+				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
+				if(itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != null) {
+					usage2 = itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
+				}
+			}
 			else usage2 = 1;
 			
 			if(!StringCalculation.calculation(this.ifUsage2, usage2)) {

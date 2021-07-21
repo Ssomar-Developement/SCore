@@ -12,6 +12,7 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_PLANT_FULLY_GROWN = "ifPlantFullyGrown";
 	public static final String IF_IS_POWERED = "ifIsPowered";
+	public static final String AROUND_BLOCK_CDT = "Around block conditions";
 	
 	public BlockConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, BlockConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Block Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -30,6 +31,8 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateBoolean(IF_IS_POWERED, conditions.isIfIsPowered());
 		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+AROUND_BLOCK_CDT, 	false,	false, "&7&oAround blocks conditions", "&a✎ Click here to edit", "&7>> &e"+conditions.getBlockAroundConditions().size()+" &7conditions");
+		i++;
 		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		

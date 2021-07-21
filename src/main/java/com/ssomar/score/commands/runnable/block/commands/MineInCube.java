@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
 import com.ssomar.score.usedapi.WorldGuardAPI;
@@ -22,19 +23,22 @@ public class MineInCube extends BlockCommandTemplate{
 	@Override
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
-		if(aInfo.isEventCallByMineInCube()) return;
+		if(aInfo.isEventCallByMineInCube()) {
+			SsomarDev.testMsg("1");
+			return;
+		}
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;
-			if(args.size()==2) drop = Boolean.valueOf(args.get(1));
-			if(radius<10) {
+			if(args.size() == 2) drop = Boolean.valueOf(args.get(1));
+			if(radius < 10) {
 				for(int y = -radius; y < Integer.valueOf(radius)+1; y++) {
 					for(int x = -Integer.valueOf(radius); x < Integer.valueOf(radius)+1; x++) {
 						for(int z = -Integer.valueOf(radius); z < Integer.valueOf(radius)+1; z++) {
 
 							Location toBreakLoc = new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z);
 							Block toBreak = block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z);
-
+							
 							if(!toBreak.getType().equals(Material.BEDROCK) && !toBreak.getType().equals(Material.AIR)) {
 
 								if((SCore.hasWorldGuard && new WorldGuardAPI().canBuild(p, toBreakLoc)) || !SCore.hasWorldGuard ) {
@@ -56,7 +60,9 @@ public class MineInCube extends BlockCommandTemplate{
 					}
 				}
 			}
-		}catch(Exception err) {}
+		}catch(Exception err) {
+			err.printStackTrace();
+		}
 	}
 
 	@Override

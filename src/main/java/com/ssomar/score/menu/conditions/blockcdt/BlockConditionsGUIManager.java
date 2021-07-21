@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionsGUIManager;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
@@ -25,11 +26,16 @@ public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGU
 	@Override
 	public void clicked(InteractionClickedGUIManager<BlockConditionsGUI> i) {
 		
+		BlockConditions bC = (BlockConditions) cache.get(i.player).getConditions();
+		
 		if(i.name.contains(BlockConditionsGUI.IF_IS_POWERED)) {
 			i.gui.changeBoolean(BlockConditionsGUI.IF_IS_POWERED);
 		}
 		else if(i.name.contains(BlockConditionsGUI.IF_PLANT_FULLY_GROWN)) {
 			i.gui.changeBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN);
+		}
+		else if(i.name.contains(BlockConditionsGUI.AROUND_BLOCK_CDT)) {
+			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, bC.getBlockAroundConditions(), cache.get(i.player).getDetail());
 		}
 		
 		else if(i.name.contains("Save")) {

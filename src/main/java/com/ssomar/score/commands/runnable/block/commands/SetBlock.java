@@ -21,7 +21,7 @@ public class SetBlock extends BlockCommandTemplate{
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		try {
 			String mat = args.get(0).toUpperCase();
-			if(Material.matchMaterial(mat)!=null) {
+			if(Material.matchMaterial(mat) != null) {
 				if(SCore.hasWorldGuard) {
 					if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 						block.setType(Material.valueOf(mat));

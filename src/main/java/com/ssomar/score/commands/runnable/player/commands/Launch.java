@@ -121,9 +121,11 @@ public class Launch extends PlayerCommandTemplate{
 				}
 
 				if(entity != null) {
-					Vector v = entity.getVelocity();
-					v.rotateAroundY(rotation);
-					entity.setVelocity(v);
+					if(!SCore.is1v12() && !SCore.is1v13()) {
+						Vector v = entity.getVelocity();
+						v.rotateAroundY(rotation);
+						entity.setVelocity(v);
+					}
 
 					if(SCore.hasExecutableItems && aInfo.getItem() != null) {
 						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, aInfo.getItem(), aInfo.getSlot());

@@ -14,7 +14,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -244,7 +243,7 @@ public class PlaceholdersCondition extends Conditions{
 	public static void deletePlaceholdersCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, String id, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			ExecutableItems.plugin.getLogger().severe("[ExecutableItems] Error can't find the file the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file the folder ! ("+sObject.getID()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

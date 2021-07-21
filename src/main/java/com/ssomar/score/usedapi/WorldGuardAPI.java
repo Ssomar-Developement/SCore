@@ -16,19 +16,21 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import com.ssomar.score.SCore;
 
 public class WorldGuardAPI {
 
 	public boolean canBuild(Player p, org.bukkit.Location location) {
 
-
+		if(SCore.is1v12()) return true;
+		
 		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
 		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionQuery query = container.createQuery();
 
 		StateFlag [] conditions = new StateFlag[1];
-		conditions[0]= Flags.BLOCK_BREAK;
+		conditions[0] = Flags.BLOCK_BREAK;
 		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
 		return query.testBuild(loc, localPlayer, conditions);
 
@@ -40,7 +42,7 @@ public class WorldGuardAPI {
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager regions = container.get(BukkitAdapter.adapt(p.getWorld()));
 
-		if(regions==null) return false;
+		if(regions == null) return false;
 
 		ApplicableRegionSet set = regions.getApplicableRegions(loc.toVector().toBlockPoint());
 

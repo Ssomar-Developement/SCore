@@ -295,9 +295,9 @@ public abstract class CommandsExecutor{
 
 		String prepareCommand = command;
 
-		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%x%", x+"");
-		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%y%", y+"");
-		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%z%", z+"");
+		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%x%", x+"", true);
+		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%y%", y+"", true);
+		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%z%", z+"", true);
 		prepareCommand = prepareCommand.replaceAll("%world%", world.getName());
 		
 		return prepareCommand;

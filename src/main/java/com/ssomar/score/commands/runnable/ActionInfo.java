@@ -1,14 +1,20 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.executableitems.items.Item;
+import com.ssomar.score.sobject.sactivator.SActivator;
 
 public class ActionInfo {
 	
 	private String name;
 	
+	/* The slot where the action was activated */
 	private Integer slot;
 	
+	/* The item (ExecutableItems) that actives the action */
 	private Item item;
+	
+	/* The activator that actives the action */
+	private SActivator sActivator;
 	
 	private boolean isEventCallByMineInCube = false;
 	
@@ -47,5 +53,13 @@ public class ActionInfo {
 
 	public void setEventCallByMineInCube(boolean isEventCallByMineInCube) {
 		this.isEventCallByMineInCube = isEventCallByMineInCube;
+	}
+
+	public SActivator getsActivator() {
+		return sActivator;
+	}
+
+	public void setsActivator(SActivator sActivator) {
+		this.sActivator = sActivator;
 	}
 }

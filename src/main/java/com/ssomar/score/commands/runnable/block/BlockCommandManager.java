@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.block.commands.Around;
 import com.ssomar.score.commands.runnable.block.commands.Break;
 import com.ssomar.score.commands.runnable.block.commands.DropExecutableItem;
 import com.ssomar.score.commands.runnable.block.commands.DropItem;
@@ -15,7 +16,9 @@ import com.ssomar.score.commands.runnable.block.commands.Explode;
 import com.ssomar.score.commands.runnable.block.commands.FarmInCube;
 import com.ssomar.score.commands.runnable.block.commands.FertilizeInCube;
 import com.ssomar.score.commands.runnable.block.commands.MineInCube;
+import com.ssomar.score.commands.runnable.block.commands.MobAround;
 import com.ssomar.score.commands.runnable.block.commands.ParticleCommand;
+import com.ssomar.score.commands.runnable.block.commands.RemoveBlock;
 import com.ssomar.score.commands.runnable.block.commands.SendMessage;
 import com.ssomar.score.commands.runnable.block.commands.SetBlock;
 import com.ssomar.score.commands.runnable.block.commands.SetExecutableBlock;
@@ -41,6 +44,9 @@ public class BlockCommandManager {
 		references.add(new MineInCube());
 		references.add(new FarmInCube());
 		references.add(new FertilizeInCube());
+		references.add(new RemoveBlock());
+		references.add(new Around());
+		references.add(new MobAround());
 		this.commands = references;
 	}
 	

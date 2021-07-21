@@ -17,10 +17,12 @@ public interface SActivator {
 
 	public SOption getOption(); 
 	
+	/* Delay */
 	public boolean isDelayInTick();
 	
 	public int getDelay();
 	
+	/* Conditions */
 	public PlayerConditions getOwnerConditions();
 	
 	public PlayerConditions getPlayerConditions();
@@ -41,7 +43,11 @@ public interface SActivator {
 	
 	public List<PlaceholdersCondition> getPlaceholdersConditions();
 	
+	/* Required ExecutableItems */
 	public List<RequiredEI> getRequiredExecutableItems();
 	
 	public RequiredEI getRequiredEI(String id);
+	
+	/* Detailed blocks */
+	public DetailedBlocks getDetailedBlocks();
 }
