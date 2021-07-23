@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 
 import com.ssomar.score.sobject.SObject;
@@ -65,8 +67,10 @@ public class DetailedBlocks extends ArrayList<DetailedBlock>{
 		
 		return true;
 	}
-	
-	public void load(List<String> blocks, List<String> error, SPlugin sPlugin, SObject sObject) {
+	/*
+	 * @param error if error is null sPlugin and sObject can be null
+	 */
+	public void load(List<String> blocks, @Nullable List<String> error, @Nullable SPlugin sPlugin, @Nullable SObject sObject) {
 		
 		for (String str : blocks) {
 			/* StateId / value */
@@ -91,7 +95,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock>{
 				else material = Material.valueOf(str);
 				this.add(new DetailedBlock(material, states));
 			} catch (Exception e) {
-				error.add(sPlugin.getNameDesign()+" Invalid material: " + str + " for item: " + sObject.getID());
+				if(error != null) error.add(sPlugin.getNameDesign()+" Invalid material: " + str + " for item: " + sObject.getID());
 				continue;
 			}
 		}

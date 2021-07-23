@@ -6,8 +6,10 @@ import org.bukkit.Material;
 
 public class DetailedBlock {
 
+	/* Material of the block */
 	private Material material;
 	
+	/* States of the block , example STATE1 = Value1*/
 	private Map<String, String> states;
 
 	public DetailedBlock(Material material, Map<String, String> states) {

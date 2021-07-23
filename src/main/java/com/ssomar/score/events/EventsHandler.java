@@ -12,7 +12,7 @@ public class EventsHandler {
 	private SCore main;
 	
 	public void setup(SCore main) {
-		this.main=main;
+		this.main = main;
 		setupEvents();
 	}
 	
