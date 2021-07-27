@@ -128,4 +128,13 @@ public class DetailedBlocks extends ArrayList<DetailedBlock>{
 			}
 		}
 	}
+
+	public boolean isCancelEventIfNotDetailedBlocks() {
+		return cancelEventIfNotDetailedBlocks;
+	}
+
+	public void setCancelEventIfNotDetailedBlocks(boolean cancelEventIfNotDetailedBlocks) {
+		this.cancelEventIfNotDetailedBlocks = cancelEventIfNotDetailedBlocks;
+	}
+	
 }
