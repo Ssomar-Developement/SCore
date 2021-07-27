@@ -90,10 +90,15 @@ public class DetailedBlocks extends ArrayList<DetailedBlock>{
 	 * @param error if error is null sPlugin and sObject can be null
 	 */
 	public void load(ConfigurationSection config, @Nullable List<String> error, @Nullable SPlugin sPlugin, @Nullable SObject sObject) {
-		
-		this.cancelEventIfNotDetailedBlocks = config.getBoolean("cancelEventIfNotDetailedBlocks", false);
-		
+				
 		List<String> blocks = config.getStringList("detailedBlocks");
+		
+		this.load(blocks, config.getBoolean("cancelEventIfNotDetailedBlocks", false), error, sPlugin, sObject);
+	}
+	
+	public void load(List<String> blocks, boolean cancelEventIfNotDetailedBlocks, @Nullable List<String> error, @Nullable SPlugin sPlugin, @Nullable SObject sObject) {
+		
+		this.cancelEventIfNotDetailedBlocks = cancelEventIfNotDetailedBlocks;
 		
 		for (String str : blocks) {
 			/* StateId / value */
