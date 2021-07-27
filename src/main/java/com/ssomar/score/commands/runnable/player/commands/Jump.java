@@ -24,7 +24,7 @@ public class Jump extends PlayerCommandTemplate{
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 
 		double jump = 5;
-		if(args.size()==1) {
+		if(args.size() == 1) {
 			try {
 				jump = Double.valueOf(args.get(0));
 			}catch(Exception e) {}

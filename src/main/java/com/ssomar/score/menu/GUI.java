@@ -37,13 +37,13 @@ public abstract class GUI {
 	public final static String PREVIOUS_PAGE = "&dPrevious page &5&l◀";
 
 	public final static String EXIT = "&4&l▶ &cExit";
-	
+
 	public final static String OBJECT_ID = "✚ OBJECT ID:";
-	
+
 	public final static String COLOR_OBJECT_ID = "&2&l✚ &a&lOBJECT ID:";
-	
+
 	public final static String ACTIVATOR_ID = "✚ ACTIVATOR ID:";
-	
+
 	public final static String COLOR_ACTIVATOR_ID = "&2&l✚ &a&lACTIVATOR ID:";
 
 	public Material NEXT_PAGE_MAT = null;
@@ -214,11 +214,11 @@ public abstract class GUI {
 		};
 		runnable.runTask(SCore.getPlugin());
 	}
-	
+
 	public String getObjectID() {
 		return this.getActually(this.getByName(OBJECT_ID));
 	}
-	
+
 	@Nullable
 	public SObject getSObject(SPlugin plugin) {
 		try {
@@ -227,11 +227,11 @@ public abstract class GUI {
 			return null;
 		}
 	}
-	
+
 	public String getActivatorID() {
 		return this.getActually(this.getByName(ACTIVATOR_ID));
 	}
-	
+
 	@Nullable
 	public SActivator getActivator(SPlugin plugin) {
 		try {
@@ -252,7 +252,7 @@ public abstract class GUI {
 		for(String s: lore) {
 			if(StringConverter.decoloredString(s).contains("actually: ")) {
 				try {
-				return StringConverter.decoloredString(s).split("actually: ")[1];
+					return StringConverter.decoloredString(s).split("actually: ")[1];
 				}catch(ArrayIndexOutOfBoundsException e) {
 					return "";
 				}
@@ -264,7 +264,13 @@ public abstract class GUI {
 	public String getActuallyWithColor(ItemStack item) {
 		List<String> lore = item.getItemMeta().getLore();
 		for(String s: lore) {
-			if(StringConverter.decoloredString(s).contains("actually: ")) return StringConverter.deconvertColor(s).split("actually: ")[1];
+			if(StringConverter.decoloredString(s).contains("actually: ")) {
+				try {
+					return StringConverter.deconvertColor(s).split("actually: ")[1];
+				}catch(ArrayIndexOutOfBoundsException e) {
+					return "";
+				}
+			}
 		}
 		return null;
 	}

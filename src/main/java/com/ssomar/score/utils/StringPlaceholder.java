@@ -282,7 +282,7 @@ public class StringPlaceholder {
 			String suit = result.split(placeholder+"\\+")[1];
 			StringBuilder sb = new StringBuilder();
 			for (char c : suit.toCharArray()) {
-				if (c == ' ')
+				if (c == ' ' || c == ',')
 					break; 
 				sb.append(c);
 			} 
@@ -299,7 +299,7 @@ public class StringPlaceholder {
 			String suit = result.split(placeholder+"\\-")[1];
 			StringBuilder sb = new StringBuilder();
 			for (char c : suit.toCharArray()) {
-				if (c == ' ')
+				if (c == ' ' || c == ',' )
 					break; 
 				sb.append(c);
 			} 
@@ -316,6 +316,19 @@ public class StringPlaceholder {
 		} 
 		return result;
 	}
+	
+//	public static void main(String[] args) {
+//		 StringPlaceholder sp = new StringPlaceholder();
+//		 sp.blockXInt = "10";
+//		 sp.blockYInt = "11";
+//		 sp.blockZInt = "12";
+//		 
+//		 String base = "SENDMESSAGE oops %block_x_int%,%block_y_int%+1,%block_z_int% youhouu";
+//		 
+//		 base = sp.replacePlaceholder(base);
+//		 
+//		 System.out.println(base);
+//	}
 
 
 	public String getPlayer() {

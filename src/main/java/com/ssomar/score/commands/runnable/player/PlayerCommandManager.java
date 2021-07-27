@@ -17,6 +17,7 @@ import com.ssomar.score.commands.runnable.player.commands.Damage;
 import com.ssomar.score.commands.runnable.player.commands.FlyOff;
 import com.ssomar.score.commands.runnable.player.commands.FlyOn;
 import com.ssomar.score.commands.runnable.player.commands.FrontDash;
+import com.ssomar.score.commands.runnable.player.commands.Head;
 import com.ssomar.score.commands.runnable.player.commands.Jump;
 import com.ssomar.score.commands.runnable.player.commands.Launch;
 import com.ssomar.score.commands.runnable.player.commands.LaunchEntity;
@@ -28,6 +29,7 @@ import com.ssomar.score.commands.runnable.player.commands.RegainHealth;
 import com.ssomar.score.commands.runnable.player.commands.RemoveBurn;
 import com.ssomar.score.commands.runnable.player.commands.ReplaceBlock;
 import com.ssomar.score.commands.runnable.player.commands.SendBlankMessage;
+import com.ssomar.score.commands.runnable.player.commands.SendCenteredMessage;
 import com.ssomar.score.commands.runnable.player.commands.SendMessage;
 import com.ssomar.score.commands.runnable.player.commands.SetBlock;
 import com.ssomar.score.commands.runnable.player.commands.SetExecutableBlock;
@@ -54,6 +56,7 @@ public class PlayerCommandManager {
 		commands.add(new MobAround());
 		commands.add(new SendBlankMessage());
 		commands.add(new SendMessage());
+		commands.add(new SendCenteredMessage());
 		/* SUDOOP MUST BE BEFORE SUDO */
 		commands.add(new SudoOp());
 		commands.add(new Sudo());
@@ -80,6 +83,7 @@ public class PlayerCommandManager {
 		commands.add(new StrikeLightning());
 		commands.add(new RegainHealth());
 		commands.add(new RegainFood());
+		commands.add(new Head());
 		
 		this.commands = commands;
 	}

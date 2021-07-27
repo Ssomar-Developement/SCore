@@ -9,6 +9,10 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
@@ -19,6 +23,21 @@ public class DetailedBlocks extends ArrayList<DetailedBlock>{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private boolean cancelEventIfNotDetailedBlocks;
+	
+	public DetailedBlocks() {
+		cancelEventIfNotDetailedBlocks = false;
+	}
+	
+	public boolean verification(Material material, String statesStr, @NotNull Event event) {
+		if(!this.verification(material, statesStr)) {
+			if(cancelEventIfNotDetailedBlocks && event instanceof Cancellable) ((Cancellable)event).setCancelled(true);
+			return false;
+		}
+		
+		return true;
+	}
 	
 	public boolean verification(Material material, String statesStr) {
 		Map<String, String> states = new HashMap<>();
@@ -70,7 +89,11 @@ public class DetailedBlocks extends ArrayList<DetailedBlock>{
 	/*
 	 * @param error if error is null sPlugin and sObject can be null
 	 */
-	public void load(List<String> blocks, @Nullable List<String> error, @Nullable SPlugin sPlugin, @Nullable SObject sObject) {
+	public void load(ConfigurationSection config, @Nullable List<String> error, @Nullable SPlugin sPlugin, @Nullable SObject sObject) {
+		
+		this.cancelEventIfNotDetailedBlocks = config.getBoolean("cancelEventIfNotDetailedBlocks", false);
+		
+		List<String> blocks = config.getStringList("detailedBlocks");
 		
 		for (String str : blocks) {
 			/* StateId / value */

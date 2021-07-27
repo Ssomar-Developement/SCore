@@ -164,36 +164,26 @@ public abstract class CommandsExecutor{
 		return result;
 	}
 
+	/* 
+	 * Method to select the random commands of RANDOM RUN / RANDOM END
+	 * */
+	public List<String> replaceRandomCommands(List<String> commands){
 
-	public boolean initFinalCommands() {
-
-		Integer delay = 0;
+		List<String> result = new ArrayList<>();
+		List<String> commandsRandom = new ArrayList<>();
 		boolean inRandom = false;
 		int nbRandom = 0;
-		ArrayList<String> commandsRandom = new ArrayList<String>();
-
 
 		for(String command: commands) {
 
-			//SsomarDev.testMsg("Command: "+ command);
-
-			//SsomarDev.testMsg("cmdall> "+command);
 			if(command.contains("RANDOM RUN:")) {
-				//SsomarDev.testMsg("cmdrdn> "+command);
 				nbRandom = Integer.valueOf(command.split("RANDOM RUN:")[1].replaceAll(" ",""));
 				inRandom = true;
 				continue;
 			}
 
 			else if(command.contains("RANDOM END")) {
-
-				//				for(String s : commandsRandom) {
-				//					SsomarDev.testMsg("randomrun not selected: "+s);
-				//				}
-
-
-				//SsomarDev.testMsg("size> "+commandsRandom.size()+" amount>"+nbRandom);
-				this.inserFinalCommands(delay, this.selectRandomCommands(commandsRandom, nbRandom));
+				result.addAll(this.selectRandomCommands(commandsRandom, nbRandom));
 				inRandom = false;
 				commandsRandom.clear();
 				nbRandom = 0;
@@ -205,91 +195,106 @@ public abstract class CommandsExecutor{
 				continue;
 			}
 
-			else if(command.contains("DELAYTICK ")) {
-				delay = delay+(Integer.valueOf(command.replaceAll("DELAYTICK ", "")));
+			else result.add(command);
+		}
+
+		if(commandsRandom.size() > 0) {
+			result.addAll(this.selectRandomCommands(commandsRandom, nbRandom));
+		}
+
+		return result;
+	}
+
+	public List<String> decompMultipleCommandsAndMsg(List<String> commands){
+		List<String> result = new ArrayList<>();
+
+		for(String command: commands) {
+			String [] tab;
+			if(command.contains("+++")) tab = command.split("\\+\\+\\+");
+			else {
+				tab = new String[1];
+				tab[0] = command;
+			}
+			for(String s : tab) {
+				while(s.startsWith(" ")) {
+					s = s.substring(1, s.length());
+				}
+				while(s.endsWith(" ")) {
+					s = s.substring(0, s.length()-1);
+				}
+				if(s.startsWith("/")) s = s.substring(1, s.length());
+				result.add(s);
+			}	
+
+			String s = command;
+			if(!result.isEmpty()) {
+				s = result.get(result.size()-1);
+				result.remove(result.size()-1);
+			}
+
+			if(s.contains("//")) {
+				String [] spliter = s.split("//");
+
+				String commandF = spliter[0];
+				result.add(commandF);
+				String message = "";
+				if(spliter.length >= 2) {
+					if(spliter[1].charAt(0) != ' ') {
+						message = "SENDMESSAGE "+spliter[1];
+					}
+					else message = "SENDMESSAGE"+spliter[1];
+					result.add(message);
+				}
+
+			}
+			else result.add(s);
+		}
+		return result;
+	}
+
+	public boolean initFinalCommands() {
+
+		Integer delay = 0;
+
+		commands = this.replaceRandomCommands(commands);
+		
+		commands = this.decompMultipleCommandsAndMsg(commands);
+
+		for(String command: commands) {
+			
+			if(command.trim().length() == 0) continue;
+
+			if(command.contains("DELAYTICK ")) {
+				/* Verify that there is no multiple commands after DELAYTICK */
+				String delayStr = command;
+				if(command.contains("+++")) {
+					String [] tab = command.split("\\+\\+\\+");
+					for(String s : tab) {
+						if(s.contains("DELAYTICK ")) delayStr = s;
+					}
+				}
+				/* ---------------------- */
+				delay = delay+(Integer.valueOf(delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "")));
 			}
 			else if(command.contains("DELAY ")) {
-				delay = delay+(Integer.valueOf(command.replaceAll("DELAY ", ""))*20);
+				/* Verify that there is no multiple commands after DELAY */
+				String delayStr = command;
+				if(command.contains("+++")) {
+					String [] tab = command.split("\\+\\+\\+");
+					for(String s : tab) {
+						if(s.contains("DELAY ")) delayStr = s;
+					}
+				}
+				/* ----------------------- */
+				delay = delay+(Integer.valueOf(delayStr.replaceAll("DELAY ", "").replaceAll(" ", ""))*20);
 			}
 			else {
 				this.inserFinalCommands(delay, command);
 			}
 		}
-		if(commandsRandom.size() > 0) {
-			this.inserFinalCommands(delay, this.selectRandomCommands(commandsRandom, nbRandom));
-		}
-
-		/* Decomp message in commands
-		 * + delete empty commands
-		 */
-		this.clearFinalCommands();
 
 		return true;
 	}
-
-	public void clearFinalCommands() {
-		for(Integer d : finalCommands.keySet()) {
-			List<String> gCommands = finalCommands.get(d);
-			ArrayList<String> result = new ArrayList<>();
-			for(String command : gCommands) {
-				if(command.trim().length() == 0) continue;
-				result.addAll(this.decompMsgInCommand(command));
-			}
-			finalCommands.put(d, new ArrayList<String>());
-			this.inserFinalCommands(d, result);
-		}
-	}
-
-	public List<String> decompMsgInCommand(String command){
-		List<String> result = new ArrayList<>();
-
-		String [] tab;
-
-		if(command.contains("+++")) tab = command.split("\\+\\+\\+");
-		else {
-			tab = new String[1];
-			tab[0] = command;
-		}
-		for(String s : tab) {
-			while(s.startsWith(" ")) {
-				s = s.substring(1, s.length());
-			}
-			while(s.endsWith(" ")) {
-				s = s.substring(0, s.length()-1);
-			}
-			if(s.startsWith("/")) s = s.substring(1, s.length());
-			result.add(s);
-		}	
-
-		String s = command;
-		if(!result.isEmpty()) {
-			s = result.get(result.size()-1);
-			result.remove(result.size()-1);
-		}
-
-		if(s.contains("//")) {
-			String [] spliter = s.split("//");
-
-			String commandF = spliter[0];
-			result.add(commandF);
-			String message = "";
-			if(spliter.length >= 2) {
-				if(spliter[1].charAt(0) != ' ') {
-					message = "SENDMESSAGE "+spliter[1];
-				}
-				else message = "SENDMESSAGE"+spliter[1];
-				result.add(message);
-			}
-
-			return result;
-		}
-		else {
-			result.add(s);
-			return result;
-		}
-	}
-
-
 
 	public String replaceLocation(String command, double x, double y, double z, World world) {
 
@@ -299,7 +304,7 @@ public abstract class CommandsExecutor{
 		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%y%", y+"", true);
 		prepareCommand = StringPlaceholder.replaceCalculPlaceholder(prepareCommand, "%z%", z+"", true);
 		prepareCommand = prepareCommand.replaceAll("%world%", world.getName());
-		
+
 		return prepareCommand;
 	}
 

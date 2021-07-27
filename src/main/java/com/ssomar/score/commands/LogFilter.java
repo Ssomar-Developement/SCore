@@ -29,6 +29,7 @@ public class LogFilter implements Filter {
 		messageToHide.add("Could not set the block");
 		messageToHide.add("Changed the block at");
 		messageToHide.add("Unable to apply this effect");
+		messageToHide.add("That position is not loaded");
 	}
 
 
