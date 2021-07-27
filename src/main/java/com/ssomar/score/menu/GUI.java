@@ -122,8 +122,8 @@ public abstract class GUI {
 
 	public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
-		ItemStack item= new ItemStack(material,amount);
-		ItemMeta meta= item.getItemMeta();
+		ItemStack item = new ItemStack(material, amount);
+		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
 
 
