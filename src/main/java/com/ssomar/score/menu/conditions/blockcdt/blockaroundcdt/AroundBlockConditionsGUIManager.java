@@ -3,7 +3,6 @@ package com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt;
 import java.util.List;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
@@ -25,7 +24,28 @@ public class AroundBlockConditionsGUIManager extends GUIManagerSCore<AroundBlock
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+	public boolean noShiftclicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		if(!i.name.isEmpty()){
+			AroundBlockCondition aBC = null;
+			for (AroundBlockCondition place :  cache.get(i.player).getList()) {
+				if (place.getId().equals(StringConverter.decoloredString(i.name).split("✦ ID: ")[1]))
+					aBC = place;
+			}
+			if (aBC != null)
+				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, aBC, cache.get(i.player).getDetail());
+			else {
+				i.player.sendMessage(StringConverter.coloredString(
+						"&4&l"+i.sPlugin.getNameDesign()+" &cCan't load this block around cdt, pls contact the developper on discord if you see this message"));
+				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail());
+			}
+			cache.remove(i.player);
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean allClicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
 		String cPage  = StringConverter.decoloredString(i.title);
 		
 		if (i.name.contains("Next page")) {
@@ -43,47 +63,60 @@ public class AroundBlockConditionsGUIManager extends GUIManagerSCore<AroundBlock
 		else if(i.name.contains("Back")) {
 			BlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions(), cache.get(i.player).getDetail());
 		}
-		else if(i.name.isEmpty()){
-			return;
-		}
-		else {
-			AroundBlockCondition aBC = null;
-			for (AroundBlockCondition place :  cache.get(i.player).getList()) {
-				if (place.getId().equals(StringConverter.decoloredString(i.name).split("✦ ID: ")[1]))
-					aBC = place;
-			}
-			if (aBC != null)
-				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, aBC, cache.get(i.player).getDetail());
-			else {
-				i.player.sendMessage(StringConverter.coloredString(
-						"&4&l"+i.sPlugin.getNameDesign()+" &cCan't load this block around cdt, pls contact the developper on discord if you see this message"));
-				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail());
-			}
-		}
-
-		cache.remove(i.player);
+		else return false;
+		
+		return true;
 	}
 
-	public void shiftLeftClicked(Player p, ItemStack item, String title) {
-		String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-		String cPage = StringConverter.decoloredString(title);
-		SPlugin sPlugin = cache.get(p).getsPlugin();
-		SObject sObject = cache.get(p).getSObject();
-		SActivator sActivator = cache.get(p).getSAct();
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		String cPage  = StringConverter.decoloredString(i.title);
 		try {
-			String id = name.split("✦ ID: ")[1];
-			AroundBlockCondition.deleteBACCdt(sPlugin, sObject, sActivator, id, cache.get(p).getDetail());
-			LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-			sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-			sActivator = sObject.getActivator(sActivator.getID());
-			cache.replace(p, new AroundBlockConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]), sPlugin, sObject, sActivator, sActivator.getBlockConditions().getBlockAroundConditions(), cache.get(p).getDetail()));
-			cache.get(p).openGUISync(p);
+			String id = i.name.split("✦ ID: ")[1];
+			AroundBlockCondition.deleteBACCdt(i.sPlugin, i.sObject, i.sActivator, id, cache.get(i.player).getDetail());
+			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getID());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
+			cache.replace(i.player, new AroundBlockConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions().getBlockAroundConditions(), cache.get(i.player).getDetail()));
+			cache.get(i.player).openGUISync(i.player);
 		}
 		catch(Exception e) {
 
 		}
-
+		
+		return true;
 	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<AroundBlockConditionsGUI> interact) {
+		return false;
+	}
+
 
 	public static AroundBlockConditionsGUIManager getInstance() {
 		if(instance == null) instance = new AroundBlockConditionsGUIManager();

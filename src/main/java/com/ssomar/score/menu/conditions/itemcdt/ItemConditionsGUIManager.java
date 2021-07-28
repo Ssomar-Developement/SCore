@@ -1,7 +1,6 @@
 package com.ssomar.score.menu.conditions.itemcdt;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -24,8 +23,23 @@ public class ItemConditionsGUIManager extends GUIManagerSCore<ItemConditionsGUI>
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+	public boolean allClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		if(i.name.contains("Save")) {
+			saveItemConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
+
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		else return false;
 		
+		return true;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
 		/*======================= A AMELIORER CEST NIMPORTE QUOI YA TROP DE REPETITION =========================*/
 		if(i.name.contains(ItemConditionsGUI.IF_DURABILITY)) {
 			requestWriting.put(i.player, ItemConditionsGUI.IF_DURABILITY);
@@ -55,16 +69,55 @@ public class ItemConditionsGUIManager extends GUIManagerSCore<ItemConditionsGUI>
 			space(i.player);
 		}
 		/* =========================================================================== */
+		else return false;
 		
-		else if(i.name.contains("Save")) {
-			saveItemConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
+		return true;
+	}
 
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		saveItemConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		ItemConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getItemConditions(), detail);
+	
+		return true;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<ItemConditionsGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {
@@ -149,44 +202,7 @@ public class ItemConditionsGUIManager extends GUIManagerSCore<ItemConditionsGUI>
 			}
 		}
 	}
-
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
-
-				if(name.contains("Reset")) {
-					cache.replace(p, new ItemConditionsGUI(sPlugin, sObject, sAct, new ItemConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
-
-				else if(name.contains("Save")) {
-					saveItemConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
-
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
-
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					saveItemConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ItemConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getItemConditions(), detail);
-				}
-			}
-		}
-	}
-
+	
 	public void saveItemConditionsEI(Player p) {
 
 		SPlugin sPlugin = cache.get(p).getsPlugin();

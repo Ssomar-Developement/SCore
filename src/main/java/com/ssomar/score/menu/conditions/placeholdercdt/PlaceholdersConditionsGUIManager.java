@@ -3,7 +3,6 @@ package com.ssomar.score.menu.conditions.placeholdercdt;
 import java.util.List;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -24,9 +23,14 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 		cache.put(p, new PlaceholdersConditionsGUI(sPlugin, sObject, sActivator, list, detail));
 		cache.get(p).openGUISync(p);
 	}
-	
+
+	public static PlaceholdersConditionsGUIManager getInstance() {
+		if(instance == null) instance = new PlaceholdersConditionsGUIManager();
+		return instance;
+	}
+
 	@Override
-	public void clicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+	public boolean allClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
 		String cPage  = StringConverter.decoloredString(i.title);
 		
 		if (i.name.contains("Next page")) {
@@ -43,10 +47,7 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 		else if(i.name.contains("Back")) {
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
-		else if(i.name.isEmpty()){
-			return;
-		}
-		else {
+		else if(!i.name.isEmpty()){
 			PlaceholdersCondition pC = null;
 			for (PlaceholdersCondition place :  cache.get(i.player).getList()) {
 				if (place.getId().equals(StringConverter.decoloredString(i.name).split("✦ ID: ")[1]))
@@ -62,31 +63,67 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 		}
 
 		cache.remove(i.player);
+		return true;
 	}
 
-	public void shiftLeftClicked(Player p, ItemStack item, String title) {
-		String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-		String cPage = StringConverter.decoloredString(title);
-		SPlugin sPlugin = cache.get(p).getsPlugin();
-		SObject sObject = cache.get(p).getSObject();
-		SActivator sActivator = cache.get(p).getSAct();
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		String cPage  = StringConverter.decoloredString(i.title);
+		
 		try {
-			String id = name.split("✦ ID: ")[1];
-			PlaceholdersCondition.deletePlaceholdersCdt(sPlugin, sObject, sActivator, id, cache.get(p).getDetail());
-			LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-			sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-			sActivator = sObject.getActivator(sActivator.getID());
-			cache.replace(p, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]), sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), cache.get(p).getDetail()));
-			cache.get(p).openGUISync(p);
+			String id = i.name.split("✦ ID: ")[1];
+			PlaceholdersCondition.deletePlaceholdersCdt(i.sPlugin, i.sObject, i.sActivator, id, cache.get(i.player).getDetail());
+			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getID());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
+			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), cache.get(i.player).getDetail()));
+			cache.get(i.player).openGUISync(i.player);
 		}
 		catch(Exception e) {
 
 		}
-
+		return true;
 	}
 
-	public static PlaceholdersConditionsGUIManager getInstance() {
-		if(instance == null) instance = new PlaceholdersConditionsGUIManager();
-		return instance;
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

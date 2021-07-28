@@ -1,7 +1,6 @@
 package com.ssomar.score.menu.conditions.customcdt.ei;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -25,7 +24,7 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+	public boolean noShiftclicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
 
 		if(i.name.contains(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION)) i.gui.changeBoolean(CustomConditionsGUI.IF_NEED_PLAYER_CONFIRMATION);
 
@@ -42,8 +41,14 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 			if(SCore.hasLands || SCore.hasGriefPrevention || SCore.hasGriefDefender) i.gui.changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM);
 			else i.player.sendMessage(StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cYou haven't a compatible claim plugin to change this option ! (Lands, GriefPrevention, GriefDefender)"));
 		}
-
-		else if(i.name.contains("Save")) {
+		else return false;
+		
+		return true;
+	}
+	
+	@Override
+	public boolean allClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		if(i.name.contains("Save")) {
 			saveCustomConditionsEI(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
@@ -52,43 +57,49 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 		else if(i.name.contains("Back")) {
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
+		else return false;
+		
+		return true;
 	}
 
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		return false;
+	}
 
-				if(name.contains("Reset")) {
-					cache.replace(p, new CustomConditionsGUI(sPlugin, sObject, sAct, new CustomEIConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		return false;
+	}
 
-				else if(name.contains("Save")) {
-					saveCustomConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		saveCustomConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		CustomConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getCustomEIConditions(), detail);
+	
+		return true;
+	}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		return false;
+	}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					saveCustomConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					CustomConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getCustomEIConditions(), detail);
-				}
-			}
-		}
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<CustomConditionsGUI> interact) {
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {

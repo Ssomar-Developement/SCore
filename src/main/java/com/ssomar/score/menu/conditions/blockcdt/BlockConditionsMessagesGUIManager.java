@@ -1,7 +1,6 @@
 package com.ssomar.score.menu.conditions.blockcdt;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -13,7 +12,6 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
 
 
 public class BlockConditionsMessagesGUIManager extends GUIManagerSCore<BlockConditionsMessagesGUI>{
@@ -26,18 +24,36 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerSCore<BlockCond
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
-		
+	public boolean allClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
 		if(i.name.contains("Save")) {
 			saveBlockConditionsEI(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
 		}
-
 		else if(i.name.contains("Back")) {
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
-		else if(!i.name.isEmpty()) {
+		else return false;
+		
+		return true;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		saveBlockConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		
+		BlockConditions bC;
+		if(detail.contains("target")) bC = i.sObject.getActivator(i.sActivator.getID()).getTargetBlockConditions();
+		else bC = i.sObject.getActivator(i.sActivator.getID()).getBlockConditions();
+		BlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, bC, detail);
+		return true;
+	}
+	
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		if(!i.name.isEmpty()) {
 			for(BlockConditionsMessages bcMsg : BlockConditionsMessages.values()) {
 				if(i.name.contains(bcMsg.name)) {
 					requestWriting.put(i.player, bcMsg.name);
@@ -46,44 +62,7 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerSCore<BlockCond
 				}
 			}
 		}
-	}
-	
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
-
-				if(name.contains("Reset")) {
-					cache.replace(p, new BlockConditionsMessagesGUI(sPlugin, sObject, sAct, new BlockConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
-
-				else if(name.contains("Save")) {
-					saveBlockConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
-
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
-
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					saveBlockConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					if(detail.contains("target")) BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetBlockConditions(), detail);
-					else BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getBlockConditions(), detail);
-				}
-			}
-		}
+		return true;
 	}
 
 	public void receivedMessage(Player p, String message) {
@@ -120,4 +99,42 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerSCore<BlockCond
 		if(instance == null) instance = new BlockConditionsMessagesGUIManager();
 		return instance;
 	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 }

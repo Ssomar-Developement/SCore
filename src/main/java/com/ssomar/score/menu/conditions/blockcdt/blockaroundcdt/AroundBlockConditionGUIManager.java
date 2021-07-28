@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
@@ -31,47 +30,9 @@ public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockC
 		cache.put(p, new AroundBlockConditionGUI(sPlugin, sObject, sActivator, aBC, detail));
 		cache.get(p).openGUISync(p);
 	}
-
+	
 	@Override
-	public void clicked(InteractionClickedGUIManager<AroundBlockConditionGUI> i) {
-		AroundBlockConditionGUI gui = cache.get(i.player);
-
-		if(i.name.contains(AroundBlockConditionGUI.SOUTH_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.NORTH_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.WEST_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.EAST_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.ABOVE_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.UNDER_VALUE)) {
-
-			gui.incrValue(StringConverter.decoloredString(i.name));
-		}
-		else this.generalClick(i);		
-	}
-
-	public void rightClicked(Player p, ItemStack itemS) {
-
-		InteractionClickedGUIManager<AroundBlockConditionGUI> i = new InteractionClickedGUIManager<AroundBlockConditionGUI>();
-
-		i.sPlugin = cache.get(p).getsPlugin();
-		i.sObject = cache.get(p).getSObject();
-		i.sActivator = cache.get(p).getSAct();
-		i.name = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-		i.gui = cache.get(p);
-
-		if(i.name.contains(AroundBlockConditionGUI.SOUTH_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.NORTH_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.WEST_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.EAST_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.ABOVE_VALUE)
-				|| i.name.contains(AroundBlockConditionGUI.UNDER_VALUE)) {
-
-			cache.get(p).decrValue(i.name);
-		}
-		else this.generalClick(i);
-	}
-
-	public void generalClick(InteractionClickedGUIManager<AroundBlockConditionGUI> i) {
-
+	public boolean allClicked(InteractionClickedGUIManager<AroundBlockConditionGUI> i) {
 		if(i.name.contains(AroundBlockConditionGUI.MUST_BE_EXECUTABLEBLOCKS)) {
 			requestWriting.put(i.player, AroundBlockConditionGUI.MUST_BE_EXECUTABLEBLOCKS);
 			if(!currentWriting.containsKey(i.player)) {
@@ -113,9 +74,74 @@ public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockC
 		else if(i.name.contains("Back")) {
 			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions().getBlockAroundConditions(), cache.get(i.player).getDetail());
 		}
-
+		else return false;
+		
+		return true;
 	}
 
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<AroundBlockConditionGUI> interact) {
+		return false;
+	}
+	
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<AroundBlockConditionGUI> interact) {
+		return false;
+	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<AroundBlockConditionGUI> interact) {
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<AroundBlockConditionGUI> interact) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<AroundBlockConditionGUI> interact) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<AroundBlockConditionGUI> interact) {
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<AroundBlockConditionGUI> i) {
+		AroundBlockConditionGUI gui = cache.get(i.player);
+
+		if(i.name.contains(AroundBlockConditionGUI.SOUTH_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.NORTH_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.WEST_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.EAST_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.ABOVE_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.UNDER_VALUE)) {
+
+			gui.incrValue(StringConverter.decoloredString(i.name));
+		}
+		else return false;
+		
+		return true;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<AroundBlockConditionGUI> i) {
+		if(i.name.contains(AroundBlockConditionGUI.SOUTH_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.NORTH_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.WEST_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.EAST_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.ABOVE_VALUE)
+				|| i.name.contains(AroundBlockConditionGUI.UNDER_VALUE)) {
+
+			cache.get(i.player).decrValue(i.name);
+		}
+		else return false;
+		
+		return true;
+	}
 
 
 	public void receivedMessage(Player p, String message) {

@@ -1,7 +1,6 @@
 package com.ssomar.score.menu.conditions.worldcdt;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -13,7 +12,6 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
 
 
 public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldConditionsMessagesGUI>{
@@ -26,7 +24,7 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+	public boolean allClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
 		if(i.name.contains("Save")) {
 			saveWorldConditionsEI(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
@@ -36,8 +34,14 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 		else if(i.name.contains("Back")) {
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
+		else return false;
 		
-		else if(!i.name.isEmpty()) {
+		return true;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		if(!i.name.isEmpty()) {
 			for(WorldConditionsMessages wcMsg : WorldConditionsMessages.values()) {
 				if(i.name.contains(wcMsg.name)) {
 					requestWriting.put(i.player, wcMsg.name);
@@ -46,43 +50,53 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 				}
 			}
 		}
+		return true;
 	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		saveWorldConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		WorldConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getWorldConditions(), detail);
 	
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+		return true;
+	}
 
-				if(name.contains("Reset")) {
-					cache.replace(p, new WorldConditionsMessagesGUI(sPlugin, sObject, sAct, new WorldConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-				else if(name.contains("Save")) {
-					saveWorldConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					saveWorldConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getWorldConditions(), detail);
-				}
-			}
-		}
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {

@@ -26,7 +26,7 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerSCore<PlayerCo
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+	public boolean allClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
 		if(i.name.contains("Save")) {
 			savePlayerConditionsEI(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
@@ -36,8 +36,14 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerSCore<PlayerCo
 		else if(i.name.contains("Back")) {
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
+		else return false;
 		
-		else if(!i.name.isEmpty()) {
+		return true;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		if(!i.name.isEmpty()) {
 			for(PlayerConditionsMessages pcMsg : PlayerConditionsMessages.values()) {
 				if(i.name.contains(pcMsg.name)) {
 					requestWriting.put(i.player, pcMsg.name);
@@ -46,7 +52,59 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerSCore<PlayerCo
 				}
 			}
 		}
+		return true;
 	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		savePlayerConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		PlayerConditions pC = null;
+		if(detail.contains("owner")) pC = i.sObject.getActivator(i.sActivator.getID()).getOwnerConditions();
+		else if(detail.contains("target")) pC = i.sObject.getActivator(i.sActivator.getID()).getTargetPlayerConditions();
+		else if(detail.contains("player")) pC = i.sObject.getActivator(i.sActivator.getID()).getPlayerConditions();
+		PlayerConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, pC, detail);
+	
+		return true;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	
 	public void shiftClicked(Player p, ItemStack item) {
 		if(item != null && item.hasItemMeta()) {
@@ -144,4 +202,5 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerSCore<PlayerCo
 		if(instance == null) instance = new PlayerConditionsMessagesGUIManager();
 		return instance;
 	}
+
 }

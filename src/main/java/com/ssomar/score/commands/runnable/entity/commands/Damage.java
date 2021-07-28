@@ -17,25 +17,31 @@ public class Damage extends EntityCommandTemplate{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
 		try {
-			int amount= Integer.valueOf(args.get(0));
-			if(amount>0 && !entity.isDead() && entity instanceof LivingEntity) {
+			double amount = Double.valueOf(args.get(0));
+			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
 				LivingEntity e = (LivingEntity) entity;
-				e.damage(Integer.valueOf(amount));
+				if(p != null) {
+					amount = amount + 0.00007772;
+					e.damage(amount, p);
+				}
+				else e.damage(amount);
 			}
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public String verify(List<String> args) {
 		String error = "";
 
-		String damage= "DAMAGE {amount}";
-		if(args.size()<1) error = notEnoughArgs+damage;
-		else if(args.size()!=1) error= tooManyArgs+damage;
+		String damage = "DAMAGE {amount}";
+		if(args.size() < 1) error = notEnoughArgs+damage;
+		else if(args.size() != 1) error= tooManyArgs+damage;
 
 		return error;
 	}
-	
+
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();

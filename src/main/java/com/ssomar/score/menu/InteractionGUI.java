@@ -149,11 +149,7 @@ public class InteractionGUI implements Listener{
 		//String itemName = itemS.getItemMeta().getDisplayName();
 
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
-
-		boolean isShiftRight = e.getClick().equals(ClickType.SHIFT_RIGHT);
 		
-		boolean isRight = e.getClick().equals(ClickType.SHIFT_RIGHT) || e.getClick().equals(ClickType.RIGHT);
-
 		switch (guiType) {
 		case "ConditionsGUIManager":
 			ConditionsGUIManager.getInstance().clicked(player, itemS);
@@ -171,112 +167,67 @@ public class InteractionGUI implements Listener{
 			break;
 
 		case "EntityConditionsGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				EntityConditionsGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else EntityConditionsGUIManager.getInstance().clicked(player, itemS);
+			EntityConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "EntityConditionsMessagesGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				EntityConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else EntityConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			EntityConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "WorldConditionsMessagesGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				WorldConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else WorldConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			 WorldConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "WorldConditionsGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				WorldConditionsGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else WorldConditionsGUIManager.getInstance().clicked(player, itemS);
+			WorldConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "PlayerConditionsMessagesGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				PlayerConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else PlayerConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			PlayerConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "PlayerConditionsGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				PlayerConditionsGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else PlayerConditionsGUIManager.getInstance().clicked(player, itemS);
+			PlayerConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "PlaceholdersConditionsGUIManager":
-			if(isShiftLeft) {
-				PlaceholdersConditionsGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
-			}
-			else PlaceholdersConditionsGUIManager.getInstance().clicked(player, itemS, title);
+			PlaceholdersConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
 			break;
 
 		case "PlaceholdersConditionGUIManager":
-			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS);
+			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 			
 		case "AroundBlockConditionsGUIManager":
-			if(isShiftLeft) {
-				AroundBlockConditionsGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
-			}
-			else AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title);
+			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
 			break;
 
 		case "AroundBlockConditionGUIManager":
-			if(isRight) {
-				AroundBlockConditionGUIManager.getInstance().rightClicked(player ,itemS);
-			}
-			else AroundBlockConditionGUIManager.getInstance().clicked(player, itemS);
+			AroundBlockConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "ItemConditionMessagesGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				ItemConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else ItemConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			ItemConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "ItemConditionGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				ItemConditionsGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else ItemConditionsGUIManager.getInstance().clicked(player, itemS);
+			ItemConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 			
 		case "BlockConditionMessagesGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				BlockConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else BlockConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			BlockConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "BlockConditionGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				BlockConditionsGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else BlockConditionsGUIManager.getInstance().clicked(player, itemS);
+			BlockConditionsGUIManager.getInstance().clicked(player, itemS,e.getClick());
 			break;
 
 		case "CustomConditionsMessagesGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				CustomConditionsMessagesGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else CustomConditionsMessagesGUIManager.getInstance().clicked(player, itemS);
+			CustomConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "CustomConditionsGUIManager":
-			if(isShiftRight || isShiftLeft) {
-				CustomConditionsGUIManager.getInstance().shiftClicked(player, itemS);
-			}
-			else CustomConditionsGUIManager.getInstance().clicked(player, itemS);
+			CustomConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		default:

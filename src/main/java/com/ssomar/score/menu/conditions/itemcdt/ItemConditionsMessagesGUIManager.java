@@ -1,7 +1,6 @@
 package com.ssomar.score.menu.conditions.itemcdt;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.ConditionsGUIManager;
@@ -13,7 +12,6 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.ItemConditions;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
 
 
 public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemConditionsMessagesGUI>{
@@ -26,8 +24,7 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
-		
+	public boolean allClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
 		if(i.name.contains("Save")) {
 			saveItemConditionsEI(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
@@ -37,7 +34,14 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 		else if(i.name.contains("Back")) {
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
-		else if(!i.name.isEmpty()) {
+		else return false;
+		
+		return true;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		if(!i.name.isEmpty()) {
 			for(ItemConditionsMessages icMsg : ItemConditionsMessages.values()) {
 				if(i.name.contains(icMsg.name)) {
 					requestWriting.put(i.player, icMsg.name);
@@ -46,43 +50,53 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 				}
 			}
 		}
+		return true;
 	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		saveItemConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		ItemConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getItemConditions(), detail);
 	
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
+		return true;
+	}
 
-				if(name.contains("Reset")) {
-					cache.replace(p, new ItemConditionsMessagesGUI(sPlugin, sObject, sAct, new ItemConditions(), cache.get(p).getDetail()));
-					cache.get(p).openGUISync(p);
-				}
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-				else if(name.contains("Save")) {
-					saveItemConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-				else if(name.contains("Back")) {
-					ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
-				else {
-					String detail = cache.get(p).getDetail();
-					saveItemConditionsEI(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					ItemConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getItemConditions(), detail);
-				}
-			}
-		}
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {

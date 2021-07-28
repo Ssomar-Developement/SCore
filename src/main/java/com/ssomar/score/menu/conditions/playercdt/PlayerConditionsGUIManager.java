@@ -7,7 +7,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -31,10 +30,25 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 		cache.put(p, new PlayerConditionsGUI(sPlugin, sObject, sActivator, pC, detail));
 		cache.get(p).openGUISync(p);
 	}
-	
+
 	@Override
-	public void clicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
-		
+	public boolean allClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		if(i.name.contains("Save")) {
+			savePlayerConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
+
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		else return false;
+
+		return true;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
 		if(i.name.contains(PlayerConditionsGUI.IF_SNEAKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_SNEAKING);
 
 		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_SNEAKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_NOT_SNEAKING);
@@ -50,7 +64,7 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 		else if(i.name.contains(PlayerConditionsGUI.IF_FLYING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_FLYING);
 
 		else if(i.name.contains(PlayerConditionsGUI.IF_IS_IN_THE_AIR)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_IS_IN_THE_AIR);
-		
+
 		else if(i.name.contains(PlayerConditionsGUI.IF_IN_WORLD)) {
 			requestWriting.put(i.player, PlayerConditionsGUI.IF_IN_WORLD);
 			if(!currentWriting.containsKey(i.player)) {
@@ -162,7 +176,7 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 			this.showIfTargetBlockEditor(i.player);
 			space(i.player);
 		}
-		
+
 		else if(i.name.contains(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
 			requestWriting.put(i.player, PlayerConditionsGUI.IF_IS_ON_THE_BLOCK);
 			if(!currentWriting.containsKey(i.player)) {
@@ -272,53 +286,59 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 			this.showCalculationGUI(i.player, "Level", cache.get(i.player).getIfPlayerLevel());
 			space(i.player);
 		}	
+		else return false;
 
-		else if(i.name.contains("Save")) {
-			savePlayerConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
+		return true;
 	}
 
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null && item.hasItemMeta()) {
-			SPlugin sPlugin = cache.get(p).getsPlugin();
-			SObject sObject = cache.get(p).getSObject();
-			SActivator sAct = cache.get(p).getSAct();
-			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			//String i.sPlugin.getNameDesign() = sPlugin.getNameDesign();
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-			if(name.contains("Reset")) {
-				cache.replace(p, new PlayerConditionsGUI(sPlugin, sObject, sAct, new PlayerConditions(), cache.get(p).getDetail()));
-				cache.get(p).openGUISync(p);
-			}
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-			else if(name.contains("Save")) {
-				savePlayerConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-			}
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		savePlayerConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		PlayerConditions pC = null;
+		if(detail.contains("owner")) pC = i.sObject.getActivator(i.sActivator.getID()).getOwnerConditions();
+		else if(detail.contains("target")) pC = i.sObject.getActivator(i.sActivator.getID()).getTargetPlayerConditions();
+		else if(detail.contains("player")) pC = i.sObject.getActivator(i.sActivator.getID()).getPlayerConditions();
+		PlayerConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, pC, detail);
 
-			else if(name.contains("Exit")) {
-				p.closeInventory();
-			}
+		return true;
+	}
 
-			else if(name.contains("Back")) {
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-			}
-			else {
-				String detail = cache.get(p).getDetail();
-				savePlayerConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				if(detail.contains("owner"))PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getOwnerConditions(), detail);
-				else if(detail.contains("target")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetPlayerConditions(), detail);
-				else if(detail.contains("player")) PlayerConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getPlayerConditions(), detail);
-			}
-		}
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<PlayerConditionsGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {
@@ -553,7 +573,7 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 				}
 				this.showTheGoodEditor(requestWriting.get(p), p);
 			}
-			
+
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
 				if(message.isEmpty() || message.equals(" ")) {
 					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid block please !"));
@@ -754,7 +774,7 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Target block", false, false, false, true, true, true, false, "", suggestions);		
 		editor.generateTheMenuAndSendIt(p);
 	}
-	
+
 	public void showIfIsOnTheBlockEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifIsOnTheBlock:");
@@ -786,7 +806,7 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 		case PlayerConditionsGUI.IF_TARGET_BLOCK:
 			showIfTargetBlockEditor(p);
 			break;
-			
+
 		case PlayerConditionsGUI.IF_IS_ON_THE_BLOCK:
 			showIfIsOnTheBlockEditor(p);
 			break;
@@ -873,4 +893,5 @@ public class PlayerConditionsGUIManager extends GUIManagerSCore<PlayerConditions
 		if(instance == null) instance = new PlayerConditionsGUIManager();
 		return instance;
 	}
+
 }

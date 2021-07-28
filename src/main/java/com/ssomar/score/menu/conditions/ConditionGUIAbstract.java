@@ -23,6 +23,7 @@ public abstract class ConditionGUIAbstract extends GUIAbstract{
 	
 	public void reloadGUI() {
 		conditions.init();
+		this.loadTheGUI();
 	}
 	
 	public void updateMessage(String itemName, String message) {

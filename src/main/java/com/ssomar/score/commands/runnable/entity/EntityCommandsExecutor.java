@@ -54,9 +54,9 @@ public class EntityCommandsExecutor extends CommandsExecutor{
 
 						if(!entity.isDead()) {
 
-							if(command.contains("ei-giveslot")) {
+							if(command.contains("ei giveslot")) {
 								try {
-									String playeName= command.split("ei-giveslot ")[1].split(" ")[0];
+									String playeName= command.split("ei giveslot ")[1].split(" ")[0];
 									Player pgive = Bukkit.getPlayer(playeName);
 									CommandsManager.getInstance().addStopPickup(pgive, 20);
 								}catch(Exception e) {}
@@ -66,7 +66,7 @@ public class EntityCommandsExecutor extends CommandsExecutor{
 
 							List<String> args = EntityCommandManager.getInstance().getECArgs(command);
 
-							if(eC!=null) {
+							if(eC != null) {
 	
 								if(eC.getNames().contains("CHANGETO")) {
 									try {

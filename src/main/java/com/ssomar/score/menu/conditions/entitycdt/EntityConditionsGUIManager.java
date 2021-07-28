@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
@@ -30,7 +29,25 @@ public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditions
 	}
 	
 	@Override
-	public void clicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+	public boolean allClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		if(i.name.contains("Save")) {
+			i.player.closeInventory();
+			saveEntityConditionsEI(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
+
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		
+		else return false;
+		
+		return true;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
 		if(i.name.contains(EntityConditionsGUI.IF_GLOWING)) i.gui.changeBoolean(EntityConditionsGUI.IF_GLOWING);
 
 		else if(i.name.contains(EntityConditionsGUI.IF_INVULNERABLE)) i.gui.changeBoolean(EntityConditionsGUI.IF_INVULNERABLE);
@@ -74,52 +91,48 @@ public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditions
 			this.showCalculationGUI(i.player, "Health", cache.get(i.player).getIfEntityHealth());
 			space(i.player);
 		}
+		else return false;
+		
+		return true;
+	}
 
-		else if(i.name.contains("Save")) {
-			i.player.closeInventory();
-			saveEntityConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		return false;
+	}
 
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
-	}	
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		return false;
+	}
 
-	public void shiftClicked(Player p, ItemStack item) {
-		if(item != null && item.hasItemMeta()) {
-			SPlugin sPlugin = cache.get(p).getsPlugin();
-			SObject sObject = cache.get(p).getSObject();
-			SActivator sAct = cache.get(p).getSAct();
-			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-			//String plName = sPlugin.getNameDesign();
-			if(name.contains("Reset")) {
-				p.closeInventory();
-				cache.replace(p, new EntityConditionsGUI(sPlugin, sObject, sAct, new EntityConditions(), cache.get(p).getDetail()));
-				cache.get(p).openGUISync(p);
-			}
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		String detail = cache.get(i.player).getDetail();
+		saveEntityConditionsEI(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		EntityConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getTargetEntityConditions(), detail);
+		return true;
+	}
 
-			else if(name.contains("Save")) {
-				saveEntityConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-			}
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		return false;
+	}
 
-			else if(name.contains("Exit")) {
-				p.closeInventory();
-			}
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		return false;
+	}
 
-			else if(name.contains("Back")) {
-				ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-			}
-			else {
-				String detail = cache.get(p).getDetail();
-				saveEntityConditionsEI(p);
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-				EntityConditionsMessagesGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct, sObject.getActivator(sAct.getID()).getTargetEntityConditions(), detail);
-			}
-		}
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<EntityConditionsGUI> interact) {
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {
