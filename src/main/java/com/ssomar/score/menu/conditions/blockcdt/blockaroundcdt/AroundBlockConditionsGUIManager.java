@@ -31,17 +31,14 @@ public class AroundBlockConditionsGUIManager extends GUIManagerSCore<AroundBlock
 				if (place.getId().equals(StringConverter.decoloredString(i.name).split("✦ ID: ")[1]))
 					aBC = place;
 			}
-			if (aBC != null)
+			if (aBC != null) {
 				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, aBC, cache.get(i.player).getDetail());
-			else {
-				i.player.sendMessage(StringConverter.coloredString(
-						"&4&l"+i.sPlugin.getNameDesign()+" &cCan't load this block around cdt, pls contact the developper on discord if you see this message"));
-				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail());
+				cache.remove(i.player);
+				return true;
 			}
-			cache.remove(i.player);
 		}
 		
-		return true;
+		return false;
 	}
 	
 	@Override

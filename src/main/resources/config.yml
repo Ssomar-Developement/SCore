@@ -5,3 +5,8 @@
 # ptBR (Brazil) by Seytani
 # DE by N.T.G
 locale: EN
+useMySQL: false
+dbIP: 127.0.0.1
+dbName: myDB
+dbUser: root
+dbPassword: rootPassword

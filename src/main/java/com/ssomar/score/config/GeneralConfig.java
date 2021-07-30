@@ -8,6 +8,16 @@ public class GeneralConfig extends Config {
 	
 	private String locale;
 	
+	private boolean useMySQL;
+	
+	private String dbIP;
+	
+	private String dbName;
+	
+	private String dbUser;
+	
+	private String dbPassword;
+	
 	public GeneralConfig() {
 		super("config.yml");
 		super.setup(SCore.getPlugin());
@@ -28,6 +38,12 @@ public class GeneralConfig extends Config {
 			locale = "EN";
 		}
 		
+		useMySQL = config.getBoolean("useMySQL", false);
+		dbIP = config.getString("dbIP", "");
+		dbName = config.getString("dbName", "");
+		dbUser = config.getString("dbUser", "");
+		dbPassword = config.getString("dbPassword", "");
+		
 	}
 
 	public String getLocale() {
@@ -41,6 +57,46 @@ public class GeneralConfig extends Config {
 	public static GeneralConfig getInstance() {
 		if(instance == null) instance = new GeneralConfig();
 		return instance;
+	}
+
+	public boolean isUseMySQL() {
+		return useMySQL;
+	}
+
+	public void setUseMySQL(boolean useMySQL) {
+		this.useMySQL = useMySQL;
+	}
+
+	public String getDbIP() {
+		return dbIP;
+	}
+
+	public void setDbIP(String dbIP) {
+		this.dbIP = dbIP;
+	}
+
+	public String getDbName() {
+		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+
+	public String getDbUser() {
+		return dbUser;
+	}
+
+	public void setDbUser(String dbUser) {
+		this.dbUser = dbUser;
+	}
+
+	public String getDbPassword() {
+		return dbPassword;
+	}
+
+	public void setDbPassword(String dbPassword) {
+		this.dbPassword = dbPassword;
 	}
 	
 }

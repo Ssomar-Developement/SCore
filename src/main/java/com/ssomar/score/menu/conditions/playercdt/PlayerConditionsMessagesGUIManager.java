@@ -49,10 +49,11 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerSCore<PlayerCo
 					requestWriting.put(i.player, pcMsg.name);
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(pcMsg.name);
 					RequestMessage.sendRequestMessage(i.msgInfos);
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

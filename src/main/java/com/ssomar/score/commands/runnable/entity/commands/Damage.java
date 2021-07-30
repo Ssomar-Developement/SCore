@@ -7,7 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
 
@@ -21,7 +23,7 @@ public class Damage extends EntityCommandTemplate{
 			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
 				LivingEntity e = (LivingEntity) entity;
 				if(p != null) {
-					amount = amount + 0.00007772;
+					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
 					e.damage(amount, p);
 				}
 				else e.damage(amount);

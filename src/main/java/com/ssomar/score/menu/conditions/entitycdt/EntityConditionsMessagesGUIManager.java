@@ -46,10 +46,11 @@ public class EntityConditionsMessagesGUIManager extends GUIManagerSCore<EntityCo
 					requestWriting.put(i.player, ecMsg.name);
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(ecMsg.name);
 					RequestMessage.sendRequestMessage(i.msgInfos);
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

@@ -47,10 +47,11 @@ public class CustomConditionsMessagesGUIManager extends GUIManagerSCore<CustomCo
 					requestWriting.put(i.player, ccMsg.name);
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(ccMsg.name);
 					RequestMessage.sendRequestMessage(i.msgInfos);
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

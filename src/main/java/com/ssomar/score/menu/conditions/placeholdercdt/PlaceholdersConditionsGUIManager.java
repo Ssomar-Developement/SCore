@@ -102,11 +102,12 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
 			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), cache.get(i.player).getDetail()));
 			cache.get(i.player).openGUISync(i.player);
+			return true;
 		}
 		catch(Exception e) {
 
 		}
-		return true;
+		return false;
 	}
 
 	@Override

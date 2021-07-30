@@ -47,10 +47,11 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 					requestWriting.put(i.player, icMsg.name);
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(icMsg.name);
 					RequestMessage.sendRequestMessage(i.msgInfos);
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

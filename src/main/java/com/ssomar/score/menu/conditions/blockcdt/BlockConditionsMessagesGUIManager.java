@@ -59,10 +59,11 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerSCore<BlockCond
 					requestWriting.put(i.player, bcMsg.name);
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(bcMsg.name);
 					RequestMessage.sendRequestMessage(i.msgInfos);
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public void receivedMessage(Player p, String message) {

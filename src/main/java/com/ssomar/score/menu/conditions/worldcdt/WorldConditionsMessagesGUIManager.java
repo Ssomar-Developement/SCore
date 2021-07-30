@@ -47,10 +47,11 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 					requestWriting.put(i.player, wcMsg.name);
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(wcMsg.name);
 					RequestMessage.sendRequestMessage(i.msgInfos);
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

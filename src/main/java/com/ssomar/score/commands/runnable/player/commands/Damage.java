@@ -8,7 +8,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.metadata.FixedMetadataValue;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
 
@@ -34,13 +36,10 @@ public class Damage extends PlayerCommandTemplate{
 				//				}
 
 				if(p != null) {
-					amount = amount + 0.00007772;
-					EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(p, receiver, DamageCause.ENTITY_ATTACK, amount);
-
-					/* */
-					Bukkit.getPluginManager().callEvent(event);
+					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
+					receiver.damage(amount, p);
 				}
-				receiver.damage(amount);
+				else receiver.damage(amount);
 
 			}
 		}catch(Exception e) {}

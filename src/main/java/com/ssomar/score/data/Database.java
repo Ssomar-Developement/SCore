@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 
 /**
  *
@@ -17,14 +20,14 @@ public class Database {
 	private String fileName;
 	
 	public void load() {
-		createNewDatabase("data.db");
+		if(!GeneralConfig.getInstance().isUseMySQL()) createNewDatabase("data.db");
 		SecurityOPQuery.createNewTable(connect());
 		CommandsQuery.createNewTable(connect());
 	}
 	
 	public void createNewDatabase(String fileName) {
 
-		this.fileName=fileName;
+		this.fileName = fileName;
 
 		String url = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() +"/"+fileName;
 
@@ -40,12 +43,27 @@ public class Database {
 	
 	public Connection connect() {
 		// SQLite connection string
-		String url = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() + "/"+fileName;
+		
+		String urlLocal = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() + "/"+fileName;
+		
 		Connection conn = null;
+		
 		try {
-			conn = DriverManager.getConnection(url);
+			if(GeneralConfig.getInstance().isUseMySQL()){
+				MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
+				dataSource.setServerName(GeneralConfig.getInstance().getDbIP());
+				dataSource.setPortNumber(3306);
+				dataSource.setDatabaseName(GeneralConfig.getInstance().getDbName());
+				dataSource.setUser(GeneralConfig.getInstance().getDbUser());
+				dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
+				
+				conn = dataSource.getConnection();
+			}
+			else conn = DriverManager.getConnection(urlLocal);
+			
 			//System.out.println("[ExecutableItems] "+"Connexion OKAY");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		}
 		return conn;
