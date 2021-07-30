@@ -30,6 +30,17 @@ public class Cooldown {
 		this.time = time;
 		this.global = global;
 	}
+	
+	public Cooldown(String id, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
+		super();
+		this.id = id;
+		this.entityUUID = entityUUID;
+		this.cooldown = cooldown;
+		this.isInTick = isInTick;
+		this.time = time;
+		this.global = global;
+	}
+
 
 	public String getId() {
 		return id;

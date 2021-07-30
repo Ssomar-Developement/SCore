@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.SecurityOPCommands;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
+import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
 
 public class EventsHandler {
 	
@@ -26,6 +27,8 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
+		
+		main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 	}
 
 	public static EventsHandler getInstance() {

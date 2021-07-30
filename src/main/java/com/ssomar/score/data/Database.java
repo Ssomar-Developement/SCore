@@ -23,6 +23,7 @@ public class Database {
 		if(!GeneralConfig.getInstance().isUseMySQL()) createNewDatabase("data.db");
 		SecurityOPQuery.createNewTable(connect());
 		CommandsQuery.createNewTable(connect());
+		CooldownsQuery.createNewTable(connect());
 	}
 	
 	public void createNewDatabase(String fileName) {

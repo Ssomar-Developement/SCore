@@ -15,6 +15,7 @@ public class CooldownsManager {
 	private static CooldownsManager instance;
 
 	private Map<String, List<Cooldown>> cooldowns = new HashMap<>();
+	private Map<UUID, List<Cooldown>> cooldownsUUID = new HashMap<>();
 
 	public void addCooldown(Cooldown cd) {
 		String id = cd.getId();
@@ -27,6 +28,30 @@ public class CooldownsManager {
 			List<Cooldown> cds = new ArrayList<>();
 			cds.add(cd);
 			cooldowns.put(id, cds);
+		}
+		
+		UUID id2 = cd.getEntityUUID();
+		if(cooldownsUUID.containsKey(id2)) {	
+			List<Cooldown> cds = cooldownsUUID.get(id2);
+			cds.add(cd);
+			cooldownsUUID.replace(id2, cds);
+		}
+		else {
+			List<Cooldown> cds = new ArrayList<>();
+			cds.add(cd);
+			cooldownsUUID.put(id2, cds);
+		}
+	}
+	
+	public void addCooldowns(List<Cooldown> cds) {
+		for(Cooldown cd : cds) {
+			long current = System.currentTimeMillis();
+			long delay = current - cd.getTime();	
+			int div = 1000;
+			if(cd.isInTick()) div = 50;
+			int delayInt = (int) (delay/div);
+
+			if(delayInt < cd.getCooldown()) this.addCooldown(cd);
 		}
 	}
 
@@ -126,6 +151,17 @@ public class CooldownsManager {
 			return 0;
 		}	
 		return 0;
+	}
+	
+	public List<Cooldown> getCooldownsOf(UUID uuid){
+		if(cooldownsUUID.containsKey(uuid)) {
+			return cooldownsUUID.get(uuid);
+		}
+		else return new ArrayList<>();
+	}
+	
+	public void removeCooldownsOf(UUID uuid){
+		cooldownsUUID.remove(uuid);
 	}
 
 	public static CooldownsManager getInstance() {
