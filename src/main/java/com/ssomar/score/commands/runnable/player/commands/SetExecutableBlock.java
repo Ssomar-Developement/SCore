@@ -18,9 +18,9 @@ import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
-public class SetExecutableBlock extends PlayerCommandTemplate{
+public class SetExecutableBlock extends PlayerCommand{
 
 	@Override
 	public String verify(List<String> args) {
@@ -131,7 +131,7 @@ public class SetExecutableBlock extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		if(SCore.hasExecutableBlocks) {
 			
 			if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {

@@ -12,13 +12,13 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 
-public class SetBlock extends BlockCommandTemplate{
+public class SetBlock extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
 			String mat = args.get(0).toUpperCase();
 			if(Material.matchMaterial(mat) != null) {
@@ -31,7 +31,7 @@ public class SetBlock extends BlockCommandTemplate{
 					block.setType(Material.valueOf(mat));
 				}
 			}else {
-				RunConsoleCommand.runConsoleCommand("execute at "+p.getName()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase()+" replace", silenceOutput);
+				RunConsoleCommand.runConsoleCommand("execute at "+p.getName()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase()+" replace", aInfo.isSilenceOutput());
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

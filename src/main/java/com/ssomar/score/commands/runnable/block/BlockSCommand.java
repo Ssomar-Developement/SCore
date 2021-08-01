@@ -2,18 +2,18 @@ package com.ssomar.score.commands.runnable.block;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 
-public interface BlockCommandInterface {
+public interface BlockSCommand {
 
-	public abstract void run(@Nullable Player p, @Nonnull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput);
+	public abstract void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo);
 
 	public abstract String verify(List<String> args);
 }

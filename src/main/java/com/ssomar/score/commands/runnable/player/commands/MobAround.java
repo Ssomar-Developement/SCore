@@ -11,20 +11,21 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandsExecutor;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class MobAround extends PlayerCommandTemplate{
+public class MobAround extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
 			double distance =  Double.valueOf(args.get(0));
 			int cpt = 0;
-			
+
 			int startForCommand = 1;
 			boolean mute = false;
 			if(args.get(1).equalsIgnoreCase("true")) {
@@ -37,9 +38,9 @@ public class MobAround extends PlayerCommandTemplate{
 
 			for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
 				if(!(e instanceof Player)) {
-	
+
 					if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
-					
+
 					/* regroup the last args that correspond to the commands */
 					StringBuilder prepareCommands = new StringBuilder();
 					for(String s: args.subList(startForCommand, args.size())) {
@@ -71,8 +72,9 @@ public class MobAround extends PlayerCommandTemplate{
 						s =s.replaceAll("%entity_z%", loc.getZ()+"");
 						s= s.replaceAll("%entity%", e.getType().toString());
 						s= s.replaceAll("%entity_uuid%", e.getUniqueId().toString());
-						new EntityCommandsExecutor(Arrays.asList(s), p, silenceOutput, e, aInfo).runEntityCommands(silenceOutput);		
-					}				
+						EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo);
+						CommandsExecutor.runCommands(builder);	
+					}			
 					cpt++;
 				}
 			}
@@ -100,7 +102,7 @@ public class MobAround extends PlayerCommandTemplate{
 
 		return error;
 	}
-	
+
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();

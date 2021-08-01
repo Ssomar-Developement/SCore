@@ -7,7 +7,8 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 
-import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.CommandManager;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.player.commands.ActionbarCommand;
 import com.ssomar.score.commands.runnable.player.commands.Around;
 import com.ssomar.score.commands.runnable.player.commands.BackDash;
@@ -43,14 +44,14 @@ import com.ssomar.score.commands.runnable.player.commands.WorldTeleport;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class PlayerCommandManager {
+public class PlayerCommandManager implements CommandManager{
 	
 	private static PlayerCommandManager instance;
 	
-	private List<PlayerCommandTemplate> commands;
+	private List<PlayerCommand> commands;
 	
 	public PlayerCommandManager() {
-		List<PlayerCommandTemplate> commands = new ArrayList<>();
+		List<PlayerCommand> commands = new ArrayList<>();
 		commands.add(new ActionbarCommand());
 		commands.add(new Around());
 		commands.add(new MobAround());
@@ -89,7 +90,7 @@ public class PlayerCommandManager {
 	}
 	
 
-	public String verifArgs(PlayerCommandTemplate pC, List<String> args) {
+	public String verifArgs(PlayerCommand pC, List<String> args) {
 
 		/* ""> No error */
 		String error="";
@@ -100,7 +101,7 @@ public class PlayerCommandManager {
 	}
 
 	public boolean isValidPlayerCommads(String entry) {
-		for(PlayerCommandTemplate playerCommands : this.commands) {
+		for(PlayerCommand playerCommands : this.commands) {
 			for(String name: playerCommands.getNames()) {
 				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
 					return true;
@@ -108,40 +109,6 @@ public class PlayerCommandManager {
 			}
 		}
 		return false;
-	}
-
-
-	public PlayerCommandTemplate getPlayerCommand(String entry) {
-		for(PlayerCommandTemplate playerCommands : this.commands) {
-			for(String name: playerCommands.getNames()) {
-				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
-					return playerCommands;
-				}
-			}
-		}
-		return null;
-	}
-
-	public List<String> getPCArgs(String entry) {
-		List<String> args = new ArrayList<>();
-		boolean first = true;
-		boolean second = false;
-		if(entry.toUpperCase().startsWith("FLY ON")
-				|| entry.toUpperCase().startsWith("FLY OFF")
-				|| entry.toUpperCase().startsWith("REGAIN HEALTH")
-				|| entry.toUpperCase().startsWith("REGAIN FOOD")) second = true;
-		for(String s : entry.split(" ")) {
-			if(first) {
-				first = false;
-				continue;
-			}
-			if(second) {
-				second = false;
-				continue;
-			}
-			args.add(s);
-		}
-		return args;
 	}
 	
 	public List<String> getCommands(SPlugin sPlugin, List<String> commands, List<String> errorList, String id) {
@@ -153,8 +120,8 @@ public class PlayerCommandManager {
 			String command = StringConverter.coloredString(commands.get(i));
 
 			if (this.isValidPlayerCommads(commands.get(i))) {
-				PlayerCommandTemplate bc = this.getPlayerCommand(command);
-				List<String> args = this.getPCArgs(command);
+				PlayerCommand bc = (PlayerCommand) this.getCommand(command);
+				List<String> args = this.getArgs(command);
 
 				String error = "";
 				if (!(error = this.verifArgs(bc, args)).isEmpty()) {
@@ -173,13 +140,13 @@ public class PlayerCommandManager {
 	}
 
 
-	public List<PlayerCommandTemplate> getCommands() {
+	public List<PlayerCommand> getCommands() {
 		return commands;
 	}
 	
 	public Map<String, String> getCommandsDisplay() {
 		Map<String, String> result = new HashMap<>();
-		for(Command c : this.commands) {
+		for(SCommand c : this.commands) {
 
 			ChatColor extra = c.getExtraColor();
 			if(extra == null) extra = ChatColor.DARK_PURPLE;
@@ -193,8 +160,45 @@ public class PlayerCommandManager {
 	}
 
 
-	public void setCommands(List<PlayerCommandTemplate> commands) {
+	public void setCommands(List<PlayerCommand> commands) {
 		this.commands = commands;
+	}
+
+
+	@Override
+	public SCommand getCommand(String brutCommand) {
+		for(PlayerCommand playerCommands : this.commands) {
+			for(String name: playerCommands.getNames()) {
+				if(brutCommand.toUpperCase().startsWith(name.toUpperCase())) {
+					return playerCommands;
+				}
+			}
+		}
+		return null;
+	}
+
+
+	@Override
+	public List<String> getArgs(String command) {
+		List<String> args = new ArrayList<>();
+		boolean first = true;
+		boolean second = false;
+		if(command.toUpperCase().startsWith("FLY ON")
+				|| command.toUpperCase().startsWith("FLY OFF")
+				|| command.toUpperCase().startsWith("REGAIN HEALTH")
+				|| command.toUpperCase().startsWith("REGAIN FOOD")) second = true;
+		for(String s : command.split(" ")) {
+			if(first) {
+				first = false;
+				continue;
+			}
+			if(second) {
+				second = false;
+				continue;
+			}
+			args.add(s);
+		}
+		return args;
 	}	
 
 }

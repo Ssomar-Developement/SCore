@@ -1,7 +1,13 @@
 package com.ssomar.score.commands.runnable;
 
+import java.util.UUID;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 public class ActionInfo {
 	
@@ -18,9 +24,30 @@ public class ActionInfo {
 	
 	private boolean isEventCallByMineInCube = false;
 	
-	public ActionInfo(String name, Integer slot) {
+	/* Important info */
+	private UUID launcherUUID;
+	
+	private UUID receiverUUID;
+	
+	/* ------------------ */
+	private Block block;
+	
+	private Material oldBlockMaterial;
+	
+	/* ------------------ */
+	private UUID entityUUID;
+	
+	/* ------------------ */
+	
+	private boolean silenceOutput;
+	
+	private StringPlaceholder sp;
+	
+	public ActionInfo(String name, Integer slot, StringPlaceholder sp) {
 		this.name = name;
 		this.slot = slot;
+		this.sp = sp;
+		this.silenceOutput = false;
 	}
 	
 	public Item getItem() {
@@ -62,4 +89,61 @@ public class ActionInfo {
 	public void setsActivator(SActivator sActivator) {
 		this.sActivator = sActivator;
 	}
+
+	public UUID getLauncherUUID() {
+		return launcherUUID;
+	}
+
+	public void setLauncherUUID(UUID launcherUUID) {
+		this.launcherUUID = launcherUUID;
+	}
+
+	public UUID getReceiverUUID() {
+		return receiverUUID;
+	}
+
+	public void setReceiverUUID(UUID receiverUUID) {
+		this.receiverUUID = receiverUUID;
+	}
+
+	public boolean isSilenceOutput() {
+		return silenceOutput;
+	}
+
+	public void setSilenceOutput(boolean silenceOutput) {
+		this.silenceOutput = silenceOutput;
+	}
+
+	public StringPlaceholder getSp() {
+		return sp;
+	}
+
+	public void setSp(StringPlaceholder sp) {
+		this.sp = sp;
+	}
+
+	public Block getBlock() {
+		return block;
+	}
+
+	public void setBlock(Block block) {
+		this.block = block;
+	}
+
+	public Material getOldBlockMaterial() {
+		return oldBlockMaterial;
+	}
+
+	public void setOldBlockMaterial(Material oldBlockMaterial) {
+		this.oldBlockMaterial = oldBlockMaterial;
+	}
+
+	public UUID getEntityUUID() {
+		return entityUUID;
+	}
+
+	public void setEntityUUID(UUID entityUUID) {
+		this.entityUUID = entityUUID;
+	}
+	
 }

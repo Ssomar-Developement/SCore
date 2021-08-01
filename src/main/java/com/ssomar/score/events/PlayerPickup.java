@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 
-import com.ssomar.score.commands.runnable.CommandsManager;
+import com.ssomar.score.commands.runnable.CommandsHandler;
 
 public class PlayerPickup implements Listener {
 
@@ -15,7 +15,7 @@ public class PlayerPickup implements Listener {
 		if(e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 
-			if(CommandsManager.getInstance().getStopPickup().contains(p)) e.setCancelled(true);
+			if(CommandsHandler.getInstance().getStopPickup().contains(p)) e.setCancelled(true);
 		}
 	}
 }

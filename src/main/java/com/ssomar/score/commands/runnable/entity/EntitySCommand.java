@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 
-public interface EntityCommandInterface {
+public interface EntitySCommand {
 
-	public abstract void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput);
+	public abstract void run(Player p, Entity entity, List<String> args, ActionInfo aInfo);
 
 	public abstract String verify(List<String> args);
 

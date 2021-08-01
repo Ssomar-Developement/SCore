@@ -7,14 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.SUDOOPManager;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 
 /* SUDOOP {command} */
-public class SudoOp extends PlayerCommandTemplate{
+public class SudoOp extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		String command2 ="";
 		for(String s: args) {
 			command2= command2+s+" ";

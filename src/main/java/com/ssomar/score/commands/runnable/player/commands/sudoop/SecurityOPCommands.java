@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.runnable;
+package com.ssomar.score.commands.runnable.player.commands.sudoop;
 
 import java.util.List;
 

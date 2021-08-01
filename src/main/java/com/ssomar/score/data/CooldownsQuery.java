@@ -49,6 +49,8 @@ public class CooldownsQuery {
 		String sql = "INSERT INTO "+TABLE_COOLDOWNS+" ("+COL_ID+","+COL_UUID+","+COL_COOLDOWN+","+COL_IS_IN_TICK+","+ COL_IS_GLOBAL+","+COL_TIME+","+COL_LOADED+") VALUES(?,?,?,?,?,?,?)";
 
 		PreparedStatement pstmt = null;
+		int i = 0;
+		
 		for(Cooldown cd : cooldowns) {
 			try {
 				pstmt = conn.prepareStatement(sql);
@@ -59,7 +61,11 @@ public class CooldownsQuery {
 				pstmt.setBoolean(5, cd.isGlobal());
 				pstmt.setLong(6, cd.getTime());
 				pstmt.setBoolean(7, false);
-				pstmt.executeUpdate();
+				pstmt.addBatch();
+				
+				if (i % 1000 == 0 || i == cooldowns.size()) {
+					pstmt.executeBatch(); // Execute every 1000 items.
+	            }
 			} catch (SQLException e) {
 				System.out.println(SCore.NAME_2+" "+e.getMessage());
 			}

@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* CUSTOMDASH1 {x} {y} {z} */
-public class CustomDash1 extends EntityCommandTemplate{
+public class CustomDash1 extends EntityCommand{
 
 	private static void pullEntityToLocation(Entity e, Location loc) {
 		Location entityLoc = e.getLocation();
@@ -76,7 +76,7 @@ public class CustomDash1 extends EntityCommandTemplate{
 	}
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		double x;
 		double y;
 		double z;

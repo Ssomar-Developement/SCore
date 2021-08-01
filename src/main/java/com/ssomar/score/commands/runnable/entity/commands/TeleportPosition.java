@@ -9,13 +9,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* TELEPORT POSITION {x} {y} {z} */
-public class TeleportPosition extends EntityCommandTemplate{
+public class TeleportPosition extends EntityCommand{
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		if(args.size()==3) {
 			try {
 				if(!entity.isDead()) entity.teleport(new Location(entity.getWorld(), Integer.valueOf(args.get(0)), Integer.valueOf(args.get(1)), Integer.valueOf(args.get(2))));

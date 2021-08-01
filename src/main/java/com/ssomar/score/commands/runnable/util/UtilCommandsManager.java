@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 
-import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.util.commands.Delay;
 import com.ssomar.score.commands.runnable.util.commands.DelayTick;
 import com.ssomar.score.commands.runnable.util.commands.Nothing;
@@ -18,10 +18,10 @@ public class UtilCommandsManager {
 	
 	private static UtilCommandsManager instance;
 	
-	private List<Command> commands;
+	private List<SCommand> commands;
 	
 	public UtilCommandsManager() {
-		List<Command> commands = new ArrayList<>();
+		List<SCommand> commands = new ArrayList<>();
 		commands.add(new Delay());
 		commands.add(new DelayTick());
 		commands.add(new Nothing());
@@ -35,13 +35,13 @@ public class UtilCommandsManager {
 		return instance;
 	}
 
-	public List<Command> getCommands() {
+	public List<SCommand> getCommands() {
 		return commands;
 	}
 	
 	public Map<String, String> getCommandsDisplay() {
 		Map<String, String> result = new HashMap<>();
-		for(Command c : this.commands) {
+		for(SCommand c : this.commands) {
 
 			ChatColor extra = c.getExtraColor();
 			if(extra == null) extra = ChatColor.GOLD;
@@ -54,7 +54,7 @@ public class UtilCommandsManager {
 		return result;
 	}
 
-	public void setCommands(List<Command> commands) {
+	public void setCommands(List<SCommand> commands) {
 		this.commands = commands;
 	}
 

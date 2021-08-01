@@ -9,14 +9,14 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.executableitems.fly.FlyManager;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* FLY OFF */
 @SuppressWarnings("deprecation")
-public class FlyOff extends PlayerCommandTemplate{
+public class FlyOff extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		if(!receiver.isOnGround()) {
 			Location playerLocation= receiver.getLocation();
 			boolean isVoid=false;

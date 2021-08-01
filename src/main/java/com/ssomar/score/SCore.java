@@ -1,26 +1,19 @@
 package com.ssomar.score;
 
-import java.util.HashMap;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.CommandsClass;
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.CommandsManager;
-import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageInterface;
 import com.ssomar.score.configs.messages.MessageMain;
-import com.ssomar.score.data.CommandsQuery;
 import com.ssomar.score.data.Database;
-import com.ssomar.score.data.SecurityOPQuery;
 import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.events.loop.LoopManager;
+import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
 import com.ssomar.score.utils.Utils;
 
 public final class SCore extends JavaPlugin {
@@ -93,14 +86,14 @@ public final class SCore extends JavaPlugin {
 		
 		/* Run all saved commands of the BDD part */
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			List<String> commands = CommandsQuery.selectCommandsForPlayer(Database.getInstance().connect(), p);
-			if(!commands.isEmpty()) {
-				new PlayerCommandsExecutor(commands, p, false, p, new ActionInfo("", 0)).runPlayerCommands(true);
-				CommandsQuery.deleteCommandsForPlayer(Database.getInstance().connect(), p);
-			}
-			if(SecurityOPQuery.selectIfSecurityOPcontains(Database.getInstance().connect(), p)) {
-				p.setOp(false);
-			}
+//			List<String> commands = CommandsQuery.selectCommandsForPlayer(Database.getInstance().connect(), p);
+//			if(!commands.isEmpty()) {
+//				new PlayerCommandsExecutor(commands, p, false, p, new ActionInfo("", 0)).runPlayerCommands(true);
+//				CommandsQuery.deleteCommandsForPlayer(Database.getInstance().connect(), p);
+//			}
+//			if(SecurityOPQuery.selectIfSecurityOPcontains(Database.getInstance().connect(), p)) {
+//				p.setOp(false);
+//			}
 		}
 
 	}
@@ -169,13 +162,14 @@ public final class SCore extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		/* Save all delayed commands in BDD */
-		HashMap<String,List<String>> saveCommands = CommandsManager.getInstance().getServerOffPlayerCommands();
-		for(String playerName: saveCommands.keySet()) {
-			Player player = Bukkit.getPlayer(playerName);
-			for(String command: saveCommands.get(playerName)) {
-				CommandsQuery.insertCommand(Database.getInstance().connect(), player, command);
-			}
-		}
+//		HashMap<String,List<String>> saveCommands = CommandsHandler.getInstance().getServerOffPlayerCommands();
+//		for(String playerName: saveCommands.keySet()) {
+//			Player player = Bukkit.getPlayer(playerName);
+//			for(String command: saveCommands.get(playerName)) {
+//				CommandsQuery.insertCommand(Database.getInstance().connect(), player, command);
+//			}
+//		}
+		CooldownsHandler.closeServerSaveAll();
 	}
 
 	public void onReload() {

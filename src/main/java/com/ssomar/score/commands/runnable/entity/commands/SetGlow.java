@@ -8,13 +8,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* SETGLOW */
-public class SetGlow extends EntityCommandTemplate{
+public class SetGlow extends EntityCommand{
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		if(!entity.isDead()) {
 			entity.setGlowing(true);
 		}

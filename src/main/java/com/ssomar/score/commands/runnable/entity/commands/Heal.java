@@ -11,14 +11,14 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* HEAL */
-public class Heal extends EntityCommandTemplate{
+public class Heal extends EntityCommand{
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			if(args.size()==1) {
 				int amount = Integer.valueOf(args.get(0));

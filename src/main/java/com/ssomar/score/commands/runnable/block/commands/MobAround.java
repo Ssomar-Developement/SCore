@@ -12,11 +12,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
-import com.ssomar.score.commands.runnable.entity.EntityCommandsExecutor;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class MobAround extends BlockCommandTemplate{
+public class MobAround extends BlockCommand{
 
 	@Override
 	public String verify(List<String> args) {
@@ -61,8 +62,7 @@ public class MobAround extends BlockCommandTemplate{
 	}
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo,
-			boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
 			double distance =  Double.valueOf(args.get(0));
 			
@@ -104,7 +104,8 @@ public class MobAround extends BlockCommandTemplate{
 						s =s.replaceAll("%entity_z%", loc.getZ()+"");
 						s= s.replaceAll("%entity%", e.getType().toString());
 						s= s.replaceAll("%entity_uuid%", e.getUniqueId().toString());
-						new EntityCommandsExecutor(Arrays.asList(s), p, silenceOutput, e, aInfo).runEntityCommands(silenceOutput);		
+						EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo);
+						CommandsExecutor.runCommands(builder);	
 					}				
 				}
 			}

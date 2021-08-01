@@ -28,14 +28,14 @@ import com.ssomar.executableitems.projectiles.CustomProjectileTemplate;
 import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
-public class Launch extends PlayerCommandTemplate{
+public class Launch extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
 		double rotation = 0;
 

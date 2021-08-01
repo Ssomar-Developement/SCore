@@ -7,13 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* SUDO {command} */
-public class Sudo extends PlayerCommandTemplate{
+public class Sudo extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		String command2 ="";
 		for(String s: args) {
 			command2= command2+s+" ";

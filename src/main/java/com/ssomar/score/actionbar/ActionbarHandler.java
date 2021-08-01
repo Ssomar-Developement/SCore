@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.ssomar.score.SCore;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
-import com.ssomar.score.utils.StringPlaceholder;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -100,7 +100,7 @@ public class ActionbarHandler {
 	
 	public void displayDesactivationActionbars(List<Actionbar> actionbars, Player p){
 		StringPlaceholder sp = new StringPlaceholder();
-		sp.setPlayer(p.getName());
+		sp.setPlayerPlcHldr(p.getUniqueId());
 		
 		List<Actionbar> desactivation = new ArrayList<>();
 		for(Actionbar actionbar : actionbars) {
@@ -156,7 +156,7 @@ public class ActionbarHandler {
 		StringPlaceholder sp = new StringPlaceholder();
 		sp.setItem(actionbar.getName());
 		sp.setTime(actionbar.getTime()+"");
-		sp.setPlayer(p.getName());
+		sp.setPlayerPlcHldr(p.getUniqueId());
 		String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_MESSAGE));
 		Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 		

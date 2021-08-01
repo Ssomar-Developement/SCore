@@ -11,13 +11,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 
 /* PARTICLE {type} {quantity} {offset} {speed}*/
-public class ParticleCommand extends BlockCommandTemplate{
+public class ParticleCommand extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		//By default particles is spawn on the side on the block, this part center the spawn
 		Location newLoc = block.getLocation().clone();
 		newLoc.add(0.5, 0.5, 0.5);

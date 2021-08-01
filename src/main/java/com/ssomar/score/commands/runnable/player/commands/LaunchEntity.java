@@ -12,13 +12,13 @@ import org.bukkit.util.Vector;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* LAUNCHENTITY {entityType} */
-public class LaunchEntity extends PlayerCommandTemplate{
+public class LaunchEntity extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		Location loc = receiver.getEyeLocation();
 		//loc.setY(loc.getY()-1);
 		EntityType entityType = EntityType.PIG;

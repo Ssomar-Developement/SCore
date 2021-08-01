@@ -12,16 +12,16 @@ import org.bukkit.util.Vector;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import com.ssomar.score.utils.Couple;
 
 /* JUMP {amount} */
-public class Jump extends PlayerCommandTemplate{
+public class Jump extends PlayerCommand{
 
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
 		double jump = 5;
 		if(args.size() == 1) {

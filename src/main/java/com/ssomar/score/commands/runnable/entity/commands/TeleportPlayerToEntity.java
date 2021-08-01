@@ -9,13 +9,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* TELEPORT PLAYER TO ENTITY */
-public class TeleportPlayerToEntity extends EntityCommandTemplate{
+public class TeleportPlayerToEntity extends EntityCommand{
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		Location eLoc = entity.getLocation();
 		
 		if(!entity.isDead() && p.isOnline() && !p.isDead()) p.teleport(new Location(entity.getWorld(), eLoc.getX(), eLoc.getY(), eLoc.getZ()));

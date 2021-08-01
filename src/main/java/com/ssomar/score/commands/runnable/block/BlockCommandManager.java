@@ -7,7 +7,8 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 
-import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.CommandManager;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.block.commands.Around;
 import com.ssomar.score.commands.runnable.block.commands.Break;
 import com.ssomar.score.commands.runnable.block.commands.DropExecutableItem;
@@ -25,14 +26,14 @@ import com.ssomar.score.commands.runnable.block.commands.SetExecutableBlock;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class BlockCommandManager {
+public class BlockCommandManager implements CommandManager{
 	
 	private static BlockCommandManager instance;
 	
-	private List<BlockCommandTemplate> commands;
+	private List<BlockCommand> commands;
 
 	public BlockCommandManager() {
-		List<BlockCommandTemplate> references = new ArrayList<>();
+		List<BlockCommand> references = new ArrayList<>();
 		references.add(new SetBlock());
 		references.add(new SetExecutableBlock());
 		references.add(new ParticleCommand());
@@ -49,28 +50,17 @@ public class BlockCommandManager {
 		references.add(new MobAround());
 		this.commands = references;
 	}
-	
-	public BlockCommandTemplate getBlockCommand(String entry) {
-		for(BlockCommandTemplate blockCommands : commands) {
-			for(String name: blockCommands.getNames()) {
-				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
-					return blockCommands;
-				}
-			}
-		}
-		return null;
-	}
 
 	/*
 	 *  return "" if no error else return the error
 	 */
-	public String verifArgs(BlockCommandTemplate bC, List<String> args) {
+	public String verifArgs(BlockCommand bC, List<String> args) {
 		return bC.verify(args);
 	}
 
 
 	public boolean isValidBlockCommads(String entry) {
-		for(BlockCommandTemplate blockCommands : commands) {
+		for(BlockCommand blockCommands : commands) {
 			for(String name: blockCommands.getNames()) {
 				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
 					return true;
@@ -78,20 +68,6 @@ public class BlockCommandManager {
 			}
 		}
 		return false;
-	}
-
-
-	public List<String> getBCArgs(String entry) {
-		List<String> args = new ArrayList<>();
-		boolean first= true;
-		for(String s : entry.split(" ")) {
-			if(first) {
-				first = false;
-				continue;
-			}
-			args.add(s);
-		}
-		return args;
 	}
 	
 	public List<String> getBlockCommands(SPlugin sPlugin, List<String> commands, List<String> errorList, String id) {
@@ -108,8 +84,8 @@ public class BlockCommandManager {
 			 */
 
 			if (this.isValidBlockCommads(commands.get(i)) && !commands.get(i).contains("//")) {
-				BlockCommandTemplate bc = this.getBlockCommand(command);
-				List<String> args = this.getBCArgs(command);
+				BlockCommand bc = (BlockCommand) this.getCommand(command);
+				List<String> args = this.getArgs(command);
 
 				String error = "";
 				if (!(error = this.verifArgs(bc, args)).isEmpty()) {
@@ -127,13 +103,13 @@ public class BlockCommandManager {
 		return instance;
 	}
 
-	public List<BlockCommandTemplate> getCommands() {
+	public List<BlockCommand> getCommands() {
 		return commands;
 	}
 
 	public Map<String, String> getCommandsDisplay() {
 		Map<String, String> result = new HashMap<>();
-		for(Command c : this.commands) {
+		for(SCommand c : this.commands) {
 
 			ChatColor extra = c.getExtraColor();
 			if(extra == null) extra = ChatColor.DARK_PURPLE;
@@ -147,7 +123,33 @@ public class BlockCommandManager {
 	}
 	
 	
-	public void setCommands(List<BlockCommandTemplate> commands) {
+	public void setCommands(List<BlockCommand> commands) {
 		this.commands = commands;
+	}
+
+	@Override
+	public SCommand getCommand(String brutCommand) {
+		for(BlockCommand blockCommands : commands) {
+			for(String name: blockCommands.getNames()) {
+				if(brutCommand.toUpperCase().startsWith(name.toUpperCase())) {
+					return blockCommands;
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<String> getArgs(String command) {
+		List<String> args = new ArrayList<>();
+		boolean first = true;
+		for(String s : command.split(" ")) {
+			if(first) {
+				first = false;
+				continue;
+			}
+			args.add(s);
+		}
+		return args;
 	}
 }

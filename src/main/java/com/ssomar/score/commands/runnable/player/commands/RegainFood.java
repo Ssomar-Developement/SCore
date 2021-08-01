@@ -7,12 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
-public class RegainFood extends PlayerCommandTemplate{
+public class RegainFood extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		int regain=1;
 		if(args.size()==1) {
 			regain = Integer.valueOf(args.get(0));

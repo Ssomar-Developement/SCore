@@ -15,12 +15,12 @@ import org.bukkit.util.Vector;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import com.ssomar.score.utils.Couple;
 
 /* CUSTOMDASH1 {x} {y} {z} */
-public class ProjectileCustomDash1 extends PlayerCommandTemplate{
+public class ProjectileCustomDash1 extends PlayerCommand{
 
 	private static void pullEntityToLocation(Entity e, Location loc) {
 		Location entityLoc = e.getLocation();
@@ -40,7 +40,7 @@ public class ProjectileCustomDash1 extends PlayerCommandTemplate{
 	}
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
 		boolean fallDamage = false;
 		if(args.size() == 1) {

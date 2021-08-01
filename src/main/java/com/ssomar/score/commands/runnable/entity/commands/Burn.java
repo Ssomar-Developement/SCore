@@ -8,13 +8,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* BURN {timeinsecs} */
-public class Burn extends EntityCommandTemplate{
+public class Burn extends EntityCommand{
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			if(args.size()==0) {
 				entity.setFireTicks(20*10);

@@ -11,13 +11,13 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* TELEPORTONCURSOR {range}:Integer {acceptAir}:boolean */
-public class TeleportOnCursor extends PlayerCommandTemplate{
+public class TeleportOnCursor extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		int amount = 200;
 		boolean acceptAir = false;
 		if(args.size() >= 1) {

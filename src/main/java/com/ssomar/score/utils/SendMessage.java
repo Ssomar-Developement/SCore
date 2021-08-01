@@ -3,6 +3,8 @@ package com.ssomar.score.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
+
 public class SendMessage {
 	
 	private StringPlaceholder sp = new StringPlaceholder();

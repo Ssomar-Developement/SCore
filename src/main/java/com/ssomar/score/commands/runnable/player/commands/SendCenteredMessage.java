@@ -7,14 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.messages.DefaultFontInfo;
 
 /* SENDCENTEREDMESSAGE {message} */
-public class SendCenteredMessage extends PlayerCommandTemplate{
+public class SendCenteredMessage extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		String message = "";
 		for(String s: args) {
 			//SsomarDev.testMsg("cmdarg> "+s);

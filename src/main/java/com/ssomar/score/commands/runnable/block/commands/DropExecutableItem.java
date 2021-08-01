@@ -12,13 +12,13 @@ import com.ssomar.executableitems.api.ExecutableItemsAPI;
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 
 /* DROPEXECUTABLEITEM {id} [quantity} */
-public class DropExecutableItem extends BlockCommandTemplate{
+public class DropExecutableItem extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 			try {
 				if(SCore.hasExecutableItems && ExecutableItemsAPI.isValidID(args.get(0))) {
 					int amount = Integer.valueOf(args.get(1));

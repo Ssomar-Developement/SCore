@@ -8,12 +8,12 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
-public class RegainHealth extends PlayerCommandTemplate{
+public class RegainHealth extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		double regain=1;
 		if(args.size()==1) {
 			regain = Double.valueOf(args.get(0));

@@ -15,15 +15,15 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.ToolsListMaterial;
 
 /* FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}*/
-public class FarmInCube extends BlockCommandTemplate{
+public class FarmInCube extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
 		if(!validMaterial.contains(oldMaterial)) return;

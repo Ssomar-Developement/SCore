@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
-public class BackDash extends PlayerCommandTemplate{
+public class BackDash extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		int amount = 5;
 		
 		try {

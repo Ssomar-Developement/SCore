@@ -13,13 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* SPAWNENTITYONCURSOR {entity} {amount} {maxRange} */
-public class SpawnEntityOnCursor extends PlayerCommandTemplate{
+public class SpawnEntityOnCursor extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		int range = 200;
 		if(args.size()==3) {
 			try {

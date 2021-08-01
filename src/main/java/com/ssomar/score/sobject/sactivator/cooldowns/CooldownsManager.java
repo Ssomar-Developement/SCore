@@ -14,7 +14,10 @@ public class CooldownsManager {
 
 	private static CooldownsManager instance;
 
+	/* CD_ID Cooldown */
 	private Map<String, List<Cooldown>> cooldowns = new HashMap<>();
+	
+	/* Player_UUID Cooldown */
 	private Map<UUID, List<Cooldown>> cooldownsUUID = new HashMap<>();
 
 	public void addCooldown(Cooldown cd) {
@@ -43,6 +46,7 @@ public class CooldownsManager {
 		}
 	}
 	
+	/* FROM DB */
 	public void addCooldowns(List<Cooldown> cds) {
 		for(Cooldown cd : cds) {
 			long current = System.currentTimeMillis();
@@ -56,39 +60,29 @@ public class CooldownsManager {
 	}
 
 	public boolean isInCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
+		this.clearCooldownsPassed(sPlugin, sO, sAct);
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
-			List<Cooldown> toRemove = new ArrayList<>();
 			for(Cooldown cd : cooldowns.get(id)) {
-				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())<cd.getCooldown()) {
-					cooldowns.get(id).removeAll(toRemove);		
+				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())<cd.getCooldown()) {	
 					return true;
 				}
-				else {
-					toRemove.add(cd);
-				}
 			}	
-			cooldowns.get(id).removeAll(toRemove);		
 		}
 		return false;
 	}
 
 	public boolean isGlobalCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
+		this.clearCooldownsPassed(sPlugin, sO, sAct);
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
-			List<Cooldown> toRemove = new ArrayList<>();
 			for(Cooldown cd : cooldowns.get(id)) {
 				if(!cd.isGlobal()) continue;
 				/* if actual cd < registered cd so its in cooldown !*/
 				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())<cd.getCooldown()) {
-					cooldowns.get(id).removeAll(toRemove);		
 					return true;
 				}
-				else {
-					toRemove.add(cd);
-				}
-			}	
-			cooldowns.get(id).removeAll(toRemove);		
+			}			
 		}
 		return false;
 	}
@@ -99,20 +93,17 @@ public class CooldownsManager {
 	 * @return-
 	 */
 	public boolean isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
+		this.clearCooldownsPassed(sPlugin, sO, sAct);
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
-		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
-			List<Cooldown> toRemove = new ArrayList<>();
-			for(Cooldown cd : cooldowns.get(id)) {
-				if(cd.getEntityUUID().equals(uuid)) {
+		List<Cooldown> cooldowns;
+		if(cooldownsUUID.containsKey(uuid) && (cooldowns = cooldownsUUID.get(uuid)).size()!= 0){
+			for(Cooldown cd : cooldowns) {
+				if(cd.getId().equals(id)) {
 					if(this.getCooldown(sPlugin, sO, sAct, uuid)<cd.getCooldown()) {
 						return true;
 					}
-					else {
-						toRemove.add(cd);
-					}
 				}
 			}	
-			cooldowns.get(id).removeAll(toRemove);	
 		}
 		return false;
 	}
@@ -153,6 +144,33 @@ public class CooldownsManager {
 		return 0;
 	}
 	
+	public void clearCooldownsPassed(SPlugin sPlugin, SObject sO, SActivator sAct) {
+		
+		for(String s : cooldowns.keySet()) {
+			List<Cooldown> toRemove = new ArrayList<>();
+			for(Cooldown cd : cooldowns.get(s)) {
+				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())>=cd.getCooldown()) {
+					toRemove.add(cd);
+				}
+			}
+			if(!toRemove.isEmpty()) {
+				cooldowns.get(s).removeAll(toRemove);
+			}
+		}
+		
+		for(UUID uuid : cooldownsUUID.keySet()) {
+			List<Cooldown> toRemove = new ArrayList<>();
+			for(Cooldown cd : cooldownsUUID.get(uuid)) {
+				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())>=cd.getCooldown()) {
+					toRemove.add(cd);
+				}
+			}
+			if(!toRemove.isEmpty()) {
+				cooldownsUUID.get(uuid).removeAll(toRemove);
+			}
+		}
+	}
+	
 	public List<Cooldown> getCooldownsOf(UUID uuid){
 		if(cooldownsUUID.containsKey(uuid)) {
 			return cooldownsUUID.get(uuid);
@@ -160,8 +178,36 @@ public class CooldownsManager {
 		else return new ArrayList<>();
 	}
 	
+	public List<Cooldown> getAllCooldowns(){
+		List<Cooldown> result = new ArrayList<>();
+		
+		for(String id : cooldowns.keySet()) {
+			result.addAll(cooldowns.get(id));
+		}
+		
+		return result;
+	}
+	
+	public void clearCooldowns() {
+		cooldowns.clear();
+		cooldownsUUID.clear();
+	}
+	
 	public void removeCooldownsOf(UUID uuid){
 		cooldownsUUID.remove(uuid);
+		for(String s : cooldowns.keySet()) {
+			Cooldown toRemove = null;
+			for(Cooldown c : cooldowns.get(s)) {
+				if(c.getEntityUUID().equals(uuid)) {
+					toRemove = c;
+					break;
+				}
+			}
+			if(toRemove != null) {
+				cooldowns.get(s).remove(toRemove);
+				break;
+			}
+		}
 	}
 
 	public static CooldownsManager getInstance() {

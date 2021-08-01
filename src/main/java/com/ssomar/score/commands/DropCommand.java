@@ -68,7 +68,7 @@ public class DropCommand {
 			return;
 		}
 		catch (ArrayIndexOutOfBoundsException error) {
-			sender.sendMessage(ChatColor.RED+sPlugin.getNameDesign()+" Command invalid, verify your args /"+sPlugin.getShortName().toLowerCase()+" drop {id} {quantity} {world} {x} {y} {z}");
+			sender.sendMessage(ChatColor.RED+sPlugin.getNameDesign()+" SCommand invalid, verify your args /"+sPlugin.getShortName().toLowerCase()+" drop {id} {quantity} {world} {x} {y} {z}");
 		}
 
 	}

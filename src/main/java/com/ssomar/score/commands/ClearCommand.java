@@ -6,25 +6,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.actionbar.ActionbarHandler;
-import com.ssomar.score.commands.runnable.CommandsManager;
+import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
 public class ClearCommand {
 
 	public static void clearCmd(SPlugin sPlugin, CommandSender sender, String [] args) {
-		String name = "";
+		UUID pUUID = null;
+
 		if(sender instanceof Player) {
 			if(args.length > 1) {
 				if(Bukkit.getPlayer(args[0]) == null)  {
 					sender.sendMessage(StringConverter.coloredString("&4"+sPlugin.getNameDesign()+" &cInvalid playername."));	
 					return;
 				}
-				else name = Bukkit.getPlayer(args[0]).getName();
+				else  pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
 			}
-			else name = ((Player)sender).getName();
+			else  pUUID = ((Player)sender).getUniqueId();
 		}
 		else {
 			if(args.length < 1) {
@@ -35,15 +35,13 @@ public class ClearCommand {
 				sender.sendMessage(StringConverter.coloredString("&4"+sPlugin.getNameDesign()+" &cInvalid playername."));	
 				return;
 			}
-			else name = Bukkit.getPlayer(args[0]).getName();
+			else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
 		}
-		if(CommandsManager.getInstance().getDelayedCommands().containsKey(name)) {
-			for(UUID uuid : CommandsManager.getInstance().getDelayedCommands().get(name).keySet()){
-				SCore.plugin.getServer().getScheduler().cancelTask(CommandsManager.getInstance().getDelayedCommands().get(name).get(uuid));
-			}
-			CommandsManager.getInstance().getDelayedCommands().remove(name);
-		}
-		ActionbarHandler.getInstance().removeActionbars(Bukkit.getPlayer(name));
-		sender.sendMessage(StringConverter.coloredString("&2"+sPlugin.getNameDesign()+" &aSuccesfully clear the user: &e"+name));	
+		CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
+
+		Player player = Bukkit.getPlayer(pUUID);
+		ActionbarHandler.getInstance().removeActionbars(player);
+		sender.sendMessage(StringConverter.coloredString("&2"+sPlugin.getNameDesign()+" &aSuccesfully clear the user: &e"+player.getName()));	
+
 	}
 }

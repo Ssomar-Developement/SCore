@@ -17,23 +17,31 @@ public class CooldownsHandler implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void PlayerJoinEvent(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		
+
 		List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
-		
+
 		CooldownsManager.getInstance().addCooldowns(cooldowns);
-		
+
 		CooldownsQuery.deleteCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGH)
 	public void PlayerQuitEvent(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		
+
 		List<Cooldown> cooldowns = CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId());
-		
+
 		CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
-		
+
 		CooldownsManager.getInstance().removeCooldownsOf(p.getUniqueId());
+	}
+
+	public static void closeServerSaveAll() {
+		List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
+
+		CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
+
+		CooldownsManager.getInstance().clearCooldowns();
 	}
 
 }

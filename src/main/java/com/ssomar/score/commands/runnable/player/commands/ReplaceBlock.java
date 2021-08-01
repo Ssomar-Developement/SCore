@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 
 /* REPLACEBLOCK {material} */
-public class ReplaceBlock extends PlayerCommandTemplate{
+public class ReplaceBlock extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
 			Block block = receiver.getTargetBlock(null, 5);
 
@@ -35,7 +35,7 @@ public class ReplaceBlock extends PlayerCommandTemplate{
 					}
 				}
 				else {
-					RunConsoleCommand.runConsoleCommand("execute at "+receiver.getName()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase(), silenceOutput);
+					RunConsoleCommand.runConsoleCommand("execute at "+receiver.getName()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase(), aInfo.isSilenceOutput());
 				}
 			}
 		}catch(Exception e) {

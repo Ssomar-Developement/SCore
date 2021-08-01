@@ -9,12 +9,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 
-public class SendMessage extends BlockCommandTemplate{
+public class SendMessage extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		String message="";
 		for(String s: args) {
 			//SsomarDev.testMsg("cmdarg> "+s);

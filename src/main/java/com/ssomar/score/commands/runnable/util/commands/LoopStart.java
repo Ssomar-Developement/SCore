@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
-import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.SCommand;
 
-public class LoopStart implements Command{
+public class LoopStart implements SCommand{
 
 	@Override
 	public List<String> getNames() {

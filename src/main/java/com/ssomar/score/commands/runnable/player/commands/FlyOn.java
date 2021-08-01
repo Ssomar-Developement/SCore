@@ -8,13 +8,13 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.executableitems.fly.FlyManager;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* FLY ON */
-public class FlyOn extends PlayerCommandTemplate{
+public class FlyOn extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		receiver.setAllowFlight(true);
 		FlyManager.getInstance().addPlayerWithFly(p);
 	}

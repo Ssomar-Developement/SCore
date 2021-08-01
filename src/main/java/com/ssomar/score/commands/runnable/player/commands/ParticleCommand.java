@@ -8,12 +8,12 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
-public class ParticleCommand extends PlayerCommandTemplate{
+public class ParticleCommand extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		// TODO Auto-generated method stub
 		try {
 			receiver.getWorld().spawnParticle(Particle.valueOf(args.get(0)),

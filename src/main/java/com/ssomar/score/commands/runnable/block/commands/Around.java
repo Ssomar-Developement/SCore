@@ -12,11 +12,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
-import com.ssomar.score.commands.runnable.player.PlayerCommandsExecutor;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 
 /* AROUND {distance} {true or false} {Your commands here} */
-public class Around extends BlockCommandTemplate{
+public class Around extends BlockCommand{
 	@Override
 	public String verify(List<String> args) {
 		String error = "";
@@ -58,8 +59,7 @@ public class Around extends BlockCommandTemplate{
 	}
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo,
-			boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
 			double distance = Double.valueOf(args.get(0));
 			
@@ -99,8 +99,8 @@ public class Around extends BlockCommandTemplate{
 						s = s.replaceAll("%target_z%", loc.getZ()+"");
 						s = s.replaceAll("%target%", target.getName());
 						s = s.replaceAll("%target_uuid%", target.getUniqueId()+"");
-						new PlayerCommandsExecutor(Arrays.asList(s), p, silenceOutput, target, aInfo).runPlayerCommands(silenceOutput);		
-					}				
+						PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo);
+						CommandsExecutor.runCommands(builder);}				
 				}
 			}
 		}catch(Exception e) {

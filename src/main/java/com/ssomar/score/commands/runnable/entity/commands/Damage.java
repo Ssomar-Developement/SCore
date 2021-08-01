@@ -11,13 +11,13 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* DAMAGE {amount} */
-public class Damage extends EntityCommandTemplate{
+public class Damage extends EntityCommand{
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			double amount = Double.valueOf(args.get(0));
 			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {

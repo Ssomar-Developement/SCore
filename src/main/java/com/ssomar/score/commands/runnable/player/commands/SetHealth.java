@@ -7,14 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommandTemplate;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* SETHEALTH {amount} */
 @SuppressWarnings("deprecation")
-public class SetHealth extends PlayerCommandTemplate{
+public class SetHealth extends PlayerCommand{
 
 	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
 			if(args.size()==0) {
 				receiver.setHealth(receiver.getMaxHealth());

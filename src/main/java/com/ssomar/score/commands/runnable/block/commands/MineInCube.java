@@ -13,16 +13,16 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
-public class MineInCube extends BlockCommandTemplate{
+public class MineInCube extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
 		if(aInfo.isEventCallByMineInCube()) return;
 		try {

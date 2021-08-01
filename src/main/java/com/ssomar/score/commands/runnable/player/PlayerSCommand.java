@@ -8,9 +8,9 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 
 
 
-public interface PlayerCommandInterface {
+public interface PlayerSCommand {
 	
-    public abstract void run(Player p, Player receiver, List<String> args, ActionInfo aInfo, boolean silenceOutput);
+    public abstract void run(Player p, Player receiver, List<String> args, ActionInfo aInfo);
 	
 	public abstract String verify(List<String> args);
 }

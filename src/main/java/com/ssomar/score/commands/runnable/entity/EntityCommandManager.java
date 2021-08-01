@@ -7,7 +7,8 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 
-import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.CommandManager;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.entity.commands.Burn;
 import com.ssomar.score.commands.runnable.entity.commands.ChangeTo;
 import com.ssomar.score.commands.runnable.entity.commands.CustomDash1;
@@ -31,11 +32,11 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
 
-public class EntityCommandManager {
+public class EntityCommandManager implements CommandManager{
 
 	private static EntityCommandManager instance;
 	
-	private List<EntityCommandTemplate> commands;
+	private List<EntityCommand> commands;
 	
 	private EntityCommandManager() {
 		commands = new ArrayList<>();
@@ -59,28 +60,17 @@ public class EntityCommandManager {
 		commands.add(new RemoveGlow());
 		commands.add(new StrikeLightning());
 	}
-	
-	public EntityCommandTemplate getEntityCommand(String entry) {
-		for(EntityCommandTemplate cmd : commands) {
-			for(String name: cmd.getNames()) {
-				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
-					return cmd;
-				}
-			}
-		}
-		return null;
-	}
 
 	/*
 	 *  return "" if no error else return the error
 	 */
-	public String verifArgs(EntityCommandTemplate eC, List<String> args) {
+	public String verifArgs(EntityCommand eC, List<String> args) {
 		return eC.verify(args);
 	}
 
 
 	public boolean isValidEntityCommand(String entry) {
-		for(EntityCommandTemplate cmd : commands) {
+		for(EntityCommand cmd : commands) {
 			for(String name: cmd.getNames()) {
 				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
 					return true;
@@ -89,37 +79,6 @@ public class EntityCommandManager {
 		}
 		return false;
 	}
-
-
-	public List<String> getECArgs(String entry) {
-		List<String> args = new ArrayList<>();
-		boolean first= true;
-		boolean second= false;
-		boolean third= false;
-		if(entry.toUpperCase().startsWith("TELEPORT POSITION")) second=true;
-		else if(entry.toUpperCase().startsWith("TELEPORT ENTITY TO PLAYER")
-				|| entry.toUpperCase().startsWith("TELEPORT PLAYER TO ENTITY")) {
-			second=true;
-			third=true;
-		}
-		for(String s : entry.split(" ")) {
-			if(first) {
-				first=false;
-				continue;
-			}
-			if(second) {
-				second=false;
-				continue;
-			}
-			if(third) {
-				third=false;
-				continue;
-			}
-			args.add(s);
-		}
-		return args;
-	}
-
 	
 	public List<String> getEntityCommands(SPlugin sPlugin, List<String> commands, List<String> errorList, String id) {
 
@@ -136,8 +95,8 @@ public class EntityCommandManager {
 			 */
 
 			if (EntityCommandManager.getInstance().isValidEntityCommand(commands.get(i)) && !commands.get(i).contains("//")) {
-				EntityCommandTemplate eC = this.getEntityCommand(command);
-				List<String> args = this.getECArgs(command);
+				EntityCommand eC = (EntityCommand)this.getCommand(command);
+				List<String> args = this.getArgs(command);
 
 				String error = "";
 				if (!(error = this.verifArgs(eC, args)).isEmpty()) {
@@ -155,13 +114,13 @@ public class EntityCommandManager {
 		return instance;
 	}
 
-	public List<EntityCommandTemplate> getCommands() {
+	public List<EntityCommand> getCommands() {
 		return commands;
 	}
 	
 	public Map<String, String> getCommandsDisplay() {
 		Map<String, String> result = new HashMap<>();
-		for(Command c : this.commands) {
+		for(SCommand c : this.commands) {
 
 			ChatColor extra = c.getExtraColor();
 			if(extra == null) extra = ChatColor.DARK_PURPLE;
@@ -174,8 +133,50 @@ public class EntityCommandManager {
 		return result;
 	}
 
-	public void setCommands(List<EntityCommandTemplate> commands) {
+	public void setCommands(List<EntityCommand> commands) {
 		this.commands = commands;
+	}
+
+	@Override
+	public SCommand getCommand(String brutCommand) {
+		for(EntityCommand cmd : commands) {
+			for(String name: cmd.getNames()) {
+				if(brutCommand.toUpperCase().startsWith(name.toUpperCase())) {
+					return cmd;
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<String> getArgs(String command) {
+		List<String> args = new ArrayList<>();
+		boolean first= true;
+		boolean second= false;
+		boolean third= false;
+		if(command.toUpperCase().startsWith("TELEPORT POSITION")) second=true;
+		else if(command.toUpperCase().startsWith("TELEPORT ENTITY TO PLAYER")
+				|| command.toUpperCase().startsWith("TELEPORT PLAYER TO ENTITY")) {
+			second=true;
+			third=true;
+		}
+		for(String s : command.split(" ")) {
+			if(first) {
+				first=false;
+				continue;
+			}
+			if(second) {
+				second=false;
+				continue;
+			}
+			if(third) {
+				third=false;
+				continue;
+			}
+			args.add(s);
+		}
+		return args;
 	}
 
 }

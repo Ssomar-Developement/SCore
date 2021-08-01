@@ -11,14 +11,14 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommandTemplate;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
 
 /* FARMINCUBE {radius} {ActiveDrop true or false} */
-public class FertilizeInCube extends BlockCommandTemplate{
+public class FertilizeInCube extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
 		try {

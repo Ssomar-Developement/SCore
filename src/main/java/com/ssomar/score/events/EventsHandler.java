@@ -1,7 +1,7 @@
 package com.ssomar.score.events;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.SecurityOPCommands;
+import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
 import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;

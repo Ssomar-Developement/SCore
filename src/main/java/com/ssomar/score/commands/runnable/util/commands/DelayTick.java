@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
-import com.ssomar.score.commands.runnable.Command;
+import com.ssomar.score.commands.runnable.SCommand;
 
-public class DelayTick implements Command{
+public class DelayTick implements SCommand{
 
 	@Override
 	public List<String> getNames() {

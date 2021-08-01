@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
-public interface Command {
+public interface SCommand {
 	
 	public List<String> getNames();
 	

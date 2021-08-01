@@ -9,13 +9,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommandTemplate;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 /* PARTICLE {type} {quantity} {offset} {speed} */
-public class ParticleCommand extends EntityCommandTemplate{
+public class ParticleCommand extends EntityCommand{
 
 	@Override
-	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo, boolean silenceOutput) {
+	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			entity.getWorld().spawnParticle(Particle.valueOf(args.get(0)),
 					entity.getLocation(),
