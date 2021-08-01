@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 
@@ -24,6 +24,7 @@ public class Database {
 		SecurityOPQuery.createNewTable(connect());
 		CommandsQuery.createNewTable(connect());
 		CooldownsQuery.createNewTable(connect());
+		PlayerCommandsQuery.createNewTable(connect());
 	}
 	
 	public void createNewDatabase(String fileName) {

@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
+import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.executableitems.projectiles.CustomProjectileTemplate;
 import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
@@ -127,8 +128,8 @@ public class Launch extends PlayerCommand{
 						entity.setVelocity(v);
 					}
 
-					if(SCore.hasExecutableItems && aInfo.getItem() != null) {
-						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, aInfo.getItem(), aInfo.getSlot());
+					if(SCore.hasExecutableItems && aInfo.getItemID() != null) {
+						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), null, ItemManager.getInstance().getLoadedItemWithID(aInfo.getItemID()), aInfo.getSlot());
 						ProjectilesEvt.getInstance().addProjectileInfo(pInfo);
 					}
 				}

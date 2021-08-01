@@ -14,6 +14,11 @@ import com.ssomar.score.commands.runnable.SCommand;
 
 public class EntityRunCommand extends RunCommand{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private UUID launcherUUID;
 
 	private UUID entityUUID;

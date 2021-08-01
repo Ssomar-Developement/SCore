@@ -1,6 +1,7 @@
 package com.ssomar.score.events;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
@@ -27,6 +28,8 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
+		
+		main.getServer().getPluginManager().registerEvents(new CommandsHandler(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 	}

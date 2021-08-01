@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.placeholders;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -11,8 +12,13 @@ import com.ssomar.score.SCore;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
-public class StringPlaceholder extends PlaceholdersInterface{
+public class StringPlaceholder extends PlaceholdersInterface implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/* placeholders of the player */
 	private PlayerPlaceholders playerPlch = new PlayerPlaceholders();
 	

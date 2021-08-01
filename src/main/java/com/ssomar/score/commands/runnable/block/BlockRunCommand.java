@@ -15,6 +15,11 @@ import com.ssomar.score.commands.runnable.SCommand;
 
 public class BlockRunCommand extends RunCommand{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private UUID launcherUUID;
 
 	private Block block;

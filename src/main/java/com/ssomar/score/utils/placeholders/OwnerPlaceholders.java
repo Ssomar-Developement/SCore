@@ -1,12 +1,18 @@
 package com.ssomar.score.utils.placeholders;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class OwnerPlaceholders extends PlaceholdersInterface {
+public class OwnerPlaceholders extends PlaceholdersInterface implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/* placeholders of the player */
 	private UUID ownerUUID;

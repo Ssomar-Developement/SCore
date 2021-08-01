@@ -1,9 +1,16 @@
 package com.ssomar.score.utils.placeholders;
 
+import java.io.Serializable;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-public class TargetBlockPlaceholders extends PlaceholdersInterface{
+public class TargetBlockPlaceholders extends PlaceholdersInterface implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/* placeholders of the block */
 	private Block targetBlock;

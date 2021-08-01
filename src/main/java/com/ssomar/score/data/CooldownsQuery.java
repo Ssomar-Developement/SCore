@@ -50,10 +50,10 @@ public class CooldownsQuery {
 
 		PreparedStatement pstmt = null;
 		int i = 0;
-		
-		for(Cooldown cd : cooldowns) {
-			try {
-				pstmt = conn.prepareStatement(sql);
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			for(Cooldown cd : cooldowns) {
 				pstmt.setString(1, cd.getId());
 				pstmt.setString(2, cd.getEntityUUID()+"");
 				pstmt.setInt(3, cd.getCooldown());
@@ -62,25 +62,25 @@ public class CooldownsQuery {
 				pstmt.setLong(6, cd.getTime());
 				pstmt.setBoolean(7, false);
 				pstmt.addBatch();
-				
+
 				if (i % 1000 == 0 || i == cooldowns.size()) {
 					pstmt.executeBatch(); // Execute every 1000 items.
-	            }
-			} catch (SQLException e) {
-				System.out.println(SCore.NAME_2+" "+e.getMessage());
+				}
 			}
-			finally {
-				if(pstmt != null){
-					try{
-						pstmt.close();
-					} catch(Exception e){
-						e.printStackTrace();
-					}
+		} catch (SQLException e) {
+			System.out.println(SCore.NAME_2+" "+e.getMessage());
+		}
+		finally {
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				} catch(Exception e){
+					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
+
 	public static List<Cooldown> getCooldownsOf(Connection conn, UUID uuid){
 		String sql = "SELECT "+COL_ID+","+COL_UUID+","+COL_COOLDOWN+","+COL_IS_IN_TICK+","+ COL_IS_GLOBAL+","+COL_TIME+" FROM "+TABLE_COOLDOWNS+" where "+COL_UUID+"=? AND "+COL_LOADED+"=0";
 
@@ -93,45 +93,45 @@ public class CooldownsQuery {
 			rs    = pstmt.executeQuery();
 
 			while (rs.next()) {
-				
+
 				String id = rs.getString(COL_ID);
 				String uuidStr = rs.getString(COL_UUID);
 				int cd = rs.getInt(COL_COOLDOWN);
 				boolean isInTick = rs.getBoolean(COL_IS_IN_TICK);
 				boolean isGlobal = rs.getBoolean(COL_IS_GLOBAL);
 				long time = rs.getLong(COL_TIME);
-				
+
 				Cooldown cooldown = new Cooldown(id, UUID.fromString(uuidStr), cd, isInTick, time, isGlobal);
-				
+
 				list.add(cooldown);
 			}
 		} catch (SQLException e) {
 			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		} finally {
-	        if(rs != null){
-	             try{
-	                  rs.close();
-	             } catch(Exception e){
-	                 e.printStackTrace();
-	             }
-	        }
-	        if(pstmt != null){
-	            try{
-	                pstmt.close();
-	            } catch(Exception e){
-	                e.printStackTrace();
-	            }
-	        }
-	    }
+			if(rs != null){
+				try{
+					rs.close();
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
 		return list;
 	}
-	
+
 	public static void deleteCooldownsOf(Connection conn, UUID uuid){
 
 		String sql = "DELETE FROM "+TABLE_COOLDOWNS+" where "+COL_UUID+"=?";
 
 		PreparedStatement pstmt = null;
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, uuid.toString());
@@ -140,14 +140,14 @@ public class CooldownsQuery {
 			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		}
 		finally {
-	        if(pstmt != null){
-	            try{
-	                pstmt.close();
-	            } catch(Exception e){
-	                e.printStackTrace();
-	            }
-	        }
-	    }
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

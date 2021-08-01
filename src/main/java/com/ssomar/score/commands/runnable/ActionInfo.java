@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.bukkit.Material;
@@ -9,15 +10,20 @@ import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
-public class ActionInfo {
+public class ActionInfo implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	
 	/* The slot where the action was activated */
 	private Integer slot;
 	
 	/* The item (ExecutableItems) that actives the action */
-	private Item item;
+	private String itemID;
 	
 	/* The activator that actives the action */
 	private SActivator sActivator;
@@ -48,7 +54,7 @@ public class ActionInfo {
 		this.slot = slot;
 		this.sp = sp;
 		this.silenceOutput = false;
-		this.item = null;
+		this.itemID = null;
 		this.sActivator = null;
 		this.isEventCallByMineInCube = false;
 		this.launcherUUID = null;
@@ -61,7 +67,7 @@ public class ActionInfo {
 	
 	public ActionInfo clone() {
 		ActionInfo result = new ActionInfo(this.name, this.slot, this.sp);
-		result.setItem(item);
+		result.setItemID(itemID);
 		result.setsActivator(sActivator);
 		result.setEventCallByMineInCube(isEventCallByMineInCube);
 		result.setLauncherUUID(launcherUUID);
@@ -73,13 +79,13 @@ public class ActionInfo {
 		
 		return result;
 	}
-	
-	public Item getItem() {
-		return item;
+
+	public String getItemID() {
+		return itemID;
 	}
 
-	public void setItem(Item item) {
-		this.item = item;
+	public void setItemID(String itemID) {
+		this.itemID = itemID;
 	}
 
 	public String getName() {

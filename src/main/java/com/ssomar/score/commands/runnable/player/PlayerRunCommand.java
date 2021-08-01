@@ -13,6 +13,11 @@ import com.ssomar.score.commands.runnable.SCommand;
 
 public class PlayerRunCommand extends RunCommand{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private UUID launcherUUID;
 
 	private UUID receiverUUID;
@@ -24,6 +29,11 @@ public class PlayerRunCommand extends RunCommand{
 	public PlayerRunCommand(String brutCommand, int delay, ActionInfo aInfo) {
 		super(brutCommand, delay, aInfo);
 	}
+	
+	public PlayerRunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
+		super(brutCommand, runTime, aInfo);
+	}
+	
 	@Override
 	public void pickupInfo() {
 		ActionInfo aInfo = this.getaInfo();
@@ -61,7 +71,7 @@ public class PlayerRunCommand extends RunCommand{
 	public void insideDelayedCommand() {
 		Player receiver = Bukkit.getPlayer(receiverUUID);
 
-		if(receiver.isOnline()) {
+		if(receiver != null && receiver.isOnline()) {
 			runCommand(PlayerCommandManager.getInstance());
 			CommandsHandler.getInstance().removeDelayedCommand(getUuid(), receiverUUID);
 		}

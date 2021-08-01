@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,12 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
-public abstract class RunCommand {
+public abstract class RunCommand implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String brutCommand;
 
@@ -38,6 +44,28 @@ public abstract class RunCommand {
 		this.uuid = UUID.randomUUID();
 		this.task = null;
 		this.pickupInfo();
+	}
+	
+	public RunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
+		this.brutCommand = brutCommand;
+		this.aInfo = aInfo;
+		this.sp = aInfo.getSp();
+		this.uuid = UUID.randomUUID();
+		this.task = null;
+		this.pickupInfo();
+		
+		long current = System.currentTimeMillis();
+		
+		long diff = runTime - current;
+		
+		if(diff == 0) {
+			delay = 0;
+			runTime = -1;
+		}
+		else {
+			delay = (int) (diff/50);
+			runTime = -1;
+		}
 	}
 
 	public abstract void run();
