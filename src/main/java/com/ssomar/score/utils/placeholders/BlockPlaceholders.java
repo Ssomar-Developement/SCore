@@ -1,13 +1,15 @@
 package com.ssomar.score.utils.placeholders;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 public class BlockPlaceholders extends PlaceholdersInterface{
 
 	/* placeholders of the block */
 	private Block block;
-	
+	private Material fixType;
+
 	private String blockType = "";
 	private String blockWorld = "";
 	private String blockX= "";
@@ -16,15 +18,24 @@ public class BlockPlaceholders extends PlaceholdersInterface{
 	private String blockXInt= "";
 	private String blockYInt= "";
 	private String blockZInt= "";
-	
+
 	public void setBlockPlcHldr(Block block) {
 		this.block = block;
+		this.reloadBlockPlcHldr();
+	}
+	
+	public void setBlockPlcHldr(Block block, Material fixType) {
+		this.block = block;
+		this.fixType = fixType;
 		this.reloadBlockPlcHldr();
 	}
 
 	public void reloadBlockPlcHldr() {
 		if(this.block != null ) {
-			this.blockType = block.getType().toString();
+			if(this.fixType != null) {
+				this.blockType = fixType.toString();
+			}
+			else this.blockType = block.getType().toString();
 			Location bLoc = block.getLocation();
 			this.blockWorld = bLoc.getWorld().getName();
 			this.blockX = bLoc.getX()+"";
@@ -35,7 +46,7 @@ public class BlockPlaceholders extends PlaceholdersInterface{
 			this.blockZInt = bLoc.getBlockZ()+"";
 		}
 	}
-	
+
 	public String replacePlaceholder(String s) {
 		String toReplace = s;
 		if(block != null) {
@@ -49,7 +60,7 @@ public class BlockPlaceholders extends PlaceholdersInterface{
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_y_int%", blockYInt, true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_z_int%", blockZInt, true);
 		}
-		
+
 		return toReplace;
 	}
 }
