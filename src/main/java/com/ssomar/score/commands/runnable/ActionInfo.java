@@ -48,6 +48,30 @@ public class ActionInfo {
 		this.slot = slot;
 		this.sp = sp;
 		this.silenceOutput = false;
+		this.item = null;
+		this.sActivator = null;
+		this.isEventCallByMineInCube = false;
+		this.launcherUUID = null;
+		this.receiverUUID = null;
+		this.block = null;
+		this.oldBlockMaterial = null;
+		this.entityUUID = null;
+		this.silenceOutput = false;
+	}
+	
+	public ActionInfo clone() {
+		ActionInfo result = new ActionInfo(this.name, this.slot, this.sp);
+		result.setItem(item);
+		result.setsActivator(sActivator);
+		result.setEventCallByMineInCube(isEventCallByMineInCube);
+		result.setLauncherUUID(launcherUUID);
+		result.setReceiverUUID(receiverUUID);
+		result.setBlock(block);
+		result.setOldBlockMaterial(oldBlockMaterial);
+		result.setEntityUUID(entityUUID);
+		result.setSilenceOutput(silenceOutput);
+		
+		return result;
 	}
 	
 	public Item getItem() {
