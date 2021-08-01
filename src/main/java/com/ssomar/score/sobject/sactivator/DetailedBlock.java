@@ -1,29 +1,35 @@
 package com.ssomar.score.sobject.sactivator;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.bukkit.Material;
 
-public class DetailedBlock {
+public class DetailedBlock implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/* Material of the block */
-	private Material material;
+	private String materialName;
 	
 	/* States of the block , example STATE1 = Value1*/
 	private Map<String, String> states;
 
 	public DetailedBlock(Material material, Map<String, String> states) {
 		super();
-		this.material = material;
+		this.materialName = material.toString();
 		this.states = states;
 	}
 
 	public Material getMaterial() {
-		return material;
+		return Material.valueOf(materialName);
 	}
 
 	public void setMaterial(Material material) {
-		this.material = material;
+		this.materialName = material.toString();
 	}
 
 	public Map<String, String> getStates() {

@@ -42,14 +42,8 @@ public class EntityRunCommand extends RunCommand{
 	}
 
 	@Override
-	public void run() {
-
-		if(this.getDelay() == 0) {
-			this.runCommand(EntityCommandManager.getInstance());
-		}
-		else {
-			this.runDelayedCommand();
-		}
+	public void runGetManager() {
+		this.runCommand(EntityCommandManager.getInstance());
 	}
 
 	@Override
@@ -61,8 +55,8 @@ public class EntityRunCommand extends RunCommand{
 
 		pCommand.run(launcher, receiver, args, aInfo);
 	}
-	
-	
+
+
 	@Override
 	public void insideDelayedCommand() {
 		Entity entity = Bukkit.getEntity(entityUUID);

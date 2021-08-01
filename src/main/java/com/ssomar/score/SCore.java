@@ -1,7 +1,6 @@
 package com.ssomar.score;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
@@ -85,7 +84,7 @@ public final class SCore extends JavaPlugin {
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 		
 		/* Run all saved commands of the BDD part */
-		for(Player p : Bukkit.getOnlinePlayers()) {
+		//for(Player p : Bukkit.getOnlinePlayers()) {
 //			List<String> commands = CommandsQuery.selectCommandsForPlayer(Database.getInstance().connect(), p);
 //			if(!commands.isEmpty()) {
 //				new PlayerCommandsExecutor(commands, p, false, p, new ActionInfo("", 0)).runPlayerCommands(true);
@@ -94,7 +93,7 @@ public final class SCore extends JavaPlugin {
 //			if(SecurityOPQuery.selectIfSecurityOPcontains(Database.getInstance().connect(), p)) {
 //				p.setOp(false);
 //			}
-		}
+		//}
 
 	}
 	

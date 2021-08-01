@@ -1,12 +1,18 @@
 package com.ssomar.score.utils;
 
+import java.io.Serializable;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
-public class SendMessage {
+public class SendMessage implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private StringPlaceholder sp = new StringPlaceholder();
 
 	public void sendMessage(Player p, String s) {

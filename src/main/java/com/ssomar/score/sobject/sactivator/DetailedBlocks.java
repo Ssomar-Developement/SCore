@@ -1,6 +1,7 @@
 package com.ssomar.score.sobject.sactivator;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 
-public class DetailedBlocks extends ArrayList<DetailedBlock>{
+public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializable{
 
 	/**
 	 * 

@@ -3,11 +3,14 @@ package com.ssomar.score.commands.runnable;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 public class ActionInfo implements Serializable{
@@ -25,9 +28,6 @@ public class ActionInfo implements Serializable{
 	/* The item (ExecutableItems) that actives the action */
 	private String itemID;
 	
-	/* The activator that actives the action */
-	private SActivator sActivator;
-	
 	private boolean isEventCallByMineInCube = false;
 	
 	/* Important info */
@@ -36,9 +36,14 @@ public class ActionInfo implements Serializable{
 	private UUID receiverUUID;
 	
 	/* ------------------ */
-	private Block block;
+	private int blockLocationX;
+	private int blockLocationY;
+	private int blockLocationZ;
+	private String blockLocationWorld;
 	
-	private Material oldBlockMaterial;
+	DetailedBlocks detailedBlocks;
+	
+	private String oldBlockMaterialName;
 	
 	/* ------------------ */
 	private UUID entityUUID;
@@ -55,12 +60,14 @@ public class ActionInfo implements Serializable{
 		this.sp = sp;
 		this.silenceOutput = false;
 		this.itemID = null;
-		this.sActivator = null;
 		this.isEventCallByMineInCube = false;
 		this.launcherUUID = null;
 		this.receiverUUID = null;
-		this.block = null;
-		this.oldBlockMaterial = null;
+		this.blockLocationX = -1;
+		this.blockLocationY = -1;
+		this.blockLocationZ = -1;
+		this.blockLocationWorld = null;
+		this.oldBlockMaterialName = null;
 		this.entityUUID = null;
 		this.silenceOutput = false;
 	}
@@ -68,16 +75,32 @@ public class ActionInfo implements Serializable{
 	public ActionInfo clone() {
 		ActionInfo result = new ActionInfo(this.name, this.slot, this.sp);
 		result.setItemID(itemID);
-		result.setsActivator(sActivator);
 		result.setEventCallByMineInCube(isEventCallByMineInCube);
 		result.setLauncherUUID(launcherUUID);
 		result.setReceiverUUID(receiverUUID);
-		result.setBlock(block);
-		result.setOldBlockMaterial(oldBlockMaterial);
+		result.setOldBlockMaterial(Material.valueOf(oldBlockMaterialName));
 		result.setEntityUUID(entityUUID);
 		result.setSilenceOutput(silenceOutput);
 		
+		
 		return result;
+	}
+	
+	public void setBlock(Block block) {
+		Location bLoc = block.getLocation();
+		this.blockLocationX = bLoc.getBlockX();
+		this.blockLocationY = bLoc.getBlockY();
+		this.blockLocationZ = bLoc.getBlockZ();
+		this.blockLocationWorld = bLoc.getWorld().getName();
+	}
+	
+	@Nullable
+	public Block getBlock() {
+		if(blockLocationWorld != null) {
+			Location bLoc = new Location(Bukkit.getWorld(blockLocationWorld), blockLocationX, blockLocationY, blockLocationZ);
+			return bLoc.getBlock();
+		}
+		return null;
 	}
 
 	public String getItemID() {
@@ -112,14 +135,6 @@ public class ActionInfo implements Serializable{
 		this.isEventCallByMineInCube = isEventCallByMineInCube;
 	}
 
-	public SActivator getsActivator() {
-		return sActivator;
-	}
-
-	public void setsActivator(SActivator sActivator) {
-		this.sActivator = sActivator;
-	}
-
 	public UUID getLauncherUUID() {
 		return launcherUUID;
 	}
@@ -152,20 +167,12 @@ public class ActionInfo implements Serializable{
 		this.sp = sp;
 	}
 
-	public Block getBlock() {
-		return block;
-	}
-
-	public void setBlock(Block block) {
-		this.block = block;
-	}
-
 	public Material getOldBlockMaterial() {
-		return oldBlockMaterial;
+		return  Material.valueOf(oldBlockMaterialName);
 	}
 
 	public void setOldBlockMaterial(Material oldBlockMaterial) {
-		this.oldBlockMaterial = oldBlockMaterial;
+		this.oldBlockMaterialName = oldBlockMaterial.toString();
 	}
 
 	public UUID getEntityUUID() {
@@ -174,6 +181,14 @@ public class ActionInfo implements Serializable{
 
 	public void setEntityUUID(UUID entityUUID) {
 		this.entityUUID = entityUUID;
+	}
+
+	public DetailedBlocks getDetailedBlocks() {
+		return detailedBlocks;
+	}
+
+	public void setDetailedBlocks(DetailedBlocks detailedBlocks) {
+		this.detailedBlocks = detailedBlocks;
 	}
 	
 }

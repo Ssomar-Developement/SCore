@@ -15,7 +15,6 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
-import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
@@ -25,10 +24,16 @@ public class MineInCube extends BlockCommand{
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
 		if(aInfo.isEventCallByMineInCube()) return;
+		
+		String arg = args.get(args.size()-1);
+		if(arg.contains(">>>")) {
+			
+		}
+		
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;
-			if(args.size() == 2) drop = Boolean.valueOf(args.get(1));
+			if(args.size() >= 2) drop = Boolean.valueOf(args.get(1));
 			
 			List<Material> blackList = new ArrayList<>();
 			blackList.add(Material.BEDROCK);
@@ -42,9 +47,8 @@ public class MineInCube extends BlockCommand{
 							Location toBreakLoc = new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z);
 							Block toBreak = block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z);
 							
-							SActivator sActivator;
-							if((sActivator = aInfo.getsActivator()) != null) {
-								DetailedBlocks whiteList = sActivator.getDetailedBlocks();
+							DetailedBlocks whiteList;
+							if((whiteList = aInfo.getDetailedBlocks()) != null) {
 								if(!whiteList.isEmpty()) {
 									String statesStr = "";
 									if(!SCore.is1v12()) statesStr = toBreak.getBlockData().getAsString(true);

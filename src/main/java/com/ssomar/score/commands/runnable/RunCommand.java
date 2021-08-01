@@ -67,15 +67,22 @@ public abstract class RunCommand implements Serializable{
 			runTime = -1;
 		}
 	}
-
-	public abstract void run();
 	
-	public void runCommand(CommandManager manager) {
-		
-		if(delay == 0) runTime = 0;
+	public void run() {
+		if(delay == 0) {
+			runTime = 0;
+			this.runGetManager();
+		}
 		else {
 			runTime = System.currentTimeMillis() + delay * 50;
+			this.runDelayedCommand();
 		}
+	}
+
+	public abstract void runGetManager();
+	
+	
+	public void runCommand(CommandManager manager) {
 		
 		String finalCommand = this.getBrutCommand();
 		

@@ -46,14 +46,8 @@ public class PlayerRunCommand extends RunCommand{
 	}
 
 	@Override
-	public void run() {
-
-		if(this.getDelay() == 0) {
-			this.runCommand(PlayerCommandManager.getInstance());
-		}
-		else {
-			this.runDelayedCommand();
-		}
+	public void runGetManager() {
+		this.runCommand(PlayerCommandManager.getInstance());
 	}
 
 	@Override

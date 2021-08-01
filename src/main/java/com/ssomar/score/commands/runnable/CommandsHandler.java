@@ -55,11 +55,11 @@ public class CommandsHandler implements Listener {
 		Player p = e.getPlayer();
 
 		List<PlayerRunCommand> commands = getInstance().getDelayedCommandsWithReceiver(p.getUniqueId());
-		System.out.println(" >>> "+p.getName()+ " "+commands.size());
+		//System.out.println(" >>> "+p.getName()+ " "+commands.size());
 
 		PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commands);
 
-		this.removeAllDelayedCommands(p.getUniqueId());
+		getInstance().removeAllDelayedCommands(p.getUniqueId());
 	}
 
 	public static void closeServerSaveAll() {
@@ -88,7 +88,7 @@ public class CommandsHandler implements Listener {
 				List<RunCommand> list = new ArrayList<>();
 				list.add(command);
 				delayedCommandsByReceiverUuid.put(((PlayerRunCommand)command).getReceiverUUID(), list);
-				System.out.println(">>>>>> Yes add :: "+delayedCommandsByReceiverUuid.size());
+				//System.out.println(">>>>>> Yes add :: "+delayedCommandsByReceiverUuid.size());
 			}
 		}
 	}
@@ -115,7 +115,7 @@ public class CommandsHandler implements Listener {
 			if(runCommands.isEmpty()) delayedCommandsByReceiverUuid.remove(receiverUUID);
 		}
 		
-		System.out.println(">>>>>> Yess remove :: "+delayedCommandsByReceiverUuid.size());
+		//System.out.println(">>>>>> Yess remove :: "+delayedCommandsByReceiverUuid.size());
 	}
 
 	public void removeAllDelayedCommands(UUID receiverUUID) {
@@ -133,15 +133,10 @@ public class CommandsHandler implements Listener {
 	public List<PlayerRunCommand> getDelayedCommandsWithReceiver(UUID receiverUUID) {
 		List<PlayerRunCommand> commands = new ArrayList<>();
 		if(delayedCommandsByReceiverUuid.containsKey(receiverUUID)) {
-			System.out.println(">>>>>> Yes");
 			List<RunCommand> runCommands = delayedCommandsByReceiverUuid.get(receiverUUID);
-			//System.out.println(">>>>>> Yes2 :: "+runCommands.size());
 			for(RunCommand rC : runCommands) {
 				if(rC instanceof PlayerRunCommand) commands.add((PlayerRunCommand) rC);
 			}
-		}
-		else {
-			//System.out.println(">>>>>> Nooo :: "+delayedCommandsByReceiverUuid.size());
 		}
 		return commands;
 	}

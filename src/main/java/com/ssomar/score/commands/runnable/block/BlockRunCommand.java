@@ -47,14 +47,8 @@ public class BlockRunCommand extends RunCommand{
 	}
 
 	@Override
-	public void run() {
-
-		if(this.getDelay() == 0) {
-			this.runCommand(BlockCommandManager.getInstance());
-		}
-		else {
-			this.runDelayedCommand();
-		}
+	public void runGetManager() {
+		this.runCommand(BlockCommandManager.getInstance());
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class PlayerCommandsQuery {
 
 
 	public static void insertCommand(Connection conn, List<PlayerRunCommand> commands) {
-		String sql = "INSERT INTO "+TABLE_COMMANDS_PLAYER+" ("+COL_UUID_LAUNCHER+","+COL_UUID_RECEIVER+","+COL_BRUT_COMMAND+","+COL_RUN_TIME+","+COL_ACTION_INFO+") VALUES(?,?,?,?)";
+		String sql = "INSERT INTO "+TABLE_COMMANDS_PLAYER+" ("+COL_UUID_LAUNCHER+","+COL_UUID_RECEIVER+","+COL_BRUT_COMMAND+","+COL_RUN_TIME+","+COL_ACTION_INFO+") VALUES(?,?,?,?,?)";
 
 		PreparedStatement pstmt = null;
 
@@ -49,8 +49,8 @@ public class PlayerCommandsQuery {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			for(PlayerRunCommand command: commands) {
-				pstmt.setString(1, command.getReceiverUUID().toString());
-				pstmt.setString(2, command.getLauncherUUID().toString());
+				pstmt.setString(1, command.getLauncherUUID().toString());
+				pstmt.setString(2, command.getReceiverUUID().toString());
 				pstmt.setString(3, command.getBrutCommand());
 				pstmt.setLong(4, command.getRunTime());
 				pstmt.setString(5, ActionInfoSerializer.toString(command.getaInfo()));
@@ -100,7 +100,7 @@ public class PlayerCommandsQuery {
 	}
 
 	public static List<PlayerRunCommand> selectCommandsForPlayer(Connection conn, UUID uuid){
-		String sql = "SELECT "+COL_BRUT_COMMAND+","+COL_RUN_TIME+","+COL_ACTION_INFO+" FROM "+TABLE_COMMANDS_PLAYER+" where "+COL_UUID_RECEIVER+"=?";
+		String sql = "SELECT "+COL_BRUT_COMMAND+","+COL_RUN_TIME+","+COL_ACTION_INFO+" FROM "+TABLE_COMMANDS_PLAYER+" where "+COL_UUID_RECEIVER+"=? ORDER BY "+COL_RUN_TIME;
 
 		List<PlayerRunCommand> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
