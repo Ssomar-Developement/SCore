@@ -41,18 +41,19 @@ public class EntityPlaceholders extends PlaceholdersInterface{
 	}
 
 	public String replacePlaceholder(String s) {
+		String toReplace = s;
 		if(entityUUID != null) {
-			s = s.replaceAll("%entity%", entity);
-			s = s.replaceAll("%entity_uuid%", entityUUID.toString());
-			s = replaceCalculPlaceholder(s, "%entity_x%", entityX, false);
-			s = replaceCalculPlaceholder(s, "%entity_y%", entityY, false);
-			s = replaceCalculPlaceholder(s, "%entity_z%", entityZ, false);
-			s = replaceCalculPlaceholder(s, "%entity_x_int%", entityXInt, true);
-			s = replaceCalculPlaceholder(s, "%entity_y_int%", entityYInt, true);
-			s = replaceCalculPlaceholder(s, "%entity_z_int%", entityZInt, true);
-			s = s.replaceAll("%entityworld%", entityWorld);
+			toReplace = toReplace.replaceAll("%entity%", entity);
+			toReplace = toReplace.replaceAll("%entity_uuid%", entityUUID.toString());
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x%", entityX, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y%", entityY, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z%", entityZ, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x_int%", entityXInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y_int%", entityYInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z_int%", entityZInt, true);
+			toReplace = toReplace.replaceAll("%entityworld%", entityWorld);
 		}
 
-		return s;
+		return toReplace;
 	}
 }

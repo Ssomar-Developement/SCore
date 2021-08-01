@@ -65,9 +65,9 @@ public class PlayerRunCommand extends RunCommand{
 			runCommand(PlayerCommandManager.getInstance());
 			CommandsHandler.getInstance().removeDelayedCommand(getUuid(), receiverUUID);
 		}
-		else {
+		//else {
 			//ADD THE COMMAND IN THE DB
-		}
+		//}
 	}
 	public UUID getLauncherUUID() {
 		return launcherUUID;

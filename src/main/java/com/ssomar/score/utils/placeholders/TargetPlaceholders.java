@@ -43,19 +43,20 @@ public class TargetPlaceholders extends PlaceholdersInterface{
 	}
 	
 	public String replacePlaceholder(String s) {
+		String toReplace = s;
 		if(targetUUID != null) {
-			s = s.replaceAll("%target%", target);
-			s = s.replaceAll("%target_uuid%", targetUUID.toString());
-			s = replaceCalculPlaceholder(s, "%target_x%", targetX, false);
-			s = replaceCalculPlaceholder(s, "%target_y%", targetY, false);
-			s = replaceCalculPlaceholder(s, "%target_z%", targetZ, false);
-			s = replaceCalculPlaceholder(s, "%target_x_int%", targetXInt, true);
-			s = replaceCalculPlaceholder(s, "%target_y_int%", targetYInt, true);
-			s = replaceCalculPlaceholder(s, "%target_z_int%", targetZInt, true);
-			s = s.replaceAll("%target_world%", targetWorld);
-			s = s.replaceAll("%target_slot%", targetSlot);
+			toReplace = toReplace.replaceAll("%target%", target);
+			toReplace = toReplace.replaceAll("%target_uuid%", targetUUID.toString());
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_x%", targetX, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_y%", targetY, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_z%", targetZ, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_x_int%", targetXInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_y_int%", targetYInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_z_int%", targetZInt, true);
+			toReplace = toReplace.replaceAll("%target_world%", targetWorld);
+			toReplace = toReplace.replaceAll("%target_toReplacelot%", targetSlot);
 		}
 		
-		return s;
+		return toReplace;
 	}
 }

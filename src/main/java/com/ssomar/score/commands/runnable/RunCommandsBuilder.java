@@ -7,14 +7,11 @@ import java.util.List;
 
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 public abstract class RunCommandsBuilder{
 
 	/* Commands to run */
 	private List<String> commands;
-	
-	private StringPlaceholder sp;
 
 	private ActionInfo actionInfo;
 
@@ -25,7 +22,6 @@ public abstract class RunCommandsBuilder{
 
 	public RunCommandsBuilder(List<String> commands, ActionInfo actionInfo) {
 		this.actionInfo = actionInfo;
-		this.sp = actionInfo.getSp();
 		this.commands = commands;
 		this.init();
 	}

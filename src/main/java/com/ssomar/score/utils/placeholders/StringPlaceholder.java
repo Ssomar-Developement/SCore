@@ -13,25 +13,13 @@ import me.clip.placeholderapi.PlaceholderAPI;
 public class StringPlaceholder extends PlaceholdersInterface{
 	
 	/* placeholders of the player */
-	PlayerPlaceholders playerPlch = new PlayerPlaceholders();
-	
-	public void setPlayerPlcHldr(UUID uuid) {
-		 playerPlch.setPlayerPlcHldr(uuid);
-	}
+	private PlayerPlaceholders playerPlch = new PlayerPlaceholders();
 	
 	/* placeholders of the target player */
-	TargetPlaceholders targetPlch = new TargetPlaceholders();
-	
-	public void setTargetPlcHldr(UUID uuid) {
-		 targetPlch.setTargetPlcHldr(uuid);
-	}
+	private TargetPlaceholders targetPlch = new TargetPlaceholders();
 
 	/* placeholders of the owner */
-	OwnerPlaceholders ownerPlch = new OwnerPlaceholders();
-	
-	public void setOwnerPlcHldr(UUID uuid) {
-		 ownerPlch.setOwnerPlcHldr(uuid);
-	}
+	private OwnerPlaceholders ownerPlch = new OwnerPlaceholders();
 
 	/* placeholders of the item */
 	private String activator= "";
@@ -42,25 +30,13 @@ public class StringPlaceholder extends PlaceholdersInterface{
 	private String maxUsePerDayActivator= "";
 
 	/* placeholders of the target entity */
-	EntityPlaceholders entityPlch = new EntityPlaceholders();
-	
-	public void setEntityPlcHldr(UUID uuid) {
-		 entityPlch.setEntityPlcHldr(uuid);
-	}
+	private EntityPlaceholders entityPlch = new EntityPlaceholders();
 
 	/* placeholders of the block */
-	BlockPlaceholders blockPlch = new BlockPlaceholders();
-	
-	public void setBlockPlcHldr(Block block) {
-		 blockPlch.setBlockPlcHldr(block);
-	}
+	private BlockPlaceholders blockPlch = new BlockPlaceholders();
 
 	/* placeholders of the target block */
-	TargetBlockPlaceholders targetBlockPlch = new TargetBlockPlaceholders();
-	
-	public void setTargetBlockPlcHldr(Block block) {
-		 targetBlockPlch.setTargetBlockPlcHldr(block);
-	}
+	private TargetBlockPlaceholders targetBlockPlch = new TargetBlockPlaceholders();
 
 	/* placeholders tools */
 	private String launcher="";
@@ -74,6 +50,30 @@ public class StringPlaceholder extends PlaceholdersInterface{
 	private String projectileX="";
 	private String projectileY="";
 	private String projectileZ="";
+	
+	public void setPlayerPlcHldr(UUID uuid) {
+		 playerPlch.setPlayerPlcHldr(uuid);
+	}
+	
+	public void setTargetPlcHldr(UUID uuid) {
+		 targetPlch.setTargetPlcHldr(uuid);
+	}
+	
+	public void setOwnerPlcHldr(UUID uuid) {
+		 ownerPlch.setOwnerPlcHldr(uuid);
+	}
+	
+	public void setEntityPlcHldr(UUID uuid) {
+		 entityPlch.setEntityPlcHldr(uuid);
+	}
+	
+	public void setBlockPlcHldr(Block block) {
+		 blockPlch.setBlockPlcHldr(block);
+	}
+	
+	public void setTargetBlockPlcHldr(Block block) {
+		 targetBlockPlch.setTargetBlockPlcHldr(block);
+	}
 	
 	public void reloadAllPlaceholders() {
 		playerPlch.reloadPlayerPlcHldr();

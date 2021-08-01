@@ -44,20 +44,21 @@ public class PlayerPlaceholders extends PlaceholdersInterface{
 	}
 	
 	public String replacePlaceholder(String s) {
+		String toReplace = s;
 		if(playerUUID != null) {
-			s = s.replaceAll("%player%", player);
-			s = s.replaceAll("%player_uuid%", playerUUID.toString());
-			s = replaceCalculPlaceholder(s, "%x%", x, false);
-			s = replaceCalculPlaceholder(s, "%y%", y, false);
-			s = replaceCalculPlaceholder(s, "%z%", z, false);
-			s = replaceCalculPlaceholder(s, "%x_int%", xInt, true);
-			s = replaceCalculPlaceholder(s, "%y_int%", yInt, true);
-			s = replaceCalculPlaceholder(s, "%z_int%", zInt, true);
-			s = s.replaceAll("%world%", world);
-			s = s.replaceAll("%slot%", slot);
+			toReplace = toReplace.replaceAll("%player%", player);
+			toReplace = toReplace.replaceAll("%player_uuid%", playerUUID.toString());
+			toReplace = replaceCalculPlaceholder(toReplace, "%x%", x, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%y%", y, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%z%", z, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%x_int%", xInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%y_int%", yInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%z_int%", zInt, true);
+			toReplace = toReplace.replaceAll("%world%", world);
+			toReplace = toReplace.replaceAll("%toReplacelot%", slot);
 		}
 		
-		return s;
+		return toReplace;
 	}
 
 	public UUID getPlayerUUID() {

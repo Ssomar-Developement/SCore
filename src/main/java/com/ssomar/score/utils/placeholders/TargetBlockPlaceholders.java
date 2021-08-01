@@ -37,18 +37,19 @@ public class TargetBlockPlaceholders extends PlaceholdersInterface{
 	}
 	
 	public String replacePlaceholder(String s) {
+		String toReplace = s;
 		if(targetBlock != null) {
-			s = s.replaceAll("%target_block%", targetBlockType);
-			s = s.replaceAll("%target_block_lower%", targetBlockType.toLowerCase());
-			s = s.replaceAll("%target_block_world%", targetBlockWorld);
-			s = replaceCalculPlaceholder(s, "%target_block_x%", targetBlockX, false);
-			s = replaceCalculPlaceholder(s, "%target_block_y%", targetBlockY, false);
-			s = replaceCalculPlaceholder(s, "%target_block_z%", targetBlockZ, false);
-			s = replaceCalculPlaceholder(s, "%target_block_x_int%", targetBlockXInt, true);
-			s = replaceCalculPlaceholder(s, "%target_block_y_int%", targetBlockYInt, true);
-			s = replaceCalculPlaceholder(s, "%target_block_z_int%", targetBlockZInt, true);
+			toReplace = toReplace.replaceAll("%target_block%", targetBlockType);
+			toReplace = toReplace.replaceAll("%target_block_lower%", targetBlockType.toLowerCase());
+			toReplace = toReplace.replaceAll("%target_block_world%", targetBlockWorld);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_block_x%", targetBlockX, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_block_y%", targetBlockY, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_block_z%", targetBlockZ, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_block_x_int%", targetBlockXInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_block_y_int%", targetBlockYInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%target_block_z_int%", targetBlockZInt, true);
 		}
 		
-		return s;
+		return toReplace;
 	}
 }

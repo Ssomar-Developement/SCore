@@ -43,20 +43,21 @@ public class OwnerPlaceholders extends PlaceholdersInterface {
 	}
 	
 	public String replacePlaceholder(String s) {
+		String toReplace = s;
 		if(ownerUUID != null) {
-			s = s.replaceAll("%owner%", owner);
-			s = s.replaceAll("%owner_uuid%", ownerUUID.toString());
-			s = replaceCalculPlaceholder(s, "%owner_x%", ownerX, false);
-			s = replaceCalculPlaceholder(s, "%owner_y%", ownerY, false);
-			s = replaceCalculPlaceholder(s, "%owner_z%", ownerZ, false);
-			s = replaceCalculPlaceholder(s, "%owner_x_int%", ownerXInt, true);
-			s = replaceCalculPlaceholder(s, "%owner_y_int%", ownerYInt, true);
-			s = replaceCalculPlaceholder(s, "%owner_z_int%", ownerZInt, true);
-			s = s.replaceAll("%owner_world%", ownerWorld);
-			s = s.replaceAll("%owner_slot%", ownerSlot);
+			toReplace = toReplace.replaceAll("%owner%", owner);
+			toReplace = toReplace.replaceAll("%owner_uuid%", ownerUUID.toString());
+			toReplace = replaceCalculPlaceholder(toReplace, "%owner_x%", ownerX, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%owner_y%", ownerY, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%owner_z%", ownerZ, false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%owner_x_int%", ownerXInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%owner_y_int%", ownerYInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%owner_z_int%", ownerZInt, true);
+			toReplace = toReplace.replaceAll("%owner_world%", ownerWorld);
+			toReplace = toReplace.replaceAll("%owner_toReplacelot%", ownerSlot);
 		}
 		
-		return s;
+		return toReplace;
 	}
 	
 }
