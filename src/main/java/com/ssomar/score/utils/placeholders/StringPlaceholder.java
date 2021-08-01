@@ -3,6 +3,7 @@ package com.ssomar.score.utils.placeholders;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -69,6 +70,10 @@ public class StringPlaceholder extends PlaceholdersInterface{
 	
 	public void setBlockPlcHldr(Block block) {
 		 blockPlch.setBlockPlcHldr(block);
+	}
+	
+	public void setBlockPlcHldr(Block block, Material fixType) {
+		 blockPlch.setBlockPlcHldr(block, fixType);
 	}
 	
 	public void setTargetBlockPlcHldr(Block block) {
