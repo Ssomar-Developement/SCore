@@ -54,7 +54,7 @@ public class TargetPlaceholders extends PlaceholdersInterface{
 			toReplace = replaceCalculPlaceholder(toReplace, "%target_y_int%", targetYInt, true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%target_z_int%", targetZInt, true);
 			toReplace = toReplace.replaceAll("%target_world%", targetWorld);
-			toReplace = toReplace.replaceAll("%target_toReplacelot%", targetSlot);
+			toReplace = toReplace.replaceAll("%target_slot%", targetSlot);
 		}
 		
 		return toReplace;

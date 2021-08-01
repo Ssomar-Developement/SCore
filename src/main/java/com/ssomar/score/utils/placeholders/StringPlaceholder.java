@@ -56,6 +56,10 @@ public class StringPlaceholder extends PlaceholdersInterface{
 		 playerPlch.setPlayerPlcHldr(uuid);
 	}
 	
+	public void setPlayerPlcHldr(UUID uuid, int fixSlot) {
+		 playerPlch.setPlayerPlcHldr(uuid, fixSlot);
+	}
+	
 	public void setTargetPlcHldr(UUID uuid) {
 		 targetPlch.setTargetPlcHldr(uuid);
 	}

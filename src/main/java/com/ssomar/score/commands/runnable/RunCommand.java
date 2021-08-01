@@ -31,11 +31,13 @@ public abstract class RunCommand {
 
 	public RunCommand(String brutCommand, int delay, ActionInfo aInfo) {
 		this.brutCommand = brutCommand;
+		this.aInfo = aInfo;
 		this.sp = aInfo.getSp();
 		this.delay = delay;
 		this.runTime = -1;
 		this.uuid = UUID.randomUUID();
 		this.task = null;
+		this.pickupInfo();
 	}
 
 	public abstract void run();

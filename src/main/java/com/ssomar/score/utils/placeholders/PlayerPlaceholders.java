@@ -10,6 +10,7 @@ public class PlayerPlaceholders extends PlaceholdersInterface{
 	
 	/* placeholders of the player */
 	private UUID playerUUID;
+	private int fixSlot;
 	
 	private String player = "";
 	private String x = "";
@@ -20,9 +21,16 @@ public class PlayerPlaceholders extends PlaceholdersInterface{
 	private String zInt = "";
 	private String world = "";
 	private String slot = "";
+	private String slotLive = "";
 	
 	public void setPlayerPlcHldr(UUID uuid) {
 		this.playerUUID = uuid;
+		this.reloadPlayerPlcHldr();
+	}
+	
+	public void setPlayerPlcHldr(UUID uuid, int fixSlot) {
+		this.playerUUID = uuid;
+		this.fixSlot = fixSlot;
 		this.reloadPlayerPlcHldr();
 	}
 
@@ -39,7 +47,9 @@ public class PlayerPlaceholders extends PlaceholdersInterface{
 			this.yInt = pLoc.getBlockY()+"";
 			this.zInt = pLoc.getBlockZ()+"";
 			this.world = pLoc.getWorld().getName();
-			this.slot = player.getInventory().getHeldItemSlot()+"";
+			if(fixSlot != -1) this.slot = fixSlot+"";
+			else this.slot = player.getInventory().getHeldItemSlot()+"";
+			this.slotLive = player.getInventory().getHeldItemSlot()+"";
 		}
 	}
 	
@@ -55,7 +65,8 @@ public class PlayerPlaceholders extends PlaceholdersInterface{
 			toReplace = replaceCalculPlaceholder(toReplace, "%y_int%", yInt, true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%z_int%", zInt, true);
 			toReplace = toReplace.replaceAll("%world%", world);
-			toReplace = toReplace.replaceAll("%toReplacelot%", slot);
+			toReplace = toReplace.replaceAll("%slot%", slot);
+			toReplace = toReplace.replaceAll("%slot_live%", slotLive);
 		}
 		
 		return toReplace;

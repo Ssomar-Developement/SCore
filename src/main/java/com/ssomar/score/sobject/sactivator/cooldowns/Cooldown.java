@@ -40,6 +40,11 @@ public class Cooldown {
 		this.time = time;
 		this.global = global;
 	}
+	
+	@Override
+	public String toString() {
+		return id+" >>>> "+entityUUID+" >>>> "+cooldown+" >>>> "+isInTick+" >>>> "+time;
+	}
 
 
 	public String getId() {

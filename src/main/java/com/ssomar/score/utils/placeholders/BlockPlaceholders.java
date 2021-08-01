@@ -11,6 +11,7 @@ public class BlockPlaceholders extends PlaceholdersInterface{
 	private Material fixType;
 
 	private String blockType = "";
+	private String blockLive = "";
 	private String blockWorld = "";
 	private String blockX= "";
 	private String blockY= "";
@@ -36,6 +37,7 @@ public class BlockPlaceholders extends PlaceholdersInterface{
 				this.blockType = fixType.toString();
 			}
 			else this.blockType = block.getType().toString();
+			this.blockLive = block.getType().toString();
 			Location bLoc = block.getLocation();
 			this.blockWorld = bLoc.getWorld().getName();
 			this.blockX = bLoc.getX()+"";
@@ -52,6 +54,8 @@ public class BlockPlaceholders extends PlaceholdersInterface{
 		if(block != null) {
 			toReplace = toReplace.replaceAll("%block%", blockType);
 			toReplace = toReplace.replaceAll("%block_lower%", blockType.toLowerCase());
+			toReplace = toReplace.replaceAll("%block_live%", blockLive);
+			toReplace = toReplace.replaceAll("%block_live_lower%", blockLive.toLowerCase());
 			toReplace = toReplace.replaceAll("%block_world%", blockWorld);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_x%", blockX, false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_y%", blockY, false);

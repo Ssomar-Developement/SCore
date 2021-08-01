@@ -21,11 +21,13 @@ public class CooldownsManager {
 	private Map<UUID, List<Cooldown>> cooldownsUUID = new HashMap<>();
 
 	public void addCooldown(Cooldown cd) {
+		
+		if(cd.getCooldown() == 0) return;
+		
 		String id = cd.getId();
 		if(cooldowns.containsKey(id)) {	
 			List<Cooldown> cds = cooldowns.get(id);
 			cds.add(cd);
-			cooldowns.replace(id, cds);
 		}
 		else {
 			List<Cooldown> cds = new ArrayList<>();
@@ -37,7 +39,6 @@ public class CooldownsManager {
 		if(cooldownsUUID.containsKey(id2)) {	
 			List<Cooldown> cds = cooldownsUUID.get(id2);
 			cds.add(cd);
-			cooldownsUUID.replace(id2, cds);
 		}
 		else {
 			List<Cooldown> cds = new ArrayList<>();
@@ -93,7 +94,8 @@ public class CooldownsManager {
 	 * @return-
 	 */
 	public boolean isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
-		this.clearCooldownsPassed(sPlugin, sO, sAct);
+		this.clearCooldownsPassed(sPlugin, sO, sAct);	
+		
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
 		List<Cooldown> cooldowns;
 		if(cooldownsUUID.containsKey(uuid) && (cooldowns = cooldownsUUID.get(uuid)).size()!= 0){
@@ -146,8 +148,9 @@ public class CooldownsManager {
 	
 	public void clearCooldownsPassed(SPlugin sPlugin, SObject sO, SActivator sAct) {
 		
+		List<Cooldown> toRemove = new ArrayList<>();
+		
 		for(String s : cooldowns.keySet()) {
-			List<Cooldown> toRemove = new ArrayList<>();
 			for(Cooldown cd : cooldowns.get(s)) {
 				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())>=cd.getCooldown()) {
 					toRemove.add(cd);
@@ -159,15 +162,7 @@ public class CooldownsManager {
 		}
 		
 		for(UUID uuid : cooldownsUUID.keySet()) {
-			List<Cooldown> toRemove = new ArrayList<>();
-			for(Cooldown cd : cooldownsUUID.get(uuid)) {
-				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())>=cd.getCooldown()) {
-					toRemove.add(cd);
-				}
-			}
-			if(!toRemove.isEmpty()) {
-				cooldownsUUID.get(uuid).removeAll(toRemove);
-			}
+			cooldownsUUID.get(uuid).removeAll(toRemove);
 		}
 	}
 	
@@ -216,3 +211,22 @@ public class CooldownsManager {
 	}
 
 }
+
+/* Reader */
+//System.out.println("--------^^^^^^^^^^^^^^^^^^^^1-------------");
+//
+//for(String s : cooldowns.keySet()) {
+//	for(Cooldown cd2 : cooldowns.get(s)) {
+//		System.out.println(cd2.toString());
+//	}
+//}
+//
+//System.out.println("----------------------");
+//
+//for(UUID uuid2 : cooldownsUUID.keySet()) {
+//	for(Cooldown cd2 : cooldownsUUID.get(uuid2)) {
+//		System.out.println(cd2.toString());
+//	}
+//}
+//
+//System.out.println("---------vvvvvvvvvvv1vvvvvv-------------");
