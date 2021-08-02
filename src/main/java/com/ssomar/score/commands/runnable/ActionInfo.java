@@ -3,12 +3,7 @@ package com.ssomar.score.commands.runnable;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -28,7 +23,7 @@ public class ActionInfo implements Serializable{
 	/* The item (ExecutableItems) that actives the action */
 	private String itemID;
 	
-	private boolean isEventCallByMineInCube = false;
+	private boolean isEventCallByMineInCube;
 	
 	/* Important info */
 	private UUID launcherUUID;
@@ -39,7 +34,7 @@ public class ActionInfo implements Serializable{
 	private int blockLocationX;
 	private int blockLocationY;
 	private int blockLocationZ;
-	private String blockLocationWorld;
+	private UUID blockLocationWorld;
 	
 	DetailedBlocks detailedBlocks;
 	
@@ -81,26 +76,19 @@ public class ActionInfo implements Serializable{
 		result.setOldBlockMaterial(Material.valueOf(oldBlockMaterialName));
 		result.setEntityUUID(entityUUID);
 		result.setSilenceOutput(silenceOutput);
-		
+		result.setBlockLocationX(blockLocationX);
+		result.setBlockLocationY(blockLocationY);
+		result.setBlockLocationZ(blockLocationZ);
+		result.setBlockLocationWorld(blockLocationWorld);		
 		
 		return result;
 	}
 	
-	public void setBlock(Block block) {
-		Location bLoc = block.getLocation();
-		this.blockLocationX = bLoc.getBlockX();
-		this.blockLocationY = bLoc.getBlockY();
-		this.blockLocationZ = bLoc.getBlockZ();
-		this.blockLocationWorld = bLoc.getWorld().getName();
-	}
-	
-	@Nullable
-	public Block getBlock() {
-		if(blockLocationWorld != null) {
-			Location bLoc = new Location(Bukkit.getWorld(blockLocationWorld), blockLocationX, blockLocationY, blockLocationZ);
-			return bLoc.getBlock();
-		}
-		return null;
+	public void setBlock(int x, int y, int z, UUID world) {
+		this.blockLocationX = x;
+		this.blockLocationY = y;
+		this.blockLocationZ = z;
+		this.blockLocationWorld = world;
 	}
 
 	public String getItemID() {
@@ -190,5 +178,47 @@ public class ActionInfo implements Serializable{
 	public void setDetailedBlocks(DetailedBlocks detailedBlocks) {
 		this.detailedBlocks = detailedBlocks;
 	}
+
+	public int getBlockLocationX() {
+		return blockLocationX;
+	}
+
+	public void setBlockLocationX(int blockLocationX) {
+		this.blockLocationX = blockLocationX;
+	}
+
+	public int getBlockLocationY() {
+		return blockLocationY;
+	}
+
+	public void setBlockLocationY(int blockLocationY) {
+		this.blockLocationY = blockLocationY;
+	}
+
+	public int getBlockLocationZ() {
+		return blockLocationZ;
+	}
+
+	public void setBlockLocationZ(int blockLocationZ) {
+		this.blockLocationZ = blockLocationZ;
+	}
+
+	public UUID getBlockLocationWorld() {
+		return blockLocationWorld;
+	}
+
+	public void setBlockLocationWorld(UUID blockLocationWorld) {
+		this.blockLocationWorld = blockLocationWorld;
+	}
+
+	public String getOldBlockMaterialName() {
+		return oldBlockMaterialName;
+	}
+
+	public void setOldBlockMaterialName(String oldBlockMaterialName) {
+		this.oldBlockMaterialName = oldBlockMaterialName;
+	}
+	
+	
 	
 }

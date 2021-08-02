@@ -19,8 +19,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.block.BlockRunCommand;
+import com.ssomar.score.commands.runnable.entity.EntityRunCommand;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommand;
+import com.ssomar.score.data.BlockCommandsQuery;
 import com.ssomar.score.data.Database;
+import com.ssomar.score.data.EntityCommandsQuery;
 import com.ssomar.score.data.PlayerCommandsQuery;
 
 public class CommandsHandler implements Listener {
@@ -32,6 +36,12 @@ public class CommandsHandler implements Listener {
 
 	/* DelayedCommands by receiver UUID */
 	private Map<UUID, List<RunCommand>> delayedCommandsByReceiverUuid;
+
+	/* DelayedCommands by entity UUID */
+	List<EntityRunCommand> delayedCommandsByEntityUuid;
+	
+	/* DelayedCommands by block UUID */
+	List<BlockRunCommand> delayedCommandsByBlockUuid;
 
 	/* for "morph item" timing between delete item and regive item (2 ticks)  player */
 	private List<Player> stopPickup;
@@ -61,19 +71,47 @@ public class CommandsHandler implements Listener {
 
 		getInstance().removeAllDelayedCommands(p.getUniqueId());
 	}
+	
+	public void onEnable() {
+		/* Quite useless because at the start of the server the entities seems not loaded and the Bukkit.getentity return null */
+		List<EntityRunCommand> commands = EntityCommandsQuery.selectEntityCommands(Database.getInstance().connect());
+		for(EntityRunCommand eCommand : commands) {
+			eCommand.run();
+		}
+		EntityCommandsQuery.deleteEntityCommands(Database.getInstance().connect());
+		
+		
+		List<BlockRunCommand> commands2 = BlockCommandsQuery.selectAllCommands(Database.getInstance().connect());
+		for(BlockRunCommand bCommand : commands2) {
+			bCommand.run();
+		}
+		BlockCommandsQuery.deleteCommands(Database.getInstance().connect());
+	}
 
-	public static void closeServerSaveAll() {
-//		List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
-//
-//		CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
-//
-//		CooldownsManager.getInstance().clearCooldowns();
+	public void onDisable() {
+		/* Save all delayed commands in BDD */
+		for(Player p : Bukkit.getServer().getOnlinePlayers()){
+			List<PlayerRunCommand> commands = getInstance().getDelayedCommandsWithReceiver(p.getUniqueId());
+			//System.out.println(" >>> "+p.getName()+ " "+commands.size());
+
+			PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commands);
+
+			getInstance().removeAllDelayedCommands(p.getUniqueId());
+		}
+		
+		EntityCommandsQuery.insertCommand(Database.getInstance().connect(), this.delayedCommandsByEntityUuid);
+		this.delayedCommandsByEntityUuid.clear();
+		
+		BlockCommandsQuery.insertCommand(Database.getInstance().connect(), this.delayedCommandsByBlockUuid);
+		this.delayedCommandsByBlockUuid.clear();
 	}
 
 
 	public CommandsHandler() {
 		delayedCommandsByRcUuid = new HashMap<>();
 		delayedCommandsByReceiverUuid = new HashMap<>();
+		delayedCommandsByEntityUuid = new ArrayList<>();
+		delayedCommandsByBlockUuid = new ArrayList<>();
 		stopPickup = new ArrayList<>();
 	}
 
@@ -91,6 +129,12 @@ public class CommandsHandler implements Listener {
 				//System.out.println(">>>>>> Yes add :: "+delayedCommandsByReceiverUuid.size());
 			}
 		}
+		else if (command instanceof EntityRunCommand) {
+			this.delayedCommandsByEntityUuid.add((EntityRunCommand)command);
+		}
+		else if (command instanceof BlockRunCommand) {
+			this.delayedCommandsByBlockUuid.add((BlockRunCommand)command);
+		}
 	}
 
 	public void removeDelayedCommand(UUID uuid, @Nullable UUID receiverUUID) {
@@ -99,22 +143,51 @@ public class CommandsHandler implements Listener {
 			if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null) task.cancel();
 			delayedCommandsByRcUuid.remove(uuid);
 		}
-		if(receiverUUID != null && delayedCommandsByReceiverUuid.containsKey(receiverUUID)) {
-			List<RunCommand> runCommands = delayedCommandsByReceiverUuid.get(receiverUUID);
-			RunCommand toDelete = null;
-
-			for(RunCommand rC : runCommands) {
-				if(rC.getUuid().equals(uuid)) {
-					toDelete = rC;
-					BukkitTask task;
-					if ((task = rC.getTask()) != null) task.cancel();
-				}
-			}
-			if(toDelete != null) runCommands.remove(toDelete);
-
-			if(runCommands.isEmpty()) delayedCommandsByReceiverUuid.remove(receiverUUID);
-		}
 		
+		/* ==================================== */
+		RunCommand toDelete = null;
+
+		for(RunCommand rC : delayedCommandsByEntityUuid) {
+			if(rC.getUuid().equals(uuid)) {
+				toDelete = rC;
+				BukkitTask task;
+				if ((task = rC.getTask()) != null) task.cancel();
+			}
+		}
+		if(toDelete != null) delayedCommandsByEntityUuid.remove(toDelete);
+		
+		/* ==================================== */
+		toDelete = null;
+		
+		for(RunCommand rC : delayedCommandsByBlockUuid) {
+			if(rC.getUuid().equals(uuid)) {
+				toDelete = rC;
+				BukkitTask task;
+				if ((task = rC.getTask()) != null) task.cancel();
+			}
+		}
+		if(toDelete != null) delayedCommandsByBlockUuid.remove(toDelete);
+		
+		
+		if(receiverUUID != null) {
+			if(delayedCommandsByReceiverUuid.containsKey(receiverUUID)) {
+
+				List<RunCommand> runCommands = delayedCommandsByReceiverUuid.get(receiverUUID);
+				toDelete = null;
+
+				for(RunCommand rC : runCommands) {
+					if(rC.getUuid().equals(uuid)) {
+						toDelete = rC;
+						BukkitTask task;
+						if ((task = rC.getTask()) != null) task.cancel();
+					}
+				}
+				if(toDelete != null) runCommands.remove(toDelete);
+
+				if(runCommands.isEmpty()) delayedCommandsByReceiverUuid.remove(receiverUUID);
+			}
+		}
+
 		//System.out.println(">>>>>> Yess remove :: "+delayedCommandsByReceiverUuid.size());
 	}
 
@@ -129,7 +202,7 @@ public class CommandsHandler implements Listener {
 			delayedCommandsByReceiverUuid.remove(receiverUUID);
 		}
 	}
-	
+
 	public List<PlayerRunCommand> getDelayedCommandsWithReceiver(UUID receiverUUID) {
 		List<PlayerRunCommand> commands = new ArrayList<>();
 		if(delayedCommandsByReceiverUuid.containsKey(receiverUUID)) {

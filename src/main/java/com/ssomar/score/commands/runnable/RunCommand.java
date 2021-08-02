@@ -101,7 +101,7 @@ public abstract class RunCommand implements Serializable{
 			this.runCommand(command, args);
 		}
 		else {
-			if(finalCommand.charAt(0)=='/') finalCommand = finalCommand.substring(1, finalCommand.length());
+			if(finalCommand.charAt(0) == '/') finalCommand = finalCommand.substring(1, finalCommand.length());
 			// accept the "color": HEX COLOR in title
 			if(finalCommand.contains("\"color\"") && finalCommand.contains("title")) finalCommand = StringConverter.deconvertColor(finalCommand);
 			RunConsoleCommand.runConsoleCommand(finalCommand, aInfo.isSilenceOutput());

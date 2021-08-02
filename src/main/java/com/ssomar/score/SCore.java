@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.CommandsClass;
+import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageInterface;
@@ -18,102 +19,91 @@ import com.ssomar.score.utils.Utils;
 public final class SCore extends JavaPlugin {
 
 	public static SCore plugin;
-	
+
 	public static final String NAME = "SCore";
-	
+
 	public static final String NAME_2 = "[SCore]";
-	
+
 	private CommandsClass commandClass;
-	
+
 	public static boolean hasPlaceholderAPI = false;
-	
+
 	public static boolean hasExecutableItems = false;
-	
+
 	public static boolean hasExecutableBlocks = false;
-	
+
 	public static boolean hasCustomPiglinsTrades = false;
-	
+
 	public static boolean hasSParkour = false;
-	
+
 	public static boolean hasWorldGuard = false;
-	
+
 	public static boolean hasVault = false;
-	
+
 	public static boolean hasIridiumSkyblock = false;
-	
+
 	public static boolean hasMultiverse = false;
-	
+
 	public static boolean hasLands = false;
-	
+
 	public static boolean hasGriefPrevention = false;
-	
+
 	public static boolean hasGriefDefender = false;
 
-	
+
 	@Override
 	public void onEnable() {
 		plugin = this;
 		commandClass = new CommandsClass(this);
-		
+
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
-		
+
 		this.loadDependency();
-		
+
 		GeneralConfig.getInstance();
-		
+
 		MessageMain.getInstance().load();
 
 		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
-		
+
 		/* Loop instance part */	
 		LoopManager.getInstance().setup();
-		
+
 		ActionbarHandler.getInstance().load();
-		
+
 		/* Database */
 		Database.getInstance().load();
-		
+
 		/* Events instance part */	
 		EventsHandler.getInstance().setup(this);
-		
+
 		/* Commands part */
 		this.getCommand("score").setExecutor(commandClass);
-		
+
 
 
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
-		
-		/* Run all saved commands of the BDD part */
-		//for(Player p : Bukkit.getOnlinePlayers()) {
-//			List<String> commands = CommandsQuery.selectCommandsForPlayer(Database.getInstance().connect(), p);
-//			if(!commands.isEmpty()) {
-//				new PlayerCommandsExecutor(commands, p, false, p, new ActionInfo("", 0)).runPlayerCommands(true);
-//				CommandsQuery.deleteCommandsForPlayer(Database.getInstance().connect(), p);
-//			}
-//			if(SecurityOPQuery.selectIfSecurityOPcontains(Database.getInstance().connect(), p)) {
-//				p.setOp(false);
-//			}
-		//}
 
+		CommandsHandler.getInstance().onEnable();
 	}
-	
+
 	public void loadDependency() {
 		/* Soft-Dependency part */
 		if(Bukkit.getPluginManager().getPlugin("ExecutableItems")!=null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] ExecutableItems hooked !");
 			hasExecutableItems = true;
 		}
-		
+
 		if(Bukkit.getPluginManager().getPlugin("ExecutableBlocks")!=null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] ExecutableBlocks hooked !");
 			hasExecutableBlocks = true;
 		}
-		
+
 		if(Bukkit.getPluginManager().getPlugin("CustomPiglinsTrades")!=null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] CustomPiglinsTrades hooked !");
 			hasCustomPiglinsTrades = true;
 		}
-		
+
 		if(Bukkit.getPluginManager().getPlugin("SParkour")!=null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] SParkour hooked !");
 			hasSParkour = true;
@@ -123,12 +113,12 @@ public final class SCore extends JavaPlugin {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] PlaceholderAPI hooked !");
 			hasPlaceholderAPI = true;
 		}
-		
+
 		if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] WorldGuard hooked !");
 			hasWorldGuard = true;
 		}
-		
+
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Vault hooked !");
 			hasVault = true;
@@ -141,17 +131,17 @@ public final class SCore extends JavaPlugin {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Multiverse-Core hooked !");
 			hasMultiverse = true;	
 		}
-		
+
 		if (Bukkit.getPluginManager().getPlugin("Lands") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Lands hooked !");
 			hasLands = true;	
 		}
-		
+
 		if (Bukkit.getPluginManager().getPlugin("GriefPrevention") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] GriefPrevention hooked !");
 			hasGriefPrevention = true;	
 		}
-		
+
 		if (Bukkit.getPluginManager().getPlugin("GriefDefender") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] GriefDefender hooked !");
 			hasGriefDefender = true;	
@@ -160,14 +150,7 @@ public final class SCore extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		/* Save all delayed commands in BDD */
-//		HashMap<String,List<String>> saveCommands = CommandsHandler.getInstance().getServerOffPlayerCommands();
-//		for(String playerName: saveCommands.keySet()) {
-//			Player player = Bukkit.getPlayer(playerName);
-//			for(String command: saveCommands.get(playerName)) {
-//				CommandsQuery.insertCommand(Database.getInstance().connect(), player, command);
-//			}
-//		}
+		CommandsHandler.getInstance().onDisable();
 		CooldownsHandler.closeServerSaveAll();
 	}
 
@@ -183,7 +166,7 @@ public final class SCore extends JavaPlugin {
 	public static SCore getPlugin() {
 		return plugin;
 	}
-	
+
 	public CommandsClass getCommandClass() {
 		return commandClass;
 	}
@@ -217,6 +200,6 @@ public final class SCore extends JavaPlugin {
 	public static boolean is1v17() {
 		return Bukkit.getServer().getVersion().contains("1.17");
 	}
-	
-	
+
+
 }

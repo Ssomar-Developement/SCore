@@ -25,11 +25,6 @@ public class MineInCube extends BlockCommand{
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
 		if(aInfo.isEventCallByMineInCube()) return;
 		
-		String arg = args.get(args.size()-1);
-		if(arg.contains(">>>")) {
-			
-		}
-		
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;

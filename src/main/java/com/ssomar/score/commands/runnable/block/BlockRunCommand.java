@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -22,24 +24,33 @@ public class BlockRunCommand extends RunCommand{
 
 	private UUID launcherUUID;
 
-	private Block block;
+	private int blockX;
+	private int blockY;
+	private int blockZ;
+	private UUID blockWorld;
 
 	private Material oldBlockMaterial;
-
-	private ActionInfo aInfo;
 
 	private boolean silenceOutput;
 
 	public BlockRunCommand(String brutCommand, int delay, ActionInfo aInfo) {
 		super(brutCommand, delay, aInfo);
 	}
+	
+	public BlockRunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
+		super(brutCommand, runTime, aInfo);
+	}
+	
 	@Override
 	public void pickupInfo() {
 		ActionInfo aInfo = this.getaInfo();
 
 		launcherUUID = aInfo.getLauncherUUID();
 
-		block = aInfo.getBlock();
+		blockX = aInfo.getBlockLocationX();
+		blockY = aInfo.getBlockLocationY();
+		blockZ = aInfo.getBlockLocationZ();
+		blockWorld = aInfo.getBlockLocationWorld();
 
 		oldBlockMaterial = aInfo.getOldBlockMaterial();
 
@@ -53,12 +64,14 @@ public class BlockRunCommand extends RunCommand{
 
 	@Override
 	public void runCommand(SCommand command, List<String> args) {
-		BlockSCommand pCommand = (BlockSCommand) command;
+		BlockSCommand bCommand = (BlockSCommand) command;
 
 		Player launcher = Bukkit.getPlayer(launcherUUID);
+		World world = Bukkit.getServer().getWorld(blockWorld);
+		Location loc = new Location(world, blockX, blockY, blockZ);
+		Block block = loc.getBlock();
 
-
-		pCommand.run(launcher, block, oldBlockMaterial, args, aInfo);
+		bCommand.run(launcher, block, oldBlockMaterial, args, this.getaInfo());
 	}
 
 
@@ -73,12 +86,38 @@ public class BlockRunCommand extends RunCommand{
 	public void setLauncherUUID(UUID launcherUUID) {
 		this.launcherUUID = launcherUUID;
 	}
-	public Block getBlock() {
-		return block;
+	public int getBlockX() {
+		return blockX;
 	}
-	public void setBlock(Block block) {
-		this.block = block;
+
+	public void setBlockX(int blockX) {
+		this.blockX = blockX;
 	}
+
+	public int getBlockY() {
+		return blockY;
+	}
+
+	public void setBlockY(int blockY) {
+		this.blockY = blockY;
+	}
+
+	public int getBlockZ() {
+		return blockZ;
+	}
+
+	public void setBlockZ(int blockZ) {
+		this.blockZ = blockZ;
+	}
+
+	public UUID getBlockWorld() {
+		return blockWorld;
+	}
+
+	public void setBlockWorld(UUID blockWorld) {
+		this.blockWorld = blockWorld;
+	}
+
 	public Material getOldBlockMaterial() {
 		return oldBlockMaterial;
 	}

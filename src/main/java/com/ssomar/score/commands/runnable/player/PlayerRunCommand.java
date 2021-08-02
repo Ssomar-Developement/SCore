@@ -22,8 +22,6 @@ public class PlayerRunCommand extends RunCommand{
 
 	private UUID receiverUUID;
 
-	private ActionInfo aInfo;
-
 	private boolean silenceOutput;
 
 	public PlayerRunCommand(String brutCommand, int delay, ActionInfo aInfo) {
@@ -57,7 +55,7 @@ public class PlayerRunCommand extends RunCommand{
 		Player launcher = Bukkit.getPlayer(launcherUUID);
 		Player receiver = Bukkit.getPlayer(receiverUUID);
 
-		pCommand.run(launcher, receiver, args, aInfo);
+		pCommand.run(launcher, receiver, args, this.getaInfo());
 	}
 	
 	
@@ -67,11 +65,12 @@ public class PlayerRunCommand extends RunCommand{
 
 		if(receiver != null && receiver.isOnline()) {
 			runCommand(PlayerCommandManager.getInstance());
-			CommandsHandler.getInstance().removeDelayedCommand(getUuid(), receiverUUID);
 		}
 		//else {
 			//ADD THE COMMAND IN THE DB
+			/* No need >> onPlayerQuitEvent its auto delete and save in the DB */
 		//}
+		CommandsHandler.getInstance().removeDelayedCommand(getUuid(), receiverUUID);
 	}
 	public UUID getLauncherUUID() {
 		return launcherUUID;

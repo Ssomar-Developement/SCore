@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
-import com.mysql.cj.jdbc.MysqlDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 
@@ -25,6 +25,8 @@ public class Database {
 		CommandsQuery.createNewTable(connect());
 		CooldownsQuery.createNewTable(connect());
 		PlayerCommandsQuery.createNewTable(connect());
+		EntityCommandsQuery.createNewTable(connect());
+		BlockCommandsQuery.createNewTable(connect());
 	}
 	
 	public void createNewDatabase(String fileName) {
@@ -58,7 +60,7 @@ public class Database {
 				dataSource.setDatabaseName(GeneralConfig.getInstance().getDbName());
 				dataSource.setUser(GeneralConfig.getInstance().getDbUser());
 				dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
-				
+				dataSource.setServerTimezone("UTC");
 				conn = dataSource.getConnection();
 			}
 			else conn = DriverManager.getConnection(urlLocal);
