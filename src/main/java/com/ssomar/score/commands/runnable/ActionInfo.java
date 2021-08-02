@@ -3,7 +3,9 @@ package com.ssomar.score.commands.runnable;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -36,7 +38,7 @@ public class ActionInfo implements Serializable{
 	private int blockLocationZ;
 	private UUID blockLocationWorld;
 	
-	DetailedBlocks detailedBlocks;
+	private DetailedBlocks detailedBlocks;
 	
 	private String oldBlockMaterialName;
 	
@@ -84,11 +86,12 @@ public class ActionInfo implements Serializable{
 		return result;
 	}
 	
-	public void setBlock(int x, int y, int z, UUID world) {
-		this.blockLocationX = x;
-		this.blockLocationY = y;
-		this.blockLocationZ = z;
-		this.blockLocationWorld = world;
+	public void setBlock(Block block) {
+		Location bLoc = block.getLocation();
+		this.blockLocationX = bLoc.getBlockX();
+		this.blockLocationY = bLoc.getBlockY();
+		this.blockLocationZ = bLoc.getBlockZ();
+		this.blockLocationWorld =  bLoc.getWorld().getUID();
 	}
 
 	public String getItemID() {

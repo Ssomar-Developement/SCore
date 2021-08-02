@@ -1,9 +1,12 @@
 package com.ssomar.score.utils.placeholders;
 
 import java.io.Serializable;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 public class BlockPlaceholders extends PlaceholdersInterface implements Serializable{
@@ -13,62 +16,65 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 	 */
 	private static final long serialVersionUID = 1L;
 	/* placeholders of the block */
-	private Block block;
+	private int blockX;
+	private int blockY;
+	private int blockZ;
+	private UUID blockWorld;
+	private String blockWorldName;
 	private Material fixType;
 
 	private String blockType = "";
 	private String blockLive = "";
-	private String blockWorld = "";
-	private String blockX= "";
-	private String blockY= "";
-	private String blockZ= "";
-	private String blockXInt= "";
-	private String blockYInt= "";
-	private String blockZInt= "";
 
 	public void setBlockPlcHldr(Block block) {
-		this.block = block;
+		Location bLoc = block.getLocation();
+		this.blockX = bLoc.getBlockX();
+		this.blockY = bLoc.getBlockY();
+		this.blockZ = bLoc.getBlockZ();
+		this.blockWorld = bLoc.getWorld().getUID();
 		this.reloadBlockPlcHldr();
 	}
 	
 	public void setBlockPlcHldr(Block block, Material fixType) {
-		this.block = block;
+		Location bLoc = block.getLocation();
+		this.blockX = bLoc.getBlockX();
+		this.blockY = bLoc.getBlockY();
+		this.blockZ = bLoc.getBlockZ();
+		this.blockWorld = bLoc.getWorld().getUID();
 		this.fixType = fixType;
 		this.reloadBlockPlcHldr();
 	}
 
 	public void reloadBlockPlcHldr() {
-		if(this.block != null ) {
+		if(this.blockWorld != null ) {
+			World world = Bukkit.getServer().getWorld(blockWorld);
+			Location loc = new Location(world,blockX, blockY, blockZ);
+			Block block = loc.getBlock();
+			
+			this.blockWorldName = world.getName();
+			
 			if(this.fixType != null) {
 				this.blockType = fixType.toString();
 			}
 			else this.blockType = block.getType().toString();
 			this.blockLive = block.getType().toString();
-			Location bLoc = block.getLocation();
-			this.blockWorld = bLoc.getWorld().getName();
-			this.blockX = bLoc.getX()+"";
-			this.blockY = bLoc.getY()+"";
-			this.blockZ = bLoc.getZ()+"";
-			this.blockXInt = bLoc.getBlockX()+"";
-			this.blockYInt = bLoc.getBlockY()+"";
-			this.blockZInt = bLoc.getBlockZ()+"";
 		}
 	}
 
 	public String replacePlaceholder(String s) {
 		String toReplace = s;
-		if(block != null) {
+		if(blockWorld != null) {
 			toReplace = toReplace.replaceAll("%block%", blockType);
 			toReplace = toReplace.replaceAll("%block_lower%", blockType.toLowerCase());
 			toReplace = toReplace.replaceAll("%block_live%", blockLive);
 			toReplace = toReplace.replaceAll("%block_live_lower%", blockLive.toLowerCase());
-			toReplace = toReplace.replaceAll("%block_world%", blockWorld);
-			toReplace = replaceCalculPlaceholder(toReplace, "%block_x%", blockX, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%block_y%", blockY, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%block_z%", blockZ, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%block_x_int%", blockXInt, true);
-			toReplace = replaceCalculPlaceholder(toReplace, "%block_y_int%", blockYInt, true);
-			toReplace = replaceCalculPlaceholder(toReplace, "%block_z_int%", blockZInt, true);
+			toReplace = toReplace.replaceAll("%block_world%", blockWorldName);
+			toReplace = replaceCalculPlaceholder(toReplace, "%block_x%", blockX+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%block_y%", blockY+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%block_z%", blockZ+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%block_x_int%", blockX+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%block_y_int%", blockY+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%block_z_int%", blockZ+"", true);
 		}
 
 		return toReplace;
