@@ -23,13 +23,25 @@ public class PlayerRunCommand extends RunCommand{
 	private UUID receiverUUID;
 
 	private boolean silenceOutput;
+	
+	private boolean runOffline;
 
 	public PlayerRunCommand(String brutCommand, int delay, ActionInfo aInfo) {
 		super(brutCommand, delay, aInfo);
+		this.initRunOffline(brutCommand);
 	}
 	
 	public PlayerRunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
 		super(brutCommand, runTime, aInfo);
+		this.initRunOffline(brutCommand);
+	}
+	
+	public void initRunOffline(String brutCommand) {
+		if(brutCommand.contains("[<OFFLINE>]")) {
+			runOffline = true;
+			this.setBrutCommand(brutCommand.replaceAll("[<OFFLINE>]", ""));
+		}
+		else runOffline = false;
 	}
 	
 	@Override
@@ -63,7 +75,7 @@ public class PlayerRunCommand extends RunCommand{
 	public void insideDelayedCommand() {
 		Player receiver = Bukkit.getPlayer(receiverUUID);
 
-		if(receiver != null && receiver.isOnline()) {
+		if((receiver != null && receiver.isOnline()) || runOffline) {
 			runCommand(PlayerCommandManager.getInstance());
 		}
 		//else {

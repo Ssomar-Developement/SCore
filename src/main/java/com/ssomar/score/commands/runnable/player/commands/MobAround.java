@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -16,6 +15,7 @@ import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends PlayerCommand{
@@ -40,6 +40,9 @@ public class MobAround extends PlayerCommand{
 				if(!(e instanceof Player)) {
 
 					if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
+					
+					StringPlaceholder sp = new StringPlaceholder();
+					sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
 
 					/* regroup the last args that correspond to the commands */
 					StringBuilder prepareCommands = new StringBuilder();
@@ -65,13 +68,8 @@ public class MobAround extends PlayerCommand{
 						}
 						if(s.startsWith("/")) s = s.substring(1, s.length());
 
-						Location loc = e.getLocation();
-
-						s =s.replaceAll("%entity_x%", loc.getX()+"");
-						s =s.replaceAll("%entity_y%", loc.getY()+"");
-						s =s.replaceAll("%entity_z%", loc.getZ()+"");
-						s= s.replaceAll("%entity%", e.getType().toString());
-						s= s.replaceAll("%entity_uuid%", e.getUniqueId().toString());
+						s = sp.replacePlaceholder(s); 
+						
 						EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo);
 						CommandsExecutor.runCommands(builder);	
 					}			

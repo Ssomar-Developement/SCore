@@ -61,6 +61,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	/* placeholders of the around target player */
 	AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
 	
+	/* placeholders of the around target entity */
+	AroundEntityTargetPlaceholders aroundEntityTargetPlch = new AroundEntityTargetPlaceholders();
+	
 	public void setPlayerPlcHldr(UUID uuid) {
 		 playerPlch.setPlayerPlcHldr(uuid);
 	}
@@ -93,8 +96,16 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		 targetBlockPlch.setTargetBlockPlcHldr(block);
 	}
 	
+	public void setTargetBlockPlcHldr(Block block, Material fixType) {
+		 targetBlockPlch.setTargetBlockPlcHldr(block, fixType);
+	}
+	
 	public void setAroundTargetPlayerPlcHldr(UUID uuid) {
 		aroundPlayerTargetPlch.setAroundPlayerTargetPlcHldr(uuid);
+	}
+	
+	public void setAroundTargetEntityPlcHldr(UUID uuid) {
+		aroundEntityTargetPlch.setAroundEntityTargetPlcHldr(uuid);
 	}
 	
 	public void reloadAllPlaceholders() {
@@ -105,6 +116,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		blockPlch.reloadBlockPlcHldr();
 		targetBlockPlch.reloadTargetBlockPlcHldr();
 		aroundPlayerTargetPlch.reloadAroundPlayerTargetPlcHldr();
+		aroundEntityTargetPlch.reloadAroundEntityTargetPlcHldr();
 	}
 
 	public String replacePlaceholder(String str) {
@@ -160,6 +172,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		s = targetBlockPlch.replacePlaceholder(s);
 		
 		s = aroundPlayerTargetPlch.replacePlaceholder(s);
+		
+		s = aroundEntityTargetPlch.replacePlaceholder(s);
 		
 		return replacePlaceholderOfPAPI(s);
 	}

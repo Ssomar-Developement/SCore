@@ -17,13 +17,11 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 	/* placeholders of the target entity */
 	private UUID entityUUID;
 
-	private String entity = "";
-	private String entityX = "";
-	private String entityY = "";
-	private String entityZ = "";
-	private String entityXInt = "";
-	private String entityYInt = "";
-	private String entityZInt = "";
+	private String entityType = "";
+	private String entityName = "";
+	private double entityX;
+	private double entityY ;
+	private double entityZ ;
 	private String entityWorld = "";
 
 	public void setEntityPlcHldr(UUID uuid) {
@@ -34,14 +32,12 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 	public void reloadEntityPlcHldr() {
 		Entity entity;
 		if(this.entityUUID != null && (entity = Bukkit.getEntity(entityUUID)) != null) {
-			this.entity = entity.getName();
+			this.entityType = entity.getType().toString();
+			this.entityName = entity.getName();
 			Location eLoc = entity.getLocation();
-			this.entityX = eLoc.getX()+"";
-			this.entityY = eLoc.getY()+"";
-			this.entityZ = eLoc.getZ()+"";
-			this.entityXInt = eLoc.getBlockX()+"";
-			this.entityYInt = eLoc.getBlockY()+"";
-			this.entityZInt = eLoc.getBlockZ()+"";
+			this.entityX = eLoc.getX();
+			this.entityY = eLoc.getY();
+			this.entityZ = eLoc.getZ();
 			this.entityWorld = eLoc.getWorld().getName();
 		}
 	}
@@ -49,14 +45,15 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 	public String replacePlaceholder(String s) {
 		String toReplace = s;
 		if(entityUUID != null) {
-			toReplace = toReplace.replaceAll("%entity%", entity);
+			toReplace = toReplace.replaceAll("%entity%", entityType);
+			toReplace = toReplace.replaceAll("entity_name%", entityName);
 			toReplace = toReplace.replaceAll("%entity_uuid%", entityUUID.toString());
-			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x%", entityX, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y%", entityY, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z%", entityZ, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x_int%", entityXInt, true);
-			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y_int%", entityYInt, true);
-			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z_int%", entityZInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x%", entityX+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y%", entityY+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z%", entityZ+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x_int%", ((int) entityX)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y_int%", ((int) entityY)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z_int%", ((int) entityZ)+"", true);
 			toReplace = toReplace.replaceAll("%entityworld%", entityWorld);
 		}
 

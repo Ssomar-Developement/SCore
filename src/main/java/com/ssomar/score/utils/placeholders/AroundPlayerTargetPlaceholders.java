@@ -17,14 +17,12 @@ public class AroundPlayerTargetPlaceholders extends PlaceholdersInterface implem
 	private UUID targetPlayerUUID;
 	
 	private String aroundTarget = "";
-	private String aroundTargetX = "";
-	private String aroundTargetY = "";
-	private String aroundTargetZ = "";
-	private String aroundTargetXInt = "";
-	private String aroundTargetYInt = "";
-	private String aroundTargetZInt = "";
+	private double aroundTargetX;
+	private double aroundTargetY;
+	private double aroundTargetZ;
 	private String aroundTargetWorld = "";
 	private String aroundTargetSlot = "";
+	private double aroundTargetLastDamageTaken;
 
 	
 	public void setAroundPlayerTargetPlcHldr(UUID uuid) {
@@ -37,14 +35,12 @@ public class AroundPlayerTargetPlaceholders extends PlaceholdersInterface implem
 		if(this.targetPlayerUUID != null && (player = Bukkit.getPlayer(targetPlayerUUID)) != null) {
 			this.aroundTarget = player.getName();
 			Location pLoc = player.getLocation();
-			this.aroundTargetX = pLoc.getX()+"";
-			this.aroundTargetY = pLoc.getY()+"";
-			this.aroundTargetZ = pLoc.getZ()+"";
-			this.aroundTargetXInt = pLoc.getBlockX()+"";
-			this.aroundTargetYInt = pLoc.getBlockY()+"";
-			this.aroundTargetZInt = pLoc.getBlockZ()+"";
+			this.aroundTargetX = pLoc.getX();
+			this.aroundTargetY = pLoc.getY();
+			this.aroundTargetZ = pLoc.getZ();
 			this.aroundTargetWorld = pLoc.getWorld().getName();
 			this.aroundTargetSlot = player.getInventory().getHeldItemSlot()+"";
+			this.aroundTargetLastDamageTaken = player.getLastDamage();
 		}
 	}
 	
@@ -53,14 +49,16 @@ public class AroundPlayerTargetPlaceholders extends PlaceholdersInterface implem
 		if(targetPlayerUUID != null) {
 			toReplace = toReplace.replaceAll("%around_target%", aroundTarget);
 			toReplace = toReplace.replaceAll("%around_target_uuid%", targetPlayerUUID.toString());
-			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_x%", aroundTargetX, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_y%", aroundTargetY, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_z%", aroundTargetZ, false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_x_int%", aroundTargetXInt, true);
-			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_y_int%", aroundTargetYInt, true);
-			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_z_int%", aroundTargetZInt, true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_x%", aroundTargetX+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_y%", aroundTargetY+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_z%", aroundTargetZ+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_x_int%", ((int) aroundTargetX)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_y_int%", ((int) aroundTargetY)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_z_int%", ((int) aroundTargetZ)+"", true);
 			toReplace = toReplace.replaceAll("%around_target_world%", aroundTargetWorld);
 			toReplace = toReplace.replaceAll("%around_target_slot%", aroundTargetSlot);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_last_damage_taken%", aroundTargetLastDamageTaken+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_last_damage_taken_int%", ((int) aroundTargetLastDamageTaken)+"", true);
 		}
 		
 		return toReplace;
