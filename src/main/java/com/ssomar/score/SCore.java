@@ -49,6 +49,8 @@ public final class SCore extends JavaPlugin {
 	public static boolean hasGriefPrevention = false;
 
 	public static boolean hasGriefDefender = false;
+	
+	public static boolean hasCoreProtect = false;
 
 
 	@Override
@@ -145,6 +147,11 @@ public final class SCore extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("GriefDefender") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] GriefDefender hooked !");
 			hasGriefDefender = true;	
+		}
+		
+		if (Bukkit.getPluginManager().getPlugin("CoreProtect") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] CoreProtect hooked !");
+			hasCoreProtect = true;	
 		}
 	}
 

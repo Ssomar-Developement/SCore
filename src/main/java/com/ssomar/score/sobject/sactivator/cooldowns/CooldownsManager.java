@@ -134,7 +134,6 @@ public class CooldownsManager {
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
 			int minValue = -1;
 			List<Cooldown> cds = cooldowns.get(id);
-			System.out.println(">>>>>>>>>>>>> size: "+cds.size());
 			for(int i = 0; i < cds.size(); i++) {
 				Cooldown cd = cds.get(i);
 				if(cd == null) continue;

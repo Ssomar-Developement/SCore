@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.4.1</version>
+	<version>1.5.0</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -122,6 +122,11 @@
 			<id>OnARandomBox</id>
 			<url>http://repo.onarandombox.com/content/groups/public</url>
 		</repository>
+		
+		<repository>
+			<id>CoreProtect</id>
+			<url>https://maven.playpro.com</url>
+		</repository>
 		<!-- <repository> -->
 		<!-- <id>IntellectualSites</id> -->
 		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
@@ -174,7 +179,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-821f06260a-1</version>
+			<version>main-42d749e2de-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -224,5 +229,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.38</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>net.coreprotect</groupId>
+			<artifactId>coreprotect</artifactId>
+			<version>20.1</version>
+			<scope>provided</scope>
+		</dependency>
+		
 	</dependencies>
 </project>

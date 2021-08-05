@@ -60,6 +60,9 @@ public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGU
 		if(i.name.contains(BlockConditionsGUI.IF_IS_POWERED)) {
 			i.gui.changeBoolean(BlockConditionsGUI.IF_IS_POWERED);
 		}
+		else if(i.name.contains(BlockConditionsGUI.IF_MUST_BE_NATURAL)) {
+			i.gui.changeBoolean(BlockConditionsGUI.IF_MUST_BE_NATURAL);
+		}
 		else if(i.name.contains(BlockConditionsGUI.IF_PLANT_FULLY_GROWN)) {
 			i.gui.changeBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN);
 		}
@@ -81,6 +84,7 @@ public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGU
 		BlockConditions bC = (BlockConditions) cache.get(p).getConditions();
 
 		bC.setIfIsPowered(cache.get(p).getBoolean(BlockConditionsGUI.IF_IS_POWERED));
+		bC.setIfMustBeNatural(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NATURAL));
 		bC.setIfPlantFullyGrown(cache.get(p).getBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN));
 
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sAct, bC, cache.get(p).getDetail());

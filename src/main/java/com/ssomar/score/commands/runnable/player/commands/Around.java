@@ -31,6 +31,9 @@ public class Around extends PlayerCommand{
 					Player target =  (Player) e;
 					if(target.hasMetadata("NPC") || target.equals(receiver)) continue;
 					
+					ActionInfo aInfo2 = aInfo.clone();
+					aInfo2.setReceiverUUID(target.getUniqueId());
+					
 					StringPlaceholder sp = new StringPlaceholder();
 					sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
 					
@@ -60,7 +63,7 @@ public class Around extends PlayerCommand{
 						
 						s = sp.replacePlaceholder(s);
 
-						PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo);
+						PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo2);
 						CommandsExecutor.runCommands(builder);
 					}				
 					cpt++;

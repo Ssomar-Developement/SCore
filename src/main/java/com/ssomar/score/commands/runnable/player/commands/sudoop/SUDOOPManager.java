@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
 
@@ -21,7 +24,7 @@ public class SUDOOPManager {
 
 	public void runOPCommand(Player player, String cmd) {
 		String command = this.verifyCommand(cmd);
-		if(player.isOp()) player.chat(command);
+		if(player.isOp()) performCommand(player, command);
 		else {
 			try {
 				if(commandsAsOP.containsKey(player)) {
@@ -34,7 +37,7 @@ public class SUDOOPManager {
 				}
 				if(SecurityOPQuery.insertPlayerOP(Database.getInstance().connect(), player)) {
 					player.setOp(true);
-					player.chat(command);
+					performCommand(player, command);
 				}
 			} finally {
 				player.setOp(false);
@@ -44,11 +47,21 @@ public class SUDOOPManager {
 			}
 		}
 	}
+	
+	public static void performCommand(final Player player, final String command) {
+	    BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				 player.chat(command);
+			}
+		};
+		runnable.runTask(SCore.getPlugin());
+	}
 
 	public String verifyCommand(String cmd) {
 		String command = cmd.trim();
 		if(command.charAt(0) != '/') {
-			command= "/"+ command;
+			command = "/"+ command;
 		}
 		return command;
 	}

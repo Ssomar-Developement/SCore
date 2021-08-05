@@ -30,9 +30,9 @@ public abstract class RunCommand implements Serializable{
 	private long runTime;
 
 	private ActionInfo aInfo;
-	
+
 	private UUID uuid;
-	
+
 	private BukkitTask task;
 
 	public RunCommand(String brutCommand, int delay, ActionInfo aInfo) {
@@ -45,7 +45,7 @@ public abstract class RunCommand implements Serializable{
 		this.task = null;
 		this.pickupInfo();
 	}
-	
+
 	public RunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
 		this.brutCommand = brutCommand;
 		this.aInfo = aInfo;
@@ -53,11 +53,11 @@ public abstract class RunCommand implements Serializable{
 		this.uuid = UUID.randomUUID();
 		this.task = null;
 		this.pickupInfo();
-		
+
 		long current = System.currentTimeMillis();
-		
+
 		long diff = runTime - current;
-		
+
 		if(diff == 0) {
 			delay = 0;
 			runTime = -1;
@@ -67,7 +67,7 @@ public abstract class RunCommand implements Serializable{
 			runTime = -1;
 		}
 	}
-	
+
 	public void run() {
 		if(delay == 0) {
 			runTime = 0;
@@ -80,12 +80,12 @@ public abstract class RunCommand implements Serializable{
 	}
 
 	public abstract void runGetManager();
-	
-	
+
+
 	public void runCommand(CommandManager manager) {
-		
+
 		String finalCommand = this.getBrutCommand();
-		
+
 		if(getBrutCommand().contains("ei giveslot")) {
 			try {
 				String playeName = getBrutCommand().split("ei giveslot ")[1].split(" ")[0];
@@ -93,7 +93,7 @@ public abstract class RunCommand implements Serializable{
 				CommandsHandler.getInstance().addStopPickup(pgive, 20);
 			}catch(Exception e) {}
 		}
-		
+
 		finalCommand = this.getSp().replacePlaceholder(finalCommand);
 		SCommand command = manager.getCommand(finalCommand); 
 		if(command != null) {
@@ -107,7 +107,7 @@ public abstract class RunCommand implements Serializable{
 			RunConsoleCommand.runConsoleCommand(finalCommand, aInfo.isSilenceOutput());
 		}
 	}
-	
+
 	public void runDelayedCommand() {
 		BukkitRunnable runnable = new BukkitRunnable(){
 
@@ -118,9 +118,9 @@ public abstract class RunCommand implements Serializable{
 		task = runnable.runTaskLater(SCore.getPlugin(), this.getDelay());
 		CommandsHandler.getInstance().addDelayedCommand(this);
 	}
-	
+
 	public abstract void insideDelayedCommand();
-	
+
 	public abstract void runCommand(SCommand command , List<String> args);
 
 	public abstract void pickupInfo();
@@ -181,5 +181,5 @@ public abstract class RunCommand implements Serializable{
 	public void setTask(BukkitTask task) {
 		this.task = task;
 	}
-	
+
 }

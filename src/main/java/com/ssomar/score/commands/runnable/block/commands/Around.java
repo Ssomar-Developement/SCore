@@ -71,6 +71,9 @@ public class Around extends BlockCommand{
 					StringPlaceholder sp = new StringPlaceholder();
 					sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
 					
+					ActionInfo aInfo2 = aInfo.clone();
+					aInfo2.setReceiverUUID(target.getUniqueId());
+					
 					/* regroup the last args that correspond to the commands */
 					StringBuilder prepareCommands = new StringBuilder();
 					for(String s : args.subList(1, args.size())) {
@@ -97,7 +100,7 @@ public class Around extends BlockCommand{
 
 						 s = sp.replacePlaceholder(s);
 						 
-						PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo);
+						PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo2);
 						CommandsExecutor.runCommands(builder);}				
 				}
 			}

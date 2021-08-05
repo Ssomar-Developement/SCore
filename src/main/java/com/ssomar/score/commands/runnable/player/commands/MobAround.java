@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
@@ -37,12 +38,15 @@ public class MobAround extends PlayerCommand{
 			}
 
 			for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
-				if(!(e instanceof Player)) {
+				if(e instanceof LivingEntity && !(e instanceof Player)) {
 
 					if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
 					
 					StringPlaceholder sp = new StringPlaceholder();
 					sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
+					
+					ActionInfo aInfo2 = aInfo.clone();
+					aInfo2.setEntityUUID(e.getUniqueId());
 
 					/* regroup the last args that correspond to the commands */
 					StringBuilder prepareCommands = new StringBuilder();
@@ -70,7 +74,7 @@ public class MobAround extends PlayerCommand{
 
 						s = sp.replacePlaceholder(s); 
 						
-						EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo);
+						EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo2);
 						CommandsExecutor.runCommands(builder);	
 					}			
 					cpt++;

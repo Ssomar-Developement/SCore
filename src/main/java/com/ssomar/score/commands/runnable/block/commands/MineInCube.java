@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -54,17 +55,7 @@ public class MineInCube extends BlockCommand{
 							if(!blackList.contains(toBreak.getType())) {
 
 								if((SCore.hasWorldGuard && new WorldGuardAPI().canBuild(p, toBreakLoc)) || !SCore.hasWorldGuard ) {
-									
-									BlockBreakEvent bbE = new BlockBreakEvent(toBreak, p);
-									bbE.setCancelled(false);
-									/* */
-									bbE.setExpToDrop(-666666);
-									Bukkit.getPluginManager().callEvent(bbE);
-
-									if(!bbE.isCancelled()) {
-										if(drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
-										else toBreak.setType(Material.AIR);
-									}
+									breakBlock(toBreak, p, drop);
 								}
 								else continue;
 							}
@@ -75,6 +66,25 @@ public class MineInCube extends BlockCommand{
 		}catch(Exception err) {
 			err.printStackTrace();
 		}
+	}
+	
+	public static void breakBlock(final Block block, final Player player, final boolean drop) {
+	    BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				BlockBreakEvent bbE = new BlockBreakEvent(block, player);
+				bbE.setCancelled(false);
+				/* */
+				bbE.setExpToDrop(-666666);
+				Bukkit.getPluginManager().callEvent(bbE);
+
+				if(!bbE.isCancelled()) {
+					if(drop) block.breakNaturally(player.getInventory().getItemInMainHand());
+					else block.setType(Material.AIR);
+				}
+			}
+		};
+		runnable.runTask(SCore.getPlugin());
 	}
 
 	@Override

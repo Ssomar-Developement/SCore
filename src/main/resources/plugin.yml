@@ -3,7 +3,7 @@ author: Ssomar
 version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
-softdepend: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, PlaceholderAPI, GriefPrevention, GriefDefender]
+softdepend: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect]
 loadbefore: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades]
 commands:
   score:

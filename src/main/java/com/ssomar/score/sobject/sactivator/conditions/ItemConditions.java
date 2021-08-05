@@ -71,8 +71,9 @@ public class ItemConditions extends Conditions{
 			List<String> lore = itemMeta.getLore();
 			int usage;
 
-			if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage = -1;
+			else if(infoItem.getUse() == 0) usage = 1;
 			else if(infoItem.isHideUse()) {
 				usage = 1;
 				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
@@ -91,12 +92,13 @@ public class ItemConditions extends Conditions{
 		}
 		
 		if(this.hasIfUsage2()) {
-			ItemMeta itemMeta =i.getItemMeta();
+			ItemMeta itemMeta = i.getItemMeta();
 			List<String> lore = itemMeta.getLore();
 			int usage2;
 
-			if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage2 = -1;
+			else if(infoItem.getUse() == 0) usage2 = 1;
 			else if(infoItem.isHideUse()) {
 				usage2 = 1;
 				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
