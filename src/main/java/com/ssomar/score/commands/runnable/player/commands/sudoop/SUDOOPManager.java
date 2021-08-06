@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
 

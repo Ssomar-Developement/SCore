@@ -211,7 +211,7 @@ public class CooldownsManager {
 			List<Cooldown> cds = cooldowns.get(s);
 			for(int i = 0; i < cds.size(); i++) {
 				Cooldown cd = cds.get(i);
-				if(cd.getEntityUUID().equals(uuid)) {
+				if(cd != null && cd.getEntityUUID().equals(uuid)) {
 					cds.set(i, null);
 					break;
 				}

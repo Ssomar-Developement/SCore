@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -23,68 +24,75 @@ public class MobAround extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		try {
-			double distance =  Double.valueOf(args.get(0));
-			int cpt = 0;
 
-			int startForCommand = 1;
-			boolean mute = false;
-			if(args.get(1).equalsIgnoreCase("true")) {
-				startForCommand = 2;
-				mute = true;
-			}
-			else if( args.get(1).equalsIgnoreCase("false")) {
-				startForCommand = 2;
-			}
+		BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				try {
+					double distance =  Double.valueOf(args.get(0));
+					int cpt = 0;
 
-			for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
-				if(e instanceof LivingEntity && !(e instanceof Player)) {
-
-					if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
-					
-					StringPlaceholder sp = new StringPlaceholder();
-					sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
-					
-					ActionInfo aInfo2 = aInfo.clone();
-					aInfo2.setEntityUUID(e.getUniqueId());
-
-					/* regroup the last args that correspond to the commands */
-					StringBuilder prepareCommands = new StringBuilder();
-					for(String s: args.subList(startForCommand, args.size())) {
-						prepareCommands.append(s);
-						prepareCommands.append(" ");
+					int startForCommand = 1;
+					boolean mute = false;
+					if(args.get(1).equalsIgnoreCase("true")) {
+						startForCommand = 2;
+						mute = true;
 					}
-					prepareCommands.deleteCharAt(prepareCommands.length()-1);				
-
-					String buildCommands = prepareCommands.toString();
-					String [] tab;
-					if(buildCommands.contains("+++")) tab = buildCommands.split("\\+\\+\\+");
-					else {
-						tab = new String[1];
-						tab[0] = buildCommands;
+					else if( args.get(1).equalsIgnoreCase("false")) {
+						startForCommand = 2;
 					}
-					for(String s : tab) {
-						while(s.startsWith(" ")) {
-							s = s.substring(1, s.length());
-						}
-						while(s.endsWith(" ")) {
-							s = s.substring(0, s.length()-1);
-						}
-						if(s.startsWith("/")) s = s.substring(1, s.length());
 
-						s = sp.replacePlaceholder(s); 
-						
-						EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo2);
-						CommandsExecutor.runCommands(builder);	
-					}			
-					cpt++;
+					for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
+						if(e instanceof LivingEntity && !(e instanceof Player)) {
+
+							if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
+
+							StringPlaceholder sp = new StringPlaceholder();
+							sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
+
+							ActionInfo aInfo2 = aInfo.clone();
+							aInfo2.setEntityUUID(e.getUniqueId());
+
+							/* regroup the last args that correspond to the commands */
+							StringBuilder prepareCommands = new StringBuilder();
+							for(String s: args.subList(startForCommand, args.size())) {
+								prepareCommands.append(s);
+								prepareCommands.append(" ");
+							}
+							prepareCommands.deleteCharAt(prepareCommands.length()-1);				
+
+							String buildCommands = prepareCommands.toString();
+							String [] tab;
+							if(buildCommands.contains("+++")) tab = buildCommands.split("\\+\\+\\+");
+							else {
+								tab = new String[1];
+								tab[0] = buildCommands;
+							}
+							for(String s : tab) {
+								while(s.startsWith(" ")) {
+									s = s.substring(1, s.length());
+								}
+								while(s.endsWith(" ")) {
+									s = s.substring(0, s.length()-1);
+								}
+								if(s.startsWith("/")) s = s.substring(1, s.length());
+
+								s = sp.replacePlaceholder(s); 
+
+								EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Arrays.asList(s), aInfo2);
+								CommandsExecutor.runCommands(builder);	
+							}			
+							cpt++;
+						}
+					}
+					if(cpt == 0 && !mute) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
+
+				}catch(Exception e) {
+					e.printStackTrace();
 				}
 			}
-			if(cpt == 0 && !mute) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
-
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		};
+		runnable.runTask(SCore.getPlugin());
 	}
 
 	@Override

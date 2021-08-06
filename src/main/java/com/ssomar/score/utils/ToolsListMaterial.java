@@ -3,6 +3,8 @@ package com.ssomar.score.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 
 import com.ssomar.score.SCore;
@@ -31,6 +33,46 @@ public class ToolsListMaterial {
 		}
 		
 		
+	}
+	
+	@Nullable
+	public static Material getRealMaterialOfBlock(Material material) {
+		if(SCore.is1v12()) {
+			if(material.equals(Material.valueOf("CROPS"))){
+				return Material.valueOf("SEEDS");
+			}
+			else if(material.equals(Material.valueOf("NETHER_WARTS"))){
+				return Material.valueOf("NETHER_WARTS");
+			}
+			else if(material.equals(Material.valueOf("POTATO"))){
+				return Material.valueOf("POTATO_ITEM");
+			}
+			else if(material.equals(Material.valueOf("CARROT"))){
+				return Material.valueOf("CARROT_ITEM");
+			}
+			else if(material.equals(Material.valueOf("BEETROOT_BLOCK"))){
+				return Material.valueOf("BEETROOT_SEEDS");
+			}			
+		}
+		else{
+			if(material.equals(Material.WHEAT)){
+				return Material.WHEAT_SEEDS;
+			}
+			else if(material.equals(Material.CARROTS)){
+				return Material.CARROT;
+			}
+			if(material.equals(Material.POTATOES)){
+				return Material.POTATO;
+			}
+			if(material.equals(Material.BEETROOTS)){
+				return Material.BEETROOT_SEEDS;
+			}
+			if(material.equals(Material.NETHER_WART)){
+				return Material.NETHER_WART;
+			}
+		}
+		
+		return null;
 	}
 	
 	public static ToolsListMaterial getInstance() {

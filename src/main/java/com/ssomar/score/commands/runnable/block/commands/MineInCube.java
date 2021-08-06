@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -25,16 +24,16 @@ public class MineInCube extends BlockCommand{
 	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
 		if(aInfo.isEventCallByMineInCube()) return;
-		
+
 		try {
 			int radius = Integer.valueOf(args.get(0));
 			Boolean drop = true;
 			if(args.size() >= 2) drop = Boolean.valueOf(args.get(1));
-			
+
 			List<Material> blackList = new ArrayList<>();
 			blackList.add(Material.BEDROCK);
 			blackList.add(Material.AIR);
-			
+
 			if(radius < 10) {
 				for(int y = -radius; y < Integer.valueOf(radius)+1; y++) {
 					for(int x = -Integer.valueOf(radius); x < Integer.valueOf(radius)+1; x++) {
@@ -42,7 +41,7 @@ public class MineInCube extends BlockCommand{
 
 							Location toBreakLoc = new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z);
 							Block toBreak = block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z);
-							
+
 							DetailedBlocks whiteList;
 							if((whiteList = aInfo.getDetailedBlocks()) != null) {
 								if(!whiteList.isEmpty()) {
@@ -51,7 +50,7 @@ public class MineInCube extends BlockCommand{
 									if(!whiteList.verification(toBreak.getType(), statesStr)) continue;
 								}
 							}
-							
+
 							if(!blackList.contains(toBreak.getType())) {
 
 								if((SCore.hasWorldGuard && new WorldGuardAPI().canBuild(p, toBreakLoc)) || !SCore.hasWorldGuard ) {
@@ -67,24 +66,20 @@ public class MineInCube extends BlockCommand{
 			err.printStackTrace();
 		}
 	}
-	
-	public static void breakBlock(final Block block, final Player player, final boolean drop) {
-	    BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				BlockBreakEvent bbE = new BlockBreakEvent(block, player);
-				bbE.setCancelled(false);
-				/* */
-				bbE.setExpToDrop(-666666);
-				Bukkit.getPluginManager().callEvent(bbE);
 
-				if(!bbE.isCancelled()) {
-					if(drop) block.breakNaturally(player.getInventory().getItemInMainHand());
-					else block.setType(Material.AIR);
-				}
-			}
-		};
-		runnable.runTask(SCore.getPlugin());
+	public static void breakBlock(final Block block, final Player player, final boolean drop) {
+
+		BlockBreakEvent bbE = new BlockBreakEvent(block, player);
+		bbE.setCancelled(false);
+		/* */
+		bbE.setExpToDrop(-666666);
+		Bukkit.getPluginManager().callEvent(bbE);
+
+		if(!bbE.isCancelled()) {
+			if(drop) block.breakNaturally(player.getInventory().getItemInMainHand());
+			else block.setType(Material.AIR);
+		}
+
 	}
 
 	@Override

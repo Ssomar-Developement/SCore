@@ -11,46 +11,46 @@ import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 public class ActionInfo implements Serializable{
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	
+
 	/* The slot where the action was activated */
 	private Integer slot;
-	
+
 	/* The item (ExecutableItems) that actives the action */
 	private String itemID;
-	
+
 	private boolean isEventCallByMineInCube;
-	
+
 	/* Important info */
 	private UUID launcherUUID;
-	
+
 	private UUID receiverUUID;
-	
+
 	/* ------------------ */
 	private int blockLocationX;
 	private int blockLocationY;
 	private int blockLocationZ;
 	private UUID blockLocationWorld;
-	
+
 	private DetailedBlocks detailedBlocks;
-	
+
 	private String oldBlockMaterialName;
-	
+
 	/* ------------------ */
 	private UUID entityUUID;
-	
+
 	/* ------------------ */
-	
+
 	private boolean silenceOutput;
-	
+
 	private StringPlaceholder sp;
-	
+
 	public ActionInfo(String name, Integer slot, StringPlaceholder sp) {
 		this.name = name;
 		this.slot = slot;
@@ -68,24 +68,29 @@ public class ActionInfo implements Serializable{
 		this.entityUUID = null;
 		this.silenceOutput = false;
 	}
-	
+
 	public ActionInfo clone() {
 		ActionInfo result = new ActionInfo(this.name, this.slot, this.sp);
 		result.setItemID(itemID);
 		result.setEventCallByMineInCube(isEventCallByMineInCube);
 		result.setLauncherUUID(launcherUUID);
 		result.setReceiverUUID(receiverUUID);
-		result.setOldBlockMaterial(Material.valueOf(oldBlockMaterialName));
+		try {
+			result.setOldBlockMaterial(Material.valueOf(oldBlockMaterialName));
+		}
+		catch(Exception e) {
+
+		}
 		result.setEntityUUID(entityUUID);
 		result.setSilenceOutput(silenceOutput);
 		result.setBlockLocationX(blockLocationX);
 		result.setBlockLocationY(blockLocationY);
 		result.setBlockLocationZ(blockLocationZ);
 		result.setBlockLocationWorld(blockLocationWorld);		
-		
+
 		return result;
 	}
-	
+
 	public void setBlock(Block block) {
 		Location bLoc = block.getLocation();
 		this.blockLocationX = bLoc.getBlockX();
@@ -221,7 +226,7 @@ public class ActionInfo implements Serializable{
 	public void setOldBlockMaterialName(String oldBlockMaterialName) {
 		this.oldBlockMaterialName = oldBlockMaterialName;
 	}
-	
-	
-	
+
+
+
 }

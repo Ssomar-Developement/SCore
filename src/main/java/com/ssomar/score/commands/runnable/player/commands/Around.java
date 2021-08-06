@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -22,58 +23,65 @@ public class Around extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		try {
-			double distance = Double.valueOf(args.get(0));
-			int cpt = 0;
 
-			for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
-				if(e instanceof Player) {
-					Player target =  (Player) e;
-					if(target.hasMetadata("NPC") || target.equals(receiver)) continue;
-					
-					ActionInfo aInfo2 = aInfo.clone();
-					aInfo2.setReceiverUUID(target.getUniqueId());
-					
-					StringPlaceholder sp = new StringPlaceholder();
-					sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
-					
-					/* regroup the last args that correspond to the commands */
-					StringBuilder prepareCommands = new StringBuilder();
-					for(String s : args.subList(2, args.size())) {
-						prepareCommands.append(s);
-						prepareCommands.append(" ");
-					}
-					prepareCommands.deleteCharAt(prepareCommands.length()-1);				
+		BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				try {
+					double distance = Double.valueOf(args.get(0));
+					int cpt = 0;
 
-					String buildCommands = prepareCommands.toString();
-					String [] tab;
-					if(buildCommands.contains("+++")) tab = buildCommands.split("\\+\\+\\+");
-					else {
-						tab = new String[1];
-						tab[0] = buildCommands;
-					}
-					for(String s : tab) {
-						while(s.startsWith(" ")) {
-							s = s.substring(1, s.length());
+					for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
+						if(e instanceof Player) {
+							Player target =  (Player) e;
+							if(target.hasMetadata("NPC") || target.equals(receiver)) continue;
+
+							ActionInfo aInfo2 = aInfo.clone();
+							aInfo2.setReceiverUUID(target.getUniqueId());
+
+							StringPlaceholder sp = new StringPlaceholder();
+							sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
+
+							/* regroup the last args that correspond to the commands */
+							StringBuilder prepareCommands = new StringBuilder();
+							for(String s : args.subList(2, args.size())) {
+								prepareCommands.append(s);
+								prepareCommands.append(" ");
+							}
+							prepareCommands.deleteCharAt(prepareCommands.length()-1);				
+
+							String buildCommands = prepareCommands.toString();
+							String [] tab;
+							if(buildCommands.contains("+++")) tab = buildCommands.split("\\+\\+\\+");
+							else {
+								tab = new String[1];
+								tab[0] = buildCommands;
+							}
+							for(String s : tab) {
+								while(s.startsWith(" ")) {
+									s = s.substring(1, s.length());
+								}
+								while(s.endsWith(" ")) {
+									s = s.substring(0, s.length()-1);
+								}
+								if(s.startsWith("/")) s = s.substring(1, s.length());
+
+								s = sp.replacePlaceholder(s);
+
+								PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo2);
+								CommandsExecutor.runCommands(builder);
+							}				
+							cpt++;
 						}
-						while(s.endsWith(" ")) {
-							s = s.substring(0, s.length()-1);
-						}
-						if(s.startsWith("/")) s = s.substring(1, s.length());
-						
-						s = sp.replacePlaceholder(s);
+					}
+					if(cpt == 0 && Boolean.valueOf(args.get(1))) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
 
-						PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo2);
-						CommandsExecutor.runCommands(builder);
-					}				
-					cpt++;
+				}catch(Exception e) {
+					e.printStackTrace();
 				}
 			}
-			if(cpt == 0 && Boolean.valueOf(args.get(1))) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
-
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		};
+		runnable.runTask(SCore.getPlugin());
 	}
 
 	@Override
