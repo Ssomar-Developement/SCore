@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.messages.DefaultFontInfo;
+import com.ssomar.score.utils.messages.CenteredMessage;
 
 /* SENDCENTEREDMESSAGE {message} */
 public class SendCenteredMessage extends PlayerCommand{
@@ -21,7 +21,7 @@ public class SendCenteredMessage extends PlayerCommand{
 			message = message+s+" ";
 		}
 		message = message.substring(0, message.length()-1);
-		DefaultFontInfo.sendCenteredMessage(receiver, message);
+		CenteredMessage.sendCenteredMessage(receiver, message);
 	}
 
 	@Override

@@ -20,15 +20,19 @@ public abstract class RunCommand implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/* The command enter by the user */
 	private String brutCommand;
 
+	/* Placehodlers manager */
 	private StringPlaceholder sp;
 
 	/* In Ticks */
 	private int delay;
 
+	/* The time where the command must be executed */
 	private long runTime;
 
+	/* Extra infos is stored in */
 	private ActionInfo aInfo;
 
 	private UUID uuid;

@@ -3,10 +3,9 @@ package com.ssomar.score.menu.conditions.worldcdt;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.conditions.RequestMessage;
 import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsMessagesGUI.WorldConditionsMessages;
-import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -14,7 +13,7 @@ import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 
-public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldConditionsMessagesGUI>{
+public class WorldConditionsMessagesGUIManager extends GUIManagerConditions<WorldConditionsMessagesGUI>{
 
 	private static WorldConditionsMessagesGUIManager instance;	
 
@@ -25,18 +24,7 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 	
 	@Override
 	public boolean allClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		if(i.name.contains("Save")) {
-			saveWorldConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
-		else return false;
-		
-		return true;
+		return this.saveOrBackOrNothing(i);
 	}
 
 	@Override
@@ -57,7 +45,7 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
-		saveWorldConditionsEI(i.player);
+		this.saveTheConfiguration(i.player);
 		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 		WorldConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getWorldConditions(), detail);
 	
@@ -114,7 +102,14 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 		cache.get(p).openGUISync(p);
 	}
 
-	public void saveWorldConditionsEI(Player p) {
+
+	public static WorldConditionsMessagesGUIManager getInstance() {
+		if(instance == null) instance = new WorldConditionsMessagesGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -127,11 +122,5 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerSCore<WorldCond
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
-
-	public static WorldConditionsMessagesGUIManager getInstance() {
-		if(instance == null) instance = new WorldConditionsMessagesGUIManager();
-		return instance;
 	}
 }

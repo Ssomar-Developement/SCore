@@ -30,6 +30,7 @@ public abstract class GUIManager<T> {
 		currentWriting = new HashMap<>();
 	}
 
+	public abstract void saveTheConfiguration(Player p);
 	
 	@SuppressWarnings("deprecation")
 	public void showCalculationGUI(Player p, String variable, String current) {

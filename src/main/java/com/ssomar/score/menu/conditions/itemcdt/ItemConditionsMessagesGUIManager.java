@@ -3,10 +3,9 @@ package com.ssomar.score.menu.conditions.itemcdt;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.conditions.RequestMessage;
 import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsMessagesGUI.ItemConditionsMessages;
-import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -14,7 +13,7 @@ import com.ssomar.score.sobject.sactivator.conditions.ItemConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 
-public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemConditionsMessagesGUI>{
+public class ItemConditionsMessagesGUIManager extends GUIManagerConditions<ItemConditionsMessagesGUI>{
 
 	private static ItemConditionsMessagesGUIManager instance;	
 
@@ -25,18 +24,7 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 	
 	@Override
 	public boolean allClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
-		if(i.name.contains("Save")) {
-			saveItemConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
-		else return false;
-		
-		return true;
+		return this.saveOrBackOrNothing(i);
 	}
 
 	@Override
@@ -69,7 +57,7 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
-		saveItemConditionsEI(i.player);
+		this.saveTheConfiguration(i.player);
 		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 		ItemConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getItemConditions(), detail);
 	
@@ -114,7 +102,14 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 		cache.get(p).openGUISync(p);
 	}
 
-	public void saveItemConditionsEI(Player p) {
+
+	public static ItemConditionsMessagesGUIManager getInstance() {
+		if(instance == null) instance = new ItemConditionsMessagesGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -128,11 +123,5 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerSCore<ItemCondit
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
-
-	public static ItemConditionsMessagesGUIManager getInstance() {
-		if(instance == null) instance = new ItemConditionsMessagesGUIManager();
-		return instance;
 	}
 }

@@ -31,11 +31,11 @@ public class BlockConditions extends Conditions{
 	private boolean ifIsPowered;
 	public static final String IF_IS_POWERED_MSG = " &cThe block must be powered by redstone to active the activator: &6%activator% &cof this item!";
 	private String ifIsPoweredMsg;
-	
+
 	private boolean ifMustBeNotPowered;
 	public static final String IF_MUST_BE_NOT_POWERED_MSG = " &cThe block must be not powered by redstone to active the activator: &6%activator% &cof this item!";
 	private String ifMustBeNotPoweredMsg;
-	
+
 	private boolean ifMustBeNatural;
 	public static final String IF_MUST_BE_NATURAL_MSG = " &cThe block must be natural to active the activator: &6%activator% &cof this item!";
 	private String ifMustBeNaturalMsg;
@@ -49,13 +49,13 @@ public class BlockConditions extends Conditions{
 
 		this.ifIsPowered = false;
 		this.ifIsPoweredMsg = IF_IS_POWERED_MSG;	
-		
+
 		this.ifMustBeNotPowered = false;
 		this.ifMustBeNotPoweredMsg = IF_MUST_BE_NOT_POWERED_MSG;
-		
+
 		this.ifMustBeNatural = false;
 		this.ifMustBeNaturalMsg = IF_MUST_BE_NATURAL_MSG;	
-		
+
 
 		blockAroundConditions = new ArrayList<>();
 
@@ -91,32 +91,30 @@ public class BlockConditions extends Conditions{
 
 		if(this.ifIsPowered) {
 			boolean notPowered = false;
-			
+
 			if(!b.isBlockPowered()) {
 				notPowered = true;
 			}
-			
+
 			if(b.getBlockData() instanceof Powerable) {
 				Powerable power = (Powerable)b.getBlockData();
 				if(!power.isPowered()) notPowered = true;
 			}
-			
+
 			if(notPowered) {
 				this.getSm().sendMessage(p, this.getIfIsPoweredMsg());
 				return false;
 			}
 		}
-		
-		if(this.ifMustBeNotPowered) {
-			if(b.getBlockData() instanceof Powerable) {
-				Powerable power = (Powerable)b.getBlockData();
-				if(power.isPowered()) {
-					this.getSm().sendMessage(p, this.getIfMustBeNotPoweredMsg());
-					return false;
-				}
+
+		if(this.ifMustBeNotPowered && b.getBlockData() instanceof Powerable) {
+			Powerable power = (Powerable)b.getBlockData();
+			if(power.isPowered()) {
+				this.getSm().sendMessage(p, this.getIfMustBeNotPoweredMsg());
+				return false;
 			}
 		}
-		
+
 		if(this.ifMustBeNatural) {
 			if(!MyCoreProtectAPI.isNaturalBlock(b)) {	
 				this.getSm().sendMessage(p, this.getIfMustBeNaturalMsg());
@@ -142,14 +140,14 @@ public class BlockConditions extends Conditions{
 
 		bCdt.setIfIsPowered(blockCdtSection.getBoolean("ifIsPowered", false));
 		bCdt.setIfIsPoweredMsg(blockCdtSection.getString("ifIsPoweredMsg", "&4&l"+pluginName+IF_IS_POWERED_MSG));
-		
+
 		bCdt.setIfMustBeNotPowered(blockCdtSection.getBoolean("ifMustBeNotPowered", false));
 		bCdt.setIfMustBeNotPoweredMsg(blockCdtSection.getString("ifMustBeNotPoweredMsg", "&4&l"+pluginName+IF_MUST_BE_NOT_POWERED_MSG));
-		
+
 		bCdt.setIfMustBeNatural(blockCdtSection.getBoolean("ifMustBeNatural", false));
 		bCdt.setIfIsNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", "&4&l"+pluginName+IF_MUST_BE_NATURAL_MSG));
-		
-		
+
+
 		if(blockCdtSection.contains("blockAroundCdts")) {
 			for(String s : blockCdtSection.getConfigurationSection("blockAroundCdts").getKeys(false)) {
 				ConfigurationSection section = blockCdtSection.getConfigurationSection("blockAroundCdts."+s);
@@ -188,11 +186,11 @@ public class BlockConditions extends Conditions{
 		if(bC.isIfIsPowered()) pCConfig.set("ifIsPowered", true); 
 		else pCConfig.set("ifIsPowered", null);
 		pCConfig.set("ifIsPoweredMsg", bC.getIfIsPoweredMsg());
-		
+
 		if(bC.isIfMustBeNotPowered()) pCConfig.set("ifMustBeNotPowered", true); 
 		else pCConfig.set("ifMustBeNotPowered", null);
 		pCConfig.set("ifMustBeNotPoweredMsg", bC.getIfMustBeNotPoweredMsg());
-		
+
 		if(bC.isIfMustbeNatural()) pCConfig.set("ifMustBeNatural", true); 
 		else pCConfig.set("ifMustBeNatural", null);
 		pCConfig.set("ifMustBeNaturalMsg", bC.getIfMustBeNaturalMsg());

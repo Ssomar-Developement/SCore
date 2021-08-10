@@ -28,22 +28,5 @@ public class ActionInfoSerializer {
          ois.close();
          return o;
     }
-   
-//    public static void main(String[]args) throws IOException, ClassNotFoundException {
-//    	
-//    	
-//    	StringPlaceholder sp = new StringPlaceholder();
-//    	sp.setItem("dsihfsud$$$");
-//    	
-//    	ActionInfo aInfo = new ActionInfo("myname", 6, sp);
-//    	
-//    	String s = ActionInfoSerializer.toString(aInfo);
-//    	
-//    	System.out.println(s);
-//    	
-//    	ActionInfo aInfo2 = (ActionInfo) ActionInfoSerializer.fromString(s);
-//    	
-//    	System.out.println(aInfo2.getName());
-//    	System.out.println(aInfo2.getSp().getItem());
-//    }
+ 
 }

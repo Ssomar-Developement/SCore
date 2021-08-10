@@ -118,7 +118,7 @@ public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
 				}
 
 				else if(name.contains("Save") || name.contains("Create this required EI")) {
-					saveRequiredEI(p);
+					this.saveTheConfiguration(p);
 					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 					RequiredEIsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
 				}
@@ -359,7 +359,13 @@ public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
 
 	}
 
-	public void saveRequiredEI(Player p) {
+	public static RequiredEIGUIManager getInstance() {
+		if(instance == null) instance = new RequiredEIGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sAct = cache.get(p).getSAct();
@@ -375,10 +381,5 @@ public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
-	public static RequiredEIGUIManager getInstance() {
-		if(instance == null) instance = new RequiredEIGUIManager();
-		return instance;
 	}
 }

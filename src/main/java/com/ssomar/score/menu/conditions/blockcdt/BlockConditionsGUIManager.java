@@ -3,16 +3,15 @@ package com.ssomar.score.menu.conditions.blockcdt;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionsGUIManager;
-import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import com.ssomar.score.splugin.SPlugin;
 
-public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGUI>{
+public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditionsGUI>{
 
 	private static BlockConditionsGUIManager instance;
 
@@ -23,25 +22,13 @@ public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGU
 	
 	@Override
 	public boolean allClicked(InteractionClickedGUIManager<BlockConditionsGUI> i) {
-		if(i.name.contains("Save")) {
-			saveBlockConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-			return true;
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-			return true;
-		}
-		
-		return false;
+		return this.saveOrBackOrNothing(i);
 	}
 
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<BlockConditionsGUI> i) {
 		String detail = cache.get(i.player).getDetail();
-		saveBlockConditionsEI(i.player);
+		this.saveTheConfiguration(i.player);
 		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 		
 		BlockConditions bC;
@@ -75,26 +62,6 @@ public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGU
 		else return false;
 		
 		return true;
-	}
-
-	public void saveBlockConditionsEI(Player p) {
-
-		SPlugin sPlugin = cache.get(p).getsPlugin();
-		SObject sObject = cache.get(p).getSObject();
-		SActivator sAct = cache.get(p).getSAct();
-		//String plName = sPlugin.getNameDesign();
-
-		BlockConditions bC = (BlockConditions) cache.get(p).getConditions();
-
-		bC.setIfIsPowered(cache.get(p).getBoolean(BlockConditionsGUI.IF_IS_POWERED));
-		bC.setIfMustBeNotPowered(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NOT_POWERED));
-		bC.setIfMustBeNatural(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NATURAL));
-		bC.setIfPlantFullyGrown(cache.get(p).getBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN));
-
-		BlockConditions.saveBlockConditions(sPlugin, sObject, sAct, bC, cache.get(p).getDetail());
-		cache.remove(p);
-		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
 	}
 
 
@@ -131,6 +98,26 @@ public class BlockConditionsGUIManager extends GUIManagerSCore<BlockConditionsGU
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<BlockConditionsGUI> interact) {
 		return false;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
+		SPlugin sPlugin = cache.get(p).getsPlugin();
+		SObject sObject = cache.get(p).getSObject();
+		SActivator sAct = cache.get(p).getSAct();
+		//String plName = sPlugin.getNameDesign();
+
+		BlockConditions bC = (BlockConditions) cache.get(p).getConditions();
+
+		bC.setIfIsPowered(cache.get(p).getBoolean(BlockConditionsGUI.IF_IS_POWERED));
+		bC.setIfMustBeNotPowered(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NOT_POWERED));
+		bC.setIfMustBeNatural(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NATURAL));
+		bC.setIfPlantFullyGrown(cache.get(p).getBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN));
+
+		BlockConditions.saveBlockConditions(sPlugin, sObject, sAct, bC, cache.get(p).getDetail());
+		cache.remove(p);
+		requestWriting.remove(p);
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
 	}
 
 }

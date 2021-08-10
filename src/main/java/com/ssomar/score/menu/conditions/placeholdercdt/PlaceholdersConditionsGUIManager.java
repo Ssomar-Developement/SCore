@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
@@ -126,5 +126,11 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 	public boolean rightClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> interact) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 
-public enum DefaultFontInfo{
+public enum CenteredMessage{
 
 	A('A', 5),
 	a('a', 5),
@@ -106,7 +106,7 @@ public enum DefaultFontInfo{
 	private char character;
 	private int length;
 
-	DefaultFontInfo(char character, int length) {
+	CenteredMessage(char character, int length) {
 		this.character = character;
 		this.length = length;
 	}
@@ -120,15 +120,15 @@ public enum DefaultFontInfo{
 	}
 
 	public int getBoldLength(){
-		if(this == DefaultFontInfo.SPACE) return this.getLength();
+		if(this == CenteredMessage.SPACE) return this.getLength();
 		return this.length + 1;
 	}
 
-	public static DefaultFontInfo getDefaultFontInfo(char c){
-		for(DefaultFontInfo dFI : DefaultFontInfo.values()){
+	public static CenteredMessage getDefaultFontInfo(char c){
+		for(CenteredMessage dFI : CenteredMessage.values()){
 			if(dFI.getCharacter() == c) return dFI;
 		}
-		return DefaultFontInfo.DEFAULT;
+		return CenteredMessage.DEFAULT;
 	}
 
 	private final static int CENTER_PX = 154;
@@ -152,7 +152,7 @@ public enum DefaultFontInfo{
 					continue;
 				}else isBold = false;
 			}else{
-				DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
+				CenteredMessage dFI = CenteredMessage.getDefaultFontInfo(c);
 				messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
 				messagePxSize++;
 			}
@@ -160,7 +160,7 @@ public enum DefaultFontInfo{
 
 		int halvedMessageSize = messagePxSize / 2;
 		int toCompensate = CENTER_PX - halvedMessageSize;
-		int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
+		int spaceLength = CenteredMessage.SPACE.getLength() + 1;
 		int compensated = 0;
 		StringBuilder sb = new StringBuilder();
 		while(compensated < toCompensate){

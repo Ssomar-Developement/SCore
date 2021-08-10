@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionGUIManager;
@@ -23,6 +22,7 @@ import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsMessagesGUIManager;
+import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsGUIManager;
 import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionGUIManager;

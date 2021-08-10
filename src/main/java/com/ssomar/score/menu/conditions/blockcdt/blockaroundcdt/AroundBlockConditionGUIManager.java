@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -17,7 +17,7 @@ import com.ssomar.score.sobject.sactivator.conditions.AroundBlockCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockConditionGUI>{
+public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundBlockConditionGUI>{
 
 	private static AroundBlockConditionGUIManager instance;
 
@@ -65,7 +65,7 @@ public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockC
 		else if(i.name.contains("Save") || i.name.contains("Create this Around block Condition")) {
 
 			String detail = cache.get(i.player).getDetail();
-			saveAroundBlockCondition(i.player);
+			this.saveTheConfiguration(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
 			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions().getBlockAroundConditions(), detail);
@@ -256,8 +256,14 @@ public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockC
 		}
 	}
 
-	public void saveAroundBlockCondition(Player p) {
 
+	public static AroundBlockConditionGUIManager getInstance() {
+		if(instance == null) instance = new AroundBlockConditionGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -280,11 +286,5 @@ public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockC
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
-
-	public static AroundBlockConditionGUIManager getInstance() {
-		if(instance == null) instance = new AroundBlockConditionGUIManager();
-		return instance;
 	}
 }

@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
-import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -19,7 +18,7 @@ import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
 
-public class WorldConditionsGUIManager extends GUIManagerSCore<WorldConditionsGUI>{
+public class WorldConditionsGUIManager extends GUIManagerConditions<WorldConditionsGUI>{
 
 	private static WorldConditionsGUIManager instance;
 
@@ -30,19 +29,7 @@ public class WorldConditionsGUIManager extends GUIManagerSCore<WorldConditionsGU
 	
 	@Override
 	public boolean allClicked(InteractionClickedGUIManager<WorldConditionsGUI> i) {
-		if(i.name.contains("Save")) {
-			i.player.closeInventory();
-			saveWorldConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
-		else return false;
-		
-		return true;
+		return this.saveOrBackOrNothing(i);
 	}
 
 	@Override
@@ -88,7 +75,7 @@ public class WorldConditionsGUIManager extends GUIManagerSCore<WorldConditionsGU
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<WorldConditionsGUI> i) {
 		String detail = cache.get(i.player).getDetail();
-		saveWorldConditionsEI(i.player);
+		this.saveTheConfiguration(i.player);
 		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 		WorldConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getWorldConditions(), detail);
 	
@@ -201,7 +188,13 @@ public class WorldConditionsGUIManager extends GUIManagerSCore<WorldConditionsGU
 	}
 
 
-	public void saveWorldConditionsEI(Player p) {
+	public static WorldConditionsGUIManager getInstance() {
+		if(instance == null) instance = new WorldConditionsGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -214,12 +207,6 @@ public class WorldConditionsGUIManager extends GUIManagerSCore<WorldConditionsGU
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-
-	}
-
-	public static WorldConditionsGUIManager getInstance() {
-		if(instance == null) instance = new WorldConditionsGUIManager();
-		return instance;
 	}
 }
 

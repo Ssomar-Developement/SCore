@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
-import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -19,7 +18,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
-public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditionsGUI>{
+public class EntityConditionsGUIManager extends GUIManagerConditions<EntityConditionsGUI>{
 
 	private static EntityConditionsGUIManager instance;
 
@@ -30,20 +29,7 @@ public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditions
 	
 	@Override
 	public boolean allClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
-		if(i.name.contains("Save")) {
-			i.player.closeInventory();
-			saveEntityConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
-		
-		else return false;
-		
-		return true;
+		return this.saveOrBackOrNothing(i);
 	}
 
 	@Override
@@ -109,7 +95,7 @@ public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditions
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<EntityConditionsGUI> i) {
 		String detail = cache.get(i.player).getDetail();
-		saveEntityConditionsEI(i.player);
+		this.saveTheConfiguration(i.player);
 		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 		EntityConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getTargetEntityConditions(), detail);
 		return true;
@@ -265,7 +251,13 @@ public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditions
 		editor.generateTheMenuAndSendIt(p);
 	}
 
-	public void saveEntityConditionsEI(Player p) {
+	public static EntityConditionsGUIManager getInstance() {
+		if(instance == null) instance = new EntityConditionsGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -284,10 +276,5 @@ public class EntityConditionsGUIManager extends GUIManagerSCore<EntityConditions
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
-	public static EntityConditionsGUIManager getInstance() {
-		if(instance == null) instance = new EntityConditionsGUIManager();
-		return instance;
 	}
 }

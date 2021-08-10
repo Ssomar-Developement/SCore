@@ -50,31 +50,6 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 		requestWriting.remove(p);
 	}
 
-	public void savePlaceholdersCondition(Player p) {
-
-		SPlugin sPlugin = cache.get(p).getsPlugin();
-		SObject sObject = cache.get(p).getSObject();
-		SActivator sActivator = cache.get(p).getSAct();
-
-		String id = cache.get(p).getActually(PlaceholdersConditionGUI.CDT_ID);
-		PlaceholdersCdtType type = cache.get(p).getType();
-		String message = cache.get(p).getActuallyWithColor(PlaceholdersConditionGUI.MESSAGE);
-		String part1 = cache.get(p).getActually(PlaceholdersConditionGUI.PART1);
-		String part2 = cache.get(p).getActually(PlaceholdersConditionGUI.PART2);
-		Comparator comp = cache.get(p).getComparator();
-		PlaceholdersCondition pC;
-		if(type.equals(PlaceholdersCdtType.PLAYER_NUMBER) || type.equals(PlaceholdersCdtType.TARGET_NUMBER)) {
-			pC = new PlaceholdersCondition(id, type, message, part1, comp, Double.valueOf(part2));
-		}
-		else pC = new PlaceholdersCondition(id, type, message, part1, comp, part2);
-		pC.setCancelEvent(cache.get(p).getBoolean(PlaceholdersConditionGUI.CANCEL_EVENT));
-
-		PlaceholdersCondition.savePlaceholdersCdt(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
-		cache.remove(p);
-		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
 
 	public static PlaceholdersConditionGUIManager getInstance() {
 		if(instance == null) instance = new PlaceholdersConditionGUIManager();
@@ -138,7 +113,7 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 			}
 
 			String detail = cache.get(i.player).getDetail();
-			savePlaceholdersCondition(i.player);
+			this.saveTheConfiguration(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
 			PlaceholdersConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), detail);
@@ -197,5 +172,30 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 	public boolean rightClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> interact) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
+		SPlugin sPlugin = cache.get(p).getsPlugin();
+		SObject sObject = cache.get(p).getSObject();
+		SActivator sActivator = cache.get(p).getSAct();
+
+		String id = cache.get(p).getActually(PlaceholdersConditionGUI.CDT_ID);
+		PlaceholdersCdtType type = cache.get(p).getType();
+		String message = cache.get(p).getActuallyWithColor(PlaceholdersConditionGUI.MESSAGE);
+		String part1 = cache.get(p).getActually(PlaceholdersConditionGUI.PART1);
+		String part2 = cache.get(p).getActually(PlaceholdersConditionGUI.PART2);
+		Comparator comp = cache.get(p).getComparator();
+		PlaceholdersCondition pC;
+		if(type.equals(PlaceholdersCdtType.PLAYER_NUMBER) || type.equals(PlaceholdersCdtType.TARGET_NUMBER)) {
+			pC = new PlaceholdersCondition(id, type, message, part1, comp, Double.valueOf(part2));
+		}
+		else pC = new PlaceholdersCondition(id, type, message, part1, comp, part2);
+		pC.setCancelEvent(cache.get(p).getBoolean(PlaceholdersConditionGUI.CANCEL_EVENT));
+
+		PlaceholdersCondition.savePlaceholdersCdt(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
+		cache.remove(p);
+		requestWriting.remove(p);
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
 	}
 }

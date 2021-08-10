@@ -98,4 +98,10 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 		if(instance == null) instance = new RequiredEIsGUIManager();
 		return instance;
 	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
+		// TODO Auto-generated method stub
+		
+	}
 }

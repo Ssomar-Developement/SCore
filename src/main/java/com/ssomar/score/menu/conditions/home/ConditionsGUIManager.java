@@ -1,4 +1,4 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.home;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -86,5 +86,11 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 	public static ConditionsGUIManager getInstance() {
 		if(instance == null) instance = new ConditionsGUIManager();
 		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
+		// TODO Auto-generated method stub
+		
 	}
 }

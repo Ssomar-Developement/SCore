@@ -4,8 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.ConditionsGUIManager;
-import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -14,7 +13,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
 
-public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditionsGUI>{
+public class CustomConditionsGUIManager extends GUIManagerConditions<CustomConditionsGUI>{
 
 	private static CustomConditionsGUIManager instance;
 
@@ -48,18 +47,7 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 	
 	@Override
 	public boolean allClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
-		if(i.name.contains("Save")) {
-			saveCustomConditionsEI(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
-		}
-
-		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
-		}
-		else return false;
-		
-		return true;
+		return this.saveOrBackOrNothing(i);
 	}
 
 	@Override
@@ -75,7 +63,7 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<CustomConditionsGUI> i) {
 		String detail = cache.get(i.player).getDetail();
-		saveCustomConditionsEI(i.player);
+		this.saveTheConfiguration(i.player);
 		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 		CustomConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getCustomEIConditions(), detail);
 	
@@ -106,7 +94,13 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 
 	}
 
-	public void saveCustomConditionsEI(Player p) {	
+	public static CustomConditionsGUIManager getInstance() {
+		if(instance == null) instance = new CustomConditionsGUIManager();
+		return instance;
+	}
+
+	@Override
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sActivator = cache.get(p).getSAct();
@@ -122,10 +116,5 @@ public class CustomConditionsGUIManager extends GUIManagerSCore<CustomConditions
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-	}
-
-	public static CustomConditionsGUIManager getInstance() {
-		if(instance == null) instance = new CustomConditionsGUIManager();
-		return instance;
 	}
 }

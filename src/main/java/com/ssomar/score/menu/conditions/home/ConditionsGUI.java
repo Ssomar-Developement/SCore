@@ -1,8 +1,9 @@
-package com.ssomar.score.menu.conditions;
+package com.ssomar.score.menu.conditions.home;
 
 import org.bukkit.Material;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.SOption;
