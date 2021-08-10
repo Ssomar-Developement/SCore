@@ -36,7 +36,9 @@ public class Damage extends PlayerCommand{
 					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
 					receiver.damage(amount, p);
 				}
-				else receiver.damage(amount);
+				else {
+					receiver.damage(amount);
+				}
 
 			}
 		}catch(Exception e) {}

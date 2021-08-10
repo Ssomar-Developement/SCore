@@ -19,7 +19,7 @@ import com.ssomar.score.utils.StringConverter;
 
 
 public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
-	
+
 	private static ConditionsGUIManager instance;
 
 	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sAct) {
@@ -28,60 +28,58 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 	}
 
 	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sActivator = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				//String plName = sPlugin.getNameDesign();
-				
-				if(name.contains(ConditionsGUI.OWNER_CONDITIONS)) {
-					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getOwnerConditions(), "ownerConditions");
-				}
+		if(item != null && item.hasItemMeta()) {
+			SPlugin sPlugin = cache.get(p).getsPlugin();
+			SObject sObject = cache.get(p).getSObject();
+			SActivator sActivator = cache.get(p).getSAct();
+			String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			//String plName = sPlugin.getNameDesign();
 
-				else if(name.contains(ConditionsGUI.PLAYER_CONDITIONS)) {
-					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlayerConditions(), "playerConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.TARGET_CONDITIONS)) {
-					PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetPlayerConditions(), "targetConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.WORLD_CONDITIONS)) {
-					WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getWorldConditions(), "worldConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.ITEM_CONDITIONS)) {
-					ItemConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getItemConditions(), "itemConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.ENTITY_CONDITIONS)) {
-					EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetEntityConditions(), "entityConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.BLOCK_CONDITIONS)) {
-					BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getBlockConditions(), "blockConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.TARGET_BLOCK_CONDITIONS)) {
-					BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetBlockConditions(), "targetBlockConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
-					PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
-				}
-				
-				else if(name.contains(ConditionsGUI.CUSTOM_EI_CONDITIONS)) {
-					CustomConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getCustomEIConditions(), "customConditions");
-				}
-
-				
-				if(name.contains("Back")) {
-					LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
-				}
-				cache.remove(p);
+			if(name.contains(ConditionsGUI.OWNER_CONDITIONS)) {
+				PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getOwnerConditions(), "ownerConditions");
 			}
+
+			else if(name.contains(ConditionsGUI.PLAYER_CONDITIONS)) {
+				PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlayerConditions(), "playerConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.TARGET_CONDITIONS)) {
+				PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetPlayerConditions(), "targetConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.WORLD_CONDITIONS)) {
+				WorldConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getWorldConditions(), "worldConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.ITEM_CONDITIONS)) {
+				ItemConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getItemConditions(), "itemConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.ENTITY_CONDITIONS)) {
+				EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetEntityConditions(), "entityConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.BLOCK_CONDITIONS)) {
+				BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getBlockConditions(), "blockConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.TARGET_BLOCK_CONDITIONS)) {
+				BlockConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetBlockConditions(), "targetBlockConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
+				PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
+			}
+
+			else if(name.contains(ConditionsGUI.CUSTOM_EI_CONDITIONS)) {
+				CustomConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getCustomEIConditions(), "customConditions");
+			}
+
+
+			if(name.contains("Back")) {
+				LinkedPlugins.openActivatorMenu(p, sPlugin, sObject, sActivator);
+			}
+			cache.remove(p);
 		}
 	}
 

@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
 
@@ -48,13 +46,13 @@ public class SUDOOPManager {
 	}
 	
 	public static void performCommand(final Player player, final String command) {
-	    BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
+//	    BukkitRunnable runnable = new BukkitRunnable() {
+//			@Override
+//			public void run() {
 				 player.chat(command);
-			}
-		};
-		runnable.runTask(SCore.getPlugin());
+//			}
+//		};
+//		runnable.runTask(SCore.getPlugin());
 	}
 
 	public String verifyCommand(String cmd) {

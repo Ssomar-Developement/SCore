@@ -87,7 +87,9 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerSCore<BlockCond
 		BlockConditions bC = (BlockConditions) cache.get(p).getConditions();
 
 		bC.setIfIsPoweredMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_IS_POWERED_MSG.name));
+		bC.setIfMustBeNotPoweredMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NOT_POWERED_MSG.name));
 		bC.setIfPlantFullyGrownMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_PLANT_FULLY_GROWN_MSG.name));
+		bC.setIfIsNaturalMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name));
 		
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sActivator, bC, cache.get(p).getDetail());
 		cache.remove(p);

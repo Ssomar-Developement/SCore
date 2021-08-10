@@ -27,6 +27,14 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateMessage(BlockConditionsMessages.IF_IS_POWERED_MSG.name, conditions.getIfIsPoweredMsg());
 		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_MUST_BE_NOT_POWERED_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_MUST_BE_NOT_POWERED_MSG.name, conditions.getIfMustBeNotPoweredMsg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name, conditions.getIfMustBeNaturalMsg());
+		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
 		createItem(ORANGE, 					1 , 19, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of block conditions" );
@@ -41,7 +49,9 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 	
 	public enum BlockConditionsMessages{
 		IF_PLANT_FULLY_GROWN_MSG ("ifPlantFullyGrown message"),
-		IF_IS_POWERED_MSG ("ifIsPowered message");
+		IF_IS_POWERED_MSG ("ifIsPowered message"),
+		IF_MUST_BE_NOT_POWERED_MSG ("ifMustBeNotPowered message"),
+		IF_MUST_BE_NATURAL_MSG ("ifMustBeNatural message");
 		
 		public String name;
 

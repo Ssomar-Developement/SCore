@@ -12,6 +12,7 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_PLANT_FULLY_GROWN = "ifPlantFullyGrown";
 	public static final String IF_IS_POWERED = "ifIsPowered";
+	public static final String IF_MUST_BE_NOT_POWERED = "ifMustbeNotPowered";
 	public static final String IF_MUST_BE_NATURAL = "ifMustBeNatural";
 	public static final String AROUND_BLOCK_CDT = "Around block conditions";
 	
@@ -31,6 +32,10 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IS_POWERED, 	false,	false, "&7&oThe block must be powered ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_IS_POWERED, conditions.isIfIsPowered());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_MUST_BE_NOT_POWERED, 	false,	false, "&7&oThe block must be not powered ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_MUST_BE_NOT_POWERED, conditions.isIfMustBeNotPowered());
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_MUST_BE_NATURAL, 	false,	false, "&7&oThe block must be natural ?", "&a✎ Click here to change", "&7actually:");
 		i++;

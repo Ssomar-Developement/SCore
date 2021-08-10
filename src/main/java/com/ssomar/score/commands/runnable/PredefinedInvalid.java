@@ -12,7 +12,7 @@ public abstract class PredefinedInvalid {
 	protected static String invalidQuantity= "SCommand contains an invalid quantity: ";
 	protected static String invalidDistance= "SCommand contains an invalid distance: ";
 	protected static String invalidCoordinate= "SCommand contains an invalid coordinate: ";
-	protected static String invalidTime= "SCommand contains an invalid time: ";
+	protected static String invalidTime= "SCommand contains an invalid time or number: ";
 	protected static String invalidRange= "SCommand contains an invalid range: ";
 	protected static String invalidBoolean= "SCommand contains an invalid boolean: ";
 	protected static String invalidExecutableItems= "SCommand contains an invalid id of ExecutableItems: ";

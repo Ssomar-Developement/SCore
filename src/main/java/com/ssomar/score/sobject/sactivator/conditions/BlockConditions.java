@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,8 +29,12 @@ public class BlockConditions extends Conditions{
 	private String ifPlantFullyGrownMsg;
 
 	private boolean ifIsPowered;
-	public static final String IF_IS_POWERED_MSG = " &cThe block ust be powered by redstone to active the activator: &6%activator% &cof this item!";
+	public static final String IF_IS_POWERED_MSG = " &cThe block must be powered by redstone to active the activator: &6%activator% &cof this item!";
 	private String ifIsPoweredMsg;
+	
+	private boolean ifMustBeNotPowered;
+	public static final String IF_MUST_BE_NOT_POWERED_MSG = " &cThe block must be not powered by redstone to active the activator: &6%activator% &cof this item!";
+	private String ifMustBeNotPoweredMsg;
 	
 	private boolean ifMustBeNatural;
 	public static final String IF_MUST_BE_NATURAL_MSG = " &cThe block must be natural to active the activator: &6%activator% &cof this item!";
@@ -44,6 +49,9 @@ public class BlockConditions extends Conditions{
 
 		this.ifIsPowered = false;
 		this.ifIsPoweredMsg = IF_IS_POWERED_MSG;	
+		
+		this.ifMustBeNotPowered = false;
+		this.ifMustBeNotPoweredMsg = IF_MUST_BE_NOT_POWERED_MSG;
 		
 		this.ifMustBeNatural = false;
 		this.ifMustBeNaturalMsg = IF_MUST_BE_NATURAL_MSG;	
@@ -82,9 +90,30 @@ public class BlockConditions extends Conditions{
 		}
 
 		if(this.ifIsPowered) {
+			boolean notPowered = false;
+			
 			if(!b.isBlockPowered()) {
+				notPowered = true;
+			}
+			
+			if(b.getBlockData() instanceof Powerable) {
+				Powerable power = (Powerable)b.getBlockData();
+				if(!power.isPowered()) notPowered = true;
+			}
+			
+			if(notPowered) {
 				this.getSm().sendMessage(p, this.getIfIsPoweredMsg());
 				return false;
+			}
+		}
+		
+		if(this.ifMustBeNotPowered) {
+			if(b.getBlockData() instanceof Powerable) {
+				Powerable power = (Powerable)b.getBlockData();
+				if(power.isPowered()) {
+					this.getSm().sendMessage(p, this.getIfMustBeNotPoweredMsg());
+					return false;
+				}
 			}
 		}
 		
@@ -113,6 +142,9 @@ public class BlockConditions extends Conditions{
 
 		bCdt.setIfIsPowered(blockCdtSection.getBoolean("ifIsPowered", false));
 		bCdt.setIfIsPoweredMsg(blockCdtSection.getString("ifIsPoweredMsg", "&4&l"+pluginName+IF_IS_POWERED_MSG));
+		
+		bCdt.setIfMustBeNotPowered(blockCdtSection.getBoolean("ifMustBeNotPowered", false));
+		bCdt.setIfMustBeNotPoweredMsg(blockCdtSection.getString("ifMustBeNotPoweredMsg", "&4&l"+pluginName+IF_MUST_BE_NOT_POWERED_MSG));
 		
 		bCdt.setIfMustBeNatural(blockCdtSection.getBoolean("ifMustBeNatural", false));
 		bCdt.setIfIsNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", "&4&l"+pluginName+IF_MUST_BE_NATURAL_MSG));
@@ -156,6 +188,10 @@ public class BlockConditions extends Conditions{
 		if(bC.isIfIsPowered()) pCConfig.set("ifIsPowered", true); 
 		else pCConfig.set("ifIsPowered", null);
 		pCConfig.set("ifIsPoweredMsg", bC.getIfIsPoweredMsg());
+		
+		if(bC.isIfMustBeNotPowered()) pCConfig.set("ifMustBeNotPowered", true); 
+		else pCConfig.set("ifMustBeNotPowered", null);
+		pCConfig.set("ifMustBeNotPoweredMsg", bC.getIfMustBeNotPoweredMsg());
 		
 		if(bC.isIfMustbeNatural()) pCConfig.set("ifMustBeNatural", true); 
 		else pCConfig.set("ifMustBeNatural", null);
@@ -229,6 +265,22 @@ public class BlockConditions extends Conditions{
 
 	public void setBlockAroundConditions(List<AroundBlockCondition> blockAroundConditions) {
 		this.blockAroundConditions = blockAroundConditions;
+	}
+
+	public boolean isIfMustBeNotPowered() {
+		return ifMustBeNotPowered;
+	}
+
+	public void setIfMustBeNotPowered(boolean ifMustBeNotPowered) {
+		this.ifMustBeNotPowered = ifMustBeNotPowered;
+	}
+
+	public String getIfMustBeNotPoweredMsg() {
+		return ifMustBeNotPoweredMsg;
+	}
+
+	public void setIfMustBeNotPoweredMsg(String ifMustBeNotPoweredMsg) {
+		this.ifMustBeNotPoweredMsg = ifMustBeNotPoweredMsg;
 	}
 
 }

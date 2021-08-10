@@ -29,7 +29,6 @@ public class FarmInCube extends BlockCommand{
 
 		List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
-		if(!validMaterial.contains(oldMaterial)) return;
 		try {
 			int radius = Integer.valueOf(args.get(0));
 
@@ -55,19 +54,11 @@ public class FarmInCube extends BlockCommand{
 				}
 			}
 
-			final boolean finalReplant = replant;
-
-			BukkitRunnable runnable = new BukkitRunnable() {
-				@Override
-				public void run() {
-					if(finalReplant) {
-						block.setType(oldMaterial);
-						BlockData data = block.getState().getBlockData().clone();
-						replant(block, data, oldMaterial, p);
-					}
-				}
-			};
-			runnable.runTask(SCore.getPlugin());
+			if(validMaterial.contains(oldMaterial) && replant) {
+				block.setType(oldMaterial);
+				BlockData data = block.getState().getBlockData().clone();
+				replant(block, data, oldMaterial, p);
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

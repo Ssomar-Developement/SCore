@@ -31,7 +31,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	/* placeholders of the item */
 	private String activator= "";
 	private String item= "";
-	private String quantity= "";
+	private String quantity = "";
 	private String usage="";
 	private String maxUsePerDayItem= "";
 	private String maxUsePerDayActivator= "";
@@ -129,7 +129,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 			s=s.replaceAll("%item%", this.getItem());
 		}
 		if(this.hasQuantity()) {
-			s=s.replaceAll("%quantity%", this.getQuantity());
+			s = replaceCalculPlaceholder(s, "%quantity%", quantity, true);
+			s = replaceCalculPlaceholder(s, "%amount%", quantity, true);
 		}
 		if(this.hasCoolodwn()) {
 			s=s.replaceAll("%cooldown%", this.getCooldown());

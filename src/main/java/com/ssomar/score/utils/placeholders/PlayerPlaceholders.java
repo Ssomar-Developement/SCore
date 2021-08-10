@@ -25,6 +25,8 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 	private String slot = "";
 	private String slotLive = "";
 	private double lastDamageTaken;
+	private float pitch;
+	private float pitchPositive;
 	
 	public void setPlayerPlcHldr(UUID uuid) {
 		this.playerUUID = uuid;
@@ -51,6 +53,9 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			else this.slot = player.getInventory().getHeldItemSlot()+"";
 			this.slotLive = player.getInventory().getHeldItemSlot()+"";
 			this.lastDamageTaken = player.getLastDamage();
+			this.pitch = pLoc.getPitch();
+			if(pitch < 0) pitchPositive = pitch * -1;
+			else pitchPositive = pitch;
 		}
 	}
 	
@@ -70,6 +75,10 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = toReplace.replaceAll("%slot_live%", slotLive);
 			toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_taken%", lastDamageTaken+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_taken_int%", ((int) lastDamageTaken)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%pitch%", pitch+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_int%", ((int) pitch)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive%", pitchPositive+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive_int%", ((int) pitchPositive)+"", false);
 		}
 		
 		return toReplace;
