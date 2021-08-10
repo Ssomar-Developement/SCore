@@ -134,7 +134,7 @@ public enum CenteredMessage{
 	private final static int CENTER_PX = 154;
 
 	public static void sendCenteredMessage(Player player, String message) {
-		player.sendMessage(message);
+		player.sendMessage(convertIntoCenteredMessage(message));
 	}
 	
 	public static String convertIntoCenteredMessage(String message){
