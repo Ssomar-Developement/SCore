@@ -163,7 +163,7 @@ public class InteractionGUI implements Listener{
 			break;
 			
 		case "RequiredEIGUIManager":
-			RequiredEIGUIManager.getInstance().clicked(player, itemS);
+			RequiredEIGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "EntityConditionsGUIManager":

@@ -21,6 +21,7 @@ public abstract class ConditionGUIAbstract extends GUIAbstract{
 	
 	public abstract void loadTheGUI();
 	
+	@Override
 	public void reloadGUI() {
 		conditions.init();
 		this.loadTheGUI();

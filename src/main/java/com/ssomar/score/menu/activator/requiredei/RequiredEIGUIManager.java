@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.GUIManager;
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
@@ -22,7 +22,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
+public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 
 	private static RequiredEIGUIManager instance;
 
@@ -35,103 +35,89 @@ public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
 		cache.put(p, new RequiredEIGUI(sPlugin, sObject, activator, rEI));
 		cache.get(p).openGUISync(p);
 	}
-
+	
 	@SuppressWarnings("deprecation")
-	public void clicked(Player p, ItemStack item) {
-		if(item != null) {
-			if(item.hasItemMeta()) {
-				SPlugin sPlugin = cache.get(p).getsPlugin();
-				SObject sObject = cache.get(p).getSObject();
-				SActivator sAct = cache.get(p).getSAct();
-				String name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
-				String plName = sPlugin.getNameDesign();
+	@Override
+	public boolean allClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		
+		if(i.name.contains(RequiredEIGUI.CONSUME)) cache.get(i.player).changeBoolean(RequiredEIGUI.CONSUME);
 
-				if(name.contains(RequiredEIGUI.CONSUME)) cache.get(p).changeBoolean(RequiredEIGUI.CONSUME);
+		else if(i.name.contains(RequiredEIGUI.EI_ID)) {
+			requestWriting.put(i.player, RequiredEIGUI.EI_ID);
+			i.player.closeInventory();
+			space(i.player);
 
-				else if(name.contains(RequiredEIGUI.EI_ID)) {
-					requestWriting.put(p, RequiredEIGUI.EI_ID);
-					p.closeInventory();
-					space(p);
+			TextComponent message = new TextComponent( StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &aSelect an ID below: "));
+			i.player.spigot().sendMessage(message);
 
-					TextComponent message = new TextComponent( StringConverter.coloredString("&a&l"+plName+" &aSelect an ID below: "));
-					p.spigot().sendMessage(message);
+			List<TextComponent> listItems = new ArrayList<>();
+			for(Item _i : ItemManager.getInstance().getLoadedItems()) {
+				TextComponent newText;
 
-					List<TextComponent> listItems = new ArrayList<>();
-					for(Item _i : ItemManager.getInstance().getLoadedItems()) {
-						TextComponent newText;
+				newText = new TextComponent( StringConverter.coloredString("&5&l[&d&l"+_i.getIdentification()+"&5&l]"));
+				newText.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, _i.getIdentification() ));
+				newText.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&aSelect the EI with ID: &e"+_i.getIdentification()) ).create() ) );
 
-						newText = new TextComponent( StringConverter.coloredString("&5&l[&d&l"+_i.getIdentification()+"&5&l]"));
-						newText.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, _i.getIdentification() ));
-						newText.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&aSelect the EI with ID: &e"+_i.getIdentification()) ).create() ) );
-
-						listItems.add(newText);
-					}
-
-					for(int i =0 ; i<listItems.size(); i++) {
-						TextComponent result;
-						if(i+1!=listItems.size()) {
-							(result= listItems.get(i)).addExtra("  ");
-							result.addExtra(listItems.get(i+1));
-							i++;
-						}
-						else {
-							result= listItems.get(i);
-						}
-						p.spigot().sendMessage(result);
-					}
-					space(p);
-				}
-
-				else if(name.contains(RequiredEIGUI.AMOUNT)) {
-					requestWriting.put(p, RequiredEIGUI.AMOUNT);
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &aEnter a cooldown (min 0, in seconds):"));
-					space(p);
-				}
-
-				else if(name.contains(RequiredEIGUI.VALID_USAGES)) {
-					requestWriting.put(p, RequiredEIGUI.VALID_USAGES);
-					if(!currentWriting.containsKey(p)) {
-
-						List<String> lore= cache.get(p).getByName(RequiredEIGUI.VALID_USAGES).getItemMeta().getLore().subList(3, cache.get(p).getByName(RequiredEIGUI.VALID_USAGES).getItemMeta().getLore().size());
-						List<String> convert = new ArrayList<>();
-
-						for(String str: lore) {
-							if(str.contains("ALL USAGE IS VALID")) break;
-							else {
-								convert.add(str);	
-							}
-						}
-						currentWriting.put(p, convert);
-					}
-					p.closeInventory();
-					space(p);
-					p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION VALID USAGES:"));
-					this.showValidUsagesEditor(p);
-					space(p);
-				}
-
-				else if(name.contains("Reset")) {
-					cache.replace(p, new RequiredEIGUI(sPlugin, sObject, sAct, new RequiredEI(cache.get(p).getActually(RequiredEIGUI.ID))));
-					cache.get(p).openGUISync(p);
-				}
-
-				else if(name.contains("Save") || name.contains("Create this required EI")) {
-					this.saveTheConfiguration(p);
-					sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
-					RequiredEIsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sObject.getActivator(sAct.getID()));
-				}
-
-				else if(name.contains("Exit")) {
-					p.closeInventory();
-				}
-
-				else if(name.contains("Back")) {
-					RequiredEIsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sAct);
-				}
+				listItems.add(newText);
 			}
+
+			for(int j = 0 ; j < listItems.size(); j++) {
+				TextComponent result;
+				if(j+1 != listItems.size()) {
+					(result = listItems.get(j)).addExtra("  ");
+					result.addExtra(listItems.get(j+1));
+					j++;
+				}
+				else {
+					result= listItems.get(j);
+				}
+				i.player.spigot().sendMessage(result);
+			}
+			space(i.player);
 		}
+
+		else if(i.name.contains(RequiredEIGUI.AMOUNT)) {
+			requestWriting.put(i.player, RequiredEIGUI.AMOUNT);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &aEnter a cooldown (min 0, in seconds):"));
+			space(i.player);
+		}
+
+		else if(i.name.contains(RequiredEIGUI.VALID_USAGES)) {
+			requestWriting.put(i.player, RequiredEIGUI.VALID_USAGES);
+			if(!currentWriting.containsKey(i.player)) {
+
+				List<String> lore= cache.get(i.player).getByName(RequiredEIGUI.VALID_USAGES).getItemMeta().getLore().subList(3, cache.get(i.player).getByName(RequiredEIGUI.VALID_USAGES).getItemMeta().getLore().size());
+				List<String> convert = new ArrayList<>();
+
+				for(String str: lore) {
+					if(str.contains("ALL USAGE IS VALID")) break;
+					else {
+						convert.add(str);	
+					}
+				}
+				currentWriting.put(i.player, convert);
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION VALID USAGES:"));
+			this.showValidUsagesEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains("Save") || i.name.contains("Create this required EI")) {
+			this.saveTheConfiguration(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			RequiredEIsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
+
+		else if(i.name.contains("Back")) {
+			RequiredEIsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		else return false;
+		
+		return true;
 	}
 
 	public void receivedMessage(Player p, String message) {
@@ -381,5 +367,53 @@ public class RequiredEIGUIManager extends GUIManager<RequiredEIGUI>{
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<RequiredEIGUI> interact) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

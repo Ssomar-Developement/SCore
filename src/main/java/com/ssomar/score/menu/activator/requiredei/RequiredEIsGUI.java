@@ -21,18 +21,18 @@ public class RequiredEIsGUI extends GUIAbstract {
 	public RequiredEIsGUI(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - RequiredEIs - Page 1", 5*9, sPlugin, sObject, sActivator);
 		setIndex(1);
-		loadItems(p, sObject, sActivator);
+		loadItems(p);
 	}
 
 	// other pages
 	public RequiredEIsGUI(int index, Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - RequiredEIs - Page "+index, 5*9, sPlugin, sObject, sActivator);
 		setIndex(index);
-		loadItems(p, sObject, sActivator);
+		loadItems(p);
 	}
 
-	public void loadItems(Player p, SObject sObject, SActivator sActivator) {
-		List<RequiredEI> rEIs = sActivator.getRequiredExecutableItems();
+	public void loadItems(Player p) {
+		List<RequiredEI> rEIs = this.getSAct().getRequiredExecutableItems();
 		int i = 0;
 		int total = 0;
 		for(RequiredEI rEI : rEIs) {
@@ -74,11 +74,11 @@ public class RequiredEIsGUI extends GUIAbstract {
 
 		createItem(GREEN, 	1 , 40, 	"&2&l✚ &aNew RequiredEI", 	false, false);
 		
-		createItem(Material.BOOK, 							1 , 42, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 43, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+sActivator.getID());
+		createItem(Material.BOOK, 							1 , 42, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 43, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		//Last Edit
-		if(RequiredEIGUIManager.getInstance().getCache().containsKey(p)) {
+		if(p != null && RequiredEIGUIManager.getInstance().getCache().containsKey(p)) {
 			createItem(BLUE, 							1 , 39, "&3&l✦ &bReturn to your last edit", 		false, false, 	"", "&7&oClick here to continue" , "&7&oyour last edit" );
 		}
 	}
@@ -89,5 +89,10 @@ public class RequiredEIsGUI extends GUIAbstract {
 
 	public static void setIndex(int index) {
 		RequiredEIsGUI.index = index;
+	}
+
+	@Override
+	public void reloadGUI() {
+		this.loadItems(null);
 	}
 }

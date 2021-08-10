@@ -17,6 +17,8 @@ public abstract class GUIAbstract extends GUI{
 		this.sAct = sAct;
 	}
 	
+	public abstract void reloadGUI();
+	
 	public SPlugin getsPlugin() {
 		return sPlugin;
 	}

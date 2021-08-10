@@ -38,15 +38,15 @@ public class RequiredEIGUI extends GUIAbstract{
 		}
 		String idStr = "requiredEI"+id;
 		RequiredEI rEI = new RequiredEI(idStr);
-		this.fillTheGUI(sObject, activator, rEI);
+		this.fillTheGUI(rEI);
 	}
 	
 	public RequiredEIGUI(SPlugin sPlugin, SObject sObject, SActivator activator, RequiredEI rEI) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - RequiredEI", 4*9, sPlugin, sObject, activator);
-		this.fillTheGUI(sObject, activator, rEI);
+		this.fillTheGUI(rEI);
 	}
 
-	public void fillTheGUI(SObject sObject, SActivator activator, RequiredEI rEI) {
+	public void fillTheGUI(RequiredEI rEI) {
 		//Main Options
 		createItem(Material.NAME_TAG,						1 , 0, 	TITLE_COLOR+EI_ID, 	false,	false, "", "&a✎ Click here to change", "&7actually:");
 		this.updateActually(EI_ID, rEI.getEI_ID());
@@ -61,8 +61,8 @@ public class RequiredEIGUI extends GUIAbstract{
 		this.updateValidUsages(rEI.getValidUsages());
 
 		createItem(Material.BOOK,							1 , 4, 	"&a&l"+ID, 	false,	false, "", "&7actually: &e"+rEI.getId());
-		createItem(Material.BOOK, 							1 , 33, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+sObject.getID());
-		createItem(Material.BOOK, 							1 , 34, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+activator.getID());
+		createItem(Material.BOOK, 							1 , 33, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 34, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		//Reset menu
 		createItem(ORANGE, 					1 , 28, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of this required EI" );
@@ -104,6 +104,12 @@ public class RequiredEIGUI extends GUIAbstract{
 
 	public void setNewRequiredEI(boolean newRequiredEI) {
 		this.newRequiredEI = newRequiredEI;
+	}
+
+	@Override
+	public void reloadGUI() {
+		RequiredEI rEI = new RequiredEI(this.getActually(RequiredEIGUI.ID));
+		this.fillTheGUI(rEI);
 	}
 
 

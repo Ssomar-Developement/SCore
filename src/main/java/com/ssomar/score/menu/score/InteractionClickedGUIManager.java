@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
+import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -27,8 +27,9 @@ public class InteractionClickedGUIManager<T> {
 	
 	public void resetGUI() {
 		gui = (GUI) cache.get(player);
-		if(gui instanceof ConditionGUIAbstract) {
-			((ConditionGUIAbstract) gui).reloadGUI();
+		
+		if(gui instanceof GUIAbstract) {
+			((GUIAbstract) gui).reloadGUI();
 		}
 	}
 }
