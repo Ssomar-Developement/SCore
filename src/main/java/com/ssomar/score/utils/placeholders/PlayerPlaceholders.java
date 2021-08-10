@@ -63,6 +63,7 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 		String toReplace = s;
 		if(playerUUID != null) {
 			toReplace = toReplace.replaceAll("%player%", player);
+			toReplace = toReplace.replaceAll("%player_name%", player);
 			toReplace = toReplace.replaceAll("%player_uuid%", playerUUID.toString());
 			toReplace = replaceCalculPlaceholder(toReplace, "%x%", x+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%y%", y+"", false);
