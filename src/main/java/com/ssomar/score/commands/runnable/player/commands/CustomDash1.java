@@ -23,8 +23,8 @@ public class CustomDash1 extends PlayerCommand{
 
 	private static void pullEntityToLocation(Entity e, Location loc) {
 		Location entityLoc = e.getLocation();
-		entityLoc.setY(entityLoc.getY() + 0.5D);
-		e.teleport(entityLoc);
+		Vector vec = e.getVelocity().clone().setY(entityLoc.getY() + 0.5D);
+		e.setVelocity(vec);
 		double g = -0.08D;
 		double d = loc.distance(entityLoc);
 		double t = d;

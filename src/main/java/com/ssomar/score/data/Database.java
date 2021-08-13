@@ -37,7 +37,7 @@ public class Database {
 
 		try (Connection conn = DriverManager.getConnection(url)) {
 			if (conn != null) {
-				System.out.println(SCore.NAME_2+" Connexion to the db...");
+				SCore.getPlugin().getLogger().info(SCore.NAME_2+" Connexion to the db...");
 			}
 
 		} catch (SQLException e) {
@@ -68,7 +68,7 @@ public class Database {
 			//System.out.println("[ExecutableItems] "+"Connexion OKAY");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(SCore.NAME_2+" "+e.getMessage());
+			SCore.getPlugin().getLogger().severe(SCore.NAME_2+" "+e.getMessage());
 		}
 		return conn;
 	}

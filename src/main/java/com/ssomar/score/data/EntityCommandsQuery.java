@@ -30,7 +30,7 @@ public class EntityCommandsQuery {
 
 	public static void createNewTable(Connection conn) {
 		try (Statement stmt = conn.createStatement()) {
-			System.out.println(SCore.NAME_2+" Verification of the table "+TABLE_COMMANDS_ENTITY_NAME+"...");
+			SCore.getPlugin().getLogger().info(SCore.NAME_2+" Verification of the table "+TABLE_COMMANDS_ENTITY_NAME+"...");
 			stmt.execute(CREATE_TABLE);
 		} catch (SQLException e) {
 			System.out.println(SCore.NAME_2+" "+e.getMessage());
