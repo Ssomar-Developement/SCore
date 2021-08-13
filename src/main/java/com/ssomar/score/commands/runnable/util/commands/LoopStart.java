@@ -25,13 +25,13 @@ public class LoopStart implements SCommand{
 	@Override
 	public ChatColor getColor() {
 		// TODO Auto-generated method stub
-		return null;
+		return ChatColor.YELLOW;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
 		// TODO Auto-generated method stub
-		return null;
+		return ChatColor.GOLD;
 	}
 	
 }

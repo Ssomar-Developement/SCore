@@ -56,7 +56,7 @@ public class Database {
 			if(GeneralConfig.getInstance().isUseMySQL()){
 				MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
 				dataSource.setServerName(GeneralConfig.getInstance().getDbIP());
-				dataSource.setPortNumber(3306);
+				dataSource.setPortNumber(GeneralConfig.getInstance().getDbPort());
 				dataSource.setDatabaseName(GeneralConfig.getInstance().getDbName());
 				dataSource.setUser(GeneralConfig.getInstance().getDbUser());
 				dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());

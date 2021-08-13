@@ -1,6 +1,7 @@
 package com.ssomar.score.menu.conditions.blockcdt;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
@@ -15,6 +16,12 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_MUST_BE_NOT_POWERED = "ifMustbeNotPowered";
 	public static final String IF_MUST_BE_NATURAL = "ifMustBeNatural";
 	public static final String AROUND_BLOCK_CDT = "Around block conditions";
+	public static final String BLOCK_X_CDT = "if block location X condition";
+	public static final String BLOCK_X_CDT2 = "if block location X 2 condition";
+	public static final String BLOCK_Y_CDT = "if block location Y condition";
+	public static final String BLOCK_Y_CDT2 = "if block location Y 2 condition";
+	public static final String BLOCK_Z_CDT = "if block location Z condition";
+	public static final String BLOCK_Z_CDT2 = "if block location Z 2 condition";
 	
 	public BlockConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, BlockConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Block Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -41,6 +48,30 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateBoolean(IF_MUST_BE_NATURAL, conditions.isIfMustbeNatural());
 		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_X_CDT, 	false,	false, "&7&oThe block location X must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosX(conditions.getIfBlockLocationX());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_X_CDT2, 	false,	false, "&7&oThe block location X must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosX2(conditions.getIfBlockLocationX2());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_Y_CDT, 	false,	false, "&7&oThe block location Y must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosY(conditions.getIfBlockLocationY());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_Y_CDT2, 	false,	false, "&7&oThe block location Y must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosY2(conditions.getIfBlockLocationY2());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_Z_CDT, 	false,	false, "&7&oThe block location Z must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosZ(conditions.getIfBlockLocationZ());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_Z_CDT2, 	false,	false, "&7&oThe block location Z must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfPosZ2(conditions.getIfBlockLocationZ2());
+		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+AROUND_BLOCK_CDT, 	false,	false, "&7&oAround blocks conditions", "&a✎ Click here to edit", "&7>> &e"+conditions.getBlockAroundConditions().size()+" &7conditions");
 		i++;
 		
@@ -54,5 +85,72 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.BOOK, 			1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
 		createItem(Material.BOOK, 			1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
+	}
+	
+	
+	public void updateIfPosX(String condition){
+		ItemStack item = this.getByName(BLOCK_X_CDT);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfPosX() {
+		if(this.getActually(this.getByName(BLOCK_X_CDT)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(BLOCK_X_CDT));
+	}
+	
+	public void updateIfPosX2(String condition){
+		ItemStack item = this.getByName(BLOCK_X_CDT2);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfPosX2() {
+		if(this.getActually(this.getByName(BLOCK_X_CDT2)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(BLOCK_X_CDT2));
+	}
+	
+	public void updateIfPosY(String condition){
+		ItemStack item = this.getByName(BLOCK_Y_CDT);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfPosY() {
+		if(this.getActually(this.getByName(BLOCK_Y_CDT)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(BLOCK_Y_CDT));
+	}
+	
+	public void updateIfPosY2(String condition){
+		ItemStack item = this.getByName(BLOCK_Y_CDT2);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+	
+	public String getIfPosY2() {
+		if(this.getActually(this.getByName(BLOCK_Y_CDT2)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(BLOCK_Y_CDT2));
+	}
+	
+	public void updateIfPosZ(String condition){
+		ItemStack item = this.getByName(BLOCK_Z_CDT);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+	
+	public String getIfPosZ() {
+		if(this.getActually(this.getByName(BLOCK_Z_CDT)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(BLOCK_Z_CDT));
+	}
+	
+	public void updateIfPosZ2(String condition){
+		ItemStack item = this.getByName(BLOCK_Z_CDT2);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+	
+	public String getIfPosZ2() {
+		if(this.getActually(this.getByName(BLOCK_Z_CDT2)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(BLOCK_Z_CDT2));
 	}
 }

@@ -258,6 +258,10 @@ public class InteractionGUI implements Listener{
 			e.setCancelled(true);
 			PlayerConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
+		else if(BlockConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			BlockConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
 		else if(EntityConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			EntityConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());

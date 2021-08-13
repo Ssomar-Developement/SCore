@@ -20,6 +20,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_NOT_SNEAKING = "ifNotSneaking";
 	public static final String IF_BLOCKING = "ifBlocking";
 	public static final String IF_NOT_BLOCKING = "ifNotBlocking";
+	public static final String IF_SPRINTING = "ifSprinting";
 	public static final String IF_SWIMMING = "ifSwimming";
 	public static final String IF_GLIDING = "ifGliding";
 	public static final String IF_FLYING = "ifFlying";
@@ -45,7 +46,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_POS_Z = "ifPosZ";
 
 	public PlayerConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 4*9, sPlugin, sObject, sActivator, detail, conditions);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 5*9, sPlugin, sObject, sActivator, detail, conditions);
 	}
 	
 	@Override
@@ -68,6 +69,10 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NOT_BLOCKING, 	false,	false, "&7&oThe player must not block with shield ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_NOT_BLOCKING, conditions.isIfNotBlocking());
+		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_SPRINTING, 	false,	false, "&7&oThe player must sprint ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_SPRINTING, conditions.isIfSprinting());
 
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_SWIMMING, 	false,	false, "&7&oThe player must swim ?", "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -163,16 +168,16 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		
 		
 
-		createItem(RED, 					1 , 27, "&4&l▶ &cBack to conditions config", 	false, false);
+		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
 
-		createItem(ORANGE, 					1 , 28, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of player conditions" );
+		createItem(ORANGE, 					1 , 37, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of player conditions" );
 
-		createItem(GREEN, 					1 , 35, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of player conditions" );
+		createItem(GREEN, 					1 , 44, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of player conditions" );
 
-		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
+		createItem(WRITABLE_BOOK, 	1 , 40, 	"&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
-		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
+		createItem(Material.BOOK, 	1 , 42, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 43, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 
 

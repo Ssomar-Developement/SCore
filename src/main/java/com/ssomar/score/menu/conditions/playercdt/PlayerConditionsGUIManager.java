@@ -45,6 +45,8 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 
 		else if(i.name.contains(PlayerConditionsGUI.IF_NOT_BLOCKING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING);
 
+		else if(i.name.contains(PlayerConditionsGUI.IF_SPRINTING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_SPRINTING);
+
 		else if(i.name.contains(PlayerConditionsGUI.IF_SWIMMING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_SWIMMING);
 
 		else if(i.name.contains(PlayerConditionsGUI.IF_GLIDING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_GLIDING);
@@ -853,6 +855,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		pC.setIfBlocking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_BLOCKING));
 		pC.setIfNotBlocking(cache.get(p).getBoolean(PlayerConditionsGUI.IF_NOT_BLOCKING));
 		pC.setIfSwimming(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SWIMMING));
+		pC.setIfSprinting(cache.get(p).getBoolean(PlayerConditionsGUI.IF_SPRINTING));
 		pC.setIfGliding(cache.get(p).getBoolean(PlayerConditionsGUI.IF_GLIDING));
 		pC.setIfFlying(cache.get(p).getBoolean(PlayerConditionsGUI.IF_FLYING));
 		pC.setIfIsInTheAir(cache.get(p).getBoolean(PlayerConditionsGUI.IF_IS_IN_THE_AIR));

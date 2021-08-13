@@ -7,6 +7,7 @@
 locale: EN
 useMySQL: false
 dbIP: 127.0.0.1
+dbPort: 3306
 dbName: myDB
 dbUser: root
 dbPassword: rootPassword

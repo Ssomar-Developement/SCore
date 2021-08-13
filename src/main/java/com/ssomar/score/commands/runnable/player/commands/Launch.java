@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.DragonFireball;
@@ -20,6 +21,8 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.entity.SplashPotion;
 import org.bukkit.entity.Trident;
 import org.bukkit.entity.WitherSkull;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.util.Vector;
 
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
@@ -30,6 +33,7 @@ import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.customprojectiles.CustomArrow;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
@@ -52,7 +56,7 @@ public class Launch extends PlayerCommand{
 				ProjectilesEvt.getInstance().getPlayerHasLauchedProjectileByLaunchCommand().add(receiver.getUniqueId());
 				Entity entity = null;
 
-				if(args.get(0).equalsIgnoreCase("ARROW")) entity = receiver.launchProjectile(Arrow.class);
+				if(args.get(0).equalsIgnoreCase("ARROW")) entity = receiver.launchProjectile(CustomArrow.class);
 				else if(args.get(0).equalsIgnoreCase("DRAGONFIREBALL")) entity = receiver.launchProjectile(DragonFireball.class);
 				else if(args.get(0).equalsIgnoreCase("EGG")) entity = receiver.launchProjectile(Egg.class);
 				else if(args.get(0).equalsIgnoreCase("ENDERPEARL")) entity = receiver.launchProjectile(EnderPearl.class);
@@ -119,7 +123,7 @@ public class Launch extends PlayerCommand{
 					}
 					projectile.transformTheProjectile(entity, receiver);
 
-				}
+				}	
 
 				if(entity != null) {
 					if(!SCore.is1v12() && !SCore.is1v13()) {

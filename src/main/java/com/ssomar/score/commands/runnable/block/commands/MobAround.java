@@ -74,6 +74,7 @@ public class MobAround extends BlockCommand{
 
 					int startForCommand = 1;
 
+
 					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation(), distance, distance, distance)) {
 						if(e instanceof LivingEntity && !(e instanceof Player)) {
 

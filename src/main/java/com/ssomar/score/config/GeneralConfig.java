@@ -12,6 +12,8 @@ public class GeneralConfig extends Config {
 	
 	private String dbIP;
 	
+	private int dbPort;
+	
 	private String dbName;
 	
 	private String dbUser;
@@ -40,6 +42,7 @@ public class GeneralConfig extends Config {
 		
 		useMySQL = config.getBoolean("useMySQL", false);
 		dbIP = config.getString("dbIP", "");
+		dbPort = config.getInt("dbPort", 3306);
 		dbName = config.getString("dbName", "");
 		dbUser = config.getString("dbUser", "");
 		dbPassword = config.getString("dbPassword", "");
@@ -97,6 +100,14 @@ public class GeneralConfig extends Config {
 
 	public void setDbPassword(String dbPassword) {
 		this.dbPassword = dbPassword;
+	}
+
+	public int getDbPort() {
+		return dbPort;
+	}
+
+	public void setDbPort(int dbPort) {
+		this.dbPort = dbPort;
 	}
 	
 }

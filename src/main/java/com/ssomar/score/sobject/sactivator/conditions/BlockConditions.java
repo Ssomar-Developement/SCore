@@ -21,6 +21,7 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.MyCoreProtectAPI;
+import com.ssomar.score.utils.StringCalculation;
 
 public class BlockConditions extends Conditions{
 
@@ -39,6 +40,32 @@ public class BlockConditions extends Conditions{
 	private boolean ifMustBeNatural;
 	public static final String IF_MUST_BE_NATURAL_MSG = " &cThe block must be natural to active the activator: &6%activator% &cof this item!";
 	private String ifMustBeNaturalMsg;
+	
+	private String ifBlockLocationX;
+	public static final String IF_BLOCK_LOCATION_X_MSG = " &cThe block location X is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockLocationXMsg;
+	
+	private String ifBlockLocationX2;
+	public static final String IF_BLOCK_LOCATION_X2_MSG = " &cThe block location X is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockLocationX2Msg;
+	
+	private String ifBlockLocationY;
+	public static final String IF_BLOCK_LOCATION_Y_MSG = " &cThe block location Y is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockLocationYMsg;
+	
+	private String ifBlockLocationY2;
+	public static final String IF_BLOCK_LOCATION_Y2_MSG = " &cThe block location Y is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockLocationY2Msg;
+	
+	private String ifBlockLocationZ;
+	public static final String IF_BLOCK_LOCATION_Z_MSG = " &cThe block location Z is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockLocationZMsg;
+	
+	private String ifBlockLocationZ2;
+	public static final String IF_BLOCK_LOCATION_Z2_MSG = " &cThe block location Z is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockLocationZ2Msg;
+	
+
 
 	List<AroundBlockCondition> blockAroundConditions;
 
@@ -55,6 +82,24 @@ public class BlockConditions extends Conditions{
 
 		this.ifMustBeNatural = false;
 		this.ifMustBeNaturalMsg = IF_MUST_BE_NATURAL_MSG;	
+		
+		ifBlockLocationX = "";
+		ifBlockLocationXMsg =IF_BLOCK_LOCATION_X_MSG;
+		
+		ifBlockLocationX2 = "";
+		ifBlockLocationX2Msg =IF_BLOCK_LOCATION_X2_MSG;
+		
+		ifBlockLocationY = "";
+		ifBlockLocationYMsg =IF_BLOCK_LOCATION_Y_MSG;
+		
+		ifBlockLocationY2 = "";
+		ifBlockLocationY2Msg =IF_BLOCK_LOCATION_Y2_MSG;
+		
+		ifBlockLocationZ = "";
+		ifBlockLocationZMsg =IF_BLOCK_LOCATION_Z_MSG;
+		
+		ifBlockLocationZ2 = "";
+		ifBlockLocationZ2Msg =IF_BLOCK_LOCATION_Z2_MSG;
 
 
 		blockAroundConditions = new ArrayList<>();
@@ -127,6 +172,36 @@ public class BlockConditions extends Conditions{
 				if(!bAC.verif(b, p)) return false;
 			}
 		}
+		
+		if(ifBlockLocationX != "" && !StringCalculation.calculation(ifBlockLocationX, b.getLocation().getX())) {
+			this.getSm().sendMessage(p, ifBlockLocationXMsg);
+			return false;
+		}
+		
+		if(ifBlockLocationX2 != "" && !StringCalculation.calculation(ifBlockLocationX2, b.getLocation().getX())) {
+			this.getSm().sendMessage(p, ifBlockLocationX2Msg);
+			return false;
+		}
+		
+		if(ifBlockLocationY != "" && !StringCalculation.calculation(ifBlockLocationY, b.getLocation().getY())) {
+			this.getSm().sendMessage(p, ifBlockLocationYMsg);
+			return false;
+		}
+		
+		if(ifBlockLocationY2 != "" && !StringCalculation.calculation(ifBlockLocationY2, b.getLocation().getY())) {
+			this.getSm().sendMessage(p, ifBlockLocationY2Msg);
+			return false;
+		}
+		
+		if(ifBlockLocationZ != "" && !StringCalculation.calculation(ifBlockLocationZ, b.getLocation().getZ())) {
+			this.getSm().sendMessage(p, ifBlockLocationZMsg);
+			return false;
+		}
+		
+		if(ifBlockLocationZ2 != "" && !StringCalculation.calculation(ifBlockLocationZ2, b.getLocation().getZ())) {
+			this.getSm().sendMessage(p, ifBlockLocationZ2Msg);
+			return false;
+		}
 
 		return true;
 	}
@@ -147,6 +222,23 @@ public class BlockConditions extends Conditions{
 		bCdt.setIfMustBeNatural(blockCdtSection.getBoolean("ifMustBeNatural", false));
 		bCdt.setIfIsNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", "&4&l"+pluginName+IF_MUST_BE_NATURAL_MSG));
 
+		bCdt.setIfBlockLocationX(blockCdtSection.getString("ifBlockLocationX", ""));
+		bCdt.setIfBlockLocationXMsg(blockCdtSection.getString("ifBlockLocationXMsg", "&4&l"+pluginName+IF_BLOCK_LOCATION_X_MSG));
+		
+		bCdt.setIfBlockLocationX2(blockCdtSection.getString("ifBlockLocationX2", ""));
+		bCdt.setIfBlockLocationX2Msg(blockCdtSection.getString("ifBlockLocationX2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_X2_MSG));
+		
+		bCdt.setIfBlockLocationY(blockCdtSection.getString("ifBlockLocationY", ""));
+		bCdt.setIfBlockLocationYMsg(blockCdtSection.getString("ifBlockLocationYMsg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Y_MSG));
+		
+		bCdt.setIfBlockLocationY2(blockCdtSection.getString("ifBlockLocationY2", ""));
+		bCdt.setIfBlockLocationY2Msg(blockCdtSection.getString("ifBlockLocationY2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Y2_MSG));
+		
+		bCdt.setIfBlockLocationZ(blockCdtSection.getString("ifBlockLocationZ", ""));
+		bCdt.setIfBlockLocationZMsg(blockCdtSection.getString("ifBlockLocationZMsg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Z_MSG));
+		
+		bCdt.setIfBlockLocationZ2(blockCdtSection.getString("ifBlockLocationZ2", ""));
+		bCdt.setIfBlockLocationZ2Msg(blockCdtSection.getString("ifBlockLocationZ2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Z2_MSG));
 
 		if(blockCdtSection.contains("blockAroundCdts")) {
 			for(String s : blockCdtSection.getConfigurationSection("blockAroundCdts").getKeys(false)) {
@@ -194,6 +286,30 @@ public class BlockConditions extends Conditions{
 		if(bC.isIfMustbeNatural()) pCConfig.set("ifMustBeNatural", true); 
 		else pCConfig.set("ifMustBeNatural", null);
 		pCConfig.set("ifMustBeNaturalMsg", bC.getIfMustBeNaturalMsg());
+		
+		if(bC.ifBlockLocationX != "") pCConfig.set("ifBlockLocationX", bC.ifBlockLocationX); 
+		else pCConfig.set("ifBlockLocationX", null);
+		pCConfig.set("ifBlockLocationXMsg", bC.ifBlockLocationXMsg);
+		
+		if(bC.ifBlockLocationX2 != "") pCConfig.set("ifBlockLocationX2", bC.ifBlockLocationX2); 
+		else pCConfig.set("ifBlockLocationX2", null);
+		pCConfig.set("ifBlockLocationX2Msg", bC.ifBlockLocationX2Msg);
+		
+		if(bC.ifBlockLocationY != "") pCConfig.set("ifBlockLocationY", bC.ifBlockLocationY); 
+		else pCConfig.set("ifBlockLocationY", null);
+		pCConfig.set("ifBlockLocationYMsg", bC.ifBlockLocationYMsg);
+		
+		if(bC.ifBlockLocationY2 != "") pCConfig.set("ifBlockLocationY2", bC.ifBlockLocationY2); 
+		else pCConfig.set("ifBlockLocationY2", null);
+		pCConfig.set("ifBlockLocationY2Msg", bC.ifBlockLocationY2Msg);
+		
+		if(bC.ifBlockLocationZ != "") pCConfig.set("ifBlockLocationZ", bC.ifBlockLocationZ); 
+		else pCConfig.set("ifBlockLocationZ", null);
+		pCConfig.set("ifBlockLocationZMsg", bC.ifBlockLocationZMsg);
+		
+		if(bC.ifBlockLocationZ2 != "") pCConfig.set("ifBlockLocationZ2", bC.ifBlockLocationZ2); 
+		else pCConfig.set("ifBlockLocationZ2", null);
+		pCConfig.set("ifBlockLocationZ2Msg", bC.ifBlockLocationZ2Msg);
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
@@ -279,6 +395,110 @@ public class BlockConditions extends Conditions{
 
 	public void setIfMustBeNotPoweredMsg(String ifMustBeNotPoweredMsg) {
 		this.ifMustBeNotPoweredMsg = ifMustBeNotPoweredMsg;
+	}
+
+	public String getIfBlockLocationX() {
+		return ifBlockLocationX;
+	}
+
+	public void setIfBlockLocationX(String ifBlockLocationX) {
+		this.ifBlockLocationX = ifBlockLocationX;
+	}
+
+	public String getIfBlockLocationXMsg() {
+		return ifBlockLocationXMsg;
+	}
+
+	public void setIfBlockLocationXMsg(String ifBlockLocationXMsg) {
+		this.ifBlockLocationXMsg = ifBlockLocationXMsg;
+	}
+
+	public String getIfBlockLocationX2() {
+		return ifBlockLocationX2;
+	}
+
+	public void setIfBlockLocationX2(String ifBlockLocationX2) {
+		this.ifBlockLocationX2 = ifBlockLocationX2;
+	}
+
+	public String getIfBlockLocationX2Msg() {
+		return ifBlockLocationX2Msg;
+	}
+
+	public void setIfBlockLocationX2Msg(String ifBlockLocationX2Msg) {
+		this.ifBlockLocationX2Msg = ifBlockLocationX2Msg;
+	}
+
+	public String getIfBlockLocationY() {
+		return ifBlockLocationY;
+	}
+
+	public void setIfBlockLocationY(String ifBlockLocationY) {
+		this.ifBlockLocationY = ifBlockLocationY;
+	}
+
+	public String getIfBlockLocationYMsg() {
+		return ifBlockLocationYMsg;
+	}
+
+	public void setIfBlockLocationYMsg(String ifBlockLocationYMsg) {
+		this.ifBlockLocationYMsg = ifBlockLocationYMsg;
+	}
+
+	public String getIfBlockLocationY2() {
+		return ifBlockLocationY2;
+	}
+
+	public void setIfBlockLocationY2(String ifBlockLocationY2) {
+		this.ifBlockLocationY2 = ifBlockLocationY2;
+	}
+
+	public String getIfBlockLocationY2Msg() {
+		return ifBlockLocationY2Msg;
+	}
+
+	public void setIfBlockLocationY2Msg(String ifBlockLocationY2Msg) {
+		this.ifBlockLocationY2Msg = ifBlockLocationY2Msg;
+	}
+
+	public String getIfBlockLocationZ() {
+		return ifBlockLocationZ;
+	}
+
+	public void setIfBlockLocationZ(String ifBlockLocationZ) {
+		this.ifBlockLocationZ = ifBlockLocationZ;
+	}
+
+	public String getIfBlockLocationZ2() {
+		return ifBlockLocationZ2;
+	}
+
+	public void setIfBlockLocationZ2(String ifBlockLocationZ2) {
+		this.ifBlockLocationZ2 = ifBlockLocationZ2;
+	}
+
+	public String getIfBlockLocationZMsg() {
+		return ifBlockLocationZMsg;
+	}
+
+	public void setIfBlockLocationZMsg(String ifBlockLocationZMsg) {
+		this.ifBlockLocationZMsg = ifBlockLocationZMsg;
+	}
+
+	public String getIfBlockLocationZ2Msg() {
+		return ifBlockLocationZ2Msg;
+	}
+
+	public void setIfBlockLocationZ2Msg(String ifBlockLocationZ2Msg) {
+		this.ifBlockLocationZ2Msg = ifBlockLocationZ2Msg;
+	}
+
+	public boolean isIfMustBeNatural() {
+		return ifMustBeNatural;
+	}
+
+	public void setIfMustBeNaturalMsg(String ifMustBeNaturalMsg) {
+		this.ifMustBeNaturalMsg = ifMustBeNaturalMsg;
 	}
 
 }

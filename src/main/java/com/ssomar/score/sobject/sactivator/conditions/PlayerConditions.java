@@ -46,6 +46,10 @@ public class PlayerConditions extends Conditions{
 	private boolean ifNotBlocking;
 	private static final String IF_NOT_BLOCKING_MSG = " &cYou must not block damage with shield to active the activator: &6%activator% &cof this item!";
 	private String ifNotBlockingMsg;
+	
+	private boolean ifSprinting;
+	private static final String IF_SPRINTING_MSG = " &cYou must sprint to active the activator: &6%activator% &cof this item!";
+	private String ifSprintingMsg;
 
 	private boolean ifSwimming;
 	private static final String IF_SWIMMING_MSG = " &cYou must swin to active the activator: &6%activator% &cof this item!";
@@ -160,6 +164,9 @@ public class PlayerConditions extends Conditions{
 		
 		this.ifNotBlocking = false;
 		this.ifNotBlockingMsg = IF_NOT_BLOCKING_MSG;
+		
+		this.ifSprinting = false;
+		this.ifSprintingMsg = IF_SPRINTING_MSG;
 		
 		this.ifSwimming = false;
 		this.ifSwimmingMsg = IF_SWIMMING_MSG;
@@ -284,6 +291,11 @@ public class PlayerConditions extends Conditions{
 
 		if(this.hasIfSwimming() && ifSwimming && !p.isSwimming()) {
 			this.getSm().sendMessage(toMsg, (this.getIfSwimmingMsg()));
+			return false;
+		}
+		
+		if(this.ifSprinting && !p.isSprinting()) {
+			this.getSm().sendMessage(toMsg, (this.getIfSprintingMsg()));
 			return false;
 		}
 
@@ -500,6 +512,9 @@ public class PlayerConditions extends Conditions{
 
 		pCdt.setIfNotBlocking(playerCdtSection.getBoolean("ifNotBlocking", false));
 		pCdt.setIfNotBlockingMsg(playerCdtSection.getString("ifNotBlockingMsg", "&4&l"+pluginName+IF_NOT_BLOCKING_MSG));
+		
+		pCdt.setIfSprinting(playerCdtSection.getBoolean("ifSprinting", false));
+		pCdt.setIfSprintingMsg(playerCdtSection.getString("ifSprintingMsg", "&4&l"+pluginName+IF_SPRINTING_MSG));
 
 		pCdt.setIfSwimming(playerCdtSection.getBoolean("ifSwimming", false));
 		pCdt.setIfSwimmingMsg(playerCdtSection.getString("ifSwimmingMsg", "&4&l"+pluginName+IF_SWIMMING_MSG));
@@ -681,6 +696,10 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfSwimming()) pCConfig.set("ifSwimming", true); 
 		else pCConfig.set("ifSwimming", null);
 		pCConfig.set("ifSwimmingMsg", pC.getIfSwimmingMsg()); 
+		
+		if(pC.ifSprinting) pCConfig.set("ifSprinting", true); 
+		else pCConfig.set("ifSprinting", null);
+		pCConfig.set("ifSprintingMsg", pC.getIfSprintingMsg()); 
 
 		if(pC.hasIfGliding()) pCConfig.set("ifGliding", true); 
 		else pCConfig.set("ifGliding", null);
@@ -1368,6 +1387,22 @@ public class PlayerConditions extends Conditions{
 
 	public void setIfIsOnTheBlockMsg(String ifIsOnTheBlockMsg) {
 		this.ifIsOnTheBlockMsg = ifIsOnTheBlockMsg;
+	}
+
+	public boolean isIfSprinting() {
+		return ifSprinting;
+	}
+
+	public void setIfSprinting(boolean ifSprinting) {
+		this.ifSprinting = ifSprinting;
+	}
+
+	public String getIfSprintingMsg() {
+		return ifSprintingMsg;
+	}
+
+	public void setIfSprintingMsg(String ifSprintingMsg) {
+		this.ifSprintingMsg = ifSprintingMsg;
 	}
 
 }

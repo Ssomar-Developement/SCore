@@ -35,6 +35,30 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateMessage(BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name, conditions.getIfMustBeNaturalMsg());
 		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_LOCATION_X_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_X_MSG.name, conditions.getIfBlockLocationXMsg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_LOCATION_X2_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_X2_MSG.name, conditions.getIfBlockLocationX2Msg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_LOCATION_Y_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Y_MSG.name, conditions.getIfBlockLocationYMsg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_LOCATION_Y2_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Y2_MSG.name, conditions.getIfBlockLocationY2Msg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_LOCATION_Z_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Z_MSG.name, conditions.getIfBlockLocationZMsg());
+		
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_LOCATION_Z2_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Z2_MSG.name, conditions.getIfBlockLocationZ2Msg());
+		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
 		createItem(ORANGE, 					1 , 19, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of block conditions" );
@@ -51,7 +75,13 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_PLANT_FULLY_GROWN_MSG ("ifPlantFullyGrown message"),
 		IF_IS_POWERED_MSG ("ifIsPowered message"),
 		IF_MUST_BE_NOT_POWERED_MSG ("ifMustBeNotPowered message"),
-		IF_MUST_BE_NATURAL_MSG ("ifMustBeNatural message");
+		IF_MUST_BE_NATURAL_MSG ("ifMustBeNatural message"),
+		IF_BLOCK_LOCATION_X_MSG ("if block location X message"),
+		IF_BLOCK_LOCATION_X2_MSG ("if block location X 2 message"),
+		IF_BLOCK_LOCATION_Y_MSG ("if block location Y message"),
+		IF_BLOCK_LOCATION_Y2_MSG ("if block location Y 2 message"),
+		IF_BLOCK_LOCATION_Z_MSG ("if block location Z message"),
+		IF_BLOCK_LOCATION_Z2_MSG ("if block location Z 2 message");
 		
 		public String name;
 

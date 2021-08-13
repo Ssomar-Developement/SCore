@@ -122,6 +122,12 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<Bloc
 		bC.setIfMustBeNotPoweredMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NOT_POWERED_MSG.name));
 		bC.setIfPlantFullyGrownMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_PLANT_FULLY_GROWN_MSG.name));
 		bC.setIfIsNaturalMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name));
+		bC.setIfBlockLocationXMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_X_MSG.name));
+		bC.setIfBlockLocationX2Msg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_X2_MSG.name));
+		bC.setIfBlockLocationYMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Y_MSG.name));
+		bC.setIfBlockLocationY2Msg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Y2_MSG.name));
+		bC.setIfBlockLocationZMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Z_MSG.name));
+		bC.setIfBlockLocationZ2Msg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Z2_MSG.name));
 		
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sActivator, bC, cache.get(p).getDetail());
 		cache.remove(p);

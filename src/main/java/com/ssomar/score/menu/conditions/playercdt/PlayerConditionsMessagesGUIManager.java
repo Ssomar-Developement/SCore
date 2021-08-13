@@ -142,6 +142,7 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 		pC.setIfPlayerLevelMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_PLAYER_LEVEL_MSG.name));
 		pC.setIfSneakingMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_SNEAKING_MSG.name));
 		pC.setIfSwimmingMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_SWIMMING_MSG.name));
+		pC.setIfSprintingMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_SPRINTING_MSG.name));
 		pC.setIfTargetBlockMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_TARGET_BLOCK_MSG.name));
 		pC.setIfPosXMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_POS_X_MSG.name));
 		pC.setIfPosYMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_POS_Y_MSG.name));

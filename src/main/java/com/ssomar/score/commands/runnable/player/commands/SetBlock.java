@@ -31,10 +31,11 @@ public class SetBlock extends PlayerCommand{
 
 			Block block = receiver.getTargetBlock(set, 5);
 
-			if(block.getType()!=Material.AIR) {
+			if(block.getType() != Material.AIR) {
 
-				block = block.getRelative(BlockFace.valueOf(args.get(0)));	
-				if(Material.matchMaterial(args.get(1).toUpperCase())!=null) {
+				block = block.getRelative(BlockFace.valueOf(args.get(0)));
+				
+				if(Material.matchMaterial(args.get(1).toUpperCase()) != null) {
 					if(SCore.hasWorldGuard) {
 						if(new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 							block.setType(Material.valueOf(args.get(1)));
@@ -42,6 +43,7 @@ public class SetBlock extends PlayerCommand{
 					}
 					else {
 						block.setType(Material.valueOf(args.get(1)));
+						
 					}
 				}
 				else {
@@ -49,7 +51,7 @@ public class SetBlock extends PlayerCommand{
 				}
 			}
 		}catch(Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

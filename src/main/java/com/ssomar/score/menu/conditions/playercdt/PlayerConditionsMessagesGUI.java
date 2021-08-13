@@ -11,7 +11,7 @@ import com.ssomar.score.splugin.SPlugin;
 public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 	
 	public PlayerConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions Messages", 4*9, sPlugin, sObject, sActivator, detail, conditions);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions Messages", 5*9, sPlugin, sObject, sActivator, detail, conditions);
 	}
 
 	@Override
@@ -35,6 +35,10 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateMessage(PlayerConditionsMessages.IF_NOT_BLOCKING_MSG.name, conditions.getIfNotBlockingMsg());
 
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_SPRINTING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_SPRINTING_MSG.name, conditions.getIfSprintingMsg());
+		
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_SWIMMING_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(PlayerConditionsMessages.IF_SWIMMING_MSG.name, conditions.getIfSwimmingMsg());
@@ -128,16 +132,16 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		this.updateMessage(PlayerConditionsMessages.IF_POS_Z_MSG.name, conditions.getIfPosZMsg());
 		
 
-		createItem(RED, 					1 , 27, "&4&l▶ &cBack to conditions config", 	false, false);
+		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
 
-		createItem(ORANGE, 					1 , 28, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of player conditions" );
+		createItem(ORANGE, 					1 , 37, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of player conditions" );
 
-		createItem(GREEN, 					1 , 35, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of player conditions" );
+		createItem(GREEN, 					1 , 44, "&2&l✔ &aSave", 		false,	false, 	"", "&a&oClick here to save" , "&a&oyour modification of player conditions" );
 
-		createItem(WRITABLE_BOOK, 	1 , 31, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
+		createItem(WRITABLE_BOOK, 	1 , 40, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 33, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
-		createItem(Material.BOOK, 	1 , 34, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
+		createItem(Material.BOOK, 	1 , 42, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 43, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 	
 	public enum PlayerConditionsMessages{
@@ -145,6 +149,7 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_NOT_SNEAKING_MSG ("ifNotSneaking message"),
 		IF_BLOCKING_MSG ("ifBlocking message"),
 		IF_NOT_BLOCKING_MSG ("ifNotBlocking message"),
+		IF_SPRINTING_MSG ("ifSprinting message"),
 		IF_SWIMMING_MSG ("ifSwimming message"),
 		IF_GLIDING_MSG ("ifGliding message"),
 		IF_FLYING_MSG ("ifFlying message"),
