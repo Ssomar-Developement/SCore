@@ -28,8 +28,12 @@ public class AroundBlockConditionsGUIManager extends GUIManagerConditions<Around
 		if(!i.name.isEmpty()){
 			AroundBlockCondition aBC = null;
 			for (AroundBlockCondition place :  cache.get(i.player).getList()) {
+				try {
 				if (place.getId().equals(StringConverter.decoloredString(i.name).split("✦ ID: ")[1]))
 					aBC = place;
+				}catch(ArrayIndexOutOfBoundsException e) {
+					continue;
+				}
 			}
 			if (aBC != null) {
 				AroundBlockConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, aBC, cache.get(i.player).getDetail());

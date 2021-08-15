@@ -118,7 +118,7 @@ public class AroundBlockCondition extends Conditions{
 		section.set("westValue", aBC.getWestValue());
 		section.set("eastValue", aBC.getEastValue());
 		section.set("aboveValue", aBC.getAboveValue());
-		section.set("underValue", aBC.getNorthValue());
+		section.set("underValue", aBC.getUnderValue());
 		section.set("blockMustBeExecutableBlock", aBC.getBlockMustBeExecutableBlock());
 
 		List<String> convert = new ArrayList<>();

@@ -60,6 +60,7 @@ public class CustomDash1 extends PlayerCommand{
 				z = Double.valueOf(args.get(2));
 			}
 			catch(Exception e) {
+				SCore.getPlugin().getLogger().severe(SCore.NAME_2+" ERROR for CUSTOMDASH1, one of x, yor z is invalid ! (you can see below the enite error)");
 				e.printStackTrace();
 				return;
 			}

@@ -92,7 +92,7 @@ public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
 		if (index > 1) {
 			createItem(PREVIOUS_PAGE_MAT, 1, 37, "&dPrevious page &5&l◀", false, false);
 		}
-		createItem(RED, 1, 36, "&4&l▶ &cBack to item config", false, false);
+		createItem(RED, 1, 36, "&4&l▶ &cBack", false, false);
 
 		createItem(GREEN, 1, 40, "&2&l✚ &aNew Around block cdt", false, false);
 

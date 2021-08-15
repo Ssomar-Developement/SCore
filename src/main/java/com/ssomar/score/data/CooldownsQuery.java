@@ -6,10 +6,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
+import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
+import com.ssomar.score.events.EntityWalkOnEvent;
+import com.ssomar.score.events.loop.LoopEvent;
+import com.ssomar.score.events.loop.LoopManager;
+import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.cooldowns.Cooldown;
 
 public class CooldownsQuery {
@@ -47,38 +64,50 @@ public class CooldownsQuery {
 	public static void insertCooldowns(Connection conn, List<Cooldown> cooldowns) {
 
 		String sql = "INSERT INTO "+TABLE_COOLDOWNS+" ("+COL_ID+","+COL_UUID+","+COL_COOLDOWN+","+COL_IS_IN_TICK+","+ COL_IS_GLOBAL+","+COL_TIME+","+COL_LOADED+") VALUES(?,?,?,?,?,?,?)";
+		
+		BukkitRunnable runnable = new BukkitRunnable() {
 
-		PreparedStatement pstmt = null;
-		int i = 0;
+			@Override
+			public void run() {
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			for(Cooldown cd : cooldowns) {
-				pstmt.setString(1, cd.getId());
-				pstmt.setString(2, cd.getEntityUUID()+"");
-				pstmt.setInt(3, cd.getCooldown());
-				pstmt.setBoolean(4, cd.isInTick());
-				pstmt.setBoolean(5, cd.isGlobal());
-				pstmt.setLong(6, cd.getTime());
-				pstmt.setBoolean(7, false);
-				pstmt.addBatch();
+				PreparedStatement pstmt = null;
+				int i = 0;
 
-				if (i % 1000 == 0 || i == cooldowns.size()) {
-					pstmt.executeBatch(); // Execute every 1000 items.
+				try {
+					pstmt = conn.prepareStatement(sql);
+					for(Cooldown cd : cooldowns) {
+						if (cd != null){
+							pstmt.setString(1, cd.getId());
+							pstmt.setString(2, cd.getEntityUUID()+"");
+							pstmt.setInt(3, cd.getCooldown());
+							pstmt.setBoolean(4, cd.isInTick());
+							pstmt.setBoolean(5, cd.isGlobal());
+							pstmt.setLong(6, cd.getTime());
+							pstmt.setBoolean(7, false);
+							pstmt.addBatch();
+						}
+
+						if (i % 1000 == 0 || i == cooldowns.size()) {
+							pstmt.executeBatch(); // Execute every 1000 items.
+						}
+					}
+				} catch (SQLException e) {
+					System.out.println(SCore.NAME_2+" "+e.getMessage());
 				}
-			}
-		} catch (SQLException e) {
-			System.out.println(SCore.NAME_2+" "+e.getMessage());
-		}
-		finally {
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				} catch(Exception e){
-					e.printStackTrace();
+				finally {
+					if(pstmt != null){
+						try{
+							pstmt.close();
+						} catch(Exception e){
+							e.printStackTrace();
+						}
+					}
 				}
+				
 			}
-		}
+		};
+		runnable.runTaskAsynchronously(SCore.plugin);
+	
 	}
 
 	public static List<Cooldown> getCooldownsOf(Connection conn, UUID uuid){
