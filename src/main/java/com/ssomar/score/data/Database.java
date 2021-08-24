@@ -61,6 +61,7 @@ public class Database {
 				dataSource.setUser(GeneralConfig.getInstance().getDbUser());
 				dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
 				dataSource.setServerTimezone("UTC");
+				dataSource.setUseSSL(false);
 				conn = dataSource.getConnection();
 			}
 			else conn = DriverManager.getConnection(urlLocal);

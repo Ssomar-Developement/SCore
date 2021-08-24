@@ -35,6 +35,21 @@ public class WorldGuardAPI {
 		return query.testBuild(loc, localPlayer, conditions);
 
 	}
+	
+	public boolean isInPvpZone(Player p, org.bukkit.Location location) {
+
+		if(SCore.is1v12()) return true;
+		
+		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
+		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionQuery query = container.createQuery();
+
+		StateFlag [] conditions = new StateFlag[1];
+		conditions[0] = Flags.PVP;
+		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
+		return query.testState(loc, localPlayer, conditions);
+	}
 
 	public boolean isInRegion(Player p, String name) {
 

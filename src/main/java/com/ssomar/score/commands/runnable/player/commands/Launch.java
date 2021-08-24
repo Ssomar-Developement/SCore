@@ -29,6 +29,7 @@ import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.executableitems.projectiles.CustomProjectileTemplate;
 import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
@@ -122,12 +123,30 @@ public class Launch extends PlayerCommand{
 					projectile.transformTheProjectile(entity, receiver);
 
 				}	
+				
+			//	SsomarDev.testMsg("null entity: " + (entity==null));
 
 				if(entity != null) {
 					if(!SCore.is1v12() && !SCore.is1v13()) {
-						Vector v = entity.getVelocity();
-						v.rotateAroundY(rotation);
-						entity.setVelocity(v);
+						Vector v;
+						if(entity instanceof Fireball) {
+							Fireball fireball = (Fireball) entity;
+							v = fireball.getDirection();
+							v.rotateAroundY(rotation);
+							fireball.setDirection(v);
+						}
+						else if(entity instanceof DragonFireball) {
+							DragonFireball fireball = (DragonFireball) entity;
+							v = fireball.getDirection();
+							v.rotateAroundY(rotation);
+							fireball.setDirection(v);
+						}
+						else {
+							v = entity.getVelocity();
+							v.rotateAroundY(rotation);
+							entity.setVelocity(v);
+						}
+						SsomarDev.testMsg("rotation: "+ rotation);
 					}
 
 					if(SCore.hasExecutableItems && aInfo.getItemID() != null) {
