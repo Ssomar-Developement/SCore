@@ -10,6 +10,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.usedapi.WorldGuardAPI;
 
 public class Damage extends PlayerCommand{
 
@@ -33,16 +34,21 @@ public class Damage extends PlayerCommand{
 				//				}
 
 				if(p != null) {
-					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
-					receiver.damage(amount, p);
+					if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
+						p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
+						receiver.damage(amount, p);
+					}
 				}
 				else {
-					receiver.damage(amount);
+					if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
+						receiver.damage(amount);
+					}
 				}
 
 			}
 		}catch(Exception e) {}
 	}
+
 
 	@Override
 	public String verify(List<String> args) {

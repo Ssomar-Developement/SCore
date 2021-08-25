@@ -36,7 +36,7 @@ public class WorldGuardAPI {
 
 	}
 	
-	public boolean isInPvpZone(Player p, org.bukkit.Location location) {
+	public static boolean isInPvpZone(Player p, org.bukkit.Location location) {
 
 		if(SCore.is1v12()) return true;
 		

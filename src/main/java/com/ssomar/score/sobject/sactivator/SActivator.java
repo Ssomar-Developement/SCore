@@ -13,6 +13,8 @@ import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
 
 public interface SActivator {
 	
+	public String getParentObjectID();
+	
 	public String getID();
 
 	public SOption getOption(); 

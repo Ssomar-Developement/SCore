@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.usedapi.WorldGuardAPI;
 
 /* BURN {timeinsecs} */
 public class Burn extends PlayerCommand{
@@ -15,33 +18,47 @@ public class Burn extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
-			if(args.size()==0) {
-				receiver.setFireTicks(20*10);
+			int time = 200;
+
+			double timeDouble = Double.valueOf(args.get(0));
+			time = (int) timeDouble;
+
+			if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
+				receiver.setFireTicks(20 * (int)time);
 			}
 			else {
-				double time= Double.valueOf(args.get(0));
-				receiver.setFireTicks(20* (int)time);
+				receiver.setVisualFire(true);
+				
+				BukkitRunnable runnable = new BukkitRunnable() {
+
+					@Override
+					public void run() {
+						if(receiver.isOnline()) receiver.setVisualFire(false);
+					}
+				};
+				runnable.runTaskLater(SCore.getPlugin(), time);
 			}
+
 		}catch(Exception e) {}
 	}
 
 	@Override
 	public String verify(List<String> args) {
-		String error ="";
+		String error = "";
 
 		String burn= "BURN {timeinsecs}";
-		if(args.size()>1) error= tooManyArgs+burn;
-		else if(args.size()==1) { 
+		if(args.size() > 1) error = tooManyArgs+burn;
+		else if(args.size() == 1) { 
 			try {
 				Double.valueOf(args.get(0));
 			}catch(NumberFormatException e){
-				error = invalidTime+args.get(0)+" for command: "+burn;
+				error = invalidTime + args.get(0)+" for command: "+burn;
 			}
 		}
 
 		return error;
 	}
-	
+
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();
