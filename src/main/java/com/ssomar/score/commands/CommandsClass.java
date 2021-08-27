@@ -3,6 +3,7 @@ package com.ssomar.score.commands;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,7 +12,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
+import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
+import com.ssomar.score.events.loop.LoopManager;
+import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 
@@ -34,13 +39,16 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 			case "reload":
 				this.runCommand(sender, "reload", args);
 				break;
+			case "inspect-loop":
+				this.runCommand(sender, "inspect-loop", args);
+				break;
 			default:
-				sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload ]"));
+				sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop ]"));
 				break;
 			}
 		}
 		else {
-			sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload ]"));
+			sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop ]"));
 		}
 		return true;
 	}
@@ -72,6 +80,25 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 			sm.sendMessage(sender, ChatColor.GREEN+"SCore has been reload");	
 			System.out.println("SCore reloaded !");
 			break;
+		case "inspect-loop":
+			Map<SActivator, Integer> loops = LoopManager.getInstance().getLoopActivators();
+			sm.sendMessage(sender, " ");
+			sm.sendMessage(sender, "&8==== &7SCore contains &e"+loops.size()+" &7loop(s) &8====");
+			sm.sendMessage(sender, "&7&o(The loop of ExecutableItems requires more performance when there are many players)");
+			sm.sendMessage(sender, " ");
+			for(SActivator sAct : loops.keySet()) {
+				int delay = sAct.getDelay();
+				if(!sAct.isDelayInTick()) delay = delay * 20;
+				if(SCore.hasExecutableItems && sAct instanceof ActivatorEI) {
+					sm.sendMessage(sender,"&bEI LOOP > &7item: &e"+sAct.getParentObjectID()+" &7delay: &e"+delay+ " &7(in ticks)");
+				}
+				else if(SCore.hasExecutableBlocks && sAct instanceof ActivatorEB) {
+					sm.sendMessage(sender, "&aEB LOOP > &7block: &e"+sAct.getParentObjectID()+" &7delay: &e"+delay+ " &7(in ticks)");
+				}
+			}
+			sm.sendMessage(sender, " ");
+			
+			break;
 		default:
 			break;
 		}
@@ -84,6 +111,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 			if (args.length == 1) {
 
 				arguments.add("reload");
+				arguments.add("inspect-loop");
 		
 				Collections.sort(arguments);
 				return arguments;

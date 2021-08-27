@@ -23,21 +23,24 @@ public class Burn extends PlayerCommand{
 			double timeDouble = Double.valueOf(args.get(0));
 			time = (int) timeDouble;
 
-			if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
-				receiver.setFireTicks(20 * (int)time);
-			}
-			else {
-				receiver.setVisualFire(true);
-				
-				BukkitRunnable runnable = new BukkitRunnable() {
+			if(SCore.hasWorldGuard) {
+				if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
+					receiver.setFireTicks(20 * (int)time);
+				}
+				else {
+					receiver.setVisualFire(true);
 
-					@Override
-					public void run() {
-						if(receiver.isOnline()) receiver.setVisualFire(false);
-					}
-				};
-				runnable.runTaskLater(SCore.getPlugin(), time);
+					BukkitRunnable runnable = new BukkitRunnable() {
+
+						@Override
+						public void run() {
+							if(receiver.isOnline()) receiver.setVisualFire(false);
+						}
+					};
+					runnable.runTaskLater(SCore.getPlugin(), time);
+				}
 			}
+			else receiver.setFireTicks(20 * (int)time);
 
 		}catch(Exception e) {}
 	}

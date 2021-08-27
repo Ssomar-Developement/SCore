@@ -8,7 +8,7 @@ loadbefore: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades]
 commands:
   score:
     description: score command
-    usage: /<command> [ reload ]
+    usage: /<command> [ reload | inspect-loop ]
 permissions:
   score.*:
    description: SCore permission
@@ -20,5 +20,8 @@ permissions:
    default: op
    children:
      score.cmd.reload: true
+     score.cmd.inspect-loop: true
   score.cmd.reload:
     description: Allows the command /score reload
+  score.cmd.inspect-loop:
+    description: Allows the command /score inspect-loop

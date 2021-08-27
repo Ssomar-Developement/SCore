@@ -34,15 +34,17 @@ public class Damage extends PlayerCommand{
 				//				}
 
 				if(p != null) {
-					if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
+					boolean doDamage = true;
+					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
+					if(doDamage) {
 						p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
 						receiver.damage(amount, p);
 					}
 				}
 				else {
-					if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
-						receiver.damage(amount);
-					}
+					boolean doDamage = true;
+					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
+					if(doDamage) receiver.damage(amount);
 				}
 
 			}
