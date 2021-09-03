@@ -30,6 +30,7 @@ public class LogFilter implements Filter {
 		messageToHide.add("Changed the block at");
 		messageToHide.add("Unable to apply this effect");
 		messageToHide.add("That position is not loaded");
+		messageToHide.add("The particle was not visible for anybody");
 	}
 
 

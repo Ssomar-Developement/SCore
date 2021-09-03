@@ -38,7 +38,17 @@ public class MyCoreProtectAPI {
 			if(list.size() == 0) {
 				return true;
 			}
-			else return false;
+			else {
+//				SCore.plugin.getLogger().info("DEBUG for the user LUCKYWARRIOR pls send me the following message");
+//				for(String[] tab : list) {
+//					SCore.plugin.getLogger().info("==========");
+//					for(String s: tab) {
+//						SCore.plugin.getLogger().info(s);
+//					}
+//					SCore.plugin.getLogger().info("==========");
+//				}
+				return false;
+			}
 		}
 		
 		return false;

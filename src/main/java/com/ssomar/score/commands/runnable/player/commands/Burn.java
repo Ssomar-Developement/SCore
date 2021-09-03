@@ -27,7 +27,8 @@ public class Burn extends PlayerCommand{
 				if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
 					receiver.setFireTicks(20 * (int)time);
 				}
-				else {
+				/* setVisualFire appears in 1.17 */
+				else if(SCore.is1v17()){
 					receiver.setVisualFire(true);
 
 					BukkitRunnable runnable = new BukkitRunnable() {

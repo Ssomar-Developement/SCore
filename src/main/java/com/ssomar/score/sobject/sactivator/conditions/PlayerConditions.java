@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.base.Charsets;
 import com.ssomar.executableitems.api.ExecutableItemsAPI;
@@ -38,7 +39,7 @@ public class PlayerConditions extends Conditions{
 	private boolean ifNotSneaking;
 	private static final String IF_NOT_SNEAKING_MSG = " &cYou must not sneak to active the activator: &6%activator% &cof this item!";
 	private String ifNotSneakingMsg;
-	
+
 	private boolean ifBlocking;
 	private static final String IF_BLOCKING_MSG = " &cYou must block damage with shield to active the activator: &6%activator% &cof this item!";
 	private String ifBlockingMsg;
@@ -46,7 +47,7 @@ public class PlayerConditions extends Conditions{
 	private boolean ifNotBlocking;
 	private static final String IF_NOT_BLOCKING_MSG = " &cYou must not block damage with shield to active the activator: &6%activator% &cof this item!";
 	private String ifNotBlockingMsg;
-	
+
 	private boolean ifSprinting;
 	private static final String IF_SPRINTING_MSG = " &cYou must sprint to active the activator: &6%activator% &cof this item!";
 	private String ifSprintingMsg;
@@ -62,11 +63,11 @@ public class PlayerConditions extends Conditions{
 	private boolean ifFlying;
 	private static final String IF_FLYING_MSG = " &cYou must fly to active the activator: &6%activator% &cof this item!";
 	private String ifFlyingMsg;
-	
+
 	private boolean ifIsInTheAir;
 	private static final String IF_IS_IN_THE_AIR_MSG = " &cYou must be in the air to active the activator: &6%activator% &cof this item!";
 	private String ifIsInTheAirMsg;
-	
+
 	private List<Material> ifIsOnTheBlock;
 	private static final String IF_IS_ON_THE_BLOCK_MSG = " &cYou are not on the good type of block to active the activator: &6%activator% &cof this item!";
 	private String ifIsOnTheBlockMsg;
@@ -150,98 +151,105 @@ public class PlayerConditions extends Conditions{
 	private Map<Material, Integer> ifPlayerHasItem;
 	private static final String IF_PLAYER_HAS_ITEM_MSG = " &cYou don't have all correct Items to active the activator: &6%activator% &cof this item!";
 	private String ifPlayerHasItemMsg;
-	
+
+	private Map<PotionEffectType, Integer> ifPlayerHasEffect;
+	private static final String IF_PLAYER_HAS_EFFECT_MSG = " &cYou don't have all correct effects to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerHasEffectMsg;
+
 	@Override
 	public void init() {
 		this.ifSneaking = false;
 		this.ifSneakingMsg = IF_SNEAKING_MSG;
-		
+
 		this.ifNotSneaking = false;
 		this.ifNotSneakingMsg = IF_NOT_SNEAKING_MSG;
-		
+
 		this.ifBlocking = false;
 		this.ifBlockingMsg = IF_BLOCKING_MSG;
-		
+
 		this.ifNotBlocking = false;
 		this.ifNotBlockingMsg = IF_NOT_BLOCKING_MSG;
-		
+
 		this.ifSprinting = false;
 		this.ifSprintingMsg = IF_SPRINTING_MSG;
-		
+
 		this.ifSwimming = false;
 		this.ifSwimmingMsg = IF_SWIMMING_MSG;
-		
+
 		this.ifGliding = false;
 		this.ifGlidingMsg = IF_GLIDING_MSG;
-		
+
 		this.ifFlying = false;
 		this.ifFlyingMsg = IF_FLYING_MSG;
-		
+
 		ifIsInTheAir = false;
 		ifIsInTheAirMsg = IF_IS_IN_THE_AIR_MSG;
-		
+
 		ifIsOnTheBlock = new ArrayList<>();
 		ifIsOnTheBlockMsg = IF_IS_ON_THE_BLOCK_MSG;
-		
+
 		this.ifInWorld = new ArrayList<>();
 		this.ifInWorldMsg = IF_IN_WORLD_MSG;
-		
+
 		this.ifNotInWorld = new ArrayList<>();
 		this.ifNotInWorldMsg = IF_NOT_IN_WORLD_MSG;
-		
+
 		this.ifInBiome = new ArrayList<>();
 		this.ifInBiomeMsg = IF_IN_BIOME_MSG;
-		
+
 		this.ifNotInBiome = new ArrayList<>();
 		this.ifNotInBiomeMsg = IF_NOT_IN_BIOME_MSG;
-		
+
 		this.ifInRegion = new ArrayList<>();
 		this.ifInRegionMsg = IF_IN_REGION_MSG;
-		
+
 		this.ifNotInRegion = new ArrayList<>();
 		this.ifNotInRegionMsg = IF_NOT_IN_REGION_MSG;
-		
+
 		this.ifHasPermission = new ArrayList<>();
 		this.ifHasPermissionMsg = IF_HAS_PERMISSION_MSG;
-		
+
 		this.ifNotHasPermission = new ArrayList<>();
 		this.ifNotHasPermissionMsg = IF_NOT_HAS_PERMISSION_MSG;
-		
+
 		this.ifTargetBlock = new ArrayList<>();
 		this.ifTargetBlockMsg = IF_TARGET_BLOCK_MSG;
-		
+
 		this.ifNotTargetBlock = new ArrayList<>();
 		this.ifNotTargetBlockMsg = IF_NOT_TARGET_BLOCK_MSG;
-		
+
 		this.ifPlayerHealth = "";
 		this.ifPlayerHealthMsg = IF_PLAYER_HEALTH_MSG;
-		
+
 		this.ifPlayerFoodLevel = "";
 		this.ifPlayerFoodLevelMsg= IF_PLAYER_FOOD_LEVEL_MSG;
-		
+
 		this.ifPlayerEXP = "";
 		this.ifPlayerEXPMsg = IF_PLAYER_EXP_MSG;
-		
+
 		this.ifPlayerLevel = "";
 		this.ifPlayerLevelMsg = IF_PLAYER_LEVEL_MSG;;
-		
+
 		this.ifLightLevel = "";
 		this.ifLightLevelMsg = IF_LIGHT_LEVEL_MSG;
-		
+
 		this.ifPosX = "";
 		this.ifPosXMsg = IF_POS_X_MSG;
-		
+
 		this.ifPosY = "";
 		this.ifPosYMsg = IF_POS_Y_MSG;
-		
+
 		this.ifPosZ = "";
 		this.ifPosZMsg = IF_POS_Z_MSG;
-		
+
 		this.ifPlayerHasItem = new HashMap<>();
 		this.ifPlayerHasItemMsg = IF_PLAYER_HAS_ITEM_MSG;
-		
+
 		this.ifPlayerHasExecutableItem = new HashMap<>();
 		this.ifPlayerHasExecutableItemMsg = IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG;
+
+		this.ifPlayerHasEffect = new HashMap<>();
+		this.ifPlayerHasEffectMsg = IF_PLAYER_HAS_EFFECT_MSG;
 	}
 
 	public boolean verifConditions(Player p, Player toMsg) {
@@ -278,7 +286,7 @@ public class PlayerConditions extends Conditions{
 			this.getSm().sendMessage(toMsg, this.getIfNotSneakingMsg());
 			return false;
 		}
-		
+
 		if(ifBlocking && !p.isBlocking()) {
 			this.getSm().sendMessage(toMsg, this.getIfBlockingMsg());
 			return false;
@@ -293,7 +301,7 @@ public class PlayerConditions extends Conditions{
 			this.getSm().sendMessage(toMsg, (this.getIfSwimmingMsg()));
 			return false;
 		}
-		
+
 		if(this.ifSprinting && !p.isSprinting()) {
 			this.getSm().sendMessage(toMsg, (this.getIfSprintingMsg()));
 			return false;
@@ -308,18 +316,18 @@ public class PlayerConditions extends Conditions{
 			this.getSm().sendMessage(toMsg, this.getIfFlyingMsg());
 			return false;
 		}
-		
+
 		if(this.ifIsInTheAir || this.ifIsOnTheBlock.size() != 0) {
 			Location pLoc = p.getLocation();
 			pLoc.subtract(0, 1, 0);
-			
+
 			Block block = pLoc.getBlock();
 			Material type = block.getType();
 			if(!type.equals(Material.AIR) && this.ifIsInTheAir) {
 				this.getSm().sendMessage(toMsg, this.getIfIsInTheAirMsg());
 				return false;
 			}
-			
+
 			if(this.ifIsOnTheBlock.size() != 0 && !ifIsOnTheBlock.contains(type)) {
 				this.getSm().sendMessage(toMsg, this.getIfIsOnTheBlockMsg());
 				return false;
@@ -494,6 +502,21 @@ public class PlayerConditions extends Conditions{
 				return false;
 			}
 		}
+
+		if(this.ifPlayerHasEffect.size() > 0) {
+			for(PotionEffectType pET : ifPlayerHasEffect.keySet()) {
+				if(!p.hasPotionEffect(pET)) {
+					this.getSm().sendMessage(toMsg, this.getIfPlayerHasEffectMsg());
+					return false;
+				}
+				else {
+					if(p.getPotionEffect(pET).getAmplifier() < ifPlayerHasEffect.get(pET)) {
+						this.getSm().sendMessage(toMsg, this.getIfPlayerHasEffectMsg());
+						return false;
+					}
+				}
+			}
+		}
 		return true;
 	}
 
@@ -506,13 +529,13 @@ public class PlayerConditions extends Conditions{
 
 		pCdt.setIfNotSneaking(playerCdtSection.getBoolean("ifNotSneaking", false));
 		pCdt.setIfNotSneakingMsg(playerCdtSection.getString("ifNotSneakingMsg", "&4&l"+pluginName+IF_NOT_SNEAKING_MSG));
-		
+
 		pCdt.setIfBlocking(playerCdtSection.getBoolean("ifBlocking", false));
 		pCdt.setIfBlockingMsg(playerCdtSection.getString("ifBlockingMsg", "&4&l"+pluginName+IF_BLOCKING_MSG));
 
 		pCdt.setIfNotBlocking(playerCdtSection.getBoolean("ifNotBlocking", false));
 		pCdt.setIfNotBlockingMsg(playerCdtSection.getString("ifNotBlockingMsg", "&4&l"+pluginName+IF_NOT_BLOCKING_MSG));
-		
+
 		pCdt.setIfSprinting(playerCdtSection.getBoolean("ifSprinting", false));
 		pCdt.setIfSprintingMsg(playerCdtSection.getString("ifSprintingMsg", "&4&l"+pluginName+IF_SPRINTING_MSG));
 
@@ -524,10 +547,10 @@ public class PlayerConditions extends Conditions{
 
 		pCdt.setIfFlying(playerCdtSection.getBoolean("ifFlying", false));
 		pCdt.setIfFlyingMsg(playerCdtSection.getString("ifFlyingMsg", "&4&l"+pluginName+IF_FLYING_MSG));
-		
+
 		pCdt.setIfIsInTheAir(playerCdtSection.getBoolean("ifIsInTheAir", false));
 		pCdt.setIfIsInTheAirMsg(playerCdtSection.getString("ifIsInTheAirMsg", "&4&l"+pluginName+IF_IS_IN_THE_AIR_MSG));
-		
+
 		List<Material> mat = new ArrayList<>();
 		for (String s : playerCdtSection.getStringList("ifIsOnTheBlock")) {
 			try {
@@ -613,8 +636,8 @@ public class PlayerConditions extends Conditions{
 
 		Map<String, Integer> verifEI = new HashMap<>();
 		for (String s : playerCdtSection.getStringList("ifPlayerHasExecutableItem")) {
-			if (s.contains(":")) {
-				String[] spliter = s.split(":");
+			String[] spliter;
+			if (s.contains(":") && (spliter = s.split(":")).length == 2) {
 				int slot = 0;
 				try {
 					slot = Integer.valueOf(spliter[1]);
@@ -630,8 +653,8 @@ public class PlayerConditions extends Conditions{
 
 		Map<Material, Integer> verifI = new HashMap<>();
 		for (String s : playerCdtSection.getStringList("ifPlayerHasItem")) {
-			if (s.contains(":")) {
-				String[] spliter = s.split(":");
+			String[] spliter;
+			if (s.contains(":") && (spliter = s.split(":")).length == 2) {
 				int slot = 0;
 				Material material = null;
 				try {
@@ -652,10 +675,34 @@ public class PlayerConditions extends Conditions{
 		pCdt.setIfPlayerHasItem(verifI);
 		pCdt.setIfPlayerHasItemMsg(playerCdtSection.getString("ifPlayerHasItemMsg", "&4&l"+pluginName+IF_PLAYER_HAS_ITEM_MSG));
 
+		Map<PotionEffectType, Integer> verifETP = new HashMap<>();
+		for (String s : playerCdtSection.getStringList("ifPlayerHasEffect")) {
+			String[] spliter;
+			if (s.contains(":") && (spliter = s.split(":")).length == 2) {
+				int value = 0;
+				PotionEffectType type = PotionEffectType.getByName(spliter[0]);
+				if(type == null) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasEffect condition: " + s+ " correct form > EFFECT:MINIMUM_AMPLIFIER_REQUIRED  example> SPEED:0 !");
+					continue;
+				}
+
+				try {
+					value = Integer.valueOf(spliter[1]);
+				} catch (Exception e) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasEffect condition: " + s+ " correct form > EFFECT:MINIMUM_AMPLIFIER_REQUIRED  example> SPEED:0 !");
+					continue;
+				}
+				verifETP.put(type, value);
+			}
+		}
+
+		pCdt.setIfPlayerHasEffect(verifETP);
+		pCdt.setIfPlayerHasEffectMsg(playerCdtSection.getString("ifPlayerHasEffectMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
+
 		return pCdt;
 
 	}
-	
+
 	/*
 	 *  @param sPlugin The plugin of the conditions
 	 *  @param sObject The object
@@ -684,7 +731,7 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfNotSneaking()) pCConfig.set("ifNotSneaking", true); 
 		else pCConfig.set("ifNotSneaking", null);
 		pCConfig.set("ifNotSneakingMsg", pC.getIfNotSneakingMsg()); 
-		
+
 		if(pC.ifBlocking) pCConfig.set("ifBlocking", true); 
 		else pCConfig.set("ifBlocking", null);
 		pCConfig.set("ifBlockingMsg", pC.getIfBlockingMsg()); 
@@ -696,7 +743,7 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfSwimming()) pCConfig.set("ifSwimming", true); 
 		else pCConfig.set("ifSwimming", null);
 		pCConfig.set("ifSwimmingMsg", pC.getIfSwimmingMsg()); 
-		
+
 		if(pC.ifSprinting) pCConfig.set("ifSprinting", true); 
 		else pCConfig.set("ifSprinting", null);
 		pCConfig.set("ifSprintingMsg", pC.getIfSprintingMsg()); 
@@ -708,11 +755,11 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfFlying()) pCConfig.set("ifFlying", true); 
 		else pCConfig.set("ifFlying", null);
 		pCConfig.set("ifFlyingMsg", pC.getIfFlyingMsg()); 
-		
+
 		if(pC.ifIsInTheAir) pCConfig.set("ifIsInTheAir", true); 
 		else pCConfig.set("ifIsInTheAir", null);
 		pCConfig.set("ifIsInTheAirMsg", pC.getIfIsInTheAirMsg()); 
-		
+
 		List<String> convert = new ArrayList<>();
 		for(Material mat : pC.getIfIsOnTheBlock()) {
 			convert.add(mat.toString());
@@ -724,15 +771,15 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfInWorld()) pCConfig.set("ifInWorld", pC.getIfInWorld()); 
 		else pCConfig.set("ifInWorld", null);
 		pCConfig.set("ifInWorldMsg", pC.getIfInWorldMsg()); 
-		
+
 		if(pC.hasIfNotInWorld()) pCConfig.set("ifNotInWorld", pC.getIfNotInWorld()); 
 		else pCConfig.set("ifNotInWorld", null);
 		pCConfig.set("ifNotInWorldMsg", pC.getIfNotInWorldMsg()); 
-		
+
 		if(pC.hasIfInBiome()) pCConfig.set("ifInBiome", pC.getIfInBiome()); 
 		else pCConfig.set("ifInBiome", null);
 		pCConfig.set("ifInBiomeMsg", pC.getIfInBiomeMsg()); 
-		
+
 		if(pC.hasIfNotInBiome()) pCConfig.set("ifNotInBiome", pC.getIfNotInBiome()); 
 		else pCConfig.set("ifNotInBiome", null);
 		pCConfig.set("ifNotInBiomeMsg", pC.getIfNotInBiomeMsg()); 
@@ -748,11 +795,11 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfHasPermission()) pCConfig.set("ifHasPermission", pC.getIfHasPermission()); 
 		else pCConfig.set("ifHasPermission", null);
 		pCConfig.set("ifHasPermissionMsg", pC.getIfHasPermissionMsg()); 
-		
+
 		if(pC.hasIfNotHasPermission()) pCConfig.set("ifNotHasPermission", pC.getIfNotHasPermission()); 
 		else pCConfig.set("ifNotHasPermission", null);
 		pCConfig.set("ifNotHasPermissionMsg", pC.getIfNotHasPermissionMsg()); 
-		
+
 		convert = new ArrayList<>();
 		for(Material mat : pC.getIfTargetBlock()) {
 			convert.add(mat.toString());
@@ -760,7 +807,7 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfTargetBlock()) pCConfig.set("ifTargetBlock",convert); 
 		else pCConfig.set("ifTargetBlock", null);
 		pCConfig.set("ifTargetBlockMsg", pC.getIfTargetBlockMsg()); 
-		
+
 		convert = new ArrayList<>();
 		for(Material mat : pC.getIfNotTargetBlock()) {
 			convert.add(mat.toString());
@@ -772,7 +819,7 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfPlayerHealth()) pCConfig.set("ifPlayerHealth", pC.getIfPlayerHealth()); 
 		else pCConfig.set("ifPlayerHealth", null);
 		pCConfig.set("ifPlayerHealthMsg", pC.getIfPlayerHealthMsg()); 
-		
+
 		if(pC.hasIfLightLevel()) pCConfig.set("ifLightLevel", pC.getIfLightLevel()); 
 		else pCConfig.set("ifLightLevel", null);
 		pCConfig.set("ifLightLevelMsg", pC.getIfLightLevelMsg()); 
@@ -788,18 +835,28 @@ public class PlayerConditions extends Conditions{
 		if(pC.hasIfPlayerLevel()) pCConfig.set("ifPlayerLevel", pC.getIfPlayerLevel()); 
 		else pCConfig.set("ifPlayerLevel", null);
 		pCConfig.set("ifPlayerLevelMsg", pC.getIfPlayerLevelMsg()); 
-		
+
 		if(pC.hasIfPosX()) pCConfig.set("ifPosX", pC.getIfPosX()); 
 		else pCConfig.set("ifPosX", null);
 		pCConfig.set("ifPosXMsg", pC.getIfPosXMsg());
-		
+
 		if(pC.hasIfPosY()) pCConfig.set("ifPosY", pC.getIfPosY()); 
 		else pCConfig.set("ifPosY", null);
 		pCConfig.set("ifPosYMsg", pC.getIfPosYMsg());
-		
+
 		if(pC.hasIfPosZ()) pCConfig.set("ifPosZ", pC.getIfPosZ()); 
 		else pCConfig.set("ifPosZ", null);
 		pCConfig.set("ifPosZMsg", pC.getIfPosZMsg());
+		
+		if(pC.ifPlayerHasEffect.size() > 0) {
+			List<String> result = new ArrayList<>();
+			for(PotionEffectType pET : pC.ifPlayerHasEffect.keySet()) {
+				result.add(pET.getName().toString()+":"+pC.ifPlayerHasEffect.get(pET));
+			}
+			pCConfig.set("ifPlayerHasEffect", result);
+			pCConfig.set("ifPlayerHasEffectMsg", pC.getIfPlayerHasEffectMsg());
+		}
+		else pCConfig.set("ifPlayerHasEffect", null);
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
@@ -1403,6 +1460,22 @@ public class PlayerConditions extends Conditions{
 
 	public void setIfSprintingMsg(String ifSprintingMsg) {
 		this.ifSprintingMsg = ifSprintingMsg;
+	}
+
+	public Map<PotionEffectType, Integer> getIfPlayerHasEffect() {
+		return ifPlayerHasEffect;
+	}
+
+	public void setIfPlayerHasEffect(Map<PotionEffectType, Integer> ifPlayerHasEffect) {
+		this.ifPlayerHasEffect = ifPlayerHasEffect;
+	}
+
+	public String getIfPlayerHasEffectMsg() {
+		return ifPlayerHasEffectMsg;
+	}
+
+	public void setIfPlayerHasEffectMsg(String ifPlayerHasEffectMsg) {
+		this.ifPlayerHasEffectMsg = ifPlayerHasEffectMsg;
 	}
 
 }

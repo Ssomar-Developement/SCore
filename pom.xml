@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.5.2.1</version>
+	<version>1.5.2.5</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -177,13 +177,13 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-41d03f93c1-1</version>
+			<version>master-41514dca64-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-42d749e2de-1</version>
+			<version>main-bcfebb788c-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

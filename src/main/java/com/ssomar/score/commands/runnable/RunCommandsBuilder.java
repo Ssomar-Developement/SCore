@@ -27,7 +27,7 @@ public abstract class RunCommandsBuilder{
 	}
 
 	public void init() {
-		this.replaceLoop();
+		this.commands = this.replaceLoop(commands);
 		this.initFinalCommands();
 	}
 
@@ -46,7 +46,7 @@ public abstract class RunCommandsBuilder{
 		return result;
 	}
 
-	public void replaceLoop() {
+	public List<String> replaceLoop(List<String> commands) {
 
 		List<String> result = new ArrayList<>();
 		boolean isInLoop = false;
@@ -57,18 +57,18 @@ public abstract class RunCommandsBuilder{
 
 			String command = StringConverter.coloredString(commands.get(i));
 
-			if(command.contains("LOOP START: ")) {
+			if(command.contains("LOOP START: ") && !command.contains("+++")) {
 				try {
 					loopAmount = Integer.valueOf(command.split("LOOP START: ")[1]);
 					isInLoop = true;
 					continue;
 				}catch(Exception e) {
-					loopAmount=0;
-					isInLoop= false;
+					loopAmount = 0;
+					isInLoop = false;
 					continue;
 				}
 			}
-			else if(command.contains("LOOP END")) {
+			else if(command.contains("LOOP END") && !command.contains("+++")) {
 				for(int k = 0; k < loopAmount; k++) {
 					for(String str: commandsInLoop) {
 						result.add(str);
@@ -83,7 +83,7 @@ public abstract class RunCommandsBuilder{
 			if(isInLoop) commandsInLoop.add(command);
 			else result.add(command);
 		}
-		commands = result;
+		return result;
 	}
 	
 	public abstract RunCommand buildRunCommand(Integer delay, String command, ActionInfo aInfo);
@@ -249,6 +249,8 @@ public abstract class RunCommandsBuilder{
 		commands = this.replaceRandomCommands(commands);
 		
 		commands = this.decompMultipleCommandsAndMsg(commands);
+		
+		commands = this.replaceLoop(commands);
 
 		for(String command: commands) {
 			

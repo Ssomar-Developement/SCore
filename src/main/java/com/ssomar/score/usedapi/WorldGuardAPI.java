@@ -12,11 +12,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 
 public class WorldGuardAPI {
 
@@ -40,15 +42,38 @@ public class WorldGuardAPI {
 
 		if(SCore.is1v12()) return true;
 		
-		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
+		/* Antoher method that doesnt count the default value, and the default value allows pvp , so it's bad to use it */
+		
+		//LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
 		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+//		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+//		RegionQuery query = container.createQuery();
+//
+//		StateFlag [] conditions = new StateFlag[1];
+//		conditions[0] = Flags.PVP;
+//		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
+//		
+//		boolean isPVP = query.testState(loc, localPlayer, conditions);
+		
+		
+		boolean isPVP = true;
+		
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionQuery query = container.createQuery();
+		ApplicableRegionSet set = query.getApplicableRegions(loc);
 
-		StateFlag [] conditions = new StateFlag[1];
-		conditions[0] = Flags.PVP;
-		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
-		return query.testState(loc, localPlayer, conditions);
+		for (ProtectedRegion region : set) {
+            if (region != null){
+                if (region.getFlag(Flags.PVP).equals(State.DENY)) {
+                	isPVP = false;
+                	break;
+                }
+            }
+        }
+		
+		//SsomarDev.testMsg("isinPvp ? : "+ isPVP);
+		
+		return isPVP;
 	}
 
 	public boolean isInRegion(Player p, String name) {

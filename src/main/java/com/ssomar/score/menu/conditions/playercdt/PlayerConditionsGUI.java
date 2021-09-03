@@ -1,11 +1,14 @@
 package com.ssomar.score.menu.conditions.playercdt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
@@ -44,6 +47,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_POS_X = "ifPosX";
 	public static final String IF_POS_Y = "ifPosY";
 	public static final String IF_POS_Z = "ifPosZ";
+	public static final String IF_HAS_EFFECT = "ifHasEffect";
 
 	public PlayerConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 5*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -166,6 +170,9 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateIfPosZ(conditions.getIfPosZ());
 		
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_EFFECT, 	false,	false, "&7&oThe player must have th effect(s)...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfHasEffect(conditions.getIfPlayerHasEffect());
 		
 
 		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -589,6 +596,68 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public String getIfPosZ() {
 		if(this.getActually(this.getByName(IF_POS_Z)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(IF_POS_Z));
+	}
+	
+	public void updateIfHasEffect(List<String> list) {
+		ItemStack item = this.getByName(IF_HAS_EFFECT);
+		ItemMeta toChange = item.getItemMeta();
+		List<String> loreUpdate = toChange.getLore().subList(0, 3);
+		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &ePLAYER NO NEED EFFECT"));
+		else {
+			for(String str: list) {
+				loreUpdate.add(StringConverter.coloredString("&6➤ &e"+str));
+			}
+		}
+		toChange.setLore(loreUpdate);
+		item.setItemMeta(toChange);
+	}
+	
+	public void updateIfHasEffect(Map<PotionEffectType, Integer> list) {
+		ItemStack item = this.getByName(IF_HAS_EFFECT);
+		ItemMeta toChange = item.getItemMeta();
+		List<String> loreUpdate = toChange.getLore().subList(0, 3);
+		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &ePLAYER NO NEED EFFECT"));
+		else {
+			for(PotionEffectType pET: list.keySet()) {
+				String str = pET.getName().toString()+":"+list.get(pET);
+				loreUpdate.add(StringConverter.coloredString("&6➤ &e"+str));
+			}
+		}
+		toChange.setLore(loreUpdate);
+		item.setItemMeta(toChange);
+	}
+
+	public List<String> getIfHasEffectStr(){
+		ItemStack item = this.getByName(IF_HAS_EFFECT);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
+		List<String> result = new ArrayList<>();
+		for(String line: loreUpdate) {
+			line=StringConverter.decoloredString(line);
+			if(line.contains("PLAYER NO NEED EFFECT")) {
+				return new ArrayList<>();
+			}else result.add(line.replaceAll("➤ ", ""));
+		}
+		return result;
+	}
+	
+	public Map<PotionEffectType, Integer> getIfHasEffect(){
+		ItemStack item = this.getByName(IF_HAS_EFFECT);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
+		Map<PotionEffectType, Integer> result = new HashMap<>();
+		for(String line: loreUpdate) {
+			line = StringConverter.decoloredString(line);
+			if(line.contains("PLAYER NO NEED EFFECT")) {
+				return new HashMap<>();
+			}else {
+				String[] decomp = line.replaceAll("➤ ", "").split(":");
+				PotionEffectType type = PotionEffectType.getByName(decomp[0]);
+				int value = Integer.valueOf(decomp[1]);
+				result.put(type, value);
+			}
+		}
+		return result;
 	}
 	
 }

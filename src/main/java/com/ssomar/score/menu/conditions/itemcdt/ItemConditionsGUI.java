@@ -12,8 +12,8 @@ import com.ssomar.score.splugin.SPlugin;
 public class ItemConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_DURABILITY = "ifDurability";
-	public static final String IF_USAGE = "ifUsage";
-	public static final String IF_USAGE2 = "ifUsage2";
+	public static final String IF_USAGE = "(1) ifUsage";
+	public static final String IF_USAGE2 = "(2) ifUsage";
 	
 	public ItemConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);

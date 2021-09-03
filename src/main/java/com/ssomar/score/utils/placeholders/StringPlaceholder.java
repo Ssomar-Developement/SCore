@@ -13,7 +13,7 @@ import com.ssomar.score.SCore;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class StringPlaceholder extends PlaceholdersInterface implements Serializable{
-	
+
 	/**
 	 * 
 	 */
@@ -21,7 +21,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 	/* placeholders of the player */
 	private PlayerPlaceholders playerPlch = new PlayerPlaceholders();
-	
+
 	/* placeholders of the target player */
 	private TargetPlaceholders targetPlch = new TargetPlaceholders();
 
@@ -57,57 +57,57 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private String projectileX="";
 	private String projectileY="";
 	private String projectileZ="";
-	
+
 	/* placeholders of the around target player */
 	AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
-	
+
 	/* placeholders of the around target entity */
 	AroundEntityTargetPlaceholders aroundEntityTargetPlch = new AroundEntityTargetPlaceholders();
-	
+
 	public void setPlayerPlcHldr(UUID uuid) {
-		 playerPlch.setPlayerPlcHldr(uuid);
+		playerPlch.setPlayerPlcHldr(uuid);
 	}
-	
+
 	public void setPlayerPlcHldr(UUID uuid, int fixSlot) {
-		 playerPlch.setPlayerPlcHldr(uuid, fixSlot);
+		playerPlch.setPlayerPlcHldr(uuid, fixSlot);
 	}
-	
+
 	public void setTargetPlcHldr(UUID uuid) {
-		 targetPlch.setTargetPlcHldr(uuid);
+		targetPlch.setTargetPlcHldr(uuid);
 	}
-	
+
 	public void setOwnerPlcHldr(UUID uuid) {
-		 ownerPlch.setOwnerPlcHldr(uuid);
+		ownerPlch.setOwnerPlcHldr(uuid);
 	}
-	
+
 	public void setEntityPlcHldr(UUID uuid) {
-		 entityPlch.setEntityPlcHldr(uuid);
+		entityPlch.setEntityPlcHldr(uuid);
 	}
-	
+
 	public void setBlockPlcHldr(Block block) {
-		 blockPlch.setBlockPlcHldr(block);
+		blockPlch.setBlockPlcHldr(block);
 	}
-	
+
 	public void setBlockPlcHldr(Block block, Material fixType) {
-		 blockPlch.setBlockPlcHldr(block, fixType);
+		blockPlch.setBlockPlcHldr(block, fixType);
 	}
-	
+
 	public void setTargetBlockPlcHldr(Block block) {
-		 targetBlockPlch.setTargetBlockPlcHldr(block);
+		targetBlockPlch.setTargetBlockPlcHldr(block);
 	}
-	
+
 	public void setTargetBlockPlcHldr(Block block, Material fixType) {
-		 targetBlockPlch.setTargetBlockPlcHldr(block, fixType);
+		targetBlockPlch.setTargetBlockPlcHldr(block, fixType);
 	}
-	
+
 	public void setAroundTargetPlayerPlcHldr(UUID uuid) {
 		aroundPlayerTargetPlch.setAroundPlayerTargetPlcHldr(uuid);
 	}
-	
+
 	public void setAroundTargetEntityPlcHldr(UUID uuid) {
 		aroundEntityTargetPlch.setAroundEntityTargetPlcHldr(uuid);
 	}
-	
+
 	public void reloadAllPlaceholders() {
 		playerPlch.reloadPlayerPlcHldr();
 		targetPlch.reloadTargetPlcHldr();
@@ -122,6 +122,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	public String replacePlaceholder(String str) {
 		this.reloadAllPlaceholders();
 		String s = str;
+		s = replaceRandomPlaceholders(s);
+		
 		if(this.hasActivator()) {
 			s = s.replaceAll("%activator%", this.getActivator());
 		}
@@ -159,24 +161,63 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		if(this.hasMaxUsePerDayItem()) {
 			s=s.replaceAll("%max_use_per_day_item%", this.getMaxUsePerDayItem());
 		}
-		
+
 		s = playerPlch.replacePlaceholder(s);
-		
+
 		s = targetPlch.replacePlaceholder(s);
-		
+
 		s = ownerPlch.replacePlaceholder(s);
-		
+
 		s = entityPlch.replacePlaceholder(s);
-		
+
 		s = blockPlch.replacePlaceholder(s);
-		
+
 		s = targetBlockPlch.replacePlaceholder(s);
-		
+
 		s = aroundPlayerTargetPlch.replacePlaceholder(s);
-		
+
 		s = aroundEntityTargetPlch.replacePlaceholder(s);
-		
+
 		return replacePlaceholderOfPAPI(s);
+	}
+
+	public static String replaceRandomPlaceholders(String s) {
+		String result = s;
+		if(result.contains("%rand:")) {
+			int part1;
+			int part2;
+			String [] decompRand = result.split("\\%rand:");
+			boolean cont = true;
+			for(String strRand : decompRand) {
+				if(cont) {
+					cont = false;
+					continue;
+				}
+				
+				System.out.println(strRand);
+
+				if(strRand.contains("%")) {
+					String [] decomp = strRand.split("\\%");
+					if((decomp.length >= 2 || (strRand.endsWith("%") && decomp.length == 1) ) && decomp[0].contains("|")) {
+						decomp = decomp[0].split("\\|");
+
+						try {
+							part1 = Integer.valueOf(decomp[0]);
+							part2 = Integer.valueOf(decomp[1]);
+						}catch(Exception e) {
+							continue;
+						}
+
+						if(part1 < part2) {
+							int random = part1 + (int)(Math.random() * ((part2 - part1) + 1));
+							result = result.replace("%rand:"+part1+"|"+part2+"%", random+"");
+						}
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public String replacePlaceholderOfPAPI(String s) {
@@ -259,7 +300,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		return time.length()!=0;
 	}
 
-	
+
 	public String getBlockface() {
 		return blockface;
 	}

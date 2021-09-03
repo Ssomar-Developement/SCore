@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -54,6 +55,18 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		else if(i.name.contains(PlayerConditionsGUI.IF_FLYING)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_FLYING);
 
 		else if(i.name.contains(PlayerConditionsGUI.IF_IS_IN_THE_AIR)) cache.get(i.player).changeBoolean(PlayerConditionsGUI.IF_IS_IN_THE_AIR);
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_HAS_EFFECT)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_HAS_EFFECT);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfHasEffectStr());
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS EFFECT:"));
+			this.showIfHasEffectEditor(i.player);
+			space(i.player);
+		}
 
 		else if(i.name.contains(PlayerConditionsGUI.IF_IN_WORLD)) {
 			requestWriting.put(i.player, PlayerConditionsGUI.IF_IN_WORLD);
@@ -370,7 +383,14 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				pass = true;
 			}
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
-				if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD)) {
+				if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT)) {
+					List<String> result = new ArrayList<>();
+					for(String str : currentWriting.get(p)) {
+						result.add(str);
+					}
+					cache.get(p).updateIfHasEffect(result);
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD)) {
 					List<String> result= new ArrayList<>();
 					for(String str : currentWriting.get(p)) {
 						result.add(str);
@@ -466,6 +486,57 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				space(p);
 				space(p);			
 			}
+
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT)) {
+
+				message = StringConverter.decoloredString(message);
+				String[] decomp;
+				PotionEffectType type;
+				int value;
+
+				if(!message.contains(":") || (decomp = message.split(":")).length != 2) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid form pls follow this example: SPEED:0  (EFFECT:MINIMUM_AMPLIFIER_REQUIRED)"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+				type = PotionEffectType.getByName(decomp[0]);
+
+				if(type == null) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid Effect type. List of the effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+				try {
+					value = Integer.valueOf(decomp[1]);
+				}
+				catch(Exception e) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid MINIMUM_AMPLIFIER_REQUIRED, set an integer >= 0"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+				if(value < 0) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid MINIMUM_AMPLIFIER_REQUIRED, set an integer >= 0"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+
+				if(currentWriting.containsKey(p)) {
+					currentWriting.get(p).add(message);
+				}
+				else {
+					ArrayList<String> list = new ArrayList<>();
+					list.add(message);
+					currentWriting.put(p, list);
+				}
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have added new required effect!"));
+
+				this.showTheGoodEditor(requestWriting.get(p), p);
+			}
+
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD) || requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
 				if(Bukkit.getServer().getWorld(message)!=null) {
 					if(currentWriting.containsKey(p)) {
@@ -675,6 +746,17 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 
 	}
 
+	public void showIfHasEffectEditor(Player p) {
+		p.sendMessage(StringConverter.coloredString("&8&o>>> &7 Effets list: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html"));
+		List<String> beforeMenu = new ArrayList<>();
+		beforeMenu.add("&7➤ ifHasEffect:");
+
+		HashMap<String, String> suggestions = new HashMap<>();
+
+		EditorCreator editor = new EditorCreator(beforeMenu, currentWriting.get(p), "Has effect:", false, false, false, true, true, true, false, "", suggestions);		
+		editor.generateTheMenuAndSendIt(p);
+	}
+
 	public void showIfInWorldEditor(Player p) {
 		List<String> beforeMenu = new ArrayList<>();
 		beforeMenu.add("&7➤ ifInWorld:");
@@ -828,6 +910,10 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		case PlayerConditionsGUI.IF_IN_WORLD:
 			showIfInWorldEditor(p);
 			break;
+			
+		case PlayerConditionsGUI.IF_HAS_EFFECT:
+			showIfHasEffectEditor(p);
+			break;
 
 		case PlayerConditionsGUI.IF_NOT_IN_WORLD:
 			showIfNotInWorldEditor(p);
@@ -878,6 +964,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		pC.setIfPosY(cache.get(p).getIfPosY());
 		pC.setIfPosZ(cache.get(p).getIfPosZ());
 		pC.setIfIsOnTheBlock(cache.get(p).getIfIsOnTheBlock());
+		pC.setIfPlayerHasEffect(cache.get(p).getIfHasEffect());
 
 		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);
