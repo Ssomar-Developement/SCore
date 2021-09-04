@@ -23,6 +23,7 @@ import com.ssomar.score.commands.runnable.block.commands.RemoveBlock;
 import com.ssomar.score.commands.runnable.block.commands.SendMessage;
 import com.ssomar.score.commands.runnable.block.commands.SetBlock;
 import com.ssomar.score.commands.runnable.block.commands.SetExecutableBlock;
+import com.ssomar.score.commands.runnable.block.commands.VeinBreaker;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -48,6 +49,7 @@ public class BlockCommandManager implements CommandManager{
 		references.add(new RemoveBlock());
 		references.add(new Around());
 		references.add(new MobAround());
+		references.add(new VeinBreaker());
 		this.commands = references;
 	}
 

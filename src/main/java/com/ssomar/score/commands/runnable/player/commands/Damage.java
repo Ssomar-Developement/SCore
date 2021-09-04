@@ -14,10 +14,23 @@ import com.ssomar.score.usedapi.WorldGuardAPI;
 
 public class Damage extends PlayerCommand{
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
-			double amount = Double.valueOf(args.get(0));
+			double amount;
+			String damage = args.get(0);
+			/* percentage damage */
+			if(damage.contains("%")) {
+				String [] decomp = damage.split("\\%");
+				damage = decomp[0];
+				
+				double percentage = damage.equals("100") ? 1 : Double.valueOf("0."+damage);
+				amount = receiver.getMaxHealth() * percentage;
+				amount = Double.valueOf((amount+"").substring(0, 3));
+			}
+			else amount = Double.valueOf(damage);
+			
 			if(amount > 0 && !receiver.isDead()) {
 
 
@@ -48,7 +61,9 @@ public class Damage extends PlayerCommand{
 				}
 
 			}
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

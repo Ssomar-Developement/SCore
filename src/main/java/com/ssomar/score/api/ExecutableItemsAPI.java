@@ -11,7 +11,7 @@ import com.ssomar.executableitems.items.ItemManager;
 
 public class ExecutableItemsAPI {
 	
-	/* Verify if id is a valid ExecutableItem ID*/
+	/* Verify if id is a valid ExecutableItem ID */
 	public static boolean isValidID(String id) {
 		return ItemManager.getInstance().containsLoadedItemWithID(id);
 	}

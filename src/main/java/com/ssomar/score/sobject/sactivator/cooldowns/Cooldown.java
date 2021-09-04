@@ -20,6 +20,8 @@ public class Cooldown {
 	
 	/* Affect all players or not */
 	private boolean global;
+	
+	private boolean isNull;
 
 	public Cooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
 		super();
@@ -29,6 +31,7 @@ public class Cooldown {
 		this.isInTick = isInTick;
 		this.time = time;
 		this.global = global;
+		isNull = false;
 	}
 	
 	public Cooldown(String id, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
@@ -39,6 +42,7 @@ public class Cooldown {
 		this.isInTick = isInTick;
 		this.time = time;
 		this.global = global;
+		isNull = false;
 	}
 	
 	@Override
@@ -93,5 +97,13 @@ public class Cooldown {
 
 	public void setGlobal(boolean global) {
 		this.global = global;
+	}
+
+	public boolean isNull() {
+		return isNull;
+	}
+
+	public void setNull(boolean isNull) {
+		this.isNull = isNull;
 	}
 }

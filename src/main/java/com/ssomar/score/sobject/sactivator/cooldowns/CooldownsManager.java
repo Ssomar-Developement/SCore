@@ -95,14 +95,13 @@ public class CooldownsManager {
 	 */
 	public boolean isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
-		List<Cooldown> cooldowns;
-		if(cooldownsUUID.containsKey(uuid) && (cooldowns = cooldownsUUID.get(uuid)).size()!= 0){
-			for(Cooldown cd : cooldowns) {
-				if(cd == null) continue;
-				if(cd.getId().equals(id)) {
-					if(this.getCooldown(sPlugin, sO, sAct, uuid)<cd.getCooldown()) {
-						return true;
-					}
+		List<Cooldown> cooldowns2;
+		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
+			cooldowns2 = cooldowns.get(id);
+			for(Cooldown cd : cooldowns2) {
+				if(cd == null || !cd.getEntityUUID().equals(uuid)) continue;
+				if(this.getCooldown(sPlugin, sO, sAct, uuid)<cd.getCooldown()) {
+					return true;
 				}
 			}	
 		}
@@ -133,6 +132,7 @@ public class CooldownsManager {
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
 			int minValue = -1;
+			int index = -1;
 			List<Cooldown> cds = cooldowns.get(id);
 			for(int i = 0; i < cds.size(); i++) {
 				Cooldown cd = cds.get(i);
@@ -143,15 +143,25 @@ public class CooldownsManager {
 				int div = 1000;
 				if(cd.isInTick()) div = 50;
 				int delayInt = (int) (delay/div);
-				if(minValue == -1 || delayInt < minValue) minValue = delayInt;
-				else if(delayInt >= minValue)  cds.set(i, null);
+				if(minValue == -1 || delayInt < minValue) {
+					if(index != -1) {
+						cd.setNull(true);
+						cds.set(index, null);
+					}
+					index = i;
+					minValue = delayInt;
+				}
+				else if(delayInt >= minValue) {
+					cd.setNull(true);
+					cds.set(i, null);
+				}
 			}
 			if(minValue == -1) return 0;
 			return minValue;
 		}	
 		return 0;
 	}
-	
+
 
 	//	public void clearCooldownsPassed(SPlugin sPlugin, SObject sO, SActivator sAct) {
 	//		
