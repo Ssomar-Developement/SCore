@@ -120,7 +120,7 @@ public class LoopManager {
 				}
 			}
 		};
-		runnable.runTaskTimer(SCore.plugin, 0L, DELAY);
+		runnable.runTaskTimerAsynchronously(SCore.plugin, 0L, DELAY);
 	}
 
 
