@@ -36,25 +36,15 @@ public class Jump extends PlayerCommand{
 		v.setZ(0);
 		receiver.setVelocity(v);
 
-
-		UUID uuid = UUID.randomUUID();
-
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
-			}
-		};
-		BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
-
-		NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<UUID, BukkitTask>(uuid, task));
+		/* NO FALL DAMAGE PART */
+		NoFallDamageManager.getInstance().addNoFallDamage(receiver);
 	}
 
 	@Override
 	public String verify(List<String> args) {
 		String error ="";
 
-		String jump= "JUMP {number}";
+		String jump= "JUMP {number (max 5)}";
 		if(args.size()>1) error= tooManyArgs+jump;
 		else if(args.size()==1) { 
 			try {
@@ -77,7 +67,7 @@ public class Jump extends PlayerCommand{
 	@Override
 	public String getTemplate() {
 		// TODO Auto-generated method stub
-		return "JUMP {number}";
+		return "JUMP {number (max 5)}";
 	}
 
 	@Override

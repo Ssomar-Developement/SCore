@@ -118,6 +118,8 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerConditions<ItemC
 		iC.setIfDurabilityMsg(cache.get(p).getMessage(ItemConditionsMessages.IF_DURABILITY_MSG.name));
 		iC.setIfUsageMsg(cache.get(p).getMessage(ItemConditionsMessages.IF_USAGE_MSG.name));
 		iC.setIfUsage2Msg(cache.get(p).getMessage(ItemConditionsMessages.IF_USAGE2_MSG.name));
+		iC.setIfHasEnchantMsg(cache.get(p).getMessage(ItemConditionsMessages.IF_HAS_ENCHANT_MSG.name));
+		iC.setIfHasNotEnchantMsg(cache.get(p).getMessage(ItemConditionsMessages.IF_HAS_NOT_ENCHANT_MSG.name));
 		
 		ItemConditions.saveItemConditions(sPlugin, sObject, sActivator, iC, cache.get(p).getDetail());
 		cache.remove(p);

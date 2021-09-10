@@ -156,6 +156,9 @@ public class PlayerConditions extends Conditions{
 	private static final String IF_PLAYER_HAS_EFFECT_MSG = " &cYou don't have all correct effects to active the activator: &6%activator% &cof this item!";
 	private String ifPlayerHasEffectMsg;
 
+	private Map<PotionEffectType, Integer> ifPlayerHasEffectEquals;
+	private String ifPlayerHasEffectEqualsMsg;
+
 	@Override
 	public void init() {
 		this.ifSneaking = false;
@@ -250,6 +253,9 @@ public class PlayerConditions extends Conditions{
 
 		this.ifPlayerHasEffect = new HashMap<>();
 		this.ifPlayerHasEffectMsg = IF_PLAYER_HAS_EFFECT_MSG;
+
+		this.ifPlayerHasEffectEquals = new HashMap<>();
+		this.ifPlayerHasEffectEqualsMsg = IF_PLAYER_HAS_EFFECT_MSG;
 	}
 
 	public boolean verifConditions(Player p, Player toMsg) {
@@ -517,6 +523,21 @@ public class PlayerConditions extends Conditions{
 				}
 			}
 		}
+
+		if(this.ifPlayerHasEffectEquals.size() > 0) {
+			for(PotionEffectType pET : ifPlayerHasEffectEquals.keySet()) {
+				if(!p.hasPotionEffect(pET)) {
+					this.getSm().sendMessage(toMsg, this.getIfPlayerHasEffectEqualsMsg());
+					return false;
+				}
+				else {
+					if(p.getPotionEffect(pET).getAmplifier() != ifPlayerHasEffectEquals.get(pET)) {
+						this.getSm().sendMessage(toMsg, this.getIfPlayerHasEffectEqualsMsg());
+						return false;
+					}
+				}
+			}
+		}
 		return true;
 	}
 
@@ -699,6 +720,30 @@ public class PlayerConditions extends Conditions{
 		pCdt.setIfPlayerHasEffect(verifETP);
 		pCdt.setIfPlayerHasEffectMsg(playerCdtSection.getString("ifPlayerHasEffectMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
 
+		Map<PotionEffectType, Integer> verifETPE = new HashMap<>();
+		for (String s : playerCdtSection.getStringList("ifPlayerHasEffectEquals")) {
+			String[] spliter;
+			if (s.contains(":") && (spliter = s.split(":")).length == 2) {
+				int value = 0;
+				PotionEffectType type = PotionEffectType.getByName(spliter[0]);
+				if(type == null) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasEffectEquals condition: " + s+ " correct form > EFFECT:AMPLIFIER_REQUIRED  example> SPEED:0 !");
+					continue;
+				}
+
+				try {
+					value = Integer.valueOf(spliter[1]);
+				} catch (Exception e) {
+					errorList.add(pluginName+" Invalid argument for the ifPlayerHasEffectEquals condition: " + s+ " correct form > EFFECT:AMPLIFIER_REQUIRED  example> SPEED:0 !");
+					continue;
+				}
+				verifETPE.put(type, value);
+			}
+		}
+
+		pCdt.setIfPlayerHasEffectEquals(verifETPE);
+		pCdt.setIfPlayerHasEffectEqualsMsg(playerCdtSection.getString("ifPlayerHasEffectEqualsMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
+
 		return pCdt;
 
 	}
@@ -857,6 +902,16 @@ public class PlayerConditions extends Conditions{
 			pCConfig.set("ifPlayerHasEffectMsg", pC.getIfPlayerHasEffectMsg());
 		}
 		else pCConfig.set("ifPlayerHasEffect", null);
+
+		if(pC.ifPlayerHasEffectEquals.size() > 0) {
+			List<String> result = new ArrayList<>();
+			for(PotionEffectType pET : pC.ifPlayerHasEffectEquals.keySet()) {
+				result.add(pET.getName().toString()+":"+pC.ifPlayerHasEffectEquals.get(pET));
+			}
+			pCConfig.set("ifPlayerHasEffectEquals", result);
+			pCConfig.set("ifPlayerHasEffectEqualsMsg", pC.getIfPlayerHasEffectMsg());
+		}
+		else pCConfig.set("ifPlayerHasEffectEquals", null);
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
@@ -1161,12 +1216,6 @@ public class PlayerConditions extends Conditions{
 	public boolean hasIfPlayerHasItem() {
 		return ifPlayerHasItem != null && !ifPlayerHasItem.isEmpty();
 	}
-
-
-
-
-
-
 
 	public synchronized String getIfSneakingMsg() {
 		return ifSneakingMsg;
@@ -1478,4 +1527,19 @@ public class PlayerConditions extends Conditions{
 		this.ifPlayerHasEffectMsg = ifPlayerHasEffectMsg;
 	}
 
+	public Map<PotionEffectType, Integer> getIfPlayerHasEffectEquals() {
+		return ifPlayerHasEffectEquals;
+	}
+
+	public void setIfPlayerHasEffectEquals(Map<PotionEffectType, Integer> ifPlayerHasEffectEquals) {
+		this.ifPlayerHasEffectEquals = ifPlayerHasEffectEquals;
+	}
+
+	public String getIfPlayerHasEffectEqualsMsg() {
+		return ifPlayerHasEffectEqualsMsg;
+	}
+
+	public void setIfPlayerHasEffectEqualsMsg(String ifPlayerHasEffectEqualsMsg) {
+		this.ifPlayerHasEffectEqualsMsg = ifPlayerHasEffectEqualsMsg;
+	}
 }

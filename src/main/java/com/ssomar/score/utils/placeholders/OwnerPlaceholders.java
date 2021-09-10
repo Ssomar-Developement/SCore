@@ -26,6 +26,7 @@ public class OwnerPlaceholders extends PlaceholdersInterface implements Serializ
 	private String ownerZInt = "";
 	private String ownerWorld = "";
 	private String ownerSlot = "";
+	private String direction;
 	
 	public void setOwnerPlcHldr(UUID uuid) {
 		this.ownerUUID = uuid;
@@ -45,6 +46,31 @@ public class OwnerPlaceholders extends PlaceholdersInterface implements Serializ
 			this.ownerZInt = pLoc.getBlockZ()+"";
 			this.ownerWorld = pLoc.getWorld().getName();
 			this.ownerSlot = player.getInventory().getHeldItemSlot()+"";
+			float yaw = pLoc.getYaw();
+			if(yaw >= -30 && yaw <= 30){
+				direction = "S";
+			}
+			else if(yaw > 30 && yaw < 60){
+				direction = "SW";
+			}
+			else if(yaw >= 60 && yaw <= 120){
+				direction = "W";
+			}
+			else if(yaw > 120 && yaw < 150){
+				direction = "NW";
+			}
+			else if(yaw >= 150 || yaw <= -150){
+				direction = "N";
+			}
+			else if(yaw > -150 && yaw <-120 ){
+				direction = "NE";
+			}
+			else if(yaw >= -120 && yaw <= -60){
+				direction = "E";
+			}
+			else if(yaw > -60 && yaw <-30 ){
+				direction = "SE";
+			}
 		}
 	}
 	
@@ -61,6 +87,7 @@ public class OwnerPlaceholders extends PlaceholdersInterface implements Serializ
 			toReplace = replaceCalculPlaceholder(toReplace, "%owner_z_int%", ownerZInt, true);
 			toReplace = toReplace.replaceAll("%owner_world%", ownerWorld);
 			toReplace = toReplace.replaceAll("%owner_slot%", ownerSlot);
+			toReplace = toReplace.replaceAll("%owner_direction%", direction);
 		}
 		
 		return toReplace;

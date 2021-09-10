@@ -47,7 +47,8 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_POS_X = "ifPosX";
 	public static final String IF_POS_Y = "ifPosY";
 	public static final String IF_POS_Z = "ifPosZ";
-	public static final String IF_HAS_EFFECT = "ifHasEffect";
+	public static final String IF_HAS_EFFECT = "(1) ifHasEffect";
+	public static final String IF_HAS_EFFECT_EQUALS = "(2) ifHasEffectEquals";
 
 	public PlayerConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 5*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -170,9 +171,13 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateIfPosZ(conditions.getIfPosZ());
 		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_EFFECT, 	false,	false, "&7&oThe player must have th effect(s)...", "&a✎ Click here to change", "&7actually:");
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_EFFECT, 	false,	false, "&7&oThe player must have the effect(s)...", "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateIfHasEffect(conditions.getIfPlayerHasEffect());
+		this.updateIfHasEffect(conditions.getIfPlayerHasEffect(), false);
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_EFFECT_EQUALS, 	false,	false, "&7&oThe player must have the effect(s)...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfHasEffect(conditions.getIfPlayerHasEffectEquals(), true);
 		
 
 		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -598,8 +603,10 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		else return this.getActually(this.getByName(IF_POS_Z));
 	}
 	
-	public void updateIfHasEffect(List<String> list) {
-		ItemStack item = this.getByName(IF_HAS_EFFECT);
+	public void updateIfHasEffect(List<String> list , boolean equals) {
+		ItemStack item;
+		if(equals) item = this.getByName(IF_HAS_EFFECT_EQUALS);
+		else item = this.getByName(IF_HAS_EFFECT);
 		ItemMeta toChange = item.getItemMeta();
 		List<String> loreUpdate = toChange.getLore().subList(0, 3);
 		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &ePLAYER NO NEED EFFECT"));
@@ -612,8 +619,10 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		item.setItemMeta(toChange);
 	}
 	
-	public void updateIfHasEffect(Map<PotionEffectType, Integer> list) {
-		ItemStack item = this.getByName(IF_HAS_EFFECT);
+	public void updateIfHasEffect(Map<PotionEffectType, Integer> list, boolean equals) {
+		ItemStack item;
+		if(equals) item = this.getByName(IF_HAS_EFFECT_EQUALS);
+		else item = this.getByName(IF_HAS_EFFECT);
 		ItemMeta toChange = item.getItemMeta();
 		List<String> loreUpdate = toChange.getLore().subList(0, 3);
 		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &ePLAYER NO NEED EFFECT"));
@@ -627,8 +636,10 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		item.setItemMeta(toChange);
 	}
 
-	public List<String> getIfHasEffectStr(){
-		ItemStack item = this.getByName(IF_HAS_EFFECT);
+	public List<String> getIfHasEffectStr(boolean equals){
+		ItemStack item;
+		if(equals) item = this.getByName(IF_HAS_EFFECT_EQUALS);
+		else item = this.getByName(IF_HAS_EFFECT);
 		ItemMeta iM = item.getItemMeta();
 		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
 		List<String> result = new ArrayList<>();
@@ -641,8 +652,10 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		return result;
 	}
 	
-	public Map<PotionEffectType, Integer> getIfHasEffect(){
-		ItemStack item = this.getByName(IF_HAS_EFFECT);
+	public Map<PotionEffectType, Integer> getIfHasEffect(boolean equals){
+		ItemStack item;
+		if(equals) item = this.getByName(IF_HAS_EFFECT_EQUALS);
+		else item = this.getByName(IF_HAS_EFFECT);
 		ItemMeta iM = item.getItemMeta();
 		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
 		Map<PotionEffectType, Integer> result = new HashMap<>();

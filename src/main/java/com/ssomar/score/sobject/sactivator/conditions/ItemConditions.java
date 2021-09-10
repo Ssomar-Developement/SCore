@@ -5,18 +5,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.base.Charsets;
+import com.ssomar.score.SsomarDev;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import com.google.common.base.Charsets;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.executableitems.items.Item;
@@ -30,15 +35,23 @@ public class ItemConditions extends Conditions{
 
 	//Item
 	private String ifDurability;
-	private static final String IF_DURABILITY_MSG = " &cThis item must haven't a valid durability to active the activator: &6%activator% &cof this item!";
+	private static final String IF_DURABILITY_MSG = " &cThis item must have a valid durability to active the activator: &6%activator% &cof this item!";
 	private String ifDurabilityMsg;
 	
 	private String ifUsage;
-	private static final String IF_USAGE_MSG = " &cThis item must haven't a valid usage to active the activator: &6%activator% &cof this item!";
+	private static final String IF_USAGE_MSG = " &cThis item must have the valid usage to active the activator: &6%activator% &cof this item!";
 	private String ifUsageMsg;
 
 	private String ifUsage2;
 	private String ifUsage2Msg;
+
+	private Map<Enchantment, Integer> ifHasEnchant;
+	private static final String IF_HAS_ENCHANT_MSG = " &cThis item must have the good enchantments to active the activator: &6%activator% &cof this item!";
+	private String ifHasEnchantMsg;
+
+	private Map<Enchantment, Integer> ifHasNotEnchant;
+	private static final String IF_HAS_NOT_ENCHANT_MSG = " &cThis item must have the good enchantments to active the activator: &6%activator% &cof this item!";
+	private String ifHasNotEnchantMsg;
 
 	
 	//private String ifKillWithItem="";
@@ -55,10 +68,21 @@ public class ItemConditions extends Conditions{
 		
 		this.ifUsage2 = "";
 		this.ifUsage2Msg = IF_USAGE_MSG;
+
+		this.ifHasEnchant = new HashMap<>();
+		this.ifHasEnchantMsg = IF_HAS_ENCHANT_MSG;
+
+		this.ifHasNotEnchant = new HashMap<>();
+		this.ifHasNotEnchantMsg = IF_HAS_NOT_ENCHANT_MSG;
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean verifConditions(ItemStack i, Item infoItem, Player p) {		
+	public boolean verifConditions(ItemStack i, Item infoItem, Player p) {
+
+		ItemMeta itemMeta = null;
+		boolean hasItemMeta = i.hasItemMeta();
+		if(hasItemMeta) itemMeta = i.getItemMeta();
+
 		if(this.hasIfDurability()) {
 			if(!StringCalculation.calculation(this.ifDurability, i.getDurability())) {
 				this.getSm().sendMessage(p, this.getIfDurabilityMsg());
@@ -67,7 +91,7 @@ public class ItemConditions extends Conditions{
 		}
 		
 		if(this.hasIfUsage()) {
-			ItemMeta itemMeta = i.getItemMeta();
+			if(!hasItemMeta) return false;
 			List<String> lore = itemMeta.getLore();
 			int usage;
 
@@ -82,7 +106,6 @@ public class ItemConditions extends Conditions{
 				}
 			}
 			else usage = 1;
-			
 			//SsomarDev.testMsg("usage: "+usage+ " / ifUsage: "+this.ifUsage);
 			
 			if(!StringCalculation.calculation(this.ifUsage, usage)) {
@@ -90,9 +113,11 @@ public class ItemConditions extends Conditions{
 				return false;
 			}
 		}
-		
+
+
+
 		if(this.hasIfUsage2()) {
-			ItemMeta itemMeta = i.getItemMeta();
+			if(!hasItemMeta) return false;
 			List<String> lore = itemMeta.getLore();
 			int usage2;
 
@@ -113,6 +138,23 @@ public class ItemConditions extends Conditions{
 				return false;
 			}
 		}
+
+		if(this.ifHasEnchant.size() != 0){
+			if(!hasItemMeta) return false;
+			Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
+			for(Enchantment enchant : ifHasEnchant.keySet()){
+				if(!enchants.containsKey(enchant) || ifHasEnchant.get(enchant) != enchants.get(enchant)) return false;
+			}
+		}
+
+		if(this.ifHasNotEnchant.size() != 0){
+			if(!hasItemMeta) return false;
+			Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
+			for(Enchantment enchant : ifHasNotEnchant.keySet()){
+				if(enchants.containsKey(enchant) && ifHasNotEnchant.get(enchant) == enchants.get(enchant)) return false;
+			}
+		}
+
 			
 		return true;
 	}
@@ -130,7 +172,34 @@ public class ItemConditions extends Conditions{
 		iCdt.setIfUsage2(itemCdtSection.getString("ifUsage2", ""));
 		iCdt.setIfUsage2Msg(itemCdtSection.getString("ifUsage2Msg", "&4&l"+pluginName+IF_USAGE_MSG));
 
+		Map<Enchantment, Integer> hasEnchants = iCdt.transformEnchants(itemCdtSection.getStringList("ifHasEnchant"));
+		iCdt.setIfHasEnchant(hasEnchants);
+		iCdt.setIfHasEnchantMsg(itemCdtSection.getString("ifHasEnchantMsg", "&4&l"+pluginName+IF_HAS_ENCHANT_MSG));
+
+		Map<Enchantment, Integer> hasNotEnchants = iCdt.transformEnchants(itemCdtSection.getStringList("ifHasNotEnchant"));
+		iCdt.setIfHasNotEnchant(hasNotEnchants);
+		iCdt.setIfHasNotEnchantMsg(itemCdtSection.getString("ifHasNotEnchantMsg", "&4&l"+pluginName+IF_HAS_NOT_ENCHANT_MSG));
+
 		return iCdt;
+	}
+
+	public static Map<Enchantment, Integer> transformEnchants(List<String> enchantsConfig){
+		Map<Enchantment, Integer> result = new HashMap<>();
+		for(String s : enchantsConfig){
+			Enchantment enchant;
+			int level;
+			String [] decomp;
+
+			if(s.contains(":")){
+				decomp = s.split(":");
+				try {
+					enchant = Enchantment.getByName(decomp[0]);
+					level = Integer.valueOf(decomp[1]);
+					result.put(enchant, level);
+				}catch(Exception e){ e.printStackTrace();}
+			}
+		}
+		return result;
 	}
 	
 	/*
@@ -141,30 +210,50 @@ public class ItemConditions extends Conditions{
 	 */
 	public static void saveItemConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions iC, String detail) {
 
-		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+		if (!new File(sObject.getPath()).exists()) {
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign() + " Error can't find the file in the folder ! (" + sObject.getID() + ".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
 		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
 
-		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-		activatorConfig.set("conditions."+detail+".ifDurability", ">50");
+		ConfigurationSection activatorConfig = config.getConfigurationSection("activators." + sActivator.getID());
+		activatorConfig.set("conditions." + detail + ".ifDurability", ">50");
 
 
-		ConfigurationSection pCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
+		ConfigurationSection pCConfig = config.getConfigurationSection("activators." + sActivator.getID() + ".conditions." + detail);
 
-		if(iC.hasIfDurability()) pCConfig.set("ifDurability", iC.getIfDurability()); 
+		if (iC.hasIfDurability()) pCConfig.set("ifDurability", iC.getIfDurability());
 		else pCConfig.set("ifDurability", null);
-		pCConfig.set("ifDurabilityMsg", iC.getIfDurabilityMsg()); 
-		
-		if(iC.hasIfUsage()) pCConfig.set("ifUsage", iC.getIfUsage()); 
+		pCConfig.set("ifDurabilityMsg", iC.getIfDurabilityMsg());
+
+		if (iC.hasIfUsage()) pCConfig.set("ifUsage", iC.getIfUsage());
 		else pCConfig.set("ifUsage", null);
-		pCConfig.set("ifUsageMsg", iC.getIfUsageMsg()); 
-		
-		if(iC.hasIfUsage2()) pCConfig.set("ifUsage2", iC.getIfUsage2()); 
+		pCConfig.set("ifUsageMsg", iC.getIfUsageMsg());
+
+		if (iC.hasIfUsage2()) pCConfig.set("ifUsage2", iC.getIfUsage2());
 		else pCConfig.set("ifUsage2", null);
-		pCConfig.set("ifUsage2Msg", iC.getIfUsage2Msg()); 
+		pCConfig.set("ifUsage2Msg", iC.getIfUsage2Msg());
+
+		if (iC.ifHasEnchant.size() != 0) {
+			List<String> result = new ArrayList<>();
+			for(Enchantment enchant : iC.ifHasEnchant.keySet()){
+				result.add(enchant.toString()+":"+iC.ifHasEnchant.get(enchant));
+			}
+			pCConfig.set("ifHasEnchant", result);
+		}
+		else pCConfig.set("ifHasEnchant", null);
+		pCConfig.set("ifHasEnchantMsg", iC.getIfHasEnchantMsg());
+
+		if (iC.ifHasNotEnchant.size() != 0) {
+			List<String> result = new ArrayList<>();
+			for(Enchantment enchant : iC.ifHasNotEnchant.keySet()){
+				result.add(enchant.toString()+":"+iC.ifHasNotEnchant.get(enchant));
+			}
+			pCConfig.set("ifHasNotEnchant", result);
+		}
+		else pCConfig.set("ifHasNotEnchant", null);
+		pCConfig.set("ifHasNotEnchantMsg", iC.getIfHasNotEnchantMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
@@ -178,7 +267,6 @@ public class ItemConditions extends Conditions{
 			e.printStackTrace();
 		}
 	}
-
 
 	public String getIfDurability() {
 		return ifDurability;
@@ -229,7 +317,36 @@ public class ItemConditions extends Conditions{
 	public void setIfUsage2Msg(String ifUsage2Msg) {
 		this.ifUsage2Msg = ifUsage2Msg;
 	}
-	
-	
-	
+
+	public Map<Enchantment, Integer> getIfHasEnchant() {
+		return ifHasEnchant;
+	}
+
+	public void setIfHasEnchant(Map<Enchantment, Integer> ifHasEnchant) {
+		this.ifHasEnchant = ifHasEnchant;
+	}
+
+	public String getIfHasEnchantMsg() {
+		return ifHasEnchantMsg;
+	}
+
+	public void setIfHasEnchantMsg(String ifHasEnchantMsg) {
+		this.ifHasEnchantMsg = ifHasEnchantMsg;
+	}
+
+	public Map<Enchantment, Integer> getIfHasNotEnchant() {
+		return ifHasNotEnchant;
+	}
+
+	public void setIfHasNotEnchant(Map<Enchantment, Integer> ifHasNotEnchant) {
+		this.ifHasNotEnchant = ifHasNotEnchant;
+	}
+
+	public String getIfHasNotEnchantMsg() {
+		return ifHasNotEnchantMsg;
+	}
+
+	public void setIfHasNotEnchantMsg(String ifHasNotEnchantMsg) {
+		this.ifHasNotEnchantMsg = ifHasNotEnchantMsg;
+	}
 }

@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.ssomar.score.SCore;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.ssomar.score.utils.Couple;
@@ -18,6 +20,20 @@ public class NoFallDamageManager {
 	private Map<Player, List<Couple<UUID,BukkitTask>>> noFallDamageMap = new HashMap<>();
 
 	private static NoFallDamageManager instance;
+
+	public void addNoFallDamage(Player p) {
+		UUID uuid = UUID.randomUUID();
+
+		BukkitRunnable runnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+			}
+		};
+		BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
+
+		NoFallDamageManager.getInstance().addNoFallDamage(p, new Couple<UUID, BukkitTask>(uuid, task));
+	}
 
 	public void addNoFallDamage(Player p, Couple<UUID, BukkitTask> c) {
 		if (noFallDamageMap.containsKey(p)) {

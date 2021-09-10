@@ -147,6 +147,8 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 		pC.setIfPosXMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_POS_X_MSG.name));
 		pC.setIfPosYMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_POS_Y_MSG.name));
 		pC.setIfPosZMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_POS_Z_MSG.name));
+		pC.setIfPlayerHasEffectEqualsMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_HAS_EFFECT_EQUALS_MSG.name));
+		pC.setIfPlayerHasEffectMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_HAS_EFFECT_MSG.name));
 
 		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);

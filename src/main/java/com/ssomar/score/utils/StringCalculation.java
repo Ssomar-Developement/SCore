@@ -1,5 +1,7 @@
 package com.ssomar.score.utils;
 
+import com.ssomar.score.SsomarDev;
+
 public class StringCalculation {
 
 	public static boolean calculation(String s, double number) {

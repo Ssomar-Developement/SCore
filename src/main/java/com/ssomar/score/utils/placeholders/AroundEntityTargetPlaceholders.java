@@ -34,7 +34,7 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 
 	public void reloadAroundEntityTargetPlcHldr() {
 		Entity entity;
-		if(this.targetEntityUUID != null && (entity = Bukkit.getPlayer(targetEntityUUID)) != null) {
+		if(this.targetEntityUUID != null && (entity = Bukkit.getEntity(targetEntityUUID)) != null) {
 			this.aroundTargetName = entity.getName();
 			this.aroundTargetType = entity.getType().toString();
 			Location pLoc = entity.getLocation();

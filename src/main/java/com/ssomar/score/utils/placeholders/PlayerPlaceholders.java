@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class PlayerPlaceholders extends PlaceholdersInterface implements Serializable{
@@ -27,6 +28,7 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 	private double lastDamageTaken;
 	private float pitch;
 	private float pitchPositive;
+	private String direction;
 	
 	public void setPlayerPlcHldr(UUID uuid) {
 		this.playerUUID = uuid;
@@ -56,6 +58,31 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			this.pitch = pLoc.getPitch();
 			if(pitch < 0) pitchPositive = pitch * -1;
 			else pitchPositive = pitch;
+		 	float yaw = pLoc.getYaw();
+		 	if(yaw >= -30 && yaw <= 30){
+		 		direction = "S";
+			}
+		 	else if(yaw > 30 && yaw < 60){
+				direction = "SW";
+			}
+			else if(yaw >= 60 && yaw <= 120){
+				direction = "W";
+			}
+			else if(yaw > 120 && yaw < 150){
+				direction = "NW";
+			}
+			else if(yaw >= 150 || yaw <= -150){
+				direction = "N";
+			}
+			else if(yaw > -150 && yaw <-120 ){
+				direction = "NE";
+			}
+			else if(yaw >= -120 && yaw <= -60){
+				direction = "E";
+			}
+			else if(yaw > -60 && yaw <-30 ){
+				direction = "SE";
+			}
 		}
 	}
 	
@@ -80,6 +107,25 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_int%", ((int) pitch)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive%", pitchPositive+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive_int%", ((int) pitchPositive)+"", false);
+			toReplace = toReplace.replaceAll("%direction%", direction);
+
+
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_x%", x+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_y%", y+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_z%", z+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_x_int%", ((int) x)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_y_int%", ((int) y)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_z_int%", ((int) z)+"", true);
+			toReplace = toReplace.replaceAll("%player_world%", world);
+			toReplace = toReplace.replaceAll("%player_slot%", slot);
+			toReplace = toReplace.replaceAll("%player_slot_live%", slotLive);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_last_damage_taken%", lastDamageTaken+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_last_damage_taken_int%", ((int) lastDamageTaken)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch%", pitch+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch_int%", ((int) pitch)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch_positive%", pitchPositive+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch_positive_int%", ((int) pitchPositive)+"", false);
+			toReplace = toReplace.replaceAll("%player_direction%", direction);
 		}
 		
 		return toReplace;

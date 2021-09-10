@@ -71,7 +71,7 @@ public class Around extends BlockCommand{
 					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation(), distance, distance, distance)) {
 						if(e instanceof Player) {
 							Player target =  (Player) e;
-							if(target.hasMetadata("NPC")) continue;
+							if(target.hasMetadata("NPC") || (p != null && p.equals(target))) continue;
 
 							StringPlaceholder sp = new StringPlaceholder();
 							sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());

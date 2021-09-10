@@ -1,6 +1,7 @@
 package com.ssomar.score.menu.conditions.itemcdt;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
@@ -9,11 +10,17 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.ItemConditions;
 import com.ssomar.score.splugin.SPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class ItemConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_DURABILITY = "ifDurability";
 	public static final String IF_USAGE = "(1) ifUsage";
 	public static final String IF_USAGE2 = "(2) ifUsage";
+	public static final String IF_HAS_ENCHANT = "ifHasEnchant";
+	public static final String IF_HAS_NOT_ENCHANT = "ifHasNotEnchant";
 	
 	public ItemConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -35,6 +42,14 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_USAGE2, 	false,	false, "&7&oThe usage must be..", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateIfUsage2(conditions.getIfUsage2());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change");
+		i++;
+		this.updateIfHasEnchant(conditions.getIfHasEnchant(), false);
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_NOT_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change");
+		i++;
+		this.updateIfHasEnchant(conditions.getIfHasNotEnchant(), true);
 		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
@@ -79,5 +94,26 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 	public String getIfUsage2() {
 		if(this.getActually(this.getByName(IF_USAGE2)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(IF_USAGE2));
+	}
+
+	public void updateIfHasEnchant(Map<Enchantment, Integer> enchants, boolean not){
+		String name;
+		List<String> enchantsStr = new ArrayList<>();
+		if(!not) name = IF_HAS_ENCHANT;
+		else name = IF_HAS_NOT_ENCHANT;
+
+		for(Enchantment enchant : enchants.keySet()){
+			enchantsStr.add(enchant.toString()+":"+enchants.get(enchant));
+		}
+
+		this.updateConditionList(name, enchantsStr, "&cNO ENCHANTS REQUIRED");
+	}
+
+	public Map<Enchantment, Integer> getIfHasEnchant(boolean not){
+		String name;
+		if(!not) name = IF_HAS_ENCHANT;
+		else name = IF_HAS_NOT_ENCHANT;
+		List<String> enchantsStr = this.getConditionList(name, "NO ENCHANTS REQUIRED");
+		return ItemConditions.transformEnchants(enchantsStr);
 	}
 }

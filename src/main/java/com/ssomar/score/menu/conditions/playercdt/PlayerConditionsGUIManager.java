@@ -59,11 +59,23 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		else if(i.name.contains(PlayerConditionsGUI.IF_HAS_EFFECT)) {
 			requestWriting.put(i.player, PlayerConditionsGUI.IF_HAS_EFFECT);
 			if(!currentWriting.containsKey(i.player)) {
-				currentWriting.put(i.player, cache.get(i.player).getIfHasEffectStr());
+				currentWriting.put(i.player, cache.get(i.player).getIfHasEffectStr(false));
 			}
 			i.player.closeInventory();
 			space(i.player);
-			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS EFFECT:"));
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS EFFECT &e&o(EFFECT:MINIMUM_REQUIRED_AMPLIFIER):"));
+			this.showIfHasEffectEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getIfHasEffectStr(true));
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS EFFECT EQUALS &e&o(EFFECT:REQUIRED_AMPLIFIER):"));
 			this.showIfHasEffectEditor(i.player);
 			space(i.player);
 		}
@@ -388,7 +400,14 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 					for(String str : currentWriting.get(p)) {
 						result.add(str);
 					}
-					cache.get(p).updateIfHasEffect(result);
+					cache.get(p).updateIfHasEffect(result, false);
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS)) {
+					List<String> result = new ArrayList<>();
+					for(String str : currentWriting.get(p)) {
+						result.add(str);
+					}
+					cache.get(p).updateIfHasEffect(result, true);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD)) {
 					List<String> result= new ArrayList<>();
@@ -533,6 +552,56 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 					currentWriting.put(p, list);
 				}
 				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have added new required effect!"));
+
+				this.showTheGoodEditor(requestWriting.get(p), p);
+			}
+
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS)) {
+
+				message = StringConverter.decoloredString(message);
+				String[] decomp;
+				PotionEffectType type;
+				int value;
+
+				if(!message.contains(":") || (decomp = message.split(":")).length != 2) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid form pls follow this example: SPEED:0  (EFFECT:AMPLIFIER_REQUIRED)"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+				type = PotionEffectType.getByName(decomp[0]);
+
+				if(type == null) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid Effect type. List of the effects: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+				try {
+					value = Integer.valueOf(decomp[1]);
+				}
+				catch(Exception e) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid AMPLIFIER_REQUIRED, set an integer >= 0"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+				if(value < 0) {
+					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid AMPLIFIER_REQUIRED, set an integer >= 0"));
+					this.showTheGoodEditor(requestWriting.get(p), p);
+					return;
+				}
+
+
+				if(currentWriting.containsKey(p)) {
+					currentWriting.get(p).add(message);
+				}
+				else {
+					ArrayList<String> list = new ArrayList<>();
+					list.add(message);
+					currentWriting.put(p, list);
+				}
+				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have added new required effect equals!"));
 
 				this.showTheGoodEditor(requestWriting.get(p), p);
 			}
@@ -911,7 +980,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			showIfInWorldEditor(p);
 			break;
 			
-		case PlayerConditionsGUI.IF_HAS_EFFECT:
+		case PlayerConditionsGUI.IF_HAS_EFFECT: case PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS:
 			showIfHasEffectEditor(p);
 			break;
 
@@ -964,7 +1033,8 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		pC.setIfPosY(cache.get(p).getIfPosY());
 		pC.setIfPosZ(cache.get(p).getIfPosZ());
 		pC.setIfIsOnTheBlock(cache.get(p).getIfIsOnTheBlock());
-		pC.setIfPlayerHasEffect(cache.get(p).getIfHasEffect());
+		pC.setIfPlayerHasEffect(cache.get(p).getIfHasEffect(false));
+		pC.setIfPlayerHasEffectEquals(cache.get(p).getIfHasEffect(true));
 
 		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);

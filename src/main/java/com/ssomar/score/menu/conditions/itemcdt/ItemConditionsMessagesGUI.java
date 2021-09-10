@@ -30,6 +30,15 @@ public class ItemConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_USAGE2_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(ItemConditionsMessages.IF_USAGE2_MSG.name, conditions.getIfUsage2Msg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_HAS_ENCHANT_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(ItemConditionsMessages.IF_HAS_ENCHANT_MSG.name, conditions.getIfHasEnchantMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ItemConditionsMessages.IF_HAS_NOT_ENCHANT_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(ItemConditionsMessages.IF_HAS_NOT_ENCHANT_MSG.name, conditions.getIfHasNotEnchantMsg());
+
 		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
@@ -46,7 +55,10 @@ public class ItemConditionsMessagesGUI extends ConditionGUIAbstract{
 	public enum ItemConditionsMessages{
 		IF_DURABILITY_MSG ("ifDurability message"),
 		IF_USAGE_MSG ("ifUsage message"),
-		IF_USAGE2_MSG ("ifUsage2 message");
+		IF_USAGE2_MSG ("ifUsage2 message"),
+		IF_HAS_ENCHANT_MSG ("ifHasEnchant message"),
+		IF_HAS_NOT_ENCHANT_MSG ("ifHasNotEnchant message");
+
 		
 		public String name;
 

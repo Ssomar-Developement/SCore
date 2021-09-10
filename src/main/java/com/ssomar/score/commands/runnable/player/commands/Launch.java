@@ -65,7 +65,11 @@ public class Launch extends PlayerCommand{
 				else if(args.get(0).equalsIgnoreCase("LARGEFIREBALL")) entity = receiver.launchProjectile(LargeFireball.class);
 				else if(args.get(0).equalsIgnoreCase("LINGERINGPOTION")) entity = receiver.launchProjectile(LingeringPotion.class);
 				else if(args.get(0).equalsIgnoreCase("LLAMASPIT")) entity = receiver.launchProjectile(LlamaSpit.class);
-				else if(args.get(0).equalsIgnoreCase("SHULKERBULLET")) entity = receiver.launchProjectile(ShulkerBullet.class);
+				/* No movement because shulker bullet need to have a target */
+				else if(args.get(0).equalsIgnoreCase("SHULKERBULLET")){
+					entity = receiver.launchProjectile(ShulkerBullet.class);
+					ShulkerBullet bullet = (ShulkerBullet) entity;
+				}
 				else if(args.get(0).equalsIgnoreCase("SIZEDFIREBALL")) entity = receiver.launchProjectile(SizedFireball.class);
 				else if(args.get(0).equalsIgnoreCase("SNOWBALL")) entity = receiver.launchProjectile(Snowball.class);
 				else if(args.get(0).equalsIgnoreCase("TRIDENT")) entity = receiver.launchProjectile(Trident.class);
@@ -146,7 +150,7 @@ public class Launch extends PlayerCommand{
 							v.rotateAroundY(rotation);
 							entity.setVelocity(v);
 						}
-						SsomarDev.testMsg("rotation: "+ rotation);
+						//SsomarDev.testMsg("rotation: "+ rotation);
 					}
 
 					if(SCore.hasExecutableItems && aInfo.getItemID() != null) {

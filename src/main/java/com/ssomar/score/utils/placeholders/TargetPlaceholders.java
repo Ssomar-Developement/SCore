@@ -24,6 +24,7 @@ public class TargetPlaceholders extends PlaceholdersInterface implements Seriali
 	private String targetWorld = "";	
 	private String targetSlot = "";
 	private double targetLastDamageTaken;
+	private String direction;
 
 	public void setTargetPlcHldr(UUID uuid) {
 		this.targetUUID = uuid;
@@ -41,6 +42,31 @@ public class TargetPlaceholders extends PlaceholdersInterface implements Seriali
 			this.targetWorld = pLoc.getWorld().getName();
 			this.targetSlot = player.getInventory().getHeldItemSlot()+"";
 			this.targetLastDamageTaken = player.getLastDamage();
+			float yaw = pLoc.getYaw();
+			if(yaw >= -30 && yaw <= 30){
+				direction = "S";
+			}
+			else if(yaw > 30 && yaw < 60){
+				direction = "SW";
+			}
+			else if(yaw >= 60 && yaw <= 120){
+				direction = "W";
+			}
+			else if(yaw > 120 && yaw < 150){
+				direction = "NW";
+			}
+			else if(yaw >= 150 || yaw <= -150){
+				direction = "N";
+			}
+			else if(yaw > -150 && yaw <-120 ){
+				direction = "NE";
+			}
+			else if(yaw >= -120 && yaw <= -60){
+				direction = "E";
+			}
+			else if(yaw > -60 && yaw <-30 ){
+				direction = "SE";
+			}
 		}
 	}
 	
@@ -59,6 +85,7 @@ public class TargetPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = toReplace.replaceAll("%target_slot%", targetSlot);
 			toReplace = replaceCalculPlaceholder(toReplace, "%target_last_damage_taken%", targetLastDamageTaken+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%target_last_damage_taken_int%", ((int) targetLastDamageTaken)+"", true);
+			toReplace = toReplace.replaceAll("%target_direction%", direction);
 		}
 		
 		return toReplace;

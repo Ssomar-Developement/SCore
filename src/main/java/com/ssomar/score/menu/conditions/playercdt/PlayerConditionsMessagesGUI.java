@@ -134,6 +134,10 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_HAS_EFFECT_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(PlayerConditionsMessages.IF_HAS_EFFECT_MSG.name, conditions.getIfPlayerHasEffectMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_HAS_EFFECT_EQUALS_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_HAS_EFFECT_EQUALS_MSG.name, conditions.getIfPlayerHasEffectEqualsMsg());
 		
 
 		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -177,7 +181,8 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_POS_X_MSG ("ifPosX message"),
 		IF_POS_Y_MSG ("ifPosY message"),
 		IF_POS_Z_MSG ("ifPosZ message"),
-		IF_HAS_EFFECT_MSG ("ifHasEffect message");
+		IF_HAS_EFFECT_MSG ("(1) ifHasEffect message"),
+		IF_HAS_EFFECT_EQUALS_MSG ("(2) ifHasEffectEquals message");
 		
 		public String name;
 

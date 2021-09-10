@@ -2,7 +2,10 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.ssomar.score.nofalldamage.NoFallDamageManager;
+import com.ssomar.score.utils.Couple;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +15,8 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 /* TELEPORTONCURSOR {range}:Integer {acceptAir}:boolean */
 public class TeleportOnCursor extends PlayerCommand{
@@ -49,7 +54,10 @@ public class TeleportOnCursor extends PlayerCommand{
 				newLoc.setPitch(locP.getPitch());
 				newLoc.setYaw(locP.getYaw());
 
-				receiver.teleport(newLoc);	
+				receiver.teleport(newLoc);
+
+				/* NO FALL DAMAGE PART, IF THE PLAYER IS TELEPORTED IN THE AIR */
+				NoFallDamageManager.getInstance().addNoFallDamage(receiver);
 			}
 		}catch(Exception e) {}
 	}
