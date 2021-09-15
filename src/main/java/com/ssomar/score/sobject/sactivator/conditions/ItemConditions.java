@@ -208,6 +208,7 @@ public class ItemConditions extends Conditions{
 	 *  @param sActivator The activator that contains the conditions
 	 *  @param iC the item conditions object
 	 */
+	@SuppressWarnings("deprecation")
 	public static void saveItemConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions iC, String detail) {
 
 		if (!new File(sObject.getPath()).exists()) {
@@ -238,7 +239,7 @@ public class ItemConditions extends Conditions{
 		if (iC.ifHasEnchant.size() != 0) {
 			List<String> result = new ArrayList<>();
 			for(Enchantment enchant : iC.ifHasEnchant.keySet()){
-				result.add(enchant.toString()+":"+iC.ifHasEnchant.get(enchant));
+				result.add(enchant.getName().toString()+":"+iC.ifHasEnchant.get(enchant));
 			}
 			pCConfig.set("ifHasEnchant", result);
 		}
@@ -248,7 +249,7 @@ public class ItemConditions extends Conditions{
 		if (iC.ifHasNotEnchant.size() != 0) {
 			List<String> result = new ArrayList<>();
 			for(Enchantment enchant : iC.ifHasNotEnchant.keySet()){
-				result.add(enchant.toString()+":"+iC.ifHasNotEnchant.get(enchant));
+				result.add(enchant.getName().toString()+":"+iC.ifHasNotEnchant.get(enchant));
 			}
 			pCConfig.set("ifHasNotEnchant", result);
 		}

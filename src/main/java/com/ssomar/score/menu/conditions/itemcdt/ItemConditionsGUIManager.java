@@ -1,6 +1,8 @@
 package com.ssomar.score.menu.conditions.itemcdt;
 
 import com.ssomar.score.menu.EditorCreator;
+
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -63,6 +65,9 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 		}
 		else if(i.name.contains(ItemConditionsGUI.IF_HAS_ENCHANT)) {
 			requestWriting.put(i.player, ItemConditionsGUI.IF_HAS_ENCHANT);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getConditionList(ItemConditionsGUI.IF_HAS_ENCHANT, "NO ENCHANTS REQUIRED"));
+			}
 			i.player.closeInventory();
 			space(i.player);
 			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS ENCHANT:"));
@@ -70,6 +75,9 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 			space(i.player);
 		}else if(i.name.contains(ItemConditionsGUI.IF_HAS_NOT_ENCHANT)) {
 			requestWriting.put(i.player, ItemConditionsGUI.IF_HAS_NOT_ENCHANT);
+			if(!currentWriting.containsKey(i.player)) {
+				currentWriting.put(i.player, cache.get(i.player).getConditionList(ItemConditionsGUI.IF_HAS_NOT_ENCHANT, "NO ENCHANTS REQUIRED"));
+			}
 			i.player.closeInventory();
 			space(i.player);
 			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF HAS NOT ENCHANT:"));
@@ -140,6 +148,7 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 		editor.generateTheMenuAndSendIt(p);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void receivedMessage(Player p, String message) {
 		boolean notExit = true;
 
@@ -170,13 +179,12 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 				pass=true;
 			}
 			if(StringConverter.decoloredString(editMessage).equals("exit") || pass) {
-				/*if(requestWriting.get(p).equals("WEATHER")) {
-					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
-					cache.get(p).updateIfWeather(result);
-				}*/
+				if(requestWriting.get(p).equals(ItemConditionsGUI.IF_HAS_ENCHANT)) {
+					cache.get(p).updateConditionList(ItemConditionsGUI.IF_HAS_ENCHANT, currentWriting.get(p), "&cNO ENCHANTS REQUIRED");
+				}
+				else if(requestWriting.get(p).equals(ItemConditionsGUI.IF_HAS_NOT_ENCHANT)) {
+					cache.get(p).updateConditionList(ItemConditionsGUI.IF_HAS_NOT_ENCHANT, currentWriting.get(p), "&cNO ENCHANTS REQUIRED");
+				}
 				currentWriting.remove(p);
 				requestWriting.remove(p);
 				cache.get(p).openGUISync(p);
@@ -220,6 +228,43 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 					this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage());
 				}
 			}
+			else if(requestWriting.get(p).equals(ItemConditionsGUI.IF_HAS_ENCHANT) || requestWriting.get(p).equals(ItemConditionsGUI.IF_HAS_NOT_ENCHANT)) {
+				space(p);
+				if(editMessage.contains(":")) {
+					String [] decomp = editMessage.split(":");
+					if(decomp.length == 2) {
+						Enchantment enchant;
+						int level;
+						try {
+							enchant = Enchantment.getByName(decomp[0]);
+							level = Integer.valueOf(decomp[1]);
+							
+							
+							if(enchant != null) {
+								if(level > 0) {
+									currentWriting.get(p).add(editMessage);
+									p.sendMessage(StringConverter.coloredString("&2&lVALID &a New line added !"));
+								}
+								else p.sendMessage(StringConverter.coloredString("&4&lERROR &cInvalid Level (number above 0), ENCHANTMENT:LEVEL !"));
+							}
+							else p.sendMessage(StringConverter.coloredString("&4&lERROR &cInvalid Enchantment,  &7 Enchantments list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html &c!"));
+							
+						}catch(Exception e) {
+							e.printStackTrace();
+							p.sendMessage(StringConverter.coloredString("&4&lERROR &cInvalid Level (number above 0), ENCHANTMENT:LEVEL !"));
+						}
+					}
+					else {
+						p.sendMessage(StringConverter.coloredString("&4&lERROR &cInvalid form, ENCHANTMENT:LEVEL !"));
+					}
+				} else {
+					p.sendMessage(StringConverter.coloredString("&4&lERROR &cInvalid form, ENCHANTMENT:LEVEL !"));
+				}
+				
+				this.showIfHasEnchantEditor(p);
+				space(p);	
+				
+			}
 		}
 	}
 
@@ -241,6 +286,8 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 		iC.setIfDurability(cache.get(p).getIfDurability());
 		iC.setIfUsage(cache.get(p).getIfUsage());
 		iC.setIfUsage2(cache.get(p).getIfUsage2());
+		iC.setIfHasEnchant(cache.get(p).getIfHasEnchant(false));
+		iC.setIfHasNotEnchant(cache.get(p).getIfHasEnchant(true));
 
 		ItemConditions.saveItemConditions(sPlugin, sObject, sAct, iC, cache.get(p).getDetail());
 		cache.remove(p);

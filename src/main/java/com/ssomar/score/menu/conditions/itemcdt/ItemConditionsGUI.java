@@ -43,11 +43,11 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateIfUsage2(conditions.getIfUsage2());
 
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change");
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateIfHasEnchant(conditions.getIfHasEnchant(), false);
 
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_NOT_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change");
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_NOT_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateIfHasEnchant(conditions.getIfHasNotEnchant(), true);
 		
@@ -96,6 +96,7 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 		else return this.getActually(this.getByName(IF_USAGE2));
 	}
 
+	@SuppressWarnings("deprecation")
 	public void updateIfHasEnchant(Map<Enchantment, Integer> enchants, boolean not){
 		String name;
 		List<String> enchantsStr = new ArrayList<>();
@@ -103,7 +104,7 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 		else name = IF_HAS_NOT_ENCHANT;
 
 		for(Enchantment enchant : enchants.keySet()){
-			enchantsStr.add(enchant.toString()+":"+enchants.get(enchant));
+			enchantsStr.add(enchant.getName().toString()+":"+enchants.get(enchant));
 		}
 
 		this.updateConditionList(name, enchantsStr, "&cNO ENCHANTS REQUIRED");
