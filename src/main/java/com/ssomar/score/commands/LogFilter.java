@@ -15,9 +15,9 @@ import com.ssomar.score.SsomarDev;
 
 public class LogFilter implements Filter {
 
-	private boolean debug = false;
+	private final boolean debug = false;
 
-	private List<String> messageToHide = new ArrayList<>();
+	private final List<String> messageToHide = new ArrayList<>();
 
 	public LogFilter() {
 		messageToHide.add("Applied effect");

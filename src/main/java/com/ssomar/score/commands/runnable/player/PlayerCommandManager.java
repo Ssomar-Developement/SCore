@@ -5,42 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.score.commands.runnable.player.commands.*;
 import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
-import com.ssomar.score.commands.runnable.player.commands.ActionbarCommand;
-import com.ssomar.score.commands.runnable.player.commands.Around;
-import com.ssomar.score.commands.runnable.player.commands.BackDash;
-import com.ssomar.score.commands.runnable.player.commands.Burn;
-import com.ssomar.score.commands.runnable.player.commands.CustomDash1;
-import com.ssomar.score.commands.runnable.player.commands.Damage;
-import com.ssomar.score.commands.runnable.player.commands.FlyOff;
-import com.ssomar.score.commands.runnable.player.commands.FlyOn;
-import com.ssomar.score.commands.runnable.player.commands.FrontDash;
-import com.ssomar.score.commands.runnable.player.commands.Head;
-import com.ssomar.score.commands.runnable.player.commands.Jump;
-import com.ssomar.score.commands.runnable.player.commands.Launch;
-import com.ssomar.score.commands.runnable.player.commands.LaunchEntity;
-import com.ssomar.score.commands.runnable.player.commands.MobAround;
-import com.ssomar.score.commands.runnable.player.commands.ParticleCommand;
-import com.ssomar.score.commands.runnable.player.commands.ProjectileCustomDash1;
-import com.ssomar.score.commands.runnable.player.commands.RegainFood;
-import com.ssomar.score.commands.runnable.player.commands.RegainHealth;
-import com.ssomar.score.commands.runnable.player.commands.RemoveBurn;
-import com.ssomar.score.commands.runnable.player.commands.ReplaceBlock;
-import com.ssomar.score.commands.runnable.player.commands.SendBlankMessage;
-import com.ssomar.score.commands.runnable.player.commands.SendCenteredMessage;
-import com.ssomar.score.commands.runnable.player.commands.SendMessage;
-import com.ssomar.score.commands.runnable.player.commands.SetBlock;
-import com.ssomar.score.commands.runnable.player.commands.SetExecutableBlock;
-import com.ssomar.score.commands.runnable.player.commands.SetHealth;
-import com.ssomar.score.commands.runnable.player.commands.SpawnEntityOnCursor;
-import com.ssomar.score.commands.runnable.player.commands.StrikeLightning;
-import com.ssomar.score.commands.runnable.player.commands.Sudo;
-import com.ssomar.score.commands.runnable.player.commands.SudoOp;
-import com.ssomar.score.commands.runnable.player.commands.TeleportOnCursor;
-import com.ssomar.score.commands.runnable.player.commands.WorldTeleport;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -85,6 +54,8 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new RegainHealth());
 		commands.add(new RegainFood());
 		commands.add(new Head());
+		commands.add(new SetPitch());
+		commands.add(new SetYaw());
 		
 		this.commands = commands;
 	}
@@ -182,11 +153,10 @@ public class PlayerCommandManager implements CommandManager{
 	public List<String> getArgs(String command) {
 		List<String> args = new ArrayList<>();
 		boolean first = true;
-		boolean second = false;
-		if(command.toUpperCase().startsWith("FLY ON")
+		boolean second = command.toUpperCase().startsWith("FLY ON")
 				|| command.toUpperCase().startsWith("FLY OFF")
 				|| command.toUpperCase().startsWith("REGAIN HEALTH")
-				|| command.toUpperCase().startsWith("REGAIN FOOD")) second = true;
+				|| command.toUpperCase().startsWith("REGAIN FOOD");
 		for(String s : command.split(" ")) {
 			if(first) {
 				first = false;

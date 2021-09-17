@@ -17,7 +17,7 @@ import com.ssomar.score.utils.Couple;
 
 public class NoFallDamageManager {
 
-	private Map<Player, List<Couple<UUID,BukkitTask>>> noFallDamageMap = new HashMap<>();
+	private final Map<Player, List<Couple<UUID,BukkitTask>>> noFallDamageMap = new HashMap<>();
 
 	private static NoFallDamageManager instance;
 

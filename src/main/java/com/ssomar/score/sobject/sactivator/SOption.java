@@ -4,20 +4,20 @@ import java.util.List;
 
 public interface SOption {
 	
-	public List<SOption> getOptionWithPlayer();
+	List<SOption> getOptionWithPlayer();
 	
-	public List<SOption> getOptionWithWorld();
+	List<SOption> getOptionWithWorld();
 	
-	public List<SOption> getOptionWithItem();
+	List<SOption> getOptionWithItem();
 	
-	public List<SOption> getOptionWithOwner();
+	List<SOption> getOptionWithOwner();
 	
-	public List<SOption> getOptionWithBlock();
+	List<SOption> getOptionWithBlock();
 	
-	public List<SOption> getOptionWithTargetBlock();
+	List<SOption> getOptionWithTargetBlock();
 	
-	public List<SOption> getOptionWithTargetEntity();
+	List<SOption> getOptionWithTargetEntity();
 	
-	public List<SOption> getOptionWithTargetPlayer();
+	List<SOption> getOptionWithTargetPlayer();
 
 }

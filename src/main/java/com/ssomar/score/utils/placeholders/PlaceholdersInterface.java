@@ -28,10 +28,10 @@ public abstract class PlaceholdersInterface {
 			} 
 			if (isNumeric(sb.toString())) {
 				double d = Double.parseDouble(sb.toString()) + Double.valueOf(value);
-				if(isInteger) result = result.replaceAll(placeholder+"\\+" + sb.toString(), "" + (int) d);
-				else result = result.replaceAll(placeholder+"\\+" + sb.toString(), "" + d);
+				if(isInteger) result = result.replaceAll(placeholder+"\\+" + sb, "" + (int) d);
+				else result = result.replaceAll(placeholder+"\\+" + sb, "" + d);
 			} else {
-				result = result.replaceAll(placeholder+"\\+" + sb.toString(), value);
+				result = result.replaceAll(placeholder+"\\+" + sb, value);
 			} 
 		}
 
@@ -45,10 +45,10 @@ public abstract class PlaceholdersInterface {
 			} 
 			if (isNumeric(sb.toString())) {
 				double d = Double.valueOf(value) - Double.parseDouble(sb.toString());
-				if(isInteger) result = result.replaceAll(placeholder+"\\-" + sb.toString(), "" + (int) d);
-				else result = result.replaceAll(placeholder+"\\-" + sb.toString(), "" + d);
+				if(isInteger) result = result.replaceAll(placeholder+"\\-" + sb, "" + (int) d);
+				else result = result.replaceAll(placeholder+"\\-" + sb, "" + d);
 			} else {
-				result = result.replaceAll(placeholder+"\\-" + sb.toString(), value);
+				result = result.replaceAll(placeholder+"\\-" + sb, value);
 			} 
 		}
 		while (result.contains(placeholder)) {

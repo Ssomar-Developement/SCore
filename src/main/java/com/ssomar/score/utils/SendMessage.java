@@ -16,7 +16,7 @@ public class SendMessage implements Serializable{
 	private StringPlaceholder sp = new StringPlaceholder();
 
 	public void sendMessage(Player p, String s) {
-		CommandSender cs = (CommandSender)p;
+		CommandSender cs = p;
 		this.sendMessage(cs, s);
 	}
 	
@@ -28,7 +28,7 @@ public class SendMessage implements Serializable{
 	}
 	
 	public static void sendMessageNoPlch(Player p, String s) {
-		CommandSender cs = (CommandSender)p;
+		CommandSender cs = p;
 		sendMessageNoPlch(cs, s);
 	}
 	

@@ -114,7 +114,7 @@ public abstract class GUIManager<T> {
 	}
 	
 	public String getStringBeforeEnd(String insert) {
-		StringBuilder sb= new StringBuilder("");
+		StringBuilder sb= new StringBuilder();
 		for(char c : insert.toCharArray()) {
 			if(c==',' || c=='}') return sb.toString();
 			else sb.append(c);

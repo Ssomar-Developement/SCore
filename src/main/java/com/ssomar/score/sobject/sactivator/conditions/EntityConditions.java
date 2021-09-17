@@ -94,17 +94,11 @@ public class EntityConditions extends Conditions{
 	public boolean verifConditions(Entity e, @Nullable Player p) {
 
 		if(this.hasIfGlowing()) {
-			boolean hasError= false;
-			if(!e.isGlowing()) {
-				hasError=true;
-			}
+			boolean hasError= !e.isGlowing();
 			LivingEntity lE = (LivingEntity)e;
 			try {
-				if(!lE.hasPotionEffect(PotionEffectType.GLOWING)) {
-					hasError=true;
-				}
-				else hasError=false;
-			}catch(Exception err) {}
+				hasError= !lE.hasPotionEffect(PotionEffectType.GLOWING);
+			}catch(Exception ignored) {}
 			if(hasError) {
 				if(p != null) this.getSm().sendMessage(p, this.getIfGlowingMsg());
 				return false;
@@ -213,7 +207,7 @@ public class EntityConditions extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifGlowing", false);

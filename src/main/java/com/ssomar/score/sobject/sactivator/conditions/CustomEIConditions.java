@@ -182,7 +182,7 @@ public class CustomEIConditions extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifNeedPlayerConfirmation", false);

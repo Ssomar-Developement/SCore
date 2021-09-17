@@ -179,15 +179,15 @@ public class StringConverter {
 		}
 
 		if(hexCode.size()==6) {
-			String toReplace = "&x";
+			StringBuilder toReplace = new StringBuilder("&x");
 			for(String code : hexCode) {
-				toReplace=toReplace+"&"+code;
+				toReplace.append("&").append(code);
 			}
-			String replacement = "#";
+			StringBuilder replacement = new StringBuilder("#");
 			for(String code : hexCode) {
-				replacement= replacement+code;
+				replacement.append(code);
 			}
-			textToTranslate= textToTranslate.replaceAll(toReplace, replacement);
+			textToTranslate= textToTranslate.replaceAll(toReplace.toString(), replacement.toString());
 
 			textToTranslate= replaceHexCodes(textToTranslate);
 		}

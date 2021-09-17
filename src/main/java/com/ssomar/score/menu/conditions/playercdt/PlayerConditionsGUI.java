@@ -628,7 +628,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &ePLAYER NO NEED EFFECT"));
 		else {
 			for(PotionEffectType pET: list.keySet()) {
-				String str = pET.getName().toString()+":"+list.get(pET);
+				String str = pET.getName() +":"+list.get(pET);
 				loreUpdate.add(StringConverter.coloredString("&6➤ &e"+str));
 			}
 		}

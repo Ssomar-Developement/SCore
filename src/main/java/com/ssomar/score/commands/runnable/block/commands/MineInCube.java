@@ -27,11 +27,11 @@ public class MineInCube extends BlockCommand{
 
 		try {
 			int radius = Integer.valueOf(args.get(0));
-			Boolean drop = true;
-			if(args.size() >= 2) drop = Boolean.valueOf(args.get(1));
+			boolean drop = true;
+			if(args.size() >= 2) drop = Boolean.parseBoolean(args.get(1));
 			
-			Boolean createBBEvent = true;
-			if(args.size() >= 3) createBBEvent = Boolean.valueOf(args.get(2));
+			boolean createBBEvent = true;
+			if(args.size() >= 3) createBBEvent = Boolean.parseBoolean(args.get(2));
 
 			List<Material> blackList = new ArrayList<>();
 			blackList.add(Material.BEDROCK);
@@ -56,14 +56,19 @@ public class MineInCube extends BlockCommand{
 
 							if(!blackList.contains(toBreak.getType())) {
 
-								if((SCore.hasWorldGuard && new WorldGuardAPI().canBuild(p, toBreakLoc)) || !SCore.hasWorldGuard ) {
+								if (!SCore.hasWorldGuard) {
 									if (createBBEvent) breakBlockWithEvent(toBreak, p, drop);
 									else {
-										if(drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
+										if (drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
+										else toBreak.setType(Material.AIR);
+									}
+								} else if (new WorldGuardAPI().canBuild(p, toBreakLoc)) {
+									if (createBBEvent) breakBlockWithEvent(toBreak, p, drop);
+									else {
+										if (drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
 										else toBreak.setType(Material.AIR);
 									}
 								}
-								else continue;
 							}
 						}
 					}

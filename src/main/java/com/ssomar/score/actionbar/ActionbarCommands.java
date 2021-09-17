@@ -11,7 +11,7 @@ import com.ssomar.score.utils.SendMessage;
 
 public class ActionbarCommands {
 	
-	private static SendMessage sm = new SendMessage();
+	private static final SendMessage sm = new SendMessage();
 	
 	public static void manageCommand(Player p, String arg) {
 		

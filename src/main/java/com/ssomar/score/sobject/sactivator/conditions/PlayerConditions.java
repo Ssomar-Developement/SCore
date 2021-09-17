@@ -231,7 +231,7 @@ public class PlayerConditions extends Conditions{
 		this.ifPlayerEXPMsg = IF_PLAYER_EXP_MSG;
 
 		this.ifPlayerLevel = "";
-		this.ifPlayerLevelMsg = IF_PLAYER_LEVEL_MSG;;
+		this.ifPlayerLevelMsg = IF_PLAYER_LEVEL_MSG;
 
 		this.ifLightLevel = "";
 		this.ifLightLevelMsg = IF_LIGHT_LEVEL_MSG;
@@ -476,11 +476,9 @@ public class PlayerConditions extends Conditions{
 
 		if(this.hasIfPlayerHasExecutableItem() || this.hasIfPlayerHasItem()) {
 			ItemStack[] content = p.getInventory().getContents();
-			Map<String, Integer> verifEI = new HashMap<>();
-			verifEI.putAll(this.getIfPlayerHasExecutableItem());
+			Map<String, Integer> verifEI = new HashMap<>(this.getIfPlayerHasExecutableItem());
 
-			Map<Material, Integer> verifI = new HashMap<>();
-			verifI.putAll(this.getIfPlayerHasItem());
+			Map<Material, Integer> verifI = new HashMap<>(this.getIfPlayerHasItem());
 
 			int cpt = -1;
 			for(ItemStack is : content) {
@@ -761,7 +759,7 @@ public class PlayerConditions extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifSneaking", false);
@@ -896,7 +894,7 @@ public class PlayerConditions extends Conditions{
 		if(pC.ifPlayerHasEffect.size() > 0) {
 			List<String> result = new ArrayList<>();
 			for(PotionEffectType pET : pC.ifPlayerHasEffect.keySet()) {
-				result.add(pET.getName().toString()+":"+pC.ifPlayerHasEffect.get(pET));
+				result.add(pET.getName() +":"+pC.ifPlayerHasEffect.get(pET));
 			}
 			pCConfig.set("ifPlayerHasEffect", result);
 			pCConfig.set("ifPlayerHasEffectMsg", pC.getIfPlayerHasEffectMsg());
@@ -906,7 +904,7 @@ public class PlayerConditions extends Conditions{
 		if(pC.ifPlayerHasEffectEquals.size() > 0) {
 			List<String> result = new ArrayList<>();
 			for(PotionEffectType pET : pC.ifPlayerHasEffectEquals.keySet()) {
-				result.add(pET.getName().toString()+":"+pC.ifPlayerHasEffectEquals.get(pET));
+				result.add(pET.getName() +":"+pC.ifPlayerHasEffectEquals.get(pET));
 			}
 			pCConfig.set("ifPlayerHasEffectEquals", result);
 			pCConfig.set("ifPlayerHasEffectEqualsMsg", pC.getIfPlayerHasEffectMsg());

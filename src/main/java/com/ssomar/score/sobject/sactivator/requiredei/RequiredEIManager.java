@@ -65,7 +65,7 @@ public class RequiredEIManager {
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+activator.getID());
 
@@ -96,7 +96,7 @@ public class RequiredEIManager {
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("requiredExecutableItems."+id, null);
@@ -189,9 +189,24 @@ public class RequiredEIManager {
 					}
 				}
 				if(needed>0) {
-					if(rEI.getValidUsages().isEmpty() || rEI.getItem().getUse() == 0 || rEI.getItem().getUse() == -1) sb.append("&c"+rEI.getItem().getName()+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_QUANTITY)+needed+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR));
-					else sb.append("&c"+rEI.getItem().getName()+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_QUANTITY)+needed+" &8&o(Require '"+StringConverter.decoloredString(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))+"' &7&o"+rEI.getValidUsages().toString()+"&8&o)"+MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR));
-					oneIsNeeded=true;
+					if(rEI.getValidUsages().isEmpty() || rEI.getItem().getUse() == 0 || rEI.getItem().getUse() == -1) {
+						sb.append("&c")
+								.append(rEI.getItem().getName())
+								.append(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_QUANTITY))
+								.append(needed)
+								.append(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR));
+					}
+					else {
+						sb.append("&c")
+								.append(rEI.getItem().getName())
+								.append(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_QUANTITY))
+								.append(needed)
+								.append(" &8&o(Require '")
+								.append(StringConverter.decoloredString(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE)))
+								.append("' &7&o").append(rEI.getValidUsages().toString()).append("&8&o)")
+								.append(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_SEPARATOR));
+					}
+					oneIsNeeded = true;
 				}
 
 			}

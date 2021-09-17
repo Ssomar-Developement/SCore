@@ -17,16 +17,16 @@ public class ActionbarCommand extends PlayerCommand{
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		if(args.size() >= 2) {
 			
-			String name = "";
+			StringBuilder name = new StringBuilder();
 			
 			for(int i = 0; i < args.size()-1; i++) {
-				if(i == 0) name = args.get(i);
-				else name = name +" "+ args.get(i);
+				if(i == 0) name = new StringBuilder(args.get(i));
+				else name.append(" ").append(args.get(i));
 			}
 			
 			try {
-				int time = Integer.valueOf(args.get(args.size()-1));
-				ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(name, time));
+				int time = Integer.parseInt(args.get(args.size()-1));
+				ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(name.toString(), time));
 			}catch(Exception e) {
 				e.printStackTrace();
 			}

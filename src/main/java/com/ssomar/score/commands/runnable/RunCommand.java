@@ -62,14 +62,10 @@ public abstract class RunCommand implements Serializable{
 
 		long diff = runTime - current;
 
-		if(diff == 0) {
-			delay = 0;
-			runTime = -1;
-		}
-		else {
-			delay = (int) (diff/50);
-			runTime = -1;
-		}
+		if(diff == 0) delay = 0;
+		else delay = (int) (diff/50);
+
+		this.runTime = -1;
 	}
 
 	public void run() {
@@ -105,7 +101,7 @@ public abstract class RunCommand implements Serializable{
 			this.runCommand(command, args);
 		}
 		else {
-			if(finalCommand.charAt(0) == '/') finalCommand = finalCommand.substring(1, finalCommand.length());
+			if(finalCommand.charAt(0) == '/') finalCommand = finalCommand.substring(1);
 			// accept the "color": HEX COLOR in title
 			if(finalCommand.contains("\"color\"") && finalCommand.contains("title")) finalCommand = StringConverter.deconvertColor(finalCommand);
 			RunConsoleCommand.runConsoleCommand(finalCommand, aInfo.isSilenceOutput());

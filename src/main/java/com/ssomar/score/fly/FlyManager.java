@@ -9,7 +9,7 @@ public class FlyManager {
 
 	private static FlyManager instance;
 	
-	private List<String> playerWithFly = new ArrayList<>();
+	private final List<String> playerWithFly = new ArrayList<>();
 	
 	public void addPlayerWithFly(Player p) {
 		String name = p.getName();
@@ -18,7 +18,7 @@ public class FlyManager {
 	
 	public void removePlayerWithFly(Player p) {
 		String name = p.getName();
-		if(playerWithFly.contains(name)) playerWithFly.remove(name);
+        playerWithFly.remove(name);
 	}
 	
 	public boolean isPlayerWithFly(Player p) {

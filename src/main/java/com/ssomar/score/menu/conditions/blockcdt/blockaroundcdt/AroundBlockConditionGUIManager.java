@@ -147,9 +147,7 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 	public void receivedMessage(Player p, String message) {
 		boolean notExit = true;
 		SPlugin sPlugin = cache.get(p).getsPlugin();
-		//SObject sObject = cache.get(p).getSObject();
-		//SActivator sAct = cache.get(p).getSAct();
-		String plName = sPlugin.getNameDesign();
+        String plName = sPlugin.getNameDesign();
 
 		if(message.contains("exit")) {
 			boolean pass = false;
@@ -166,9 +164,7 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 				}
 				else if(requestWriting.get(p).equals(AroundBlockConditionGUI.MUST_BE_EXECUTABLEBLOCKS)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateMustBeExecutableBlock(result);
 				}
 				currentWriting.remove(p);

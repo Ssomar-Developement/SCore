@@ -25,7 +25,7 @@ public class Burn extends PlayerCommand{
 
 			if(SCore.hasWorldGuard) {
 				if(WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation())) {
-					receiver.setFireTicks(20 * (int)time);
+					receiver.setFireTicks(20 * time);
 				}
 				/* setVisualFire appears in 1.17 */
 				else if(SCore.is1v17()){
@@ -41,7 +41,7 @@ public class Burn extends PlayerCommand{
 					runnable.runTaskLater(SCore.getPlugin(), time);
 				}
 			}
-			else receiver.setFireTicks(20 * (int)time);
+			else receiver.setFireTicks(20 * time);
 
 		}catch(Exception e) {}
 	}

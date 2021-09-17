@@ -10,42 +10,42 @@ public class StringCalculation {
 		calculStr=calculStr.replaceAll(" ", "");
 		if(calculStr.startsWith("<=") || calculStr.startsWith("=<")) {
 			try {
-				return number<=Double.valueOf(calculStr.substring(2, calculStr.length()));
+				return number<=Double.valueOf(calculStr.substring(2));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith("<")) {
 			try {
-				return number<Double.valueOf(calculStr.substring(1, calculStr.length()));
+				return number<Double.valueOf(calculStr.substring(1));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith(">=") || calculStr.startsWith("=>")) {
 			try {
-				return number>=Double.valueOf(calculStr.substring(2, calculStr.length()));
+				return number>=Double.valueOf(calculStr.substring(2));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith(">")) {
 			try {
-				return number>Double.valueOf(calculStr.substring(1, calculStr.length()));
+				return number>Double.valueOf(calculStr.substring(1));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith("==")) {
 			try {
-				return number==Double.valueOf(calculStr.substring(2, calculStr.length()));
+				return number==Double.valueOf(calculStr.substring(2));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith("=")) {
 			try {
-				return number==Double.valueOf(calculStr.substring(1, calculStr.length()));
+				return number==Double.valueOf(calculStr.substring(1));
 			}catch(Exception e) {
 				return false;
 			}
@@ -65,7 +65,7 @@ public class StringCalculation {
 		calculStr=calculStr.replaceAll(" ", "");
 		if(calculStr.startsWith("<=") || calculStr.startsWith("=<")) {
 			try {
-				Double.valueOf(calculStr.substring(2, calculStr.length()));
+				Double.valueOf(calculStr.substring(2));
 				return true;
 			}catch(Exception e) {
 				return false;
@@ -73,7 +73,7 @@ public class StringCalculation {
 		}
 		else if(calculStr.startsWith("<")) {
 			try {
-				Double.valueOf(calculStr.substring(1, calculStr.length()));
+				Double.valueOf(calculStr.substring(1));
 				return true;
 			}catch(Exception e) {
 				return false;
@@ -81,7 +81,7 @@ public class StringCalculation {
 		}
 		else if(calculStr.startsWith(">=") || calculStr.startsWith("=>")) {
 			try {
-				Double.valueOf(calculStr.substring(2, calculStr.length()));
+				Double.valueOf(calculStr.substring(2));
 				return true;
 			}catch(Exception e) {
 				return false;
@@ -89,7 +89,7 @@ public class StringCalculation {
 		}
 		else if(calculStr.startsWith(">")) {
 			try {
-				Double.valueOf(calculStr.substring(1, calculStr.length()));
+				Double.valueOf(calculStr.substring(1));
 				return true;
 			}catch(Exception e) {
 				return false;
@@ -97,7 +97,7 @@ public class StringCalculation {
 		}
 		else if(calculStr.startsWith("==")) {
 			try {
-				Double.valueOf(calculStr.substring(2, calculStr.length()));
+				Double.valueOf(calculStr.substring(2));
 				return true;
 			}catch(Exception e) {
 				return false;
@@ -105,7 +105,7 @@ public class StringCalculation {
 		}
 		else if(calculStr.startsWith("=")) {
 			try {
-				Double.valueOf(calculStr.substring(1, calculStr.length()));
+				Double.valueOf(calculStr.substring(1));
 				return true;
 			}catch(Exception e) {
 				return false;

@@ -104,7 +104,7 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 		else name = IF_HAS_NOT_ENCHANT;
 
 		for(Enchantment enchant : enchants.keySet()){
-			enchantsStr.add(enchant.getName().toString()+":"+enchants.get(enchant));
+			enchantsStr.add(enchant.getName() +":"+enchants.get(enchant));
 		}
 
 		this.updateConditionList(name, enchantsStr, "&cNO ENCHANTS REQUIRED");

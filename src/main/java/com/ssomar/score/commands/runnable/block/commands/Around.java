@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -96,16 +97,16 @@ public class Around extends BlockCommand{
 							}
 							for(String s : tab) {
 								while(s.startsWith(" ")) {
-									s = s.substring(1, s.length());
+									s = s.substring(1);
 								}
 								while(s.endsWith(" ")) {
 									s = s.substring(0, s.length()-1);
 								}
-								if(s.startsWith("/")) s = s.substring(1, s.length());
+								if(s.startsWith("/")) s = s.substring(1);
 
 								s = sp.replacePlaceholder(s);
 
-								PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(s), aInfo2);
+								PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Collections.singletonList(s), aInfo2);
 								CommandsExecutor.runCommands(builder);}				
 						}
 					}

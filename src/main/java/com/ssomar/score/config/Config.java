@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,7 +37,7 @@ public abstract class Config {
 				BufferedReader br = new BufferedReader(new InputStreamReader(plugin.getResource(this.fileName)));
 			    String line;
 
-			    Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.pdfile), "UTF-8"));
+			    Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.pdfile), StandardCharsets.UTF_8));
 
 			    try {
 			        while ((line = br.readLine()) != null) {
@@ -53,7 +54,7 @@ public abstract class Config {
 			} 
 			catch (NullPointerException e) {/* locale */} 
 		} 
-		this.config = (FileConfiguration) YamlConfiguration.loadConfiguration(this.pdfile);
+		this.config = YamlConfiguration.loadConfiguration(this.pdfile);
 		plugin.reloadConfig();
 		load();
 	}

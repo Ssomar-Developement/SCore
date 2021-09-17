@@ -17,10 +17,8 @@ import net.milkbowl.vault.economy.Economy;
 
 public class VaultAPI {
 	
-	private boolean error=false;
-	
-	private static RegisteredServiceProvider<Economy> rsp= null;
-	
+	private boolean error = false;
+
 	public SendMessage sm = new SendMessage();
 	
 	private static Economy econ = null;
@@ -30,7 +28,7 @@ public class VaultAPI {
 	
 	public boolean verifEconomy(Player p) {
 		if(SCore.hasVault) {
-			rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+			RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 	        if (rsp == null) {
 	        	p.sendMessage(StringConverter.coloredString("&4&l[SCore] &cPlease contact your administrator, Vault dont find an Economy plugin !"));
 				SCore.plugin.getServer().getLogger().severe("[SCore] Vault dont find and Economy plugin !");

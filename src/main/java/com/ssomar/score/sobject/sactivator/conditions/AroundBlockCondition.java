@@ -107,7 +107,7 @@ public class AroundBlockCondition extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".blockAroundCdts."+aBC.getId()+".southValue", "0");
@@ -180,7 +180,7 @@ public class AroundBlockCondition extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+"."+id, null);

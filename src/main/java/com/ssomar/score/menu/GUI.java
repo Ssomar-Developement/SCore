@@ -355,12 +355,7 @@ public abstract class GUI {
 
 	public void changeBoolean(String itemName) {
 		ItemStack item = this.getByName(itemName);
-		if(getActually(item).contains("True")) {
-			updateBoolean(itemName, false);
-		}
-		else {
-			updateBoolean(itemName, true);
-		}
+		updateBoolean(itemName, !getActually(item).contains("True"));
 	}
 
 	public boolean getBoolean(String itemName) {

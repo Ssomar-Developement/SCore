@@ -397,65 +397,47 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfHasEffect(result, false);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfHasEffect(result, true);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD)) {
 					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfInWorld(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
 					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfNotInWorld(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_BIOME)) {
 					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfInBiome(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
 					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfNotInBiome(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_REGION)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfInRegion(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfNotInRegion(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfHasPermission(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
@@ -487,9 +469,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
 					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfNotHasPermission(result);
 				}
 				currentWriting.remove(p);

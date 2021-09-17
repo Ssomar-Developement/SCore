@@ -18,7 +18,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class ActionbarHandler {
 	
-	private HashMap<Player, List<Actionbar>> actionbarHandler = new HashMap<>();
+	private final HashMap<Player, List<Actionbar>> actionbarHandler = new HashMap<>();
 	
 	private List<Player> hideActionbar = new ArrayList<>();
 	
@@ -41,8 +41,7 @@ public class ActionbarHandler {
 					List<Actionbar> actionbars = actionbarHandler.get(player);
 					if(player.isOnline()) {		
 						if(!hideActionbar.contains(player)) displayDesactivationActionbars(actionbars, player);
-						boolean oneIsRemove = false;
-						if(removeDesactionActionabars(actionbars) != 0) oneIsRemove = true;
+						boolean oneIsRemove = removeDesactionActionabars(actionbars) != 0;
 						if(actionbars.size() == 0) {
 							playerEmpty.add(player);
 							continue;
@@ -82,7 +81,10 @@ public class ActionbarHandler {
 	public void activeActionbarIfNotExist(List<Actionbar> actionbars) {
 		boolean existActiveActionbar = false;
 		for(Actionbar actionbar : actionbars) {
-			if(actionbar.isActive()) existActiveActionbar = true;
+			if (actionbar.isActive()) {
+				existActiveActionbar = true;
+				break;
+			}
 		}
 		if(!existActiveActionbar && actionbars.size() >= 1) actionbars.get(0).setActive(true);
 	}
@@ -108,11 +110,11 @@ public class ActionbarHandler {
 		}
 		
 		if(desactivation.size() >= 1) {
-			String items = "";
+			StringBuilder items = new StringBuilder();
 			for(Actionbar a : desactivation) {
-				items = items+" "+a.getName();
+				items.append(" ").append(a.getName());
 			}
-			sp.setItem(items);
+			sp.setItem(items.toString());
 			String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_END));
 			Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 			

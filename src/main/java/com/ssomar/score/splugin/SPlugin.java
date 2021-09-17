@@ -4,13 +4,13 @@ import org.bukkit.plugin.Plugin;
 
 public interface SPlugin {
 
-	public String getShortName();
+	String getShortName();
 	
-	public String getName();
+	String getName();
 	
-	public String getNameDesign();
+	String getNameDesign();
 	
-	public Plugin getPlugin();
+	Plugin getPlugin();
 	
-	public boolean isLotOfWork();
+	boolean isLotOfWork();
 }

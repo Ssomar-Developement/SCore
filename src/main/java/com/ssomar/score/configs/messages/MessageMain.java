@@ -51,7 +51,7 @@ public class MessageMain {
 				BufferedReader br = new BufferedReader(new InputStreamReader(plugin.getResource(fileName)));
 			    String line;
 
-			    Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pdfile), "UTF-8"));
+			    Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pdfile), StandardCharsets.UTF_8));
 
 			    try {
 			        while ((line = br.readLine()) != null) {
@@ -68,7 +68,7 @@ public class MessageMain {
 			} 
 			catch (NullPointerException e) {/* locale */} 
 		} 
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(pdfile);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(pdfile);
 		
 		for(MessageInterface msgI : messagesEnum) {
 			formMessages.put(msgI, this.loadMessage(plugin, pdfile, config, msgI.getName()));
@@ -92,7 +92,7 @@ public class MessageMain {
 			InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
 			BufferedReader buff = new BufferedReader(lecture);
 			String ligne;
-			Boolean isNotUpdate=true;
+			boolean isNotUpdate =true;
 			while ((ligne = buff.readLine()) != null && isNotUpdate){
 				if(ligne.contains(what+":")) {
 					SCore.plugin.getServer().getLogger().info(SCore.NAME_2+" Update of "+what+" in your for the plugin > "+plugin.getName()+" in language: "+GeneralConfig.getInstance().getLocale());

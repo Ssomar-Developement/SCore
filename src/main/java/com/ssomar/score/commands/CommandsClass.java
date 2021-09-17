@@ -22,9 +22,9 @@ import com.ssomar.score.utils.StringConverter;
 
 public class CommandsClass implements CommandExecutor, TabExecutor{
 
-	private SendMessage sm = new SendMessage();
+	private final SendMessage sm = new SendMessage();
 
-	private SCore main;
+	private final SCore main;
 
 	public CommandsClass(SCore main) {
 		this.main = main;

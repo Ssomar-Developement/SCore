@@ -103,8 +103,8 @@ public enum CenteredMessage{
 	SPACE(' ', 3),
 	DEFAULT('a', 4);
 
-	private char character;
-	private int length;
+	private final char character;
+	private final int length;
 
 	CenteredMessage(char character, int length) {
 		this.character = character;
@@ -149,7 +149,7 @@ public enum CenteredMessage{
 			if(c == '§'){
 				previousCode = true;
 				continue;
-			}else if(previousCode == true){
+			}else if(previousCode){
 				previousCode = false;
 				if(c == 'l' || c == 'L'){
 					isBold = true;
@@ -171,7 +171,7 @@ public enum CenteredMessage{
 			sb.append(" ");
 			compensated += spaceLength;
 		}
-		return sb.toString() + message;
+		return sb + message;
 	}
 
 }

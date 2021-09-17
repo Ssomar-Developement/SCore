@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.5.3.4</version>
+	<version>1.5.3.6</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -124,7 +124,7 @@
 		</repository>
 		<repository>
 			<id>OnARandomBox</id>
-			<url>http://repo.onarandombox.com/content/groups/public</url>
+			<url>https://repo.onarandombox.com/content/groups/public</url>
 		</repository>
 
 		<repository>

@@ -14,13 +14,13 @@ public class SendMessage extends EntityCommand{
 
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
-		String message="";
+		StringBuilder message= new StringBuilder();
 		for(String s: args) {
 			//SsomarDev.testMsg("cmdarg> "+s);
-			message= message+s+" ";
+			message.append(s).append(" ");
 		}
-		message = message.substring(0, message.length()-1);
-		sm.sendMessage(p, message);
+		message = new StringBuilder(message.substring(0, message.length() - 1));
+		sm.sendMessage(p, message.toString());
 	}
 
 	@Override

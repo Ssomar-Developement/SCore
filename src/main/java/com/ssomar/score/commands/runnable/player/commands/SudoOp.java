@@ -15,12 +15,12 @@ public class SudoOp extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		String command2 = "";
+		StringBuilder command2 = new StringBuilder();
 		for(String s: args) {
-			command2 = command2+s+" ";
+			command2.append(s).append(" ");
 		}
-		command2 = command2.substring(0, command2.length()-1);
-		SUDOOPManager.getInstance().runOPCommand(receiver, command2);
+		command2 = new StringBuilder(command2.substring(0, command2.length() - 1));
+		SUDOOPManager.getInstance().runOPCommand(receiver, command2.toString());
 	}
 
 	@Override

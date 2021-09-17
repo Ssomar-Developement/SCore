@@ -20,13 +20,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private static final long serialVersionUID = 1L;
 
 	/* placeholders of the player */
-	private PlayerPlaceholders playerPlch = new PlayerPlaceholders();
+	private final PlayerPlaceholders playerPlch = new PlayerPlaceholders();
 
 	/* placeholders of the target player */
-	private TargetPlaceholders targetPlch = new TargetPlaceholders();
+	private final TargetPlaceholders targetPlch = new TargetPlaceholders();
 
 	/* placeholders of the owner */
-	private OwnerPlaceholders ownerPlch = new OwnerPlaceholders();
+	private final OwnerPlaceholders ownerPlch = new OwnerPlaceholders();
 
 	/* placeholders of the item */
 	private String activator= "";
@@ -37,13 +37,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private String maxUsePerDayActivator= "";
 
 	/* placeholders of the target entity */
-	private EntityPlaceholders entityPlch = new EntityPlaceholders();
+	private final EntityPlaceholders entityPlch = new EntityPlaceholders();
 
 	/* placeholders of the block */
-	private BlockPlaceholders blockPlch = new BlockPlaceholders();
+	private final BlockPlaceholders blockPlch = new BlockPlaceholders();
 
 	/* placeholders of the target block */
-	private TargetBlockPlaceholders targetBlockPlch = new TargetBlockPlaceholders();
+	private final TargetBlockPlaceholders targetBlockPlch = new TargetBlockPlaceholders();
 
 	/* placeholders tools */
 	private String launcher="";

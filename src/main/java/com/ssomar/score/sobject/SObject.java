@@ -11,15 +11,15 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 
 public interface SObject {
 	
-	public String getID();
+	String getID();
 	
-	public String getPath();
+	String getPath();
 	
-	public List<SActivator> getActivators();
+	List<SActivator> getActivators();
 	
-	public ItemStack formItem(int quantity, Player p);
+	ItemStack formItem(int quantity, Player p);
 	
 	@Nullable
-	public SActivator getActivator(String actID);
+    SActivator getActivator(String actID);
 
 }

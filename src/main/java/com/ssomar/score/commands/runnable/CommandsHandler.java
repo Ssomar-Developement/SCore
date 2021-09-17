@@ -32,10 +32,10 @@ public class CommandsHandler implements Listener {
 	private static CommandsHandler instance;
 
 	/* DelayedCommands by RunCommand UUID */
-	private Map<UUID, RunCommand> delayedCommandsByRcUuid;
+	private final Map<UUID, RunCommand> delayedCommandsByRcUuid;
 
 	/* DelayedCommands by receiver UUID */
-	private Map<UUID, List<RunCommand>> delayedCommandsByReceiverUuid;
+	private final Map<UUID, List<RunCommand>> delayedCommandsByReceiverUuid;
 
 	/* DelayedCommands by entity UUID */
 	List<EntityRunCommand> delayedCommandsByEntityUuid;

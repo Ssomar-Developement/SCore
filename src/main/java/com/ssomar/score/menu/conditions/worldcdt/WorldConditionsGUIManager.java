@@ -123,9 +123,7 @@ public class WorldConditionsGUIManager extends GUIManagerConditions<WorldConditi
 			if(StringConverter.decoloredString(prepareMsg).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(WorldConditionsGUI.IF_WEATHER)) {
 					List<String> result= new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfWeather(result);
 				}
 				currentWriting.remove(p);

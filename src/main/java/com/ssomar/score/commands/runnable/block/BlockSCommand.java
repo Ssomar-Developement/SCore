@@ -13,7 +13,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 
 public interface BlockSCommand {
 
-	public abstract void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo);
+	void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo);
 
-	public abstract String verify(List<String> args);
+	String verify(List<String> args);
 }

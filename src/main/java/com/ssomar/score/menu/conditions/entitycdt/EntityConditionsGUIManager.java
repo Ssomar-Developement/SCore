@@ -141,9 +141,7 @@ public class EntityConditionsGUIManager extends GUIManagerConditions<EntityCondi
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(EntityConditionsGUI.IF_NAME)) {
 					List<String> result = new ArrayList<>();
-					for(String str : currentWriting.get(p)) {
-						result.add(str);
-					}
+					result.addAll(currentWriting.get(p));
 					cache.get(p).updateIfName(result);
 				}
 				else if(requestWriting.get(p).equals(EntityConditionsGUI.IF_NOT_ENTITY_TYPE)) {

@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface CommandManager {
 
-	public abstract SCommand getCommand(String brutCommand);
+	SCommand getCommand(String brutCommand);
 	
-	public List<String> getArgs(String command);
+	List<String> getArgs(String command);
 	
 }

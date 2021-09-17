@@ -12,7 +12,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 public interface RequestMessage {
 	
 	@SuppressWarnings("deprecation")
-	public static void sendRequestMessage(RequestMessageInfo infos) {
+	static void sendRequestMessage(RequestMessageInfo infos) {
 		infos.player.closeInventory();
 		space(infos.player);
 
@@ -43,7 +43,7 @@ public interface RequestMessage {
 		space(infos.player);
 	}
 	
-	public static void space(Player p) {
+	static void space(Player p) {
 		p.sendMessage("");
 	}
 

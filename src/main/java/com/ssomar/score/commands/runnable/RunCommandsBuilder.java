@@ -1,9 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
@@ -32,8 +29,7 @@ public abstract class RunCommandsBuilder{
 	}
 
 	public List<String> selectRandomCommands(List<String> commands, Integer amount){
-		List<String> commandsList = new ArrayList<>();
-		commandsList.addAll(commands);
+		List<String> commandsList = new ArrayList<>(commands);
 
 		List<String> result = new ArrayList<>();
 
@@ -70,9 +66,7 @@ public abstract class RunCommandsBuilder{
 			}
 			else if(command.contains("LOOP END") && !command.contains("+++")) {
 				for(int k = 0; k < loopAmount; k++) {
-					for(String str: commandsInLoop) {
-						result.add(str);
-					}
+					result.addAll(commandsInLoop);
 				}
 				loopAmount = 0;
 				isInLoop = false;
@@ -133,7 +127,7 @@ public abstract class RunCommandsBuilder{
 				}
 
 			}catch(Exception err) {
-				return Arrays.asList(command);
+				return Collections.singletonList(command);
 			}
 		}
 		else if(command.contains("NOTHING*")) {
@@ -147,10 +141,10 @@ public abstract class RunCommandsBuilder{
 					else result.add("");
 				}
 			}catch(Exception err) {
-				return Arrays.asList(command);
+				return Collections.singletonList(command);
 			}
 		}
-		else return Arrays.asList(command);
+		else return Collections.singletonList(command);
 		return result;
 	}
 
@@ -207,12 +201,12 @@ public abstract class RunCommandsBuilder{
 			}
 			for(String s : tab) {
 				while(s.startsWith(" ")) {
-					s = s.substring(1, s.length());
+					s = s.substring(1);
 				}
 				while(s.endsWith(" ")) {
 					s = s.substring(0, s.length()-1);
 				}
-				if(s.startsWith("/")) s = s.substring(1, s.length());
+				if(s.startsWith("/")) s = s.substring(1);
 				result.add(s);
 			}	
 
@@ -244,7 +238,7 @@ public abstract class RunCommandsBuilder{
 
 	public boolean initFinalCommands() {
 
-		Integer delay = 0;
+		int delay = 0;
 
 		commands = this.replaceRandomCommands(commands);
 		

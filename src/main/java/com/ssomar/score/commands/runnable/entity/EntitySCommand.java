@@ -9,8 +9,8 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 
 public interface EntitySCommand {
 
-	public abstract void run(Player p, Entity entity, List<String> args, ActionInfo aInfo);
+	void run(Player p, Entity entity, List<String> args, ActionInfo aInfo);
 
-	public abstract String verify(List<String> args);
+	String verify(List<String> args);
 
 }

@@ -172,11 +172,11 @@ public class ItemConditions extends Conditions{
 		iCdt.setIfUsage2(itemCdtSection.getString("ifUsage2", ""));
 		iCdt.setIfUsage2Msg(itemCdtSection.getString("ifUsage2Msg", "&4&l"+pluginName+IF_USAGE_MSG));
 
-		Map<Enchantment, Integer> hasEnchants = iCdt.transformEnchants(itemCdtSection.getStringList("ifHasEnchant"));
+		Map<Enchantment, Integer> hasEnchants = transformEnchants(itemCdtSection.getStringList("ifHasEnchant"));
 		iCdt.setIfHasEnchant(hasEnchants);
 		iCdt.setIfHasEnchantMsg(itemCdtSection.getString("ifHasEnchantMsg", "&4&l"+pluginName+IF_HAS_ENCHANT_MSG));
 
-		Map<Enchantment, Integer> hasNotEnchants = iCdt.transformEnchants(itemCdtSection.getStringList("ifHasNotEnchant"));
+		Map<Enchantment, Integer> hasNotEnchants = transformEnchants(itemCdtSection.getStringList("ifHasNotEnchant"));
 		iCdt.setIfHasNotEnchant(hasNotEnchants);
 		iCdt.setIfHasNotEnchantMsg(itemCdtSection.getString("ifHasNotEnchantMsg", "&4&l"+pluginName+IF_HAS_NOT_ENCHANT_MSG));
 
@@ -216,7 +216,7 @@ public class ItemConditions extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators." + sActivator.getID());
 		activatorConfig.set("conditions." + detail + ".ifDurability", ">50");
@@ -239,7 +239,7 @@ public class ItemConditions extends Conditions{
 		if (iC.ifHasEnchant.size() != 0) {
 			List<String> result = new ArrayList<>();
 			for(Enchantment enchant : iC.ifHasEnchant.keySet()){
-				result.add(enchant.getName().toString()+":"+iC.ifHasEnchant.get(enchant));
+				result.add(enchant.getName() +":"+iC.ifHasEnchant.get(enchant));
 			}
 			pCConfig.set("ifHasEnchant", result);
 		}
@@ -249,7 +249,7 @@ public class ItemConditions extends Conditions{
 		if (iC.ifHasNotEnchant.size() != 0) {
 			List<String> result = new ArrayList<>();
 			for(Enchantment enchant : iC.ifHasNotEnchant.keySet()){
-				result.add(enchant.getName().toString()+":"+iC.ifHasNotEnchant.get(enchant));
+				result.add(enchant.getName() +":"+iC.ifHasNotEnchant.get(enchant));
 			}
 			pCConfig.set("ifHasNotEnchant", result);
 		}

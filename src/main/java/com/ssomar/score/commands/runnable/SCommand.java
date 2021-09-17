@@ -6,12 +6,12 @@ import org.bukkit.ChatColor;
 
 public interface SCommand {
 	
-	public List<String> getNames();
+	List<String> getNames();
 	
-	public String getTemplate();
+	String getTemplate();
 	
-	public ChatColor getColor();
+	ChatColor getColor();
 	
-	public ChatColor getExtraColor();
+	ChatColor getExtraColor();
 
 }

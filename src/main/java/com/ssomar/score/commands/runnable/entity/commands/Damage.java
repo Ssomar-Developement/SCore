@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.EntityEffect;
+import org.bukkit.Sound;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -24,18 +27,24 @@ public class Damage extends EntityCommand{
 			String damage = args.get(0);
 			/* percentage damage */
 			if(damage.contains("%") && entity instanceof LivingEntity) {
-				String [] decomp = damage.split("\\%");
-				damage = decomp[0];
+				String [] decomposition = damage.split("\\%");
+				damage = decomposition[0];
 				
-				double percentage = damage.equals("100") ? 1 : Double.valueOf("0."+damage);
+				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
 				amount = ((LivingEntity) entity).getMaxHealth() * percentage;
 				
-				amount = Double.valueOf((amount+"").substring(0, 3));
+				amount = Double.parseDouble((amount+"").substring(0, 3));
 			}
-			else amount = Double.valueOf(damage);
+			else amount = Double.parseDouble(damage);
 			
 			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
 				LivingEntity e = (LivingEntity) entity;
+				if(e instanceof EnderDragon){
+					EnderDragon dragon = (EnderDragon)e;
+					dragon.setHealth(dragon.getHealth()-1);
+					dragon.playEffect(EntityEffect.HURT);
+					dragon.getWorld().playSound(dragon.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
+				}
 				if(p != null) {
 					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
 					e.damage(amount, p);

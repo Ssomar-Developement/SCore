@@ -13,43 +13,43 @@ import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
 
 public interface SActivator {
 	
-	public String getParentObjectID();
+	String getParentObjectID();
 	
-	public String getID();
+	String getID();
 
-	public SOption getOption(); 
+	SOption getOption();
 	
 	/* Delay */
-	public boolean isDelayInTick();
+	boolean isDelayInTick();
 	
-	public int getDelay();
+	int getDelay();
 	
 	/* Conditions */
-	public PlayerConditions getOwnerConditions();
+	PlayerConditions getOwnerConditions();
 	
-	public PlayerConditions getPlayerConditions();
+	PlayerConditions getPlayerConditions();
 	
-	public PlayerConditions getTargetPlayerConditions();
+	PlayerConditions getTargetPlayerConditions();
 	
-	public WorldConditions getWorldConditions();
+	WorldConditions getWorldConditions();
 	
-	public ItemConditions getItemConditions();
+	ItemConditions getItemConditions();
 	
-	public BlockConditions getBlockConditions();
+	BlockConditions getBlockConditions();
 	
-	public EntityConditions getTargetEntityConditions();
+	EntityConditions getTargetEntityConditions();
 	
-	public BlockConditions getTargetBlockConditions();
+	BlockConditions getTargetBlockConditions();
 	
-	public CustomEIConditions getCustomEIConditions();
+	CustomEIConditions getCustomEIConditions();
 	
-	public List<PlaceholdersCondition> getPlaceholdersConditions();
+	List<PlaceholdersCondition> getPlaceholdersConditions();
 	
 	/* Required ExecutableItems */
-	public List<RequiredEI> getRequiredExecutableItems();
+	List<RequiredEI> getRequiredExecutableItems();
 	
-	public RequiredEI getRequiredEI(String id);
+	RequiredEI getRequiredEI(String id);
 	
 	/* Detailed blocks */
-	public DetailedBlocks getDetailedBlocks();
+	DetailedBlocks getDetailedBlocks();
 }

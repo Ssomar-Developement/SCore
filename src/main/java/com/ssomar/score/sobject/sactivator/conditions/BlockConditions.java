@@ -135,11 +135,7 @@ public class BlockConditions extends Conditions{
 		}
 
 		if(this.ifIsPowered) {
-			boolean notPowered = false;
-
-			if(!b.isBlockPowered()) {
-				notPowered = true;
-			}
+			boolean notPowered = !b.isBlockPowered();
 
 			if(b.getBlockData() instanceof Powerable) {
 				Powerable power = (Powerable)b.getBlockData();
@@ -263,7 +259,7 @@ public class BlockConditions extends Conditions{
 			return;
 		}
 		File file = new File(sObject.getPath());
-		FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".fPlantFullyGrown", false);

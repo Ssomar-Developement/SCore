@@ -83,9 +83,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 			}
 			i++;
 		}
-		if(!valid || this.size() == i) return false;
-		
-		return true;
+		return valid && this.size() != i;
 	}
 	/*
 	 * @param error if error is null sPlugin and sObject can be null

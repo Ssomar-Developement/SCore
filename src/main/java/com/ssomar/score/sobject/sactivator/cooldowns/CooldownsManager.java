@@ -15,10 +15,10 @@ public class CooldownsManager {
 	private static CooldownsManager instance;
 
 	/* CD_ID Cooldown */
-	private Map<String, List<Cooldown>> cooldowns = new HashMap<>();
+	private final Map<String, List<Cooldown>> cooldowns = new HashMap<>();
 
 	/* Player_UUID Cooldown */
-	private Map<UUID, List<Cooldown>> cooldownsUUID = new HashMap<>();
+	private final Map<UUID, List<Cooldown>> cooldownsUUID = new HashMap<>();
 
 	public void addCooldown(Cooldown cd) {
 
@@ -89,23 +89,24 @@ public class CooldownsManager {
 	}
 
 	/**
-	 * @param id
-	 * @param uuid
-	 * @return-
+	 * @param uuid the UUID of the player
+	 * @return True if the player has this activator in cooldown else false
 	 */
 	public boolean isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
-		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
+		boolean result = false;
+		String id = sPlugin.getShortName() + ":" + sO.getID() + ":" + sAct.getID();
 		List<Cooldown> cooldowns2;
-		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
+		if (cooldowns.containsKey(id) && cooldowns.get(id).size() != 0) {
 			cooldowns2 = cooldowns.get(id);
-			for(Cooldown cd : cooldowns2) {
-				if(cd == null || !cd.getEntityUUID().equals(uuid)) continue;
-				if(this.getCooldown(sPlugin, sO, sAct, uuid)<cd.getCooldown()) {
-					return true;
+			for (Cooldown cd : cooldowns2) {
+				if (cd == null || !cd.getEntityUUID().equals(uuid)) continue;
+				if (this.getCooldown(sPlugin, sO, sAct, uuid) < cd.getCooldown()) {
+					result = true;
+					break;
 				}
-			}	
+			}
 		}
-		return false;
+		return result;
 	}
 
 	public int getMaxGlobalCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {

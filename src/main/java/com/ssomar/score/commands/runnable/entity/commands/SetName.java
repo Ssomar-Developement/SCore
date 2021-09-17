@@ -17,13 +17,13 @@ public class SetName extends EntityCommand{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		if(!entity.isDead()) {
-			String name ="";
+			StringBuilder name = new StringBuilder();
 			for(String s: args) {
-				name= name+s+" ";
+				name.append(s).append(" ");
 			}
-			name = name.substring(0, name.length()-1);
+			name = new StringBuilder(name.substring(0, name.length() - 1));
 			try {
-				entity.setCustomName(StringConverter.coloredString(name));
+				entity.setCustomName(StringConverter.coloredString(name.toString()));
 			}catch(Exception e) {}
 		}
 	}
