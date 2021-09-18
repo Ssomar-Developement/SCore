@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import org.jetbrains.annotations.NotNull;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends BlockCommand{
@@ -66,12 +66,12 @@ public class MobAround extends BlockCommand{
 	}
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				try {
-					double distance =  Double.valueOf(args.get(0));
+					double distance =  Double.parseDouble(args.get(0));
 
 					int startForCommand = 1;
 

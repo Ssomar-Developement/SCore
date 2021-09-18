@@ -76,22 +76,22 @@ public class BlockCommandManager implements CommandManager{
 
 		List<String> result = new ArrayList<>();
 
-		for (int i = 0; i < commands.size(); i++) {
+		for (String s : commands) {
 
-			String command = StringConverter.coloredString(commands.get(i));
+			String command = StringConverter.coloredString(s);
 
 			/*
 			 * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if
 			 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
 			 */
 
-			if (this.isValidBlockCommads(commands.get(i)) && !commands.get(i).contains("//")) {
+			if (this.isValidBlockCommads(s) && !s.contains("//")) {
 				BlockCommand bc = (BlockCommand) this.getCommand(command);
 				List<String> args = this.getArgs(command);
 
 				String error = "";
 				if (!(error = this.verifArgs(bc, args)).isEmpty()) {
-					errorList.add(sPlugin.getNameDesign()+" " + error + " for item: " + id);
+					errorList.add(sPlugin.getNameDesign() + " " + error + " for item: " + id);
 					continue;
 				}
 			}

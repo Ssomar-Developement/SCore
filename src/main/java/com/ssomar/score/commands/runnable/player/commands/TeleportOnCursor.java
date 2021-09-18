@@ -2,10 +2,8 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
-import com.ssomar.score.utils.Couple;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,8 +13,6 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 /* TELEPORTONCURSOR {range}:Integer {acceptAir}:boolean */
 public class TeleportOnCursor extends PlayerCommand{
@@ -27,16 +23,16 @@ public class TeleportOnCursor extends PlayerCommand{
 		boolean acceptAir = false;
 		if(args.size() >= 1) {
 			try {
-				amount = Integer.valueOf(args.get(0));
+				amount = Integer.parseInt(args.get(0));
 				if(amount <= 0) {
 					amount = 200;
 				}
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 		}
 		if(args.size() >= 2) {
 			try {
-				acceptAir= Boolean.valueOf(args.get(1));
-			}catch(Exception e) {}
+				acceptAir= Boolean.parseBoolean(args.get(1));
+			}catch(Exception ignored) {}
 		}
 		try {
 			Block block = receiver.getTargetBlock(null, amount);
@@ -59,7 +55,7 @@ public class TeleportOnCursor extends PlayerCommand{
 				/* NO FALL DAMAGE PART, IF THE PLAYER IS TELEPORTED IN THE AIR */
 				NoFallDamageManager.getInstance().addNoFallDamage(receiver);
 			}
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

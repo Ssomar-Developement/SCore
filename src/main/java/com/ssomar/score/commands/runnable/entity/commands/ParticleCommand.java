@@ -19,12 +19,12 @@ public class ParticleCommand extends EntityCommand{
 		try {
 			entity.getWorld().spawnParticle(Particle.valueOf(args.get(0)),
 					entity.getLocation(),
-					Integer.valueOf(args.get(1)),
-					Double.valueOf(args.get(2)),
-					Double.valueOf(args.get(2)) ,
-					Double.valueOf(args.get(2)) ,
-					Double.valueOf(args.get(3)), null);
-		}catch(Exception e) {}
+					Integer.parseInt(args.get(1)),
+					Double.parseDouble(args.get(2)),
+					Double.parseDouble(args.get(2)) ,
+					Double.parseDouble(args.get(2)) ,
+					Double.parseDouble(args.get(3)), null);
+		}catch(Exception ignored) {}
 	}
 
 	@Override

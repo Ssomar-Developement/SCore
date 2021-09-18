@@ -5,13 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.base.Charsets;
-import com.ssomar.score.SsomarDev;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -95,7 +91,7 @@ public class ItemConditions extends Conditions{
 			List<String> lore = itemMeta.getLore();
 			int usage;
 
-			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage = -1;
 			else if(infoItem.getUse() == 0) usage = 1;
 			else if(infoItem.isHideUse()) {
@@ -121,7 +117,7 @@ public class ItemConditions extends Conditions{
 			List<String> lore = itemMeta.getLore();
 			int usage2;
 
-			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage2 = -1;
 			else if(infoItem.getUse() == 0) usage2 = 1;
 			else if(infoItem.isHideUse()) {
@@ -143,7 +139,7 @@ public class ItemConditions extends Conditions{
 			if(!hasItemMeta) return false;
 			Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
 			for(Enchantment enchant : ifHasEnchant.keySet()){
-				if(!enchants.containsKey(enchant) || ifHasEnchant.get(enchant) != enchants.get(enchant)) return false;
+				if(!enchants.containsKey(enchant) || !Objects.equals(ifHasEnchant.get(enchant), enchants.get(enchant))) return false;
 			}
 		}
 
@@ -151,7 +147,7 @@ public class ItemConditions extends Conditions{
 			if(!hasItemMeta) return false;
 			Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
 			for(Enchantment enchant : ifHasNotEnchant.keySet()){
-				if(enchants.containsKey(enchant) && ifHasNotEnchant.get(enchant) == enchants.get(enchant)) return false;
+				if(enchants.containsKey(enchant) && ifHasNotEnchant.get(enchant).equals(enchants.get(enchant))) return false;
 			}
 		}
 
@@ -194,7 +190,7 @@ public class ItemConditions extends Conditions{
 				decomp = s.split(":");
 				try {
 					enchant = Enchantment.getByName(decomp[0]);
-					level = Integer.valueOf(decomp[1]);
+					level = Integer.parseInt(decomp[1]);
 					result.put(enchant, level);
 				}catch(Exception e){ e.printStackTrace();}
 			}

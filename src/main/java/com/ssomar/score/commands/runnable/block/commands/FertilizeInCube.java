@@ -13,16 +13,17 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
+import org.jetbrains.annotations.NotNull;
 
 /* FARMINCUBE {radius} {ActiveDrop true or false} */
 public class FertilizeInCube extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
 		try {
-			int radius = Integer.valueOf(args.get(0));
+			int radius = Integer.parseInt(args.get(0));
 			
 			for(int y = -radius ; y<radius+1 ; y++) {
 				for(int x = -radius ; x<radius+1 ; x++) {

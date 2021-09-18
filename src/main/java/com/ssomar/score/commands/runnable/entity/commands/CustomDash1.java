@@ -83,9 +83,9 @@ public class CustomDash1 extends EntityCommand{
 
 		if(args.size() >= 3) {
 			try {
-				x = Double.valueOf(args.get(0));
-				y = Double.valueOf(args.get(1));
-				z = Double.valueOf(args.get(2));
+				x = Double.parseDouble(args.get(0));
+				y = Double.parseDouble(args.get(1));
+				z = Double.parseDouble(args.get(2));
 			}
 			catch(Exception e) {
 				e.printStackTrace();

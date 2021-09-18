@@ -86,17 +86,17 @@ public class PlayerCommandManager implements CommandManager{
 
 		List<String> result = new ArrayList<>();
 
-		for (int i = 0; i < commands.size(); i++) {
+		for (String s : commands) {
 
-			String command = StringConverter.coloredString(commands.get(i));
+			String command = StringConverter.coloredString(s);
 
-			if (this.isValidPlayerCommads(commands.get(i))) {
+			if (this.isValidPlayerCommads(s)) {
 				PlayerCommand bc = (PlayerCommand) this.getCommand(command);
 				List<String> args = this.getArgs(command);
 
 				String error = "";
 				if (!(error = this.verifArgs(bc, args)).isEmpty()) {
-					errorList.add(sPlugin.getNameDesign()+" " + error + " for item: " + id);
+					errorList.add(sPlugin.getNameDesign() + " " + error + " for item: " + id);
 					continue;
 				}
 			}

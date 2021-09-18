@@ -18,7 +18,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 
 public class WorldGuardAPI {
 

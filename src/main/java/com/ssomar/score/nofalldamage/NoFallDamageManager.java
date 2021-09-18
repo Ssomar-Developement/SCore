@@ -32,7 +32,7 @@ public class NoFallDamageManager {
 		};
 		BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
 
-		NoFallDamageManager.getInstance().addNoFallDamage(p, new Couple<UUID, BukkitTask>(uuid, task));
+		NoFallDamageManager.getInstance().addNoFallDamage(p, new Couple<>(uuid, task));
 	}
 
 	public void addNoFallDamage(Player p, Couple<UUID, BukkitTask> c) {

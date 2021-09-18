@@ -20,10 +20,10 @@ public class SetHealth extends PlayerCommand{
 				receiver.setHealth(receiver.getMaxHealth());
 			}
 			else {
-				double health= Double.valueOf(args.get(0));
+				double health= Double.parseDouble(args.get(0));
 				receiver.setHealth(health);
 			}
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

@@ -10,11 +10,12 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import org.jetbrains.annotations.NotNull;
 
 public class SendMessage extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		StringBuilder message= new StringBuilder();
 		for(String s: args) {
 			//SsomarDev.testMsg("cmdarg> "+s);

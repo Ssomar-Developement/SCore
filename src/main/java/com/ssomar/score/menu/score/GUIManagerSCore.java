@@ -12,13 +12,13 @@ import com.ssomar.score.utils.StringConverter;
 public abstract class GUIManagerSCore<T extends GUIAbstract> extends GUIManager<T>{
 	
 	public void clicked(Player p, ItemStack item, ClickType click) {
-			InteractionClickedGUIManager<T> interact = new InteractionClickedGUIManager<T>();
+			InteractionClickedGUIManager<T> interact = new InteractionClickedGUIManager<>();
 			interact.player = p;
 			this.clicked(item, interact, click);
 	}
 	
 	public void clicked(Player p, ItemStack item, String title, ClickType click) {
-		InteractionClickedGUIManager<T> interact = new InteractionClickedGUIManager<T>();
+		InteractionClickedGUIManager<T> interact = new InteractionClickedGUIManager<>();
 		interact.player = p;
 		interact.title = title;
 		this.clicked(item, interact, click);

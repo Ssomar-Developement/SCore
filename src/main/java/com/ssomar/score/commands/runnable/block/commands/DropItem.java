@@ -11,18 +11,19 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import org.jetbrains.annotations.NotNull;
 
 /* DROPITEM {material} [quantity} */
 public class DropItem extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
-			int amount = Integer.valueOf(args.get(1));
+			int amount = Integer.parseInt(args.get(1));
 			if(amount>0) {
 				block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.valueOf(args.get(0).toUpperCase()), amount));
 			}
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

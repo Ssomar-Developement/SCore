@@ -56,7 +56,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 					states.put(spliterState[0], spliterState[1]);
 				}	
 			}	
-		} catch (Exception e) {}
+		} catch (Exception ignored) {}
 
 		boolean valid = true;
 		int i = 0;

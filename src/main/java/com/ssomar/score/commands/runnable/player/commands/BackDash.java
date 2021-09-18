@@ -15,10 +15,10 @@ public class BackDash extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		int amount = 5;
+		int amount;
 		
 		try {
-			amount = Integer.valueOf(args.get(0));
+			amount = Integer.parseInt(args.get(0));
 		}catch(NumberFormatException e){
 			return;
 		}

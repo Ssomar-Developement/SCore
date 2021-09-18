@@ -49,34 +49,33 @@ public abstract class RunCommandsBuilder{
 		int loopAmount = 0;
 		List<String> commandsInLoop = new ArrayList<>();
 
-		for (int i = 0; i < commands.size(); i++) {
+        for (String s : commands) {
 
-			String command = StringConverter.coloredString(commands.get(i));
+            String command = StringConverter.coloredString(s);
 
-			if(command.contains("LOOP START: ") && !command.contains("+++")) {
-				try {
-					loopAmount = Integer.valueOf(command.split("LOOP START: ")[1]);
-					isInLoop = true;
-					continue;
-				}catch(Exception e) {
-					loopAmount = 0;
-					isInLoop = false;
-					continue;
-				}
-			}
-			else if(command.contains("LOOP END") && !command.contains("+++")) {
-				for(int k = 0; k < loopAmount; k++) {
-					result.addAll(commandsInLoop);
-				}
-				loopAmount = 0;
-				isInLoop = false;
-				commandsInLoop.clear();
-				continue;
-			}
+            if (command.contains("LOOP START: ") && !command.contains("+++")) {
+                try {
+                    loopAmount = Integer.parseInt(command.split("LOOP START: ")[1]);
+                    isInLoop = true;
+                    continue;
+                } catch (Exception e) {
+                    loopAmount = 0;
+                    isInLoop = false;
+                    continue;
+                }
+            } else if (command.contains("LOOP END") && !command.contains("+++")) {
+                for (int k = 0; k < loopAmount; k++) {
+                    result.addAll(commandsInLoop);
+                }
+                loopAmount = 0;
+                isInLoop = false;
+                commandsInLoop.clear();
+                continue;
+            }
 
-			if(isInLoop) commandsInLoop.add(command);
-			else result.add(command);
-		}
+            if (isInLoop) commandsInLoop.add(command);
+            else result.add(command);
+        }
 		return result;
 	}
 	
@@ -118,8 +117,8 @@ public abstract class RunCommandsBuilder{
 		if(command.contains("nothing*")) {
 			try {
 				int m=0;
-				if(command.contains("//")) m = Integer.valueOf(command.split("nothing\\*")[1].split("//")[0].trim());
-				else m = Integer.valueOf(command.split("nothing\\*")[1]);
+				if(command.contains("//")) m = Integer.parseInt(command.split("nothing\\*")[1].split("//")[0].trim());
+				else m = Integer.parseInt(command.split("nothing\\*")[1]);
 
 				for(int k = 0; k < m; k++) {
 					if(command.contains("//")) result.add("SENDMESSAGE "+command.split("//")[1]);
@@ -133,8 +132,8 @@ public abstract class RunCommandsBuilder{
 		else if(command.contains("NOTHING*")) {
 			try {
 				int m = 0;
-				if(command.contains("//")) m=Integer.valueOf(command.split("NOTHING\\*")[1].split("//")[0].trim());
-				else m = Integer.valueOf(command.split("NOTHING\\*")[1]);
+				if(command.contains("//")) m=Integer.parseInt(command.split("NOTHING\\*")[1].split("//")[0].trim());
+				else m = Integer.parseInt(command.split("NOTHING\\*")[1]);
 
 				for(int k = 0; k < m; k++) {
 					if(command.contains("//")) result.add("SENDMESSAGE "+command.split("//")[1]);
@@ -161,7 +160,7 @@ public abstract class RunCommandsBuilder{
 		for(String command: commands) {
 
 			if(command.contains("RANDOM RUN:")) {
-				nbRandom = Integer.valueOf(command.split("RANDOM RUN:")[1].replaceAll(" ",""));
+				nbRandom = Integer.parseInt(command.split("RANDOM RUN:")[1].replaceAll(" ",""));
 				inRandom = true;
 				continue;
 			}
@@ -260,7 +259,7 @@ public abstract class RunCommandsBuilder{
 					}
 				}
 				/* ---------------------- */
-				delay = delay+(Integer.valueOf(delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "")));
+				delay = delay+(Integer.parseInt(delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "")));
 			}
 			else if(command.contains("DELAY ")) {
 				/* Verify that there is no multiple commands after DELAY */
@@ -272,7 +271,7 @@ public abstract class RunCommandsBuilder{
 					}
 				}
 				/* ----------------------- */
-				delay = delay+(Integer.valueOf(delayStr.replaceAll("DELAY ", "").replaceAll(" ", ""))*20);
+				delay = delay+(Integer.parseInt(delayStr.replaceAll("DELAY ", "").replaceAll(" ", ""))*20);
 			}
 			else {
 				this.inserFinalCommands(delay, command);

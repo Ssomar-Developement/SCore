@@ -158,13 +158,12 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 						try {
 							result.add(Material.valueOf(str));
 						}
-						catch(Exception e) {}
+						catch(Exception ignored) {}
 					}
 					cache.get(p).updateMustBeType(result);
 				}
 				else if(requestWriting.get(p).equals(AroundBlockConditionGUI.MUST_BE_EXECUTABLEBLOCKS)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateMustBeExecutableBlock(result);
 				}
 				currentWriting.remove(p);

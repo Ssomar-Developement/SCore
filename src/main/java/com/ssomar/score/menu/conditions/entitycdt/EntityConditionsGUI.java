@@ -106,7 +106,7 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 			}else {
 				try {
 					result.add(EntityType.valueOf(line.replaceAll("➤ ", "").toUpperCase()));
-				}catch(Exception e) {}
+				}catch(Exception ignored) {}
 			}
 		}
 		return result;

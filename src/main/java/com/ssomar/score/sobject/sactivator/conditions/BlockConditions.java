@@ -169,32 +169,32 @@ public class BlockConditions extends Conditions{
 			}
 		}
 		
-		if(ifBlockLocationX != "" && !StringCalculation.calculation(ifBlockLocationX, b.getLocation().getX())) {
+		if(!ifBlockLocationX.equals("") && !StringCalculation.calculation(ifBlockLocationX, b.getLocation().getX())) {
 			this.getSm().sendMessage(p, ifBlockLocationXMsg);
 			return false;
 		}
 		
-		if(ifBlockLocationX2 != "" && !StringCalculation.calculation(ifBlockLocationX2, b.getLocation().getX())) {
+		if(!ifBlockLocationX2.equals("") && !StringCalculation.calculation(ifBlockLocationX2, b.getLocation().getX())) {
 			this.getSm().sendMessage(p, ifBlockLocationX2Msg);
 			return false;
 		}
 		
-		if(ifBlockLocationY != "" && !StringCalculation.calculation(ifBlockLocationY, b.getLocation().getY())) {
+		if(!ifBlockLocationY.equals("") && !StringCalculation.calculation(ifBlockLocationY, b.getLocation().getY())) {
 			this.getSm().sendMessage(p, ifBlockLocationYMsg);
 			return false;
 		}
 		
-		if(ifBlockLocationY2 != "" && !StringCalculation.calculation(ifBlockLocationY2, b.getLocation().getY())) {
+		if(!ifBlockLocationY2.equals("") && !StringCalculation.calculation(ifBlockLocationY2, b.getLocation().getY())) {
 			this.getSm().sendMessage(p, ifBlockLocationY2Msg);
 			return false;
 		}
 		
-		if(ifBlockLocationZ != "" && !StringCalculation.calculation(ifBlockLocationZ, b.getLocation().getZ())) {
+		if(!ifBlockLocationZ.equals("") && !StringCalculation.calculation(ifBlockLocationZ, b.getLocation().getZ())) {
 			this.getSm().sendMessage(p, ifBlockLocationZMsg);
 			return false;
 		}
 		
-		if(ifBlockLocationZ2 != "" && !StringCalculation.calculation(ifBlockLocationZ2, b.getLocation().getZ())) {
+		if(!ifBlockLocationZ2.equals("") && !StringCalculation.calculation(ifBlockLocationZ2, b.getLocation().getZ())) {
 			this.getSm().sendMessage(p, ifBlockLocationZ2Msg);
 			return false;
 		}
@@ -283,27 +283,27 @@ public class BlockConditions extends Conditions{
 		else pCConfig.set("ifMustBeNatural", null);
 		pCConfig.set("ifMustBeNaturalMsg", bC.getIfMustBeNaturalMsg());
 		
-		if(bC.ifBlockLocationX != "") pCConfig.set("ifBlockLocationX", bC.ifBlockLocationX); 
+		if(!bC.ifBlockLocationX.equals("")) pCConfig.set("ifBlockLocationX", bC.ifBlockLocationX);
 		else pCConfig.set("ifBlockLocationX", null);
 		pCConfig.set("ifBlockLocationXMsg", bC.ifBlockLocationXMsg);
 		
-		if(bC.ifBlockLocationX2 != "") pCConfig.set("ifBlockLocationX2", bC.ifBlockLocationX2); 
+		if(!bC.ifBlockLocationX2.equals("")) pCConfig.set("ifBlockLocationX2", bC.ifBlockLocationX2);
 		else pCConfig.set("ifBlockLocationX2", null);
 		pCConfig.set("ifBlockLocationX2Msg", bC.ifBlockLocationX2Msg);
 		
-		if(bC.ifBlockLocationY != "") pCConfig.set("ifBlockLocationY", bC.ifBlockLocationY); 
+		if(!bC.ifBlockLocationY.equals("")) pCConfig.set("ifBlockLocationY", bC.ifBlockLocationY);
 		else pCConfig.set("ifBlockLocationY", null);
 		pCConfig.set("ifBlockLocationYMsg", bC.ifBlockLocationYMsg);
 		
-		if(bC.ifBlockLocationY2 != "") pCConfig.set("ifBlockLocationY2", bC.ifBlockLocationY2); 
+		if(!bC.ifBlockLocationY2.equals("")) pCConfig.set("ifBlockLocationY2", bC.ifBlockLocationY2);
 		else pCConfig.set("ifBlockLocationY2", null);
 		pCConfig.set("ifBlockLocationY2Msg", bC.ifBlockLocationY2Msg);
 		
-		if(bC.ifBlockLocationZ != "") pCConfig.set("ifBlockLocationZ", bC.ifBlockLocationZ); 
+		if(!bC.ifBlockLocationZ.equals("")) pCConfig.set("ifBlockLocationZ", bC.ifBlockLocationZ);
 		else pCConfig.set("ifBlockLocationZ", null);
 		pCConfig.set("ifBlockLocationZMsg", bC.ifBlockLocationZMsg);
 		
-		if(bC.ifBlockLocationZ2 != "") pCConfig.set("ifBlockLocationZ2", bC.ifBlockLocationZ2); 
+		if(!bC.ifBlockLocationZ2.equals("")) pCConfig.set("ifBlockLocationZ2", bC.ifBlockLocationZ2);
 		else pCConfig.set("ifBlockLocationZ2", null);
 		pCConfig.set("ifBlockLocationZ2Msg", bC.ifBlockLocationZ2Msg);
 

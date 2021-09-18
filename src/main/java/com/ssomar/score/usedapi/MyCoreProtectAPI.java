@@ -19,7 +19,7 @@ public class MyCoreProtectAPI {
 			Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
 			
 			 // Check that CoreProtect is loaded
-	        if (plugin == null || !(plugin instanceof CoreProtect)) {
+	        if (!(plugin instanceof CoreProtect)) {
 	        	return false;
 	        }
 

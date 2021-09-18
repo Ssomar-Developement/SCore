@@ -45,9 +45,9 @@ public class ProjectileCustomDash1 extends PlayerCommand{
 		boolean fallDamage = false;
 		if(args.size() == 1) {
 			try {
-				fallDamage = Boolean.valueOf(args.get(0));
+				fallDamage = Boolean.parseBoolean(args.get(0));
 			}
-			catch(Exception e) {
+			catch(Exception ignored) {
 
 			}
 		}
@@ -85,7 +85,7 @@ public class ProjectileCustomDash1 extends PlayerCommand{
 			};
 			BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
 
-			NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<UUID, BukkitTask>(uuid, task));
+			NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
 		}
 
 	}

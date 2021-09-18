@@ -17,11 +17,11 @@ public class DropItem extends EntityCommand{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
-			int amount = Integer.valueOf(args.get(1));
+			int amount = Integer.parseInt(args.get(1));
 			if(amount>0 && !entity.isDead()) {
 				entity.getWorld().dropItem(entity.getLocation(), new ItemStack(Material.valueOf(args.get(0)), amount));
 			}
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

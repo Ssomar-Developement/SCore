@@ -78,9 +78,7 @@ public class ActionInfo implements Serializable{
 		try {
 			result.setOldBlockMaterial(Material.valueOf(oldBlockMaterialName));
 		}
-		catch(Exception e) {
-
-		}
+		catch(Exception ignored) {}
 		result.setEntityUUID(entityUUID);
 		result.setSilenceOutput(silenceOutput);
 		result.setBlockLocationX(blockLocationX);

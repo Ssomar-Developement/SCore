@@ -28,21 +28,21 @@ public class LaunchEntity extends PlayerCommand{
 		if(args.size() >= 1) {
 			try {
 				entityType = EntityType.valueOf(args.get(0).toUpperCase());
-			}catch(Exception e) {
+			}catch(Exception ignored) {
 
 			}
 		}
 		if(args.size() >= 2) {
 			try {
-				speed = Double.valueOf(args.get(1));
-			}catch(Exception e) {}
+				speed = Double.parseDouble(args.get(1));
+			}catch(Exception ignored) {}
 		}
 		
 		if(args.size() >= 3) {
 			try {
-				rotation = Double.valueOf(args.get(2));
+				rotation = Double.parseDouble(args.get(2));
 				rotation = rotation * Math.PI/180;
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 		}
 
 		Entity entity = receiver.getWorld().spawnEntity(loc, entityType);

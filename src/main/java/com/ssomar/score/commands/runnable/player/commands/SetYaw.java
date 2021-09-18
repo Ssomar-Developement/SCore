@@ -14,7 +14,7 @@ public class SetYaw extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        float yaw = Float.valueOf(args.get(0));
+        float yaw = Float.parseFloat(args.get(0));
 
         Location location = receiver.getLocation();
         location.setYaw(yaw);

@@ -21,7 +21,7 @@ public class Heal extends EntityCommand{
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			if(args.size()==1) {
-				int amount = Integer.valueOf(args.get(0));
+				int amount = Integer.parseInt(args.get(0));
 				if(amount>0 && !entity.isDead() && entity instanceof LivingEntity) {
 					LivingEntity e = (LivingEntity) entity;
 					if(!SCore.is1v12()) {
@@ -48,7 +48,7 @@ public class Heal extends EntityCommand{
 					} 
 				} 
 			}
-		}catch(Exception err) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

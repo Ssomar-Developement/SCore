@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import org.jetbrains.annotations.NotNull;
 
 /* AROUND {distance} {true or false} {Your commands here} */
 public class Around extends BlockCommand{
@@ -62,12 +62,12 @@ public class Around extends BlockCommand{
 	}
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				try {
-					double distance = Double.valueOf(args.get(0));
+					double distance = Double.parseDouble(args.get(0));
 
 					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation(), distance, distance, distance)) {
 						if(e instanceof Player) {

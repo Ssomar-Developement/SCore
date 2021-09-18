@@ -216,11 +216,7 @@ public class CommandsHandler implements Listener {
 
 	public void addStopPickup(Player p, Integer delay) {
 		stopPickup.add(p);
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.getPlugin() , new Runnable(){
-			public void run(){			
-				stopPickup.remove(p);
-			}
-		}, delay);
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.getPlugin() , () -> stopPickup.remove(p), delay);
 	}
 
 

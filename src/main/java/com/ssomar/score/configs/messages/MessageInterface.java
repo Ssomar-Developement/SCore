@@ -9,8 +9,7 @@ public interface MessageInterface {
 	String getName();
 	
 	static List<MessageInterface> getMessagesEnum(MessageInterface[] tab) {
-		List<MessageInterface> result = new ArrayList<>();
-		result.addAll(Arrays.asList(tab));
+		List<MessageInterface> result = new ArrayList<>(Arrays.asList(tab));
 		return result;
 	}
 }

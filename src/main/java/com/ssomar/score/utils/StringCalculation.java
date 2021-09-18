@@ -1,7 +1,5 @@
 package com.ssomar.score.utils;
 
-import com.ssomar.score.SsomarDev;
-
 public class StringCalculation {
 
 	public static boolean calculation(String s, double number) {
@@ -10,49 +8,49 @@ public class StringCalculation {
 		calculStr=calculStr.replaceAll(" ", "");
 		if(calculStr.startsWith("<=") || calculStr.startsWith("=<")) {
 			try {
-				return number<=Double.valueOf(calculStr.substring(2));
+				return number<=Double.parseDouble(calculStr.substring(2));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith("<")) {
 			try {
-				return number<Double.valueOf(calculStr.substring(1));
+				return number<Double.parseDouble(calculStr.substring(1));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith(">=") || calculStr.startsWith("=>")) {
 			try {
-				return number>=Double.valueOf(calculStr.substring(2));
+				return number>=Double.parseDouble(calculStr.substring(2));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith(">")) {
 			try {
-				return number>Double.valueOf(calculStr.substring(1));
+				return number>Double.parseDouble(calculStr.substring(1));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith("==")) {
 			try {
-				return number==Double.valueOf(calculStr.substring(2));
+				return number==Double.parseDouble(calculStr.substring(2));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else if(calculStr.startsWith("=")) {
 			try {
-				return number==Double.valueOf(calculStr.substring(1));
+				return number==Double.parseDouble(calculStr.substring(1));
 			}catch(Exception e) {
 				return false;
 			}
 		}
 		else {
 			try {
-				return number>=Double.valueOf(calculStr);
+				return number>=Double.parseDouble(calculStr);
 			}catch(Exception e) {
 				return false;
 			}

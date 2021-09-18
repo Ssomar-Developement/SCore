@@ -7,7 +7,7 @@ public class SsomarDev {
 	public static void testMsg(String message) {
 		try {
 			Bukkit.getPlayer("Ssomar").sendMessage(message);
-		}catch(Exception err) {
+		}catch(Exception ignored) {
 			
 		}
 	}

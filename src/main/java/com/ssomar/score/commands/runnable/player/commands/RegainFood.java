@@ -15,7 +15,7 @@ public class RegainFood extends PlayerCommand{
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		int regain=1;
 		if(args.size()==1) {
-			regain = Integer.valueOf(args.get(0));
+			regain = Integer.parseInt(args.get(0));
 		}
 		receiver.setFoodLevel(receiver.getFoodLevel()+regain);
 	}

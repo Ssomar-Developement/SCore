@@ -31,8 +31,8 @@ public class StringConverter {
 
 	public static List<String> replaceVariable(List<String> list, String player, String item, String quantity, int time) {
 		List<String> newList= new ArrayList<>();
-		for(int i=0; i<list.size();i++) {
-			newList.add(replaceVariable(list.get(i), player, item, quantity, time));
+		for (String s : list) {
+			newList.add(replaceVariable(s, player, item, quantity, time));
 		}
 		return newList;
 	}
@@ -98,11 +98,11 @@ public class StringConverter {
 
 		StringBuilder sb = new StringBuilder();
 		char[] sChar= s.toCharArray();
-		for(int i= 0;i<sChar.length;i++) {
-			if(sChar[i]=='§') {
+		for (char c : sChar) {
+			if (c == '§') {
 				sb.append('&');
-			}else {
-				sb.append(sChar[i]);
+			} else {
+				sb.append(c);
 			}
 		}
 		return replaceHexCodes(sb.toString());

@@ -47,17 +47,17 @@ public class CustomDash1 extends PlayerCommand{
 		boolean fallDamage = false;
 		if(args.size() == 4) {
 			try {
-				fallDamage = Boolean.valueOf(args.get(3));
+				fallDamage = Boolean.parseBoolean(args.get(3));
 			}
-			catch(Exception e) {
+			catch(Exception ignored) {
 
 			}
 		}
 		if(args.size() >= 3) {
 			try {
-				x = Double.valueOf(args.get(0));
-				y = Double.valueOf(args.get(1));
-				z = Double.valueOf(args.get(2));
+				x = Double.parseDouble(args.get(0));
+				y = Double.parseDouble(args.get(1));
+				z = Double.parseDouble(args.get(2));
 			}
 			catch(Exception e) {
 				SCore.getPlugin().getLogger().severe(SCore.NAME_2+" ERROR for CUSTOMDASH1, one of x, yor z is invalid ! (you can see below the enite error)");
@@ -80,7 +80,7 @@ public class CustomDash1 extends PlayerCommand{
 				};
 				BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
 
-				NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<UUID, BukkitTask>(uuid, task));
+				NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
 			}
 		}
 		else return;

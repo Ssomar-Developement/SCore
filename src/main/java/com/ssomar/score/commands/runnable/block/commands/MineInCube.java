@@ -16,17 +16,18 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.jetbrains.annotations.NotNull;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
 public class MineInCube extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		/* Cancel a Loop of blockBreakEvent that MineInCbe can create */
 		if(aInfo.isEventCallByMineInCube()) return;
 
 		try {
-			int radius = Integer.valueOf(args.get(0));
+			int radius = Integer.parseInt(args.get(0));
 			boolean drop = true;
 			if(args.size() >= 2) drop = Boolean.parseBoolean(args.get(1));
 			
@@ -38,9 +39,9 @@ public class MineInCube extends BlockCommand{
 			blackList.add(Material.AIR);
 
 			if(radius < 10) {
-				for(int y = -radius; y < Integer.valueOf(radius)+1; y++) {
-					for(int x = -Integer.valueOf(radius); x < Integer.valueOf(radius)+1; x++) {
-						for(int z = -Integer.valueOf(radius); z < Integer.valueOf(radius)+1; z++) {
+				for(int y = -radius; y < radius +1; y++) {
+					for(int x = -radius; x < radius +1; x++) {
+						for(int z = -radius; z < radius +1; z++) {
 
 							Location toBreakLoc = new Location(block.getWorld(), block.getX()+x, block.getY()+y, block.getZ()+z);
 							Block toBreak = block.getWorld().getBlockAt(block.getX()+x, block.getY()+y, block.getZ()+z);

@@ -18,8 +18,8 @@ public class TeleportPosition extends EntityCommand{
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		if(args.size()==3) {
 			try {
-				if(!entity.isDead()) entity.teleport(new Location(entity.getWorld(), Integer.valueOf(args.get(0)), Integer.valueOf(args.get(1)), Integer.valueOf(args.get(2))));
-			}catch(Exception e) {}
+				if(!entity.isDead()) entity.teleport(new Location(entity.getWorld(), Integer.parseInt(args.get(0)), Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2))));
+			}catch(Exception ignored) {}
 		}
 	}
 

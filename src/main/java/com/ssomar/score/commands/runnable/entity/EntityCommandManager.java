@@ -85,22 +85,22 @@ public class EntityCommandManager implements CommandManager{
 		List<String> result = new ArrayList<>();
 
 
-		for (int i = 0; i < commands.size(); i++) {
+		for (String s : commands) {
 
-			String command = StringConverter.coloredString(commands.get(i));
+			String command = StringConverter.coloredString(s);
 
 			/*
 			 * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if
 			 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
 			 */
 
-			if (EntityCommandManager.getInstance().isValidEntityCommand(commands.get(i)) && !commands.get(i).contains("//")) {
-				EntityCommand eC = (EntityCommand)this.getCommand(command);
+			if (EntityCommandManager.getInstance().isValidEntityCommand(s) && !s.contains("//")) {
+				EntityCommand eC = (EntityCommand) this.getCommand(command);
 				List<String> args = this.getArgs(command);
 
 				String error = "";
 				if (!(error = this.verifArgs(eC, args)).isEmpty()) {
-					errorList.add(sPlugin+" " + error + " for item: " + id);
+					errorList.add(sPlugin + " " + error + " for item: " + id);
 					continue;
 				}
 			}

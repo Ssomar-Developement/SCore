@@ -2,19 +2,14 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
-import com.ssomar.score.utils.Couple;
 
 /* JUMP {amount} */
 public class Jump extends PlayerCommand{
@@ -26,8 +21,8 @@ public class Jump extends PlayerCommand{
 		double jump = 5;
 		if(args.size() == 1) {
 			try {
-				jump = Double.valueOf(args.get(0));
-			}catch(Exception e) {}
+				jump = Double.parseDouble(args.get(0));
+			}catch(Exception ignored) {}
 		}
 
 		Vector v = receiver.getVelocity();

@@ -74,7 +74,7 @@ public abstract class RunCommand implements Serializable{
 			this.runGetManager();
 		}
 		else {
-			runTime = System.currentTimeMillis() + delay * 50;
+			runTime = System.currentTimeMillis() + delay * 50L;
 			this.runDelayedCommand();
 		}
 	}
@@ -91,7 +91,7 @@ public abstract class RunCommand implements Serializable{
 				String playeName = getBrutCommand().split("ei giveslot ")[1].split(" ")[0];
 				Player pgive = Bukkit.getPlayer(playeName);
 				CommandsHandler.getInstance().addStopPickup(pgive, 20);
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 		}
 
 		finalCommand = this.getSp().replacePlaceholder(finalCommand);

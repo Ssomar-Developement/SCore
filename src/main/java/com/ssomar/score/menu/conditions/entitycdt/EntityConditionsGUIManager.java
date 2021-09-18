@@ -140,8 +140,7 @@ public class EntityConditionsGUIManager extends GUIManagerConditions<EntityCondi
 			}
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(EntityConditionsGUI.IF_NAME)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfName(result);
 				}
 				else if(requestWriting.get(p).equals(EntityConditionsGUI.IF_NOT_ENTITY_TYPE)) {
@@ -149,7 +148,7 @@ public class EntityConditionsGUIManager extends GUIManagerConditions<EntityCondi
 					for(String str : currentWriting.get(p)) {
 						try {
 							result.add(EntityType.valueOf(str.toUpperCase()));
-						}catch(Exception e) {}
+						}catch(Exception ignored) {}
 
 					}
 					cache.get(p).updateIfNotEntityType(result);
@@ -164,7 +163,7 @@ public class EntityConditionsGUIManager extends GUIManagerConditions<EntityCondi
 			if(message.contains("delete line <")) {	
 				space(p);
 				space(p);
-				int line = Integer.valueOf(message.split("delete line <")[1].split(">")[0]);
+				int line = Integer.parseInt(message.split("delete line <")[1].split(">")[0]);
 				deleteLine(p, line);
 				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have delete the line: "+line+" !"));
 				if(requestWriting.get(p).equals(EntityConditionsGUI.IF_NAME)) this.showIfNameEditor(p);

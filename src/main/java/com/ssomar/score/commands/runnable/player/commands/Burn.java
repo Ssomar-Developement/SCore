@@ -20,7 +20,7 @@ public class Burn extends PlayerCommand{
 		try {
 			int time = 200;
 
-			double timeDouble = Double.valueOf(args.get(0));
+			double timeDouble = Double.parseDouble(args.get(0));
 			time = (int) timeDouble;
 
 			if(SCore.hasWorldGuard) {
@@ -43,7 +43,7 @@ public class Burn extends PlayerCommand{
 			}
 			else receiver.setFireTicks(20 * time);
 
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

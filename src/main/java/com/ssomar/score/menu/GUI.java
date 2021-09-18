@@ -370,7 +370,7 @@ public abstract class GUI {
 
 	public int getInt(String itemName) {
 		ItemStack item = this.getByName(itemName);
-		return Integer.valueOf(getActually(item));	
+		return Integer.parseInt(getActually(item));
 	}
 
 	public void updateDouble(String itemName, double value) {
@@ -380,7 +380,7 @@ public abstract class GUI {
 
 	public double getDouble(String itemName) {
 		ItemStack item = this.getByName(itemName);
-		return Double.valueOf(getActually(item));	
+		return Double.parseDouble(getActually(item));
 	}
 
 }

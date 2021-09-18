@@ -20,10 +20,10 @@ public class Burn extends EntityCommand{
 				entity.setFireTicks(20*10);
 			}
 			else {
-				double time= Double.valueOf(args.get(0));
+				double time= Double.parseDouble(args.get(0));
 				entity.setFireTicks(20* (int)time);
 			}
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 	}
 
 	@Override

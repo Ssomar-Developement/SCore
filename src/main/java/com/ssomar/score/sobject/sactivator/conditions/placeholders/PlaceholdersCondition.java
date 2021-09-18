@@ -104,7 +104,7 @@ public class PlaceholdersCondition extends Conditions{
 		
 		case PLAYER_NUMBER: case TARGET_NUMBER:
 			if(NTools.isNumber(aPart1)) {
-				double nPart1 = Double.valueOf(aPart1);
+				double nPart1 = Double.parseDouble(aPart1);
 				if(!comparator.verify(nPart1, part2Number)) return false;
 			}
 			else return false;
@@ -116,8 +116,8 @@ public class PlaceholdersCondition extends Conditions{
 			
 		case PLAYER_PLAYER: case TARGET_TARGET: case PLAYER_TARGET:
 			if(NTools.isNumber(aPart1) && NTools.isNumber(aPart2)) {
-				double nPart1 = Double.valueOf(aPart1);
-				double nPart2 = Double.valueOf(aPart2);
+				double nPart1 = Double.parseDouble(aPart1);
+				double nPart2 = Double.parseDouble(aPart2);
 				if(!comparator.verify(nPart1, nPart2)) return false;
 			}
 			else if(!comparator.verify(aPart1, aPart2)) return false;

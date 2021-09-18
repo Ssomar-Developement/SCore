@@ -445,7 +445,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 			}else {
 				try {
 					result.add(Material.valueOf(line.replaceAll("➤ ", "")));
-				}catch(Exception e) {}
+				}catch(Exception ignored) {}
 			}
 		}
 		return result;
@@ -477,7 +477,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 			}else {
 				try {
 					result.add(Material.valueOf(line.replaceAll("➤ ", "")));
-				}catch(Exception e) {}
+				}catch(Exception ignored) {}
 			}
 		}
 		return result;
@@ -509,7 +509,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 			}else {
 				try {
 					result.add(Material.valueOf(line.replaceAll("➤ ", "")));
-				}catch(Exception e) {}
+				}catch(Exception ignored) {}
 			}
 		}
 		return result;
@@ -666,7 +666,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 			}else {
 				String[] decomp = line.replaceAll("➤ ", "").split(":");
 				PotionEffectType type = PotionEffectType.getByName(decomp[0]);
-				int value = Integer.valueOf(decomp[1]);
+				int value = Integer.parseInt(decomp[1]);
 				result.put(type, value);
 			}
 		}

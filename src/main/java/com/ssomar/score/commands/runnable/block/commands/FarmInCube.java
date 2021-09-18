@@ -20,26 +20,27 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.ToolsListMaterial;
+import org.jetbrains.annotations.NotNull;
 
 /* FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}*/
 public class FarmInCube extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
 		List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
 		try {
-			int radius = Integer.valueOf(args.get(0));
+			int radius = Integer.parseInt(args.get(0));
 
 			boolean drop = true;
-			if(args.size() == 2) drop = Boolean.valueOf(args.get(1));
+			if(args.size() == 2) drop = Boolean.parseBoolean(args.get(1));
 
 			boolean onlyMaxAge = true;
-			if(args.size() == 3) onlyMaxAge = Boolean.valueOf(args.get(2));
+			if(args.size() == 3) onlyMaxAge = Boolean.parseBoolean(args.get(2));
 
 			boolean replant = false;
-			if(args.size() == 4) replant = Boolean.valueOf(args.get(3));
+			if(args.size() == 4) replant = Boolean.parseBoolean(args.get(3));
 
 			if(radius < 10) {
 				for(int y = -radius ; y < radius+1 ; y++) {

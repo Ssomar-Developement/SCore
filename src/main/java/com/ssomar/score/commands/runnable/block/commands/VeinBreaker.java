@@ -15,18 +15,19 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.jetbrains.annotations.NotNull;
 
 public class VeinBreaker  extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		
 		if(!(oldMaterial.toString().contains("ORE") || oldMaterial.toString().contains("LOG") || oldMaterial.toString().contains("WOOD"))) return;
 		
 		int veinSize = 120;
 		try {
-			veinSize = Integer.valueOf(args.get(0));
-		}catch(Exception e) {}
+			veinSize = Integer.parseInt(args.get(0));
+		}catch(Exception ignored) {}
 		
 		List<Block> vein;
 		if(SCore.hasWorldGuard) {
@@ -60,9 +61,9 @@ public class VeinBreaker  extends BlockCommand{
 		
 		Location loc = block.getLocation();
 		int radius = 1;
-		for(int y = -radius; y < Integer.valueOf(radius)+1; y++) {
-			for(int x = -Integer.valueOf(radius); x < Integer.valueOf(radius)+1; x++) {
-				for(int z = -Integer.valueOf(radius); z < Integer.valueOf(radius)+1; z++) {
+		for(int y = -radius; y < radius +1; y++) {
+			for(int x = -radius; x < radius +1; x++) {
+				for(int z = -radius; z < radius +1; z++) {
 
 					if( y == 0 && z == 0 && x == 0) continue;
 					

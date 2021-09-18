@@ -237,7 +237,7 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 						int level;
 						try {
 							enchant = Enchantment.getByName(decomp[0]);
-							level = Integer.valueOf(decomp[1]);
+							level = Integer.parseInt(decomp[1]);
 							
 							
 							if(enchant != null) {

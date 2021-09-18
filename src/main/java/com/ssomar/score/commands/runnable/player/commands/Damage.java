@@ -25,11 +25,11 @@ public class Damage extends PlayerCommand{
 				String [] decomp = damage.split("\\%");
 				damage = decomp[0];
 				
-				double percentage = damage.equals("100") ? 1 : Double.valueOf("0."+damage);
+				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
 				amount = receiver.getMaxHealth() * percentage;
-				amount = Double.valueOf((amount+"").substring(0, 3));
+				amount = Double.parseDouble((amount+"").substring(0, 3));
 			}
-			else amount = Double.valueOf(damage);
+			else amount = Double.parseDouble(damage);
 			
 			if(amount > 0 && !receiver.isDead()) {
 

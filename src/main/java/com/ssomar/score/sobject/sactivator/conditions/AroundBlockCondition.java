@@ -159,7 +159,7 @@ public class AroundBlockCondition extends Conditions{
 		for(String s : section.getStringList("blockTypeMustBe")) {
 			try {
 				blockTypeMustBe.add(Material.valueOf(s));
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 		}
 
 		String errorMsg = section.getString("errorMsg", "");

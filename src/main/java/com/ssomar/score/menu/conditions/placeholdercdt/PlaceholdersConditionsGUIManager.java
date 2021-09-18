@@ -34,10 +34,10 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 		String cPage  = StringConverter.decoloredString(i.title);
 		
 		if (i.name.contains("Next page")) {
-			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]) + 1, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail()));
+			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.parseInt(cPage.split("Page ")[1]) + 1, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail()));
 			cache.get(i.player).openGUISync(i.player);
 		} else if (i.name.contains("Previous page")) {
-			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]) - 1, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail()));
+			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.parseInt(cPage.split("Page ")[1]) - 1, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail()));
 			cache.get(i.player).openGUISync(i.player);
 		}
 		else if (i.name.contains("New Placeholders cdt")) {
@@ -100,11 +100,11 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getID());
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
-			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.valueOf(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), cache.get(i.player).getDetail()));
+			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.parseInt(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), cache.get(i.player).getDetail()));
 			cache.get(i.player).openGUISync(i.player);
 			return true;
 		}
-		catch(Exception e) {
+		catch(Exception ignored) {
 
 		}
 		return false;

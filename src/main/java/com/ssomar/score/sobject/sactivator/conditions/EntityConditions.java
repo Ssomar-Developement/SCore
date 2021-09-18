@@ -183,7 +183,7 @@ public class EntityConditions extends Conditions{
 		for (String s : entityCdtSection.getStringList("ifNotEntityType")) {
 			try {
 				list.add(EntityType.valueOf(s));
-			} catch (Exception e) {}
+			} catch (Exception ignored) {}
 		}
 		eCdt.setIfNotEntityType(list);
 		eCdt.setIfNotEntityTypeMsg(entityCdtSection.getString("ifNotEntityTypeMsg", "&4&l"+pluginName+IF_NOT_ENTITY_TYPE_MSG));

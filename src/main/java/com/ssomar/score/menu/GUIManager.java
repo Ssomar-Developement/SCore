@@ -86,7 +86,7 @@ public abstract class GUIManager<T> {
 	public void deleteLine(String message, Player p) {
 		space(p);
 		space(p);
-		int line = Integer.valueOf(message.split("delete line <")[1].split(">")[0]);
+		int line = Integer.parseInt(message.split("delete line <")[1].split(">")[0]);
 		deleteLine(p, line);
 		p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION &aYou have delete the line: "+line+" !"));
 		space(p);

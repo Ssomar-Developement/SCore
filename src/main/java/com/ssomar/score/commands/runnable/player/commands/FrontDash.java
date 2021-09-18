@@ -18,7 +18,7 @@ public class FrontDash extends PlayerCommand{
 		double amount = 5;
 
 		try {
-			amount = Double.valueOf(args.get(0));
+			amount = Double.parseDouble(args.get(0));
 		}catch(NumberFormatException e){
 			return;
 		}
@@ -26,7 +26,7 @@ public class FrontDash extends PlayerCommand{
 		double customY = 0;
 		if(args.size()>=2) {
 			try {
-				customY = Double.valueOf(args.get(1));
+				customY = Double.parseDouble(args.get(1));
 			}catch(NumberFormatException e){
 				return;
 			}

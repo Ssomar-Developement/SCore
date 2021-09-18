@@ -107,7 +107,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		if(command.getName().equalsIgnoreCase("score")) {
-			ArrayList<String> arguments = new ArrayList<String>();
+			ArrayList<String> arguments = new ArrayList<>();
 			if (args.length == 1) {
 
 				arguments.add("reload");

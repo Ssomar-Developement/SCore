@@ -169,7 +169,7 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 			else {
 				try {
 					result.add(Material.valueOf(line.replaceAll("➤ ", "")));
-				}catch(Exception e) {}
+				}catch(Exception ignored) {}
 			}
 		}
 		return result;

@@ -20,13 +20,13 @@ public class DropExecutableItem extends EntityCommand{
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			if(SCore.hasExecutableItems && ExecutableItemsAPI.isValidID(args.get(0))) {
-				int amount = Integer.valueOf(args.get(1));
+				int amount = Integer.parseInt(args.get(1));
 				if(amount>0 && !entity.isDead()) { 
 					Item item = ExecutableItemsAPI.getExecutableItemConfig(ExecutableItemsAPI.getExecutableItem(args.get(0)));
 					entity.getWorld().dropItem(entity.getLocation(), item.formItem(amount, p, item.getUse()));
 				}
 			}
-		}catch(Exception e) {}	
+		}catch(Exception ignored) {}
 	}
 
 	@Override

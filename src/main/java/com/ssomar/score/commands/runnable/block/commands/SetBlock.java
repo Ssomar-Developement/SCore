@@ -14,11 +14,12 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.jetbrains.annotations.NotNull;
 
 public class SetBlock extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
 			String mat = args.get(0).toUpperCase();
 			if(Material.matchMaterial(mat) != null) {

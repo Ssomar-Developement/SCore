@@ -574,7 +574,7 @@ public class PlayerConditions extends Conditions{
 		for (String s : playerCdtSection.getStringList("ifIsOnTheBlock")) {
 			try {
 				mat.add(Material.valueOf(s.toUpperCase()));
-			} catch (Exception e) {}
+			} catch (Exception ignored) {}
 		}
 		pCdt.setIfIsOnTheBlock(mat);
 		pCdt.setIfIsOnTheBlockMsg(playerCdtSection.getString("ifIsOnTheBlockMsg", "&4&l"+pluginName+IF_IS_ON_THE_BLOCK_MSG));
@@ -615,7 +615,7 @@ public class PlayerConditions extends Conditions{
 		for (String s : playerCdtSection.getStringList("ifTargetBlock")) {
 			try {
 				mat.add(Material.valueOf(s.toUpperCase()));
-			} catch (Exception e) {}
+			} catch (Exception ignored) {}
 		}
 		pCdt.setIfTargetBlock(mat);
 		pCdt.setIfTargetBlockMsg(playerCdtSection.getString("ifTargetBlockMsg", "&4&l"+pluginName+IF_TARGET_BLOCK_MSG));
@@ -624,7 +624,7 @@ public class PlayerConditions extends Conditions{
 		for (String s : playerCdtSection.getStringList("ifNotTargetBlock")) {
 			try {
 				mat.add(Material.valueOf(s.toUpperCase()));
-			} catch (Exception e) {}
+			} catch (Exception ignored) {}
 		}
 		pCdt.setIfNotTargetBlock(mat);
 		pCdt.setIfNotTargetBlockMsg(playerCdtSection.getString("ifNotTargetBlockMsg", "&4&l"+pluginName+IF_NOT_TARGET_BLOCK_MSG));
@@ -659,7 +659,7 @@ public class PlayerConditions extends Conditions{
 			if (s.contains(":") && (spliter = s.split(":")).length == 2) {
 				int slot = 0;
 				try {
-					slot = Integer.valueOf(spliter[1]);
+					slot = Integer.parseInt(spliter[1]);
 				} catch (Exception e) {
 					errorList.add(pluginName+" Invalid argument for the ifPlayerHasExecutableItem condition: " + s + " correct form > ID:SLOT  example> test:5 !");
 					continue;
@@ -683,7 +683,7 @@ public class PlayerConditions extends Conditions{
 					continue;
 				}
 				try {
-					slot = Integer.valueOf(spliter[1]);
+					slot = Integer.parseInt(spliter[1]);
 				} catch (Exception e) {
 					errorList.add(pluginName+" Invalid argument for the ifPlayerHasItem condition: " + s+ " correct form > MATERIAL:SLOT  example> DIAMOND:5 !");
 					continue;
@@ -706,7 +706,7 @@ public class PlayerConditions extends Conditions{
 				}
 
 				try {
-					value = Integer.valueOf(spliter[1]);
+					value = Integer.parseInt(spliter[1]);
 				} catch (Exception e) {
 					errorList.add(pluginName+" Invalid argument for the ifPlayerHasEffect condition: " + s+ " correct form > EFFECT:MINIMUM_AMPLIFIER_REQUIRED  example> SPEED:0 !");
 					continue;
@@ -730,7 +730,7 @@ public class PlayerConditions extends Conditions{
 				}
 
 				try {
-					value = Integer.valueOf(spliter[1]);
+					value = Integer.parseInt(spliter[1]);
 				} catch (Exception e) {
 					errorList.add(pluginName+" Invalid argument for the ifPlayerHasEffectEquals condition: " + s+ " correct form > EFFECT:AMPLIFIER_REQUIRED  example> SPEED:0 !");
 					continue;

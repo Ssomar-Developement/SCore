@@ -21,11 +21,12 @@ import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedMana
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import org.jetbrains.annotations.NotNull;
 
 public class SetExecutableBlock extends BlockCommand{
 
 	@Override
-	public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
 		if(SCore.hasExecutableBlocks) {
 			
@@ -38,20 +39,20 @@ public class SetExecutableBlock extends BlockCommand{
 			double y;
 			double z;
 			try {
-				x = Double.valueOf(args.get(1));
+				x = Double.parseDouble(args.get(1));
 			}catch(Exception e) {
 				return ;
 			}
 
 			try {
-				y = Double.valueOf(args.get(2));
+				y = Double.parseDouble(args.get(2));
 			}catch(Exception e) {
 
 				return;
 			}
 
 			try {
-				z = Double.valueOf(args.get(3));
+				z = Double.parseDouble(args.get(3));
 			}catch(Exception e) {
 				return;
 			}
@@ -76,15 +77,15 @@ public class SetExecutableBlock extends BlockCommand{
 
 			boolean replace = false;
 			try {
-				replace = Boolean.valueOf(args.get(5));
+				replace = Boolean.parseBoolean(args.get(5));
 			}
-			catch(Exception e) {}
+			catch(Exception ignored) {}
 
 			UUID ownerUUID = null;
 			try {
 				ownerUUID = UUID.fromString(args.get(6));
 			}
-			catch(Exception e) {}
+			catch(Exception ignored) {}
 
 			Location loc = new Location(world, x, y , z);
 			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);

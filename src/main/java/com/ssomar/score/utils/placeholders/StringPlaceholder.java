@@ -202,8 +202,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 						decomp = decomp[0].split("\\|");
 
 						try {
-							part1 = Integer.valueOf(decomp[0]);
-							part2 = Integer.valueOf(decomp[1]);
+							part1 = Integer.parseInt(decomp[0]);
+							part2 = Integer.parseInt(decomp[1]);
 						}catch(Exception e) {
 							continue;
 						}

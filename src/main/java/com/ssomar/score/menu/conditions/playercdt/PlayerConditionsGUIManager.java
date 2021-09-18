@@ -396,48 +396,39 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			}
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
 				if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfHasEffect(result, false);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_EFFECT_EQUALS)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfHasEffect(result, true);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_WORLD)) {
-					List<String> result= new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfInWorld(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_WORLD)) {
-					List<String> result= new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfNotInWorld(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_BIOME)) {
-					List<String> result= new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfInBiome(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_BIOME)) {
-					List<String> result= new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfNotInBiome(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IN_REGION)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfInRegion(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_IN_REGION)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfNotInRegion(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_HAS_PERMISSION)) {
-					List<String> result = new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfHasPermission(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_TARGET_BLOCK)) {
@@ -446,7 +437,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 						for(String str : currentWriting.get(p)) {
 							result.add(Material.valueOf(str));
 						}
-					}catch(Exception e) {}
+					}catch(Exception ignored) {}
 					cache.get(p).updateIfTargetBlock(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
@@ -455,7 +446,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 						for(String str : currentWriting.get(p)) {
 							result.add(Material.valueOf(str));
 						}
-					}catch(Exception e) {}
+					}catch(Exception ignored) {}
 					cache.get(p).updateIfIsOnTheBlock(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
@@ -464,12 +455,11 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 						for(String str : currentWriting.get(p)) {
 							result.add(Material.valueOf(str));
 						}
-					}catch(Exception e) {}
+					}catch(Exception ignored) {}
 					cache.get(p).updateIfNotTargetBlock(result);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_HAS_PERMISSION)) {
-					List<String> result= new ArrayList<>();
-					result.addAll(currentWriting.get(p));
+					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateIfNotHasPermission(result);
 				}
 				currentWriting.remove(p);
@@ -508,7 +498,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				}
 
 				try {
-					value = Integer.valueOf(decomp[1]);
+					value = Integer.parseInt(decomp[1]);
 				}
 				catch(Exception e) {
 					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid MINIMUM_AMPLIFIER_REQUIRED, set an integer >= 0"));
@@ -558,7 +548,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				}
 
 				try {
-					value = Integer.valueOf(decomp[1]);
+					value = Integer.parseInt(decomp[1]);
 				}
 				catch(Exception e) {
 					p.sendMessage(StringConverter.coloredString("&4&l"+plName+" &4&lERROR &cInvalid AMPLIFIER_REQUIRED, set an integer >= 0"));

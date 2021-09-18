@@ -20,24 +20,21 @@ public class CooldownsHandler implements Listener {
 	public void PlayerJoinEvent(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		
-		Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
-            @Override
-            public void run() {
-            	List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
-                Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                    	CooldownsManager.getInstance().addCooldowns(cooldowns);
-                    	
-                    	Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
-                            @Override
-                            public void run() {
-                            	CooldownsQuery.deleteCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
-                            }
-                        });
-                    }
-                });
-            }
+		Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+            List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
+            Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    CooldownsManager.getInstance().addCooldowns(cooldowns);
+
+                    Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            CooldownsQuery.deleteCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
+                        }
+                    });
+                }
+            });
         });
 	}
 
@@ -47,19 +44,13 @@ public class CooldownsHandler implements Listener {
 
 		List<Cooldown> cooldowns = CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId());
 		
-		Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
-            @Override
-            public void run() {
-            	CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
-                // go back to the tick loop
-                Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        // call the callback with the result
-                    	CooldownsManager.getInstance().removeCooldownsOf(p.getUniqueId());
-                    }
-                });
-            }
+		Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+            CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
+            // go back to the tick loop
+            Bukkit.getScheduler().runTask(SCore.plugin, () -> {
+                // call the callback with the result
+                CooldownsManager.getInstance().removeCooldownsOf(p.getUniqueId());
+            });
         });
 
 	}

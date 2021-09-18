@@ -27,7 +27,7 @@ public abstract class PlaceholdersInterface {
 				sb.append(c);
 			} 
 			if (isNumeric(sb.toString())) {
-				double d = Double.parseDouble(sb.toString()) + Double.valueOf(value);
+				double d = Double.parseDouble(sb.toString()) + Double.parseDouble(value);
 				if(isInteger) result = result.replaceAll(placeholder+"\\+" + sb, "" + (int) d);
 				else result = result.replaceAll(placeholder+"\\+" + sb, "" + d);
 			} else {
@@ -44,7 +44,7 @@ public abstract class PlaceholdersInterface {
 				sb.append(c);
 			} 
 			if (isNumeric(sb.toString())) {
-				double d = Double.valueOf(value) - Double.parseDouble(sb.toString());
+				double d = Double.parseDouble(value) - Double.parseDouble(sb.toString());
 				if(isInteger) result = result.replaceAll(placeholder+"\\-" + sb, "" + (int) d);
 				else result = result.replaceAll(placeholder+"\\-" + sb, "" + d);
 			} else {

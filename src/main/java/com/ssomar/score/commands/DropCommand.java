@@ -29,13 +29,13 @@ public class DropCommand {
 					sender.sendMessage(ChatColor.RED+sPlugin.getNameDesign()+" Quantity " + args[1] + " is invalid.");
 					return;
 				}
-				qty = Integer.valueOf(args[1]);
+				qty = Integer.parseInt(args[1]);
 			}
 			
 			if(sender instanceof Player) {
 				Player p = (Player) sender;	 
 				if(args.length <= 2) {
-					runDrop(sObject, Integer.valueOf(args[1]), p.getLocation());
+					runDrop(sObject, Integer.parseInt(args[1]), p.getLocation());
 					System.out.println(sPlugin.getNameDesign()+" Succesfully run /"+sPlugin.getShortName().toLowerCase()+" drop "+args[0]+" "+qty+" "+p.getWorld().getName()+" "+(int) p.getLocation().getX()+" "+(int) p.getLocation().getY()+" "+(int) p.getLocation().getZ()+" ");
 					return;
 				}
@@ -63,7 +63,7 @@ public class DropCommand {
 				sender.sendMessage(ChatColor.RED+sPlugin.getNameDesign()+" Z " + args[3] + " is invalid.");
 				return;
 			}	
-			runDrop(sObject, qty, new Location( Bukkit.getServer().getWorld(args[2]), Double.valueOf(args[3]), Double.valueOf(args[4]), Double.valueOf(args[5])));
+			runDrop(sObject, qty, new Location( Bukkit.getServer().getWorld(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), Double.parseDouble(args[5])));
 			ExecutableItems.plugin.getLogger().fine(sPlugin.getNameDesign()+" Succesfully run /"+sPlugin.getShortName().toLowerCase()+" drop "+args[0]+" "+qty+" "+args[2]+" "+args[3]+" "+args[4]+" "+args[5]+" ");
 			return;
 		}

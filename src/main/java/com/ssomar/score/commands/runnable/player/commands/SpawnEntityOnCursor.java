@@ -23,11 +23,11 @@ public class SpawnEntityOnCursor extends PlayerCommand{
 		int range = 200;
 		if(args.size()==3) {
 			try {
-				range= Integer.valueOf(args.get(2));
+				range= Integer.parseInt(args.get(2));
 				if(range<=0) {
 					range=200;
 				}
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 		}
 
 		EntityType entityType = EntityType.ZOMBIE;
@@ -36,12 +36,12 @@ public class SpawnEntityOnCursor extends PlayerCommand{
 		if(args.size()>0) { 
 			try {
 				entityType= EntityType.valueOf(args.get(0).toUpperCase());
-			}catch(Exception e){}
+			}catch(Exception ignored){}
 		}
 		if(args.size()>1) { 
 			try {
-				amount = Integer.valueOf(args.get(1));
-			}catch(NumberFormatException e){}
+				amount = Integer.parseInt(args.get(1));
+			}catch(NumberFormatException ignored){}
 		}
 
 		Block block = receiver.getTargetBlock(null, range);

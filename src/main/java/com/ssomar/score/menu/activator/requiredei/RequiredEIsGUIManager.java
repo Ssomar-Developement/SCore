@@ -31,11 +31,11 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 			String currentPage = StringConverter.decoloredString(guiTitle);
 
 			if(name.contains("Next page")) {
-				new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
+				new RequiredEIsGUI(Integer.parseInt(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
 			}
 			else if(name.contains("Previous page")) {
 				p.closeInventory();
-				new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
+				new RequiredEIsGUI(Integer.parseInt(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
 			}
 			else if(name.contains("Return")) {
 				RequiredEIGUIManager.getInstance().getCache().get(p).openGUISync(p);
@@ -50,7 +50,7 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 				try {
 					RequiredEIGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getRequiredEI(name.split("ID: ")[1]));
 				}
-				catch(Exception e) {}
+				catch(Exception ignored) {}
 			}
 
 			cache.remove(p);
@@ -66,11 +66,11 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 		String currentPage = StringConverter.decoloredString(guiTitle);
 
 		if(name.contains("Next page")) {
-			new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
+			new RequiredEIsGUI(Integer.parseInt(currentPage.split("Page ")[1])+1, p, sPlugin, sObject, sActivator).openGUISync(p);
 		}
 		else if(name.contains("Previous page")) {
 			p.closeInventory();
-			new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
+			new RequiredEIsGUI(Integer.parseInt(currentPage.split("Page ")[1])-1, p, sPlugin, sObject, sActivator).openGUISync(p);
 		}
 		else if(name.contains("Return")) {
 			RequiredEIGUIManager.getInstance().getCache().get(p).openGUISync(p);
@@ -87,10 +87,10 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 				LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
 				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
 				sActivator = sObject.getActivator(sActivator.getID());
-				cache.put(p, new RequiredEIsGUI(Integer.valueOf(currentPage.split("Page ")[1]), p, sPlugin, sObject, sActivator));
+				cache.put(p, new RequiredEIsGUI(Integer.parseInt(currentPage.split("Page ")[1]), p, sPlugin, sObject, sActivator));
 				cache.get(p).openGUISync(p);
 			}
-			catch(Exception e) {}
+			catch(Exception ignored) {}
 		}
 	}
 

@@ -2,11 +2,9 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ public class SetPitch extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        float pitch = Float.valueOf(args.get(0));
+        float pitch = Float.parseFloat(args.get(0));
 
        Location location = receiver.getLocation();
        location.setPitch(pitch);

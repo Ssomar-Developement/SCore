@@ -24,7 +24,7 @@ public class SetName extends EntityCommand{
 			name = new StringBuilder(name.substring(0, name.length() - 1));
 			try {
 				entity.setCustomName(StringConverter.coloredString(name.toString()));
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 		}
 	}
 

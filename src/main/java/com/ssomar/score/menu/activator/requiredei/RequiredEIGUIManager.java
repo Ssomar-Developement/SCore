@@ -159,7 +159,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 			else if(message.contains("up line <")) {
 				space(p);
 				space(p);
-				int line= Integer.valueOf(message.split("up line <")[1].split(">")[0]);
+				int line= Integer.parseInt(message.split("up line <")[1].split(">")[0]);
 				if (line!=0) {
 					String current = currentWriting.get(p).get(line);
 					currentWriting.get(p).set(line, currentWriting.get(p).get(line-1));
@@ -173,7 +173,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 			else if(message.contains("down line <")) {
 				space(p);
 				space(p);
-				int line= Integer.valueOf(message.split("down line <")[1].split(">")[0]);
+				int line= Integer.parseInt(message.split("down line <")[1].split(">")[0]);
 				if (line!=currentWriting.get(p).size()-1) {
 					String current = currentWriting.get(p).get(line);
 					currentWriting.get(p).set(line, currentWriting.get(p).get(line+1));
@@ -190,7 +190,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 				int line=0;
 				boolean error=false;
 				try {
-					line = Integer.valueOf(message.split("edit line <")[1].split(">")[0]);
+					line = Integer.parseInt(message.split("edit line <")[1].split(">")[0]);
 					String newLine;
 					if(message.split("edit line <")[1].split("->").length==1) newLine="&7";
 					else newLine=  message.split("edit line <")[1].split("->")[1];
@@ -225,13 +225,13 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 				boolean error=true;
 				if(!message.replaceAll(" ", "").isEmpty()) {
 					try {
-						if(Integer.valueOf(message)>0) {
-							cache.get(p).updateInt(RequiredEIGUI.AMOUNT, Integer.valueOf(message));
+						if(Integer.parseInt(message)>0) {
+							cache.get(p).updateInt(RequiredEIGUI.AMOUNT, Integer.parseInt(message));
 							cache.get(p).openGUISync(p);
 							requestWriting.remove(p);
 							error=false;
 						}
-					} catch (Exception e) {}
+					} catch (Exception ignored) {}
 				}
 				if(error) p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &cError invalid amount pls select an amount > 0 !"));
 			}
@@ -239,7 +239,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 				boolean error=true;
 				if(!message.replaceAll(" ", "").isEmpty()) {
 					try {
-						if(Integer.valueOf(message)>0) {
+						if(Integer.parseInt(message)>0) {
 							if(currentWriting.containsKey(p)) {
 								currentWriting.get(p).add("&6➤ &e"+Integer.valueOf(message));
 							}
@@ -250,7 +250,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 							}
 							error=false;
 						}
-					} catch (Exception e) {}
+					} catch (Exception ignored) {}
 					this.showValidUsagesEditor(p);
 				}
 				if(error) p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &cError invalid valid usage pls select a valid usage > 0 !"));

@@ -16,7 +16,7 @@ public class RegainHealth extends PlayerCommand{
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		double regain=1;
 		if(args.size()==1) {
-			regain = Double.valueOf(args.get(0));
+			regain = Double.parseDouble(args.get(0));
 		}
 		if(receiver.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() >= receiver.getHealth()+regain)
 		receiver.setHealth(receiver.getHealth()+regain);

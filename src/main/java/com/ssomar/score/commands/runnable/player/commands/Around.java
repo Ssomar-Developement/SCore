@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class Around extends PlayerCommand{
 			@Override
 			public void run() {
 				try {
-					double distance = Double.valueOf(args.get(0));
+					double distance = Double.parseDouble(args.get(0));
 					int cpt = 0;
 
 					for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
@@ -75,7 +74,7 @@ public class Around extends PlayerCommand{
 							cpt++;
 						}
 					}
-					if(cpt == 0 && Boolean.valueOf(args.get(1))) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
+					if(cpt == 0 && Boolean.parseBoolean(args.get(1))) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
 
 				}catch(Exception e) {
 					e.printStackTrace();

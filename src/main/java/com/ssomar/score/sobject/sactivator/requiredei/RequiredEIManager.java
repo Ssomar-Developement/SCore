@@ -176,7 +176,7 @@ public class RequiredEIManager {
 							List<String> lore= itemMeta2.getLore();
 
 							if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) {
-								int use= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+								int use= Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 								if(validUsages.contains(use)) {
 									if(needed<=it.getAmount()) {
 										needed=0;
@@ -258,7 +258,7 @@ public class RequiredEIManager {
 								List<String> lore = itemMeta2.getLore();
 
 								if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) {
-									int use= Integer.valueOf(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
+									int use= Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 									if(validUsages.contains(use)) {
 										if(needed<=it.getAmount()) {
 											it.setAmount(it.getAmount()-needed);

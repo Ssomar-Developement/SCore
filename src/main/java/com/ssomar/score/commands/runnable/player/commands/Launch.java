@@ -29,7 +29,6 @@ import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.executableitems.projectiles.CustomProjectileTemplate;
 import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
@@ -47,9 +46,9 @@ public class Launch extends PlayerCommand{
 		}
 		else {
 			try {
-				rotation = Double.valueOf(args.get(1));
+				rotation = Double.parseDouble(args.get(1));
 				rotation = rotation * Math.PI/180;
-			}catch(Exception e) {}
+			}catch(Exception ignored) {}
 			try {
 				Entity entity = null;
 

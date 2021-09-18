@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class MobAround extends PlayerCommand{
 			@Override
 			public void run() {
 				try {
-					double distance =  Double.valueOf(args.get(0));
+					double distance =  Double.parseDouble(args.get(0));
 					int cpt = 0;
 
 					int startForCommand = 1;
