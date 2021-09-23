@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.bukkit.entity.Player;
 
-
 public class IridiumSkyblockTool {
 
 	public static boolean playerIsOnHisIsland(Player player) {

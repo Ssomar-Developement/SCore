@@ -118,10 +118,10 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>savagelabs</id>
 			<url>https://nexus.savagelabs.net/repository/maven-releases/</url>
-		</repository>
+		</repository>-->
 		<repository>
 			<id>OnARandomBox</id>
 			<url>https://repo.onarandombox.com/content/groups/public</url>
@@ -196,7 +196,7 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.13.1</version>
 		</dependency>
-		<!--<dependency>
+		<!-- <dependency>
 			<groupId>com.iridium</groupId>
 			<artifactId>IridiumSkyblock</artifactId>
 			<version>3.1.1</version>
