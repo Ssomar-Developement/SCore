@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Sound;
@@ -22,6 +23,7 @@ public class Damage extends EntityCommand{
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+		//SsomarDev.testMsg("Passe damage 1");
 		try {
 			double amount;
 			String damage = args.get(0);
@@ -36,15 +38,18 @@ public class Damage extends EntityCommand{
 				amount = Double.parseDouble((amount+"").substring(0, 3));
 			}
 			else amount = Double.parseDouble(damage);
-			
+			//SsomarDev.testMsg("Passe damage 2");
 			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
 				LivingEntity e = (LivingEntity) entity;
 				if(e instanceof EnderDragon){
-					EnderDragon dragon = (EnderDragon)e;
-					dragon.setHealth(dragon.getHealth()-1);
-					dragon.playEffect(EntityEffect.HURT);
-					dragon.getWorld().playSound(dragon.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
+					//SsomarDev.testMsg("Passe enderdrag");
+					double newHealth = e.getHealth()-amount;
+					if(newHealth <= 0) newHealth = 0;
+					else e.setHealth(newHealth);
+					e.playEffect(EntityEffect.HURT);
+					e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
 				}
+
 				if(p != null) {
 					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
 					e.damage(amount, p);

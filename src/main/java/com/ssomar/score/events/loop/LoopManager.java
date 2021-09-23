@@ -95,18 +95,23 @@ public class LoopManager {
 								ExecutableBlockPlaced eBP =  mapEBP.get(loc);
 
 								if(eBP.hasEntityOn()) {
-									Collection<Entity> entities = loc.getWorld().getNearbyEntities(loc, 0.2, 1, 0.2);
-									if(!entities.isEmpty()) {
-										for(Entity ent : entities) {
-											
-											if(ent instanceof LivingEntity && !(ent instanceof Player)) {
-												EntityWalkOnEvent e = new EntityWalkOnEvent();
-												com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e, e);
-												eInfo.setTargetEntity(ent);
-												com.ssomar.executableblocks.events.EventsManager.getInstance().manage(eBP, eInfo, listEB);
+									Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
+										@Override
+										public void run() {
+											Collection<Entity> entities = loc.getWorld().getNearbyEntities(loc, 0.2, 1, 0.2);
+											if(!entities.isEmpty()) {
+												for(Entity ent : entities) {
+
+													if(ent instanceof LivingEntity && !(ent instanceof Player)) {
+														EntityWalkOnEvent e = new EntityWalkOnEvent();
+														com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e, e);
+														eInfo.setTargetEntity(ent);
+														com.ssomar.executableblocks.events.EventsManager.getInstance().manage(eBP, eInfo, listEB);
+													}
+												}
 											}
 										}
-									}
+									});
 								}
 								if(eBP.hasLoop()) {
 									LoopEvent e = new LoopEvent();

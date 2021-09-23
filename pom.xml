@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.5.3.6</version>
+	<version>1.5.3.8</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -131,6 +131,10 @@
 			<id>CoreProtect</id>
 			<url>https://maven.playpro.com</url>
 		</repository>
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>https://repo.dmulloy2.net/repository/public/</url>
+		</repository>
 		<!-- <repository> -->
 		<!-- <id>IntellectualSites</id> -->
 		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
@@ -177,7 +181,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-41514dca64-1</version>
+			<version>master-25899f27ab-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -240,6 +244,11 @@
 			<version>20.1</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib</artifactId>
+			<version>4.7.0</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

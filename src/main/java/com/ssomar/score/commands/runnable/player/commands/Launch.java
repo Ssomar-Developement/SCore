@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.executableitems.projectiles.types.CustomProjectile;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.DragonFireball;
@@ -26,7 +27,6 @@ import org.bukkit.util.Vector;
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
 import com.ssomar.executableitems.items.ItemManager;
-import com.ssomar.executableitems.projectiles.CustomProjectileTemplate;
 import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
@@ -74,7 +74,7 @@ public class Launch extends PlayerCommand{
 				else if(args.get(0).equalsIgnoreCase("TRIDENT")) entity = receiver.launchProjectile(Trident.class);
 				else if(args.get(0).equalsIgnoreCase("WITHERSKULL")) entity = receiver.launchProjectile(WitherSkull.class);
 				else if(ProjectilesManager.getInstance().containsProjectileWithID(args.get(0))) {
-					CustomProjectileTemplate projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
+					CustomProjectile projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
 
 					switch(projectile.getIdentifierType()) {
 					case "ARROW":

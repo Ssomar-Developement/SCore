@@ -58,7 +58,9 @@ public class EntityRunCommand extends RunCommand{
 		Player launcher = Bukkit.getPlayer(launcherUUID);
 		Entity receiver = Bukkit.getEntity(entityUUID);
 
-		if(receiver != null && !receiver.isDead()) pCommand.run(launcher, receiver, args, this.getaInfo());
+		if(receiver != null && !receiver.isDead()){
+			pCommand.run(launcher, receiver, args, this.getaInfo());
+		}
 	}
 
 

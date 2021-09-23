@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -83,7 +84,7 @@ public abstract class RunCommand implements Serializable{
 
 
 	public void runCommand(CommandManager manager) {
-
+		//SsomarDev.testMsg("Command run command: "+this.getBrutCommand());
 		String finalCommand = this.getBrutCommand();
 
 		if(getBrutCommand().contains("ei giveslot")) {
@@ -97,10 +98,12 @@ public abstract class RunCommand implements Serializable{
 		finalCommand = this.getSp().replacePlaceholder(finalCommand);
 		SCommand command = manager.getCommand(finalCommand); 
 		if(command != null) {
+			//SsomarDev.testMsg("Command: valid");
 			List<String> args = manager.getArgs(finalCommand);
 			this.runCommand(command, args);
 		}
 		else {
+			//SsomarDev.testMsg("Command: invalid");
 			if(finalCommand.charAt(0) == '/') finalCommand = finalCommand.substring(1);
 			// accept the "color": HEX COLOR in title
 			if(finalCommand.contains("\"color\"") && finalCommand.contains("title")) finalCommand = StringConverter.deconvertColor(finalCommand);

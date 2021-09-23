@@ -1,5 +1,8 @@
 package com.ssomar.score;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.ssomar.executableitems.ExecutableItems;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -52,6 +55,9 @@ public final class SCore extends JavaPlugin {
 	
 	public static boolean hasCoreProtect = false;
 
+	public static boolean hasProtocolLib = false;
+
+	public static ProtocolManager protocolManager;
 
 	@Override
 	public void onEnable() {
@@ -152,6 +158,13 @@ public final class SCore extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("CoreProtect") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] CoreProtect hooked !");
 			hasCoreProtect = true;	
+		}
+
+		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+			ExecutableItems.plugin.getServer().getLogger().info("[ExecutableItems] ProtocolLib hooked !");
+			hasProtocolLib= true;
+			/* Protocolib */
+			protocolManager = ProtocolLibrary.getProtocolManager();
 		}
 	}
 

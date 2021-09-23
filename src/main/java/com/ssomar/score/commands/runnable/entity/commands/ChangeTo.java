@@ -29,7 +29,7 @@ public class ChangeTo extends EntityCommand{
 	public String verify(List<String> args) {
 		String error = "";
 		
-		String changeto= "CHANGETO {entityType}";
+		String changeto = "CHANGETO {entityType}";
 		if(args.size() < 1) error = notEnoughArgs+changeto;
 		else if(args.size() == 1) {
 			if(EntityType.fromName(args.get(0)) == null) error = invalidEntityType+args.get(0)+" for command: "+changeto;
