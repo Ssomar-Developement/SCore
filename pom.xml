@@ -122,10 +122,10 @@
 			<id>savagelabs</id>
 			<url>https://nexus.savagelabs.net/repository/maven-releases/</url>
 		</repository>-->
-		<repository>
+		<!--<repository>
 			<id>OnARandomBox</id>
 			<url>https://repo.onarandombox.com/content/groups/public</url>
-		</repository>
+		</repository> -->
 
 		<repository>
 			<id>CoreProtect</id>
@@ -201,13 +201,13 @@
 			<artifactId>IridiumSkyblock</artifactId>
 			<version>3.1.1</version>
 			<scope>provided</scope>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
 			<version>4.2.2</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.github.angeschossen</groupId>
 			<artifactId>LandsAPI</artifactId>

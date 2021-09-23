@@ -10,9 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.onarandombox.MultiverseCore.api.Core;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
@@ -82,11 +79,11 @@ public class SetExecutableBlock extends PlayerCommand{
 				if(worldStr.isEmpty()) return invalidWorld+args.get(4)+" for the command: "+setEB;
 				else {
 					if(SCore.hasMultiverse) {
-						Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+						/*Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 						MVWorldManager multiverseManager = core.getMVWorldManager();
 						if(multiverseManager.getMVWorld(worldStr) == null) {
 							return invalidWorld+args.get(4)+" for the command: "+setEB;
-						}
+						}*/
 					}
 					else {
 						if(Bukkit.getWorld(worldStr) == null) return invalidWorld+args.get(4)+" for the command: "+setEB;
@@ -166,13 +163,13 @@ public class SetExecutableBlock extends PlayerCommand{
 			if(worldStr.isEmpty()) return;
 			else {
 				if(SCore.hasMultiverse) {
-					Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+					/*Core core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 					MVWorldManager multiverseManager = core.getMVWorldManager();
 					MultiverseWorld mv;
 					if((mv = multiverseManager.getMVWorld(worldStr)) == null) {
 						return;
 					}
-					else world = mv.getCBWorld();
+					else world = mv.getCBWorld();*/
 				}
 				else {
 					if((world = Bukkit.getWorld(worldStr)) == null) return;
