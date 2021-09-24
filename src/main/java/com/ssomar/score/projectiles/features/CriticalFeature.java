@@ -22,7 +22,7 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isCritical = projConfig.getBoolean("critical", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

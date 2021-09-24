@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomSnowball extends CustomProjectile {
 
     CustomProjectile customSnowball;
-    String id;
-
-    public CustomSnowball(String id) {
-        super(id);
-    }
 
     public CustomSnowball(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -34,11 +29,6 @@ public class CustomSnowball extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customSnowball;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override

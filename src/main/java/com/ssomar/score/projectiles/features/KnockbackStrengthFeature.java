@@ -22,7 +22,7 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         knockbackStrength = projConfig.getInt("knockbackStrength", -1);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

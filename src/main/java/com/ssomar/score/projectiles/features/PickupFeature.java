@@ -31,10 +31,10 @@ public class PickupFeature extends DecorateurCustomProjectiles {
                 SCore.plugin.getLogger()
                         .severe("[ExecutableItems] Error invalid pickupStatus for the projectile: " + this.getId()
                                 + " (ALLOWED, CREATIVE_ONLY, DISALLOWED) DEFAULT> ALLOWED");
-                return cProj.loadConfiguration(projConfig) && false;
+                return cProj.loadConfiguration() && false;
             }
         }
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isSilent = projConfig.getBoolean("silent", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

@@ -11,10 +11,6 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
 
     protected CustomProjectile cProj;
 
-    public DecorateurCustomProjectiles(String id) {
-        super(id);
-    }
-
     public DecorateurCustomProjectiles(String id, FileConfiguration projConfig) {
         super(id, projConfig);
     }

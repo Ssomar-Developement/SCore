@@ -38,9 +38,9 @@ public class ColorFeature extends DecorateurCustomProjectiles {
             SCore.plugin.getLogger()
                     .severe("[ExecutableItems] Error invalid color for the projectile: " + this.getId()
                             + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
-            return cProj.loadConfiguration(projConfig) && false;
+            return cProj.loadConfiguration() && false;
         }
-        return cProj.loadConfiguration(projConfig);
+        return cProj.loadConfiguration();
     }
 
     @Override

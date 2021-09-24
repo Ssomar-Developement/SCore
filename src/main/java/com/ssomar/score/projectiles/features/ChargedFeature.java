@@ -21,7 +21,7 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isCharged = projConfig.getBoolean("charged", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

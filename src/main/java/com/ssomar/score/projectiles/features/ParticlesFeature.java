@@ -38,7 +38,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                 if(couple.getElem2()){
                     particles.add(couple.getElem1());
                 }
-                else return cProj.loadConfiguration(projConfig) && false;
+                else return cProj.loadConfiguration() && false;
             }
         }
         else{
@@ -46,10 +46,10 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
            if(couple.getElem2()){
                 particles.add(couple.getElem1());
            }
-           else return cProj.loadConfiguration(projConfig) && false;
+           else return cProj.loadConfiguration() && false;
         }
         this.particles = particles;
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     public Couple<CustomParticle, Boolean> loadParticle(ConfigurationSection conf){

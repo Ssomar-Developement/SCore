@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomFireball extends CustomProjectile {
 
     CustomProjectile customFireball;
-    String id;
-
-    public CustomFireball(String id) {
-        super(id);
-    }
 
     public CustomFireball(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -38,10 +33,6 @@ public class CustomFireball extends CustomProjectile {
         return customFireball;
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
 
     @Override
     public String getIdentifierType() {

@@ -24,7 +24,7 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isCustomNameVisible = projConfig.getBoolean("customNameVisible", false);
         customName = StringConverter.coloredString(projConfig.getString("customName", ""));
-        return cProj.loadConfiguration(projConfig);
+        return cProj.loadConfiguration();
     }
 
     @Override

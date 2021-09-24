@@ -31,7 +31,7 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     public boolean loadConfiguration(FileConfiguration projConfig) {
         if (projConfig.isConfigurationSection("potionEffects"))
             potionEffects = this.loadPotionEffects(projConfig.getConfigurationSection("potionEffects"));
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

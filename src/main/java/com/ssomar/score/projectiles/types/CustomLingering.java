@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomLingering extends CustomProjectile {
 
     CustomProjectile customLingering;
-    String id;
-
-    public CustomLingering(String id) {
-        super(id);
-    }
 
     public CustomLingering(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -35,11 +30,6 @@ public class CustomLingering extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customLingering;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override

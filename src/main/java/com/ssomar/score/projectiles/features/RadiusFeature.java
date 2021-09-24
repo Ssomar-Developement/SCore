@@ -21,7 +21,7 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         yield = (float) projConfig.getDouble("radius", -1);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

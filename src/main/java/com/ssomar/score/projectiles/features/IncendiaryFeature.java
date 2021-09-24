@@ -21,7 +21,7 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isIncendiary = projConfig.getBoolean("incendiary", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

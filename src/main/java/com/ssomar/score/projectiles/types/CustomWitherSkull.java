@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomWitherSkull extends CustomProjectile {
 
     CustomProjectile customWitherSkull;
-    String id;
-
-    public CustomWitherSkull(String id) {
-        super(id);
-    }
 
     public CustomWitherSkull(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -36,11 +31,6 @@ public class CustomWitherSkull extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customWitherSkull;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override

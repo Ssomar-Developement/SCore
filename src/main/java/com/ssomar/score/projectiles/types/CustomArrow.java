@@ -9,10 +9,6 @@ public class CustomArrow extends CustomProjectile {
 
     CustomProjectile customArrow;
 
-    public CustomArrow(String id) {
-        super(id);
-    }
-
     public CustomArrow(String id, FileConfiguration projConfig) {
         super(id, projConfig);
     }
@@ -39,11 +35,6 @@ public class CustomArrow extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customArrow;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override

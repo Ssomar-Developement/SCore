@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomEgg extends CustomProjectile {
 
         CustomProjectile customEgg;
-        String id;
-
-    public CustomEgg(String id) {
-        super(id);
-    }
 
     public CustomEgg(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -32,13 +27,8 @@ public class CustomEgg extends CustomProjectile {
     }
 
     @Override
-        public CustomProjectile getLoaded() {
+    public CustomProjectile getLoaded() {
             return customEgg;
-        }
-
-        @Override
-        public String getId() {
-            return id;
         }
 
         @Override

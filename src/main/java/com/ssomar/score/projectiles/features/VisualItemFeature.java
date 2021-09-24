@@ -38,7 +38,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
             } catch (Exception e) {
             }
         }
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override

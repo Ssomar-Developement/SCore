@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomTrident extends CustomProjectile {
 
    CustomProjectile customTrident;
-    String id;
-
-    public CustomTrident(String id) {
-     super(id);
-    }
 
     public CustomTrident(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -40,11 +35,6 @@ public class CustomTrident extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customTrident;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override

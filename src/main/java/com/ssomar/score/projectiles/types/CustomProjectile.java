@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -23,12 +24,6 @@ public abstract class CustomProjectile {
     String id;
     FileConfiguration projConfig;
 
-    public CustomProjectile(String id){
-        this.id = id;
-        this.projConfig = new YamlConfiguration();
-        this.setup();
-    }
-
     public CustomProjectile(String id, FileConfiguration projConfig){
         this.id = id;
         this.projConfig = projConfig;
@@ -37,14 +32,8 @@ public abstract class CustomProjectile {
 
     public abstract void setup();
 
-    /* to delete */
-    public boolean loadConfiguration(FileConfiguration projConfig){
-        identifierType = projConfig.getString("type", "null");
-        return true;
-    }
-
     public boolean loadConfiguration(){
-        identifierType = projConfig.getString("type", "null");
+        this.identifierType = projConfig.getString("type", "NULZ");
         return true;
     }
 
@@ -55,7 +44,7 @@ public abstract class CustomProjectile {
     public SimpleGUI getConfigGUI(){
         SsomarDev.testMsg("PASSE CREATION");
         configGui = new SimpleGUI("Editor: Custom Projectiles", 5*9);
-        configGui.createItem(Material.valueOf(identifierType), 1, 40, GUI.TITLE_COLOR+"&e>>&l &aProjectile type:", false, false,"", "&7actually: ");
+        configGui.createItem(this.getMaterial(), 1, 40, GUI.TITLE_COLOR+"&e>>&l &aProjectile type:", false, false,"", "&7actually: ");
         configGui.updateActually(GUI.TITLE_COLOR+"&e>>&l &aProjectile type:", identifierType);
 
         configGui.createItem(Material.ANVIL, 1, 42, GUI.TITLE_COLOR+"&e>>&l &aProjectile ID:", false, false,"", "&7actually: ");
@@ -75,6 +64,7 @@ public abstract class CustomProjectile {
             SsomarDev.testMsg("TITLE EQUALS");
             player.closeInventory();
             CustomProjectile proj = new CustomSnowball(id, projConfig);
+            System.out.println(projConfig.toString());
             proj.loadConfiguration();
             proj.openConfigGUIFor(player);
             return true;
@@ -107,6 +97,15 @@ public abstract class CustomProjectile {
 
     public String getIdentifierType(){
         return identifierType;
+    }
+
+    public Material getMaterial(){
+        if(identifierType.equals("SNOWBALL")) return Material.SNOWBALL;
+        else if(identifierType.equals("ARROW")) return Material.ARROW;
+        else{
+            SsomarDev.testMsg("Error get material proj: "+ identifierType);
+            return Material.SPONGE;
+        }
     }
 
 }

@@ -7,11 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomShulkerBullet extends CustomProjectile {
 
     CustomProjectile customShulkerBullet;
-    String id;
-
-    public CustomShulkerBullet(String id) {
-        super(id);
-      }
 
     public CustomShulkerBullet(String id, FileConfiguration projConfig) {
         super(id, projConfig);
@@ -33,11 +28,6 @@ public class CustomShulkerBullet extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customShulkerBullet;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override

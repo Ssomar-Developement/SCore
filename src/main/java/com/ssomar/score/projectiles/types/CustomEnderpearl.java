@@ -7,16 +7,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class CustomEnderpearl extends CustomProjectile {
 
     CustomProjectile customEnderpearl;
-    String id;
-
-    public CustomEnderpearl(String id) {
-        super(id);
-    }
 
     public CustomEnderpearl(String id, FileConfiguration projConfig) {
         super(id, projConfig);
     }
-
 
     @Override
     public void setup() {
@@ -34,11 +28,6 @@ public class CustomEnderpearl extends CustomProjectile {
     @Override
     public CustomProjectile getLoaded() {
         return customEnderpearl;
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     @Override
