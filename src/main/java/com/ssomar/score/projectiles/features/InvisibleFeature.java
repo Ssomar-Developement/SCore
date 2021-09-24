@@ -8,6 +8,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     boolean isInvisible;
 
     public InvisibleFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         isInvisible = false;
     }
@@ -49,6 +51,8 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.GLASS_PANE, 1, gui.TITLE_COLOR+"Invisible", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(gui.TITLE_COLOR+"Invisible", isInvisible);
         return gui;
     }
 }

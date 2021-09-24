@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CustomShulkerBullet extends CustomProjectile {
 
@@ -9,8 +10,15 @@ public class CustomShulkerBullet extends CustomProjectile {
     String id;
 
     public CustomShulkerBullet(String id) {
-        configGui = new SimpleGUI("EDITORE CURSTOM PROJECTILES ARROW", 5*9);
-        this.id = id;
+        super(id);
+      }
+
+    public CustomShulkerBullet(String id, FileConfiguration projConfig) {
+        super(id, projConfig);
+    }
+
+    @Override
+    public void setup() {
         customShulkerBullet = new CustomNameFeature(this);
         customShulkerBullet = new InvisibleFeature(customShulkerBullet);
         customShulkerBullet = new GlowingFeature(customShulkerBullet);
@@ -20,7 +28,6 @@ public class CustomShulkerBullet extends CustomProjectile {
         customShulkerBullet = new VelocityFeature(customShulkerBullet);
         customShulkerBullet = new SilentFeature(customShulkerBullet);
         customShulkerBullet = new ParticlesFeature(customShulkerBullet);
-
     }
 
     @Override

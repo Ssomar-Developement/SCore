@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles.features;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
@@ -13,6 +14,7 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     boolean isCritical;
 
     public CriticalFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         isCritical = false;
     }
@@ -35,6 +37,8 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.DIAMOND_AXE, 1, gui.TITLE_COLOR+"Critical", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(gui.TITLE_COLOR+"Critical", isCritical);
         return gui;
     }
 

@@ -161,7 +161,7 @@ public final class SCore extends JavaPlugin {
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-			ExecutableItems.plugin.getServer().getLogger().info("[ExecutableItems] ProtocolLib hooked !");
+			SCore.plugin.getServer().getLogger().info("[ExecutableItems] ProtocolLib hooked !");
 			hasProtocolLib= true;
 			/* Protocolib */
 			protocolManager = ProtocolLibrary.getProtocolManager();

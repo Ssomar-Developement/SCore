@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CustomFireball extends CustomProjectile {
 
@@ -9,8 +10,16 @@ public class CustomFireball extends CustomProjectile {
     String id;
 
     public CustomFireball(String id) {
-        configGui = new SimpleGUI("EDITORE CURSTOM PROJECTILES ARROW", 5*9);
-        this.id = id;
+        super(id);
+    }
+
+    public CustomFireball(String id, FileConfiguration projConfig) {
+        super(id, projConfig);
+    }
+
+
+    @Override
+    public void setup() {
         customFireball = new CustomNameFeature(this);
         customFireball = new InvisibleFeature(customFireball);
         customFireball = new GlowingFeature(customFireball);
@@ -22,7 +31,6 @@ public class CustomFireball extends CustomProjectile {
         customFireball = new ParticlesFeature(customFireball);
         customFireball = new RadiusFeature(customFireball);
         customFireball = new IncendiaryFeature(customFireball);
-
     }
 
     @Override

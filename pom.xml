@@ -181,7 +181,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-25899f27ab-1</version>
+			<version>master-27aaaf364e-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -196,18 +196,20 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.13.1</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.iridium</groupId>
-			<artifactId>IridiumSkyblock</artifactId>
-			<version>3.1.1</version>
-			<scope>provided</scope>
+			<artifactId>iridiumskyblock</artifactId>
+			<version>3.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.1.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
-			<version>4.2.2</version>
-			<scope>provided</scope>
-		</dependency> -->
+			<version>4.3.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/Multiverse-Core-4.3.1.jar</systemPath>
+		</dependency>
 		<dependency>
 			<groupId>com.github.angeschossen</groupId>
 			<artifactId>LandsAPI</artifactId>

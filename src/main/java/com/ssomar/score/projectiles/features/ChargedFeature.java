@@ -13,6 +13,7 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     boolean isCharged;
 
     public ChargedFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         isCharged = false;
     }
@@ -34,6 +35,8 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.NETHER_STAR, 1, gui.TITLE_COLOR+"Charged", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(gui.TITLE_COLOR+"Charged", isCharged);
         return gui;
     }
 

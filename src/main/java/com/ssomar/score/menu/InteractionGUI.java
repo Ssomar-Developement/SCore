@@ -2,7 +2,11 @@ package com.ssomar.score.menu;
 
 import java.util.List;
 
+import com.ssomar.executableitems.projectiles.ProjectilesManager;
+import com.ssomar.score.SsomarDev;
+import com.ssomar.score.projectiles.types.CustomProjectile;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -41,7 +45,7 @@ public class InteractionGUI implements Listener{
 
 		if(!(e.getWhoClicked() instanceof Player)) return;	
 
-		String title= e.getView().getTitle();
+		String title = e.getView().getTitle();
 		Player player = (Player) e.getWhoClicked();
 		try {
 			if(e.getClickedInventory().getType().equals(InventoryType.PLAYER)) return;
@@ -55,7 +59,10 @@ public class InteractionGUI implements Listener{
 
 		try {
 
-			if(title.contains(StringConverter.coloredString("Editor - Conditions"))) {
+			if(title.contains("Editor: Custom Projectiles")){
+				this.manage(player, itemS, title, "ProjectilesEditor", e);
+			}
+			else if(title.contains(StringConverter.coloredString("Editor - Conditions"))) {
 				this.manage(player, itemS, title, "ConditionsGUIManager", e);
 			}
 
@@ -151,6 +158,17 @@ public class InteractionGUI implements Listener{
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
 		
 		switch (guiType) {
+			case "ProjectilesEditor":
+				GUI gui = new SimpleGUI(e.getClickedInventory());
+				String id = gui.getActually(GUI.TITLE_COLOR+"&e>>&l &aProjectile ID:");
+				SsomarDev.testMsg("GUI ID: "+ id);
+				for(CustomProjectile proj : ProjectilesManager.getInstance().getProjectiles()){
+					if(proj.getId().equals(id)){
+						proj.interactionConfigGUI(player, itemS, title);
+						break;
+					}
+				}
+				break;
 		case "ConditionsGUIManager":
 			ConditionsGUIManager.getInstance().clicked(player, itemS);
 			break;

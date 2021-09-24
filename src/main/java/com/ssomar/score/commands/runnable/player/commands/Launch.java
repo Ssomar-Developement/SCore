@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssomar.executableitems.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.CustomProjectile;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.DragonFireball;

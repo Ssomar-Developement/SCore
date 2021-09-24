@@ -17,6 +17,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     boolean hasItem;
 
     public VisualItemFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         item = null;
         this.hasItem = false;
@@ -51,6 +52,9 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.ITEM_FRAME, 1, gui.TITLE_COLOR+"Visual item", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(item == null) gui.updateActually(gui.TITLE_COLOR+"Visual item", "VANILLA ITEM");
+        else gui.updateActually(gui.TITLE_COLOR+"Visual item", item.getType().toString());
         return gui;
     }
 }

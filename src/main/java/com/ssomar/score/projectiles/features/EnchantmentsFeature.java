@@ -5,6 +5,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.utils.Couple;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,6 +24,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     private Map<SEnchantment,Integer> enchants;
 
     public EnchantmentsFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         enchants = new HashMap<>();
     }
@@ -31,7 +33,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     public boolean loadConfiguration(FileConfiguration projConfig) {
         if(projConfig.contains("enchantments")) {
             Couple<HashMap<SEnchantment, Integer>, Boolean> couple = this.getEnchantments(projConfig.getConfigurationSection("enchantments"));
-            if(!couple.getElem2()) return false;
+            if(!couple.getElem2()) return cProj.loadConfiguration(projConfig) && false;
             else enchants = couple.getElem1();
         }
         return cProj.loadConfiguration(projConfig) && true;
@@ -89,6 +91,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.ENCHANTED_BOOK, 1, gui.TITLE_COLOR+"Enchantments", false, false, gui.CLICK_HERE_TO_CHANGE);
         return gui;
     }
 }

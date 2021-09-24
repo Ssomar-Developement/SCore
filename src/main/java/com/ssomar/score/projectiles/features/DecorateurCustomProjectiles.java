@@ -11,6 +11,21 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
 
     protected CustomProjectile cProj;
 
+    public DecorateurCustomProjectiles(String id) {
+        super(id);
+    }
+
+    public DecorateurCustomProjectiles(String id, FileConfiguration projConfig) {
+        super(id, projConfig);
+    }
+
+    /* Nothing for feature */
+    public void setup(){}
+
+    public boolean loadConfiguration(){
+        return this.loadConfiguration(cProj.getProjConfig());
+    }
+
     public abstract boolean loadConfiguration(FileConfiguration projConfig);
 
     public abstract void transformTheProjectile(Entity e, Player launcher);

@@ -5,6 +5,7 @@ import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.utils.CustomColor;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -20,6 +21,7 @@ public class ColorFeature extends DecorateurCustomProjectiles {
     Color color;
 
     public ColorFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         activeColor = true;
         color = Color.AQUA;
@@ -36,7 +38,7 @@ public class ColorFeature extends DecorateurCustomProjectiles {
             SCore.plugin.getLogger()
                     .severe("[ExecutableItems] Error invalid color for the projectile: " + this.getId()
                             + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
-            return false;
+            return cProj.loadConfiguration(projConfig) && false;
         }
         return cProj.loadConfiguration(projConfig);
     }
@@ -64,6 +66,9 @@ public class ColorFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.RED_DYE, 1, gui.TITLE_COLOR+"Color", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(color == null)  gui.updateActually(gui.TITLE_COLOR+"Color", "&cNO COLOR");
+        else gui.updateActually(gui.TITLE_COLOR+"Color", color.toString());
         return gui;
     }
 }

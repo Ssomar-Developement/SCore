@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles.features;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
@@ -13,6 +14,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     AbstractArrow.PickupStatus pickupStatus;
 
     public PickupFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         pickupStatus = AbstractArrow.PickupStatus.ALLOWED;
     }
@@ -25,10 +27,11 @@ public class PickupFeature extends DecorateurCustomProjectiles {
             try {
                 pickupStatus = AbstractArrow.PickupStatus.valueOf(pickStatus.toUpperCase());
             } catch (Exception e) {
+                pickupStatus = AbstractArrow.PickupStatus.ALLOWED;
                 SCore.plugin.getLogger()
                         .severe("[ExecutableItems] Error invalid pickupStatus for the projectile: " + this.getId()
                                 + " (ALLOWED, CREATIVE_ONLY, DISALLOWED) DEFAULT> ALLOWED");
-                return false;
+                return cProj.loadConfiguration(projConfig) && false;
             }
         }
         return cProj.loadConfiguration(projConfig) && true;
@@ -44,6 +47,8 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
+        gui.addItem(Material.LEAD, 1, gui.TITLE_COLOR+"Pickup", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateActually(gui.TITLE_COLOR+"Pickup", pickupStatus.toString());
         return gui;
     }
 

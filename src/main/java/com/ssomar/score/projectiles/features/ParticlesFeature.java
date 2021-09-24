@@ -21,6 +21,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
     List<CustomParticle> particles;
 
     public ParticlesFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         particles = new ArrayList<>();
     }
@@ -37,7 +38,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                 if(couple.getElem2()){
                     particles.add(couple.getElem1());
                 }
-                else return false;
+                else return cProj.loadConfiguration(projConfig) && false;
             }
         }
         else{
@@ -45,7 +46,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
            if(couple.getElem2()){
                 particles.add(couple.getElem1());
            }
-           else return false;
+           else return cProj.loadConfiguration(projConfig) && false;
         }
         this.particles = particles;
         return cProj.loadConfiguration(projConfig) && true;

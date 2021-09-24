@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CustomWitherSkull extends CustomProjectile {
 
@@ -9,8 +10,15 @@ public class CustomWitherSkull extends CustomProjectile {
     String id;
 
     public CustomWitherSkull(String id) {
-        configGui = new SimpleGUI("EDITORE CURSTOM PROJECTILES ARROW", 5*9);
-        this.id = id;
+        super(id);
+    }
+
+    public CustomWitherSkull(String id, FileConfiguration projConfig) {
+        super(id, projConfig);
+    }
+
+    @Override
+    public void setup() {
         customWitherSkull = new CustomNameFeature(this);
         customWitherSkull = new InvisibleFeature(customWitherSkull);
         customWitherSkull = new GlowingFeature(customWitherSkull);

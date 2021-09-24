@@ -144,6 +144,16 @@ public abstract class GUI {
 
 	}
 
+	public void addItem(Material material, int amount, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
+		int i = 0;
+		for(ItemStack item : inv){
+			if(item == null || item.getType().equals(Material.LIGHT_BLUE_STAINED_GLASS_PANE)) break;
+			i++;
+		}
+		createItem(material, amount, i, displayName, glow, haveEnchant, loreString);
+	}
+
+
 	public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, int customTextureTag, String... loreString) {
 
 		ItemStack item= new ItemStack(material,amount);

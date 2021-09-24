@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CustomEnderpearl extends CustomProjectile {
 
@@ -9,8 +10,16 @@ public class CustomEnderpearl extends CustomProjectile {
     String id;
 
     public CustomEnderpearl(String id) {
-        configGui = new SimpleGUI("EDITORE CURSTOM PROJECTILES ARROW", 5*9);
-        this.id = id;
+        super(id);
+    }
+
+    public CustomEnderpearl(String id, FileConfiguration projConfig) {
+        super(id, projConfig);
+    }
+
+
+    @Override
+    public void setup() {
         customEnderpearl = new CustomNameFeature(this);
         customEnderpearl = new InvisibleFeature(customEnderpearl);
         customEnderpearl = new GlowingFeature(customEnderpearl);
@@ -20,7 +29,6 @@ public class CustomEnderpearl extends CustomProjectile {
         customEnderpearl = new VelocityFeature(customEnderpearl);
         customEnderpearl = new SilentFeature(customEnderpearl);
         customEnderpearl = new ParticlesFeature(customEnderpearl);
-
     }
 
     @Override

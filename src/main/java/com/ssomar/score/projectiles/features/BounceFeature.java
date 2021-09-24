@@ -13,6 +13,7 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     boolean isBounce;
 
     public BounceFeature(CustomProjectile cProj){
+        super(cProj.getId());
         super.cProj = cProj;
         isBounce = false;
     }
@@ -21,7 +22,7 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isBounce = projConfig.getBoolean("bounce", false);
 
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration() && true;
     }
 
     @Override
@@ -35,7 +36,8 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI getConfigGUI() {
         SimpleGUI gui = cProj.getConfigGUI();
-        gui.createItem(Material.SLIME_BLOCK, 1, 0, "BOUNCE", false, false, "Click to edit");
+        gui.addItem(Material.SLIME_BLOCK, 1, gui.TITLE_COLOR+"Bounce", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(gui.TITLE_COLOR+"Bounce", isBounce);
         return gui;
     }
 }

@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CustomSnowball extends CustomProjectile {
 
@@ -9,8 +10,15 @@ public class CustomSnowball extends CustomProjectile {
     String id;
 
     public CustomSnowball(String id) {
-        configGui = new SimpleGUI("EDITORE CURSTOM PROJECTILES ARROW", 5*9);
-        this.id = id;
+        super(id);
+    }
+
+    public CustomSnowball(String id, FileConfiguration projConfig) {
+        super(id, projConfig);
+    }
+
+    @Override
+    public void setup() {
         customSnowball = new CustomNameFeature(this);
         customSnowball = new InvisibleFeature(customSnowball);
         customSnowball = new GlowingFeature(customSnowball);
