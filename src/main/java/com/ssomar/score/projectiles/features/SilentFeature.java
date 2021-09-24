@@ -12,7 +12,7 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     boolean isSilent;
 
     public SilentFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isSilent = false;
     }

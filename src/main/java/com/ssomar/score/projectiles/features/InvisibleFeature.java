@@ -21,7 +21,7 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     boolean isInvisible;
 
     public InvisibleFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isInvisible = false;
     }

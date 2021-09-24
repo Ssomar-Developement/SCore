@@ -13,7 +13,7 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     float yield;
 
     public RadiusFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         yield = -1L;
     }

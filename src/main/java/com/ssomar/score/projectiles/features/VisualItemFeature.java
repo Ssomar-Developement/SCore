@@ -17,7 +17,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     boolean hasItem;
 
     public VisualItemFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         item = null;
         this.hasItem = false;

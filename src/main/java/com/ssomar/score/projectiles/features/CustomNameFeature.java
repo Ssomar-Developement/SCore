@@ -14,7 +14,7 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
     String customName;
 
     public CustomNameFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isCustomNameVisible = false;
         customName = "";

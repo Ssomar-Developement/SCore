@@ -21,7 +21,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
     List<CustomParticle> particles;
 
     public ParticlesFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         particles = new ArrayList<>();
     }

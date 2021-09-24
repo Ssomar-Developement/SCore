@@ -22,7 +22,7 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     private List<PotionEffect> potionEffects;
 
     public PotionEffectsFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         potionEffects = new ArrayList<>();
     }

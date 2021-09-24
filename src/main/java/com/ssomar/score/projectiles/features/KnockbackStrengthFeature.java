@@ -14,7 +14,7 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
     int knockbackStrength;
 
     public KnockbackStrengthFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         knockbackStrength = -1;
     }

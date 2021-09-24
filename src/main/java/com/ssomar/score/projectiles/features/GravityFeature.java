@@ -12,7 +12,7 @@ public class GravityFeature extends DecorateurCustomProjectiles {
     boolean isGravity;
 
     public GravityFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isGravity = true;
     }

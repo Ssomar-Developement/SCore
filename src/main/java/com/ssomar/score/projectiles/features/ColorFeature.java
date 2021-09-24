@@ -21,7 +21,7 @@ public class ColorFeature extends DecorateurCustomProjectiles {
     Color color;
 
     public ColorFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         activeColor = true;
         color = Color.AQUA;

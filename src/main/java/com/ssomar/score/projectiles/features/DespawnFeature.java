@@ -14,7 +14,7 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
     int despawnDelay;
 
     public DespawnFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         despawnDelay = -1;
     }

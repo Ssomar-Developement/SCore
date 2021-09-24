@@ -12,7 +12,7 @@ public class GlowingFeature extends DecorateurCustomProjectiles {
     boolean isGlowing;
 
     public GlowingFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isGlowing = false;
     }

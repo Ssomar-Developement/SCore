@@ -14,7 +14,7 @@ public class PierceLevelFeature extends DecorateurCustomProjectiles {
     int pierceLevel;
 
     public PierceLevelFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         pierceLevel = -1;
     }

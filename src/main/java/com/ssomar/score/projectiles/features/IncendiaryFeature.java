@@ -13,7 +13,7 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     boolean isIncendiary;
 
     public IncendiaryFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isIncendiary = false;
     }

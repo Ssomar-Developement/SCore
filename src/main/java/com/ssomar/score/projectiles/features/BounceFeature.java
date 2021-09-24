@@ -13,7 +13,7 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     boolean isBounce;
 
     public BounceFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isBounce = false;
     }

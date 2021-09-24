@@ -14,7 +14,7 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     double velocity;
 
     public VelocityFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         velocity = 1;
     }

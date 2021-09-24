@@ -13,7 +13,7 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     boolean isCharged;
 
     public ChargedFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isCharged = false;
     }

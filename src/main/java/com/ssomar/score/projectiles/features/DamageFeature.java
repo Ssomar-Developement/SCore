@@ -14,7 +14,7 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     double damage;
 
     public DamageFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         damage = -1;
     }

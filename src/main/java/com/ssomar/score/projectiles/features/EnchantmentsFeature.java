@@ -24,7 +24,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     private Map<SEnchantment,Integer> enchants;
 
     public EnchantmentsFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         enchants = new HashMap<>();
     }

@@ -14,7 +14,7 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     boolean isCritical;
 
     public CriticalFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isCritical = false;
     }

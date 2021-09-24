@@ -14,7 +14,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     AbstractArrow.PickupStatus pickupStatus;
 
     public PickupFeature(CustomProjectile cProj){
-        super(cProj.getId());
+        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         pickupStatus = AbstractArrow.PickupStatus.ALLOWED;
     }
