@@ -64,7 +64,7 @@ public abstract class CustomProjectile {
             SsomarDev.testMsg("TITLE EQUALS");
             player.closeInventory();
             CustomProjectile proj = new CustomSnowball(id, projConfig);
-            System.out.println(projConfig.toString());
+            System.out.println(projConfig.saveToString());
             proj.loadConfiguration();
             proj.openConfigGUIFor(player);
             return true;
@@ -78,7 +78,7 @@ public abstract class CustomProjectile {
 
     public void openConfigGUIFor(Player p){
         if(configGui != null) configGui.openGUISync(p);
-        else (configGui = this.getConfigGUI()).openGUISync(p);
+        else (configGui = getConfigGUI()).openGUISync(p);
     }
 
     public void load(){

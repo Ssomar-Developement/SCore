@@ -36,9 +36,4 @@ public class CustomArrow extends CustomProjectile {
     public CustomProjectile getLoaded() {
         return customArrow;
     }
-
-    @Override
-    public String getIdentifierType() {
-        return identifierType;
-    }
 }

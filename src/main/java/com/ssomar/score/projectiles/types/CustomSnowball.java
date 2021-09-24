@@ -31,8 +31,4 @@ public class CustomSnowball extends CustomProjectile {
         return customSnowball;
     }
 
-    @Override
-    public String getIdentifierType() {
-        return identifierType;
-    }
 }
