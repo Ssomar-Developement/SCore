@@ -60,6 +60,13 @@ public class CooldownsManager {
 		}
 	}
 
+	public void addCooldown(SPlugin sPlugin, SObject sObject, int cooldown, UUID target){
+		for(SActivator sActivator : sObject.getActivators()){
+			Cooldown cd = new Cooldown(sPlugin, sObject, sActivator, target, cooldown, false, System.currentTimeMillis(), false);
+			this.addCooldown(cd);
+		}
+	}
+
 	public boolean isInCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
 		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
