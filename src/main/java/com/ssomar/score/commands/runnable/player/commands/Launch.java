@@ -1,29 +1,5 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ssomar.score.projectiles.types.CustomProjectile;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.DragonFireball;
-import org.bukkit.entity.Egg;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.LargeFireball;
-import org.bukkit.entity.LingeringPotion;
-import org.bukkit.entity.LlamaSpit;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.ShulkerBullet;
-import org.bukkit.entity.SizedFireball;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.SplashPotion;
-import org.bukkit.entity.Trident;
-import org.bukkit.entity.WitherSkull;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.Vector;
-
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
 import com.ssomar.executableitems.items.ItemManager;
@@ -31,6 +7,14 @@ import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.projectiles.types.CustomProjectile;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
@@ -76,7 +60,7 @@ public class Launch extends PlayerCommand{
 				else if(ProjectilesManager.getInstance().containsProjectileWithID(args.get(0))) {
 					CustomProjectile projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
 
-					switch(projectile.getIdentifierType()) {
+					/*switch(projectile.getIdentifierType()) {
 					case "ARROW":
 						entity = receiver.launchProjectile(Arrow.class);
 						break;
@@ -123,7 +107,7 @@ public class Launch extends PlayerCommand{
 						entity = receiver.launchProjectile(Arrow.class);
 						break;
 					}
-					projectile.transformTheProjectile(entity, receiver);
+					projectile.transformTheProjectile(entity, receiver);*/
 
 				}	
 				

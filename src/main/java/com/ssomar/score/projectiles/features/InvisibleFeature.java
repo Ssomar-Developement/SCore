@@ -3,15 +3,18 @@ package com.ssomar.score.projectiles.features;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -21,7 +24,6 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     boolean isInvisible;
 
     public InvisibleFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         isInvisible = false;
     }
@@ -29,7 +31,7 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         isInvisible = projConfig.getBoolean("invisilbe", false);
-        return  cProj.loadConfiguration() && true;
+        return  cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -49,10 +51,24 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.GLASS_PANE, 1, gui.TITLE_COLOR+"Invisible", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
         gui.updateBoolean(gui.TITLE_COLOR+"Invisible", isInvisible);
         return gui;
+    }
+
+    @Override
+    public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
+        if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
+        String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
+        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Invisible");
+
+        if(itemName.equals(changeBounce)) {
+            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Invisible");
+            gui.updateBoolean(gui.TITLE_COLOR+"Invisible", !bool);
+        }
+        else return false;
+        return true;
     }
 }

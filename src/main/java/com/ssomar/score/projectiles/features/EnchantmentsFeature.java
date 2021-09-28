@@ -4,6 +4,7 @@ import com.ssomar.executableitems.items.SEnchantment;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.Couple;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,7 +25,6 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     private Map<SEnchantment,Integer> enchants;
 
     public EnchantmentsFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         enchants = new HashMap<>();
     }
@@ -33,10 +33,10 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     public boolean loadConfiguration(FileConfiguration projConfig) {
         if(projConfig.contains("enchantments")) {
             Couple<HashMap<SEnchantment, Integer>, Boolean> couple = this.getEnchantments(projConfig.getConfigurationSection("enchantments"));
-            if(!couple.getElem2()) return cProj.loadConfiguration() && false;
+            if(!couple.getElem2()) return cProj.loadConfiguration(projConfig) && false;
             else enchants = couple.getElem1();
         }
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -74,8 +74,9 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
                 else
                     enchantment = Enchantment.getByName(enchtSection.getString("enchantment"));
             } catch (Exception error) {
-                    SCore.plugin.getServer().getLogger().severe("[ExecutableItems] ERROR for projectile: "+this.getId()+", Enchantment with id: " + id
+                    SCore.plugin.getServer().getLogger().severe("[ExecutableItems] ERROR for projectile: "+"ADD ID HERE"+", Enchantment with id: " + id
                             + " has invalid enchantment: " + enchtSection.getString("enchantment") + " !");
+                    // #TODO add id here
                 return new Couple(new HashMap<>(), false);
             }
 
@@ -89,8 +90,8 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.ENCHANTED_BOOK, 1, gui.TITLE_COLOR+"Enchantments", false, false, gui.CLICK_HERE_TO_CHANGE);
         return gui;
     }

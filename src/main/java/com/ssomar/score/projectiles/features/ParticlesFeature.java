@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles.features;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.CustomColor;
 import org.bukkit.Color;
@@ -21,7 +22,6 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
     List<CustomParticle> particles;
 
     public ParticlesFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         particles = new ArrayList<>();
     }
@@ -38,7 +38,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                 if(couple.getElem2()){
                     particles.add(couple.getElem1());
                 }
-                else return cProj.loadConfiguration() && false;
+                else return cProj.loadConfiguration(projConfig) && false;
             }
         }
         else{
@@ -46,10 +46,10 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
            if(couple.getElem2()){
                 particles.add(couple.getElem1());
            }
-           else return cProj.loadConfiguration() && false;
+           else return cProj.loadConfiguration(projConfig) && false;
         }
         this.particles = particles;
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     public Couple<CustomParticle, Boolean> loadParticle(ConfigurationSection conf){
@@ -67,8 +67,9 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                 particlesType = Particle.valueOf(conf.getString("particlesType"));
             } catch (Exception e) {
                 SCore.plugin.getLogger()
-                        .severe("[ExecutableItems] Error invalid particlesType "+conf.getString("particlesType")+" for the projectile: " + this.getId()
+                        .severe("[ExecutableItems] Error invalid particlesType "+conf.getString("particlesType")+" for the projectile: " + "ADD ID HERE"
                                 + " (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html)");
+                // #TODO add id here
                 return new Couple(null, false);
             }
         }
@@ -86,8 +87,9 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
             redstoneColor = CustomColor.valueOf(redstoneColorStr);
         } catch (Exception e) {
             SCore.plugin.getLogger()
-                    .severe("[ExecutableItems] Error invalid redstoneColor "+redstoneColorStr+" for the projectile: " + this.getId()
+                    .severe("[ExecutableItems] Error invalid redstoneColor "+redstoneColorStr+" for the projectile: " + "ADD ID HERE"
                             + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
+            // #TODO add id here
         }
 
         CustomParticle particle = new CustomParticle(particlesType, particlesAmount, particlesOffSet, particlesSpeed, particlesDelay);
@@ -188,8 +190,8 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         return gui;
     }
 }

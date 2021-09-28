@@ -1,44 +1,32 @@
 package com.ssomar.score.projectiles.types;
 
-import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class CustomTrident extends CustomProjectile {
-
-   CustomProjectile customTrident;
+public class CustomTrident extends SProjectiles {
 
     public CustomTrident(String id, FileConfiguration projConfig) {
         super(id, projConfig);
     }
 
     @Override
-    public void setup() {
-        customTrident = new CustomNameFeature(this);
-        customTrident = new InvisibleFeature(customTrident);
-        customTrident = new PickupFeature(customTrident);
-        customTrident = new GlowingFeature(customTrident);
-        customTrident = new CriticalFeature(customTrident);
-        customTrident = new BounceFeature(customTrident);
-        customTrident = new GravityFeature(customTrident);
-        customTrident = new DamageFeature(customTrident);
-        customTrident = new KnockbackStrengthFeature(customTrident);
-        customTrident = new PierceLevelFeature(customTrident);
-        customTrident = new DespawnFeature(customTrident);
-        customTrident = new VelocityFeature(customTrident);
-        customTrident = new SilentFeature(customTrident);
-        customTrident = new ParticlesFeature(customTrident);
-        customTrident = new VisualItemFeature(customTrident);
-        customTrident = new EnchantmentsFeature(customTrident);
-    }
-
-    @Override
-    public CustomProjectile getLoaded() {
-        return customTrident;
-    }
-
-    @Override
-    public String getIdentifierType() {
-        return identifierType;
+    public CustomProjectile setup(CustomProjectile proj) {
+        proj = new CustomNameFeature(proj);
+        proj = new InvisibleFeature(proj);
+        proj = new PickupFeature(proj);
+        proj = new GlowingFeature(proj);
+        proj = new CriticalFeature(proj);
+        proj = new BounceFeature(proj);
+        proj = new GravityFeature(proj);
+        proj = new DamageFeature(proj);
+        proj = new KnockbackStrengthFeature(proj);
+        proj = new PierceLevelFeature(proj);
+        proj = new DespawnFeature(proj);
+        proj = new VelocityFeature(proj);
+        proj = new SilentFeature(proj);
+        proj = new ParticlesFeature(proj);
+        proj = new VisualItemFeature(proj);
+        proj = new EnchantmentsFeature(proj);
+        return proj;
     }
 }

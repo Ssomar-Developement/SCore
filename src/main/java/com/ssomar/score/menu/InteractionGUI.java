@@ -1,21 +1,6 @@
 package com.ssomar.score.menu;
 
-import java.util.List;
-
-import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.projectiles.types.CustomProjectile;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.ItemStack;
-
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
@@ -36,6 +21,17 @@ import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUIMan
 import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsGUIManager;
 import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsMessagesGUIManager;
 import com.ssomar.score.utils.StringConverter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 
 public class InteractionGUI implements Listener{
@@ -162,12 +158,12 @@ public class InteractionGUI implements Listener{
 				GUI gui = new SimpleGUI(e.getClickedInventory());
 				String id = gui.getActually(GUI.TITLE_COLOR+"&e>>&l &aProjectile ID:");
 				SsomarDev.testMsg("GUI ID: "+ id);
-				for(CustomProjectile proj : ProjectilesManager.getInstance().getProjectiles()){
+				/*for(CustomProjectile proj : ProjectilesManager.getInstance().getProjectiles()){
 					if(proj.getId().equals(id)){
-						proj.interactionConfigGUI(player, itemS, title);
+						proj.interactionConfigGUI(gui, player, itemS, title);
 						break;
 					}
-				}
+				}*/
 				break;
 		case "ConditionsGUIManager":
 			ConditionsGUIManager.getInstance().clicked(player, itemS);
@@ -327,6 +323,16 @@ public class InteractionGUI implements Listener{
 		else if(RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			RequiredEIGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
+		else {
+			/*for(CustomProjectile proj : ProjectilesManager.getInstance().getProjectiles()){
+				SsomarDev.testMsg(proj.isRequestChat()+"");
+				if(proj.isRequestChat()){
+					e.setCancelled(true);
+					proj.messageForConfig(p, e.getMessage());
+					break;
+				}
+			}*/
 		}
 	}	
 }

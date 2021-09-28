@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,7 +23,6 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     private List<PotionEffect> potionEffects;
 
     public PotionEffectsFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         potionEffects = new ArrayList<>();
     }
@@ -31,7 +31,7 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     public boolean loadConfiguration(FileConfiguration projConfig) {
         if (projConfig.isConfigurationSection("potionEffects"))
             potionEffects = this.loadPotionEffects(projConfig.getConfigurationSection("potionEffects"));
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -90,8 +90,8 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.BELL, 1, gui.TITLE_COLOR+"Potion effects", false, false, gui.CLICK_HERE_TO_CHANGE);
         return gui;
     }

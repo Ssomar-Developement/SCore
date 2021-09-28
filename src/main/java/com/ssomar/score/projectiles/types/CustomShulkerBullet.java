@@ -1,37 +1,25 @@
 package com.ssomar.score.projectiles.types;
 
-import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.features.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class CustomShulkerBullet extends CustomProjectile {
-
-    CustomProjectile customShulkerBullet;
+public class CustomShulkerBullet extends SProjectiles {
 
     public CustomShulkerBullet(String id, FileConfiguration projConfig) {
         super(id, projConfig);
     }
 
     @Override
-    public void setup() {
-        customShulkerBullet = new CustomNameFeature(this);
-        customShulkerBullet = new InvisibleFeature(customShulkerBullet);
-        customShulkerBullet = new GlowingFeature(customShulkerBullet);
-        customShulkerBullet = new BounceFeature(customShulkerBullet);
-        customShulkerBullet = new GravityFeature(customShulkerBullet);
-        customShulkerBullet = new DespawnFeature(customShulkerBullet);
-        customShulkerBullet = new VelocityFeature(customShulkerBullet);
-        customShulkerBullet = new SilentFeature(customShulkerBullet);
-        customShulkerBullet = new ParticlesFeature(customShulkerBullet);
-    }
-
-    @Override
-    public CustomProjectile getLoaded() {
-        return customShulkerBullet;
-    }
-
-    @Override
-    public String getIdentifierType() {
-        return identifierType;
+    public CustomProjectile setup(CustomProjectile proj) {
+        proj = new CustomNameFeature(proj);
+        proj = new InvisibleFeature(proj);
+        proj = new GlowingFeature(proj);
+        proj = new BounceFeature(proj);
+        proj = new GravityFeature(proj);
+        proj = new DespawnFeature(proj);
+        proj = new VelocityFeature(proj);
+        proj = new SilentFeature(proj);
+        proj = new ParticlesFeature(proj);
+        return proj;
     }
 }

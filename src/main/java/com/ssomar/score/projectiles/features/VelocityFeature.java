@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -14,7 +15,6 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     double velocity;
 
     public VelocityFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         velocity = 1;
     }
@@ -22,7 +22,7 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         velocity = projConfig.getDouble("velocity", 1);
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -37,8 +37,8 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.FIREWORK_ROCKET, 1, gui.TITLE_COLOR+"Velocity", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
         gui.updateDouble(gui.TITLE_COLOR+"Velocity", velocity);
         return gui;

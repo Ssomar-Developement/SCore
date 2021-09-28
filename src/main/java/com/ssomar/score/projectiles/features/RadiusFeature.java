@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -13,7 +14,6 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     float yield;
 
     public RadiusFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         yield = -1L;
     }
@@ -21,7 +21,7 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         yield = (float) projConfig.getDouble("radius", -1);
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -34,8 +34,8 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.HEART_OF_THE_SEA, 1, gui.TITLE_COLOR+"Radius", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
         if(yield == -1) gui.updateActually(gui.TITLE_COLOR+"Radius", "&cVANILLA RADIUS");
         else gui.updateDouble(gui.TITLE_COLOR+"Radius", yield);

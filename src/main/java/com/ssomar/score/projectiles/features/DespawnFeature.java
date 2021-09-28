@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles.features;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -14,7 +15,6 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
     int despawnDelay;
 
     public DespawnFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         despawnDelay = -1;
     }
@@ -22,7 +22,7 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig) {
         despawnDelay = projConfig.getInt("despawnDelay", -1);
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.DEAD_BUSH, 1, gui.TITLE_COLOR+"1) Despawn delay", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
         if(despawnDelay == -1) gui.updateActually(gui.TITLE_COLOR+"1) Despawn delay", "&cNO DESPAWN");
         else gui.updateInt(gui.TITLE_COLOR+"1) Despawn delay", despawnDelay);

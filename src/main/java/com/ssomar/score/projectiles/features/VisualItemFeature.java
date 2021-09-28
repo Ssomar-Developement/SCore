@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles.features;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -17,7 +18,6 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     boolean hasItem;
 
     public VisualItemFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         item = null;
         this.hasItem = false;
@@ -38,7 +38,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
             } catch (Exception e) {
             }
         }
-        return cProj.loadConfiguration() && true;
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.ITEM_FRAME, 1, gui.TITLE_COLOR+"Visual item", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
         if(item == null) gui.updateActually(gui.TITLE_COLOR+"Visual item", "VANILLA ITEM");
         else gui.updateActually(gui.TITLE_COLOR+"Visual item", item.getType().toString());

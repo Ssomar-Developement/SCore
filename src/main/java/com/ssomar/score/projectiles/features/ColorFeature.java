@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles.features;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.CustomColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -21,7 +22,6 @@ public class ColorFeature extends DecorateurCustomProjectiles {
     Color color;
 
     public ColorFeature(CustomProjectile cProj){
-        super(cProj.getId(), cProj.getProjConfig());
         super.cProj = cProj;
         activeColor = true;
         color = Color.AQUA;
@@ -36,11 +36,12 @@ public class ColorFeature extends DecorateurCustomProjectiles {
         } catch (Exception e) {
             activeColor = false;
             SCore.plugin.getLogger()
-                    .severe("[ExecutableItems] Error invalid color for the projectile: " + this.getId()
+                    .severe("[ExecutableItems] Error invalid color for the projectile: " + "ADD THE ID HERE"
                             + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
-            return cProj.loadConfiguration() && false;
+            // #TODO add id here
+            return cProj.loadConfiguration(projConfig) && false;
         }
-        return cProj.loadConfiguration();
+        return cProj.loadConfiguration(projConfig) && true;
     }
 
     @Override
@@ -63,9 +64,8 @@ public class ColorFeature extends DecorateurCustomProjectiles {
         cProj.transformTheProjectile(e, launcher);
     }
 
-    @Override
-    public SimpleGUI getConfigGUI() {
-        SimpleGUI gui = cProj.getConfigGUI();
+    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
+        SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.RED_DYE, 1, gui.TITLE_COLOR+"Color", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
         if(color == null)  gui.updateActually(gui.TITLE_COLOR+"Color", "&cNO COLOR");
         else gui.updateActually(gui.TITLE_COLOR+"Color", color.toString());
