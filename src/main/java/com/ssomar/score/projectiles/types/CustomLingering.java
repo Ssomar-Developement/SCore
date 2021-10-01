@@ -3,10 +3,17 @@ package com.ssomar.score.projectiles.types;
 import com.ssomar.score.projectiles.features.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
+
 public class CustomLingering extends SProjectiles {
 
-    public CustomLingering(String id, FileConfiguration projConfig) {
-        super(id, projConfig);
+
+    public CustomLingering(String id, File file) {
+        super(id, file);
+    }
+
+    public CustomLingering(String id, File file, boolean showError) {
+        super(id, file, showError);
     }
 
     @Override

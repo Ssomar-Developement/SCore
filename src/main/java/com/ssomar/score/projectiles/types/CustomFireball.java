@@ -3,12 +3,18 @@ package com.ssomar.score.projectiles.types;
 import com.ssomar.score.projectiles.features.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
+
 public class CustomFireball extends SProjectiles {
 
-    public CustomFireball(String id, FileConfiguration projConfig) {
-        super(id, projConfig);
+
+    public CustomFireball(String id, File file) {
+        super(id, file);
     }
 
+    public CustomFireball(String id, File file, boolean showError) {
+        super(id, file, showError);
+    }
 
     @Override
     public CustomProjectile setup(CustomProjectile proj) {

@@ -25,10 +25,17 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isCustomNameVisible = projConfig.getBoolean("customNameVisible", false);
         customName = StringConverter.coloredString(projConfig.getString("customName", ""));
-        return cProj.loadConfiguration(projConfig);
+        return cProj.loadConfiguration(projConfig, showError);
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("customNameVisible", isCustomNameVisible);
+        config.set("customName", customName);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -69,6 +76,13 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isCustomNameVisible = gui.getBoolean(gui.TITLE_COLOR+"1) Custom name visible");
+        customName = gui.getActuallyWithColor(gui.TITLE_COLOR+"2) Custom name");
     }
 
     @Override

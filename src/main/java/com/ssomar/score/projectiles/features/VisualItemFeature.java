@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
@@ -24,7 +25,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         if (projConfig.contains("visualItem")) {
             String material = projConfig.getString("visualItem", "");
             try {
@@ -38,7 +39,16 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
             } catch (Exception e) {
             }
         }
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        if(hasItem) {
+            config.set("visualItem", item.getType().toString());
+            if(item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) config.set("customModelData", item.getItemMeta().getCustomModelData());
+        }
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -56,5 +66,11 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
         if(item == null) gui.updateActually(gui.TITLE_COLOR+"Visual item", "VANILLA ITEM");
         else gui.updateActually(gui.TITLE_COLOR+"Visual item", item.getType().toString());
         return gui;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        // #TODO extract infos for visual item
+        cProj.extractInfosGUI(gui);
     }
 }

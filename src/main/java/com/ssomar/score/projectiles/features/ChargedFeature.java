@@ -22,9 +22,15 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isCharged = projConfig.getBoolean("charged", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("charged", isCharged);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -55,6 +61,12 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isCharged = gui.getBoolean(gui.TITLE_COLOR+"Charged");
     }
 
 }

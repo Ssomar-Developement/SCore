@@ -22,10 +22,16 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isBounce = projConfig.getBoolean("bounce", false);
 
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("bounce", isBounce);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -56,5 +62,11 @@ public class BounceFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isBounce = gui.getBoolean(gui.TITLE_COLOR + "Bounce");
     }
 }

@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
@@ -28,10 +29,16 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         if (projConfig.isConfigurationSection("potionEffects"))
-            potionEffects = this.loadPotionEffects(projConfig.getConfigurationSection("potionEffects"));
-        return cProj.loadConfiguration(projConfig) && true;
+            potionEffects = this.loadPotionEffects(projConfig.getConfigurationSection("potionEffects"), showError);
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        // #TODO save potion effects
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -53,7 +60,7 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
         cProj.transformTheProjectile(e, launcher);
     }
 
-    public List<PotionEffect> loadPotionEffects(ConfigurationSection config) {
+    public List<PotionEffect> loadPotionEffects(ConfigurationSection config, boolean showError) {
         List<PotionEffect> potionEffects = new ArrayList<>();
         for (String effectID : config.getKeys(false)) {
             ConfigurationSection effectSection = config.getConfigurationSection(effectID);
@@ -94,6 +101,11 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         gui.addItem(Material.BELL, 1, gui.TITLE_COLOR+"Potion effects", false, false, gui.CLICK_HERE_TO_CHANGE);
         return gui;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
     }
 
 }

@@ -38,6 +38,14 @@
 					<include>Locale*.yml</include>
 				</includes>
 			</resource>
+			<resource>
+				<targetPath>com/ssomar/score/configs/projectiles</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources/projectiles/</directory>
+				<includes>
+					<include>*.yml</include>
+				</includes>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>

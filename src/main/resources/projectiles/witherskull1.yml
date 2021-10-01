@@ -1,0 +1,16 @@
+type: WITHER_SKULL
+customNameVisible: true
+customName: "CustomWitherSkull1"
+glowing: false
+incendiary: false
+bounce: true
+gravity: true
+charged: true
+despawnDelay: 3 #in seconds
+velocity: 1 #you can multiply the velocity (speed) ex velocity: 2.5
+silent: false
+#particlesType: FLAME #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
+particlesAmount: 10
+particlesOffSet: 0.5
+particlesSpeed: 0.3
+particlesDelay: 1 #in tick

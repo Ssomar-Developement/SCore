@@ -1,15 +1,30 @@
 package com.ssomar.score.commands;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Charsets;
+import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.executableitems.configs.api.PlaceholderAPI;
+import com.ssomar.executableitems.configs.ingame.ConfigWriter;
+import com.ssomar.executableitems.configs.ingame.items.ItemGUIManager;
+import com.ssomar.executableitems.configs.ingame.items.ShowGUI;
+import com.ssomar.executableitems.items.*;
+import com.ssomar.score.projectiles.ProjectilesGUIManager;
+import com.ssomar.score.projectiles.ProjectilesManager;
+import com.ssomar.score.projectiles.types.CustomArrow;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
@@ -42,13 +57,22 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 			case "inspect-loop":
 				this.runCommand(sender, "inspect-loop", args);
 				break;
+			case "projectiles":
+				ProjectilesGUIManager.getInstance().startEditing((Player) sender);
+				break;
+			case "projectiles-create":
+				this.runCommand(sender, "projectiles-create", args);
+				break;
+			case "projectiles-delete":
+				this.runCommand(sender, "projectiles-delete", args);
+				break;
 			default:
-				sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop ]"));
+				sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop | projectiles | projectiles-create | projectiles-delete ]"));
 				break;
 			}
 		}
 		else {
-			sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop ]"));
+			sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop | projectiles ]"));
 		}
 		return true;
 	}
@@ -99,6 +123,61 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 			sm.sendMessage(sender, " ");
 			
 			break;
+		case "projectiles-create":
+			if(player != null) {
+				if(args.length == 1) {
+					if(ProjectilesManager.getInstance().getProjectileWithID(args[0]) != null) {
+						player.sendMessage(StringConverter.coloredString("&4[SCore] &cError this id already exist re-enter &6/score projectiles-create ID &7&o(ID is the id you want for your new projectile)")) ;
+					}
+					else {
+						String id = args[0];
+						File file = new File(SCore.getPlugin().getDataFolder()+"/projectiles/"+id+".yml");
+						try {
+							file.createNewFile();
+						} catch (IOException var17) {}
+
+						FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+						config.set("type", "ARROW");
+
+						try {
+							Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+							try {
+								writer.write(config.saveToString());
+							} finally {
+								writer.close();
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+						for(SProjectiles p : ProjectilesManager.getInstance().getProjectiles()) p.resetRequestChat();
+
+						SProjectiles proj = new CustomArrow(id, file, false);
+						proj.openConfigGUI(player);
+						ProjectilesManager.getInstance().addProjectile(proj);
+					}
+				}
+				else {
+					player.sendMessage(StringConverter.coloredString("&2[SCore] &aTo create a new projectile type &e/score projectiles-create ID &7&o(ID is the id you want for your new projectile)")) ;
+				}
+			}
+			break;
+		case "projectiles-delete":
+				if(args.length == 2) {
+					if(!args[1].equalsIgnoreCase("confirm")) {
+						sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm the delete type &6/score projectiles-delete {projID} confirm"));
+						return;
+					}
+
+					if(!ProjectilesManager.getInstance().deleteProjectile(args[0])) {
+						sender.sendMessage(StringConverter.coloredString("&4[SCore] &cProjectile file not found (&6"+args[0]+".yml&c) so it can't be deleted !"));
+						return;
+					}
+					else sender.sendMessage(StringConverter.coloredString("&2[SCore] &aProjectile file (&e"+args[0]+".yml&a) deleted !"));
+				}
+				else sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm the delete type &6/score projectiles-delete {projID} confirm"));
+				break;
 		default:
 			break;
 		}
@@ -112,6 +191,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 
 				arguments.add("reload");
 				arguments.add("inspect-loop");
+				arguments.add("projectiles");
+				arguments.add("projectiles-create");
+				arguments.add("projectiles-delete");
 		
 				Collections.sort(arguments);
 				return arguments;

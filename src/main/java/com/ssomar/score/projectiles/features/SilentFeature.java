@@ -21,9 +21,15 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isSilent = projConfig.getBoolean("silent", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("silent", isSilent);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -52,5 +58,11 @@ public class SilentFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isSilent = gui.getBoolean(gui.TITLE_COLOR+"Silent");
     }
 }

@@ -4,10 +4,17 @@ package com.ssomar.score.projectiles.types;
 import com.ssomar.score.projectiles.features.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
+
 public class CustomArrow extends SProjectiles {
 
-    public CustomArrow(String id, FileConfiguration projConfig) {
-        super(id, projConfig);
+
+    public CustomArrow(String id, File file) {
+        super(id, file);
+    }
+
+    public CustomArrow(String id, File file, boolean showError) {
+        super(id, file, showError);
     }
 
     @Override

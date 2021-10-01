@@ -22,9 +22,15 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isIncendiary = projConfig.getBoolean("incendiary", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("incendiary", isIncendiary);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -56,5 +62,11 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isIncendiary = gui.getBoolean(gui.TITLE_COLOR+"Incendiary");
     }
 }

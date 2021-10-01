@@ -1,0 +1,12 @@
+
+List of available type:
+- ARROW
+- FIREBALL
+- TRIDENT
+- SPLASH_POTION //with lingering: true for LINGERING_POTION  and false for normal SPLASH_POTION
+- DRAGON_FIREBALL
+- EGG
+- ENDER_PEARL
+- SHULKER_BULLET
+- SNOWBALL
+- WITHERSKULL

@@ -1,0 +1,14 @@
+type: SHULKER_BULLET
+bounce: false
+despawnDelay: -1
+customNameVisible: false
+glowing: false
+customName: ""
+silent: false
+gravity: true
+velocity: 1 #you can multiply the velocity (speed) ex velocity: 2.5
+#particlesType: FLAME #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
+particlesAmount: 10
+particlesOffSet: 0.5
+particlesSpeed: 0.3
+particlesDelay: 1 #in tick

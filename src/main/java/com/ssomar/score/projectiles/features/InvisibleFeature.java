@@ -29,9 +29,15 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isInvisible = projConfig.getBoolean("invisilbe", false);
-        return  cProj.loadConfiguration(projConfig) && true;
+        return  cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("invisible", isInvisible);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -70,5 +76,11 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isInvisible = gui.getBoolean(gui.TITLE_COLOR+"Invisible");
     }
 }

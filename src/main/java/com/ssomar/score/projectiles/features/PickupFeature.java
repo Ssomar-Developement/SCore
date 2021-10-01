@@ -27,7 +27,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
 
         if (!SCore.is1v12() && projConfig.contains("pickupStatus")) {
             String pickStatus = projConfig.getString("pickupStatus", "null");
@@ -35,14 +35,20 @@ public class PickupFeature extends DecorateurCustomProjectiles {
                 pickupStatus = AbstractArrow.PickupStatus.valueOf(pickStatus.toUpperCase());
             } catch (Exception e) {
                 pickupStatus = AbstractArrow.PickupStatus.ALLOWED;
-                SCore.plugin.getLogger()
-                        .severe("[ExecutableItems] Error invalid pickupStatus for the projectile: " + "ADD ID HERE"
+                if(showError) SCore.plugin.getLogger()
+                        .severe("[SCore] Error invalid pickupStatus for the projectile: " + "ADD ID HERE"
                                 + " (ALLOWED, CREATIVE_ONLY, DISALLOWED) DEFAULT> ALLOWED");
-                return cProj.loadConfiguration(projConfig) && false;
+                return cProj.loadConfiguration(projConfig, showError) && false;
                 // #TODO add id here
             }
         }
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("pickupStatus", pickupStatus.name());
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -70,6 +76,12 @@ public class PickupFeature extends DecorateurCustomProjectiles {
             this.changePickup(gui);
         }
         return false;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        pickupStatus = this.getPickup(gui);
     }
 
     public void changePickup(GUI gui) {

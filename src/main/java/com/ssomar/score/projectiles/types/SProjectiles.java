@@ -1,28 +1,113 @@
 package com.ssomar.score.projectiles.types;
 
+import com.google.common.base.Charsets;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
+import com.ssomar.score.projectiles.ProjectilesGUIManager;
+import com.ssomar.score.projectiles.ProjectilesManager;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.*;
 
 public abstract class SProjectiles extends CustomProjectile{
 
     CustomProjectile projectile;
     String id;
+    File file;
     FileConfiguration config;
     SimpleGUI configGUI;
 
-    public SProjectiles(String id, FileConfiguration config){
+    public SProjectiles(String id, File file){
         this.id = id;
-        this.config = config;
+        this.file = file;
+        this.config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
         this.projectile = this;
         this.projectile = setup(this.projectile);
-        projectile.loadConfiguration(config);
+        projectile.loadConfiguration(config, true);
+        configGUI = projectile.loadConfigGUI(this);
+    }
+
+    public SProjectiles(String id, File file, boolean showError){
+        this.id = id;
+        this.file = file;
+        this.config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+        this.projectile = this;
+        this.projectile = setup(this.projectile);
+        projectile.loadConfiguration(config, showError);
         configGUI = projectile.loadConfigGUI(this);
     }
 
     public abstract CustomProjectile setup(CustomProjectile proj);
+
+    public void saveConfiguration(FileConfiguration config){
+        this.config = config;
+        try {
+            Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+            try {
+                writer.write(config.saveToString());
+            } finally {
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public SimpleGUI loadConfigGUI(SProjectiles proj){
+        SimpleGUI configGui = new SimpleGUI("Editor: Custom Projectiles", 5 * 9);
+        configGui.createItem(proj.getMaterial(), 1, 40, GUI.TITLE_COLOR + "&e>>&l &aProjectile type:", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        configGui.updateActually(GUI.TITLE_COLOR + "&e>>&l &aProjectile type:", proj.getIdentifierType());
+
+        configGui.createItem(Material.ANVIL, 1, 42, GUI.TITLE_COLOR + "&e>>&l &aProjectile ID:", false, false, "", "&7actually: ");
+        configGui.updateActually(GUI.TITLE_COLOR + "&e>>&l &aProjectile ID:", proj.getId());
+
+        configGui.createItem(Material.ORANGE_STAINED_GLASS_PANE, 1, 36, GUI.TITLE_COLOR + "&cBack to projectiles", false, false, "", "&7&oBack to projectiles !");
+
+        configGui.createItem(Material.LIME_STAINED_GLASS_PANE, 1, 44, GUI.TITLE_COLOR + "&aSave the config", false, false, "", "&7&oClick here to save !");
+        return configGui;
+    }
+
+    public boolean sendInteractionConfigGUI(GUI gui, Player player, ItemStack itemS, String title){
+        return projectile.interactionConfigGUI(gui, player, itemS, title);
+    }
+
+    @Override
+    public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title){
+        String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
+        String change = StringConverter.decoloredString(GUI.TITLE_COLOR + "&e>>&l &aProjectile type:");
+        String save = StringConverter.decoloredString(GUI.TITLE_COLOR + "&aSave the config");
+        String back = StringConverter.decoloredString(GUI.TITLE_COLOR + "&cBack to projectiles");
+
+        if(itemName.equals(change)) {
+            this.changeType(player);
+        }
+        else if(itemName.equals(save)){
+            projectile.extractInfosGUI(gui);
+            projectile.saveConfiguration(config);
+            this.resetRequestChat();
+            ProjectilesGUIManager.getInstance().startEditing(player);
+        }
+        else if(itemName.equals(back)){
+            this.resetRequestChat();
+            ProjectilesGUIManager.getInstance().startEditing(player);
+        }
+        else return false;
+        return true;
+    }
+
+    public void extractInfosGUI(GUI gui){}
+
+    public boolean sendMessageForConfig(SimpleGUI gui, Player player, String message){
+        return projectile.messageForConfig(gui, player, message);
+    }
 
     public CustomProjectile getProjectile(){
         return this.projectile;
@@ -32,9 +117,11 @@ public abstract class SProjectiles extends CustomProjectile{
         configGUI.openGUISync(p);
     }
 
-    public boolean isRequestChat(){
+    public boolean hasRequestChat(){
         return projectile.isRequestChat();
     }
+
+    public void resetRequestChat() { projectile.setRequestChat(false); }
 
     public String getIdentifierType(){
         return config.getString("type", "NULZ");
@@ -66,51 +153,73 @@ public abstract class SProjectiles extends CustomProjectile{
         }
     }
 
-    /*public void changeType(Player player){
-        CustomProjectile proj = null;
+    public void changeType(Player player){
+        SProjectiles proj = null;
         switch(this.getIdentifierType()){
             case "ARROW":
-                projConfig.set("type", "EGG");
-                proj = new CustomEgg(id, projConfig);
+                config.set("type", "EGG");
+                this.saveConfigInFile(config, file);
+                proj = new CustomEgg(id, file);
                 break;
             case "EGG":
-                projConfig.set("type", "ENDER_PEARL");
-                proj = new CustomEnderpearl(id, projConfig);
+                config.set("type", "ENDER_PEARL");
+                this.saveConfigInFile(config, file);
+                proj = new CustomEnderpearl(id, file);
                 break;
             case "ENDER_PEARL":
-                projConfig.set("type", "FIREBALL");
-                proj = new CustomFireball(id, projConfig);
+                config.set("type", "FIREBALL");
+                this.saveConfigInFile(config, file);
+                proj = new CustomFireball(id, file);
                 break;
             case "FIREBALL":
-                projConfig.set("type", "SPLASH_POTION");
-                proj = new CustomLingering(id, projConfig);
+                config.set("type", "SPLASH_POTION");
+                this.saveConfigInFile(config, file);
+                proj = new CustomLingering(id, file);
                 break;
             case "SPLASH_POTION":
-                projConfig.set("type", "SHULKER_BULLET");
-                proj = new CustomShulkerBullet(id, projConfig);
+                config.set("type", "SHULKER_BULLET");
+                this.saveConfigInFile(config, file);
+                proj = new CustomShulkerBullet(id, file);
                 break;
             case "SHULKER_BULLET":
-                projConfig.set("type", "SNOWBALL");
-                proj = new CustomSnowball(id, projConfig);
+                config.set("type", "SNOWBALL");
+                this.saveConfigInFile(config, file);
+                proj = new CustomSnowball(id, file);
                 break;
             case "SNOWBALL":
-                projConfig.set("type", "TRIDENT");
-                proj = new CustomTrident(id, projConfig);
+                config.set("type", "TRIDENT");
+                this.saveConfigInFile(config, file);
+                proj = new CustomTrident(id, file);
                 break;
             case "TRIDENT":
-                projConfig.set("type", "WITHER_SKULL");
-                proj = new CustomWitherSkull(id, projConfig);
+                config.set("type", "WITHER_SKULL");
+                this.saveConfigInFile(config, file);
+                proj = new CustomWitherSkull(id, file);
                 break;
             case "WITHER_SKULL":
-                projConfig.set("type", "ARROW");
-                proj = new CustomArrow(id, projConfig);
+                config.set("type", "ARROW");
+                this.saveConfigInFile(config, file);
+                proj = new CustomArrow(id, file);
                 break;
         }
-        proj.loadConfiguration();
-        proj = proj.getLoaded();
+
         ProjectilesManager.getInstance().replaceProjectileWithID(this.getId(), proj);
-        proj.openConfigGUIFor(player);
-    }*/
+        proj.openConfigGUI(player);
+    }
+
+    public void saveConfigInFile(FileConfiguration config, File file){
+        try {
+            Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+            try {
+                writer.write(config.saveToString());
+            } finally {
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setProjectile(CustomProjectile projectile) {
         this.projectile = projectile;

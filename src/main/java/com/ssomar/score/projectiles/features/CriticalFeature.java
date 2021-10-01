@@ -23,9 +23,15 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isCritical = projConfig.getBoolean("critical", false);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("critical", isCritical);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -57,6 +63,12 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isCritical = gui.getBoolean(gui.TITLE_COLOR+"Critical");
     }
 
 }

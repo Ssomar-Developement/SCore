@@ -21,9 +21,15 @@ public class GravityFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         isGravity = projConfig.getBoolean("gravity", true);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("gravity", isGravity);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -52,5 +58,11 @@ public class GravityFeature extends DecorateurCustomProjectiles {
         }
         else return false;
         return true;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        isGravity = gui.getBoolean(gui.TITLE_COLOR+"Gravity");
     }
 }

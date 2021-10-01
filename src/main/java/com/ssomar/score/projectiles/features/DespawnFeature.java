@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
@@ -20,9 +21,15 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         despawnDelay = projConfig.getInt("despawnDelay", -1);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("despawnDelay", despawnDelay);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -45,6 +52,13 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
         if(despawnDelay == -1) gui.updateActually(gui.TITLE_COLOR+"1) Despawn delay", "&cNO DESPAWN");
         else gui.updateInt(gui.TITLE_COLOR+"1) Despawn delay", despawnDelay);
         return gui;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        if(gui.getActually(gui.TITLE_COLOR+"1) Despawn delay").contains("NO DESPAWN")) despawnDelay = -1;
+        else despawnDelay = gui.getInt(gui.TITLE_COLOR+"1) Despawn delay");
     }
 
 }

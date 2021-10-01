@@ -1,0 +1,16 @@
+type: FIREBALL
+customNameVisible: true
+customName: "Fireball2"
+glowing: false
+bounce: true
+despawnDelay: 20
+silent: false
+radius: -1
+incendiary: true
+gravity: true
+velocity: 1 #you can multiply the velocity (speed) ex velocity: 2.5
+#particlesType: FLAME #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
+particlesAmount: 10
+particlesOffSet: 0.5
+particlesSpeed: 0.3
+particlesDelay: 1 #in tick

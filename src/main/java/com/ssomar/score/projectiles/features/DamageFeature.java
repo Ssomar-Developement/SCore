@@ -25,9 +25,15 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         damage = projConfig.getDouble("damage", -1);
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
+    }
+
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        config.set("damage", damage);
+        cProj.saveConfiguration(config);
     }
 
     @Override
@@ -66,6 +72,13 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
+        if(gui.getActually(gui.TITLE_COLOR+"Damage").contains("VANILLA DAMAGE")) damage = -1;
+        else damage = gui.getInt(gui.TITLE_COLOR+"Damage");
+    }
+
+    @Override
     public boolean messageForConfig(SimpleGUI gui, Player player, String message){
         if(cProj.messageForConfig(gui, player, message)) return true;
         if(askDamage){
@@ -76,7 +89,7 @@ public class DamageFeature extends DecorateurCustomProjectiles {
                 player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid number for the setting damage ("+message+")"));
                 return true;
             }
-            if(damage == -1)  gui.updateActually(gui.TITLE_COLOR+"Damage", "&cVANILLA DAMAGE");
+            if(newDamage == -1)  gui.updateActually(gui.TITLE_COLOR+"Damage", "&cVANILLA DAMAGE");
             else gui.updateDouble(gui.TITLE_COLOR+"Damage", newDamage);
             gui.openGUISync(player);
             askDamage = false;

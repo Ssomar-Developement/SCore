@@ -13,7 +13,7 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
 
     protected CustomProjectile cProj;
 
-    public abstract boolean loadConfiguration(FileConfiguration projConfig);
+    public abstract boolean loadConfiguration(FileConfiguration projConfig, boolean showError);
 
     public abstract void transformTheProjectile(Entity e, Player launcher);
 
@@ -30,4 +30,14 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
         if(cProj.messageForConfig(gui, player, message)) return true;
         return false;
     }
+
+    public boolean isRequestChat(){
+        return cProj.isRequestChat() || requestChat;
+    }
+
+    @Override
+    public void setRequestChat(boolean request) {
+        cProj.setRequestChat(request);
+        this.requestChat = request;
+    };
 }

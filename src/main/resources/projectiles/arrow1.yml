@@ -1,0 +1,21 @@
+type: ARROW
+customNameVisible: true
+customName: "CustomArrow2"
+pickupStatus: DISALLOWED #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/AbstractArrow.PickupStatus.html
+glowing: false
+critical: false
+bounce: true
+gravity: true
+damage: -1
+knockbackStrength: -1
+pierceLevel: -1
+despawnDelay: 3
+velocity: 1 #you can multiply the velocity (speed) ex velocity: 2.5
+silent: false
+activeColor: true
+color: RED #https://helpch.at/docs/1.12.2/org/bukkit/Color.html
+#particlesType: FLAME #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
+particlesAmount: 10
+particlesOffSet: 0.5
+particlesSpeed: 0.3
+particlesDelay: 1 #in tick

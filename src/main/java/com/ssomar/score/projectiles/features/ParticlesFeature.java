@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
@@ -28,31 +29,37 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
 
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig) {
+    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
         List<CustomParticle> particles = new ArrayList<>();
         if (projConfig.contains("particles")) {
             ConfigurationSection particlesSection = projConfig.getConfigurationSection("particles");
             for(String key : particlesSection.getKeys(false)){
                 ConfigurationSection particleSection = particlesSection.getConfigurationSection(key);
-                Couple<CustomParticle, Boolean> couple = this.loadParticle(particleSection);
+                Couple<CustomParticle, Boolean> couple = this.loadParticle(particleSection, showError);
                 if(couple.getElem2()){
                     particles.add(couple.getElem1());
                 }
-                else return cProj.loadConfiguration(projConfig) && false;
+                else return cProj.loadConfiguration(projConfig, showError) && false;
             }
         }
         else{
-           Couple<CustomParticle, Boolean> couple = this.loadParticle(projConfig);
+           Couple<CustomParticle, Boolean> couple = this.loadParticle(projConfig, showError);
            if(couple.getElem2()){
                 particles.add(couple.getElem1());
            }
-           else return cProj.loadConfiguration(projConfig) && false;
+           else return cProj.loadConfiguration(projConfig, showError) && false;
         }
         this.particles = particles;
-        return cProj.loadConfiguration(projConfig) && true;
+        return cProj.loadConfiguration(projConfig, showError) && true;
     }
 
-    public Couple<CustomParticle, Boolean> loadParticle(ConfigurationSection conf){
+    @Override
+    public void saveConfiguration(FileConfiguration config) {
+        // #TODO save particles
+        cProj.saveConfiguration(config);
+    }
+
+    public Couple<CustomParticle, Boolean> loadParticle(ConfigurationSection conf, boolean showError){
 
         Particle particlesType = null;
         int particlesAmount = 1;
@@ -66,8 +73,8 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
             try {
                 particlesType = Particle.valueOf(conf.getString("particlesType"));
             } catch (Exception e) {
-                SCore.plugin.getLogger()
-                        .severe("[ExecutableItems] Error invalid particlesType "+conf.getString("particlesType")+" for the projectile: " + "ADD ID HERE"
+                if(showError) SCore.plugin.getLogger()
+                        .severe("[SCore] Error invalid particlesType "+conf.getString("particlesType")+" for the projectile: " + "ADD ID HERE"
                                 + " (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html)");
                 // #TODO add id here
                 return new Couple(null, false);
@@ -86,8 +93,8 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
         try {
             redstoneColor = CustomColor.valueOf(redstoneColorStr);
         } catch (Exception e) {
-            SCore.plugin.getLogger()
-                    .severe("[ExecutableItems] Error invalid redstoneColor "+redstoneColorStr+" for the projectile: " + "ADD ID HERE"
+            if(showError) SCore.plugin.getLogger()
+                    .severe("[SCore] Error invalid redstoneColor "+redstoneColorStr+" for the projectile: " + "ADD ID HERE"
                             + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
             // #TODO add id here
         }
@@ -193,5 +200,10 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         return gui;
+    }
+
+    @Override
+    public void extractInfosGUI(GUI gui) {
+        cProj.extractInfosGUI(gui);
     }
 }

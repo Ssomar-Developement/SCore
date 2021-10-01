@@ -2,7 +2,7 @@ package com.ssomar.score;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.score.projectiles.ProjectilesLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -88,7 +88,8 @@ public final class SCore extends JavaPlugin {
 		/* Commands part */
 		this.getCommand("score").setExecutor(commandClass);
 
-
+		/* Projectiles instance part */
+		ProjectilesLoader.getInstance().load();
 
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 
@@ -177,6 +178,9 @@ public final class SCore extends JavaPlugin {
 	public void onReload() {
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 		GeneralConfig.getInstance().reload();
+
+		/* Projectiles instance part */
+		ProjectilesLoader.getInstance().reload();
 
 		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 

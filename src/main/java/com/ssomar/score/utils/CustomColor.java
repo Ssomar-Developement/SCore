@@ -2,6 +2,8 @@ package com.ssomar.score.utils;
 
 import org.bukkit.Color;
 
+import static org.bukkit.Color.AQUA;
+
 public class CustomColor {
 
 	public static Color valueOf(String s) {
@@ -44,6 +46,83 @@ public class CustomColor {
 			return Color.YELLOW;
 		default: 
 			return null;
+		}
+	}
+
+	public static Color[] values(){
+		Color [] values = {
+				Color.AQUA,
+				Color.BLACK,
+				Color.BLUE,
+				Color.FUCHSIA,
+				Color.GRAY,
+				Color.GREEN,
+				Color.LIME,
+				Color.MAROON,
+				Color.NAVY,
+				Color.OLIVE,
+				Color.ORANGE,
+				Color.PURPLE,
+				Color.RED,
+				Color.SILVER,
+				Color.TEAL,
+				Color.WHITE,
+				Color.YELLOW
+		};
+		return values;
+	}
+
+	public static Color getNext(Color color){
+		if (AQUA.equals(color)) {
+			return Color.BLACK;
+		}
+		else if(color.equals(Color.BLACK)){
+			return Color.BLUE;
+		}
+		else if(color.equals(Color.BLUE)){
+			return Color.FUCHSIA;
+		}
+		else if(color.equals(Color.FUCHSIA)){
+			return Color.GRAY;
+		}
+		else if(color.equals(Color.GRAY)){
+			return Color.GREEN;
+		}
+		else if(color.equals(Color.GREEN)){
+			return Color.LIME;
+		}
+		else if(color.equals(Color.LIME)){
+			return Color.MAROON;
+		}
+		else if(color.equals(Color.MAROON)){
+			return Color.NAVY;
+		}
+		else if(color.equals(Color.NAVY)){
+			return Color.OLIVE;
+		}
+		else if(color.equals(Color.OLIVE)){
+			return Color.ORANGE;
+		}
+		else if(color.equals(Color.ORANGE)){
+			return Color.PURPLE;
+		}
+		else if(color.equals(Color.PURPLE)){
+			return Color.RED;
+		}
+		else if(color.equals(Color.RED)){
+			return Color.SILVER;
+		}
+		else if(color.equals(Color.SILVER)){
+			return Color.TEAL;
+		}
+		else if(color.equals(Color.TEAL)){
+			return Color.WHITE;
+		}
+		else if(color.equals(Color.WHITE)){
+			return Color.YELLOW;
+		}
+		else {
+			return Color.AQUA;
 		}
 	}
 }
