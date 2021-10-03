@@ -47,7 +47,7 @@ public class SAttribute {
 	public static void deleteAttribute(SPlugin sPlugin, SObject sObject, String id) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			ExecutableItems.plugin.getLogger().severe("[ExecutableItems] Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getPlugin()+" Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

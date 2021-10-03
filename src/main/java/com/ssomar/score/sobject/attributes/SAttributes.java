@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.configs.api.PlaceholderAPI;
 import com.ssomar.executableitems.items.Item;
+import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.attribute.Attribute;
@@ -98,7 +99,7 @@ public class SAttributes extends HashMap<SAttribute, AttributeModifier> {
     public void saveAttributes(SPlugin sPlugin, SObject sObject) {
 
         if(!new File(sObject.getPath()).exists()) {
-            ExecutableItems.plugin.getLogger().severe("[ExecutableItems] Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
+            SCore.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
             return;
         }
         File file = new File(sObject.getPath());
