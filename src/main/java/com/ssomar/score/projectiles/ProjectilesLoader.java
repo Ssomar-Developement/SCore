@@ -1,6 +1,5 @@
 package com.ssomar.score.projectiles;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.types.*;
 import org.bukkit.configuration.file.FileConfiguration;

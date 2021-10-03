@@ -49,9 +49,9 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.CHAINMAIL_CHESTPLATE, 1, gui.TITLE_COLOR+"Knockback Strength", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        if(knockbackStrength == -1) gui.updateActually(gui.TITLE_COLOR+"Knockback Strength", "&cVANILLA KNOCKBACK");
-        else gui.updateInt(gui.TITLE_COLOR+"Knockback Strength", knockbackStrength);
+        gui.addItem(Material.CHAINMAIL_CHESTPLATE, 1, GUI.TITLE_COLOR +"Knockback Strength", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(knockbackStrength == -1) gui.updateActually(GUI.TITLE_COLOR +"Knockback Strength", "&cVANILLA KNOCKBACK");
+        else gui.updateInt(GUI.TITLE_COLOR +"Knockback Strength", knockbackStrength);
         return gui;
     }
 
@@ -59,7 +59,7 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change1 = StringConverter.decoloredString(gui.TITLE_COLOR+"Knockback Strength");
+        String change1 = StringConverter.decoloredString(GUI.TITLE_COLOR +"Knockback Strength");
 
        if(itemName.equals(change1)){
             requestChat = true;
@@ -74,10 +74,10 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        if(gui.getActually(gui.TITLE_COLOR+"Knockback Strength").contains("VANILLA KNOCKBACK")){
+        if(gui.getActually(GUI.TITLE_COLOR +"Knockback Strength").contains("VANILLA KNOCKBACK")){
             knockbackStrength = -1;
         }
-        else knockbackStrength = gui.getInt(gui.TITLE_COLOR+"Knockback Strength");
+        else knockbackStrength = gui.getInt(GUI.TITLE_COLOR +"Knockback Strength");
     }
 
     @Override
@@ -91,8 +91,8 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
                 player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid number for the setting knockbackStrength ("+message+")"));
                 return true;
             }
-            if(newKnock == -1)  gui.updateActually(gui.TITLE_COLOR+"Knockback Strength", "&cVANILLA KNOCKBACK");
-            else gui.updateInt(gui.TITLE_COLOR+"Knockback Strength", newKnock);
+            if(newKnock == -1)  gui.updateActually(GUI.TITLE_COLOR +"Knockback Strength", "&cVANILLA KNOCKBACK");
+            else gui.updateInt(GUI.TITLE_COLOR +"Knockback Strength", newKnock);
             gui.openGUISync(player);
             askKnockbackStrength = false;
             requestChat = false;

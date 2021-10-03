@@ -41,8 +41,8 @@ public class GlowingFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.BEACON, 1, gui.TITLE_COLOR+"Glowing", true, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Glowing", isGlowing);
+        gui.addItem(Material.BEACON, 1, GUI.TITLE_COLOR +"Glowing", true, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Glowing", isGlowing);
         return gui;
     }
 
@@ -50,11 +50,11 @@ public class GlowingFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Glowing");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Glowing");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Glowing");
-            gui.updateBoolean(gui.TITLE_COLOR+"Glowing", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Glowing");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Glowing", !bool);
         }
         else return false;
         return true;
@@ -63,6 +63,6 @@ public class GlowingFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isGlowing = gui.getBoolean(gui.TITLE_COLOR+"Glowing");
+        isGlowing = gui.getBoolean(GUI.TITLE_COLOR +"Glowing");
     }
 }

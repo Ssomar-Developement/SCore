@@ -41,8 +41,8 @@ public class GravityFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.ELYTRA, 1, gui.TITLE_COLOR+"Gravity", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Gravity", isGravity);
+        gui.addItem(Material.ELYTRA, 1, GUI.TITLE_COLOR +"Gravity", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Gravity", isGravity);
         return gui;
     }
 
@@ -50,11 +50,11 @@ public class GravityFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Gravity");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Gravity");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Gravity");
-            gui.updateBoolean(gui.TITLE_COLOR+"Gravity", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Gravity");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Gravity", !bool);
         }
         else return false;
         return true;
@@ -63,6 +63,6 @@ public class GravityFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isGravity = gui.getBoolean(gui.TITLE_COLOR+"Gravity");
+        isGravity = gui.getBoolean(GUI.TITLE_COLOR +"Gravity");
     }
 }

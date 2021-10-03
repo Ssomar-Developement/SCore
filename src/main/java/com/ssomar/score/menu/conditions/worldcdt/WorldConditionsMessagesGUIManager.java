@@ -54,37 +54,31 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerConditions<Worl
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

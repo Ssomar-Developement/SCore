@@ -45,8 +45,8 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.SLIME_BLOCK, 1, gui.TITLE_COLOR+"Bounce", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Bounce", isBounce);
+        gui.addItem(Material.SLIME_BLOCK, 1, GUI.TITLE_COLOR +"Bounce", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Bounce", isBounce);
         return gui;
     }
 
@@ -54,11 +54,11 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Bounce");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Bounce");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR + "Bounce");
-            gui.updateBoolean(gui.TITLE_COLOR + "Bounce", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR + "Bounce");
+            gui.updateBoolean(GUI.TITLE_COLOR + "Bounce", !bool);
         }
         else return false;
         return true;
@@ -67,6 +67,6 @@ public class BounceFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isBounce = gui.getBoolean(gui.TITLE_COLOR + "Bounce");
+        isBounce = gui.getBoolean(GUI.TITLE_COLOR + "Bounce");
     }
 }

@@ -95,19 +95,16 @@ public class TeleportOnCursor extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "TELEPORTONCURSOR {maxRange} {acceptAir true or false}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

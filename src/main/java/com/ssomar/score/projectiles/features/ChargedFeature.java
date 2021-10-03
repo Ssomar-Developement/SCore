@@ -44,8 +44,8 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.NETHER_STAR, 1, gui.TITLE_COLOR+"Charged", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Charged", isCharged);
+        gui.addItem(Material.NETHER_STAR, 1, GUI.TITLE_COLOR +"Charged", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Charged", isCharged);
         return gui;
     }
 
@@ -53,11 +53,11 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Charged");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Charged");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Charged");
-            gui.updateBoolean(gui.TITLE_COLOR+"Charged", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Charged");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Charged", !bool);
         }
         else return false;
         return true;
@@ -66,7 +66,7 @@ public class ChargedFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isCharged = gui.getBoolean(gui.TITLE_COLOR+"Charged");
+        isCharged = gui.getBoolean(GUI.TITLE_COLOR +"Charged");
     }
 
 }

@@ -19,6 +19,10 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
 
     public abstract SimpleGUI loadConfigGUI(SProjectiles sProj);
 
+    public SimpleGUI getMainGUI(){
+       return cProj.getMainGUI();
+    }
+
     @Override
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title){
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;

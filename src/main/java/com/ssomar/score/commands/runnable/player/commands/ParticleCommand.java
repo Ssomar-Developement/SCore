@@ -14,7 +14,6 @@ public class ParticleCommand extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		// TODO Auto-generated method stub
 		try {
 			receiver.getWorld().spawnParticle(Particle.valueOf(args.get(0)),
 					receiver.getLocation(),
@@ -28,7 +27,6 @@ public class ParticleCommand extends PlayerCommand{
 
 	@Override
 	public String verify(List<String> args) {
-		// TODO Auto-generated method stub
 		return "";
 	}
 	
@@ -41,19 +39,16 @@ public class ParticleCommand extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "PARTICLE {type} {quantity} {offset} {speed}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

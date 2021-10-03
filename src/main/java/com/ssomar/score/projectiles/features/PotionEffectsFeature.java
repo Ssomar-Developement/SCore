@@ -99,7 +99,8 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.BELL, 1, gui.TITLE_COLOR+"Potion effects", false, false, gui.CLICK_HERE_TO_CHANGE);
+        // TODO effects GUI
+        gui.addItem(Material.BELL, 1, GUI.TITLE_COLOR +"Potion effects", false, false, "&c&oNOT EDITABLE IN GAME FOR THE MOMENT");
         return gui;
     }
 

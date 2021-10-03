@@ -45,8 +45,8 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.CAMPFIRE, 1, gui.TITLE_COLOR+"Incendiary", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Incendiary", isIncendiary);
+        gui.addItem(Material.CAMPFIRE, 1, GUI.TITLE_COLOR +"Incendiary", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Incendiary", isIncendiary);
         return gui;
     }
 
@@ -54,11 +54,11 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Incendiary");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Incendiary");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Incendiary");
-            gui.updateBoolean(gui.TITLE_COLOR+"Incendiary", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Incendiary");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Incendiary", !bool);
         }
         else return false;
         return true;
@@ -67,6 +67,6 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isIncendiary = gui.getBoolean(gui.TITLE_COLOR+"Incendiary");
+        isIncendiary = gui.getBoolean(GUI.TITLE_COLOR +"Incendiary");
     }
 }

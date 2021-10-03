@@ -71,19 +71,16 @@ public class LaunchEntity extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "LAUNCHENTITY {entityType} {speed} [angle rotation y]";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -49,19 +49,16 @@ public class Sudo extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "SUDO {command}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -77,37 +77,31 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<Bloc
 
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

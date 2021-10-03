@@ -46,8 +46,8 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.DIAMOND_AXE, 1, gui.TITLE_COLOR+"Critical", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Critical", isCritical);
+        gui.addItem(Material.DIAMOND_AXE, 1, GUI.TITLE_COLOR +"Critical", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Critical", isCritical);
         return gui;
     }
 
@@ -55,11 +55,11 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Critical");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Critical");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Critical");
-            gui.updateBoolean(gui.TITLE_COLOR+"Critical", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Critical");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Critical", !bool);
         }
         else return false;
         return true;
@@ -68,7 +68,7 @@ public class CriticalFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isCritical = gui.getBoolean(gui.TITLE_COLOR+"Critical");
+        isCritical = gui.getBoolean(GUI.TITLE_COLOR +"Critical");
     }
 
 }

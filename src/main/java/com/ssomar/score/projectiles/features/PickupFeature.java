@@ -61,7 +61,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.LEAD, 1, gui.TITLE_COLOR+"Pickup", false, false, "", gui.CLICK_HERE_TO_CHANGE);
+        gui.addItem(Material.LEAD, 1, GUI.TITLE_COLOR +"Pickup", false, false, "", GUI.CLICK_HERE_TO_CHANGE);
         this.updatePickup(gui, pickupStatus);
         return gui;
     }
@@ -70,7 +70,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change = StringConverter.decoloredString(gui.TITLE_COLOR+"Pickup");
+        String change = StringConverter.decoloredString(GUI.TITLE_COLOR +"Pickup");
 
         if(itemName.equals(change)) {
             this.changePickup(gui);
@@ -86,7 +86,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
 
     public void changePickup(GUI gui) {
         boolean next = true;
-        ItemStack item = gui.getByName(gui.TITLE_COLOR+"Pickup");
+        ItemStack item = gui.getByName(GUI.TITLE_COLOR +"Pickup");
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         AbstractArrow.PickupStatus status = AbstractArrow.PickupStatus.ALLOWED;
@@ -118,7 +118,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     }
 
     public void updatePickup(GUI gui, AbstractArrow.PickupStatus status) {
-        ItemStack item = gui.getByName(gui.TITLE_COLOR+"Pickup");
+        ItemStack item = gui.getByName(GUI.TITLE_COLOR +"Pickup");
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
         boolean find = false;
@@ -150,7 +150,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     }
 
     public AbstractArrow.PickupStatus getPickup(GUI gui) {
-        ItemStack item = gui.getByName(gui.TITLE_COLOR+"Pickup");
+        ItemStack item = gui.getByName(GUI.TITLE_COLOR +"Pickup");
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

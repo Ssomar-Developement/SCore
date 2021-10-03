@@ -371,49 +371,41 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 
 	@Override
 	public boolean noShiftclicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<RequiredEIGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<RequiredEIGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

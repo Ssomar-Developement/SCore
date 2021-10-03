@@ -61,19 +61,16 @@ public class Jump extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "JUMP {number (max 5)}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

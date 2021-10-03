@@ -101,7 +101,6 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 
 	@Override
 	public void saveTheConfiguration(Player p) {
-		// TODO Auto-generated method stub
-		
+
 	}
 }

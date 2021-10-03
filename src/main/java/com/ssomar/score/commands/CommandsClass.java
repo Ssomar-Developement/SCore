@@ -7,18 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.configs.api.PlaceholderAPI;
-import com.ssomar.executableitems.configs.ingame.ConfigWriter;
-import com.ssomar.executableitems.configs.ingame.items.ItemGUIManager;
-import com.ssomar.executableitems.configs.ingame.items.ShowGUI;
-import com.ssomar.executableitems.items.*;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.types.CustomArrow;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

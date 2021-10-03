@@ -1,7 +1,6 @@
 package com.ssomar.score.usedapi;
 
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class MultiverseAPI {

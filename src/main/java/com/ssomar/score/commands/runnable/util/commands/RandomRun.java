@@ -18,19 +18,16 @@ public class RandomRun implements SCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "RANDOM RUN: {number}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return ChatColor.YELLOW;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return ChatColor.GOLD;
 	}
 }

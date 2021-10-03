@@ -47,9 +47,9 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.HEART_OF_THE_SEA, 1, gui.TITLE_COLOR+"Radius", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        if(yield == -1) gui.updateActually(gui.TITLE_COLOR+"Radius", "&cVANILLA RADIUS");
-        else gui.updateDouble(gui.TITLE_COLOR+"Radius", yield);
+        gui.addItem(Material.HEART_OF_THE_SEA, 1, GUI.TITLE_COLOR +"Radius", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(yield == -1) gui.updateActually(GUI.TITLE_COLOR +"Radius", "&cVANILLA RADIUS");
+        else gui.updateDouble(GUI.TITLE_COLOR +"Radius", yield);
         return gui;
     }
 
@@ -57,7 +57,7 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change1 = StringConverter.decoloredString(gui.TITLE_COLOR+"Radius");
+        String change1 = StringConverter.decoloredString(GUI.TITLE_COLOR +"Radius");
 
         if(itemName.equals(change1)){
             requestChat = true;
@@ -72,10 +72,10 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        if(gui.getActually(gui.TITLE_COLOR+"Radius").contains("VANILLA RADIUS")){
+        if(gui.getActually(GUI.TITLE_COLOR +"Radius").contains("VANILLA RADIUS")){
             yield = -1;
         }
-        else yield = gui.getInt(gui.TITLE_COLOR+"Radius");
+        else yield = gui.getInt(GUI.TITLE_COLOR +"Radius");
     }
 
     @Override
@@ -89,8 +89,8 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
                 player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid number for the setting radius ("+message+")"));
                 return true;
             }
-            if(newRadius == -1)  gui.updateActually(gui.TITLE_COLOR+"Radius", "&cVANILLA RADIUS");
-            else gui.updateInt(gui.TITLE_COLOR+"Radius", newRadius);
+            if(newRadius == -1)  gui.updateActually(GUI.TITLE_COLOR +"Radius", "&cVANILLA RADIUS");
+            else gui.updateInt(GUI.TITLE_COLOR +"Radius", newRadius);
             gui.openGUISync(player);
             askForYield = false;
             requestChat = false;

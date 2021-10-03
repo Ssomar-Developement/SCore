@@ -34,13 +34,11 @@ public class FlyOn extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "FLY ON";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return ChatColor.BLUE;
 	}
 

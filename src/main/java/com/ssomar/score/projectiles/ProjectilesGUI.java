@@ -1,11 +1,7 @@
 package com.ssomar.score.projectiles;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
-import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUI;
 import com.ssomar.score.projectiles.types.SProjectiles;
-import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

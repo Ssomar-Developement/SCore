@@ -48,17 +48,17 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.DEAD_BUSH, 1, gui.TITLE_COLOR+"1) Despawn delay", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        if(despawnDelay == -1) gui.updateActually(gui.TITLE_COLOR+"1) Despawn delay", "&cNO DESPAWN");
-        else gui.updateInt(gui.TITLE_COLOR+"1) Despawn delay", despawnDelay);
+        gui.addItem(Material.DEAD_BUSH, 1, GUI.TITLE_COLOR +"1) Despawn delay", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(despawnDelay == -1) gui.updateActually(GUI.TITLE_COLOR +"1) Despawn delay", "&cNO DESPAWN");
+        else gui.updateInt(GUI.TITLE_COLOR +"1) Despawn delay", despawnDelay);
         return gui;
     }
 
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        if(gui.getActually(gui.TITLE_COLOR+"1) Despawn delay").contains("NO DESPAWN")) despawnDelay = -1;
-        else despawnDelay = gui.getInt(gui.TITLE_COLOR+"1) Despawn delay");
+        if(gui.getActually(GUI.TITLE_COLOR +"1) Despawn delay").contains("NO DESPAWN")) despawnDelay = -1;
+        else despawnDelay = gui.getInt(GUI.TITLE_COLOR +"1) Despawn delay");
     }
 
 }

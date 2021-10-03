@@ -1,9 +1,7 @@
 package com.ssomar.score.projectiles.types;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,6 +19,8 @@ public abstract class CustomProjectile {
     public abstract void saveConfiguration(FileConfiguration config);
 
     public void transformTheProjectile(Entity e, Player launcher){}
+
+    public abstract SimpleGUI getMainGUI();
 
     /* false = no message */
     public boolean messageForConfig(SimpleGUI gui, Player player, String message){

@@ -1,7 +1,5 @@
 package com.ssomar.score.projectiles;
 
-import com.ssomar.executableitems.items.ItemLoader;
-import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
 
 import java.io.File;

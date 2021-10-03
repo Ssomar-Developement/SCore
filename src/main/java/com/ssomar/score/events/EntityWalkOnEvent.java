@@ -7,7 +7,6 @@ public class EntityWalkOnEvent extends Event{
 
 	@Override
 	public HandlerList getHandlers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

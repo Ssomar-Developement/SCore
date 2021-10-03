@@ -44,9 +44,69 @@ public class CustomColor {
 			return Color.WHITE;
 		case "YELLOW":
 			return Color.YELLOW;
+		case "NO_COLOR":
+			return Color.fromRGB(1, 2 ,3);
 		default: 
 			return null;
 		}
+	}
+
+	public static String getName(Color color){
+		if (AQUA.equals(color)) {
+			return "AQUA";
+		}
+		else if(color.equals(Color.BLACK)){
+			return "BLACK";
+		}
+		else if(color.equals(Color.BLUE)){
+			return "BLUE";
+		}
+		else if(color.equals(Color.FUCHSIA)){
+			return "FUCHSIA";
+		}
+		else if(color.equals(Color.GRAY)){
+			return "GRAY";
+		}
+		else if(color.equals(Color.GREEN)){
+			return "GREEN";
+		}
+		else if(color.equals(Color.LIME)){
+			return "LIME";
+		}
+		else if(color.equals(Color.MAROON)){
+			return "MAROON";
+		}
+		else if(color.equals(Color.NAVY)){
+			return "NAVY";
+		}
+		else if(color.equals(Color.OLIVE)){
+			return "OLIVE";
+		}
+		else if(color.equals(Color.ORANGE)){
+			return "ORANGE";
+		}
+		else if(color.equals(Color.PURPLE)){
+			return "PURPLE";
+		}
+		else if(color.equals(Color.RED)){
+			return "RED";
+		}
+		else if(color.equals(Color.SILVER)){
+			return "SILVER";
+		}
+		else if(color.equals(Color.TEAL)){
+			return "TEAL";
+		}
+		else if(color.equals(Color.WHITE)){
+			return "WHITE";
+		}
+		else if(color.equals(Color.YELLOW)){
+			return "YELLOW";
+		}
+		else if(color.equals(Color.fromRGB(1, 2 ,3))){
+			return "NO_COLOR";
+		}
+		return "AQUA";
 	}
 
 	public static Color[] values(){
@@ -67,7 +127,8 @@ public class CustomColor {
 				Color.SILVER,
 				Color.TEAL,
 				Color.WHITE,
-				Color.YELLOW
+				Color.YELLOW,
+				Color.fromRGB(1, 2 ,3)
 		};
 		return values;
 	}
@@ -120,6 +181,9 @@ public class CustomColor {
 		}
 		else if(color.equals(Color.WHITE)){
 			return Color.YELLOW;
+		}
+		else if(color.equals(Color.YELLOW)){
+			return Color.fromRGB(1,2,3);
 		}
 		else {
 			return Color.AQUA;

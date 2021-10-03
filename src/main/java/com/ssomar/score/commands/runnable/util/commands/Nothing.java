@@ -18,19 +18,16 @@ public class Nothing implements SCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "NOTHING*{number}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return ChatColor.YELLOW;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return ChatColor.GOLD;
 	}
 }

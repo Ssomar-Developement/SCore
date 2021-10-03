@@ -44,13 +44,11 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -70,25 +68,21 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

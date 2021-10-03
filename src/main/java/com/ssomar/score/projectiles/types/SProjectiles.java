@@ -10,6 +10,7 @@ import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,6 +41,11 @@ public abstract class SProjectiles extends CustomProjectile{
         this.projectile = this;
         this.projectile = setup(this.projectile);
         projectile.loadConfiguration(config, showError);
+        configGUI = projectile.loadConfigGUI(this);
+    }
+
+    public void reload(){
+        projectile.loadConfiguration(config, true);
         configGUI = projectile.loadConfigGUI(this);
     }
 
@@ -77,6 +83,10 @@ public abstract class SProjectiles extends CustomProjectile{
 
     public boolean sendInteractionConfigGUI(GUI gui, Player player, ItemStack itemS, String title){
         return projectile.interactionConfigGUI(gui, player, itemS, title);
+    }
+
+    public void executeTransformTheProjectile(Entity e, Player launcher){
+        projectile.transformTheProjectile(e, launcher);
     }
 
     @Override
@@ -247,5 +257,9 @@ public abstract class SProjectiles extends CustomProjectile{
 
     public void setConfigGUI(SimpleGUI configGUI) {
         this.configGUI = configGUI;
+    }
+
+    public SimpleGUI getMainGUI(){
+        return configGUI;
     }
 }

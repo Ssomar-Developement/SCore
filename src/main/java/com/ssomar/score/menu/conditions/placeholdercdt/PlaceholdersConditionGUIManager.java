@@ -134,43 +134,36 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

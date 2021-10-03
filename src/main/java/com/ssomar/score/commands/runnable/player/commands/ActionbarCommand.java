@@ -35,7 +35,6 @@ public class ActionbarCommand extends PlayerCommand{
 
 	@Override
 	public String verify(List<String> args) {
-		// TODO Auto-generated method stub
 		return "";
 	}
 

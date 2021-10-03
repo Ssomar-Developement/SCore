@@ -48,12 +48,12 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.NAME_TAG, 1, gui.TITLE_COLOR+"1) Custom name visible", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"1) Custom name visible", isCustomNameVisible);
+        gui.addItem(Material.NAME_TAG, 1, GUI.TITLE_COLOR +"1) Custom name visible", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"1) Custom name visible", isCustomNameVisible);
 
-        gui.addItem(Material.NAME_TAG, 1, gui.TITLE_COLOR+"2) Custom name", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        if(customName.isEmpty()) gui.updateActually(gui.TITLE_COLOR+"2) Custom name", "&cNO NAME");
-        else gui.updateActually(gui.TITLE_COLOR+"2) Custom name", customName);
+        gui.addItem(Material.NAME_TAG, 1, GUI.TITLE_COLOR +"2) Custom name", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(customName.isEmpty()) gui.updateActually(GUI.TITLE_COLOR +"2) Custom name", "&cNO NAME");
+        else gui.updateActually(GUI.TITLE_COLOR +"2) Custom name", customName);
         return gui;
     }
 
@@ -61,12 +61,12 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change1 = StringConverter.decoloredString(gui.TITLE_COLOR+"1) Custom name visible");
-        String change2 = StringConverter.decoloredString(gui.TITLE_COLOR+"2) Custom name");
+        String change1 = StringConverter.decoloredString(GUI.TITLE_COLOR +"1) Custom name visible");
+        String change2 = StringConverter.decoloredString(GUI.TITLE_COLOR +"2) Custom name");
 
         if(itemName.equals(change1)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"1) Custom name visible");
-            gui.updateBoolean(gui.TITLE_COLOR+"1) Custom name visible", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"1) Custom name visible");
+            gui.updateBoolean(GUI.TITLE_COLOR +"1) Custom name visible", !bool);
         }
         else if(itemName.equals(change2)){
             requestChat = true;
@@ -81,15 +81,15 @@ public class CustomNameFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isCustomNameVisible = gui.getBoolean(gui.TITLE_COLOR+"1) Custom name visible");
-        customName = gui.getActuallyWithColor(gui.TITLE_COLOR+"2) Custom name");
+        isCustomNameVisible = gui.getBoolean(GUI.TITLE_COLOR +"1) Custom name visible");
+        customName = gui.getActuallyWithColor(GUI.TITLE_COLOR +"2) Custom name");
     }
 
     @Override
     public boolean messageForConfig(SimpleGUI gui, Player player, String message){
         if(cProj.messageForConfig(gui, player, message)) return true;
         if(askName){
-            gui.updateActually(gui.TITLE_COLOR+"2) Custom name", message);
+            gui.updateActually(GUI.TITLE_COLOR +"2) Custom name", message);
             gui.openGUISync(player);
             askName = false;
             requestChat = false;

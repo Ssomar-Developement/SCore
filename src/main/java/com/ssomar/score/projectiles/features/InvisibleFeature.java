@@ -59,8 +59,8 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.GLASS_PANE, 1, gui.TITLE_COLOR+"Invisible", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Invisible", isInvisible);
+        gui.addItem(Material.GLASS_PANE, 1, GUI.TITLE_COLOR +"Invisible", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Invisible", isInvisible);
         return gui;
     }
 
@@ -68,11 +68,11 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Invisible");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Invisible");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Invisible");
-            gui.updateBoolean(gui.TITLE_COLOR+"Invisible", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Invisible");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Invisible", !bool);
         }
         else return false;
         return true;
@@ -81,6 +81,6 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isInvisible = gui.getBoolean(gui.TITLE_COLOR+"Invisible");
+        isInvisible = gui.getBoolean(GUI.TITLE_COLOR +"Invisible");
     }
 }

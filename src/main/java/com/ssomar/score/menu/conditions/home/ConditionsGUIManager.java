@@ -90,7 +90,6 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 
 	@Override
 	public void saveTheConfiguration(Player p) {
-		// TODO Auto-generated method stub
-		
+
 	}
 }

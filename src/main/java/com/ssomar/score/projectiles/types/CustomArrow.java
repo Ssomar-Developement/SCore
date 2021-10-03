@@ -2,7 +2,7 @@ package com.ssomar.score.projectiles.types;
 
 
 import com.ssomar.score.projectiles.features.*;
-import org.bukkit.configuration.file.FileConfiguration;
+import com.ssomar.score.projectiles.features.Particles.ParticlesFeature;
 
 import java.io.File;
 

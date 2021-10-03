@@ -18,13 +18,11 @@ public class Delay implements SCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "DELAY {number}";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return ChatColor.YELLOW;
 	}
 

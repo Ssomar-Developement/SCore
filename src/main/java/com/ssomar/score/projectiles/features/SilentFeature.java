@@ -41,8 +41,8 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.BELL, 1, gui.TITLE_COLOR+"Silent", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(gui.TITLE_COLOR+"Silent", isSilent);
+        gui.addItem(Material.BELL, 1, GUI.TITLE_COLOR +"Silent", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        gui.updateBoolean(GUI.TITLE_COLOR +"Silent", isSilent);
         return gui;
     }
 
@@ -50,11 +50,11 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(gui.TITLE_COLOR+"Silent");
+        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Silent");
 
         if(itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(gui.TITLE_COLOR+"Silent");
-            gui.updateBoolean(gui.TITLE_COLOR+"Silent", !bool);
+            boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Silent");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Silent", !bool);
         }
         else return false;
         return true;
@@ -63,6 +63,6 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isSilent = gui.getBoolean(gui.TITLE_COLOR+"Silent");
+        isSilent = gui.getBoolean(GUI.TITLE_COLOR +"Silent");
     }
 }

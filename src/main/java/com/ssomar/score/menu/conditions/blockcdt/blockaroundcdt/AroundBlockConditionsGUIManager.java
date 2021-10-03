@@ -126,7 +126,6 @@ public class AroundBlockConditionsGUIManager extends GUIManagerConditions<Around
 
 	@Override
 	public void saveTheConfiguration(Player p) {
-		// TODO Auto-generated method stub
-		
+
 	}
 }

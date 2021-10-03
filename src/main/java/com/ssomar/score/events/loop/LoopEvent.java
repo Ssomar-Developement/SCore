@@ -7,7 +7,6 @@ public class LoopEvent extends Event{
 
 	@Override
 	public HandlerList getHandlers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

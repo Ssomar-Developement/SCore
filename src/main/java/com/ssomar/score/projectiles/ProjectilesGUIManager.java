@@ -1,15 +1,8 @@
 package com.ssomar.score.projectiles;
 
-import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
-import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUI;
-import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.projectiles.types.SProjectiles;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.requiredei.RequiredEIManager;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -108,7 +101,6 @@ public class ProjectilesGUIManager extends GUIManager<ProjectilesGUI> {
 
     @Override
     public void saveTheConfiguration(Player p) {
-        // TODO Auto-generated method stub
 
     }
 }

@@ -1,8 +1,5 @@
 package com.ssomar.score.usedapi;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.bukkit.entity.Player;
 
 public class IridiumSkyblockTool {

@@ -308,13 +308,11 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -334,25 +332,21 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<PlayerConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<PlayerConditionsGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

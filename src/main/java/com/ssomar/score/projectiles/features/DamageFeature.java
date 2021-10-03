@@ -49,9 +49,9 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.DIAMOND_SWORD, 1, gui.TITLE_COLOR+"Damage", false, false, gui.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        if(damage == -1)  gui.updateActually(gui.TITLE_COLOR+"Damage", "&cVANILLA DAMAGE");
-        else gui.updateDouble(gui.TITLE_COLOR+"Damage", damage);
+        gui.addItem(Material.DIAMOND_SWORD, 1, GUI.TITLE_COLOR +"Damage", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        if(damage == -1)  gui.updateActually(GUI.TITLE_COLOR +"Damage", "&cVANILLA DAMAGE");
+        else gui.updateDouble(GUI.TITLE_COLOR +"Damage", damage);
         return gui;
     }
 
@@ -59,7 +59,7 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change = StringConverter.decoloredString(gui.TITLE_COLOR+"Damage");
+        String change = StringConverter.decoloredString(GUI.TITLE_COLOR +"Damage");
 
         if(itemName.equals(change)){
             requestChat = true;
@@ -74,8 +74,8 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        if(gui.getActually(gui.TITLE_COLOR+"Damage").contains("VANILLA DAMAGE")) damage = -1;
-        else damage = gui.getInt(gui.TITLE_COLOR+"Damage");
+        if(gui.getActually(GUI.TITLE_COLOR +"Damage").contains("VANILLA DAMAGE")) damage = -1;
+        else damage = gui.getInt(GUI.TITLE_COLOR +"Damage");
     }
 
     @Override
@@ -89,8 +89,8 @@ public class DamageFeature extends DecorateurCustomProjectiles {
                 player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid number for the setting damage ("+message+")"));
                 return true;
             }
-            if(newDamage == -1)  gui.updateActually(gui.TITLE_COLOR+"Damage", "&cVANILLA DAMAGE");
-            else gui.updateDouble(gui.TITLE_COLOR+"Damage", newDamage);
+            if(newDamage == -1)  gui.updateActually(GUI.TITLE_COLOR +"Damage", "&cVANILLA DAMAGE");
+            else gui.updateDouble(GUI.TITLE_COLOR +"Damage", newDamage);
             gui.openGUISync(player);
             askDamage = false;
             requestChat = false;

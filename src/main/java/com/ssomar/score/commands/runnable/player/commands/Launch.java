@@ -3,11 +3,12 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
 import com.ssomar.executableitems.items.ItemManager;
-import com.ssomar.executableitems.projectiles.ProjectilesManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.types.CustomProjectile;
+import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -58,9 +59,9 @@ public class Launch extends PlayerCommand{
 				else if(args.get(0).equalsIgnoreCase("TRIDENT")) entity = receiver.launchProjectile(Trident.class);
 				else if(args.get(0).equalsIgnoreCase("WITHERSKULL")) entity = receiver.launchProjectile(WitherSkull.class);
 				else if(ProjectilesManager.getInstance().containsProjectileWithID(args.get(0))) {
-					CustomProjectile projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
+					SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
 
-					/*switch(projectile.getIdentifierType()) {
+					switch(projectile.getIdentifierType()) {
 					case "ARROW":
 						entity = receiver.launchProjectile(Arrow.class);
 						break;
@@ -107,7 +108,7 @@ public class Launch extends PlayerCommand{
 						entity = receiver.launchProjectile(Arrow.class);
 						break;
 					}
-					projectile.transformTheProjectile(entity, receiver);*/
+					projectile.executeTransformTheProjectile(entity, receiver);
 
 				}	
 				
@@ -167,19 +168,16 @@ public class Launch extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		// TODO Auto-generated method stub
 		return "LAUNCH {projectileType} [angle rotation y]";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

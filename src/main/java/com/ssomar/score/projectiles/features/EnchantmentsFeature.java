@@ -18,16 +18,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EnchantmentsFeature extends DecorateurCustomProjectiles {
 
     private Map<SEnchantment,Integer> enchants;
+    boolean askEnchantments;
 
     public EnchantmentsFeature(CustomProjectile cProj){
         super.cProj = cProj;
         enchants = new HashMap<>();
+        this.askEnchantments = false;
     }
 
     @Override
@@ -100,7 +101,8 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.ENCHANTED_BOOK, 1, gui.TITLE_COLOR+"Enchantments", false, false, gui.CLICK_HERE_TO_CHANGE);
+        // TODO echantmentsGUI
+        gui.addItem(Material.ENCHANTED_BOOK, 1, GUI.TITLE_COLOR +"Enchantments", false, false, "&c&oNOT EDITABLE IN GAME FOR THE MOMENT");
         return gui;
     }
 
@@ -108,11 +110,12 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
         if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change = StringConverter.decoloredString(gui.TITLE_COLOR+"Pickup");
+        String change = StringConverter.decoloredString(GUI.TITLE_COLOR +"Pickup");
 
         if(itemName.equals(change)) {
            //this.changeEnchantment(gui);
         }
+
         return false;
     }
 

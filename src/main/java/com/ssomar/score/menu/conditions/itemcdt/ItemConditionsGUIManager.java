@@ -93,13 +93,11 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 
 	@Override
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean noShiftRightclicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -115,25 +113,21 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 
 	@Override
 	public boolean shiftLeftClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean shiftRightClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean leftClicked(InteractionClickedGUIManager<ItemConditionsGUI> i) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean rightClicked(InteractionClickedGUIManager<ItemConditionsGUI> interact) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
