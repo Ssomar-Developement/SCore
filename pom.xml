@@ -127,8 +127,8 @@
 			<url>https://jitpack.io</url>
 		</repository>
 		<repository>
-			<id>savagelabs</id>
-			<url>https://nexus.savagelabs.net/repository/maven-releases/</url>
+			<id>iridiumdevelopment</id>
+			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
 		</repository>
 		<repository>
 			<id>OnARandomBox</id>
