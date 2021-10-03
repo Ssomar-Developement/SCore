@@ -98,6 +98,10 @@
 
 	<repositories>
 		<repository>
+			<id>iridiumdevelopment</id>
+			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
+		</repository>
+		<repository>
 			<id>griefdefender</id>
 			<url>https://repo.glaremasters.me/repository/bloodshot/</url>
 		</repository>
@@ -125,10 +129,6 @@
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
-		</repository>
-		<repository>
-			<id>iridiumdevelopment</id>
-			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
 		</repository>
 		<repository>
 			<id>OnARandomBox</id>
@@ -206,8 +206,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.iridium</groupId>
-			<artifactId>iridiumskyblock</artifactId>
-			<version>3.0.0</version>
+			<artifactId>IridiumSkyblock</artifactId>
+			<version>3.1.1</version>
 			<scope>provided</scope>
 		</dependency>
 		 <dependency>
