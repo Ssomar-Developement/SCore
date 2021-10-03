@@ -42,7 +42,7 @@ public class SEnchantment {
 		deleteEnchantment(sPlugin, sObject, id);
 	}
 
-	public void saveEnchantments(SPlugin sPlugin, SObject sObject, int level) {
+	public void saveEnchantment(SPlugin sPlugin, SObject sObject, int level) {
 
 		// TODO not general string
 		if(!new File(sObject.getPath()).exists()) {
