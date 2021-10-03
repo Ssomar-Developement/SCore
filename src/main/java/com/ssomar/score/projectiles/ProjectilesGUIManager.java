@@ -34,8 +34,9 @@ public class ProjectilesGUIManager extends GUIManager<ProjectilesGUI> {
                 p.closeInventory();
                 new ProjectilesGUI(Integer.parseInt(currentPage.split("Page ")[1])-1, p).openGUISync(p);
             }
-            else if(name.contains("Return")) {
-                ProjectilesGUIManager.getInstance().getCache().get(p).openGUISync(p);
+            else if(name.contains("wiki")){
+                p.closeInventory();
+                p.sendMessage(StringConverter.coloredString("&6>> &eThe wiki: &ahttps://github.com/ssomar1607/ExecutableItems/wiki/%E2%9E%A4-Custom-Projectiles"));
             }
             else if(name.contains("New Custom projectile")) {
                 p.closeInventory();
@@ -75,8 +76,9 @@ public class ProjectilesGUIManager extends GUIManager<ProjectilesGUI> {
             p.closeInventory();
             new ProjectilesGUI(Integer.parseInt(currentPage.split("Page ")[1])-1, p).openGUISync(p);
         }
-        else if(name.contains("Return")) {
-            RequiredEIGUIManager.getInstance().getCache().get(p).openGUISync(p);
+        else if(name.contains("wiki")){
+            p.closeInventory();
+            p.sendMessage(StringConverter.coloredString("&6>> &eThe wiki: &ahttps://github.com/ssomar1607/ExecutableItems/wiki/%E2%9E%A4-Custom-Projectiles"));
         }
         else if(name.contains("New Custom projectile")) {
             p.closeInventory();

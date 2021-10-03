@@ -126,14 +126,14 @@
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
-		<!--<repository>
+		<repository>
 			<id>savagelabs</id>
 			<url>https://nexus.savagelabs.net/repository/maven-releases/</url>
-		</repository>-->
-		<!--<repository>
+		</repository>
+		<repository>
 			<id>OnARandomBox</id>
 			<url>https://repo.onarandombox.com/content/groups/public</url>
-		</repository> -->
+		</repository>
 
 		<repository>
 			<id>CoreProtect</id>
@@ -204,20 +204,18 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.13.1</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.iridium</groupId>
 			<artifactId>iridiumskyblock</artifactId>
 			<version>3.0.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.1.0.jar</systemPath>
+			<scope>provided</scope>
 		</dependency>
 		 <dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
 			<version>4.3.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/Multiverse-Core-4.3.1.jar</systemPath>
-		</dependency>  -->
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.github.angeschossen</groupId>
 			<artifactId>LandsAPI</artifactId>

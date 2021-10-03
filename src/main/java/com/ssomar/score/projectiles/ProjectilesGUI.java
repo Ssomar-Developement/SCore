@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.types.SProjectiles;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -61,6 +62,8 @@ public class ProjectilesGUI extends GUI {
         if(total>27 && index*27<total) createItem(PURPLE, 	1 , 44, 	"&5&l▶ &dNext page ", 	false, false);
 
         if(index>1) createItem(PURPLE, 	1 , 37, 	"&dPrevious page &5&l◀", 	false, false);
+
+        createItem(Material.BOOK, 1, 38, GUI.TITLE_COLOR + "&aOpen the wiki", false, false, "", "&7&oClick here to open the wiki !");
 
         createItem(GREEN, 	1 , 40, 	"&2&l✚ &aNew Custom projectile", 	false, false);
 

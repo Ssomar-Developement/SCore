@@ -59,8 +59,12 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.GLASS_PANE, 1, GUI.TITLE_COLOR +"Invisible", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(GUI.TITLE_COLOR +"Invisible", isInvisible);
+        if(SCore.hasProtocolLib){
+            gui.addItem(Material.GLASS_PANE, 1, GUI.TITLE_COLOR +"Invisible", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+            gui.updateBoolean(GUI.TITLE_COLOR +"Invisible", isInvisible);
+        }
+        else gui.addItem(Material.GLASS_PANE, 1, GUI.TITLE_COLOR +"Invisible", false, false, "&c&oREQUIRE PROTOCOLIB PLUGIN");
+
         return gui;
     }
 
@@ -70,7 +74,7 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
         String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
         String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR +"Invisible");
 
-        if(itemName.equals(changeBounce)) {
+        if(itemName.equals(changeBounce) && SCore.hasProtocolLib) {
             boolean bool = gui.getBoolean(GUI.TITLE_COLOR +"Invisible");
             gui.updateBoolean(GUI.TITLE_COLOR +"Invisible", !bool);
         }
@@ -81,6 +85,6 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     @Override
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
-        isInvisible = gui.getBoolean(GUI.TITLE_COLOR +"Invisible");
+        if(SCore.hasProtocolLib) isInvisible = gui.getBoolean(GUI.TITLE_COLOR +"Invisible");
     }
 }
