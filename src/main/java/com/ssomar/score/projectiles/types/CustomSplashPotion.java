@@ -5,14 +5,14 @@ import com.ssomar.score.projectiles.features.Particles.ParticlesFeature;
 
 import java.io.File;
 
-public class CustomEnderpearl extends SProjectiles {
+public class CustomSplashPotion extends SProjectiles {
 
 
-    public CustomEnderpearl(String id, File file) {
+    public CustomSplashPotion(String id, File file) {
         super(id, file);
     }
 
-    public CustomEnderpearl(String id, File file, boolean showError) {
+    public CustomSplashPotion(String id, File file, boolean showError) {
         super(id, file, showError);
     }
 
@@ -26,8 +26,9 @@ public class CustomEnderpearl extends SProjectiles {
         proj = new DespawnFeature(proj);
         proj = new VelocityFeature(proj);
         proj = new SilentFeature(proj);
+        proj = new ColorFeature(proj);
         proj = new ParticlesFeature(proj);
-        proj = new VisualItemFeature(proj);
+        proj = new PotionEffectsFeature(proj);
         return proj;
     }
 }

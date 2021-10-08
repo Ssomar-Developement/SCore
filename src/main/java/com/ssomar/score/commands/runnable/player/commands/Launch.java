@@ -65,34 +65,34 @@ public class Launch extends PlayerCommand{
 					case "ARROW":
 						entity = receiver.launchProjectile(Arrow.class);
 						break;
-					case "DRAGONFIREBALL":
+					case "DRAGON_FIREBALL":
 						entity = receiver.launchProjectile(DragonFireball.class);
 						break;
 					case "EGG":
 						entity = receiver.launchProjectile(Egg.class);
 						break;
-					case "ENDERPEARL":
+					case "ENDER_PEARL":
 						entity = receiver.launchProjectile(EnderPearl.class);
 						break;
 					case "FIREBALL":
 						entity = receiver.launchProjectile(Fireball.class);
 						break;
-					case "LARGEFIREBALL":
+					case "LARGE_FIREBALL":
 						entity = receiver.launchProjectile(LargeFireball.class);
 						break;
-					case "LINGERINGPOTION":
+					case "LINGERING_POTION":
 						entity = receiver.launchProjectile(LingeringPotion.class);
 						break;
-					case "SPLASHPOTION":
+					case "SPLASH_POTION":
 						entity = receiver.launchProjectile(SplashPotion.class);
 						break;
-					case "LLAMASPIT":
+					case "LLAMA_SPIT":
 						entity = receiver.launchProjectile(LlamaSpit.class);
 						break;
-					case "SHULKERBULLET":
+					case "SHULKER_BULLET":
 						entity = receiver.launchProjectile(ShulkerBullet.class);
 						break;
-					case "SIZEDFIREBALL":
+					case "SIZED_FIREBALL":
 						entity = receiver.launchProjectile(SizedFireball.class);
 						break;
 					case "SNOWBALL":
@@ -101,7 +101,7 @@ public class Launch extends PlayerCommand{
 					case "TRIDENT":
 						entity = receiver.launchProjectile(Trident.class);
 						break;
-					case "WITHERSKULL":
+					case "WITHER_SKULL":
 						entity = receiver.launchProjectile(WitherSkull.class);
 						break;
 					default:

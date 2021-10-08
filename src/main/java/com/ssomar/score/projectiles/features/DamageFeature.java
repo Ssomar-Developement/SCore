@@ -75,7 +75,7 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     public void extractInfosGUI(GUI gui) {
         cProj.extractInfosGUI(gui);
         if(gui.getActually(GUI.TITLE_COLOR +"Damage").contains("VANILLA DAMAGE")) damage = -1;
-        else damage = gui.getInt(GUI.TITLE_COLOR +"Damage");
+        else damage = gui.getDouble(GUI.TITLE_COLOR +"Damage");
     }
 
     @Override

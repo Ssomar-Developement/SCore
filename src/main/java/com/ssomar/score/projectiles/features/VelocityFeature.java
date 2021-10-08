@@ -85,15 +85,15 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     public boolean messageForConfig(SimpleGUI gui, Player player, String message){
         if(cProj.messageForConfig(gui, player, message)) return true;
         if(askVelocity){
-            int newVelocity;
+            double newVelocity;
             try{
-                newVelocity = Integer.valueOf(StringConverter.decoloredString(message));
+                newVelocity = Double.valueOf(StringConverter.decoloredString(message));
             }catch(NumberFormatException e){
                 player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid number for the setting velocity ("+message+")"));
                 return true;
             }
             if(newVelocity == -1)  gui.updateActually(GUI.TITLE_COLOR +"Velocity", "&cVANILLA VELOCITY");
-            else gui.updateInt(GUI.TITLE_COLOR +"Velocity", newVelocity);
+            else gui.updateDouble(GUI.TITLE_COLOR +"Velocity", newVelocity);
             gui.openGUISync(player);
             askVelocity = false;
             requestChat = false;

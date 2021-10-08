@@ -1,11 +1,11 @@
 package com.ssomar.score.projectiles.features;
 
-import com.ssomar.executableitems.items.SEnchantment;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.score.sobject.enchantments.SEnchantment;
 import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Material;

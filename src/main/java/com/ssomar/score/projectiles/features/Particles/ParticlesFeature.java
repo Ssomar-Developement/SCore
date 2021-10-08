@@ -209,7 +209,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         // TODO particles GUI
         gui.addItem(Material.BLAZE_POWDER, 1, GUI.TITLE_COLOR +"Particles", false, false, "","&c&oNOT EDITABLE IN GAME FOR THE MOMENT");
-        this.updateParticles(gui, particles);
+        //this.updateParticles(gui, particles);
         return gui;
     }
 

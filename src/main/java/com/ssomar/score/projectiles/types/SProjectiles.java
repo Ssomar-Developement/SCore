@@ -149,6 +149,8 @@ public abstract class SProjectiles extends CustomProjectile{
                 return Material.FIRE_CHARGE;
             case "SPLASH_POTION":
                 return Material.SPLASH_POTION;
+            case "LINGERING_POTION":
+                return Material.LINGERING_POTION;
             case "SHULKER_BULLET":
                 return Material.SHULKER_SHELL;
             case "SNOWBALL":
@@ -184,9 +186,14 @@ public abstract class SProjectiles extends CustomProjectile{
             case "FIREBALL":
                 config.set("type", "SPLASH_POTION");
                 this.saveConfigInFile(config, file);
-                proj = new CustomLingering(id, file);
+                proj = new CustomSplashPotion(id, file);
                 break;
             case "SPLASH_POTION":
+                config.set("type", "LINGERING_POTION");
+                this.saveConfigInFile(config, file);
+                proj = new CustomLingering(id, file);
+                break;
+            case "LINGERING_POTION":
                 config.set("type", "SHULKER_BULLET");
                 this.saveConfigInFile(config, file);
                 proj = new CustomShulkerBullet(id, file);

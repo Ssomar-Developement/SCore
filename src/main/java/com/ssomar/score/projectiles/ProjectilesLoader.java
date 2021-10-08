@@ -237,45 +237,45 @@ public class ProjectilesLoader {
 				FileConfiguration projConfig = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
 
 				if(projConfig.contains("type")) {	
-					EntityType entityType;
-					if(validProjectiles.contains((entityType = EntityType.valueOf(projConfig.getString("type").toUpperCase())))) {
+					String type = projConfig.getString("type");
 						SProjectiles projectile = null;
 
-						switch(entityType){
-							case SPLASH_POTION:
+						switch(type){
+							case "SPLASH_POTION":
+								projectile = new CustomSplashPotion(id, file);
+								break;
+							case "LINGERING_POTION":
 								projectile = new CustomLingering(id, file);
 								break;
-							case ARROW:
+							case "ARROW":
 								projectile = new CustomArrow(id, file);
 								break;
-							case EGG:
+							case "EGG":
 								projectile = new CustomEgg(id, file);
 								break;
-							case ENDER_PEARL:
+							case "ENDER_PEARL":
 								projectile = new CustomEnderpearl(id, file);
 								break;
-							case FIREBALL: case DRAGON_FIREBALL: case SMALL_FIREBALL:
+							case "FIREBALL": case "DRAGON_FIREBALL": case "SMALL_FIREBALL":
 								projectile = new CustomFireball(id, file);
 								break;
-							case SHULKER_BULLET:
+							case "SHULKER_BULLET":
 								projectile = new CustomShulkerBullet(id, file);
 								break;
-							case SNOWBALL:
+							case "SNOWBALL":
 								projectile = new CustomSnowball(id, file);
 								break;
-							case TRIDENT:
+							case "TRIDENT":
 								projectile = new CustomTrident(id, file);
 								break;
-							case WITHER_SKULL:
+							case "WITHER_SKULL":
 								projectile = new CustomWitherSkull(id, file);
 								break;
+							default:
+								SCore.plugin.getLogger().severe("[ExecutableItems] Invalid type of projectile for the projectile file: "+file.getName());
+								return null;
 						}
 						return projectile;
-					}
-					else {
-						SCore.plugin.getLogger().severe("[ExecutableItems] Invalid type of projectile for the projectile file: "+file.getName());
-						return null;
-					}
 				}
 				else {
 					return null;

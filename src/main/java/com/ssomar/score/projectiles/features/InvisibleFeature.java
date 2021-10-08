@@ -30,7 +30,7 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
 
     @Override
     public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
-        isInvisible = projConfig.getBoolean("invisilbe", false);
+        isInvisible = projConfig.getBoolean("invisible", false);
         return  cProj.loadConfiguration(projConfig, showError) && true;
     }
 

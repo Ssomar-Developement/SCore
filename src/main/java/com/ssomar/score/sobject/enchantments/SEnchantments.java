@@ -1,8 +1,6 @@
 package com.ssomar.score.sobject.enchantments;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
