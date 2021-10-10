@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -24,6 +25,10 @@ public class Damage extends PlayerCommand{
 			if(damage.contains("%")) {
 				String [] decomp = damage.split("\\%");
 				damage = decomp[0];
+				damage = damage.trim();
+				if(damage.length() == 1){
+					damage = "0"+damage;
+				}
 				
 				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
 				amount = receiver.getMaxHealth() * percentage;
