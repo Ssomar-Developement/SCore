@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -47,7 +48,11 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.HEART_OF_THE_SEA, 1, GUI.TITLE_COLOR +"Radius", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        Material radiusMat;
+        if(SCore.is1v12()) radiusMat = Material.valueOf("WEB");
+        else radiusMat = Material.HEART_OF_THE_SEA;
+
+        gui.addItem(radiusMat, 1, GUI.TITLE_COLOR +"Radius", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
         if(yield == -1) gui.updateActually(GUI.TITLE_COLOR +"Radius", "&cVANILLA RADIUS");
         else gui.updateDouble(GUI.TITLE_COLOR +"Radius", yield);
         return gui;

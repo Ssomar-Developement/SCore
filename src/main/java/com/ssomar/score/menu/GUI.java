@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.sk89q.jchronic.tags.Scalar;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -58,17 +59,17 @@ public abstract class GUI {
 
 	public Material HEAD = null;
 
-	public Material RED = null;
+	public static Material RED = null;
 
-	public Material ORANGE = null;
+	public static Material ORANGE = null;
 
-	public Material GREEN = null;
+	public static Material GREEN = null;
 
-	public Material YELLOW = null;
+	public static Material YELLOW = null;
 
-	public Material PURPLE = null;
+	public static Material PURPLE = null;
 
-	public Material BLUE = null;
+	public static Material BLUE = null;
 
 	private Inventory inv;
 
@@ -147,7 +148,7 @@ public abstract class GUI {
 	public void addItem(Material material, int amount, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 		int i = 0;
 		for(ItemStack item : inv){
-			if(item == null || item.getType().equals(Material.LIGHT_BLUE_STAINED_GLASS_PANE)) break;
+			if(item == null || (!SCore.is1v12() && item.getType().equals(Material.LIGHT_BLUE_STAINED_GLASS_PANE))) break;
 			i++;
 		}
 		createItem(material, amount, i, displayName, glow, haveEnchant, loreString);
@@ -173,7 +174,7 @@ public abstract class GUI {
 		for(String s : loreString) lore.add(StringConverter.coloredString(s));
 
 		meta.setLore(lore);
-		meta.setCustomModelData(customTextureTag);
+		if(!SCore.is1v12()) meta.setCustomModelData(customTextureTag);
 		item.setItemMeta(meta);
 		inv.setItem(invSlot, item);	
 
@@ -210,7 +211,9 @@ public abstract class GUI {
 
 	public ItemStack getByName(String name) {
 		for(ItemStack item: inv.getContents()) {
-			if(item!=null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))) return item;
+			if(item != null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))){
+				return item;
+			}
 		}
 		return null;
 	}
@@ -286,9 +289,9 @@ public abstract class GUI {
 	}
 
 	public void updateActually(ItemStack item, String update) {
-		ItemMeta meta= item.getItemMeta();
+		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		int cpt=0;
+		int cpt = 0;
 		for(String s: lore) {
 			if(StringConverter.decoloredString(s).contains("actually:")) break;
 			cpt++;

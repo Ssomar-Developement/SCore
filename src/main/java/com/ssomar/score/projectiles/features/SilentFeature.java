@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -41,7 +42,11 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.BELL, 1, GUI.TITLE_COLOR +"Silent", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        Material bell;
+        if(SCore.is1v12()) bell = Material.JUKEBOX;
+        else bell = Material.BELL;
+
+        gui.addItem(bell, 1, GUI.TITLE_COLOR +"Silent", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
         gui.updateBoolean(GUI.TITLE_COLOR +"Silent", isSilent);
         return gui;
     }

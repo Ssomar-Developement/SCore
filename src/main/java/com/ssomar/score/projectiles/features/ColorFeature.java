@@ -82,7 +82,11 @@ public class ColorFeature extends DecorateurCustomProjectiles {
 
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.RED_DYE, 1, GUI.TITLE_COLOR +"Color", false, false, "",GUI.CLICK_HERE_TO_CHANGE);
+        Material colorMat;
+        if(SCore.is1v12()) colorMat = Material.valueOf("INK_SACK");
+        else colorMat = Material.RED_DYE;
+
+        gui.addItem(colorMat, 1, GUI.TITLE_COLOR +"Color", false, false, "",GUI.CLICK_HERE_TO_CHANGE);
         updateColor(gui, color);
         return gui;
     }

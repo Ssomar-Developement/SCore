@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -45,7 +46,10 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.CAMPFIRE, 1, GUI.TITLE_COLOR +"Incendiary", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        Material fire;
+        if(SCore.is1v12()) fire = Material.FLINT_AND_STEEL;
+        else fire = Material.CAMPFIRE;
+        gui.addItem(fire, 1, GUI.TITLE_COLOR +"Incendiary", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
         gui.updateBoolean(GUI.TITLE_COLOR +"Incendiary", isIncendiary);
         return gui;
     }

@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -50,7 +51,11 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.FIREWORK_ROCKET, 1, GUI.TITLE_COLOR +"Velocity", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        Material firework;
+        if(SCore.is1v12()) firework = Material.valueOf("FIREWORK");
+        else firework = Material.FIREWORK_ROCKET;
+
+        gui.addItem(firework, 1, GUI.TITLE_COLOR +"Velocity", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
         if(velocity == -1) gui.updateActually(GUI.TITLE_COLOR +"Velocity", "&cVANILLA VELOCITY");
         else gui.updateDouble(GUI.TITLE_COLOR +"Velocity", velocity);
         return gui;

@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.types;
 
 import com.google.common.base.Charsets;
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
@@ -75,9 +76,9 @@ public abstract class SProjectiles extends CustomProjectile{
         configGui.createItem(Material.ANVIL, 1, 42, GUI.TITLE_COLOR + "&e>>&l &aProjectile ID:", false, false, "", "&7actually: ");
         configGui.updateActually(GUI.TITLE_COLOR + "&e>>&l &aProjectile ID:", proj.getId());
 
-        configGui.createItem(Material.ORANGE_STAINED_GLASS_PANE, 1, 36, GUI.TITLE_COLOR + "&cBack to projectiles", false, false, "", "&7&oBack to projectiles !");
+        configGui.createItem(GUI.ORANGE, 1, 36, GUI.TITLE_COLOR + "&cBack to projectiles", false, false, "", "&7&oBack to projectiles !");
 
-        configGui.createItem(Material.LIME_STAINED_GLASS_PANE, 1, 44, GUI.TITLE_COLOR + "&aSave the config", false, false, "", "&7&oClick here to save !");
+        configGui.createItem(GUI.GREEN, 1, 44, GUI.TITLE_COLOR + "&aSave the config", false, false, "", "&7&oClick here to save !");
         return configGui;
     }
 
@@ -146,7 +147,10 @@ public abstract class SProjectiles extends CustomProjectile{
             case "ENDER_PEARL":
                 return Material.ENDER_PEARL;
             case "FIREBALL":
-                return Material.FIRE_CHARGE;
+                Material fireball;
+                if(SCore.is1v12()) fireball = Material.valueOf("FIREBALL");
+                else fireball = Material.FIRE_CHARGE;
+                return fireball;
             case "SPLASH_POTION":
                 return Material.SPLASH_POTION;
             case "LINGERING_POTION":
@@ -154,11 +158,20 @@ public abstract class SProjectiles extends CustomProjectile{
             case "SHULKER_BULLET":
                 return Material.SHULKER_SHELL;
             case "SNOWBALL":
-                return Material.SNOWBALL;
+                Material snowball;
+                if(SCore.is1v12()) snowball = Material.valueOf("SNOW_BALL");
+                else snowball = Material.SNOWBALL;
+                return snowball;
             case "TRIDENT":
-                return Material.TRIDENT;
+                Material trident;
+                if(SCore.is1v12()) trident = Material.STICK;
+                else trident = Material.TRIDENT;
+                return trident;
             case "WITHER_SKULL":
-                return Material.WITHER_SKELETON_SKULL;
+                Material skull;
+                if(SCore.is1v12()) skull = Material.valueOf("SKULL");
+                else skull = Material.WITHER_SKELETON_SKULL;
+                return skull;
             default:
                 SsomarDev.testMsg("Error get material proj: "+ this.getIdentifierType());
                 return Material.SPONGE;
