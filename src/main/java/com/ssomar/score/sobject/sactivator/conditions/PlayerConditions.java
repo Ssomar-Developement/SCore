@@ -907,7 +907,7 @@ public class PlayerConditions extends Conditions{
 				result.add(pET.getName() +":"+pC.ifPlayerHasEffectEquals.get(pET));
 			}
 			pCConfig.set("ifPlayerHasEffectEquals", result);
-			pCConfig.set("ifPlayerHasEffectEqualsMsg", pC.getIfPlayerHasEffectMsg());
+			pCConfig.set("ifPlayerHasEffectEqualsMsg", pC.getIfPlayerHasEffectEqualsMsg());
 		}
 		else pCConfig.set("ifPlayerHasEffectEquals", null);
 

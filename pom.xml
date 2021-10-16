@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.5.5.3</version>
+	<version>1.5.5.4</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -18,7 +18,7 @@
 	</properties>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 
 		<resources>
@@ -89,6 +89,12 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<relocations>
+								<relocation>
+									<pattern>com.mysql</pattern>
+									<shadedPattern>com.ssomar.score.libraries.mysql</shadedPattern>
+								</relocation>
+							</relocations>
 						</configuration>
 					</execution>
 				</executions>

@@ -47,7 +47,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                 if(couple.getElem2()){
                     particles.add(couple.getElem1());
                 }
-                else return cProj.loadConfiguration(projConfig, showError) && false;
+                else continue;
             }
         }
         else{
@@ -88,6 +88,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                 return new Couple(null, false);
             }
         }
+        if(particlesType == null) return new Couple(null, false);
 
         particlesAmount = conf.getInt("particlesAmount", 1);
 

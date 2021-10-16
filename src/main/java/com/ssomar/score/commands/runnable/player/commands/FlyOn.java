@@ -3,10 +3,10 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.fly.FlyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.ssomar.executableitems.fly.FlyManager;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 

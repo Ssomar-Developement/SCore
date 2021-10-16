@@ -28,8 +28,12 @@ public class Damage extends EntityCommand{
 			String damage = args.get(0);
 			/* percentage damage */
 			if(damage.contains("%") && entity instanceof LivingEntity) {
-				String [] decomposition = damage.split("\\%");
-				damage = decomposition[0];
+					String [] decomp = damage.split("\\%");
+					damage = decomp[0];
+					damage = damage.trim();
+					if(damage.length() == 1){
+						damage = "0"+damage;
+					}
 				
 				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
 				amount = ((LivingEntity) entity).getMaxHealth() * percentage;

@@ -92,6 +92,7 @@ public class VeinBreaker  extends BlockCommand{
 			ExecutableBlockPlaced eBP;
 			if((eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(bLoc)) != null) {
 				ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
+				// TODO add the drop of the EB here
 			}
 		}
 

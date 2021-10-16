@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,9 +36,10 @@ public class DropExecutableItem extends BlockCommand{
 		public String verify(List<String> args) {
 			String error = "";
 
-			String dropei= "DROPEXECUTABLEITEM {id} {quantity}";
-			if(args.size()<2) error = notEnoughArgs+dropei;
-			else if(args.size()==2) {
+			String dropei = "DROPEXECUTABLEITEM {id} {quantity}";
+			if(args.size() < 2) error = notEnoughArgs+dropei;
+			else if(args.size() == 2) {
+				SsomarDev.testMsg("arg: "+args.get(0)+ " valid: "+ExecutableItemsAPI.isValidID(args.get(0))+ " error: "+ (!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))));
 				if(!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
 				else {
 					try {
@@ -47,7 +49,7 @@ public class DropExecutableItem extends BlockCommand{
 					}
 				}
 			}
-			else error= tooManyArgs+dropei;
+			else error = tooManyArgs+dropei;
 
 			return error;
 		}
