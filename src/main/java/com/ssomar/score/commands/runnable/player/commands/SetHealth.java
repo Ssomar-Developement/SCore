@@ -16,7 +16,7 @@ public class SetHealth extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
-			if(args.size()==0) {
+			if(args.size() == 0) {
 				receiver.setHealth(receiver.getMaxHealth());
 			}
 			else {
@@ -32,7 +32,7 @@ public class SetHealth extends PlayerCommand{
 
 		String sethealth= "SETHEALTH {amount}";
 		if(args.size()>1) error= tooManyArgs+sethealth;
-		else if(args.size()==1 && !args.get(0).contains("%")) { 
+		else if(args.size()==1 && !args.get(0).contains("%")) {
 			try {
 				Double.valueOf(args.get(0));
 			}catch(NumberFormatException e){

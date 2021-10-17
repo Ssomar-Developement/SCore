@@ -14,8 +14,8 @@ public class RegainHealth extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		double regain=1;
-		if(args.size()==1) {
+		double regain = 1;
+		if(args.size() == 1) {
 			regain = Double.parseDouble(args.get(0));
 		}
 		if(receiver.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() >= receiver.getHealth()+regain)
@@ -25,16 +25,16 @@ public class RegainHealth extends PlayerCommand{
 
 	@Override
 	public String verify(List<String> args) {
-		String error ="";
+		String error = "";
 
 		String regainHealth= "REGAIN HEALTH {amount}";
-		if(args.size()>1) error= tooManyArgs+regainHealth;
-		else if(args.size()==1) { 
-			try {
-				Double.valueOf(args.get(0));
-			}catch(NumberFormatException e){
-				error = invalidTime+args.get(0)+" for command: "+regainHealth;
-			}
+		if(args.size()>1) error = tooManyArgs+regainHealth;
+		else if(args.size() == 1 && !args.get(0).contains("%")) {
+				try {
+					Double.valueOf(args.get(0));
+				} catch (NumberFormatException e) {
+					error = invalidTime + args.get(0) + " for command: " + regainHealth;
+				}
 		}
 
 		return error;

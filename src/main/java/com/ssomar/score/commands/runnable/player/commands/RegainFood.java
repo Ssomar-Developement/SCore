@@ -13,8 +13,8 @@ public class RegainFood extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		int regain=1;
-		if(args.size()==1) {
+		int regain = 1;
+		if(args.size() == 1) {
 			regain = Integer.parseInt(args.get(0));
 		}
 		receiver.setFoodLevel(receiver.getFoodLevel()+regain);
@@ -22,16 +22,16 @@ public class RegainFood extends PlayerCommand{
 
 	@Override
 	public String verify(List<String> args) {
-		String error ="";
+		String error = "";
 
-		String regainHealth= "REGAIN FOOD {amount}";
-		if(args.size()>1) error= tooManyArgs+regainHealth;
-		else if(args.size()==1) { 
-			try {
-				Integer.valueOf(args.get(0));
-			}catch(NumberFormatException e){
-				error = invalidTime+args.get(0)+" for command: "+regainHealth;
-			}
+		String regainHealth = "REGAIN FOOD {amount}";
+		if(args.size() > 1) error = tooManyArgs+regainHealth;
+		else if(args.size() == 1 && !args.get(0).contains("%")) {
+				try {
+					Integer.valueOf(args.get(0));
+				} catch (NumberFormatException e) {
+					error = invalidTime + args.get(0) + " for command: " + regainHealth;
+				}
 		}
 
 		return error;
