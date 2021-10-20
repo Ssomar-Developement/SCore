@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
+import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -57,8 +59,16 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 			}
 			i.player.closeInventory();
 			space(i.player);
-			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION TYPE MUST BE:"));
+			i.player.sendMessage(StringConverter.coloredString("&2&l"+i.sPlugin.getNameDesign()+" &a&lEDITION TYPE MUST BE:"));
 			this.showTypeMustBeEditor(i.player);
+			space(i.player);
+		}
+
+		else if(i.name.contains(AroundBlockConditionGUI.ERROR_MSG)) {
+			requestWriting.put(i.player, AroundBlockConditionGUI.ERROR_MSG);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&2&l"+i.sPlugin.getNameDesign()+" &a&lWrite your error message:"));
 			space(i.player);
 		}
 
@@ -68,11 +78,17 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 			this.saveTheConfiguration(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
-			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions().getBlockAroundConditions(), detail);
+			BlockConditions cdts;
+			if(detail.equals("targetBlockConditions")) cdts = i.sActivator.getTargetBlockConditions();
+			else cdts = i.sActivator.getBlockConditions();
+			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cdts.getBlockAroundConditions(), detail);
 		}
 
 		else if(i.name.contains("Back")) {
-			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions().getBlockAroundConditions(), cache.get(i.player).getDetail());
+			BlockConditions cdts;
+			if(cache.get(i.player).getDetail().equals("targetBlockConditions")) cdts = i.sActivator.getTargetBlockConditions();
+			else cdts = i.sActivator.getBlockConditions();
+			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cdts.getBlockAroundConditions(), cache.get(i.player).getDetail());
 		}
 		else return false;
 		
@@ -210,6 +226,12 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 				p.sendMessage(StringConverter.coloredString("&a&l"+plName+" &2&lEDITION &aYou have added new accepted EB!"));
 
 				this.showTheGoodEditor(requestWriting.get(p), p);
+			}
+
+			else if(requestWriting.get(p).equals(AroundBlockConditionGUI.ERROR_MSG)) {
+				cache.get(p).updateActually(AroundBlockConditionGUI.ERROR_MSG, StringConverter.coloredString(message));
+				cache.get(p).openGUISync(p);
+				requestWriting.remove(p);
 			}
 		}
 	}

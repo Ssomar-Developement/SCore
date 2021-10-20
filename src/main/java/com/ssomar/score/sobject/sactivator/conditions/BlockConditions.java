@@ -64,10 +64,12 @@ public class BlockConditions extends Conditions{
 	private String ifBlockLocationZ2;
 	public static final String IF_BLOCK_LOCATION_Z2_MSG = " &cThe block location Z is invalid to active the activator: &6%activator% &cof this item!";
 	private String ifBlockLocationZ2Msg;
-	
-
 
 	List<AroundBlockCondition> blockAroundConditions;
+
+	public BlockConditions(){
+		init();
+	}
 
 	@Override
 	public void init() {

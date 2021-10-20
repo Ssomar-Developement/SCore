@@ -28,7 +28,7 @@ public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
 
 	// other pages
 	public AroundBlockConditionsGUI(int index, SPlugin sPlugin, SObject sObject, SActivator sActivator, List<AroundBlockCondition> list, String detail) {
-		super("&8&l"+sPlugin.getShortName()+"Editor - Around block Conditions - Page " + index, 5 * 9, sPlugin, sObject, sActivator, detail, null);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Around block Conditions - Page " + index, 5 * 9, sPlugin, sObject, sActivator, detail, null);
 		this.list = list;
 		setIndex(index);
 		loadCdts(sObject, sActivator, list);

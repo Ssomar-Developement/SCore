@@ -2,6 +2,8 @@ package com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt;
 
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
+import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -62,7 +64,10 @@ public class AroundBlockConditionsGUIManager extends GUIManagerConditions<Around
 		} 
 		
 		else if(i.name.contains("Back")) {
-			BlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions(), cache.get(i.player).getDetail());
+			BlockConditions cdts;
+			if(cache.get(i.player).getDetail().equals("targetBlockConditions")) cdts = i.sActivator.getTargetBlockConditions();
+			else cdts = i.sActivator.getBlockConditions();
+			BlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cdts, cache.get(i.player).getDetail());
 		}
 		else return false;
 		
@@ -88,7 +93,11 @@ public class AroundBlockConditionsGUIManager extends GUIManagerConditions<Around
 			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getID());
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
-			cache.replace(i.player, new AroundBlockConditionsGUI(Integer.parseInt(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getBlockConditions().getBlockAroundConditions(), cache.get(i.player).getDetail()));
+
+			BlockConditions cdts;
+			if(cache.get(i.player).getDetail().equals("targetBlockConditions")) cdts = i.sActivator.getTargetBlockConditions();
+			else cdts = i.sActivator.getBlockConditions();
+			cache.replace(i.player, new AroundBlockConditionsGUI(Integer.parseInt(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, cdts.getBlockAroundConditions(), cache.get(i.player).getDetail()));
 			cache.get(i.player).openGUISync(i.player);
 		}
 		catch(Exception ignored) {

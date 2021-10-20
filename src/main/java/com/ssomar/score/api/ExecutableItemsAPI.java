@@ -1,13 +1,13 @@
 package com.ssomar.score.api;
 
-import javax.annotation.Nullable;
-
+import com.ssomar.score.sobject.SObject;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.executableitems.items.ExecutableItemBuilder;
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.executableitems.items.ItemManager;
+import org.jetbrains.annotations.Nullable;
 
 public class ExecutableItemsAPI {
 	
@@ -71,9 +71,19 @@ public class ExecutableItemsAPI {
 	public static Item getExecutableItemConfig(ItemStack itemStack) {
 		return ItemManager.getInstance().getExecutableItem(itemStack);
 	}
+
+	@Nullable
+	public static SObject getSObject(ItemStack itemStack) {
+		return ItemManager.getInstance().getExecutableItem(itemStack);
+	}
 	
 	@Nullable
 	public static Item getExecutableItemConfig(String id) {
+		return ItemManager.getInstance().getLoadedItemWithID(id);
+	}
+
+	@Nullable
+	public static SObject getSObject(String id) {
 		return ItemManager.getInstance().getLoadedItemWithID(id);
 	}
 

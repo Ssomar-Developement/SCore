@@ -8,8 +8,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
+import com.ssomar.score.SsomarDev;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,6 +25,7 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
+import org.jetbrains.annotations.Nullable;
 
 public class AroundBlockCondition extends Conditions{
 	
@@ -88,6 +88,7 @@ public class AroundBlockCondition extends Conditions{
 
 		if(!this.blockTypeMustBe.isEmpty() && this.blockTypeMustBe.contains(targetBlock.getType())) return true;
 
+		targetLoc.add(0.5, 0.5, 0.5);
 		if(SCore.hasExecutableBlocks && !this.blockMustBeExecutableBlock.isEmpty()) {
 			ExecutableBlockPlaced eBP;
 			if((eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(targetLoc)) != null
@@ -183,7 +184,7 @@ public class AroundBlockCondition extends Conditions{
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-		activatorConfig.set("conditions."+detail+"."+id, null);
+		activatorConfig.set("conditions."+detail+".blockAroundCdts."+id, null);
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
