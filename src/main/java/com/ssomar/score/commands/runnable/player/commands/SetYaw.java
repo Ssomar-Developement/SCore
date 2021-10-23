@@ -26,9 +26,9 @@ public class SetYaw extends PlayerCommand {
         String error = "";
 
         String setYaw = "SETYAW {yaw_number}";
-        if(args.size()>1) error = tooManyArgs+setYaw;
+        if(args.size() > 1) error = tooManyArgs+setYaw;
         else if(args.size() == 0) error = notEnoughArgs+setYaw;
-        else {
+        else if(!args.get(0).contains("%")){
             try {
                 Float.valueOf(args.get(0));
             } catch (NumberFormatException e) {

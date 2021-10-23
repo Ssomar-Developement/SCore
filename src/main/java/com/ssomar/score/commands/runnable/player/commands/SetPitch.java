@@ -28,7 +28,7 @@ public class SetPitch extends PlayerCommand {
         String setPitch= "SETPITCH {pitch_number}";
         if(args.size()>1) error = tooManyArgs+setPitch;
         else if(args.size() == 0) error = notEnoughArgs+setPitch;
-        else {
+        else if(!args.get(0).contains("%")){
             try {
                 Float.valueOf(args.get(0));
             } catch (NumberFormatException e) {

@@ -21,8 +21,15 @@ public class VeinBreaker  extends BlockCommand{
 
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-		
-		if(!(oldMaterial.toString().contains("ORE") || oldMaterial.toString().contains("LOG") || oldMaterial.toString().contains("WOOD"))) return;
+				
+		if(args.size() == 2) {
+			if (!oldMaterial.toString() .equals(args.get(1)))
+				return;
+		}
+		else{
+			if (!(oldMaterial.toString().contains("ORE") || oldMaterial.toString().contains("LOG") || oldMaterial.toString().contains("WOOD")))
+				return;
+		}
 		
 		int veinSize = 120;
 		try {
@@ -113,7 +120,7 @@ public class VeinBreaker  extends BlockCommand{
 
 	@Override
 	public String getTemplate() {
-		return "VEIN_BREAKER [Max_vein_size]";
+		return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE and WOOD]";
 	}
 
 	@Override
