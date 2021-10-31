@@ -5,25 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.score.commands.runnable.block.commands.*;
 import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
-import com.ssomar.score.commands.runnable.block.commands.Around;
-import com.ssomar.score.commands.runnable.block.commands.Break;
-import com.ssomar.score.commands.runnable.block.commands.DropExecutableItem;
-import com.ssomar.score.commands.runnable.block.commands.DropItem;
-import com.ssomar.score.commands.runnable.block.commands.Explode;
-import com.ssomar.score.commands.runnable.block.commands.FarmInCube;
-import com.ssomar.score.commands.runnable.block.commands.FertilizeInCube;
-import com.ssomar.score.commands.runnable.block.commands.MineInCube;
-import com.ssomar.score.commands.runnable.block.commands.MobAround;
-import com.ssomar.score.commands.runnable.block.commands.ParticleCommand;
-import com.ssomar.score.commands.runnable.block.commands.RemoveBlock;
-import com.ssomar.score.commands.runnable.block.commands.SendMessage;
-import com.ssomar.score.commands.runnable.block.commands.SetBlock;
-import com.ssomar.score.commands.runnable.block.commands.SetExecutableBlock;
-import com.ssomar.score.commands.runnable.block.commands.VeinBreaker;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -35,6 +21,7 @@ public class BlockCommandManager implements CommandManager{
 
 	public BlockCommandManager() {
 		List<BlockCommand> references = new ArrayList<>();
+		references.add(new SetBlockPos());
 		references.add(new SetBlock());
 		references.add(new SetExecutableBlock());
 		references.add(new ParticleCommand());

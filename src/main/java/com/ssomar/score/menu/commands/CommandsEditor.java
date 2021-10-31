@@ -1,11 +1,14 @@
 package com.ssomar.score.menu.commands;
 
-import com.ssomar.executableitems.configs.ingame.activators.ActivatorGUI;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.util.UtilCommandsManager;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.messages.CenteredMessage;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -14,11 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class CommandsEditor {
 
@@ -49,6 +47,33 @@ public class CommandsEditor {
         suggestions.remove(p);
         commandPage.remove(p);
         return commandsFinal;
+    }
+
+    public void receiveMessage(Player p, String message){
+
+        if(message.equals("COMMANDS PREVIOUS PAGE")) {
+            this.previousPageSuggestion(p);
+            return;
+        }
+        else if(message.equals("COMMANDS NEXT PAGE")) {
+            this.nextPageSuggestion(p);
+            return;
+        }
+        else if(message.contains("delete line <")) {
+            this.deleteCommand(p, message);
+        }
+        else if(message.contains("up line <")) {
+            this.upCommand(p, message);
+        }
+        else if(message.contains("down line <")) {
+            this.downCommand(p, message);
+        }
+        else {
+            commands.get(p).add(message);
+        }
+
+        this.sendEditor(p);
+
     }
 
     public void sendEditor(@NotNull Player p){
@@ -167,33 +192,6 @@ public class CommandsEditor {
         space(p);
     }
 
-    public void receiveMessage(Player p, String message){
-
-        if(message.equals("COMMANDS PREVIOUS PAGE")) {
-            this.previousPageSuggestion(p);
-            return;
-        }
-        else if(message.equals("COMMANDS NEXT PAGE")) {
-            this.nextPageSuggestion(p);
-            return;
-        }
-        else if(message.contains("delete line <")) {
-            this.deleteCommand(p, message);
-        }
-        else if(message.contains("up line <")) {
-            this.upCommand(p, message);
-        }
-        else if(message.contains("down line <")) {
-            this.downCommand(p, message);
-        }
-        else {
-            commands.get(p).add(message);
-        }
-
-        this.sendEditor(p);
-
-    }
-
     public void nextPageSuggestion(Player p){
         commandPage.put(p, commandPage.get(p)+1);
     }
@@ -240,9 +238,9 @@ public class CommandsEditor {
         space(p);
     }
 
-    public boolean isAsking(){
+    public boolean isAsking(Player player){
         for(Player p : isAsking.keySet()){
-            if(isAsking.get(p)) return true;
+            if(p.equals(player) && isAsking.get(p)) return true;
         }
         return false;
     }

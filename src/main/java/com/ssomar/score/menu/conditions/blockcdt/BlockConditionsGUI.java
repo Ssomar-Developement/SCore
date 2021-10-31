@@ -22,6 +22,8 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 	public static final String BLOCK_Y_CDT2 = "if block location Y 2 condition";
 	public static final String BLOCK_Z_CDT = "if block location Z condition";
 	public static final String BLOCK_Z_CDT2 = "if block location Z 2 condition";
+	public static final String IF_PLAYER_MUST_BE_ON_THE_BLOCK = "if player must be on the block condition";
+	public static final String IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK = "if no player must be on the block condition";
 	
 	public BlockConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, BlockConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Block Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -74,7 +76,16 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+AROUND_BLOCK_CDT, 	false,	false, "&7&oAround blocks conditions", "&a✎ Click here to edit", "&7>> &e"+conditions.getBlockAroundConditions().size()+" &7conditions");
 		i++;
-		
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_MUST_BE_ON_THE_BLOCK, 	false,	false, "&7&oA player must be on the block ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_PLAYER_MUST_BE_ON_THE_BLOCK, conditions.isIfPlayerMustBeOnTheBlock());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK, 	false,	false, "&7&oNo player must be on the block ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK, conditions.isIfNoPlayerMustBeOnTheBlock());
+
+
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
 		createItem(ORANGE, 					1 , 19, "&4&l✘ &cReset", 		false,	false, 	"", "&c&oClick here to reset", "&c&oall options of block conditions" );

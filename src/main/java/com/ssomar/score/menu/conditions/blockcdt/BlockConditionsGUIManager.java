@@ -58,6 +58,12 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		else if(i.name.contains(BlockConditionsGUI.IF_PLANT_FULLY_GROWN)) {
 			i.gui.changeBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN);
 		}
+		else if(i.name.contains(BlockConditionsGUI.IF_PLAYER_MUST_BE_ON_THE_BLOCK)) {
+			i.gui.changeBoolean(BlockConditionsGUI.IF_PLAYER_MUST_BE_ON_THE_BLOCK);
+		}
+		else if(i.name.contains(BlockConditionsGUI.IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK)){
+			i.gui.changeBoolean(BlockConditionsGUI.IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK);
+		}
 		else if(i.name.contains(BlockConditionsGUI.AROUND_BLOCK_CDT)) {
 			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, bC.getBlockAroundConditions(), cache.get(i.player).getDetail());
 		}
@@ -290,6 +296,8 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		bC.setIfBlockLocationY2(cache.get(p).getIfPosY2());
 		bC.setIfBlockLocationZ(cache.get(p).getIfPosZ());
 		bC.setIfBlockLocationZ2(cache.get(p).getIfPosZ2());
+		bC.setIfPlayerMustBeOnTheBlock(cache.get(p).getBoolean(BlockConditionsGUI.IF_PLAYER_MUST_BE_ON_THE_BLOCK));
+		bC.setIfNoPlayerMustBeOnTheBlock(cache.get(p).getBoolean(BlockConditionsGUI.IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK));
 
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sAct, bC, cache.get(p).getDetail());
 		cache.remove(p);

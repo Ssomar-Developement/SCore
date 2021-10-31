@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,7 +26,7 @@ public class Around extends BlockCommand{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String around = "AROUND {distance} {Your commands here}";
+		String around = "AROUND {distance} [affectThePlayerThatActivesTheActivator true or false] {Your commands here}";
 
 		if(args.size() < 2) error = notEnoughArgs+around;
 		else if(args.size() > 2) { 
@@ -48,7 +49,7 @@ public class Around extends BlockCommand{
 
 	@Override
 	public String getTemplate() {
-		return "AROUND {distance} {Your commands here}";
+		return "AROUND {distance} [affectThePlayerThatActivesTheActivator true or false] {Your commands here}";
 	}
 
 	@Override
@@ -68,11 +69,13 @@ public class Around extends BlockCommand{
 			public void run() {
 				try {
 					double distance = Double.parseDouble(args.get(0));
+					boolean affectThePlayerThatActivesTheActivator = true;
+					if(args.get(1).equalsIgnoreCase("false")) affectThePlayerThatActivesTheActivator = false;
 
 					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation(), distance, distance, distance)) {
 						if(e instanceof Player) {
 							Player target =  (Player) e;
-							if(target.hasMetadata("NPC") || (p != null && p.equals(target))) continue;
+							if(target.hasMetadata("NPC") || (!affectThePlayerThatActivesTheActivator && (p != null && p.equals(target)))) continue;
 
 							StringPlaceholder sp = new StringPlaceholder();
 							sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
@@ -86,7 +89,7 @@ public class Around extends BlockCommand{
 								prepareCommands.append(s);
 								prepareCommands.append(" ");
 							}
-							prepareCommands.deleteCharAt(prepareCommands.length()-1);				
+							prepareCommands.deleteCharAt(prepareCommands.length()-1);
 
 							String buildCommands = prepareCommands.toString();
 							String [] tab;

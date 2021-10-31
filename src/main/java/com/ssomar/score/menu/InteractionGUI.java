@@ -3,6 +3,7 @@ package com.ssomar.score.menu;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
+import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionGUIManager;
@@ -277,7 +278,10 @@ public class InteractionGUI implements Listener{
 	public void onChatEvent(AsyncPlayerChatEvent e) {
 
 		Player p = e.getPlayer();
-		if(PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		if(CommandsEditor.getInstance().isAsking(p)){
+			CommandsEditor.getInstance().receiveMessage(p, e.getMessage());
+		}
+		else if(PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlayerConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}

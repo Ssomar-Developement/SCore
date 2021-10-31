@@ -1,9 +1,11 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
+import it.unimi.dsi.fastutil.shorts.Short2BooleanSortedMap;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -48,6 +50,8 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
 
             try {
                 ItemStack item = lp.getItem();
+                item.setType(Material.SPLASH_POTION);
+                SsomarDev.testMsg("item::: "+item.getType());
                 PotionMeta pMeta = (PotionMeta) item.getItemMeta();
                 for (PotionEffect pE : this.potionEffects) {
                     pMeta.addCustomEffect(pE, true);

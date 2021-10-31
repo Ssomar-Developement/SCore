@@ -8,6 +8,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Powerable;
@@ -22,6 +25,7 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.MyCoreProtectAPI;
 import com.ssomar.score.utils.StringCalculation;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockConditions extends Conditions{
 
@@ -67,6 +71,14 @@ public class BlockConditions extends Conditions{
 
 	List<AroundBlockCondition> blockAroundConditions;
 
+	private boolean ifPlayerMustBeOnTheBlock;
+	public static final String IF_PLAYER_MUST_BE_ON_THE_MSG = " &cA player must be on the block to active the activator: &6%activator% &cof this item!";
+	private String ifPlayerMustBeOnTheBlockMsg;
+
+	private boolean ifNoPlayerMustBeOnTheBlock;
+	public static final String IF_NO_PLAYER_MUST_BE_ON_THE_MSG = " &cA player must be on the block to active the activator: &6%activator% &cof this item!";
+	private String ifNoPlayerMustBeOnTheBlockMsg;
+
 	public BlockConditions(){
 		init();
 	}
@@ -103,8 +115,11 @@ public class BlockConditions extends Conditions{
 		ifBlockLocationZ2 = "";
 		ifBlockLocationZ2Msg =IF_BLOCK_LOCATION_Z2_MSG;
 
-
 		blockAroundConditions = new ArrayList<>();
+
+		ifPlayerMustBeOnTheBlock = false;
+
+		ifNoPlayerMustBeOnTheBlock = false;
 
 		//		List<Material> typeCdt = new ArrayList<>();
 		//		typeCdt.add(Material.RAW_IRON_BLOCK);
@@ -126,7 +141,9 @@ public class BlockConditions extends Conditions{
 		//		blockAroundConditions.add(cdt5);
 	}
 
-	public boolean verifConditions(Block b, Player p) {
+	public boolean verifConditions(Block b, @Nullable Player p) {
+
+		boolean hasPlayer = (p != null);
 
 		if(this.isIfPlantFullyGrown() && b.getState().getBlockData() instanceof Ageable) {
 			Ageable ageable = (Ageable) b.getState().getBlockData();
@@ -136,16 +153,43 @@ public class BlockConditions extends Conditions{
 			}
 		}
 
+		if(this.ifPlayerMustBeOnTheBlock){
+			boolean onBlock = false;
+			Location bLoc = b.getLocation();
+			bLoc = bLoc.add(0.5,1,0.5);
+			for(Player pl : Bukkit.getServer().getOnlinePlayers()){
+				if(bLoc.distance(pl.getLocation()) < 1.135){
+					onBlock = true;
+					break;
+				}
+			}
+			if(!onBlock) return false;
+		}
+
+		if(this.ifNoPlayerMustBeOnTheBlock){
+			boolean onBlock = false;
+			Location bLoc = b.getLocation();
+			bLoc = bLoc.add(0.5,1,0.5);
+			for(Player pl : Bukkit.getServer().getOnlinePlayers()){
+				if(bLoc.distance(pl.getLocation()) < 1.135){
+					onBlock = true;
+					break;
+				}
+			}
+			if(onBlock) return false;
+		}
+
 		if(this.ifIsPowered) {
-			boolean notPowered = !b.isBlockPowered();
+			//SsomarDev.testMsg("block: "+b.getType()+ "   isBlockpowered: "+b.isBlockPowered()+ " is Powerable: "+(b.getBlockData() instanceof Powerable)+ "power: "+b.getBlockPower());
+			boolean notPowered = !b.isBlockPowered() && b.getBlockPower() == 0;
 
 			if(b.getBlockData() instanceof Powerable) {
 				Powerable power = (Powerable)b.getBlockData();
-				if(!power.isPowered()) notPowered = true;
+				notPowered = !power.isPowered();
 			}
 
 			if(notPowered) {
-				this.getSm().sendMessage(p, this.getIfIsPoweredMsg());
+				if(hasPlayer) this.getSm().sendMessage(p, this.getIfIsPoweredMsg());
 				return false;
 			}
 		}
@@ -153,14 +197,14 @@ public class BlockConditions extends Conditions{
 		if(this.ifMustBeNotPowered && b.getBlockData() instanceof Powerable) {
 			Powerable power = (Powerable)b.getBlockData();
 			if(power.isPowered()) {
-				this.getSm().sendMessage(p, this.getIfMustBeNotPoweredMsg());
+				if(hasPlayer) this.getSm().sendMessage(p, this.getIfMustBeNotPoweredMsg());
 				return false;
 			}
 		}
 
 		if(this.ifMustBeNatural) {
-			if(!MyCoreProtectAPI.isNaturalBlock(b)) {	
-				this.getSm().sendMessage(p, this.getIfMustBeNaturalMsg());
+			if(!MyCoreProtectAPI.isNaturalBlock(b)) {
+				if(hasPlayer) this.getSm().sendMessage(p, this.getIfMustBeNaturalMsg());
 				return false;
 			}
 		}
@@ -172,32 +216,32 @@ public class BlockConditions extends Conditions{
 		}
 		
 		if(!ifBlockLocationX.equals("") && !StringCalculation.calculation(ifBlockLocationX, b.getLocation().getX())) {
-			this.getSm().sendMessage(p, ifBlockLocationXMsg);
+			if(hasPlayer) this.getSm().sendMessage(p, ifBlockLocationXMsg);
 			return false;
 		}
 		
 		if(!ifBlockLocationX2.equals("") && !StringCalculation.calculation(ifBlockLocationX2, b.getLocation().getX())) {
-			this.getSm().sendMessage(p, ifBlockLocationX2Msg);
+			if(hasPlayer) this.getSm().sendMessage(p, ifBlockLocationX2Msg);
 			return false;
 		}
 		
 		if(!ifBlockLocationY.equals("") && !StringCalculation.calculation(ifBlockLocationY, b.getLocation().getY())) {
-			this.getSm().sendMessage(p, ifBlockLocationYMsg);
+			if(hasPlayer) this.getSm().sendMessage(p, ifBlockLocationYMsg);
 			return false;
 		}
 		
 		if(!ifBlockLocationY2.equals("") && !StringCalculation.calculation(ifBlockLocationY2, b.getLocation().getY())) {
-			this.getSm().sendMessage(p, ifBlockLocationY2Msg);
+			if(hasPlayer) this.getSm().sendMessage(p, ifBlockLocationY2Msg);
 			return false;
 		}
 		
 		if(!ifBlockLocationZ.equals("") && !StringCalculation.calculation(ifBlockLocationZ, b.getLocation().getZ())) {
-			this.getSm().sendMessage(p, ifBlockLocationZMsg);
+			if(hasPlayer) this.getSm().sendMessage(p, ifBlockLocationZMsg);
 			return false;
 		}
 		
 		if(!ifBlockLocationZ2.equals("") && !StringCalculation.calculation(ifBlockLocationZ2, b.getLocation().getZ())) {
-			this.getSm().sendMessage(p, ifBlockLocationZ2Msg);
+			if(hasPlayer) this.getSm().sendMessage(p, ifBlockLocationZ2Msg);
 			return false;
 		}
 
@@ -237,6 +281,12 @@ public class BlockConditions extends Conditions{
 		
 		bCdt.setIfBlockLocationZ2(blockCdtSection.getString("ifBlockLocationZ2", ""));
 		bCdt.setIfBlockLocationZ2Msg(blockCdtSection.getString("ifBlockLocationZ2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Z2_MSG));
+
+		bCdt.setIfPlayerMustBeOnTheBlock(blockCdtSection.getBoolean("ifPlayerMustBeOnTheBlock", false));
+		bCdt.setIfPlayerMustBeOnTheBlockMsg(blockCdtSection.getString("ifPlayerMustBeOnTheBlockMsg", "&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_THE_MSG));
+
+		bCdt.setIfNoPlayerMustBeOnTheBlock(blockCdtSection.getBoolean("ifNoPlayerMustBeOnTheBlock", false));
+		bCdt.setIfNoPlayerMustBeOnTheBlockMsg(blockCdtSection.getString("ifNoPlayerMustBeOnTheBlockMsg", "&4&l"+pluginName+IF_NO_PLAYER_MUST_BE_ON_THE_MSG));
 
 		if(blockCdtSection.contains("blockAroundCdts")) {
 			for(String s : blockCdtSection.getConfigurationSection("blockAroundCdts").getKeys(false)) {
@@ -308,6 +358,14 @@ public class BlockConditions extends Conditions{
 		if(!bC.ifBlockLocationZ2.equals("")) pCConfig.set("ifBlockLocationZ2", bC.ifBlockLocationZ2);
 		else pCConfig.set("ifBlockLocationZ2", null);
 		pCConfig.set("ifBlockLocationZ2Msg", bC.ifBlockLocationZ2Msg);
+
+		if(bC.isIfPlayerMustBeOnTheBlock()) pCConfig.set("ifPlayerMustBeOnTheBlock", true);
+		else pCConfig.set("ifPlayerMustBeOnTheBlock", null);
+		pCConfig.set("ifPlayerMustBeOnTheBlockMsg", bC.getIfPlayerMustBeOnTheBlockMsg());
+
+		if(bC.isIfNoPlayerMustBeOnTheBlock()) pCConfig.set("ifNoPlayerMustBeOnTheBlock", true);
+		else pCConfig.set("ifNoPlayerMustBeOnTheBlock", null);
+		pCConfig.set("ifNoPlayerMustBeOnTheBlockMsg", bC.getIfNoPlayerMustBeOnTheBlockMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
@@ -499,4 +557,35 @@ public class BlockConditions extends Conditions{
 		this.ifMustBeNaturalMsg = ifMustBeNaturalMsg;
 	}
 
+	public boolean isIfPlayerMustBeOnTheBlock() {
+		return ifPlayerMustBeOnTheBlock;
+	}
+
+	public void setIfPlayerMustBeOnTheBlock(boolean ifPlayerMustBeOnTheBlock) {
+		this.ifPlayerMustBeOnTheBlock = ifPlayerMustBeOnTheBlock;
+	}
+
+	public String getIfPlayerMustBeOnTheBlockMsg() {
+		return ifPlayerMustBeOnTheBlockMsg;
+	}
+
+	public void setIfPlayerMustBeOnTheBlockMsg(String ifPlayerMustBeOnTheBlockMsg) {
+		this.ifPlayerMustBeOnTheBlockMsg = ifPlayerMustBeOnTheBlockMsg;
+	}
+
+	public boolean isIfNoPlayerMustBeOnTheBlock() {
+		return ifNoPlayerMustBeOnTheBlock;
+	}
+
+	public void setIfNoPlayerMustBeOnTheBlock(boolean ifNoPlayerMustBeOnTheBlock) {
+		this.ifNoPlayerMustBeOnTheBlock = ifNoPlayerMustBeOnTheBlock;
+	}
+
+	public String getIfNoPlayerMustBeOnTheBlockMsg() {
+		return ifNoPlayerMustBeOnTheBlockMsg;
+	}
+
+	public void setIfNoPlayerMustBeOnTheBlockMsg(String ifNoPlayerMustBeOnTheBlockMsg) {
+		this.ifNoPlayerMustBeOnTheBlockMsg = ifNoPlayerMustBeOnTheBlockMsg;
+	}
 }
