@@ -51,7 +51,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 				this.runCommand(sender, "inspect-loop", args);
 				break;
 			case "projectiles":
-				ProjectilesGUIManager.getInstance().startEditing((Player) sender);
+				this.runCommand(sender, "projectiles", args);
 				break;
 			case "projectiles-create":
 				this.runCommand(sender, "projectiles-create", args);
@@ -91,6 +91,10 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 		}
 
 		switch(command) {
+
+		case "projectiles":
+			ProjectilesGUIManager.getInstance().startEditing((Player) sender);
+			break;
 
 		case "reload":
 			main.onReload();

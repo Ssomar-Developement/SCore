@@ -24,10 +24,13 @@ public class DropExecutableItem extends BlockCommand{
 			try {
 				if(SCore.hasExecutableItems && ExecutableItemsAPI.isValidID(args.get(0))) {
 					int amount = Integer.parseInt(args.get(1));
-					if(amount>0) { 
+					if(amount > 0) {
 						Item item = ExecutableItemsAPI.getExecutableItemConfig(ExecutableItemsAPI.getExecutableItem(args.get(0)));
 						block.getWorld().dropItem(block.getLocation(), item.formItem(amount, p, item.getUse()));
 					}
+				}
+				else{
+					SCore.getPlugin().getLogger().severe("Error when trying to execute the custom command DROPEXECUTABLEITEM but no EI found with the ID: "+args.get(0));
 				}
 			}catch(Exception ignored) {}
 		}
@@ -38,18 +41,7 @@ public class DropExecutableItem extends BlockCommand{
 
 			String dropei = "DROPEXECUTABLEITEM {id} {quantity}";
 			if(args.size() < 2) error = notEnoughArgs+dropei;
-			else if(args.size() == 2) {
-				SsomarDev.testMsg("arg: "+args.get(0)+ " valid: "+ExecutableItemsAPI.isValidID(args.get(0))+ " error: "+ (!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))));
-				if(!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
-				else {
-					try {
-						Integer.valueOf(args.get(1));
-					}catch(NumberFormatException e){
-						error = invalidQuantity+args.get(1)+" for command: "+dropei;
-					}
-				}
-			}
-			else error = tooManyArgs+dropei;
+			else if(args.size() != 2) error = tooManyArgs+dropei;
 
 			return error;
 		}

@@ -85,16 +85,19 @@ public abstract class RunCommand implements Serializable{
 	public void runCommand(CommandManager manager) {
 		//SsomarDev.testMsg("Command run command: "+this.getBrutCommand());
 		String finalCommand = this.getBrutCommand();
+		finalCommand = this.getSp().replacePlaceholder(finalCommand);
 
 		if(getBrutCommand().contains("ei giveslot")) {
 			try {
-				String playeName = getBrutCommand().split("ei giveslot ")[1].split(" ")[0];
-				Player pgive = Bukkit.getPlayer(playeName);
+				String playeName = finalCommand.split("ei giveslot ")[1].split(" ")[0];
+				Player pgive = Bukkit.getServer().getPlayer(playeName);
 				CommandsHandler.getInstance().addStopPickup(pgive, 20);
-			}catch(Exception ignored) {}
+			}catch(Exception ignored) {
+				ignored.printStackTrace();
+			}
 		}
 
-		finalCommand = this.getSp().replacePlaceholder(finalCommand);
+
 		SCommand command = manager.getCommand(finalCommand); 
 		if(command != null) {
 			//SsomarDev.testMsg("Command: valid");

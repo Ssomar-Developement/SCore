@@ -314,7 +314,7 @@ public class BlockConditions extends Conditions{
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-		activatorConfig.set("conditions."+detail+".fPlantFullyGrown", false);
+		activatorConfig.set("conditions."+detail+".ifPlantFullyGrown", false);
 
 
 		ConfigurationSection pCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);

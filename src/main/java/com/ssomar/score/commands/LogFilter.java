@@ -8,12 +8,13 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LifeCycle;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.message.Message;
 
 import com.ssomar.score.SsomarDev;
 
-public class LogFilter implements Filter {
+public class LogFilter implements Filter, LifeCycle {
 
 	private final boolean debug = false;
 
@@ -147,5 +148,20 @@ public class LogFilter implements Filter {
 			Throwable t) {
 		if(debug) SsomarDev.testMsg("FILTER: 16" );
 		return null;
+	}
+
+	@Override
+	public void start() {
+
+	}
+
+	@Override
+	public void stop(){
+
+	}
+
+	@Override
+	public boolean isStarted() {
+		return false;
 	}
 }

@@ -33,7 +33,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 	}
 	
 	public boolean verification(Material material, String statesStr, @NotNull Event event) {
-		SsomarDev.testMsg("mat: "+material.toString());
+		//SsomarDev.testMsg("mat: "+material.toString());
 		if(!this.verification(material, statesStr)) {
 			if(cancelEventIfNotDetailedBlocks && event instanceof Cancellable) ((Cancellable)event).setCancelled(true);
 			return false;

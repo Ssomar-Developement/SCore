@@ -173,7 +173,7 @@ public abstract class SProjectiles extends CustomProjectile{
                 else skull = Material.WITHER_SKELETON_SKULL;
                 return skull;
             default:
-                SsomarDev.testMsg("Error get material proj: "+ this.getIdentifierType());
+                //SsomarDev.testMsg("Error get material proj: "+ this.getIdentifierType());
                 return Material.SPONGE;
         }
     }

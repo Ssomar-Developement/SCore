@@ -5,15 +5,18 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DespawnFeature extends DecorateurCustomProjectiles {
 
     int despawnDelay;
+    boolean askDespawnDelay;
 
     public DespawnFeature(CustomProjectile cProj){
         super.cProj = cProj;
@@ -59,6 +62,43 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
         cProj.extractInfosGUI(gui);
         if(gui.getActually(GUI.TITLE_COLOR +"1) Despawn delay").contains("NO DESPAWN")) despawnDelay = -1;
         else despawnDelay = gui.getInt(GUI.TITLE_COLOR +"1) Despawn delay");
+    }
+
+    @Override
+    public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
+        if(cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
+        String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
+        String change = StringConverter.decoloredString(GUI.TITLE_COLOR +"1) Despawn delay");
+
+        if(itemName.equals(change)){
+            requestChat = true;
+            askDespawnDelay = true;
+            player.closeInventory();
+            player.sendMessage(StringConverter.coloredString("&2&l>> &aEnter the new &eDespawn delay&a: &7&o(Number, no despawn: -1)"));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean messageForConfig(SimpleGUI gui, Player player, String message){
+        if(cProj.messageForConfig(gui, player, message)) return true;
+        if(askDespawnDelay){
+            int newDespawnDelay;
+            try{
+                newDespawnDelay = Integer.valueOf(StringConverter.decoloredString(message));
+            }catch(NumberFormatException e){
+                player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid number for the setting despawn delay ("+message+") || &7&o(Number, no despawn: -1)"));
+                return true;
+            }
+            if(newDespawnDelay == -1)  gui.updateActually(GUI.TITLE_COLOR +"1) Despawn delay", "&cNO DESPAWN");
+            else gui.updateInt(GUI.TITLE_COLOR +"1) Despawn delay", newDespawnDelay);
+            gui.openGUISync(player);
+            askDespawnDelay = false;
+            requestChat = false;
+            return true;
+        }
+        return false;
     }
 
 }

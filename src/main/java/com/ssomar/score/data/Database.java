@@ -17,6 +17,8 @@ public class Database {
 
 	private static Database instance;
 
+	private static Connection conn;
+
 	private String fileName;
 	
 	public void load() {
@@ -47,30 +49,36 @@ public class Database {
 	
 	public Connection connect() {
 		// SQLite connection string
-		
 		String urlLocal = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() + "/"+fileName;
-		
-		Connection conn = null;
-		
+
+		boolean needOpenConnection;
 		try {
-			if(GeneralConfig.getInstance().isUseMySQL()){
-				MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
-				dataSource.setServerName(GeneralConfig.getInstance().getDbIP());
-				dataSource.setPortNumber(GeneralConfig.getInstance().getDbPort());
-				dataSource.setDatabaseName(GeneralConfig.getInstance().getDbName());
-				dataSource.setUser(GeneralConfig.getInstance().getDbUser());
-				dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
-				dataSource.setServerTimezone("UTC");
-				dataSource.setUseSSL(false);
-				conn = dataSource.getConnection();
-			}
-			else conn = DriverManager.getConnection(urlLocal);
-			
-			//System.out.println("[ExecutableItems] "+"Connexion OKAY");
+			needOpenConnection = conn == null || conn.isClosed();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			SCore.getPlugin().getLogger().severe(SCore.NAME_2+" "+e.getMessage());
+			needOpenConnection = true;
 		}
+
+		if(needOpenConnection) {
+			try {
+				if (GeneralConfig.getInstance().isUseMySQL()) {
+					MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
+					dataSource.setServerName(GeneralConfig.getInstance().getDbIP());
+					dataSource.setPortNumber(GeneralConfig.getInstance().getDbPort());
+					dataSource.setDatabaseName(GeneralConfig.getInstance().getDbName());
+					dataSource.setUser(GeneralConfig.getInstance().getDbUser());
+					dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
+					dataSource.setServerTimezone("UTC");
+					dataSource.setUseSSL(false);
+					conn = dataSource.getConnection();
+				} else conn = DriverManager.getConnection(urlLocal);
+
+				//System.out.println("[ExecutableItems] "+"Connexion OKAY");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				SCore.getPlugin().getLogger().severe(SCore.NAME_2 + " " + e.getMessage());
+			}
+		}
+
 		return conn;
 	}
 

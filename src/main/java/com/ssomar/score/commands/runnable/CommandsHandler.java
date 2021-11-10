@@ -44,7 +44,7 @@ public class CommandsHandler implements Listener {
 	List<BlockRunCommand> delayedCommandsByBlockUuid;
 
 	/* for "morph item" timing between delete item and regive item (2 ticks)  player */
-	private List<Player> stopPickup;
+	private Map<Player, Long> stopPickup;
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void PlayerJoinEvent(PlayerJoinEvent e) {
@@ -112,7 +112,7 @@ public class CommandsHandler implements Listener {
 		delayedCommandsByReceiverUuid = new HashMap<>();
 		delayedCommandsByEntityUuid = new ArrayList<>();
 		delayedCommandsByBlockUuid = new ArrayList<>();
-		stopPickup = new ArrayList<>();
+		stopPickup = new HashMap<>();
 	}
 
 	public void addDelayedCommand(@NotNull RunCommand command) {
@@ -215,17 +215,23 @@ public class CommandsHandler implements Listener {
 	}
 
 	public void addStopPickup(Player p, Integer delay) {
-		stopPickup.add(p);
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.getPlugin() , () -> stopPickup.remove(p), delay);
+		long time = System.currentTimeMillis()+(delay*50);
+		stopPickup.put(p, time);
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.getPlugin() , () -> {
+			if(stopPickup.containsKey(p) && stopPickup.get(p) == time){
+				stopPickup.remove(p);
+			}
+		} , delay);
 	}
 
+	//FAIRE AVEC LHEURE DE FIN CEST MIEUX
 
-	public List<Player> getStopPickup() {
+	public Map<Player, Long> getStopPickup() {
 		return stopPickup;
 	}
 
 
-	public void setStopPickup(List<Player> stopPickup) {
+	public void setStopPickup(Map<Player, Long> stopPickup) {
 		this.stopPickup = stopPickup;
 	}
 

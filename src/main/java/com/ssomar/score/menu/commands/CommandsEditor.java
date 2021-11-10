@@ -1,5 +1,6 @@
 package com.ssomar.score.menu.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.util.UtilCommandsManager;
 import com.ssomar.score.menu.EditorCreator;
@@ -35,10 +36,12 @@ public class CommandsEditor {
         commandPage = new HashMap<>();
     }
 
-    public void start(Player p, List<String> commands, List<SCommand> suggestions){
+    public void start(@NotNull Player p, List<String> commands, List<SCommand> suggestions){
+        p.closeInventory();
         this.commandPage.put(p, 0);
         this.commands.put(p, commands);
         this.suggestions.put(p, this.sortSuggestions(suggestions));
+        this.isAsking.put(p, true);
     }
 
     public List<String> finish(Player p){
@@ -46,6 +49,7 @@ public class CommandsEditor {
         commands.remove(p);
         suggestions.remove(p);
         commandPage.remove(p);
+        isAsking.remove(p);
         return commandsFinal;
     }
 
@@ -53,11 +57,9 @@ public class CommandsEditor {
 
         if(message.equals("COMMANDS PREVIOUS PAGE")) {
             this.previousPageSuggestion(p);
-            return;
         }
         else if(message.equals("COMMANDS NEXT PAGE")) {
             this.nextPageSuggestion(p);
-            return;
         }
         else if(message.contains("delete line <")) {
             this.deleteCommand(p, message);
@@ -89,7 +91,7 @@ public class CommandsEditor {
         List<TextComponent> listCommands = new ArrayList<>();
 
         int y = commandPage.get(p) * commandsPerColumn;
-        while(y < (commandPage.get(p)+1) * commandsPerColumn && suggestions.size()-1 >= y ) {
+        while(y < (commandPage.get(p)+1) * commandsPerColumn && suggestions.get(p).size()-1 >= y ) {
 
             SCommand command = suggestions.get(p).get(y);
             TextComponent cmd1Cpnt = new TextComponent("");
@@ -108,7 +110,7 @@ public class CommandsEditor {
             cmd1Cpnt.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&aCommand: &e"+command.getTemplate()) ).create() ) );
 
 
-            if(y+1 != suggestions.size()) {
+            if(y+1 != suggestions.get(p).size()) {
 
                 SCommand command2 = suggestions.get(p).get(y+1);
 
@@ -167,7 +169,7 @@ public class CommandsEditor {
         if(commandPage.get(p) == 0) {
             changementPage = " | &d&lNext page &5&l>>>>>";
         }
-        else if (((commandPage.get(p)+1) * commandsPerColumn) > suggestions.size()) {
+        else if (((commandPage.get(p)+1) * commandsPerColumn) > suggestions.get(p).size()) {
             changementPage = "&5&l<<<<< &d&lPrevious page | ";
         }
         else  changementPage = "&5&l<<<<< &d&lPrevious page | &d&lNext page &5&l>>>>>";
@@ -240,7 +242,7 @@ public class CommandsEditor {
 
     public boolean isAsking(Player player){
         for(Player p : isAsking.keySet()){
-            if(p.equals(player) && isAsking.get(p)) return true;
+            if(p.getUniqueId().equals(player.getUniqueId()) && isAsking.get(p)) return true;
         }
         return false;
     }

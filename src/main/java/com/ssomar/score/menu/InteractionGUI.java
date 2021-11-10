@@ -165,7 +165,7 @@ public class InteractionGUI implements Listener{
 			case "ProjectilesEditor":
 				GUI gui = new SimpleGUI(e.getClickedInventory());
 				String id = gui.getActually(GUI.TITLE_COLOR+"&e>>&l &aProjectile ID:");
-				SsomarDev.testMsg("GUI ID: "+ id);
+				//SsomarDev.testMsg("GUI ID: "+ id);
 				for(SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()){
 					if(proj.getId().equals(id)){
 						proj.sendInteractionConfigGUI(gui, player, itemS, title);
@@ -279,6 +279,7 @@ public class InteractionGUI implements Listener{
 
 		Player p = e.getPlayer();
 		if(CommandsEditor.getInstance().isAsking(p)){
+			e.setCancelled(true);
 			CommandsEditor.getInstance().receiveMessage(p, e.getMessage());
 		}
 		else if(PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
@@ -343,7 +344,6 @@ public class InteractionGUI implements Listener{
 		}
 		else {
 			for(SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()){
-				SsomarDev.testMsg(proj.isRequestChat()+"");
 				if(proj.hasRequestChat()){
 					e.setCancelled(true);
 					proj.sendMessageForConfig(proj.getConfigGUI(), p, e.getMessage());

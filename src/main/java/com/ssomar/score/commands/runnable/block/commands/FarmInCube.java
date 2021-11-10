@@ -42,7 +42,7 @@ public class FarmInCube extends BlockCommand{
 			boolean replant = false;
 			if(args.size() == 4) replant = Boolean.parseBoolean(args.get(3));
 
-			if(radius < 10) {
+			if(radius >= 10)  radius = 9;
 				for(int y = -radius ; y < radius+1 ; y++) {
 					for(int x = -radius ; x < radius+1 ; x++) {
 						for(int z = -radius ; z < radius+1 ; z++) {
@@ -53,7 +53,6 @@ public class FarmInCube extends BlockCommand{
 						}
 					}
 				}
-			}
 
 			if(validMaterial.contains(oldMaterial) && replant) {
 				block.setType(oldMaterial);
