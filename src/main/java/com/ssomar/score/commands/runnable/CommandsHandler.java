@@ -216,6 +216,7 @@ public class CommandsHandler implements Listener {
 
 	public void addStopPickup(Player p, Integer delay) {
 		long time = System.currentTimeMillis()+(delay*50);
+		//System.out.println("ADD "+p.getDisplayName()+ " time: "+time);
 		stopPickup.put(p, time);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.getPlugin() , () -> {
 			if(stopPickup.containsKey(p) && stopPickup.get(p) == time){

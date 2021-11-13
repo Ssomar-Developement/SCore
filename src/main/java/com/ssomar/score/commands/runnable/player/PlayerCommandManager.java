@@ -56,6 +56,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new Head());
 		commands.add(new SetPitch());
 		commands.add(new SetYaw());
+		commands.add(new CancelPickup());
 		
 		this.commands = commands;
 	}
