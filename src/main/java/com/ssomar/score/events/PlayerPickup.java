@@ -14,10 +14,7 @@ public class PlayerPickup implements Listener {
 	public void PlayerPickupItemEvent(EntityPickupItemEvent e) {
 		if(e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
-			long time = System.currentTimeMillis();
-			//System.out.println("pickup "+CommandsHandler.getInstance().getStopPickup().get(p)+" actual "+time);
-			if(CommandsHandler.getInstance().getStopPickup().containsKey(p)
-					&& CommandsHandler.getInstance().getStopPickup().get(p) > time) e.setCancelled(true);
+			if(CommandsHandler.getInstance().hasStopPickup(p)) e.setCancelled(true);
 		}
 	}
 }

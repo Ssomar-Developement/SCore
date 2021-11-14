@@ -225,6 +225,16 @@ public class CommandsHandler implements Listener {
 		} , delay);
 	}
 
+	public boolean hasStopPickup(@NotNull  Player p){
+		long time = System.currentTimeMillis();
+		//System.out.println("pickup "+CommandsHandler.getInstance().getStopPickup().get(p)+" actual "+time);
+		boolean stop = stopPickup.containsKey(p) && CommandsHandler.getInstance().getStopPickup().get(p) > time;
+		if(!stop){
+			stopPickup.remove(p);
+		}
+		return stop;
+	}
+
 	//FAIRE AVEC LHEURE DE FIN CEST MIEUX
 
 	public Map<Player, Long> getStopPickup() {

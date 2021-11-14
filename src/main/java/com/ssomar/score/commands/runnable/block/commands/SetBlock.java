@@ -39,7 +39,7 @@ public class SetBlock extends BlockCommand{
 				List<Entity> entities = w.getEntities();
 
 				if(entities.size() > 0)
-				RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0)+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase()+" replace", aInfo.isSilenceOutput());
+				RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase()+" replace", aInfo.isSilenceOutput());
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
