@@ -193,8 +193,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 					cont = false;
 					continue;
 				}
-				
-				System.out.println(strRand);
 
 				if(strRand.contains("%")) {
 					String [] decomp = strRand.split("\\%");

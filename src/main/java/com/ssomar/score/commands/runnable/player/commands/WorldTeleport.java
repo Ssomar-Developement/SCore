@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.usedapi.MultiverseAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,16 +21,16 @@ public class WorldTeleport extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
-		if(args.size()==1) {
-
+		if(args.size() == 1) {
 			Location locP = receiver.getLocation();
-			
-			World world = Bukkit.getWorld(args.get(0));
-			
+			World world;
+			if(SCore.hasMultiverse) world = MultiverseAPI.getWorld(args.get(0));
+			else world = Bukkit.getWorld(args.get(0));
+
 			
 			int i = 0;
 			boolean teleport= false;
-			while(i<999 && !teleport) {
+			while(i < 999 && !teleport) {
 				
 				Location newLoc = new Location(world, locP.getX()+i, locP.getY(), locP.getZ());
 
@@ -98,7 +100,11 @@ public class WorldTeleport extends PlayerCommand{
 		String wT= "WORLDTELEPORT {world}";
 		if(args.size()!=1) error = notEnoughArgs+wT;
 		else {
-			if(Bukkit.getWorld(args.get(0))==null) error = invalidWorld+args.get(0)+" for command: "+wT;
+			World world;
+			if(SCore.hasMultiverse) world = MultiverseAPI.getWorld(args.get(0));
+			else world = Bukkit.getWorld(args.get(0));
+
+			if(world == null) error = invalidWorld+args.get(0)+" for command: "+wT;
 		}
 
 		return error;

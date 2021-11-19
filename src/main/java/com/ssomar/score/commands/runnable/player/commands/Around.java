@@ -88,8 +88,8 @@ public class Around extends PlayerCommand{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String around= "AROUND {distance} {DisplayMsgIfNoPlayer true or false} {Your commands here}";
-		if(args.size()<3) error = notEnoughArgs+around;
+		String around = "AROUND {distance} {DisplayMsgIfNoPlayer true or false} {Your commands here}";
+		if(args.size() < 3) error = notEnoughArgs+around;
 		else if(args.size()>3) { 
 			try {
 				Double.valueOf(args.get(0));

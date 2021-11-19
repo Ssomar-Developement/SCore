@@ -26,15 +26,21 @@ public class Launch extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
-		double rotation = 0;
+		double rotationy = 0;
+		double rotationz = 0;
 
 		if(args.size() == 0) {
 			receiver.launchProjectile(Arrow.class);
 		}
 		else {
 			try {
-				rotation = Double.parseDouble(args.get(1));
-				rotation = rotation * Math.PI/180;
+				rotationy = Double.parseDouble(args.get(1));
+				rotationy = rotationy * Math.PI/180;
+			}catch(Exception ignored) {}
+
+			try {
+				rotationz = Double.parseDouble(args.get(2));
+				rotationz = rotationz * Math.PI/180;
 			}catch(Exception ignored) {}
 			try {
 				Entity entity = null;
@@ -122,18 +128,21 @@ public class Launch extends PlayerCommand{
 						if(entity instanceof Fireball) {
 							Fireball fireball = (Fireball) entity;
 							v = fireball.getDirection();
-							v.rotateAroundY(rotation);
+							v.rotateAroundY(rotationy);
+							v.rotateAroundZ(rotationz);
 							fireball.setDirection(v);
 						}
 						else if(entity instanceof DragonFireball) {
 							DragonFireball fireball = (DragonFireball) entity;
 							v = fireball.getDirection();
-							v.rotateAroundY(rotation);
+							v.rotateAroundY(rotationy);
+							v.rotateAroundZ(rotationz);
 							fireball.setDirection(v);
 						}
 						else {
 							v = entity.getVelocity();
-							v.rotateAroundY(rotation);
+							v.rotateAroundY(rotationy);
+							v.rotateAroundZ(rotationz);
 							entity.setVelocity(v);
 						}
 						//SsomarDev.testMsg("rotation: "+ rotation);
@@ -155,7 +164,7 @@ public class Launch extends PlayerCommand{
 	@Override
 	public String verify(List<String> args) {	
 		String error = "";
-		String launch = "LAUNCH {projectileType} [angle rotation y]";
+		String launch = "LAUNCH {projectileType} [angle rotation y] [angle rotation z]";
 		if(args.size()<1) error = notEnoughArgs+launch;
 
 		return error;
