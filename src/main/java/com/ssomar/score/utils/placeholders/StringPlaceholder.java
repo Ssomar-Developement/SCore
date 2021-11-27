@@ -33,6 +33,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private String item= "";
 	private String quantity = "";
 	private String usage="";
+	private String usageLimit="";
 	private String maxUsePerDayItem= "";
 	private String maxUsePerDayActivator= "";
 
@@ -298,6 +299,17 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		return time.length()!=0;
 	}
 
+	public String getUsageLimit() {
+		return usageLimit;
+	}
+
+	public boolean hasUsageLimit() {
+		return usageLimit.length() != 0;
+	}
+
+	public void setUsageLimit(String usageLimit) {
+		this.usageLimit = usageLimit;
+	}
 
 	public String getBlockface() {
 		return blockface;
