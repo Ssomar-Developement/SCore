@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Charsets;
+import com.ssomar.score.sobject.sactivator.conditions.player.IfPlayerHasExecutableItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,9 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import com.google.common.base.Charsets;
-import com.ssomar.executableitems.api.ExecutableItemsAPI;
-import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -30,7 +29,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.StringCalculation;
 
-public class PlayerConditions extends Conditions{
+public class PlayerConditions extends Conditions {
 
 	private boolean ifSneaking;
 	private static final String IF_SNEAKING_MSG = " &cYou must sneak to active the activator: &6%activator% &cof this item!";
@@ -144,7 +143,7 @@ public class PlayerConditions extends Conditions{
 	private static final String IF_POS_Z_MSG = " &cCoordinate Z is not valid to active the activator: &6%activator% &cof this item!";
 	private String ifPosZMsg;
 
-	private Map<String, Integer> ifPlayerHasExecutableItem;
+	private List<IfPlayerHasExecutableItem> ifPlayerHasExecutableItem;
 	private static final String IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG = " &cYou don't have all correct ExecutableItems to active the activator: &6%activator% &cof this item!";
 	private String ifPlayerHasExecutableItemMsg;
 
@@ -248,7 +247,7 @@ public class PlayerConditions extends Conditions{
 		this.ifPlayerHasItem = new HashMap<>();
 		this.ifPlayerHasItemMsg = IF_PLAYER_HAS_ITEM_MSG;
 
-		this.ifPlayerHasExecutableItem = new HashMap<>();
+		this.ifPlayerHasExecutableItem = new ArrayList<>();
 		this.ifPlayerHasExecutableItemMsg = IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG;
 
 		this.ifPlayerHasEffect = new HashMap<>();
@@ -476,7 +475,6 @@ public class PlayerConditions extends Conditions{
 
 		if(this.hasIfPlayerHasExecutableItem() || this.hasIfPlayerHasItem()) {
 			ItemStack[] content = p.getInventory().getContents();
-			Map<String, Integer> verifEI = new HashMap<>(this.getIfPlayerHasExecutableItem());
 
 			Map<Material, Integer> verifI = new HashMap<>(this.getIfPlayerHasItem());
 
@@ -485,25 +483,25 @@ public class PlayerConditions extends Conditions{
 				cpt++;
 				if(is == null) continue;
 
-				if(SCore.hasExecutableItems) {
-					Item item;
-					if((item = ExecutableItemsAPI.getExecutableItemConfig(is))!=null && !verifEI.isEmpty() && verifEI.containsKey(item.getIdentification()) && verifEI.get(item.getIdentification())==cpt) 
-						verifEI.remove(item.getIdentification());
-				}
-
-				if(verifI.containsKey(is.getType()) && verifI.get(is.getType())==cpt) {
+				if(verifI.containsKey(is.getType()) && ((verifI.get(is.getType()) == cpt)  || verifI.get(is.getType()) == -1 && cpt == p.getInventory().getHeldItemSlot())) {
 					verifI.remove(is.getType());
 				}
-			}
-
-			if(!verifEI.isEmpty()) {
-				this.getSm().sendMessage(toMsg, this.getIfPlayerHasExecutableItemMsg());
-				return false;
 			}
 
 			if(!verifI.isEmpty()) {
 				this.getSm().sendMessage(toMsg, this.getIfPlayerHasItemMsg());
 				return false;
+			}
+		}
+
+		if(this.hasIfPlayerHasExecutableItem()){
+			if(SCore.hasExecutableItems) {
+				for(IfPlayerHasExecutableItem cdt : this.ifPlayerHasExecutableItem){
+					if(!cdt.verify(p)) {
+						this.getSm().sendMessage(toMsg, this.getIfPlayerHasExecutableItemMsg());
+						return false;
+					}
+				}
 			}
 		}
 
@@ -653,20 +651,27 @@ public class PlayerConditions extends Conditions{
 		pCdt.setIfPosZ(playerCdtSection.getString("ifPosZ", ""));
 		pCdt.setIfPosZMsg(playerCdtSection.getString("ifPosZMsg", "&4&l"+pluginName+IF_POS_Z_MSG));
 
-		Map<String, Integer> verifEI = new HashMap<>();
-		for (String s : playerCdtSection.getStringList("ifPlayerHasExecutableItem")) {
-			String[] spliter;
-			if (s.contains(":") && (spliter = s.split(":")).length == 2) {
-				int slot = 0;
-				try {
-					slot = Integer.parseInt(spliter[1]);
-				} catch (Exception e) {
-					errorList.add(pluginName+" Invalid argument for the ifPlayerHasExecutableItem condition: " + s + " correct form > ID:SLOT  example> test:5 !");
-					continue;
+		List<IfPlayerHasExecutableItem> verifEI = new ArrayList<>();
+		if(playerCdtSection.contains("ifPlayerHasExecutableItem")){
+			ConfigurationSection sec = playerCdtSection.getConfigurationSection("ifPlayerHasExecutableItem");
+			if(sec != null && sec.getKeys(false).size() > 0){
+				for(String s : sec.getKeys(false)){
+					IfPlayerHasExecutableItem cdt = new IfPlayerHasExecutableItem(sec.getConfigurationSection(s));
+					if(cdt.isValid())
+					 verifEI.add(cdt);
+					else errorList.add(pluginName+" Invalid configuration of ifPlayerHasExecutableItems with id : " + s+ " !");
 				}
-				verifEI.put(spliter[0], slot);
+			}
+			else if(playerCdtSection.getStringList("ifPlayerHasExecutableItem").size() > 0){
+				for (String s : playerCdtSection.getStringList("ifPlayerHasExecutableItem")) {
+					IfPlayerHasExecutableItem cdt = new IfPlayerHasExecutableItem(s);
+					if(cdt.isValid())
+						verifEI.add(cdt);
+					else errorList.add(pluginName+" Invalid configuration of ifPlayerHasExecutableItems: " + s+ " !");
+				}
 			}
 		}
+
 		pCdt.setIfPlayerHasExecutableItem(verifEI);
 		pCdt.setIfPlayerHasExecutableItemMsg(playerCdtSection.getString("ifPlayerHasExecutableItemMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG));
 
@@ -1195,14 +1200,16 @@ public class PlayerConditions extends Conditions{
 		this.ifPosZ = ifPosZ;
 	}
 
-	public Map<String, Integer> getIfPlayerHasExecutableItem() {
-		return ifPlayerHasExecutableItem;
-	}
-	public void setIfPlayerHasExecutableItem(Map<String, Integer> ifPlayerHasExecutableItem) {
-		this.ifPlayerHasExecutableItem = ifPlayerHasExecutableItem;
-	}
 	public boolean hasIfPlayerHasExecutableItem() {
 		return ifPlayerHasExecutableItem != null && !ifPlayerHasExecutableItem.isEmpty();
+	}
+
+	public List<IfPlayerHasExecutableItem> getIfPlayerHasExecutableItem() {
+		return ifPlayerHasExecutableItem;
+	}
+
+	public void setIfPlayerHasExecutableItem(List<IfPlayerHasExecutableItem> ifPlayerHasExecutableItem) {
+		this.ifPlayerHasExecutableItem = ifPlayerHasExecutableItem;
 	}
 
 	public Map<Material, Integer> getIfPlayerHasItem() {
