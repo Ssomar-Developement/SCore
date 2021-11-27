@@ -59,6 +59,8 @@ public abstract class GUI {
 
 	public Material HEAD = null;
 
+	public Material GRINDSTONE = null;
+
 	public static Material RED = null;
 
 	public static Material ORANGE = null;
@@ -103,6 +105,7 @@ public abstract class GUI {
 			YELLOW = Material.HOPPER;
 			PURPLE = Material.HOPPER;
 			BLUE = Material.ANVIL;
+			GRINDSTONE = Material.LEVER;
 		}
 
 		else {
@@ -118,6 +121,7 @@ public abstract class GUI {
 			YELLOW = Material.YELLOW_STAINED_GLASS_PANE;
 			PURPLE = Material.MAGENTA_STAINED_GLASS_PANE;
 			BLUE = Material.BLUE_STAINED_GLASS_PANE;
+			GRINDSTONE = Material.GRINDSTONE;
 		}
 	}
 
