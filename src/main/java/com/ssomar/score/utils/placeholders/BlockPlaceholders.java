@@ -21,6 +21,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 	private int blockZ;
 	private UUID blockWorld;
 	private String blockWorldName;
+	private String blockDimension;
 	private Material fixType;
 
 	private String blockType = "";
@@ -32,6 +33,20 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 		this.blockY = bLoc.getBlockY();
 		this.blockZ = bLoc.getBlockZ();
 		this.blockWorld = bLoc.getWorld().getUID();
+		switch (block.getWorld().getEnvironment()){
+			case NETHER:
+				blockDimension = "nether";
+				break;
+			case CUSTOM:
+				blockDimension = "custom";
+				break;
+			case NORMAL:
+				blockDimension = "normal";
+				break;
+			case THE_END:
+				blockDimension = "end";
+				break;
+		}
 		this.reloadBlockPlcHldr();
 	}
 	
@@ -41,6 +56,20 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 		this.blockY = bLoc.getBlockY();
 		this.blockZ = bLoc.getBlockZ();
 		this.blockWorld = bLoc.getWorld().getUID();
+		switch (block.getWorld().getEnvironment()){
+			case NETHER:
+				blockDimension = "nether";
+				break;
+			case CUSTOM:
+				blockDimension = "custom";
+				break;
+			case NORMAL:
+				blockDimension = "normal";
+				break;
+			case THE_END:
+				blockDimension = "end";
+				break;
+		}
 		this.fixType = fixType;
 		this.reloadBlockPlcHldr();
 	}
@@ -50,7 +79,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 			World world = Bukkit.getServer().getWorld(blockWorld);
 			Location loc = new Location(world,blockX, blockY, blockZ);
 			Block block = loc.getBlock();
-			
+
 			this.blockWorldName = world.getName();
 			
 			if(this.fixType != null) {
@@ -69,6 +98,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 			toReplace = toReplace.replaceAll("%block_live%", blockLive);
 			toReplace = toReplace.replaceAll("%block_live_lower%", blockLive.toLowerCase());
 			toReplace = toReplace.replaceAll("%block_world%", blockWorldName);
+			toReplace = toReplace.replaceAll("%block_dimension%", blockDimension);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_x%", blockX+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_y%", blockY+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_z%", blockZ+"", false);
