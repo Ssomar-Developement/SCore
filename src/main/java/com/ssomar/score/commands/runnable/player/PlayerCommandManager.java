@@ -45,6 +45,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new Damage());
 		commands.add(new LaunchEntity());
 		commands.add(new Launch());
+		commands.add(new LocatedLaunch());
 		commands.add(new Burn());
 		commands.add(new Jump());
 		commands.add(new RemoveBurn());
