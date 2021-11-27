@@ -30,6 +30,8 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new CommandsHandler(), main);
+
+		main.getServer().getPluginManager().registerEvents(new KeepCustomFlyEvent(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 	}
