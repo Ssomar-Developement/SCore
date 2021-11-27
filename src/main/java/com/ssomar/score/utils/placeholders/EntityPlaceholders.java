@@ -46,7 +46,9 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 		String toReplace = s;
 		if(entityUUID != null) {
 			toReplace = toReplace.replaceAll("%entity%", entityType);
+			toReplace = toReplace.replaceAll("%entity_lower_case%", entityType.toLowerCase());
 			toReplace = toReplace.replaceAll("%entity_name%", entityName);
+			toReplace = toReplace.replaceAll("%entity_name_lower_case%", entityName.toLowerCase());
 			toReplace = toReplace.replaceAll("%entity_uuid%", entityUUID.toString());
 			toReplace = replaceCalculPlaceholder(toReplace, "%entity_x%", entityX+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y%", entityY+"", false);
