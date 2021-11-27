@@ -162,8 +162,8 @@ public final class SCore extends JavaPlugin {
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-			SCore.plugin.getServer().getLogger().info("[ExecutableItems] ProtocolLib hooked !");
-			hasProtocolLib= true;
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] ProtocolLib hooked !");
+			hasProtocolLib = true;
 			/* Protocolib */
 			protocolManager = ProtocolLibrary.getProtocolManager();
 		}
@@ -228,6 +228,11 @@ public final class SCore extends JavaPlugin {
 	/* The server is in 1.17 ? */
 	public static boolean is1v17() {
 		return Bukkit.getServer().getVersion().contains("1.17");
+	}
+
+	/* The server is in 1.18 ? */
+	public static boolean is1v18() {
+		return Bukkit.getServer().getVersion().contains("1.18");
 	}
 
 
