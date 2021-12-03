@@ -37,18 +37,26 @@ public class SetBlockPos extends BlockCommand {
             if(Material.matchMaterial(mat) != null) {
                 if(SCore.hasWorldGuard && p != null && !bypassWG) {
                     if(new WorldGuardAPI().canBuild(p, loc)) {
-                        loc.getBlock().setType(Material.valueOf(mat));
+                        World w = block.getWorld();
+                        List<Entity> entities = w.getEntities();
+
+                        if(entities.size() > 0)
+                            RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(3).toLowerCase()+" replace", aInfo.isSilenceOutput());
                     }
                 }
                 else {
-                    loc.getBlock().setType(Material.valueOf(mat));
+                    World w = block.getWorld();
+                    List<Entity> entities = w.getEntities();
+
+                    if(entities.size() > 0)
+                        RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(3).toLowerCase()+" replace", aInfo.isSilenceOutput());
                 }
             }else {
                 World w = block.getWorld();
                 List<Entity> entities = w.getEntities();
 
                 if(entities.size() > 0)
-                    RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(0).toLowerCase()+" replace", aInfo.isSilenceOutput());
+                    RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(3).toLowerCase()+" replace", aInfo.isSilenceOutput());
             }
         }catch(Exception e) {
             e.printStackTrace();

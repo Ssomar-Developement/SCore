@@ -51,27 +51,30 @@ public abstract class RunCommandsBuilder{
 
         for (String s : commands) {
 
-            String command = StringConverter.coloredString(s);
+			String command = s;
 
-            if (command.contains("LOOP START: ") && !command.contains("+++")) {
-                try {
-                    loopAmount = Integer.parseInt(command.split("LOOP START: ")[1]);
-                    isInLoop = true;
-                    continue;
-                } catch (Exception e) {
-                    loopAmount = 0;
-                    isInLoop = false;
-                    continue;
-                }
-            } else if (command.contains("LOOP END") && !command.contains("+++")) {
-                for (int k = 0; k < loopAmount; k++) {
-                    result.addAll(commandsInLoop);
-                }
-                loopAmount = 0;
-                isInLoop = false;
-                commandsInLoop.clear();
-                continue;
-            }
+			if(!command.contains("+++")) {
+				if (command.contains("LOOP START: ")) {
+					try {
+						loopAmount = Integer.parseInt(command.split("LOOP START: ")[1]);
+						isInLoop = true;
+						continue;
+					} catch (Exception e) {
+						loopAmount = 0;
+						isInLoop = false;
+						continue;
+					}
+				} else if (command.contains("LOOP END")) {
+					for (int k = 0; k < loopAmount; k++) {
+						result.addAll(commandsInLoop);
+					}
+					loopAmount = 0;
+					isInLoop = false;
+					commandsInLoop.clear();
+					continue;
+				}
+			}
+			else command = StringConverter.coloredString(s);
 
             if (isInLoop) commandsInLoop.add(command);
             else result.add(command);
@@ -96,8 +99,7 @@ public abstract class RunCommandsBuilder{
 			finalCommands.get(delay).add(runCommand);
 		}
 		else {
-			List<RunCommand> result = new ArrayList<>();
-			result.add(runCommand);
+			List<RunCommand> result = new ArrayList<>(Arrays.asList(runCommand));
 			finalCommands.put(delay, result);
 		}
 	}

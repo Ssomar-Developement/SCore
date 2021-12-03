@@ -85,8 +85,11 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 			if(this.fixType != null) {
 				this.blockType = fixType.toString();
 			}
-			else this.blockType = block.getType().toString();
-			this.blockLive = block.getType().toString();
+			else{
+				Material type = block.getType();
+				this.blockType = type.toString();
+				this.blockLive = type.toString();
+			}
 		}
 	}
 

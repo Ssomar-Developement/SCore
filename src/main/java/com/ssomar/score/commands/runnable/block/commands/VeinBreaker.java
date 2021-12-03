@@ -23,11 +23,17 @@ public class VeinBreaker  extends BlockCommand{
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 				
 		if(args.size() == 2) {
-			if (!oldMaterial.toString() .equals(args.get(1)))
+			if (!oldMaterial.toString().equals(args.get(1)))
 				return;
 		}
 		else{
-			if (!(oldMaterial.toString().contains("ORE") || oldMaterial.toString().contains("LOG") || oldMaterial.toString().contains("WOOD")))
+			if (!(oldMaterial.toString().contains("ORE")
+					|| oldMaterial.toString().contains("LOG")
+					|| oldMaterial.toString().contains("WOOD")
+					/* 1.16 woods */
+					|| oldMaterial.toString().contains("HYPHAE")
+					|| oldMaterial.toString().contains("WARPED_STEM")
+					|| oldMaterial.toString().contains("CRIMSON_STEM")))
 				return;
 		}
 		
