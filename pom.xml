@@ -104,10 +104,6 @@
 
 	<repositories>
 		<repository>
-			<id>iridiumdevelopment</id>
-			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
-		</repository>
-		<repository>
 			<id>griefdefender</id>
 			<url>https://repo.glaremasters.me/repository/bloodshot/</url>
 		</repository>
@@ -149,6 +145,11 @@
 			<id>dmulloy2-repo</id>
 			<url>https://repo.dmulloy2.net/repository/public/</url>
 		</repository>
+
+		<!-- <repository>
+			<id>iridiumdevelopment</id>
+			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
+		</repository> -->
 		<!-- <repository> -->
 		<!-- <id>IntellectualSites</id> -->
 		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
@@ -210,12 +211,12 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.13.1</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.iridium</groupId>
 			<artifactId>IridiumSkyblock</artifactId>
 			<version>3.1.1</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 		 <dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>

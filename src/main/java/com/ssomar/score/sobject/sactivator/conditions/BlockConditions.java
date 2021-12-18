@@ -158,9 +158,12 @@ public class BlockConditions extends Conditions{
 			Location bLoc = b.getLocation();
 			bLoc = bLoc.add(0.5,1,0.5);
 			for(Player pl : Bukkit.getServer().getOnlinePlayers()){
-				if(bLoc.distance(pl.getLocation()) < 1.135){
-					onBlock = true;
-					break;
+				Location pLoc = pl.getLocation();
+				if(bLoc.getWorld().getUID().equals(pLoc.getWorld().getUID())) {
+					if (bLoc.distance(pLoc) < 1.135) {
+						onBlock = true;
+						break;
+					}
 				}
 			}
 			if(!onBlock) return false;
@@ -171,9 +174,12 @@ public class BlockConditions extends Conditions{
 			Location bLoc = b.getLocation();
 			bLoc = bLoc.add(0.5,1,0.5);
 			for(Player pl : Bukkit.getServer().getOnlinePlayers()){
-				if(bLoc.distance(pl.getLocation()) < 1.135){
-					onBlock = true;
-					break;
+				Location pLoc = pl.getLocation();
+				if(bLoc.getWorld().getUID().equals(pLoc.getWorld().getUID())) {
+					if (bLoc.distance(pl.getLocation()) < 1.135) {
+						onBlock = true;
+						break;
+					}
 				}
 			}
 			if(onBlock) return false;

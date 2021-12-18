@@ -111,7 +111,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
         if(askVisualItem){
             Material newMaterial;
             try{
-                newMaterial = Material.valueOf(StringConverter.decoloredString(message));
+                newMaterial = Material.valueOf(StringConverter.decoloredString(message).toUpperCase());
             }catch(IllegalArgumentException e){
                 player.sendMessage(StringConverter.coloredString("&4&l>> ERROR : &cInvalid material for the setting visualItem ("+message+") &7&o( https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html )"));
                 return true;

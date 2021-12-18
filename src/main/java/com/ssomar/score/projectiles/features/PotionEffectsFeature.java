@@ -50,7 +50,7 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
 
             try {
                 ItemStack item = lp.getItem();
-                item.setType(Material.SPLASH_POTION);
+                item.setType(lp.getItem().getType());
                 //SsomarDev.testMsg("item::: "+item.getType());
                 PotionMeta pMeta = (PotionMeta) item.getItemMeta();
                 for (PotionEffect pE : this.potionEffects) {

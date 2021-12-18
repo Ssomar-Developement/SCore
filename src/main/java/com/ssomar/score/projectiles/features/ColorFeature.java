@@ -70,7 +70,7 @@ public class ColorFeature extends DecorateurCustomProjectiles {
 
             try {
                 ItemStack item = lp.getItem();
-                item.setType(Material.SPLASH_POTION);
+                item.setType(lp.getItem().getType());
                 PotionMeta pMeta = (PotionMeta) item.getItemMeta();
                 if (this.activeColor)
                     pMeta.setColor(this.color);
