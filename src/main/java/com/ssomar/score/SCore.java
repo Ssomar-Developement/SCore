@@ -235,5 +235,13 @@ public final class SCore extends JavaPlugin {
 		return Bukkit.getServer().getVersion().contains("1.18");
 	}
 
+	/* The server is in 1.16 or + ? */
+	public static boolean is1v16Plus() {
+		return is1v16() || is1v17() || is1v18();
+	}
 
+	/* The server is in 1.17 or + ? */
+	public static boolean is1v17Plus() {
+		return is1v17() || is1v18();
+	}
 }

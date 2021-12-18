@@ -5,14 +5,19 @@ import java.util.List;
 import java.util.Locale;
 
 import com.ssomar.score.SsomarDev;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.jetbrains.annotations.NotNull;
 
 public class Damage extends PlayerCommand{
 
@@ -56,8 +61,12 @@ public class Damage extends PlayerCommand{
 					boolean doDamage = true;
 					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
 					if(doDamage) {
-						p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
-						receiver.damage(amount, p);
+						/* Cause to much problem , it creates loop of event EntityDamageByEntityEvent */
+						/* p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
+						EntityDamageByEntityEvent entityDamageByEntityEvent = new EntityDamageByEntityEvent(p, receiver, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount);
+						Bukkit.getServer().getPluginManager().callEvent(entityDamageByEntityEvent); */
+
+						receiver.damage(amount);
 					}
 				}
 				else {

@@ -17,7 +17,7 @@ public class StringConverter {
 
 	public static String coloredString(String s) {
 		String convert = s.replaceAll("&", "§");
-		if(SCore.is1v16() || SCore.is1v17()) convert=translateHexCodes(convert);
+		if(SCore.is1v16Plus()) convert = translateHexCodes(convert);
 		return convert;
 	}
 	
@@ -38,13 +38,13 @@ public class StringConverter {
 	}
 
 	public static String replaceVariable(String s, String player, String item, String quantity, int time) {	
-		String convert=s;
-		String convertItem= item;
-		String convertPlayer= player;
+		String convert = s;
+		String convertItem = item;
+		String convertPlayer = player;
 
 		if(!convert.isEmpty()) {
-			convert=convert.replace("$", "REGEX-DOLARS");
-			if(convert.charAt(0)=='/') {
+			convert = convert.replace("$", "REGEX-DOLARS");
+			if(convert.charAt(0) == '/') {
 				convert=convert.replaceFirst("/", "");
 			}
 			convertItem=convertItem.replace("$", "REGEX-DOLARS");
@@ -178,7 +178,7 @@ public class StringConverter {
 			}
 		}
 
-		if(hexCode.size()==6) {
+		if(hexCode.size() == 6) {
 			StringBuilder toReplace = new StringBuilder("&x");
 			for(String code : hexCode) {
 				toReplace.append("&").append(code);

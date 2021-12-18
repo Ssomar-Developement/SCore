@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.executableitems.items.activators.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -70,10 +71,9 @@ public class LoopManager {
 							for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 								LoopEvent e = new LoopEvent();
 
-								com.ssomar.executableitems.events.EventInfos eInfo = new com.ssomar.executableitems.events.EventInfos(e, e);
+								com.ssomar.executableitems.events.EventInfos eInfo = new com.ssomar.executableitems.events.EventInfos(e);
 								eInfo.setPlayer(player);
-								com.ssomar.executableitems.events.EventsManager.getInstance().manage(eInfo, listEI);
-
+								com.ssomar.executableitems.events.EventsManager.getInstance().activeOption(Option.LOOP, eInfo, listEI);
 							}
 						}
 

@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class InvisibleFeature extends DecorateurCustomProjectiles {
 
@@ -44,7 +45,8 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     public void transformTheProjectile(Entity e, Player launcher) {
         if(isInvisible && SCore.hasProtocolLib){
             PacketContainer entityPacketContainer = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
-            entityPacketContainer.getIntLists().write(0, Arrays.asList(e.getEntityId()));
+            if(!SCore.is1v17Plus()) entityPacketContainer.getIntegerArrays().write(0, new int []{e.getEntityId()});
+            else entityPacketContainer.getIntLists().write(0, Arrays.asList(e.getEntityId()));
             Bukkit.getOnlinePlayers().forEach(p -> {
                 try {
                     ProtocolLibrary.getProtocolManager().sendServerPacket(p, entityPacketContainer);

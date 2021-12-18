@@ -1,8 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
-import com.ssomar.executableitems.events.projectiles.ProjectilesEvt;
+import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
 import com.ssomar.executableitems.items.ExecutableItem;
 import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.SCore;
@@ -149,8 +148,8 @@ public class Launch extends PlayerCommand{
 					}
 
 					if(SCore.hasExecutableItems && aInfo.getItemID() != null) {
-						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedItemWithID(aInfo.getItemID())), aInfo.getSlot());
-						ProjectilesEvt.getInstance().addProjectileInfo(pInfo);
+						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedItemWithID(aInfo.getItemID())), aInfo.getSlot(), System.currentTimeMillis());
+						ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
 					}
 				}
 
@@ -179,7 +178,7 @@ public class Launch extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		return "LAUNCH {projectileType} [angle rotation y]";
+		return "LAUNCH {projectileType} [angle rotation y] [angle rotation z]";
 	}
 
 	@Override
