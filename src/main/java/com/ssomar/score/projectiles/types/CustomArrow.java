@@ -4,6 +4,7 @@ package com.ssomar.score.projectiles.types;
 import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.features.*;
 import com.ssomar.score.projectiles.features.Particles.ParticlesFeature;
+import com.ssomar.score.projectiles.features.Particles.PassengerFeature;
 
 import java.io.File;
 
@@ -37,6 +38,7 @@ public class CustomArrow extends SProjectiles {
         if(!SCore.is1v12())
         proj = new ColorFeature(proj);
         proj = new ParticlesFeature(proj);
+        proj = new PassengerFeature(proj);
         return proj;
     }
 

@@ -21,6 +21,7 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_ADULT = "ifAdult";
 	public static final String IF_BABY = "ifBaby";
 	public static final String IF_INVULNERABLE = "ifInvulnerable";
+	public static final String IF_ON_FIRE = "ifOnFire";
 	public static final String IF_POWERED = "ifPowered";
 	public static final String IF_NAME = "ifName";
 	public static final String IF_NOT_ENTITY_TYPE = "ifNotEntityType";
@@ -50,7 +51,11 @@ public class EntityConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_INVULNERABLE, 	false,	false, "&7&oThe entity must be invulnerable ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_INVULNERABLE, conditions.isIfInvulnerable());
-		
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_ON_FIRE, 	false,	false, "&7&oThe entity must be on fire ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_ON_FIRE, conditions.isIfOnFire());
+
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_POWERED, 	false,	false, "&7&oThe entity must be powered ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_POWERED, conditions.isIfPowered());

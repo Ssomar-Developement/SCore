@@ -269,7 +269,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>SEvents</artifactId>
-			<version>main-b1fe8eafd2-1</version>
+			<version>main-3a4e92795f-1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

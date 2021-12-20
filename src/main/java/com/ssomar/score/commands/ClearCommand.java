@@ -2,6 +2,7 @@ package com.ssomar.score.commands;
 
 import java.util.UUID;
 
+import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class ClearCommand {
 			else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
 		}
 		CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
-
+		CooldownsManager.getInstance().removeCooldownsOf(pUUID);
 		Player player = Bukkit.getPlayer(pUUID);
 		ActionbarHandler.getInstance().removeActionbars(player);
 		sender.sendMessage(StringConverter.coloredString("&2"+sPlugin.getNameDesign()+" &aSuccesfully clear the user: &e"+player.getName()));	

@@ -38,6 +38,8 @@ public class EntityConditionsGUIManager extends GUIManagerConditions<EntityCondi
 
 		else if(i.name.contains(EntityConditionsGUI.IF_INVULNERABLE)) i.gui.changeBoolean(EntityConditionsGUI.IF_INVULNERABLE);
 
+		else if(i.name.contains(EntityConditionsGUI.IF_ON_FIRE)) i.gui.changeBoolean(EntityConditionsGUI.IF_ON_FIRE);
+
 		else if(i.name.contains(EntityConditionsGUI.IF_ADULT)) i.gui.changeBoolean(EntityConditionsGUI.IF_ADULT);
 
 		else if(i.name.contains(EntityConditionsGUI.IF_BABY)) i.gui.changeBoolean(EntityConditionsGUI.IF_BABY);
@@ -262,6 +264,7 @@ public class EntityConditionsGUIManager extends GUIManagerConditions<EntityCondi
 
 		eC.setIfGlowing(cache.get(p).getBoolean(EntityConditionsGUI.IF_GLOWING));
 		eC.setIfInvulnerable(cache.get(p).getBoolean(EntityConditionsGUI.IF_INVULNERABLE));
+		eC.setIfOnFire(cache.get(p).getBoolean(EntityConditionsGUI.IF_ON_FIRE));
 		eC.setIfAdult(cache.get(p).getBoolean(EntityConditionsGUI.IF_ADULT));
 		eC.setIfBaby(cache.get(p).getBoolean(EntityConditionsGUI.IF_BABY));
 		eC.setIfPowered(cache.get(p).getBoolean(EntityConditionsGUI.IF_POWERED));

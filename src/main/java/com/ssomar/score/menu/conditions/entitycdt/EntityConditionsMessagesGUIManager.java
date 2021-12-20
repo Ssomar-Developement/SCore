@@ -111,6 +111,7 @@ public class EntityConditionsMessagesGUIManager extends GUIManagerConditions<Ent
 		eC.setIfEntityHealthMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_ENTITY_HEALTH_MSG.name));
 		eC.setIfGlowingMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_GLOWING_MSG.name));
 		eC.setIfInvulnerableMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_INVULNERABLE_MSG.name));
+		eC.setIfOnFireMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_ON_FIRE_MSG.name));
 		eC.setIfNameMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_NAME_MSG.name));
 		eC.setIfNotEntityTypeMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_NOT_ENTITY_TYPE_MSG.name));
 		eC.setIfPoweredMsg(cache.get(p).getMessage(EntityConditionsMessages.IF_POWERED_MSG.name));

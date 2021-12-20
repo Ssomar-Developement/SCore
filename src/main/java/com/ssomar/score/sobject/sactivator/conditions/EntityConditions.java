@@ -38,6 +38,10 @@ public class EntityConditions extends Conditions{
 	private static final String IF_INVULNERABLE_MSG = " &cThe entity must being invulnerable to active the activator: &6%activator% &cof this item!";
 	private String ifInvulnerableMsg;
 
+	private boolean ifOnFire;
+	private static final String IF_ON_FIRE_MSG = " &cThe entity must be on fire to active the activator: &6%activator% &cof this item!";
+	private String ifOnFireMsg;
+
 	private List<String> ifName;
 	private static final String IF_NAME_MSG = " &cThe entity doesn't have a valid name to active the activator: &6%activator% &cof this item!";
 	private String ifNameMsg;
@@ -71,6 +75,9 @@ public class EntityConditions extends Conditions{
 
 		this.ifInvulnerable = false;
 		this.ifInvulnerableMsg = IF_INVULNERABLE_MSG;
+
+		this.ifOnFire = false;
+		this.ifOnFireMsg = IF_ON_FIRE_MSG;
 
 		this.ifName = new ArrayList<>();
 		this.ifNameMsg = IF_NAME_MSG;
@@ -115,6 +122,11 @@ public class EntityConditions extends Conditions{
 
 		if(this.hasIfInvulnerable() && !e.isInvulnerable()) {
 			if(p != null) this.getSm().sendMessage(p, this.getIfInvulnerableMsg());
+			return false;
+		}
+
+		if(this.hasIfOnFire() && !e.isVisualFire()) {
+			if(p != null) this.getSm().sendMessage(p, this.getIfOnFireMsg());
 			return false;
 		}
 
@@ -166,6 +178,9 @@ public class EntityConditions extends Conditions{
 
 		eCdt.setIfInvulnerable(entityCdtSection.getBoolean("ifInvulnerable", false));
 		eCdt.setIfInvulnerableMsg(entityCdtSection.getString("ifInvulnerableMsg", "&4&l"+pluginName+IF_INVULNERABLE_MSG));
+
+		eCdt.setIfOnFire(entityCdtSection.getBoolean("ifOnFire", false));
+		eCdt.setIfOnFireMsg(entityCdtSection.getString("ifOnFireMsg", "&4&l"+pluginName+IF_ON_FIRE_MSG));
 
 		eCdt.setIfAdult(entityCdtSection.getBoolean("ifAdult", false));
 		eCdt.setIfAdultMsg(entityCdtSection.getString("ifAdultMsg", "&4&l"+pluginName+IF_ADULT_MSG));
@@ -220,7 +235,11 @@ public class EntityConditions extends Conditions{
 
 		if(eC.hasIfInvulnerable()) eCConfig.set("ifInvulnerable", true); 
 		else eCConfig.set("ifInvulnerable", null);
-		eCConfig.set("ifInvulnerableMsg", eC.getIfInvulnerableMsg()); 
+		eCConfig.set("ifInvulnerableMsg", eC.getIfInvulnerableMsg());
+
+		if(eC.hasIfOnFire()) eCConfig.set("ifOnFire", true);
+		else eCConfig.set("ifOnFire", null);
+		eCConfig.set("ifOnFireMsg", eC.getIfOnFireMsg());
 
 		if(eC.hasIfAdult()) eCConfig.set("ifAdult", true); 
 		else eCConfig.set("ifAdult", null);
@@ -313,6 +332,18 @@ public class EntityConditions extends Conditions{
 		return ifInvulnerable;
 	}
 
+	public boolean isIfOnFire() {
+		return ifOnFire;
+	}
+
+	public void setIfOnFire(boolean ifOnFire) {
+		this.ifOnFire = ifOnFire;
+	}
+
+	public boolean hasIfOnFire() {
+		return ifOnFire;
+	}
+
 	public List<String> getIfName() {
 		return ifName;
 	}
@@ -391,6 +422,13 @@ public class EntityConditions extends Conditions{
 		this.ifInvulnerableMsg = ifInvulnerableMsg;
 	}
 
+	public String getIfOnFireMsg() {
+		return ifOnFireMsg;
+	}
+
+	public void setIfOnFireMsg(String ifOnFireMsg) {
+		this.ifOnFireMsg = ifOnFireMsg;
+	}
 
 	public String getIfNameMsg() {
 		return ifNameMsg;

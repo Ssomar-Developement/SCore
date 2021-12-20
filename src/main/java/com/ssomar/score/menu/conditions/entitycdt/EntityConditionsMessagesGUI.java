@@ -34,7 +34,11 @@ public class EntityConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+EntityConditionsMessages.IF_INVULNERABLE_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(EntityConditionsMessages.IF_INVULNERABLE_MSG.name, conditions.getIfInvulnerableMsg());
-		
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+EntityConditionsMessages.IF_ON_FIRE_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(EntityConditionsMessages.IF_ON_FIRE_MSG.name, conditions.getIfOnFireMsg());
+
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+EntityConditionsMessages.IF_POWERED_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(EntityConditionsMessages.IF_POWERED_MSG.name, conditions.getIfPoweredMsg());
@@ -68,6 +72,7 @@ public class EntityConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_ADULT_MSG ("ifAdult message"),
 		IF_BABY_MSG ("ifBaby message"),
 		IF_INVULNERABLE_MSG ("ifInvulnerable message"),
+		IF_ON_FIRE_MSG ("ifOnFire message"),
 		IF_POWERED_MSG ("ifPowered message"),
 		IF_NAME_MSG ("ifName message"),
 		IF_NOT_ENTITY_TYPE_MSG ("ifNotEntityType message"),
