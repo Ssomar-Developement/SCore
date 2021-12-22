@@ -169,7 +169,9 @@ public abstract class SProjectiles extends CustomProjectile{
                 return trident;
             case "WITHER_SKULL":
                 Material skull;
-                if(SCore.is1v12()) skull = Material.valueOf("SKULL");
+                if(SCore.is1v12()) {
+                    skull = Material.valueOf("SKULL");
+                }
                 else skull = Material.WITHER_SKELETON_SKULL;
                 return skull;
             default:

@@ -105,9 +105,9 @@ public class LoopManager {
 
 													if(ent instanceof LivingEntity && !(ent instanceof Player)) {
 														EntityWalkOnEvent e = new EntityWalkOnEvent();
-														com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e, e);
+														com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
 														eInfo.setTargetEntity(ent);
-														com.ssomar.executableblocks.events.EventsManager.getInstance().manage(eBP, eInfo, listEB);
+														com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.ENTITY_WALK_ON, eBP, eInfo, listEB);
 													}
 												}
 											}
@@ -116,8 +116,8 @@ public class LoopManager {
 								}
 								if(eBP.hasLoop()) {
 									LoopEvent e = new LoopEvent();
-									com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e, e);
-									com.ssomar.executableblocks.events.EventsManager.getInstance().manage(eBP, eInfo, listEB);
+									com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
+									com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.LOOP, eBP, eInfo, listEB);
 								}
 							}
 						}

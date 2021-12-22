@@ -37,6 +37,7 @@ public class BlockCommandManager implements CommandManager{
 		references.add(new Around());
 		references.add(new MobAround());
 		references.add(new VeinBreaker());
+		references.add(new SilkSpawner());
 		this.commands = references;
 	}
 
