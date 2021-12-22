@@ -73,7 +73,7 @@ public class MobAround extends BlockCommand{
 					int startForCommand = 1;
 
 
-					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation(), distance, distance, distance)) {
+					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation().add(0.5,0.5,0.5), distance, distance, distance)) {
 						if(e instanceof LivingEntity && !(e instanceof Player)) {
 
 							if(e.hasMetadata("NPC")) continue;

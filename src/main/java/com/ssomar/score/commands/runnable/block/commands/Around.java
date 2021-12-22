@@ -72,7 +72,7 @@ public class Around extends BlockCommand{
 					boolean affectThePlayerThatActivesTheActivator = true;
 					if(args.get(1).equalsIgnoreCase("false")) affectThePlayerThatActivesTheActivator = false;
 
-					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation(), distance, distance, distance)) {
+					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation().add(0.5,0.5,0.5), distance, distance, distance)) {
 						if(e instanceof Player) {
 							Player target =  (Player) e;
 							if(target.hasMetadata("NPC") || (!affectThePlayerThatActivesTheActivator && (p != null && p.equals(target)))) continue;
