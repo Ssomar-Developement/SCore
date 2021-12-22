@@ -27,6 +27,8 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 	private double lastDamageTaken;
 	private float pitch;
 	private float pitchPositive;
+	private float yaw;
+	private float yawPositive;
 	private String direction;
 	
 	public void setPlayerPlcHldr(UUID uuid) {
@@ -57,6 +59,9 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			this.pitch = pLoc.getPitch();
 			if(pitch < 0) pitchPositive = pitch * -1;
 			else pitchPositive = pitch;
+			this.yaw = pLoc.getYaw();
+			if(yaw < 0) yawPositive = yaw * -1;
+			else yawPositive = yaw;
 		 	float yaw = pLoc.getYaw();
 		 	if(yaw >= -30 && yaw <= 30){
 		 		direction = "S";
@@ -120,10 +125,16 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = toReplace.replaceAll("%player_slot_live%", slotLive);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_last_damage_taken%", lastDamageTaken+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_last_damage_taken_int%", ((int) lastDamageTaken)+"", true);
+
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch%", pitch+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch_int%", ((int) pitch)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch_positive%", pitchPositive+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_pitch_positive_int%", ((int) pitchPositive)+"", false);
+
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_yaw%", yaw+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_yaw_int%", ((int) yaw)+"", true);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_yaw_positive%", yawPositive+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_yaw_positive_int%", ((int) yawPositive)+"", false);
 			toReplace = toReplace.replaceAll("%player_direction%", direction);
 		}
 		
