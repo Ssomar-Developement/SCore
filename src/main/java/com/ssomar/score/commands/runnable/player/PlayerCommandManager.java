@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.player.commands.*;
 import org.bukkit.ChatColor;
 
@@ -45,7 +47,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new Damage());
 		commands.add(new LaunchEntity());
 		commands.add(new Launch());
-		commands.add(new LocatedLaunch());
+		if(!SCore.is1v12()) commands.add(new LocatedLaunch());
 		commands.add(new Burn());
 		commands.add(new Jump());
 		commands.add(new RemoveBurn());
