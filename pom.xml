@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>pre.1.6.0.8</version>
+	<version>1.6.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -146,10 +146,10 @@
 			<url>https://repo.dmulloy2.net/repository/public/</url>
 		</repository>
 
-		<!-- <repository>
+		<repository>
 			<id>iridiumdevelopment</id>
 			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
-		</repository> -->
+		</repository>
 		<!-- <repository> -->
 		<!-- <id>IntellectualSites</id> -->
 		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
@@ -211,12 +211,12 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.13.1</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.iridium</groupId>
 			<artifactId>IridiumSkyblock</artifactId>
 			<version>3.1.1</version>
 			<scope>provided</scope>
-		</dependency> -->
+		</dependency>
 		 <dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
@@ -269,7 +269,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>SEvents</artifactId>
-			<version>main-3df6d7f2a1-1</version>
+			<version>main-1e456dcdcc-1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

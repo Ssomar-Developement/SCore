@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -25,12 +26,22 @@ public class ColorFeature extends DecorateurCustomProjectiles {
     boolean activeColor;
     Color color;
     boolean hasColor;
+    private boolean isLingering;
 
     public ColorFeature(CustomProjectile cProj){
         super.cProj = cProj;
         activeColor = true;
         color = Color.fromRGB(1,2,3);
         hasColor = false;
+        this.isLingering = false;
+    }
+
+    public ColorFeature(CustomProjectile cProj, boolean isLingering){
+        super.cProj = cProj;
+        activeColor = true;
+        color = Color.fromRGB(1,2,3);
+        hasColor = false;
+        this.isLingering = isLingering;
     }
 
     @Override
@@ -70,7 +81,8 @@ public class ColorFeature extends DecorateurCustomProjectiles {
 
             try {
                 ItemStack item = lp.getItem();
-                item.setType(lp.getItem().getType());
+                if(isLingering) item.setType(Material.LINGERING_POTION);
+                else item.setType(Material.SPLASH_POTION);
                 PotionMeta pMeta = (PotionMeta) item.getItemMeta();
                 if (this.activeColor)
                     pMeta.setColor(this.color);
