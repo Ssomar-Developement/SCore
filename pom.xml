@@ -150,6 +150,10 @@
 			<id>iridiumdevelopment</id>
 			<url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
 		</repository>
+		<repository>
+			<id>papermc</id>
+			<url>https://papermc.io/repo/repository/maven-public/</url>
+		</repository>
 		<!-- <repository> -->
 		<!-- <id>IntellectualSites</id> -->
 		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
