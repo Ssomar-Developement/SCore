@@ -200,24 +200,12 @@
 			<artifactId>ExecutableItems</artifactId>
 			<version>4008fbb6db</version>
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.bstats</groupId>
-					<artifactId>bstats-bukkit</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
 			<version>main-f59e16bdf2-1</version>
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.bstats</groupId>
-					<artifactId>bstats-bukkit</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<!-- jsoup HTML parser library @ https://jsoup.org/ -->
