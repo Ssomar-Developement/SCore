@@ -28,7 +28,7 @@ public class Burn extends PlayerCommand{
 					receiver.setFireTicks(20 * time);
 				}
 				/* setVisualFire appears in 1.17 */
-				else if(SCore.is1v17()){
+				else if(SCore.is1v17Plus()){
 					receiver.setVisualFire(true);
 
 					BukkitRunnable runnable = new BukkitRunnable() {

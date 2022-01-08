@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.6.1.0</version>
+	<version>1.6.1.4</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -80,14 +80,14 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>
+						<!-- <configuration>
 							<relocations>
 								<relocation>
 									<pattern>com.mysql</pattern>
-									<shadedPattern>com.ssomar.score.libraries.mysql</shadedPattern>
+									 <shadedPattern>com.ssomar.score.libraries.mysql</shadedPattern>
 								</relocation>
 							</relocations>
-						</configuration>
+						</configuration> -->
 					</execution>
 				</executions>
 			</plugin>
@@ -156,9 +156,24 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.17-R0.1-SNAPSHOT</version>
+			<version>1.18-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.27</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql..</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.46</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>com.mojang</groupId>
 			<artifactId>authlib</artifactId>
@@ -192,13 +207,13 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>4008fbb6db</version>
+			<version>d45ceef0d1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-f59e16bdf2-1</version>
+			<version>65a99a1f90</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -244,12 +259,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.46</version>
-		</dependency>
-
-		<dependency>
 			<groupId>net.coreprotect</groupId>
 			<artifactId>coreprotect</artifactId>
 			<version>20.1</version>
@@ -265,7 +274,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>SEvents</artifactId>
-			<version>main-1e456dcdcc-1</version>
+			<version>main-76b73669c8-1</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 
@@ -34,7 +32,11 @@ public class Database {
 	public void createNewDatabase(String fileName) {
 
 		this.fileName = fileName;
-
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		String url = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() +"/"+fileName;
 
 		try (Connection conn = DriverManager.getConnection(url)) {
@@ -49,6 +51,11 @@ public class Database {
 	
 	public Connection connect() {
 		// SQLite connection string
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		String urlLocal = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() + "/"+fileName;
 
 		boolean needOpenConnection;
@@ -61,15 +68,8 @@ public class Database {
 		if(needOpenConnection) {
 			try {
 				if (GeneralConfig.getInstance().isUseMySQL()) {
-					MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
-					dataSource.setServerName(GeneralConfig.getInstance().getDbIP());
-					dataSource.setPortNumber(GeneralConfig.getInstance().getDbPort());
-					dataSource.setDatabaseName(GeneralConfig.getInstance().getDbName());
-					dataSource.setUser(GeneralConfig.getInstance().getDbUser());
-					dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
-					dataSource.setServerTimezone("UTC");
-					dataSource.setUseSSL(false);
-					conn = dataSource.getConnection();
+					if(SCore.is1v18()) conn = new Database1v18().get1v18Connection();
+					else conn = new DatabaseOld().getOldConnection();
 				} else conn = DriverManager.getConnection(urlLocal);
 
 				//System.out.println("[ExecutableItems] "+"Connexion OKAY");

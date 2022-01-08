@@ -16,12 +16,12 @@ public class Burn extends EntityCommand{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
-			if(args.size()==0) {
-				entity.setFireTicks(20*10);
+			if(args.size() == 0) {
+				entity.setFireTicks(20 * 10);
 			}
 			else {
 				double time= Double.parseDouble(args.get(0));
-				entity.setFireTicks(20* (int)time);
+				entity.setFireTicks(20 * (int)time);
 			}
 		}catch(Exception ignored) {}
 	}

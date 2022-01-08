@@ -21,11 +21,11 @@ public class SpawnEntityOnCursor extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		int range = 200;
-		if(args.size()==3) {
+		if(args.size() == 3) {
 			try {
-				range= Integer.parseInt(args.get(2));
-				if(range<=0) {
-					range=200;
+				range = Integer.parseInt(args.get(2));
+				if(range <= 0) {
+					range = 200;
 				}
 			}catch(Exception ignored) {}
 		}
@@ -35,10 +35,10 @@ public class SpawnEntityOnCursor extends PlayerCommand{
 
 		if(args.size()>0) { 
 			try {
-				entityType= EntityType.valueOf(args.get(0).toUpperCase());
+				entityType = EntityType.valueOf(args.get(0).toUpperCase());
 			}catch(Exception ignored){}
 		}
-		if(args.size()>1) { 
+		if(args.size() > 1) {
 			try {
 				amount = Integer.parseInt(args.get(1));
 			}catch(NumberFormatException ignored){}
@@ -52,11 +52,11 @@ public class SpawnEntityOnCursor extends PlayerCommand{
 			loc.add(0, 1, 0);	
 
 			if(entityType.equals(EntityType.LIGHTNING)) {
-				for(int i=0; i<amount; i++) receiver.getWorld().strikeLightning(loc);
+				for(int i = 0; i < amount; i++) receiver.getWorld().strikeLightning(loc);
 			}
 			else {
-				for(int i=0; i<amount; i++) {	
-					Entity e =receiver.getWorld().spawnEntity(loc, entityType);
+				for(int i = 0; i < amount; i++) {
+					Entity e = receiver.getWorld().spawnEntity(loc, entityType);
 					if(entityType.equals(EntityType.FIREBALL)) e.setVelocity(new Vector(0, 0, 0));
 				}
 			}

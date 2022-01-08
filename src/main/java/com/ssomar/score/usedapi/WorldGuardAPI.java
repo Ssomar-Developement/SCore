@@ -61,8 +61,11 @@ public class WorldGuardAPI {
 		RegionQuery query = container.createQuery();
 		ApplicableRegionSet set = query.getApplicableRegions(loc);
 
+		int allowMaxPriority = -2147483648;
+
 		for (ProtectedRegion region : set) {
             if (region != null){
+
                 if (region.getFlag(Flags.PVP).equals(State.DENY)) {
                 	isPVP = false;
                 	break;

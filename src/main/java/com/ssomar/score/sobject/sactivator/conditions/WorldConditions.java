@@ -52,10 +52,11 @@ public class WorldConditions extends Conditions{
 			}
 		}
 		if(this.hasIfWeather()) {
-			String currentW="";
+			String currentW = "";
 			if(world.isThundering()) currentW = "STORM";
-			else if(p != null && p.getPlayerWeather().equals(WeatherType.DOWNFALL)) currentW = "RAIN";
-			else currentW="CLEAR";
+
+			else if(p != null && p.getPlayerWeather() != null && p.getPlayerWeather().equals(WeatherType.DOWNFALL)) currentW = "RAIN";
+			else currentW = "CLEAR";
 			
 			if(!this.ifWeather.contains(currentW)) {
 				if(p != null) this.getSm().sendMessage(p, this.getIfWeatherMsg());

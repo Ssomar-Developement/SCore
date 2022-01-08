@@ -1,5 +1,8 @@
 package com.ssomar.score.menu.conditions.worldcdt;
 
+import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsGUIManager;
+import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUI;
+import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -59,7 +62,13 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerConditions<Worl
 
 	@Override
 	public boolean shiftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
-		return false;
+		String detail = cache.get(i.player).getDetail();
+		this.saveTheConfiguration(i.player);
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		WorldConditions wC = i.sObject.getActivator(i.sActivator.getID()).getWorldConditions();
+		WorldConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, wC, detail);
+
+		return true;
 	}
 
 	@Override

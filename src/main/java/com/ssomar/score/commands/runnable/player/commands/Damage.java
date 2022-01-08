@@ -62,11 +62,12 @@ public class Damage extends PlayerCommand{
 					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
 					if(doDamage) {
 						/* Cause to much problem , it creates loop of event EntityDamageByEntityEvent */
-						/* p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
+						/* ^^ normally its fine with the detection of the tag */
+						p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
 						EntityDamageByEntityEvent entityDamageByEntityEvent = new EntityDamageByEntityEvent(p, receiver, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount);
-						Bukkit.getServer().getPluginManager().callEvent(entityDamageByEntityEvent); */
+						Bukkit.getServer().getPluginManager().callEvent(entityDamageByEntityEvent);
 
-						receiver.damage(amount);
+						//receiver.damage(amount);
 					}
 				}
 				else {
