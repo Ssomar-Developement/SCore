@@ -65,14 +65,21 @@ public class WorldGuardAPI {
 
 		for (ProtectedRegion region : set) {
             if (region != null){
-
-                if (region.getFlag(Flags.PVP).equals(State.DENY)) {
-                	isPVP = false;
-                	break;
-                }
+				if (region.getFlag(Flags.PVP).equals(State.ALLOW)) {
+					if(allowMaxPriority < region.getPriority()) allowMaxPriority = region.getPriority();
+				}
             }
         }
-		
+
+		for (ProtectedRegion region : set) {
+			if (region != null){
+				if (region.getFlag(Flags.PVP).equals(State.DENY) && region.getPriority() > allowMaxPriority) {
+					isPVP = false;
+					break;
+				}
+			}
+		}
+
 		//SsomarDev.testMsg("isinPvp ? : "+ isPVP);
 		
 		return isPVP;
