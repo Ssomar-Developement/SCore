@@ -48,6 +48,7 @@ public class Launch extends PlayerCommand{
 				receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
 				
 				if(args.get(0).equalsIgnoreCase("ARROW")) entity = receiver.launchProjectile(Arrow.class);
+				else if(args.get(0).equalsIgnoreCase("SPECTRALARROW")) entity = receiver.launchProjectile(SpectralArrow.class);
 				else if(args.get(0).equalsIgnoreCase("DRAGONFIREBALL")) entity = receiver.launchProjectile(DragonFireball.class);
 				else if(args.get(0).equalsIgnoreCase("EGG")) entity = receiver.launchProjectile(Egg.class);
 				else if(args.get(0).equalsIgnoreCase("ENDERPEARL")) entity = receiver.launchProjectile(EnderPearl.class);
@@ -73,6 +74,9 @@ public class Launch extends PlayerCommand{
 					case "ARROW":
 						entity = receiver.launchProjectile(Arrow.class);
 						break;
+					case "SPECTRALARROW":
+							entity = receiver.launchProjectile(SpectralArrow.class);
+							break;
 					case "DRAGON_FIREBALL":
 						entity = receiver.launchProjectile(DragonFireball.class);
 						break;

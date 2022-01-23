@@ -5,29 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.score.commands.runnable.entity.commands.*;
 import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
-import com.ssomar.score.commands.runnable.entity.commands.Burn;
-import com.ssomar.score.commands.runnable.entity.commands.ChangeTo;
-import com.ssomar.score.commands.runnable.entity.commands.CustomDash1;
-import com.ssomar.score.commands.runnable.entity.commands.Damage;
-import com.ssomar.score.commands.runnable.entity.commands.DropExecutableItem;
-import com.ssomar.score.commands.runnable.entity.commands.DropItem;
-import com.ssomar.score.commands.runnable.entity.commands.Heal;
-import com.ssomar.score.commands.runnable.entity.commands.Kill;
-import com.ssomar.score.commands.runnable.entity.commands.ParticleCommand;
-import com.ssomar.score.commands.runnable.entity.commands.RemoveGlow;
-import com.ssomar.score.commands.runnable.entity.commands.SendMessage;
-import com.ssomar.score.commands.runnable.entity.commands.SetAdult;
-import com.ssomar.score.commands.runnable.entity.commands.SetBaby;
-import com.ssomar.score.commands.runnable.entity.commands.SetGlow;
-import com.ssomar.score.commands.runnable.entity.commands.SetName;
-import com.ssomar.score.commands.runnable.entity.commands.StrikeLightning;
-import com.ssomar.score.commands.runnable.entity.commands.TeleportEntityToPlayer;
-import com.ssomar.score.commands.runnable.entity.commands.TeleportPlayerToEntity;
-import com.ssomar.score.commands.runnable.entity.commands.TeleportPosition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
@@ -55,6 +37,7 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new SetAdult());
 		commands.add(new SetName());
 		commands.add(new Burn());
+		commands.add(new BackDash());
 		commands.add(new CustomDash1());
 		commands.add(new SetGlow());
 		commands.add(new RemoveGlow());

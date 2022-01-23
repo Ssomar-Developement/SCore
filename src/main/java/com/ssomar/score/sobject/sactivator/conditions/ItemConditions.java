@@ -8,6 +8,8 @@ import java.io.Writer;
 import java.util.*;
 
 import com.google.common.base.Charsets;
+import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
+import com.ssomar.executableitems.items.ExecutableItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -87,22 +89,11 @@ public class ItemConditions extends Conditions{
 		}
 		
 		if(this.hasIfUsage()) {
-			if(!hasItemMeta) return false;
-			List<String> lore = itemMeta.getLore();
-			int usage;
+			ExecutableItem ei = new ExecutableItem(i);
+			Optional<Integer> usageOpt;
+			if(!ei.isValid() || !(usageOpt = ei.getUsage()).isPresent()) return false;
 
-			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage = Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
-			else if(infoItem.getUse() == -1) usage = -1;
-			else if(infoItem.getUse() == 0) usage = 1;
-			else if(infoItem.isHideUse()) {
-				usage = 1;
-				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
-				if(itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != null) {
-					usage = itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
-				}
-			}
-			else usage = 1;
-			//SsomarDev.testMsg("usage: "+usage+ " / ifUsage: "+this.ifUsage);
+			int usage = usageOpt.get();
 			
 			if(!StringCalculation.calculation(this.ifUsage, usage)) {
 				this.getSm().sendMessage(p, this.getIfUsageMsg());

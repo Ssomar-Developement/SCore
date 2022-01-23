@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.utils.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Sound;
@@ -37,8 +38,8 @@ public class Damage extends EntityCommand{
 				
 				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
 				amount = ((LivingEntity) entity).getMaxHealth() * percentage;
-				
-				amount = Double.parseDouble((amount+"").substring(0, 3));
+				amount = NTools.reduceDouble(amount, 2);
+
 			}
 			else amount = Double.parseDouble(damage);
 			//SsomarDev.testMsg("Passe damage 2");

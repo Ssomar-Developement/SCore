@@ -44,7 +44,9 @@ public class AroundBlockCondition extends Conditions{
 
 	private List<Material> blockTypeMustBe;
 
-	/*
+	private List<Material> blockTypeMustNotBe;
+
+	/**
 	 * 
 	 * @param southValue the south value
 	 * @param northValue the north value
@@ -54,7 +56,7 @@ public class AroundBlockCondition extends Conditions{
 	 * @param blockTypeMustBe all type of block that the block can be
 	 * @param errorMsg the message sended when the condition is not valid
 	 * 
-	 */
+	 **/
 	public AroundBlockCondition(String id, int southValue, int northValue, int westValue, int eastValue, int aboveValue, int underValue,
 			List<String> blockMustBeExecutableBlock, List<Material> blockTypeMustBe, String errorMsg) {
 		super();
@@ -67,6 +69,34 @@ public class AroundBlockCondition extends Conditions{
 		this.underValue = underValue;
 		this.blockMustBeExecutableBlock = blockMustBeExecutableBlock;
 		this.blockTypeMustBe = blockTypeMustBe;
+		this.blockTypeMustNotBe = new ArrayList<>();
+		this.errorMsg = errorMsg;
+	}
+
+	/**
+	 *
+	 * @param southValue the south value
+	 * @param northValue the north value
+	 * @param westValue the west value
+	 * @param eastValue the east value
+	 * @param blockMustBeExecutableBlock all ExecutableBlock ids that the block can be
+	 * @param blockTypeMustBe all type of block that the block can be
+	 * @param errorMsg the message sended when the condition is not valid
+	 *
+	 **/
+	public AroundBlockCondition(String id, int southValue, int northValue, int westValue, int eastValue, int aboveValue, int underValue,
+								List<String> blockMustBeExecutableBlock, List<Material> blockTypeMustBe, List<Material> blockTypeMusNotBe, String errorMsg) {
+		super();
+		this.id = id;
+		this.southValue = southValue;
+		this.northValue = northValue;
+		this.westValue = westValue;
+		this.eastValue = eastValue;
+		this.aboveValue = aboveValue;
+		this.underValue = underValue;
+		this.blockMustBeExecutableBlock = blockMustBeExecutableBlock;
+		this.blockTypeMustBe = blockTypeMustBe;
+		this.blockTypeMustNotBe = blockTypeMusNotBe;
 		this.errorMsg = errorMsg;
 	}
 	
@@ -86,19 +116,24 @@ public class AroundBlockCondition extends Conditions{
 
 		targetBlock = targetLoc.getBlock();
 
-		if(!this.blockTypeMustBe.isEmpty() && this.blockTypeMustBe.contains(targetBlock.getType())) return true;
+		boolean valid = true;
+
+		if(!this.blockTypeMustBe.isEmpty())
+		valid = valid && this.blockTypeMustBe.contains(targetBlock.getType());
+
+		if(!this.blockTypeMustNotBe.isEmpty())
+			valid = valid && !this.blockTypeMustNotBe.contains(targetBlock.getType());
 
 		targetLoc.add(0.5, 0.5, 0.5);
 		if(SCore.hasExecutableBlocks && !this.blockMustBeExecutableBlock.isEmpty()) {
 			ExecutableBlockPlaced eBP;
-			if((eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(targetLoc)) != null
-					&& this.blockMustBeExecutableBlock.contains(eBP.getEB_ID())) {
-				return true;
-			}
+			valid = valid && (eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(targetLoc)) != null
+					&& this.blockMustBeExecutableBlock.contains(eBP.getEB_ID());
+
 		}
 
 		if(p != null) SendMessage.sendMessageNoPlch(p, errorMsg);
-		return false;
+		return valid;
 	}
 	
 	public static void saveAroundBlockCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, AroundBlockCondition aBC, String detail) {
@@ -128,6 +163,12 @@ public class AroundBlockCondition extends Conditions{
 		}
 
 		section.set("blockTypeMustBe", convert);
+
+		List<String> convert2 = new ArrayList<>();
+		for(Material mat : aBC.getBlockTypeMustNotBe()) {
+			convert2.add(mat.toString());
+		}
+		section.set("blockTypeMustNotBe", convert2);
 		section.set("errorMsg", aBC.getErrorMsg());
 		
 		
@@ -163,9 +204,17 @@ public class AroundBlockCondition extends Conditions{
 			}catch(Exception ignored) {}
 		}
 
+		List<Material> blockTypeMustNotBe = new ArrayList<>();
+
+		for(String s : section.getStringList("blockTypeMustNotBe")) {
+			try {
+				blockTypeMustNotBe.add(Material.valueOf(s));
+			}catch(Exception ignored) {}
+		}
+
 		String errorMsg = section.getString("errorMsg", "");
 
-		return new AroundBlockCondition(id, southValue, northValue, westValue, eastValue, aboveValue, underValue, blockMustBeExecutableBlock, blockTypeMustBe, errorMsg);
+		return new AroundBlockCondition(id, southValue, northValue, westValue, eastValue, aboveValue, underValue, blockMustBeExecutableBlock, blockTypeMustBe, blockTypeMustNotBe, errorMsg);
 	}
 	
 	/*
@@ -280,6 +329,14 @@ public class AroundBlockCondition extends Conditions{
 		this.blockTypeMustBe = blockTypeMustBe;
 	}
 
+	public List<Material> getBlockTypeMustNotBe() {
+		return blockTypeMustNotBe;
+	}
+
+	public void setBlockTypeMustNotBe(List<Material> blockTypeMustNotBe) {
+		this.blockTypeMustNotBe = blockTypeMustNotBe;
+	}
+
 	@Override
 	public void init() {
 		this.southValue = 0;
@@ -290,6 +347,7 @@ public class AroundBlockCondition extends Conditions{
 		this.underValue = 0;
 		this.blockMustBeExecutableBlock = new ArrayList<>();
 		this.blockTypeMustBe = new ArrayList<>();
+		this.blockTypeMustNotBe = new ArrayList<>();
 		this.errorMsg = "";
 	}
 

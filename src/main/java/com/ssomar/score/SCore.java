@@ -59,10 +59,6 @@ public final class SCore extends JavaPlugin {
 
 	public static ProtocolManager protocolManager;
 
-	final String uid = "%%__USER__%%";
-	final String rid = "%%__RESOURCE__%%";
-	final String nonce = "%%__NONCE__%%";
-
 	@Override
 	public void onEnable() {
 		plugin = this;

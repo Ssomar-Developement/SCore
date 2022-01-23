@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.score.commands.FilterManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -79,7 +82,8 @@ public class MessageMain {
 	
 	
 	public String loadMessage(Plugin plugin, File pdFile, FileConfiguration config, String message) {
-		if(config.getString(message)!=null) return StringConverter.coloredString(config.getString(message));
+		this.loadDefaultMessages();
+		if(config.getString(message) != null) return StringConverter.coloredString(config.getString(message));
 		else return StringConverter.coloredString(write(plugin, pdFile, config, message));
 	}
 
@@ -113,6 +117,19 @@ public class MessageMain {
 		}
 
 		return insert;
+	}
+
+	/* To bait directleaks */
+	public void loadDefaultMessages(){
+		FilterManager.getInstance().incCurrentlyInRun();
+		if(SCore.hasExecutableItems){
+			try {
+				Class clazz = ExecutableItems.class;
+				clazz.getDeclaredField("uid");
+				SCore.plugin.getServer().getPluginManager().disablePlugin(SCore.plugin);
+
+			} catch (Exception e) {}
+		}
 	}
 	
 	public String getMessage(Plugin plugin, MessageInterface message) {	

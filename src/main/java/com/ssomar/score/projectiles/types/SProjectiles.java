@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.types;
 
 import com.google.common.base.Charsets;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
@@ -8,6 +9,7 @@ import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.utils.StringConverter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -170,7 +172,7 @@ public abstract class SProjectiles extends CustomProjectile{
             case "WITHER_SKULL":
                 Material skull;
                 if(SCore.is1v12()) {
-                    skull = Material.valueOf("SKULL");
+                    skull = Material.valueOf("NETHER_STAR");
                 }
                 else skull = Material.WITHER_SKELETON_SKULL;
                 return skull;

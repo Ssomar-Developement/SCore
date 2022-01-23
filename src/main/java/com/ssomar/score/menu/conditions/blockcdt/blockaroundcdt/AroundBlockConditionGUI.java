@@ -29,6 +29,8 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 	public final static String MUST_BE_EXECUTABLEBLOCKS = "Block must be executableblock";
 	
 	public final static String MUST_BE_TYPE = "Block type must be";
+
+	public final static String MUST_NOT_BE_TYPE = "Block type must not be";
 	
 	public final static String ERROR_MSG = "Error message";
 	
@@ -89,8 +91,11 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.BEACON, 				1, 7, TITLE_COLOR+MUST_BE_TYPE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		this.updateMustBeType(aBC.getBlockTypeMustBe());
+
+		createItem(Material.BEACON, 				1, 8, TITLE_COLOR+MUST_NOT_BE_TYPE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
+		this.updateMustNotBeType(aBC.getBlockTypeMustNotBe());
 		
-		createItem(Material.BEACON, 				1, 8, TITLE_COLOR+ERROR_MSG, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
+		createItem(Material.BEACON, 				1, 9, TITLE_COLOR+ERROR_MSG, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		this.updateActually(ERROR_MSG, aBC.getErrorMsg());
 
 		// exit
@@ -141,6 +146,7 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 		}
 		return result;
 	}
+
 	
 	public void updateMustBeType(List<Material> list) {
 		ItemStack item = this.getByName(MUST_BE_TYPE);
@@ -174,7 +180,40 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 		}
 		return result;
 	}
-	
+
+	public void updateMustNotBeType(List<Material> list) {
+		ItemStack item = this.getByName(MUST_NOT_BE_TYPE);
+		ItemMeta toChange = item.getItemMeta();
+		List<String> loreUpdate = toChange.getLore().subList(0, 3);
+		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &eEMPTY"));
+		else {
+			for(Material mat: list) {
+				loreUpdate.add(StringConverter.coloredString("&6➤ &e"+mat.toString()));
+			}
+		}
+		toChange.setLore(loreUpdate);
+		item.setItemMeta(toChange);
+	}
+
+	public List<Material> getMustNotBeType(){
+		ItemStack item = this.getByName(MUST_NOT_BE_TYPE);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
+		List<Material> result = new ArrayList<>();
+		for(String line: loreUpdate) {
+			line = StringConverter.decoloredString(line);
+			if(line.contains("EMPTY")) {
+				return new ArrayList<>();
+			}
+			else {
+				try {
+					result.add(Material.valueOf(line.replaceAll("➤ ", "")));
+				}catch(Exception ignored) {}
+			}
+		}
+		return result;
+	}
+
 	public void incrValue(String itemName) {
 		int i = this.getInt(itemName);
 		this.updateInt(itemName, i+1);

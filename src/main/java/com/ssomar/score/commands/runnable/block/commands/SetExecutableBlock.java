@@ -79,7 +79,7 @@ public class SetExecutableBlock extends BlockCommand{
 			}
 			catch(Exception ignored) {}
 
-			Location loc = new Location(world, x, y , z);
+			Location loc = new Location(world, x, y , z).getBlock().getLocation();
 			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
 		}
 	}

@@ -2,6 +2,7 @@ package com.ssomar.score.usedapi;
 
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -66,6 +67,7 @@ public class WorldGuardAPI {
 		for (ProtectedRegion region : set) {
             if (region != null){
 				if (region.getFlag(Flags.PVP).equals(State.ALLOW)) {
+					SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority());
 					if(allowMaxPriority < region.getPriority()) allowMaxPriority = region.getPriority();
 				}
             }
@@ -74,6 +76,7 @@ public class WorldGuardAPI {
 		for (ProtectedRegion region : set) {
 			if (region != null){
 				if (region.getFlag(Flags.PVP).equals(State.DENY) && region.getPriority() > allowMaxPriority) {
+					SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority()+" || "+allowMaxPriority);
 					isPVP = false;
 					break;
 				}

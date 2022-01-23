@@ -57,9 +57,11 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new RegainHealth());
 		commands.add(new RegainFood());
 		commands.add(new Head());
+		commands.add(new Chestplate());
 		commands.add(new SetPitch());
 		commands.add(new SetYaw());
 		commands.add(new CancelPickup());
+		commands.add(new ModifyDurability());
 		
 		this.commands = commands;
 	}

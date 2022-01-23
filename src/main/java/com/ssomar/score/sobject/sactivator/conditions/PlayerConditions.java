@@ -324,7 +324,7 @@ public class PlayerConditions extends Conditions {
 
 		if(this.ifIsInTheAir || this.ifIsOnTheBlock.size() != 0) {
 			Location pLoc = p.getLocation();
-			pLoc.subtract(0, 1, 0);
+			pLoc.subtract(0, 0.1, 0);
 
 			Block block = pLoc.getBlock();
 			Material type = block.getType();
@@ -340,7 +340,7 @@ public class PlayerConditions extends Conditions {
 		}
 
 		if(this.hasIfInWorld()) {
-			boolean notValid=true;
+			boolean notValid = true;
 			for(String s: this.ifInWorld) {
 				if(p.getWorld().getName().equalsIgnoreCase(s)) {
 					notValid=false;
@@ -354,7 +354,7 @@ public class PlayerConditions extends Conditions {
 		}
 
 		if(this.hasIfNotInWorld()) {
-			boolean notValid=false;
+			boolean notValid = false;
 			for(String s: this.ifNotInWorld) {
 				if(p.getWorld().getName().equalsIgnoreCase(s)) {
 					notValid=true;

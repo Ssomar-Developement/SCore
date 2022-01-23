@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.SCore;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.entity.Projectile;
 
 public class StringPlaceholder extends PlaceholdersInterface implements Serializable{
 
@@ -27,6 +28,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 	/* placeholders of the owner */
 	private final OwnerPlaceholders ownerPlch = new OwnerPlaceholders();
+
+	/* placeholders of the owner */
+	private final ProjectilePlaceholders projectilePlch = new ProjectilePlaceholders();
 
 	/* placeholders of the item */
 	private String activator= "";
@@ -54,11 +58,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private String cooldown= "";
 	private String time= "";
 
-	/* placeholders of the projectile */
-	private String projectileX="";
-	private String projectileY="";
-	private String projectileZ="";
-
 	/* placeholders of the around target player */
 	AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
 
@@ -79,6 +78,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 	public void setOwnerPlcHldr(UUID uuid) {
 		ownerPlch.setOwnerPlcHldr(uuid);
+	}
+
+	public void setProjectilePlcHldr(Projectile proj) {
+		projectilePlch.setProjectilePlcHldr(proj);
 	}
 
 	public void setEntityPlcHldr(UUID uuid) {
@@ -118,6 +121,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		targetBlockPlch.reloadTargetBlockPlcHldr();
 		aroundPlayerTargetPlch.reloadAroundPlayerTargetPlcHldr();
 		aroundEntityTargetPlch.reloadAroundEntityTargetPlcHldr();
+		projectilePlch.reloadProjectilePlcHldr();
 	}
 
 	public String replacePlaceholder(String str) {
@@ -147,15 +151,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		if(this.hasUsage()) {
 			s = replaceCalculPlaceholder(s, "%usage%", usage, true);
 		}
-		if(this.hasProjectileX()) {
-			s = replaceCalculPlaceholder(s, "%projectile_x%", this.getProjectileX(), false);
-		}
-		if(this.hasProjectileY()) {
-			s = replaceCalculPlaceholder(s, "%projectile_y%", this.getProjectileY(), false);
-		}
-		if(this.hasProjectileZ()) {
-			s = replaceCalculPlaceholder(s, "%projectile_z%", this.getProjectileZ(), false);
-		}
 		if(this.hasMaxUsePerDayActivator()) {
 			s=s.replaceAll("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
 		}
@@ -178,6 +173,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		s = aroundPlayerTargetPlch.replacePlaceholder(s);
 
 		s = aroundEntityTargetPlch.replacePlaceholder(s);
+
+		s = projectilePlch.replacePlaceholder(s);
 
 		return replacePlaceholderOfPAPI(s);
 	}
@@ -331,43 +328,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		return this.usage.length()!=0;
 	}
 
-	public String getProjectileX() {
-		return projectileX;
-	}
-
-	public void setProjectileX(String projectileX) {
-		this.projectileX = projectileX;
-	}
-
-	public boolean hasProjectileX() {
-		return projectileX.length()!=0;
-	}
-
-	public String getProjectileY() {
-		return projectileY;
-	}
-
-	public void setProjectileY(String projectileY) {
-		this.projectileY = projectileY;
-	}
-
-	public boolean hasProjectileY() {
-		return projectileY.length()!=0;
-	}
-
-	public String getProjectileZ() {
-		return projectileZ;
-	}
-
-	public void setProjectileZ(String projectileZ) {
-		this.projectileZ = projectileZ;
-	}
-
-	public boolean hasProjectileZ() {
-		return projectileZ.length()!=0;
-	}
-
-
 	public String getMaxUsePerDayItem() {
 		return maxUsePerDayItem;
 	}
@@ -391,5 +351,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	public boolean hasMaxUsePerDayActivator() {
 		return maxUsePerDayActivator.length()!=0;
 	}
+
+
 
 }

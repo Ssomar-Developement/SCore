@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.utils.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -38,7 +39,7 @@ public class Damage extends PlayerCommand{
 				
 				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
 				amount = receiver.getMaxHealth() * percentage;
-				amount = Double.parseDouble((amount+"").substring(0, 3));
+				amount = NTools.reduceDouble(amount, 2);
 			}
 			else amount = Double.parseDouble(damage);
 			
@@ -64,10 +65,7 @@ public class Damage extends PlayerCommand{
 						/* Cause to much problem , it creates loop of event EntityDamageByEntityEvent */
 						/* ^^ normally its fine with the detection of the tag */
 						p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
-						EntityDamageByEntityEvent entityDamageByEntityEvent = new EntityDamageByEntityEvent(p, receiver, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount);
-						Bukkit.getServer().getPluginManager().callEvent(entityDamageByEntityEvent);
-
-						//receiver.damage(amount);
+						receiver.damage(amount, p);
 					}
 				}
 				else {

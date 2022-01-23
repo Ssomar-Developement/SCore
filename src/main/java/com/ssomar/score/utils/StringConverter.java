@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.ssomar.score.SCore;
 
+import com.ssomar.score.SsomarDev;
 import net.md_5.bungee.api.ChatColor;
 
 public class StringConverter {
@@ -30,7 +31,7 @@ public class StringConverter {
 	}
 
 	public static List<String> replaceVariable(List<String> list, String player, String item, String quantity, int time) {
-		List<String> newList= new ArrayList<>();
+		List<String> newList = new ArrayList<>();
 		for (String s : list) {
 			newList.add(replaceVariable(s, player, item, quantity, time));
 		}
@@ -110,6 +111,11 @@ public class StringConverter {
 
 	public static String translateHexCodes (String textToTranslate) {
 
+		if(textToTranslate.contains("BRUT_HEX")){
+			textToTranslate = textToTranslate.replaceAll("§", "&");
+			return textToTranslate.replaceAll("BRUT_HEX", "");
+		}
+
 		String convert = textToTranslate;
 		Matcher matcher = HEX_PATTERN.matcher(convert);
 		StringBuffer buffer = new StringBuffer();
@@ -128,7 +134,7 @@ public class StringConverter {
 	public static void main(String[]args) {
 		String s ="#32293A&lV#98141D&lo#FF0000&lr#FF0000&lt#FF7F7F&le#FFFFFF&lx &f&lPrut";
 
-		s= translateHexCodes(s);
+		s = translateHexCodes(s);
 		System.out.println(s);
 	}
 

@@ -15,7 +15,7 @@ public class FilterManager {
 	}
 
 	public boolean isSilenceOuput() {
-		return currentlyInRun>0;
+		return currentlyInRun > 0;
 	}
 
 	public void incCurrentlyInRun() {

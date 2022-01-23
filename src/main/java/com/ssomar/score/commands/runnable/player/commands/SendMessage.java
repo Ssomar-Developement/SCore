@@ -14,7 +14,7 @@ public class SendMessage extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		StringBuilder message= new StringBuilder();
+		StringBuilder message = new StringBuilder();
 		for(String s: args) {
 			//SsomarDev.testMsg("cmdarg> "+s);
 			message.append(s).append(" ");
