@@ -132,7 +132,7 @@ public class AroundBlockCondition extends Conditions{
 
 		}
 
-		if(p != null) SendMessage.sendMessageNoPlch(p, errorMsg);
+		if(p != null && !valid ) SendMessage.sendMessageNoPlch(p, errorMsg);
 		return valid;
 	}
 	
