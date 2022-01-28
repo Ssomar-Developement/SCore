@@ -1,6 +1,8 @@
 package com.ssomar.score.utils.placeholders;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -33,13 +35,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private final ProjectilePlaceholders projectilePlch = new ProjectilePlaceholders();
 
 	/* placeholders of the item */
-	private String activator= "";
-	private String item= "";
-	private String quantity = "";
-	private String usage="";
-	private String usageLimit="";
-	private String maxUsePerDayItem= "";
-	private String maxUsePerDayActivator= "";
+	private String activator = "";
+	private String item = "";
+	private String quantity  = "";
+	private String usage ="";
+	private String usageLimit ="";
+	private String maxUsePerDayItem = "";
+	private String maxUsePerDayActivator = "";
 
 	/* placeholders of the target entity */
 	private final EntityPlaceholders entityPlch = new EntityPlaceholders();
@@ -57,6 +59,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	/* placeholders of the cooldown */
 	private String cooldown= "";
 	private String time= "";
+
+	private Map<String, Double> variables = new HashMap<>();
 
 	/* placeholders of the around target player */
 	AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
@@ -121,7 +125,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		targetBlockPlch.reloadTargetBlockPlcHldr();
 		aroundPlayerTargetPlch.reloadAroundPlayerTargetPlcHldr();
 		aroundEntityTargetPlch.reloadAroundEntityTargetPlcHldr();
-		projectilePlch.reloadProjectilePlcHldr();
+		/* delayed command with old version has this to null */
+		if(projectilePlch != null ) projectilePlch.reloadProjectilePlcHldr();
 	}
 
 	public String replacePlaceholder(String str) {
@@ -158,6 +163,14 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 			s=s.replaceAll("%max_use_per_day_item%", this.getMaxUsePerDayItem());
 		}
 
+		for(String var : variables.keySet()){
+			String varPlch = "%var_"+var+"%";
+			String varPlchInt = "%var_"+var+"_int%";
+			double value = variables.get(var);
+			s = replaceCalculPlaceholder(s, varPlch, value+"", false);
+			s = replaceCalculPlaceholder(s, varPlchInt, value+"", true);
+		}
+
 		s = playerPlch.replacePlaceholder(s);
 
 		s = targetPlch.replacePlaceholder(s);
@@ -174,7 +187,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 		s = aroundEntityTargetPlch.replacePlaceholder(s);
 
-		s = projectilePlch.replacePlaceholder(s);
+		if(projectilePlch != null ) s = projectilePlch.replacePlaceholder(s);
 
 		return replacePlaceholderOfPAPI(s);
 	}
@@ -240,6 +253,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	//		 System.out.println(base);
 	//	}
 
+	public void addVariable(String var, double value){
+		variables.put(var, value);
+	}
 
 	public String getLauncher() {
 		return launcher;

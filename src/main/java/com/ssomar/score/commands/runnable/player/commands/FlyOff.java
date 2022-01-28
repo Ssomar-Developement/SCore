@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssomar.score.fly.FlyManager;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,19 +18,28 @@ public class FlyOff extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		if(!receiver.isOnGround()) {
-			Location playerLocation= receiver.getLocation();
-			boolean isVoid=false;
-			while(playerLocation.getBlock().isEmpty()) {
-				if(playerLocation.getY()<=1) {
-					isVoid=true;
-					break;
+
+		boolean teleport = true;
+		try{
+			teleport = Boolean.parseBoolean(args.get(0));
+		} catch (Exception e){
+
+		}
+		if(teleport){
+			if(!receiver.isOnGround()) {
+				Location playerLocation= receiver.getLocation();
+				boolean isVoid = false;
+				while(playerLocation.getBlock().isEmpty()) {
+					if(playerLocation.getY()<=1) {
+						isVoid = true;
+						break;
+					}
+					playerLocation.subtract(0, 1, 0);
 				}
-				playerLocation.subtract(0, 1, 0);
-			}
-			if(!isVoid) {
-				playerLocation.add(0, 1, 0);
-				receiver.teleport(playerLocation);
+				if(!isVoid) {
+					playerLocation.add(0, 1, 0);
+					receiver.teleport(playerLocation);
+				}
 			}
 		}
 		receiver.setAllowFlight(false);
@@ -52,7 +62,7 @@ public class FlyOff extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		return "FLY OFF";
+		return "FLY OFF {teleportOnTheGround true or false}";
 	}
 
 	@Override

@@ -62,6 +62,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new Leggings());
 		commands.add(new SetPitch());
 		commands.add(new SetYaw());
+		commands.add(new TotemAnimation());
 		commands.add(new CancelPickup());
 		commands.add(new ModifyDurability());
 		

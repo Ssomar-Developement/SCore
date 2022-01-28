@@ -196,7 +196,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			requestWriting.put(i.player, PlayerConditionsGUI.IF_IS_ON_THE_BLOCK);
 			if(!currentWriting.containsKey(i.player)) {
 				List<String> convert = new ArrayList<>();
-				for(Material mat : cache.get(i.player).getIfIsOnTheBlock()) {
+				for(Material mat : cache.get(i.player).getIfIsOnTheBlock(false)) {
 					convert.add(mat.toString());
 				}
 				currentWriting.put(i.player, convert);
@@ -204,7 +204,23 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			i.player.closeInventory();
 			space(i.player);
 			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IS ON THE BLOCK:"));
-			this.showIfIsOnTheBlockEditor(i.player);
+			this.showIfIsOnTheBlockEditor(i.player, false);
+			space(i.player);
+		}
+
+		else if(i.name.contains(PlayerConditionsGUI.IF_IS_NOT_ON_THE_BLOCK)) {
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_IS_NOT_ON_THE_BLOCK);
+			if(!currentWriting.containsKey(i.player)) {
+				List<String> convert = new ArrayList<>();
+				for(Material mat : cache.get(i.player).getIfIsOnTheBlock(true)) {
+					convert.add(mat.toString());
+				}
+				currentWriting.put(i.player, convert);
+			}
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF IS NOT ON THE BLOCK:"));
+			this.showIfIsOnTheBlockEditor(i.player, true);
 			space(i.player);
 		}
 
@@ -441,7 +457,16 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 							result.add(Material.valueOf(str));
 						}
 					}catch(Exception ignored) {}
-					cache.get(p).updateIfIsOnTheBlock(result);
+					cache.get(p).updateIfIsOnTheBlock(result, false);
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_NOT_ON_THE_BLOCK)) {
+					List<Material> result = new ArrayList<>();
+					try {
+						for(String str : currentWriting.get(p)) {
+							result.add(Material.valueOf(str));
+						}
+					}catch(Exception ignored) {}
+					cache.get(p).updateIfIsOnTheBlock(result, true);
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_NOT_TARGET_BLOCK)) {
 					List<Material> result = new ArrayList<>();
@@ -668,7 +693,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				this.showTheGoodEditor(requestWriting.get(p), p);
 			}
 
-			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK)) {
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_ON_THE_BLOCK) || requestWriting.get(p).equals(PlayerConditionsGUI.IF_IS_NOT_ON_THE_BLOCK)) {
 				if(message.isEmpty() || message.equals(" ")) {
 					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid block please !"));
 				}
@@ -880,9 +905,10 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		editor.generateTheMenuAndSendIt(p);
 	}
 
-	public void showIfIsOnTheBlockEditor(Player p) {
+	public void showIfIsOnTheBlockEditor(Player p, boolean not) {
 		List<String> beforeMenu = new ArrayList<>();
-		beforeMenu.add("&7➤ ifIsOnTheBlock:");
+		if(not) beforeMenu.add("&7➤ ifIsNotOnTheBlock:");
+		else beforeMenu.add("&7➤ ifIsOnTheBlock:");
 
 		HashMap<String, String> suggestions = new HashMap<>();
 
@@ -913,8 +939,12 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			break;
 
 		case PlayerConditionsGUI.IF_IS_ON_THE_BLOCK:
-			showIfIsOnTheBlockEditor(p);
+			showIfIsOnTheBlockEditor(p, false);
 			break;
+
+		case PlayerConditionsGUI.IF_IS_NOT_ON_THE_BLOCK:
+				showIfIsOnTheBlockEditor(p, true);
+				break;
 
 		case PlayerConditionsGUI.IF_HAS_PERMISSION:
 			showIfHasPermissionEditor(p);
@@ -996,7 +1026,8 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		pC.setIfPosX(cache.get(p).getIfPosX());
 		pC.setIfPosY(cache.get(p).getIfPosY());
 		pC.setIfPosZ(cache.get(p).getIfPosZ());
-		pC.setIfIsOnTheBlock(cache.get(p).getIfIsOnTheBlock());
+		pC.setIfIsOnTheBlock(cache.get(p).getIfIsOnTheBlock(false));
+		pC.setIfIsNotOnTheBlock(cache.get(p).getIfIsOnTheBlock(true));
 		pC.setIfPlayerHasEffect(cache.get(p).getIfHasEffect(false));
 		pC.setIfPlayerHasEffectEquals(cache.get(p).getIfHasEffect(true));
 

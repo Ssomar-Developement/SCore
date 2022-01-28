@@ -71,6 +71,10 @@ public class PlayerConditions extends Conditions {
 	private static final String IF_IS_ON_THE_BLOCK_MSG = " &cYou are not on the good type of block to active the activator: &6%activator% &cof this item!";
 	private String ifIsOnTheBlockMsg;
 
+	private List<Material> ifIsNotOnTheBlock;
+	private static final String IF_IS_NOT_ON_THE_BLOCK_MSG = " &cYou are not on the good type of block to active the activator: &6%activator% &cof this item!";
+	private String ifIsNotOnTheBlockMsg;
+
 	private List<String> ifInWorld;
 	private static final String IF_IN_WORLD_MSG = " &cYou aren't in the good world to active the activator: &6%activator% &cof this item!";
 	private String ifInWorldMsg;
@@ -189,6 +193,9 @@ public class PlayerConditions extends Conditions {
 
 		ifIsOnTheBlock = new ArrayList<>();
 		ifIsOnTheBlockMsg = IF_IS_ON_THE_BLOCK_MSG;
+
+		ifIsNotOnTheBlock = new ArrayList<>();
+		ifIsNotOnTheBlockMsg = IF_IS_NOT_ON_THE_BLOCK_MSG;
 
 		this.ifInWorld = new ArrayList<>();
 		this.ifInWorldMsg = IF_IN_WORLD_MSG;
@@ -322,7 +329,7 @@ public class PlayerConditions extends Conditions {
 			return false;
 		}
 
-		if(this.ifIsInTheAir || this.ifIsOnTheBlock.size() != 0) {
+		if(this.ifIsInTheAir || this.ifIsOnTheBlock.size() != 0 || this.ifIsNotOnTheBlock.size() != 0) {
 			Location pLoc = p.getLocation();
 			pLoc.subtract(0, 0.1, 0);
 
@@ -335,6 +342,11 @@ public class PlayerConditions extends Conditions {
 
 			if(this.ifIsOnTheBlock.size() != 0 && !ifIsOnTheBlock.contains(type)) {
 				this.getSm().sendMessage(toMsg, this.getIfIsOnTheBlockMsg());
+				return false;
+			}
+
+			if(this.ifIsNotOnTheBlock.size() != 0 && ifIsNotOnTheBlock.contains(type)) {
+				this.getSm().sendMessage(toMsg, this.getIfIsNotOnTheBlockMsg());
 				return false;
 			}
 		}
@@ -577,6 +589,16 @@ public class PlayerConditions extends Conditions {
 		pCdt.setIfIsOnTheBlock(mat);
 		pCdt.setIfIsOnTheBlockMsg(playerCdtSection.getString("ifIsOnTheBlockMsg", "&4&l"+pluginName+IF_IS_ON_THE_BLOCK_MSG));
 
+		List<Material> mat2 = new ArrayList<>();
+		for (String s : playerCdtSection.getStringList("ifIsNotOnTheBlock")) {
+			try {
+				mat2.add(Material.valueOf(s.toUpperCase()));
+			} catch (Exception ignored) {}
+		}
+		pCdt.setIfIsNotOnTheBlock(mat2);
+		pCdt.setIfIsNotOnTheBlockMsg(playerCdtSection.getString("ifIsNotOnTheBlockMsg", "&4&l"+pluginName+IF_IS_NOT_ON_THE_BLOCK_MSG));
+
+
 		pCdt.setIfInWorld(playerCdtSection.getStringList("ifInWorld"));
 		pCdt.setIfInWorldMsg(playerCdtSection.getString("ifInWorldMsg", "&4&l"+pluginName+IF_IN_WORLD_MSG));
 
@@ -814,7 +836,15 @@ public class PlayerConditions extends Conditions {
 		}
 		if(pC.getIfIsOnTheBlock().size() != 0) pCConfig.set("ifIsOnTheBlock",convert); 
 		else pCConfig.set("ifIsOnTheBlock", null);
-		pCConfig.set("ifIsOnTheBlockMsg", pC.getIfIsOnTheBlockMsg()); 
+		pCConfig.set("ifIsOnTheBlockMsg", pC.getIfIsOnTheBlockMsg());
+
+		List<String> convert2 = new ArrayList<>();
+		for(Material mat : pC.getIfIsNotOnTheBlock()) {
+			convert2.add(mat.toString());
+		}
+		if(pC.getIfIsNotOnTheBlock().size() != 0) pCConfig.set("ifIsNotOnTheBlock",convert2);
+		else pCConfig.set("ifIsNotOnTheBlock", null);
+		pCConfig.set("ifIsNotOnTheBlockMsg", pC.getIfIsNotOnTheBlockMsg());
 
 		if(pC.hasIfInWorld()) pCConfig.set("ifInWorld", pC.getIfInWorld()); 
 		else pCConfig.set("ifInWorld", null);
@@ -1546,5 +1576,21 @@ public class PlayerConditions extends Conditions {
 
 	public void setIfPlayerHasEffectEqualsMsg(String ifPlayerHasEffectEqualsMsg) {
 		this.ifPlayerHasEffectEqualsMsg = ifPlayerHasEffectEqualsMsg;
+	}
+
+	public List<Material> getIfIsNotOnTheBlock() {
+		return ifIsNotOnTheBlock;
+	}
+
+	public void setIfIsNotOnTheBlock(List<Material> ifIsNotOnTheBlock) {
+		this.ifIsNotOnTheBlock = ifIsNotOnTheBlock;
+	}
+
+	public String getIfIsNotOnTheBlockMsg() {
+		return ifIsNotOnTheBlockMsg;
+	}
+
+	public void setIfIsNotOnTheBlockMsg(String ifIsNotOnTheBlockMsg) {
+		this.ifIsNotOnTheBlockMsg = ifIsNotOnTheBlockMsg;
 	}
 }

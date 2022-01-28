@@ -97,8 +97,10 @@ public class StringConverter {
 
 	public static String deconvertColor(String s) {
 
+		if(s == null || s.isEmpty()) return "";
+
 		StringBuilder sb = new StringBuilder();
-		char[] sChar= s.toCharArray();
+		char[] sChar = s.toCharArray();
 		for (char c : sChar) {
 			if (c == '§') {
 				sb.append('&');

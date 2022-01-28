@@ -28,6 +28,7 @@ public class BlockCommandManager implements CommandManager{
 		references.add(new SendMessage());
 		references.add(new Explode());
 		references.add(new Break());
+		references.add(new Launch());
 		references.add(new DropItem());
 		references.add(new DropExecutableItem());
 		references.add(new MineInCube());

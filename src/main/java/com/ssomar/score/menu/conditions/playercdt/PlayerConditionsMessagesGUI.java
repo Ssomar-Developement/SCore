@@ -58,7 +58,11 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IS_ON_THE_BLOCK_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(PlayerConditionsMessages.IF_IS_ON_THE_BLOCK_MSG.name, conditions.getIfIsOnTheBlockMsg());
-		
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IS_NOT_ON_THE_BLOCK_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_IS_NOT_ON_THE_BLOCK_MSG.name, conditions.getIfIsNotOnTheBlockMsg());
+
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_IN_WORLD_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(PlayerConditionsMessages.IF_IN_WORLD_MSG.name, conditions.getIfInWorldMsg());
@@ -163,6 +167,7 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_FLYING_MSG ("ifFlying message"),
 		IF_IS_IN_THE_AIR_MSG ("ifIsInTheAir message"),
 		IF_IS_ON_THE_BLOCK_MSG ("ifIsOnTheBlock message"),
+		IF_IS_NOT_ON_THE_BLOCK_MSG ("ifIsNotOnTheBlock message"),
 		IF_IN_WORLD_MSG ("ifInWorld message"),
 		IF_NOT_IN_WORLD_MSG ("ifNotInWorld message"),
 		IF_IN_BIOME_MSG ("ifInBiome message"),

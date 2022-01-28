@@ -29,6 +29,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_FLYING = "ifFlying";
 	public static final String IF_IS_IN_THE_AIR = "if is in the air";
 	public static final String IF_IS_ON_THE_BLOCK = "if is on the block";
+	public static final String IF_IS_NOT_ON_THE_BLOCK = "if isn't on the block";
 	public static final String IF_IN_WORLD = "ifInWorld";
 	public static final String IF_NOT_IN_WORLD = "ifNotInWorld";
 	public static final String IF_IN_BIOME = "ifInBiome";
@@ -97,7 +98,11 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IS_ON_THE_BLOCK, 	false,	false, "&7&oThe player must be on ceartain block ?", "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateIfIsOnTheBlock(conditions.getIfIsOnTheBlock());
+		this.updateIfIsOnTheBlock(conditions.getIfIsOnTheBlock(), false);
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IS_NOT_ON_THE_BLOCK, 	false,	false, "&7&oThe player must not be on ceartain block ?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfIsOnTheBlock(conditions.getIfIsOnTheBlock(), true);
 
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IN_WORLD, 	false,	false, "&7&oThe player must be in this world", "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -419,8 +424,12 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		return result;
 	}
 	
-	public void updateIfIsOnTheBlock(List<Material> list) {
-		ItemStack item = this.getByName(IF_IS_ON_THE_BLOCK);
+	public void updateIfIsOnTheBlock(List<Material> list, boolean not) {
+		ItemStack item;
+
+		if(not) item = this.getByName(IF_IS_NOT_ON_THE_BLOCK);
+		else item = this.getByName(IF_IS_ON_THE_BLOCK);
+
 		ItemMeta toChange = item.getItemMeta();
 		List<String> loreUpdate= toChange.getLore().subList(0, 3);
 		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString("&6➤ &eNO BLOCK IS REQUIRED"));
@@ -433,8 +442,12 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		item.setItemMeta(toChange);
 	}
 
-	public List<Material> getIfIsOnTheBlock(){
-		ItemStack item = this.getByName(IF_IS_ON_THE_BLOCK);
+	public List<Material> getIfIsOnTheBlock(boolean not){
+		ItemStack item;
+
+		if(not) item = this.getByName(IF_IS_NOT_ON_THE_BLOCK);
+		else item = this.getByName(IF_IS_ON_THE_BLOCK);
+
 		ItemMeta iM = item.getItemMeta();
 		List<String> loreUpdate= iM.getLore().subList(3, iM.getLore().size());
 		List<Material> result = new ArrayList<>();

@@ -3,6 +3,7 @@ package com.ssomar.score.utils.placeholders;
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.ssomar.score.utils.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -96,9 +97,9 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = toReplace.replaceAll("%player%", player);
 			toReplace = toReplace.replaceAll("%player_name%", player);
 			toReplace = toReplace.replaceAll("%player_uuid%", playerUUID.toString());
-			toReplace = replaceCalculPlaceholder(toReplace, "%x%", x+"", false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%y%", y+"", false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%z%", z+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%x%", NTools.reduceDouble(x, 2)+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%y%", NTools.reduceDouble(y, 2)+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%z%", NTools.reduceDouble(z, 2)+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%x_int%", ((int) x)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%y_int%", ((int) y)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%z_int%", ((int) z)+"", true);
@@ -113,10 +114,9 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive_int%", ((int) pitchPositive)+"", false);
 			toReplace = toReplace.replaceAll("%direction%", direction);
 
-
-			toReplace = replaceCalculPlaceholder(toReplace, "%player_x%", x+"", false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%player_y%", y+"", false);
-			toReplace = replaceCalculPlaceholder(toReplace, "%player_z%", z+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_x%", NTools.reduceDouble(x, 2)+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_y%", NTools.reduceDouble(y, 2)+"", false);
+			toReplace = replaceCalculPlaceholder(toReplace, "%player_z%", NTools.reduceDouble(z, 2)+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_x_int%", ((int) x)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_y_int%", ((int) y)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_z_int%", ((int) z)+"", true);

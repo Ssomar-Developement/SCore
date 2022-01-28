@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -74,13 +75,19 @@ public class SetExecutableBlock extends BlockCommand{
 			catch(Exception ignored) {}
 
 			UUID ownerUUID = null;
+			Player owner = null;
 			try {
 				ownerUUID = UUID.fromString(args.get(6));
+				owner = Bukkit.getServer().getPlayer(ownerUUID);
 			}
 			catch(Exception ignored) {}
 
 			Location loc = new Location(world, x, y , z).getBlock().getLocation();
-			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
+
+			ExecutableBlock eB;
+			if((eB = ExecutableBlockManager.getInstance().getLoadedBlockWithID(args.get(0))) != null) {
+				eB.place(owner, loc, true);
+			}
 		}
 	}
 

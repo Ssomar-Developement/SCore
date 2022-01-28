@@ -118,6 +118,7 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 		pC.setIfFlyingMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_FLYING_MSG.name));
 		pC.setIfIsInTheAirMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_IS_IN_THE_AIR_MSG.name));
 		pC.setIfIsOnTheBlockMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_IS_ON_THE_BLOCK_MSG.name));
+		pC.setIfIsNotOnTheBlockMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_IS_NOT_ON_THE_BLOCK_MSG.name));
 		pC.setIfGlidingMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_GLIDING_MSG.name));
 		pC.setIfHasPermissionMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_HAS_PERMISSION_MSG.name));
 		pC.setIfInBiomeMsg(cache.get(p).getMessage(PlayerConditionsMessages.IF_IN_BIOME_MSG.name));

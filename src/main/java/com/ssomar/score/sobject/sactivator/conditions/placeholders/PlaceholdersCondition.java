@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -80,28 +81,35 @@ public class PlaceholdersCondition extends Conditions{
 		this.cancelEvent = false;
 	}
 
+	public boolean verify(Player player, Player target) {
+		return  verify(player, target, null);
+	}
 
 	public boolean verify(Player player, Player target,@Nullable StringPlaceholder sp) {
 		String aPart1 = "";
-		String aPart2 ="";
+		String aPart2 = "";
 
 		if(sp != null) {
-			aPart1 = sp.replacePlaceholder(aPart1);
-			aPart2 = sp.replacePlaceholder(aPart2);
+			aPart1 = sp.replacePlaceholder(part1);
+			aPart2 = sp.replacePlaceholder(part2String);
+		}
+		else{
+			aPart1 = part1;
+			aPart2 = part2String;
 		}
 		
 		if(SCore.hasPlaceholderAPI) {
 
 			// replace placeholders in first part
 			if (PlaceholdersCdtType.getpCdtTypeWithPlayer().contains(type) && player != null) {
-				aPart1 = PlaceholderAPI.setPlaceholders(player, part1);
-			} else if (target != null) aPart1 = PlaceholderAPI.setPlaceholders(target, part1);
+				aPart1 = PlaceholderAPI.setPlaceholders(player, aPart1);
+			} else if (target != null) aPart1 = PlaceholderAPI.setPlaceholders(target, aPart1);
 
 			// replace placeholders in second part
 			if (PlaceholdersCdtType.PLAYER_PLAYER.equals(type) && player != null) {
-				aPart2 = PlaceholderAPI.setPlaceholders(player, part2String);
+				aPart2 = PlaceholderAPI.setPlaceholders(player, aPart2);
 			} else if ((PlaceholdersCdtType.TARGET_TARGET.equals(type) || PlaceholdersCdtType.PLAYER_TARGET.equals(type)) && target != null) {
-				aPart2 = PlaceholderAPI.setPlaceholders(target, part2String);
+				aPart2 = PlaceholderAPI.setPlaceholders(target, aPart2);
 			}
 		}
 
