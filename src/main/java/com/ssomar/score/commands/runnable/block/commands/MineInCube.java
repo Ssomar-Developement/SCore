@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.events.BlockBreakEventExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -82,10 +83,9 @@ public class MineInCube extends BlockCommand{
 
 	public static void breakBlockWithEvent(final Block block, final Player player, final boolean drop) {
 
-		BlockBreakEvent bbE = new BlockBreakEvent(block, player);
+		BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
 		bbE.setCancelled(false);
 		/* */
-		bbE.setExpToDrop(-666666);
 		Bukkit.getPluginManager().callEvent(bbE);
 
 		if(!bbE.isCancelled()) {
