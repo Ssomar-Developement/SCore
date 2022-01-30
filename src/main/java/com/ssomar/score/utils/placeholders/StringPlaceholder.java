@@ -168,7 +168,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 			String varPlchInt = "%var_"+var+"_int%";
 			double value = variables.get(var);
 			s = replaceCalculPlaceholder(s, varPlch, value+"", false);
-			s = replaceCalculPlaceholder(s, varPlchInt, value+"", true);
+			s = replaceCalculPlaceholder(s, varPlchInt, ((int)value)+"", true);
 		}
 
 		s = playerPlch.replacePlaceholder(s);

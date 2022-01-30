@@ -3,7 +3,10 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.NTools;
+import com.ssomar.sevents.events.player.click.EntityDamageByEntityEventExtension;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Sound;
@@ -11,6 +14,8 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.ssomar.score.SCore;
@@ -42,7 +47,6 @@ public class Damage extends EntityCommand{
 
 			}
 			else amount = Double.parseDouble(damage);
-			//SsomarDev.testMsg("Passe damage 2");
 			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
 				LivingEntity e = (LivingEntity) entity;
 				if(e instanceof EnderDragon){
@@ -55,8 +59,8 @@ public class Damage extends EntityCommand{
 				}
 
 				if(p != null) {
-					p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
-					e.damage(amount, p);
+					EntityDamageByEntityEvent bbE = new EntityDamageByEntityEventExtension(p, e, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount, true);
+					Bukkit.getPluginManager().callEvent(bbE);
 				}
 				else e.damage(amount);
 			}

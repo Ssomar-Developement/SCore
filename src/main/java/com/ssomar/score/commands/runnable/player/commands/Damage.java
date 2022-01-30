@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Locale;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.utils.NTools;
+import com.ssomar.sevents.events.player.click.EntityDamageByEntityEventExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -44,28 +48,12 @@ public class Damage extends PlayerCommand{
 			else amount = Double.parseDouble(damage);
 			
 			if(amount > 0 && !receiver.isDead()) {
-
-
-				/* DELETE THE MESSAGE Message.DAMAGE_COMMAND_KILL */
-
-				//				if(receiver.getHealth() <= Integer.valueOf(amount)) {
-				//					StringPlaceholder sp = new StringPlaceholder();
-				//					sp.setPlayer(p.getName());
-				//					sp.setTarget(receiver.getName());
-				//					sp.setItem(aInfo.getName());
-				//					String message = MessageMain.getInstance().getMessage(SCore.plugin, Message.DAMAGE_COMMAND_KILL);
-				//					if(!StringConverter.decoloredString(message).isEmpty())
-				//					Bukkit.getServer().broadcastMessage(StringConverter.coloredString(sp.replacePlaceholder(message)));
-				//				}
-
 				if(p != null) {
 					boolean doDamage = true;
 					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
 					if(doDamage) {
-						/* Cause to much problem , it creates loop of event EntityDamageByEntityEvent */
-						/* ^^ normally its fine with the detection of the tag */
-						p.setMetadata("cancelDamageEvent", new FixedMetadataValue(SCore.plugin, 7772));
-						receiver.damage(amount, p);
+						EntityDamageByEntityEvent bbE = new EntityDamageByEntityEventExtension(p, receiver, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount, true);
+						Bukkit.getPluginManager().callEvent(bbE);
 					}
 				}
 				else {
