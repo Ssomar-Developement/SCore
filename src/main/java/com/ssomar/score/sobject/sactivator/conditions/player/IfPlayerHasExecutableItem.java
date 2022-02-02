@@ -58,12 +58,8 @@ public class IfPlayerHasExecutableItem {
         ExecutableItem ei = new ExecutableItem(item);
         if(!ei.isValid() || !ei.getConfig().getID().equals(executableItemID)) return false;
 
-        Optional<Integer> usageOpt = ei.getUsage();
         if(usageCalcul != null){
-            if(usageOpt.isPresent()){
-                if(!StringCalculation.calculation(usageCalcul, usageOpt.get())) return false;
-            }
-            else return false;
+            if(!StringCalculation.calculation(usageCalcul, ei.getUsage())) return false;
         }
 
         return true;

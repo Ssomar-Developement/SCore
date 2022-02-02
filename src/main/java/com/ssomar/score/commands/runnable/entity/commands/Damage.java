@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.NTools;
-import com.ssomar.sevents.events.player.click.EntityDamageByEntityEventExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
@@ -21,6 +20,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 /* DAMAGE {amount} */
 public class Damage extends EntityCommand{
@@ -59,8 +60,8 @@ public class Damage extends EntityCommand{
 				}
 
 				if(p != null) {
-					EntityDamageByEntityEvent bbE = new EntityDamageByEntityEventExtension(p, e, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount, true);
-					Bukkit.getPluginManager().callEvent(bbE);
+					p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
+					e.damage(amount, (Entity)p);
 				}
 				else e.damage(amount);
 			}

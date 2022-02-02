@@ -7,7 +7,6 @@ import java.util.Locale;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.utils.NTools;
-import com.ssomar.sevents.events.player.click.EntityDamageByEntityEventExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,6 +21,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class Damage extends PlayerCommand{
@@ -52,8 +53,8 @@ public class Damage extends PlayerCommand{
 					boolean doDamage = true;
 					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
 					if(doDamage) {
-						EntityDamageByEntityEvent bbE = new EntityDamageByEntityEventExtension(p, receiver, EntityDamageEvent.DamageCause.ENTITY_ATTACK, amount, true);
-						Bukkit.getPluginManager().callEvent(bbE);
+						p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
+						receiver.damage(amount, (Entity)p);
 					}
 				}
 				else {

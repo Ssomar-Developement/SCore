@@ -21,6 +21,9 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_USAGE2 = "(2) ifUsage";
 	public static final String IF_HAS_ENCHANT = "ifHasEnchant";
 	public static final String IF_HAS_NOT_ENCHANT = "ifHasNotEnchant";
+	public static final String IF_CROSSBOW_MUST_BE_CHARGED = "ifCrossbowMustBeCharged";
+	public static final String IF_CROSSBOW_MUST_NOT_BE_CHARGED = "ifCrossbowMustNotBeCharged";
+
 	
 	public ItemConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Item Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -50,6 +53,14 @@ public class ItemConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_NOT_ENCHANT, 	false,	false, "&7&oThe item must have..", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateIfHasEnchant(conditions.getIfHasNotEnchant(), true);
+
+		createItem(Material.ARROW,							1 , i, 	TITLE_COLOR+IF_CROSSBOW_MUST_BE_CHARGED, 	false,	false, "", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_CROSSBOW_MUST_BE_CHARGED, conditions.isIfCrossbowMustBeCharged());
+
+		createItem(Material.ARROW,							1 , i, 	TITLE_COLOR+IF_CROSSBOW_MUST_NOT_BE_CHARGED, 	false,	false, "", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_CROSSBOW_MUST_NOT_BE_CHARGED, conditions.isIfCrossbowMustNotBeCharged());
 		
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		

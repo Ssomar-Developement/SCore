@@ -85,13 +85,13 @@ public class PlaceholdersCondition extends Conditions{
 		return  verify(player, target, null);
 	}
 
-	public boolean verify(Player player, Player target,@Nullable StringPlaceholder sp) {
+	public boolean verify(Player player, Player target, @Nullable StringPlaceholder sp) {
 		String aPart1 = "";
 		String aPart2 = "";
 
 		if(sp != null) {
-			aPart1 = sp.replacePlaceholder(part1);
-			aPart2 = sp.replacePlaceholder(part2String);
+			aPart1 = sp.replacePlaceholder(part1, false);
+			aPart2 = sp.replacePlaceholder(part2String, false);
 		}
 		else{
 			aPart1 = part1;
@@ -103,12 +103,14 @@ public class PlaceholdersCondition extends Conditions{
 			// replace placeholders in first part
 			if (PlaceholdersCdtType.getpCdtTypeWithPlayer().contains(type) && player != null) {
 				aPart1 = PlaceholderAPI.setPlaceholders(player, aPart1);
-			} else if (target != null) aPart1 = PlaceholderAPI.setPlaceholders(target, aPart1);
+			}
+			else if (target != null) aPart1 = PlaceholderAPI.setPlaceholders(target, aPart1);
 
 			// replace placeholders in second part
 			if (PlaceholdersCdtType.PLAYER_PLAYER.equals(type) && player != null) {
 				aPart2 = PlaceholderAPI.setPlaceholders(player, aPart2);
-			} else if ((PlaceholdersCdtType.TARGET_TARGET.equals(type) || PlaceholdersCdtType.PLAYER_TARGET.equals(type)) && target != null) {
+			}
+			else if ((PlaceholdersCdtType.TARGET_TARGET.equals(type) || PlaceholdersCdtType.PLAYER_TARGET.equals(type)) && target != null) {
 				aPart2 = PlaceholderAPI.setPlaceholders(target, aPart2);
 			}
 		}

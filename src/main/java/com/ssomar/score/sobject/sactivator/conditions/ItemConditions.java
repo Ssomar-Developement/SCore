@@ -8,8 +8,8 @@ import java.io.Writer;
 import java.util.*;
 
 import com.google.common.base.Charsets;
-import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
 import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.executableitems.items.hiders.HiderEnum;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -51,6 +52,14 @@ public class ItemConditions extends Conditions{
 	private static final String IF_HAS_NOT_ENCHANT_MSG = " &cThis item must have the good enchantments to active the activator: &6%activator% &cof this item!";
 	private String ifHasNotEnchantMsg;
 
+	private boolean ifCrossbowMustBeCharged;
+	private static final String IF_CROSSBOW_MUST_BE_CHARGED_MSG = " &cThis crossbow must be charged to active the activator: &6%activator% &cof this item!";
+	private String ifCrossbowMustBeChargedMsg;
+
+	private boolean ifCrossbowMustNotBeCharged;
+	private static final String IF_CROSSBOW_MUST_NOT_BE_CHARGED_MSG = " &cThis crossbow must not be charged to active the activator: &6%activator% &cof this item!";
+	private String ifCrossbowMustNotBeChargedMsg;
+
 	
 	//private String ifKillWithItem="";
 
@@ -72,6 +81,12 @@ public class ItemConditions extends Conditions{
 
 		this.ifHasNotEnchant = new HashMap<>();
 		this.ifHasNotEnchantMsg = IF_HAS_NOT_ENCHANT_MSG;
+
+		this.ifCrossbowMustBeCharged = false;
+		this.ifCrossbowMustBeChargedMsg = IF_CROSSBOW_MUST_BE_CHARGED_MSG;
+
+		this.ifCrossbowMustNotBeCharged = false;
+		this.ifCrossbowMustNotBeChargedMsg = IF_CROSSBOW_MUST_NOT_BE_CHARGED_MSG;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -91,9 +106,9 @@ public class ItemConditions extends Conditions{
 		if(this.hasIfUsage()) {
 			ExecutableItem ei = new ExecutableItem(i);
 			Optional<Integer> usageOpt;
-			if(!ei.isValid() || !(usageOpt = ei.getUsage()).isPresent()) return false;
+			if(!ei.isValid()) return false;
 
-			int usage = usageOpt.get();
+			int usage = ei.getUsage();
 			
 			if(!StringCalculation.calculation(this.ifUsage, usage)) {
 				this.getSm().sendMessage(p, this.getIfUsageMsg());
@@ -111,7 +126,7 @@ public class ItemConditions extends Conditions{
 			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 			else if(infoItem.getUse() == -1) usage2 = -1;
 			else if(infoItem.getUse() == 0) usage2 = 1;
-			else if(infoItem.isHideUse()) {
+			else if(infoItem.getHiders().is(HiderEnum.HIDE_USAGE)) {
 				usage2 = 1;
 				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
 				if(itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != null) {
@@ -142,6 +157,23 @@ public class ItemConditions extends Conditions{
 			}
 		}
 
+		if(ifCrossbowMustBeCharged || ifCrossbowMustNotBeCharged && i.getType().toString().contains("CROSSBOW")){
+			ItemMeta meta;
+			if(i.hasItemMeta() && (meta = i.getItemMeta()) instanceof CrossbowMeta){
+				CrossbowMeta cMeta = (CrossbowMeta)meta;
+				boolean charged = cMeta.hasChargedProjectiles();
+				if(charged && ifCrossbowMustNotBeCharged){
+					this.getSm().sendMessage(p, this.getIfCrossbowMustNotBeChargedMsg());
+					return false;
+				}
+
+				if(!charged && ifCrossbowMustBeCharged){
+					this.getSm().sendMessage(p, this.getIfCrossbowMustBeChargedMsg());
+					return false;
+				}
+			}
+		}
+
 			
 		return true;
 	}
@@ -166,6 +198,12 @@ public class ItemConditions extends Conditions{
 		Map<Enchantment, Integer> hasNotEnchants = transformEnchants(itemCdtSection.getStringList("ifHasNotEnchant"));
 		iCdt.setIfHasNotEnchant(hasNotEnchants);
 		iCdt.setIfHasNotEnchantMsg(itemCdtSection.getString("ifHasNotEnchantMsg", "&4&l"+pluginName+IF_HAS_NOT_ENCHANT_MSG));
+
+		iCdt.setIfCrossbowMustBeCharged(itemCdtSection.getBoolean("ifCrossbowMustBeCharged", false));
+		iCdt.setIfCrossbowMustBeChargedMsg(itemCdtSection.getString("ifCrossbowMustBeChargedMsg", "&4&l"+pluginName+ IF_CROSSBOW_MUST_BE_CHARGED_MSG));
+
+		iCdt.setIfCrossbowMustNotBeCharged(itemCdtSection.getBoolean("ifCrossbowMustNotBeCharged", false));
+		iCdt.setIfCrossbowMustNotBeChargedMsg(itemCdtSection.getString("ifCrossbowMustNotBeChargedMsg", "&4&l"+pluginName+ IF_CROSSBOW_MUST_NOT_BE_CHARGED_MSG));
 
 		return iCdt;
 	}
@@ -242,6 +280,14 @@ public class ItemConditions extends Conditions{
 		}
 		else pCConfig.set("ifHasNotEnchant", null);
 		pCConfig.set("ifHasNotEnchantMsg", iC.getIfHasNotEnchantMsg());
+
+		if (iC.isIfCrossbowMustBeCharged()) pCConfig.set("ifCrossbowMustBeCharged", iC.isIfCrossbowMustBeCharged());
+		else pCConfig.set("ifCrossbowMustBeCharged", null);
+		pCConfig.set("ifCrossbowMustBeChargedMsg", iC.getIfCrossbowMustBeChargedMsg());
+
+		if (iC.isIfCrossbowMustNotBeCharged()) pCConfig.set("ifCrossbowMustNotBeCharged", iC.isIfCrossbowMustNotBeCharged());
+		else pCConfig.set("ifCrossbowMustNotBeCharged", null);
+		pCConfig.set("ifCrossbowMustNotBeChargedMsg", iC.getIfCrossbowMustNotBeChargedMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
@@ -336,5 +382,37 @@ public class ItemConditions extends Conditions{
 
 	public void setIfHasNotEnchantMsg(String ifHasNotEnchantMsg) {
 		this.ifHasNotEnchantMsg = ifHasNotEnchantMsg;
+	}
+
+	public boolean isIfCrossbowMustBeCharged() {
+		return ifCrossbowMustBeCharged;
+	}
+
+	public void setIfCrossbowMustBeCharged(boolean ifCrossbowMustBeCharged) {
+		this.ifCrossbowMustBeCharged = ifCrossbowMustBeCharged;
+	}
+
+	public String getIfCrossbowMustBeChargedMsg() {
+		return ifCrossbowMustBeChargedMsg;
+	}
+
+	public void setIfCrossbowMustBeChargedMsg(String ifCrossbowMustBeChargedMsg) {
+		this.ifCrossbowMustBeChargedMsg = ifCrossbowMustBeChargedMsg;
+	}
+
+	public boolean isIfCrossbowMustNotBeCharged() {
+		return ifCrossbowMustNotBeCharged;
+	}
+
+	public void setIfCrossbowMustNotBeCharged(boolean ifCrossbowMustNotBeCharged) {
+		this.ifCrossbowMustNotBeCharged = ifCrossbowMustNotBeCharged;
+	}
+
+	public String getIfCrossbowMustNotBeChargedMsg() {
+		return ifCrossbowMustNotBeChargedMsg;
+	}
+
+	public void setIfCrossbowMustNotBeChargedMsg(String ifCrossbowMustNotBeChargedMsg) {
+		this.ifCrossbowMustNotBeChargedMsg = ifCrossbowMustNotBeChargedMsg;
 	}
 }

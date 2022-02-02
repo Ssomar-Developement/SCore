@@ -34,6 +34,8 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new KeepCustomFlyEvent(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
+
+		main.getServer().getPluginManager().registerEvents(new RemoveCancelDamageEventMetadataTagEvent(), main);
 	}
 
 	public static EventsHandler getInstance() {

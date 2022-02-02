@@ -45,6 +45,12 @@ public class ItemConditionsGUIManager extends GUIManagerConditions<ItemCondition
 			this.showCalculationGUI(i.player, "Durability", cache.get(i.player).getIfDurability());
 			space(i.player);
 		}
+		else if(i.name.contains(ItemConditionsGUI.IF_CROSSBOW_MUST_BE_CHARGED)) {
+			cache.get(i.player).changeBoolean(ItemConditionsGUI.IF_CROSSBOW_MUST_BE_CHARGED);
+		}
+		else if(i.name.contains(ItemConditionsGUI.IF_CROSSBOW_MUST_NOT_BE_CHARGED)) {
+			cache.get(i.player).changeBoolean(ItemConditionsGUI.IF_CROSSBOW_MUST_NOT_BE_CHARGED);
+		}
 		else if(i.name.contains(ItemConditionsGUI.IF_USAGE)) {
 			requestWriting.put(i.player, ItemConditionsGUI.IF_USAGE);
 			i.player.closeInventory();

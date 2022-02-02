@@ -84,6 +84,8 @@ public class SetExecutableBlock extends BlockCommand{
 
 			Location loc = new Location(world, x, y , z).getBlock().getLocation();
 
+			if(!loc.getBlock().isEmpty() && !replace) return;
+
 			ExecutableBlock eB;
 			if((eB = ExecutableBlockManager.getInstance().getLoadedBlockWithID(args.get(0))) != null) {
 				eB.place(owner, loc, true);

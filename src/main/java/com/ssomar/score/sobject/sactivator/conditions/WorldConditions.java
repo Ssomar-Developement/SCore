@@ -55,7 +55,7 @@ public class WorldConditions extends Conditions{
 			String currentW = "";
 			if(world.isThundering()) currentW = "STORM";
 
-			else if(p != null && p.getPlayerWeather() != null && p.getPlayerWeather().equals(WeatherType.DOWNFALL)) currentW = "RAIN";
+			else if(world.hasStorm()) currentW = "RAIN";
 			else currentW = "CLEAR";
 			
 			if(!this.ifWeather.contains(currentW)) {

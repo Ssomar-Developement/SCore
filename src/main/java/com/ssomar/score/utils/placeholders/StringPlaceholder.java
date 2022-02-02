@@ -130,6 +130,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	}
 
 	public String replacePlaceholder(String str) {
+		return replacePlaceholder(str, true);
+	}
+
+	public String replacePlaceholder(String str, boolean withPAPI) {
 		this.reloadAllPlaceholders();
 		String s = str;
 		s = replaceRandomPlaceholders(s);
@@ -163,12 +167,14 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 			s=s.replaceAll("%max_use_per_day_item%", this.getMaxUsePerDayItem());
 		}
 
-		for(String var : variables.keySet()){
-			String varPlch = "%var_"+var+"%";
-			String varPlchInt = "%var_"+var+"_int%";
-			double value = variables.get(var);
-			s = replaceCalculPlaceholder(s, varPlch, value+"", false);
-			s = replaceCalculPlaceholder(s, varPlchInt, ((int)value)+"", true);
+		if(variables != null) {
+			for (String var : variables.keySet()) {
+				String varPlch = "%var_" + var + "%";
+				String varPlchInt = "%var_" + var + "_int%";
+				double value = variables.get(var);
+				s = replaceCalculPlaceholder(s, varPlch, value + "", false);
+				s = replaceCalculPlaceholder(s, varPlchInt, ((int) value) + "", true);
+			}
 		}
 
 		s = playerPlch.replacePlaceholder(s);
@@ -189,7 +195,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 		if(projectilePlch != null ) s = projectilePlch.replacePlaceholder(s);
 
-		return replacePlaceholderOfPAPI(s);
+		if(withPAPI) return replacePlaceholderOfPAPI(s);
+		else return s;
 	}
 
 	public static String replaceRandomPlaceholders(String s) {
