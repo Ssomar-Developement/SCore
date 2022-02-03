@@ -61,6 +61,8 @@ public abstract class GUI {
 
 	public Material GRINDSTONE = null;
 
+	public Material COMPARATOR = null;
+
 	public static Material RED = null;
 
 	public static Material ORANGE = null;
@@ -99,6 +101,7 @@ public abstract class GUI {
 			NEXT_PAGE_MAT = Material.ARROW;
 			PREVIOUS_PAGE_MAT = Material.ARROW;
 			HEAD = Material.valueOf("SKULL_ITEM");
+			COMPARATOR = Material.valueOf("REDSTONE_COMPARATOR");
 			RED = Material.REDSTONE_BLOCK;
 			ORANGE = Material.BARRIER;
 			GREEN = Material.EMERALD;
@@ -115,6 +118,7 @@ public abstract class GUI {
 			NEXT_PAGE_MAT = Material.PURPLE_STAINED_GLASS_PANE;
 			PREVIOUS_PAGE_MAT = Material.PURPLE_STAINED_GLASS_PANE;
 			HEAD = Material.PLAYER_HEAD;
+			COMPARATOR = Material.COMPARATOR;
 			RED = Material.RED_STAINED_GLASS_PANE;
 			ORANGE = Material.ORANGE_STAINED_GLASS_PANE;
 			GREEN = Material.LIME_STAINED_GLASS_PANE;
