@@ -60,7 +60,8 @@ public class TeleportOnCursor extends PlayerCommand {
             boolean validTp = (acceptAir && isAirBlock(checkLoc.getBlock()) || (!isAirBlock(checkLoc.getBlock()) && mat.isBlock() && !mat.equals(Material.LAVA)));
 
             if (validTp && isAirBlock(checkLoc.clone().add(0, 1, 0).getBlock()) && isAirBlock(checkLoc.clone().add(0, 2, 0).getBlock())) {
-                receiver.teleport(checkLoc.add(0, 1, 0));
+                if(TeleportOnCursorManager.getInstance().canTp(receiver.getUniqueId())) receiver.teleport(checkLoc.add(0, 1, 0));
+
             }
 
 

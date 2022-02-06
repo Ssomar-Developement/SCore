@@ -40,6 +40,7 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
         if (despawnDelay != -1) {
             BukkitRunnable runnable = new BukkitRunnable() {
                 public void run() {
+                    if(e != null)
                     e.remove();
                 }
             };

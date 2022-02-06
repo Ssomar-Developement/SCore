@@ -1,6 +1,10 @@
 package com.ssomar.score.utils;
 
-public class NTools {
+import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
+
+public class NTools implements Serializable {
 	
 	public static boolean isNumber(String s) {
 		try {
@@ -12,9 +16,9 @@ public class NTools {
 		return true;
 	}
 
-	public static double reduceDouble(double number, int numbersAfterComma){
+	public static double reduceDouble(@NotNull double number, int numbersAfterComma){
 		/* Limit numbers after , */
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("");
 		int limit = numbersAfterComma;
 		boolean startCount = false;
 		int cpt = 0;
@@ -30,7 +34,11 @@ public class NTools {
 			}
 			sb.append(c);
 		}
-		return Double.parseDouble(sb.toString());
+		try{
+			return Double.parseDouble(sb.toString());
+		}catch (Exception e){
+			e.printStackTrace();
+			return number;
+		}
 	}
-
 }

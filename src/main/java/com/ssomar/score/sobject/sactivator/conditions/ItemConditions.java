@@ -29,6 +29,7 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemConditions extends Conditions{
 
@@ -90,7 +91,11 @@ public class ItemConditions extends Conditions{
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean verifConditions(ItemStack i, Item infoItem, Player p) {
+	public boolean verifConditions(@Nullable ExecutableItem ei, @Nullable ItemStack item, Player p) {
+
+		ItemStack i;
+		if(ei != null) i = ei.getItem();
+		else i = item;
 
 		ItemMeta itemMeta = null;
 		boolean hasItemMeta = i.hasItemMeta();
@@ -103,10 +108,7 @@ public class ItemConditions extends Conditions{
 			}
 		}
 		
-		if(this.hasIfUsage()) {
-			ExecutableItem ei = new ExecutableItem(i);
-			Optional<Integer> usageOpt;
-			if(!ei.isValid()) return false;
+		if(this.hasIfUsage() && ei != null) {
 
 			int usage = ei.getUsage();
 			
@@ -118,22 +120,9 @@ public class ItemConditions extends Conditions{
 
 
 
-		if(this.hasIfUsage2()) {
-			if(!hasItemMeta) return false;
-			List<String> lore = itemMeta.getLore();
-			int usage2;
+		if(this.hasIfUsage2() && ei != null) {
 
-			if(itemMeta.hasLore() && lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) usage2= Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
-			else if(infoItem.getUse() == -1) usage2 = -1;
-			else if(infoItem.getUse() == 0) usage2 = 1;
-			else if(infoItem.getHiders().is(HiderEnum.HIDE_USAGE)) {
-				usage2 = 1;
-				NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-USAGE");
-				if(itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != null) {
-					usage2 = itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
-				}
-			}
-			else usage2 = 1;
+			int usage2 = ei.getUsage();
 			
 			if(!StringCalculation.calculation(this.ifUsage2, usage2)) {
 				this.getSm().sendMessage(p, this.getIfUsage2Msg());
@@ -158,9 +147,8 @@ public class ItemConditions extends Conditions{
 		}
 
 		if(ifCrossbowMustBeCharged || ifCrossbowMustNotBeCharged && i.getType().toString().contains("CROSSBOW")){
-			ItemMeta meta;
-			if(i.hasItemMeta() && (meta = i.getItemMeta()) instanceof CrossbowMeta){
-				CrossbowMeta cMeta = (CrossbowMeta)meta;
+			if(hasItemMeta && itemMeta instanceof CrossbowMeta){
+				CrossbowMeta cMeta = (CrossbowMeta)itemMeta;
 				boolean charged = cMeta.hasChargedProjectiles();
 				if(charged && ifCrossbowMustNotBeCharged){
 					this.getSm().sendMessage(p, this.getIfCrossbowMustNotBeChargedMsg());

@@ -66,6 +66,8 @@ public final class SCore extends JavaPlugin {
 
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 
+		this.initVersion();
+
 		this.loadDependency();
 
 		GeneralConfig.getInstance();
@@ -195,44 +197,69 @@ public final class SCore extends JavaPlugin {
 		return commandClass;
 	}
 
+
+	private static boolean is1v12 = false;
+	private static boolean is1v13 = false;
+	private static boolean is1v14 = false;
+	private static boolean is1v15 = false;
+	private static boolean is1v16 = false;
+	private static boolean is1v16v1 = false;
+	private static boolean is1v17 = false;
+	private static boolean is1v18 = false;
+	private static boolean is1v16Plus = false;
+	private static boolean is1v17Plus = false;
+
+	public void initVersion(){
+		is1v12 = Bukkit.getServer().getVersion().contains("1.12");
+		is1v13 = Bukkit.getServer().getVersion().contains("1.13");
+		is1v14 = Bukkit.getServer().getVersion().contains("1.14");
+		is1v15 = Bukkit.getServer().getVersion().contains("1.15");
+		is1v16 = Bukkit.getServer().getVersion().contains("1.16");
+		is1v16v1 = Bukkit.getServer().getVersion().contains("1.16.1");
+		is1v17 = Bukkit.getServer().getVersion().contains("1.17");
+		is1v18 = Bukkit.getServer().getVersion().contains("1.18");
+	}
+
+
+
 	/* The server is in 1.12 ? */
 	public static boolean is1v12() {
-		return Bukkit.getServer().getVersion().contains("1.12");
+		return is1v12;
 	}
 
 	/* The server is in 1.13 ? */
 	public static boolean is1v13() {
-		return Bukkit.getServer().getVersion().contains("1.13");
+		return is1v13;
 	}
 
 	/* The server is in 1.14 ? */
 	public static boolean is1v14() {
-		return Bukkit.getServer().getVersion().contains("1.14");
+		return is1v14;
 	}
 
 	/* The server is in 1.15 ? */
 	public static boolean is1v15() {
-		return Bukkit.getServer().getVersion().contains("1.15");
+		return is1v15;
 	}
 
 	/* The server is in 1.16 ? */
 	public static boolean is1v16() {
-		return Bukkit.getServer().getVersion().contains("1.16");
+		return is1v16;
 	}
 	
 	/* The server is in 1.16 ? */
 	public static boolean is1v16v1() {
-		return Bukkit.getServer().getVersion().contains("1.16.1");
+		return is1v16v1;
 	}
 
 	/* The server is in 1.17 ? */
 	public static boolean is1v17() {
-		return Bukkit.getServer().getVersion().contains("1.17");
+		return is1v17;
 	}
 
 	/* The server is in 1.18 ? */
 	public static boolean is1v18() {
-		return Bukkit.getServer().getVersion().contains("1.18");
+		return is1v18;
 	}
 
 	/* The server is in 1.16 or + ? */
