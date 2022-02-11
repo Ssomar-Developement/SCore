@@ -92,7 +92,7 @@ public class LoopManager {
 							Map<Location, ExecutableBlockPlaced> mapEBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlocksPlaced();
 							for(Location loc : mapEBP.keySet()) {
 
-								if(!loc.isWorldLoaded()) continue;
+								if(!loc.isWorldLoaded() || !loc.getChunk().isLoaded()) continue;
 								ExecutableBlockPlaced eBP =  mapEBP.get(loc);
 
 								if(eBP.hasEntityOn()) {

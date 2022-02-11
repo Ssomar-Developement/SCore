@@ -53,10 +53,14 @@ public class Damage extends EntityCommand{
 				if(e instanceof EnderDragon){
 					//SsomarDev.testMsg("Passe enderdrag");
 					double newHealth = e.getHealth()-amount;
-					if(newHealth <= 0) newHealth = 0;
-					else e.setHealth(newHealth);
-					e.playEffect(EntityEffect.HURT);
-					e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
+					if(newHealth <= 0){
+						((EnderDragon) e).setPhase(EnderDragon.Phase.DYING);
+					}
+					else{
+						e.setHealth(newHealth);
+						e.playEffect(EntityEffect.HURT);
+						e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
+					}
 				}
 
 				if(p != null) {

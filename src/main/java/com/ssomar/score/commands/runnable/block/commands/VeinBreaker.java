@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.executableitems.items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,7 +17,10 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class VeinBreaker  extends BlockCommand{
 
@@ -41,26 +46,33 @@ public class VeinBreaker  extends BlockCommand{
 		try {
 			veinSize = Integer.parseInt(args.get(0));
 		}catch(Exception ignored) {}
+
+		ItemStack item = null;
+		try{
+			item = ItemManager.getInstance().getLoadedItemWithID(aInfo.getItemID()).formItem(1, null);
+		} catch (Exception e){
+			//SCore.getPlugin().getLogger().info("ERROR IN THE VEIN_BREAKER COMMAND, report it to ssomar");
+		}
 		
 		List<Block> vein;
 		if(SCore.hasWorldGuard) {
 			if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-				this.validBreak(block);
+				this.validBreak(block, item);
 			}
 			else return;	
 		}
-		else this.validBreak(block);
+		else this.validBreak(block, item);
 
 		vein = this.getVein(block, oldMaterial, veinSize);
 
 		for(Block b : vein) {
 			if(SCore.hasWorldGuard) {
 				if(new WorldGuardAPI().canBuild(p, new Location(b.getWorld(), b.getX(), b.getY(), b.getZ()))) {
-					this.validBreak(b);
+					this.validBreak(b, item);
 				}
 				else continue;	
 			}
-			else this.validBreak(b);
+			else this.validBreak(b, item);
 		}
 	}
 
@@ -97,7 +109,7 @@ public class VeinBreaker  extends BlockCommand{
 		}
 	}
 
-	public void validBreak(Block block) {
+	public void validBreak(Block block, @Nullable ItemStack item) {
 		Location bLoc = block.getLocation();
 		bLoc.add(0.5, 0.5, 0.5);
 
@@ -109,7 +121,9 @@ public class VeinBreaker  extends BlockCommand{
 			}
 		}
 
-		block.breakNaturally();
+		/* Only for axe, for other tools its useless */
+		if(item != null && item.getType().toString().contains("PICKAXE")) block.breakNaturally(item);
+		else block.breakNaturally();
 	}
 
 	@Override

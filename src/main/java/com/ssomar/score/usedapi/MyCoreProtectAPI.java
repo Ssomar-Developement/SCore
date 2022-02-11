@@ -36,13 +36,13 @@ public class MyCoreProtectAPI {
 			List<String[]> list = CoreProtect.blockLookup(block, 2592000);
 
 			//				SCore.plugin.getLogger().info("DEBUG for the user LUCKYWARRIOR pls send me the following message");
-							for(String[] tab : list) {
+							/* for(String[] tab : list) {
 								SCore.plugin.getLogger().info("==========");
 								for(String s: tab) {
 									SCore.plugin.getLogger().info(s);
 								}
 								SCore.plugin.getLogger().info("==========");
-						}
+						}*/
 			return list.size() == 0;
 		}
 		

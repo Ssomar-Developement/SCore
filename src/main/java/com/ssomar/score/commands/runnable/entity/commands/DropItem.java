@@ -3,7 +3,9 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,10 +20,13 @@ public class DropItem extends EntityCommand{
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
 			int amount = Integer.parseInt(args.get(1));
-			if(amount>0 && !entity.isDead()) {
-				entity.getWorld().dropItem(entity.getLocation(), new ItemStack(Material.valueOf(args.get(0)), amount));
+			Location eLoc = entity.getLocation();
+			if(amount>0) {
+				eLoc.getWorld().dropItem(eLoc, new ItemStack(Material.valueOf(args.get(0)), amount));
 			}
-		}catch(Exception ignored) {}
+		}catch(Exception ignored) {
+			ignored.printStackTrace();
+		}
 	}
 
 	@Override

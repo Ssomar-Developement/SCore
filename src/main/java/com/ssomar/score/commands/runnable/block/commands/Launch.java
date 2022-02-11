@@ -19,6 +19,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +36,7 @@ public class Launch extends BlockCommand {
 		BlockData data;
 		Directional directional;
 		double speed = 2;
+		int despawnDelay = 10;
 		if((data = block.getBlockData()) == null || !(data instanceof Directional)) return;
 
 		directional = (Directional) data;
@@ -43,11 +45,17 @@ public class Launch extends BlockCommand {
 		if( args.size() == 0 ){
 			launchProjectile(block, directional, Arrow.class, speed);
 		}
-		else if(args.size() == 2) {
+		else if(args.size() >= 2) {
 			try{
 				speed = Double.parseDouble(args.get(1));
 			}
 			catch (NumberFormatException e){}
+
+			try{
+				despawnDelay = Integer.parseInt(args.get(2));
+			}
+			catch (NumberFormatException e){}
+
 		}
 		else {
 			try {
@@ -124,9 +132,16 @@ public class Launch extends BlockCommand {
 					}
 					projectile.executeTransformTheProjectile(entity, p);
 
-				}	
-				
-			//	SsomarDev.testMsg("null entity: " + (entity==null));
+				}
+
+				final Entity e = entity;
+				BukkitRunnable runnable = new BukkitRunnable() {
+					public void run() {
+						if(e != null)
+							e.remove();
+					}
+				};
+				runnable.runTaskLater(SCore.plugin, despawnDelay * 20);
 
 				if(entity != null) {
 					if(SCore.hasExecutableItems && aInfo.getItemID() != null) {
@@ -154,8 +169,8 @@ public class Launch extends BlockCommand {
 	@Override
 	public String verify(List<String> args) {	
 		String error = "";
-		String launch = "LAUNCH {projectileType} [speed]";
-		if(args.size()<1) error = notEnoughArgs+launch;
+		String launch = "LAUNCH {projectileType} [speed] [despawnDelay]";
+		if(args.size() < 1) error = notEnoughArgs+launch;
 
 		return error;
 	}
@@ -169,7 +184,7 @@ public class Launch extends BlockCommand {
 
 	@Override
 	public String getTemplate() {
-		return "LAUNCH {projectileType} [speed]";
+		return "LAUNCH {projectileType} [speed] [despawnDelay]";
 	}
 
 	@Override
