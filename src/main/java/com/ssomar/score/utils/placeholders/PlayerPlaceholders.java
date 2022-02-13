@@ -104,6 +104,7 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = replaceCalculPlaceholder(toReplace, "%y_int%", ((int) y)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%z_int%", ((int) z)+"", true);
 			toReplace = toReplace.replaceAll("%world%", world);
+			toReplace = toReplace.replaceAll("%world%_lower%", world);
 			toReplace = toReplace.replaceAll("%slot%", slot);
 			toReplace = toReplace.replaceAll("%slot_live%", slotLive);
 			toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_taken%", lastDamageTaken+"", false);
@@ -121,6 +122,7 @@ public class PlayerPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_y_int%", ((int) y)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_z_int%", ((int) z)+"", true);
 			toReplace = toReplace.replaceAll("%player_world%", world);
+			toReplace = toReplace.replaceAll("%player_world_lower%", world.toLowerCase());
 			toReplace = toReplace.replaceAll("%player_slot%", slot);
 			toReplace = toReplace.replaceAll("%player_slot_live%", slotLive);
 			toReplace = replaceCalculPlaceholder(toReplace, "%player_last_damage_taken%", lastDamageTaken+"", false);

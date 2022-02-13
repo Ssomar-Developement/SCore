@@ -101,6 +101,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 			toReplace = toReplace.replaceAll("%block_live%", blockLive);
 			toReplace = toReplace.replaceAll("%block_live_lower%", blockLive.toLowerCase());
 			toReplace = toReplace.replaceAll("%block_world%", blockWorldName);
+			toReplace = toReplace.replaceAll("%block_world_lower%", blockWorldName.toLowerCase());
 			toReplace = toReplace.replaceAll("%block_dimension%", blockDimension);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_x%", blockX+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%block_y%", blockY+"", false);

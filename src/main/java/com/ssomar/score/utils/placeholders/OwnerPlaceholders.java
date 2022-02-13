@@ -86,6 +86,7 @@ public class OwnerPlaceholders extends PlaceholdersInterface implements Serializ
 			toReplace = replaceCalculPlaceholder(toReplace, "%owner_y_int%", ownerYInt, true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%owner_z_int%", ownerZInt, true);
 			toReplace = toReplace.replaceAll("%owner_world%", ownerWorld);
+			toReplace = toReplace.replaceAll("%owner_world_lower%", ownerWorld.toLowerCase());
 			toReplace = toReplace.replaceAll("%owner_slot%", ownerSlot);
 			toReplace = toReplace.replaceAll("%owner_direction%", direction);
 		}

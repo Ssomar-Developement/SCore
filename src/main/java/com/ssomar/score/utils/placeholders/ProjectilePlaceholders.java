@@ -58,6 +58,8 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 			toReplace = replaceCalculPlaceholder(toReplace, "%projectile_y_int%", ((int) projectileY)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%projectile_z_int%", ((int) projectileZ)+"", true);
 			toReplace = toReplace.replaceAll("%projectileworld%", projectileWorld);
+			toReplace = toReplace.replaceAll("%projectile_world%", projectileWorld);
+			toReplace = toReplace.replaceAll("%projectile_world_lower%", projectileWorld.toLowerCase());
 		}
 
 		return toReplace;

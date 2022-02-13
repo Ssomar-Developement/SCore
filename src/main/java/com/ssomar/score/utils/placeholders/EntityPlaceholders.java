@@ -57,6 +57,8 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = replaceCalculPlaceholder(toReplace, "%entity_y_int%", ((int) entityY)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%entity_z_int%", ((int) entityZ)+"", true);
 			toReplace = toReplace.replaceAll("%entityworld%", entityWorld);
+			toReplace = toReplace.replaceAll("%entity_world%", entityWorld);
+			toReplace = toReplace.replaceAll("%entity_world_lower%", entityWorld.toLowerCase());
 		}
 
 		return toReplace;
