@@ -44,7 +44,7 @@ public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
                     }
 
                     /* Check if the option is valid */
-                    if (!Option.isValidOption(optionStr)) {
+                    if (!SOption.isValidOption(optionStr)) {
                         error.add(plugin.getNameDesign()+"  Invalid option " + optionStr + " for item: " + sObject.getID());
                         continue;
                     }

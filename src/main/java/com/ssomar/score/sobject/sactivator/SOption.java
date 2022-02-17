@@ -20,6 +20,10 @@ public interface SOption {
 	
 	List<SOption> getOptionWithTargetPlayer();
 
+	static boolean isValidOption(String optionStr){
+		return false;
+	}
+
 	static SOption getOption(String optionStr){
 		return null;
 	}
