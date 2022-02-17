@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
 
-     public List<T> loadActivators(Y plugin, ActivatorLoader<T> activatorLoader, ConfigurationSection config, SObject sObject, boolean isDefaultSObject, List<String> error){
+     public List<T> loadActivators(Y plugin, ActivatorLoader<T> activatorLoader, ConfigurationSection config, SObject sObject, SOption sOptionI, boolean isDefaultSObject, List<String> error){
 
         /* CONFIG ACTIVATORS */
         List<T> activators = new ArrayList<>();
@@ -44,13 +44,13 @@ public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
                     }
 
                     /* Check if the option is valid */
-                    if (!SOption.isValidOption(optionStr)) {
+                    if (!sOptionI.isValidOption(optionStr)) {
                         error.add(plugin.getNameDesign()+"  Invalid option " + optionStr + " for item: " + sObject.getID());
                         continue;
                     }
 
                     /* Load the activator */
-                    SOption sOption = SOption.getOption(optionsStr);
+                    SOption sOption = sOptionI.getOption(optionsStr);
                     Optional<T> sActivatorOpt = activatorLoader.loadActivator(activatorSection, sObject, sOption, modifiedActivatorID, isDefaultSObject, error);
                     if (sActivatorOpt.isPresent()) {
                         activators.add(sActivatorOpt.get());
