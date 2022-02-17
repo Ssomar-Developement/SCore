@@ -50,7 +50,7 @@ public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
                     }
 
                     /* Load the activator */
-                    SOption sOption = Option.getOption(optionsStr);
+                    SOption sOption = SOption.getOption(optionsStr);
                     Optional<T> sActivatorOpt = activatorLoader.loadActivator(activatorSection, sObject, sOption, modifiedActivatorID, isDefaultSObject, error);
                     if (sActivatorOpt.isPresent()) {
                         activators.add(sActivatorOpt.get());

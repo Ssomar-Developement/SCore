@@ -20,4 +20,8 @@ public interface SOption {
 	
 	List<SOption> getOptionWithTargetPlayer();
 
+	static SOption getOption(String optionStr){
+		return null;
+	}
+
 }
