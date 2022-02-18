@@ -8,6 +8,9 @@ import java.io.Writer;
 import java.util.List;
 import java.util.UUID;
 
+import com.ssomar.score.usedapi.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,11 +26,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.usedapi.GriefDefenderAPI;
-import com.ssomar.score.usedapi.GriefPreventionAPI;
-import com.ssomar.score.usedapi.IridiumSkyblockTool;
-import com.ssomar.score.usedapi.LandsIntegrationAPI;
 
+@Getter @Setter
 public class CustomEIConditions extends Conditions{
 
 	//Custom
@@ -50,6 +50,10 @@ public class CustomEIConditions extends Conditions{
 	private boolean ifPlayerMustBeOnHisClaim;
 	private static final String IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG = " &cTo active this activator/item, you must be on your Claim or friend claim !";
 	private String ifPlayerMustBeOnHisClaimMsg;
+
+	private boolean ifPlayerMustBeOnHisPlot;
+	private static final String IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG = " &cTo active this activator/item, you must be on your Plot or friend plot !";
+	private String ifPlayerMustBeOnHisPlotMsg;
 	
 	@Override
 	public void init() {
@@ -67,6 +71,9 @@ public class CustomEIConditions extends Conditions{
 		
 		this.ifPlayerMustBeOnHisClaim = false;
 		this.ifPlayerMustBeOnHisClaimMsg = IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG;
+
+		this.ifPlayerMustBeOnHisPlot = false;
+		this.ifPlayerMustBeOnHisPlotMsg = IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG;
 	}
 
 	public boolean verifConditions(Player p, ItemStack item) {
@@ -95,6 +102,7 @@ public class CustomEIConditions extends Conditions{
 				}
 			}
 		}
+
 		if(SCore.hasGriefDefender) {
 			if(this.isIfPlayerMustBeOnHisClaim()) {
 				if(!GriefDefenderAPI.playerIsInHisClaim(p, p.getLocation())) {
@@ -103,6 +111,16 @@ public class CustomEIConditions extends Conditions{
 				}
 			}
 		}
+
+		if(SCore.hasPlotSquared) {
+			if(this.isIfPlayerMustBeOnHisPlot()) {
+				if(!PlotSquaredAPI.playerIsInHisPlot(p, p.getLocation())) {
+					this.getSm().sendMessage(p, this.getIfPlayerMustBeOnHisPlotMsg());
+					return false;
+				}
+			}
+		}
+
 		if(this.isIfOwnerOfTheEI()) {
 			if(item.hasItemMeta()) {
 				ItemMeta iM = item.getItemMeta();
@@ -166,6 +184,10 @@ public class CustomEIConditions extends Conditions{
 		cCdt.setIfPlayerMustBeOnHisClaimMsg(customCdtSection.getString("ifPlayerMustBeOnHisClaimMsg",
 				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
 
+		cCdt.setIfPlayerMustBeOnHisPlot(customCdtSection.getBoolean("ifPlayerMustBeOnHisPlot", false));
+		cCdt.setIfPlayerMustBeOnHisPlotMsg(customCdtSection.getString("ifPlayerMustBeOnHisPlotMsg",
+				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG));
+
 		return cCdt;
 
 	}	
@@ -189,7 +211,7 @@ public class CustomEIConditions extends Conditions{
 
 		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
-		if(cC.hasIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true); 
+		if(cC.isIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true);
 		else cCConfig.set("ifNeedPlayerConfirmation", null);
 		cCConfig.set("ifNeedPlayerConfirmationMsg", cC.getIfNeedPlayerConfirmationMsg());
 
@@ -208,8 +230,12 @@ public class CustomEIConditions extends Conditions{
 
 		if(cC.isIfPlayerMustBeOnHisClaim()) cCConfig.set("ifPlayerMustBeOnHisClaim", true); 
 		else cCConfig.set("ifPlayerMustBeOnHisClaim", null);
-		cCConfig.set("ifPlayerMustBeOnHisClaimMsg", cC.getIfPlayerMustBeOnHisClaimMsg()); 
-		
+		cCConfig.set("ifPlayerMustBeOnHisClaimMsg", cC.getIfPlayerMustBeOnHisClaimMsg());
+
+		if(cC.isIfPlayerMustBeOnHisPlot()) cCConfig.set("ifPlayerMustBeOnHisPlot", true);
+		else cCConfig.set("ifPlayerMustBeOnHisPlot", null);
+		cCConfig.set("ifPlayerMustBeOnHisPlotMsg", cC.getIfPlayerMustBeOnHisPlotMsg());
+
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 
@@ -222,92 +248,4 @@ public class CustomEIConditions extends Conditions{
 			e.printStackTrace();
 		}
 	}
-
-	public boolean hasCustomCondition() {
-		return this.ifNeedPlayerConfirmation || this.ifPlayerMustBeOnHisIsland;
-	}
-
-	public boolean isIfNeedPlayerConfirmation() {
-		return ifNeedPlayerConfirmation;
-	}
-
-	public void setIfNeedPlayerConfirmation(boolean ifNeedPlayerConfirmation) {
-		this.ifNeedPlayerConfirmation = ifNeedPlayerConfirmation;
-	}
-
-	public boolean hasIfNeedPlayerConfirmation() {
-		return ifNeedPlayerConfirmation;
-	}
-
-	public String getIfNeedPlayerConfirmationMsg() {
-		return ifNeedPlayerConfirmationMsg;
-	}
-	public void setIfNeedPlayerConfirmationMsg(String ifNeedPlayerConfirmationMsg) {
-		this.ifNeedPlayerConfirmationMsg = ifNeedPlayerConfirmationMsg;
-	}
-
-	public boolean isIfPlayerMustBeOnHisIsland() {
-		return ifPlayerMustBeOnHisIsland;
-	}
-
-	public void setIfPlayerMustBeOnHisIsland(boolean ifPlayerMustBeOnHisIsland) {
-		this.ifPlayerMustBeOnHisIsland = ifPlayerMustBeOnHisIsland;
-	}
-
-	public String getIfPlayerMustBeOnHisIslandMsg() {
-		return ifPlayerMustBeOnHisIslandMsg;
-	}
-
-	public void setIfPlayerMustBeOnHisIslandMsg(String ifPlayerMustBeOnHisIslandMsg) {
-		this.ifPlayerMustBeOnHisIslandMsg = ifPlayerMustBeOnHisIslandMsg;
-	}
-
-	public boolean isIfOwnerOfTheEI() {
-		return ifOwnerOfTheEI;
-	}
-
-	public void setIfOwnerOfTheEI(boolean ifOwnerOfTheEI) {
-		this.ifOwnerOfTheEI = ifOwnerOfTheEI;
-	}
-
-	public String getIfOwnerOfTheEIMsg() {
-		return ifOwnerOfTheEIMsg;
-	}
-
-	public void setIfOwnerOfTheEIMsg(String ifOwnerOfTheEIMsg) {
-		this.ifOwnerOfTheEIMsg = ifOwnerOfTheEIMsg;
-	}
-
-	public boolean isIfNotOwnerOfTheEI() {
-		return ifNotOwnerOfTheEI;
-	}
-
-	public void setIfNotOwnerOfTheEI(boolean ifNotOwnerOfTheEI) {
-		this.ifNotOwnerOfTheEI = ifNotOwnerOfTheEI;
-	}
-
-	public String getIfNotOwnerOfTheEIMsg() {
-		return ifNotOwnerOfTheEIMsg;
-	}
-
-	public void setIfNotOwnerOfTheEIMsg(String ifNotOwnerOfTheEIMsg) {
-		this.ifNotOwnerOfTheEIMsg = ifNotOwnerOfTheEIMsg;
-	}
-
-	public boolean isIfPlayerMustBeOnHisClaim() {
-		return ifPlayerMustBeOnHisClaim;
-	}
-
-	public void setIfPlayerMustBeOnHisClaim(boolean ifPlayerMustBeOnHisClaim) {
-		this.ifPlayerMustBeOnHisClaim = ifPlayerMustBeOnHisClaim;
-	}
-
-	public String getIfPlayerMustBeOnHisClaimMsg() {
-		return ifPlayerMustBeOnHisClaimMsg;
-	}
-
-	public void setIfPlayerMustBeOnHisClaimMsg(String ifPlayerMustBeOnHisClaimMsg) {
-		this.ifPlayerMustBeOnHisClaimMsg = ifPlayerMustBeOnHisClaimMsg;
-	}
-
 }
