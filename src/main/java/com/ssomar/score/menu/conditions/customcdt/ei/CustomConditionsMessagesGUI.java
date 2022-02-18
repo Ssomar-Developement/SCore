@@ -38,6 +38,10 @@ public class CustomConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG.name, conditions.getIfPlayerMustBeOnHisClaimMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG.name, conditions.getIfPlayerMustBeOnHisPlotMsg());
 		
 		createItem(RED, 				1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
@@ -56,7 +60,8 @@ public class CustomConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_OWNER_OF_THE_EI_MSG ("if owner of the EI message"),
 		IF_NOT_OWNER_OF_THE_EI_MSG ("if not owner of the EI message"),
 		IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG ("ifPlayerMustBeOnHisIsland message"),
-		IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG ("if Player Must Be On His Claim message");
+		IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG ("if Player Must Be On His Claim message"),
+		IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG ("if Player Must Be On His Plot message");
 		
 		public String name;
 

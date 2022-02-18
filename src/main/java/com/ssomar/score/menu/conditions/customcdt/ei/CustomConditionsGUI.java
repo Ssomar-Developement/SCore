@@ -15,6 +15,7 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_NOT_OWNER_OF_THE_EI = "if not owner of the EI";
 	public static final String IF_PLAYER_MUST_BE_ON_HIS_ISLAND = "ifPlayerMustBeOnHisIsland";
 	public static final String IF_PLAYER_MUST_BE_ON_HIS_CLAIM = "if Player Must Be On His Claim";
+	public static final String IF_PLAYER_MUST_BE_ON_HIS_PLOT = "if Player Must Be On His Plot";
 	
 	public CustomConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, CustomEIConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Custom Conditions", 3*9, sPlugin, sObject, sAct, detail, conditions);
@@ -44,6 +45,10 @@ public class CustomConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_MUST_BE_ON_HIS_CLAIM, 	false,	false, "&7&oThe player must be on his claim or a friend claim?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_PLAYER_MUST_BE_ON_HIS_CLAIM, conditions.isIfPlayerMustBeOnHisClaim());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLAYER_MUST_BE_ON_HIS_PLOT, 	false,	false, "&7&oThe player must be on his plot or a friend plot?", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateBoolean(IF_PLAYER_MUST_BE_ON_HIS_PLOT, conditions.isIfPlayerMustBeOnHisPlot());
 		
 		createItem(RED, 				1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
 		
