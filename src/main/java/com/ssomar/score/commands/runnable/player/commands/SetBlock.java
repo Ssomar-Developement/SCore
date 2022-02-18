@@ -38,11 +38,11 @@ public class SetBlock extends PlayerCommand{
 				if(Material.matchMaterial(args.get(1).toUpperCase()) != null) {
 					if(SCore.hasWorldGuard) {
 						if(new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-							block.setType(Material.valueOf(args.get(1)));
+							block.setType(Material.valueOf(args.get(1).toUpperCase()));
 						}
 					}
 					else {
-						block.setType(Material.valueOf(args.get(1)));
+						block.setType(Material.valueOf(args.get(1).toUpperCase()));
 						
 					}
 				}

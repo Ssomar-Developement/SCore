@@ -28,6 +28,7 @@ public class CustomSnowball extends SProjectiles {
         proj = new SilentFeature(proj);
         proj = new ParticlesFeature(proj);
         proj = new VisualItemFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 

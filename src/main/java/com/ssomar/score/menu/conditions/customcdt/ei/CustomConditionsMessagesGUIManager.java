@@ -114,6 +114,7 @@ public class CustomConditionsMessagesGUIManager extends GUIManagerConditions<Cus
 		cC.setIfOwnerOfTheEIMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_OWNER_OF_THE_EI_MSG.name));
 		cC.setIfPlayerMustBeOnHisIslandMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG.name));
 		cC.setIfPlayerMustBeOnHisClaimMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG.name));
+		cC.setIfPlayerMustBeOnHisPlotMsg(cache.get(p).getMessage(CustomConditionsMessages.IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG.name));
 		
 		CustomEIConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC, cache.get(p).getDetail());
 		cache.remove(p);

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 public class EntityPlaceholders extends PlaceholdersInterface implements Serializable{
 
@@ -23,6 +24,7 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 	private double entityY ;
 	private double entityZ ;
 	private String entityWorld = "";
+	private double entityMaxHealth;
 
 	public void setEntityPlcHldr(UUID uuid) {
 		this.entityUUID = uuid;
@@ -39,6 +41,11 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 			this.entityY = eLoc.getY();
 			this.entityZ = eLoc.getZ();
 			this.entityWorld = eLoc.getWorld().getName();
+			if(entity instanceof LivingEntity){
+				LivingEntity lE = (LivingEntity) entity;
+				this.entityMaxHealth = lE.getMaxHealth();
+			}
+			else this.entityMaxHealth = -1;
 		}
 	}
 
@@ -59,6 +66,7 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = toReplace.replaceAll("%entityworld%", entityWorld);
 			toReplace = toReplace.replaceAll("%entity_world%", entityWorld);
 			toReplace = toReplace.replaceAll("%entity_world_lower%", entityWorld.toLowerCase());
+			if(entityMaxHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%entity_max_health%", entityMaxHealth+"", false);
 		}
 
 		return toReplace;

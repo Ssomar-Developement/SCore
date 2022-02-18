@@ -2,7 +2,9 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.ssomar.score.commands.runnable.util.safebreak.SafeBreak;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -58,19 +60,9 @@ public class MineInCube extends BlockCommand{
 
 							if(!blackList.contains(toBreak.getType())) {
 
-								if (!SCore.hasWorldGuard) {
-									if (createBBEvent) breakBlockWithEvent(toBreak, p, drop);
-									else {
-										if (drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
-										else toBreak.setType(Material.AIR);
-									}
-								} else if (new WorldGuardAPI().canBuild(p, toBreakLoc)) {
-									if (createBBEvent) breakBlockWithEvent(toBreak, p, drop);
-									else {
-										if (drop) toBreak.breakNaturally(p.getInventory().getItemInMainHand());
-										else toBreak.setType(Material.AIR);
-									}
-								}
+								UUID pUUID = null;
+								if(p != null) pUUID = p.getUniqueId();
+								SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent);
 							}
 						}
 					}
@@ -79,20 +71,6 @@ public class MineInCube extends BlockCommand{
 		}catch(Exception err) {
 			err.printStackTrace();
 		}
-	}
-
-	public static void breakBlockWithEvent(final Block block, final Player player, final boolean drop) {
-
-		BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
-		bbE.setCancelled(false);
-		/* */
-		Bukkit.getPluginManager().callEvent(bbE);
-
-		if(!bbE.isCancelled()) {
-			if(drop) block.breakNaturally(player.getInventory().getItemInMainHand());
-			else block.setType(Material.AIR);
-		}
-
 	}
 
 	@Override

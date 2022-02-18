@@ -22,7 +22,7 @@ public abstract class PlaceholdersInterface {
 			String suit = result.split(placeholder+"\\+")[1];
 			StringBuilder sb = new StringBuilder();
 			for (char c : suit.toCharArray()) {
-				if (c == ' ' || c == ',')
+				if (c == ' ' || c == ',' || c == ')')
 					break; 
 				sb.append(c);
 			} 
@@ -39,7 +39,7 @@ public abstract class PlaceholdersInterface {
 			String suit = result.split(placeholder+"\\-")[1];
 			StringBuilder sb = new StringBuilder();
 			for (char c : suit.toCharArray()) {
-				if (c == ' ' || c == ',' )
+				if (c == ' ' || c == ',' || c == ')' )
 					break; 
 				sb.append(c);
 			} 

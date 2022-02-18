@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implements Serializable{
 	
@@ -25,8 +26,10 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 	private String aroundTargetYInt = "";
 	private String aroundTargetZInt = "";
 	private String aroundTargetWorld = "";
+	private double aroundTargetMaxHealth;
 
-	
+
+
 	public void setAroundEntityTargetPlcHldr(UUID uuid) {
 		this.targetEntityUUID = uuid;
 		this.reloadAroundEntityTargetPlcHldr();
@@ -45,6 +48,11 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 			this.aroundTargetYInt = pLoc.getBlockY()+"";
 			this.aroundTargetZInt = pLoc.getBlockZ()+"";
 			this.aroundTargetWorld = pLoc.getWorld().getName();
+			if(entity instanceof LivingEntity){
+				LivingEntity lE = (LivingEntity) entity;
+				this.aroundTargetMaxHealth = lE.getMaxHealth();
+			}
+			else this.aroundTargetMaxHealth = -1;
 		}
 	}
 	
@@ -61,6 +69,8 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_y_int%", aroundTargetYInt, true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_z_int%", aroundTargetZInt, true);
 			toReplace = toReplace.replaceAll("%around_target_world%", aroundTargetWorld);
+			toReplace = toReplace.replaceAll("%around_target_world_lower%", aroundTargetWorld.toLowerCase());
+			if(aroundTargetMaxHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%around_target_max_health%", aroundTargetMaxHealth+"", false);
 		}
 		
 		return toReplace;

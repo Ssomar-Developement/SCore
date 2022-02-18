@@ -29,6 +29,7 @@ public class CustomSplashPotion extends SProjectiles {
         proj = new ColorFeature(proj);
         proj = new ParticlesFeature(proj);
         proj = new PotionEffectsFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 }

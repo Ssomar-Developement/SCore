@@ -23,4 +23,13 @@ public class GriefPreventionAPI {
 		return claim.getOwnerID().equals(pUUID);
 	}
 
+	public static boolean playerCanBreakClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+
+		DataStore dataStore = GriefPrevention.instance.dataStore;
+		Claim claim = dataStore.getClaimAt(location, false, null);
+		if(claim == null) return false;
+
+		return claim.getOwnerID().equals(pUUID);
+	}
+
 }

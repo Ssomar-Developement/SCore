@@ -35,6 +35,10 @@ public class EventsHandler {
 		
 		main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 
+		main.getServer().getPluginManager().registerEvents(new FixSpawnerPlaceEvent(), main);
+
+		main.getServer().getPluginManager().registerEvents(new RemoveProjectileHitBlockEvent(), main);
+
 		main.getServer().getPluginManager().registerEvents(new RemoveCancelDamageEventMetadataTagEvent(), main);
 	}
 

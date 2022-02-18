@@ -34,6 +34,7 @@ public class LogFilter implements Filter, LifeCycle {
 		messageToHide.add("That position is not loaded");
 		messageToHide.add("The particle was not visible for anybody");
 		messageToHide.add("Disabling SCore");
+		messageToHide.add("Successfully filled");
 	}
 
 

@@ -34,6 +34,7 @@ public class CustomTrident extends SProjectiles {
         proj = new ParticlesFeature(proj);
         proj = new VisualItemFeature(proj);
         proj = new EnchantmentsFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 }

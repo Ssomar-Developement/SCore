@@ -29,6 +29,7 @@ public class CustomLingering extends SProjectiles {
         proj = new ColorFeature(proj, true);
         proj = new ParticlesFeature(proj);
         proj = new PotionEffectsFeature(proj, true);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 

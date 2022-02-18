@@ -40,6 +40,12 @@ public class CustomConditionsGUIManager extends GUIManagerConditions<CustomCondi
 			if(SCore.hasLands || SCore.hasGriefPrevention || SCore.hasGriefDefender) i.gui.changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM);
 			else i.player.sendMessage(StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cYou haven't a compatible claim plugin to change this option ! (Lands, GriefPrevention, GriefDefender)"));
 		}
+
+		else if(i.name.contains(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_PLOT)) {
+			if(SCore.hasPlotSquared) i.gui.changeBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_PLOT);
+			else i.player.sendMessage(StringConverter.coloredString("&4&l"+i.sPlugin.getNameDesign()+" &cYou haven't a compatible claim plugin to change this option ! (PlotSquared)"));
+		}
+
 		else return false;
 		
 		return true;
@@ -111,6 +117,7 @@ public class CustomConditionsGUIManager extends GUIManagerConditions<CustomCondi
 		cC.setIfNotOwnerOfTheEI(cache.get(p).getBoolean(CustomConditionsGUI.IF_NOT_OWNER_OF_THE_EI));
 		cC.setIfPlayerMustBeOnHisIsland(cache.get(p).getBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_ISLAND));
 		cC.setIfPlayerMustBeOnHisClaim(cache.get(p).getBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_CLAIM));
+		cC.setIfPlayerMustBeOnHisPlot(cache.get(p).getBoolean(CustomConditionsGUI.IF_PLAYER_MUST_BE_ON_HIS_PLOT));
 
 		CustomEIConditions.saveCustomConditions(sPlugin, sObject, sActivator, cC, cache.get(p).getDetail());
 		cache.remove(p);

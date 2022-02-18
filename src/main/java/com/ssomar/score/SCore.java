@@ -57,6 +57,8 @@ public final class SCore extends JavaPlugin {
 
 	public static boolean hasProtocolLib = false;
 
+	public static boolean hasPlotSquared = false;
+
 	public static ProtocolManager protocolManager;
 
 	@Override
@@ -169,6 +171,12 @@ public final class SCore extends JavaPlugin {
 			/* Protocolib */
 			protocolManager = ProtocolLibrary.getProtocolManager();
 		}
+
+		if (Bukkit.getPluginManager().getPlugin("PlotSquared") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] CPlotSquared hooked !");
+			hasPlotSquared = true;
+		}
+
 	}
 
 	@Override

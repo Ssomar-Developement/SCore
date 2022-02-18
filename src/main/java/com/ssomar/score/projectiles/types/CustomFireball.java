@@ -29,6 +29,7 @@ public class CustomFireball extends SProjectiles {
         proj = new ParticlesFeature(proj);
         proj = new RadiusFeature(proj);
         proj = new IncendiaryFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 }

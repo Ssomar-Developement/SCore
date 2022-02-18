@@ -56,6 +56,7 @@ public class AroundPlayerTargetPlaceholders extends PlaceholdersInterface implem
 			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_y_int%", ((int) aroundTargetY)+"", true);
 			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_z_int%", ((int) aroundTargetZ)+"", true);
 			toReplace = toReplace.replaceAll("%around_target_world%", aroundTargetWorld);
+			toReplace = toReplace.replaceAll("%around_target_world_lower%", aroundTargetWorld.toLowerCase());
 			toReplace = toReplace.replaceAll("%around_target_slot%", aroundTargetSlot);
 			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_last_damage_taken%", aroundTargetLastDamageTaken+"", false);
 			toReplace = replaceCalculPlaceholder(toReplace, "%around_target_last_damage_taken_int%", ((int) aroundTargetLastDamageTaken)+"", true);

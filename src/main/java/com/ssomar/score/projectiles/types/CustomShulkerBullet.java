@@ -27,6 +27,7 @@ public class CustomShulkerBullet extends SProjectiles {
         proj = new VelocityFeature(proj);
         proj = new SilentFeature(proj);
         proj = new ParticlesFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 }

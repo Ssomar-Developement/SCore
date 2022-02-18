@@ -2,9 +2,11 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.ssomar.executableitems.items.ExecutableItem;
 import com.ssomar.executableitems.items.ItemManager;
+import com.ssomar.score.commands.runnable.util.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +28,8 @@ public class VeinBreaker  extends BlockCommand{
 
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+
+		if(aInfo.isEventCallByMineInCube()) return;
 				
 		if(args.size() == 2) {
 			if (!oldMaterial.toString().equals(args.get(1)))
@@ -46,33 +50,16 @@ public class VeinBreaker  extends BlockCommand{
 		try {
 			veinSize = Integer.parseInt(args.get(0));
 		}catch(Exception ignored) {}
-
-		ItemStack item = null;
-		try{
-			item = ItemManager.getInstance().getLoadedItemWithID(aInfo.getItemID()).formItem(1, null);
-		} catch (Exception e){
-			//SCore.getPlugin().getLogger().info("ERROR IN THE VEIN_BREAKER COMMAND, report it to ssomar");
-		}
 		
 		List<Block> vein;
-		if(SCore.hasWorldGuard) {
-			if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-				this.validBreak(block, item);
-			}
-			else return;	
-		}
-		else this.validBreak(block, item);
+		UUID pUUID = null;
+		if(p != null) pUUID = p.getUniqueId();
+		SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true);
 
 		vein = this.getVein(block, oldMaterial, veinSize);
 
 		for(Block b : vein) {
-			if(SCore.hasWorldGuard) {
-				if(new WorldGuardAPI().canBuild(p, new Location(b.getWorld(), b.getX(), b.getY(), b.getZ()))) {
-					this.validBreak(b, item);
-				}
-				else continue;	
-			}
-			else this.validBreak(b, item);
+			SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, true);
 		}
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssomar.executableitems.items.activators.Option;
+import com.ssomar.score.SsomarDev;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -21,6 +22,7 @@ import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.EntityWalkOnEvent;
 import com.ssomar.score.sobject.sactivator.SActivator;
+import org.bukkit.util.Vector;
 
 public class LoopManager {
 
@@ -91,8 +93,7 @@ public class LoopManager {
 						if(!listEB.isEmpty()) {
 							Map<Location, ExecutableBlockPlaced> mapEBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlocksPlaced();
 							for(Location loc : mapEBP.keySet()) {
-
-								if(!loc.isWorldLoaded() || !loc.getChunk().isLoaded()) continue;
+								if(!loc.isWorldLoaded() || !loc.getWorld().isChunkLoaded(loc.getBlockX()/16, loc.getBlockZ()/16)) continue;
 								ExecutableBlockPlaced eBP =  mapEBP.get(loc);
 
 								if(eBP.hasEntityOn()) {
@@ -104,10 +105,14 @@ public class LoopManager {
 												for(Entity ent : entities) {
 
 													if(ent instanceof LivingEntity && !(ent instanceof Player)) {
-														EntityWalkOnEvent e = new EntityWalkOnEvent();
-														com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
-														eInfo.setTargetEntity(ent);
-														com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.ENTITY_WALK_ON, eBP, eInfo, listEB);
+														LivingEntity lE = (LivingEntity)ent;
+														Vector v = lE.getVelocity();
+														if(v.getX() != 0 || v.getZ() != 0) {
+															EntityWalkOnEvent e = new EntityWalkOnEvent();
+															com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
+															eInfo.setTargetEntity(ent);
+															com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.ENTITY_WALK_ON, eBP, eInfo, listEB);
+														}
 													}
 												}
 											}

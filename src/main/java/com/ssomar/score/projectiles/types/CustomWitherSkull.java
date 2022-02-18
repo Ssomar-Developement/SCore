@@ -30,6 +30,7 @@ public class CustomWitherSkull extends SProjectiles {
         proj = new RadiusFeature(proj);
         proj = new IncendiaryFeature(proj);
         proj = new ChargedFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 }

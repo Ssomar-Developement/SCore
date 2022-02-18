@@ -1,7 +1,12 @@
 package com.ssomar.score.usedapi;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -26,6 +31,13 @@ public class LandsIntegrationAPI {
 		final Area area = landsIntegration.getAreaByLoc(location);
 
 		UUID pUUID = p.getUniqueId();
+
+		return area.getOwnerUID().equals(pUUID) || area.isTrusted(pUUID);
+	}
+
+	public boolean playerCanBreakClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+		// get a land area from a location
+		final Area area = landsIntegration.getAreaByLoc(location);
 
 		return area.getOwnerUID().equals(pUUID) || area.isTrusted(pUUID);
 	}

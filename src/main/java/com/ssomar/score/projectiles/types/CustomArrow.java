@@ -39,6 +39,7 @@ public class CustomArrow extends SProjectiles {
         proj = new ColorFeature(proj);
         proj = new ParticlesFeature(proj);
         proj = new PassengerFeature(proj);
+        proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 

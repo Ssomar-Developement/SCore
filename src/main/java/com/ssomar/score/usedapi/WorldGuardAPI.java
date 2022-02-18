@@ -1,8 +1,14 @@
 package com.ssomar.score.usedapi;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import com.ssomar.score.SsomarDev;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -19,6 +25,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import com.ssomar.score.SCore;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldGuardAPI {
 
@@ -36,6 +43,21 @@ public class WorldGuardAPI {
 		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
 		return query.testBuild(loc, localPlayer, conditions);
 
+	}
+
+	public static boolean playerCanBreakInRegion(@NotNull UUID pUUID, @NotNull org.bukkit.Location location) {
+
+		if(SCore.is1v12()) return true;
+
+		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapOfflinePlayer(Bukkit.getServer().getOfflinePlayer(pUUID));
+		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionQuery query = container.createQuery();
+
+		StateFlag [] conditions = new StateFlag[1];
+		conditions[0] = Flags.BLOCK_BREAK;
+		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
+		return query.testBuild(loc, localPlayer, conditions);
 	}
 	
 	public static boolean isInPvpZone(Player p, org.bukkit.Location location) {

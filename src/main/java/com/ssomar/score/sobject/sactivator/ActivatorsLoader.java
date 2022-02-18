@@ -31,7 +31,7 @@ public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
                 int cptOption = 0;
                 for (String optionStr : optionsSpliter) {
                     cptOption++;
-                    optionsStr = optionsStr.trim();
+                    optionStr = optionStr.trim();
                     String modifiedActivatorID = activatorID;
                     if(cptOption >= 2){
                         modifiedActivatorID = activatorID+"--"+cptOption;
@@ -50,7 +50,7 @@ public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
                     }
 
                     /* Load the activator */
-                    SOption sOption = sOptionI.getOption(optionsStr);
+                    SOption sOption = sOptionI.getOption(optionStr);
                     Optional<T> sActivatorOpt = activatorLoader.loadActivator(activatorSection, sObject, sOption, modifiedActivatorID, isDefaultSObject, error);
                     if (sActivatorOpt.isPresent()) {
                         activators.add(sActivatorOpt.get());

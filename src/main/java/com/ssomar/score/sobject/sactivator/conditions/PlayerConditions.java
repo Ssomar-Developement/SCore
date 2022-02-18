@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Charsets;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.sactivator.conditions.player.IfPlayerHasExecutableItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.SculkSensor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -455,7 +457,7 @@ public class PlayerConditions extends Conditions {
 			return false;
 		}
 
-		if(this.hasIfPlayerEXP() && !StringCalculation.calculation(this.ifPlayerEXP, p.getExp())) {
+		if(this.hasIfPlayerEXP() && !StringCalculation.calculation(this.ifPlayerEXP, p.getTotalExperience())) {
 			this.getSm().sendMessage(toMsg, this.getIfPlayerEXPMsg());
 			return false;
 		}
