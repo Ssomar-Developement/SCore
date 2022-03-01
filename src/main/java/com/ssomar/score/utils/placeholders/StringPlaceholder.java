@@ -86,7 +86,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		ownerPlch.setOwnerPlcHldr(uuid);
 	}
 
-	public void setProjectilePlcHldr(Projectile proj, @Nullable BlockFace blockFace) {
+	public void setProjectilePlcHldr(Projectile proj, String blockFace) {
 		projectilePlch.setProjectilePlcHldr(proj, blockFace);
 	}
 

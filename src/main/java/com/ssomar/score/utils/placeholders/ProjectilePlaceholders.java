@@ -28,10 +28,10 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 	private double projectileY;
 	private double projectileZ;
 	@Getter @Setter
-	private BlockFace projectileBlockFace = null;
+	private String projectileBlockFace = null;
 	private String projectileWorld = "";
 
-	public void setProjectilePlcHldr(Projectile projectile, @Nullable BlockFace blockFace) {
+	public void setProjectilePlcHldr(Projectile projectile, String blockFace) {
 		this.projectileUUID = projectile.getUniqueId();
 		this.projectileBlockFace = blockFace;
 		this.reloadProjectilePlcHldr();
@@ -67,9 +67,9 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 			toReplace = toReplace.replaceAll("%projectileworld%", projectileWorld);
 			toReplace = toReplace.replaceAll("%projectile_world%", projectileWorld);
 			toReplace = toReplace.replaceAll("%projectile_world_lower%", projectileWorld.toLowerCase());
-			if(projectileBlockFace != null){
-				toReplace = toReplace.replaceAll("%projectile_blockface%", projectileBlockFace.name().toUpperCase());
-				toReplace = toReplace.replaceAll("%projectile_blockface_lower%", projectileBlockFace.name().toLowerCase());
+			if(!projectileBlockFace.equals("")){
+				toReplace = toReplace.replaceAll("%projectile_blockface%", projectileBlockFace.toUpperCase());
+				toReplace = toReplace.replaceAll("%projectile_blockface_lower%", projectileBlockFace.toLowerCase());
 			}
 		}
 
