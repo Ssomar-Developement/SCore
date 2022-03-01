@@ -8,12 +8,14 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.SCore;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Projectile;
+import org.jetbrains.annotations.Nullable;
 
 public class StringPlaceholder extends PlaceholdersInterface implements Serializable{
 
@@ -84,8 +86,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		ownerPlch.setOwnerPlcHldr(uuid);
 	}
 
-	public void setProjectilePlcHldr(Projectile proj) {
-		projectilePlch.setProjectilePlcHldr(proj);
+	public void setProjectilePlcHldr(Projectile proj, @Nullable BlockFace blockFace) {
+		projectilePlch.setProjectilePlcHldr(proj, blockFace);
 	}
 
 	public void setEntityPlcHldr(UUID uuid) {

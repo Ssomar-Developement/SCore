@@ -1,9 +1,13 @@
 package com.ssomar.score.utils.placeholders;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -21,12 +25,15 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 	private String projectileType = "";
 	private String projectileName = "";
 	private double projectileX;
-	private double projectileY ;
-	private double projectileZ ;
+	private double projectileY;
+	private double projectileZ;
+	@Getter @Setter
+	private BlockFace projectileBlockFace = null;
 	private String projectileWorld = "";
 
-	public void setProjectilePlcHldr(Projectile projectile) {
+	public void setProjectilePlcHldr(Projectile projectile, @Nullable BlockFace blockFace) {
 		this.projectileUUID = projectile.getUniqueId();
+		this.projectileBlockFace = blockFace;
 		this.reloadProjectilePlcHldr();
 	}
 
@@ -60,6 +67,10 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 			toReplace = toReplace.replaceAll("%projectileworld%", projectileWorld);
 			toReplace = toReplace.replaceAll("%projectile_world%", projectileWorld);
 			toReplace = toReplace.replaceAll("%projectile_world_lower%", projectileWorld.toLowerCase());
+			if(projectileBlockFace != null){
+				toReplace = toReplace.replaceAll("%projectile_blockface%", projectileBlockFace.name().toUpperCase());
+				toReplace = toReplace.replaceAll("%projectile_blockface_lower%", projectileBlockFace.name().toLowerCase());
+			}
 		}
 
 		return toReplace;
