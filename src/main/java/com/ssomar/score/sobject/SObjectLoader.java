@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Logger;
 
-public abstract class sObjectLoader<T extends SObject> {
+public abstract class SObjectLoader<T extends SObject> {
 
      private SPlugin sPlugin;
      private String defaultObjectsPath;
@@ -23,7 +23,7 @@ public abstract class sObjectLoader<T extends SObject> {
      private int cpt;
      private Logger logger;
 
-     public sObjectLoader(SPlugin sPlugin, String defaultObjectsPath, SObjectManager<T> sObjectManager, int maxFreeObjects){
+     public SObjectLoader(SPlugin sPlugin, String defaultObjectsPath, SObjectManager<T> sObjectManager, int maxFreeObjects){
          this.sPlugin = sPlugin;
          this.logger =  sPlugin.getPlugin().getServer().getLogger();
          this.defaultObjectsPath = defaultObjectsPath;
@@ -34,9 +34,9 @@ public abstract class sObjectLoader<T extends SObject> {
 
     public abstract Map<String, List<String>> getPremiumDefaultItemsName();
 
-    public abstract Map<String, List<String>> getFreeDefaultItemsName();
+    public abstract Map<String, List<String>> getFreeDefaultObjectsName();
 
-    public abstract Map<String, List<String>> getAllDefaultItemsName();
+    public abstract Map<String, List<String>> getAllDefaultObjectsName();
 
 
     public void createDefaultObjectsFile(Boolean isPremiumLoading) {
@@ -47,8 +47,8 @@ public abstract class sObjectLoader<T extends SObject> {
         logger.severe(sPlugin.getNameDesign()+" DEFAULT "+objectName.toUpperCase()+" CREATED !");
 
         Map<String, List<String>> defaultObjects;
-        if (!isPremiumLoading) defaultObjects = this.getFreeDefaultItemsName();
-        else defaultObjects = this.getAllDefaultItemsName();
+        if (!isPremiumLoading) defaultObjects = this.getFreeDefaultObjectsName();
+        else defaultObjects = this.getAllDefaultObjectsName();
 
 
         for (String folder : defaultObjects.keySet()) {
