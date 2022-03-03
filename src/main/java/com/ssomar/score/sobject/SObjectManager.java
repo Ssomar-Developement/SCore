@@ -2,12 +2,13 @@ package com.ssomar.score.sobject;
 
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Getter
+@Getter@Setter
 public abstract class SObjectManager<T extends SObject> {
 
     private SPlugin sPlugin;
