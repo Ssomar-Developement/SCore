@@ -32,7 +32,7 @@ public abstract class SObjectLoader<T extends SObject> {
          this.cpt = 0;
      }
 
-    public abstract Map<String, List<String>> getPremiumDefaultItemsName();
+    public abstract Map<String, List<String>> getPremiumDefaultObjectsName();
 
     public abstract Map<String, List<String>> getFreeDefaultObjectsName();
 
