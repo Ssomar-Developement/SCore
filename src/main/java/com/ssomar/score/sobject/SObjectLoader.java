@@ -1,11 +1,11 @@
 package com.ssomar.score.sobject;
 
 import com.google.common.io.ByteStreams;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -96,25 +96,26 @@ public abstract class SObjectLoader<T extends SObject> {
         }
     }
 
-    public void loadDefaultPremiumObjects(Map<String, List<String>> defaultItemsName) {
+    public void loadDefaultPremiumObjects(Map<String, List<String>> defaultObjectsName) {
 
         /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
         randomIdsDefaultObjects = new HashMap<>();
-        for (String folder : defaultItemsName.keySet()) {
-            for (String id : defaultItemsName.get(folder)) {
+        for (String folder : defaultObjectsName.keySet()) {
+            for (String id : defaultObjectsName.get(folder)) {
                 randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
             }
         }
 
-        for (String folder : defaultItemsName.keySet()) {
-            for (String id : defaultItemsName.get(folder)) {
+        for (String folder : defaultObjectsName.keySet()) {
+            for (String id : defaultObjectsName.get(folder)) {
 
                 InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + folder + "/" + id + ".yml");
                 BufferedReader reader = null;
                 reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-                T o;
-                if ((o = this.getObjectByReader(reader, id, false, randomIdsDefaultObjects)) == null) continue;
+                Optional<T> oOpt;
+                if (!(oOpt = this.getObjectByReader(reader, id, false, randomIdsDefaultObjects)).isPresent()) continue;
 
+                T o = oOpt.get();
                 o.setId(randomIdsDefaultObjects.get(o.getId()));
                 sObjectManager.addDefaultLoadedItems(o);
             }
@@ -131,12 +132,12 @@ public abstract class SObjectLoader<T extends SObject> {
             return;
         }
 
-        T o;
-        if ((o = this.getObjectByFile(fileEntry, id, true)) == null) {
+        Optional<T> oOpt;
+        if (!(oOpt = this.getObjectByFile(fileEntry, id, true)).isPresent()) {
             logger.severe(sPlugin.getNameDesign() + filePath);
             return;
         }
-        sObjectManager.addLoadedObject(o);
+        sObjectManager.addLoadedObject(oOpt.get());
         cpt++;
         logger.fine(sPlugin.getNameDesign() + " " + id + " was loaded !");
     }
@@ -155,13 +156,13 @@ public abstract class SObjectLoader<T extends SObject> {
         }
     }
 
-    public static File searchFileOfObject(String id) {
+    public File searchFileOfObject(String id) {
 
-        List<String> listFiles = Arrays.asList(new File(ExecutableItems.getPluginSt().getDataFolder() + "/items").list());
+        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/items").list());
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File(ExecutableItems.getPluginSt().getDataFolder() + "/items/" + s);
+            File fileEntry = new File( sPlugin.getPlugin().getDataFolder() + "/items/" + s);
             if (fileEntry.isDirectory()) {
                 File result = null;
                 if ((result = searchFileOfObjectInFolder(id, fileEntry)) == null)
@@ -203,7 +204,7 @@ public abstract class SObjectLoader<T extends SObject> {
         return null;
     }
 
-    public T getObjectByFile(File file, String id, boolean showError) {
+    public Optional<T> getObjectByFile(File file, String id, boolean showError) {
         try {
             if (this.CreateBackupFilIfNotValid(file)) return null;
             configVersionsConverter(file);
@@ -215,7 +216,7 @@ public abstract class SObjectLoader<T extends SObject> {
         }
     }
 
-    public T getObjectByReader(Reader reader, String id, boolean showError, Map<String, String> wordsToReplace) {
+    public Optional<T> getObjectByReader(Reader reader, String id, boolean showError, Map<String, String> wordsToReplace) {
         try {
             FileConfiguration firstConfig = (FileConfiguration) YamlConfiguration.loadConfiguration(reader);
             String toStr = firstConfig.saveToString();
@@ -235,15 +236,19 @@ public abstract class SObjectLoader<T extends SObject> {
 
     public abstract void configVersionsConverter(File file);
 
-    public T getObject(FileConfiguration objectConfig, String id, boolean showError) {
+    public Optional<T>getObjectById(String id, boolean showError) {
+        return getObjectByFile(searchFileOfObject(id), id, showError);
+    }
+
+    public Optional<T> getObject(FileConfiguration objectConfig, String id, boolean showError) {
         return getObject(objectConfig, id, showError, !sPlugin.isLotOfWork(), searchFileOfObject(id).getPath());
     }
 
-    public T getDefaultObject(FileConfiguration objectConfig, String id, boolean showError) {
+    public Optional<T> getDefaultObject(FileConfiguration objectConfig, String id, boolean showError) {
         return getObject(objectConfig, id, showError, true, "");
     }
 
-    public abstract T getObject(FileConfiguration objectConfig, String id, boolean showError, boolean isPremiumLoading, String path);
+    public abstract Optional<T> getObject(FileConfiguration objectConfig, String id, boolean showError, boolean isPremiumLoading, String path);
 
 
     public boolean CreateBackupFilIfNotValid(File file) {
