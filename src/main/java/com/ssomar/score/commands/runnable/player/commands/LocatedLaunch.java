@@ -69,7 +69,7 @@ public class LocatedLaunch extends PlayerCommand{
 		//SsomarDev.testMsg("x: "+newX+" y: "+newY+" z: "+newZ);
 
 		try {
-			Entity entity = null;
+			Projectile entity = null;
 
 			receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
 
@@ -149,6 +149,7 @@ public class LocatedLaunch extends PlayerCommand{
 			//	SsomarDev.testMsg("null entity: " + (entity==null));
 
 			if(entity != null) {
+				entity.setShooter(receiver);
 				Vector v = null;
 				Location loc = null;
 				boolean searchBlockOrEntity = true;

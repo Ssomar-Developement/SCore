@@ -114,7 +114,7 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 
 			String detail = cache.get(i.player).getDetail();
 			this.saveTheConfiguration(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
 			PlaceholdersConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), detail);
 		}
@@ -189,6 +189,6 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 		PlaceholdersCondition.savePlaceholdersCdt(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 }

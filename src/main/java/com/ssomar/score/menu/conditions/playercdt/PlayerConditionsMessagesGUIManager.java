@@ -56,7 +56,7 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 	public boolean shiftClicked(InteractionClickedGUIManager<PlayerConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		PlayerConditions pC = null;
 		if(detail.contains("owner")) pC = i.sObject.getActivator(i.sActivator.getID()).getOwnerConditions();
 		else if(detail.contains("target")) pC = i.sObject.getActivator(i.sActivator.getID()).getTargetPlayerConditions();
@@ -148,7 +148,7 @@ public class PlayerConditionsMessagesGUIManager extends GUIManagerConditions<Pla
 		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 
 }

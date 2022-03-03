@@ -8,7 +8,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssomar.score.SsomarDev;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -139,7 +138,7 @@ public class AroundBlockCondition extends Conditions{
 	public static void saveAroundBlockCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, AroundBlockCondition aBC, String detail) {
 		
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -226,7 +225,7 @@ public class AroundBlockCondition extends Conditions{
 	public static void deleteBACCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, String id, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

@@ -4,21 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.ssomar.score.commands.runnable.util.safebreak.SafeBreak;
-import com.ssomar.score.events.BlockBreakEventExtension;
-import org.bukkit.Bukkit;
+import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
-import com.ssomar.score.usedapi.WorldGuardAPI;
 import org.jetbrains.annotations.NotNull;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
@@ -62,7 +58,7 @@ public class MineInCube extends BlockCommand{
 
 								UUID pUUID = null;
 								if(p != null) pUUID = p.getUniqueId();
-								SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent);
+								SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true);
 							}
 						}
 					}

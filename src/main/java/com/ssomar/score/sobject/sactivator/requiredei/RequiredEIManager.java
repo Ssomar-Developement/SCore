@@ -61,7 +61,7 @@ public class RequiredEIManager {
 	public static void saveRequiredEI(SPlugin sPlugin, SObject sObject, SActivator activator, RequiredEI rEI) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the object ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the object ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -92,7 +92,7 @@ public class RequiredEIManager {
 	public static void deleteRequiredEI(SPlugin sPlugin, SObject sObject, SActivator sActivator, String id) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the object ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the object ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -117,7 +117,7 @@ public class RequiredEIManager {
 
 	/* CONFIG */
 
-	public static List<RequiredEI> getRequiredEIInConfig(SPlugin sPlugin, SObject sObject, SActivator sActivator, ConfigurationSection activatorSection, List<String> error, boolean isDefaultObject){
+	public static List<RequiredEI> getRequiredEIInConfig(SPlugin sPlugin, SObject sObject, SActivator sActivator, ConfigurationSection activatorSection, List<String> error, boolean isPremiumLoading){
 		List<RequiredEI> requiredExecutableItems = new ArrayList<>();
 		if (activatorSection.contains("requiredExecutableItems")) {
 			if (activatorSection.contains("requiredExecutableItems")) {
@@ -125,8 +125,8 @@ public class RequiredEIManager {
 
 				for (String rID : requiredEISection.getKeys(false)) {
 
-					if (sPlugin.isLotOfWork() && !isDefaultObject) {
-						error.add(sPlugin.getNameDesign()+" " + sObject.getID()+ " REQUIRE PREMIUM: required ExecutableItems is only in the premium version");
+					if (!isPremiumLoading) {
+						error.add(sPlugin.getNameDesign()+" " + sObject.getId()+ " REQUIRE PREMIUM: required ExecutableItems is only in the premium version");
 						break;
 					}
 					RequiredEI rEI = new RequiredEI(rID);

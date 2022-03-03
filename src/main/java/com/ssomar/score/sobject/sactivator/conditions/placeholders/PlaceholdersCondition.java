@@ -8,7 +8,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -218,7 +217,7 @@ public class PlaceholdersCondition extends Conditions{
 	public static void savePlaceholdersCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlaceholdersCondition pC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -259,7 +258,7 @@ public class PlaceholdersCondition extends Conditions{
 	public static void deletePlaceholdersCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, String id, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

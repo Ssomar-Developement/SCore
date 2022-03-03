@@ -2,7 +2,9 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,27 +24,13 @@ public class Break extends BlockCommand{
 
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-		if(SCore.hasWorldGuard) {
-			if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-				this.validBreak(block);
-			}
-		}
-		else this.validBreak(block);
+		UUID pUUID = null;
+		if(p != null) pUUID = p.getUniqueId();
+
+		SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, false);
 	}
 	
-	public void validBreak(Block block) {
-		Location bLoc = block.getLocation();
-		bLoc.add(0.5, 0.5, 0.5);
-		
-		if(SCore.hasExecutableBlocks) {
-			ExecutableBlockPlaced eBP;
-			if((eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(bLoc)) != null) {
-				ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
-			}
-		}
-		
-		block.breakNaturally();
-	}
+
 
 	@Override
 	public String verify(List<String> args) {

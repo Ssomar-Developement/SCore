@@ -68,7 +68,7 @@ public class CooldownsManager {
 	}
 
 	public boolean isInCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
-		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
+		String id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
 			for(Cooldown cd : cooldowns.get(id)) {
 				if(cd == null) continue;
@@ -81,7 +81,7 @@ public class CooldownsManager {
 	}
 
 	public boolean isGlobalCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
-		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
+		String id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
 			for(Cooldown cd : cooldowns.get(id)) {
 				if(cd == null) continue;
@@ -101,7 +101,7 @@ public class CooldownsManager {
 	 */
 	public boolean isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
 		boolean result = false;
-		String id = sPlugin.getShortName() + ":" + sO.getID() + ":" + sAct.getID();
+		String id = sPlugin.getShortName() + ":" + sO.getId() + ":" + sAct.getID();
 		List<Cooldown> cooldowns2;
 		if (cooldowns.containsKey(id) && cooldowns.get(id).size() != 0) {
 			cooldowns2 = cooldowns.get(id);
@@ -117,7 +117,7 @@ public class CooldownsManager {
 	}
 
 	public int getMaxGlobalCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
-		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
+		String id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
 			int max = -1;
 			for(Cooldown cd : cooldowns.get(id)) {
@@ -137,7 +137,7 @@ public class CooldownsManager {
 	}
 
 	public int getCooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
-		String id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
+		String id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getID();
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
 			int minValue = -1;
 			int index = -1;

@@ -30,6 +30,9 @@ public class Damage extends PlayerCommand{
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+		/* When target a NPC it can occurs */
+		if(receiver == null) return;
+
 		try {
 			double amount;
 			String damage = args.get(0);

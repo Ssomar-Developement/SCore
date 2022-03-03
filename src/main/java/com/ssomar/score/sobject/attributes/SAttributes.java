@@ -1,9 +1,6 @@
 package com.ssomar.score.sobject.attributes;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.configs.api.PlaceholderAPI;
-import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
@@ -21,7 +18,7 @@ import java.util.UUID;
 
 public class SAttributes extends HashMap<SAttribute, AttributeModifier> {
 
-    public void loadAttributes(SPlugin sPlugin, ConfigurationSection attsSection, List<String> errorList, boolean isDefaultItem) {
+    public void loadAttributes(SPlugin sPlugin, ConfigurationSection attsSection, List<String> errorList, boolean isPremiumLoading) {
         /*
          * attributes: 1: attribute: GENERIC_MAX_HEALTH uuid: random name:
          * generic.maxHealth operation: ADD_NUMBER amount: 10.0 slot: HAND
@@ -30,7 +27,7 @@ public class SAttributes extends HashMap<SAttribute, AttributeModifier> {
         int cptAtt = 0;
         for (String id : attsSection.getKeys(false)) {
 
-            if ((PlaceholderAPI.isLotOfWork() && !isDefaultItem) && cptAtt >= 2) {
+            if ((!isPremiumLoading) && cptAtt >= 2) {
                 errorList.add(sPlugin.getNameDesign()+" " + id+ " REQUIRE PREMIUM: to add more than two attributes you need the premium version");
                 break;
             }
@@ -99,7 +96,7 @@ public class SAttributes extends HashMap<SAttribute, AttributeModifier> {
     public void saveAttributes(SPlugin sPlugin, SObject sObject) {
 
         if(!new File(sObject.getPath()).exists()) {
-            SCore.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
+            SCore.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getId()+".yml)");
             return;
         }
         File file = new File(sObject.getPath());

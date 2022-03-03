@@ -36,8 +36,10 @@ public class IridiumSkyblockTool {
             for (User user : members) {
                 if (pUUID.equals(user.getUuid())) return true;
             }
+            return false;
         }
 
-        return false;
+        /* He is not on an Island */
+        return true;
     }
 }

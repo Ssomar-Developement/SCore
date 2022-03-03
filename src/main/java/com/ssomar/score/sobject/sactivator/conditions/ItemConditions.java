@@ -9,8 +9,7 @@ import java.util.*;
 
 import com.google.common.base.Charsets;
 import com.ssomar.executableitems.items.ExecutableItem;
-import com.ssomar.executableitems.items.hiders.HiderEnum;
-import org.bukkit.NamespacedKey;
+import com.ssomar.score.utils.messages.MessageDesign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,12 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.configs.Message;
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
@@ -171,27 +165,27 @@ public class ItemConditions extends Conditions{
 		ItemConditions iCdt = new ItemConditions();
 
 		iCdt.setIfDurability(itemCdtSection.getString("ifDurability", ""));
-		iCdt.setIfDurabilityMsg(itemCdtSection.getString("ifDurabilityMsg", "&4&l"+pluginName+IF_DURABILITY_MSG));
+		iCdt.setIfDurabilityMsg(itemCdtSection.getString("ifDurabilityMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_DURABILITY_MSG));
 
 		iCdt.setIfUsage(itemCdtSection.getString("ifUsage", ""));
-		iCdt.setIfUsageMsg(itemCdtSection.getString("ifUsageMsg", "&4&l"+pluginName+IF_USAGE_MSG));
+		iCdt.setIfUsageMsg(itemCdtSection.getString("ifUsageMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_USAGE_MSG));
 
 		iCdt.setIfUsage2(itemCdtSection.getString("ifUsage2", ""));
-		iCdt.setIfUsage2Msg(itemCdtSection.getString("ifUsage2Msg", "&4&l"+pluginName+IF_USAGE_MSG));
+		iCdt.setIfUsage2Msg(itemCdtSection.getString("ifUsage2Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_USAGE_MSG));
 
 		Map<Enchantment, Integer> hasEnchants = transformEnchants(itemCdtSection.getStringList("ifHasEnchant"));
 		iCdt.setIfHasEnchant(hasEnchants);
-		iCdt.setIfHasEnchantMsg(itemCdtSection.getString("ifHasEnchantMsg", "&4&l"+pluginName+IF_HAS_ENCHANT_MSG));
+		iCdt.setIfHasEnchantMsg(itemCdtSection.getString("ifHasEnchantMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_HAS_ENCHANT_MSG));
 
 		Map<Enchantment, Integer> hasNotEnchants = transformEnchants(itemCdtSection.getStringList("ifHasNotEnchant"));
 		iCdt.setIfHasNotEnchant(hasNotEnchants);
-		iCdt.setIfHasNotEnchantMsg(itemCdtSection.getString("ifHasNotEnchantMsg", "&4&l"+pluginName+IF_HAS_NOT_ENCHANT_MSG));
+		iCdt.setIfHasNotEnchantMsg(itemCdtSection.getString("ifHasNotEnchantMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_HAS_NOT_ENCHANT_MSG));
 
 		iCdt.setIfCrossbowMustBeCharged(itemCdtSection.getBoolean("ifCrossbowMustBeCharged", false));
-		iCdt.setIfCrossbowMustBeChargedMsg(itemCdtSection.getString("ifCrossbowMustBeChargedMsg", "&4&l"+pluginName+ IF_CROSSBOW_MUST_BE_CHARGED_MSG));
+		iCdt.setIfCrossbowMustBeChargedMsg(itemCdtSection.getString("ifCrossbowMustBeChargedMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+ IF_CROSSBOW_MUST_BE_CHARGED_MSG));
 
 		iCdt.setIfCrossbowMustNotBeCharged(itemCdtSection.getBoolean("ifCrossbowMustNotBeCharged", false));
-		iCdt.setIfCrossbowMustNotBeChargedMsg(itemCdtSection.getString("ifCrossbowMustNotBeChargedMsg", "&4&l"+pluginName+ IF_CROSSBOW_MUST_NOT_BE_CHARGED_MSG));
+		iCdt.setIfCrossbowMustNotBeChargedMsg(itemCdtSection.getString("ifCrossbowMustNotBeChargedMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+ IF_CROSSBOW_MUST_NOT_BE_CHARGED_MSG));
 
 		return iCdt;
 	}
@@ -225,7 +219,7 @@ public class ItemConditions extends Conditions{
 	public static void saveItemConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, ItemConditions iC, String detail) {
 
 		if (!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign() + " Error can't find the file in the folder ! (" + sObject.getID() + ".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign() + " Error can't find the file in the folder ! (" + sObject.getId() + ".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -234,20 +228,24 @@ public class ItemConditions extends Conditions{
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators." + sActivator.getID());
 		activatorConfig.set("conditions." + detail + ".ifDurability", ">50");
 
+		String pluginName = sPlugin.getNameDesign();
 
 		ConfigurationSection pCConfig = config.getConfigurationSection("activators." + sActivator.getID() + ".conditions." + detail);
 
 		if (iC.hasIfDurability()) pCConfig.set("ifDurability", iC.getIfDurability());
 		else pCConfig.set("ifDurability", null);
-		pCConfig.set("ifDurabilityMsg", iC.getIfDurabilityMsg());
+		if(iC.getIfDurabilityMsg().contains(iC.IF_DURABILITY_MSG)) pCConfig.set("ifDurabilityMsg", null);
+		else pCConfig.set("ifDurabilityMsg", iC.getIfDurabilityMsg());
 
 		if (iC.hasIfUsage()) pCConfig.set("ifUsage", iC.getIfUsage());
 		else pCConfig.set("ifUsage", null);
-		pCConfig.set("ifUsageMsg", iC.getIfUsageMsg());
+		if(iC.getIfUsageMsg().contains(iC.IF_USAGE_MSG)) pCConfig.set("ifUsageMsg", null);
+		else pCConfig.set("ifUsageMsg", iC.getIfUsageMsg());
 
 		if (iC.hasIfUsage2()) pCConfig.set("ifUsage2", iC.getIfUsage2());
 		else pCConfig.set("ifUsage2", null);
-		pCConfig.set("ifUsage2Msg", iC.getIfUsage2Msg());
+		if(iC.getIfUsage2Msg().contains(iC.IF_USAGE_MSG)) pCConfig.set("ifUsage2Msg", null);
+		else pCConfig.set("ifUsage2Msg", iC.getIfUsage2Msg());
 
 		if (iC.ifHasEnchant.size() != 0) {
 			List<String> result = new ArrayList<>();
@@ -257,7 +255,8 @@ public class ItemConditions extends Conditions{
 			pCConfig.set("ifHasEnchant", result);
 		}
 		else pCConfig.set("ifHasEnchant", null);
-		pCConfig.set("ifHasEnchantMsg", iC.getIfHasEnchantMsg());
+		if(iC.getIfHasEnchantMsg().contains(iC.IF_HAS_ENCHANT_MSG)) pCConfig.set("ifHasEnchantMsg", null);
+		else pCConfig.set("ifHasEnchantMsg", iC.getIfHasEnchantMsg());
 
 		if (iC.ifHasNotEnchant.size() != 0) {
 			List<String> result = new ArrayList<>();
@@ -267,15 +266,18 @@ public class ItemConditions extends Conditions{
 			pCConfig.set("ifHasNotEnchant", result);
 		}
 		else pCConfig.set("ifHasNotEnchant", null);
-		pCConfig.set("ifHasNotEnchantMsg", iC.getIfHasNotEnchantMsg());
+		if(iC.getIfHasNotEnchantMsg().contains(iC.IF_HAS_NOT_ENCHANT_MSG)) pCConfig.set("ifHasNotEnchantMsg", null);
+		else pCConfig.set("ifHasNotEnchantMsg", iC.getIfHasNotEnchantMsg());
 
 		if (iC.isIfCrossbowMustBeCharged()) pCConfig.set("ifCrossbowMustBeCharged", iC.isIfCrossbowMustBeCharged());
 		else pCConfig.set("ifCrossbowMustBeCharged", null);
-		pCConfig.set("ifCrossbowMustBeChargedMsg", iC.getIfCrossbowMustBeChargedMsg());
+		if(iC.getIfCrossbowMustBeChargedMsg().contains(iC.IF_CROSSBOW_MUST_BE_CHARGED_MSG)) pCConfig.set("ifCrossbowMustBeChargedMsg", null);
+		else pCConfig.set("ifCrossbowMustBeChargedMsg", iC.getIfCrossbowMustBeChargedMsg());
 
 		if (iC.isIfCrossbowMustNotBeCharged()) pCConfig.set("ifCrossbowMustNotBeCharged", iC.isIfCrossbowMustNotBeCharged());
 		else pCConfig.set("ifCrossbowMustNotBeCharged", null);
-		pCConfig.set("ifCrossbowMustNotBeChargedMsg", iC.getIfCrossbowMustNotBeChargedMsg());
+		if(iC.getIfCrossbowMustNotBeChargedMsg().contains(iC.IF_CROSSBOW_MUST_NOT_BE_CHARGED_MSG)) pCConfig.set("ifCrossbowMustNotBeChargedMsg", null);
+		else pCConfig.set("ifCrossbowMustNotBeChargedMsg", iC.getIfCrossbowMustNotBeChargedMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

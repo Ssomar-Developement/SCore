@@ -74,7 +74,7 @@ public class WorldConditionsGUIManager extends GUIManagerConditions<WorldConditi
 	public boolean shiftClicked(InteractionClickedGUIManager<WorldConditionsGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		WorldConditionsMessagesGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getWorldConditions(), detail);
 	
 		return true;
@@ -197,7 +197,7 @@ public class WorldConditionsGUIManager extends GUIManagerConditions<WorldConditi
 		WorldConditions.saveWorldConditions(sPlugin, sObject, sActivator, wC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 }
 

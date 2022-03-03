@@ -31,7 +31,7 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 	public boolean shiftClicked(InteractionClickedGUIManager<BlockConditionsGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		
 		BlockConditions bC;
 		if(detail.contains("target")) bC = i.sObject.getActivator(i.sActivator.getID()).getTargetBlockConditions();
@@ -302,7 +302,7 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sAct, bC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 
 }

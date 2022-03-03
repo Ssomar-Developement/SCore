@@ -2,7 +2,6 @@ package com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt;
 
 import java.util.List;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import org.bukkit.entity.Player;
 
@@ -90,8 +89,8 @@ public class AroundBlockConditionsGUIManager extends GUIManagerConditions<Around
 		try {
 			String id = i.name.split("✦ ID: ")[1];
 			AroundBlockCondition.deleteBACCdt(i.sPlugin, i.sObject, i.sActivator, id, cache.get(i.player).getDetail());
-			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getID());
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getId());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
 
 			BlockConditions cdts;

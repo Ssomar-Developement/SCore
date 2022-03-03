@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.ssomar.score.SsomarDev;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Cancellable;
@@ -125,7 +124,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 				else material = Material.valueOf(str);
 				this.add(new DetailedBlock(material, states));
 			} catch (Exception e) {
-				if(error != null) error.add(sPlugin.getNameDesign()+" Invalid material: " + str + " for item: " + sObject.getID());
+				if(error != null) error.add(sPlugin.getNameDesign()+" Invalid material: " + str + " for item: " + sObject.getId());
 				continue;
 			}
 		}

@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.runnable.util.safebreak;
+package com.ssomar.score.utils.safebreak;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
@@ -20,24 +20,25 @@ import java.util.UUID;
 
 public class SafeBreak {
 
-    public static void breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, final boolean drop, boolean generateBreakEvent) {
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1");
+    public static void breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, final boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
+
+        //SsomarDev.testMsg("DEBUG SAFE BREAK 1");
         if(playerUUID == null){
             block.breakNaturally();
             return;
         }
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1.5");
+       // SsomarDev.testMsg("DEBUG SAFE BREAK 1.5");
 
-        if(!verifSafeBreak(playerUUID, block)) return;
+        if(verifSafeBreak && !verifSafeBreak(playerUUID, block)) return;
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
-        SsomarDev.testMsg("DEBUG SAFE BREAK 2");
+        //SsomarDev.testMsg("DEBUG SAFE BREAK 2");
         if (player != null) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 3");
+            //SsomarDev.testMsg("DEBUG SAFE BREAK 3");
             boolean canceled = false;
             if(generateBreakEvent) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK 4");
+                //SsomarDev.testMsg("DEBUG SAFE BREAK 4");
                 BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
                 bbE.setCancelled(false);
                 /* */
@@ -47,15 +48,15 @@ public class SafeBreak {
 
             if (!canceled) {
                 if (drop){
-                    SsomarDev.testMsg("DEBUG SAFE BREAK 5");
-                    if( slot != 40) block.breakNaturally(player.getInventory().getItemInMainHand());
+                    //SsomarDev.testMsg("DEBUG SAFE BREAK 5");
+                    if(slot != 40) block.breakNaturally(player.getInventory().getItemInMainHand());
                     else block.breakNaturally(player.getInventory().getItemInOffHand());
                 }
                 else block.setType(Material.AIR);
             }
         }
         else {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 6");
+            //SsomarDev.testMsg("DEBUG SAFE BREAK 6");
             if (drop) block.breakNaturally();
             else block.setType(Material.AIR);
         }
@@ -64,19 +65,19 @@ public class SafeBreak {
 
     public static boolean verifSafeBreak(@NotNull final UUID playerUUID, @NotNull Block block){
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
+        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
 
         if(SCore.hasGriefPrevention) if(!GriefPreventionAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2");
+       // SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2");
 
         if(SCore.hasIridiumSkyblock) if(!IridiumSkyblockTool.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
+        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
 
         if(SCore.hasLands) if(!new LandsIntegrationAPI(SCore.plugin).playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
+        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
 
         if(SCore.hasWorldGuard) if(!WorldGuardAPI.playerCanBreakInRegion(playerUUID, block.getLocation())) return false;
 

@@ -29,7 +29,9 @@ public class Damage extends EntityCommand{
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
-		//SsomarDev.testMsg("Passe damage 1");
+		/* When target a NPC it can occurs */
+		if(entity == null) return;
+
 		try {
 			double amount;
 			String damage = args.get(0);

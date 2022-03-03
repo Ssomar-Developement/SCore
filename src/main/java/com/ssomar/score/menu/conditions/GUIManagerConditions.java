@@ -11,7 +11,7 @@ public abstract class GUIManagerConditions<T extends GUIAbstract> extends GUIMan
 	public <X extends ConditionGUIAbstract> boolean saveOrBackOrNothing(InteractionClickedGUIManager<X> i) {
 		if(i.name.contains("Save")) {
 			this.saveTheConfiguration(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
 		}
 

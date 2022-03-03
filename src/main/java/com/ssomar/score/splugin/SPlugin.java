@@ -9,6 +9,8 @@ public interface SPlugin {
 	String getName();
 	
 	String getNameDesign();
+
+	String getObjectName();
 	
 	Plugin getPlugin();
 	

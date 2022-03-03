@@ -56,7 +56,7 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerConditions<ItemC
 	public boolean shiftClicked(InteractionClickedGUIManager<ItemConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		ItemConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getItemConditions(), detail);
 	
 		return true;
@@ -118,6 +118,6 @@ public class ItemConditionsMessagesGUIManager extends GUIManagerConditions<ItemC
 		ItemConditions.saveItemConditions(sPlugin, sObject, sActivator, iC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 }

@@ -46,7 +46,7 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		i++;
 		this.updateBoolean(IF_MUST_BE_NOT_POWERED, conditions.isIfMustBeNotPowered());
 		
-		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_MUST_BE_NATURAL, 	false,	false, "&7&oThe block must be natural ?", "&a✎ Click here to change", "&7actually:");
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_MUST_BE_NATURAL, 	false,	false, "&7&oThe block must be natural ?", "&c&oREQUIRE COREPROTECT", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_MUST_BE_NATURAL, conditions.isIfMustbeNatural());
 		
@@ -94,7 +94,7 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 
 		createItem(WRITABLE_BOOK, 			1 , 22, "&aTo edit messages of Conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 			1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 			1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getId());
 		createItem(Material.BOOK, 			1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 	

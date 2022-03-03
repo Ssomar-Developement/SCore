@@ -1,14 +1,13 @@
 package com.ssomar.score.sobject.sactivator.conditions.player;
 
 import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.utils.StringCalculation;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public class IfPlayerHasExecutableItem {
 
@@ -56,7 +55,7 @@ public class IfPlayerHasExecutableItem {
         else item = pInv.getItem(pInv.getHeldItemSlot());
 
         ExecutableItem ei = new ExecutableItem(item);
-        if(!ei.isValid() || !ei.getConfig().getID().equals(executableItemID)) return false;
+        if(!ei.isValid() || !((SObject)(ei.getConfig())).getId().equals(executableItemID)) return false;
 
         if(usageCalcul != null){
             if(!StringCalculation.calculation(usageCalcul, ei.getUsage())) return false;

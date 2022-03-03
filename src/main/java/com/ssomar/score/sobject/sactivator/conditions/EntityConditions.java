@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.ssomar.score.utils.messages.MessageDesign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -174,25 +175,25 @@ public class EntityConditions extends Conditions{
 		EntityConditions eCdt = new EntityConditions();
 
 		eCdt.setIfGlowing(entityCdtSection.getBoolean("ifGlowing", false));
-		eCdt.setIfGlowingMsg(entityCdtSection.getString("ifGlowingMsg", "&4&l"+pluginName+IF_GLOWING_MSG));
+		eCdt.setIfGlowingMsg(entityCdtSection.getString("ifGlowingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_GLOWING_MSG));
 
 		eCdt.setIfInvulnerable(entityCdtSection.getBoolean("ifInvulnerable", false));
-		eCdt.setIfInvulnerableMsg(entityCdtSection.getString("ifInvulnerableMsg", "&4&l"+pluginName+IF_INVULNERABLE_MSG));
+		eCdt.setIfInvulnerableMsg(entityCdtSection.getString("ifInvulnerableMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_INVULNERABLE_MSG));
 
 		eCdt.setIfOnFire(entityCdtSection.getBoolean("ifOnFire", false));
-		eCdt.setIfOnFireMsg(entityCdtSection.getString("ifOnFireMsg", "&4&l"+pluginName+IF_ON_FIRE_MSG));
+		eCdt.setIfOnFireMsg(entityCdtSection.getString("ifOnFireMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_ON_FIRE_MSG));
 
 		eCdt.setIfAdult(entityCdtSection.getBoolean("ifAdult", false));
-		eCdt.setIfAdultMsg(entityCdtSection.getString("ifAdultMsg", "&4&l"+pluginName+IF_ADULT_MSG));
+		eCdt.setIfAdultMsg(entityCdtSection.getString("ifAdultMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_ADULT_MSG));
 
 		eCdt.setIfBaby(entityCdtSection.getBoolean("ifBaby", false));
-		eCdt.setIfBabyMsg(entityCdtSection.getString("ifBabyMsg", "&4&l"+pluginName+IF_BABY_MSG));
+		eCdt.setIfBabyMsg(entityCdtSection.getString("ifBabyMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BABY_MSG));
 
 		eCdt.setIfPowered(entityCdtSection.getBoolean("ifPowered", false));
-		eCdt.setIfPoweredMsg(entityCdtSection.getString("ifPoweredMsg", "&4&l"+pluginName+IF_POWERED_MSG));
+		eCdt.setIfPoweredMsg(entityCdtSection.getString("ifPoweredMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_POWERED_MSG));
 
 		eCdt.setIfName(entityCdtSection.getStringList("ifName"));
-		eCdt.setIfNameMsg(entityCdtSection.getString("ifNameMsg", "&4&l"+pluginName+IF_NAME_MSG));
+		eCdt.setIfNameMsg(entityCdtSection.getString("ifNameMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NAME_MSG));
 
 		List<EntityType> list = new ArrayList<>();
 		for (String s : entityCdtSection.getStringList("ifNotEntityType")) {
@@ -201,10 +202,10 @@ public class EntityConditions extends Conditions{
 			} catch (Exception ignored) {}
 		}
 		eCdt.setIfNotEntityType(list);
-		eCdt.setIfNotEntityTypeMsg(entityCdtSection.getString("ifNotEntityTypeMsg", "&4&l"+pluginName+IF_NOT_ENTITY_TYPE_MSG));
+		eCdt.setIfNotEntityTypeMsg(entityCdtSection.getString("ifNotEntityTypeMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_ENTITY_TYPE_MSG));
 
 		eCdt.setIfEntityHealth(entityCdtSection.getString("ifEntityHealth", ""));
-		eCdt.setIfEntityHealthMsg(entityCdtSection.getString("ifEntityHealthMsg", "&4&l"+pluginName+IF_ENTITY_HEALTH_MSG));
+		eCdt.setIfEntityHealthMsg(entityCdtSection.getString("ifEntityHealthMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_ENTITY_HEALTH_MSG));
 
 		return eCdt;
 	}
@@ -218,7 +219,7 @@ public class EntityConditions extends Conditions{
 	public static void saveEntityConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, EntityConditions eC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -227,35 +228,44 @@ public class EntityConditions extends Conditions{
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifGlowing", false);
 
+		String pluginName = sPlugin.getNameDesign();
+
 		ConfigurationSection eCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(eC.hasIfGlowing()) eCConfig.set("ifGlowing", true); 
 		else eCConfig.set("ifGlowing", null);
-		eCConfig.set("ifGlowingMsg", eC.getIfGlowingMsg()); 
+		if(eC.getIfGlowingMsg().contains(eC.IF_GLOWING_MSG)) eCConfig.set("ifGlowingMsg", null);
+		else eCConfig.set("ifGlowingMsg", eC.getIfGlowingMsg());
 
 		if(eC.hasIfInvulnerable()) eCConfig.set("ifInvulnerable", true); 
 		else eCConfig.set("ifInvulnerable", null);
-		eCConfig.set("ifInvulnerableMsg", eC.getIfInvulnerableMsg());
+		if(eC.getIfInvulnerableMsg().contains(eC.IF_INVULNERABLE_MSG))  eCConfig.set("ifInvulnerableMsg", null);
+		else eCConfig.set("ifInvulnerableMsg", eC.getIfInvulnerableMsg());
 
 		if(eC.hasIfOnFire()) eCConfig.set("ifOnFire", true);
 		else eCConfig.set("ifOnFire", null);
-		eCConfig.set("ifOnFireMsg", eC.getIfOnFireMsg());
+		if(eC.getIfOnFireMsg().contains(eC.IF_ON_FIRE_MSG)) eCConfig.set("ifOnFireMsg", null);
+		else eCConfig.set("ifOnFireMsg", eC.getIfOnFireMsg());
 
 		if(eC.hasIfAdult()) eCConfig.set("ifAdult", true); 
 		else eCConfig.set("ifAdult", null);
-		eCConfig.set("ifAdultMsg", eC.getIfAdultMsg()); 
+		if(eC.getIfAdultMsg().contains(eC.IF_ADULT_MSG))  eCConfig.set("ifAdultMsg", null);
+		else eCConfig.set("ifAdultMsg", eC.getIfAdultMsg());
 
 		if(eC.hasIfBaby()) eCConfig.set("ifBaby", true); 
 		else eCConfig.set("ifBaby", null);
-		eCConfig.set("ifBabyMsg", eC.getIfBabyMsg()); 
+		if(eC.getIfBabyMsg().contains(eC.IF_BABY_MSG)) eCConfig.set("ifBabyMsg", null);
+		else eCConfig.set("ifBabyMsg", eC.getIfBabyMsg());
 
 		if(eC.hasIfPowered()) eCConfig.set("ifPowered", true); 
 		else eCConfig.set("ifPowered", null);
-		eCConfig.set("ifPoweredMsg", eC.getIfPoweredMsg()); 
+		if(eC.getIfPoweredMsg().contains(eC.IF_POWERED_MSG)) eCConfig.set("ifPoweredMsg", null);
+		else eCConfig.set("ifPoweredMsg", eC.getIfPoweredMsg());
 
 		if(eC.hasIfName()) eCConfig.set("ifName", eC.getIfName()); 
 		else eCConfig.set("ifName", null);
-		eCConfig.set("ifNameMsg", eC.getIfNameMsg()); 
+		if(eC.getIfNameMsg().contains(eC.IF_NAME_MSG)) eCConfig.set("ifNameMsg", null);
+		else eCConfig.set("ifNameMsg", eC.getIfNameMsg());
 
 		List<String> convert= new ArrayList<>();
 		for(EntityType eT : eC.getIfNotEntityType()) {
@@ -264,11 +274,13 @@ public class EntityConditions extends Conditions{
 
 		if(eC.hasIfNotEntityType()) eCConfig.set("ifNotEntityType", convert); 
 		else eCConfig.set("ifNotEntityType", null);
-		eCConfig.set("ifNotEntityTypeMsg", eC.getIfNotEntityTypeMsg()); 
+		if(eC.getIfNotEntityTypeMsg().contains(eC.IF_NOT_ENTITY_TYPE_MSG)) eCConfig.set("ifNotEntityTypeMsg", null);
+		else eCConfig.set("ifNotEntityTypeMsg", eC.getIfNotEntityTypeMsg());
 
 		if(eC.hasIfEntityHealth()) eCConfig.set("ifEntityHealth", eC.getIfEntityHealth()); 
 		else eCConfig.set("ifEntityHealth", null);
-		eCConfig.set("ifEntityHealthMsg", eC.getIfEntityHealthMsg()); 
+		if(eC.getIfEntityHealthMsg().contains(eC.IF_ENTITY_HEALTH_MSG)) eCConfig.set("ifEntityHealthMsg", null);
+		else eCConfig.set("ifEntityHealthMsg", eC.getIfEntityHealthMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

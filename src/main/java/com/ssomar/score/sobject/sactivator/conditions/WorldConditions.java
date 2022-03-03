@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.ssomar.score.utils.messages.MessageDesign;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,10 +72,10 @@ public class WorldConditions extends Conditions{
 		WorldConditions wCdt = new WorldConditions();
 
 		wCdt.setIfWeather(worldCdtSection.getStringList("ifWeather"));
-		wCdt.setIfWeatherMsg(worldCdtSection.getString("ifWeatherMsg", "&4&l"+pluginName+IF_WEATHER_MSG));
+		wCdt.setIfWeatherMsg(worldCdtSection.getString("ifWeatherMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_WEATHER_MSG));
 
 		wCdt.setIfWorldTime(worldCdtSection.getString("ifWorldTime", ""));
-		wCdt.setIfWorldTimeMsg(worldCdtSection.getString("ifWorldTimeMsg", "&4&l"+pluginName+IF_WORLD_TIME_MSG));
+		wCdt.setIfWorldTimeMsg(worldCdtSection.getString("ifWorldTimeMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_WORLD_TIME_MSG));
 
 		return wCdt;
 
@@ -89,7 +90,7 @@ public class WorldConditions extends Conditions{
 	public static void saveWorldConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, WorldConditions wC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe("[ExecutableItems] Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe("[ExecutableItems] Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -98,16 +99,19 @@ public class WorldConditions extends Conditions{
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifWorldTime", "<=0");
 
+		String pluginName = sPlugin.getNameDesign();
 
 		ConfigurationSection wCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(wC.hasIfWeather()) wCConfig.set("ifWeather", wC.getIfWeather()); 
 		else wCConfig.set("ifWeather", null);
-		wCConfig.set("ifWeatherMsg", wC.getIfWeatherMsg()); 
+		if(wC.getIfWeatherMsg().contains(wC.IF_WEATHER_MSG)) wCConfig.set("ifWeatherMsg", null);
+		else wCConfig.set("ifWeatherMsg", wC.getIfWeatherMsg());
 
 		if(wC.hasIfWorldTime()) wCConfig.set("ifWorldTime", wC.getIfWorldTime()); 
 		else wCConfig.set("ifWorldTime", null);
-		wCConfig.set("ifWorldTimeMsg", wC.getIfWorldTimeMsg()); 
+		if(wC.getIfWorldTimeMsg().contains(wC.IF_WORLD_TIME_MSG)) wCConfig.set("ifWorldTimeMsg", null);
+		else wCConfig.set("ifWorldTimeMsg", wC.getIfWorldTimeMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

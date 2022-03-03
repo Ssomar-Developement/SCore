@@ -93,8 +93,8 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 		try {
 			String id = i.name.split("✦ ID: ")[1];
 			PlaceholdersCondition.deletePlaceholdersCdt(i.sPlugin, i.sObject, i.sActivator, id, cache.get(i.player).getDetail());
-			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getID());
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			LinkedPlugins.reloadSObject(i.sPlugin, i.sObject.getId());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 			i.sActivator = i.sObject.getActivator(i.sActivator.getID());
 			cache.replace(i.player, new PlaceholdersConditionsGUI(Integer.parseInt(cPage.split("Page ")[1]), i.sPlugin, i.sObject, i.sActivator, i.sActivator.getPlaceholdersConditions(), cache.get(i.player).getDetail()));
 			cache.get(i.player).openGUISync(i.player);

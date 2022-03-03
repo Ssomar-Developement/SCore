@@ -29,6 +29,7 @@ public class LandsIntegrationAPI {
 
 		// get a land area from a location
 		final Area area = landsIntegration.getAreaByLoc(location);
+		if(area == null) return false;
 
 		UUID pUUID = p.getUniqueId();
 
@@ -38,6 +39,8 @@ public class LandsIntegrationAPI {
 	public boolean playerCanBreakClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
 		// get a land area from a location
 		final Area area = landsIntegration.getAreaByLoc(location);
+
+		if(area == null) return true;
 
 		return area.getOwnerUID().equals(pUUID) || area.isTrusted(pUUID);
 	}

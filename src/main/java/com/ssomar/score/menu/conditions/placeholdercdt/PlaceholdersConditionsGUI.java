@@ -89,7 +89,7 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 		createItem(GREEN, 1, 40, "&2&l✚ &aNew Placeholders cdt", false, false);
 
-		createItem(Material.BOOK, 1, 42, COLOR_OBJECT_ID, false, false, "","&7actually: &e" + sObject.getID());
+		createItem(Material.BOOK, 1, 42, COLOR_OBJECT_ID, false, false, "","&7actually: &e" + sObject.getId());
 
 		createItem(Material.BOOK, 1, 43, COLOR_ACTIVATOR_ID, false, false, "","&7actually: &e" + sActivator.getID());
 	}

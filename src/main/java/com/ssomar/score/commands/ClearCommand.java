@@ -29,7 +29,7 @@ public class ClearCommand {
 		}
 		else {
 			if(args.length < 1) {
-				sender.sendMessage(StringConverter.coloredString("&4"+sPlugin.getNameDesign()+" &c/ei clear {playername}."));	
+				sender.sendMessage(StringConverter.coloredString("&4"+sPlugin.getNameDesign()+" &cERROR &6/"+sPlugin.getShortName().toLowerCase()+" clear {playername}."));
 				return;
 			}
 			if(Bukkit.getPlayer(args[0]) == null)  {

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.ssomar.score.usedapi.*;
+import com.ssomar.score.utils.messages.MessageDesign;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.NamespacedKey;
@@ -167,26 +168,25 @@ public class CustomEIConditions extends Conditions{
 		CustomEIConditions cCdt = new CustomEIConditions();
 
 		cCdt.setIfNeedPlayerConfirmation(customCdtSection.getBoolean("ifNeedPlayerConfirmation", false));
-		cCdt.setIfNeedPlayerConfirmationMsg(customCdtSection.getString("ifNeedPlayerConfirmationMsg",
-				"&8&l"+pluginName+IF_NEED_PLAYER_CONFIRMATION_MSG));
+		cCdt.setIfNeedPlayerConfirmationMsg(customCdtSection.getString("ifNeedPlayerConfirmationMsg", "&8&l"+pluginName+IF_NEED_PLAYER_CONFIRMATION_MSG));
 
 		cCdt.setIfOwnerOfTheEI(customCdtSection.getBoolean("ifOwnerOfTheEI", false));
-		cCdt.setIfOwnerOfTheEIMsg(customCdtSection.getString("ifOwnerOfTheEIMsg", "&4&l"+pluginName+IF_OWNER_OF_THE_EI_MSG));
+		cCdt.setIfOwnerOfTheEIMsg(customCdtSection.getString("ifOwnerOfTheEIMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_OWNER_OF_THE_EI_MSG));
 
 		cCdt.setIfNotOwnerOfTheEI(customCdtSection.getBoolean("ifNotOwnerOfTheEI", false));
-		cCdt.setIfNotOwnerOfTheEIMsg(customCdtSection.getString("ifNotOwnerOfTheEIMsg", "&4&l"+pluginName+IF_NOT_OWNER_OF_THE_EI_MSG));
+		cCdt.setIfNotOwnerOfTheEIMsg(customCdtSection.getString("ifNotOwnerOfTheEIMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_OWNER_OF_THE_EI_MSG));
 
 		cCdt.setIfPlayerMustBeOnHisIsland(customCdtSection.getBoolean("ifPlayerMustBeOnHisIsland", false));
 		cCdt.setIfPlayerMustBeOnHisIslandMsg(customCdtSection.getString("ifPlayerMustBeOnHisIslandMsg",
-				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
+				MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG));
 		
 		cCdt.setIfPlayerMustBeOnHisClaim(customCdtSection.getBoolean("ifPlayerMustBeOnHisClaim", false));
 		cCdt.setIfPlayerMustBeOnHisClaimMsg(customCdtSection.getString("ifPlayerMustBeOnHisClaimMsg",
-				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
+				MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG));
 
 		cCdt.setIfPlayerMustBeOnHisPlot(customCdtSection.getBoolean("ifPlayerMustBeOnHisPlot", false));
 		cCdt.setIfPlayerMustBeOnHisPlotMsg(customCdtSection.getString("ifPlayerMustBeOnHisPlotMsg",
-				"&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG));
+				MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG));
 
 		return cCdt;
 
@@ -200,7 +200,7 @@ public class CustomEIConditions extends Conditions{
 	public static void saveCustomConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, CustomEIConditions cC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -209,32 +209,40 @@ public class CustomEIConditions extends Conditions{
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifNeedPlayerConfirmation", false);
 
+		String pluginName = sPlugin.getNameDesign();
+
 		ConfigurationSection cCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(cC.isIfNeedPlayerConfirmation()) cCConfig.set("ifNeedPlayerConfirmation", true);
 		else cCConfig.set("ifNeedPlayerConfirmation", null);
-		cCConfig.set("ifNeedPlayerConfirmationMsg", cC.getIfNeedPlayerConfirmationMsg());
+		if(cC.getIfNeedPlayerConfirmationMsg().contains(cC.IF_NEED_PLAYER_CONFIRMATION_MSG)) cCConfig.set("ifNeedPlayerConfirmationMsg", null);
+		else cCConfig.set("ifNeedPlayerConfirmationMsg", cC.getIfNeedPlayerConfirmationMsg());
 
 
 		if(cC.isIfOwnerOfTheEI()) cCConfig.set("ifOwnerOfTheEI", true); 
 		else cCConfig.set("ifOwnerOfTheEI", null);
-		cCConfig.set("ifOwnerOfTheEIMsg", cC.getIfOwnerOfTheEIMsg()); 
+		if(cC.getIfOwnerOfTheEIMsg().contains(cC.IF_OWNER_OF_THE_EI_MSG)) cCConfig.set("ifOwnerOfTheEIMsg", null);
+		else cCConfig.set("ifOwnerOfTheEIMsg", cC.getIfOwnerOfTheEIMsg());
 
 		if(cC.isIfNotOwnerOfTheEI()) cCConfig.set("ifNotOwnerOfTheEI", true); 
 		else cCConfig.set("ifNotOwnerOfTheEI", null);
-		cCConfig.set("ifNotOwnerOfTheEIMsg", cC.getIfNotOwnerOfTheEIMsg()); 
+		if(cC.getIfNotOwnerOfTheEIMsg().contains(cC.IF_NOT_OWNER_OF_THE_EI_MSG)) cCConfig.set("ifNotOwnerOfTheEIMsg", null);
+		else cCConfig.set("ifNotOwnerOfTheEIMsg", cC.getIfNotOwnerOfTheEIMsg());
 
 		if(cC.isIfPlayerMustBeOnHisIsland()) cCConfig.set("ifPlayerMustBeOnHisIsland", true); 
 		else cCConfig.set("ifPlayerMustBeOnHisIsland", null);
-		cCConfig.set("ifPlayerMustBeOnHisIslandMsg", cC.getIfPlayerMustBeOnHisIslandMsg()); 
+		if(cC.getIfPlayerMustBeOnHisIslandMsg().contains(cC.IF_PLAYER_MUST_BE_ON_HIS_ISLAND_MSG)) cCConfig.set("ifPlayerMustBeOnHisIslandMsg", null);
+		else cCConfig.set("ifPlayerMustBeOnHisIslandMsg", cC.getIfPlayerMustBeOnHisIslandMsg());
 
 		if(cC.isIfPlayerMustBeOnHisClaim()) cCConfig.set("ifPlayerMustBeOnHisClaim", true); 
 		else cCConfig.set("ifPlayerMustBeOnHisClaim", null);
-		cCConfig.set("ifPlayerMustBeOnHisClaimMsg", cC.getIfPlayerMustBeOnHisClaimMsg());
+		if(cC.getIfPlayerMustBeOnHisClaimMsg().contains(cC.IF_PLAYER_MUST_BE_ON_HIS_CLAIM_MSG)) cCConfig.set("ifPlayerMustBeOnHisClaimMsg", null);
+		else cCConfig.set("ifPlayerMustBeOnHisClaimMsg", cC.getIfPlayerMustBeOnHisClaimMsg());
 
 		if(cC.isIfPlayerMustBeOnHisPlot()) cCConfig.set("ifPlayerMustBeOnHisPlot", true);
 		else cCConfig.set("ifPlayerMustBeOnHisPlot", null);
-		cCConfig.set("ifPlayerMustBeOnHisPlotMsg", cC.getIfPlayerMustBeOnHisPlotMsg());
+		if(cC.getIfPlayerMustBeOnHisPlotMsg().contains(cC.IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG)) cCConfig.set("ifPlayerMustBeOnHisPlotMsg", null);
+		else cCConfig.set("ifPlayerMustBeOnHisPlotMsg", cC.getIfPlayerMustBeOnHisPlotMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

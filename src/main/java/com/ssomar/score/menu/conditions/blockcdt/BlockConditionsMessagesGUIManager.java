@@ -31,7 +31,7 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<Bloc
 	public boolean shiftClicked(InteractionClickedGUIManager<BlockConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		
 		BlockConditions bC;
 		if(detail.contains("target")) bC = i.sObject.getActivator(i.sActivator.getID()).getTargetBlockConditions();
@@ -122,11 +122,13 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<Bloc
 		bC.setIfBlockLocationY2Msg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Y2_MSG.name));
 		bC.setIfBlockLocationZMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Z_MSG.name));
 		bC.setIfBlockLocationZ2Msg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Z2_MSG.name));
+		bC.setIfPlayerMustBeOnTheBlockMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_PLAYER_MUST_BE_ON_THE_BLOCK_MSG.name));
+		bC.setIfNoPlayerMustBeOnTheBlockMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK_MSG.name));
 		
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sActivator, bC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 
 	

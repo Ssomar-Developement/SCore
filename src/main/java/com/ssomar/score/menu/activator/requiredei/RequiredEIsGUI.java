@@ -74,7 +74,7 @@ public class RequiredEIsGUI extends GUIAbstract {
 
 		createItem(GREEN, 	1 , 40, 	"&2&l✚ &aNew RequiredEI", 	false, false);
 		
-		createItem(Material.BOOK, 							1 , 42, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 42, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getId());
 		createItem(Material.BOOK, 							1 , 43, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		//Last Edit

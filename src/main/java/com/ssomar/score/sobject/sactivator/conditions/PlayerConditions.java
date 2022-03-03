@@ -11,12 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Charsets;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.sactivator.conditions.player.IfPlayerHasExecutableItem;
+import com.ssomar.score.utils.messages.MessageDesign;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.SculkSensor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -556,31 +555,31 @@ public class PlayerConditions extends Conditions {
 		PlayerConditions pCdt = new PlayerConditions();
 
 		pCdt.setIfSneaking(playerCdtSection.getBoolean("ifSneaking", false));
-		pCdt.setIfSneakingMsg(playerCdtSection.getString("ifSneakingMsg", "&4&l"+pluginName+IF_SNEAKING_MSG));
+		pCdt.setIfSneakingMsg(playerCdtSection.getString("ifSneakingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_SNEAKING_MSG));
 
 		pCdt.setIfNotSneaking(playerCdtSection.getBoolean("ifNotSneaking", false));
-		pCdt.setIfNotSneakingMsg(playerCdtSection.getString("ifNotSneakingMsg", "&4&l"+pluginName+IF_NOT_SNEAKING_MSG));
+		pCdt.setIfNotSneakingMsg(playerCdtSection.getString("ifNotSneakingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_SNEAKING_MSG));
 
 		pCdt.setIfBlocking(playerCdtSection.getBoolean("ifBlocking", false));
-		pCdt.setIfBlockingMsg(playerCdtSection.getString("ifBlockingMsg", "&4&l"+pluginName+IF_BLOCKING_MSG));
+		pCdt.setIfBlockingMsg(playerCdtSection.getString("ifBlockingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCKING_MSG));
 
 		pCdt.setIfNotBlocking(playerCdtSection.getBoolean("ifNotBlocking", false));
-		pCdt.setIfNotBlockingMsg(playerCdtSection.getString("ifNotBlockingMsg", "&4&l"+pluginName+IF_NOT_BLOCKING_MSG));
+		pCdt.setIfNotBlockingMsg(playerCdtSection.getString("ifNotBlockingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_BLOCKING_MSG));
 
 		pCdt.setIfSprinting(playerCdtSection.getBoolean("ifSprinting", false));
-		pCdt.setIfSprintingMsg(playerCdtSection.getString("ifSprintingMsg", "&4&l"+pluginName+IF_SPRINTING_MSG));
+		pCdt.setIfSprintingMsg(playerCdtSection.getString("ifSprintingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_SPRINTING_MSG));
 
 		pCdt.setIfSwimming(playerCdtSection.getBoolean("ifSwimming", false));
-		pCdt.setIfSwimmingMsg(playerCdtSection.getString("ifSwimmingMsg", "&4&l"+pluginName+IF_SWIMMING_MSG));
+		pCdt.setIfSwimmingMsg(playerCdtSection.getString("ifSwimmingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_SWIMMING_MSG));
 
 		pCdt.setIfGliding(playerCdtSection.getBoolean("ifGliding", false));
-		pCdt.setIfGlidingMsg(playerCdtSection.getString("ifGlidingMsg", "&4&l"+pluginName+IF_GLIDING_MSG));
+		pCdt.setIfGlidingMsg(playerCdtSection.getString("ifGlidingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_GLIDING_MSG));
 
 		pCdt.setIfFlying(playerCdtSection.getBoolean("ifFlying", false));
-		pCdt.setIfFlyingMsg(playerCdtSection.getString("ifFlyingMsg", "&4&l"+pluginName+IF_FLYING_MSG));
+		pCdt.setIfFlyingMsg(playerCdtSection.getString("ifFlyingMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_FLYING_MSG));
 
 		pCdt.setIfIsInTheAir(playerCdtSection.getBoolean("ifIsInTheAir", false));
-		pCdt.setIfIsInTheAirMsg(playerCdtSection.getString("ifIsInTheAirMsg", "&4&l"+pluginName+IF_IS_IN_THE_AIR_MSG));
+		pCdt.setIfIsInTheAirMsg(playerCdtSection.getString("ifIsInTheAirMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IS_IN_THE_AIR_MSG));
 
 		List<Material> mat = new ArrayList<>();
 		for (String s : playerCdtSection.getStringList("ifIsOnTheBlock")) {
@@ -589,7 +588,7 @@ public class PlayerConditions extends Conditions {
 			} catch (Exception ignored) {}
 		}
 		pCdt.setIfIsOnTheBlock(mat);
-		pCdt.setIfIsOnTheBlockMsg(playerCdtSection.getString("ifIsOnTheBlockMsg", "&4&l"+pluginName+IF_IS_ON_THE_BLOCK_MSG));
+		pCdt.setIfIsOnTheBlockMsg(playerCdtSection.getString("ifIsOnTheBlockMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IS_ON_THE_BLOCK_MSG));
 
 		List<Material> mat2 = new ArrayList<>();
 		for (String s : playerCdtSection.getStringList("ifIsNotOnTheBlock")) {
@@ -598,20 +597,20 @@ public class PlayerConditions extends Conditions {
 			} catch (Exception ignored) {}
 		}
 		pCdt.setIfIsNotOnTheBlock(mat2);
-		pCdt.setIfIsNotOnTheBlockMsg(playerCdtSection.getString("ifIsNotOnTheBlockMsg", "&4&l"+pluginName+IF_IS_NOT_ON_THE_BLOCK_MSG));
+		pCdt.setIfIsNotOnTheBlockMsg(playerCdtSection.getString("ifIsNotOnTheBlockMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IS_NOT_ON_THE_BLOCK_MSG));
 
 
 		pCdt.setIfInWorld(playerCdtSection.getStringList("ifInWorld"));
-		pCdt.setIfInWorldMsg(playerCdtSection.getString("ifInWorldMsg", "&4&l"+pluginName+IF_IN_WORLD_MSG));
+		pCdt.setIfInWorldMsg(playerCdtSection.getString("ifInWorldMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IN_WORLD_MSG));
 
 		pCdt.setIfNotInWorld(playerCdtSection.getStringList("ifNotInWorld"));
-		pCdt.setIfNotInWorldMsg(playerCdtSection.getString("ifNotInWorldMsg", "&4&l"+pluginName+IF_NOT_IN_WORLD_MSG));
+		pCdt.setIfNotInWorldMsg(playerCdtSection.getString("ifNotInWorldMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_IN_WORLD_MSG));
 
 		pCdt.setIfInBiome(playerCdtSection.getStringList("ifInBiome"));
-		pCdt.setIfInBiomeMsg(playerCdtSection.getString("ifInBiomeMsg", "&4&l"+pluginName+IF_IN_BIOME_MSG));
+		pCdt.setIfInBiomeMsg(playerCdtSection.getString("ifInBiomeMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IN_BIOME_MSG));
 
 		pCdt.setIfNotInBiome(playerCdtSection.getStringList("ifNotInBiome"));
-		pCdt.setIfNotInBiomeMsg(playerCdtSection.getString("ifNotInBiomeMsg", "&4&l"+pluginName+IF_NOT_IN_BIOME_MSG));
+		pCdt.setIfNotInBiomeMsg(playerCdtSection.getString("ifNotInBiomeMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_IN_BIOME_MSG));
 
 		if (playerCdtSection.contains("ifInRegion") || playerCdtSection.contains("ifNotInRegion")) {
 
@@ -620,18 +619,18 @@ public class PlayerConditions extends Conditions {
 			} 
 			else {
 				pCdt.setIfInRegion(playerCdtSection.getStringList("ifInRegion"));
-				pCdt.setIfInRegionMsg(playerCdtSection.getString("ifInRegionMsg", "&4&l"+pluginName+IF_IN_REGION_MSG));
 
 				pCdt.setIfNotInRegion(playerCdtSection.getStringList("ifNotInRegion"));
-				pCdt.setIfNotInRegionMsg(playerCdtSection.getString("ifNotInRegionMsg", "&4&l"+pluginName+IF_NOT_IN_REGION_MSG));
 			}
 		}
+		pCdt.setIfInRegionMsg(playerCdtSection.getString("ifInRegionMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IN_REGION_MSG));
+		pCdt.setIfNotInRegionMsg(playerCdtSection.getString("ifNotInRegionMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_IN_REGION_MSG));
 
 		pCdt.setIfHasPermission(playerCdtSection.getStringList("ifHasPermission"));
-		pCdt.setIfHasPermissionMsg(playerCdtSection.getString("ifHasPermissionMsg", "&4&l"+pluginName+IF_HAS_PERMISSION_MSG));
+		pCdt.setIfHasPermissionMsg(playerCdtSection.getString("ifHasPermissionMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_HAS_PERMISSION_MSG));
 
 		pCdt.setIfNotHasPermission(playerCdtSection.getStringList("ifNotHasPermission"));
-		pCdt.setIfNotHasPermissionMsg(playerCdtSection.getString("ifNotHasPermissionMsg", "&4&l"+pluginName+IF_NOT_HAS_PERMISSION_MSG));
+		pCdt.setIfNotHasPermissionMsg(playerCdtSection.getString("ifNotHasPermissionMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_HAS_PERMISSION_MSG));
 
 		mat = new ArrayList<>();
 		for (String s : playerCdtSection.getStringList("ifTargetBlock")) {
@@ -640,7 +639,7 @@ public class PlayerConditions extends Conditions {
 			} catch (Exception ignored) {}
 		}
 		pCdt.setIfTargetBlock(mat);
-		pCdt.setIfTargetBlockMsg(playerCdtSection.getString("ifTargetBlockMsg", "&4&l"+pluginName+IF_TARGET_BLOCK_MSG));
+		pCdt.setIfTargetBlockMsg(playerCdtSection.getString("ifTargetBlockMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_TARGET_BLOCK_MSG));
 
 		mat = new ArrayList<>();
 		for (String s : playerCdtSection.getStringList("ifNotTargetBlock")) {
@@ -649,31 +648,31 @@ public class PlayerConditions extends Conditions {
 			} catch (Exception ignored) {}
 		}
 		pCdt.setIfNotTargetBlock(mat);
-		pCdt.setIfNotTargetBlockMsg(playerCdtSection.getString("ifNotTargetBlockMsg", "&4&l"+pluginName+IF_NOT_TARGET_BLOCK_MSG));
+		pCdt.setIfNotTargetBlockMsg(playerCdtSection.getString("ifNotTargetBlockMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NOT_TARGET_BLOCK_MSG));
 
 		pCdt.setIfPlayerHealth(playerCdtSection.getString("ifPlayerHealth", ""));
-		pCdt.setIfPlayerHealthMsg(playerCdtSection.getString("ifPlayerHealthMsg", "&4&l"+pluginName+IF_PLAYER_HEALTH_MSG));
+		pCdt.setIfPlayerHealthMsg(playerCdtSection.getString("ifPlayerHealthMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_HEALTH_MSG));
 
 		pCdt.setIfPlayerFoodLevel(playerCdtSection.getString("ifPlayerFoodLevel", ""));
-		pCdt.setIfPlayerFoodLevelMsg(playerCdtSection.getString("ifPlayerFoodLevelMsg", "&4&l"+pluginName+IF_PLAYER_FOOD_LEVEL_MSG));
+		pCdt.setIfPlayerFoodLevelMsg(playerCdtSection.getString("ifPlayerFoodLevelMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_FOOD_LEVEL_MSG));
 
 		pCdt.setIfPlayerEXP(playerCdtSection.getString("ifPlayerEXP", ""));
-		pCdt.setIfPlayerEXPMsg(playerCdtSection.getString("ifPlayerEXPMsg", "&4&l"+pluginName+IF_PLAYER_EXP_MSG));
+		pCdt.setIfPlayerEXPMsg(playerCdtSection.getString("ifPlayerEXPMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_EXP_MSG));
 
 		pCdt.setIfPlayerLevel(playerCdtSection.getString("ifPlayerLevel", ""));
-		pCdt.setIfPlayerLevelMsg(playerCdtSection.getString("ifPlayerLevelMsg", "&4&l"+pluginName+IF_PLAYER_LEVEL_MSG));
+		pCdt.setIfPlayerLevelMsg(playerCdtSection.getString("ifPlayerLevelMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_LEVEL_MSG));
 
 		pCdt.setIfLightLevel(playerCdtSection.getString("ifLightLevel", ""));
-		pCdt.setIfLightLevelMsg(playerCdtSection.getString("ifLightLevelMsg", "&4&l"+pluginName+IF_LIGHT_LEVEL_MSG));
+		pCdt.setIfLightLevelMsg(playerCdtSection.getString("ifLightLevelMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_LIGHT_LEVEL_MSG));
 
 		pCdt.setIfPosX(playerCdtSection.getString("ifPosX", ""));
-		pCdt.setIfPosXMsg(playerCdtSection.getString("ifPosXMsg", "&4&l"+pluginName+IF_POS_X_MSG));
+		pCdt.setIfPosXMsg(playerCdtSection.getString("ifPosXMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_POS_X_MSG));
 
 		pCdt.setIfPosY(playerCdtSection.getString("ifPosY", ""));
-		pCdt.setIfPosYMsg(playerCdtSection.getString("ifPosYMsg", "&4&l"+pluginName+IF_POS_Y_MSG));
+		pCdt.setIfPosYMsg(playerCdtSection.getString("ifPosYMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_POS_Y_MSG));
 
 		pCdt.setIfPosZ(playerCdtSection.getString("ifPosZ", ""));
-		pCdt.setIfPosZMsg(playerCdtSection.getString("ifPosZMsg", "&4&l"+pluginName+IF_POS_Z_MSG));
+		pCdt.setIfPosZMsg(playerCdtSection.getString("ifPosZMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_POS_Z_MSG));
 
 		List<IfPlayerHasExecutableItem> verifEI = new ArrayList<>();
 		if(playerCdtSection.contains("ifPlayerHasExecutableItem")){
@@ -697,7 +696,7 @@ public class PlayerConditions extends Conditions {
 		}
 
 		pCdt.setIfPlayerHasExecutableItem(verifEI);
-		pCdt.setIfPlayerHasExecutableItemMsg(playerCdtSection.getString("ifPlayerHasExecutableItemMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG));
+		pCdt.setIfPlayerHasExecutableItemMsg(playerCdtSection.getString("ifPlayerHasExecutableItemMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG));
 
 		Map<Material, Integer> verifI = new HashMap<>();
 		for (String s : playerCdtSection.getStringList("ifPlayerHasItem")) {
@@ -721,7 +720,7 @@ public class PlayerConditions extends Conditions {
 			}
 		}
 		pCdt.setIfPlayerHasItem(verifI);
-		pCdt.setIfPlayerHasItemMsg(playerCdtSection.getString("ifPlayerHasItemMsg", "&4&l"+pluginName+IF_PLAYER_HAS_ITEM_MSG));
+		pCdt.setIfPlayerHasItemMsg(playerCdtSection.getString("ifPlayerHasItemMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_HAS_ITEM_MSG));
 
 		Map<PotionEffectType, Integer> verifETP = new HashMap<>();
 		for (String s : playerCdtSection.getStringList("ifPlayerHasEffect")) {
@@ -745,7 +744,7 @@ public class PlayerConditions extends Conditions {
 		}
 
 		pCdt.setIfPlayerHasEffect(verifETP);
-		pCdt.setIfPlayerHasEffectMsg(playerCdtSection.getString("ifPlayerHasEffectMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
+		pCdt.setIfPlayerHasEffectMsg(playerCdtSection.getString("ifPlayerHasEffectMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
 
 		Map<PotionEffectType, Integer> verifETPE = new HashMap<>();
 		for (String s : playerCdtSection.getStringList("ifPlayerHasEffectEquals")) {
@@ -769,7 +768,7 @@ public class PlayerConditions extends Conditions {
 		}
 
 		pCdt.setIfPlayerHasEffectEquals(verifETPE);
-		pCdt.setIfPlayerHasEffectEqualsMsg(playerCdtSection.getString("ifPlayerHasEffectEqualsMsg", "&4&l"+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
+		pCdt.setIfPlayerHasEffectEqualsMsg(playerCdtSection.getString("ifPlayerHasEffectEqualsMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_HAS_EFFECT_MSG));
 
 		return pCdt;
 
@@ -784,7 +783,7 @@ public class PlayerConditions extends Conditions {
 	public static void savePlayerConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions pC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -792,45 +791,56 @@ public class PlayerConditions extends Conditions {
 
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifSneaking", false);
+		
+		String pluginName = sPlugin.getNameDesign();
 
 
 		ConfigurationSection pCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(pC.hasIfSneaking()) pCConfig.set("ifSneaking", true); 
 		else pCConfig.set("ifSneaking", null);
-		pCConfig.set("ifSneakingMsg", pC.getIfSneakingMsg()); 
+		if(pC.getIfSneakingMsg().contains(pC.IF_SNEAKING_MSG)) pCConfig.set("ifSneakingMsg", null);
+		else pCConfig.set("ifSneakingMsg", pC.getIfSneakingMsg());
 
 		if(pC.hasIfNotSneaking()) pCConfig.set("ifNotSneaking", true); 
 		else pCConfig.set("ifNotSneaking", null);
-		pCConfig.set("ifNotSneakingMsg", pC.getIfNotSneakingMsg()); 
+		if(pC.getIfNotSneakingMsg().contains(pC.IF_NOT_SNEAKING_MSG)) pCConfig.set("ifNotSneakingMsg", null);
+		else pCConfig.set("ifNotSneakingMsg", pC.getIfNotSneakingMsg());
 
 		if(pC.ifBlocking) pCConfig.set("ifBlocking", true); 
 		else pCConfig.set("ifBlocking", null);
-		pCConfig.set("ifBlockingMsg", pC.getIfBlockingMsg()); 
+		if(pC.getIfBlockingMsg().contains(pC.IF_BLOCKING_MSG)) pCConfig.set("ifBlockingMsg", null);
+		else pCConfig.set("ifBlockingMsg", pC.getIfBlockingMsg());
 
 		if(pC.ifNotBlocking) pCConfig.set("ifNotBlocking", true); 
 		else pCConfig.set("ifNotBlocking", null);
-		pCConfig.set("ifNotBlockingMsg", pC.getIfNotBlockingMsg()); 
+		if(pC.getIfNotBlockingMsg().contains(pC.IF_NOT_BLOCKING_MSG)) pCConfig.set("ifNotBlockingMsg", null);
+		else pCConfig.set("ifNotBlockingMsg", pC.getIfNotBlockingMsg());
 
 		if(pC.hasIfSwimming()) pCConfig.set("ifSwimming", true); 
 		else pCConfig.set("ifSwimming", null);
-		pCConfig.set("ifSwimmingMsg", pC.getIfSwimmingMsg()); 
+		if(pC.getIfSwimmingMsg().contains(pC.IF_SWIMMING_MSG)) pCConfig.set("ifSwimmingMsg", null);
+		else pCConfig.set("ifSwimmingMsg", pC.getIfSwimmingMsg());
 
 		if(pC.ifSprinting) pCConfig.set("ifSprinting", true); 
 		else pCConfig.set("ifSprinting", null);
-		pCConfig.set("ifSprintingMsg", pC.getIfSprintingMsg()); 
+		if(pC.getIfSprintingMsg().contains(pC.IF_SPRINTING_MSG)) pCConfig.set("ifSprintingMsg", null);
+		else pCConfig.set("ifSprintingMsg", pC.getIfSprintingMsg());
 
 		if(pC.hasIfGliding()) pCConfig.set("ifGliding", true); 
 		else pCConfig.set("ifGliding", null);
-		pCConfig.set("ifGlidingMsg", pC.getIfGlidingMsg()); 
+		if(pC.getIfGlidingMsg().contains(pC.IF_GLIDING_MSG)) pCConfig.set("ifGlidingMsg", null);
+		else pCConfig.set("ifGlidingMsg", pC.getIfGlidingMsg());
 
 		if(pC.hasIfFlying()) pCConfig.set("ifFlying", true); 
 		else pCConfig.set("ifFlying", null);
-		pCConfig.set("ifFlyingMsg", pC.getIfFlyingMsg()); 
+		if(pC.getIfFlyingMsg().contains(pC.IF_FLYING_MSG)) pCConfig.set("ifFlyingMsg", null);
+		else pCConfig.set("ifFlyingMsg", pC.getIfFlyingMsg());
 
 		if(pC.ifIsInTheAir) pCConfig.set("ifIsInTheAir", true); 
 		else pCConfig.set("ifIsInTheAir", null);
-		pCConfig.set("ifIsInTheAirMsg", pC.getIfIsInTheAirMsg()); 
+		if(pC.getIfIsInTheAirMsg().contains(pC.IF_IS_IN_THE_AIR_MSG)) pCConfig.set("ifIsInTheAirMsg", null);
+		else pCConfig.set("ifIsInTheAirMsg", pC.getIfIsInTheAirMsg());
 
 		List<String> convert = new ArrayList<>();
 		for(Material mat : pC.getIfIsOnTheBlock()) {
@@ -838,7 +848,8 @@ public class PlayerConditions extends Conditions {
 		}
 		if(pC.getIfIsOnTheBlock().size() != 0) pCConfig.set("ifIsOnTheBlock",convert); 
 		else pCConfig.set("ifIsOnTheBlock", null);
-		pCConfig.set("ifIsOnTheBlockMsg", pC.getIfIsOnTheBlockMsg());
+		if(pC.getIfIsOnTheBlockMsg().contains(pC.IF_IS_ON_THE_BLOCK_MSG)) pCConfig.set("ifIsOnTheBlockMsg", null);
+		else pCConfig.set("ifIsOnTheBlockMsg", pC.getIfIsOnTheBlockMsg());
 
 		List<String> convert2 = new ArrayList<>();
 		for(Material mat : pC.getIfIsNotOnTheBlock()) {
@@ -846,39 +857,48 @@ public class PlayerConditions extends Conditions {
 		}
 		if(pC.getIfIsNotOnTheBlock().size() != 0) pCConfig.set("ifIsNotOnTheBlock",convert2);
 		else pCConfig.set("ifIsNotOnTheBlock", null);
-		pCConfig.set("ifIsNotOnTheBlockMsg", pC.getIfIsNotOnTheBlockMsg());
+		if(pC.getIfIsNotOnTheBlockMsg().contains(pC.IF_IS_NOT_ON_THE_BLOCK_MSG)) pCConfig.set("ifIsNotOnTheBlockMsg", null);
+		else pCConfig.set("ifIsNotOnTheBlockMsg", pC.getIfIsNotOnTheBlockMsg());
 
 		if(pC.hasIfInWorld()) pCConfig.set("ifInWorld", pC.getIfInWorld()); 
 		else pCConfig.set("ifInWorld", null);
-		pCConfig.set("ifInWorldMsg", pC.getIfInWorldMsg()); 
+		if(pC.getIfInWorldMsg().contains(pC.IF_IN_WORLD_MSG)) pCConfig.set("ifInWorldMsg", null);
+		else pCConfig.set("ifInWorldMsg", pC.getIfInWorldMsg());
 
 		if(pC.hasIfNotInWorld()) pCConfig.set("ifNotInWorld", pC.getIfNotInWorld()); 
 		else pCConfig.set("ifNotInWorld", null);
-		pCConfig.set("ifNotInWorldMsg", pC.getIfNotInWorldMsg()); 
+		if(pC.getIfNotInWorldMsg().contains(pC.IF_NOT_IN_WORLD_MSG)) pCConfig.set("ifNotInWorldMsg", null);
+		else pCConfig.set("ifNotInWorldMsg", pC.getIfNotInWorldMsg());
 
 		if(pC.hasIfInBiome()) pCConfig.set("ifInBiome", pC.getIfInBiome()); 
 		else pCConfig.set("ifInBiome", null);
-		pCConfig.set("ifInBiomeMsg", pC.getIfInBiomeMsg()); 
+		if(pC.getIfInBiomeMsg().contains(pC.IF_IN_BIOME_MSG)) pCConfig.set("ifInBiomeMsg", null);
+		else pCConfig.set("ifInBiomeMsg", pC.getIfInBiomeMsg());
 
 		if(pC.hasIfNotInBiome()) pCConfig.set("ifNotInBiome", pC.getIfNotInBiome()); 
 		else pCConfig.set("ifNotInBiome", null);
-		pCConfig.set("ifNotInBiomeMsg", pC.getIfNotInBiomeMsg()); 
+		if(pC.getIfNotInBiomeMsg().contains(pC.IF_NOT_IN_BIOME_MSG)) pCConfig.set("ifNotInBiomeMsg", null);
+		else pCConfig.set("ifNotInBiomeMsg", pC.getIfNotInBiomeMsg());
 
 		if(pC.hasIfInRegion()) pCConfig.set("ifInRegion", pC.getIfInRegion()); 
 		else pCConfig.set("ifInRegion", null);
-		pCConfig.set("ifInRegionMsg", pC.getIfInRegionMsg()); 
+		if(pC.getIfInRegionMsg().contains(pC.IF_IN_REGION_MSG)) pCConfig.set("ifInRegionMsg", null);
+		else pCConfig.set("ifInRegionMsg", pC.getIfInRegionMsg());
 
 		if(pC.hasIfNotInRegion()) pCConfig.set("ifNotInRegion", pC.getIfNotInRegion()); 
 		else pCConfig.set("ifNotInRegion", null);
-		pCConfig.set("ifNotInRegionMsg", pC.getIfNotInRegionMsg()); 
+		if(pC.getIfNotInRegionMsg().contains(pC.IF_NOT_IN_REGION_MSG)) pCConfig.set("ifNotInRegionMsg", null);
+		else pCConfig.set("ifNotInRegionMsg", pC.getIfNotInRegionMsg());
 
 		if(pC.hasIfHasPermission()) pCConfig.set("ifHasPermission", pC.getIfHasPermission()); 
 		else pCConfig.set("ifHasPermission", null);
-		pCConfig.set("ifHasPermissionMsg", pC.getIfHasPermissionMsg()); 
+		if(pC.getIfHasPermissionMsg().contains(pC.IF_HAS_PERMISSION_MSG)) pCConfig.set("ifHasPermissionMsg", null);
+		else pCConfig.set("ifHasPermissionMsg", pC.getIfHasPermissionMsg());
 
 		if(pC.hasIfNotHasPermission()) pCConfig.set("ifNotHasPermission", pC.getIfNotHasPermission()); 
 		else pCConfig.set("ifNotHasPermission", null);
-		pCConfig.set("ifNotHasPermissionMsg", pC.getIfNotHasPermissionMsg()); 
+		if(pC.getIfNotHasPermissionMsg().contains(pC.IF_NOT_HAS_PERMISSION_MSG)) pCConfig.set("ifNotHasPermissionMsg", null);
+		else pCConfig.set("ifNotHasPermissionMsg", pC.getIfNotHasPermissionMsg());
 
 		convert = new ArrayList<>();
 		for(Material mat : pC.getIfTargetBlock()) {
@@ -886,7 +906,8 @@ public class PlayerConditions extends Conditions {
 		}
 		if(pC.hasIfTargetBlock()) pCConfig.set("ifTargetBlock",convert); 
 		else pCConfig.set("ifTargetBlock", null);
-		pCConfig.set("ifTargetBlockMsg", pC.getIfTargetBlockMsg()); 
+		if(pC.getIfTargetBlockMsg().contains(pC.IF_TARGET_BLOCK_MSG)) pCConfig.set("ifTargetBlockMsg", null);
+		else pCConfig.set("ifTargetBlockMsg", pC.getIfTargetBlockMsg());
 
 		convert = new ArrayList<>();
 		for(Material mat : pC.getIfNotTargetBlock()) {
@@ -894,39 +915,48 @@ public class PlayerConditions extends Conditions {
 		}
 		if(pC.hasIfNotTargetBlock()) pCConfig.set("ifNotTargetBlock", convert); 
 		else pCConfig.set("ifNotTargetBlock", null);
-		pCConfig.set("ifNotTargetBlockMsg", pC.getIfNotTargetBlockMsg()); 
+		if(pC.getIfNotTargetBlockMsg().contains(pC.IF_NOT_TARGET_BLOCK_MSG)) pCConfig.set("ifNotTargetBlockMsg", null);
+		else pCConfig.set("ifNotTargetBlockMsg", pC.getIfNotTargetBlockMsg());
 
 		if(pC.hasIfPlayerHealth()) pCConfig.set("ifPlayerHealth", pC.getIfPlayerHealth()); 
 		else pCConfig.set("ifPlayerHealth", null);
-		pCConfig.set("ifPlayerHealthMsg", pC.getIfPlayerHealthMsg()); 
+		if(pC.getIfPlayerHealthMsg().contains(pC.IF_PLAYER_HEALTH_MSG)) pCConfig.set("ifPlayerHealthMsg", null);
+		else pCConfig.set("ifPlayerHealthMsg", pC.getIfPlayerHealthMsg());
 
 		if(pC.hasIfLightLevel()) pCConfig.set("ifLightLevel", pC.getIfLightLevel()); 
 		else pCConfig.set("ifLightLevel", null);
-		pCConfig.set("ifLightLevelMsg", pC.getIfLightLevelMsg()); 
+		if(pC.getIfLightLevelMsg().contains(pC.IF_LIGHT_LEVEL_MSG)) pCConfig.set("ifLightLevelMsg", null);
+		else pCConfig.set("ifLightLevelMsg", pC.getIfLightLevelMsg());
 
 		if(pC.hasIfPlayerFoodLevel()) pCConfig.set("ifPlayerFoodLevel", pC.getIfPlayerFoodLevel());
 		else pCConfig.set("ifPlayerFoodLevel", null);
-		pCConfig.set("ifPlayerFoodLevelMsg", pC.getIfPlayerFoodLevelMsg());
+		if(pC.getIfPlayerFoodLevelMsg().contains(pC.IF_PLAYER_FOOD_LEVEL_MSG)) pCConfig.set("ifPlayerFoodLevelMsg", null);
+		else pCConfig.set("ifPlayerFoodLevelMsg", pC.getIfPlayerFoodLevelMsg());
 
 		if(pC.hasIfPlayerEXP()) pCConfig.set("ifPlayerEXP", pC.getIfPlayerEXP()); 
 		else pCConfig.set("ifPlayerEXP", null);
-		pCConfig.set("ifPlayerEXPMsg", pC.getIfPlayerEXPMsg()); 
+		if(pC.getIfPlayerEXPMsg().contains(pC.IF_PLAYER_EXP_MSG)) pCConfig.set("ifPlayerEXPMsg", null);
+		else pCConfig.set("ifPlayerEXPMsg", pC.getIfPlayerEXPMsg());
 
 		if(pC.hasIfPlayerLevel()) pCConfig.set("ifPlayerLevel", pC.getIfPlayerLevel()); 
 		else pCConfig.set("ifPlayerLevel", null);
-		pCConfig.set("ifPlayerLevelMsg", pC.getIfPlayerLevelMsg()); 
+		if(pC.getIfPlayerLevelMsg().contains(pC.IF_PLAYER_LEVEL_MSG)) pCConfig.set("ifPlayerLevelMsg", null);
+		else pCConfig.set("ifPlayerLevelMsg", pC.getIfPlayerLevelMsg());
 
 		if(pC.hasIfPosX()) pCConfig.set("ifPosX", pC.getIfPosX()); 
 		else pCConfig.set("ifPosX", null);
-		pCConfig.set("ifPosXMsg", pC.getIfPosXMsg());
+		if(pC.getIfPosXMsg().contains(pC.IF_POS_X_MSG)) pCConfig.set("ifPosXMsg", null);
+		else pCConfig.set("ifPosXMsg", pC.getIfPosXMsg());
 
 		if(pC.hasIfPosY()) pCConfig.set("ifPosY", pC.getIfPosY()); 
 		else pCConfig.set("ifPosY", null);
-		pCConfig.set("ifPosYMsg", pC.getIfPosYMsg());
+		if(pC.getIfPosYMsg().contains(pC.IF_POS_Y_MSG)) pCConfig.set("ifPosYMsg", null);
+		else pCConfig.set("ifPosYMsg", pC.getIfPosYMsg());
 
 		if(pC.hasIfPosZ()) pCConfig.set("ifPosZ", pC.getIfPosZ()); 
 		else pCConfig.set("ifPosZ", null);
-		pCConfig.set("ifPosZMsg", pC.getIfPosZMsg());
+		if(pC.getIfPosZMsg().contains(pC.IF_POS_Z_MSG)) pCConfig.set("ifPosZMsg", null);
+		else pCConfig.set("ifPosZMsg", pC.getIfPosZMsg());
 		
 		if(pC.ifPlayerHasEffect.size() > 0) {
 			List<String> result = new ArrayList<>();
@@ -934,7 +964,8 @@ public class PlayerConditions extends Conditions {
 				result.add(pET.getName() +":"+pC.ifPlayerHasEffect.get(pET));
 			}
 			pCConfig.set("ifPlayerHasEffect", result);
-			pCConfig.set("ifPlayerHasEffectMsg", pC.getIfPlayerHasEffectMsg());
+			if(pC.getIfPlayerHasEffectMsg().contains(pC.IF_PLAYER_HAS_EFFECT_MSG)) pCConfig.set("ifPlayerHasEffectMsg", null);
+			else pCConfig.set("ifPlayerHasEffectMsg", pC.getIfPlayerHasEffectMsg());
 		}
 		else pCConfig.set("ifPlayerHasEffect", null);
 
@@ -944,7 +975,8 @@ public class PlayerConditions extends Conditions {
 				result.add(pET.getName() +":"+pC.ifPlayerHasEffectEquals.get(pET));
 			}
 			pCConfig.set("ifPlayerHasEffectEquals", result);
-			pCConfig.set("ifPlayerHasEffectEqualsMsg", pC.getIfPlayerHasEffectEqualsMsg());
+			if(pC.getIfPlayerHasEffectEqualsMsg().contains(pC.IF_PLAYER_HAS_EFFECT_MSG)) pCConfig.set("ifPlayerHasEffectEqualsMsg", null);
+			else pCConfig.set("ifPlayerHasEffectEqualsMsg", pC.getIfPlayerHasEffectEqualsMsg());
 		}
 		else pCConfig.set("ifPlayerHasEffectEquals", null);
 

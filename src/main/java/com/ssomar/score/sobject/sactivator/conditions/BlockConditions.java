@@ -8,7 +8,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssomar.score.SsomarDev;
+import com.ssomar.score.utils.messages.MessageDesign;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -118,8 +118,10 @@ public class BlockConditions extends Conditions{
 		blockAroundConditions = new ArrayList<>();
 
 		ifPlayerMustBeOnTheBlock = false;
+		ifPlayerMustBeOnTheBlockMsg = IF_PLAYER_MUST_BE_ON_THE_MSG;
 
 		ifNoPlayerMustBeOnTheBlock = false;
+		ifNoPlayerMustBeOnTheBlockMsg = IF_NO_PLAYER_MUST_BE_ON_THE_MSG;
 
 		//		List<Material> typeCdt = new ArrayList<>();
 		//		typeCdt.add(Material.RAW_IRON_BLOCK);
@@ -259,40 +261,40 @@ public class BlockConditions extends Conditions{
 		BlockConditions bCdt = new BlockConditions();
 
 		bCdt.setIfPlantFullyGrown(blockCdtSection.getBoolean("ifPlantFullyGrown", false));
-		bCdt.setIfPlantFullyGrownMsg(blockCdtSection.getString("ifPlantFullyGrownMsg", "&4&l"+pluginName+IF_PLANT_FULLY_GROWN_MSG));
+		bCdt.setIfPlantFullyGrownMsg(blockCdtSection.getString("ifPlantFullyGrownMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLANT_FULLY_GROWN_MSG));
 
 		bCdt.setIfIsPowered(blockCdtSection.getBoolean("ifIsPowered", false));
-		bCdt.setIfIsPoweredMsg(blockCdtSection.getString("ifIsPoweredMsg", "&4&l"+pluginName+IF_IS_POWERED_MSG));
+		bCdt.setIfIsPoweredMsg(blockCdtSection.getString("ifIsPoweredMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IS_POWERED_MSG));
 
 		bCdt.setIfMustBeNotPowered(blockCdtSection.getBoolean("ifMustBeNotPowered", false));
-		bCdt.setIfMustBeNotPoweredMsg(blockCdtSection.getString("ifMustBeNotPoweredMsg", "&4&l"+pluginName+IF_MUST_BE_NOT_POWERED_MSG));
+		bCdt.setIfMustBeNotPoweredMsg(blockCdtSection.getString("ifMustBeNotPoweredMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_MUST_BE_NOT_POWERED_MSG));
 
 		bCdt.setIfMustBeNatural(blockCdtSection.getBoolean("ifMustBeNatural", false));
-		bCdt.setIfIsNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", "&4&l"+pluginName+IF_MUST_BE_NATURAL_MSG));
+		bCdt.setIfIsNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_MUST_BE_NATURAL_MSG));
 
 		bCdt.setIfBlockLocationX(blockCdtSection.getString("ifBlockLocationX", ""));
-		bCdt.setIfBlockLocationXMsg(blockCdtSection.getString("ifBlockLocationXMsg", "&4&l"+pluginName+IF_BLOCK_LOCATION_X_MSG));
+		bCdt.setIfBlockLocationXMsg(blockCdtSection.getString("ifBlockLocationXMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_X_MSG));
 		
 		bCdt.setIfBlockLocationX2(blockCdtSection.getString("ifBlockLocationX2", ""));
-		bCdt.setIfBlockLocationX2Msg(blockCdtSection.getString("ifBlockLocationX2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_X2_MSG));
+		bCdt.setIfBlockLocationX2Msg(blockCdtSection.getString("ifBlockLocationX2Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_X2_MSG));
 		
 		bCdt.setIfBlockLocationY(blockCdtSection.getString("ifBlockLocationY", ""));
-		bCdt.setIfBlockLocationYMsg(blockCdtSection.getString("ifBlockLocationYMsg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Y_MSG));
+		bCdt.setIfBlockLocationYMsg(blockCdtSection.getString("ifBlockLocationYMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_Y_MSG));
 		
 		bCdt.setIfBlockLocationY2(blockCdtSection.getString("ifBlockLocationY2", ""));
-		bCdt.setIfBlockLocationY2Msg(blockCdtSection.getString("ifBlockLocationY2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Y2_MSG));
+		bCdt.setIfBlockLocationY2Msg(blockCdtSection.getString("ifBlockLocationY2Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_Y2_MSG));
 		
 		bCdt.setIfBlockLocationZ(blockCdtSection.getString("ifBlockLocationZ", ""));
-		bCdt.setIfBlockLocationZMsg(blockCdtSection.getString("ifBlockLocationZMsg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Z_MSG));
+		bCdt.setIfBlockLocationZMsg(blockCdtSection.getString("ifBlockLocationZMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_Z_MSG));
 		
 		bCdt.setIfBlockLocationZ2(blockCdtSection.getString("ifBlockLocationZ2", ""));
-		bCdt.setIfBlockLocationZ2Msg(blockCdtSection.getString("ifBlockLocationZ2Msg", "&4&l"+pluginName+IF_BLOCK_LOCATION_Z2_MSG));
+		bCdt.setIfBlockLocationZ2Msg(blockCdtSection.getString("ifBlockLocationZ2Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_Z2_MSG));
 
 		bCdt.setIfPlayerMustBeOnTheBlock(blockCdtSection.getBoolean("ifPlayerMustBeOnTheBlock", false));
-		bCdt.setIfPlayerMustBeOnTheBlockMsg(blockCdtSection.getString("ifPlayerMustBeOnTheBlockMsg", "&4&l"+pluginName+IF_PLAYER_MUST_BE_ON_THE_MSG));
+		bCdt.setIfPlayerMustBeOnTheBlockMsg(blockCdtSection.getString("ifPlayerMustBeOnTheBlockMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLAYER_MUST_BE_ON_THE_MSG));
 
 		bCdt.setIfNoPlayerMustBeOnTheBlock(blockCdtSection.getBoolean("ifNoPlayerMustBeOnTheBlock", false));
-		bCdt.setIfNoPlayerMustBeOnTheBlockMsg(blockCdtSection.getString("ifNoPlayerMustBeOnTheBlockMsg", "&4&l"+pluginName+IF_NO_PLAYER_MUST_BE_ON_THE_MSG));
+		bCdt.setIfNoPlayerMustBeOnTheBlockMsg(blockCdtSection.getString("ifNoPlayerMustBeOnTheBlockMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_NO_PLAYER_MUST_BE_ON_THE_MSG));
 
 		if(blockCdtSection.contains("blockAroundCdts")) {
 			for(String s : blockCdtSection.getConfigurationSection("blockAroundCdts").getKeys(false)) {
@@ -313,7 +315,7 @@ public class BlockConditions extends Conditions{
 	public static void saveBlockConditions(SPlugin sPlugin, SObject sObject, SActivator sActivator, BlockConditions bC, String detail) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -322,56 +324,69 @@ public class BlockConditions extends Conditions{
 		ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
 		activatorConfig.set("conditions."+detail+".ifPlantFullyGrown", false);
 
+		String pluginName = sPlugin.getNameDesign();
 
 		ConfigurationSection pCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
 		if(bC.isIfPlantFullyGrown()) pCConfig.set("ifPlantFullyGrown", true); 
 		else pCConfig.set("ifPlantFullyGrown", null);
-		pCConfig.set("ifPlantFullyGrownMsg", bC.getIfPlantFullyGrownMsg()); 
+		if(bC.getIfPlantFullyGrownMsg().contains(bC.IF_PLANT_FULLY_GROWN_MSG)) pCConfig.set("ifPlantFullyGrownMsg", null);
+		else pCConfig.set("ifPlantFullyGrownMsg", bC.getIfPlantFullyGrownMsg());
 
 		if(bC.isIfIsPowered()) pCConfig.set("ifIsPowered", true); 
 		else pCConfig.set("ifIsPowered", null);
-		pCConfig.set("ifIsPoweredMsg", bC.getIfIsPoweredMsg());
+		if(bC.getIfIsPoweredMsg().contains(bC.IF_IS_POWERED_MSG)) pCConfig.set("ifIsPoweredMsg", null);
+		else pCConfig.set("ifIsPoweredMsg", bC.getIfIsPoweredMsg());
 
 		if(bC.isIfMustBeNotPowered()) pCConfig.set("ifMustBeNotPowered", true); 
 		else pCConfig.set("ifMustBeNotPowered", null);
-		pCConfig.set("ifMustBeNotPoweredMsg", bC.getIfMustBeNotPoweredMsg());
+		if(bC.getIfMustBeNotPoweredMsg().contains(bC.IF_MUST_BE_NOT_POWERED_MSG))  pCConfig.set("ifMustBeNotPoweredMsg", null);
+		else pCConfig.set("ifMustBeNotPoweredMsg", bC.getIfMustBeNotPoweredMsg());
 
 		if(bC.isIfMustbeNatural()) pCConfig.set("ifMustBeNatural", true); 
 		else pCConfig.set("ifMustBeNatural", null);
-		pCConfig.set("ifMustBeNaturalMsg", bC.getIfMustBeNaturalMsg());
+		if(bC.getIfMustBeNaturalMsg().contains(bC.IF_MUST_BE_NATURAL_MSG)) pCConfig.set("ifMustBeNaturalMsg", null);
+		else pCConfig.set("ifMustBeNaturalMsg", bC.getIfMustBeNaturalMsg());
 		
 		if(!bC.ifBlockLocationX.equals("")) pCConfig.set("ifBlockLocationX", bC.ifBlockLocationX);
 		else pCConfig.set("ifBlockLocationX", null);
-		pCConfig.set("ifBlockLocationXMsg", bC.ifBlockLocationXMsg);
+		if(bC.ifBlockLocationXMsg.contains(bC.IF_BLOCK_LOCATION_X_MSG)) pCConfig.set("ifBlockLocationXMsg", null);
+		else pCConfig.set("ifBlockLocationXMsg", bC.ifBlockLocationXMsg);
 		
 		if(!bC.ifBlockLocationX2.equals("")) pCConfig.set("ifBlockLocationX2", bC.ifBlockLocationX2);
 		else pCConfig.set("ifBlockLocationX2", null);
-		pCConfig.set("ifBlockLocationX2Msg", bC.ifBlockLocationX2Msg);
+		if(bC.ifBlockLocationX2Msg.contains(bC.IF_BLOCK_LOCATION_X2_MSG)) pCConfig.set("ifBlockLocationX2Msg", null);
+		else pCConfig.set("ifBlockLocationX2Msg", bC.ifBlockLocationX2Msg);
 		
 		if(!bC.ifBlockLocationY.equals("")) pCConfig.set("ifBlockLocationY", bC.ifBlockLocationY);
 		else pCConfig.set("ifBlockLocationY", null);
-		pCConfig.set("ifBlockLocationYMsg", bC.ifBlockLocationYMsg);
+		if(bC.ifBlockLocationYMsg.contains(bC.IF_BLOCK_LOCATION_Y_MSG)) pCConfig.set("ifBlockLocationYMsg", null);
+		else pCConfig.set("ifBlockLocationYMsg", bC.ifBlockLocationYMsg);
 		
 		if(!bC.ifBlockLocationY2.equals("")) pCConfig.set("ifBlockLocationY2", bC.ifBlockLocationY2);
 		else pCConfig.set("ifBlockLocationY2", null);
-		pCConfig.set("ifBlockLocationY2Msg", bC.ifBlockLocationY2Msg);
+		if(bC.ifBlockLocationY2Msg.contains(bC.IF_BLOCK_LOCATION_Y2_MSG)) pCConfig.set("ifBlockLocationY2Msg", null);
+		else pCConfig.set("ifBlockLocationY2Msg", bC.ifBlockLocationY2Msg);
 		
 		if(!bC.ifBlockLocationZ.equals("")) pCConfig.set("ifBlockLocationZ", bC.ifBlockLocationZ);
 		else pCConfig.set("ifBlockLocationZ", null);
-		pCConfig.set("ifBlockLocationZMsg", bC.ifBlockLocationZMsg);
+		if(bC.ifBlockLocationZMsg.contains(bC.IF_BLOCK_LOCATION_Z_MSG)) pCConfig.set("ifBlockLocationZMsg", null);
+		else pCConfig.set("ifBlockLocationZMsg", bC.ifBlockLocationZMsg);
 		
 		if(!bC.ifBlockLocationZ2.equals("")) pCConfig.set("ifBlockLocationZ2", bC.ifBlockLocationZ2);
 		else pCConfig.set("ifBlockLocationZ2", null);
-		pCConfig.set("ifBlockLocationZ2Msg", bC.ifBlockLocationZ2Msg);
+		if(bC.ifBlockLocationZ2Msg.contains(bC.IF_BLOCK_LOCATION_Z2_MSG)) pCConfig.set("ifBlockLocationZ2Msg", null);
+		else pCConfig.set("ifBlockLocationZ2Msg", bC.ifBlockLocationZ2Msg);
 
 		if(bC.isIfPlayerMustBeOnTheBlock()) pCConfig.set("ifPlayerMustBeOnTheBlock", true);
 		else pCConfig.set("ifPlayerMustBeOnTheBlock", null);
-		pCConfig.set("ifPlayerMustBeOnTheBlockMsg", bC.getIfPlayerMustBeOnTheBlockMsg());
+		if(bC.getIfPlayerMustBeOnTheBlockMsg().contains(bC.IF_PLAYER_MUST_BE_ON_THE_MSG)) pCConfig.set("ifPlayerMustBeOnTheBlockMsg", null);
+		else pCConfig.set("ifPlayerMustBeOnTheBlockMsg", bC.getIfPlayerMustBeOnTheBlockMsg());
 
 		if(bC.isIfNoPlayerMustBeOnTheBlock()) pCConfig.set("ifNoPlayerMustBeOnTheBlock", true);
 		else pCConfig.set("ifNoPlayerMustBeOnTheBlock", null);
-		pCConfig.set("ifNoPlayerMustBeOnTheBlockMsg", bC.getIfNoPlayerMustBeOnTheBlockMsg());
+		if(bC.getIfNoPlayerMustBeOnTheBlockMsg().contains(bC.IF_NO_PLAYER_MUST_BE_ON_THE_MSG)) pCConfig.set("ifNoPlayerMustBeOnTheBlockMsg", null);
+		else pCConfig.set("ifNoPlayerMustBeOnTheBlockMsg", bC.getIfNoPlayerMustBeOnTheBlockMsg());
 
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);

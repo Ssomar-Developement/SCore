@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.ssomar.executableitems.items.ExecutableItem;
-import com.ssomar.executableitems.items.ItemManager;
-import com.ssomar.score.commands.runnable.util.safebreak.SafeBreak;
+import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +16,7 @@ import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedMana
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
-import com.ssomar.score.usedapi.WorldGuardAPI;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,12 +50,12 @@ public class VeinBreaker  extends BlockCommand{
 		List<Block> vein;
 		UUID pUUID = null;
 		if(p != null) pUUID = p.getUniqueId();
-		SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true);
+		SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, true);
 
 		vein = this.getVein(block, oldMaterial, veinSize);
 
 		for(Block b : vein) {
-			SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, true);
+			SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, true, true);
 		}
 	}
 

@@ -84,7 +84,7 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 
 		createItem(RED, 									1 , 18, 	"&4&l▶ &cBack to activator config", 	false, false);
 
-		createItem(Material.BOOK, 							1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 24, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getId());
 		createItem(Material.BOOK, 							1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		return;

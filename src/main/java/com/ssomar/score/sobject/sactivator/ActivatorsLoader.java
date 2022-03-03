@@ -1,6 +1,5 @@
 package com.ssomar.score.sobject.sactivator;
 
-import com.ssomar.executableitems.items.activators.Option;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,7 +10,7 @@ import java.util.Optional;
 
 public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
 
-     public List<T> loadActivators(Y plugin, ActivatorLoader<T> activatorLoader, ConfigurationSection config, SObject sObject, SOption sOptionI, boolean isDefaultSObject, List<String> error){
+     public List<T> loadActivators(Y plugin, ActivatorLoader<T> activatorLoader, ConfigurationSection config, SObject sObject, SOption sOptionI, boolean isPremiumLoading, List<String> error){
 
         /* CONFIG ACTIVATORS */
         List<T> activators = new ArrayList<>();
@@ -38,20 +37,20 @@ public abstract class ActivatorsLoader<T extends SActivator, Y extends SPlugin>{
                     }
 
                     /* Limit of 1 activator in the free version */
-                    if ((plugin.isLotOfWork() && !isDefaultSObject) && cptAct >= 1) {
-                        error.add(plugin.getNameDesign()+" " + sObject.getID() + " REQUIRE PREMIUM: to add more than one activator you need the premium version");
+                    if ((!isPremiumLoading) && cptAct >= 1) {
+                        error.add(plugin.getNameDesign()+" " + sObject.getId() + " REQUIRE PREMIUM: to add more than one activator you need the premium version");
                         return activators;
                     }
 
                     /* Check if the option is valid */
                     if (!sOptionI.isValidOption(optionStr)) {
-                        error.add(plugin.getNameDesign()+"  Invalid option " + optionStr + " for item: " + sObject.getID());
+                        error.add(plugin.getNameDesign()+"  Invalid option " + optionStr + " for item: " + sObject.getId());
                         continue;
                     }
 
                     /* Load the activator */
                     SOption sOption = sOptionI.getOption(optionStr);
-                    Optional<T> sActivatorOpt = activatorLoader.loadActivator(activatorSection, sObject, sOption, modifiedActivatorID, isDefaultSObject, error);
+                    Optional<T> sActivatorOpt = activatorLoader.loadActivator(activatorSection, sObject, sOption, modifiedActivatorID, isPremiumLoading, error);
                     if (sActivatorOpt.isPresent()) {
                         activators.add(sActivatorOpt.get());
                         cptAct++;

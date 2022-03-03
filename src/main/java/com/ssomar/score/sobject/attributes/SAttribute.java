@@ -1,8 +1,6 @@
 package com.ssomar.score.sobject.attributes;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
@@ -49,7 +47,7 @@ public class SAttribute {
 	public void saveAttribute(SPlugin sPlugin, SObject sObject, AttributeModifier attm) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			SCore.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
+			SCore.plugin.getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());
@@ -79,7 +77,7 @@ public class SAttribute {
 	public static void deleteAttribute(SPlugin sPlugin, SObject sObject, String id) {
 
 		if(!new File(sObject.getPath()).exists()) {
-			sPlugin.getPlugin().getLogger().severe(sPlugin.getPlugin()+" Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
+			sPlugin.getPlugin().getLogger().severe(sPlugin.getPlugin()+" Error can't find the file of the item in the folder items ! ("+sObject.getId()+".yml)");
 			return;
 		}
 		File file = new File(sObject.getPath());

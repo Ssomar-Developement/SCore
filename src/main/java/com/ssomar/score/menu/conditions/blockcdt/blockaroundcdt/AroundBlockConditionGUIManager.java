@@ -83,7 +83,7 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
 
             String detail = cache.get(i.player).getDetail();
             this.saveTheConfiguration(i.player);
-            i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+            i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
             i.sActivator = i.sObject.getActivator(i.sActivator.getID());
             BlockConditions cdts;
             if (detail.equals("targetBlockConditions")) cdts = i.sActivator.getTargetBlockConditions();
@@ -334,6 +334,6 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
         AroundBlockCondition.saveAroundBlockCdt(sPlugin, sObject, sActivator, aBC, cache.get(p).getDetail());
         cache.remove(p);
         requestWriting.remove(p);
-        LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+        LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
     }
 }

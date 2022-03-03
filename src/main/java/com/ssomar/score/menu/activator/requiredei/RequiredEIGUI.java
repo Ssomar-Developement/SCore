@@ -61,7 +61,7 @@ public class RequiredEIGUI extends GUIAbstract{
 		this.updateValidUsages(rEI.getValidUsages());
 
 		createItem(Material.BOOK,							1 , 4, 	"&a&l"+ID, 	false,	false, "", "&7actually: &e"+rEI.getId());
-		createItem(Material.BOOK, 							1 , 33, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 							1 , 33, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getId());
 		createItem(Material.BOOK, 							1 , 34, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		//Reset menu

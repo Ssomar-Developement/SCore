@@ -84,8 +84,8 @@ public class RequiredEIsGUIManager extends GUIManager<RequiredEIsGUI>{
 		else if(!name.isEmpty()) {
 			try {
 				RequiredEIManager.deleteRequiredEI(sPlugin, sObject, sActivator, name.split("ID: ")[1]);
-				LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
-				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getID());
+				LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
+				sObject = LinkedPlugins.getSObject(sPlugin, sObject.getId());
 				sActivator = sObject.getActivator(sActivator.getID());
 				cache.put(p, new RequiredEIsGUI(Integer.parseInt(currentPage.split("Page ")[1]), p, sPlugin, sObject, sActivator));
 				cache.get(p).openGUISync(p);

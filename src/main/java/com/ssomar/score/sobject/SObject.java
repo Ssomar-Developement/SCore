@@ -11,7 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 public interface SObject {
 	
-	String getID();
+	String getId();
+
+	void setId(String id);
 	
 	String getPath();
 	

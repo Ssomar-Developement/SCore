@@ -55,7 +55,7 @@ public class EntityConditionsMessagesGUIManager extends GUIManagerConditions<Ent
 	public boolean shiftClicked(InteractionClickedGUIManager<EntityConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		EntityConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getTargetEntityConditions(), detail);
 		return true;
 	}
@@ -119,6 +119,6 @@ public class EntityConditionsMessagesGUIManager extends GUIManagerConditions<Ent
 		EntityConditions.saveEntityConditions(sPlugin, sObject, sActivator, eC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 }

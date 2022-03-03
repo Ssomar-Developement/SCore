@@ -108,7 +108,7 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 
 		createItem(Material.BOOK, 					1, 50, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
 
-		createItem(Material.BOOK, 					1, 51, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getID());
+		createItem(Material.BOOK, 					1, 51, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getId());
 
 		// Save menu
 		if(newAroundBlockCondition) {
@@ -221,6 +221,7 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 	
 	public void decrValue(String itemName) {
 		int i = this.getInt(itemName);
+		if(i == 0) return;
 		this.updateInt(itemName, i-1);
 	}
 

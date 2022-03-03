@@ -152,7 +152,7 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 
 		createItem(WRITABLE_BOOK, 	1 , 40, 	"&aTo edit conditions", 	false, false, "", "&2>> &a&oSHIFT + CLICK");
 		
-		createItem(Material.BOOK, 	1 , 42, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getID());
+		createItem(Material.BOOK, 	1 , 42, 	COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getId());
 		createItem(Material.BOOK, 	1 , 43, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
 	

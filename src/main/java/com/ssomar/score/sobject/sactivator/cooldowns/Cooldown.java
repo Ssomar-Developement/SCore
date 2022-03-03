@@ -25,7 +25,7 @@ public class Cooldown {
 
 	public Cooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
 		super();
-		this.id = sPlugin.getShortName()+":"+sO.getID()+":"+sAct.getID();
+		this.id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getID();
 		this.entityUUID = entityUUID;
 		this.cooldown = cooldown;
 		this.isInTick = isInTick;

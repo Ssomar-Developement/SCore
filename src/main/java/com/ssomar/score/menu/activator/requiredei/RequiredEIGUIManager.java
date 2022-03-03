@@ -108,7 +108,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 
 		else if(i.name.contains("Save") || i.name.contains("Create this required EI")) {
 			this.saveTheConfiguration(i.player);
-			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 			RequiredEIsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
 		}
 
@@ -366,7 +366,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 		RequiredEIManager.saveRequiredEI(sPlugin, sObject, sAct, rEI);
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 
 	@Override

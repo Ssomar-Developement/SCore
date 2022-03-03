@@ -4,7 +4,6 @@ import com.google.common.base.Charsets;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -46,7 +45,7 @@ public class SEnchantments extends HashMap<SEnchantment, Integer> {
 
         // TODO not general string
         if(!new File(sObject.getPath()).exists()) {
-            sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getID()+".yml)");
+            sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file of the item in the folder items ! ("+sObject.getId()+".yml)");
             return;
         }
         File file = new File(sObject.getPath());

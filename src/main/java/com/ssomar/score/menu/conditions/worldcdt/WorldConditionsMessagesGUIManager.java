@@ -1,8 +1,5 @@
 package com.ssomar.score.menu.conditions.worldcdt;
 
-import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsGUIManager;
-import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUI;
-import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -49,7 +46,7 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerConditions<Worl
 	public boolean noShiftLeftclicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		WorldConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, i.sObject.getActivator(i.sActivator.getID()).getWorldConditions(), detail);
 	
 		return true;
@@ -64,7 +61,7 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerConditions<Worl
 	public boolean shiftClicked(InteractionClickedGUIManager<WorldConditionsMessagesGUI> i) {
 		String detail = cache.get(i.player).getDetail();
 		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getID());
+		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
 		WorldConditions wC = i.sObject.getActivator(i.sActivator.getID()).getWorldConditions();
 		WorldConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, wC, detail);
 
@@ -124,6 +121,6 @@ public class WorldConditionsMessagesGUIManager extends GUIManagerConditions<Worl
 		WorldConditions.saveWorldConditions(sPlugin, sObject, sActivator, wC, cache.get(p).getDetail());
 		cache.remove(p);
 		requestWriting.remove(p);
-		LinkedPlugins.reloadSObject(sPlugin, sObject.getID());
+		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
 	}
 }
