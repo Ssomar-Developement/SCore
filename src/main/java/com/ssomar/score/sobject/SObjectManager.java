@@ -77,12 +77,16 @@ public abstract class SObjectManager<T extends SObject> {
 
         sPlugin.getPlugin().getServer().getLogger().info(sPlugin.getNameDesign()+" reloading of "+id);
 
-        this.addLoadedObject(methodObjectLoading(id));
+        Optional<T> oOpt = methodObjectLoading(id);
+        if(oOpt.isPresent()) {
+            this.addLoadedObject(oOpt.get());
+        }
+        else sPlugin.getPlugin().getServer().getLogger().severe(sPlugin.getNameDesign()+" Error when trying to reload the item "+id);
     }
 
     public abstract void actionOnObjectWhenReloading(T object);
 
-    public abstract T methodObjectLoading(String id);
+    public abstract Optional<T> methodObjectLoading(String id);
 
 
 }
