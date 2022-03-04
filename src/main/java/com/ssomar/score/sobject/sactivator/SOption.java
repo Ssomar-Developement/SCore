@@ -22,6 +22,8 @@ public interface SOption {
 	
 	List<SOption> getOptionWithTargetPlayer();
 
+	List<SOption> getPremiumOption();
+
 	boolean isValidOption(String optionStr);
 
 	SOption getOption(String optionStr);
