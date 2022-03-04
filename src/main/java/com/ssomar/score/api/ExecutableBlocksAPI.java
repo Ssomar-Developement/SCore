@@ -1,5 +1,6 @@
 package com.ssomar.score.api;
 
+import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,18 +10,20 @@ import com.ssomar.executableblocks.blocks.ExecutableBlocksBuilder;
 import com.ssomar.executableitems.items.ItemManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class ExecutableBlocksAPI {
 
 	/* Verify if id is a valid ExecutableBlock ID*/
 	public static boolean isValidID(String id) {
-		return ItemManager.getInstance().containsLoadedItemWithID(id);
+		return ExecutableBlockManager.getInstance().getLoadedObjectWithID(id).isPresent();
 	}
 	
 	public static ItemStack getExecutableBlock(String id) {
-		if(isValidID(id)) {
-			return ExecutableBlockManager.getInstance().getLoadedBlockWithID(id).formItem(1, null);
+		Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(id);
+		if(oOpt.isPresent()) {
+			return oOpt.get().formItem(1, null);
 		}
 		else return null;
 	}

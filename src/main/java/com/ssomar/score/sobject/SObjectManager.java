@@ -35,7 +35,7 @@ public abstract class SObjectManager<T extends SObject> {
 
     public abstract void actionOnObjectWhenLoading(T object);
 
-    public void addDefaultLoadedItems(T object) {
+    public void addDefaultLoadedObject(T object) {
         defaultObjects.add(object);
         actionOnObjectWhenLoading(object);
     }

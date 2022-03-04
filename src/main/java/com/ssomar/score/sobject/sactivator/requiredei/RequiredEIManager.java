@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -152,9 +153,10 @@ public class RequiredEIManager {
 			sb.append(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.REQUIRED_EI_FIRST_PART));
 			for(RequiredEI rEI : activator.getRequiredExecutableItems()) {
 
-				if(rEI.getItem()==null) {
-					if(!ItemManager.getInstance().containsLoadedItemWithID(rEI.getEI_ID())) continue;
-					else rEI.setItem(ItemManager.getInstance().getLoadedItemWithID(rEI.getEI_ID()));
+				if(rEI.getItem() == null) {
+					Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(rEI.getEI_ID());
+					if(!oOpt.isPresent()) continue;
+					else rEI.setItem(oOpt.get());
 				}
 
 				int needed = rEI.getAmount();
@@ -229,9 +231,10 @@ public class RequiredEIManager {
 
 			for(RequiredEI rEI : activator.getRequiredExecutableItems()) {
 
-				if(rEI.getItem()==null) {
-					if(!ItemManager.getInstance().containsLoadedItemWithID(rEI.getEI_ID())) continue;
-					else rEI.setItem(ItemManager.getInstance().getLoadedItemWithID(rEI.getEI_ID()));
+				if(rEI.getItem() == null) {
+					Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(rEI.getEI_ID());
+					if(!oOpt.isPresent()) continue;
+					else rEI.setItem(oOpt.get());
 				}
 
 				if(!rEI.isConsume()) continue;

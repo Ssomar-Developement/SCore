@@ -51,7 +51,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 			i.player.spigot().sendMessage(message);
 
 			List<TextComponent> listItems = new ArrayList<>();
-			for(Item _i : ItemManager.getInstance().getLoadedItems()) {
+			for(Item _i : ItemManager.getInstance().getLoadedObjects()) {
 				TextComponent newText;
 
 				newText = new TextComponent( StringConverter.coloredString("&5&l[&d&l"+_i.getIdentification()+"&5&l]"));
@@ -208,8 +208,8 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 				space(p);
 			}
 			else if(requestWriting.get(p).equals(RequiredEIGUI.EI_ID)) {
-				boolean error=true;
-				for(Item it : ItemManager.getInstance().getLoadedItems()) {
+				boolean error = true;
+				for(Item it : ItemManager.getInstance().getLoadedObjects()) {
 					if(it.getIdentification().equalsIgnoreCase(message.replaceAll(" ", ""))) {
 						requestWriting.remove(p);
 						cache.get(p).updateActually(RequiredEIGUI.EI_ID, message);

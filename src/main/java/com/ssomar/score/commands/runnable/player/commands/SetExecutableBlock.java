@@ -2,8 +2,10 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -126,8 +128,9 @@ public class SetExecutableBlock extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		if(SCore.hasExecutableBlocks) {
-			
-			if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
+
+			Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(args.get(0));
+			if(!oOpt.isPresent()) {
 				ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command SETEXECUTABLEBLOCK (object: "+aInfo.getName()+")");
 				return;
 			}
@@ -179,7 +182,12 @@ public class SetExecutableBlock extends PlayerCommand{
 			catch(Exception ignored) {}
 
 			Location loc = new Location(world, x, y , z);
-			ExecutableBlockPlacedManager.getInstance().placeExecutableBlock(args.get(0), ownerUUID, loc, replace);
+
+			if(!replace && !loc.getBlock().isEmpty()) return;
+
+			ExecutableBlock eB = oOpt.get();
+
+			eB.place(Bukkit.getPlayer(ownerUUID), loc, true);
 		}
 	}
 

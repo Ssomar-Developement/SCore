@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlock;
@@ -28,8 +29,9 @@ public class SetExecutableBlock extends BlockCommand{
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
 		if(SCore.hasExecutableBlocks) {
-			
-			if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
+
+			Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(args.get(0));
+			if(!oOpt.isPresent()) {
 				ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command SETEXECUTABLEBLOCK (object: "+aInfo.getName()+")");
 				return;
 			}
@@ -84,12 +86,11 @@ public class SetExecutableBlock extends BlockCommand{
 
 			Location loc = new Location(world, x, y , z).getBlock().getLocation();
 
-			if(!loc.getBlock().isEmpty() && !replace) return;
+			if(!replace && !loc.getBlock().isEmpty()) return;
 
-			ExecutableBlock eB;
-			if((eB = ExecutableBlockManager.getInstance().getLoadedBlockWithID(args.get(0))) != null) {
-				eB.place(owner, loc, true);
-			}
+			ExecutableBlock eB = oOpt.get();
+
+			eB.place(Bukkit.getPlayer(ownerUUID), loc, true);
 		}
 	}
 

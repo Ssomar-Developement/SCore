@@ -194,7 +194,7 @@ public class LocatedLaunch extends PlayerCommand{
 				}
 
 				if(SCore.hasExecutableItems && aInfo.getItemID() != null) {
-					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedItemWithID(aInfo.getItemID())), aInfo.getSlot(), System.currentTimeMillis());
+					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedObjectWithID(aInfo.getItemID()).get()), aInfo.getSlot(), System.currentTimeMillis());
 					ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
 				}
 			}

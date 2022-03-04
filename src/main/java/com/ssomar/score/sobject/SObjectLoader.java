@@ -117,7 +117,7 @@ public abstract class SObjectLoader<T extends SObject> {
 
                 T o = oOpt.get();
                 o.setId(randomIdsDefaultObjects.get(o.getId()));
-                sObjectManager.addDefaultLoadedItems(o);
+                sObjectManager.addDefaultLoadedObject(o);
             }
         }
     }
@@ -128,7 +128,7 @@ public abstract class SObjectLoader<T extends SObject> {
         String id = fileEntry.getName().split(".yml")[0];
 
         if (isPremiumLoading && cpt >= 25) {
-            logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than 25 items you need the premium version");
+            logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than "+maxFreeObjects+" "+sPlugin.getObjectName()+" you need the premium version");
             return;
         }
 
@@ -158,11 +158,11 @@ public abstract class SObjectLoader<T extends SObject> {
 
     public File searchFileOfObject(String id) {
 
-        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/items").list());
+        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/"+sPlugin.getObjectName()).list());
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File( sPlugin.getPlugin().getDataFolder() + "/items/" + s);
+            File fileEntry = new File( sPlugin.getPlugin().getDataFolder() + "/"+sPlugin.getObjectName()+"/" + s);
             if (fileEntry.isDirectory()) {
                 File result = null;
                 if ((result = searchFileOfObjectInFolder(id, fileEntry)) == null)

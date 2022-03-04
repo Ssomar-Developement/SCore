@@ -25,13 +25,13 @@ public class LinkedPlugins {
 
 		case "EXECUTABLEBLOCKS":
 			if(SCore.hasExecutableBlocks) {
-				return ExecutableBlockManager.getInstance().getLoadedBlockWithID(objectID);
+				return ExecutableBlockManager.getInstance().getLoadedObjectWithID(objectID).get();
 			}
 			break;
 			
 		case "EXECUTABLEITEMS":
 			if(SCore.hasExecutableItems) {
-				return ItemManager.getInstance().getLoadedItemWithID(objectID);
+				return ItemManager.getInstance().getLoadedObjectWithID(objectID).get();
 			}
 			break;
 
@@ -48,13 +48,13 @@ public class LinkedPlugins {
 
 		case "EXECUTABLEBLOCKS":
 			if(SCore.hasExecutableBlocks) {
-				ExecutableBlockManager.getInstance().reloadBlock(objectID);
+				ExecutableBlockManager.getInstance().reloadObject(objectID);
 			}
 			break;
 			
 		case "EXECUTABLEITEMS":
 			if(SCore.hasExecutableItems) {
-				ItemManager.getInstance().reloadItem(objectID);
+				ItemManager.getInstance().reloadObject(objectID);
 			}
 			break;
 
