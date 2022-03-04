@@ -1,5 +1,6 @@
 package com.ssomar.score.sobject;
 
+import java.io.File;
 import java.util.List;
 
 
