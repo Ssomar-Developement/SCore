@@ -144,8 +144,8 @@ public class Launch extends BlockCommand {
 				runnable.runTaskLater(SCore.plugin, despawnDelay * 20);
 
 				if(entity != null) {
-					if(SCore.hasExecutableItems && aInfo.getItemID() != null) {
-						ProjectileInfo pInfo = new ProjectileInfo(p, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedObjectWithID(aInfo.getItemID()).get()), aInfo.getSlot(), System.currentTimeMillis());
+					if(SCore.hasExecutableItems && aInfo.getExecutableItemId() != null) {
+						ProjectileInfo pInfo = new ProjectileInfo(p, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedObjectWithID(aInfo.getExecutableItemId()).get()), aInfo.getSlot(), System.currentTimeMillis());
 						ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
 					}
 				}

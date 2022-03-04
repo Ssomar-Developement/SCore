@@ -52,7 +52,7 @@ public class BlockRunCommand extends RunCommand{
 		blockZ = aInfo.getBlockLocationZ();
 		blockWorld = aInfo.getBlockLocationWorld();
 
-		oldBlockMaterial = aInfo.getOldBlockMaterial();
+		oldBlockMaterial = Material.valueOf(aInfo.getOldBlockMaterialName());
 
 		silenceOutput = aInfo.isSilenceOutput();
 	}
