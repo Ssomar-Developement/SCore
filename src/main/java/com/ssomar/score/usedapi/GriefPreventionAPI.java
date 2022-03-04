@@ -2,6 +2,8 @@ package com.ssomar.score.usedapi;
 
 import java.util.UUID;
 
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +29,7 @@ public class GriefPreventionAPI {
 
 		DataStore dataStore = GriefPrevention.instance.dataStore;
 		Claim claim = dataStore.getClaimAt(location, false, null);
-		if(claim == null) return false;
+		if(claim == null) return true;
 
 		return claim.getOwnerID().equals(pUUID);
 	}

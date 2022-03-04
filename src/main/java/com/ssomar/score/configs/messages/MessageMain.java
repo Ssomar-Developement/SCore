@@ -89,21 +89,21 @@ public class MessageMain {
 
 	public String write(Plugin plugin, File pdFile, FileConfiguration config, String what) {
 
-		String insert="Can't load the string ("+what+") for the plugin > "+plugin.getName()+" in language: "+GeneralConfig.getInstance().getLocale()+", contact the developper";
+		String insert = "Can't load the string ("+what+") for the plugin > "+plugin.getName()+" in language: "+GeneralConfig.getInstance().getLocale()+", contact the developper";
 		try{
 			
 			InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/"+plugin.getName().toLowerCase()+"/configs/locale/Locale_"+GeneralConfig.getInstance().getLocale()+".yml");
 			InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
 			BufferedReader buff = new BufferedReader(lecture);
 			String ligne;
-			boolean isNotUpdate =true;
+			boolean isNotUpdate = true;
 			while ((ligne = buff.readLine()) != null && isNotUpdate){
 				if(ligne.contains(what+":")) {
 					SCore.plugin.getServer().getLogger().info(SCore.NAME_2+" Update of "+what+" in your for the plugin > "+plugin.getName()+" in language: "+GeneralConfig.getInstance().getLocale());
 					insert = ligne.split("\"")[1];
 					config.set(what, insert);
 					config.save(pdFile);
-					isNotUpdate=false;
+					isNotUpdate = false;
 				}
 			}
 			buff.close(); 

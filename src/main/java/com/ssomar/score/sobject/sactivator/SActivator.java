@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator;
 
 import java.util.List;
 
+import com.ssomar.sevents.events.projectile.hitentity.ProjectileHitEntityEvent;
 import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
 import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
@@ -10,6 +11,9 @@ import com.ssomar.score.sobject.sactivator.conditions.PlayerConditions;
 import com.ssomar.score.sobject.sactivator.conditions.WorldConditions;
 import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
 import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
+import com.ssomar.sevents.events.projectile.hitplayer.ProjectileHitPlayerEvent;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 
 public interface SActivator {
 	
@@ -52,4 +56,18 @@ public interface SActivator {
 	
 	/* Detailed blocks */
 	DetailedBlocks getDetailedBlocks();
+
+
+	static void cancelEvent(Event e, boolean condition) {
+		if (condition && e instanceof Cancellable) {
+			/* IMPORTANT? IF THE PROJECTILE IS NOT REMOVED THE SERVER CRASH ! */
+			if(e instanceof ProjectileHitEntityEvent){
+				((ProjectileHitEntityEvent)e).getEntity().remove();
+			}
+			else if(e instanceof ProjectileHitPlayerEvent){
+				((ProjectileHitPlayerEvent)e).getEntity().remove();
+			}
+			((Cancellable) e).setCancelled(true);
+		}
+	}
 }
