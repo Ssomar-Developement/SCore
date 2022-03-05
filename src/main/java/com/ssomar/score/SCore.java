@@ -95,9 +95,9 @@ public final class SCore extends JavaPlugin {
 		/* Projectiles instance part */
 		ProjectilesLoader.getInstance().load();
 
-		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
-
 		CommandsHandler.getInstance().onEnable();
+
+		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 	}
 
 	public void loadDependency() {

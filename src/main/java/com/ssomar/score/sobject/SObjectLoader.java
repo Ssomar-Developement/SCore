@@ -127,14 +127,14 @@ public abstract class SObjectLoader<T extends SObject> {
         if (!fileEntry.getName().contains(".yml") || fileEntry.getName().contains(".txt")) return;
         String id = fileEntry.getName().split(".yml")[0];
 
-        if (isPremiumLoading && cpt >= 25) {
+        if (isPremiumLoading && cpt >= maxFreeObjects) {
             logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than "+maxFreeObjects+" "+sPlugin.getObjectName()+" you need the premium version");
             return;
         }
 
         Optional<T> oOpt;
         if (!(oOpt = this.getObjectByFile(fileEntry, id, true)).isPresent()) {
-            logger.severe(sPlugin.getNameDesign() + filePath);
+            logger.severe(sPlugin.getNameDesign()+" Error the file " + filePath+" can't be loaded !");
             return;
         }
         sObjectManager.addLoadedObject(oOpt.get());

@@ -1,17 +1,16 @@
 package com.ssomar.score.api;
 
+import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.executableitems.items.*;
 import com.ssomar.score.sobject.SObject;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.executableitems.items.ExecutableItemBuilder;
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
-
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.executableitems.items.ItemManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -29,6 +28,14 @@ public class ExecutableItemsAPI {
 			return oOpt.get().formItem(1, null);
 		}
 		else return null;
+	}
+
+	public static Optional<String> getExecutableItemId(ItemStack itemStack) {
+		ExecutableItem ei = new ExecutableItem(itemStack);
+		if(ei.isValid()){
+			return Optional.ofNullable(ei.getConfig().getId());
+		}
+		else return Optional.ofNullable(null);
 	}
 
 	public static ItemStack getExecutableItem(String id, int amount) {
@@ -75,7 +82,15 @@ public class ExecutableItemsAPI {
 		return ItemManager.getInstance().getExecutableItem(itemStack) != null;
 	}
 
-	@javax.annotation.Nullable
+	public static boolean isExecutableItem(ItemStack itemStack, String id) {
+		ExecutableItem ei = new ExecutableItem(itemStack);
+		if(ei.isValid()){
+			return ei.getConfig().getId().equals(id);
+		}
+		else return false;
+	}
+
+	@Nullable
 	public static Item getExecutableItemConfig(ItemStack itemStack) {
 		return ItemManager.getInstance().getExecutableItem(itemStack);
 	}

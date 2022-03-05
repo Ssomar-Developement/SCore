@@ -22,7 +22,7 @@ public class GeneralConfig extends Config {
 	
 	public GeneralConfig() {
 		super("config.yml");
-		super.setup(SCore.getPlugin());
+		super.setup(SCore.plugin);
 	}
 	
 	public void reload() {
