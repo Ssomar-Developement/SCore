@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.player;
 import java.util.List;
 import java.util.UUID;
 
+import com.ssomar.score.SsomarDev;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -23,7 +25,8 @@ public class PlayerRunCommand extends RunCommand{
 	private UUID receiverUUID;
 
 	private boolean silenceOutput;
-	
+
+	@Getter
 	private boolean runOffline;
 
 	public PlayerRunCommand(String brutCommand, int delay, ActionInfo aInfo) {
@@ -39,7 +42,7 @@ public class PlayerRunCommand extends RunCommand{
 	public void initRunOffline(String brutCommand) {
 		if(brutCommand.contains("[<OFFLINE>]")) {
 			runOffline = true;
-			this.setBrutCommand(brutCommand.replaceAll("[<OFFLINE>]", ""));
+			this.setBrutCommand(brutCommand.replaceAll("\\[<OFFLINE>\\]", ""));
 		}
 		else runOffline = false;
 	}

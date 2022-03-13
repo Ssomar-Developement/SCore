@@ -46,7 +46,7 @@ public class SpawnEntityOnCursor extends PlayerCommand{
 
 		Block block = receiver.getTargetBlock(null, range);
 
-		if(block.getType()!=Material.AIR) {
+		if(!block.getType().equals(Material.AIR)) {
 
 			Location loc = block.getLocation();
 			loc.add(0, 1, 0);	

@@ -50,6 +50,7 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public static final String IF_POS_Z = "ifPosZ";
 	public static final String IF_HAS_EFFECT = "(1) ifHasEffect";
 	public static final String IF_HAS_EFFECT_EQUALS = "(2) ifHasEffectEquals";
+	public static final String IF_CURSOR_DISTANCE = "ifCursorDistance";
 
 	public PlayerConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlayerConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Player Conditions", 5*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -183,6 +184,10 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_HAS_EFFECT_EQUALS, 	false,	false, "&7&oThe player must have the effect(s)...", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateIfHasEffect(conditions.getIfPlayerHasEffectEquals(), true);
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_CURSOR_DISTANCE, 	false,	false, "&7&oThe player cursor distance  must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfCursorDistance(conditions.getIfCursorDistance());
 		
 
 		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -592,6 +597,17 @@ public class PlayerConditionsGUI extends ConditionGUIAbstract{
 	public String getIfPosX() {
 		if(this.getActually(this.getByName(IF_POS_X)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(IF_POS_X));
+	}
+
+	public void updateIfCursorDistance(String condition){
+		ItemStack item = this.getByName(IF_CURSOR_DISTANCE);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfCursorDistance() {
+		if(this.getActually(this.getByName(IF_CURSOR_DISTANCE)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_CURSOR_DISTANCE));
 	}
 	
 	public void updateIfPosY(String condition){

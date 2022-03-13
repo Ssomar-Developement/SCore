@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable;
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.ssomar.executableitems.items.ExecutableItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -12,7 +13,7 @@ import org.bukkit.block.Block;
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
-@Getter@Setter
+@Getter @Setter
 public class ActionInfo implements Serializable{
 
 	/**
@@ -26,7 +27,7 @@ public class ActionInfo implements Serializable{
 	private Integer slot;
 
 	/* The executableItem that actives the action (to know from which ei a custom projectile has been launched) */
-	private String executableItemId;
+	private ExecutableItem executableItem;
 
 	private boolean isEventCallByMineInCube;
 
@@ -58,7 +59,7 @@ public class ActionInfo implements Serializable{
 		this.name = name;
 		this.slot = -1;
 		this.sp = sp;
-		this.executableItemId = null;
+		this.executableItem = null;
 		this.isEventCallByMineInCube = false;
 		this.launcherUUID = null;
 		this.receiverUUID = null;
@@ -73,7 +74,7 @@ public class ActionInfo implements Serializable{
 
 	public ActionInfo clone() {
 		ActionInfo result = new ActionInfo(this.name, this.sp);
-		result.setExecutableItemId(executableItemId);
+		result.setExecutableItem(executableItem);
 		result.setEventCallByMineInCube(isEventCallByMineInCube);
 		result.setLauncherUUID(launcherUUID);
 		result.setReceiverUUID(receiverUUID);

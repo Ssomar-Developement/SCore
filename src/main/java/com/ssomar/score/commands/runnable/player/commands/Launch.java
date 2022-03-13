@@ -152,8 +152,8 @@ public class Launch extends PlayerCommand{
 						//SsomarDev.testMsg("rotation: "+ rotation);
 					}
 
-					if(SCore.hasExecutableItems && aInfo.getExecutableItemId() != null) {
-						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), new ExecutableItem(ItemManager.getInstance().getLoadedObjectWithID(aInfo.getExecutableItemId()).get()), aInfo.getSlot(), System.currentTimeMillis());
+					if(SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
+						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), aInfo.getExecutableItem(), aInfo.getSlot(), System.currentTimeMillis());
 						ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
 					}
 				}
