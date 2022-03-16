@@ -122,24 +122,69 @@ public abstract class SObjectLoader<T extends SObject> {
         }
     }
 
+    public void loadDefaultEncodedPremiumObjects(Map<String, List<String>> defaultObjectsName) {
+
+        /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
+        randomIdsDefaultObjects = new HashMap<>();
+        for (String folder : defaultObjectsName.keySet()) {
+            for (String id : defaultObjectsName.get(folder)) {
+                randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
+            }
+        }
+
+        for (String folder : defaultObjectsName.keySet()) {
+            for (String id : defaultObjectsName.get(folder)) {
+
+                InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + folder + "/" + id + ".pack");
+                InputStream decodedIn = null;
+                int length = -1;
+                try {
+                    length = in.available();
+                    byte[] fileBytes = new byte[length];
+                    in.read(fileBytes, 0, fileBytes.length);
+                    in.close();
+                    byte[] decoded = Base64.getDecoder().decode(fileBytes);
+                    decodedIn = new ByteArrayInputStream(decoded);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+
+                BufferedReader reader = null;
+                reader = new BufferedReader(new InputStreamReader(decodedIn, StandardCharsets.UTF_8));
+                Optional<T> oOpt;
+                if (!(oOpt = this.getObjectByReader(reader, id, false, randomIdsDefaultObjects)).isPresent()) continue;
+
+                T o = oOpt.get();
+                o.setId(randomIdsDefaultObjects.get(o.getId()));
+                sObjectManager.addDefaultLoadedObject(o);
+            }
+        }
+    }
+
     public void loadObjectByFile(String filePath, boolean isPremiumLoading) {
-        File fileEntry = new File(filePath);
-        if (!fileEntry.getName().contains(".yml") || fileEntry.getName().contains(".txt")) return;
-        String id = fileEntry.getName().split(".yml")[0];
+        try {
+            File fileEntry = new File(filePath);
+            if (!fileEntry.getName().contains(".yml") || fileEntry.getName().contains(".txt")) return;
+            String id = fileEntry.getName().split(".yml")[0];
 
-        if (isPremiumLoading && cpt >= maxFreeObjects) {
-            logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than "+maxFreeObjects+" "+sPlugin.getObjectName()+" you need the premium version");
-            return;
-        }
+            if (!isPremiumLoading && cpt >= maxFreeObjects) {
+                logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than " + maxFreeObjects + " " + sPlugin.getObjectName() + " you need the premium version");
+                return;
+            }
 
-        Optional<T> oOpt;
-        if (!(oOpt = this.getObjectByFile(fileEntry, id, true)).isPresent()) {
-            logger.severe(sPlugin.getNameDesign()+" Error the file " + filePath+" can't be loaded !");
-            return;
+            Optional<T> oOpt;
+            if (!(oOpt = this.getObjectByFile(fileEntry, id, true)).isPresent()) {
+                logger.severe(sPlugin.getNameDesign() + " Error the file " + filePath + " can't be loaded !");
+                return;
+            }
+            sObjectManager.addLoadedObject(oOpt.get());
+            cpt++;
+            logger.fine(sPlugin.getNameDesign() + " " + id + " was loaded !");
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        sObjectManager.addLoadedObject(oOpt.get());
-        cpt++;
-        logger.fine(sPlugin.getNameDesign() + " " + id + " was loaded !");
     }
 
     public void loadObjectsInFolder(File folder, boolean isPremiumLoading) {
