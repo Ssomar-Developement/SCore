@@ -3,6 +3,7 @@ package com.ssomar.score;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.ssomar.score.projectiles.ProjectilesLoader;
+import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,7 +20,7 @@ import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
 import com.ssomar.score.utils.Utils;
 
-public final class SCore extends JavaPlugin {
+public final class SCore extends JavaPlugin implements SPlugin {
 
 	public static SCore plugin;
 
@@ -197,8 +198,29 @@ public final class SCore extends JavaPlugin {
 		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
 	}
 
-	public static SCore getPlugin() {
+	@Override
+	public String getShortName() {
+		return NAME;
+	}
+
+	@Override
+	public String getNameDesign() {
+		return NAME_2;
+	}
+
+	@Override
+	public String getObjectName() {
+		return null;
+	}
+
+	@Override
+	public SCore getPlugin() {
 		return plugin;
+	}
+
+	@Override
+	public boolean isLotOfWork() {
+		return false;
 	}
 
 	public CommandsClass getCommandClass() {
