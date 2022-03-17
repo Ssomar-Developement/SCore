@@ -38,7 +38,7 @@ public class Burn extends PlayerCommand{
 							if(receiver.isOnline()) receiver.setVisualFire(false);
 						}
 					};
-					runnable.runTaskLater(SCore.getPlugin(), time);
+					runnable.runTaskLater(SCore.plugin, time);
 				}
 			}
 			else receiver.setFireTicks(20 * time);

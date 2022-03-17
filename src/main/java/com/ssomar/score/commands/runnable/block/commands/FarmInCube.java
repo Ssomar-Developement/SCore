@@ -99,7 +99,7 @@ public class FarmInCube extends BlockCommand{
 
 			}
 		};
-		runnable.runTask(SCore.getPlugin());
+		runnable.runTask(SCore.plugin);
 	}
 
 	public static void replant(Block block, BlockData oldData, Material material, @Nullable Player player) {

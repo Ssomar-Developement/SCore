@@ -290,6 +290,16 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 			space(i.player);
 		}
 
+		else if(i.name.contains(PlayerConditionsGUI.IF_CURSOR_DISTANCE)){
+			requestWriting.put(i.player, PlayerConditionsGUI.IF_CURSOR_DISTANCE);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF CURSOR DISTANCE:"));
+
+			this.showCalculationGUI(i.player, "Cursor distance", cache.get(i.player).getIfCursorDistance());
+			space(i.player);
+		}
+
 		else if(i.name.contains(PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL)) {
 			requestWriting.put(i.player, PlayerConditionsGUI.IF_PLAYER_FOOD_LEVEL);
 			i.player.closeInventory();
@@ -384,6 +394,9 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_X)) {
 					cache.get(p).updateIfPosX("");
+				}
+				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_CURSOR_DISTANCE)) {
+					cache.get(p).updateIfCursorDistance("");
 				}
 				else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_Y)) {
 					cache.get(p).updateIfPosY("");
@@ -750,6 +763,16 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 					this.showCalculationGUI(p, "Pos X", cache.get(p).getIfPosX());
 				}
 			}
+			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_CURSOR_DISTANCE)) {
+				if(StringCalculation.isStringCalculation(message)) {
+					cache.get(p).updateIfCursorDistance(message);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for cursor distance please !"));
+					this.showCalculationGUI(p, "Cursor distance", cache.get(p).getIfCursorDistance());
+				}
+			}
 			else if(requestWriting.get(p).equals(PlayerConditionsGUI.IF_POS_Y)) {
 				if(StringCalculation.isStringCalculation(message)) {
 					cache.get(p).updateIfPosY(message);
@@ -1030,6 +1053,7 @@ public class PlayerConditionsGUIManager extends GUIManagerConditions<PlayerCondi
 		pC.setIfIsNotOnTheBlock(cache.get(p).getIfIsOnTheBlock(true));
 		pC.setIfPlayerHasEffect(cache.get(p).getIfHasEffect(false));
 		pC.setIfPlayerHasEffectEquals(cache.get(p).getIfHasEffect(true));
+		pC.setIfCursorDistance(cache.get(p).getIfCursorDistance());
 
 		PlayerConditions.savePlayerConditions(sPlugin, sObject, sActivator, pC, cache.get(p).getDetail());
 		cache.remove(p);

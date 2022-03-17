@@ -65,11 +65,18 @@ public class CommandsHandler implements Listener {
 		Player p = e.getPlayer();
 
 		List<PlayerRunCommand> commands = getInstance().getDelayedCommandsWithReceiver(p.getUniqueId());
-		//System.out.println(" >>> "+p.getName()+ " "+commands.size());
+		List<PlayerRunCommand> commandsToSave = new ArrayList<>();
+		for(PlayerRunCommand command : commands){
+			if(!command.isRunOffline()){
+				commandsToSave.add(command);
+			}
+		}
 
-		PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commands);
+		PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commandsToSave, true);
 
-		getInstance().removeAllDelayedCommands(p.getUniqueId());
+		for(PlayerRunCommand command : commandsToSave){
+			getInstance().removeDelayedCommand(command.getUuid(), p.getUniqueId());
+		}
 	}
 	
 	public void onEnable() {
@@ -94,7 +101,7 @@ public class CommandsHandler implements Listener {
 			List<PlayerRunCommand> commands = getInstance().getDelayedCommandsWithReceiver(p.getUniqueId());
 			//System.out.println(" >>> "+p.getName()+ " "+commands.size());
 
-			PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commands);
+			PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commands, false);
 
 			getInstance().removeAllDelayedCommands(p.getUniqueId());
 		}
@@ -218,7 +225,7 @@ public class CommandsHandler implements Listener {
 		long time = System.currentTimeMillis()+(delay*50);
 		//System.out.println("ADD "+p.getDisplayName()+ " time: "+time);
 		stopPickup.put(p, time);
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.getPlugin() , () -> {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.plugin , () -> {
 			if(stopPickup.containsKey(p) && stopPickup.get(p) == time){
 				stopPickup.remove(p);
 			}

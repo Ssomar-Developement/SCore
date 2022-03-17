@@ -60,7 +60,7 @@ public class CustomDash1 extends PlayerCommand{
 				z = Double.parseDouble(args.get(2));
 			}
 			catch(Exception e) {
-				SCore.getPlugin().getLogger().severe(SCore.NAME_2+" ERROR for CUSTOMDASH1, one of x, yor z is invalid ! (you can see below the enite error)");
+				SCore.plugin.getLogger().severe(SCore.NAME_2+" ERROR for CUSTOMDASH1, one of x, yor z is invalid ! (you can see below the enite error)");
 				e.printStackTrace();
 				return;
 			}
@@ -78,7 +78,7 @@ public class CustomDash1 extends PlayerCommand{
 						NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
 					}
 				};
-				BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
+				BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);
 
 				NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
 			}

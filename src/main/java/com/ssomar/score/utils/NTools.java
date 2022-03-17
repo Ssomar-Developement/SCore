@@ -29,7 +29,7 @@ public class NTools implements Serializable {
 			else if(startCount){
 				cpt++;
 			}
-			else if(c == ','){
+			else if(c == ',' || c == '.'){
 				startCount = true;
 			}
 			sb.append(c);

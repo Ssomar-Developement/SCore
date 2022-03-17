@@ -30,7 +30,7 @@ public class NoFallDamageManager {
 				NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
 			}
 		};
-		BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
+		BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);
 
 		NoFallDamageManager.getInstance().addNoFallDamage(p, new Couple<>(uuid, task));
 	}

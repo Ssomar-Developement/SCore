@@ -4,12 +4,14 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /* HEAD */
 public class Boots extends PlayerCommand{
@@ -21,6 +23,10 @@ public class Boots extends PlayerCommand{
 		ItemStack item = inv.getItemInMainHand();
 		ItemStack headItem = inv.getBoots();
 		if(!item.getType().equals(Material.AIR)) {
+			if(headItem != null){
+				Map<Enchantment, Integer> enchants = headItem.getEnchantments();
+				if(enchants.containsKey(Enchantment.BINDING_CURSE)) return;
+			}
 			inv.setBoots(item);
 			inv.setItemInMainHand(headItem);
 		}

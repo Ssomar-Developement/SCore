@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 
 public abstract class RunCommandsBuilder{
 
@@ -56,7 +57,11 @@ public abstract class RunCommandsBuilder{
 			if(!command.contains("+++")) {
 				if (command.contains("LOOP START: ")) {
 					try {
-						loopAmount = Integer.parseInt(command.split("LOOP START: ")[1]);
+						String secondPart = command.split("LOOP START: ")[1].replaceAll(" ","");
+						if(secondPart.contains("%")){
+							secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
+						}
+						loopAmount = Integer.parseInt(secondPart);
 						isInLoop = true;
 						continue;
 					} catch (Exception e) {
@@ -162,7 +167,11 @@ public abstract class RunCommandsBuilder{
 		for(String command: commands) {
 
 			if(command.contains("RANDOM RUN:")) {
-				nbRandom = Integer.parseInt(command.split("RANDOM RUN:")[1].replaceAll(" ",""));
+				String secondPart = command.split("RANDOM RUN:")[1].replaceAll(" ","");
+				if(secondPart.contains("%")){
+					secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
+				}
+				nbRandom = Integer.parseInt(secondPart);
 				inRandom = true;
 				continue;
 			}

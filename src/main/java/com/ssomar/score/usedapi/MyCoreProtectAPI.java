@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.griefdefender.api.Core;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Queue;
@@ -38,7 +39,7 @@ public class MyCoreProtectAPI {
 			}
 
 			// Check that a compatible version of the API is loaded
-			if (CoreProtect.APIVersion() < 7) {
+			if (CoreProtect.APIVersion() < 9) {
 				return false;
 			}
 			
@@ -73,7 +74,7 @@ public class MyCoreProtectAPI {
 			}
 
 			// Check that a compatible version of the API is loaded
-			if (CoreProtect.APIVersion() < 7) {
+			if (CoreProtect.APIVersion() < 9) {
 				return;
 			}
 
@@ -99,7 +100,7 @@ public class MyCoreProtectAPI {
 		}
 
 		public void addItemTransaction(Player player, Location location, int time, int itemId){
-			Queue.queueItemTransaction(player.getName(), location.clone(), time, itemId);
+			Queue.queueItemTransaction(player.getName(), location.clone(),time, 0, itemId);
 		}
 
 		public static int getItem(String loggingItemId){

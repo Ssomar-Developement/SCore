@@ -26,9 +26,9 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
         velocity = projConfig.getDouble("velocity", 1);
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

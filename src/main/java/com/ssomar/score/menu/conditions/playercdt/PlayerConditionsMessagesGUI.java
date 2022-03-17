@@ -142,6 +142,10 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_HAS_EFFECT_EQUALS_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(PlayerConditionsMessages.IF_HAS_EFFECT_EQUALS_MSG.name, conditions.getIfPlayerHasEffectEqualsMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+PlayerConditionsMessages.IF_CURSOR_DISTANCE_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(PlayerConditionsMessages.IF_CURSOR_DISTANCE_MSG.name, conditions.getIfCursorDistanceMsg());
 		
 
 		createItem(RED, 					1 , 36, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -187,7 +191,8 @@ public class PlayerConditionsMessagesGUI extends ConditionGUIAbstract{
 		IF_POS_Y_MSG ("ifPosY message"),
 		IF_POS_Z_MSG ("ifPosZ message"),
 		IF_HAS_EFFECT_MSG ("(1) ifHasEffect message"),
-		IF_HAS_EFFECT_EQUALS_MSG ("(2) ifHasEffectEquals message");
+		IF_HAS_EFFECT_EQUALS_MSG ("(2) ifHasEffectEquals message"),
+		IF_CURSOR_DISTANCE_MSG ("ifCursorDistance message");
 		
 		public String name;
 

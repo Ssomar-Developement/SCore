@@ -59,7 +59,7 @@ public interface SActivator {
 
 
 	static void cancelEvent(Event e, boolean condition) {
-		if (condition && e instanceof Cancellable) {
+		if (e != null && condition && e instanceof Cancellable) {
 			/* IMPORTANT? IF THE PROJECTILE IS NOT REMOVED THE SERVER CRASH ! */
 			if(e instanceof ProjectileHitEntityEvent){
 				((ProjectileHitEntityEvent)e).getEntity().remove();

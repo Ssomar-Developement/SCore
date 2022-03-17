@@ -92,7 +92,7 @@ public class MobAround extends PlayerCommand{
 				}
 			}
 		};
-		runnable.runTask(SCore.getPlugin());
+		runnable.runTask(SCore.plugin);
 	}
 
 	@Override

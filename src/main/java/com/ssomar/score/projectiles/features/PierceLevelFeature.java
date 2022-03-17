@@ -25,9 +25,9 @@ public class PierceLevelFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
         pierceLevel = projConfig.getInt("pierceLevel", -1);
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

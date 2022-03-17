@@ -32,7 +32,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
 
         if (!isDisable && projConfig.contains("pickupStatus")) {
             String pickStatus = projConfig.getString("pickupStatus", "null");
@@ -43,11 +43,11 @@ public class PickupFeature extends DecorateurCustomProjectiles {
                 if(showError) SCore.plugin.getLogger()
                         .severe("[SCore] Error invalid pickupStatus for the projectile: " + "ADD ID HERE"
                                 + " (ALLOWED, CREATIVE_ONLY, DISALLOWED) DEFAULT> ALLOWED");
-                return cProj.loadConfiguration(projConfig, showError) && false;
+                return cProj.loadConfiguration(filePath, projConfig, showError) && false;
                 // #TODO add id here
             }
         }
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class GeneralConfig extends Config {
 	}
 	
 	public void reload() {
-		super.setup(SCore.getPlugin());
+		super.setup(SCore.plugin);
 	}
 	
 	@Override

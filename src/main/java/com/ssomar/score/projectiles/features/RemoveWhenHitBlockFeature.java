@@ -1,6 +1,5 @@
 package com.ssomar.score.projectiles.features;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
@@ -26,10 +25,10 @@ public class RemoveWhenHitBlockFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
         removeWhenHitBlock = projConfig.getBoolean("removeWhenHitBlock", false);
 
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class RemoveWhenHitBlockFeature extends DecorateurCustomProjectiles {
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
         if (e instanceof Projectile && !SCore.is1v12() && !SCore.is1v13() && removeWhenHitBlock) {
-            ((Projectile) e).getPersistentDataContainer().set(new NamespacedKey(ExecutableItems.getPluginSt(), "remove_hit_block"), PersistentDataType.INTEGER, 1);
+            ((Projectile) e).getPersistentDataContainer().set(new NamespacedKey(SCore.plugin, "remove_hit_block"), PersistentDataType.INTEGER, 1);
         }
         cProj.transformTheProjectile(e, launcher);
     }

@@ -60,7 +60,7 @@ public class ActionbarHandler {
 				}
 			}
 		};
-		runnable.runTaskTimer(SCore.getPlugin(), 0L, 20L);
+		runnable.runTaskTimer(SCore.plugin, 0L, 20L);
 	}
 	
 	public void removeActionbars(Player p) {

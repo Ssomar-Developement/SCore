@@ -122,7 +122,7 @@ public abstract class RunCommand implements Serializable{
 				insideDelayedCommand();
 			}
 		};
-		task = runnable.runTaskLater(SCore.getPlugin(), this.getDelay());
+		task = runnable.runTaskLater(SCore.plugin, this.getDelay());
 		CommandsHandler.getInstance().addDelayedCommand(this);
 	}
 

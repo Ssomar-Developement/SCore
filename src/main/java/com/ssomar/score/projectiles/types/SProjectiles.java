@@ -33,7 +33,7 @@ public abstract class SProjectiles extends CustomProjectile{
         this.config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
         this.projectile = this;
         this.projectile = setup(this.projectile);
-        projectile.loadConfiguration(config, true);
+        projectile.loadConfiguration(file.getPath(), config, true);
         configGUI = projectile.loadConfigGUI(this);
     }
 
@@ -43,19 +43,24 @@ public abstract class SProjectiles extends CustomProjectile{
         this.config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
         this.projectile = this;
         this.projectile = setup(this.projectile);
-        projectile.loadConfiguration(config, showError);
+        projectile.loadConfiguration(file.getPath(), config, showError);
         configGUI = projectile.loadConfigGUI(this);
     }
 
     public void reload(){
-        projectile.loadConfiguration(config, true);
+        projectile.loadConfiguration(file.getPath(), config, true);
         configGUI = projectile.loadConfigGUI(this);
     }
 
     public abstract CustomProjectile setup(CustomProjectile proj);
 
     public void saveConfiguration(FileConfiguration config){
-        this.config = config;
+        if (!new File(file.getPath()).exists()) {
+            SCore.plugin.getLogger().severe(SCore.plugin.getNameDesign() + " Error can't find the file  (" + file.getPath() + ")");
+            return;
+        }
+        file = new File(file.getPath());
+        config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
         try {
             Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 

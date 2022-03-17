@@ -45,7 +45,7 @@ public class ColorFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
         activeColor = projConfig.getBoolean("activeColor", true);
         if(activeColor && projConfig.contains("color")) {
             String colorStr = projConfig.getString("color", "NO_COLOR");
@@ -58,10 +58,10 @@ public class ColorFeature extends DecorateurCustomProjectiles {
                         .severe("[SCore] Error invalid color (" + colorStr + ") for the projectile: " + "ADD THE ID HERE"
                                 + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
                 // #TODO add id here
-                return cProj.loadConfiguration(projConfig, showError) && false;
+                return cProj.loadConfiguration(filePath, projConfig, showError) && false;
             }
         }
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

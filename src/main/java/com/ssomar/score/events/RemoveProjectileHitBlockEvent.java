@@ -17,7 +17,7 @@ public class RemoveProjectileHitBlockEvent implements Listener {
     public void onProjectileHitBlock(ProjectileHitEvent e){
         if(SCore.is1v12() || SCore.is1v13() && e.getHitBlock() == null) return;
 
-        NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "remove_hit_block");
+        NamespacedKey key = new NamespacedKey(SCore.plugin, "remove_hit_block");
 
         if(e.getEntity().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != null){
             e.getEntity().remove();

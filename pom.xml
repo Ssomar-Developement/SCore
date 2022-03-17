@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.6.4.5</version>
+	<version>1.6.5.9</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -42,6 +42,14 @@
 				<targetPath>com/ssomar/score/configs/projectiles</targetPath>
 				<filtering>true</filtering>
 				<directory>${basedir}/src/main/resources/projectiles/</directory>
+				<includes>
+					<include>*.yml</include>
+				</includes>
+			</resource>
+			<resource>
+				<targetPath>com/ssomar/score/configs/projectiles_not_editable</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources/projectiles_not_editable/</directory>
 				<includes>
 					<include>*.yml</include>
 				</includes>
@@ -248,6 +256,14 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.plotsquared</groupId>
+			<artifactId>PlotSquared-Core</artifactId>
+			<version>6.5.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.griefdefender</groupId>
 			<artifactId>api</artifactId>
 			<version>2.0.0-20211206.072436-12</version>
@@ -257,7 +273,7 @@
 		<dependency>
 			<groupId>net.coreprotect</groupId>
 			<artifactId>coreprotect</artifactId>
-			<version>20.1</version>
+			<version>21.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

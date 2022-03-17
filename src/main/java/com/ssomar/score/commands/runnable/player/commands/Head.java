@@ -2,9 +2,11 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -22,6 +24,10 @@ public class Head extends PlayerCommand{
 		ItemStack item = inv.getItemInMainHand();
 		ItemStack headItem = inv.getHelmet();
 		if(!item.getType().equals(Material.AIR)) {
+			if(headItem != null){
+				Map<Enchantment, Integer> enchants = headItem.getEnchantments();
+				if(enchants.containsKey(Enchantment.BINDING_CURSE)) return;
+			}
 			inv.setHelmet(item);
 			inv.setItemInMainHand(headItem);
 		}

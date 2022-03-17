@@ -25,7 +25,7 @@ public class CommandsQuery {
 	
 	public static void createNewTable(Connection conn) {
 		try (Statement stmt = conn.createStatement()) {
-			SCore.getPlugin().getLogger().info(SCore.NAME_2+" Verification of the table "+TABLE_COMMANDS_NAME+"...");
+			SCore.plugin.getLogger().info(SCore.NAME_2+" Verification of the table "+TABLE_COMMANDS_NAME+"...");
 			stmt.execute(CREATE_TABLE);
 		} catch (SQLException e) {
 			System.out.println(SCore.NAME_2+" "+e.getMessage());

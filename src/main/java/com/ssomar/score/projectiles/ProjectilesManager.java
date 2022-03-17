@@ -1,26 +1,34 @@
 package com.ssomar.score.projectiles;
 
 import com.ssomar.score.projectiles.types.SProjectiles;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter @Setter
 public class ProjectilesManager {
 	
 	private static ProjectilesManager instance;
 	
 	private List<SProjectiles> projectiles = new ArrayList<>();
+	private List<SProjectiles> projectilesOfDefaultItems = new ArrayList<>();
 	
 	public boolean containsProjectileWithID(String id) {
-		for(SProjectiles projectile : projectiles) {
+		List<SProjectiles> all = new ArrayList<>(projectiles);
+		all.addAll(projectilesOfDefaultItems);
+		for(SProjectiles projectile : all) {
 			if(projectile.getId().equals(id)) return true;
 		}
 		return false;
 	}
 	
 	public SProjectiles getProjectileWithID(String id) {
-		for(SProjectiles projectile : projectiles) {
+		List<SProjectiles> all = new ArrayList<>(projectiles);
+		all.addAll(projectilesOfDefaultItems);
+		for(SProjectiles projectile : all) {
 			if(projectile.getId().equals(id)) return projectile;
 		}
 		return null;
@@ -48,14 +56,6 @@ public class ProjectilesManager {
 			}
 		}
 
-	}
-
-	public List<SProjectiles> getProjectiles() {
-		return projectiles;
-	}
-
-	public void setProjectiles(ArrayList<SProjectiles> projectiles) {
-		this.projectiles = projectiles;
 	}
 
 	public static ProjectilesManager getInstance() {

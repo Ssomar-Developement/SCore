@@ -58,7 +58,7 @@ public class VaultAPI {
 		if(!econ.has(p, amount)) {
 			DecimalFormat df = new DecimalFormat("#.##");
 			df.setRoundingMode(RoundingMode.CEILING);
-			if(customMessage.length()== 0) sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.getPlugin(), Message.ERROR_MONEY).replaceAll("%amount%", amount+"").replaceAll("%balance%", df.format(econ.getBalance(p))+"")));
+			if(customMessage.length()== 0) sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.plugin, Message.ERROR_MONEY).replaceAll("%amount%", amount+"").replaceAll("%balance%", df.format(econ.getBalance(p))+"")));
 			else sm.sendMessage(p, StringConverter.coloredString(customMessage.replaceAll("%amount%", amount+"").replaceAll("%balance%", df.format(econ.getBalance(p))+"")));
 		}
 		return econ.has(p, amount);
@@ -71,7 +71,7 @@ public class VaultAPI {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
 		df.setRoundingMode(RoundingMode.CEILING);
-		sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.getPlugin(), Message.NEW_BALANCE).replaceAll("%amount%", amount+"").replaceAll("%balance%", df.format(econ.getBalance(p))+"")));
+		sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.plugin, Message.NEW_BALANCE).replaceAll("%amount%", amount+"").replaceAll("%balance%", df.format(econ.getBalance(p))+"")));
 	}
 
 }

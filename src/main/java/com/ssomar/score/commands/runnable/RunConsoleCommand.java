@@ -33,12 +33,12 @@ public class RunConsoleCommand {
 				}
 				catch (Exception e) {
 					e.printStackTrace();
-					SCore.getPlugin().getLogger().severe(SCore.NAME_2+" ERROR WHEN THE CONSOLE COMMAND IS RUN !");
+					SCore.plugin.getLogger().severe(SCore.NAME_2+" ERROR WHEN THE CONSOLE COMMAND IS RUN !");
 				}
 
 			}
 		};
-		runnable.runTaskLater(SCore.getPlugin(), 1);
+		runnable.runTaskLater(SCore.plugin, 1);
 
 
 		BukkitRunnable runnable3 = new BukkitRunnable() {
@@ -49,7 +49,7 @@ public class RunConsoleCommand {
 
 			}
 		};
-		runnable3.runTaskLater(SCore.getPlugin(), 2);
+		runnable3.runTaskLater(SCore.plugin, 2);
 	}
 
 	public static String addWorldCompatibilityForExecute(String command){

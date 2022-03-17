@@ -30,7 +30,7 @@ public class DropExecutableItem extends BlockCommand{
 					}
 				}
 				else{
-					SCore.getPlugin().getLogger().severe("Error when trying to execute the custom command DROPEXECUTABLEITEM but no EI found with the ID: "+args.get(0));
+					SCore.plugin.getLogger().severe("Error when trying to execute the custom command DROPEXECUTABLEITEM but no EI found with the ID: "+args.get(0));
 				}
 			}catch(Exception ignored) {}
 		}

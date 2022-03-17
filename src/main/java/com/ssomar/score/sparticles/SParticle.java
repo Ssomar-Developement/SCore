@@ -25,7 +25,17 @@ public class SParticle {
 	/* sepecific for the Particle.REDSTONE */
 	private Color redstoneColor;
 
-	public SParticle(Particle particlesType, int particlesAmount, double particlesOffSet, double particlesSpeed, int particlesDelay) {
+	public SParticle(String id){
+		this.id = id;
+		this.particlesType = Particle.FLAME;
+		this.particlesAmount = 1;
+		this.particlesOffSet = 1;
+		this.particlesSpeed = 1;
+		this.particlesDelay = 1;
+	}
+
+	public SParticle(String id, Particle particlesType, int particlesAmount, double particlesOffSet, double particlesSpeed, int particlesDelay) {
+		this.id = id;
 		this.particlesType = particlesType;
 		this.particlesAmount = particlesAmount;
 		this.particlesOffSet = particlesOffSet;
@@ -72,7 +82,7 @@ public class SParticle {
 							+ " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
 		}
 
-		SParticle particle = new SParticle(particlesType, particlesAmount, particlesOffSet, particlesSpeed, particlesDelay);
+		SParticle particle = new SParticle(id, particlesType, particlesAmount, particlesOffSet, particlesSpeed, particlesDelay);
 		if(redstoneColor != null){
 			particle.setRedstoneColor(redstoneColor);
 		}

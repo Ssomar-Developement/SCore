@@ -1,19 +1,16 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.usedapi.WorldGuardAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /* TOTEM_ANIMATION */
-public class TotemAnimation extends PlayerCommand{
+public class AnimationBreakOffHand extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
@@ -30,22 +27,23 @@ public class TotemAnimation extends PlayerCommand{
 	@Override
 	public List<String> getNames() {
 		List<String> names = new ArrayList<>();
-		names.add("TOTEM_ANIMATION");
+		names.add("~ANIMATION_BREAK_OFF_HAND");
+		names.add("BREAK_OFF_HAND_ANIMATION");
 		return names;
 	}
 
 	@Override
 	public String getTemplate() {
-		return "TOTEM_ANIMATION";
+		return "BREAK_OFF_HAND_ANIMATION";
 	}
 
 	@Override
 	public ChatColor getColor() {
-		return null;
+		return ChatColor.AQUA;
 	}
 
 	@Override
 	public ChatColor getExtraColor() {
-		return null;
+		return ChatColor.GOLD;
 	}
 }

@@ -13,7 +13,7 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
 
     protected CustomProjectile cProj;
 
-    public abstract boolean loadConfiguration(FileConfiguration projConfig, boolean showError);
+    public abstract boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError);
 
     public abstract void transformTheProjectile(Entity e, Player launcher);
 

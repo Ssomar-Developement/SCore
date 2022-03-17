@@ -21,6 +21,8 @@ import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsGUIManager;
 import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsGUIManager;
 import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsMessagesGUIManager;
+import com.ssomar.score.menu.particles.SParticleGUIManager;
+import com.ssomar.score.menu.particles.SParticlesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.types.SProjectiles;
@@ -72,6 +74,14 @@ public class InteractionGUI implements Listener{
 			
 			else if(title.contains(StringConverter.coloredString("Editor - RequiredEI"))) {
 				this.manage(player, itemS, title, "RequiredEIGUIManager", e);
+			}
+
+			else if(title.contains(StringConverter.coloredString("Editor - Particles"))) {
+				this.manage(player, itemS, title, "SParticlesGUIManager", e);
+			}
+
+			else if(title.contains(StringConverter.coloredString("Editor - Particle"))) {
+				this.manage(player, itemS, title, "SParticleGUIManager", e);
 			}
 			
 			else if(title.contains(StringConverter.coloredString("Editor - Player Conditions Messages"))) {
@@ -187,6 +197,17 @@ public class InteractionGUI implements Listener{
 		case "RequiredEIGUIManager":
 			RequiredEIGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
+
+		case "SParticlesGUIManager":
+				if(isShiftLeft) {
+					SParticlesGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
+				}
+				else SParticlesGUIManager.getInstance().clicked(player, itemS, title);
+				break;
+
+		case "SParticleGUIManager":
+				SParticleGUIManager.getInstance().clicked(player, itemS, e.getClick());
+				break;
 
 		case "EntityConditionsGUIManager":
 			EntityConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
@@ -341,6 +362,10 @@ public class InteractionGUI implements Listener{
 		else if(RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			RequiredEIGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
+		else if(SParticleGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			SParticleGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
 		else {
 			for(SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()){

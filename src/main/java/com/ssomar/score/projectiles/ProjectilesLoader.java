@@ -8,10 +8,8 @@ import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class ProjectilesLoader {
 
@@ -39,8 +37,21 @@ public class ProjectilesLoader {
 
 	public void load() {
 		this.rewriteProjectiles();
-		// ITEMS CONFIG
-		ProjectilesManager.getInstance().setProjectiles(new ArrayList<SProjectiles>());
+
+		ProjectilesManager.getInstance().setProjectiles(new ArrayList<>());
+		ProjectilesManager.getInstance().setProjectilesOfDefaultItems(new ArrayList<>());
+
+		File toDelete = null;
+		if ((toDelete = new File(SCore.plugin.getDataFolder() + "/projectiles_not_editable")).exists()) {
+			String[]entries = toDelete.list();
+			for(String s: entries){
+				File currentFile = new File(toDelete.getPath(),s);
+				currentFile.delete();
+			}
+			toDelete.delete();
+		}
+		this.createProjectilesOfDefaultObjectFile();
+		this.loadProjectilesOfDefaultObjectsbyFile();
 
 		if (new File(SCore.plugin.getDataFolder() + "/projectiles").exists()) {
 			this.loadProjectilesbyFile();
@@ -48,6 +59,7 @@ public class ProjectilesLoader {
 			this.createDefaultProjectilesFile();
 			this.load();
 		}
+
 	}
 
 	public void rewriteProjectiles(){
@@ -87,6 +99,35 @@ public class ProjectilesLoader {
 				}
 			}
 		}
+	}
+
+	public List<String> getProjectilesOfDefaultObjectsName() {
+		List<String> defaultProjectiles = new ArrayList<>();
+		defaultProjectiles.add("FAIRYTAIL_GRAY_FULLBUSTER_1");
+		defaultProjectiles.add("FAIRYTAIL_NATSU_DRAGNEEL_1");
+		defaultProjectiles.add("FATE_ARCHER_1");
+		defaultProjectiles.add("FATE_ARCHER_2");
+		defaultProjectiles.add("FATE_CASTER_1");
+		defaultProjectiles.add("FATE_CASTER_2");
+		defaultProjectiles.add("FATE_CASTER_3");
+		defaultProjectiles.add("FATE_GILGAMESH_1");
+		defaultProjectiles.add("FATE_GILGAMESH_2");
+		defaultProjectiles.add("FATE_GILGAMESH_3");
+		defaultProjectiles.add("FATE_RIDER_1");
+		defaultProjectiles.add("HUNTERXHUNTER_GON_FREECSS_1");
+		defaultProjectiles.add("HUNTERXHUNTER_KURAPIKA_1");
+		defaultProjectiles.add("MADOKA_HOMURA_AKEMI_1");
+		defaultProjectiles.add("MADOKA_MADOKA_KANAME_1");
+		defaultProjectiles.add("MADOKA_MAMI_TOMOE_1");
+		defaultProjectiles.add("MHA_DENKI_KAMINARI_1");
+		defaultProjectiles.add("MHA_IZUKU_MIDORIYA_1");
+		defaultProjectiles.add("MHA_MINA_ASHIDO_ACID_1");
+		defaultProjectiles.add("MHA_MINA_ASHIDO_ACID_2");
+		defaultProjectiles.add("MHA_SHOTO_TODOROKI_2");
+		defaultProjectiles.add("OPM_GENOS_1");
+		defaultProjectiles.add("OPM_SPEED_O_SONIC_1");
+
+		return defaultProjectiles;
 	}
 
 	public List<String> getDefaultProjectilesName(boolean isPremium) {
@@ -134,6 +175,60 @@ public class ProjectilesLoader {
 				in.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+
+	public void createProjectilesOfDefaultObjectFile() {
+
+		List<String> defaultProjectilesLoaded = this.getProjectilesOfDefaultObjectsName();
+
+		for(String id : defaultProjectilesLoaded) {
+			try {
+				File pdfile = new File(SCore.plugin.getDataFolder() + "/projectiles_not_editable/", id + ".yml");
+				InputStream in = this.getClass().getResourceAsStream("/com/ssomar/score/configs/projectiles_not_editable/" + id + ".yml");
+
+				if(!pdfile.exists()){
+					SCore.plugin.getDataFolder().mkdirs();
+					pdfile.getParentFile().mkdirs();
+					pdfile.createNewFile();
+				}else return;
+
+				OutputStream out = new FileOutputStream(pdfile);
+				byte[] buffer = new byte[1024];
+				int current = 0;
+
+				while((current = in.read(buffer)) > -1) out.write(buffer, 0, current);
+
+				out.close();
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void loadProjectilesOfDefaultObjectsbyFile() {
+		List<String> listFiles = Arrays.asList(new File(SCore.plugin.getDataFolder() + "/projectiles_not_editable").list());
+		Collections.sort(listFiles);
+
+		for (String s : listFiles) {
+			File fileEntry = new File(SCore.plugin.getDataFolder() + "/projectiles_not_editable/"+s);
+			if (fileEntry.isDirectory()) loadProjectilesInFolder(fileEntry);
+			else {
+				if(!fileEntry.getName().contains(".yml")) continue;
+				String id = fileEntry.getName().split(".yml")[0];
+
+				if(id.equals("type")) continue;
+
+				SProjectiles projectile;
+				if((projectile = this.getProjectileByFile(fileEntry, id, true)) == null) {
+					SCore.plugin.getServer().getLogger().severe("[SCore] Couldn't load the projectile associate with the file "+s);
+					continue;
+				}
+				ProjectilesManager.getInstance().getProjectilesOfDefaultItems().add(projectile);
+
+				SCore.plugin.getServer().getLogger().info("[SCore] projectile not editable " + id + " was loaded !");
 			}
 		}
 	}

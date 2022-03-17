@@ -128,7 +128,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor{
 					}
 					else {
 						String id = args[0];
-						File file = new File(SCore.getPlugin().getDataFolder()+"/projectiles/"+id+".yml");
+						File file = new File(SCore.plugin.getDataFolder()+"/projectiles/"+id+".yml");
 						try {
 							file.createNewFile();
 						} catch (IOException var17) {}

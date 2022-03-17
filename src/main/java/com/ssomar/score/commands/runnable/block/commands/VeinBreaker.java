@@ -92,7 +92,7 @@ public class VeinBreaker extends BlockCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.getPlugin(), 1);
+        runnable3.runTaskLater(SCore.plugin, 1);
 
     }
 

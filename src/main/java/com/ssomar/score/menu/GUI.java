@@ -3,9 +3,6 @@ package com.ssomar.score.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import com.sk89q.jchronic.tags.Scalar;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -22,6 +19,7 @@ import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class GUI {
 
@@ -233,7 +231,7 @@ public abstract class GUI {
 				player.openInventory(inv);
 			}
 		};
-		runnable.runTask(SCore.getPlugin());
+		runnable.runTask(SCore.plugin);
 	}
 
 	public String getObjectID() {

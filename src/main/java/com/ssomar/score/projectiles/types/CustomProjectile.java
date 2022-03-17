@@ -12,7 +12,7 @@ public abstract class CustomProjectile {
     public boolean requestChat;
 
     /* true if its loaded correctly */
-    public boolean loadConfiguration(FileConfiguration config, boolean showError){
+    public boolean loadConfiguration(String filePath, FileConfiguration config, boolean showError){
         return true;
     }
 

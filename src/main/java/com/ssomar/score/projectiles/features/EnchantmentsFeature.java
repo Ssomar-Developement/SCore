@@ -32,13 +32,13 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
         if(projConfig.contains("enchantments")) {
             Couple<HashMap<SEnchantment, Integer>, Boolean> couple = this.getEnchantments(projConfig.getConfigurationSection("enchantments"), showError);
-            if(!couple.getElem2()) return cProj.loadConfiguration(projConfig, showError) && false;
+            if(!couple.getElem2()) return cProj.loadConfiguration(filePath, projConfig, showError) && false;
             else enchants = couple.getElem1();
         }
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

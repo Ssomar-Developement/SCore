@@ -1,4 +1,4 @@
-package com.ssomar.score.projectiles.features.Particles;
+package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
@@ -19,8 +19,8 @@ public class PassengerFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
-        return cProj.loadConfiguration(projConfig, showError) && true;
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

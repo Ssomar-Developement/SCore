@@ -32,7 +32,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
     }
 
     @Override
-    public boolean loadConfiguration(FileConfiguration projConfig, boolean showError) {
+    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
         if (projConfig.contains("visualItem")) {
             String materialStr = projConfig.getString("visualItem", "");
             try {
@@ -44,7 +44,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
             } catch (Exception e) {
             }
         }
-        return cProj.loadConfiguration(projConfig, showError) && true;
+        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
     }
 
     @Override

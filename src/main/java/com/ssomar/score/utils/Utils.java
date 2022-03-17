@@ -25,7 +25,7 @@ public class Utils {
     }
 
     public static void sendConsoleMsg(String msg) {
-        SCore.getPlugin().getServer().getConsoleSender().sendMessage(format(msg));
+        SCore.plugin.getServer().getConsoleSender().sendMessage(format(msg));
     }
 
     public void sendTitleMsg(Player p, String title, String subTitle, int fadein, int stay, int fadeout) {

@@ -37,11 +37,11 @@ public class Database {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		String url = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() +"/"+fileName;
+		String url = "jdbc:sqlite:"+SCore.plugin.getDataFolder() +"/"+fileName;
 
 		try (Connection conn = DriverManager.getConnection(url)) {
 			if (conn != null) {
-				SCore.getPlugin().getLogger().info(SCore.NAME_2+" Connexion to the db...");
+				SCore.plugin.getLogger().info(SCore.NAME_2+" Connexion to the db...");
 			}
 
 		} catch (SQLException e) {
@@ -56,7 +56,7 @@ public class Database {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		String urlLocal = "jdbc:sqlite:"+SCore.getPlugin().getDataFolder() + "/"+fileName;
+		String urlLocal = "jdbc:sqlite:"+SCore.plugin.getDataFolder() + "/"+fileName;
 
 		boolean needOpenConnection;
 		try {
@@ -75,7 +75,7 @@ public class Database {
 				//System.out.println("[ExecutableItems] "+"Connexion OKAY");
 			} catch (SQLException e) {
 				e.printStackTrace();
-				SCore.getPlugin().getLogger().severe(SCore.NAME_2 + " " + e.getMessage());
+				SCore.plugin.getLogger().severe(SCore.NAME_2 + " " + e.getMessage());
 			}
 		}
 

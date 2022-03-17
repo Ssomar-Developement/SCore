@@ -83,7 +83,7 @@ public class ProjectileCustomDash1 extends PlayerCommand{
 					NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
 				}
 			};
-			BukkitTask task = runnable.runTaskLater(SCore.getPlugin(), 300);
+			BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);
 
 			NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
 		}

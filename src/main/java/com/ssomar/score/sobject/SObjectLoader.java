@@ -99,7 +99,7 @@ public abstract class SObjectLoader<T extends SObject> {
     public void loadDefaultPremiumObjects(Map<String, List<String>> defaultObjectsName) {
 
         /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
-        randomIdsDefaultObjects = new HashMap<>();
+       randomIdsDefaultObjects = new HashMap<>();
         for (String folder : defaultObjectsName.keySet()) {
             for (String id : defaultObjectsName.get(folder)) {
                 randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
@@ -125,7 +125,7 @@ public abstract class SObjectLoader<T extends SObject> {
     public void loadDefaultEncodedPremiumObjects(Map<String, List<String>> defaultObjectsName) {
 
         /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
-        randomIdsDefaultObjects = new HashMap<>();
+        if(randomIdsDefaultObjects == null ) randomIdsDefaultObjects = new HashMap<>();
         for (String folder : defaultObjectsName.keySet()) {
             for (String id : defaultObjectsName.get(folder)) {
                 randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
