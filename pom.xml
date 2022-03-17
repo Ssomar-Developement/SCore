@@ -264,12 +264,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>net.coreprotect</groupId>
-			<artifactId>coreprotect</artifactId>
-			<version>21.0</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
