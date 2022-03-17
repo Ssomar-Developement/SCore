@@ -255,12 +255,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.plotsquared</groupId>
-			<artifactId>PlotSquared-Core</artifactId>
-			<version>6.5.0</version>
-			<scope>provided</scope>
-		</dependency>
 
 
 		<dependency>
@@ -276,6 +270,7 @@
 			<version>21.0</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
 			<artifactId>ProtocolLib</artifactId>
