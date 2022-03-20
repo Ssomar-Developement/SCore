@@ -1,10 +1,11 @@
 package com.ssomar.score.utils.placeholders;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+import com.ssomar.executableitems.items.variables.VariableConfig;
+import com.ssomar.executableitems.items.variables.VariableReal;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -62,7 +63,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private String cooldown= "";
 	private String time= "";
 
-	private Map<String, Double> variables = new HashMap<>();
+	@Setter
+	private List<VariableReal> variables = new ArrayList<>();
 
 	/* placeholders of the around target player */
 	AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
@@ -170,12 +172,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		}
 
 		if(variables != null) {
-			for (String var : variables.keySet()) {
-				String varPlch = "%var_" + var + "%";
-				String varPlchInt = "%var_" + var + "_int%";
-				double value = variables.get(var);
-				s = replaceCalculPlaceholder(s, varPlch, value + "", false);
-				s = replaceCalculPlaceholder(s, varPlchInt, ((int) value) + "", true);
+			for (VariableReal var : variables) {
+				s = var.replaceVariablePlaceholder(s);
 			}
 		}
 
@@ -261,10 +259,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	//		 
 	//		 System.out.println(base);
 	//	}
-
-	public void addVariable(String var, double value){
-		variables.put(var, value);
-	}
 
 	public String getLauncher() {
 		return launcher;
