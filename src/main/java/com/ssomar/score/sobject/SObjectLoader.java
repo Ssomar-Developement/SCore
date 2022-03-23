@@ -5,7 +5,6 @@ import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -49,12 +48,15 @@ public abstract class SObjectLoader<T extends SObject> {
         return defaultObjects;
     }
 
-
     public void createDefaultObjectsFile(Boolean isPremiumLoading) {
+        createDefaultObjectsFile(isPremiumLoading, false);
+    }
+
+    public void createDefaultObjectsFile(Boolean isPremiumLoading, boolean exists) {
 
         String objectName = sPlugin.getObjectName().toLowerCase();
 
-        logger.severe(sPlugin.getNameDesign() + " CANT LOAD YOUR " + objectName.toUpperCase() + ", FOLDER '" + objectName + "' not found !");
+        if (!exists) logger.severe(sPlugin.getNameDesign() + " CANT LOAD YOUR " + objectName.toUpperCase() + ", FOLDER '" + objectName + "' not found !");
         logger.severe(sPlugin.getNameDesign() + " DEFAULT " + objectName.toUpperCase() + " CREATED !");
 
         Map<String, List<String>> defaultObjects;
@@ -99,7 +101,7 @@ public abstract class SObjectLoader<T extends SObject> {
     public void loadDefaultPremiumObjects(Map<String, List<String>> defaultObjectsName) {
 
         /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
-       randomIdsDefaultObjects = new HashMap<>();
+        randomIdsDefaultObjects = new HashMap<>();
         for (String folder : defaultObjectsName.keySet()) {
             for (String id : defaultObjectsName.get(folder)) {
                 randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
@@ -125,7 +127,7 @@ public abstract class SObjectLoader<T extends SObject> {
     public void loadDefaultEncodedPremiumObjects(Map<String, List<String>> defaultObjectsName) {
 
         /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
-        if(randomIdsDefaultObjects == null ) randomIdsDefaultObjects = new HashMap<>();
+        if (randomIdsDefaultObjects == null) randomIdsDefaultObjects = new HashMap<>();
         for (String folder : defaultObjectsName.keySet()) {
             for (String id : defaultObjectsName.get(folder)) {
                 randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
@@ -182,7 +184,7 @@ public abstract class SObjectLoader<T extends SObject> {
             sObjectManager.addLoadedObject(oOpt.get());
             cpt++;
             logger.fine(sPlugin.getNameDesign() + " " + id + " was loaded !");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -203,11 +205,11 @@ public abstract class SObjectLoader<T extends SObject> {
 
     public File searchFileOfObject(String id) {
 
-        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/"+sPlugin.getObjectName()).list());
+        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName()).list());
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File( sPlugin.getPlugin().getDataFolder() + "/"+sPlugin.getObjectName()+"/" + s);
+            File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName() + "/" + s);
             if (fileEntry.isDirectory()) {
                 File result = null;
                 if ((result = searchFileOfObjectInFolder(id, fileEntry)) == null)
@@ -281,7 +283,7 @@ public abstract class SObjectLoader<T extends SObject> {
 
     public abstract void configVersionsConverter(File file);
 
-    public Optional<T>getObjectById(String id, boolean showError) {
+    public Optional<T> getObjectById(String id, boolean showError) {
         return getObjectByFile(searchFileOfObject(id), id, showError);
     }
 
@@ -386,7 +388,7 @@ public abstract class SObjectLoader<T extends SObject> {
         load();
     }
 
-    public void resetCpt(){
+    public void resetCpt() {
         this.cpt = 0;
     }
 }

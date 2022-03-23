@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.ssomar.executableitems.items.variables.VariableConfig;
 import com.ssomar.executableitems.items.variables.VariableReal;
+import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -37,6 +38,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	/* placeholders of the owner */
 	private final ProjectilePlaceholders projectilePlch = new ProjectilePlaceholders();
 
+	/* placeholders of the time */
+	@Getter
+	private final TimePlaceholders timePlch = new TimePlaceholders();
+
 	/* placeholders of the item */
 	private String activator = "";
 	private String item = "";
@@ -61,7 +66,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 	/* placeholders of the cooldown */
 	private String cooldown= "";
-	private String time= "";
 
 	@Setter
 	private List<VariableReal> variables = new ArrayList<>();
@@ -146,29 +150,26 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 			s = s.replaceAll("%activator%", this.getActivator());
 		}
 		if(this.hasItem()) {
-			s=s.replaceAll("%item%", this.getItem());
+			s = s.replaceAll("%item%", this.getItem());
 		}
 		if(this.hasQuantity()) {
 			s = replaceCalculPlaceholder(s, "%quantity%", quantity, true);
 			s = replaceCalculPlaceholder(s, "%amount%", quantity, true);
 		}
 		if(this.hasCoolodwn()) {
-			s=s.replaceAll("%cooldown%", this.getCooldown());
-		}
-		if(this.hasTime()) {
-			s=s.replaceAll("%time%", this.getTime());
+			s = s.replaceAll("%cooldown%", this.getCooldown());
 		}
 		if(this.hasBlockFace()) {
-			s=s.replaceAll("%blockface%", this.getBlockface());
+			s = s.replaceAll("%blockface%", this.getBlockface());
 		}
 		if(this.hasUsage()) {
 			s = replaceCalculPlaceholder(s, "%usage%", usage, true);
 		}
 		if(this.hasMaxUsePerDayActivator()) {
-			s=s.replaceAll("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
+			s = s.replaceAll("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
 		}
 		if(this.hasMaxUsePerDayItem()) {
-			s=s.replaceAll("%max_use_per_day_item%", this.getMaxUsePerDayItem());
+			s = s.replaceAll("%max_use_per_day_item%", this.getMaxUsePerDayItem());
 		}
 
 		if(variables != null) {
@@ -192,6 +193,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		s = aroundPlayerTargetPlch.replacePlaceholder(s);
 
 		s = aroundEntityTargetPlch.replacePlaceholder(s);
+
+		s = timePlch.replacePlaceholder(s);
 
 		if(projectilePlch != null ) s = projectilePlch.replacePlaceholder(s);
 
@@ -304,15 +307,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	}
 	public boolean hasCoolodwn() {
 		return cooldown.length()!=0;
-	}
-	public String getTime() {
-		return time;
-	}
-	public void setTime(String time) {
-		this.time = time;
-	}
-	public boolean hasTime() {
-		return time.length()!=0;
 	}
 
 	public String getUsageLimit() {

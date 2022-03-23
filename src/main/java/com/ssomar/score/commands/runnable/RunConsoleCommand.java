@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
@@ -28,8 +29,8 @@ public class RunConsoleCommand {
 			public void run() {
 
 				try{
-					addWorldCompatibilityForExecute(command);
-					Bukkit.dispatchCommand(console, command);
+					String newCommand = addWorldCompatibilityForExecute(command);
+					Bukkit.dispatchCommand(console, newCommand);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -56,13 +57,17 @@ public class RunConsoleCommand {
 		if(command.contains("in <<")){
 			String [] spliter = command.split("in <<");
 			if(spliter.length > 1){
-				String [] spliter2 = command.split(">>");
+				String [] spliter2 = spliter[1].split(">>");
 				String worldName = spliter2[0];
-				World world = MultiverseAPI.getWorld(worldName);
+				World world;
+				if(SCore.hasMultiverse) world = MultiverseAPI.getWorld(worldName);
+				else{
+					world = Bukkit.getServer().getWorld(worldName);
+				}
 				if(world != null){
 					List<Entity> entities = world.getEntities();
 					if(entities.size() > 0){
-						command = command.replace("in <<"+worldName+">>", "at @e[uuid"+entities.get(0).getUniqueId()+"]");
+						command = command.replace("in <<"+worldName+">>", "at "+entities.get(0).getUniqueId());
 					}
 				}
 			}

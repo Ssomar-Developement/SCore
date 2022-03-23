@@ -19,6 +19,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
+import java.util.Optional;
+
 @Getter@Setter
 public class CooldownFeature {
 
@@ -71,23 +73,27 @@ public class CooldownFeature {
 
         /* Check if the activator is in cooldown for the player or not  */
         if (!hasNoCDPerm(p)) {
-            if (CooldownsManager.getInstance().isInCooldownForPlayer(ExecutableItems.plugin, sO, sAct, p.getUniqueId())) {
+            Optional<Integer> inCooldownOpt = CooldownsManager.getInstance().isInCooldownForPlayer(ExecutableItems.plugin, sO, sAct, p.getUniqueId());
+            if (inCooldownOpt.isPresent()) {
                 if (this.displayCooldownMessage) {
-                    int cooldown = this.cooldown - CooldownsManager.getInstance().getCooldown(sPlugin, sO, sAct, p.getUniqueId());
-                    String message = cooldownMessage;
-                    if(message.isEmpty()){
-                        message = MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.TIME_LEFT);
-                    }
-
-                    sp.setTime(cooldown + "");
-                    message = sp.replacePlaceholder(message);
-                    p.sendMessage(StringConverter.coloredString(message));
+                    int cooldown = this.cooldown - inCooldownOpt.get();
+                    displayCooldownMessage(p, cooldown, sp);
                 }
                 SActivator.cancelEvent(e, this.isCancelEventIfInCooldown());
                 return false;
             }
         }
         return true;
+    }
+
+    public void displayCooldownMessage(Player player, int timeLeft, StringPlaceholder sp){
+        String message = cooldownMessage;
+        if(message.isEmpty()){
+            message = MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.TIME_LEFT);
+        }
+        sp.getTimePlch().setTimePlcHldr(timeLeft, isCooldownInTicks);
+        message = sp.replacePlaceholder(message);
+        player.sendMessage(StringConverter.coloredString(message));
     }
 
     /**

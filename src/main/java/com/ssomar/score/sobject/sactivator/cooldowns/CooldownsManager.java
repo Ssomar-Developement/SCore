@@ -1,10 +1,6 @@
 package com.ssomar.score.sobject.sactivator.cooldowns;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -97,23 +93,30 @@ public class CooldownsManager {
 
 	/**
 	 * @param uuid the UUID of the player
-	 * @return True if the player has this activator in cooldown else false
+	 * @return Return the duration of the actual cooldown if there is one
 	 */
-	public boolean isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
-		boolean result = false;
-		String id = sPlugin.getShortName() + ":" + sO.getId() + ":" + sAct.getID();
+	public Optional<Integer> isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
+		StringBuilder sbId = new StringBuilder(sPlugin.getShortName());
+		sbId.append(":");
+		sbId.append(sO.getId());
+		sbId.append(":");
+		sbId.append(sAct.getID());
+		String id = sbId.toString();
+
 		List<Cooldown> cooldowns2;
-		if (cooldowns.containsKey(id) && cooldowns.get(id).size() != 0) {
+		if (cooldowns.containsKey(id)) {
 			cooldowns2 = cooldowns.get(id);
-			for (Cooldown cd : cooldowns2) {
-				if (cd == null || !cd.getEntityUUID().equals(uuid)) continue;
-				if (this.getCooldown(sPlugin, sO, sAct, uuid) < cd.getCooldown()) {
-					result = true;
-					break;
+			if(cooldowns2.size() != 0) {
+				for (Cooldown cd : cooldowns2) {
+					if (cd == null || !cd.getEntityUUID().equals(uuid)) continue;
+					int cdTime = 0;
+					if ((cdTime = this.getCooldown(sPlugin, sO, sAct, uuid)) < cd.getCooldown()) {
+						return Optional.of(cdTime);
+					}
 				}
 			}
 		}
-		return result;
+		return Optional.ofNullable(null);
 	}
 
 	public int getMaxGlobalCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
@@ -137,35 +140,42 @@ public class CooldownsManager {
 	}
 
 	public int getCooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
-		String id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getID();
-		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0) {
+		StringBuilder sbId = new StringBuilder(sPlugin.getShortName());
+		sbId.append(":");
+		sbId.append(sO.getId());
+		sbId.append(":");
+		sbId.append(sAct.getID());
+		String id = sbId.toString();
+
+		if(cooldowns.containsKey(id)) {
 			int minValue = -1;
 			int index = -1;
 			List<Cooldown> cds = cooldowns.get(id);
-			for(int i = 0; i < cds.size(); i++) {
-				Cooldown cd = cds.get(i);
-				if(cd == null) continue;
-				if(!cd.getEntityUUID().equals(uuid)) continue;
-				long current = System.currentTimeMillis();
-				long delay = current - cd.getTime();	
-				int div = 1000;
-				if(cd.isInTick()) div = 50;
-				int delayInt = (int) (delay/div);
-				if(minValue == -1 || delayInt < minValue) {
-					if(index != -1) {
+			if(cds.size() != 0) {
+				for (int i = 0; i < cds.size(); i++) {
+					Cooldown cd = cds.get(i);
+					if (cd == null) continue;
+					if (!cd.getEntityUUID().equals(uuid)) continue;
+					long current = System.currentTimeMillis();
+					long delay = current - cd.getTime();
+					int div = 1000;
+					if (cd.isInTick()) div = 50;
+					int delayInt = (int) (delay / div);
+					if (minValue == -1 || delayInt < minValue) {
+						if (index != -1) {
+							cd.setNull(true);
+							cds.set(index, null);
+						}
+						index = i;
+						minValue = delayInt;
+					} else if (delayInt >= minValue) {
 						cd.setNull(true);
-						cds.set(index, null);
+						cds.set(i, null);
 					}
-					index = i;
-					minValue = delayInt;
 				}
-				else if(delayInt >= minValue) {
-					cd.setNull(true);
-					cds.set(i, null);
-				}
+				if (minValue == -1) return 0;
+				return minValue;
 			}
-			if(minValue == -1) return 0;
-			return minValue;
 		}	
 		return 0;
 	}

@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.6.5.9</version>
+	<version>1.6.6.4</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -215,7 +215,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-f8012a5f73-1</version>
+			<version>master-f0bf818290-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -255,7 +255,12 @@
 			<scope>provided</scope>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.plotsquared</groupId>
+			<artifactId>PlotSquared-Core</artifactId>
+			<version>6.5.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.griefdefender</groupId>
@@ -264,6 +269,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>net.coreprotect</groupId>
+			<artifactId>coreprotect</artifactId>
+			<version>21.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
@@ -275,7 +286,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>SEvents</artifactId>
-			<version>main-7cd62febf5-1</version>
+			<version>main-413c008286-1</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -285,6 +296,14 @@
 			<version>1.18.20</version>
 			<scope>provided</scope>
 		</dependency>
+		<!--
+                <dependency>
+                    <groupId>com.dutchjelly.craftenhance</groupId>
+                    <artifactId>craftenhance</artifactId>
+                    <version>2.4.3</version>
+                    <scope>system</scope>
+                    <systemPath>${project.basedir}/src/main/resources/CraftEnhance-2.4.3.jar</systemPath>
+                </dependency> -->
 
-	</dependencies>
-</project>
+            </dependencies>
+        </project>
