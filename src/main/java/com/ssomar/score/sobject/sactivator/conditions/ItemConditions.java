@@ -10,6 +10,8 @@ import java.util.*;
 import com.google.common.base.Charsets;
 import com.ssomar.executableitems.items.ExecutableItem;
 import com.ssomar.score.utils.messages.MessageDesign;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,6 +27,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import org.jetbrains.annotations.Nullable;
 
+@Getter @Setter
 public class ItemConditions extends Conditions{
 
 	//Item
@@ -111,8 +114,6 @@ public class ItemConditions extends Conditions{
 				return false;
 			}
 		}
-
-
 
 		if(this.hasIfUsage2() && ei != null) {
 
@@ -292,117 +293,15 @@ public class ItemConditions extends Conditions{
 		}
 	}
 
-	public String getIfDurability() {
-		return ifDurability;
-	}
-	public void setIfDurability(String ifDurability) {
-		this.ifDurability = ifDurability;
-	}
 	public boolean hasIfDurability() {
-		return ifDurability.length()!=0;
+		return ifDurability.length() != 0;
 	}
 
-	public String getIfUsage() {
-		return ifUsage;
-	}
-	public void setIfUsage(String ifUsage) {
-		this.ifUsage = ifUsage;
-	}
 	public boolean hasIfUsage() {
-		return ifUsage.length()!=0;
+		return ifUsage.length() != 0;
 	}
-	
-	public String getIfUsage2() {
-		return ifUsage2;
-	}
-	public void setIfUsage2(String ifUsage2) {
-		this.ifUsage2 = ifUsage2;
-	}
+
 	public boolean hasIfUsage2() {
-		return ifUsage2.length()!=0;
-	}
-
-
-	public String getIfDurabilityMsg() {
-		return ifDurabilityMsg;
-	}
-	public void setIfDurabilityMsg(String ifDurabilityMsg) {
-		this.ifDurabilityMsg = ifDurabilityMsg;
-	}
-	public String getIfUsageMsg() {
-		return ifUsageMsg;
-	}
-	public String getIfUsage2Msg() {
-		return ifUsage2Msg;
-	}
-	public void setIfUsageMsg(String ifUsageMsg) {
-		this.ifUsageMsg = ifUsageMsg;
-	}
-	public void setIfUsage2Msg(String ifUsage2Msg) {
-		this.ifUsage2Msg = ifUsage2Msg;
-	}
-
-	public Map<Enchantment, Integer> getIfHasEnchant() {
-		return ifHasEnchant;
-	}
-
-	public void setIfHasEnchant(Map<Enchantment, Integer> ifHasEnchant) {
-		this.ifHasEnchant = ifHasEnchant;
-	}
-
-	public String getIfHasEnchantMsg() {
-		return ifHasEnchantMsg;
-	}
-
-	public void setIfHasEnchantMsg(String ifHasEnchantMsg) {
-		this.ifHasEnchantMsg = ifHasEnchantMsg;
-	}
-
-	public Map<Enchantment, Integer> getIfHasNotEnchant() {
-		return ifHasNotEnchant;
-	}
-
-	public void setIfHasNotEnchant(Map<Enchantment, Integer> ifHasNotEnchant) {
-		this.ifHasNotEnchant = ifHasNotEnchant;
-	}
-
-	public String getIfHasNotEnchantMsg() {
-		return ifHasNotEnchantMsg;
-	}
-
-	public void setIfHasNotEnchantMsg(String ifHasNotEnchantMsg) {
-		this.ifHasNotEnchantMsg = ifHasNotEnchantMsg;
-	}
-
-	public boolean isIfCrossbowMustBeCharged() {
-		return ifCrossbowMustBeCharged;
-	}
-
-	public void setIfCrossbowMustBeCharged(boolean ifCrossbowMustBeCharged) {
-		this.ifCrossbowMustBeCharged = ifCrossbowMustBeCharged;
-	}
-
-	public String getIfCrossbowMustBeChargedMsg() {
-		return ifCrossbowMustBeChargedMsg;
-	}
-
-	public void setIfCrossbowMustBeChargedMsg(String ifCrossbowMustBeChargedMsg) {
-		this.ifCrossbowMustBeChargedMsg = ifCrossbowMustBeChargedMsg;
-	}
-
-	public boolean isIfCrossbowMustNotBeCharged() {
-		return ifCrossbowMustNotBeCharged;
-	}
-
-	public void setIfCrossbowMustNotBeCharged(boolean ifCrossbowMustNotBeCharged) {
-		this.ifCrossbowMustNotBeCharged = ifCrossbowMustNotBeCharged;
-	}
-
-	public String getIfCrossbowMustNotBeChargedMsg() {
-		return ifCrossbowMustNotBeChargedMsg;
-	}
-
-	public void setIfCrossbowMustNotBeChargedMsg(String ifCrossbowMustNotBeChargedMsg) {
-		this.ifCrossbowMustNotBeChargedMsg = ifCrossbowMustNotBeChargedMsg;
+		return ifUsage2.length() != 0;
 	}
 }

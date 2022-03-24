@@ -139,7 +139,7 @@ public class FarmInCube extends BlockCommand{
 
 	@Override
 	public String getTemplate() {
-		return "FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}";
+		return "FARMINCUBE {radius} [ActiveDrop true or false] [onlyMaxAge true or false] [replant true or false]";
 	}
 
 	@Override

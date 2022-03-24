@@ -1,5 +1,6 @@
 package com.ssomar.score.sobject.sactivator.cooldowns;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -42,7 +43,7 @@ public class CooldownsHandler implements Listener {
 	public void PlayerQuitEvent(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
 
-		List<Cooldown> cooldowns = CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId());
+		List<Cooldown> cooldowns = new ArrayList<>(CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId()));
 		
 		Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
             CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);

@@ -22,6 +22,10 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_PLANT_FULLY_GROWN_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateMessage(BlockConditionsMessages.IF_PLANT_FULLY_GROWN_MSG.name, conditions.getIfPlantFullyGrownMsg());
+
+		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_BLOCK_AGE_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateMessage(BlockConditionsMessages.IF_BLOCK_AGE_MSG.name, conditions.getIfBlockAgeMsg());
 		
 		createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+BlockConditionsMessages.IF_IS_POWERED_MSG.name, 	false,	false, "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -84,6 +88,7 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 	
 	public enum BlockConditionsMessages{
 		IF_PLANT_FULLY_GROWN_MSG ("ifPlantFullyGrown message"),
+		IF_BLOCK_AGE_MSG ("if block age message"),
 		IF_IS_POWERED_MSG ("ifIsPowered message"),
 		IF_MUST_BE_NOT_POWERED_MSG ("ifMustBeNotPowered message"),
 		IF_MUST_BE_NATURAL_MSG ("ifMustBeNatural message"),

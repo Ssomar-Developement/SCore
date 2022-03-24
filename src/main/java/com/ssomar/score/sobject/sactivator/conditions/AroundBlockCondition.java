@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,6 +27,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
 import org.jetbrains.annotations.Nullable;
 
+@Getter
 public class AroundBlockCondition extends Conditions{
 	
 	private String id;
@@ -246,94 +248,6 @@ public class AroundBlockCondition extends Conditions{
 			e.printStackTrace();
 		}
 
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public int getSouthValue() {
-		return southValue;
-	}
-
-	public void setSouthValue(int southValue) {
-		this.southValue = southValue;
-	}
-
-	public int getNorthValue() {
-		return northValue;
-	}
-
-	public void setNorthValue(int northValue) {
-		this.northValue = northValue;
-	}
-
-	public int getWestValue() {
-		return westValue;
-	}
-
-	public void setWestValue(int westValue) {
-		this.westValue = westValue;
-	}
-
-	public int getEastValue() {
-		return eastValue;
-	}
-
-	public void setEastValue(int eastValue) {
-		this.eastValue = eastValue;
-	}
-
-	public int getAboveValue() {
-		return aboveValue;
-	}
-
-	public void setAboveValue(int aboveValue) {
-		this.aboveValue = aboveValue;
-	}
-
-	public int getUnderValue() {
-		return underValue;
-	}
-
-	public void setUnderValue(int underValue) {
-		this.underValue = underValue;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
-	}
-
-	public List<String> getBlockMustBeExecutableBlock() {
-		return blockMustBeExecutableBlock;
-	}
-
-	public void setBlockMustBeExecutableBlock(List<String> blockMustBeExecutableBlock) {
-		this.blockMustBeExecutableBlock = blockMustBeExecutableBlock;
-	}
-
-	public List<Material> getBlockTypeMustBe() {
-		return blockTypeMustBe;
-	}
-
-	public void setBlockTypeMustBe(List<Material> blockTypeMustBe) {
-		this.blockTypeMustBe = blockTypeMustBe;
-	}
-
-	public List<Material> getBlockTypeMustNotBe() {
-		return blockTypeMustNotBe;
-	}
-
-	public void setBlockTypeMustNotBe(List<Material> blockTypeMustNotBe) {
-		this.blockTypeMustNotBe = blockTypeMustNotBe;
 	}
 
 	@Override

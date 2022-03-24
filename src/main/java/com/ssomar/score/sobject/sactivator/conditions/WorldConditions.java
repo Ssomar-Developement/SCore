@@ -11,6 +11,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.ssomar.score.utils.messages.MessageDesign;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,6 +26,7 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 
+@Getter @Setter
 public class WorldConditions extends Conditions{
 	
 	//STORM, RAIN, CLEAR
@@ -125,46 +128,12 @@ public class WorldConditions extends Conditions{
 			e.printStackTrace();
 		}
 	}
-	
-	public List<String> getIfWeather() {
-		return ifWeather;
-	}
-
-	public void setIfWeather(List<String> ifWeather) {
-		this.ifWeather = ifWeather;
-	}
 
 	public boolean hasIfWeather() {
-		return ifWeather != null && ifWeather.size()!=0;
-	}
-	
-	public String getIfWorldTime() {
-		return ifWorldTime;
-	}
-
-	public void setIfWorldTime(String ifWorldTime) {
-		this.ifWorldTime = ifWorldTime;
+		return ifWeather != null && ifWeather.size() != 0;
 	}
 
 	public boolean hasIfWorldTime() {
-		return ifWorldTime != null && ifWorldTime.length()!=0;
+		return ifWorldTime != null && ifWorldTime.length() != 0;
 	}
-	
-	
-	public String getIfWeatherMsg() {
-		return ifWeatherMsg;
-	}
-
-	public void setIfWeatherMsg(String ifWeatherMsg) {
-		this.ifWeatherMsg = ifWeatherMsg;
-	}
-	
-	public String getIfWorldTimeMsg() {
-		return ifWorldTimeMsg;
-	}
-
-	public void setIfWorldTimeMsg(String ifWorldTimeMsg) {
-		this.ifWorldTimeMsg = ifWorldTimeMsg;
-	}
-
 }

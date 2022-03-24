@@ -23,6 +23,8 @@ import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 public class Damage extends PlayerCommand{
@@ -36,6 +38,13 @@ public class Damage extends PlayerCommand{
 		try {
 			double amount;
 			String damage = args.get(0);
+
+			boolean potionAmplification = false;
+			try{
+				potionAmplification = Boolean.valueOf(args.get(1));
+			}catch (Exception e){}
+
+
 			/* percentage damage */
 			if(damage.contains("%")) {
 				String [] decomp = damage.split("\\%");
@@ -50,6 +59,13 @@ public class Damage extends PlayerCommand{
 				amount = NTools.reduceDouble(amount, 2);
 			}
 			else amount = Double.parseDouble(damage);
+
+			if(p != null && potionAmplification){
+				PotionEffect pE = p.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+				if(pE != null) {
+					amount = amount + (pE.getAmplifier() + 1) * 1.5;
+				}
+			}
 			
 			if(amount > 0 && !receiver.isDead()) {
 				if(p != null) {
@@ -89,7 +105,7 @@ public class Damage extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		return "DAMAGE {number}";
+		return "DAMAGE {number} {amplified If Strength Effect, true or false}";
 	}
 
 	@Override

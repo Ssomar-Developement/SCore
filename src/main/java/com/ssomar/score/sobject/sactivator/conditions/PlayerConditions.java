@@ -9,6 +9,8 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.messages.MessageDesign;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter @Setter
 public class PlayerConditions extends Conditions {
 
     private boolean ifSneaking;
@@ -292,12 +295,12 @@ public class PlayerConditions extends Conditions {
             }
         }
 
-        if (this.hasIfSneaking() && ifSneaking && !p.isSneaking()) {
+        if (this.isIfSneaking() && ifSneaking && !p.isSneaking()) {
             this.getSm().sendMessage(toMsg, this.getIfSneakingMsg());
             return false;
         }
 
-        if (this.hasIfNotSneaking() && ifNotSneaking && p.isSneaking()) {
+        if (this.isIfNotSneaking() && ifNotSneaking && p.isSneaking()) {
             this.getSm().sendMessage(toMsg, this.getIfNotSneakingMsg());
             return false;
         }
@@ -312,7 +315,7 @@ public class PlayerConditions extends Conditions {
             return false;
         }
 
-        if (this.hasIfSwimming() && ifSwimming && !p.isSwimming()) {
+        if (this.isIfSwimming() && ifSwimming && !p.isSwimming()) {
             this.getSm().sendMessage(toMsg, (this.getIfSwimmingMsg()));
             return false;
         }
@@ -322,12 +325,12 @@ public class PlayerConditions extends Conditions {
             return false;
         }
 
-        if (this.hasIfGliding() && ifGliding && !p.isGliding()) {
+        if (this.isIfGliding() && ifGliding && !p.isGliding()) {
             this.getSm().sendMessage(toMsg, this.getIfGlidingMsg());
             return false;
         }
 
-        if (this.hasIfFlying() && ifFlying && !p.isFlying()) {
+        if (this.isIfFlying() && ifFlying && !p.isFlying()) {
             this.getSm().sendMessage(toMsg, this.getIfFlyingMsg());
             return false;
         }
@@ -815,12 +818,12 @@ public class PlayerConditions extends Conditions {
 
         ConfigurationSection pCConfig = config.getConfigurationSection("activators." + sActivator.getID() + ".conditions." + detail);
 
-        if (pC.hasIfSneaking()) pCConfig.set("ifSneaking", true);
+        if (pC.isIfSneaking()) pCConfig.set("ifSneaking", true);
         else pCConfig.set("ifSneaking", null);
         if (pC.getIfSneakingMsg().contains(pC.IF_SNEAKING_MSG)) pCConfig.set("ifSneakingMsg", null);
         else pCConfig.set("ifSneakingMsg", pC.getIfSneakingMsg());
 
-        if (pC.hasIfNotSneaking()) pCConfig.set("ifNotSneaking", true);
+        if (pC.isIfNotSneaking()) pCConfig.set("ifNotSneaking", true);
         else pCConfig.set("ifNotSneaking", null);
         if (pC.getIfNotSneakingMsg().contains(pC.IF_NOT_SNEAKING_MSG)) pCConfig.set("ifNotSneakingMsg", null);
         else pCConfig.set("ifNotSneakingMsg", pC.getIfNotSneakingMsg());
@@ -835,7 +838,7 @@ public class PlayerConditions extends Conditions {
         if (pC.getIfNotBlockingMsg().contains(pC.IF_NOT_BLOCKING_MSG)) pCConfig.set("ifNotBlockingMsg", null);
         else pCConfig.set("ifNotBlockingMsg", pC.getIfNotBlockingMsg());
 
-        if (pC.hasIfSwimming()) pCConfig.set("ifSwimming", true);
+        if (pC.isIfSwimming()) pCConfig.set("ifSwimming", true);
         else pCConfig.set("ifSwimming", null);
         if (pC.getIfSwimmingMsg().contains(pC.IF_SWIMMING_MSG)) pCConfig.set("ifSwimmingMsg", null);
         else pCConfig.set("ifSwimmingMsg", pC.getIfSwimmingMsg());
@@ -845,12 +848,12 @@ public class PlayerConditions extends Conditions {
         if (pC.getIfSprintingMsg().contains(pC.IF_SPRINTING_MSG)) pCConfig.set("ifSprintingMsg", null);
         else pCConfig.set("ifSprintingMsg", pC.getIfSprintingMsg());
 
-        if (pC.hasIfGliding()) pCConfig.set("ifGliding", true);
+        if (pC.isIfGliding()) pCConfig.set("ifGliding", true);
         else pCConfig.set("ifGliding", null);
         if (pC.getIfGlidingMsg().contains(pC.IF_GLIDING_MSG)) pCConfig.set("ifGlidingMsg", null);
         else pCConfig.set("ifGlidingMsg", pC.getIfGlidingMsg());
 
-        if (pC.hasIfFlying()) pCConfig.set("ifFlying", true);
+        if (pC.isIfFlying()) pCConfig.set("ifFlying", true);
         else pCConfig.set("ifFlying", null);
         if (pC.getIfFlyingMsg().contains(pC.IF_FLYING_MSG)) pCConfig.set("ifFlyingMsg", null);
         else pCConfig.set("ifFlyingMsg", pC.getIfFlyingMsg());
@@ -1019,228 +1022,56 @@ public class PlayerConditions extends Conditions {
         }
     }
 
-    public boolean isIfSneaking() {
-        return ifSneaking;
-    }
-
-    public void setIfSneaking(boolean ifSneaking) {
-        this.ifSneaking = ifSneaking;
-    }
-
-    public boolean hasIfSneaking() {
-        return ifSneaking;
-    }
-
-    public boolean isIfNotSneaking() {
-        return ifNotSneaking;
-    }
-
-    public void setIfNotSneaking(boolean ifNotSneaking) {
-        this.ifNotSneaking = ifNotSneaking;
-    }
-
-    public boolean hasIfNotSneaking() {
-        return ifNotSneaking;
-    }
-
-    public boolean isIfSwimming() {
-        return ifSwimming;
-    }
-
-    public void setIfSwimming(boolean ifSwimming) {
-        this.ifSwimming = ifSwimming;
-    }
-
-    public boolean hasIfSwimming() {
-        return ifSwimming;
-    }
-
-    public boolean isIfGliding() {
-        return ifGliding;
-    }
-
-    public void setIfGliding(boolean ifGliding) {
-        this.ifGliding = ifGliding;
-    }
-
-    public boolean hasIfGliding() {
-        return ifGliding;
-    }
-
-    public boolean isIfFlying() {
-        return ifFlying;
-    }
-
-    public void setIfFlying(boolean ifFlying) {
-        this.ifFlying = ifFlying;
-    }
-
-    public boolean hasIfFlying() {
-        return ifFlying;
-    }
-
-    public List<String> getIfInWorld() {
-        return ifInWorld;
-    }
-
-    public void setIfInWorld(List<String> ifInWorld) {
-        this.ifInWorld = ifInWorld;
-    }
-
     public boolean hasIfInWorld() {
         return ifInWorld != null && ifInWorld.size() != 0;
-    }
-
-    public List<String> getIfNotInWorld() {
-        return ifNotInWorld;
-    }
-
-    public void setIfNotInWorld(List<String> ifNotInWorld) {
-        this.ifNotInWorld = ifNotInWorld;
     }
 
     public boolean hasIfNotInWorld() {
         return ifNotInWorld != null && ifNotInWorld.size() != 0;
     }
 
-    public List<String> getIfInBiome() {
-        return ifInBiome;
-    }
-
-    public void setIfInBiome(List<String> ifInBiome) {
-        this.ifInBiome = ifInBiome;
-    }
-
     public boolean hasIfInBiome() {
         return ifInBiome != null && ifInBiome.size() != 0;
-    }
-
-    public List<String> getIfNotInBiome() {
-        return ifNotInBiome;
-    }
-
-    public void setIfNotInBiome(List<String> ifNotInBiome) {
-        this.ifNotInBiome = ifNotInBiome;
     }
 
     public boolean hasIfNotInBiome() {
         return ifNotInBiome != null && ifNotInBiome.size() != 0;
     }
 
-    public List<String> getIfInRegion() {
-        return ifInRegion;
-    }
-
-    public void setIfInRegion(List<String> ifInRegion) {
-        this.ifInRegion = ifInRegion;
-    }
-
     public boolean hasIfInRegion() {
         return ifInRegion != null && ifInRegion.size() != 0;
-    }
-
-    public List<String> getIfNotInRegion() {
-        return ifNotInRegion;
-    }
-
-    public void setIfNotInRegion(List<String> ifNotInRegion) {
-        this.ifNotInRegion = ifNotInRegion;
     }
 
     public boolean hasIfNotInRegion() {
         return ifNotInRegion != null && ifNotInRegion.size() != 0;
     }
 
-    public List<String> getIfHasPermission() {
-        return ifHasPermission;
-    }
-
-    public void setIfHasPermission(List<String> ifHasPermission) {
-        this.ifHasPermission = ifHasPermission;
-    }
-
     public boolean hasIfHasPermission() {
         return ifHasPermission != null && ifHasPermission.size() != 0;
-    }
-
-    public List<String> getIfNotHasPermission() {
-        return ifNotHasPermission;
-    }
-
-    public void setIfNotHasPermission(List<String> ifNotHasPermission) {
-        this.ifNotHasPermission = ifNotHasPermission;
     }
 
     public boolean hasIfNotHasPermission() {
         return ifNotHasPermission != null && ifNotHasPermission.size() != 0;
     }
 
-    public List<Material> getIfTargetBlock() {
-        return ifTargetBlock;
-    }
-
-    public void setIfTargetBlock(List<Material> ifTargetBlock) {
-        this.ifTargetBlock = ifTargetBlock;
-    }
-
     public boolean hasIfTargetBlock() {
         return ifTargetBlock != null && ifTargetBlock.size() != 0;
-    }
-
-    public List<Material> getIfNotTargetBlock() {
-        return ifNotTargetBlock;
-    }
-
-    public void setIfNotTargetBlock(List<Material> ifNotTargetBlock) {
-        this.ifNotTargetBlock = ifNotTargetBlock;
     }
 
     public boolean hasIfNotTargetBlock() {
         return ifNotTargetBlock != null && ifNotTargetBlock.size() != 0;
     }
 
-    public String getIfPlayerHealth() {
-        return ifPlayerHealth;
-    }
-
-    public void setIfPlayerHealth(String ifPlayerHealth) {
-        this.ifPlayerHealth = ifPlayerHealth;
-    }
-
     public boolean hasIfPlayerHealth() {
         return ifPlayerHealth != null && ifPlayerHealth.length() != 0;
-    }
-
-    public String getIfPlayerFoodLevel() {
-        return ifPlayerFoodLevel;
-    }
-
-    public void setIfPlayerFoodLevel(String ifPlayerFoodLevel) {
-        this.ifPlayerFoodLevel = ifPlayerFoodLevel;
     }
 
     public boolean hasIfPlayerFoodLevel() {
         return ifPlayerFoodLevel != null && ifPlayerFoodLevel.length() != 0;
     }
 
-    public String getIfPlayerEXP() {
-        return ifPlayerEXP;
-    }
-
-    public void setIfPlayerEXP(String ifPlayerEXP) {
-        this.ifPlayerEXP = ifPlayerEXP;
-    }
-
     public boolean hasIfPlayerEXP() {
         return ifPlayerEXP != null && ifPlayerEXP.length() != 0;
-    }
-
-    public String getIfPlayerLevel() {
-        return ifPlayerLevel;
-    }
-
-    public void setIfPlayerLevel(String ifPlayerLevel) {
-        this.ifPlayerLevel = ifPlayerLevel;
     }
 
     public boolean hasIfPlayerLevel() {
@@ -1251,68 +1082,20 @@ public class PlayerConditions extends Conditions {
         return ifLightLevel != null && ifLightLevel.length() != 0;
     }
 
-    public String getIfLightLevel() {
-        return ifLightLevel;
-    }
-
-    public void setIfLightLevel(String x) {
-        this.ifLightLevel = x;
-    }
-
     public boolean hasIfPosX() {
         return ifPosX != null && ifPosX.length() != 0;
-    }
-
-    public String getIfPosX() {
-        return ifPosX;
-    }
-
-    public void setIfPosX(String ifPosX) {
-        this.ifPosX = ifPosX;
     }
 
     public boolean hasIfPosY() {
         return ifPosY != null && ifPosY.length() != 0;
     }
 
-    public String getIfPosY() {
-        return ifPosY;
-    }
-
-    public void setIfPosY(String ifPosY) {
-        this.ifPosY = ifPosY;
-    }
-
     public boolean hasIfPosZ() {
         return ifPosZ != null && ifPosZ.length() != 0;
     }
 
-    public String getIfPosZ() {
-        return ifPosZ;
-    }
-
-    public void setIfPosZ(String ifPosZ) {
-        this.ifPosZ = ifPosZ;
-    }
-
     public boolean hasIfPlayerHasExecutableItem() {
         return ifPlayerHasExecutableItem != null && !ifPlayerHasExecutableItem.isEmpty();
-    }
-
-    public List<IfPlayerHasExecutableItem> getIfPlayerHasExecutableItem() {
-        return ifPlayerHasExecutableItem;
-    }
-
-    public void setIfPlayerHasExecutableItem(List<IfPlayerHasExecutableItem> ifPlayerHasExecutableItem) {
-        this.ifPlayerHasExecutableItem = ifPlayerHasExecutableItem;
-    }
-
-    public Map<Material, Integer> getIfPlayerHasItem() {
-        return ifPlayerHasItem;
-    }
-
-    public void setIfPlayerHasItem(Map<Material, Integer> ifPlayerHasItem) {
-        this.ifPlayerHasItem = ifPlayerHasItem;
     }
 
     public boolean hasIfPlayerHasItem() {
@@ -1321,363 +1104,5 @@ public class PlayerConditions extends Conditions {
 
     public boolean hasIfCursorDistance() {
         return ifCursorDistance != null && ifCursorDistance.length() != 0;
-    }
-
-    public void setIfCursorDistance(String ifCursorDistance) {
-        this.ifCursorDistance = ifCursorDistance;
-    }
-
-    public String getIfCursorDistance() {
-        return ifCursorDistance;
-    }
-
-    public synchronized String getIfSneakingMsg() {
-        return ifSneakingMsg;
-    }
-
-    public synchronized void setIfSneakingMsg(String ifSneakingMsg) {
-        this.ifSneakingMsg = ifSneakingMsg;
-    }
-
-    public synchronized String getIfNotSneakingMsg() {
-        return ifNotSneakingMsg;
-    }
-
-    public synchronized void setIfNotSneakingMsg(String ifNotSneakingMsg) {
-        this.ifNotSneakingMsg = ifNotSneakingMsg;
-    }
-
-    public synchronized String getIfSwimmingMsg() {
-        return ifSwimmingMsg;
-    }
-
-    public synchronized void setIfSwimmingMsg(String ifSwimmingMsg) {
-        this.ifSwimmingMsg = ifSwimmingMsg;
-    }
-
-    public synchronized String getIfGlidingMsg() {
-        return ifGlidingMsg;
-    }
-
-    public synchronized void setIfGlidingMsg(String ifGlidingMsg) {
-        this.ifGlidingMsg = ifGlidingMsg;
-    }
-
-    public synchronized String getIfFlyingMsg() {
-        return ifFlyingMsg;
-    }
-
-    public synchronized void setIfFlyingMsg(String ifFlyingMsg) {
-        this.ifFlyingMsg = ifFlyingMsg;
-    }
-
-    public synchronized String getIfInWorldMsg() {
-        return ifInWorldMsg;
-    }
-
-    public synchronized void setIfInWorldMsg(String ifInWorldMsg) {
-        this.ifInWorldMsg = ifInWorldMsg;
-    }
-
-    public synchronized void setIfNotInWorldMsg(String ifNotInWorldMsg) {
-        this.ifNotInWorldMsg = ifNotInWorldMsg;
-    }
-
-    public synchronized String getIfNotInWorldMsg() {
-        return ifNotInWorldMsg;
-    }
-
-    public synchronized String getIfInBiomeMsg() {
-        return ifInBiomeMsg;
-    }
-
-    public synchronized void setIfInBiomeMsg(String ifInBiomeMsg) {
-        this.ifInBiomeMsg = ifInBiomeMsg;
-    }
-
-    public synchronized void setIfNotInBiomeMsg(String ifNotInBiomeMsg) {
-        this.ifNotInBiomeMsg = ifNotInBiomeMsg;
-    }
-
-    public synchronized String getIfNotInBiomeMsg() {
-        return ifNotInBiomeMsg;
-    }
-
-    public synchronized String getIfInRegionMsg() {
-        return ifInRegionMsg;
-    }
-
-    public synchronized void setIfInRegionMsg(String ifInRegionMsg) {
-        this.ifInRegionMsg = ifInRegionMsg;
-    }
-
-    public synchronized String getIfNotInRegionMsg() {
-        return ifNotInRegionMsg;
-    }
-
-    public synchronized void setIfNotInRegionMsg(String ifNotInRegionMsg) {
-        this.ifNotInRegionMsg = ifNotInRegionMsg;
-    }
-
-    public synchronized String getIfHasPermissionMsg() {
-        return ifHasPermissionMsg;
-    }
-
-    public synchronized void setIfHasPermissionMsg(String ifHasPermissionMsg) {
-        this.ifHasPermissionMsg = ifHasPermissionMsg;
-    }
-
-    public synchronized String getIfNotHasPermissionMsg() {
-        return ifNotHasPermissionMsg;
-    }
-
-    public synchronized void setIfNotHasPermissionMsg(String ifNotHasPermissionMsg) {
-        this.ifNotHasPermissionMsg = ifNotHasPermissionMsg;
-    }
-
-    public synchronized String getIfPlayerHealthMsg() {
-        return ifPlayerHealthMsg;
-    }
-
-    public synchronized void setIfPlayerHealthMsg(String ifPlayerHealthMsg) {
-        this.ifPlayerHealthMsg = ifPlayerHealthMsg;
-    }
-
-    public synchronized String getIfPlayerFoodLevelMsg() {
-        return ifPlayerFoodLevelMsg;
-    }
-
-    public synchronized void setIfPlayerFoodLevelMsg(String ifPlayerFoodLevelMsg) {
-        this.ifPlayerFoodLevelMsg = ifPlayerFoodLevelMsg;
-    }
-
-    public synchronized String getIfPlayerEXPMsg() {
-        return ifPlayerEXPMsg;
-    }
-
-    public synchronized void setIfPlayerEXPMsg(String ifPlayerExpMsg) {
-        this.ifPlayerEXPMsg = ifPlayerExpMsg;
-    }
-
-    public synchronized String getIfPlayerLevelMsg() {
-        return ifPlayerLevelMsg;
-    }
-
-    public synchronized void setIfPlayerLevelMsg(String ifPlayerLevelMsg) {
-        this.ifPlayerLevelMsg = ifPlayerLevelMsg;
-    }
-
-
-    public String getIfTargetBlockMsg() {
-        return ifTargetBlockMsg;
-    }
-
-
-    public void setIfTargetBlockMsg(String ifTargetBlockMsg) {
-        this.ifTargetBlockMsg = ifTargetBlockMsg;
-    }
-
-
-    public String getIfPosXMsg() {
-        return ifPosXMsg;
-    }
-
-
-    public void setIfPosXMsg(String ifPosXMsg) {
-        this.ifPosXMsg = ifPosXMsg;
-    }
-
-
-    public String getIfPosYMsg() {
-        return ifPosYMsg;
-    }
-
-
-    public void setIfPosYMsg(String ifPosYMsg) {
-        this.ifPosYMsg = ifPosYMsg;
-    }
-
-
-    public String getIfPosZMsg() {
-        return ifPosZMsg;
-    }
-
-
-    public void setIfPosZMsg(String ifPosZMsg) {
-        this.ifPosZMsg = ifPosZMsg;
-    }
-
-
-    public String getIfNotTargetBlockMsg() {
-        return ifNotTargetBlockMsg;
-    }
-
-
-    public void setIfNotTargetBlockMsg(String ifNotTargetBlockMsg) {
-        this.ifNotTargetBlockMsg = ifNotTargetBlockMsg;
-    }
-
-
-    public String getIfPlayerHasExecutableItemMsg() {
-        return ifPlayerHasExecutableItemMsg;
-    }
-
-
-    public void setIfPlayerHasExecutableItemMsg(String ifPlayerHasExecutableItemMsg) {
-        this.ifPlayerHasExecutableItemMsg = ifPlayerHasExecutableItemMsg;
-    }
-
-
-    public String getIfPlayerHasItemMsg() {
-        return ifPlayerHasItemMsg;
-    }
-
-
-    public void setIfPlayerHasItemMsg(String ifPlayerHasItemMsg) {
-        this.ifPlayerHasItemMsg = ifPlayerHasItemMsg;
-    }
-
-    public String getIfLightLevelMsg() {
-        return ifLightLevelMsg;
-    }
-
-    public void setIfLightLevelMsg(String ifLightLevelMsg) {
-        this.ifLightLevelMsg = ifLightLevelMsg;
-    }
-
-    public boolean isIfBlocking() {
-        return ifBlocking;
-    }
-
-    public void setIfBlocking(boolean ifBlocking) {
-        this.ifBlocking = ifBlocking;
-    }
-
-    public String getIfBlockingMsg() {
-        return ifBlockingMsg;
-    }
-
-    public void setIfBlockingMsg(String ifBlockingMsg) {
-        this.ifBlockingMsg = ifBlockingMsg;
-    }
-
-    public boolean isIfNotBlocking() {
-        return ifNotBlocking;
-    }
-
-    public void setIfNotBlocking(boolean ifNotBlocking) {
-        this.ifNotBlocking = ifNotBlocking;
-    }
-
-    public String getIfNotBlockingMsg() {
-        return ifNotBlockingMsg;
-    }
-
-    public void setIfNotBlockingMsg(String ifNotBlockingMsg) {
-        this.ifNotBlockingMsg = ifNotBlockingMsg;
-    }
-
-    public boolean isIfIsInTheAir() {
-        return ifIsInTheAir;
-    }
-
-    public void setIfIsInTheAir(boolean ifIsInTheAir) {
-        this.ifIsInTheAir = ifIsInTheAir;
-    }
-
-    public String getIfIsInTheAirMsg() {
-        return ifIsInTheAirMsg;
-    }
-
-    public void setIfIsInTheAirMsg(String ifIsInTheAirMsg) {
-        this.ifIsInTheAirMsg = ifIsInTheAirMsg;
-    }
-
-    public List<Material> getIfIsOnTheBlock() {
-        return ifIsOnTheBlock;
-    }
-
-    public void setIfIsOnTheBlock(List<Material> ifIsOnTheBlock) {
-        this.ifIsOnTheBlock = ifIsOnTheBlock;
-    }
-
-    public String getIfIsOnTheBlockMsg() {
-        return ifIsOnTheBlockMsg;
-    }
-
-    public void setIfIsOnTheBlockMsg(String ifIsOnTheBlockMsg) {
-        this.ifIsOnTheBlockMsg = ifIsOnTheBlockMsg;
-    }
-
-    public boolean isIfSprinting() {
-        return ifSprinting;
-    }
-
-    public void setIfSprinting(boolean ifSprinting) {
-        this.ifSprinting = ifSprinting;
-    }
-
-    public String getIfSprintingMsg() {
-        return ifSprintingMsg;
-    }
-
-    public void setIfSprintingMsg(String ifSprintingMsg) {
-        this.ifSprintingMsg = ifSprintingMsg;
-    }
-
-    public Map<PotionEffectType, Integer> getIfPlayerHasEffect() {
-        return ifPlayerHasEffect;
-    }
-
-    public void setIfPlayerHasEffect(Map<PotionEffectType, Integer> ifPlayerHasEffect) {
-        this.ifPlayerHasEffect = ifPlayerHasEffect;
-    }
-
-    public String getIfPlayerHasEffectMsg() {
-        return ifPlayerHasEffectMsg;
-    }
-
-    public void setIfPlayerHasEffectMsg(String ifPlayerHasEffectMsg) {
-        this.ifPlayerHasEffectMsg = ifPlayerHasEffectMsg;
-    }
-
-    public Map<PotionEffectType, Integer> getIfPlayerHasEffectEquals() {
-        return ifPlayerHasEffectEquals;
-    }
-
-    public void setIfPlayerHasEffectEquals(Map<PotionEffectType, Integer> ifPlayerHasEffectEquals) {
-        this.ifPlayerHasEffectEquals = ifPlayerHasEffectEquals;
-    }
-
-    public String getIfPlayerHasEffectEqualsMsg() {
-        return ifPlayerHasEffectEqualsMsg;
-    }
-
-    public void setIfPlayerHasEffectEqualsMsg(String ifPlayerHasEffectEqualsMsg) {
-        this.ifPlayerHasEffectEqualsMsg = ifPlayerHasEffectEqualsMsg;
-    }
-
-    public List<Material> getIfIsNotOnTheBlock() {
-        return ifIsNotOnTheBlock;
-    }
-
-    public void setIfIsNotOnTheBlock(List<Material> ifIsNotOnTheBlock) {
-        this.ifIsNotOnTheBlock = ifIsNotOnTheBlock;
-    }
-
-    public String getIfIsNotOnTheBlockMsg() {
-        return ifIsNotOnTheBlockMsg;
-    }
-
-    public void setIfIsNotOnTheBlockMsg(String ifIsNotOnTheBlockMsg) {
-        this.ifIsNotOnTheBlockMsg = ifIsNotOnTheBlockMsg;
-    }
-
-    public String getIfCursorDistanceMsg() {
-        return ifCursorDistanceMsg;
-    }
-
-    public void setIfCursorDistanceMsg(String ifCursorDistanceMsg) {
-        this.ifCursorDistanceMsg = ifCursorDistanceMsg;
     }
 }

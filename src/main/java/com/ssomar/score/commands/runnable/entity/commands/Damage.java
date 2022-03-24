@@ -22,6 +22,8 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /* DAMAGE {amount} */
 public class Damage extends EntityCommand{
@@ -35,6 +37,12 @@ public class Damage extends EntityCommand{
 		try {
 			double amount;
 			String damage = args.get(0);
+
+			boolean potionAmplification = false;
+			try{
+				potionAmplification = Boolean.valueOf(args.get(1));
+			}catch (Exception e){}
+
 			/* percentage damage */
 			if(damage.contains("%") && entity instanceof LivingEntity) {
 					String [] decomp = damage.split("\\%");
@@ -50,6 +58,14 @@ public class Damage extends EntityCommand{
 
 			}
 			else amount = Double.parseDouble(damage);
+
+			if(p != null && potionAmplification){
+				PotionEffect pE = p.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+				if(pE != null) {
+					amount = amount + (pE.getAmplifier() + 1) * 1.5;
+				}
+			}
+
 			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
 				LivingEntity e = (LivingEntity) entity;
 				if(e instanceof EnderDragon){
@@ -80,9 +96,9 @@ public class Damage extends EntityCommand{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String damage = "DAMAGE {amount}";
+		String damage = "DAMAGE {amount} {amplified If Strength Effect, true or false}";
 		if(args.size() < 1) error = notEnoughArgs+damage;
-		else if(args.size() != 1) error= tooManyArgs+damage;
+		else if(args.size() > 2) error= tooManyArgs+damage;
 
 		return error;
 	}
@@ -96,7 +112,7 @@ public class Damage extends EntityCommand{
 
 	@Override
 	public String getTemplate() {
-		return "DAMAGE {amount}";
+		return "DAMAGE {amount} {amplified If Strength Effect, true or false}";
 	}
 
 	@Override

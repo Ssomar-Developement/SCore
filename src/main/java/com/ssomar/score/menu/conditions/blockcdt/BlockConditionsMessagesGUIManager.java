@@ -115,7 +115,8 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<Bloc
 		bC.setIfIsPoweredMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_IS_POWERED_MSG.name));
 		bC.setIfMustBeNotPoweredMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NOT_POWERED_MSG.name));
 		bC.setIfPlantFullyGrownMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_PLANT_FULLY_GROWN_MSG.name));
-		bC.setIfIsNaturalMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name));
+		bC.setIfBlockAgeMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_AGE_MSG.name));
+		bC.setIfMustBeNaturalMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_MUST_BE_NATURAL_MSG.name));
 		bC.setIfBlockLocationXMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_X_MSG.name));
 		bC.setIfBlockLocationX2Msg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_X2_MSG.name));
 		bC.setIfBlockLocationYMsg(cache.get(p).getMessage(BlockConditionsMessages.IF_BLOCK_LOCATION_Y_MSG.name));

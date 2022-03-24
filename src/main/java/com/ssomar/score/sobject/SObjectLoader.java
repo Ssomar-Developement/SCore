@@ -80,7 +80,7 @@ public abstract class SObjectLoader<T extends SObject> {
                         pdfile.getParentFile().mkdirs();
                         pdfile.createNewFile();
                     } else
-                        return;
+                        continue;
 
                     OutputStream out = new FileOutputStream(pdfile);
                     byte[] buffer = new byte[1024];

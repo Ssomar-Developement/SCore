@@ -11,6 +11,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.ssomar.score.utils.messages.MessageDesign;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,6 +31,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 
+@Getter @Setter
 public class EntityConditions extends Conditions{
 
 	private boolean ifGlowing;
@@ -101,7 +104,7 @@ public class EntityConditions extends Conditions{
 
 	public boolean verifConditions(Entity e, @Nullable Player p) {
 
-		if(this.hasIfGlowing()) {
+		if(this.isIfGlowing()) {
 			boolean hasError= !e.isGlowing();
 			LivingEntity lE = (LivingEntity)e;
 			try {
@@ -121,12 +124,12 @@ public class EntityConditions extends Conditions{
 			}
 		}
 
-		if(this.hasIfInvulnerable() && !e.isInvulnerable()) {
+		if(this.isIfInvulnerable() && !e.isInvulnerable()) {
 			if(p != null) this.getSm().sendMessage(p, this.getIfInvulnerableMsg());
 			return false;
 		}
 
-		if(this.hasIfOnFire() && !e.isVisualFire()) {
+		if(this.isIfOnFire() && !e.isVisualFire()) {
 			if(p != null) this.getSm().sendMessage(p, this.getIfOnFireMsg());
 			return false;
 		}
@@ -152,17 +155,17 @@ public class EntityConditions extends Conditions{
 		}
 
 
-		if(this.hasIfAdult() && e instanceof Ageable && !((Ageable)e).isAdult()) {
+		if(this.isIfAdult() && e instanceof Ageable && !((Ageable)e).isAdult()) {
 			if(p != null) this.getSm().sendMessage(p, this.getIfAdultMsg());
 			return false;
 		}
 
-		if(this.hasIfBaby() && e instanceof Ageable && ((Ageable)e).isAdult()) {
+		if(this.isIfBaby() && e instanceof Ageable && ((Ageable)e).isAdult()) {
 			if(p != null) this.getSm().sendMessage(p, this.getIfBabyMsg());
 			return false;
 		}
 
-		if(this.hasIfPowered() && e instanceof Creeper && !((Creeper)e).isPowered()) {
+		if(this.isIfPowered() && e instanceof Creeper && !((Creeper)e).isPowered()) {
 			if(p != null) this.getSm().sendMessage(p, this.getIfPoweredMsg());
 			return false;
 		}
@@ -232,32 +235,32 @@ public class EntityConditions extends Conditions{
 
 		ConfigurationSection eCConfig = config.getConfigurationSection("activators."+sActivator.getID()+".conditions."+detail);
 
-		if(eC.hasIfGlowing()) eCConfig.set("ifGlowing", true); 
+		if(eC.isIfGlowing()) eCConfig.set("ifGlowing", true);
 		else eCConfig.set("ifGlowing", null);
 		if(eC.getIfGlowingMsg().contains(eC.IF_GLOWING_MSG)) eCConfig.set("ifGlowingMsg", null);
 		else eCConfig.set("ifGlowingMsg", eC.getIfGlowingMsg());
 
-		if(eC.hasIfInvulnerable()) eCConfig.set("ifInvulnerable", true); 
+		if(eC.isIfInvulnerable()) eCConfig.set("ifInvulnerable", true);
 		else eCConfig.set("ifInvulnerable", null);
 		if(eC.getIfInvulnerableMsg().contains(eC.IF_INVULNERABLE_MSG))  eCConfig.set("ifInvulnerableMsg", null);
 		else eCConfig.set("ifInvulnerableMsg", eC.getIfInvulnerableMsg());
 
-		if(eC.hasIfOnFire()) eCConfig.set("ifOnFire", true);
+		if(eC.isIfOnFire()) eCConfig.set("ifOnFire", true);
 		else eCConfig.set("ifOnFire", null);
 		if(eC.getIfOnFireMsg().contains(eC.IF_ON_FIRE_MSG)) eCConfig.set("ifOnFireMsg", null);
 		else eCConfig.set("ifOnFireMsg", eC.getIfOnFireMsg());
 
-		if(eC.hasIfAdult()) eCConfig.set("ifAdult", true); 
+		if(eC.isIfAdult()) eCConfig.set("ifAdult", true);
 		else eCConfig.set("ifAdult", null);
 		if(eC.getIfAdultMsg().contains(eC.IF_ADULT_MSG))  eCConfig.set("ifAdultMsg", null);
 		else eCConfig.set("ifAdultMsg", eC.getIfAdultMsg());
 
-		if(eC.hasIfBaby()) eCConfig.set("ifBaby", true); 
+		if(eC.isIfBaby()) eCConfig.set("ifBaby", true);
 		else eCConfig.set("ifBaby", null);
 		if(eC.getIfBabyMsg().contains(eC.IF_BABY_MSG)) eCConfig.set("ifBabyMsg", null);
 		else eCConfig.set("ifBabyMsg", eC.getIfBabyMsg());
 
-		if(eC.hasIfPowered()) eCConfig.set("ifPowered", true); 
+		if(eC.isIfPowered()) eCConfig.set("ifPowered", true);
 		else eCConfig.set("ifPowered", null);
 		if(eC.getIfPoweredMsg().contains(eC.IF_POWERED_MSG)) eCConfig.set("ifPoweredMsg", null);
 		else eCConfig.set("ifPoweredMsg", eC.getIfPoweredMsg());
@@ -295,203 +298,15 @@ public class EntityConditions extends Conditions{
 		}
 	}
 
-
-	public boolean isIfAdult() {
-		return ifAdult;
-	}
-
-	public void setIfAdult(boolean ifAdult) {
-		this.ifAdult = ifAdult;
-	}
-
-	public boolean hasIfAdult() {
-		return ifAdult;
-	}
-
-	public boolean isIfBaby() {
-		return ifBaby;
-	}
-
-	public void setIfBaby(boolean ifBaby) {
-		this.ifBaby = ifBaby;
-	}
-
-	public boolean hasIfBaby() {
-		return ifBaby;
-	}
-
-	public boolean isIfGlowing() {
-		return ifGlowing;
-	}
-
-	public void setIfGlowing(boolean ifGlowing) {
-		this.ifGlowing = ifGlowing;
-	}
-
-	public boolean hasIfGlowing() {
-		return ifGlowing;
-	}
-
-	public boolean isIfInvulnerable() {
-		return ifInvulnerable;
-	}
-
-	public void setIfInvulnerable(boolean ifInvulnerable) {
-		this.ifInvulnerable = ifInvulnerable;
-	}
-
-	public boolean hasIfInvulnerable() {
-		return ifInvulnerable;
-	}
-
-	public boolean isIfOnFire() {
-		return ifOnFire;
-	}
-
-	public void setIfOnFire(boolean ifOnFire) {
-		this.ifOnFire = ifOnFire;
-	}
-
-	public boolean hasIfOnFire() {
-		return ifOnFire;
-	}
-
-	public List<String> getIfName() {
-		return ifName;
-	}
-
-	public void setIfName(List<String> ifName) {
-		this.ifName = ifName;
-	}
-
 	public boolean hasIfName() {
-		return ifName.size()!=0;
-	}
-
-	public List<EntityType> getIfNotEntityType() {
-		return ifNotEntityType;
-	}
-
-	public void setIfNotEntityType(List<EntityType> ifNotEntityType) {
-		this.ifNotEntityType = ifNotEntityType;
+		return ifName.size() != 0;
 	}
 
 	public boolean hasIfNotEntityType() {
-		return ifNotEntityType.size()!=0;
-	}
-
-	public String getIfEntityHealth() {
-		return ifEntityHealth;
-	}
-
-	public void setIfEntityHealth(String ifEntityHealth) {
-		this.ifEntityHealth = ifEntityHealth;
+		return ifNotEntityType.size() != 0;
 	}
 
 	public boolean hasIfEntityHealth() {
-		return ifEntityHealth.length()!=0;
+		return ifEntityHealth.length() != 0;
 	}
-
-	public boolean isIfPowered() {
-		return ifPowered;
-	}
-
-	public void setIfPowered(boolean ifPowered) {
-		this.ifPowered = ifPowered;
-	}
-
-	public boolean hasIfPowered() {
-		return ifPowered;
-	}
-
-
-	public String getIfAdultMsg() {
-		return ifAdultMsg;
-	}
-
-
-	public void setIfAdultMsg(String ifAdultMsg) {
-		this.ifAdultMsg = ifAdultMsg;
-	}
-
-
-	public String getIfGlowingMsg() {
-		return ifGlowingMsg;
-	}
-
-
-	public void setIfGlowingMsg(String ifGlowingMsg) {
-		this.ifGlowingMsg = ifGlowingMsg;
-	}
-
-
-	public String getIfInvulnerableMsg() {
-		return ifInvulnerableMsg;
-	}
-
-
-	public void setIfInvulnerableMsg(String ifInvulnerableMsg) {
-		this.ifInvulnerableMsg = ifInvulnerableMsg;
-	}
-
-	public String getIfOnFireMsg() {
-		return ifOnFireMsg;
-	}
-
-	public void setIfOnFireMsg(String ifOnFireMsg) {
-		this.ifOnFireMsg = ifOnFireMsg;
-	}
-
-	public String getIfNameMsg() {
-		return ifNameMsg;
-	}
-
-
-	public void setIfNameMsg(String ifNameMsg) {
-		this.ifNameMsg = ifNameMsg;
-	}
-
-
-	public String getIfEntityHealthMsg() {
-		return ifEntityHealthMsg;
-	}
-
-
-	public void setIfEntityHealthMsg(String ifEntityHealthMsg) {
-		this.ifEntityHealthMsg = ifEntityHealthMsg;
-	}
-
-
-	public String getIfBabyMsg() {
-		return ifBabyMsg;
-	}
-
-
-	public void setIfBabyMsg(String ifBabyMsg) {
-		this.ifBabyMsg = ifBabyMsg;
-	}
-
-
-	public String getIfPoweredMsg() {
-		return ifPoweredMsg;
-	}
-
-
-	public void setIfPoweredMsg(String ifPoweredMsg) {
-		this.ifPoweredMsg = ifPoweredMsg;
-	}
-
-
-	public String getIfNotEntityTypeMsg() {
-		return ifNotEntityTypeMsg;
-	}
-
-
-	public void setIfNotEntityTypeMsg(String ifNotEntityTypeMsg) {
-		this.ifNotEntityTypeMsg = ifNotEntityTypeMsg;
-	}
-
-
-
-
 }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssomar.score.utils.messages.MessageDesign;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -27,11 +29,16 @@ import com.ssomar.score.usedapi.MyCoreProtectAPI;
 import com.ssomar.score.utils.StringCalculation;
 import org.jetbrains.annotations.Nullable;
 
+@Getter @Setter
 public class BlockConditions extends Conditions{
 
 	private boolean ifPlantFullyGrown;
 	public static final String IF_PLANT_FULLY_GROWN_MSG = " &cThe plant must be fully grown to active the activator: &6%activator% &cof this item!";
 	private String ifPlantFullyGrownMsg;
+
+	private String ifBlockAge;
+	public static final String IF_BLOCK_AGE_MSG = " &cThe block age is invalid to active the activator: &6%activator% &cof this item!";
+	private String ifBlockAgeMsg;
 
 	private boolean ifIsPowered;
 	public static final String IF_IS_POWERED_MSG = " &cThe block must be powered by redstone to active the activator: &6%activator% &cof this item!";
@@ -86,7 +93,10 @@ public class BlockConditions extends Conditions{
 	@Override
 	public void init() {
 		this.ifPlantFullyGrown = false;
-		this.ifPlantFullyGrownMsg = IF_PLANT_FULLY_GROWN_MSG;	
+		this.ifPlantFullyGrownMsg = IF_PLANT_FULLY_GROWN_MSG;
+
+		ifBlockAge = "";
+		ifBlockAgeMsg = IF_BLOCK_AGE_MSG;
 
 		this.ifIsPowered = false;
 		this.ifIsPoweredMsg = IF_IS_POWERED_MSG;	
@@ -122,25 +132,6 @@ public class BlockConditions extends Conditions{
 
 		ifNoPlayerMustBeOnTheBlock = false;
 		ifNoPlayerMustBeOnTheBlockMsg = IF_NO_PLAYER_MUST_BE_ON_THE_MSG;
-
-		//		List<Material> typeCdt = new ArrayList<>();
-		//		typeCdt.add(Material.RAW_IRON_BLOCK);
-		//		
-		//		List<Material> typeCdt2 = new ArrayList<>();
-		//		typeCdt2.add(Material.RAW_GOLD_BLOCK);
-		//		
-		//		AroundBlockCondition cdt1 = new AroundBlockCondition(0, 0, 0, 0, 1, 0, new ArrayList<>(), typeCdt, "error block 1");
-		//		AroundBlockCondition cdt2 = new AroundBlockCondition(0, 0, 0, 1, 0, 0, new ArrayList<>(), typeCdt, "error block 1");
-		//		AroundBlockCondition cdt3 = new AroundBlockCondition(0, 0, 1, 0, 0, 0, new ArrayList<>(), typeCdt, "error block 1");
-		//		AroundBlockCondition cdt4 = new AroundBlockCondition(0, 0, 0, 0, 0, 1, new ArrayList<>(), typeCdt, "error block 1");
-		//		
-		//		AroundBlockCondition cdt5 = new AroundBlockCondition(0, 0, 0, 0, 2, 0, new ArrayList<>(), typeCdt2, "error block 1");
-		//		
-		//		blockAroundConditions.add(cdt1);
-		//		blockAroundConditions.add(cdt2);
-		//		blockAroundConditions.add(cdt3);
-		//		blockAroundConditions.add(cdt4);
-		//		blockAroundConditions.add(cdt5);
 	}
 
 	public boolean verifConditions(Block b, @Nullable Player p) {
@@ -149,7 +140,12 @@ public class BlockConditions extends Conditions{
 
 		if(this.isIfPlantFullyGrown() && b.getState().getBlockData() instanceof Ageable) {
 			Ageable ageable = (Ageable) b.getState().getBlockData();
-			if(ageable.getAge() != ageable.getMaximumAge()) {
+			int age = ageable.getAge();
+			if(!ifBlockAge.equals("") && !StringCalculation.calculation(ifBlockAge, age)) {
+				if(hasPlayer) this.getSm().sendMessage(p, this.getIfBlockAgeMsg());
+				return false;
+			}
+			if(age != ageable.getMaximumAge()) {
 				this.getSm().sendMessage(p, this.getIfPlantFullyGrownMsg());
 				return false;
 			}
@@ -263,6 +259,9 @@ public class BlockConditions extends Conditions{
 		bCdt.setIfPlantFullyGrown(blockCdtSection.getBoolean("ifPlantFullyGrown", false));
 		bCdt.setIfPlantFullyGrownMsg(blockCdtSection.getString("ifPlantFullyGrownMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_PLANT_FULLY_GROWN_MSG));
 
+		bCdt.setIfBlockAge(blockCdtSection.getString("ifBlockAge", ""));
+		bCdt.setIfBlockAgeMsg(blockCdtSection.getString("ifBlockAgeMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_AGE_MSG));
+
 		bCdt.setIfIsPowered(blockCdtSection.getBoolean("ifIsPowered", false));
 		bCdt.setIfIsPoweredMsg(blockCdtSection.getString("ifIsPoweredMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_IS_POWERED_MSG));
 
@@ -270,7 +269,7 @@ public class BlockConditions extends Conditions{
 		bCdt.setIfMustBeNotPoweredMsg(blockCdtSection.getString("ifMustBeNotPoweredMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_MUST_BE_NOT_POWERED_MSG));
 
 		bCdt.setIfMustBeNatural(blockCdtSection.getBoolean("ifMustBeNatural", false));
-		bCdt.setIfIsNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_MUST_BE_NATURAL_MSG));
+		bCdt.setIfMustBeNaturalMsg(blockCdtSection.getString("ifMustBeNaturalMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_MUST_BE_NATURAL_MSG));
 
 		bCdt.setIfBlockLocationX(blockCdtSection.getString("ifBlockLocationX", ""));
 		bCdt.setIfBlockLocationXMsg(blockCdtSection.getString("ifBlockLocationXMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_BLOCK_LOCATION_X_MSG));
@@ -333,6 +332,11 @@ public class BlockConditions extends Conditions{
 		if(bC.getIfPlantFullyGrownMsg().contains(bC.IF_PLANT_FULLY_GROWN_MSG)) pCConfig.set("ifPlantFullyGrownMsg", null);
 		else pCConfig.set("ifPlantFullyGrownMsg", bC.getIfPlantFullyGrownMsg());
 
+		if(!bC.ifBlockAge.equals("")) pCConfig.set("ifBlockAge", bC.ifBlockAge);
+		else pCConfig.set("ifBlockAge", null);
+		if(bC.ifBlockAgeMsg.contains(bC.IF_BLOCK_AGE_MSG)) pCConfig.set("ifBlockAgeMsg", null);
+		else pCConfig.set("ifBlockAgeMsg", bC.ifBlockAgeMsg);
+
 		if(bC.isIfIsPowered()) pCConfig.set("ifIsPowered", true); 
 		else pCConfig.set("ifIsPowered", null);
 		if(bC.getIfIsPoweredMsg().contains(bC.IF_IS_POWERED_MSG)) pCConfig.set("ifIsPoweredMsg", null);
@@ -343,7 +347,7 @@ public class BlockConditions extends Conditions{
 		if(bC.getIfMustBeNotPoweredMsg().contains(bC.IF_MUST_BE_NOT_POWERED_MSG))  pCConfig.set("ifMustBeNotPoweredMsg", null);
 		else pCConfig.set("ifMustBeNotPoweredMsg", bC.getIfMustBeNotPoweredMsg());
 
-		if(bC.isIfMustbeNatural()) pCConfig.set("ifMustBeNatural", true); 
+		if(bC.isIfMustBeNatural()) pCConfig.set("ifMustBeNatural", true);
 		else pCConfig.set("ifMustBeNatural", null);
 		if(bC.getIfMustBeNaturalMsg().contains(bC.IF_MUST_BE_NATURAL_MSG)) pCConfig.set("ifMustBeNaturalMsg", null);
 		else pCConfig.set("ifMustBeNaturalMsg", bC.getIfMustBeNaturalMsg());
@@ -399,214 +403,5 @@ public class BlockConditions extends Conditions{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	public boolean isIfPlantFullyGrown() {
-		return ifPlantFullyGrown;
-	}
-
-	public void setIfPlantFullyGrown(boolean ifPlantFullyGrown) {
-		this.ifPlantFullyGrown = ifPlantFullyGrown;
-	}
-
-	public String getIfPlantFullyGrownMsg() {
-		return ifPlantFullyGrownMsg;
-	}
-
-	public void setIfPlantFullyGrownMsg(String ifPlantFullyGrownMsg) {
-		this.ifPlantFullyGrownMsg = ifPlantFullyGrownMsg;
-	}
-
-	public boolean isIfIsPowered() {
-		return ifIsPowered;
-	}
-
-	public void setIfIsPowered(boolean ifIsPowered) {
-		this.ifIsPowered = ifIsPowered;
-	}
-
-	public String getIfIsPoweredMsg() {
-		return ifIsPoweredMsg;
-	}
-
-	public void setIfIsPoweredMsg(String ifIsPoweredMsg) {
-		this.ifIsPoweredMsg = ifIsPoweredMsg;
-	}
-
-	public boolean isIfMustbeNatural() {
-		return ifMustBeNatural;
-	}
-
-	public void setIfMustBeNatural(boolean ifIsNatural) {
-		this.ifMustBeNatural = ifIsNatural;
-	}
-
-	public String getIfMustBeNaturalMsg() {
-		return ifMustBeNaturalMsg;
-	}
-
-	public void setIfIsNaturalMsg(String ifIsNaturalMsg) {
-		this.ifMustBeNaturalMsg = ifIsNaturalMsg;
-	}
-
-	public List<AroundBlockCondition> getBlockAroundConditions() {
-		return blockAroundConditions;
-	}
-
-	public void setBlockAroundConditions(List<AroundBlockCondition> blockAroundConditions) {
-		this.blockAroundConditions = blockAroundConditions;
-	}
-
-	public boolean isIfMustBeNotPowered() {
-		return ifMustBeNotPowered;
-	}
-
-	public void setIfMustBeNotPowered(boolean ifMustBeNotPowered) {
-		this.ifMustBeNotPowered = ifMustBeNotPowered;
-	}
-
-	public String getIfMustBeNotPoweredMsg() {
-		return ifMustBeNotPoweredMsg;
-	}
-
-	public void setIfMustBeNotPoweredMsg(String ifMustBeNotPoweredMsg) {
-		this.ifMustBeNotPoweredMsg = ifMustBeNotPoweredMsg;
-	}
-
-	public String getIfBlockLocationX() {
-		return ifBlockLocationX;
-	}
-
-	public void setIfBlockLocationX(String ifBlockLocationX) {
-		this.ifBlockLocationX = ifBlockLocationX;
-	}
-
-	public String getIfBlockLocationXMsg() {
-		return ifBlockLocationXMsg;
-	}
-
-	public void setIfBlockLocationXMsg(String ifBlockLocationXMsg) {
-		this.ifBlockLocationXMsg = ifBlockLocationXMsg;
-	}
-
-	public String getIfBlockLocationX2() {
-		return ifBlockLocationX2;
-	}
-
-	public void setIfBlockLocationX2(String ifBlockLocationX2) {
-		this.ifBlockLocationX2 = ifBlockLocationX2;
-	}
-
-	public String getIfBlockLocationX2Msg() {
-		return ifBlockLocationX2Msg;
-	}
-
-	public void setIfBlockLocationX2Msg(String ifBlockLocationX2Msg) {
-		this.ifBlockLocationX2Msg = ifBlockLocationX2Msg;
-	}
-
-	public String getIfBlockLocationY() {
-		return ifBlockLocationY;
-	}
-
-	public void setIfBlockLocationY(String ifBlockLocationY) {
-		this.ifBlockLocationY = ifBlockLocationY;
-	}
-
-	public String getIfBlockLocationYMsg() {
-		return ifBlockLocationYMsg;
-	}
-
-	public void setIfBlockLocationYMsg(String ifBlockLocationYMsg) {
-		this.ifBlockLocationYMsg = ifBlockLocationYMsg;
-	}
-
-	public String getIfBlockLocationY2() {
-		return ifBlockLocationY2;
-	}
-
-	public void setIfBlockLocationY2(String ifBlockLocationY2) {
-		this.ifBlockLocationY2 = ifBlockLocationY2;
-	}
-
-	public String getIfBlockLocationY2Msg() {
-		return ifBlockLocationY2Msg;
-	}
-
-	public void setIfBlockLocationY2Msg(String ifBlockLocationY2Msg) {
-		this.ifBlockLocationY2Msg = ifBlockLocationY2Msg;
-	}
-
-	public String getIfBlockLocationZ() {
-		return ifBlockLocationZ;
-	}
-
-	public void setIfBlockLocationZ(String ifBlockLocationZ) {
-		this.ifBlockLocationZ = ifBlockLocationZ;
-	}
-
-	public String getIfBlockLocationZ2() {
-		return ifBlockLocationZ2;
-	}
-
-	public void setIfBlockLocationZ2(String ifBlockLocationZ2) {
-		this.ifBlockLocationZ2 = ifBlockLocationZ2;
-	}
-
-	public String getIfBlockLocationZMsg() {
-		return ifBlockLocationZMsg;
-	}
-
-	public void setIfBlockLocationZMsg(String ifBlockLocationZMsg) {
-		this.ifBlockLocationZMsg = ifBlockLocationZMsg;
-	}
-
-	public String getIfBlockLocationZ2Msg() {
-		return ifBlockLocationZ2Msg;
-	}
-
-	public void setIfBlockLocationZ2Msg(String ifBlockLocationZ2Msg) {
-		this.ifBlockLocationZ2Msg = ifBlockLocationZ2Msg;
-	}
-
-	public boolean isIfMustBeNatural() {
-		return ifMustBeNatural;
-	}
-
-	public void setIfMustBeNaturalMsg(String ifMustBeNaturalMsg) {
-		this.ifMustBeNaturalMsg = ifMustBeNaturalMsg;
-	}
-
-	public boolean isIfPlayerMustBeOnTheBlock() {
-		return ifPlayerMustBeOnTheBlock;
-	}
-
-	public void setIfPlayerMustBeOnTheBlock(boolean ifPlayerMustBeOnTheBlock) {
-		this.ifPlayerMustBeOnTheBlock = ifPlayerMustBeOnTheBlock;
-	}
-
-	public String getIfPlayerMustBeOnTheBlockMsg() {
-		return ifPlayerMustBeOnTheBlockMsg;
-	}
-
-	public void setIfPlayerMustBeOnTheBlockMsg(String ifPlayerMustBeOnTheBlockMsg) {
-		this.ifPlayerMustBeOnTheBlockMsg = ifPlayerMustBeOnTheBlockMsg;
-	}
-
-	public boolean isIfNoPlayerMustBeOnTheBlock() {
-		return ifNoPlayerMustBeOnTheBlock;
-	}
-
-	public void setIfNoPlayerMustBeOnTheBlock(boolean ifNoPlayerMustBeOnTheBlock) {
-		this.ifNoPlayerMustBeOnTheBlock = ifNoPlayerMustBeOnTheBlock;
-	}
-
-	public String getIfNoPlayerMustBeOnTheBlockMsg() {
-		return ifNoPlayerMustBeOnTheBlockMsg;
-	}
-
-	public void setIfNoPlayerMustBeOnTheBlockMsg(String ifNoPlayerMustBeOnTheBlockMsg) {
-		this.ifNoPlayerMustBeOnTheBlockMsg = ifNoPlayerMustBeOnTheBlockMsg;
 	}
 }

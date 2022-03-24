@@ -1,12 +1,14 @@
 package com.ssomar.score.sobject.sactivator.conditions;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.utils.SendMessage;
 
 public abstract class Conditions{
 	
-
+	@Getter @Setter
 	private SendMessage sm = new SendMessage();
 	
 	public Conditions() {
@@ -19,10 +21,4 @@ public abstract class Conditions{
 		return false;
 	}
 
-	public SendMessage getSm() {
-		return sm;
-	}
-	public void setSm(SendMessage sm) {
-		this.sm = sm;
-	}
 }

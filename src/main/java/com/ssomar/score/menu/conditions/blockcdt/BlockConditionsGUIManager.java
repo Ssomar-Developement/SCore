@@ -67,6 +67,15 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		else if(i.name.contains(BlockConditionsGUI.AROUND_BLOCK_CDT)) {
 			AroundBlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, bC.getBlockAroundConditions(), cache.get(i.player).getDetail());
 		}
+		else if(i.name.contains(BlockConditionsGUI.IF_BLOCK_AGE)) {
+			requestWriting.put(i.player,BlockConditionsGUI.IF_BLOCK_AGE);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF BLOCK AGE:"));
+
+			this.showCalculationGUI(i.player, "Age", cache.get(i.player).getIfAge());
+			space(i.player);
+		}
 		else if(i.name.contains(BlockConditionsGUI.BLOCK_X_CDT)) {
 			requestWriting.put(i.player,BlockConditionsGUI.BLOCK_X_CDT);
 			i.player.closeInventory();
@@ -136,8 +145,11 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		if(message.contains("exit")) {
 			boolean pass = false;
 			if(StringConverter.decoloredString(message).equals("exit with delete")) {
-				
-				if(requestWriting.get(p).equals(BlockConditionsGUI.BLOCK_X_CDT)) {
+
+				if(requestWriting.get(p).equals(BlockConditionsGUI.IF_BLOCK_AGE)) {
+					cache.get(p).updateIfAge("");
+				}
+				else if(requestWriting.get(p).equals(BlockConditionsGUI.BLOCK_X_CDT)) {
 					cache.get(p).updateIfPosX("");
 				}
 				else if(requestWriting.get(p).equals(BlockConditionsGUI.BLOCK_X_CDT2)) {
@@ -175,8 +187,18 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 //				space(p);
 //				space(p);			
 //			}
-			
-			if(requestWriting.get(p).equals(BlockConditionsGUI.BLOCK_X_CDT)) {
+
+			if(requestWriting.get(p).equals(BlockConditionsGUI.IF_BLOCK_AGE)) {
+				if(StringCalculation.isStringCalculation(message)) {
+					cache.get(p).updateIfAge(message);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for age please !"));
+					this.showCalculationGUI(p, "Age", cache.get(p).getIfAge());
+				}
+			}
+			else if(requestWriting.get(p).equals(BlockConditionsGUI.BLOCK_X_CDT)) {
 				if(StringCalculation.isStringCalculation(message)) {
 					cache.get(p).updateIfPosX(message);
 					requestWriting.remove(p);
@@ -290,6 +312,7 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		bC.setIfMustBeNotPowered(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NOT_POWERED));
 		bC.setIfMustBeNatural(cache.get(p).getBoolean(BlockConditionsGUI.IF_MUST_BE_NATURAL));
 		bC.setIfPlantFullyGrown(cache.get(p).getBoolean(BlockConditionsGUI.IF_PLANT_FULLY_GROWN));
+		bC.setIfBlockAge(cache.get(p).getIfAge());
 		bC.setIfBlockLocationX(cache.get(p).getIfPosX());
 		bC.setIfBlockLocationX2(cache.get(p).getIfPosX2());
 		bC.setIfBlockLocationY(cache.get(p).getIfPosY());

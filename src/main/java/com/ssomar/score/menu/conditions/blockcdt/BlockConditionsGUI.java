@@ -12,6 +12,7 @@ import com.ssomar.score.splugin.SPlugin;
 public class BlockConditionsGUI extends ConditionGUIAbstract{
 	
 	public static final String IF_PLANT_FULLY_GROWN = "ifPlantFullyGrown";
+	public static final String IF_BLOCK_AGE = "if block age condition";
 	public static final String IF_IS_POWERED = "ifIsPowered";
 	public static final String IF_MUST_BE_NOT_POWERED = "ifMustbeNotPowered";
 	public static final String IF_MUST_BE_NATURAL = "ifMustBeNatural";
@@ -37,6 +38,10 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_PLANT_FULLY_GROWN, 	false,	false, "&7&oThe plant must be fully grown ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_PLANT_FULLY_GROWN, conditions.isIfPlantFullyGrown());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_BLOCK_AGE, 	false,	false, "&7&oThe block age must be ...", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfAge(conditions.getIfBlockAge());
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_IS_POWERED, 	false,	false, "&7&oThe block must be powered ?", "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -48,7 +53,7 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_MUST_BE_NATURAL, 	false,	false, "&7&oThe block must be natural ?", "&c&oREQUIRE COREPROTECT", "&a✎ Click here to change", "&7actually:");
 		i++;
-		this.updateBoolean(IF_MUST_BE_NATURAL, conditions.isIfMustbeNatural());
+		this.updateBoolean(IF_MUST_BE_NATURAL, conditions.isIfMustBeNatural());
 		
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+BLOCK_X_CDT, 	false,	false, "&7&oThe block location X must be ...", "&a✎ Click here to change", "&7actually:");
 		i++;
@@ -97,8 +102,19 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.BOOK, 			1 , 24, COLOR_OBJECT_ID, 	false, false, "", "&7actually: &e"+this.getSObject().getId());
 		createItem(Material.BOOK, 			1 , 25, COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 	}
-	
-	
+
+
+	public void updateIfAge(String condition){
+		ItemStack item = this.getByName(IF_BLOCK_AGE);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfAge() {
+		if(this.getActually(this.getByName(IF_BLOCK_AGE)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_BLOCK_AGE));
+	}
+
 	public void updateIfPosX(String condition){
 		ItemStack item = this.getByName(BLOCK_X_CDT);
 		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
