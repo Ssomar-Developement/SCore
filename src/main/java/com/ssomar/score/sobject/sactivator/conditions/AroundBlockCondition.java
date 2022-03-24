@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,7 +28,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
 import org.jetbrains.annotations.Nullable;
 
-@Getter
+@Getter@Setter
 public class AroundBlockCondition extends Conditions{
 	
 	private String id;
