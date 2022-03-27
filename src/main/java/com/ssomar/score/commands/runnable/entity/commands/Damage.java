@@ -32,63 +32,30 @@ public class Damage extends EntityCommand{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		/* When target a NPC it can occurs */
-		if(entity == null) return;
+		if(entity == null || !(entity instanceof LivingEntity)) return;
+		LivingEntity receiver = (LivingEntity)  entity;
 
-		try {
-			double amount;
-			String damage = args.get(0);
+		double damage = com.ssomar.score.commands.runnable.player.commands.Damage.getDamage(p, receiver, args, aInfo);
 
-			boolean potionAmplification = false;
-			try{
-				potionAmplification = Boolean.valueOf(args.get(1));
-			}catch (Exception e){}
-
-			/* percentage damage */
-			if(damage.contains("%") && entity instanceof LivingEntity) {
-					String [] decomp = damage.split("\\%");
-					damage = decomp[0];
-					damage = damage.trim();
-					if(damage.length() == 1){
-						damage = "0"+damage;
-					}
-				
-				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
-				amount = ((LivingEntity) entity).getMaxHealth() * percentage;
-				amount = NTools.reduceDouble(amount, 2);
-
-			}
-			else amount = Double.parseDouble(damage);
-
-			if(p != null && potionAmplification){
-				PotionEffect pE = p.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
-				if(pE != null) {
-					amount = amount + (pE.getAmplifier() + 1) * 1.5;
+		if(damage > 0 && !entity.isDead()) {
+			if(receiver instanceof EnderDragon){
+				//SsomarDev.testMsg("Passe enderdrag");
+				double newHealth = receiver.getHealth()-damage;
+				if(newHealth <= 0){
+					((EnderDragon) receiver).setPhase(EnderDragon.Phase.DYING);
+				}
+				else{
+					receiver.setHealth(newHealth);
+					receiver.playEffect(EntityEffect.HURT);
+					receiver.getWorld().playSound(receiver.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
 				}
 			}
 
-			if(amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
-				LivingEntity e = (LivingEntity) entity;
-				if(e instanceof EnderDragon){
-					//SsomarDev.testMsg("Passe enderdrag");
-					double newHealth = e.getHealth()-amount;
-					if(newHealth <= 0){
-						((EnderDragon) e).setPhase(EnderDragon.Phase.DYING);
-					}
-					else{
-						e.setHealth(newHealth);
-						e.playEffect(EntityEffect.HURT);
-						e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
-					}
-				}
-
-				if(p != null) {
-					p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
-					e.damage(amount, (Entity)p);
-				}
-				else e.damage(amount);
+			if(p != null) {
+				p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
+				receiver.damage(damage, (Entity)p);
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
+			else receiver.damage(damage);
 		}
 	}
 
@@ -96,9 +63,9 @@ public class Damage extends EntityCommand{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String damage = "DAMAGE {amount} {amplified If Strength Effect, true or false}";
+		String damage = "DAMAGE {amount} {amplified If Strength Effect, true or false} {amplified with attack attribute, true or false}";
 		if(args.size() < 1) error = notEnoughArgs+damage;
-		else if(args.size() > 2) error= tooManyArgs+damage;
+		else if(args.size() > 3) error= tooManyArgs+damage;
 
 		return error;
 	}
@@ -112,7 +79,7 @@ public class Damage extends EntityCommand{
 
 	@Override
 	public String getTemplate() {
-		return "DAMAGE {amount} {amplified If Strength Effect, true or false}";
+		return "DAMAGE {amount} {amplified If Strength Effect, true or false} {amplified with attack attribute, true or false}";
 	}
 
 	@Override

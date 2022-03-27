@@ -10,7 +10,11 @@ import com.ssomar.score.utils.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -35,56 +39,22 @@ public class Damage extends PlayerCommand{
 		/* When target a NPC it can occurs */
 		if(receiver == null) return;
 
-		try {
-			double amount;
-			String damage = args.get(0);
+		double damage = getDamage(p, receiver, args, aInfo);
 
-			boolean potionAmplification = false;
-			try{
-				potionAmplification = Boolean.valueOf(args.get(1));
-			}catch (Exception e){}
-
-
-			/* percentage damage */
-			if(damage.contains("%")) {
-				String [] decomp = damage.split("\\%");
-				damage = decomp[0];
-				damage = damage.trim();
-				if(damage.length() == 1){
-					damage = "0"+damage;
-				}
-				
-				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
-				amount = receiver.getMaxHealth() * percentage;
-				amount = NTools.reduceDouble(amount, 2);
-			}
-			else amount = Double.parseDouble(damage);
-
-			if(p != null && potionAmplification){
-				PotionEffect pE = p.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
-				if(pE != null) {
-					amount = amount + (pE.getAmplifier() + 1) * 1.5;
+		if(damage > 0 && !receiver.isDead()) {
+			if(p != null) {
+				boolean doDamage = true;
+				if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
+				if(doDamage) {
+					p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
+					receiver.damage(damage, (Entity)p);
 				}
 			}
-			
-			if(amount > 0 && !receiver.isDead()) {
-				if(p != null) {
-					boolean doDamage = true;
-					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
-					if(doDamage) {
-						p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
-						receiver.damage(amount, (Entity)p);
-					}
-				}
-				else {
-					boolean doDamage = true;
-					if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
-					if(doDamage) receiver.damage(amount);
-				}
-
+			else {
+				boolean doDamage = true;
+				if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
+				if(doDamage) receiver.damage(damage);
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -105,7 +75,7 @@ public class Damage extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		return "DAMAGE {number} {amplified If Strength Effect, true or false}";
+		return "DAMAGE {number} {amplified If Strength Effect, true or false} {amplified with attack attribute, true or false}";
 	}
 
 	@Override
@@ -116,5 +86,71 @@ public class Damage extends PlayerCommand{
 	@Override
 	public ChatColor getExtraColor() {
 		return null;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static double getDamage(Player launcher, LivingEntity receiver, List<String> args, ActionInfo actionInfo){
+
+		try {
+			double amount;
+			String damage = args.get(0);
+
+			boolean potionAmplification = false;
+			boolean attributeAmplification = false;
+			try{
+				potionAmplification = Boolean.valueOf(args.get(1));
+			}catch (Exception ign){}
+			try{
+				attributeAmplification = Boolean.valueOf(args.get(2));
+			}catch (Exception ign){}
+
+
+			/* percentage damage */
+			if(damage.contains("%")) {
+				String [] decomp = damage.split("\\%");
+				damage = decomp[0];
+				damage = damage.trim();
+				if(damage.length() == 1){
+					damage = "0"+damage;
+				}
+
+				double percentage = damage.equals("100") ? 1 : Double.parseDouble("0."+damage);
+				amount = receiver.getMaxHealth() * percentage;
+				amount = NTools.reduceDouble(amount, 2);
+			}
+			else amount = Double.parseDouble(damage);
+
+			if(launcher != null){
+				if(potionAmplification) {
+					PotionEffect pE = launcher.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+					if (pE != null) {
+						amount = amount + (pE.getAmplifier() + 1) * 1.5;
+					}
+				}
+
+				//SsomarDev.testMsg("boost attribute: "+ attributeAmplification);
+				if(attributeAmplification){
+					AttributeInstance aI = launcher.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+					double bonusAmount = 0;
+					if(aI != null) {
+						//SsomarDev.testMsg("damage value: "+aI.getValue());
+						SsomarDev.testMsg("passe 1");
+						for (AttributeModifier aM : aI.getModifiers()) {
+							//SsomarDev.testMsg("passe 2:  "+aM.getOperation());
+							if(aM.getOperation().equals(AttributeModifier.Operation.MULTIPLY_SCALAR_1)){
+								//SsomarDev.testMsg("passe 3: "+(amount * aM.getAmount())+ " >> "+aM.getAmount());
+								bonusAmount = bonusAmount + amount * aM.getAmount();
+							}
+						}
+					}
+					//SsomarDev.testMsg("boost attribute bonus: "+ bonusAmount);
+					amount = amount + bonusAmount;
+				}
+			}
+			return amount;
+		}catch(Exception err) {
+			err.printStackTrace();
+		}
+		return 0;
 	}
 }

@@ -59,8 +59,6 @@ public abstract class SProjectiles extends CustomProjectile{
             SCore.plugin.getLogger().severe(SCore.plugin.getNameDesign() + " Error can't find the file  (" + file.getPath() + ")");
             return;
         }
-        file = new File(file.getPath());
-        config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
         try {
             Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 
@@ -109,6 +107,8 @@ public abstract class SProjectiles extends CustomProjectile{
         }
         else if(itemName.equals(save)){
             projectile.extractInfosGUI(gui);
+            file = new File(file.getPath());
+            config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
             projectile.saveConfiguration(config);
             this.resetRequestChat();
             ProjectilesGUIManager.getInstance().startEditing(player);

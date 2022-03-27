@@ -1,11 +1,10 @@
 package com.ssomar.score.events.loop;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.executableitems.items.activators.Option;
 import com.ssomar.score.SsomarDev;
 import org.bukkit.Bukkit;
@@ -15,9 +14,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.EntityWalkOnEvent;
@@ -110,7 +106,7 @@ public class LoopManager {
 														if(v.getX() != 0 || v.getZ() != 0) {
 															EntityWalkOnEvent e = new EntityWalkOnEvent();
 															com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
-															eInfo.setTargetEntity(ent);
+															eInfo.setTargetEntity(Optional.of(ent));
 															com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.ENTITY_WALK_ON, eBP, eInfo, listEB);
 														}
 													}
