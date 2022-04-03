@@ -215,7 +215,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-7fe4a1eccd-1</version>
+			<version>master-c644d4f5e4-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

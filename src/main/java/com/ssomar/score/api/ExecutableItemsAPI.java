@@ -1,13 +1,12 @@
 package com.ssomar.score.api;
 
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.items.*;
+import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.executableitems.items.Item;
+import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.sobject.SObject;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +27,18 @@ public class ExecutableItemsAPI {
 			return oOpt.get().formItem(1, null);
 		}
 		else return null;
+	}
+
+	/**
+		It adds all ExecutableItems settings in the itemStack, but it doesnt modify the material and the customModelDataTag.
+	 **/
+	@Nullable
+	public static ItemStack addExecutableItemSettingsWithoutTexturesThings(String id, @Nullable Player owner, @Nullable ItemStack itemStack) {
+		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
+		if(oOpt.isPresent()) {
+			return oOpt.get().formItem(1, owner, itemStack);
+		}
+		else return itemStack;
 	}
 
 	public static Optional<String> getExecutableItemId(ItemStack itemStack) {
