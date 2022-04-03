@@ -233,8 +233,9 @@
 		<dependency>
 			<groupId>com.iridium</groupId>
 			<artifactId>IridiumSkyblock</artifactId>
-			<version>LATEST</version>
-			<scope>provided</scope>
+			<version>3.2.8</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.2.8.jar</systemPath>
 		</dependency>
 		 <dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
