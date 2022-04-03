@@ -52,12 +52,14 @@ public class Around extends PlayerCommand{
 
 							String buildCommands = prepareCommands.toString();
 							String [] tab;
-							if(buildCommands.contains("+++")) tab = buildCommands.split("\\+\\+\\+");
+							if(buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
 							else {
 								tab = new String[1];
 								tab[0] = buildCommands;
 							}
-							for(String s : tab) {
+							List<String> commands = new ArrayList<>();
+							for(int m = 0 ; m < tab.length; m++) {
+								String s = tab[m];
 								while(s.startsWith(" ")) {
 									s = s.substring(1);
 								}
@@ -67,10 +69,10 @@ public class Around extends PlayerCommand{
 								if(s.startsWith("/")) s = s.substring(1);
 
 								s = sp.replacePlaceholder(s);
-
-								PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Collections.singletonList(s), aInfo2);
-								CommandsExecutor.runCommands(builder);
-							}				
+								commands.add(s);
+							}
+							PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
+							CommandsExecutor.runCommands(builder);
 							cpt++;
 						}
 					}

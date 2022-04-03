@@ -1,7 +1,7 @@
 type: ARROW
 customNameVisible: false
-customName: "CustomArrow2"
-pickupStatus: DISALLOWED #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/AbstractArrow.PickupStatus.html
+customName: CustomArrow2
+pickupStatus: DISALLOWED
 glowing: true
 critical: false
 charged: true
@@ -12,12 +12,15 @@ knockbackStrength: -1
 pierceLevel: 10
 despawnDelay: 2
 visualItem: PURPLE_GLAZED_TERRACOTTA
-velocity: 1 #you can multiply the velocity (speed) ex velocity: 2.5
+velocity: 1
 silent: false
 activeColor: true
-redstoneColor: PURPLE #https://helpch.at/docs/1.12.2/org/bukkit/Color.html
-particlesType: REDSTONE
-particlesAmount: 10
-particlesOffSet: 0.1
-particlesSpeed: 0.3
-particlesDelay: 1 #in tick
+particles:
+  '1':
+    redstoneColor: PURPLE
+    particlesType: REDSTONE
+    particlesAmount: 10
+    particlesOffSet: 0.1
+    particlesSpeed: 0.3
+    particlesDelay: 1
+config_3_5: 'true'

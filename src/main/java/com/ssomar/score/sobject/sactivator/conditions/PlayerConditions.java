@@ -30,26 +30,32 @@ import java.util.Map;
 @Getter @Setter
 public class PlayerConditions extends Conditions {
 
+    // If the player must sneak to activate the activator
     private boolean ifSneaking;
     private static final String IF_SNEAKING_MSG = " &cYou must sneak to active the activator: &6%activator% &cof this item!";
     private String ifSneakingMsg;
 
+    // If the player must not sneak to activate the activator
     private boolean ifNotSneaking;
     private static final String IF_NOT_SNEAKING_MSG = " &cYou must not sneak to active the activator: &6%activator% &cof this item!";
     private String ifNotSneakingMsg;
 
+    // If the player must block to activate the activator
     private boolean ifBlocking;
     private static final String IF_BLOCKING_MSG = " &cYou must block damage with shield to active the activator: &6%activator% &cof this item!";
     private String ifBlockingMsg;
 
+    // If the player must not block to activate the activator
     private boolean ifNotBlocking;
     private static final String IF_NOT_BLOCKING_MSG = " &cYou must not block damage with shield to active the activator: &6%activator% &cof this item!";
     private String ifNotBlockingMsg;
 
+    // If the player must sprint to activate the activator
     private boolean ifSprinting;
     private static final String IF_SPRINTING_MSG = " &cYou must sprint to active the activator: &6%activator% &cof this item!";
     private String ifSprintingMsg;
 
+    // If the player must swim to activate the activator
     private boolean ifSwimming;
     private static final String IF_SWIMMING_MSG = " &cYou must swin to active the activator: &6%activator% &cof this item!";
     private String ifSwimmingMsg;
@@ -191,14 +197,14 @@ public class PlayerConditions extends Conditions {
         this.ifFlying = false;
         this.ifFlyingMsg = IF_FLYING_MSG;
 
-        ifIsInTheAir = false;
-        ifIsInTheAirMsg = IF_IS_IN_THE_AIR_MSG;
+        this.ifIsInTheAir = false;
+        this.ifIsInTheAirMsg = IF_IS_IN_THE_AIR_MSG;
 
-        ifIsOnTheBlock = new ArrayList<>();
-        ifIsOnTheBlockMsg = IF_IS_ON_THE_BLOCK_MSG;
+        this.ifIsOnTheBlock = new ArrayList<>();
+        this.ifIsOnTheBlockMsg = IF_IS_ON_THE_BLOCK_MSG;
 
-        ifIsNotOnTheBlock = new ArrayList<>();
-        ifIsNotOnTheBlockMsg = IF_IS_NOT_ON_THE_BLOCK_MSG;
+        this.ifIsNotOnTheBlock = new ArrayList<>();
+        this.ifIsNotOnTheBlockMsg = IF_IS_NOT_ON_THE_BLOCK_MSG;
 
         this.ifInWorld = new ArrayList<>();
         this.ifInWorldMsg = IF_IN_WORLD_MSG;

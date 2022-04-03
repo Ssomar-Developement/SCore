@@ -21,6 +21,7 @@ public class ExecutableItemsAPI {
 		return ItemManager.getInstance().getLoadedObjectWithID(id).isPresent();
 	}
 
+	@Nullable
 	public static ItemStack getExecutableItem(String id) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
@@ -78,7 +79,8 @@ public class ExecutableItemsAPI {
 	}
 
 	public static boolean isExecutableItem(ItemStack itemStack) {
-		return ItemManager.getInstance().getExecutableItem(itemStack) != null;
+		ExecutableItem ei = new ExecutableItem(itemStack);
+		return ei.isValid();
 	}
 
 	public static boolean isExecutableItem(ItemStack itemStack, String id) {

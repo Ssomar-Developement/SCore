@@ -26,10 +26,11 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import com.ssomar.score.SCore;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WorldGuardAPI {
 
-	public boolean canBuild(Player p, org.bukkit.Location location) {
+	public boolean canBuild(@NotNull Player p, org.bukkit.Location location) {
 
 		if(SCore.is1v12()) return true;
 		
@@ -89,7 +90,7 @@ public class WorldGuardAPI {
 		for (ProtectedRegion region : set) {
             if (region != null){
 				if (region.getFlag(Flags.PVP).equals(State.ALLOW)) {
-					SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority());
+					//SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority());
 					if(allowMaxPriority < region.getPriority()) allowMaxPriority = region.getPriority();
 				}
             }
@@ -98,7 +99,7 @@ public class WorldGuardAPI {
 		for (ProtectedRegion region : set) {
 			if (region != null){
 				if (region.getFlag(Flags.PVP).equals(State.DENY) && region.getPriority() > allowMaxPriority) {
-					SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority()+" || "+allowMaxPriority);
+					//SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority()+" || "+allowMaxPriority);
 					isPVP = false;
 					break;
 				}

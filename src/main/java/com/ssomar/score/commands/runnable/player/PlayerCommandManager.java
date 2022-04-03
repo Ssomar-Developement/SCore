@@ -72,7 +72,17 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new AnimationBreakOffHand());
 		commands.add(new CancelPickup());
 		commands.add(new ModifyDurability());
-		
+		commands.add(new ForceDrop());
+		commands.add(new CloseInventory());
+		commands.add(new GlacialFreeze());
+		commands.add(new GravityEnable());
+		commands.add(new GravityDisable());
+		commands.add(new OpenEnderchest());
+		commands.add(new OpenWorkbench());
+		commands.add(new MinecartBoost());
+		commands.add(new StunEnable());
+		commands.add(new StunDisable());
+
 		this.commands = commands;
 	}
 	

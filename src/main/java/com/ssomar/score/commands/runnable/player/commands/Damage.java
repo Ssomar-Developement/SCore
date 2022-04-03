@@ -42,6 +42,8 @@ public class Damage extends PlayerCommand{
 		double damage = getDamage(p, receiver, args, aInfo);
 
 		if(damage > 0 && !receiver.isDead()) {
+			int maximumNoDmg = receiver.getMaximumNoDamageTicks();
+			receiver.setMaximumNoDamageTicks(0);
 			if(p != null) {
 				boolean doDamage = true;
 				if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
@@ -55,6 +57,7 @@ public class Damage extends PlayerCommand{
 				if(SCore.hasWorldGuard) doDamage = WorldGuardAPI.isInPvpZone(receiver, receiver.getLocation());
 				if(doDamage) receiver.damage(damage);
 			}
+			receiver.setMaximumNoDamageTicks(maximumNoDmg);
 		}
 	}
 
@@ -134,7 +137,6 @@ public class Damage extends PlayerCommand{
 					double bonusAmount = 0;
 					if(aI != null) {
 						//SsomarDev.testMsg("damage value: "+aI.getValue());
-						SsomarDev.testMsg("passe 1");
 						for (AttributeModifier aM : aI.getModifiers()) {
 							//SsomarDev.testMsg("passe 2:  "+aM.getOperation());
 							if(aM.getOperation().equals(AttributeModifier.Operation.MULTIPLY_SCALAR_1)){

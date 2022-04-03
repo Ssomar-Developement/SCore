@@ -13,9 +13,10 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
-/* DROPEXECUTABLEITEM {id} [quantity} */
+
 public class DropExecutableItem extends EntityCommand{
 
+	//
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
@@ -28,6 +29,7 @@ public class DropExecutableItem extends EntityCommand{
 			}
 		}catch(Exception ignored) {}
 	}
+
 
 	@Override
 	public String verify(List<String> args) {

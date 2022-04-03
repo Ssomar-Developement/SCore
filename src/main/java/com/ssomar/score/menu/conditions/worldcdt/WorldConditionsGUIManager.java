@@ -134,7 +134,8 @@ public class WorldConditionsGUIManager extends GUIManagerConditions<WorldConditi
 			}
 			else if(requestWriting.get(p).equals(WorldConditionsGUI.IF_WEATHER)) {
 				if(!prepareMsg.isEmpty()) {
-					if(prepareMsg.equalsIgnoreCase("CLEAR") || prepareMsg.equalsIgnoreCase("STORM") || prepareMsg.equalsIgnoreCase("RAIN") ) {
+					prepareMsg = prepareMsg.toUpperCase();
+					if(prepareMsg.equals("CLEAR") || prepareMsg.equals("STORM") || prepareMsg.equals("RAIN") ) {
 						if(currentWriting.containsKey(p)) {
 							currentWriting.get(p).add(prepareMsg);
 						}

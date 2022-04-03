@@ -2,6 +2,8 @@ package com.ssomar.score;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.plotsquared.core.PlotAPI;
+import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.projectiles.ProjectilesLoader;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.Bukkit;
@@ -174,8 +176,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("PlotSquared") != null) {
-			SCore.plugin.getServer().getLogger().info("["+NAME+"] CPlotSquared hooked !");
-			hasPlotSquared = true;
+			try{
+				PlotAPI plotAPI = new PlotAPI();
+				SCore.plugin.getServer().getLogger().info("["+NAME+"] PlotSquared hooked !");
+				hasPlotSquared = true;
+			}catch (NoClassDefFoundError e){
+				ExecutableBlocks.plugin.getServer().getLogger().severe("["+NAME+"] PlotSquared hooked BUT you haven't the good version ! (try to update it) !");
+				hasPlotSquared = false;
+			}
 		}
 
 	}

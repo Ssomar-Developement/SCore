@@ -272,7 +272,7 @@ public abstract class RunCommandsBuilder{
 				/* ---------------------- */
 				delay = delay+(Integer.parseInt(delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "")));
 			}
-			else if(command.contains("DELAY ")) {
+			else if(command.contains("DELAY ") && !command.contains("AROUND") ) {
 				/* Verify that there is no multiple commands after DELAY */
 				String delayStr = command;
 				if(command.contains("+++")) {

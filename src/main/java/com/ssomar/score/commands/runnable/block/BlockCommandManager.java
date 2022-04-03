@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssomar.score.commands.runnable.block.commands.*;
+import com.ssomar.score.commands.runnable.entity.commands.StunDisable;
+import com.ssomar.score.commands.runnable.entity.commands.StunEnable;
 import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.CommandManager;
@@ -39,6 +41,7 @@ public class BlockCommandManager implements CommandManager{
 		references.add(new MobAround());
 		references.add(new VeinBreaker());
 		references.add(new SilkSpawner());
+		references.add(new DrainInCube());
 		this.commands = references;
 	}
 

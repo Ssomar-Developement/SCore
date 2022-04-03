@@ -22,7 +22,7 @@ public class RemoveBlock extends BlockCommand{
 
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-		if(SCore.hasWorldGuard) {
+		if(SCore.hasWorldGuard && p != null) {
 			if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
 				this.validBreak(block);
 			}

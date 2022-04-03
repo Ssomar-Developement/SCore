@@ -309,7 +309,7 @@ public abstract class SObjectLoader<T extends SObject> {
             config = (FileConfiguration) loader;
             return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            sPlugin.getPlugin().getLogger().severe("Error when loading "+file.getName()+", your config is not made correctly ! this website can help you to resolve your problem: https://codebeautify.org/yaml-validator ");
             File fileBackup = new File(file.getParent() + "/" + file.getName() + ".txt");
 
             int i = 1;

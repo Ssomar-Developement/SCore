@@ -1,7 +1,7 @@
 type: SNOWBALL
 customNameVisible: false
-customName: "CustomArrow2"
-pickupStatus: DISALLOWED #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/AbstractArrow.PickupStatus.html
+customName: CustomArrow2
+pickupStatus: DISALLOWED
 glowing: false
 critical: false
 bounce: true
@@ -11,12 +11,15 @@ knockbackStrength: -1
 pierceLevel: 10
 despawnDelay: 1
 visualItem: YELLOW_GLAZED_TERRACOTTA
-velocity: 1.5 #you can multiply the velocity (speed) ex velocity: 2.5
+velocity: 1.5
 silent: false
 activeColor: true
-redstoneColor: YELLOW #https://helpch.at/docs/1.12.2/org/bukkit/Color.html
-particlesType: REDSTONE
-particlesAmount: 4
-particlesOffSet: 0.1
-particlesSpeed: 0.3
-particlesDelay: 1 
+particles:
+  '1':
+    redstoneColor: YELLOW
+    particlesType: REDSTONE
+    particlesAmount: 4
+    particlesOffSet: 0.1
+    particlesSpeed: 0.3
+    particlesDelay: 1
+config_3_5: 'true'

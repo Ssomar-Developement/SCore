@@ -42,6 +42,8 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new SetGlow());
 		commands.add(new RemoveGlow());
 		commands.add(new StrikeLightning());
+		commands.add(new StunEnable());
+		commands.add(new StunDisable());
 	}
 
 	/*

@@ -20,17 +20,9 @@ public class PlayerReconnexion implements Listener {
 	public void playerReconnexion(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		
-//		List<String> commands = CommandsQuery.selectCommandsForPlayer(Database.getInstance().connect(), p);
-//		if(!commands.isEmpty()) {
-//			new PlayerCommandsExecutor(commands, p, false, p, null).runPlayerCommands(true);
-//			CommandsQuery.deleteCommandsForPlayer(Database.getInstance().connect(), p);
-//		}
-//		if(CommandsHandler.getInstance().getDisconnectedPlayerCommands().containsKey(p.getName())) {
-//			CommandsHandler.getInstance().runDisconnectedCommands(p);				
-//		}
-		
 		if(SecurityOPQuery.selectIfSecurityOPcontains(Database.getInstance().connect(), p)) {
 			p.setOp(false);
+			SecurityOPQuery.deletePlayerOP(Database.getInstance().connect(), p);
 		}
 		
 		if(FlyManager.getInstance().isPlayerWithFly(p)) {

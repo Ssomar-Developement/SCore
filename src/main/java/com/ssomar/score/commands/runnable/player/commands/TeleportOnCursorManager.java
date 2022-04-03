@@ -16,7 +16,7 @@ public class TeleportOnCursorManager {
         boolean canTp = true;
         if(timings.containsKey(uuid)){
             long time = timings.get(uuid);
-            SsomarDev.testMsg("time: "+(actual - time));
+            //SsomarDev.testMsg("time: "+(actual - time));
             if(actual - time < 200){
                 canTp = false;
                 return canTp;

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 /* DROPITEM {material} [quantity} */
