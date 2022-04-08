@@ -1,5 +1,6 @@
 package com.ssomar.score.menu.conditions.blockcdt;
 
+import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsGUI;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
@@ -130,6 +131,24 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 			this.showCalculationGUI(i.player, "Pos Z", cache.get(i.player).getIfPosX());
 			space(i.player);
 		}
+		else if(i.name.contains(BlockConditionsGUI.IF_USAGE)) {
+			requestWriting.put(i.player, BlockConditionsGUI.IF_USAGE);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF USAGE:"));
+
+			this.showCalculationGUI(i.player, "Usage", cache.get(i.player).getIfUsage());
+			space(i.player);
+		}
+		else if(i.name.contains(BlockConditionsGUI.IF_USAGE2)) {
+			requestWriting.put(i.player, BlockConditionsGUI.IF_USAGE2);
+			i.player.closeInventory();
+			space(i.player);
+			i.player.sendMessage(StringConverter.coloredString("&a&l"+i.sPlugin.getNameDesign()+" &2&lEDITION IF USAGE2:"));
+
+			this.showCalculationGUI(i.player, "Usage", cache.get(i.player).getIfUsage2());
+			space(i.player);
+		}
 		else return false;
 		
 		return true;
@@ -167,6 +186,16 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 				else if(requestWriting.get(p).equals(BlockConditionsGUI.BLOCK_Z_CDT2)) {
 					cache.get(p).updateIfPosZ2("");
 				}
+				else if(requestWriting.get(p).equals(BlockConditionsGUI.IF_USAGE)) {
+					cache.get(p).updateIfUsage("");
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}
+				else if(requestWriting.get(p).equals(BlockConditionsGUI.IF_USAGE2)) {
+					cache.get(p).updateIfUsage2("");
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}
 				
 				requestWriting.remove(p);
 				cache.get(p).openGUISync(p);
@@ -187,7 +216,7 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 //				space(p);
 //				space(p);			
 //			}
-
+			String editMessage = message.trim();
 			if(requestWriting.get(p).equals(BlockConditionsGUI.IF_BLOCK_AGE)) {
 				if(StringCalculation.isStringCalculation(message)) {
 					cache.get(p).updateIfAge(message);
@@ -258,6 +287,26 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 					this.showCalculationGUI(p, "Pos Z 2", cache.get(p).getIfPosZ2());
 				}
 			}
+			else if(requestWriting.get(p).equals(BlockConditionsGUI.IF_USAGE)) {
+				if(StringCalculation.isStringCalculation(editMessage)) {
+					cache.get(p).updateIfUsage(editMessage);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for usage please !"));
+					this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage());
+				}
+			}
+			else if(requestWriting.get(p).equals(BlockConditionsGUI.IF_USAGE2)) {
+				if(StringCalculation.isStringCalculation(editMessage)) {
+					cache.get(p).updateIfUsage2(editMessage);
+					requestWriting.remove(p);
+					cache.get(p).openGUISync(p);
+				}else {
+					p.sendMessage(StringConverter.coloredString("&c&l"+plName+" &4&lERROR &cEnter a valid condition for usage please !"));
+					this.showCalculationGUI(p, "Usage", cache.get(p).getIfUsage());
+				}
+			}
 			
 		}
 
@@ -321,6 +370,8 @@ public class BlockConditionsGUIManager extends GUIManagerConditions<BlockConditi
 		bC.setIfBlockLocationZ2(cache.get(p).getIfPosZ2());
 		bC.setIfPlayerMustBeOnTheBlock(cache.get(p).getBoolean(BlockConditionsGUI.IF_PLAYER_MUST_BE_ON_THE_BLOCK));
 		bC.setIfNoPlayerMustBeOnTheBlock(cache.get(p).getBoolean(BlockConditionsGUI.IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK));
+		bC.setIfUsage(cache.get(p).getIfUsage());
+		bC.setIfUsage2(cache.get(p).getIfUsage2());
 
 		BlockConditions.saveBlockConditions(sPlugin, sObject, sAct, bC, cache.get(p).getDetail());
 		cache.remove(p);

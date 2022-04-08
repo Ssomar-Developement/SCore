@@ -1,7 +1,7 @@
 package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.projectiles.features.*;
-import com.ssomar.score.projectiles.features.Particles.ParticlesFeature;
+import com.ssomar.score.projectiles.features.ParticlesFeature;
 
 import java.io.File;
 

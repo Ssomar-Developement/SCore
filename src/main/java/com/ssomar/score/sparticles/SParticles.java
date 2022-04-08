@@ -101,6 +101,10 @@ public class SParticles {
             mainSection.set("particles." + sParticle.getId() + ".particlesDelay", sParticle.getParticlesDelay());
             if (sParticle.getParticlesType().equals(Particle.REDSTONE))
                 mainSection.set("particles." + sParticle.getId() + ".redstoneColor", CustomColor.getName(sParticle.getRedstoneColor()));
+            if (sParticle.getParticlesType().equals(Particle.BLOCK_CRACK)
+            || sParticle.getParticlesType().equals(Particle.BLOCK_DUST)
+                || sParticle.getParticlesType().equals(Particle.BLOCK_MARKER))
+                mainSection.set("particles." + sParticle.getId() + ".blockType", sParticle.getBlockType().toString());
         }
 
 

@@ -3,7 +3,7 @@ package com.ssomar.score.projectiles.types;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.features.*;
-import com.ssomar.score.projectiles.features.Particles.ParticlesFeature;
+import com.ssomar.score.projectiles.features.ParticlesFeature;
 import com.ssomar.score.projectiles.features.PassengerFeature;
 
 import java.io.File;

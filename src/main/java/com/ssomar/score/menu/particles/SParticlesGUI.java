@@ -59,6 +59,10 @@ public class SParticlesGUI extends GUIAbstract {
 				desc.add("&7• Particle Delay: &e" + sParticle.getParticlesDelay());
 				if(sParticle.getParticlesType().equals(Particle.REDSTONE))
 					desc.add("&7• Redstone color: &e" + CustomColor.getName(sParticle.getRedstoneColor()));
+				if(sParticle.getParticlesType().equals(Particle.BLOCK_MARKER)
+				|| sParticle.getParticlesType().equals(Particle.BLOCK_CRACK)
+				|| sParticle.getParticlesType().equals(Particle.ITEM_CRACK))
+					desc.add("&7• Block type: &e" + sParticle.getBlockType().toString());
 
 				String[]descArray = new String[desc.size()];
 				for(int j = 0; j < desc.size(); j++) {

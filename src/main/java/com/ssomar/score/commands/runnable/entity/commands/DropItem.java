@@ -22,7 +22,7 @@ public class DropItem extends EntityCommand{
 			int amount = Integer.parseInt(args.get(1));
 			Location eLoc = entity.getLocation();
 			if(amount>0) {
-				eLoc.getWorld().dropItem(eLoc, new ItemStack(Material.valueOf(args.get(0)), amount));
+				eLoc.getWorld().dropItem(eLoc, new ItemStack(Material.valueOf(args.get(0).toUpperCase()), amount));
 			}
 		}catch(Exception ignored) {
 			ignored.printStackTrace();

@@ -25,6 +25,8 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 	public static final String BLOCK_Z_CDT2 = "if block location Z 2 condition";
 	public static final String IF_PLAYER_MUST_BE_ON_THE_BLOCK = "if player must be on the block condition";
 	public static final String IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK = "if no player must be on the block condition";
+	public static final String IF_USAGE = "(1) ifUsage";
+	public static final String IF_USAGE2 = "(2) ifUsage";
 	
 	public BlockConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, BlockConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Block Conditions", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -89,6 +91,14 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK, 	false,	false, "&7&oNo player must be on the block ?", "&a✎ Click here to change", "&7actually:");
 		i++;
 		this.updateBoolean(IF_NO_PLAYER_MUST_BE_ON_THE_BLOCK, conditions.isIfNoPlayerMustBeOnTheBlock());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_USAGE, 	false,	false, "&7&oThe usage must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfUsage(conditions.getIfUsage());
+
+		createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+IF_USAGE2, 	false,	false, "&7&oThe usage must be..", "&a✎ Click here to change", "&7actually:");
+		i++;
+		this.updateIfUsage2(conditions.getIfUsage2());
 
 
 		createItem(RED, 					1 , 18, "&4&l▶ &cBack to conditions config", 	false, false);
@@ -180,4 +190,27 @@ public class BlockConditionsGUI extends ConditionGUIAbstract{
 		if(this.getActually(this.getByName(BLOCK_Z_CDT2)).contains("NO CONDITION")) return "";
 		else return this.getActually(this.getByName(BLOCK_Z_CDT2));
 	}
+
+	public void updateIfUsage(String condition){
+		ItemStack item = this.getByName(IF_USAGE);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfUsage() {
+		if(this.getActually(this.getByName(IF_USAGE)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_USAGE));
+	}
+
+	public void updateIfUsage2(String condition){
+		ItemStack item = this.getByName(IF_USAGE2);
+		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
+		else this.updateActually(item, condition);
+	}
+
+	public String getIfUsage2() {
+		if(this.getActually(this.getByName(IF_USAGE2)).contains("NO CONDITION")) return "";
+		else return this.getActually(this.getByName(IF_USAGE2));
+	}
+
 }

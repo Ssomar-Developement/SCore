@@ -1,4 +1,4 @@
-package com.ssomar.score.projectiles.features.Particles;
+package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
@@ -17,6 +17,7 @@ import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -68,7 +69,15 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                             if (particle.getRedstoneColor() != null)
                                 dO = new Particle.DustOptions(particle.getRedstoneColor(), 1);
                             e.getWorld().spawnParticle(particle.getParticlesType(), e.getLocation(), particle.getParticlesAmount(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesSpeed(), dO);
-                        } else {
+                        }
+                        else if (Particle.BLOCK_CRACK.equals(particle.getParticlesType())
+                        || Particle.BLOCK_DUST.equals(particle.getParticlesType())
+                        || Particle.BLOCK_MARKER.equals(particle.getParticlesType())) {
+                            BlockData typeData = Material.STONE.createBlockData();
+                            if (particle.getBlockType() != null)
+                                typeData = particle.getBlockType().createBlockData();
+                            e.getWorld().spawnParticle(particle.getParticlesType(), e.getLocation(), particle.getParticlesAmount(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesSpeed(), typeData);
+                        }else {
                             e.getWorld().spawnParticle(particle.getParticlesType(), e.getLocation(), particle.getParticlesAmount(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesSpeed());
                         }
                     }

@@ -8,6 +8,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
+import com.ssomar.executableblocks.blocks.placedblocks.LocationConverter;
+import com.ssomar.score.SCore;
 import com.ssomar.score.utils.messages.MessageDesign;
 import lombok.Getter;
 import lombok.Setter;
@@ -86,6 +91,13 @@ public class BlockConditions extends Conditions{
 	public static final String IF_NO_PLAYER_MUST_BE_ON_THE_MSG = " &cA player must be on the block to active the activator: &6%activator% &cof this item!";
 	private String ifNoPlayerMustBeOnTheBlockMsg;
 
+	private String ifUsage;
+	private static final String IF_USAGE_MSG = " &cThis block must have the valid usage to active the activator: &6%activator% &cof this item!";
+	private String ifUsageMsg;
+
+	private String ifUsage2;
+	private String ifUsage2Msg;
+
 	public BlockConditions(){
 		init();
 	}
@@ -132,6 +144,12 @@ public class BlockConditions extends Conditions{
 
 		ifNoPlayerMustBeOnTheBlock = false;
 		ifNoPlayerMustBeOnTheBlockMsg = IF_NO_PLAYER_MUST_BE_ON_THE_MSG;
+
+		this.ifUsage = "";
+		this.ifUsageMsg = IF_USAGE_MSG;
+
+		this.ifUsage2 = "";
+		this.ifUsage2Msg = IF_USAGE_MSG;
 	}
 
 	public boolean verifConditions(Block b, @Nullable Player p) {
@@ -249,6 +267,28 @@ public class BlockConditions extends Conditions{
 			return false;
 		}
 
+		if((this.hasIfUsage() || this.hasIfUsage2()) && SCore.hasExecutableBlocks) {
+
+			Location bLoc = LocationConverter.convert(b.getLocation(), false, false);
+			ExecutableBlockPlaced executableBlockPlaced = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(bLoc);
+			if(executableBlockPlaced != null) {
+				int usage = executableBlockPlaced.getUsage();
+
+				if(this.hasIfUsage()) {
+					if(!StringCalculation.calculation(this.ifUsage, usage)) {
+						this.getSm().sendMessage(p, this.getIfUsageMsg());
+						return false;
+					}
+				}
+				if (hasIfUsage2()) {
+					if(!StringCalculation.calculation(this.ifUsage2, usage)) {
+						this.getSm().sendMessage(p, this.getIfUsage2Msg());
+						return false;
+					}
+				}
+			}
+		}
+
 		return true;
 	}
 
@@ -301,6 +341,12 @@ public class BlockConditions extends Conditions{
 				bCdt.blockAroundConditions.add(AroundBlockCondition.get(section));
 			}
 		}
+
+		bCdt.setIfUsage(blockCdtSection.getString("ifUsage", ""));
+		bCdt.setIfUsageMsg(blockCdtSection.getString("ifUsageMsg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_USAGE_MSG));
+
+		bCdt.setIfUsage2(blockCdtSection.getString("ifUsage2", ""));
+		bCdt.setIfUsage2Msg(blockCdtSection.getString("ifUsage2Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+IF_USAGE_MSG));
 
 		return bCdt;
 	}
@@ -392,6 +438,16 @@ public class BlockConditions extends Conditions{
 		if(bC.getIfNoPlayerMustBeOnTheBlockMsg().contains(bC.IF_NO_PLAYER_MUST_BE_ON_THE_MSG)) pCConfig.set("ifNoPlayerMustBeOnTheBlockMsg", null);
 		else pCConfig.set("ifNoPlayerMustBeOnTheBlockMsg", bC.getIfNoPlayerMustBeOnTheBlockMsg());
 
+		if (bC.hasIfUsage()) pCConfig.set("ifUsage", bC.getIfUsage());
+		else pCConfig.set("ifUsage", null);
+		if(bC.getIfUsageMsg().contains(bC.IF_USAGE_MSG)) pCConfig.set("ifUsageMsg", null);
+		else pCConfig.set("ifUsageMsg", bC.getIfUsageMsg());
+
+		if (bC.hasIfUsage2()) pCConfig.set("ifUsage2", bC.getIfUsage2());
+		else pCConfig.set("ifUsage2", null);
+		if(bC.getIfUsage2Msg().contains(bC.IF_USAGE_MSG)) pCConfig.set("ifUsage2Msg", null);
+		else pCConfig.set("ifUsage2Msg", bC.getIfUsage2Msg());
+
 		try {
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 
@@ -403,5 +459,13 @@ public class BlockConditions extends Conditions{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean hasIfUsage() {
+		return ifUsage.length() != 0;
+	}
+
+	public boolean hasIfUsage2() {
+		return ifUsage2.length() != 0;
 	}
 }

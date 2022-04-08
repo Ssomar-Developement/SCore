@@ -3,8 +3,31 @@ package com.ssomar.score.utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class NTools implements Serializable {
+
+	public static Optional<Integer> getInteger(String s) {
+		Optional<Integer> result = Optional.empty();
+		try {
+			result = Optional.of(Integer.valueOf(s));
+		}
+		catch(NumberFormatException e) {
+			return result;
+		}
+		return result;
+	}
+
+	public static Optional<Double> getDouble(String s) {
+		Optional<Double> result = Optional.empty();
+		try {
+			result = Optional.of(Double.valueOf(s));
+		}
+		catch(NumberFormatException e) {
+			return result;
+		}
+		return result;
+	}
 	
 	public static boolean isNumber(String s) {
 		try {

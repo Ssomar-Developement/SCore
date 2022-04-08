@@ -75,6 +75,7 @@ public class CustomEIConditions extends Conditions{
 
 		this.ifPlayerMustBeOnHisPlot = false;
 		this.ifPlayerMustBeOnHisPlotMsg = IF_PLAYER_MUST_BE_ON_HIS_PLOT_MSG;
+
 	}
 
 	public boolean verifConditions(Player p, ItemStack item) {
