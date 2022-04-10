@@ -10,11 +10,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.AroundBlockCondition;
+import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.custom.AroundBlockCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class AroundBlockConditionGUI extends ConditionGUIAbstract{
+/*public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 
 	private boolean newAroundBlockCondition = false;
 
@@ -234,3 +234,5 @@ public class AroundBlockConditionGUI extends ConditionGUIAbstract{
 	}	
 
 }
+*/
+

@@ -11,11 +11,11 @@ import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.AroundBlockCondition;
+import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.custom.AroundBlockCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class AroundBlockConditionsGUIManager extends GUIManagerConditions<AroundBlockConditionsGUI>{
+/* public class AroundBlockConditionsGUIManager extends GUIManagerConditions<AroundBlockConditionsGUI>{
 
 	private static AroundBlockConditionsGUIManager instance;
 
@@ -136,4 +136,4 @@ public class AroundBlockConditionsGUIManager extends GUIManagerConditions<Around
 	public void saveTheConfiguration(Player p) {
 
 	}
-}
+}*/

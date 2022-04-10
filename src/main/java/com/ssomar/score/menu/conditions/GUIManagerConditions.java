@@ -23,4 +23,19 @@ public abstract class GUIManagerConditions<T extends GUIAbstract> extends GUIMan
 		return true;
 	}
 
+	public <X extends NewConditionGUIAbstract> boolean saveOrBackOrNothingNEW(InteractionClickedGUIManager<X> i) {
+		if(i.name.contains("Save")) {
+			this.saveTheConfiguration(i.player);
+			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+		}
+
+		else if(i.name.contains("Back")) {
+			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+		}
+		else return false;
+
+		return true;
+	}
+
 }

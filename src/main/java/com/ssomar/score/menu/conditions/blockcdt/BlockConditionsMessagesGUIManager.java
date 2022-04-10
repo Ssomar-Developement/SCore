@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.conditions.RequestMessage;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUI.BlockConditionsMessages;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -13,7 +12,7 @@ import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 
-public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<BlockConditionsMessagesGUI>{
+/* public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<BlockConditionsMessagesGUI>{
 
 	private static BlockConditionsMessagesGUIManager instance;	
 
@@ -133,4 +132,4 @@ public class BlockConditionsMessagesGUIManager extends GUIManagerConditions<Bloc
 	}
 
 	
-}
+}*/

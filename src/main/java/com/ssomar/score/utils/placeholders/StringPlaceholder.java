@@ -3,7 +3,6 @@ package com.ssomar.score.utils.placeholders;
 import java.io.Serializable;
 import java.util.*;
 
-import com.ssomar.executableitems.items.variables.VariableConfig;
 import com.ssomar.executableitems.items.variables.VariableReal;
 import lombok.Getter;
 import lombok.Setter;

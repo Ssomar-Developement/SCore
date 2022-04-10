@@ -5,9 +5,6 @@ import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
@@ -241,13 +238,13 @@ public class InteractionGUI implements Listener{
 			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 			
-		case "AroundBlockConditionsGUIManager":
+		/*case "AroundBlockConditionsGUIManager":
 			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
-			break;
+			break;*/
 
-		case "AroundBlockConditionGUIManager":
+		/* case "AroundBlockConditionGUIManager":
 			AroundBlockConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
+			break;*/
 
 		case "ItemConditionMessagesGUIManager":
 			ItemConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
@@ -257,9 +254,9 @@ public class InteractionGUI implements Listener{
 			ItemConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 			
-		case "BlockConditionMessagesGUIManager":
+		/* case "BlockConditionMessagesGUIManager":
 			BlockConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
+			break;*/
 
 		case "BlockConditionGUIManager":
 			BlockConditionsGUIManager.getInstance().clicked(player, itemS,e.getClick());
@@ -335,10 +332,10 @@ public class InteractionGUI implements Listener{
 			e.setCancelled(true);
 			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
-		else if(AroundBlockConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		/* else if(AroundBlockConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			AroundBlockConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
+		}*/
 		else if(ItemConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			ItemConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
@@ -347,10 +344,10 @@ public class InteractionGUI implements Listener{
 			e.setCancelled(true);
 			ItemConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
-		else if(BlockConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		/*else if(BlockConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			BlockConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
+		}*/
 		else if(CustomConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			CustomConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());

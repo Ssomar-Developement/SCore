@@ -6,7 +6,7 @@ import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.AroundBlockCondition;
+import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.custom.AroundBlockCondition;
 import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundBlockConditionGUI> {
+/* public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundBlockConditionGUI> {
 
     private static AroundBlockConditionGUIManager instance;
 
@@ -337,3 +337,5 @@ public class AroundBlockConditionGUIManager extends GUIManagerConditions<AroundB
         LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
     }
 }
+*/
+

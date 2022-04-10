@@ -8,7 +8,7 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
 import com.ssomar.score.splugin.SPlugin;
 
-public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
+/*public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 	
 	public BlockConditionsMessagesGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, BlockConditions conditions, String detail) {
 		super("&8&l"+sPlugin.getShortName()+" Editor - Block Conditions Messages", 3*9, sPlugin, sObject, sActivator, detail, conditions);
@@ -108,3 +108,4 @@ public class BlockConditionsMessagesGUI extends ConditionGUIAbstract{
 		}
 	}
 }
+*/

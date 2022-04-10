@@ -9,10 +9,10 @@ import org.bukkit.inventory.ItemStack;
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.AroundBlockCondition;
+import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.custom.AroundBlockCondition;
 import com.ssomar.score.splugin.SPlugin;
 
-public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
+/* public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
 
 	private static int index;
 
@@ -37,7 +37,7 @@ public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
 	@Override
 	public void loadTheGUI() {
 		/* DO NOTHING THERE IS NO RESET HERE */
-		loadCdts(this.getSObject(), this.getSAct(), list);
+		/*loadCdts(this.getSObject(), this.getSAct(), list);
 	}
 
 	public void loadCdts(SObject sObject, SActivator sActivator, List<AroundBlockCondition> list) {
@@ -119,3 +119,4 @@ public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
 		this.list = list;
 	}
 }
+*/
