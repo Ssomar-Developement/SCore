@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
 
     public ConditionsManager(T instance){
         this.instance = instance;
+        this.conditions = new HashMap<>();
     }
 
     public void add(Y blockCondition){
@@ -58,9 +60,8 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
                         cloneCondition.setCondition(cdtSection.getString(condition.getConfigName(), ""));
                         break;
                 }
-                if(cdtSection.contains(condition.getConfigName()+"Msg")){
-                    cloneCondition.setCustomErrorMsg(Optional.ofNullable(cdtSection.getString(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+condition.getErrorMsg())));
-                }
+                cloneCondition.setCustomErrorMsg(Optional.ofNullable(cdtSection.getString(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+condition.getErrorMsg())));
+
                 loadedConditions.add(cloneCondition);
             }
         }
@@ -90,16 +91,25 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
 
                     case BOOLEAN:
                         if((Boolean)condition.getCondition()) conditionSection.set(condition.getConfigName(), true);
-                        else conditionSection.set(condition.getConfigName(), null);
+                        else{
+                            conditionSection.set(condition.getConfigName(), null);
+                            conditionSection.set(conditionConfig.getConfigName()+"Msg", null);
+                            continue;
+                        }
                         break;
 
                     case NUMBER_CONDITION:
                         if(((String)condition.getCondition()).trim().length() > 0) conditionSection.set(condition.getConfigName(), (String)condition.getCondition());
-                        else conditionSection.set(condition.getConfigName(), null);
+                        else{
+                            conditionSection.set(condition.getConfigName(), null);
+                            conditionSection.set(conditionConfig.getConfigName()+"Msg", null);
+                            continue;
+                        }
                         break;
                 }
 
-                conditionSection.set(condition.getConfigName()+"Msg", condition.getErrorMsg());
+                if(condition.getCustomErrorMsg().isPresent()) conditionSection.set(condition.getConfigName()+"Msg", condition.getCustomErrorMsg().get());
+                else conditionSection.set(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+conditionConfig.getDefaultErrorMsg());
             }
             else {
                 if(conditionSection.contains(conditionConfig.getConfigName()+"Msg")){
@@ -125,4 +135,6 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
             e.printStackTrace();
         }
     }
+
+
 }

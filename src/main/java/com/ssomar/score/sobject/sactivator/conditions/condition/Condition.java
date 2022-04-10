@@ -26,6 +26,7 @@ public abstract class Condition<T> implements Cloneable{
         this.editorDescription = editorDescription;
         this.condition = condition;
         this.defaultErrorMsg = defaultErrorMsg;
+        this.customErrorMsg = Optional.empty();
     }
 
     public Object clone() {

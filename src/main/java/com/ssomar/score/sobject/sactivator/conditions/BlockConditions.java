@@ -1,13 +1,13 @@
 package com.ssomar.score.sobject.sactivator.conditions;
 
-import java.util.*;
-
 import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.BlockCondition;
 import com.ssomar.score.utils.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 @Getter @Setter
 public class BlockConditions extends NewConditions{

@@ -333,7 +333,7 @@ public abstract class GUI {
 	public void updateConditionList(String name, List<String> list, String emptyStr) {
 		ItemStack item = this.getByName(name);
 		ItemMeta toChange = item.getItemMeta();
-		List<String> loreUpdate= toChange.getLore().subList(0, 3);
+		List<String> loreUpdate = toChange.getLore().subList(0, 3);
 		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString(emptyStr));
 		else {
 			for(String str: list) {

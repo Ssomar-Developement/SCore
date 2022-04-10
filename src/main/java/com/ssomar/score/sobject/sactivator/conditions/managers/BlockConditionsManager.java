@@ -12,12 +12,8 @@ public class BlockConditionsManager extends ConditionsManager<BlockConditions, B
 
     private static BlockConditionsManager instance;
 
-    @Getter
-    private Map<String, BlockCondition> blockCondititions;
-
     public BlockConditionsManager() {
         super(new BlockConditions());
-        this.blockCondititions = new HashMap<>();
         add(new IfPlantFullyGrown());
         add(new IfBlockAge());
         add(new IfBlockLocationX());
