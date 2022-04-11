@@ -15,6 +15,7 @@ public class WorldConditionsManager extends ConditionsManager<WorldConditions, W
         add(new IfWeather());
         add(new IfWorldTime());
 
+        sortCorrectly();
     }
 
     public static WorldConditionsManager getInstance() {

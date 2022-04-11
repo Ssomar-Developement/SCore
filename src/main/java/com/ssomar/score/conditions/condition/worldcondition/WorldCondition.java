@@ -14,5 +14,5 @@ public abstract class WorldCondition<T> extends Condition<T> {
         super(conditionType, configName, editorName, editorDescription, condition, defaultErrorMsg);
     }
 
-    public abstract boolean verifCondition(World world, Optional<Player> playerOpt, SendMessage messangeSender);
+    public abstract boolean verifCondition(World world, Optional<Player> playerOpt, SendMessage messageSender);
 }

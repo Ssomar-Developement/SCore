@@ -72,8 +72,8 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUI
 						break;
 					case CUSTOM_AROUND_BLOCK:
 						break;
-					case WEATHER_LIST:
-						requestWriting.put(i.player, condition.getEditorName()+"::"+ConditionType.WEATHER_LIST);
+					case LIST_WEATHER:
+						requestWriting.put(i.player, condition.getEditorName()+"::"+ConditionType.LIST_WEATHER);
 						if(!currentWriting.containsKey(i.player)) {
 							currentWriting.put(i.player, cache.get(i.player).getConditionList(condition.getEditorName(), "NO WEATHER IS REQUIRED"));
 						}
@@ -110,7 +110,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUI
 			boolean pass = false;
 			if(StringConverter.decoloredString(message).equals("exit with delete")) {
 
-				if(category.equals(ConditionType.WEATHER_LIST.toString())) {
+				if(category.equals(ConditionType.LIST_WEATHER.toString())) {
 					cache.get(p).updateConditionList(setting, new ArrayList<>(), "&6➤ &eNO WEATHER IS REQUIRED");
 				}
 				else if(category.equals(ConditionType.NUMBER_CONDITION)) {
@@ -123,7 +123,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUI
 			}
 			if(StringConverter.decoloredString(message).equals("exit") || pass) {
 
-				if(category.equals(ConditionType.WEATHER_LIST.toString())) {
+				if(category.equals(ConditionType.LIST_WEATHER.toString())) {
 					List<String> result = new ArrayList<>(currentWriting.get(p));
 					cache.get(p).updateConditionList(setting, result, "&6➤ &eNO WEATHER IS REQUIRED");
 				}
@@ -140,7 +140,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUI
 
 			if(editMessage.contains("delete line <")) {
 				this.deleteLine(editMessage, p);
-				if(category.equals(ConditionType.WEATHER_LIST.toString())) this.showIfWeatherEditor(p);
+				if(category.equals(ConditionType.LIST_WEATHER.toString())) this.showIfWeatherEditor(p);
 				space(p);
 				space(p);
 			}
@@ -155,7 +155,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUI
 					this.showCalculationGUI(p, "Condition", cache.get(p).getCondition(requestWriting.get(p)));
 				}
 			}
-			else if(category.equals(ConditionType.WEATHER_LIST.toString())) {
+			else if(category.equals(ConditionType.LIST_WEATHER.toString())) {
 				if(!editMessage.isEmpty()) {
 					editMessage = editMessage.toUpperCase();
 					if(editMessage.equals("CLEAR") || editMessage.equals("STORM") || editMessage.equals("RAIN") ) {
@@ -229,7 +229,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUI
 					break;
 				case CUSTOM_AROUND_BLOCK:
 					break;
-				case WEATHER_LIST:
+				case LIST_WEATHER:
 					modifiedCondition.setCondition(cache.get(p).getConditionList(condition.getEditorName(), "NO WEATHER IS REQUIRED"));
 					break;
 			}

@@ -4,10 +4,8 @@ import com.ssomar.score.conditions.NewConditions;
 import com.ssomar.score.conditions.condition.Condition;
 import com.ssomar.score.conditions.condition.ConditionType;
 import com.ssomar.score.conditions.managers.ConditionsManager;
-import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.conditions.RequestMessage;
-import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
@@ -34,11 +32,13 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
     public boolean saveOrBackOrNothingNEW(InteractionClickedGUIManager<NewConditionGUI> i) {
         if (i.name.contains("Save")) {
             this.saveTheConfiguration(i.player);
-            i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
-            ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()));
+            NewConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getDetail(), cache.get(i.player).getConditions(), cache.get(i.player).getConditionsManager());
         } else if (i.name.contains("Back")) {
-            ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+            NewConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getDetail(), cache.get(i.player).getConditions(), cache.get(i.player).getConditionsManager());
         } else return false;
+
+        cache.remove(i.player);
+        requestWriting.remove(i.player);
 
         return true;
     }
@@ -65,15 +65,15 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
                     space(i.player);
                     i.player.sendMessage(StringConverter.coloredString("&a&l" + i.sPlugin.getNameDesign() + " &2&lEDITION " + condition.getEditorName() + ":"));
 
-                    this.showCalculationGUI(i.player, "Condition", cache.get(i.player).getCondition(condition.getEditorName()));
+                    this.showCalculationGUI(i.player, "Condition", cache.get(i.player).getCondition(NewConditionGUI.CONDITION));
                     space(i.player);
                     break;
                 case CUSTOM_AROUND_BLOCK:
                     break;
-                case WEATHER_LIST:
-                    requestWriting.put(i.player, ConditionType.WEATHER_LIST.toString());
+                case LIST_WEATHER:
+                    requestWriting.put(i.player, ConditionType.LIST_WEATHER.toString());
                     if (!currentWriting.containsKey(i.player)) {
-                        currentWriting.put(i.player, cache.get(i.player).getConditionList(condition.getEditorName(), "NO WEATHER IS REQUIRED"));
+                        currentWriting.put(i.player, cache.get(i.player).getConditionList(NewConditionGUI.CONDITION, "NO WEATHER IS REQUIRED"));
                     }
                     i.player.closeInventory();
                     space(i.player);
@@ -83,6 +83,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
                     space(i.player);
                     break;
             }
+            return true;
         }
         else if (i.name.contains(NewConditionGUI.ERROR_MESSAGE)) {
             requestWriting.put(i.player, NewConditionGUI.ERROR_MESSAGE);
@@ -91,7 +92,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
             return true;
         }
 
-        return true;
+        return false;
     }
 
     public void receivedMessage(Player p, String message) {
@@ -105,7 +106,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
             boolean pass = false;
             if (StringConverter.decoloredString(message).equals("exit with delete")) {
 
-                if (requestWriting.get(p).equals(ConditionType.WEATHER_LIST.toString())) {
+                if (requestWriting.get(p).equals(ConditionType.LIST_WEATHER.toString())) {
                     cache.get(p).updateConditionList(NewConditionGUI.CONDITION, new ArrayList<>(), "&6➤ &eNO WEATHER IS REQUIRED");
                 }
                 else if (requestWriting.get(p).equals(ConditionType.NUMBER_CONDITION)) {
@@ -118,7 +119,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
             }
             if (StringConverter.decoloredString(message).equals("exit") || pass) {
 
-                if (requestWriting.get(p).equals(ConditionType.WEATHER_LIST.toString())) {
+                if (requestWriting.get(p).equals(ConditionType.LIST_WEATHER.toString())) {
                     List<String> result = new ArrayList<>(currentWriting.get(p));
                     cache.get(p).updateConditionList(NewConditionGUI.CONDITION, result, "&6➤ &eNO WEATHER IS REQUIRED");
                 }
@@ -135,7 +136,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
 
             if (editMessage.contains("delete line <")) {
                 this.deleteLine(editMessage, p);
-                if (requestWriting.get(p).equals(ConditionType.WEATHER_LIST.toString())) this.showIfWeatherEditor(p);
+                if (requestWriting.get(p).equals(ConditionType.LIST_WEATHER.toString())) this.showIfWeatherEditor(p);
                 space(p);
                 space(p);
             }
@@ -154,7 +155,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
                     p.sendMessage(StringConverter.coloredString("&c&l" + plName + " &4&lERROR &cEnter a valid condition please !"));
                     this.showCalculationGUI(p, "Condition", cache.get(p).getCondition(requestWriting.get(p)));
                 }
-            } else if (requestWriting.get(p).equals(ConditionType.WEATHER_LIST.toString())) {
+            } else if (requestWriting.get(p).equals(ConditionType.LIST_WEATHER.toString())) {
                 if (!editMessage.isEmpty()) {
                     editMessage = editMessage.toUpperCase();
                     if (editMessage.equals("CLEAR") || editMessage.equals("STORM") || editMessage.equals("RAIN")) {
@@ -230,7 +231,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
                 break;
             case CUSTOM_AROUND_BLOCK:
                 break;
-            case WEATHER_LIST:
+            case LIST_WEATHER:
                 condition.setCondition(cache.get(p).getConditionList(NewConditionGUI.CONDITION, "NO WEATHER IS REQUIRED"));
                 break;
         }
@@ -239,9 +240,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
 
 
         cache.get(p).getConditionsManager().saveConditions(sPlugin, sObject, sAct, loadedConditions, cache.get(p).getDetail());
-        cache.remove(p);
-        requestWriting.remove(p);
-        LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
+        //LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
     }
 
 

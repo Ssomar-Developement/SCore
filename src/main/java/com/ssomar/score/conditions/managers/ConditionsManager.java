@@ -32,6 +32,14 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
         this.conditions = new HashMap<>();
     }
 
+    public void sortCorrectly(){
+        Map<String, Y> inverSort = new HashMap<String, Y>();
+        for(Y condition : conditions.values()){
+            inverSort.put(condition.getConfigName(), condition);
+        }
+        conditions = inverSort;
+    }
+
     public void add(Y blockCondition){
         conditions.put(blockCondition.getConfigName(), blockCondition);
     }

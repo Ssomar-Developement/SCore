@@ -1,9 +1,11 @@
 package com.ssomar.score.menu.conditions.clean;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.conditions.NewConditions;
 import com.ssomar.score.conditions.condition.Condition;
 import com.ssomar.score.conditions.managers.ConditionsManager;
 import com.ssomar.score.menu.GUIAbstract;
+import com.ssomar.score.menu.IGUI;
 import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -13,6 +15,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter
@@ -23,7 +27,7 @@ public class NewConditionsGUI extends GUIAbstract {
     private ConditionsManager conditionsManager;
 
     public NewConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, String detail, NewConditions conditions, ConditionsManager conditionsManager) {
-        super(sPlugin.getShortName()+" Conditions", 1*9, sPlugin, sObject, sAct);
+        super("&8&l"+sPlugin.getShortName()+" Editor - "+detail, 3*9, sPlugin, sObject, sAct);
         this.conditions = conditions;
         this.conditionsManager = conditionsManager;
         this.detail = detail;
@@ -37,10 +41,13 @@ public class NewConditionsGUI extends GUIAbstract {
 
     public void loadTheGUI() {
         int i = 0;
+        for(Object key : this.conditions.getConditions().keySet()) {
+            SsomarDev.testMsg("key: "+key);
+        }
         for (Object object : conditionsManager.getConditions().values()) {
             Condition condition = (Condition) object;
 
-			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+condition.getEditorName(), 	false,	false, "&a✎ Click here to edit");
+			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+condition.getConfigName(), 	false,	false, "", TITLE_COLOR+condition.getEditorName(), "&a✎ Click here to edit");
 			i++;
 		}
 
@@ -53,23 +60,4 @@ public class NewConditionsGUI extends GUIAbstract {
         createItem(Material.BOOK, 1, 24, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getId());
         createItem(Material.BOOK, 1, 25, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
     }
-
-	public void clicked(Player p, String name) {
-
-		String itemName = StringConverter.decoloredString(name);
-
-		if(itemName.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(p, getsPlugin(), getSObject(), getSAct());
-		}
-		else if(!itemName.contains("ERROR ID")) {
-
-			if(conditions.contains(itemName)){
-                NewConditionGUIManager.getInstance().startEditing(p, getsPlugin(), getSObject(), getSAct(), detail, conditions, conditionsManager, conditions.get(itemName));
-			}
-			else{
-                NewConditionGUIManager.getInstance().startEditing(p, getsPlugin(), getSObject(), getSAct(), detail, conditions, conditionsManager, conditionsManager.get(itemName));
-			}
-		}
-	}
-
 }

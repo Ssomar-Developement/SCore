@@ -54,7 +54,7 @@ public abstract class NewConditionsGUIAbstract<T extends NewConditions, Y extend
 					break;
 				case CUSTOM_AROUND_BLOCK:
 					break;
-				case WEATHER_LIST:
+				case LIST_WEATHER:
 					finalDescription = new String[condition.getEditorDescription().length+3];
 					for(int j = 0; j < condition.getEditorDescription().length; j++){
 						finalDescription[j] = condition.getEditorDescription()[j];
@@ -85,7 +85,7 @@ public abstract class NewConditionsGUIAbstract<T extends NewConditions, Y extend
 				case CUSTOM_AROUND_BLOCK:
 					break;
 
-				case WEATHER_LIST:
+				case LIST_WEATHER:
 					if(conditions.contains(condition)) {
 						this.updateConditionList(condition.getEditorName(), (List<String>) conditions.get(condition).getCondition(), "&6➤ &eNO WEATHER IS REQUIRED");
 					}

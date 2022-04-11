@@ -21,7 +21,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class GUI {
+public abstract class GUI implements IGUI{
 
 	public final static String DEFAULT_ITEM_NAME = "&e&lDefault Name";
 
@@ -77,7 +77,7 @@ public abstract class GUI {
 
 
 	public GUI(String name, int size) {
-		inv = Bukkit.createInventory(null, size, StringConverter.coloredString(name));
+		inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
 		if(!SCore.is1v12()) {
 			for(int j=0; j<size; j++) {
 				createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 	1 , j, 	"&7", 	true, false);
@@ -356,6 +356,11 @@ public abstract class GUI {
 			}else result.add(line.replaceAll("➤ ", ""));
 		}
 		return result;
+	}
+
+	@Override
+	public Inventory getInventory() {
+		return inv;
 	}
 
 	public Inventory getInv() {

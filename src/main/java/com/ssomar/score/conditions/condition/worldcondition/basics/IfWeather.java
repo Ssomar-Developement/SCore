@@ -14,7 +14,7 @@ public class IfWeather extends WorldCondition<List<String>> {
 
 
     public IfWeather() {
-        super(ConditionType.WEATHER_LIST, "ifWeather", "If weather", new String[]{}, new ArrayList<>(), " &cThe weather must change to active the activator: &6%activator% &cof this item!");
+        super(ConditionType.LIST_WEATHER, "ifWeather", "If weather", new String[]{}, new ArrayList<>(), " &cThe weather must change to active the activator: &6%activator% &cof this item!");
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.messages.MessageDesign;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -19,8 +20,8 @@ import java.util.List;
 public class NewConditionGUI extends GUIAbstract {
 
 
-    public static final String CONDITION = "Condition";
-    public static final String ERROR_MESSAGE = "Error Message";
+    public static final String CONDITION = "> Condition";
+    public static final String ERROR_MESSAGE = "> Error Message";
 
     private String detail;
     private NewConditions conditions;
@@ -28,7 +29,7 @@ public class NewConditionGUI extends GUIAbstract {
     private Condition condition;
 
     public NewConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, String detail, NewConditions conditions, ConditionsManager conditionsManager, Condition condition) {
-        super(sPlugin.getShortName()+" Condition: "+condition.getEditorName(), 3*9, sPlugin, sObject, sAct);
+        super("&8&l"+sPlugin.getShortName()+" Condition: "+condition.getEditorName(), 3*9, sPlugin, sObject, sAct);
         this.conditions = conditions;
         this.conditionsManager = conditionsManager;
         this.condition = condition;
@@ -44,9 +45,9 @@ public class NewConditionGUI extends GUIAbstract {
     public void loadTheGUI() {
         int i = 0;
 
-        createConditionItem(i);
+        i = createConditionItem(i);
 
-        createMessageItem(i);
+        i = createMessageItem(i);
 
         createItem(RED, 1, 18, "&4&l▶ &cBack to "+detail, false, false);
 
@@ -59,7 +60,7 @@ public class NewConditionGUI extends GUIAbstract {
     }
 
 
-    public void createConditionItem(int i){
+    public int createConditionItem(int i){
         String[] finalDescription = null;
 
         switch (condition.getConditionType()) {
@@ -67,19 +68,15 @@ public class NewConditionGUI extends GUIAbstract {
             case BOOLEAN:
             case NUMBER_CONDITION:
                 finalDescription = new String[condition.getEditorDescription().length + 2];
-                for (int j = 0; j < condition.getEditorDescription().length; j++) {
-                    finalDescription[j] = condition.getEditorDescription()[j];
-                }
+                System.arraycopy(condition.getEditorDescription(), 0, finalDescription, 0, condition.getEditorDescription().length);
                 finalDescription[finalDescription.length - 2] = "&a✎ Click here to change";
                 finalDescription[finalDescription.length - 1] = "&7actually:";
                 break;
             case CUSTOM_AROUND_BLOCK:
                 break;
-            case WEATHER_LIST:
+            case LIST_WEATHER:
                 finalDescription = new String[condition.getEditorDescription().length + 3];
-                for (int j = 0; j < condition.getEditorDescription().length; j++) {
-                    finalDescription[j] = condition.getEditorDescription()[j];
-                }
+                System.arraycopy(condition.getEditorDescription(), 0, finalDescription, 0, condition.getEditorDescription().length);
                 finalDescription[finalDescription.length - 3] = "&a✎ Click here to change";
                 finalDescription[finalDescription.length - 2] = "&7actually:";
                 finalDescription[finalDescription.length - 1] = "";
@@ -93,38 +90,40 @@ public class NewConditionGUI extends GUIAbstract {
 
             case BOOLEAN:
                 if (conditions.contains(condition)) {
-                    this.updateBoolean(condition.getEditorName(), (Boolean) conditions.get(condition).getCondition());
-                } else this.updateBoolean(condition.getEditorName(), false);
+                    this.updateBoolean(CONDITION, (Boolean) conditions.get(condition).getCondition());
+                } else this.updateBoolean(CONDITION, false);
                 break;
             case NUMBER_CONDITION:
                 if (conditions.contains(condition)) {
-                    this.updateCondition(condition.getEditorName(), (String) conditions.get(condition).getCondition());
-                } else this.updateCondition(condition.getEditorName(), "");
+                    this.updateCondition(CONDITION, (String) conditions.get(condition).getCondition());
+                } else this.updateCondition(CONDITION, "");
                 break;
             case CUSTOM_AROUND_BLOCK:
                 break;
 
-            case WEATHER_LIST:
+            case LIST_WEATHER:
                 if (conditions.contains(condition)) {
-                    this.updateConditionList(condition.getEditorName(), (List<String>) conditions.get(condition).getCondition(), "&6➤ &eNO WEATHER IS REQUIRED");
+                    this.updateConditionList(CONDITION, (List<String>) conditions.get(condition).getCondition(), "&6➤ &eNO WEATHER IS REQUIRED");
                 } else
-                    this.updateConditionList(condition.getEditorName(), new ArrayList<>(), "&6➤ &eNO WEATHER IS REQUIRED");
+                    this.updateConditionList(CONDITION, new ArrayList<>(), "&6➤ &eNO WEATHER IS REQUIRED");
                 break;
 
         }
+        return i;
     }
 
-    public void createMessageItem(int i){
+    public int createMessageItem(int i){
         createItem(WRITABLE_BOOK,							1 , i, 	TITLE_COLOR+ERROR_MESSAGE, 	false,	false, "&a✎ Click here to change", "&7actually:");
         i++;
         if(conditions.contains(condition)){
             Condition loadedCondition = conditions.get(condition);
             if(loadedCondition.getCustomErrorMsg().isPresent()){
-                this.updateMessage(condition.getEditorName()+" message", (String) loadedCondition.getCustomErrorMsg().get());
+                this.updateMessage(ERROR_MESSAGE, (String) loadedCondition.getCustomErrorMsg().get());
             }
-            else this.updateMessage(condition.getEditorName()+" message", "");
+            else this.updateMessage(ERROR_MESSAGE, "");
         }
-        else this.updateMessage(condition.getEditorName()+" message", "");
+        else this.updateMessage(ERROR_MESSAGE, MessageDesign.ERROR_CODE_FIRST+getsPlugin().getNameDesign()+condition.getErrorMsg());
+        return i;
     }
 
 

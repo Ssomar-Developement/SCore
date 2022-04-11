@@ -21,6 +21,8 @@ public class BlockConditionsManager extends ConditionsManager<BlockConditions, B
         add(new IfUsage());
         add(new IfPlayerMustBeOnTheBlock());
         add(new IfNoPlayerMustBeOnTheBlock());
+
+        sortCorrectly();
     }
 
     public static BlockConditionsManager getInstance() {

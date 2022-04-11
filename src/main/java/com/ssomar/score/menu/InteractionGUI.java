@@ -6,6 +6,7 @@ import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.conditions.clean.NewConditionGUI;
 import com.ssomar.score.menu.conditions.clean.NewConditionGUIManager;
 import com.ssomar.score.menu.conditions.clean.NewConditionsGUI;
+import com.ssomar.score.menu.conditions.clean.NewConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
@@ -15,8 +16,6 @@ import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsGUIManager;
 import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionGUIManager;
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
-import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsGUIManager;
-import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUIManager;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
@@ -147,6 +146,7 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Custom projectiles"))) {
 				this.manage(player, itemS, title, "ProjectilesGUIManager", e);
 			}
+			else this.manage(player, itemS, title, "", e);
 
 		}catch (NullPointerException error) {
 			error.printStackTrace();
@@ -167,8 +167,14 @@ public class InteractionGUI implements Listener{
 
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
 
-		if(e.getClickedInventory() instanceof NewConditionGUI){
+
+		if(e.getInventory().getHolder() instanceof NewConditionGUI){
 			NewConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof NewConditionsGUI){
+			NewConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
+			return;
 		}
 		
 		switch (guiType) {
@@ -215,14 +221,6 @@ public class InteractionGUI implements Listener{
 
 		case "EntityConditionsMessagesGUIManager":
 			EntityConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "PlayerConditionsMessagesGUIManager":
-			PlayerConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "PlayerConditionsGUIManager":
-			PlayerConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "PlaceholdersConditionsGUIManager":
@@ -289,13 +287,7 @@ public class InteractionGUI implements Listener{
 		} else if (NewConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			NewConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		} else if (PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			PlayerConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		} else if (PlayerConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			PlayerConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}  else if (EntityConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (EntityConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			EntityConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		} else if (EntityConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
