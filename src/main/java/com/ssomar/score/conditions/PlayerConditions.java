@@ -1,37 +1,25 @@
 package com.ssomar.score.conditions;
 
-import com.google.common.base.Charsets;
-import com.ssomar.score.SCore;
-import com.ssomar.score.conditions.player.IfPlayerHasExecutableItem;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.usedapi.WorldGuardAPI;
-import com.ssomar.score.utils.StringCalculation;
-import com.ssomar.score.utils.messages.MessageDesign;
+import com.ssomar.score.conditions.condition.playercondition.PlayerCondition;
+import com.ssomar.score.utils.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Getter @Setter
 public class PlayerConditions extends NewConditions {
 
 
+    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender) {
 
+        for(Object object : getConditions().values()){
+            PlayerCondition playerCondition = (PlayerCondition)object;
+            if(!playerCondition.verifCondition(player, playerOpt, messageSender)) return false;
+        }
+        return true;
+    }
 
     /*private List<IfPlayerHasExecutableItem> ifPlayerHasExecutableItem;
     private static final String IF_PLAYER_HAS_EXECUTABLE_ITEM_MSG = " &cYou don't have all correct ExecutableItems to active the activator: &6%activator% &cof this item!";
