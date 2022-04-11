@@ -17,7 +17,7 @@ public class BlockConditions extends NewConditions{
 		return new BlockConditions();
 	}
 
-	public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender) {
+	public boolean verifConditions(Block b, Optional<Player> playerOpt, SendMessage messageSender) {
 
 		for(Object object : getConditions().values()){
 			BlockCondition blockCondition = (BlockCondition)object;

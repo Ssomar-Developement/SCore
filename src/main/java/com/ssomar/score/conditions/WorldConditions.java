@@ -17,7 +17,7 @@ public class WorldConditions extends NewConditions{
 		return new WorldConditions();
 	}
 
-	public boolean verifCondition(World w, Optional<Player> playerOpt, SendMessage messageSender) {
+	public boolean verifConditions(World w, Optional<Player> playerOpt, SendMessage messageSender) {
 
 		for(Object object : getConditions().values()){
 			WorldCondition worldCondition = (WorldCondition)object;

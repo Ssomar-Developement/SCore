@@ -12,7 +12,7 @@ import java.util.Optional;
 public class PlayerConditions extends NewConditions {
 
 
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender) {
+    public boolean verifConditions(Player player, Optional<Player> playerOpt, SendMessage messageSender) {
 
         for(Object object : getConditions().values()){
             PlayerCondition playerCondition = (PlayerCondition)object;
