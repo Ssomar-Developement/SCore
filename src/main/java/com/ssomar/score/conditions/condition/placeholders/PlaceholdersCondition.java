@@ -18,14 +18,13 @@ import com.google.common.base.Charsets;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.conditions.Conditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.NTools;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.jetbrains.annotations.Nullable;
 
-public class PlaceholdersCondition extends Conditions{
+public class PlaceholdersCondition {
 	
 	private String id;
 
@@ -70,7 +69,7 @@ public class PlaceholdersCondition extends Conditions{
 		this.part2Number = part2Number;
 	}
 	
-	@Override
+
 	public void init() {
 		this.type = PlaceholdersCdtType.PLAYER_STRING;
 		this.message = "";

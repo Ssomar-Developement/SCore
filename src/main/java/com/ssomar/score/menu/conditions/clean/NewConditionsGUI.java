@@ -27,7 +27,7 @@ public class NewConditionsGUI extends GUIAbstract {
     private ConditionsManager conditionsManager;
 
     public NewConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct, String detail, NewConditions conditions, ConditionsManager conditionsManager) {
-        super("&8&l"+sPlugin.getShortName()+" Editor - "+detail, 3*9, sPlugin, sObject, sAct);
+        super("&8&l"+sPlugin.getShortName()+" Editor - "+detail, 6*9, sPlugin, sObject, sAct);
         this.conditions = conditions;
         this.conditionsManager = conditionsManager;
         this.detail = detail;
@@ -41,10 +41,7 @@ public class NewConditionsGUI extends GUIAbstract {
 
     public void loadTheGUI() {
         int i = 0;
-        for(Object key : this.conditions.getConditions().keySet()) {
-            SsomarDev.testMsg("key: "+key);
-        }
-        for (Object object : conditionsManager.getConditions().values()) {
+        for (Object object : conditionsManager.getConditionsList()) {
             Condition condition = (Condition) object;
 
 			createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+condition.getConfigName(), 	false,	false, "", TITLE_COLOR+condition.getEditorName(), "&a✎ Click here to edit");
@@ -55,9 +52,9 @@ public class NewConditionsGUI extends GUIAbstract {
         //createItem(Material.ANVIL,							1 , i, 	TITLE_COLOR+AROUND_BLOCK_CDT, 	false,	false, "&7&oAround blocks conditions", "&a✎ Click here to edit", "&7>> &e"+conditions.getBlockAroundConditions().size()+" &7conditions");
         //					i++;
 
-        createItem(RED, 1, 18, "&4&l▶ &cBack to conditions config", false, false);
+        createItem(RED, 1, 54, "&4&l▶ &cBack to conditions config", false, false);
 
-        createItem(Material.BOOK, 1, 24, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getId());
-        createItem(Material.BOOK, 1, 25, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
+        createItem(Material.BOOK, 1, 60, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getId());
+        createItem(Material.BOOK, 1, 61, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
     }
 }

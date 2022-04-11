@@ -1,7 +1,7 @@
 package com.ssomar.score.conditions.condition.worldcondition;
 
 import com.ssomar.score.conditions.condition.Condition;
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

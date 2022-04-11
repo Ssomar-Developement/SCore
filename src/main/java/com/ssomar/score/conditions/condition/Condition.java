@@ -1,5 +1,6 @@
 package com.ssomar.score.conditions.condition;
 
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;

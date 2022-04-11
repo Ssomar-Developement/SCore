@@ -4,7 +4,7 @@ import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.executableblocks.blocks.placedblocks.LocationConverter;
 import com.ssomar.score.SCore;
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.blockcondition.BlockCondition;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;

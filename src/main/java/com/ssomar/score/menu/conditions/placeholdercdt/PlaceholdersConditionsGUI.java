@@ -3,18 +3,26 @@ package com.ssomar.score.menu.conditions.placeholdercdt;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.menu.GUIAbstract;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCdtType;
 import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 
-public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
+public class PlaceholdersConditionsGUI extends GUIAbstract {
+	public PlaceholdersConditionsGUI(String name, int size, SPlugin sPlugin, SObject sObject, SActivator sAct) {
+		super(name, size, sPlugin, sObject, sAct);
+	}
 
+	@Override
+	public void reloadGUI() {
+
+	}
+/**
 	private static int index;
 
 	private List<PlaceholdersCondition> list;
@@ -37,7 +45,7 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 	@Override
 	public void loadTheGUI() {
-		/* DO NOTHING THERE IS NO RESET HERE */
+		// DO NOTHING THERE IS NO RESET HERE
 		loadCdts(this.getSObject(), this.getSAct(), list);
 	}
 
@@ -110,6 +118,6 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 	public void setList(List<PlaceholdersCondition> list) {
 		this.list = list;
-	}
+	}**/
 }
 

@@ -3,12 +3,12 @@ package com.ssomar.score.sobject.sactivator;
 import java.util.List;
 
 import com.ssomar.sevents.events.projectile.hitentity.ProjectileHitEntityEvent;
-import com.ssomar.score.conditions.BlockConditions;
-import com.ssomar.score.conditions.CustomEIConditions;
-import com.ssomar.score.conditions.EntityConditions;
-import com.ssomar.score.conditions.ItemConditions;
-import com.ssomar.score.conditions.PlayerConditions;
-import com.ssomar.score.conditions.WorldConditions;
+import com.ssomar.score.conditions.condition.blockcondition.BlockConditions;
+import com.ssomar.score.conditions.condition.customei.CustomEIConditions;
+import com.ssomar.score.conditions.condition.entityconditions.EntityConditions;
+import com.ssomar.score.conditions.condition.item.ItemConditions;
+import com.ssomar.score.conditions.condition.playercondition.PlayerConditions;
+import com.ssomar.score.conditions.condition.worldcondition.WorldConditions;
 import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
 import com.ssomar.sevents.events.projectile.hitplayer.ProjectileHitPlayerEvent;

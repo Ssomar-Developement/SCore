@@ -1,11 +1,9 @@
 package com.ssomar.score.conditions.managers;
 
-import com.ssomar.score.conditions.BlockConditions;
-import com.ssomar.score.conditions.PlayerConditions;
-import com.ssomar.score.conditions.condition.blockcondition.BlockCondition;
-import com.ssomar.score.conditions.condition.blockcondition.basics.*;
+import com.ssomar.score.conditions.condition.playercondition.PlayerConditions;
 import com.ssomar.score.conditions.condition.playercondition.PlayerCondition;
 import com.ssomar.score.conditions.condition.playercondition.basics.*;
+import com.ssomar.score.conditions.condition.playercondition.custom.IfPlayerHasExecutableItems;
 
 public class PlayerConditionsManager extends ConditionsManager<PlayerConditions, PlayerCondition> {
 
@@ -27,6 +25,9 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
         add(new IfNotSwimming());
         add(new IfIsInTheAir());
         add(new IfIsNotInTheAir());
+        add(new IfPlayerMustBeOnHisClaim());
+        add(new IfPlayerMustBeOnHisIsland());
+        add(new IfPlayerMustBeOnHisPlot());
 
         add(new IfIsOnTheBlock());
         add(new IfIsNotOnTheBlock());
@@ -51,7 +52,10 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
         add(new IfTargetBlock());
         add(new IfNotTargetBlock());
 
-        sortCorrectly();
+        add(new IfPlayerHasExecutableItems());
+        add(new IfPlayerHasItem());
+        add(new IfPlayerHasEffect());
+        add(new IfPlayerHasEffectEquals());
     }
 
     public static PlayerConditionsManager getInstance() {

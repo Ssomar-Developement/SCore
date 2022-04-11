@@ -17,7 +17,56 @@ import com.ssomar.score.utils.NTools;
 import com.ssomar.score.utils.StringConverter;
 
 public class PlaceholdersConditionGUIManager extends GUIManagerSCore<PlaceholdersConditionGUI>{
+	@Override
+	public void saveTheConfiguration(Player p) {
 
+	}
+
+	@Override
+	public boolean allClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean noShiftclicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean shiftRightClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean leftClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> i) {
+		return false;
+	}
+
+	@Override
+	public boolean rightClicked(InteractionClickedGUIManager<PlaceholdersConditionGUI> interact) {
+		return false;
+	}
+/*
 	private static PlaceholdersConditionGUIManager instance;
 
 	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
@@ -190,5 +239,5 @@ public class PlaceholdersConditionGUIManager extends GUIManagerSCore<Placeholder
 		cache.remove(p);
 		requestWriting.remove(p);
 		LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
-	}
+	}*/
 }

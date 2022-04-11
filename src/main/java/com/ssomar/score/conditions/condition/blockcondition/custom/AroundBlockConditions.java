@@ -1,6 +1,6 @@
 package com.ssomar.score.conditions.condition.blockcondition.custom;
 
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.blockcondition.BlockCondition;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.block.Block;

@@ -86,29 +86,7 @@ public class NewConditionGUI extends GUIAbstract {
         createItem(Material.ANVIL, 1, i, TITLE_COLOR + CONDITION, false, false, finalDescription);
         i++;
 
-        switch (condition.getConditionType()) {
-
-            case BOOLEAN:
-                if (conditions.contains(condition)) {
-                    this.updateBoolean(CONDITION, (Boolean) conditions.get(condition).getCondition());
-                } else this.updateBoolean(CONDITION, false);
-                break;
-            case NUMBER_CONDITION:
-                if (conditions.contains(condition)) {
-                    this.updateCondition(CONDITION, (String) conditions.get(condition).getCondition());
-                } else this.updateCondition(CONDITION, "");
-                break;
-            case CUSTOM_AROUND_BLOCK:
-                break;
-
-            case LIST_WEATHER:
-                if (conditions.contains(condition)) {
-                    this.updateConditionList(CONDITION, (List<String>) conditions.get(condition).getCondition(), "&6➤ &eNO WEATHER IS REQUIRED");
-                } else
-                    this.updateConditionList(CONDITION, new ArrayList<>(), "&6➤ &eNO WEATHER IS REQUIRED");
-                break;
-
-        }
+        condition.getConditionType().updateGUI(this, conditions, condition);
         return i;
     }
 

@@ -2,7 +2,7 @@ package com.ssomar.score.menu.conditions.clean;
 
 import com.ssomar.score.conditions.NewConditions;
 import com.ssomar.score.conditions.condition.Condition;
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.managers.ConditionsManager;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.conditions.RequestMessage;
@@ -57,7 +57,7 @@ public class NewConditionGUIManager extends GUIManagerSCore<NewConditionGUI> {
             Condition condition = cache.get(i.player).getCondition();
             switch (condition.getConditionType()) {
                 case BOOLEAN:
-                    i.gui.changeBoolean(condition.getEditorName());
+                    i.gui.changeBoolean(NewConditionGUI.CONDITION);
                     break;
                 case NUMBER_CONDITION:
                     requestWriting.put(i.player, ConditionType.NUMBER_CONDITION.toString());

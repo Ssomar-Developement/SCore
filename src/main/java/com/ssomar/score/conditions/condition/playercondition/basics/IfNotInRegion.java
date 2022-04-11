@@ -1,7 +1,7 @@
 package com.ssomar.score.conditions.condition.playercondition.basics;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.playercondition.PlayerCondition;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.SendMessage;

@@ -1,26 +1,15 @@
 package com.ssomar.score.menu.conditions.clean;
 
 import com.ssomar.score.conditions.NewConditions;
-import com.ssomar.score.conditions.condition.Condition;
-import com.ssomar.score.conditions.condition.ConditionType;
 import com.ssomar.score.conditions.managers.ConditionsManager;
-import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.conditions.RequestMessage;
 import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
 public class NewConditionsGUIManager extends GUIManagerSCore<NewConditionsGUI> {
 

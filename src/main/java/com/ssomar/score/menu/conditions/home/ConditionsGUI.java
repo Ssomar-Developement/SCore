@@ -1,15 +1,15 @@
 package com.ssomar.score.menu.conditions.home;
 
+import com.ssomar.score.menu.GUIAbstract;
 import org.bukkit.Material;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.sobject.sactivator.SOption;
 import com.ssomar.score.splugin.SPlugin;
 
-public class ConditionsGUI extends ConditionGUIAbstract{
+public class ConditionsGUI extends GUIAbstract {
 	
 	public static final String OWNER_CONDITIONS = "Owner Conditions";
 	public static final String PLAYER_CONDITIONS = "Player Conditions";
@@ -23,10 +23,11 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 	public static final String CUSTOM_EI_CONDITIONS = "Custom EI Conditions";
 
 	public ConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sAct) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Conditions", 3*9, sPlugin, sObject, sAct, "null", null);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Conditions", 3*9, sPlugin, sObject, sAct);
+		loadTheGUI();
 	}
 
-	@Override
+
 	public void loadTheGUI() {
 		SOption sOp = this.getSAct().getOption();
 		int i = 0;
@@ -88,5 +89,10 @@ public class ConditionsGUI extends ConditionGUIAbstract{
 		createItem(Material.BOOK, 							1 , 25, 	COLOR_ACTIVATOR_ID, 	false, false, "", "&7actually: &e"+this.getSAct().getID());
 
 		return;
+	}
+
+	@Override
+	public void reloadGUI() {
+
 	}
 }

@@ -1,6 +1,6 @@
 package com.ssomar.score.conditions.condition.playercondition.basics;
 
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.playercondition.PlayerCondition;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;

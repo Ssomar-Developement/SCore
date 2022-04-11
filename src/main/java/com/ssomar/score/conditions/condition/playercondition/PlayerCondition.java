@@ -1,9 +1,8 @@
 package com.ssomar.score.conditions.condition.playercondition;
 
 import com.ssomar.score.conditions.condition.Condition;
-import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.utils.SendMessage;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;

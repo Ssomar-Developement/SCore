@@ -2,11 +2,11 @@ package com.ssomar.score.menu.conditions.placeholdercdt;
 
 import java.util.List;
 
+import com.ssomar.score.menu.GUIAbstract;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.conditions.condition.placeholders.Comparator;
@@ -15,8 +15,16 @@ import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
+public class PlaceholdersConditionGUI extends GUIAbstract {
+    public PlaceholdersConditionGUI(String name, int size, SPlugin sPlugin, SObject sObject, SActivator sAct) {
+        super(name, size, sPlugin, sObject, sAct);
+    }
 
+    @Override
+    public void reloadGUI() {
+
+    }
+/*
 	private boolean newPlaceholdersCondition = false;
 
 	public final static String TITLE = "Editor - Plch condition";
@@ -230,5 +238,5 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 	public void setNewPlaceholdersCondition(boolean newPlaceholdersCondition) {
 		this.newPlaceholdersCondition = newPlaceholdersCondition;
 	}
-
+*/
 }

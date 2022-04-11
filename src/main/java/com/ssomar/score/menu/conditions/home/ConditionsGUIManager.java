@@ -1,19 +1,12 @@
 package com.ssomar.score.menu.conditions.home;
 
-import com.ssomar.score.conditions.NewConditions;
-import com.ssomar.score.conditions.WorldConditions;
-import com.ssomar.score.conditions.managers.BlockConditionsManager;
-import com.ssomar.score.conditions.managers.WorldConditionsManager;
-import com.ssomar.score.menu.conditions.clean.NewConditionsGUI;
+import com.ssomar.score.conditions.managers.*;
 import com.ssomar.score.menu.conditions.clean.NewConditionsGUIManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUIManager;
-import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
-import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
-import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsGUIManager;
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -39,15 +32,15 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 			//String plName = sPlugin.getNameDesign();
 
 			if(name.contains(ConditionsGUI.OWNER_CONDITIONS)) {
-				//PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getOwnerConditions(), "ownerConditions");
+				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "ownerConditions", sActivator.getOwnerConditions(), PlayerConditionsManager.getInstance());
 			}
 
 			else if(name.contains(ConditionsGUI.PLAYER_CONDITIONS)) {
-				//PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlayerConditions(), "playerConditions");
+				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "playerConditions", sActivator.getPlayerConditions(), PlayerConditionsManager.getInstance());
 			}
 
 			else if(name.contains(ConditionsGUI.TARGET_CONDITIONS)) {
-				//PlayerConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetPlayerConditions(), "targetConditions");
+				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator,"targetConditions", sActivator.getTargetPlayerConditions(), PlayerConditionsManager.getInstance());
 			}
 
 			else if(name.contains(ConditionsGUI.WORLD_CONDITIONS)) {
@@ -55,11 +48,11 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 			}
 
 			else if(name.contains(ConditionsGUI.ITEM_CONDITIONS)) {
-				ItemConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getItemConditions(), "itemConditions");
+				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "itemConditions", sActivator.getItemConditions(), ItemConditionsManager.getInstance());
 			}
 
 			else if(name.contains(ConditionsGUI.ENTITY_CONDITIONS)) {
-				EntityConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getTargetEntityConditions(), "entityConditions");
+				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "entityConditions", sActivator.getTargetEntityConditions(), EntityConditionsManager.getInstance());
 			}
 
 			else if(name.contains(ConditionsGUI.BLOCK_CONDITIONS)) {
@@ -70,12 +63,12 @@ public class ConditionsGUIManager extends GUIManager<ConditionsGUI>{
 				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "targetBlockConditions", sActivator.getTargetBlockConditions(), BlockConditionsManager.getInstance());
 			}
 
-			else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
+			/*else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
 				PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
-			}
+			}*/
 
 			else if(name.contains(ConditionsGUI.CUSTOM_EI_CONDITIONS)) {
-				CustomConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getCustomEIConditions(), "customConditions");
+				NewConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "customConditions", sActivator.getCustomEIConditions(), CustomEIConditionsManager.getInstance());
 			}
 
 

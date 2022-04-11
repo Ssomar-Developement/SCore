@@ -15,33 +15,25 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 public abstract class ConditionsManager<T extends NewConditions, Y extends Condition> {
 
     private Map<String, Y> conditions;
+    private List<Y> conditionsList;
     @Getter(AccessLevel.NONE)
     private T instance;
 
     public ConditionsManager(T instance){
         this.instance = instance;
         this.conditions = new HashMap<>();
-    }
-
-    public void sortCorrectly(){
-        Map<String, Y> inverSort = new HashMap<String, Y>();
-        for(Y condition : conditions.values()){
-            inverSort.put(condition.getConfigName(), condition);
-        }
-        conditions = inverSort;
+        this.conditionsList = new ArrayList<>();
     }
 
     public void add(Y blockCondition){
         conditions.put(blockCondition.getConfigName(), blockCondition);
+        conditionsList.add(blockCondition);
     }
 
     public Condition get(String conditionKey){
@@ -54,24 +46,7 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
         for(Y condition : conditions.values()){
             if(cdtSection.contains(condition.getConfigName())){
                 Condition cloneCondition = (Condition) condition.clone();
-                switch (condition.getConditionType()){
-
-                    case BOOLEAN:
-                        cloneCondition.setCondition(cdtSection.getBoolean(condition.getConfigName(), false));
-                        break;
-
-                    case NUMBER_CONDITION:
-                        cloneCondition.setCondition(cdtSection.getString(condition.getConfigName(), ""));
-                        break;
-
-                    case CUSTOM_AROUND_BLOCK:
-                        for(String s : cdtSection.getConfigurationSection("blockAroundCdts").getKeys(false)) {
-                            ConfigurationSection section = cdtSection.getConfigurationSection("blockAroundCdts."+s);
-                            ((List<AroundBlockCondition>) cloneCondition.getCondition()).add(AroundBlockCondition.get(section));
-                        }
-                        cloneCondition.setCondition(cdtSection.getString(condition.getConfigName(), ""));
-                        break;
-                }
+                cloneCondition.getConditionType().load(cloneCondition, cdtSection, errorList, pluginName);
                 cloneCondition.setCustomErrorMsg(Optional.ofNullable(cdtSection.getString(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+condition.getErrorMsg())));
 
                 loadedConditions.add(cloneCondition);
@@ -99,26 +74,8 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
         for(Y conditionConfig : conditions.values()){
             if(conditionsToSave.contains(conditionConfig)){
                 Y condition = (Y) conditionsToSave.get(conditionConfig);
-                switch (condition.getConditionType()){
 
-                    case BOOLEAN:
-                        if((Boolean)condition.getCondition()) conditionSection.set(condition.getConfigName(), true);
-                        else{
-                            conditionSection.set(condition.getConfigName(), null);
-                            conditionSection.set(conditionConfig.getConfigName()+"Msg", null);
-                            continue;
-                        }
-                        break;
-
-                    case NUMBER_CONDITION:
-                        if(((String)condition.getCondition()).trim().length() > 0) conditionSection.set(condition.getConfigName(), (String)condition.getCondition());
-                        else{
-                            conditionSection.set(condition.getConfigName(), null);
-                            conditionSection.set(conditionConfig.getConfigName()+"Msg", null);
-                            continue;
-                        }
-                        break;
-                }
+                condition.getConditionType().save(condition, conditionSection);
 
                 if(condition.getCustomErrorMsg().isPresent()) conditionSection.set(condition.getConfigName()+"Msg", condition.getCustomErrorMsg().get());
                 else conditionSection.set(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+conditionConfig.getDefaultErrorMsg());
