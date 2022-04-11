@@ -9,7 +9,7 @@ import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsMessagesGUI.En
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
+import com.ssomar.score.conditions.EntityConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 public class EntityConditionsMessagesGUIManager extends GUIManagerConditions<EntityConditionsMessagesGUI>{

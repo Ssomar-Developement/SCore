@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
+import com.ssomar.score.conditions.EntityConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 

@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCdtType;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCdtType;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 
 public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {

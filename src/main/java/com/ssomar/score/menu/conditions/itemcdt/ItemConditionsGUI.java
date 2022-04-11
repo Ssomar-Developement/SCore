@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.ItemConditions;
+import com.ssomar.score.conditions.ItemConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 import java.util.ArrayList;

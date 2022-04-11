@@ -10,7 +10,7 @@ import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 

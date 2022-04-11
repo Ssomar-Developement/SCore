@@ -350,7 +350,7 @@ public abstract class GUI {
 		List<String> loreUpdate= iM.getLore().subList(3, iM.getLore().size());
 		List<String> result = new ArrayList<>();
 		for(String line: loreUpdate) {
-			line=StringConverter.decoloredString(line);
+			line = StringConverter.decoloredString(line);
 			if(line.contains(emptyStr)) {
 				return new ArrayList<>();
 			}else result.add(line.replaceAll("➤ ", ""));

@@ -1,27 +1,27 @@
 package com.ssomar.score.menu.conditions;
 
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUI;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
-import com.ssomar.score.sobject.sactivator.conditions.NewConditions;
-import com.ssomar.score.sobject.sactivator.conditions.condition.Condition;
-import com.ssomar.score.sobject.sactivator.conditions.managers.BlockConditionsManager;
-import com.ssomar.score.sobject.sactivator.conditions.managers.ConditionsManager;
+import com.ssomar.score.conditions.NewConditions;
+import com.ssomar.score.conditions.condition.Condition;
+import com.ssomar.score.conditions.managers.ConditionsManager;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringCalculation;
-import com.ssomar.score.utils.StringConverter;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public abstract class NewConditionsMessagesGUIManager<G extends NewConditionMessagesGUIAbstract> extends GUIManagerSCore<G> {
+public abstract class NewConditionsMessagesGUIManager<G extends NewConditionMessagesGUIAbstract, T extends NewConditions, Y extends Condition, Z extends ConditionsManager<T, Y>> extends GUIManagerSCore<G> {
+
+	@Getter
+	private Z conditionsManager;
+	public NewConditionsMessagesGUIManager(Z conditionsManager) {
+		this.conditionsManager = conditionsManager;
+	}
 
 	public boolean saveOrBackOrNothingNEW(InteractionClickedGUIManager<G> i) {
 		if(i.name.contains("Save")) {
@@ -43,23 +43,11 @@ public abstract class NewConditionsMessagesGUIManager<G extends NewConditionMess
 		return this.saveOrBackOrNothingNEW(i);
 	}
 
-	@Override
-	public boolean shiftClicked(InteractionClickedGUIManager<G> i) {
-		String detail = cache.get(i.player).getDetail();
-		this.saveTheConfiguration(i.player);
-		i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
-
-		BlockConditions bC;
-		if(detail.contains("target")) bC = i.sObject.getActivator(i.sActivator.getID()).getTargetBlockConditions();
-		else bC = i.sObject.getActivator(i.sActivator.getID()).getBlockConditions();
-		BlockConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, bC, detail);
-		return true;
-	}
 
 	@Override
 	public boolean noShiftclicked(InteractionClickedGUIManager<G> i) {
 		if(!i.name.isEmpty()) {
-			for(Condition condition : BlockConditionsManager.getInstance().getConditions().values()){
+			for(Condition condition : conditionsManager.getConditions().values()){
 				if(i.name.contains(condition.getEditorName()+" message")) {
 					requestWriting.put(i.player, condition.getEditorName()+" message");
 					i.msgInfos.actualMsg = cache.get(i.player).getActuallyWithColor(condition.getEditorName()+" message");

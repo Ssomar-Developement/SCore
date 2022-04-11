@@ -9,7 +9,7 @@ import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUI
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.CustomEIConditions;
+import com.ssomar.score.conditions.CustomEIConditions;
 import com.ssomar.score.splugin.SPlugin;
 
 

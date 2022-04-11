@@ -3,26 +3,31 @@ package com.ssomar.score.menu.conditions;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
-import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsGUI;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.NewConditions;
-import com.ssomar.score.sobject.sactivator.conditions.condition.Condition;
-import com.ssomar.score.sobject.sactivator.conditions.condition.ConditionType;
-import com.ssomar.score.sobject.sactivator.conditions.managers.BlockConditionsManager;
-import com.ssomar.score.sobject.sactivator.conditions.managers.ConditionsManager;
+import com.ssomar.score.conditions.NewConditions;
+import com.ssomar.score.conditions.condition.Condition;
+import com.ssomar.score.conditions.condition.ConditionType;
+import com.ssomar.score.conditions.managers.ConditionsManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionGUIAbstract> extends GUIManagerSCore<G> {
+public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionsGUIAbstract, T extends NewConditions, Y extends Condition, Z extends ConditionsManager<T, Y>> extends GUIManagerSCore<G> {
+
+	@Getter
+	private Z conditionsManager;
+	public NewConditionsGUIManagerAbstract(Z conditionsManager) {
+		this.conditionsManager = conditionsManager;
+	}
 
 	public boolean saveOrBackOrNothingNEW(InteractionClickedGUIManager<G> i) {
 		if(i.name.contains("Save")) {
@@ -49,7 +54,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionGUIA
 
 		Boolean found = false;
 
-		for(Condition condition : BlockConditionsManager.getInstance().getConditions().values()){
+		for(Condition condition : conditionsManager.getConditions().values()){
 
 			if(i.name.contains(condition.getEditorName())) {
 				switch (condition.getConditionType()) {
@@ -105,7 +110,12 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionGUIA
 			boolean pass = false;
 			if(StringConverter.decoloredString(message).equals("exit with delete")) {
 
-				cache.get(p).updateCondition(requestWriting.get(p), "");
+				if(category.equals(ConditionType.WEATHER_LIST.toString())) {
+					cache.get(p).updateConditionList(setting, new ArrayList<>(), "&6➤ &eNO WEATHER IS REQUIRED");
+				}
+				else if(category.equals(ConditionType.NUMBER_CONDITION)) {
+					cache.get(p).updateCondition(setting, "");
+				}
 
 				requestWriting.remove(p);
 				cache.get(p).openGUISync(p);
@@ -197,7 +207,7 @@ public abstract class NewConditionsGUIManagerAbstract<G extends NewConditionGUIA
 		return false;
 	}
 
-	public <T extends NewConditions, Y extends Condition, Z extends ConditionsManager<T, Y>> void saveTheConfiguration(Player p, Z conditionsManager) {
+	public void saveTheConfiguration(Player p) {
 		SPlugin sPlugin = cache.get(p).getsPlugin();
 		SObject sObject = cache.get(p).getSObject();
 		SActivator sAct = cache.get(p).getSAct();

@@ -23,7 +23,7 @@ public abstract class GUIManagerConditions<T extends GUIAbstract> extends GUIMan
 		return true;
 	}
 
-	public <X extends NewConditionGUIAbstract> boolean saveOrBackOrNothingNEW(InteractionClickedGUIManager<X> i) {
+	public <X extends NewConditionsGUIAbstract> boolean saveOrBackOrNothingNEW(InteractionClickedGUIManager<X> i) {
 		if(i.name.contains("Save")) {
 			this.saveTheConfiguration(i.player);
 			i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());

@@ -13,7 +13,7 @@ import com.ssomar.score.menu.conditions.GUIManagerConditions;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.EntityConditions;
+import com.ssomar.score.conditions.EntityConditions;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.utils.StringConverter;

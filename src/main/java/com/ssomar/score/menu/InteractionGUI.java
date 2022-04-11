@@ -1,11 +1,11 @@
 package com.ssomar.score.menu;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.commands.CommandsEditor;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
+import com.ssomar.score.menu.conditions.clean.NewConditionGUI;
+import com.ssomar.score.menu.conditions.clean.NewConditionGUIManager;
+import com.ssomar.score.menu.conditions.clean.NewConditionsGUI;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
 import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUIManager;
 import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
@@ -17,8 +17,6 @@ import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionGUIM
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
 import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsGUIManager;
 import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUIManager;
-import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsGUIManager;
-import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsMessagesGUIManager;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
@@ -168,6 +166,10 @@ public class InteractionGUI implements Listener{
 		//String itemName = itemS.getItemMeta().getDisplayName();
 
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
+
+		if(e.getClickedInventory() instanceof NewConditionGUI){
+			NewConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
+		}
 		
 		switch (guiType) {
 			case "ProjectilesEditor":
@@ -215,14 +217,6 @@ public class InteractionGUI implements Listener{
 			EntityConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
-		case "WorldConditionsMessagesGUIManager":
-			 WorldConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "WorldConditionsGUIManager":
-			WorldConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
 		case "PlayerConditionsMessagesGUIManager":
 			PlayerConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
@@ -253,14 +247,6 @@ public class InteractionGUI implements Listener{
 
 		case "ItemConditionGUIManager":
 			ItemConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-			
-		case "BlockConditionMessagesGUIManager":
-			BlockConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "BlockConditionGUIManager":
-			BlockConditionsGUIManager.getInstance().clicked(player, itemS,e.getClick());
 			break;
 
 		case "CustomConditionsMessagesGUIManager":
@@ -300,36 +286,22 @@ public class InteractionGUI implements Listener{
 		if(CommandsEditor.getInstance().isAsking(p)){
 			e.setCancelled(true);
 			CommandsEditor.getInstance().receiveMessage(p, e.getMessage());
-		}
-		else if(PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (NewConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			NewConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		} else if (PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlayerConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(PlayerConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (PlayerConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlayerConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(BlockConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			BlockConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(EntityConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		}  else if (EntityConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			EntityConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(EntityConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (EntityConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			EntityConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(WorldConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			WorldConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(WorldConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			WorldConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
@@ -337,37 +309,27 @@ public class InteractionGUI implements Listener{
 			e.setCancelled(true);
 			AroundBlockConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}*/
-		else if(ItemConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		else if (ItemConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			ItemConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(ItemConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (ItemConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			ItemConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(BlockConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			BlockConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(CustomConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		}  else if (CustomConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			CustomConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(CustomConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (CustomConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			CustomConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			RequiredEIGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(SParticleGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (SParticleGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			SParticleGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else {
-			for(SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()){
-				if(proj.hasRequestChat()){
+		} else {
+			for (SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()) {
+				if (proj.hasRequestChat()) {
 					e.setCancelled(true);
 					proj.sendMessageForConfig(proj.getConfigGUI(), p, e.getMessage());
 					break;

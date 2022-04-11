@@ -1,20 +1,5 @@
 package com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt;
 
-import java.util.List;
-
-import com.ssomar.score.sobject.sactivator.conditions.BlockConditions;
-import org.bukkit.entity.Player;
-
-import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.GUIManagerConditions;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
-import com.ssomar.score.menu.score.InteractionClickedGUIManager;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.custom.AroundBlockCondition;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-
 /* public class AroundBlockConditionsGUIManager extends GUIManagerConditions<AroundBlockConditionsGUI>{
 
 	private static AroundBlockConditionsGUIManager instance;

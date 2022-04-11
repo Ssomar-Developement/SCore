@@ -9,9 +9,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.Comparator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCdtType;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
+import com.ssomar.score.conditions.condition.placeholders.Comparator;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCdtType;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 

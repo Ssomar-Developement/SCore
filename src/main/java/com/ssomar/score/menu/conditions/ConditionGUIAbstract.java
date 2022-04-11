@@ -3,7 +3,7 @@ package com.ssomar.score.menu.conditions;
 import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.Conditions;
+import com.ssomar.score.conditions.Conditions;
 import com.ssomar.score.splugin.SPlugin;
 
 public abstract class ConditionGUIAbstract extends GUIAbstract{

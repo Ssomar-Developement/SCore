@@ -1,17 +1,5 @@
 package com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.condition.blockcondition.custom.AroundBlockCondition;
-import com.ssomar.score.splugin.SPlugin;
-
 /* public class AroundBlockConditionsGUI extends ConditionGUIAbstract {
 
 	private static int index;
