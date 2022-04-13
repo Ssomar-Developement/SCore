@@ -91,6 +91,7 @@ public class CdtTypeBoolean extends AConditionType {
                 result = Boolean.valueOf(placeholder.replacePlaceholder(s));
             }catch (Exception e){}
         }
+        else result = (Boolean)condition.getCondition();
 
         return result;
     }
