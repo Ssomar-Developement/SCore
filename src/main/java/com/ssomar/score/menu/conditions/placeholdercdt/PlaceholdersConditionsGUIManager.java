@@ -1,18 +1,9 @@
 package com.ssomar.score.menu.conditions.placeholdercdt;
 
-import java.util.List;
-
 import org.bukkit.entity.Player;
 
-import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
 
 
 public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<PlaceholdersConditionsGUI>{

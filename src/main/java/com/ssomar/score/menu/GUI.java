@@ -215,6 +215,10 @@ public abstract class GUI implements IGUI{
 		inv.clear(invSlot);
 	}
 
+	public void clear() {
+		inv.clear();
+	}
+
 	public ItemStack getByName(String name) {
 		for(ItemStack item: inv.getContents()) {
 			if(item != null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))){
@@ -354,6 +358,22 @@ public abstract class GUI implements IGUI{
 			if(line.contains(emptyStr)) {
 				return new ArrayList<>();
 			}else result.add(line.replaceAll("➤ ", ""));
+		}
+		return result;
+	}
+
+	public List<String> getConditionListWithColor(String name, String emptyStr){
+		ItemStack item = this.getByName(name);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
+		List<String> result = new ArrayList<>();
+		for(String line: loreUpdate) {
+			line = StringConverter.deconvertColor(line);
+			if(line.contains(emptyStr)) {
+				return new ArrayList<>();
+			}
+			// If the player use a color the &e is not present in the line
+			else result.add(line.replaceAll("&6➤ &e", "").replaceAll("&6➤ ", ""));
 		}
 		return result;
 	}

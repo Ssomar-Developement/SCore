@@ -1,9 +1,9 @@
 package com.ssomar.score.conditions.managers;
 
-import com.ssomar.score.conditions.condition.worldcondition.WorldCondition;
-import com.ssomar.score.conditions.condition.worldcondition.WorldConditions;
-import com.ssomar.score.conditions.condition.worldcondition.basics.IfWeather;
-import com.ssomar.score.conditions.condition.worldcondition.basics.IfWorldTime;
+import com.ssomar.score.conditions.condition.world.WorldCondition;
+import com.ssomar.score.conditions.condition.world.WorldConditions;
+import com.ssomar.score.conditions.condition.world.basics.IfWeather;
+import com.ssomar.score.conditions.condition.world.basics.IfWorldTime;
 
 public class WorldConditionsManager extends ConditionsManager<WorldConditions, WorldCondition> {
 

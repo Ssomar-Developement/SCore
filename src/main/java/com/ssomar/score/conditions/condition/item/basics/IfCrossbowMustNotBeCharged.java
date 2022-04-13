@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
-public class IfCrossbowMustNotBeCharged extends ItemCondition<Boolean> {
+public class IfCrossbowMustNotBeCharged extends ItemCondition<Boolean, String> {
 
 
     public IfCrossbowMustNotBeCharged() {
@@ -20,7 +20,7 @@ public class IfCrossbowMustNotBeCharged extends ItemCondition<Boolean> {
     @Override
     public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
 
-        if(getCondition()  && itemStack.getType().toString().contains("CROSSBOW")){
+        if(getAllCondition(messageSender.getSp())  && itemStack.getType().toString().contains("CROSSBOW")){
 
             ItemMeta itemMeta = null;
             boolean hasItemMeta = itemStack.hasItemMeta();

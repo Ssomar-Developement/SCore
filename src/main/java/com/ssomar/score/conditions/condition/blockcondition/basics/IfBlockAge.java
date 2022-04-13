@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfBlockAge extends BlockCondition<String> {
+public class IfBlockAge extends BlockCondition<String, String> {
 
 
     public IfBlockAge() {
@@ -23,7 +23,7 @@ public class IfBlockAge extends BlockCondition<String> {
         if(b.getState().getBlockData() instanceof Ageable) {
             Ageable ageable = (Ageable) b.getState().getBlockData();
             int age = ageable.getAge();
-            if(!getCondition().equals("") && !StringCalculation.calculation(getCondition(), age)) {
+            if(!getAllCondition(messageSender.getSp()).equals("") && !StringCalculation.calculation(getCondition(), age)) {
                 sendErrorMsg(playerOpt, messageSender);
                 return false;
             }

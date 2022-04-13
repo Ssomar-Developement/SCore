@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfPlantFullyGrown extends BlockCondition<Boolean> {
+public class IfPlantFullyGrown extends BlockCondition<Boolean, String> {
 
     public IfPlantFullyGrown() {
         super(ConditionType.BOOLEAN, "ifPlantFullyGrown", "If plant fully grown", new String[]{}, false, " &cThe plant must be fully grown to active the activator: &6%activator% &cof this item!");
@@ -19,7 +19,7 @@ public class IfPlantFullyGrown extends BlockCondition<Boolean> {
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender) {
 
-        if(getCondition() && b.getState().getBlockData() instanceof Ageable) {
+        if(getAllCondition(messageSender.getSp()) && b.getState().getBlockData() instanceof Ageable) {
             Ageable ageable = (Ageable) b.getState().getBlockData();
             int age = ageable.getAge();
             if(age != ageable.getMaximumAge()) {

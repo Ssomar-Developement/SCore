@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfPlayerMustBeOnTheBlock extends BlockCondition<Boolean> {
+public class IfPlayerMustBeOnTheBlock extends BlockCondition<Boolean, String> {
 
 
     public IfPlayerMustBeOnTheBlock() {
@@ -18,8 +18,8 @@ public class IfPlayerMustBeOnTheBlock extends BlockCondition<Boolean> {
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender) {
-        if(getCondition()){
+    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender) {
+        if(getAllCondition(messageSender.getSp())){
             boolean onBlock = false;
             Location bLoc = b.getLocation();
             bLoc = bLoc.add(0.5,1,0.5);
@@ -33,7 +33,7 @@ public class IfPlayerMustBeOnTheBlock extends BlockCondition<Boolean> {
                 }
             }
             if(!onBlock){
-                sendErrorMsg(playerOpt, messangeSender);
+                sendErrorMsg(playerOpt, messageSender);
                 return false;
             }
         }

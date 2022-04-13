@@ -1,7 +1,5 @@
 package com.ssomar.score.conditions.managers;
 
-import com.ssomar.score.conditions.condition.entityconditions.EntityCondition;
-import com.ssomar.score.conditions.condition.entityconditions.EntityConditions;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.conditions.condition.item.ItemConditions;
 import com.ssomar.score.conditions.condition.item.basics.*;

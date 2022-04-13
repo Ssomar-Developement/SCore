@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
-public abstract class ItemCondition<T> extends Condition<T> {
+public abstract class ItemCondition<T, Y> extends Condition<T, Y> {
 
     public ItemCondition(ConditionType conditionType, String configName, String editorName, String [] editorDescription, T condition, String defaultErrorMsg) {
         super(conditionType, configName, editorName, editorDescription, condition, defaultErrorMsg);

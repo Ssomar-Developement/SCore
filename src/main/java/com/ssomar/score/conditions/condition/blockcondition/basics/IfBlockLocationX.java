@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfBlockLocationX extends BlockCondition<String> {
+public class IfBlockLocationX extends BlockCondition<String, String> {
 
     public IfBlockLocationX() {
         super(ConditionType.NUMBER_CONDITION, "ifBlockLocationX", "If block location X", new String[]{}, "", " &cThe block location X is invalid to active the activator: &6%activator% &cof this item!");
@@ -17,7 +17,7 @@ public class IfBlockLocationX extends BlockCondition<String> {
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender) {
-        if(!getCondition().equals("") && !StringCalculation.calculation(getCondition(), b.getLocation().getX())) {
+        if(!getAllCondition(messangeSender.getSp()).equals("") && !StringCalculation.calculation(getAllCondition(messangeSender.getSp()), b.getLocation().getX())) {
             sendErrorMsg(playerOpt, messangeSender);
             return false;
         }

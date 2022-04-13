@@ -1,9 +1,9 @@
 package com.ssomar.score.conditions.managers;
 
-import com.ssomar.score.conditions.condition.playercondition.PlayerConditions;
-import com.ssomar.score.conditions.condition.playercondition.PlayerCondition;
-import com.ssomar.score.conditions.condition.playercondition.basics.*;
-import com.ssomar.score.conditions.condition.playercondition.custom.IfPlayerHasExecutableItems;
+import com.ssomar.score.conditions.condition.player.PlayerConditions;
+import com.ssomar.score.conditions.condition.player.PlayerCondition;
+import com.ssomar.score.conditions.condition.player.basics.*;
+import com.ssomar.score.conditions.condition.player.custom.IfPlayerHasExecutableItems;
 
 public class PlayerConditionsManager extends ConditionsManager<PlayerConditions, PlayerCondition> {
 
@@ -55,7 +55,10 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
         add(new IfPlayerHasExecutableItems());
         add(new IfPlayerHasItem());
         add(new IfPlayerHasEffect());
+        add(new IfPlayerNotHasEffect());
         add(new IfPlayerHasEffectEquals());
+        add(new IfPlayerMounts());
+        add(new IfPlayerNotMounts());
     }
 
     public static PlayerConditionsManager getInstance() {

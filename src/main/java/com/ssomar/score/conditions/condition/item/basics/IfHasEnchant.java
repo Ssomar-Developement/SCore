@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class IfHasEnchant extends ItemCondition<Map<Enchantment, Integer>> {
+public class IfHasEnchant extends ItemCondition<Map<Enchantment, Integer>, Map<String, String>> {
 
 
     public IfHasEnchant() {
@@ -26,7 +26,7 @@ public class IfHasEnchant extends ItemCondition<Map<Enchantment, Integer>> {
     @Override
     public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
 
-        if(getCondition() != null && getCondition().size() != 0){
+        if(isDefined()){
 
             ItemMeta itemMeta = null;
             boolean hasItemMeta = itemStack.hasItemMeta();
@@ -37,8 +37,9 @@ public class IfHasEnchant extends ItemCondition<Map<Enchantment, Integer>> {
                 return false;
             }
             Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
-            for(Enchantment enchant : getCondition().keySet()){
-                if(!enchants.containsKey(enchant) || !Objects.equals(getCondition().get(enchant), enchants.get(enchant))){
+            Map<Enchantment, Integer> condition = getAllCondition(messageSender.getSp());
+            for(Enchantment enchant : condition.keySet()){
+                if(!enchants.containsKey(enchant) || !Objects.equals(condition.get(enchant), enchants.get(enchant))){
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

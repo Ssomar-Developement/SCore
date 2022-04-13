@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.ssomar.score.SsomarDev;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -89,7 +90,8 @@ public class WorldGuardAPI {
 
 		for (ProtectedRegion region : set) {
             if (region != null){
-				if (region.getFlag(Flags.PVP).equals(State.ALLOW)) {
+				State state = region.getFlag(Flags.PVP);
+				if (state != null && state.equals(State.ALLOW)) {
 					//SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority());
 					if(allowMaxPriority < region.getPriority()) allowMaxPriority = region.getPriority();
 				}

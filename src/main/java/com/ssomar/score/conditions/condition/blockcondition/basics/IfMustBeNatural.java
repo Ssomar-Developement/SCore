@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfMustBeNatural extends BlockCondition<Boolean> {
+public class IfMustBeNatural extends BlockCondition<Boolean,String> {
 
 
     public IfMustBeNatural() {
@@ -18,7 +18,7 @@ public class IfMustBeNatural extends BlockCondition<Boolean> {
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender) {
-        if(getCondition()) {
+        if(getAllCondition(messangeSender.getSp())) {
             if(!MyCoreProtectAPI.isNaturalBlock(b)) {
                 sendErrorMsg(playerOpt, messangeSender);
                 return false;

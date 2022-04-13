@@ -3,9 +3,8 @@ package com.ssomar.score.conditions.managers;
 import com.google.common.base.Charsets;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.conditions.NewConditions;
+import com.ssomar.score.conditions.Conditions;
 import com.ssomar.score.conditions.condition.Condition;
-import com.ssomar.score.conditions.condition.blockcondition.custom.AroundBlockCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.MessageDesign;
 import lombok.AccessLevel;
@@ -18,7 +17,7 @@ import java.io.*;
 import java.util.*;
 
 @Getter
-public abstract class ConditionsManager<T extends NewConditions, Y extends Condition> {
+public abstract class ConditionsManager<T extends Conditions, Y extends Condition> {
 
     private Map<String, Y> conditions;
     private List<Y> conditionsList;
@@ -48,6 +47,7 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
                 Condition cloneCondition = (Condition) condition.clone();
                 cloneCondition.getConditionType().load(cloneCondition, cdtSection, errorList, pluginName);
                 cloneCondition.setCustomErrorMsg(Optional.ofNullable(cdtSection.getString(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+condition.getErrorMsg())));
+                cloneCondition.setErrorCancelEvent(cdtSection.getBoolean(condition.getConfigName()+"CE", false));
 
                 loadedConditions.add(cloneCondition);
             }
@@ -75,10 +75,18 @@ public abstract class ConditionsManager<T extends NewConditions, Y extends Condi
             if(conditionsToSave.contains(conditionConfig)){
                 Y condition = (Y) conditionsToSave.get(conditionConfig);
 
-                condition.getConditionType().save(condition, conditionSection);
+                if(condition.isDefined()) {
+                    condition.getConditionType().writeInConfig(condition, conditionSection);
+                    conditionSection.set(condition.getConfigName() + "Msg", condition.getCustomErrorMsg().get());
+                }
+                else {
+                    conditionSection.set(condition.getConfigName(), null);
+                    /* If the custom message is present but different that the default message, we save it*/
+                    if(condition.getCustomErrorMsg().isPresent() && ((String)condition.getCustomErrorMsg().get()).equals(MessageDesign.ERROR_CODE_FIRST+pluginName+conditionConfig.getDefaultErrorMsg()))
+                        conditionSection.set(condition.getConfigName()+"Msg", condition.getCustomErrorMsg().get());
+                    else conditionSection.set(condition.getConfigName()+"Msg", null);
+                }
 
-                if(condition.getCustomErrorMsg().isPresent()) conditionSection.set(condition.getConfigName()+"Msg", condition.getCustomErrorMsg().get());
-                else conditionSection.set(condition.getConfigName()+"Msg", MessageDesign.ERROR_CODE_FIRST+pluginName+conditionConfig.getDefaultErrorMsg());
             }
             else {
                 if(conditionSection.contains(conditionConfig.getConfigName()+"Msg")){

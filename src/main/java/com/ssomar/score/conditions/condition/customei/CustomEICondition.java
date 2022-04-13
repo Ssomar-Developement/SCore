@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
-public abstract class CustomEICondition<T> extends Condition<T> {
+public abstract class CustomEICondition<T, Y> extends Condition<T, Y> {
 
     public CustomEICondition(ConditionType conditionType, String configName, String editorName, String [] editorDescription, T condition, String defaultErrorMsg) {
         super(conditionType, configName, editorName, editorDescription, condition, defaultErrorMsg);

@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Optional;
 import java.util.UUID;
 
-public class IfOwnerOfTheEI extends CustomEICondition<Boolean> {
+public class IfOwnerOfTheEI extends CustomEICondition<Boolean,String> {
 
 
     public IfOwnerOfTheEI() {
@@ -22,7 +22,7 @@ public class IfOwnerOfTheEI extends CustomEICondition<Boolean> {
 
     @Override
     public boolean verifCondition(Player player, ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
-        if(getCondition()) {
+        if(getAllCondition(messageSender.getSp())) {
             if(itemStack.hasItemMeta()) {
                 ItemMeta iM = itemStack.getItemMeta();
 

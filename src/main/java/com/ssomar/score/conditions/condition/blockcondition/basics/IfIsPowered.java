@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfIsPowered extends BlockCondition<Boolean> {
+public class IfIsPowered extends BlockCondition<Boolean, String> {
 
 
     public IfIsPowered() {
@@ -18,7 +18,7 @@ public class IfIsPowered extends BlockCondition<Boolean> {
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender) {
-        if(getCondition()) {
+        if(getAllCondition(messageSender.getSp())) {
             //SsomarDev.testMsg("block: "+b.getType()+ "   isBlockpowered: "+b.isBlockPowered()+ " is Powerable: "+(b.getBlockData() instanceof Powerable)+ "power: "+b.getBlockPower());
             boolean notPowered = !b.isBlockPowered() && b.getBlockPower() == 0;
 

@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
-public class IfNeedPlayerConfirmation extends CustomEICondition<Boolean> {
+public class IfNeedPlayerConfirmation extends CustomEICondition<Boolean, String> {
 
 
     public IfNeedPlayerConfirmation() {

@@ -3,6 +3,7 @@ package com.ssomar.score.conditions.managers;
 import com.ssomar.score.conditions.condition.blockcondition.BlockConditions;
 import com.ssomar.score.conditions.condition.blockcondition.BlockCondition;
 import com.ssomar.score.conditions.condition.blockcondition.basics.*;
+import com.ssomar.score.conditions.condition.blockcondition.custom.AroundBlockConditions;
 
 public class BlockConditionsManager extends ConditionsManager<BlockConditions, BlockCondition> {
 
@@ -23,6 +24,7 @@ public class BlockConditionsManager extends ConditionsManager<BlockConditions, B
         add(new IfBlockLocationZ());
         add(new IfUsage());
 
+        add(new AroundBlockConditions());
     }
 
     public static BlockConditionsManager getInstance() {

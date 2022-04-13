@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
-public class IfUsage extends ItemCondition<String> {
+public class IfUsage extends ItemCondition<String, String> {
 
 
     public IfUsage() {
@@ -23,8 +23,8 @@ public class IfUsage extends ItemCondition<String> {
         ExecutableItem executableItem = new ExecutableItem(itemStack);
         if(executableItem.isValid()){
             executableItem.loadExecutableItemInfos();
-            if(getCondition() != null && getCondition().length() > 0) {
-                if(!StringCalculation.calculation(getCondition(), executableItem.getUsage())) {
+            if(isDefined()) {
+                if(!StringCalculation.calculation(getAllCondition(messageSender.getSp()), executableItem.getUsage())) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

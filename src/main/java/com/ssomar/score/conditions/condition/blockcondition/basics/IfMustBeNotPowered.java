@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class IfMustBeNotPowered extends BlockCondition<Boolean> {
+public class IfMustBeNotPowered extends BlockCondition<Boolean, String> {
 
 
     public IfMustBeNotPowered() {
@@ -18,7 +18,7 @@ public class IfMustBeNotPowered extends BlockCondition<Boolean> {
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender) {
-        if(getCondition() && b.getBlockData() instanceof Powerable) {
+        if(getAllCondition(messangeSender.getSp()) && b.getBlockData() instanceof Powerable) {
             Powerable power = (Powerable)b.getBlockData();
             if(power.isPowered()) {
                 sendErrorMsg(playerOpt, messangeSender);

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ExecutableItemsAPI {
@@ -114,5 +115,9 @@ public class ExecutableItemsAPI {
 			return oOpt.get();
 		}
 		else return null;
+	}
+
+	public static List<String> getExecutableItemIdsList() {
+		return ItemManager.getInstance().getLoadedObjectsIDs();
 	}
 }

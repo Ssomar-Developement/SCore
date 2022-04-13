@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
-public class IfDurability extends ItemCondition<String> {
+public class IfDurability extends ItemCondition<String, String> {
 
 
     public IfDurability() {
@@ -20,8 +20,8 @@ public class IfDurability extends ItemCondition<String> {
     @Override
     public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
 
-        if(getCondition() != null && getCondition().length() > 0) {
-            if(!StringCalculation.calculation(getCondition(), itemStack.getDurability())) {
+        if(isDefined()) {
+            if(!StringCalculation.calculation(getAllCondition(messageSender.getSp()), itemStack.getDurability())) {
                 sendErrorMsg(playerOpt, messageSender);
                 return false;
             }

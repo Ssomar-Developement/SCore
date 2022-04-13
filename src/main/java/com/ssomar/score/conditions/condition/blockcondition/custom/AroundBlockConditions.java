@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AroundBlockConditions extends BlockCondition<List<AroundBlockCondition>> {
+public class AroundBlockConditions extends BlockCondition<List<AroundBlockCondition>, List<String>> {
 
     public AroundBlockConditions() {
         super(ConditionType.CUSTOM_AROUND_BLOCK, "blockAroundCdts", "Block Around Conditions", new String[]{}, new ArrayList<>(), "");
@@ -22,5 +22,18 @@ public class AroundBlockConditions extends BlockCondition<List<AroundBlockCondit
             if(!bAC.verif(b, playerOpt, messangeSender)) return false;
         }
         return true;
+    }
+
+    public void removeCondition(String id) {
+        AroundBlockCondition toRemove = null;
+        for(AroundBlockCondition bAC : getCondition()) {
+            if(bAC.getId().equals(id)) {
+                toRemove = bAC;
+                break;
+            }
+        }
+        if(toRemove != null) {
+            getCondition().remove(toRemove);
+        }
     }
 }

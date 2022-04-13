@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public abstract class BlockCondition<T> extends Condition<T> {
+public abstract class BlockCondition<T, Y> extends Condition<T, Y> {
 
     public BlockCondition(ConditionType conditionType, String configName, String editorName, String [] editorDescription, T condition, String defaultErrorMsg) {
         super(conditionType, configName, editorName, editorDescription, condition, defaultErrorMsg);

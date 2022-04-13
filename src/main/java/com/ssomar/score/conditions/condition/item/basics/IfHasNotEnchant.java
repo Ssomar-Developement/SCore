@@ -1,5 +1,6 @@
 package com.ssomar.score.conditions.condition.item.basics;
 
+import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.utils.SendMessage;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class IfHasNotEnchant extends ItemCondition<Map<Enchantment, Integer>> {
+public class IfHasNotEnchant extends ItemCondition<Map<Enchantment, Integer>, Map<String, String>> {
 
 
     public IfHasNotEnchant() {
@@ -23,7 +24,7 @@ public class IfHasNotEnchant extends ItemCondition<Map<Enchantment, Integer>> {
     @Override
     public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
 
-        if(getCondition() != null && getCondition().size() != 0){
+        if(isDefined()){
 
             ItemMeta itemMeta = null;
             boolean hasItemMeta = itemStack.hasItemMeta();
@@ -34,8 +35,9 @@ public class IfHasNotEnchant extends ItemCondition<Map<Enchantment, Integer>> {
                 return false;
             }
             Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
-            for(Enchantment enchant : getCondition().keySet()){
-                if(enchants.containsKey(enchant) && getCondition().get(enchant).equals(enchants.get(enchant))){
+            Map<Enchantment, Integer> condition = getAllCondition(messageSender.getSp());
+            for(Enchantment enchant : condition.keySet()){
+                if(enchants.containsKey(enchant) && condition.get(enchant).equals(enchants.get(enchant))){
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

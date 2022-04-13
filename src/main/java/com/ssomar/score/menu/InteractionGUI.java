@@ -3,13 +3,15 @@ package com.ssomar.score.menu;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.commands.CommandsEditor;
-import com.ssomar.score.menu.conditions.clean.NewConditionGUI;
-import com.ssomar.score.menu.conditions.clean.NewConditionGUIManager;
-import com.ssomar.score.menu.conditions.clean.NewConditionsGUI;
-import com.ssomar.score.menu.conditions.clean.NewConditionsGUIManager;
-import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
-import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionGUIManager;
-import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionGUI;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionGUIManager;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionsGUI;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionsGUIManager;
+import com.ssomar.score.menu.conditions.general.ConditionGUI;
+import com.ssomar.score.menu.conditions.general.ConditionGUIManager;
+import com.ssomar.score.menu.conditions.general.ConditionsGUI;
+import com.ssomar.score.menu.conditions.general.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.home.ConditionsHomeGUIManager;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
@@ -80,19 +82,14 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Plch condition"))) {
 				this.manage(player, itemS, title, "PlaceholdersConditionGUIManager", e);
 			}
-			
-			else if(title.contains(StringConverter.coloredString("Editor - Around block Conditions"))) {
-				this.manage(player, itemS, title, "AroundBlockConditionsGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Around-Block condition"))) {
-				this.manage(player, itemS, title, "AroundBlockConditionGUIManager", e);
-			}
 
 			else if(title.contains(StringConverter.coloredString("Editor - Custom projectiles"))) {
 				this.manage(player, itemS, title, "ProjectilesGUIManager", e);
 			}
-			else this.manage(player, itemS, title, "", e);
+			else{
+				if(e.getInventory().getHolder() instanceof GUI)
+					this.manage(player, itemS, title, "", e);
+			}
 
 		}catch (NullPointerException error) {
 			error.printStackTrace();
@@ -114,12 +111,20 @@ public class InteractionGUI implements Listener{
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
 
 
-		if(e.getInventory().getHolder() instanceof NewConditionGUI){
-			NewConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
+		if(e.getInventory().getHolder() instanceof ConditionGUI){
+			ConditionGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
 			return;
 		}
-		else if(e.getInventory().getHolder() instanceof NewConditionsGUI){
-			NewConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
+		else if(e.getInventory().getHolder() instanceof ConditionsGUI){
+			ConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof AroundBlockConditionGUI){
+			AroundBlockConditionGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof AroundBlockConditionsGUI){
+			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
 			return;
 		}
 		
@@ -136,7 +141,7 @@ public class InteractionGUI implements Listener{
 				}
 				break;
 		case "ConditionsGUIManager":
-			ConditionsGUIManager.getInstance().clicked(player, itemS);
+			ConditionsHomeGUIManager.getInstance().clicked(player, itemS);
 			break;
 
 		case "RequiredEIsGUIManager":
@@ -169,14 +174,6 @@ public class InteractionGUI implements Listener{
 		case "PlaceholdersConditionGUIManager":
 			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;*/
-			
-		/*case "AroundBlockConditionsGUIManager":
-			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
-			break;*/
-
-		/* case "AroundBlockConditionGUIManager":
-			AroundBlockConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;*/
 
 		case "ProjectilesGUIManager":
 			if(isShiftLeft) {
@@ -199,7 +196,6 @@ public class InteractionGUI implements Listener{
 	}
 
 
-
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChatEvent(AsyncPlayerChatEvent e) {
 
@@ -207,17 +203,17 @@ public class InteractionGUI implements Listener{
 		if(CommandsEditor.getInstance().isAsking(p)){
 			e.setCancelled(true);
 			CommandsEditor.getInstance().receiveMessage(p, e.getMessage());
-		} else if (NewConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (ConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
-			NewConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
+			ConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		} /*else if (PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}*/
-		/* else if(AroundBlockConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		else if(AroundBlockConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			AroundBlockConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}*/
+		}
 		else if (RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			RequiredEIGUIManager.getInstance().receivedMessage(p, e.getMessage());

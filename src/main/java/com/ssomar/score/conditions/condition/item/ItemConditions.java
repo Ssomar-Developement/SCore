@@ -2,7 +2,8 @@ package com.ssomar.score.conditions.condition.item;
 
 import java.util.*;
 
-import com.ssomar.score.conditions.NewConditions;
+import com.ssomar.score.conditions.Conditions;
+import com.ssomar.score.conditions.ConditionsVerification;
 import com.ssomar.score.utils.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,19 +11,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @Getter @Setter
-public class ItemConditions extends NewConditions {
+public class ItemConditions extends Conditions {
 
-	public boolean verifConditions(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
+	public ConditionsVerification verifConditions(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
 
 		for(Object object : getConditions().values()){
 			ItemCondition itemCondition = (ItemCondition)object;
-			if(!itemCondition.verifCondition(itemStack, playerOpt, messageSender)) return false;
+			if(!itemCondition.verifCondition(itemStack, playerOpt, messageSender)) return new ConditionsVerification(false, itemCondition.isErrorCancelEvent());
 		}
-		return true;
+		return new ConditionsVerification(true, false);
 	}
 
 	@Override
-	public NewConditions createNewInstance() {
+	public Conditions createNewInstance() {
 		return new ItemConditions();
 	}
 }
