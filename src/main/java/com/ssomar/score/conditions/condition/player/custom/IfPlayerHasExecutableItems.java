@@ -20,10 +20,10 @@ public class IfPlayerHasExecutableItems extends PlayerCondition<List<IfPlayerHas
 
     @Override
     public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender) {
-        if (getCondition() != null && getCondition().size() > 0) {
+        if (isDefined()) {
             if (SCore.hasExecutableItems) {
                 for (IfPlayerHasExecutableItem cdt : getCondition()) {
-                    if (!cdt.verify(player)) {
+                    if (cdt.isValid() && !cdt.verify(player)) {
                         sendErrorMsg(playerOpt, messageSender);
                         return false;
                     }

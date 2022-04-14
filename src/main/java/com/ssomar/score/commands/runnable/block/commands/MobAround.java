@@ -94,12 +94,14 @@ public class MobAround extends BlockCommand{
 
 							String buildCommands = prepareCommands.toString();
 							String [] tab;
-							if(buildCommands.contains("+++")) tab = buildCommands.split("\\+\\+\\+");
+							if(buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
 							else {
 								tab = new String[1];
 								tab[0] = buildCommands;
 							}
-							for(String s : tab) {
+							List<String> commands = new ArrayList<>();
+							for(int m = 0 ; m < tab.length; m++) {
+								String s = tab[m];
 								while(s.startsWith(" ")) {
 									s = s.substring(1);
 								}
@@ -108,11 +110,11 @@ public class MobAround extends BlockCommand{
 								}
 								if(s.startsWith("/")) s = s.substring(1);
 
-								s = sp.replacePlaceholder(s); 
-
-								EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(Collections.singletonList(s), aInfo2);
-								CommandsExecutor.runCommands(builder);	
-							}				
+								s = sp.replacePlaceholder(s);
+								commands.add(s);
+							}
+							EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
+							CommandsExecutor.runCommands(builder);
 						}
 					}
 				}catch(Exception e) {

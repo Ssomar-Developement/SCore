@@ -143,6 +143,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	public String replacePlaceholder(String str, boolean withPAPI) {
 		this.reloadAllPlaceholders();
 		String s = str;
+
+		if(str.trim().length() == 0) return "";
+
 		s = replaceRandomPlaceholders(s);
 		
 		if(this.hasActivator()) {

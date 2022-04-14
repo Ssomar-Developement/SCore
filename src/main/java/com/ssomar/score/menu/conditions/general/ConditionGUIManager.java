@@ -57,6 +57,10 @@ public class ConditionGUIManager extends GUIManagerSCore<ConditionGUI> {
             RequestMessage.sendRequestMessage(i.msgInfos);
             return true;
         }
+        else if (i.name.contains(ConditionGUI.CANCEL_EVENT)) {
+            cache.get(i.player).changeBoolean(ConditionGUI.CANCEL_EVENT);
+            return true;
+        }
 
         return false;
     }
@@ -137,6 +141,7 @@ public class ConditionGUIManager extends GUIManagerSCore<ConditionGUI> {
         Condition condition = (Condition) cache.get(p).getCondition().clone();
         condition.getConditionType().saveIn(cache.get(p), condition);
         condition.setCustomErrorMsg(Optional.ofNullable(cache.get(p).getMessage(ConditionGUI.ERROR_MESSAGE)));
+        condition.setErrorCancelEvent(cache.get(p).getBoolean(ConditionGUI.CANCEL_EVENT));
         loadedConditions.add(condition);
 
 

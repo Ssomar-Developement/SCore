@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockConditionGUI> {
+public class
+AroundBlockConditionGUIManager extends GUIManagerSCore<AroundBlockConditionGUI> {
 
     private static AroundBlockConditionGUIManager instance;
 

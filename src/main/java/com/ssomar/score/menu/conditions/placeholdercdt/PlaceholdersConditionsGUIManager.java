@@ -1,62 +1,23 @@
 package com.ssomar.score.menu.conditions.placeholdercdt;
 
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
+import com.ssomar.score.linkedplugins.LinkedPlugins;
+import com.ssomar.score.menu.conditions.general.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.home.ConditionsHomeGUIManager;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 
+import java.util.List;
+
 
 public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<PlaceholdersConditionsGUI>{
-	@Override
-	public void saveTheConfiguration(Player p) {
 
-	}
-
-	@Override
-	public boolean allClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean noShiftclicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean noShiftLeftclicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean noShiftRightclicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean shiftClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean shiftLeftClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean shiftRightClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean leftClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> i) {
-		return false;
-	}
-
-	@Override
-	public boolean rightClicked(InteractionClickedGUIManager<PlaceholdersConditionsGUI> interact) {
-		return false;
-	}
-/*
 	private static PlaceholdersConditionsGUIManager instance;
 
 	public void startEditing(Player p, SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
@@ -85,7 +46,7 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 			PlaceholdersConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail());
 		} 
 		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+			ConditionsHomeGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
 		else if(!i.name.isEmpty()){
 			PlaceholdersCondition pC = null;
@@ -164,5 +125,5 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 	@Override
 	public void saveTheConfiguration(Player p) {
 
-	}*/
+	}
 }

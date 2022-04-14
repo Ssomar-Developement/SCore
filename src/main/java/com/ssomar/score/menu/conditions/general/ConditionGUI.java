@@ -19,6 +19,7 @@ public class ConditionGUI extends GUIAbstract {
 
     public static final String CONDITION = "> Condition";
     public static final String ERROR_MESSAGE = "> Error Message";
+    public static final String CANCEL_EVENT = "> Error cancel event ?";
 
     private String detail;
     private Conditions conditions;
@@ -45,6 +46,9 @@ public class ConditionGUI extends GUIAbstract {
         i = createConditionItem(i);
 
         i = createMessageItem(i);
+
+        createItem(Material.LEVER, 1, i, TITLE_COLOR + CANCEL_EVENT, false, false);
+        updateBoolean(CANCEL_EVENT, condition.isErrorCancelEvent());
 
         createItem(RED, 1, 18, "&4&l▶ &cBack to "+detail, false, false);
 

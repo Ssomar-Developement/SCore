@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -11,10 +12,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
 import org.bukkit.inventory.ItemStack;
 
 public class DamageFeature extends DecorateurCustomProjectiles {
 
+    private static final Boolean DEBUG = false;
     double damage;
     boolean askDamage;
 
@@ -32,16 +35,20 @@ public class DamageFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void saveConfiguration(FileConfiguration config) {
+        if(DEBUG) SsomarDev.testMsg("Save damage: " + damage);
         config.set("damage", damage);
         cProj.saveConfiguration(config);
     }
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
+        if(DEBUG) SsomarDev.testMsg("Passage damage: + is abstract arrow " + (e instanceof AbstractArrow));
         if (!SCore.is1v12() && e instanceof AbstractArrow) {
             AbstractArrow aA = (AbstractArrow) e;
-            if (damage != -1)
+            if (damage != -1) {
+                if(DEBUG) SsomarDev.testMsg("Damage: " + damage);
                 aA.setDamage(damage);
+            }
         }
         cProj.transformTheProjectile(e, launcher);
     }
@@ -76,6 +83,7 @@ public class DamageFeature extends DecorateurCustomProjectiles {
         cProj.extractInfosGUI(gui);
         if(gui.getActually(GUI.TITLE_COLOR +"Damage").contains("VANILLA DAMAGE")) damage = -1;
         else damage = gui.getDouble(GUI.TITLE_COLOR +"Damage");
+        if(DEBUG) SsomarDev.testMsg("Extracted damage: " + damage);
     }
 
     @Override

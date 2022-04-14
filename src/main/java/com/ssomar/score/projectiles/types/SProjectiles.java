@@ -21,6 +21,7 @@ import java.io.*;
 
 public abstract class SProjectiles extends CustomProjectile{
 
+    private static final Boolean DEBUG = false;
     CustomProjectile projectile;
     String id;
     File file;
@@ -63,6 +64,7 @@ public abstract class SProjectiles extends CustomProjectile{
             Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 
             try {
+                if(DEBUG) SsomarDev.testMsg("Saving file " + file.getPath());
                 writer.write(config.saveToString());
             } finally {
                 writer.close();
@@ -106,9 +108,9 @@ public abstract class SProjectiles extends CustomProjectile{
             this.changeType(player);
         }
         else if(itemName.equals(save)){
-            projectile.extractInfosGUI(gui);
             file = new File(file.getPath());
             config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+            projectile.extractInfosGUI(gui);
             projectile.saveConfiguration(config);
             this.resetRequestChat();
             ProjectilesGUIManager.getInstance().startEditing(player);

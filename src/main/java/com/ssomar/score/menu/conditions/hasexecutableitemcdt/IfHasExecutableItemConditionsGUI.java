@@ -66,9 +66,9 @@ public class IfHasExecutableItemConditionsGUI extends GUIAbstract {
 					else
 						desc.add("&7• Usage cdt: " + "&cNO CONDITION");
 					if(bAC.isValid())
-						desc.add("&7• isValid: &c" + bAC.isValid());
-					else
 						desc.add("&7• isValid: &a" + bAC.isValid());
+					else
+						desc.add("&7• isValid: &c" + bAC.isValid());
 
 					String[] descArray = new String[desc.size()];
 					for (int j = 0; j < desc.size(); j++) {

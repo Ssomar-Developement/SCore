@@ -139,11 +139,11 @@ public abstract class RunCommandsBuilder{
 		else if(command.contains("NOTHING*")) {
 			try {
 				int m = 0;
-				if(command.contains("//")) m=Integer.parseInt(command.split("NOTHING\\*")[1].split("//")[0].trim());
+				if(command.contains("//") && !command.contains("https://")) m = Integer.parseInt(command.split("NOTHING\\*")[1].split("//")[0].trim());
 				else m = Integer.parseInt(command.split("NOTHING\\*")[1]);
 
 				for(int k = 0; k < m; k++) {
-					if(command.contains("//")) result.add("SENDMESSAGE "+command.split("//")[1]);
+					if(command.contains("//") && !command.contains("https://")) result.add("SENDMESSAGE "+command.split("//")[1]);
 					else result.add("");
 				}
 			}catch(Exception err) {
@@ -226,7 +226,7 @@ public abstract class RunCommandsBuilder{
 				result.remove(result.size()-1);
 			}
 
-			if(s.contains("//")) {
+			if(s.contains("//") && !command.contains("https://")) {
 				String [] spliter = s.split("//");
 
 				String commandF = spliter[0];
@@ -260,7 +260,8 @@ public abstract class RunCommandsBuilder{
 			
 			if(command.trim().length() == 0) continue;
 
-			if(command.contains("DELAYTICK ")) {
+			/* The delay for AROUND and MOB_AROUND is catch after */
+			if(command.contains("DELAYTICK ") && !command.contains("AROUND")) {
 				/* Verify that there is no multiple commands after DELAYTICK */
 				String delayStr = command;
 				if(command.contains("+++")) {

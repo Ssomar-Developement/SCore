@@ -11,7 +11,13 @@ import com.ssomar.score.menu.conditions.general.ConditionGUI;
 import com.ssomar.score.menu.conditions.general.ConditionGUIManager;
 import com.ssomar.score.menu.conditions.general.ConditionsGUI;
 import com.ssomar.score.menu.conditions.general.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionGUI;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionGUIManager;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionsGUI;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionsGUIManager;
 import com.ssomar.score.menu.conditions.home.ConditionsHomeGUIManager;
+import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionGUIManager;
+import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
@@ -127,6 +133,15 @@ public class InteractionGUI implements Listener{
 			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
 			return;
 		}
+
+		else if(e.getInventory().getHolder() instanceof IfHasExecutableItemConditionGUI){
+			IfHasExecutableItemConditionGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof IfHasExecutableItemConditionsGUI){
+			IfHasExecutableItemConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
 		
 		switch (guiType) {
 			case "ProjectilesEditor":
@@ -167,13 +182,13 @@ public class InteractionGUI implements Listener{
 				break;
 
 
-		/*case "PlaceholdersConditionsGUIManager":
+		case "PlaceholdersConditionsGUIManager":
 			PlaceholdersConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
 			break;
 
 		case "PlaceholdersConditionGUIManager":
 			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;*/
+			break;
 
 		case "ProjectilesGUIManager":
 			if(isShiftLeft) {
@@ -206,13 +221,17 @@ public class InteractionGUI implements Listener{
 		} else if (ConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			ConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		} /*else if (PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}*/
+		}
 		else if(AroundBlockConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			AroundBlockConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		}
+		else if(IfHasExecutableItemConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			e.setCancelled(true);
+			IfHasExecutableItemConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
 		else if (RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);

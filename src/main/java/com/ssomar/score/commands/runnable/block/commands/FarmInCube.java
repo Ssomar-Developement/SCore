@@ -3,8 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +20,7 @@ import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.ToolsListMaterial;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /* FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}*/
 public class FarmInCube extends BlockCommand{
@@ -54,10 +54,17 @@ public class FarmInCube extends BlockCommand{
 					}
 				}
 
+			SsomarDev.testMsg("OldMaterial : " + oldMaterial.toString());
 			if(validMaterial.contains(oldMaterial) && replant) {
-				block.setType(oldMaterial);
-				BlockData data = block.getState().getBlockData().clone();
-				replant(block, data, oldMaterial, p);
+				BukkitRunnable runnable = new BukkitRunnable() {
+					@Override
+					public void run() {
+						block.setType(oldMaterial);
+						BlockData data = block.getState().getBlockData().clone();
+						replant(block, data, oldMaterial, p);
+					}
+				};
+				runnable.runTask(SCore.plugin);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

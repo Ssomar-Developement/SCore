@@ -1,6 +1,8 @@
 package com.ssomar.score.menu.conditions.home;
 
 import com.ssomar.score.conditions.managers.*;
+import com.ssomar.score.menu.conditions.general.ConditionsGUI;
+import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -61,9 +63,9 @@ public class ConditionsHomeGUIManager extends GUIManager<ConditionsHomeGUI>{
 				com.ssomar.score.menu.conditions.general.ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "targetBlockConditions", sActivator.getTargetBlockConditions(), BlockConditionsManager.getInstance());
 			}
 
-			/*else if(name.contains(ConditionsGUI.PLACEHOLDERS_CONDITIONS)) {
+			else if(name.contains(ConditionsHomeGUI.PLACEHOLDERS_CONDITIONS)) {
 				PlaceholdersConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, sActivator.getPlaceholdersConditions(), "placeholdersConditions");
-			}*/
+			}
 
 			else if(name.contains(ConditionsHomeGUI.CUSTOM_EI_CONDITIONS)) {
 				com.ssomar.score.menu.conditions.general.ConditionsGUIManager.getInstance().startEditing(p, sPlugin, sObject, sActivator, "customConditions", sActivator.getCustomEIConditions(), CustomEIConditionsManager.getInstance());

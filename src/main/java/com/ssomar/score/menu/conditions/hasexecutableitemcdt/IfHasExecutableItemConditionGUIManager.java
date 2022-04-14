@@ -208,14 +208,18 @@ public class IfHasExecutableItemConditionGUIManager extends GUIManagerSCore<IfHa
         SActivator sActivator = cache.get(p).getSAct();
 
         IfPlayerHasExecutableItem aBC = cache.get(p).getABC();
+        aBC.setValid(true);
         IfHasExecutableItemConditionGUI aGUI = cache.get(p);
-        aBC.setExecutableItemID(aGUI.getActually(IfHasExecutableItemConditionGUI.EXECUTABLEITEM));
+        String eiID = aGUI.getActually(IfHasExecutableItemConditionGUI.EXECUTABLEITEM);
+        if (!ExecutableItemsAPI.getExecutableItemIdsList().contains(eiID)) {
+            aBC.setValid(false);
+        }
+        aBC.setExecutableItemID(eiID);
         aBC.setSlot(aGUI.getInt(IfHasExecutableItemConditionGUI.SLOT));
         String usageCdt = aGUI.getCondition(IfHasExecutableItemConditionGUI.USAGE);
         if(!usageCdt.equals("")){
             aBC.setUsageCalcul(Optional.ofNullable(usageCdt));
         }
-        aBC.setValid(true);
 
         IfPlayerHasExecutableItem.saveCdt(sPlugin, sObject, sActivator, aBC, cache.get(p).getDetail());
     }

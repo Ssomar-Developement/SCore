@@ -68,6 +68,7 @@ public class IfHasExecutableItemConditionGUI extends GUIAbstract {
         this.detail = detail;
         this.newIfPlayerHasEI = false;
         this.aBC = aBC;
+		this.loadTheGUI();
 	}
 
 
@@ -79,7 +80,7 @@ public class IfHasExecutableItemConditionGUI extends GUIAbstract {
 		createItem(Material.COMPASS, 				1, 1, TITLE_COLOR+SLOT, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		this.updateInt(SLOT, aBC.getSlot());
 
-		createItem(CLOCK, 				1, 1, TITLE_COLOR+USAGE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
+		createItem(CLOCK, 				1, 2, TITLE_COLOR+USAGE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
 		if(aBC.getUsageCalcul().isPresent()) this.updateCondition(USAGE, aBC.getUsageCalcul().get());
 		else this.updateCondition(USAGE, "");
 

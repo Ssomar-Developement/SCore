@@ -23,6 +23,7 @@ public class BlockCommandManager implements CommandManager{
 
 	public BlockCommandManager() {
 		List<BlockCommand> references = new ArrayList<>();
+		references.add(new ApplyBoneMeal());
 		references.add(new SetBlockPos());
 		references.add(new SetBlock());
 		references.add(new SetExecutableBlock());

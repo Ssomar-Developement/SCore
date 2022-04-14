@@ -121,7 +121,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void extractInfosGUI(GUI gui) {
-
+        cProj.extractInfosGUI(gui);
     }
 
 /*

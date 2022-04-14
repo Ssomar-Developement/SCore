@@ -67,6 +67,7 @@ public class PlaceholdersCondition {
 		this.part1 = part1;
 		this.comparator = comparator;
 		this.part2Number = part2Number;
+		this.part2String = "";
 	}
 	
 

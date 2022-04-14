@@ -78,13 +78,15 @@ public abstract class ConditionsManager<T extends Conditions, Y extends Conditio
                 if(condition.isDefined()) {
                     condition.getConditionType().writeInConfig(condition, conditionSection);
                     conditionSection.set(condition.getConfigName() + "Msg", condition.getCustomErrorMsg().get());
+                    conditionSection.set(condition.getConfigName() + "CE", condition.isErrorCancelEvent());
                 }
                 else {
                     conditionSection.set(condition.getConfigName(), null);
                     /* If the custom message is present but different that the default message, we save it*/
-                    if(condition.getCustomErrorMsg().isPresent() && ((String)condition.getCustomErrorMsg().get()).equals(MessageDesign.ERROR_CODE_FIRST+pluginName+conditionConfig.getDefaultErrorMsg()))
+                    if(condition.getCustomErrorMsg().isPresent() && !((String)condition.getCustomErrorMsg().get()).equals(MessageDesign.ERROR_CODE_FIRST+pluginName+conditionConfig.getDefaultErrorMsg()))
                         conditionSection.set(condition.getConfigName()+"Msg", condition.getCustomErrorMsg().get());
                     else conditionSection.set(condition.getConfigName()+"Msg", null);
+                    conditionSection.set(condition.getConfigName() + "CE", null);
                 }
 
             }
@@ -95,6 +97,7 @@ public abstract class ConditionsManager<T extends Conditions, Y extends Conditio
                         conditionSection.set(conditionConfig.getConfigName()+"Msg", null);
                     }
                 }
+                conditionSection.set(conditionConfig.getConfigName() + "CE", null);
             }
         }
         /* Remove the thing to force the creation of the section if it doesnt exist */

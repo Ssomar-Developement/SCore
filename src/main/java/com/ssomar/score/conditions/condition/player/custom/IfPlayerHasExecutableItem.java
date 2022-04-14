@@ -2,14 +2,12 @@ package com.ssomar.score.conditions.condition.player.custom;
 
 import com.google.common.base.Charsets;
 import com.ssomar.executableitems.items.ExecutableItem;
-import com.ssomar.score.conditions.condition.blockcondition.custom.AroundBlockCondition;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,11 +17,10 @@ import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-@Getter@Setter
+@Getter
+@Setter
 public class IfPlayerHasExecutableItem {
 
     private String id;
@@ -32,24 +29,24 @@ public class IfPlayerHasExecutableItem {
     private Optional<String> usageCalcul;
     private boolean isValid;
 
-    public IfPlayerHasExecutableItem(String id, ConfigurationSection section){
-       executableItemID = section.getString("executableItemID");
-       if(executableItemID == null){
-           isValid = false;
-           return;
-       }
-
-       slot = section.getInt("slot", -2);
-        if(slot < -1){
+    public IfPlayerHasExecutableItem(String id, ConfigurationSection section) {
+        isValid = true;
+        executableItemID = section.getString("executableItemID");
+        if (executableItemID == null) {
             isValid = false;
-            return;
+        }
+
+        slot = section.getInt("slot", -2);
+        if (slot < -1) {
+            isValid = false;
         }
 
         usageCalcul = Optional.ofNullable(section.getString("usageCalcul"));
-        isValid = true;
+        this.id = id;
     }
 
-    public IfPlayerHasExecutableItem(String id){
+    public IfPlayerHasExecutableItem(String id) {
+        this.id = id;
         executableItemID = "NOT DEFINE";
         isValid = false;
         slot = 0;
@@ -57,17 +54,17 @@ public class IfPlayerHasExecutableItem {
     }
 
 
-    public boolean verify(@NotNull Player p){
+    public boolean verify(@NotNull Player p) {
         PlayerInventory pInv = p.getInventory();
         ItemStack item;
-        if(slot != -1) item = pInv.getItem(slot);
+        if (slot != -1) item = pInv.getItem(slot);
         else item = pInv.getItem(pInv.getHeldItemSlot());
 
         ExecutableItem ei = new ExecutableItem(item);
-        if(!ei.isValid() || !((SObject)(ei.getConfig())).getId().equals(executableItemID)) return false;
+        if (!ei.isValid() || !((SObject) (ei.getConfig())).getId().equals(executableItemID)) return false;
 
-        if(usageCalcul.isPresent()){
-            if(!StringCalculation.calculation(usageCalcul.get(), ei.getUsage())) return false;
+        if (usageCalcul.isPresent()) {
+            if (!StringCalculation.calculation(usageCalcul.get(), ei.getUsage())) return false;
         }
 
         return true;
@@ -79,20 +76,20 @@ public class IfPlayerHasExecutableItem {
 
     public static void saveCdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, IfPlayerHasExecutableItem iPHEI, String detail) {
 
-        if(!new File(sObject.getPath()).exists()) {
-            sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file in the folder ! ("+sObject.getId()+".yml)");
+        if (!new File(sObject.getPath()).exists()) {
+            sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign() + " Error can't find the file in the folder ! (" + sObject.getId() + ".yml)");
             return;
         }
         File file = new File(sObject.getPath());
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-        activatorConfig.set("conditions."+detail+".ifPlayerHasExecutableItem."+iPHEI.getId()+".executableItemID", "X");
-        ConfigurationSection section = activatorConfig.getConfigurationSection("conditions."+detail+".ifPlayerHasExecutableItem."+iPHEI.getId());
+        ConfigurationSection activatorConfig = config.getConfigurationSection("activators." + sActivator.getID());
+        activatorConfig.set("conditions." + detail + ".ifPlayerHasExecutableItem." + iPHEI.getId() + ".executableItemID", "X");
+        ConfigurationSection section = activatorConfig.getConfigurationSection("conditions." + detail + ".ifPlayerHasExecutableItem." + iPHEI.getId());
 
         section.set("executableItemID", iPHEI.executableItemID);
-        section.set("slot", iPHEI.executableItemID);
-        if(iPHEI.usageCalcul.isPresent()) section.set("usageCalcul", iPHEI.usageCalcul.get());
+        section.set("slot", iPHEI.slot);
+        if (iPHEI.usageCalcul.isPresent()) section.set("usageCalcul", iPHEI.usageCalcul.get());
         else section.set("usageCalcul", null);
 
         try {
@@ -116,15 +113,15 @@ public class IfPlayerHasExecutableItem {
      */
     public static void deleteIPHEICdt(SPlugin sPlugin, SObject sObject, SActivator sActivator, String id, String detail) {
 
-        if(!new File(sObject.getPath()).exists()) {
-            sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign()+" Error can't find the file the folder ! ("+sObject.getId()+".yml)");
+        if (!new File(sObject.getPath()).exists()) {
+            sPlugin.getPlugin().getLogger().severe(sPlugin.getNameDesign() + " Error can't find the file the folder ! (" + sObject.getId() + ".yml)");
             return;
         }
         File file = new File(sObject.getPath());
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        ConfigurationSection activatorConfig = config.getConfigurationSection("activators."+sActivator.getID());
-        activatorConfig.set("conditions."+detail+".ifPlayerHasExecutableItem."+id, null);
+        ConfigurationSection activatorConfig = config.getConfigurationSection("activators." + sActivator.getID());
+        activatorConfig.set("conditions." + detail + ".ifPlayerHasExecutableItem." + id, null);
 
         try {
             Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
