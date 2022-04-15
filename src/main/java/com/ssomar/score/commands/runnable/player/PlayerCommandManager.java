@@ -41,6 +41,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new FrontDash());
 		commands.add(new BackDash());
 		commands.add(new TeleportOnCursor());
+		commands.add(new UnsafeTeleportOnCursor());
 		commands.add(new WorldTeleport());
 		commands.add(new SpawnEntityOnCursor());
 		commands.add(new Damage());
@@ -82,6 +83,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new MinecartBoost());
 		commands.add(new StunEnable());
 		commands.add(new StunDisable());
+		commands.add(XpBoost.getInstance());
 
 		this.commands = commands;
 	}

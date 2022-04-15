@@ -47,7 +47,7 @@ public class ConditionGUI extends GUIAbstract {
 
         i = createMessageItem(i);
 
-        createItem(Material.LEVER, 1, i, TITLE_COLOR + CANCEL_EVENT, false, false);
+        createItem(Material.LEVER, 1, i, TITLE_COLOR + CANCEL_EVENT, false, false, "&a✎ Click here to change", "&7actually:");
         updateBoolean(CANCEL_EVENT, condition.isErrorCancelEvent());
 
         createItem(RED, 1, 18, "&4&l▶ &cBack to "+detail, false, false);

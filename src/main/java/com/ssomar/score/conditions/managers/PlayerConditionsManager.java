@@ -28,6 +28,7 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
         add(new IfPlayerMustBeOnHisClaim());
         add(new IfPlayerMustBeOnHisIsland());
         add(new IfPlayerMustBeOnHisPlot());
+        add(new IfPlayerMustBeInHisTown());
 
         add(new IfIsOnTheBlock());
         add(new IfIsNotOnTheBlock());
@@ -40,6 +41,7 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
         add(new IfPosX());
         add(new IfPosY());
         add(new IfPosZ());
+        add(new IfCursorDistance());
 
         add(new IfHasPermission());
         add(new IfNotHasPermission());

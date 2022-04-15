@@ -18,10 +18,10 @@ public class SParticle {
 
     private String id;
     private Particle particlesType;
-    private int particlesAmount = 1;
-    private double particlesOffSet = 1;
-    private double particlesSpeed = 1;
-    private int particlesDelay = 1;
+    private int particlesAmount;
+    private double particlesOffSet;
+    private double particlesSpeed;
+    private int particlesDelay;
 
     /* specific for the Particle.REDSTONE */
     private Color redstoneColor;
