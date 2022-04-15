@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.6.7.5</version>
+	<version>1.7.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -154,9 +154,14 @@
 		<!-- <id>IntellectualSites</id> -->
 		<!-- <url>https://mvn.intellectualsites.com/content/repositories/snapshots/</url> -->
 		<!-- </repository> -->
+		<repository>
+			<id>glaremasters repo</id>
+			<url>https://repo.glaremasters.me/repository/towny/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
@@ -211,7 +216,7 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-c644d4f5e4-1</version>
+			<version>master-8fc75a48b4-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -297,6 +302,13 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>31.0.1-jre</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.palmergames.bukkit.towny</groupId>
+			<artifactId>towny</artifactId>
+			<version>0.98.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 

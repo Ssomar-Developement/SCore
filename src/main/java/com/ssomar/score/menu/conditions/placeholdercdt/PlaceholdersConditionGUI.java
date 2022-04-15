@@ -2,21 +2,26 @@ package com.ssomar.score.menu.conditions.placeholdercdt;
 
 import java.util.List;
 
+import com.ssomar.score.conditions.condition.Condition;
+import com.ssomar.score.menu.GUIAbstract;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.Comparator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCdtType;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
+import com.ssomar.score.conditions.condition.placeholders.Comparator;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCdtType;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 
-public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
+@Getter
+public class PlaceholdersConditionGUI extends GUIAbstract {
 
+    private String detail;
+    private PlaceholdersCondition condition;
 	private boolean newPlaceholdersCondition = false;
 
 	public final static String TITLE = "Editor - Plch condition";
@@ -29,7 +34,8 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 	public final static String CDT_ID = "Cdt ID:";
 
 	public PlaceholdersConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
-		super(TITLE, 6 * 9, sPlugin, sObject, sActivator, detail, new PlaceholdersCondition("null"));
+		super(TITLE, 6 * 9, sPlugin, sObject, sActivator);
+        this.detail = detail;
 		
 		newPlaceholdersCondition = true;
 
@@ -43,40 +49,40 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		}
 		String idStr = "plchC" + id;
 
-		PlaceholdersCondition pC = (PlaceholdersCondition)this.getConditions();
-		pC.setId(idStr);
-		this.setConditions(pC);
+		condition = new PlaceholdersCondition(idStr);
 		this.loadTheGUI();
 	}
 
 	public PlaceholdersConditionGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, PlaceholdersCondition pC, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" "+TITLE, 6 * 9, sPlugin, sObject, sActivator, detail, pC);
+		super("&8&l"+sPlugin.getShortName()+" "+TITLE, 6 * 9, sPlugin, sObject, sActivator);
+        this.detail = detail;
+        this.condition = pC;
+        loadTheGUI();
 	}
 
-	@Override
+
 	public void loadTheGUI() {
-		PlaceholdersCondition pC = (PlaceholdersCondition)this.getConditions();
 		//String str = "";
 		//if (PlaceholderAPI.isLotOfWork()) str = "&7&oPremium";
 
 		// Main Options
 		createItem(Material.NAME_TAG, 				1, 0, TITLE_COLOR+TYPE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
-		this.updateType(pC.getType());
+		this.updateType(condition.getType());
 
-		createItem(Material.PAPER, 					1, 1, TITLE_COLOR+PART1, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart1());
+		createItem(Material.PAPER, 					1, 1, TITLE_COLOR+PART1, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ condition.getPart1());
 
 		createItem(Material.ARROW, 				    1, 2, TITLE_COLOR+COMPARATOR, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
-		this.updateComparator(pC.getComparator());
+		this.updateComparator(condition.getComparator());
 
-		if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(pC.getType()))
-			createItem(Material.PAPER, 					1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart2Number());
+		if(PlaceholdersCdtType.getpCdtTypeWithNumber().contains(condition.getType()))
+			createItem(Material.PAPER, 					1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ condition.getPart2Number());
 
-		else createItem(Material.PAPER, 			1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getPart2String());
+		else createItem(Material.PAPER, 			1, 3, TITLE_COLOR+PART2, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ condition.getPart2String());
 
-		createItem(WRITABLE_BOOK, 					1, 4, TITLE_COLOR+MESSAGE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ pC.getMessage());
+		createItem(WRITABLE_BOOK, 					1, 4, TITLE_COLOR+MESSAGE, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: &e"+ condition.getMessage());
 
 		createItem(Material.LEVER, 					1, 5, TITLE_COLOR+CANCEL_EVENT, false, false, "", CLICK_HERE_TO_CHANGE,"&7actually: ");
-		this.updateBoolean(CANCEL_EVENT, pC.isCancelEvent());
+		this.updateBoolean(CANCEL_EVENT, condition.isCancelEvent());
 
 
 		// exit
@@ -85,7 +91,7 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		// Reset menu
 		createItem(ORANGE, 			1, 46, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall options of this Placeholders Condition");
 
-		createItem(Material.BOOK, 					1, 49, TITLE_COLOR+CDT_ID, false, false, "", "&7actually: &e" + pC.getId());
+		createItem(Material.BOOK, 					1, 49, TITLE_COLOR+CDT_ID, false, false, "", "&7actually: &e" + condition.getId());
 
 		createItem(Material.BOOK, 					1, 50, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
 
@@ -223,12 +229,12 @@ public class PlaceholdersConditionGUI extends ConditionGUIAbstract{
 		return null;
 	}
 
-	public boolean isNewPlaceholdersCondition() {
-		return newPlaceholdersCondition;
-	}
-
 	public void setNewPlaceholdersCondition(boolean newPlaceholdersCondition) {
 		this.newPlaceholdersCondition = newPlaceholdersCondition;
 	}
 
+    @Override
+    public void reloadGUI() {
+        loadTheGUI();
+    }
 }

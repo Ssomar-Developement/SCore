@@ -19,6 +19,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
@@ -71,7 +72,6 @@ public class LocatedLaunch extends PlayerCommand{
 		try {
 			Projectile entity = null;
 
-			receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
 
 			if(args.get(0).equalsIgnoreCase("ARROW")) entity = recLoc.getWorld().spawn(toLaunchLoc,Arrow.class);
 			else if(args.get(0).equalsIgnoreCase("DRAGONFIREBALL")) entity = recLoc.getWorld().spawn(toLaunchLoc,DragonFireball.class);
@@ -194,7 +194,7 @@ public class LocatedLaunch extends PlayerCommand{
 				}
 
 				if(SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
-					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), aInfo.getExecutableItem(), aInfo.getSlot(), System.currentTimeMillis());
+					ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
 					ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
 				}
 			}

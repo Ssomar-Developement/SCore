@@ -3,7 +3,6 @@ package com.ssomar.score.utils.placeholders;
 import java.io.Serializable;
 import java.util.*;
 
-import com.ssomar.executableitems.items.variables.VariableConfig;
 import com.ssomar.executableitems.items.variables.VariableReal;
 import lombok.Getter;
 import lombok.Setter;
@@ -144,6 +143,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	public String replacePlaceholder(String str, boolean withPAPI) {
 		this.reloadAllPlaceholders();
 		String s = str;
+
+		if(str.trim().length() == 0) return "";
+
 		s = replaceRandomPlaceholders(s);
 		
 		if(this.hasActivator()) {

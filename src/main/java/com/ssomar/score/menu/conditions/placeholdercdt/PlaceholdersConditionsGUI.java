@@ -3,45 +3,43 @@ package com.ssomar.score.menu.conditions.placeholdercdt;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.menu.GUIAbstract;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.ssomar.score.menu.conditions.ConditionGUIAbstract;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCdtType;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCdtType;
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 
-public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
+@Getter
+public class PlaceholdersConditionsGUI extends GUIAbstract {
 
 	private static int index;
-
+	private String detail;
 	private List<PlaceholdersCondition> list;
 
 	// Page 1
 	public PlaceholdersConditionsGUI(SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
-		super("&8&l"+sPlugin.getShortName()+" Editor - Placeholders Conditions - Page 1", 5 * 9, sPlugin, sObject, sActivator, detail, null);
+		super("&8&l"+sPlugin.getShortName()+" Editor - Placeholders Conditions - Page 1", 5 * 9, sPlugin, sObject, sActivator);
+		this.detail = detail;
 		this.list = list;
 		setIndex(1);
-		loadCdts(sObject, sActivator, list);
+		loadCdts();
 	}
 
 	// other pages
 	public PlaceholdersConditionsGUI(int index, SPlugin sPlugin, SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list, String detail) {
-		super("&8&l"+sPlugin.getShortName()+"Editor - Placeholders Conditions - Page " + index, 5 * 9, sPlugin, sObject, sActivator, detail, null);
+		super("&8&l"+sPlugin.getShortName()+"Editor - Placeholders Conditions - Page " + index, 5 * 9, sPlugin, sObject, sActivator);
+		this.detail = detail;
 		this.list = list;
 		setIndex(index);
-		loadCdts(sObject, sActivator, list);
+		loadCdts();
 	}
 
-	@Override
-	public void loadTheGUI() {
-		/* DO NOTHING THERE IS NO RESET HERE */
-		loadCdts(this.getSObject(), this.getSAct(), list);
-	}
-
-	public void loadCdts(SObject sObject, SActivator sActivator, List<PlaceholdersCondition> list) {
+	public void loadCdts() {
 		int i = 0;
 		int total = 0;
 		if(list != null) {
@@ -89,9 +87,9 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 
 		createItem(GREEN, 1, 40, "&2&l✚ &aNew Placeholders cdt", false, false);
 
-		createItem(Material.BOOK, 1, 42, COLOR_OBJECT_ID, false, false, "","&7actually: &e" + sObject.getId());
+		createItem(Material.BOOK, 1, 42, COLOR_OBJECT_ID, false, false, "","&7actually: &e" + getSObject().getId());
 
-		createItem(Material.BOOK, 1, 43, COLOR_ACTIVATOR_ID, false, false, "","&7actually: &e" + sActivator.getID());
+		createItem(Material.BOOK, 1, 43, COLOR_ACTIVATOR_ID, false, false, "","&7actually: &e" + getSAct().getID());
 	}
 
 
@@ -104,12 +102,15 @@ public class PlaceholdersConditionsGUI extends ConditionGUIAbstract {
 		PlaceholdersConditionsGUI.index = index;
 	}
 
-	public List<PlaceholdersCondition> getList() {
-		return list;
-	}
+
 
 	public void setList(List<PlaceholdersCondition> list) {
 		this.list = list;
+	}
+
+	@Override
+	public void reloadGUI() {
+		loadCdts();
 	}
 }
 

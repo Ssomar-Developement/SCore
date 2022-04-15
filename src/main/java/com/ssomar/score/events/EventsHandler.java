@@ -34,6 +34,8 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new CommandsHandler(), main);
 
 		main.getServer().getPluginManager().registerEvents(new KeepCustomFlyEvent(), main);
+
+		main.getServer().getPluginManager().registerEvents(new XPBoostEvent(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 

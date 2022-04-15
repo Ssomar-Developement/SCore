@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssomar.score.fly.FlyManager;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

@@ -1,18 +1,19 @@
 package com.ssomar.score.menu.conditions.placeholdercdt;
 
-import java.util.List;
-
-import org.bukkit.entity.Player;
-
+import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
-import com.ssomar.score.menu.score.GUIManagerSCore;
-import com.ssomar.score.menu.score.InteractionClickedGUIManager;
+import com.ssomar.score.menu.conditions.general.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.home.ConditionsHomeGUIManager;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
-import com.ssomar.score.sobject.sactivator.conditions.placeholders.PlaceholdersCondition;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
+import org.bukkit.entity.Player;
+
+import com.ssomar.score.menu.score.GUIManagerSCore;
+import com.ssomar.score.menu.score.InteractionClickedGUIManager;
+
+import java.util.List;
 
 
 public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<PlaceholdersConditionsGUI>{
@@ -45,7 +46,7 @@ public class PlaceholdersConditionsGUIManager extends GUIManagerSCore<Placeholde
 			PlaceholdersConditionGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, cache.get(i.player).getList(), cache.get(i.player).getDetail());
 		} 
 		else if(i.name.contains("Back")) {
-			ConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+			ConditionsHomeGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
 		}
 		else if(!i.name.isEmpty()){
 			PlaceholdersCondition pC = null;

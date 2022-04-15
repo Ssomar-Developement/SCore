@@ -21,7 +21,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class GUI {
+public abstract class GUI implements IGUI{
 
 	public final static String DEFAULT_ITEM_NAME = "&e&lDefault Name";
 
@@ -77,7 +77,7 @@ public abstract class GUI {
 
 
 	public GUI(String name, int size) {
-		inv = Bukkit.createInventory(null, size, StringConverter.coloredString(name));
+		inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
 		if(!SCore.is1v12()) {
 			for(int j=0; j<size; j++) {
 				createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 	1 , j, 	"&7", 	true, false);
@@ -215,6 +215,10 @@ public abstract class GUI {
 		inv.clear(invSlot);
 	}
 
+	public void clear() {
+		inv.clear();
+	}
+
 	public ItemStack getByName(String name) {
 		for(ItemStack item: inv.getContents()) {
 			if(item != null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))){
@@ -333,7 +337,7 @@ public abstract class GUI {
 	public void updateConditionList(String name, List<String> list, String emptyStr) {
 		ItemStack item = this.getByName(name);
 		ItemMeta toChange = item.getItemMeta();
-		List<String> loreUpdate= toChange.getLore().subList(0, 3);
+		List<String> loreUpdate = toChange.getLore().subList(0, 3);
 		if(list.isEmpty()) loreUpdate.add(StringConverter.coloredString(emptyStr));
 		else {
 			for(String str: list) {
@@ -350,12 +354,33 @@ public abstract class GUI {
 		List<String> loreUpdate= iM.getLore().subList(3, iM.getLore().size());
 		List<String> result = new ArrayList<>();
 		for(String line: loreUpdate) {
-			line=StringConverter.decoloredString(line);
+			line = StringConverter.decoloredString(line);
 			if(line.contains(emptyStr)) {
 				return new ArrayList<>();
 			}else result.add(line.replaceAll("➤ ", ""));
 		}
 		return result;
+	}
+
+	public List<String> getConditionListWithColor(String name, String emptyStr){
+		ItemStack item = this.getByName(name);
+		ItemMeta iM = item.getItemMeta();
+		List<String> loreUpdate = iM.getLore().subList(3, iM.getLore().size());
+		List<String> result = new ArrayList<>();
+		for(String line: loreUpdate) {
+			line = StringConverter.deconvertColor(line);
+			if(line.contains(emptyStr)) {
+				return new ArrayList<>();
+			}
+			// If the player use a color the &e is not present in the line
+			else result.add(line.replaceAll("&6➤ &e", "").replaceAll("&6➤ ", ""));
+		}
+		return result;
+	}
+
+	@Override
+	public Inventory getInventory() {
+		return inv;
 	}
 
 	public Inventory getInv() {

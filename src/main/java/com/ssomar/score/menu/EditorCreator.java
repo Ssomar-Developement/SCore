@@ -39,6 +39,7 @@ public class EditorCreator {
 	
 	private String suggestionTitle= "";
 
+	/** Key is the command, value is the visual command so you can add extra things like colors **/
 	private Map<String, String> suggestions= new HashMap<>();
 
 	private static StringConverter sc= new StringConverter();

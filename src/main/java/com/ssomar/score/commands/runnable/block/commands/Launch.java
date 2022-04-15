@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
@@ -156,7 +157,7 @@ public class Launch extends BlockCommand {
 
             if (entity != null) {
                 if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
-                    ProjectileInfo pInfo = new ProjectileInfo(p, entity.getUniqueId(), aInfo.getExecutableItem(), aInfo.getSlot(), System.currentTimeMillis());
+                    ProjectileInfo pInfo = new ProjectileInfo(p, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
                     ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
                 }
             }

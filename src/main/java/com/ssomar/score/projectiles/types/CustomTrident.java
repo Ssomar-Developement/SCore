@@ -25,7 +25,6 @@ public class CustomTrident extends SProjectiles {
         proj = new CriticalFeature(proj);
         proj = new BounceFeature(proj);
         proj = new GravityFeature(proj);
-        proj = new DamageFeature(proj);
         proj = new KnockbackStrengthFeature(proj);
         proj = new PierceLevelFeature(proj);
         proj = new DespawnFeature(proj);

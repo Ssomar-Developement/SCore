@@ -5,6 +5,7 @@ import com.ssomar.score.SsomarDev;
 import java.util.HashMap;
 import java.util.UUID;
 
+/** Fix an issue where the tp generates a click **/
 public class TeleportOnCursorManager {
 
     private static TeleportOnCursorManager instance;

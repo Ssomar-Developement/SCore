@@ -1,26 +1,23 @@
 package com.ssomar.score.menu;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUIManager;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIsGUIManager;
 import com.ssomar.score.menu.commands.CommandsEditor;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.BlockConditionsMessagesGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionGUIManager;
-import com.ssomar.score.menu.conditions.blockcdt.blockaroundcdt.AroundBlockConditionsGUIManager;
-import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsGUIManager;
-import com.ssomar.score.menu.conditions.customcdt.ei.CustomConditionsMessagesGUIManager;
-import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsGUIManager;
-import com.ssomar.score.menu.conditions.entitycdt.EntityConditionsMessagesGUIManager;
-import com.ssomar.score.menu.conditions.home.ConditionsGUIManager;
-import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsGUIManager;
-import com.ssomar.score.menu.conditions.itemcdt.ItemConditionsMessagesGUIManager;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionGUI;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionGUIManager;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionsGUI;
+import com.ssomar.score.menu.conditions.blockaroundcdt.AroundBlockConditionsGUIManager;
+import com.ssomar.score.menu.conditions.general.ConditionGUI;
+import com.ssomar.score.menu.conditions.general.ConditionGUIManager;
+import com.ssomar.score.menu.conditions.general.ConditionsGUI;
+import com.ssomar.score.menu.conditions.general.ConditionsGUIManager;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionGUI;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionGUIManager;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionsGUI;
+import com.ssomar.score.menu.conditions.hasexecutableitemcdt.IfHasExecutableItemConditionsGUIManager;
+import com.ssomar.score.menu.conditions.home.ConditionsHomeGUIManager;
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionGUIManager;
 import com.ssomar.score.menu.conditions.placeholdercdt.PlaceholdersConditionsGUIManager;
-import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsGUIManager;
-import com.ssomar.score.menu.conditions.playercdt.PlayerConditionsMessagesGUIManager;
-import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsGUIManager;
-import com.ssomar.score.menu.conditions.worldcdt.WorldConditionsMessagesGUIManager;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
@@ -83,30 +80,6 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Particle"))) {
 				this.manage(player, itemS, title, "SParticleGUIManager", e);
 			}
-			
-			else if(title.contains(StringConverter.coloredString("Editor - Player Conditions Messages"))) {
-				this.manage(player, itemS, title, "PlayerConditionsMessagesGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Player Conditions"))) {
-				this.manage(player, itemS, title, "PlayerConditionsGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - World Conditions Messages"))) {
-				this.manage(player, itemS, title, "WorldConditionsMessagesGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - World Conditions"))) {
-				this.manage(player, itemS, title, "WorldConditionsGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Entity Conditions Messages"))) {
-				this.manage(player, itemS, title, "EntityConditionsMessagesGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Entity Conditions"))) {
-				this.manage(player, itemS, title, "EntityConditionsGUIManager", e);
-			}
 
 			else if(title.contains(StringConverter.coloredString("Editor - Placeholders Conditions"))) {
 				this.manage(player, itemS, title, "PlaceholdersConditionsGUIManager", e);
@@ -115,41 +88,13 @@ public class InteractionGUI implements Listener{
 			else if(title.contains(StringConverter.coloredString("Editor - Plch condition"))) {
 				this.manage(player, itemS, title, "PlaceholdersConditionGUIManager", e);
 			}
-			
-			else if(title.contains(StringConverter.coloredString("Editor - Around block Conditions"))) {
-				this.manage(player, itemS, title, "AroundBlockConditionsGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Around-Block condition"))) {
-				this.manage(player, itemS, title, "AroundBlockConditionGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Item Conditions Messages"))) {
-				this.manage(player, itemS, title, "ItemConditionMessagesGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Item Conditions"))) {
-				this.manage(player, itemS, title, "ItemConditionGUIManager", e);
-			}
-			
-			else if(title.contains(StringConverter.coloredString("Editor - Block Conditions Messages"))) {
-				this.manage(player, itemS, title, "BlockConditionMessagesGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Block Conditions"))) {
-				this.manage(player, itemS, title, "BlockConditionGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Custom Conditions Messages"))) {
-				this.manage(player, itemS, title, "CustomConditionsMessagesGUIManager", e);
-			}
-
-			else if(title.contains(StringConverter.coloredString("Editor - Custom Conditions"))) {
-				this.manage(player, itemS, title, "CustomConditionsGUIManager", e);
-			}
 
 			else if(title.contains(StringConverter.coloredString("Editor - Custom projectiles"))) {
 				this.manage(player, itemS, title, "ProjectilesGUIManager", e);
+			}
+			else{
+				if(e.getInventory().getHolder() instanceof GUI)
+					this.manage(player, itemS, title, "", e);
 			}
 
 		}catch (NullPointerException error) {
@@ -170,6 +115,33 @@ public class InteractionGUI implements Listener{
 		//String itemName = itemS.getItemMeta().getDisplayName();
 
 		boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
+
+
+		if(e.getInventory().getHolder() instanceof ConditionGUI){
+			ConditionGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof ConditionsGUI){
+			ConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof AroundBlockConditionGUI){
+			AroundBlockConditionGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof AroundBlockConditionsGUI){
+			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+
+		else if(e.getInventory().getHolder() instanceof IfHasExecutableItemConditionGUI){
+			IfHasExecutableItemConditionGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
+		else if(e.getInventory().getHolder() instanceof IfHasExecutableItemConditionsGUI){
+			IfHasExecutableItemConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+			return;
+		}
 		
 		switch (guiType) {
 			case "ProjectilesEditor":
@@ -184,7 +156,7 @@ public class InteractionGUI implements Listener{
 				}
 				break;
 		case "ConditionsGUIManager":
-			ConditionsGUIManager.getInstance().clicked(player, itemS);
+			ConditionsHomeGUIManager.getInstance().clicked(player, itemS);
 			break;
 
 		case "RequiredEIsGUIManager":
@@ -209,29 +181,6 @@ public class InteractionGUI implements Listener{
 				SParticleGUIManager.getInstance().clicked(player, itemS, e.getClick());
 				break;
 
-		case "EntityConditionsGUIManager":
-			EntityConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "EntityConditionsMessagesGUIManager":
-			EntityConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "WorldConditionsMessagesGUIManager":
-			 WorldConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "WorldConditionsGUIManager":
-			WorldConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "PlayerConditionsMessagesGUIManager":
-			PlayerConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "PlayerConditionsGUIManager":
-			PlayerConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
 
 		case "PlaceholdersConditionsGUIManager":
 			PlaceholdersConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
@@ -239,38 +188,6 @@ public class InteractionGUI implements Listener{
 
 		case "PlaceholdersConditionGUIManager":
 			PlaceholdersConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-			
-		case "AroundBlockConditionsGUIManager":
-			AroundBlockConditionsGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
-			break;
-
-		case "AroundBlockConditionGUIManager":
-			AroundBlockConditionGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "ItemConditionMessagesGUIManager":
-			ItemConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "ItemConditionGUIManager":
-			ItemConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-			
-		case "BlockConditionMessagesGUIManager":
-			BlockConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "BlockConditionGUIManager":
-			BlockConditionsGUIManager.getInstance().clicked(player, itemS,e.getClick());
-			break;
-
-		case "CustomConditionsMessagesGUIManager":
-			CustomConditionsMessagesGUIManager.getInstance().clicked(player, itemS, e.getClick());
-			break;
-
-		case "CustomConditionsGUIManager":
-			CustomConditionsGUIManager.getInstance().clicked(player, itemS, e.getClick());
 			break;
 
 		case "ProjectilesGUIManager":
@@ -294,7 +211,6 @@ public class InteractionGUI implements Listener{
 	}
 
 
-
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChatEvent(AsyncPlayerChatEvent e) {
 
@@ -302,36 +218,10 @@ public class InteractionGUI implements Listener{
 		if(CommandsEditor.getInstance().isAsking(p)){
 			e.setCancelled(true);
 			CommandsEditor.getInstance().receiveMessage(p, e.getMessage());
-		}
-		else if(PlayerConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (ConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
-			PlayerConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(PlayerConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			PlayerConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(BlockConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			BlockConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(EntityConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			EntityConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(EntityConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			EntityConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(WorldConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			WorldConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(WorldConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			WorldConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+			ConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
+		} else if (PlaceholdersConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			PlaceholdersConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
@@ -339,37 +229,19 @@ public class InteractionGUI implements Listener{
 			e.setCancelled(true);
 			AroundBlockConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
-		else if(ItemConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		else if(IfHasExecutableItemConditionGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
-			ItemConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
+			IfHasExecutableItemConditionGUIManager.getInstance().receivedMessage(p, e.getMessage());
 		}
-		else if(ItemConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			ItemConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(BlockConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			BlockConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(CustomConditionsMessagesGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			CustomConditionsMessagesGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(CustomConditionsGUIManager.getInstance().getRequestWriting().containsKey(p)) {
-			e.setCancelled(true);
-			CustomConditionsGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		else if (RequiredEIGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			RequiredEIGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else if(SParticleGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+		} else if (SParticleGUIManager.getInstance().getRequestWriting().containsKey(p)) {
 			e.setCancelled(true);
 			SParticleGUIManager.getInstance().receivedMessage(p, e.getMessage());
-		}
-		else {
-			for(SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()){
-				if(proj.hasRequestChat()){
+		} else {
+			for (SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()) {
+				if (proj.hasRequestChat()) {
 					e.setCancelled(true);
 					proj.sendMessageForConfig(proj.getConfigGUI(), p, e.getMessage());
 					break;

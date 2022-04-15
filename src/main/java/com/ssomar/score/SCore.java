@@ -52,6 +52,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
 	public static boolean hasLands = false;
 
+	public static boolean hasTowny = false;
+
 	public static boolean hasGriefPrevention = false;
 
 	public static boolean hasGriefDefender = false;
@@ -151,6 +153,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 		if (Bukkit.getPluginManager().getPlugin("Lands") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Lands hooked !");
 			hasLands = true;	
+		}
+
+		if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] Towny hooked !");
+			hasLands = true;
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("GriefPrevention") != null) {
