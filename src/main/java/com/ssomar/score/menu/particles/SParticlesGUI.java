@@ -1,5 +1,6 @@
 package com.ssomar.score.menu.particles;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.sparticles.SParticle;
@@ -57,11 +58,9 @@ public class SParticlesGUI extends GUIAbstract {
 				desc.add("&7• Particle OffSet: &e" + sParticle.getParticlesOffSet());
 				desc.add("&7• Particle Speed: &e" + sParticle.getParticlesSpeed());
 				desc.add("&7• Particle Delay: &e" + sParticle.getParticlesDelay());
-				if(sParticle.getParticlesType().equals(Particle.REDSTONE))
+				if(sParticle.canHaveRedstoneColor())
 					desc.add("&7• Redstone color: &e" + CustomColor.getName(sParticle.getRedstoneColor()));
-				if(sParticle.getParticlesType().equals(Particle.BLOCK_MARKER)
-				|| sParticle.getParticlesType().equals(Particle.BLOCK_CRACK)
-				|| sParticle.getParticlesType().equals(Particle.ITEM_CRACK))
+				if(sParticle.canHaveBlocktype())
 					desc.add("&7• Block type: &e" + sParticle.getBlockType().toString());
 
 				String[]descArray = new String[desc.size()];

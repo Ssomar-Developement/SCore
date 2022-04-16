@@ -1,6 +1,7 @@
 package com.ssomar.score.sparticles;
 
 import com.google.common.base.Charsets;
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.CustomColor;
@@ -99,11 +100,9 @@ public class SParticles {
             mainSection.set("particles." + sParticle.getId() + ".particlesOffSet", sParticle.getParticlesOffSet());
             mainSection.set("particles." + sParticle.getId() + ".particlesSpeed", sParticle.getParticlesSpeed());
             mainSection.set("particles." + sParticle.getId() + ".particlesDelay", sParticle.getParticlesDelay());
-            if (sParticle.getParticlesType().equals(Particle.REDSTONE))
+            if (sParticle.canHaveRedstoneColor())
                 mainSection.set("particles." + sParticle.getId() + ".redstoneColor", CustomColor.getName(sParticle.getRedstoneColor()));
-            if (sParticle.getParticlesType().equals(Particle.BLOCK_CRACK)
-            || sParticle.getParticlesType().equals(Particle.BLOCK_DUST)
-                || sParticle.getParticlesType().equals(Particle.BLOCK_MARKER))
+            if (sParticle.canHaveBlocktype())
                 mainSection.set("particles." + sParticle.getId() + ".blockType", sParticle.getBlockType().toString());
         }
 

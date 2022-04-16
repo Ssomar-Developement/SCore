@@ -1,12 +1,15 @@
 package com.ssomar.score.menu.particles;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.sparticles.SParticle;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.CustomColor;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.HumanEntity;
@@ -25,6 +28,8 @@ public class SParticleGUI extends GUIAbstract {
     public static final String OFFSET = "Particle OffSet";
     public static final String SPEED = "Particle Speed";
     public static final String DELAY = "Particle Delay";
+    public static final String REDSTONE_COLOR = "Redstone color";
+    public static final String BLOCK_TYPE = "Block type";
     @Getter
     private SParticles sParticles;
     @Getter
@@ -74,6 +79,15 @@ public class SParticleGUI extends GUIAbstract {
         createItem(Material.LEVER, 1, 4, TITLE_COLOR + DELAY, false, false, "", "&a✎ Click here to change", "&7actually:");
         this.updateInt(DELAY, sParticle.getParticlesDelay());
 
+        if (sParticle.canHaveBlocktype()){
+            createItem(Material.STONE, 1, 5, TITLE_COLOR + BLOCK_TYPE, false, false, "", "&a✎ Click here to change", "&7actually:");
+            this.updateMaterial(sParticle.getBlockType());
+        }
+        else if(sParticle.canHaveRedstoneColor()){
+            createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7actually:");
+            this.updateColor(sParticle.getRedstoneColor());
+        }
+
 
         createItem(Material.BOOK, 1, 8, "&a&l" + ID, false, false, "", "&7actually: &e" + sParticle.getId());
 
@@ -85,6 +99,75 @@ public class SParticleGUI extends GUIAbstract {
         createItem(GREEN, 1, 35, "&2&l✔ &aSave this particle", false, false, "", "&a&oClick here to save this", "&a&oparticle");
     }
 
+    public Color nextColor(Color particle) {
+        boolean next = false;
+        for (Color check : CustomColor.values()) {
+            if (check.equals(particle)) {
+                next = true;
+                continue;
+            }
+            if (next) return check;
+        }
+        return CustomColor.values()[0];
+    }
+
+    public Color prevColor(Color color) {
+        int i = -1;
+        int cpt = 0;
+        for (Color check : CustomColor.values()) {
+            if (check.equals(color)) {
+                i = cpt;
+                break;
+            }
+            cpt++;
+        }
+        if (i == 0) return CustomColor.values()[CustomColor.values().length - 1];
+        else return CustomColor.values()[cpt - 1];
+    }
+
+    public void updateColor(Color color) {
+        ItemStack item = this.getByName(REDSTONE_COLOR);
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore().subList(0, 2);
+        boolean find = false;
+        for (Color check : CustomColor.values()) {
+            if (color.equals(check)) {
+                lore.add(StringConverter.coloredString("&2➤ &a" + CustomColor.getName(color)));
+                find = true;
+            } else if (find) {
+                if (lore.size() == 17) break;
+                lore.add(StringConverter.coloredString("&6✦ &e" + CustomColor.getName(check)));
+            }
+        }
+        for (Color check : CustomColor.values()) {
+            if (lore.size() == 17) break;
+            else {
+                lore.add(StringConverter.coloredString("&6✦ &e" + CustomColor.getName(check)));
+            }
+        }
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        /* Update the gui only for the right click , for the left it updated automaticaly idk why */
+        for (HumanEntity e : this.getInv().getViewers()) {
+            if (e instanceof Player) {
+                Player p = (Player) e;
+                p.updateInventory();
+            }
+        }
+    }
+
+    public Color getColor() {
+        ItemStack item = this.getByName(REDSTONE_COLOR);
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+        for (String str : lore) {
+            if (str.contains("➤ ")) {
+                str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
+                return CustomColor.valueOf(str.split("➤ ")[1]);
+            }
+        }
+        return null;
+    }
 
     public Particle nextType(Particle particle) {
         boolean next = false;
@@ -113,6 +196,18 @@ public class SParticleGUI extends GUIAbstract {
     }
 
     public void updateType(Particle particle) {
+
+        if (SParticle.getHaveBlocktypeParticles().contains(particle)) {
+            createItem(Material.STONE, 1, 5, TITLE_COLOR + BLOCK_TYPE, false, false, "", "&a✎ Click here to change", "&7actually:");
+            this.updateMaterial(Material.STONE);
+        }
+        else if(SParticle.getHaveRedstoneColorParticles().contains(particle)) {
+            createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7actually:");
+            this.updateColor(Color.RED);
+        }
+        else if (!SCore.is1v12())
+            createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, 5, "&7", true, false);
+
         ItemStack item = this.getByName(TYPE);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
@@ -156,6 +251,16 @@ public class SParticleGUI extends GUIAbstract {
         return null;
     }
 
+    public void updateMaterial(Material material) {
+        ItemStack item = this.getByName(BLOCK_TYPE);
+        updateActually(item, "&e" + material);
+    }
+
+    public Material getMaterial() {
+        ItemStack item = this.getByName(BLOCK_TYPE);
+        return Material.valueOf(this.getActually(item));
+
+    }
 
     public boolean isNewRequiredEI() {
         return newRequiredEI;

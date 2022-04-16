@@ -63,7 +63,7 @@ public class ParticlesFeature extends DecorateurCustomProjectiles {
                             e.getWorld().spawnParticle(particle.getParticlesType(), e.getLocation(), particle.getParticlesAmount(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesOffSet(), particle.getParticlesSpeed(), dO);
                         } else if (Particle.BLOCK_CRACK.equals(particle.getParticlesType())
                                 || Particle.BLOCK_DUST.equals(particle.getParticlesType())
-                                || Particle.BLOCK_MARKER.equals(particle.getParticlesType())) {
+                                || (SCore.is1v18Plus() && Particle.BLOCK_MARKER.equals(particle.getParticlesType()))) {
                             BlockData typeData = Material.STONE.createBlockData();
                             if (particle.getBlockType() != null)
                                 typeData = particle.getBlockType().createBlockData();

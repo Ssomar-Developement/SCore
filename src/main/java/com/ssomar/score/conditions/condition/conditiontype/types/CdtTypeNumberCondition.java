@@ -108,6 +108,7 @@ public class CdtTypeNumberCondition extends AConditionType {
             } catch (Exception e) {
             }
         }
+        else return (String) condition.getCondition();
 
         return result;
     }

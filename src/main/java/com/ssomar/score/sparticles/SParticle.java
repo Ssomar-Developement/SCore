@@ -10,6 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Getter
@@ -36,6 +38,8 @@ public class SParticle {
         this.particlesOffSet = 1;
         this.particlesSpeed = 1;
         this.particlesDelay = 1;
+        this.blockType = Material.STONE;
+        this.redstoneColor = Color.RED;
     }
 
     public SParticle(String id, Particle particlesType, int particlesAmount, double particlesOffSet, double particlesSpeed, int particlesDelay) {
@@ -45,6 +49,8 @@ public class SParticle {
         this.particlesOffSet = particlesOffSet;
         this.particlesSpeed = particlesSpeed;
         this.particlesDelay = particlesDelay;
+        this.blockType = Material.STONE;
+        this.redstoneColor = Color.RED;
     }
 
     public static Optional<SParticle> loadSParticle(SPlugin sPlugin, String path, ConfigurationSection conf, String id, boolean showError) {
@@ -78,7 +84,7 @@ public class SParticle {
 
         particlesDelay = conf.getInt("particlesDelay", 1);
 
-        String redstoneColorStr = conf.getString("redstoneColor", "null");
+        String redstoneColorStr = conf.getString("redstoneColor", "RED");
         try {
             redstoneColor = CustomColor.valueOf(redstoneColorStr);
         } catch (Exception e) {
@@ -87,7 +93,7 @@ public class SParticle {
                             + " (https://helpch.at/docs/1.12.2/org/bukkit/Color.html)");
         }
 
-        String blockTypeStr = conf.getString("blockType", "null").toUpperCase();
+        String blockTypeStr = conf.getString("blockType", "STONE").toUpperCase();
         if (!blockTypeStr.equals("NULL")) {
             try {
 
@@ -106,5 +112,29 @@ public class SParticle {
             particle.setBlockType(blockType);
         }
         return Optional.ofNullable(particle);
+    }
+
+    public boolean canHaveRedstoneColor() {
+        return getHaveRedstoneColorParticles().contains(getParticlesType());
+    }
+
+    public boolean canHaveBlocktype() {
+        return getHaveBlocktypeParticles().contains(particlesType);
+    }
+
+    public static List<Particle> getHaveBlocktypeParticles() {
+        List<Particle> particles = new ArrayList<>();
+        particles.add(Particle.BLOCK_CRACK);
+        particles.add(Particle.BLOCK_DUST);
+        if (SCore.is1v18Plus()) {
+            particles.add(Particle.BLOCK_MARKER);
+        }
+        return particles;
+    }
+
+    public static List<Particle> getHaveRedstoneColorParticles() {
+        List<Particle> particles = new ArrayList<>();
+        particles.add(Particle.REDSTONE);
+        return particles;
     }
 }

@@ -1,5 +1,7 @@
 package com.ssomar.score.utils;
 
+import com.ssomar.score.SsomarDev;
+
 import java.lang.reflect.MalformedParametersException;
 
 public class StringCalculation {
@@ -8,6 +10,8 @@ public class StringCalculation {
 		String calculStr = s;
 
 		calculStr = calculStr.replaceAll(" ", "");
+
+		SsomarDev.testMsg("calculStr: "+calculStr);
 
 		if(calculStr.contains("CONDITION")){
 			if(calculStr.startsWith("CONDITION")) return calculationWithConditionFirst(calculStr.replaceAll("CONDITION", ""), value);
