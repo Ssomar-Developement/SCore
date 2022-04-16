@@ -298,7 +298,7 @@ public abstract class GUI implements IGUI{
 		return null;
 	}
 
-	public void updateActually(ItemStack item, String update) {
+	public void updateActually(ItemStack item, String update, boolean withColor) {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
 		int cpt = 0;
@@ -306,9 +306,14 @@ public abstract class GUI implements IGUI{
 			if(StringConverter.decoloredString(s).contains("actually:")) break;
 			cpt++;
 		}
-		lore.set(cpt, StringConverter.coloredString("&7actually: &e"+update));
+		if(withColor) lore.set(cpt, StringConverter.coloredString("&7actually: "+update));
+		else lore.set(cpt, StringConverter.coloredString("&7actually: &e"+update));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+	}
+
+	public void updateActually(ItemStack item, String update) {
+		updateActually(item, update, false);
 	}
 
 	public String getActually(String itemName) {

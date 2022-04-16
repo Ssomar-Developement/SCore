@@ -253,6 +253,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	private static boolean is1v18 = false;
 	private static boolean is1v16Plus = false;
 	private static boolean is1v17Plus = false;
+	private static boolean is1v18Plus = false;
 
 	public void initVersion(){
 		is1v12 = Bukkit.getServer().getVersion().contains("1.12");
@@ -315,5 +316,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	/* The server is in 1.17 or + ? */
 	public static boolean is1v17Plus() {
 		return is1v17() || is1v18();
+	}
+
+	/* The server is in 1.17 or + ? */
+	public static boolean is1v18Plus() {
+		return is1v18();
 	}
 }

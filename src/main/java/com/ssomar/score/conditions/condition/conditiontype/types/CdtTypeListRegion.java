@@ -113,7 +113,6 @@ public class CdtTypeListRegion extends AConditionType {
         // TODO : check if the region is valid
         boolean error = false;
         if (!uncoloredMessage.isEmpty()) {
-            if (uncoloredMessage.equals("CLEAR") || uncoloredMessage.equals("STORM") || uncoloredMessage.equals("RAIN")) {
                 if (manager.getCurrentWriting().containsKey(player))
                     manager.getCurrentWriting().get(player).add(uncoloredMessage);
                 else {
@@ -121,12 +120,11 @@ public class CdtTypeListRegion extends AConditionType {
                     list.add(uncoloredMessage);
                     manager.getCurrentWriting().put(player, list);
                 }
-                player.sendMessage(StringConverter.coloredString("&a&l" + manager.getCache().get(player).getsPlugin().getNameDesign() + " &2&lEDITION &aYou have added new weather!"));
-            } else error = true;
+                player.sendMessage(StringConverter.coloredString("&a&l" + manager.getCache().get(player).getsPlugin().getNameDesign() + " &2&lEDITION &aYou have added new region!"));
         } else error = true;
 
         if (error)
-            player.sendMessage(StringConverter.coloredString("&c&l" + manager.getCache().get(player).getsPlugin().getNameDesign() + " &4&lERROR &cEnter a valid weather (CLEAR, RAIN, STORM) please !"));
+            player.sendMessage(StringConverter.coloredString("&c&l" + manager.getCache().get(player).getsPlugin().getNameDesign() + " &4&lERROR &cEnter a valid region please !"));
 
         this.showRegionEditor(manager, player);
     }

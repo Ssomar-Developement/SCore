@@ -1,5 +1,7 @@
 package com.ssomar.score.menu.particles;
 
+import com.ssomar.executableitems.configs.ingame.items.ItemGUI;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.activator.requiredei.RequiredEIGUI;
@@ -13,6 +15,7 @@ import com.ssomar.score.sparticles.SParticle;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -61,7 +64,15 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
             space(i.player);
             i.player.sendMessage(StringConverter.coloredString("&a&l" + i.sPlugin.getNameDesign() + " &aEnter a speed (min 0.000001, Double):"));
             space(i.player);
-        }else if (i.name.contains("Save") || i.name.contains("Create this particle")) {
+        }
+        if (i.name.contains(SParticleGUI.BLOCK_TYPE)) {
+            requestWriting.put(i.player,  SParticleGUI.BLOCK_TYPE);
+            i.player.closeInventory();
+            space(i.player);
+            i.player.sendMessage(StringConverter.coloredString("&a&l &aEnter the material of the block particle:"));
+            space(i.player);
+        }
+        else if (i.name.contains("Save") || i.name.contains("Create this particle")) {
             saveTheConfiguration(i.player);
             SParticles sParticles = cache.get(i.player).getSParticles();
             GUI guiFrom = cache.get(i.player).getGuiFrom();
@@ -152,7 +163,21 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
             if (error)
                 p.sendMessage(StringConverter.coloredString("&c&l" + plName + " &cError invalid amount pls select an offset (range) > 0 !"));
         }
+        else if (requestWriting.get(p).equals(SParticleGUI.BLOCK_TYPE)) {
 
+            boolean error = true;
+            if (!message.replaceAll(" ", "").isEmpty()) {
+                try {
+                    cache.get(p).updateMaterial(Material.valueOf(StringConverter.decoloredString(message).trim().toUpperCase()));
+                    cache.get(p).openGUISync(p);
+                    requestWriting.remove(p);
+                    error = false;
+                } catch (Exception ignored) {
+                }
+            }
+            if (error)
+                p.sendMessage(StringConverter.coloredString("&c&l" + plName + " &cError invalid material pls select a good material !  https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html"));
+        }
 
     }
 
@@ -169,6 +194,10 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
         sParticle.setParticlesType(cache.get(p).getType());
         sParticle.setParticlesSpeed(cache.get(p).getDouble(SParticleGUI.SPEED));
         sParticle.setParticlesOffSet(cache.get(p).getDouble(SParticleGUI.OFFSET));
+        if(sParticle.canHaveBlocktype())
+            sParticle.setBlockType(cache.get(p).getMaterial());
+        if(sParticle.canHaveRedstoneColor())
+            sParticle.setRedstoneColor(cache.get(p).getColor());
 
         SParticles sParticles = cache.get(p).getSParticles();
         sParticles.updateParticle(sParticle);
@@ -211,6 +240,10 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
             cache.get(i.player).updateType(cache.get(i.player).nextType(cache.get(i.player).getType()));
             return true;
         }
+        else if (i.name.contains(SParticleGUI.REDSTONE_COLOR)) {
+            cache.get(i.player).updateColor(cache.get(i.player).nextColor(cache.get(i.player).getColor()));
+            return true;
+        }
         return false;
     }
 
@@ -218,6 +251,10 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
     public boolean rightClicked(InteractionClickedGUIManager<SParticleGUI> i) {
         if (i.name.contains(SParticleGUI.TYPE)) {
             cache.get(i.player).updateType(cache.get(i.player).prevType(cache.get(i.player).getType()));
+            return true;
+        }
+        else if (i.name.contains(SParticleGUI.REDSTONE_COLOR)) {
+            cache.get(i.player).updateColor(cache.get(i.player).prevColor(cache.get(i.player).getColor()));
             return true;
         }
         return false;
