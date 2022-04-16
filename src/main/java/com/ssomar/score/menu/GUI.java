@@ -328,6 +328,10 @@ public abstract class GUI implements IGUI{
 		this.updateActually(this.getByName(itemName), update);
 	}
 
+	public void updateActually(String itemName, String update, Boolean withColor) {
+		this.updateActually(this.getByName(itemName), update, withColor);
+	}
+
 	public void updateCondition(String name, String condition){
 		ItemStack item = this.getByName(name);
 		if(condition.equals("")) this.updateActually(item, "&cNO CONDITION");
