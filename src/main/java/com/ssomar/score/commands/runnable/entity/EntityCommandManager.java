@@ -44,6 +44,8 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new StrikeLightning());
 		commands.add(new StunEnable());
 		commands.add(new StunDisable());
+		commands.add(new StunDisable());
+		commands.add(new PlayerRideOnEntity());
 	}
 
 	/*

@@ -55,7 +55,7 @@ public abstract class PlaceholdersInterface {
 				String finalValue = String.valueOf(d);
 				if(isInteger) finalValue = String.valueOf((int)d);
 				if(convertToRoman) finalValue = RomanNumber.toRoman((int)d);
-				result = result.replaceAll(placeholder+"\\+" + sb, "" + finalValue);
+				result = result.replaceAll(placeholder+"\\-" + sb, "" + finalValue);
 			} else {
 				result = result.replaceAll(placeholder+"\\-" + sb, value);
 			} 

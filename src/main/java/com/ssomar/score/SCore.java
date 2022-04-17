@@ -157,7 +157,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
 		if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] Towny hooked !");
-			hasLands = true;
+			hasTowny = true;
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("GriefPrevention") != null) {
