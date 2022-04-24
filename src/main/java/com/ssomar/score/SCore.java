@@ -242,7 +242,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
 		return commandClass;
 	}
 
-
+	private static boolean is1v8 = false;
+	private static boolean is1v9 = false;
+	private static boolean is1v10 = false;
+	private static boolean is1v11 = false;
 	private static boolean is1v12 = false;
 	private static boolean is1v13 = false;
 	private static boolean is1v14 = false;
@@ -256,6 +259,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	private static boolean is1v18Plus = false;
 
 	public void initVersion(){
+		is1v8 = Bukkit.getServer().getVersion().contains("1.8");
+		is1v9 = Bukkit.getServer().getVersion().contains("1.9");
+		is1v10 = Bukkit.getServer().getVersion().contains("1.10");
+		is1v11 = Bukkit.getServer().getVersion().contains("1.11");
 		is1v12 = Bukkit.getServer().getVersion().contains("1.12");
 		is1v13 = Bukkit.getServer().getVersion().contains("1.13");
 		is1v14 = Bukkit.getServer().getVersion().contains("1.14");
@@ -267,6 +274,25 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	}
 
 
+	/* The server is in 1.12 ? */
+	public static boolean is1v8() {
+		return is1v8;
+	}
+
+	/* The server is in 1.12 ? */
+	public static boolean is1v9() {
+		return is1v9;
+	}
+
+	/* The server is in 1.12 ? */
+	public static boolean is1v10() {
+		return is1v10;
+	}
+
+	/* The server is in 1.12 ? */
+	public static boolean is1v11() {
+		return is1v11;
+	}
 
 	/* The server is in 1.12 ? */
 	public static boolean is1v12() {
@@ -306,6 +332,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	/* The server is in 1.18 ? */
 	public static boolean is1v18() {
 		return is1v18;
+	}
+
+	/* The server is in 1.13 or - ? */
+	public static boolean is1v13Less() {
+		return is1v8() || is1v9() || is1v10() || is1v11() || is1v12() || is1v13();
 	}
 
 	/* The server is in 1.16 or + ? */
