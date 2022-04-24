@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
@@ -41,7 +42,9 @@ public class GravityFeature extends DecorateurCustomProjectiles {
     @Override
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.ELYTRA, 1, GUI.TITLE_COLOR +"Gravity", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
+        Material mat = Material.FEATHER;
+        if(!SCore.is1v11Less()) mat = Material.ELYTRA;
+        gui.addItem(mat, 1, GUI.TITLE_COLOR +"Gravity", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
         gui.updateBoolean(GUI.TITLE_COLOR +"Gravity", isGravity);
         return gui;
     }

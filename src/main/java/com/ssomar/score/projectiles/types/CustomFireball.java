@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.types;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.features.*;
 import com.ssomar.score.projectiles.features.ParticlesFeature;
 
@@ -26,10 +27,13 @@ public class CustomFireball extends SProjectiles {
         proj = new DespawnFeature(proj);
         proj = new VelocityFeature(proj);
         proj = new SilentFeature(proj);
-        proj = new ParticlesFeature(proj);
+        /* Particle feature not available in 1.11 */
+        if(!SCore.is1v11Less())
+            proj = new ParticlesFeature(proj);
         proj = new RadiusFeature(proj);
         proj = new IncendiaryFeature(proj);
-        proj = new RemoveWhenHitBlockFeature(proj);
+        if(!SCore.is1v13Less())
+            proj = new RemoveWhenHitBlockFeature(proj);
         return proj;
     }
 }

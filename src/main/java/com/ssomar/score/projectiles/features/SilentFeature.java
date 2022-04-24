@@ -43,7 +43,7 @@ public class SilentFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         Material bell;
-        if(SCore.is1v12()) bell = Material.JUKEBOX;
+        if(SCore.is1v13Less()) bell = Material.JUKEBOX;
         else bell = Material.BELL;
 
         gui.addItem(bell, 1, GUI.TITLE_COLOR +"Silent", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");

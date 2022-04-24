@@ -23,7 +23,7 @@ public class CdtTypeListRegion extends AConditionType {
     public <T extends Condition> void load(T condition, ConfigurationSection cdtSection, List<String> errorList, String pluginName) {
         // TODO : check if the region is valid
         if (cdtSection.contains(condition.getConfigName())) {
-            if (SCore.is1v12()) {
+            if (SCore.is1v12Less()) {
                 errorList.add(pluginName + " Error the conditions " + condition.getConfigName() + " are not available in 1.12 due to a changement of worldguard API ");
             } else {
                 buildCondition(cdtSection.getStringList(condition.getConfigName()), condition);

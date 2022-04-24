@@ -205,8 +205,7 @@ public class SParticleGUI extends GUIAbstract {
             createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7actually:");
             this.updateColor(Color.RED);
         }
-        else if (!SCore.is1v12())
-            createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, 5, "&7", true, false);
+        else createBackGroundItem(5);
 
         ItemStack item = this.getByName(TYPE);
         ItemMeta meta = item.getItemMeta();

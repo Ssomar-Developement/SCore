@@ -62,7 +62,7 @@ public class InvisibleFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         Material glass;
-        if(SCore.is1v12()) glass = Material.valueOf("GLASS");
+        if(SCore.is1v12Less()) glass = Material.valueOf("GLASS");
         else glass = Material.GLASS_PANE;
         if(SCore.hasProtocolLib){
             gui.addItem(glass, 1, GUI.TITLE_COLOR +"Invisible", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");

@@ -16,14 +16,14 @@ public class StunEvent implements Listener {
     public static Map<UUID, Boolean> stunPlayers = new HashMap<>();
 
     @EventHandler
-    public void PlayerPickupItemEvent2(EntityToggleGlideEvent e) {
+    public void PlayerGlideEvent(EntityToggleGlideEvent e) {
         if(stunPlayers.containsKey(e.getEntity().getUniqueId())) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void PlayerPickupItemEvent2(PlayerMoveEvent e) {
+    public void PlayerMoveEvent(PlayerMoveEvent e) {
         if(stunPlayers.containsKey(e.getPlayer().getUniqueId()) && stunPlayers.get(e.getPlayer().getUniqueId())) {
             e.setCancelled(true);
         }

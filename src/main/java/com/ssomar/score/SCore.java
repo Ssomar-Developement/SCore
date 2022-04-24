@@ -335,6 +335,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	}
 
 	/* The server is in 1.12 or - ? */
+	public static boolean is1v11Less() {
+		return is1v8() || is1v9() || is1v10() || is1v11() ;
+	}
+
+	/* The server is in 1.12 or - ? */
 	public static boolean is1v12Less() {
 		return is1v8() || is1v9() || is1v10() || is1v11() || is1v12() ;
 	}

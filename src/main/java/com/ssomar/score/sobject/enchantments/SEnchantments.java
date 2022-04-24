@@ -25,7 +25,7 @@ public class SEnchantments extends HashMap<SEnchantment, Integer> {
             ConfigurationSection enchtSection = enchtsSection.getConfigurationSection(id);
             Enchantment enchantment;
             try {
-                if (!SCore.is1v12())
+                if (!SCore.is1v12Less())
                     enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchtSection.getString("enchantment").toLowerCase()));
                 else
                     enchantment = Enchantment.getByName(enchtSection.getString("enchantment"));
@@ -54,7 +54,7 @@ public class SEnchantments extends HashMap<SEnchantment, Integer> {
         config.set("enchantments", null);
 
         for(SEnchantment sEnch : this.keySet()) {
-            if (!SCore.is1v12()) {
+            if (!SCore.is1v12Less()) {
                 config.set("enchantments." + sEnch.getId() + ".enchantment", sEnch.getEnchantment().getKey().toString().split("minecraft:")[1]);
             } else config.set("enchantments." + sEnch.getId() + ".enchantment", sEnch.getEnchantment().getName());
             config.set("enchantments." + sEnch.getId() + ".level", this.get(sEnch));

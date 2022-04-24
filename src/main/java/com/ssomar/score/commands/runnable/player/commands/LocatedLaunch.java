@@ -179,7 +179,7 @@ public class LocatedLaunch extends PlayerCommand{
 				last = last.multiply(velocity);
 
 
-				if(!SCore.is1v12() && !SCore.is1v13()) {
+				if(!SCore.is1v13Less()) {
 					if(entity instanceof Fireball) {
 						Fireball fireball = (Fireball) entity;
 						fireball.setDirection(last);

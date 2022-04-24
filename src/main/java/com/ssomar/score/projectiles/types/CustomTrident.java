@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.types;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.features.*;
 import com.ssomar.score.projectiles.features.ParticlesFeature;
 
@@ -20,20 +21,27 @@ public class CustomTrident extends SProjectiles {
     public CustomProjectile setup(CustomProjectile proj) {
         proj = new CustomNameFeature(proj);
         proj = new InvisibleFeature(proj);
-        proj = new PickupFeature(proj);
         proj = new GlowingFeature(proj);
-        proj = new CriticalFeature(proj);
         proj = new BounceFeature(proj);
         proj = new GravityFeature(proj);
-        proj = new KnockbackStrengthFeature(proj);
-        proj = new PierceLevelFeature(proj);
         proj = new DespawnFeature(proj);
         proj = new VelocityFeature(proj);
         proj = new SilentFeature(proj);
-        proj = new ParticlesFeature(proj);
-        proj = new VisualItemFeature(proj);
-        proj = new EnchantmentsFeature(proj);
-        proj = new RemoveWhenHitBlockFeature(proj);
+        if(!SCore.is1v13Less()){
+            proj = new PierceLevelFeature(proj);
+            proj = new CriticalFeature(proj);
+            /* No damage for trident, idk why it works only for arrow */
+            proj = new KnockbackStrengthFeature(proj);
+            proj = new PickupFeature(proj);
+            proj = new RemoveWhenHitBlockFeature(proj);
+            proj = new VisualItemFeature(proj);
+        }
+        if(!SCore.is1v12Less()){
+            proj = new EnchantmentsFeature(proj);
+        }
+        /* Particle feature not available in 1.11 */
+        if(!SCore.is1v11Less())
+            proj = new ParticlesFeature(proj);
         return proj;
     }
 }

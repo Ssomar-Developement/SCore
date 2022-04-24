@@ -47,7 +47,7 @@ public class IncendiaryFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         Material fire;
-        if(SCore.is1v12()) fire = Material.FLINT_AND_STEEL;
+        if(SCore.is1v13Less()) fire = Material.FLINT_AND_STEEL;
         else fire = Material.CAMPFIRE;
         gui.addItem(fire, 1, GUI.TITLE_COLOR +"Incendiary", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
         gui.updateBoolean(GUI.TITLE_COLOR +"Incendiary", isIncendiary);

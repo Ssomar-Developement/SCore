@@ -38,7 +38,7 @@ public class PierceLevelFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
-        if (!SCore.is1v12() && e instanceof AbstractArrow) {
+        if (e instanceof AbstractArrow) {
             AbstractArrow aA = (AbstractArrow) e;
             if (pierceLevel != -1)
                 aA.setPierceLevel(pierceLevel);

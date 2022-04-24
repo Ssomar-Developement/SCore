@@ -39,7 +39,7 @@ public class RemoveWhenHitBlockFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
-        if (e instanceof Projectile && !SCore.is1v12() && !SCore.is1v13() && removeWhenHitBlock) {
+        if (e instanceof Projectile && removeWhenHitBlock) {
             ((Projectile) e).getPersistentDataContainer().set(new NamespacedKey(SCore.plugin, "remove_hit_block"), PersistentDataType.INTEGER, 1);
         }
         cProj.transformTheProjectile(e, launcher);

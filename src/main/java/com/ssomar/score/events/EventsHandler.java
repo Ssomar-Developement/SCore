@@ -24,10 +24,13 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new NoFallDamageEvt(), main);
 		
 		main.getServer().getPluginManager().registerEvents(new PlayerReconnexion(), main);
-		
-		main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
 
-		main.getServer().getPluginManager().registerEvents(new StunEvent(), main);
+		/* No EntityToggleGlideEvent & EntityPickupItemEvent in 1.11 -*/
+		if(!SCore.is1v11Less()) {
+			main.getServer().getPluginManager().registerEvents(new StunEvent(), main);
+
+			main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
+		}
 		
 		main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
 		

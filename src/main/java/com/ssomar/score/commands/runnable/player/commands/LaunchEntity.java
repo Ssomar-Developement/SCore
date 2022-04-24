@@ -48,7 +48,7 @@ public class LaunchEntity extends PlayerCommand{
 		Entity entity = receiver.getWorld().spawnEntity(loc, entityType);
 		Vector v = receiver.getEyeLocation().getDirection();
 		v.multiply(speed);
-		if(!SCore.is1v12() && !SCore.is1v13()) v.rotateAroundY(rotation);
+		if(!SCore.is1v13Less()) v.rotateAroundY(rotation);
 		entity.setVelocity(v);
 	}
 

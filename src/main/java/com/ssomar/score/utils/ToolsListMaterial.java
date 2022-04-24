@@ -17,7 +17,7 @@ public class ToolsListMaterial {
 	
 	public ToolsListMaterial() {
 		plantWithGrowth = new ArrayList<>();
-		if(SCore.is1v12()) {
+		if(SCore.is1v12Less()) {
 			plantWithGrowth.add(Material.valueOf("CROPS"));
 			plantWithGrowth.add(Material.valueOf("NETHER_WARTS"));
 			plantWithGrowth.add(Material.valueOf("POTATO"));
@@ -37,7 +37,7 @@ public class ToolsListMaterial {
 	
 	@Nullable
 	public static Material getRealMaterialOfBlock(Material material) {
-		if(SCore.is1v12()) {
+		if(SCore.is1v12Less()) {
 			if(material.equals(Material.valueOf("CROPS"))){
 				return Material.valueOf("SEEDS");
 			}

@@ -54,7 +54,7 @@ public class SEnchantment {
 
 		config.set("enchantments."+id, null);
 
-			if (!SCore.is1v12()) {
+			if (!SCore.is1v12Less()) {
 				config.set("enchantments." + id + ".enchantment", enchantment.getKey().toString().split("minecraft:")[1]);
 			} else config.set("enchantments." +id + ".enchantment", enchantment.getName());
 			config.set("enchantments." + id + ".level", level);

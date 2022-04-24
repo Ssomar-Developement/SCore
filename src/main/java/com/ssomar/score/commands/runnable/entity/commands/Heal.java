@@ -24,7 +24,7 @@ public class Heal extends EntityCommand{
 				int amount = Integer.parseInt(args.get(0));
 				if(amount>0 && !entity.isDead() && entity instanceof LivingEntity) {
 					LivingEntity e = (LivingEntity) entity;
-					if(!SCore.is1v12()) {
+					if(!SCore.is1v12Less()) {
 						if(e.getHealth()+amount>= e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) {
 							e.setHealth(e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 						}
@@ -41,7 +41,7 @@ public class Heal extends EntityCommand{
 			else {
 				if (!entity.isDead()) {
 					LivingEntity e = (LivingEntity) entity;
-					if (!SCore.is1v12()) {
+					if (!SCore.is1v12Less()) {
 						e.setHealth(e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 					} else {
 						e.setHealth(e.getMaxHealth());

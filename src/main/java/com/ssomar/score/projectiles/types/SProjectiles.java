@@ -157,7 +157,7 @@ public abstract class SProjectiles extends CustomProjectile{
                 return Material.ENDER_PEARL;
             case "FIREBALL":
                 Material fireball;
-                if(SCore.is1v12()) fireball = Material.valueOf("FIREBALL");
+                if(SCore.is1v12Less()) fireball = Material.valueOf("FIREBALL");
                 else fireball = Material.FIRE_CHARGE;
                 return fireball;
             case "SPLASH_POTION":
@@ -168,17 +168,17 @@ public abstract class SProjectiles extends CustomProjectile{
                 return Material.SHULKER_SHELL;
             case "SNOWBALL":
                 Material snowball;
-                if(SCore.is1v12()) snowball = Material.valueOf("SNOW_BALL");
+                if(SCore.is1v12Less()) snowball = Material.valueOf("SNOW_BALL");
                 else snowball = Material.SNOWBALL;
                 return snowball;
             case "TRIDENT":
                 Material trident;
-                if(SCore.is1v12()) trident = Material.STICK;
+                if(SCore.is1v12Less()) trident = Material.STICK;
                 else trident = Material.TRIDENT;
                 return trident;
             case "WITHER_SKULL":
                 Material skull;
-                if(SCore.is1v12()) {
+                if(SCore.is1v12Less()) {
                     skull = Material.valueOf("NETHER_STAR");
                 }
                 else skull = Material.WITHER_SKELETON_SKULL;
@@ -213,25 +213,57 @@ public abstract class SProjectiles extends CustomProjectile{
                 proj = new CustomSplashPotion(id, file);
                 break;
             case "SPLASH_POTION":
-                config.set("type", "LINGERING_POTION");
-                this.saveConfigInFile(config, file);
-                proj = new CustomLingering(id, file);
-                break;
+                if (SCore.is1v11Less()) {
+                    config.set("type", "WITHER_SKULL");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomWitherSkull(id, file);
+                    break;
+                }
+                else {
+                    config.set("type", "LINGERING_POTION");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomLingering(id, file);
+                    break;
+                }
             case "LINGERING_POTION":
-                config.set("type", "SHULKER_BULLET");
-                this.saveConfigInFile(config, file);
-                proj = new CustomShulkerBullet(id, file);
-                break;
+                if (SCore.is1v11Less()) {
+                    config.set("type", "WITHER_SKULL");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomWitherSkull(id, file);
+                    break;
+                }
+                else {
+                    config.set("type", "SHULKER_BULLET");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomShulkerBullet(id, file);
+                    break;
+                }
             case "SHULKER_BULLET":
-                config.set("type", "SNOWBALL");
-                this.saveConfigInFile(config, file);
-                proj = new CustomSnowball(id, file);
-                break;
+                if (SCore.is1v11Less()) {
+                    config.set("type", "WITHER_SKULL");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomWitherSkull(id, file);
+                    break;
+                }
+                else {
+                    config.set("type", "SNOWBALL");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomSnowball(id, file);
+                    break;
+                }
             case "SNOWBALL":
-                config.set("type", "TRIDENT");
-                this.saveConfigInFile(config, file);
-                proj = new CustomTrident(id, file);
-                break;
+                if (SCore.is1v12Less()) {
+                    config.set("type", "WITHER_SKULL");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomWitherSkull(id, file);
+                    break;
+                }
+                else {
+                    config.set("type", "TRIDENT");
+                    this.saveConfigInFile(config, file);
+                    proj = new CustomTrident(id, file);
+                    break;
+                }
             case "TRIDENT":
                 config.set("type", "WITHER_SKULL");
                 this.saveConfigInFile(config, file);

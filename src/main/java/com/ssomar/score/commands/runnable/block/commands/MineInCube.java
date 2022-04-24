@@ -82,7 +82,7 @@ public class MineInCube extends BlockCommand {
                                     if ((whiteList = aInfo.getDetailedBlocks()) != null) {
                                         if (!whiteList.isEmpty()) {
                                             String statesStr = "";
-                                            if (!SCore.is1v12()) statesStr = toBreak.getBlockData().getAsString(true);
+                                            if (!SCore.is1v12Less()) statesStr = toBreak.getBlockData().getAsString(true);
                                             if (!whiteList.verification(toBreak.getType(), statesStr)) continue;
                                         }
                                     }

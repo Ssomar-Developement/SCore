@@ -43,7 +43,7 @@ public class DamageFeature extends DecorateurCustomProjectiles {
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
         if(DEBUG) SsomarDev.testMsg("Passage damage: + is abstract arrow " + (e instanceof AbstractArrow));
-        if (!SCore.is1v12() && e instanceof AbstractArrow) {
+        if (e instanceof AbstractArrow) {
             AbstractArrow aA = (AbstractArrow) e;
             if (damage != -1) {
                 if(DEBUG) SsomarDev.testMsg("Damage: " + damage);

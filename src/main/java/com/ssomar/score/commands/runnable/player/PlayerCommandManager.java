@@ -47,7 +47,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new Damage());
 		commands.add(new LaunchEntity());
 		commands.add(new Launch());
-		if(!SCore.is1v12()) commands.add(new LocatedLaunch());
+		if(!SCore.is1v12Less()) commands.add(new LocatedLaunch());
 		commands.add(new Burn());
 		commands.add(new Jump());
 		commands.add(new RemoveBurn());
@@ -81,8 +81,11 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new OpenEnderchest());
 		commands.add(new OpenWorkbench());
 		commands.add(new MinecartBoost());
-		commands.add(new StunEnable());
-		commands.add(new StunDisable());
+		/* No EntityToggleGlideEvent in 1.11 -*/
+		if(!SCore.is1v11Less()) {
+			commands.add(new StunEnable());
+			commands.add(new StunDisable());
+		}
 		commands.add(XpBoost.getInstance());
 
 		this.commands = commands;

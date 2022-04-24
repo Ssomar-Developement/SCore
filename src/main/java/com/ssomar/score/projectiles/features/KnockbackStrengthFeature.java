@@ -38,7 +38,7 @@ public class KnockbackStrengthFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
-        if (!SCore.is1v12() && e instanceof AbstractArrow) {
+        if (e instanceof AbstractArrow) {
             AbstractArrow aA = (AbstractArrow) e;
             if (knockbackStrength != -1)
                 aA.setKnockbackStrength(knockbackStrength);

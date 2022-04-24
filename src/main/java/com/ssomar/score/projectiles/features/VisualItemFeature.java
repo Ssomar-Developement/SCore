@@ -58,7 +58,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
-        if (!SCore.is1v12() && e instanceof ThrowableProjectile && hasItem) {
+        if (e instanceof ThrowableProjectile && hasItem) {
             ItemStack item = new ItemStack(material);
             ItemMeta meta = item.getItemMeta();
             if( customModeldata != -1) meta.setCustomModelData(customModeldata);

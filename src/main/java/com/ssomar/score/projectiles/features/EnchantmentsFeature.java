@@ -50,7 +50,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
-        if(!SCore.is1v12() && e instanceof Trident) {
+        if(e instanceof Trident) {
             Trident t= (Trident)e;
 
             try {
@@ -77,7 +77,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
             ConfigurationSection enchtSection = enchtsSection.getConfigurationSection(id);
             Enchantment enchantment;
             try {
-                if (!SCore.is1v12())
+                if (!SCore.is1v12Less())
                     enchantment = Enchantment
                             .getByKey(NamespacedKey.minecraft(enchtSection.getString("enchantment").toLowerCase()));
                 else

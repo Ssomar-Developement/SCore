@@ -49,7 +49,7 @@ public class RadiusFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         Material radiusMat;
-        if(SCore.is1v12()) radiusMat = Material.valueOf("WEB");
+        if(SCore.is1v12Less()) radiusMat = Material.valueOf("WEB");
         else radiusMat = Material.HEART_OF_THE_SEA;
 
         gui.addItem(radiusMat, 1, GUI.TITLE_COLOR +"Radius", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");

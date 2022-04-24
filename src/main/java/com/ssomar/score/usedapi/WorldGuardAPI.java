@@ -33,7 +33,7 @@ public class WorldGuardAPI {
 
 	public boolean canBuild(@NotNull Player p, org.bukkit.Location location) {
 
-		if(SCore.is1v12()) return true;
+		if(SCore.is1v12Less()) return true;
 		
 		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
 		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
@@ -49,7 +49,7 @@ public class WorldGuardAPI {
 
 	public static boolean playerCanBreakInRegion(@NotNull UUID pUUID, @NotNull org.bukkit.Location location) {
 
-		if(SCore.is1v12()) return true;
+		if(SCore.is1v12Less()) return true;
 
 		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapOfflinePlayer(Bukkit.getServer().getOfflinePlayer(pUUID));
 		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
@@ -64,7 +64,7 @@ public class WorldGuardAPI {
 	
 	public static boolean isInPvpZone(Player p, org.bukkit.Location location) {
 
-		if(SCore.is1v12()) return true;
+		if(SCore.is1v12Less()) return true;
 		
 		/* Antoher method that doesnt count the default value, and the default value allows pvp , so it's bad to use it */
 		

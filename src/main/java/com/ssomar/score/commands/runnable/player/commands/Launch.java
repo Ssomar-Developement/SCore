@@ -128,7 +128,7 @@ public class Launch extends PlayerCommand{
 			//	SsomarDev.testMsg("null entity: " + (entity==null));
 
 				if(entity != null) {
-					if(!SCore.is1v12() && !SCore.is1v13()) {
+					if(!SCore.is1v13Less()) {
 						Vector v;
 						if(entity instanceof Fireball) {
 							Fireball fireball = (Fireball) entity;

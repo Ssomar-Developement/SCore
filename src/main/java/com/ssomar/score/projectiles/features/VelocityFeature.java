@@ -40,7 +40,7 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     @Override
     public void transformTheProjectile(Entity e, Player launcher) {
         Vector v = e.getVelocity();
-        if (e instanceof ShulkerBullet) v = launcher.getEyeLocation().getDirection();
+        if (!SCore.is1v11Less() && e instanceof ShulkerBullet) v = launcher.getEyeLocation().getDirection();
         else  if (v.getX() == 0 && v.getY() == 0 && v.getZ() == 0) v = launcher.getEyeLocation().getDirection();
         if (velocity != 1)
             v = v.multiply(velocity);
@@ -52,7 +52,7 @@ public class VelocityFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         Material firework;
-        if(SCore.is1v12()) firework = Material.valueOf("FIREWORK");
+        if(SCore.is1v12Less()) firework = Material.valueOf("FIREWORK");
         else firework = Material.FIREWORK_ROCKET;
 
         gui.addItem(firework, 1, GUI.TITLE_COLOR +"Velocity", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");

@@ -25,7 +25,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     public PickupFeature(CustomProjectile cProj){
         super.cProj = cProj;
 
-        isDisable = SCore.is1v12();
+        isDisable = SCore.is1v13Less();
         if(!isDisable) {
             pickupStatus = AbstractArrow.PickupStatus.ALLOWED;
         }
@@ -69,7 +69,7 @@ public class PickupFeature extends DecorateurCustomProjectiles {
     public SimpleGUI loadConfigGUI(SProjectiles sProj) {
         SimpleGUI gui = cProj.loadConfigGUI(sProj);
         Material lead;
-        if(SCore.is1v12()) lead = Material.valueOf("LEASH");
+        if(SCore.is1v12Less()) lead = Material.valueOf("LEASH");
         else lead = Material.LEAD;
         if(isDisable) gui.addItem(lead, 1, GUI.TITLE_COLOR +"Pickup", false, false, "", "&cINVALID VERSION (1.14+)");
         else {
