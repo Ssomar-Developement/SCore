@@ -210,6 +210,10 @@ public abstract class GUI implements IGUI{
 
 	}
 
+	public void createBackGroundItem(int slot){
+		if (!SCore.is1v13Less()) createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, slot, "&7", true, false);
+	}
+
 	public void removeItem(int invSlot) {
 
 		inv.clear(invSlot);
