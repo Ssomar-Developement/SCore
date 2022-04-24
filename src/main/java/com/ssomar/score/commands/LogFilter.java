@@ -37,6 +37,7 @@ public class LogFilter implements Filter, LifeCycle {
 		messageToHide.add("Disabling SCore");
 		messageToHide.add("Successfully filled");
 		messageToHide.add("Replaced a slot on");
+		messageToHide.add("The number you have entered");
 	}
 
 
