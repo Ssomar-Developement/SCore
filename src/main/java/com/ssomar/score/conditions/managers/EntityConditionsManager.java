@@ -18,6 +18,7 @@ public class EntityConditionsManager extends ConditionsManager<EntityConditions,
         add(new IfPowered());
         add(new IfTamed());
         add(new IfNamed());
+        add(new IfFrozen());
 
         add(new IfEntityHealth());
 
