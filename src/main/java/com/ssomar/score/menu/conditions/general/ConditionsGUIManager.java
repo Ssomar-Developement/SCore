@@ -1,5 +1,6 @@
 package com.ssomar.score.menu.conditions.general;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.conditions.Conditions;
 import com.ssomar.score.conditions.condition.Condition;
 import com.ssomar.score.conditions.condition.conditiontype.AConditionTypeWithSubMenu;
@@ -12,6 +13,8 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class ConditionsGUIManager extends GUIManagerSCore<ConditionsGUI> {
 
@@ -34,11 +37,19 @@ public class ConditionsGUIManager extends GUIManagerSCore<ConditionsGUI> {
             ConditionsGUI gui = cache.get(i.player);
 
             Condition condition;
-            if(cache.get(i.player).getConditions().contains(itemName))
+            if(cache.get(i.player).getConditions().contains(itemName)) {
                 condition = gui.getConditions().get(itemName);
+                SsomarDev.testMsg("Condition found: " + condition.getConfigName());
+            }
+            else{
+                condition = (Condition) gui.getConditionsManager().get(itemName).clone();
+                SsomarDev.testMsg("Condition not found: " + condition.getConfigName());
 
-            else
-                condition =  (Condition) gui.getConditionsManager().get(itemName).clone();
+                /* Problem of link, I need to clear it otherwise it takes the list of the previous edit */
+                if(condition.getCondition() instanceof List) {
+                    ((List<?>) condition.getCondition()).clear();
+                }
+            }
 
             if(condition.getConditionType().getInstance() instanceof AConditionTypeWithSubMenu)
                 ((AConditionTypeWithSubMenu)condition.getConditionType().getInstance()).openSubMenu(this, condition, i.player);
