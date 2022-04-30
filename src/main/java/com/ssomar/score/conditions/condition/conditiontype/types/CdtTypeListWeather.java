@@ -132,7 +132,7 @@ public class CdtTypeListWeather extends AConditionType {
 
     @Override
     public <T extends Condition> boolean isDefined(T condition) {
-        return false;
+        return condition.getCondition() != null && !((List<String>)condition.getCondition()).isEmpty();
     }
 
     @Override
@@ -157,7 +157,7 @@ public class CdtTypeListWeather extends AConditionType {
 
         HashMap<String, String> suggestions = new HashMap<>();
         suggestions.put("&2&l[&a&lCLEAR&2&l]", "CLEAR");
-        suggestions.put("&3&l[&b&lCLEAR&3&l]", "RAIN");
+        suggestions.put("&3&l[&b&lRAIN&3&l]", "RAIN");
         suggestions.put("&8&l[&7&lSTORM&8&l]", "STORM");
 
         EditorCreator editor = new EditorCreator(beforeMenu, manager.getCurrentWriting().get(player), "Weather", false, false, false, true, true, true, true, "&7&oYou can click on a weather bellow to add it !", suggestions);

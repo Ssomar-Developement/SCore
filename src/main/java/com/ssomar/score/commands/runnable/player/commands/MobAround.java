@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,12 +21,50 @@ import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import org.jetbrains.annotations.Nullable;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+		mobAroundExecution(receiver.getLocation(), receiver, false, args, aInfo);
+	}
+
+	public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo){
+		List<EntityType> whiteList = new ArrayList<>();
+		List<EntityType> blackList = new ArrayList<>();
+
+		int argToRemove = -1;
+		int cpt = 0;
+		for(String s : args){
+			String [] split;
+			try {
+				if (s.contains("BLACKLIST(")) {
+					argToRemove = cpt;
+					split = s.split("BLACKLIST\\(");
+					String blackListString = split[1].split("\\)")[0];
+					split = blackListString.split(",");
+					for(String s1 : split){
+						try {
+							blackList.add(EntityType.valueOf(s1.toUpperCase()));
+						}catch(IllegalArgumentException e){}
+					}
+				} else if (s.contains("WHITELIST(")) {
+					argToRemove = cpt;
+					split = s.split("WHITELIST\\(");
+					String whiteListString = split[1].split("\\)")[0];
+					split = whiteListString.split(",");
+					for(String s1 : split){
+						try {
+							whiteList.add(EntityType.valueOf(s1.toUpperCase()));
+						}catch(IllegalArgumentException e){}
+					}
+				}
+			}catch (Exception e) {}
+			cpt++;
+		}
+		if(argToRemove != -1) args.remove(argToRemove);
 
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
@@ -34,18 +75,23 @@ public class MobAround extends PlayerCommand{
 
 					int startForCommand = 1;
 					boolean mute = false;
-					if(args.get(1).equalsIgnoreCase("true")) {
-						startForCommand = 2;
-						mute = true;
-					}
-					else if( args.get(1).equalsIgnoreCase("false")) {
-						startForCommand = 2;
+					if(!forceMute) {
+						if (args.get(1).equalsIgnoreCase("true")) {
+							startForCommand = 2;
+							mute = true;
+						} else if (args.get(1).equalsIgnoreCase("false")) {
+							startForCommand = 2;
+						}
 					}
 
-					for (Entity e: receiver.getNearbyEntities(distance, distance, distance)) {
+					for (Entity e: location.getWorld().getNearbyEntities(location, distance, distance, distance)) {
 						if(e instanceof LivingEntity && !(e instanceof Player)) {
 
 							if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
+
+							if(whiteList.size() > 0 && !whiteList.contains(e.getType())) continue;
+
+							if(blackList.size() > 0 && blackList.contains(e.getType())) continue;
 
 							StringPlaceholder sp = new StringPlaceholder();
 							sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
@@ -59,7 +105,7 @@ public class MobAround extends PlayerCommand{
 								prepareCommands.append(s);
 								prepareCommands.append(" ");
 							}
-							prepareCommands.deleteCharAt(prepareCommands.length()-1);				
+							prepareCommands.deleteCharAt(prepareCommands.length()-1);
 
 							String buildCommands = prepareCommands.toString();
 							String [] tab;

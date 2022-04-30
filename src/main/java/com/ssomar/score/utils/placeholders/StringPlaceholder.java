@@ -2,6 +2,7 @@ package com.ssomar.score.utils.placeholders;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.regex.Matcher;
 
 import com.ssomar.executableitems.items.variables.VariableReal;
 import lombok.Getter;
@@ -152,7 +153,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 			s = s.replaceAll("%activator%", this.getActivator());
 		}
 		if(this.hasItem()) {
-			s = s.replaceAll("%item%", this.getItem());
+			s = s.replaceAll("%item%", Matcher.quoteReplacement(this.getItem()));
 		}
 		if(this.hasQuantity()) {
 			s = replaceCalculPlaceholder(s, "%quantity%", quantity, true);

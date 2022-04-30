@@ -20,6 +20,8 @@ import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.jetbrains.annotations.NotNull;
 
+import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
+
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends BlockCommand{
 
@@ -64,64 +66,6 @@ public class MobAround extends BlockCommand{
 
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				try {
-					double distance =  Double.parseDouble(args.get(0));
-
-					int startForCommand = 1;
-
-
-					for (Entity e: block.getWorld().getNearbyEntities(block.getLocation().add(0.5,0.5,0.5), distance, distance, distance)) {
-						if(e instanceof LivingEntity && !(e instanceof Player)) {
-
-							if(e.hasMetadata("NPC")) continue;
-
-							StringPlaceholder sp = new StringPlaceholder();
-							sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
-
-							ActionInfo aInfo2 = aInfo.clone();
-							aInfo2.setEntityUUID(e.getUniqueId());
-
-							/* regroup the last args that correspond to the commands */
-							StringBuilder prepareCommands = new StringBuilder();
-							for(String s : args.subList(startForCommand, args.size())) {
-								prepareCommands.append(s);
-								prepareCommands.append(" ");
-							}
-							prepareCommands.deleteCharAt(prepareCommands.length()-1);				
-
-							String buildCommands = prepareCommands.toString();
-							String [] tab;
-							if(buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
-							else {
-								tab = new String[1];
-								tab[0] = buildCommands;
-							}
-							List<String> commands = new ArrayList<>();
-							for(int m = 0 ; m < tab.length; m++) {
-								String s = tab[m];
-								while(s.startsWith(" ")) {
-									s = s.substring(1);
-								}
-								while(s.endsWith(" ")) {
-									s = s.substring(0, s.length()-1);
-								}
-								if(s.startsWith("/")) s = s.substring(1);
-
-								s = sp.replacePlaceholder(s);
-								commands.add(s);
-							}
-							EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
-							CommandsExecutor.runCommands(builder);
-						}
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		runnable.runTask(SCore.plugin);
+		mobAroundExecution(block.getLocation(), null, true, args, aInfo);
 	}
 }

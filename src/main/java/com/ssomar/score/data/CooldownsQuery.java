@@ -54,6 +54,7 @@ public class CooldownsQuery {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			for(Cooldown cd : cooldowns) {
+				i++;
 				if (cd != null){
 					pstmt.setString(1, cd.getId());
 					pstmt.setString(2, cd.getEntityUUID()+"");

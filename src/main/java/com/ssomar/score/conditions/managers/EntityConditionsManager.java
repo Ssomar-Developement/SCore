@@ -1,5 +1,6 @@
 package com.ssomar.score.conditions.managers;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.conditions.condition.entity.EntityConditions;
 import com.ssomar.score.conditions.condition.entity.EntityCondition;
 import com.ssomar.score.conditions.condition.entity.basics.*;
@@ -17,7 +18,8 @@ public class EntityConditionsManager extends ConditionsManager<EntityConditions,
         add(new IfOnFire());
         add(new IfPowered());
         add(new IfTamed());
-        add(new IfNamed());
+        if(!SCore.is1v11Less())
+            add(new IfNamed());
         add(new IfFrozen());
 
         add(new IfEntityHealth());
