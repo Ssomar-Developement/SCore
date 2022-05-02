@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,6 +119,10 @@ public class ExecutableItemsAPI {
 	}
 
 	public static List<String> getExecutableItemIdsList() {
-		return ItemManager.getInstance().getLoadedObjectsIDs();
+		List<String> list = new ArrayList<>();
+		for(Item item : ItemManager.getInstance().getLoadedObjects()) {
+			list.add(item.getId());
+		}
+		return list;
 	}
 }
