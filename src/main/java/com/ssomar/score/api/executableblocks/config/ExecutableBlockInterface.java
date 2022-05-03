@@ -1,6 +1,7 @@
 package com.ssomar.score.api.executableblocks.config;
 
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.score.sobject.SObject;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public interface ExecutableBlockInterface {
+public interface ExecutableBlockInterface extends SObject {
 
     /** Build the ExecutableBlock in its ItemStack form
      * @param quantity The quantity of the ExecutableBlock

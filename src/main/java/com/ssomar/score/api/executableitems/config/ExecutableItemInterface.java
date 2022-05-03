@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.executableitems.items.ItemManager;
+import com.ssomar.score.sobject.SObject;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public interface ExecutableItemInterface {
+public interface ExecutableItemInterface extends SObject {
 
     /** To place at the end of your itemBuilder , it adds infos for item to be recognized as an ExecutableItem
      * It will take the lore / name of the ExecutableItems and Override yours (But it doesn't override the customModeldata tag)
