@@ -1,6 +1,5 @@
 package com.ssomar.score.sobject;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -20,7 +19,7 @@ public interface SObject {
 	
 	List<SActivator> getActivators();
 	
-	ItemStack formItem(int quantity, Player p);
+	ItemStack buildItem(int quantity, Player p);
 	
 	@Nullable
     SActivator getActivator(String actID);

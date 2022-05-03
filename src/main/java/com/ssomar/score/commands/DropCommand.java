@@ -74,7 +74,7 @@ public class DropCommand {
 	}
 
 	public void runDrop(SObject sObject, int qty, Location loc) {
-		ItemStack itemDrop = sObject.formItem(qty, null);
+		ItemStack itemDrop = sObject.buildItem(qty, null);
 		loc.getWorld().dropItem(loc, itemDrop);
 	}
 

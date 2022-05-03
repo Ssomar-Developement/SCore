@@ -3,12 +3,9 @@ package com.ssomar.score.api;
 import com.ssomar.executableitems.items.ExecutableItem;
 import com.ssomar.executableitems.items.Item;
 import com.ssomar.executableitems.items.ItemManager;
-import com.ssomar.score.sobject.SObject;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -27,7 +24,7 @@ public class ExecutableItemsAPI {
 	public static ItemStack getExecutableItem(String id) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(1, null);
+			return oOpt.get().buildItem(1, null);
 		}
 		else return null;
 	}
@@ -55,7 +52,7 @@ public class ExecutableItemsAPI {
 	public static ItemStack getExecutableItem(String id, int amount) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(amount, null);
+			return oOpt.get().buildItem(amount, null);
 		}
 		else return null;
 	}
@@ -63,7 +60,7 @@ public class ExecutableItemsAPI {
 	public static ItemStack getExecutableItem(String id, int amount, Player creator) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(amount, creator);
+			return oOpt.get().buildItem(amount, creator);
 		}
 		else return null;
 	}

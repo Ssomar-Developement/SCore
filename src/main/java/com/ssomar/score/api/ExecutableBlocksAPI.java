@@ -1,17 +1,14 @@
 package com.ssomar.score.api;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlock;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.ExecutableBlocksBuilder;
-import com.ssomar.executableitems.items.ItemManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Deprecated
 public class ExecutableBlocksAPI {
@@ -24,7 +21,7 @@ public class ExecutableBlocksAPI {
 	public static ItemStack getExecutableBlock(String id) {
 		Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(1, null);
+			return oOpt.get().buildItem(1, null);
 		}
 		else return null;
 	}
