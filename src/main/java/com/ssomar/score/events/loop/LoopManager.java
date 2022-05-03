@@ -1,24 +1,22 @@
 package com.ssomar.score.events.loop;
 
-import java.util.*;
-
 import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
-import com.ssomar.executableitems.items.activators.Option;
-import com.ssomar.score.SsomarDev;
+import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
+import com.ssomar.executableitems.executableitems.activators.Option;
+import com.ssomar.score.SCore;
+import com.ssomar.score.events.EntityWalkOnEvent;
+import com.ssomar.score.sobject.sactivator.SActivator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import com.ssomar.executableitems.items.activators.ActivatorEI;
-import com.ssomar.score.SCore;
-import com.ssomar.score.events.EntityWalkOnEvent;
-import com.ssomar.score.sobject.sactivator.SActivator;
 import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class LoopManager {
 

@@ -1,11 +1,8 @@
 package com.ssomar.score.conditions.condition.item.basics;
 
-import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
-import com.ssomar.executableitems.items.ExecutableItem;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringCalculation;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

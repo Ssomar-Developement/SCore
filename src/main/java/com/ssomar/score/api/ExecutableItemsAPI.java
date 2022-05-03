@@ -1,8 +1,9 @@
 package com.ssomar.score.api;
 
-import com.ssomar.executableitems.items.ExecutableItem;
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
+import com.ssomar.executableitems.executableitems.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.executableitems.executableitems.ExecutableItemsManager;
+import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,17 +16,16 @@ import java.util.Optional;
 @Deprecated
 public class ExecutableItemsAPI {
 
-
+	@Deprecated()
 	public static boolean isValidID(String id) {
-		return ItemManager.getInstance().getLoadedObjectWithID(id).isPresent();
+		return com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().isValidID(id);
 	}
 
-	@Nullable
+	@Nullable @Deprecated
 	public static ItemStack getExecutableItem(String id) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			// TODO: return oOpt.get().buildItem(1, Optional.empty());
-			return null;
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().buildItem(1, Optional.empty());
 		}
 		else return null;
 	}
@@ -33,95 +33,88 @@ public class ExecutableItemsAPI {
 	/**
 		It adds all ExecutableItems settings in the itemStack, but it doesnt modify the material and the customModelDataTag.
 	 **/
-	@Nullable
+	@Nullable @Deprecated
 	public static ItemStack addExecutableItemSettingsWithoutTexturesThings(String id, @Nullable Player owner, @Nullable ItemStack itemStack) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(1, owner, itemStack);
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().addExecutableItemInfos(itemStack, Optional.ofNullable(owner));
 		}
 		else return itemStack;
 	}
 
+	@Deprecated
 	public static Optional<String> getExecutableItemId(ItemStack itemStack) {
-		ExecutableItem ei = new ExecutableItem(itemStack);
+		ExecutableItemObject ei = new ExecutableItemObject(itemStack);
 		if(ei.isValid()){
 			return Optional.ofNullable(ei.getConfig().getId());
 		}
 		else return Optional.ofNullable(null);
 	}
 
+	@Deprecated
 	public static ItemStack getExecutableItem(String id, int amount) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			//TODO return oOpt.get().buildItem(amount, Optional.empty());
-			return null;
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().buildItem(amount, Optional.empty());
 		}
 		else return null;
 	}
 
+	@Deprecated
 	public static ItemStack getExecutableItem(String id, int amount, Player creator) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			// TODO 	return oOpt.get().buildItem(amount, Optional.ofNullable(creator));
-			return null;
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().buildItem(amount, Optional.ofNullable(creator));
 		}
 		else return null;
 	}
 
+	@Deprecated
 	public static ItemStack getExecutableItemWithUsage(String id, int usage) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(1, null, usage);
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().buildItem(1, Optional.ofNullable(usage), Optional.empty());
 		}
 		else return null;
 	}
 
+	@Deprecated
 	public static ItemStack getExecutableItemWithUsage(String id, int amount, int usage) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(amount, null, usage);
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().buildItem(amount, Optional.ofNullable(usage), Optional.empty());
 		}
 		else return null;
 	}
 
+	@Deprecated
 	public static ItemStack getExecutableItemWithUsage(String id, int amount, int usage, Player creator) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			return oOpt.get().formItem(amount, creator, usage);
+		Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+		if(eiOpt.isPresent()) {
+			return eiOpt.get().buildItem(amount, Optional.ofNullable(usage), Optional.ofNullable(creator));
 		}
 		else return null;
 	}
 
+	@Deprecated
 	public static boolean isExecutableItem(ItemStack itemStack) {
-		ExecutableItem ei = new ExecutableItem(itemStack);
+		ExecutableItemObject ei = new ExecutableItemObject(itemStack);
 		return ei.isValid();
 	}
 
+	@Deprecated
 	public static boolean isExecutableItem(ItemStack itemStack, String id) {
-		ExecutableItem ei = new ExecutableItem(itemStack);
+		ExecutableItemObject ei = new ExecutableItemObject(itemStack);
 		if(ei.isValid()){
 			return ei.getConfig().getId().equals(id);
 		}
 		else return false;
 	}
 
-	@Nullable
-	public static Item getExecutableItemConfig(ItemStack itemStack) {
-		return ItemManager.getInstance().getExecutableItem(itemStack);
-	}
-
-	@Nullable
-	public static Item getExecutableItemConfig(String id) {
-		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
-		if(oOpt.isPresent()) {
-			return oOpt.get();
-		}
-		else return null;
-	}
-
+	@Deprecated
 	public static List<String> getExecutableItemIdsList() {
 		List<String> list = new ArrayList<>();
-		for(Item item : ItemManager.getInstance().getLoadedObjects()) {
+		for(ExecutableItem item : ExecutableItemsManager.getInstance().getLoadedObjects()) {
 			list.add(item.getId());
 		}
 		return list;

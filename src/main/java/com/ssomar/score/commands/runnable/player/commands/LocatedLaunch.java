@@ -2,8 +2,6 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
-import com.ssomar.executableitems.items.ExecutableItem;
-import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;

@@ -2,13 +2,14 @@ package com.ssomar.score.commands.runnable.entity.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
+import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.ssomar.executableitems.api.ExecutableItemsAPI;
-import com.ssomar.executableitems.items.Item;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
@@ -20,11 +21,13 @@ public class DropExecutableItem extends EntityCommand{
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
-			if(SCore.hasExecutableItems && ExecutableItemsAPI.isValidID(args.get(0))) {
+			if(SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(args.get(0))) {
 				int amount = Integer.parseInt(args.get(1));
-				if(amount>0 && !entity.isDead()) { 
-					Item item = ExecutableItemsAPI.getExecutableItemConfig(ExecutableItemsAPI.getExecutableItem(args.get(0)));
-					entity.getWorld().dropItem(entity.getLocation(), item.formItem(amount, p, item.getUse()));
+				if(amount>0 && !entity.isDead()) {
+					Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(args.get(0));
+					if(eiOpt.isPresent()) {
+						entity.getWorld().dropItem(entity.getLocation(), eiOpt.get().buildItem(amount, Optional.ofNullable(p)));
+					}
 				}
 			}
 		}catch(Exception ignored) {}
@@ -38,7 +41,7 @@ public class DropExecutableItem extends EntityCommand{
 		String dropei= "DROPEXECUTABLEITEM {id} {quantity}";
 		if(args.size()<2) error = notEnoughArgs+dropei;
 		else if(args.size()==2) {
-			if(!SCore.hasExecutableItems || !ExecutableItemsAPI.isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
+			if(!SCore.hasExecutableItems || !ExecutableItemsAPI.getExecutableItemsManager().isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
 			else {
 				try {
 					Integer.valueOf(args.get(1));

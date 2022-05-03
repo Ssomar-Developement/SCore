@@ -3,10 +3,10 @@ package com.ssomar.score.menu.activator.requiredei;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.executableitems.executableitems.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemsManager;
 import org.bukkit.entity.Player;
 
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.score.GUIManagerSCore;
 import com.ssomar.score.menu.score.InteractionClickedGUIManager;
@@ -51,7 +51,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 			i.player.spigot().sendMessage(message);
 
 			List<TextComponent> listItems = new ArrayList<>();
-			for(Item _i : ItemManager.getInstance().getLoadedObjects()) {
+			for(ExecutableItem _i : ExecutableItemsManager.getInstance().getLoadedObjects()) {
 				TextComponent newText;
 
 				newText = new TextComponent( StringConverter.coloredString("&5&l[&d&l"+_i.getIdentification()+"&5&l]"));
@@ -209,7 +209,7 @@ public class RequiredEIGUIManager extends GUIManagerSCore<RequiredEIGUI>{
 			}
 			else if(requestWriting.get(p).equals(RequiredEIGUI.EI_ID)) {
 				boolean error = true;
-				for(Item it : ItemManager.getInstance().getLoadedObjects()) {
+				for(ExecutableItem it : ExecutableItemsManager.getInstance().getLoadedObjects()) {
 					if(it.getIdentification().equalsIgnoreCase(message.replaceAll(" ", ""))) {
 						requestWriting.remove(p);
 						cache.get(p).updateActually(RequiredEIGUI.EI_ID, message);

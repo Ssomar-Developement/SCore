@@ -1,6 +1,5 @@
 package com.ssomar.score.conditions.condition.item.basics;
 
-import com.ssomar.executableitems.items.ExecutableItem;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.utils.SendMessage;

@@ -1,7 +1,7 @@
 package com.ssomar.score.conditions.condition.player.custom;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
@@ -60,7 +60,7 @@ public class IfPlayerHasExecutableItem {
         if (slot != -1) item = pInv.getItem(slot);
         else item = pInv.getItem(pInv.getHeldItemSlot());
 
-        ExecutableItem ei = new ExecutableItem(item);
+        ExecutableItemObject ei = new ExecutableItemObject(item);
         if (!ei.isValid() || !((SObject) (ei.getConfig())).getId().equals(executableItemID)) return false;
 
         if (usageCalcul.isPresent()) {

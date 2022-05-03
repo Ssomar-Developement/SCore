@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Charsets;
+import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.types.CustomArrow;
@@ -21,7 +22,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
-import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.sobject.sactivator.SActivator;

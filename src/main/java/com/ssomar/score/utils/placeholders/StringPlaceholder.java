@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.regex.Matcher;
 
-import com.ssomar.executableitems.items.variables.VariableReal;
+import com.ssomar.executableitems.executableitems.variables.VariableReal;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

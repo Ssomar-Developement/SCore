@@ -1,15 +1,9 @@
 package com.ssomar.score.api.executableitems.config;
 
-import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.sobject.SObject;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 

@@ -1,20 +1,19 @@
 package com.ssomar.score.linkedplugins;
 
-import javax.annotation.Nullable;
-
+import com.ssomar.executableitems.executableitems.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemsManager;
+import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import org.bukkit.entity.Player;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.executableblocks.blocks.ExecutableBlockManager;
 import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
 import com.ssomar.executableblocks.menu.blocks.activators.ActivatorGUIManager;
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
-import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
+import org.jetbrains.annotations.Nullable;
 
 public class LinkedPlugins {
 
@@ -31,7 +30,7 @@ public class LinkedPlugins {
 			
 		case "EXECUTABLEITEMS":
 			if(SCore.hasExecutableItems) {
-				return ItemManager.getInstance().getLoadedObjectWithID(objectID).get();
+				return ExecutableItemsManager.getInstance().getLoadedObjectWithID(objectID).get();
 			}
 			break;
 
@@ -54,7 +53,7 @@ public class LinkedPlugins {
 			
 		case "EXECUTABLEITEMS":
 			if(SCore.hasExecutableItems) {
-				ItemManager.getInstance().reloadObject(objectID);
+				ExecutableItemsManager.getInstance().reloadObject(objectID);
 			}
 			break;
 
@@ -76,7 +75,7 @@ public class LinkedPlugins {
 			
 		case "EXECUTABLEITEMS":
 			if(SCore.hasExecutableItems) {	
-				com.ssomar.executableitems.configs.ingame.activators.ActivatorGUIManager.getInstance().startEditing(p, (ActivatorEI) sActivator, (Item) sObject);
+				com.ssomar.executableitems.configs.ingame.activators.ActivatorGUIManager.getInstance().startEditing(p, (ActivatorEI) sActivator, (ExecutableItem) sObject);
 			}
 			break;
 

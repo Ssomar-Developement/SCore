@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.ssomar.executableitems.executableitems.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemsManager;
+import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,8 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.google.common.base.Charsets;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.configs.Message;
-import com.ssomar.executableitems.items.Item;
-import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.menu.GUI;
@@ -154,7 +155,7 @@ public class RequiredEIManager {
 			for(RequiredEI rEI : activator.getRequiredExecutableItems()) {
 
 				if(rEI.getItem() == null) {
-					Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(rEI.getEI_ID());
+					Optional<ExecutableItem> oOpt = ExecutableItemsManager.getInstance().getLoadedObjectWithID(rEI.getEI_ID());
 					if(!oOpt.isPresent()) continue;
 					else rEI.setItem(oOpt.get());
 				}
@@ -163,9 +164,12 @@ public class RequiredEIManager {
 				List<Integer> validUsages = rEI.getValidUsages();
 
 				for(ItemStack it : p.getInventory().getContents()) {
-					if(it==null) continue;
-					Item cIt = null;
-					if((cIt = ItemManager.getInstance().getExecutableItem(it)) != null && rEI.getEI_ID().equals(cIt.getIdentification())){
+					if(it == null) continue;
+					ExecutableItem cIt = null;
+					Optional<ExecutableItemInterface> eiOpt = ExecutableItemsManager.getInstance().getExecutableItem(it);
+					if(eiOpt.isPresent()) cIt = (ExecutableItem) eiOpt.get();
+
+					if(cIt != null && rEI.getEI_ID().equals(cIt.getIdentification())){
 						if(validUsages.isEmpty() || cIt.getUse()==0 || cIt.getUse()==-1) {
 							if(needed<=it.getAmount()) {
 								needed=0;
@@ -232,7 +236,7 @@ public class RequiredEIManager {
 			for(RequiredEI rEI : activator.getRequiredExecutableItems()) {
 
 				if(rEI.getItem() == null) {
-					Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(rEI.getEI_ID());
+					Optional<ExecutableItem> oOpt = ExecutableItemsManager.getInstance().getLoadedObjectWithID(rEI.getEI_ID());
 					if(!oOpt.isPresent()) continue;
 					else rEI.setItem(oOpt.get());
 				}
@@ -243,9 +247,10 @@ public class RequiredEIManager {
 
 				for(ItemStack it : p.getInventory().getContents()) {
 					if(it == null) continue;
-					Item cIt = null;
-					if(ItemManager.getInstance().getExecutableItem(it) != null){
-						cIt = ItemManager.getInstance().getExecutableItem(it);
+					ExecutableItem cIt = null;
+					Optional<ExecutableItemInterface> eiOpt = ExecutableItemsManager.getInstance().getExecutableItem(it);
+					if(eiOpt.isPresent()) cIt = (ExecutableItem) eiOpt.get();
+					if(cIt != null){
 						if(rEI.getEI_ID().equals(cIt.getIdentification())) {
 							if(validUsages.isEmpty() || cIt.getUse()==0 || cIt.getUse()==-1) {
 								if(needed<=it.getAmount()) {

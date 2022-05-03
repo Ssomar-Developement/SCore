@@ -1,6 +1,6 @@
 package com.ssomar.score.conditions.condition.item.basics;
 
-import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.utils.SendMessage;
@@ -20,7 +20,7 @@ public class IfUsage extends ItemCondition<String, String> {
     @Override
     public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
 
-        ExecutableItem executableItem = new ExecutableItem(itemStack);
+        ExecutableItemObject executableItem = new ExecutableItemObject(itemStack);
         if(executableItem.isValid()){
             executableItem.loadExecutableItemInfos();
             if(isDefined()) {

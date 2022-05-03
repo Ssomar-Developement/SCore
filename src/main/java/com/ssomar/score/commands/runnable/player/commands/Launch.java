@@ -1,15 +1,11 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
-import com.ssomar.executableitems.items.ExecutableItem;
-import com.ssomar.executableitems.items.ItemManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.projectiles.ProjectilesManager;
-import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;

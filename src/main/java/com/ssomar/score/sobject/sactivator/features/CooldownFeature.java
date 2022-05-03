@@ -1,10 +1,7 @@
 package com.ssomar.score.sobject.sactivator.features;
 
 import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.executableitems.configs.GeneralConfig;
 import com.ssomar.executableitems.configs.Message;
-import com.ssomar.executableitems.configs.api.PlaceholderAPI;
-import com.ssomar.executableitems.items.activators.ActivatorEI;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;

@@ -3,7 +3,8 @@ package com.ssomar.score.commands.runnable;
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.ssomar.executableitems.items.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -27,7 +28,7 @@ public class ActionInfo implements Serializable{
 	private Integer slot;
 
 	/* The executableItem that actives the action (to know from which ei a custom projectile has been launched) */
-	private transient ExecutableItem executableItem;
+	private transient ExecutableItemObject executableItem;
 
 	private boolean isEventCallByMineInCube;
 
