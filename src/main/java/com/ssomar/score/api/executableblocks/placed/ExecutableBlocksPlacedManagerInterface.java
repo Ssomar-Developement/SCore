@@ -14,20 +14,20 @@ public interface ExecutableBlocksPlacedManagerInterface {
     /** Get an ExecutableBlockPlaced from its location
      * @param location The location of the potential ExecutableBlockPlaced
      * @return The ExecutableBlockPlaced **/
-    Optional<ExecutableBlockInterface> getExecutableBlockPlaced(Location location);
+    Optional<ExecutableBlockPlacedInterface> getExecutableBlockPlaced(Location location);
 
     /** Get all ExecutableBlockPlaceds present in a specific chunk
      * @param chunk The chunk to get ExecutableBlockPlaceds from
      * @return The list of ExecutableBlockPlaced **/
-    List<ExecutableBlockPlaced> getExecutableBlocksPlaced(Chunk chunk);
+    List<ExecutableBlockPlacedInterface> getExecutableBlocksPlaced(Chunk chunk);
 
     /** Get an ExecutableBlockPlaced near a specific location
      * @param location The location of the potential ExecutableBlockPlaced
      * @param distance The maximum distance to search
      * @return The list of ExecutableBlockPlaced **/
-    List<ExecutableBlockPlaced> getExecutableBlocksPlacedNear(Location location, double distance);
+    List<ExecutableBlockPlacedInterface> getExecutableBlocksPlacedNear(Location location, double distance);
 
     /** Get all the ExecutableBlocksPlaced
      * @return The map with all the ExecutableBlocksPlaced **/
-    Map<Location, ExecutableBlockPlaced> getAllExecutableBlocksPlaced();
+    Map<Location, ExecutableBlockPlacedInterface> getAllExecutableBlocksPlaced();
 }
