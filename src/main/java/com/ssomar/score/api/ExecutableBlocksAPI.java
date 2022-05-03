@@ -21,7 +21,8 @@ public class ExecutableBlocksAPI {
 	public static ItemStack getExecutableBlock(String id) {
 		Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().buildItem(1, null);
+			// TOOO return oOpt.get().buildItem(1, Optional.empty());
+			return null;
 		}
 		else return null;
 	}

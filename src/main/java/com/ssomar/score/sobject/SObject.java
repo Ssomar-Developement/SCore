@@ -1,6 +1,7 @@
 package com.ssomar.score.sobject;
 
 import java.util.List;
+import java.util.Optional;
 
 
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public interface SObject {
 	
 	List<SActivator> getActivators();
 	
-	ItemStack buildItem(int quantity, Player p);
+	ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
 	
 	@Nullable
     SActivator getActivator(String actID);

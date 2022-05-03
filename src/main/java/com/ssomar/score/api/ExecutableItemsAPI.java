@@ -24,7 +24,8 @@ public class ExecutableItemsAPI {
 	public static ItemStack getExecutableItem(String id) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().buildItem(1, null);
+			// TODO: return oOpt.get().buildItem(1, Optional.empty());
+			return null;
 		}
 		else return null;
 	}
@@ -52,7 +53,8 @@ public class ExecutableItemsAPI {
 	public static ItemStack getExecutableItem(String id, int amount) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().buildItem(amount, null);
+			//TODO return oOpt.get().buildItem(amount, Optional.empty());
+			return null;
 		}
 		else return null;
 	}
@@ -60,7 +62,8 @@ public class ExecutableItemsAPI {
 	public static ItemStack getExecutableItem(String id, int amount, Player creator) {
 		Optional<Item> oOpt = ItemManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
-			return oOpt.get().buildItem(amount, creator);
+			// TODO 	return oOpt.get().buildItem(amount, Optional.ofNullable(creator));
+			return null;
 		}
 		else return null;
 	}
