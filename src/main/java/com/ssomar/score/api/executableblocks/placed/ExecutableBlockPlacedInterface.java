@@ -15,7 +15,7 @@ public interface ExecutableBlockPlacedInterface {
     String getExecutableBlockID();
     Location getLocation();
     Location getTitleLocation();
-    Optional<UUID> getOwner();
+    Optional<UUID> getOwnerUUID();
 
     /**
      * Break the ExecutableBlockPlaced
