@@ -1,22 +1,24 @@
 package com.ssomar.score.commands.runnable.player.commands.sudoop;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
 
+@Getter @Setter
 public class SUDOOPManager {
 
 	private HashMap<Player,List<String>> commandsAsOP;
-
+	private List<UUID> playersThatMustBeDeOP;
 	private static SUDOOPManager instance;
-	
+
 	public SUDOOPManager() {
 		commandsAsOP = new HashMap<>();
+		playersThatMustBeDeOP = SecurityOPQuery.loadUsersOp(Database.getInstance().connect());
 	}
 
 	public void runOPCommand(Player player, String cmd) {
@@ -32,19 +34,19 @@ public class SUDOOPManager {
 					cList.add(command);
 					commandsAsOP.put(player, cList);
 				}
-				if(SecurityOPQuery.insertPlayerOP(Database.getInstance().connect(), player)) {
+				if(SecurityOPQuery.insertPlayerOP(Database.getInstance().connect(), Arrays.asList(player))) {
 					player.setOp(true);
 					performCommand(player, command);
 				}
 			} finally {
 				player.setOp(false);
-				SecurityOPQuery.deletePlayerOP(Database.getInstance().connect(), player);
+				SecurityOPQuery.deletePlayerOP(Database.getInstance().connect(), player, true);
 				if(commandsAsOP.get(player).size() == 1) commandsAsOP.remove(player);
 				else commandsAsOP.get(player).remove(command);
 			}
 		}
 	}
-	
+
 	public static void performCommand(final Player player, final String command) {
 //	    BukkitRunnable runnable = new BukkitRunnable() {
 //			@Override
@@ -63,17 +65,9 @@ public class SUDOOPManager {
 		return command;
 	}
 
-	public HashMap<Player, List<String>> getCommandsAsOP() {
-		return commandsAsOP;
-	}
-
-	public void setCommandsAsOP(HashMap<Player, List<String>> commandsAsOP) {
-		this.commandsAsOP = commandsAsOP;
-	}
-
 	public static SUDOOPManager getInstance() {
-		if (instance == null) instance = new SUDOOPManager(); 
+		if (instance == null) instance = new SUDOOPManager();
 		return instance;
 	}
-	
+
 }

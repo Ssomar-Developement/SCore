@@ -15,7 +15,7 @@ public class RemoveProjectileHitBlockEvent implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onProjectileHitBlock(ProjectileHitEvent e){
-        if((SCore.is1v13Less()) && e.getHitBlock() == null) return;
+        if((SCore.is1v13Less()) || e.getHitBlock() == null) return;
 
         NamespacedKey key = new NamespacedKey(SCore.plugin, "remove_hit_block");
 

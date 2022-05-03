@@ -27,7 +27,7 @@ public class ActionInfo implements Serializable{
 	private Integer slot;
 
 	/* The executableItem that actives the action (to know from which ei a custom projectile has been launched) */
-	private ExecutableItem executableItem;
+	private transient ExecutableItem executableItem;
 
 	private boolean isEventCallByMineInCube;
 

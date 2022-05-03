@@ -23,7 +23,6 @@ public class CustomWitherSkull extends SProjectiles {
         proj = new InvisibleFeature(proj);
         proj = new GlowingFeature(proj);
         proj = new BounceFeature(proj);
-        proj = new GravityFeature(proj);
         proj = new DespawnFeature(proj);
         proj = new VelocityFeature(proj);
         proj = new SilentFeature(proj);

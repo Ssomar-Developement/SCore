@@ -13,13 +13,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
+@Deprecated
 public class ExecutableBlocksAPI {
 
 	/* Verify if id is a valid ExecutableBlock ID*/
 	public static boolean isValidID(String id) {
 		return ExecutableBlockManager.getInstance().getLoadedObjectWithID(id).isPresent();
 	}
-	
+
 	public static ItemStack getExecutableBlock(String id) {
 		Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(id);
 		if(oOpt.isPresent()) {
