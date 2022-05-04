@@ -22,7 +22,7 @@ public class DetailedEntities {
         this.sActivator = sActivator;
     }
 
-    void load(ConfigurationSection config, List<String> errors) {
+    public void load(ConfigurationSection config, List<String> errors) {
         List<String> detailedEntities = config.getStringList("detailedEntities");
         for(String detailedEntity : detailedEntities) {
             try {
@@ -33,7 +33,7 @@ public class DetailedEntities {
         }
     }
 
-    boolean isValidEntity(Entity entity) {
+    public boolean isValidEntity(Entity entity) {
         for(DetailedEntity detailedEntity : detailedEntities) {
             if(detailedEntity.isValidEntity(entity)) return true;
         }

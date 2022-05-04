@@ -45,7 +45,7 @@ public class DetailedEntity {
         }
     }
 
-    boolean isValidEntity(Entity entity) {
+    public boolean isValidEntity(Entity entity) {
         EntityType entityType = entity.getType();
         if (!entityType.equals(this.entityType)) return false;
 
