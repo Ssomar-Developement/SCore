@@ -15,17 +15,14 @@ public class DetailedEntities {
     private SPlugin plugin;
     private SObject sObject;
     private SActivator sActivator;
-    
+
     public DetailedEntities(SPlugin plugin, SObject sObject, SActivator sActivator) {
         this.plugin = plugin;
         this.sObject = sObject;
         this.sActivator = sActivator;
     }
 
-    public DetailedEntities(ConfigurationSection config, SPlugin sPlugin, SObject sO, SActivator sActivator, List<String> errors) {
-        this.plugin = sPlugin;
-        this.sObject = sO;
-        this.sActivator = sActivator;
+    void load(ConfigurationSection config, List<String> errors) {
         List<String> detailedEntities = config.getStringList("detailedEntities");
         for(String detailedEntity : detailedEntities) {
             try {
