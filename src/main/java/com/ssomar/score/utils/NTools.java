@@ -28,6 +28,28 @@ public class NTools implements Serializable {
 		}
 		return result;
 	}
+
+	public static Optional<Long> getLong(String s) {
+		Optional<Long> result = Optional.empty();
+		try {
+			result = Optional.of(Long.valueOf(s));
+		}
+		catch(NumberFormatException e) {
+			return result;
+		}
+		return result;
+	}
+
+	public static Optional<Float> getFloat(String s) {
+		Optional<Float> result = Optional.empty();
+		try {
+			result = Optional.of(Float.valueOf(s));
+		}
+		catch(NumberFormatException e) {
+			return result;
+		}
+		return result;
+	}
 	
 	public static boolean isNumber(String s) {
 		try {

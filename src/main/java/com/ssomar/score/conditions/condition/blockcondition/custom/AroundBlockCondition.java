@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -20,8 +24,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Charsets;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
@@ -137,9 +139,8 @@ public class AroundBlockCondition {
 
 		targetLoc.add(0.5, 0.5, 0.5);
 		if(SCore.hasExecutableBlocks && !this.blockMustBeExecutableBlock.isEmpty()) {
-			ExecutableBlockPlaced eBP;
-			valid = valid && (eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(targetLoc)) != null
-					&& this.blockMustBeExecutableBlock.contains(eBP.getEB_ID());
+			Optional<ExecutableBlockPlacedInterface> eBP = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(targetLoc);
+			valid = valid && (eBP.isPresent() && this.blockMustBeExecutableBlock.contains(eBP.get().getExecutableBlockID()));
 
 		}
 

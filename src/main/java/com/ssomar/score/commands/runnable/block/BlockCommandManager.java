@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssomar.score.commands.runnable.block.commands.*;
-import com.ssomar.score.commands.runnable.entity.commands.StunDisable;
-import com.ssomar.score.commands.runnable.entity.commands.StunEnable;
 import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.CommandManager;
@@ -54,7 +52,7 @@ public class BlockCommandManager implements CommandManager{
 	}
 
 
-	public boolean isValidBlockCommads(String entry) {
+	public boolean isValidBlockCommands(String entry) {
 		for(BlockCommand blockCommands : commands) {
 			for(String name: blockCommands.getNames()) {
 				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
@@ -78,7 +76,7 @@ public class BlockCommandManager implements CommandManager{
 			 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
 			 */
 
-			if (this.isValidBlockCommads(s) && !s.contains("//")) {
+			if (this.isValidBlockCommands(s) && !s.contains("//") && !s.contains("+++")) {
 				BlockCommand bc = (BlockCommand) this.getCommand(command);
 				List<String> args = this.getArgs(command);
 

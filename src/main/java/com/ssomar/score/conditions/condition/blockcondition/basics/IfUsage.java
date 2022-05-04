@@ -4,6 +4,8 @@ import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.executableblocks.blocks.placedblocks.LocationConverter;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.blockcondition.BlockCondition;
 import com.ssomar.score.utils.SendMessage;
@@ -25,9 +27,10 @@ public class IfUsage extends BlockCondition<String, String> {
         if(!getAllCondition(messageSender.getSp()).equals("") && SCore.hasExecutableBlocks) {
 
             Location bLoc = LocationConverter.convert(b.getLocation(), false, false);
-            ExecutableBlockPlaced executableBlockPlaced = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(bLoc);
-            if(executableBlockPlaced != null) {
-                int usage = executableBlockPlaced.getUsage();
+            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+            if(eBPOpt.isPresent()) {
+                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
+                int usage = eBP.getUsage();
 
                 if (!StringCalculation.calculation(getAllCondition(messageSender.getSp()), usage)) {
                     sendErrorMsg(playerOpt, messageSender);

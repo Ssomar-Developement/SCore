@@ -82,7 +82,7 @@ public class EntityCommandManager implements CommandManager{
 			 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
 			 */
 
-			if (EntityCommandManager.getInstance().isValidEntityCommand(s) && !s.contains("//")) {
+			if (EntityCommandManager.getInstance().isValidEntityCommand(s) && !s.contains("//") && !s.contains("+++")) {
 				EntityCommand eC = (EntityCommand) this.getCommand(command);
 				List<String> args = this.getArgs(command);
 

@@ -2,7 +2,10 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,8 +43,11 @@ public class Explode extends BlockCommand{
 		bLoc.add(0.5, 0.5, 0.5);
 		
 		if(SCore.hasExecutableBlocks) {
-			ExecutableBlockPlaced eBP;
-			if((eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(bLoc)) != null) {
+
+			Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+
+			if(eBPOpt.isPresent()) {
+				ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
 				ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
 			}
 		}

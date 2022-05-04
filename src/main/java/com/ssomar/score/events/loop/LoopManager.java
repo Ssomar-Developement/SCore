@@ -6,6 +6,8 @@ import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedMana
 import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import com.ssomar.executableitems.executableitems.activators.Option;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.events.EntityWalkOnEvent;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import org.bukkit.Bukkit;
@@ -85,10 +87,10 @@ public class LoopManager {
 						}
 
 						if(!listEB.isEmpty()) {
-							Map<Location, ExecutableBlockPlaced> mapEBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlocksPlaced();
+							Map<Location, ExecutableBlockPlacedInterface> mapEBP = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getAllExecutableBlocksPlaced();
 							for(Location loc : mapEBP.keySet()) {
 								if(!loc.isWorldLoaded() || !loc.getWorld().isChunkLoaded(loc.getBlockX()/16, loc.getBlockZ()/16)) continue;
-								ExecutableBlockPlaced eBP =  mapEBP.get(loc);
+								ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) mapEBP.get(loc);
 
 								if(eBP.hasEntityOn()) {
 									Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {

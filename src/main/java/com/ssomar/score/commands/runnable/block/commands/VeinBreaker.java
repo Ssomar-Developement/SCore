@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safebreak.SafeBreak;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class VeinBreaker extends BlockCommand {
@@ -134,8 +137,9 @@ public class VeinBreaker extends BlockCommand {
         bLoc.add(0.5, 0.5, 0.5);
 
         if (SCore.hasExecutableBlocks) {
-            ExecutableBlockPlaced eBP;
-            if ((eBP = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(bLoc)) != null) {
+            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+            if (eBPOpt.isPresent()) {
+                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
                 ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
                 // TODO add the drop of the EB here
             }

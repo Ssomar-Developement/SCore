@@ -83,9 +83,9 @@ public class EditorCreator {
 	}
 
 	public void sendObjects(Player target) {
-		int cpt=0;
+		int cpt = 0;
 		TextComponent toSend = null;
-		if(objects.size()==0) {
+		if(objects.size() == 0) {
 			toSend = new TextComponent( StringConverter.coloredString("&7EMPTY"));
 		}
 		else {

@@ -49,6 +49,9 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new RemoveProjectileHitBlockEvent(), main);
 
 		main.getServer().getPluginManager().registerEvents(new RemoveCancelDamageEventMetadataTagEvent(), main);
+
+		main.getServer().getPluginManager().registerEvents(new TESTEVENT_TODELETE(), main);
+
 	}
 
 	public static EventsHandler getInstance() {

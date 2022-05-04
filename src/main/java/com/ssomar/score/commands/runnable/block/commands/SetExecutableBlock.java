@@ -90,7 +90,7 @@ public class SetExecutableBlock extends BlockCommand{
 
 			ExecutableBlock eB = oOpt.get();
 
-			eB.place(Bukkit.getPlayer(ownerUUID), loc, true);
+			eB.place(Optional.ofNullable(Bukkit.getPlayer(ownerUUID)), loc, true);
 		}
 	}
 

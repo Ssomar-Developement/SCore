@@ -111,13 +111,19 @@ public class EntityCommandsQuery {
 
 				String brutCommand = rs.getString(COL_BRUT_COMMAND);
 				long runTime = rs.getLong(COL_RUN_TIME);
-				ActionInfo aInfo = (ActionInfo) ActionInfoSerializer.fromString(rs.getString(COL_ACTION_INFO));
+				ActionInfo aInfo;
+				try {
+					aInfo = (ActionInfo) ActionInfoSerializer.fromString(rs.getString(COL_ACTION_INFO));
+				} catch (Exception e) {
+					SCore.plugin.getLogger().severe("(NOT VERY SERIOUS) The delayed command " + brutCommand + " has been deleted because it was saved in an outdated version.");
+					continue;
+				}
 
 				EntityRunCommand pCommand = new EntityRunCommand(brutCommand, runTime, aInfo);
 
 				list.add(pCommand);
 			}
-		} catch (SQLException | ClassNotFoundException | IOException e) {
+		} catch (SQLException e) {
 			System.out.println(SCore.NAME_2+" "+e.getMessage());
 		} finally {
 			if(rs != null){

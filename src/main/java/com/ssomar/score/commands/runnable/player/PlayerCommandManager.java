@@ -123,7 +123,7 @@ public class PlayerCommandManager implements CommandManager{
 
 			String command = StringConverter.coloredString(s);
 
-			if (this.isValidPlayerCommads(s)) {
+			if (this.isValidPlayerCommads(s) && !s.contains("+++")) {
 				PlayerCommand bc = (PlayerCommand) this.getCommand(command);
 				List<String> args = this.getArgs(command);
 
