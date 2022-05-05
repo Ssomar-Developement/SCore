@@ -2,6 +2,8 @@ package com.ssomar.score.utils.safebreak;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.usedapi.GriefPreventionAPI;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
@@ -15,6 +17,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -47,6 +50,13 @@ public class SafeBreak {
             }
 
             if (!canceled) {
+                if(SCore.hasExecutableBlocks){
+                    Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+                    if(eBPOpt.isPresent()){
+                        eBPOpt.get().breakBlock(player, drop);
+                        return;
+                    }
+                }
                 if (drop){
                     //SsomarDev.testMsg("DEBUG SAFE BREAK 5");
                     if(slot != 40) block.breakNaturally(player.getInventory().getItemInMainHand());
@@ -56,6 +66,14 @@ public class SafeBreak {
             }
         }
         else {
+            if(SCore.hasExecutableBlocks){
+                Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+                if(eBPOpt.isPresent()){
+                    eBPOpt.get().breakBlock(null, drop);
+                    return;
+                }
+            }
+
             //SsomarDev.testMsg("DEBUG SAFE BREAK 6");
             if (drop) block.breakNaturally();
             else block.setType(Material.AIR);
