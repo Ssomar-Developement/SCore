@@ -54,4 +54,12 @@ public class DetailedEntities {
         }
         config.set("detailedEntities", detailedEntities);
     }
+
+    public List<String> getDetailedEntitiesToListString() {
+        List<String> detailedEntities = new ArrayList<>();
+        for(DetailedEntity detailedEntity : this.detailedEntities) {
+            detailedEntities.add(detailedEntity.toString());
+        }
+        return detailedEntities;
+    }
 }
