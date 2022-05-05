@@ -5,8 +5,8 @@ import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailedEntities {
@@ -20,10 +20,15 @@ public class DetailedEntities {
         this.plugin = plugin;
         this.sObject = sObject;
         this.sActivator = sActivator;
+        this.detailedEntities = new ArrayList<>();
     }
 
     public void load(ConfigurationSection config, List<String> errors) {
         List<String> detailedEntities = config.getStringList("detailedEntities");
+        load(detailedEntities, errors);
+    }
+
+    public void load(List<String> detailedEntities, List<String> errors) {
         for(String detailedEntity : detailedEntities) {
             try {
                 this.detailedEntities.add(new DetailedEntity(detailedEntity));
@@ -34,13 +39,19 @@ public class DetailedEntities {
     }
 
     public boolean isValidEntity(Entity entity) {
+        if(detailedEntities.isEmpty()) return true;
+
         for(DetailedEntity detailedEntity : detailedEntities) {
             if(detailedEntity.isValidEntity(entity)) return true;
         }
         return false;
     }
 
-    public void save() {
-
+    public void save(ConfigurationSection config) {
+        List<String> detailedEntities = new ArrayList<>();
+        for(DetailedEntity detailedEntity : this.detailedEntities) {
+            detailedEntities.add(detailedEntity.toString());
+        }
+        config.set("detailedEntities", detailedEntities);
     }
 }
