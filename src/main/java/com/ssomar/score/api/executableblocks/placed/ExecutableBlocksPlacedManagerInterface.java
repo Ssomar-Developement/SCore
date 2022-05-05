@@ -4,6 +4,7 @@ import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,15 @@ import java.util.Optional;
 
 public interface ExecutableBlocksPlacedManagerInterface {
 
-    /** Get an ExecutableBlockPlaced from its location
+    /** Get an ExecutableBlockPlaced from its location (Block location +0.5 +0.5 +0.5)
      * @param location The location of the potential ExecutableBlockPlaced
      * @return The ExecutableBlockPlaced **/
     Optional<ExecutableBlockPlacedInterface> getExecutableBlockPlaced(Location location);
+
+    /** Get an ExecutableBlockPlaced from its location
+     * @param block The block of the potential ExecutableBlockPlaced
+     * @return The ExecutableBlockPlaced **/
+    Optional<ExecutableBlockPlacedInterface> getExecutableBlockPlaced(Block block);
 
     /** Get all ExecutableBlockPlaceds present in a specific chunk
      * @param chunk The chunk to get ExecutableBlockPlaceds from
