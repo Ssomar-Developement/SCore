@@ -43,7 +43,7 @@ public class DetailedEntity {
         try {
             this.entityType = EntityType.valueOf(entityTypeStr.toUpperCase());
         }catch (IllegalArgumentException e) {
-            throw new ConfigException("DETAILED ENTITIES Invalid entity type" + entityTypeStr);
+            throw new ConfigException("DETAILED ENTITIES Invalid entity type: " + entityTypeStr+ " &6>> &7&ohttps://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html");
         }
     }
 
