@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
-import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.ssomar.score.sobject.sactivator.DetailedBlocks;

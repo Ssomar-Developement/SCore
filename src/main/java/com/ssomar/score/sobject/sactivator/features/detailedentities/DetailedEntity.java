@@ -1,5 +1,6 @@
 package com.ssomar.score.sobject.sactivator.features.detailedentities;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.NTools;
 import de.tr7zw.nbtapi.NBTEntity;
@@ -51,7 +52,7 @@ public class DetailedEntity {
         EntityType entityType = entity.getType();
         if (!entityType.equals(this.entityType)) return false;
 
-        if(entityData.size() != 0){
+        if(entityData.size() != 0 && SCore.hasNBTAPI){
             for(Map.Entry<String, String> entry : entityData.entrySet()){
                 String key = entry.getKey();
                 String value = entry.getValue();

@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Cancellable;
@@ -17,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
+import org.jetbrains.annotations.Nullable;
 
 public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializable{
 

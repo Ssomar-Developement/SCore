@@ -1,4 +1,4 @@
-package com.ssomar.score.events;
+package com.ssomar.score.commands.runnable.player.events;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.player.commands.XpBoost;
@@ -21,9 +21,15 @@ public class XPBoostEvent implements Listener{
 		Player player = e.getPlayer();
 		if(DEBUG) SsomarDev.testMsg("XPBoostEvent");
 		if(XpBoost.getInstance().getActiveBoosts().containsKey(player.getUniqueId())) {
+
+			double multiplier = 1;
+			for(double m : XpBoost.getInstance().getActiveBoosts().get(player.getUniqueId())) {
+				multiplier *= m;
+			}
+
 			if(DEBUG) SsomarDev.testMsg("XPBoostEvent base: " + e.getAmount());
-			if(DEBUG) SsomarDev.testMsg("XPBoostEvent modified "+(int)(e.getAmount() * XpBoost.getInstance().getActiveBoosts().get(player.getUniqueId())));
-			e.setAmount((int)(e.getAmount() * XpBoost.getInstance().getActiveBoosts().get(player.getUniqueId())));
+			if(DEBUG) SsomarDev.testMsg("XPBoostEvent modified "+(int)(e.getAmount() * multiplier));
+			e.setAmount((int)(e.getAmount() * multiplier));
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.ssomar.score.events;
+package com.ssomar.score.commands.runnable.player.events;
 
 import com.ssomar.score.SsomarDev;
 import org.bukkit.entity.Player;

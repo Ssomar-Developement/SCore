@@ -32,6 +32,8 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
 
         add(new IfIsOnTheBlock());
         add(new IfIsNotOnTheBlock());
+        add(new IfIsInTheBlock());
+        add(new IfIsNotInTheBlock());
 
         add(new IfLightLevel());
         add(new IfPlayerHealth());

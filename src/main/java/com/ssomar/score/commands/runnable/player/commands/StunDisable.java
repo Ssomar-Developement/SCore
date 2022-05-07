@@ -1,9 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.events.StunEvent;
+import com.ssomar.score.commands.runnable.player.events.StunEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

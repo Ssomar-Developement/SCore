@@ -3,8 +3,6 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.events.StunEvent;
-import com.ssomar.score.usedapi.WorldGuardAPI;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,7 +15,7 @@ public class XpBoost extends PlayerCommand{
 
 	private static XpBoost instance;
 	@Getter
-	private Map<UUID, Double> activeBoosts;
+	private Map<UUID, List<Double>> activeBoosts;
 
 	public XpBoost() {
 		activeBoosts = new HashMap<>();
@@ -29,12 +27,21 @@ public class XpBoost extends PlayerCommand{
 			double multiplier = Double.valueOf(args.get(0));
 			int time = Integer.valueOf(args.get(1));
 
-			activeBoosts.put(receiver.getUniqueId(), multiplier);
+			if(activeBoosts.containsKey(receiver.getUniqueId())){
+				activeBoosts.get(receiver.getUniqueId()).add(multiplier);
+			}
+			else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Arrays.asList(multiplier)));
 
 			BukkitRunnable runnable3 = new BukkitRunnable() {
 				@Override
 				public void run() {
-					activeBoosts.remove(receiver.getUniqueId());
+					//SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
+					if(activeBoosts.containsKey(receiver.getUniqueId())){
+						if(activeBoosts.get(receiver.getUniqueId()).size() > 1){
+							activeBoosts.get(receiver.getUniqueId()).remove(multiplier);
+						}
+						else activeBoosts.remove(receiver.getUniqueId());
+					}
 				}
 			};
 			runnable3.runTaskLater(SCore.plugin, time*20);

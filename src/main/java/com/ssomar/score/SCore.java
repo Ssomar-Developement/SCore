@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.plotsquared.core.PlotAPI;
 import com.ssomar.executableblocks.ExecutableBlocks;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.projectiles.ProjectilesLoader;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.Bukkit;
@@ -63,6 +64,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 	public static boolean hasProtocolLib = false;
 
 	public static boolean hasPlotSquared = false;
+
+	public static boolean hasNBTAPI = false;
 
 	public static ProtocolManager protocolManager;
 
@@ -180,6 +183,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 			hasProtocolLib = true;
 			/* Protocolib */
 			protocolManager = ProtocolLibrary.getProtocolManager();
+		}
+
+		if (Bukkit.getPluginManager().getPlugin("NBTAPI") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] NBTAPI hooked !");
+			hasNBTAPI = true;
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("PlotSquared") != null) {

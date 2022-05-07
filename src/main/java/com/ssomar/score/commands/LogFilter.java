@@ -4,6 +4,8 @@ package com.ssomar.score.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.ssomar.score.SsomarDev;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -11,8 +13,6 @@ import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LifeCycle;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.message.Message;
-
-import com.ssomar.score.SsomarDev;
 
 public class LogFilter implements Filter, LifeCycle {
 

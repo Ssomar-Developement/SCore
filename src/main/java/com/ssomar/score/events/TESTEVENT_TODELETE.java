@@ -3,11 +3,17 @@ package com.ssomar.score.events;
 import com.ssomar.score.SsomarDev;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTType;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
 
 public class TESTEVENT_TODELETE  implements Listener {
 
@@ -71,4 +77,14 @@ public class TESTEVENT_TODELETE  implements Listener {
         }*/
         //entity.getServer().broadcastMessage("+++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
+
+    /*@EventHandler
+    public void PlayerInteractEvent(PlayerInteractEvent e) {
+
+        if(e.getClickedBlock() != null) {
+            Block block = e.getClickedBlock();
+            com.ssomar.test.Test.test(block, e.getPlayer(), e.getPlayer().getInventory().getItem(0));
+        }
+
+    }*/
 }

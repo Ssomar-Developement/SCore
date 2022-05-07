@@ -1,10 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.events.StunEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

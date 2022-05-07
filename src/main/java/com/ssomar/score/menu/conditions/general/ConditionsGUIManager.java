@@ -16,6 +16,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+import static com.ssomar.score.menu.GUI.NEXT_PAGE;
+import static com.ssomar.score.menu.GUI.PREVIOUS_PAGE;
+
 public class ConditionsGUIManager extends GUIManagerSCore<ConditionsGUI> {
 
     private static ConditionsGUIManager instance;
@@ -32,6 +35,12 @@ public class ConditionsGUIManager extends GUIManagerSCore<ConditionsGUI> {
 
         if(itemName.contains("Back")) {
             ConditionsHomeGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator);
+        }
+        else if(itemName.contains(StringConverter.decoloredString(NEXT_PAGE))) {
+            cache.get(i.player).nextPage();
+        }
+        else if(itemName.contains(StringConverter.decoloredString(PREVIOUS_PAGE))) {
+            cache.get(i.player).previousPage();
         }
         else if(!itemName.contains("ERROR ID")) {
             ConditionsGUI gui = cache.get(i.player);
