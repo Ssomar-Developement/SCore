@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator.cooldowns;
 
 import java.util.*;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
@@ -68,9 +69,7 @@ public class CooldownsManager {
 		if(cooldowns.containsKey(id) && cooldowns.get(id).size()!= 0){
 			for(Cooldown cd : cooldowns.get(id)) {
 				if(cd == null) continue;
-				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())<cd.getCooldown()) {	
-					return true;
-				}
+				if(cd.getTimeLeft() > 0) return true;
 			}	
 		}
 		return false;
@@ -83,40 +82,10 @@ public class CooldownsManager {
 				if(cd == null) continue;
 				if(!cd.isGlobal()) continue;
 				/* if actual cd < registered cd so its in cooldown !*/
-				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID())<cd.getCooldown()) {
-					return true;
-				}
+				if(cd.getTimeLeft() > 0) return true;
 			}			
 		}
 		return false;
-	}
-
-	/**
-	 * @param uuid the UUID of the player
-	 * @return Return the duration of the actual cooldown if there is one
-	 */
-	public Optional<Integer> isInCooldownForPlayer(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
-		StringBuilder sbId = new StringBuilder(sPlugin.getShortName());
-		sbId.append(":");
-		sbId.append(sO.getId());
-		sbId.append(":");
-		sbId.append(sAct.getID());
-		String id = sbId.toString();
-
-		List<Cooldown> cooldowns2;
-		if (cooldowns.containsKey(id)) {
-			cooldowns2 = cooldowns.get(id);
-			if(cooldowns2.size() != 0) {
-				for (Cooldown cd : cooldowns2) {
-					if (cd == null || !cd.getEntityUUID().equals(uuid)) continue;
-					int cdTime = 0;
-					if ((cdTime = this.getCooldown(sPlugin, sO, sAct, uuid)) < cd.getCooldown()) {
-						return Optional.of(cdTime);
-					}
-				}
-			}
-		}
-		return Optional.ofNullable(null);
 	}
 
 	public int getMaxGlobalCooldown(SPlugin sPlugin, SObject sO, SActivator sAct) {
@@ -139,7 +108,11 @@ public class CooldownsManager {
 		return -1;
 	}
 
-	public int getCooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
+	/**
+	 * @param uuid the UUID of the player
+	 * @return Return the duration of the actual cooldown if there is one
+	 */
+	public Optional<Cooldown> getCooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID uuid) {
 		StringBuilder sbId = new StringBuilder(sPlugin.getShortName());
 		sbId.append(":");
 		sbId.append(sO.getId());
@@ -148,7 +121,7 @@ public class CooldownsManager {
 		String id = sbId.toString();
 
 		if(cooldowns.containsKey(id)) {
-			int minValue = -1;
+			double maxTimeLeft = -1;
 			int index = -1;
 			List<Cooldown> cds = cooldowns.get(id);
 			if(cds.size() != 0) {
@@ -156,28 +129,27 @@ public class CooldownsManager {
 					Cooldown cd = cds.get(i);
 					if (cd == null) continue;
 					if (!cd.getEntityUUID().equals(uuid)) continue;
-					long current = System.currentTimeMillis();
-					long delay = current - cd.getTime();
-					int div = 1000;
-					if (cd.isInTick()) div = 50;
-					int delayInt = (int) (delay / div);
-					if (minValue == -1 || delayInt < minValue) {
-						if (index != -1) {
-							cd.setNull(true);
-							cds.set(index, null);
-						}
+
+					double timeLeft = cd.getTimeLeft();
+					if(timeLeft <= 0) {
+						cd.setNull(true);
+						cds.set(i, null);
+					}
+
+					if(maxTimeLeft < timeLeft) {
+						maxTimeLeft = timeLeft;
 						index = i;
-						minValue = delayInt;
-					} else if (delayInt >= minValue) {
+					}
+					else {
 						cd.setNull(true);
 						cds.set(i, null);
 					}
 				}
-				if (minValue == -1) return 0;
-				return minValue;
+				if (maxTimeLeft == -1) return Optional.empty();
+				return Optional.ofNullable(cds.get(index));
 			}
 		}	
-		return 0;
+		return Optional.empty();
 	}
 
 

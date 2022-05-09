@@ -44,6 +44,20 @@ public class Cooldown {
 		this.global = global;
 		isNull = false;
 	}
+
+	public double getTimeLeft() {
+		long current = System.currentTimeMillis();
+		long delay = current - getTime();
+		int div = 1000;
+		if (isInTick()) div = 50;
+		int delayInt = (int) (delay / div);
+
+		int timeLeft = getCooldown() - delayInt;
+
+		double result = timeLeft;
+		if(isInTick()) result = (timeLeft * 20)/100;
+		return result;
+	}
 	
 	@Override
 	public String toString() {

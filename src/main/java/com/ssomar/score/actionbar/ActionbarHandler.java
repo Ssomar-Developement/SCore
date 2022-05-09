@@ -157,7 +157,7 @@ public class ActionbarHandler {
 		Actionbar actionbar =  actionbars.get(this.getActiveActionbar(actionbars));
 		StringPlaceholder sp = new StringPlaceholder();
 		sp.setItem(actionbar.getName());
-		sp.getTimePlch().setTimePlcHldr(actionbar.getTime(), false);
+		sp.getTimePlch().setTimePlcHldr(actionbar.getTime());
 		sp.setPlayerPlcHldr(p.getUniqueId());
 		String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_MESSAGE));
 		Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));

@@ -70,10 +70,10 @@ public class CooldownFeature {
 
         /* Check if the activator is in cooldown for the player or not  */
         if (!hasNoCDPerm(p)) {
-            Optional<Integer> inCooldownOpt = CooldownsManager.getInstance().isInCooldownForPlayer(ExecutableItems.plugin, sO, sAct, p.getUniqueId());
+            Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(ExecutableItems.plugin, sO, sAct, p.getUniqueId());
             if (inCooldownOpt.isPresent()) {
                 if (this.displayCooldownMessage) {
-                    int cooldown = this.cooldown - inCooldownOpt.get();
+
                     displayCooldownMessage(p, cooldown, sp);
                 }
                 SActivator.cancelEvent(e, this.isCancelEventIfInCooldown());
@@ -83,12 +83,12 @@ public class CooldownFeature {
         return true;
     }
 
-    public void displayCooldownMessage(Player player, int timeLeft, StringPlaceholder sp){
+    public void displayCooldownMessage(Player player, double timeLeft, StringPlaceholder sp){
         String message = cooldownMessage;
         if(message.isEmpty()){
             message = MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.TIME_LEFT);
         }
-        sp.getTimePlch().setTimePlcHldr(timeLeft, isCooldownInTicks);
+        sp.getTimePlch().setTimePlcHldr(timeLeft);
         message = sp.replacePlaceholder(message);
         player.sendMessage(StringConverter.coloredString(message));
     }
