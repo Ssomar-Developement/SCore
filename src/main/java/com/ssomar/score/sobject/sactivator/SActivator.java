@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator;
 
 import java.util.List;
 
+import com.ssomar.score.sobject.HigherFormSObject;
 import com.ssomar.sevents.events.projectile.hitentity.ProjectileHitEntityEvent;
 import com.ssomar.score.conditions.condition.blockcondition.BlockConditions;
 import com.ssomar.score.conditions.condition.customei.CustomEIConditions;
@@ -56,6 +57,8 @@ public interface SActivator {
 	
 	/* Detailed blocks */
 	DetailedBlocks getDetailedBlocks();
+
+	void run(HigherFormSObject parentObject, EventInfo eventInfo);
 
 
 	static void cancelEvent(Event e, boolean condition) {
