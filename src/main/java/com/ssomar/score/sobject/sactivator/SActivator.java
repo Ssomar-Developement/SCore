@@ -59,7 +59,8 @@ public interface SActivator {
 	DetailedBlocks getDetailedBlocks();
 
 	void run(HigherFormSObject parentObject, EventInfo eventInfo);
-
+	
+	List<String> getMenuDescription();
 
 	static void cancelEvent(Event e, boolean condition) {
 		if (e != null && condition && e instanceof Cancellable) {

@@ -2,13 +2,13 @@ package com.ssomar.score.events.loop;
 
 import com.ssomar.executableblocks.blocks.activators.ActivatorEB;
 import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.blocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import com.ssomar.executableitems.executableitems.activators.Option;
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.events.EntityWalkOnEvent;
+import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -69,8 +69,8 @@ public class LoopManager {
 							for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 								LoopEvent e = new LoopEvent();
 
-								com.ssomar.executableitems.events.EventInfos eInfo = new com.ssomar.executableitems.events.EventInfos(e);
-								eInfo.setPlayer(player);
+								EventInfo eInfo = new EventInfo(e);
+								eInfo.setPlayer(Optional.of(player));
 								com.ssomar.executableitems.events.EventsManager.getInstance().activeOption(Option.LOOP, eInfo, listEI);
 							}
 						}
@@ -105,7 +105,7 @@ public class LoopManager {
 														Vector v = lE.getVelocity();
 														if(v.getX() != 0 || v.getZ() != 0) {
 															EntityWalkOnEvent e = new EntityWalkOnEvent();
-															com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
+															EventInfo eInfo = new EventInfo(e);
 															eInfo.setTargetEntity(Optional.of(ent));
 															com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.ENTITY_WALK_ON, eBP, eInfo, listEB);
 														}
@@ -117,7 +117,7 @@ public class LoopManager {
 								}
 								if(eBP.hasLoop()) {
 									LoopEvent e = new LoopEvent();
-									com.ssomar.executableblocks.events.EventInfos eInfo = new com.ssomar.executableblocks.events.EventInfos(e);
+									EventInfo eInfo = new EventInfo(e);
 									com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.blocks.activators.Option.LOOP, eBP, eInfo, listEB);
 								}
 							}
