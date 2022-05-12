@@ -100,7 +100,8 @@ public class WorldGuardAPI {
 
 		for (ProtectedRegion region : set) {
 			if (region != null){
-				if (region.getFlag(Flags.PVP).equals(State.DENY) && region.getPriority() > allowMaxPriority) {
+				State state = region.getFlag(Flags.PVP);
+				if (state != null && state.equals(State.DENY) && region.getPriority() > allowMaxPriority) {
 					//SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority()+" || "+allowMaxPriority);
 					isPVP = false;
 					break;

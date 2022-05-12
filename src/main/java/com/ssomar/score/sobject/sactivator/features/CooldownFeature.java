@@ -66,15 +66,12 @@ public class CooldownFeature {
      */
     public boolean checkCooldown(Player p, Event e, StringPlaceholder sp){
 
-        if(cooldown <= 0) return true;
-
         /* Check if the activator is in cooldown for the player or not  */
         if (!hasNoCDPerm(p)) {
             Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(ExecutableItems.plugin, sO, sAct, p.getUniqueId());
             if (inCooldownOpt.isPresent()) {
                 if (this.displayCooldownMessage) {
-
-                    displayCooldownMessage(p, cooldown, sp);
+                    displayCooldownMessage(p, inCooldownOpt.get().getTimeLeft(), sp);
                 }
                 SActivator.cancelEvent(e, this.isCancelEventIfInCooldown());
                 return false;

@@ -1,27 +1,60 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import de.tr7zw.nbtapi.NBTEntity;
-import de.tr7zw.nbtapi.NBTType;
+import com.ssomar.score.sobject.sactivator.DetailedBlocks;
+import com.ssomar.score.utils.safebreak.SafeBreak;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-public class TESTEVENT_TODELETE  implements Listener {
-
+public class TESTEVENT_TODELETE implements Listener {
 
 
     @EventHandler
-    public void PlayerInteractEntityEvent(PlayerInteractEntityEvent e) {
+    public void PlayerInteractEntityEvent(PlayerInteractAtEntityEvent e) {
 
+        /*SsomarDev.testMsg("PlayerInteractAtEntityEvent");
+        Entity entity = e.getRightClicked();
+        if(entity instanceof ArmorStand) {
+            ArmorStand armorStand = (ArmorStand) entity;
+            armorStand.setVisible(true);
+            SsomarDev.testMsg(" passengers ? " + armorStand.getPassengers().size());
+            for(EquipmentSlot slot : EquipmentSlot.values()) {
+                SsomarDev.testMsg(" slot: " + slot + " >>" + armorStand.getEquipment().getItem(slot).getType());
+            }
+            BukkitRunnable runnable3 = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    armorStand.remove();
+                }
+            };
+            runnable3.runTaskLater(SCore.plugin, 60);
+
+        }
+        if(entity instanceof ItemFrame) {
+            ItemFrame armorStand = (ItemFrame) entity;
+            armorStand.setVisible(true);
+        }*/
         /*Entity entity = e.getRightClicked();
         NBTEntity nbtent = new NBTEntity(entity);
         entity.getServer().broadcastMessage("+++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -78,13 +111,20 @@ public class TESTEVENT_TODELETE  implements Listener {
         //entity.getServer().broadcastMessage("+++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
-    /*@EventHandler
+    @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent e) {
 
-        if(e.getClickedBlock() != null) {
-            Block block = e.getClickedBlock();
-            com.ssomar.test.Test.test(block, e.getPlayer(), e.getPlayer().getInventory().getItem(0));
-        }
+       /* SsomarDev.testMsg("PlayerInteractEvent");
+        if (e.getClickedBlock() != null) {
+            SsomarDev.testMsg("ClickedBlock: " + e.getClickedBlock().getType());
+            Block underBlock = e.getClickedBlock();
+            Block block = underBlock.getRelative(BlockFace.UP);
+            BlockPlaceEvent bbE = new BlockPlaceEvent(block, block.getState(), underBlock, e.getItem(), e.getPlayer(), true, EquipmentSlot.HAND);
+            bbE.setCancelled(false);
 
-    }*/
+            Bukkit.getPluginManager().callEvent(bbE);
+        }
+        e.setCancelled(true);
+*/
+    }
 }

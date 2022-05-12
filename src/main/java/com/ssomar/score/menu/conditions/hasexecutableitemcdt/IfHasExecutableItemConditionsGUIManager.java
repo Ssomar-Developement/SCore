@@ -86,6 +86,9 @@ public class IfHasExecutableItemConditionsGUIManager extends GUIManagerSCore<IfH
             IfHasExecutableItemConditionsGUI gui = cache.get(i.player);
             gui.getCondition().removeCondition(id);
             cache.get(i.player).clear();
+            for(int slot = 0; slot < cache.get(i.player).getInv().getSize(); slot++) {
+                cache.get(i.player).createBackGroundItem(slot);
+            }
             cache.get(i.player).loadCdts();
         } catch (Exception ignored) {
         }

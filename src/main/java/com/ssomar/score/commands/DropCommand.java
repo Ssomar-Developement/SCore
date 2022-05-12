@@ -12,6 +12,8 @@ import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 
+import java.util.Optional;
+
 public class DropCommand {
 
 	public DropCommand(SPlugin sPlugin, CommandSender sender, String []args) {
@@ -74,7 +76,7 @@ public class DropCommand {
 	}
 
 	public void runDrop(SObject sObject, int qty, Location loc) {
-		ItemStack itemDrop = sObject.buildItem(qty, null);
+		ItemStack itemDrop = sObject.buildItem(qty, Optional.empty());
 		loc.getWorld().dropItem(loc, itemDrop);
 	}
 

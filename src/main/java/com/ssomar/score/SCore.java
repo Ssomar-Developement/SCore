@@ -74,7 +74,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 		plugin = this;
 		commandClass = new CommandsClass(this);
 
-		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
+		Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
 
 		this.initVersion();
 
@@ -86,7 +86,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
 		MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 
-		/* Loop instance part */	
+		/* Loop instance part */
 		LoopManager.getInstance().setup();
 
 		ActionbarHandler.getInstance().load();
@@ -94,7 +94,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 		/* Database */
 		Database.getInstance().load();
 
-		/* Events instance part */	
+		/* Events instance part */
 		EventsHandler.getInstance().setup(this);
 
 		/* Commands part */
@@ -105,7 +105,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
 		CommandsHandler.getInstance().onEnable();
 
-		Utils.sendConsoleMsg("================ "+NAME_2+" ================");
+		Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
 	}
 
 	public void loadDependency() {

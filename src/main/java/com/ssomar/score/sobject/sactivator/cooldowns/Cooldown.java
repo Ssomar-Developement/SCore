@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator.cooldowns;
 
 import java.util.UUID;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
@@ -22,6 +23,8 @@ public class Cooldown {
 	private boolean global;
 	
 	private boolean isNull;
+
+	private static final boolean DEBUG = false;
 
 	public Cooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
 		super();
@@ -51,11 +54,15 @@ public class Cooldown {
 		int div = 1000;
 		if (isInTick()) div = 50;
 		int delayInt = (int) (delay / div);
+		SsomarDev.testMsg("delayInt: "+delayInt, DEBUG);
 
 		int timeLeft = getCooldown() - delayInt;
 
+		SsomarDev.testMsg("timeLeft: "+timeLeft, DEBUG);
 		double result = timeLeft;
-		if(isInTick()) result = (timeLeft * 20)/100;
+		SsomarDev.testMsg("pre  result: "+result/200, DEBUG);
+		if(isInTick()) result = result/200;
+		SsomarDev.testMsg("Cooldown: "+result, DEBUG);
 		return result;
 	}
 	

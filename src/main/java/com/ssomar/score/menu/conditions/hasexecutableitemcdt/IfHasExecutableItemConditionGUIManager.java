@@ -9,6 +9,7 @@ import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.player.custom.IfPlayerHasExecutableItem;
 import com.ssomar.score.conditions.condition.player.custom.IfPlayerHasExecutableItems;
 import com.ssomar.score.conditions.managers.ConditionsManager;
+import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.conditions.general.ConditionGUI;
 import com.ssomar.score.menu.score.GUIManagerSCore;
@@ -69,8 +70,9 @@ public class IfHasExecutableItemConditionGUIManager extends GUIManagerSCore<IfHa
             space(i.player);
         }else if (i.name.contains("Save") || i.name.contains("Create this has EI Condition")) {
             this.saveTheConfiguration(i.player);
+            i.sObject = LinkedPlugins.getSObject(i.sPlugin, i.sObject.getId());
             IfHasExecutableItemConditionGUI gui = cache.get(i.player);
-            IfHasExecutableItemConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sActivator, gui.getConditionsManager(), gui.getConditions(), gui.getCondition(), gui.getDetail());
+            IfHasExecutableItemConditionsGUIManager.getInstance().startEditing(i.player, i.sPlugin, i.sObject, i.sObject.getActivator(i.sActivator.getID()), gui.getConditionsManager(), gui.getConditions(), gui.getCondition(), gui.getDetail());
             cache.remove(i.player);
             requestWriting.remove(i.player);
         } else if (i.name.contains("Back")) {
@@ -222,6 +224,7 @@ public class IfHasExecutableItemConditionGUIManager extends GUIManagerSCore<IfHa
         }
 
         IfPlayerHasExecutableItem.saveCdt(sPlugin, sObject, sActivator, aBC, cache.get(p).getDetail());
+        LinkedPlugins.reloadSObject(sPlugin, sObject.getId());
     }
 }
 
