@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
@@ -81,8 +82,8 @@ public class MineInCube extends BlockCommand {
                                     DetailedBlocks whiteList;
                                     if ((whiteList = aInfo.getDetailedBlocks()) != null) {
                                         if (!whiteList.isEmpty()) {
-                                            String statesStr = "";
-                                            if (!SCore.is1v12Less()) statesStr = toBreak.getBlockData().getAsString(true);
+                                            Optional<String> statesStr = Optional.empty();
+                                            if (!SCore.is1v12Less()) statesStr = Optional.ofNullable(toBreak.getBlockData().getAsString(true));
                                             if (!whiteList.verification(toBreak.getType(), statesStr)) continue;
                                         }
                                     }

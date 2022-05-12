@@ -2,10 +2,7 @@ package com.ssomar.score.sobject.sactivator;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,7 +27,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 		cancelEventIfNotDetailedBlocks = false;
 	}
 	
-	public boolean verification(Material material, String statesStr, @NotNull Event event) {
+	public boolean verification(Material material, Optional<String> statesStr, @NotNull Event event) {
 		//SsomarDev.testMsg("mat: "+material.toString());
 		if(!this.verification(material, statesStr)) {
 			if(cancelEventIfNotDetailedBlocks && event instanceof Cancellable) ((Cancellable)event).setCancelled(true);
@@ -40,22 +37,25 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 		return true;
 	}
 	
-	public boolean verification(Material material, String statesStr) {
+	public boolean verification(Material material, Optional<String> statesStrOpt) {
 		Map<String, String> states = new HashMap<>();
 		try {
-			if(statesStr.contains("[")) {
-				/* States are store like that TORCH[STATE1=VALUE1,STATE2=VALUE2] */
+			if(statesStrOpt.isPresent()) {
+				String statesStr = statesStrOpt.get().toUpperCase();
+				if (statesStr.contains("[")) {
+					/* States are store like that TORCH[STATE1=VALUE1,STATE2=VALUE2] */
 
-				String [] spliter1 = statesStr.split("\\]");							
-				String [] spliter2 = spliter1[0].split("\\[");
+					String[] spliter1 = statesStr.split("\\]");
+					String[] spliter2 = spliter1[0].split("\\[");
 
-				String [] spliterStates = spliter2[1].split("\\,");
+					String[] spliterStates = spliter2[1].split("\\,");
 
-				for(String state : spliterStates) {
-					String [] spliterState = state.split("\\=");
-					states.put(spliterState[0], spliterState[1]);
-				}	
-			}	
+					for (String state : spliterStates) {
+						String[] spliterState = state.split("\\=");
+						states.put(spliterState[0], spliterState[1]);
+					}
+				}
+			}
 		} catch (Exception ignored) {}
 
 		boolean valid = true;
