@@ -1,5 +1,6 @@
 package com.ssomar.score.sobject.sactivator;
 
+import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
 import com.ssomar.executableitems.executableitems.activators.DetailedInteraction;
 import com.ssomar.score.sobject.DetailedClick;
 import lombok.Getter;
@@ -53,6 +54,8 @@ public class EventInfo {
 
     private boolean mustDoNothing;
 
+    private Optional<Integer> slot;
+
     public EventInfo(Event eventSource) {
         super();
         this.eventSource = eventSource;
@@ -69,6 +72,7 @@ public class EventInfo {
         this.detailedInteraction = Optional.empty();
         this.damageCause = Optional.empty();
         this.command = Optional.empty();
+        this.slot = Optional.empty();
     }
 
     public EventInfo clone() {
@@ -90,6 +94,7 @@ public class EventInfo {
         eInfo.setMainHand(mainHand);
         eInfo.setForceMainHand(forceMainHand);
         eInfo.setMustDoNothing(mustDoNothing);
+        eInfo.setSlot(slot);
 
         return eInfo;
     }

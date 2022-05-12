@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SOption {
 
-	 
+
 	List<SOption> getOptionWithPlayer();
 
 	List<SOption> getOptionWithEntity();
