@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 
 import com.ssomar.executableitems.executableitems.variables.VariableReal;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Projectile;
 import org.jetbrains.annotations.Nullable;
 
+@Getter @Setter
 public class StringPlaceholder extends PlaceholdersInterface implements Serializable{
 
 	/**
@@ -27,19 +29,26 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	private static final long serialVersionUID = 1L;
 
 	/* placeholders of the player */
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
 	private final PlayerPlaceholders playerPlch = new PlayerPlaceholders();
 
 	/* placeholders of the target player */
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
 	private final TargetPlaceholders targetPlch = new TargetPlaceholders();
 
 	/* placeholders of the owner */
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
 	private final OwnerPlaceholders ownerPlch = new OwnerPlaceholders();
 
 	/* placeholders of the owner */
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
 	private final ProjectilePlaceholders projectilePlch = new ProjectilePlaceholders();
 
 	/* placeholders of the time */
-	@Getter
 	private final TimePlaceholders timePlch = new TimePlaceholders();
 
 	/* placeholders of the item */
@@ -67,8 +76,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	/* placeholders of the cooldown */
 	private String cooldown= "";
 
-	@Setter
 	private List<VariableReal> variables = new ArrayList<>();
+
+	private Map<String, String> extraPlaceholders = new HashMap<>();
 
 	/* placeholders of the around target player */
 	AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
@@ -201,6 +211,12 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 		if(projectilePlch != null ) s = projectilePlch.replacePlaceholder(s);
 
+		if(!extraPlaceholders.isEmpty()){
+			for(String key : extraPlaceholders.keySet()) {
+				s = s.replaceAll(key, extraPlaceholders.get(key));
+			}
+		}
+
 		if(withPAPI) return replacePlaceholderOfPAPI(s);
 		else return s;
 	}
@@ -266,108 +282,38 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	//		 System.out.println(base);
 	//	}
 
-	public String getLauncher() {
-		return launcher;
-	}
-	public void setLauncher(String launcher) {
-		this.launcher = launcher;
-	}
-	public boolean hasLauncher() {
-		return launcher.length()!=0;
-	}
-	public String getActivator() {
-		return activator;
-	}
-	public void setActivator(String activator) {
-		this.activator = activator;
-	}
 	public boolean hasActivator() {
 		return activator.length()!=0;
-	}
-	public String getItem() {
-		return item;
-	}
-	public void setItem(String item) {
-		this.item = item;
 	}
 	public boolean hasItem() {
 		return item.length()!=0;
 	}
-	public String getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
+
 	public boolean hasQuantity() {
 		return quantity.length()!=0;
 	}
-	public String getCooldown() {
-		return cooldown;
-	}
-	public void setCooldown(String cooldown) {
-		this.cooldown = cooldown;
-	}
+
 	public boolean hasCoolodwn() {
 		return cooldown.length()!=0;
-	}
-
-	public String getUsageLimit() {
-		return usageLimit;
 	}
 
 	public boolean hasUsageLimit() {
 		return usageLimit.length() != 0;
 	}
 
-	public void setUsageLimit(String usageLimit) {
-		this.usageLimit = usageLimit;
-	}
-
-	public String getBlockface() {
-		return blockface;
-	}
-	public void setBlockface(String blockface) {
-		this.blockface = blockface;
-	}
 	public boolean hasBlockFace() {
 		return this.blockface.length()!=0;
 	}
 
-	public String getUsage() {
-		return usage;
-	}
-	public void setUsage(String usage) {
-		this.usage = usage;
-	}
 	public boolean hasUsage() {
 		return this.usage.length()!=0;
-	}
-
-	public String getMaxUsePerDayItem() {
-		return maxUsePerDayItem;
-	}
-
-	public void setMaxUsePerDayItem(String maxUsePerDayItem) {
-		this.maxUsePerDayItem = maxUsePerDayItem;
 	}
 
 	public boolean hasMaxUsePerDayItem() {
 		return maxUsePerDayItem.length()!=0;
 	}
 
-	public String getMaxUsePerDayActivator() {
-		return maxUsePerDayActivator;
-	}
-
-	public void setMaxUsePerDayActivator(String maxUsePerDayActivator) {
-		this.maxUsePerDayActivator = maxUsePerDayActivator;
-	}
-
 	public boolean hasMaxUsePerDayActivator() {
 		return maxUsePerDayActivator.length()!=0;
 	}
-
-
-
 }
