@@ -13,6 +13,7 @@ import com.ssomar.score.conditions.condition.world.WorldConditions;
 import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCondition;
 import com.ssomar.score.sobject.sactivator.requiredei.RequiredEI;
 import com.ssomar.sevents.events.projectile.hitplayer.ProjectileHitPlayerEvent;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
@@ -59,8 +60,10 @@ public interface SActivator {
 	DetailedBlocks getDetailedBlocks();
 
 	void run(HigherFormSObject parentObject, EventInfo eventInfo);
-	
+
 	List<String> getMenuDescription();
+
+	void startEditing(Player editor);
 
 	static void cancelEvent(Event e, boolean condition) {
 		if (e != null && condition && e instanceof Cancellable) {
