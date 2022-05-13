@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BooleanGroupFeature implements FeatureInterface<Map<String, BooleanFeature>> {
+public class BooleanGroupFeature implements FeaturesGroupInterface<Boolean> {
 
     private Map<String, BooleanFeature> features;
 
@@ -21,7 +21,7 @@ public class BooleanGroupFeature implements FeatureInterface<Map<String, Boolean
         this.features = new HashMap<>();
         for(String featureName : features.keySet()) {
             BooleanFeature feature = features.get(featureName);
-            features.put(featureName, new BooleanFeature(feature.getName(), feature.isDefaultValue()));
+            features.put(featureName, new BooleanFeature(feature.getName(), feature.isDefaultValue(), feature.getEditorName(), feature.getEditorDescription(), feature.getEditorMaterial()));
         }
         return new ArrayList<>();
     }
@@ -32,11 +32,7 @@ public class BooleanGroupFeature implements FeatureInterface<Map<String, Boolean
     }
 
     @Override
-    public Map<String, BooleanFeature> getValue() {
-        return features;
-    }
-
-    public boolean getValueOf(String string) {
+    public Boolean getValueOf(String string) {
         return features.get(string).getValue();
     }
 }
