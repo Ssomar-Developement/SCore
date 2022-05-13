@@ -1,8 +1,8 @@
 package com.ssomar.score.features;
 
-import com.plotsquared.core.configuration.ConfigurationSection;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
