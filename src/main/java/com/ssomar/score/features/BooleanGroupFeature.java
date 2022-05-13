@@ -40,4 +40,9 @@ public class BooleanGroupFeature implements FeaturesGroupInterface<Boolean, Bool
     public BooleanFeature getFeature(String string) {
         return features.get(string);
     }
+
+    @Override
+    public Map<String, BooleanFeature> getFeatures() {
+        return features;
+    }
 }

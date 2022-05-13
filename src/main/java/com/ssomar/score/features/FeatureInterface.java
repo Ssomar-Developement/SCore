@@ -1,8 +1,10 @@
 package com.ssomar.score.features;
 
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -16,4 +18,6 @@ public interface FeatureInterface<T> {
     T getValue();
 
     void initEditorItem(GUI gui, int slot);
+
+    void clickEditor(GUIManager manager, Player player);
 }

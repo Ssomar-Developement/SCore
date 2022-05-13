@@ -2,6 +2,7 @@ package com.ssomar.score.menu;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 
@@ -12,7 +13,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public abstract class GUIManager<T> {
+public abstract class GUIManager<T extends GUI> {
 
 	public HashMap<Player, T> cache;
 	public HashMap<Player, String> requestWriting;

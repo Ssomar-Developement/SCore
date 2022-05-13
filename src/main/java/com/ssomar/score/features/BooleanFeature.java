@@ -1,10 +1,12 @@
 package com.ssomar.score.features;
 
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +55,10 @@ public class BooleanFeature implements FeatureInterface<Boolean> {
 
         gui.createItem(editorMaterial, 1, slot, gui.TITLE_COLOR+editorName, false, false, finalDescription);
         gui.updateBoolean(editorName, value);
+    }
+
+    @Override
+    public void clickEditor(GUIManager manager, Player player) {
+        ((GUI)manager.getCache().get(player)).changeBoolean(editorName);
     }
 }

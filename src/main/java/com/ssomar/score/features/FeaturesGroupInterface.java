@@ -18,4 +18,6 @@ public interface FeaturesGroupInterface<T, Y> {
     T getValueOf(String string);
 
     Y getFeature(String string);
+
+    Map<String, Y> getFeatures();
 }
