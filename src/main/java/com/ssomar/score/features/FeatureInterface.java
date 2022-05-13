@@ -19,5 +19,7 @@ public interface FeatureInterface<T> {
 
     void initEditorItem(GUI gui, int slot);
 
+    boolean isTheFeatureClicked(String featureClicked);
+
     void clickEditor(GUIManager manager, Player player);
 }

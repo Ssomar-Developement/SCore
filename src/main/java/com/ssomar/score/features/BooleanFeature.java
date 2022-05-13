@@ -12,27 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class BooleanFeature implements FeatureInterface<Boolean> {
+public class BooleanFeature extends FeatureAbstract<Boolean> {
 
-    private String name;
     private boolean value;
     private boolean defaultValue;
-    private String editorName;
-    private String [] editorDescription;
-    private Material editorMaterial;
 
     public BooleanFeature(String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial) {
-        this.name = name;
+        super(name, editorName, editorDescription, editorMaterial);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
-        this.editorName = editorName;
-        this.editorDescription = editorDescription;
-        this.editorMaterial = editorMaterial;
     }
 
     @Override
     public List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config) {
-        this.value = config.getBoolean(this.name, this.defaultValue);
+        this.value = config.getBoolean(getName(), this.defaultValue);
         return new ArrayList<>();
     }
 
@@ -48,17 +41,17 @@ public class BooleanFeature implements FeatureInterface<Boolean> {
 
     @Override
     public void initEditorItem(GUI gui, int slot) {
-        String [] finalDescription = new String[editorDescription.length + 2];
-        System.arraycopy(editorDescription, 0, finalDescription, 0, editorDescription.length);
+        String [] finalDescription = new String[getEditorDescription().length + 2];
+        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(editorMaterial, 1, slot, gui.TITLE_COLOR+editorName, false, false, finalDescription);
-        gui.updateBoolean(editorName, value);
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
+        gui.updateBoolean(getEditorName(), value);
     }
 
     @Override
     public void clickEditor(GUIManager manager, Player player) {
-        ((GUI)manager.getCache().get(player)).changeBoolean(editorName);
+        ((GUI)manager.getCache().get(player)).changeBoolean(getEditorName());
     }
 }
