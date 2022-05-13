@@ -12,13 +12,44 @@ import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
 public class Launch extends PlayerCommand{
+
+	private  Map<String, Class> projectiles;
+
+	public Launch() {
+		projectiles = new HashMap<>();
+		projectiles.put("ARROW", Arrow.class);
+		projectiles.put("SPECTRALARROW", SpectralArrow.class);
+		projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
+		projectiles.put("DRAGONFIREBALL", DragonFireball.class);
+		projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
+		projectiles.put("FIREBALL", Fireball.class);
+		projectiles.put("SMALLFIREBALL", SmallFireball.class);
+		projectiles.put("LARGEFIREBALL", LargeFireball.class);
+		projectiles.put("LARGE_FIREBALL", LargeFireball.class);
+		projectiles.put("SIZEDFIREBALL", SizedFireball.class);
+		projectiles.put("SIZED_FIREBALL", SizedFireball.class);
+		projectiles.put("SNOWBALL", Snowball.class);
+		projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
+		projectiles.put("WITHERSKULL", WitherSkull.class);
+		projectiles.put("WITHER_SKULL", WitherSkull.class);
+		projectiles.put("EGG", Egg.class);
+		projectiles.put("ENDERPEARL", EnderPearl.class);
+		projectiles.put("ENDER_PEARL", EnderPearl.class);
+		projectiles.put("LINGERINGPOTION", LingeringPotion.class);
+		projectiles.put("LINGERING_POTION", LingeringPotion.class);
+		projectiles.put("SPLASHPOTION", SplashPotion.class);
+		projectiles.put("SPLASH_POTION", SplashPotion.class);
+		projectiles.put("LLAMASPIT", LlamaSpit.class);
+		projectiles.put("LLAMA_SPIT", LlamaSpit.class);
+		projectiles.put("SHULKERBULLET", ShulkerBullet.class);
+		projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
+		projectiles.put("TRIDENT", Trident.class);
+	}
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
@@ -43,85 +74,17 @@ public class Launch extends PlayerCommand{
 				Entity entity = null;
 
 				receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
-				
-				if(args.get(0).equalsIgnoreCase("ARROW")) entity = receiver.launchProjectile(Arrow.class);
-				else if(args.get(0).equalsIgnoreCase("SPECTRALARROW")) entity = receiver.launchProjectile(SpectralArrow.class);
-				else if(args.get(0).equalsIgnoreCase("DRAGONFIREBALL")) entity = receiver.launchProjectile(DragonFireball.class);
-				else if(args.get(0).equalsIgnoreCase("EGG")) entity = receiver.launchProjectile(Egg.class);
-				else if(args.get(0).equalsIgnoreCase("ENDERPEARL")) entity = receiver.launchProjectile(EnderPearl.class);
-				else if(args.get(0).equalsIgnoreCase("FIREBALL")) entity = receiver.launchProjectile(Fireball.class);
-				//else if(args.get(0).toUpperCase().contains("FIREWORK")) receiver.launchProjectile(Firework.class);
-				//else if(args.get(0).toUpperCase().contains("FISHHOOK")) entity = receiver.launchProjectile(FishHook.class);
-				else if(args.get(0).equalsIgnoreCase("LARGEFIREBALL")) entity = receiver.launchProjectile(LargeFireball.class);
-				else if(args.get(0).equalsIgnoreCase("LINGERINGPOTION")) entity = receiver.launchProjectile(LingeringPotion.class);
-				else if(args.get(0).equalsIgnoreCase("LLAMASPIT")) entity = receiver.launchProjectile(LlamaSpit.class);
-				/* No movement because shulker bullet need to have a target */
-				else if(args.get(0).equalsIgnoreCase("SHULKERBULLET")){
-					entity = receiver.launchProjectile(ShulkerBullet.class);
-					ShulkerBullet bullet = (ShulkerBullet) entity;
-				}
-				else if(args.get(0).equalsIgnoreCase("SIZEDFIREBALL")) entity = receiver.launchProjectile(SizedFireball.class);
-				else if(args.get(0).equalsIgnoreCase("SNOWBALL")) entity = receiver.launchProjectile(Snowball.class);
-				else if(args.get(0).equalsIgnoreCase("TRIDENT")) entity = receiver.launchProjectile(Trident.class);
-				else if(args.get(0).equalsIgnoreCase("WITHERSKULL")) entity = receiver.launchProjectile(WitherSkull.class);
-				else if(ProjectilesManager.getInstance().containsProjectileWithID(args.get(0))) {
-					SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
 
-					switch(projectile.getIdentifierType()) {
-					case "ARROW":
-						entity = receiver.launchProjectile(Arrow.class);
-						break;
-					case "SPECTRALARROW":
-							entity = receiver.launchProjectile(SpectralArrow.class);
-							break;
-					case "DRAGON_FIREBALL":
-						entity = receiver.launchProjectile(DragonFireball.class);
-						break;
-					case "EGG":
-						entity = receiver.launchProjectile(Egg.class);
-						break;
-					case "ENDER_PEARL":
-						entity = receiver.launchProjectile(EnderPearl.class);
-						break;
-					case "FIREBALL":
-						entity = receiver.launchProjectile(Fireball.class);
-						break;
-					case "LARGE_FIREBALL":
-						entity = receiver.launchProjectile(LargeFireball.class);
-						break;
-					case "LINGERING_POTION":
-						entity = receiver.launchProjectile(LingeringPotion.class);
-						break;
-					case "SPLASH_POTION":
-						entity = receiver.launchProjectile(SplashPotion.class);
-						break;
-					case "LLAMA_SPIT":
-						entity = receiver.launchProjectile(LlamaSpit.class);
-						break;
-					case "SHULKER_BULLET":
-						entity = receiver.launchProjectile(ShulkerBullet.class);
-						break;
-					case "SIZED_FIREBALL":
-						entity = receiver.launchProjectile(SizedFireball.class);
-						break;
-					case "SNOWBALL":
-						entity = receiver.launchProjectile(Snowball.class);
-						break;
-					case "TRIDENT":
-						entity = receiver.launchProjectile(Trident.class);
-						break;
-					case "WITHER_SKULL":
-						entity = receiver.launchProjectile(WitherSkull.class);
-						break;
-					default:
-						entity = receiver.launchProjectile(Arrow.class);
-						break;
-					}
+				String type = args.get(0);
+				if(projectiles.containsKey(type)) {
+					entity = receiver.launchProjectile(projectiles.get(type));
+				}
+				else if(ProjectilesManager.getInstance().containsProjectileWithID(type)) {
+					SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
+					entity = receiver.launchProjectile(projectiles.get(projectile.getIdentifierType()));
 					projectile.executeTransformTheProjectile(entity, receiver);
 
 				}	
-				
-			//	SsomarDev.testMsg("null entity: " + (entity==null));
 
 				if(entity != null) {
 					if(!SCore.is1v13Less()) {

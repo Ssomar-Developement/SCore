@@ -2,7 +2,10 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,21 +28,18 @@ public class SetBlock extends BlockCommand{
 	public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
 			String mat = args.get(0).toUpperCase();
+			UUID uuid = null;
+			if (p != null) uuid = p.getUniqueId();
 			if(Material.matchMaterial(mat) != null) {
-				if(SCore.hasWorldGuard && p != null) {
-					if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-						block.setType(Material.valueOf(mat));
-					}
-				}	
-				else {
-					block.setType(Material.valueOf(mat));
-				}
+				SafePlace.placeBlockWithEvent(block, Material.matchMaterial(mat), Optional.empty(), uuid, false, true);
 			}else {
 				World w = block.getWorld();
 				List<Entity> entities = w.getEntities();
 
-				if(entities.size() > 0)
-				RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase()+" replace", aInfo.isSilenceOutput());
+				if(entities.size() > 0) {
+					if(uuid != null && SafePlace.verifSafePlace(uuid, block)) return;
+					RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0).toLowerCase() + " replace", aInfo.isSilenceOutput());
+				}
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

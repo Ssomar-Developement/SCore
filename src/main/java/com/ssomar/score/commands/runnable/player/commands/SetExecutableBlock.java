@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.score.usedapi.MultiverseAPI;
+import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -184,6 +185,11 @@ public class SetExecutableBlock extends PlayerCommand{
 			Location loc = new Location(world, x, y , z);
 
 			if(!replace && !loc.getBlock().isEmpty()) return;
+
+			UUID uuid = null;
+			if(p != null) uuid = p.getUniqueId();
+
+			if(uuid != null && !SafePlace.verifSafePlace(uuid, loc.getBlock())) return;
 
 			ExecutableBlock eB = oOpt.get();
 

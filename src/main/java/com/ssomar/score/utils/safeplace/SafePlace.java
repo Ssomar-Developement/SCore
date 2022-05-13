@@ -1,0 +1,95 @@
+package com.ssomar.score.utils.safeplace;
+
+import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
+import com.ssomar.score.usedapi.GriefPreventionAPI;
+import com.ssomar.score.usedapi.IridiumSkyblockTool;
+import com.ssomar.score.usedapi.LandsIntegrationAPI;
+import com.ssomar.score.usedapi.WorldGuardAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+public class SafePlace {
+
+    private static final boolean DEBUG = false;
+
+    public static void placeBlockWithEvent(@NotNull final Block block, @NotNull Material material, Optional<Map<String, String>> statesOpt, @Nullable final UUID playerUUID, boolean generatePlaceEvent, boolean verifSafePlace) {
+
+        SsomarDev.testMsg("DEBUG SAFE PLACE 1", DEBUG);
+        if(playerUUID == null){
+            block.setType(material);
+            return;
+        }
+        SsomarDev.testMsg("DEBUG SAFE PLACE 1.5", DEBUG);
+
+        if(verifSafePlace && !verifSafePlace(playerUUID, block)) return;
+
+        Player player = Bukkit.getServer().getPlayer(playerUUID);
+        SsomarDev.testMsg("DEBUG SAFE BREAK 2", DEBUG);
+        if (player != null) {
+            SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
+            /*boolean canceled = false;
+            if(generateBreakEvent) {
+                SsomarDev.testMsg("DEBUG SAFE BREAK 4");
+                BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
+                bbE.setCancelled(false);
+
+                Bukkit.getPluginManager().callEvent(bbE);
+                canceled = bbE.isCancelled();
+            }
+
+            if (!canceled) {*/
+            block.setType(material);
+           // }
+        }
+        else {
+            block.setType(material);
+        }
+
+    }
+
+    public static boolean placeEB(Block block, boolean drop){
+        SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
+        if(SCore.hasExecutableBlocks){
+            SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
+            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+            if(eBPOpt.isPresent()){
+                SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
+                eBPOpt.get().breakBlock(null, drop);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean verifSafePlace(@NotNull final UUID playerUUID, @NotNull Block block){
+
+        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
+
+        if(SCore.hasGriefPrevention) if(!GriefPreventionAPI.playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
+
+        // SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2");
+
+        if(SCore.hasIridiumSkyblock) if(!IridiumSkyblockTool.playerCanPlaceIslandBlock(playerUUID, block.getLocation())) return false;
+
+        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
+
+        if(SCore.hasLands) if(!new LandsIntegrationAPI(SCore.plugin).playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
+
+        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
+
+        if(SCore.hasWorldGuard) if(!WorldGuardAPI.playerCanPlaceInRegion(playerUUID, block.getLocation())) return false;
+
+        return true;
+    }
+}

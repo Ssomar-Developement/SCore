@@ -23,7 +23,7 @@ public class ParticleCommand extends BlockCommand{
 		newLoc.add(0.5, 0.5, 0.5);
 
 		try {
-			block.getWorld().spawnParticle(Particle.valueOf(args.get(0)),
+			block.getWorld().spawnParticle(Particle.valueOf(args.get(0).toUpperCase()),
 					newLoc,
 					Integer.parseInt(args.get(1)),
 					Double.parseDouble(args.get(2)),

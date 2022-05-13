@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator;
 
 import java.util.List;
 
+import com.plotsquared.core.configuration.ConfigurationSection;
 import com.ssomar.score.sobject.HigherFormSObject;
 import com.ssomar.sevents.events.projectile.hitentity.ProjectileHitEntityEvent;
 import com.ssomar.score.conditions.condition.blockcondition.BlockConditions;
@@ -64,6 +65,10 @@ public interface SActivator {
 	List<String> getMenuDescription();
 
 	void startEditing(Player editor);
+
+	//void save(ConfigurationSection config);
+
+	//void delete();
 
 	static void cancelEvent(Event e, boolean condition) {
 		if (e != null && condition && e instanceof Cancellable) {

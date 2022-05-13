@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlock;
 import com.ssomar.score.usedapi.MultiverseAPI;
+import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -77,16 +78,19 @@ public class SetExecutableBlock extends BlockCommand{
 			catch(Exception ignored) {}
 
 			UUID ownerUUID = null;
-			Player owner = null;
 			try {
 				ownerUUID = UUID.fromString(args.get(6));
-				owner = Bukkit.getServer().getPlayer(ownerUUID);
 			}
 			catch(Exception ignored) {}
 
 			Location loc = new Location(world, x, y , z).getBlock().getLocation();
 
-			if(!replace && !loc.getBlock().isEmpty()) return;
+			if(!replace && !block.isEmpty()) return;
+
+			UUID uuid = null;
+			if(p != null) uuid = p.getUniqueId();
+
+			if(uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
 
 			ExecutableBlock eB = oOpt.get();
 

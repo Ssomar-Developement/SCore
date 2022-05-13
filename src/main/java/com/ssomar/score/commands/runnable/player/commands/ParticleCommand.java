@@ -15,7 +15,7 @@ public class ParticleCommand extends PlayerCommand{
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		try {
-			receiver.getWorld().spawnParticle(Particle.valueOf(args.get(0)),
+			receiver.getWorld().spawnParticle(Particle.valueOf(args.get(0).toUpperCase()),
 					receiver.getLocation(),
 					Integer.parseInt(args.get(1)),
 					Double.parseDouble(args.get(2)),

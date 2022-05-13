@@ -1,10 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
+import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,19 +32,15 @@ public class SetBlock extends PlayerCommand{
 			if(block.getType() != Material.AIR) {
 
 				block = block.getRelative(BlockFace.valueOf(args.get(0)));
+
+				UUID uuid = null;
+				if(p != null) uuid = p.getUniqueId();
 				
 				if(Material.matchMaterial(args.get(1).toUpperCase()) != null) {
-					if(SCore.hasWorldGuard) {
-						if(new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-							block.setType(Material.valueOf(args.get(1).toUpperCase()));
-						}
-					}
-					else {
-						block.setType(Material.valueOf(args.get(1).toUpperCase()));
-						
-					}
+					SafePlace.placeBlockWithEvent(block, Material.matchMaterial(args.get(1).toUpperCase()), Optional.empty(), uuid, false, true);
 				}
 				else {
+					if(uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
 					RunConsoleCommand.runConsoleCommand("execute at "+receiver.getName()+" run setblock "+block.getX()+" "+block.getY()+" "+block.getZ()+" "+args.get(0).toLowerCase(), aInfo.isSilenceOutput());
 				}
 			}

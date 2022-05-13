@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.ssomar.score.SsomarDev;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,7 +19,6 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -58,6 +58,21 @@ public class WorldGuardAPI {
 
 		StateFlag [] conditions = new StateFlag[1];
 		conditions[0] = Flags.BLOCK_BREAK;
+		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
+		return query.testBuild(loc, localPlayer, conditions);
+	}
+
+	public static boolean playerCanPlaceInRegion(@NotNull UUID pUUID, @NotNull org.bukkit.Location location) {
+
+		if(SCore.is1v12Less()) return true;
+
+		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapOfflinePlayer(Bukkit.getServer().getOfflinePlayer(pUUID));
+		Location loc = new Location(BukkitAdapter.adapt(location.getWorld()), location.getX(), location.getY(), location.getZ());
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionQuery query = container.createQuery();
+
+		StateFlag [] conditions = new StateFlag[1];
+		conditions[0] = Flags.BLOCK_PLACE;
 		//Bukkit.broadcastMessage(query.testBuild(loc, localPlayer)+"");
 		return query.testBuild(loc, localPlayer, conditions);
 	}

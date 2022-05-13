@@ -14,21 +14,10 @@ import java.util.UUID;
 public class IridiumSkyblockTool {
 
     public static boolean playerIsOnHisIsland(Player player) {
-
-        Optional<Island> islandOpt = IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation());
-        if (islandOpt.isPresent()) {
-            Island island = islandOpt.get();
-            List<User> members = island.getMembers();
-            for (User user : members) {
-                if (player.getUniqueId().equals(user.getUuid())) return true;
-            }
-        }
-
-        return false;
+        return playerIsOnHisIsland(player.getUniqueId(), player.getLocation());
     }
 
-    public static boolean playerCanBreakIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
-
+    public static boolean playerIsOnHisIsland(@NotNull UUID pUUID, @NotNull Location location) {
         Optional<Island> islandOpt = IridiumSkyblockAPI.getInstance().getIslandViaLocation(location);
         if (islandOpt.isPresent()) {
             Island island = islandOpt.get();
@@ -41,5 +30,13 @@ public class IridiumSkyblockTool {
 
         /* He is not on an Island */
         return true;
+    }
+
+    public static boolean playerCanBreakIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        return playerIsOnHisIsland(pUUID, location);
+    }
+
+    public static boolean playerCanPlaceIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        return playerIsOnHisIsland(pUUID, location);
     }
 }

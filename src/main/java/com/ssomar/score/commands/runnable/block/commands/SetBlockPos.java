@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class SetBlockPos extends BlockCommand {
 
@@ -29,34 +32,23 @@ public class SetBlockPos extends BlockCommand {
 
             String mat = args.get(3).toUpperCase();
 
-            boolean bypassWG = false;
-            if(args.size() >= 5) bypassWG = Boolean.parseBoolean(args.get(4));
+            boolean bypassProtection = false;
+            if(args.size() >= 5) bypassProtection = Boolean.parseBoolean(args.get(4));
 
-            Location loc = new Location(block.getWorld(), x, y, z);
+            UUID uuid = null;
+            if(p != null) uuid = p.getUniqueId();
 
             if(Material.matchMaterial(mat) != null) {
-                if(SCore.hasWorldGuard && p != null && !bypassWG) {
-                    if(new WorldGuardAPI().canBuild(p, loc)) {
-                        World w = block.getWorld();
-                        List<Entity> entities = w.getEntities();
-
-                        if(entities.size() > 0)
-                            RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(3).toLowerCase()+" replace", aInfo.isSilenceOutput());
-                    }
-                }
-                else {
-                    World w = block.getWorld();
-                    List<Entity> entities = w.getEntities();
-
-                    if(entities.size() > 0)
-                        RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(3).toLowerCase()+" replace", aInfo.isSilenceOutput());
-                }
-            }else {
+                SafePlace.placeBlockWithEvent(block, Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
+            }
+            else {
                 World w = block.getWorld();
                 List<Entity> entities = w.getEntities();
 
-                if(entities.size() > 0)
-                    RunConsoleCommand.runConsoleCommand("execute at "+entities.get(0).getUniqueId()+" run setblock "+x+" "+y+" "+z+" "+args.get(3).toLowerCase()+" replace", aInfo.isSilenceOutput());
+                if(entities.size() > 0) {
+                    if(!bypassProtection && uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
+                    RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + x + " " + y + " " + z + " " + args.get(3).toLowerCase() + " replace", aInfo.isSilenceOutput());
+                }
             }
         }catch(Exception e) {
             e.printStackTrace();
@@ -86,7 +78,7 @@ public class SetBlockPos extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SETBLOCKPOS {x} {y} {z} {material} [bypassWG true or false]";
+        return "SETBLOCKPOS {x} {y} {z} {material} [bypassProtection true or false]";
     }
 
     @Override

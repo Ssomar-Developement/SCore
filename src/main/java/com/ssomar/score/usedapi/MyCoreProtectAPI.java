@@ -27,6 +27,8 @@ public class MyCoreProtectAPI {
 	public static boolean isNaturalBlock(Block block) {
 		if(SCore.hasCoreProtect) {
 			Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
+
+			if(!plugin.isEnabled()) return false;
 			
 			 // Check that CoreProtect is loaded
 	        if (!(plugin instanceof CoreProtect)) {
@@ -62,6 +64,8 @@ public class MyCoreProtectAPI {
 	public void addPickup(Location location, ItemStack itemStack, Player player) {
 		if(SCore.hasCoreProtect) {
 			Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
+
+			if(!plugin.isEnabled()) return;
 
 			// Check that CoreProtect is loaded
 			if (!(plugin instanceof CoreProtect)) {
