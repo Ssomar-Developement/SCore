@@ -72,6 +72,8 @@ public abstract class GUI implements IGUI {
 
     public static Material BLUE = null;
 
+    public static Material LIGHTNING_ROD = null;
+
     private Inventory inv;
 
 
@@ -120,6 +122,11 @@ public abstract class GUI implements IGUI {
             BLUE = Material.BLUE_STAINED_GLASS_PANE;
             GRINDSTONE = Material.GRINDSTONE;
         }
+
+        if (SCore.is1v18Plus()) {
+            LIGHTNING_ROD = Material.LIGHTNING_ROD;
+        }
+        else LIGHTNING_ROD = Material.TRIPWIRE_HOOK;
     }
 
     public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
