@@ -31,7 +31,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean> {
 
     @Override
     public void save(SPlugin plugin, ConfigurationSection config) {
-
+        config.set(getName(), value);
     }
 
     @Override
@@ -53,5 +53,10 @@ public class BooleanFeature extends FeatureAbstract<Boolean> {
     @Override
     public void clickEditor(GUIManager manager, Player player) {
         ((GUI)manager.getCache().get(player)).changeBoolean(getEditorName());
+    }
+
+    @Override
+    public void extractInfoFromEditor(GUIManager manager, Player player) {
+        this.value = ((GUI)manager.getCache().get(player)).getBoolean(getEditorName());
     }
 }

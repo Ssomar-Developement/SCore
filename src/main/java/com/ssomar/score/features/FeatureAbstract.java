@@ -1,14 +1,7 @@
 package com.ssomar.score.features;
 
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.GUIManager;
-import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 @Getter
 public abstract class FeatureAbstract<T> implements FeatureInterface<T> {

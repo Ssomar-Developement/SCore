@@ -22,4 +22,6 @@ public interface FeatureInterface<T> {
     boolean isTheFeatureClicked(String featureClicked);
 
     void clickEditor(GUIManager manager, Player player);
+
+    void extractInfoFromEditor(GUIManager manager, Player player);
 }
