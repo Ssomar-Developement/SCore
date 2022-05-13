@@ -35,4 +35,8 @@ public class BooleanGroupFeature implements FeatureInterface<Map<String, Boolean
     public Map<String, BooleanFeature> getValue() {
         return features;
     }
+
+    public boolean getValueOf(String string) {
+        return features.get(string).getValue();
+    }
 }
