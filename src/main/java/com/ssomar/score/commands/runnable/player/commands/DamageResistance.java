@@ -17,7 +17,7 @@ public class DamageResistance extends PlayerCommand{
 	private static DamageResistance instance;
 	@Getter
 	private Map<UUID, List<Double>> activeResistances;
-	private static final Boolean DEBUG = false;
+	private static final Boolean DEBUG = true;
 
 	public DamageResistance() {
 		activeResistances = new HashMap<>();
@@ -57,7 +57,7 @@ public class DamageResistance extends PlayerCommand{
 	public double getNewDamage(UUID uuid, double damage){
 		if(DamageResistance.getInstance().getActiveResistances().containsKey(uuid)) {
 			if(DEBUG) SsomarDev.testMsg("DamageResistanceEvent base: " + damage);
-			int resistance = 0;
+			double resistance = 0;
 			for(double d : DamageResistance.getInstance().getActiveResistances().get(uuid)) {
 				resistance += d;
 			}
@@ -85,9 +85,9 @@ public class DamageResistance extends PlayerCommand{
 		}
 		else if(!args.get(1).contains("%")){
 			try {
-				Integer.valueOf(args.get(0));
+				Integer.valueOf(args.get(1));
 			} catch (NumberFormatException e) {
-				error = invalidTime + args.get(0) + " for command: " + xpboost;
+				error = invalidTime + args.get(1) + " for command: " + xpboost;
 			}
 		}
 

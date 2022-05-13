@@ -1,8 +1,11 @@
-package com.ssomar.score.features;
+package com.ssomar.testRecode.features.types;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.testRecode.features.FeatureAbstract;
+import com.ssomar.testRecode.features.FeatureParentInterface;
+import com.ssomar.testRecode.menu.NewGUIManager;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,20 +20,20 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> {
     private boolean value;
     private boolean defaultValue;
 
-    public BooleanFeature(String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial) {
-        super(name, editorName, editorDescription, editorMaterial);
+    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial) {
+        super(parent, name, editorName, editorDescription, editorMaterial);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
     }
 
     @Override
-    public List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config, boolean isPremiumLoading) {
+    public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         this.value = config.getBoolean(getName(), this.defaultValue);
         return new ArrayList<>();
     }
 
     @Override
-    public void save(SPlugin plugin, ConfigurationSection config) {
+    public void save(ConfigurationSection config) {
         config.set(getName(), value);
     }
 
@@ -51,18 +54,18 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> {
     }
 
     @Override
-    public void clickEditor(GUIManager manager, Player player) {
+    public void clickEditor(NewGUIManager manager, Player player) {
         ((GUI)manager.getCache().get(player)).changeBoolean(getEditorName());
     }
 
     @Override
-    public void extractInfoFromEditor(GUIManager manager, Player player) {
+    public void extractInfoFromEditor(NewGUIManager manager, Player player) {
         this.value = ((GUI)manager.getCache().get(player)).getBoolean(getEditorName());
     }
 
     @Override
     public BooleanFeature clone() {
-        return new BooleanFeature(getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial());
+        return new BooleanFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial());
     }
 
     @Override

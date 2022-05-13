@@ -65,9 +65,9 @@ public class XpBoost extends PlayerCommand{
 		}
 		else if(!args.get(1).contains("%")){
 			try {
-				Integer.valueOf(args.get(0));
+				Integer.valueOf(args.get(1));
 			} catch (NumberFormatException e) {
-				error = invalidTime + args.get(0) + " for command: " + xpboost;
+				error = invalidTime + args.get(1) + " for command: " + xpboost;
 			}
 		}
 

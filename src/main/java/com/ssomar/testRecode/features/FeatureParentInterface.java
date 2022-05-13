@@ -1,4 +1,4 @@
-package com.ssomar.score.features;
+package com.ssomar.testRecode.features;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -8,5 +8,6 @@ public interface FeatureParentInterface {
 
     ConfigurationSection getConfigurationSection();
 
+    void reload();
 
 }

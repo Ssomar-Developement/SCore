@@ -1,9 +1,9 @@
-package com.ssomar.score.features;
+package com.ssomar.testRecode.features.groups;
 
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeaturesGroupInterface;
-import com.ssomar.score.features.BooleanFeature;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.testRecode.features.FeatureParentInterface;
+import com.ssomar.testRecode.features.FeaturesGroupInterface;
+import com.ssomar.testRecode.features.types.BooleanFeature;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -14,15 +14,15 @@ public class BooleanGroupFeature implements FeaturesGroupInterface<Boolean, Bool
 
     private Map<String, BooleanFeature> features;
 
-    public BooleanGroupFeature(Map<String, BooleanFeature> features) {
+    public BooleanGroupFeature(FeatureParentInterface parent, Map<String, BooleanFeature> features) {
         this.features = features;
     }
 
     @Override
-    public List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config) {
+    public List<String> load(SPlugin plugin, ConfigurationSection config) {
         for(String featureName : features.keySet()) {
             BooleanFeature feature = features.get(featureName);
-            features.put(featureName, new BooleanFeature(feature.getName(), feature.isDefaultValue(), feature.getEditorName(), feature.getEditorDescription(), feature.getEditorMaterial()));
+            features.put(featureName, new BooleanFeature(feature.getParent(), feature.getName(), feature.isDefaultValue(), feature.getEditorName(), feature.getEditorDescription(), feature.getEditorMaterial()));
         }
         return new ArrayList<>();
     }
