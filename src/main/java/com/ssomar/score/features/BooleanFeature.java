@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class BooleanFeature implements FeatureInterface {
+public class BooleanFeature implements FeatureInterface<Boolean> {
 
     private String name;
     private boolean value;
@@ -29,5 +29,10 @@ public class BooleanFeature implements FeatureInterface {
     @Override
     public void save(SPlugin plugin, ConfigurationSection config) {
 
+    }
+
+    @Override
+    public Boolean getValue() {
+        return value;
     }
 }

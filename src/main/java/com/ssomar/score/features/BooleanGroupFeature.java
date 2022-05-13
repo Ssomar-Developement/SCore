@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BooleanGroupFeature implements FeatureInterface {
+public class BooleanGroupFeature implements FeatureInterface<Map<String, BooleanFeature>> {
 
     private Map<String, BooleanFeature> features;
 
@@ -29,5 +29,10 @@ public class BooleanGroupFeature implements FeatureInterface {
     @Override
     public void save(SPlugin plugin, ConfigurationSection config) {
 
+    }
+
+    @Override
+    public Map<String, BooleanFeature> getValue() {
+        return features;
     }
 }
