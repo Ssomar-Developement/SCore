@@ -44,21 +44,21 @@ public abstract class GUI implements IGUI {
 
     public final static String COLOR_ACTIVATOR_ID = "&2&l✚ &a&lACTIVATOR ID:";
 
-    public Material NEXT_PAGE_MAT = null;
+    public static Material NEXT_PAGE_MAT = null;
 
-    public Material PREVIOUS_PAGE_MAT = null;
+    public static Material PREVIOUS_PAGE_MAT = null;
 
-    public Material WRITABLE_BOOK = null;
+    public static Material WRITABLE_BOOK = null;
 
-    public Material CLOCK = null;
+    public static Material CLOCK = null;
 
-    public Material ENCHANTING_TABLE = null;
+    public static Material ENCHANTING_TABLE = null;
 
-    public Material HEAD = null;
+    public static Material HEAD = null;
 
-    public Material GRINDSTONE = null;
+    public static Material GRINDSTONE = null;
 
-    public Material COMPARATOR = null;
+    public static Material COMPARATOR = null;
 
     public static Material RED = null;
 
