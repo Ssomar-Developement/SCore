@@ -1,8 +1,5 @@
 package com.ssomar.score.features;
 
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeaturesGroupInterface;
-import com.ssomar.score.features.BooleanFeature;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 

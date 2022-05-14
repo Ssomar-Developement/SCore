@@ -211,7 +211,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
 		if(projectilePlch != null ) s = projectilePlch.replacePlaceholder(s);
 
-		if(!extraPlaceholders.isEmpty()){
+		if(extraPlaceholders != null && !extraPlaceholders.isEmpty()){
 			for(String key : extraPlaceholders.keySet()) {
 				s = s.replaceAll(key, extraPlaceholders.get(key));
 			}
