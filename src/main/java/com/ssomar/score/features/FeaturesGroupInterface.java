@@ -11,7 +11,7 @@ import java.util.Map;
 public interface FeaturesGroupInterface<T, Y> {
 
     /** @return The potential errors during that appear during the loading */
-    List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config);
+    List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config, boolean isPremiumLoading);
 
     void save(SPlugin plugin, ConfigurationSection config);
 

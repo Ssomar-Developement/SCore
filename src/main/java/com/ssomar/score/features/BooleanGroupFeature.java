@@ -16,10 +16,10 @@ public class BooleanGroupFeature implements FeaturesGroupInterface<Boolean, Bool
     }
 
     @Override
-    public List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config) {
+    public List<String> load(SPlugin plugin, FeatureParentInterface parent, ConfigurationSection config, boolean isPremiumloading) {
         for(String featureName : features.keySet()) {
             BooleanFeature feature = features.get(featureName);
-            features.put(featureName, new BooleanFeature(feature.getName(), feature.isDefaultValue(), feature.getEditorName(), feature.getEditorDescription(), feature.getEditorMaterial()));
+            feature.load(plugin, parent, config, isPremiumloading);
         }
         return new ArrayList<>();
     }
