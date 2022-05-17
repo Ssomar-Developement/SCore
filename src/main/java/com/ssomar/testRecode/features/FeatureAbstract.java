@@ -21,7 +21,11 @@ public abstract class FeatureAbstract<T, Y> implements FeatureInterface<T, Y> {
     }
 
     @Override
-    public boolean isTheFeatureClicked(String featureClicked) {
-        return featureClicked.contains(name);
+    public boolean isTheFeatureClickedParentEditor(String featureClicked) {
+        return featureClicked.contains(editorName);
+    }
+
+    public void save() {
+        save(parent.getConfigurationSection());
     }
 }

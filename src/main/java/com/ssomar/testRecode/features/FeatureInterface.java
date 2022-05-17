@@ -17,13 +17,13 @@ public interface FeatureInterface<T, Y> {
 
     T getValue();
 
-    void initEditorItem(GUI gui, int slot);
+    Y initItemParentEditor(GUI gui, int slot);
 
-    boolean isTheFeatureClicked(String featureClicked);
+    void updateItemParentEditor(GUI gui);
 
-    void clickEditor(NewGUIManager manager, Player player);
+    boolean isTheFeatureClickedParentEditor(String featureClicked);
 
-    void extractInfoFromEditor(NewGUIManager manager, Player player);
+    void extractInfoFromParentEditor(NewGUIManager manager, Player player);
 
     void reset();
 }

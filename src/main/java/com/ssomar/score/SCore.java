@@ -65,6 +65,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
 	public static boolean hasPlotSquared = false;
 
+	public static boolean hasResidence = false;
+
 	public static boolean hasNBTAPI = false;
 
 	public static ProtocolManager protocolManager;
@@ -189,6 +191,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 			SCore.plugin.getServer().getLogger().info("["+NAME+"] NBTAPI hooked !");
 			hasNBTAPI = true;
 		}
+
+		if (Bukkit.getPluginManager().getPlugin("Residence") != null) {
+			SCore.plugin.getServer().getLogger().info("["+NAME+"] Residence hooked !");
+			hasResidence = true;
+		}
+
 
 		if (Bukkit.getPluginManager().getPlugin("PlotSquared") != null) {
 			try{

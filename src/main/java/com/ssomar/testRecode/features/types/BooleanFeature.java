@@ -5,6 +5,7 @@ import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
+import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.testRecode.menu.NewGUIManager;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> {
+public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> implements FeatureRequireOnlyClicksInEditor {
 
     private boolean value;
     private boolean defaultValue;
@@ -43,23 +44,23 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> {
     }
 
     @Override
-    public void initEditorItem(GUI gui, int slot) {
+    public BooleanFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
+        return this;
+    }
+
+    @Override
+    public void updateItemParentEditor(GUI gui) {
         gui.updateBoolean(getEditorName(), value);
     }
 
     @Override
-    public void clickEditor(NewGUIManager manager, Player player) {
-        ((GUI)manager.getCache().get(player)).changeBoolean(getEditorName());
-    }
-
-    @Override
-    public void extractInfoFromEditor(NewGUIManager manager, Player player) {
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
         this.value = ((GUI)manager.getCache().get(player)).getBoolean(getEditorName());
     }
 
@@ -71,5 +72,10 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> {
     @Override
     public void reset() {
         this.value = defaultValue;
+    }
+
+    @Override
+    public void clickParentEditor(Player editor, NewGUIManager manager) {
+        ((GUI)manager.getCache().get(editor)).changeBoolean(getEditorName());
     }
 }

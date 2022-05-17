@@ -29,6 +29,8 @@ import org.bukkit.potion.PotionEffectType;
 /* DAMAGE {amount} */
 public class Damage extends EntityCommand{
 
+	private final static boolean DEBUG = true;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
@@ -56,9 +58,13 @@ public class Damage extends EntityCommand{
 			receiver.setMaximumNoDamageTicks(0);
 			if(p != null) {
 				p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
+				SsomarDev.testMsg("Final Damage entity: "+damage);
 				receiver.damage(damage, (Entity)p);
 			}
-			else receiver.damage(damage);
+			else{
+				SsomarDev.testMsg("Final Damage entity: "+damage);
+				receiver.damage(damage);
+			}
 			receiver.setMaximumNoDamageTicks(maximumNoDmg);
 		}
 	}

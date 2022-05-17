@@ -15,13 +15,126 @@ import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
 public class LocatedLaunch extends PlayerCommand{
+
+	private Map<String, Class> projectiles;
+
+	public LocatedLaunch() {
+		projectiles = new HashMap<>();
+		try {
+			projectiles.put("ARROW", Arrow.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SPECTRALARROW", SpectralArrow.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("DRAGONFIREBALL", DragonFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("FIREBALL", Fireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SMALLFIREBALL", SmallFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("LARGEFIREBALL", LargeFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("LARGE_FIREBALL", LargeFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SIZEDFIREBALL", SizedFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SIZED_FIREBALL", SizedFireball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SNOWBALL", Snowball.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("WITHERSKULL", WitherSkull.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("WITHER_SKULL", WitherSkull.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("EGG", Egg.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("ENDERPEARL", EnderPearl.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("ENDER_PEARL", EnderPearl.class);
+		} catch (Exception | Error e) {
+		}
+
+		try {
+			projectiles.put("LINGERINGPOTION", LingeringPotion.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("LINGERING_POTION", LingeringPotion.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SPLASHPOTION", SplashPotion.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SPLASH_POTION", SplashPotion.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("LLAMASPIT", LlamaSpit.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("LLAMA_SPIT", LlamaSpit.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SHULKERBULLET", ShulkerBullet.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
+		} catch (Exception | Error e) {
+		}
+		try {
+			projectiles.put("TRIDENT", Trident.class);
+		} catch (Exception | Error e) {
+		}
+	}
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
@@ -35,8 +148,9 @@ public class LocatedLaunch extends PlayerCommand{
 		double yValue = 0;
 
 		double velocity = 1;
-		double rotationy = 0;
-		double rotationz = 0;
+
+		double rotationVertical = 0;
+		double rotationHorizontal = 0;
 
 		try {
 			frontValue = Double.parseDouble(args.get(1));
@@ -54,6 +168,14 @@ public class LocatedLaunch extends PlayerCommand{
 			velocity = Double.parseDouble(args.get(4));
 		}catch(Exception ignored) {}
 
+		try {
+			rotationVertical = Double.parseDouble(args.get(5));
+		}catch(Exception ignored) {}
+
+		try {
+			rotationHorizontal = Double.parseDouble(args.get(6))*-1;
+		}catch(Exception ignored) {}
+
 		Location eyeLoc = receiver.getEyeLocation();
 		Vector front =  eyeLoc.getDirection().clone().setY(0).multiply(frontValue);
 		Vector right = eyeLoc.getDirection().clone().setY(0).rotateAroundY(270 * Math.PI/180).multiply(rightValue);
@@ -69,80 +191,17 @@ public class LocatedLaunch extends PlayerCommand{
 
 		try {
 			Projectile entity = null;
+			String type = args.get(0);
 
-
-			if(args.get(0).equalsIgnoreCase("ARROW")) entity = recLoc.getWorld().spawn(toLaunchLoc,Arrow.class);
-			else if(args.get(0).equalsIgnoreCase("DRAGONFIREBALL")) entity = recLoc.getWorld().spawn(toLaunchLoc,DragonFireball.class);
-			else if(args.get(0).equalsIgnoreCase("EGG")) entity = recLoc.getWorld().spawn(toLaunchLoc,Egg.class);
-			else if(args.get(0).equalsIgnoreCase("ENDERPEARL")) entity = recLoc.getWorld().spawn(toLaunchLoc,EnderPearl.class);
-			else if(args.get(0).equalsIgnoreCase("FIREBALL")) entity = recLoc.getWorld().spawn(toLaunchLoc,Fireball.class);
-				//else if(args.get(0).toUpperCase().contains("FIREWORK")) recLoc.getWorld().spawn(toLaunchLoc,Firework.class);
-				//else if(args.get(0).toUpperCase().contains("FISHHOOK")) entity = recLoc.getWorld().spawn(toLaunchLoc,FishHook.class);
-			else if(args.get(0).equalsIgnoreCase("LARGEFIREBALL")) entity = recLoc.getWorld().spawn(toLaunchLoc,LargeFireball.class);
-			else if(args.get(0).equalsIgnoreCase("LINGERINGPOTION")) entity = recLoc.getWorld().spawn(toLaunchLoc,LingeringPotion.class);
-			else if(args.get(0).equalsIgnoreCase("LLAMASPIT")) entity = recLoc.getWorld().spawn(toLaunchLoc,LlamaSpit.class);
-				/* No movement because shulker bullet need to have a target */
-			else if(args.get(0).equalsIgnoreCase("SHULKERBULLET")){
-				entity = recLoc.getWorld().spawn(toLaunchLoc,ShulkerBullet.class);
-				ShulkerBullet bullet = (ShulkerBullet) entity;
+			if(projectiles.containsKey(type)) {
+				entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc,projectiles.get(type));
 			}
-			else if(args.get(0).equalsIgnoreCase("SIZEDFIREBALL")) entity = recLoc.getWorld().spawn(toLaunchLoc,SizedFireball.class);
-			else if(args.get(0).equalsIgnoreCase("SNOWBALL")) entity = recLoc.getWorld().spawn(toLaunchLoc,Snowball.class);
-			else if(args.get(0).equalsIgnoreCase("TRIDENT")) entity = recLoc.getWorld().spawn(toLaunchLoc,Trident.class);
-			else if(args.get(0).equalsIgnoreCase("WITHERSKULL")) entity = recLoc.getWorld().spawn(toLaunchLoc,WitherSkull.class);
-			else if(ProjectilesManager.getInstance().containsProjectileWithID(args.get(0))) {
-				SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
-
-				switch(projectile.getIdentifierType()) {
-					case "ARROW":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,Arrow.class);
-						break;
-					case "DRAGON_FIREBALL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,DragonFireball.class);
-						break;
-					case "EGG":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,Egg.class);
-						break;
-					case "ENDER_PEARL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,EnderPearl.class);
-						break;
-					case "FIREBALL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,Fireball.class);
-						break;
-					case "LARGE_FIREBALL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,LargeFireball.class);
-						break;
-					case "LINGERING_POTION":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,LingeringPotion.class);
-						break;
-					case "SPLASH_POTION":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,SplashPotion.class);
-						break;
-					case "LLAMA_SPIT":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,LlamaSpit.class);
-						break;
-					case "SHULKER_BULLET":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,ShulkerBullet.class);
-						break;
-					case "SIZED_FIREBALL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,SizedFireball.class);
-						break;
-					case "SNOWBALL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,Snowball.class);
-						break;
-					case "TRIDENT":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,Trident.class);
-						break;
-					case "WITHER_SKULL":
-						entity = recLoc.getWorld().spawn(toLaunchLoc,WitherSkull.class);
-						break;
-					default:
-						entity = recLoc.getWorld().spawn(toLaunchLoc,Arrow.class);
-						break;
-				}
+			else if(ProjectilesManager.getInstance().containsProjectileWithID(type)) {
+				SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
+				entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc,projectiles.get(type));
 				projectile.executeTransformTheProjectile(entity, receiver);
-
 			}
+			else  entity = recLoc.getWorld().spawn(toLaunchLoc, Arrow.class);
 
 			//	SsomarDev.testMsg("null entity: " + (entity==null));
 
@@ -151,7 +210,32 @@ public class LocatedLaunch extends PlayerCommand{
 				Vector v = null;
 				Location loc = null;
 				boolean searchBlockOrEntity = true;
+
+				/* rotation part */
 				Location eyeLoc2 = receiver.getEyeLocation();
+				float pitch = eyeLoc2.getPitch();
+				float yaw = eyeLoc2.getYaw();
+				//SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
+				float newPitch = (float) (pitch + rotationHorizontal);
+				float newYaw = (float) (yaw + rotationVertical);
+				if(newPitch > 90) newPitch = 90;
+				if(newPitch < -90){
+					newPitch = newPitch+ 90;
+					newPitch = newPitch*-1;
+					newPitch = -90 + newPitch;
+					if(newYaw > 0){
+						newYaw = -180 + newYaw;
+					}
+					else if(newYaw < 0){
+						newYaw = 180 + newYaw;
+					}
+					else newYaw = 0;
+				}
+				//SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw);
+				eyeLoc2.setPitch(newPitch);
+				eyeLoc2.setYaw(newYaw);
+
+
 				int multiply = 2;
 				while(searchBlockOrEntity && multiply < 100) {
 					v = eyeLoc2.getDirection().clone();
@@ -208,7 +292,7 @@ public class LocatedLaunch extends PlayerCommand{
 	@Override
 	public String verify(List<String> args) {	
 		String error = "";
-		String launch = "LOCATED_LAUNCH {projectileType} {frontValue positive=front , negative=back} {rightValue right=positive, negative=left} {yValue} {velocity}";
+		String launch = "LOCATED_LAUNCH {projectileType} {frontValue positive=front , negative=back} {rightValue right=positive, negative=left} {yValue} {velocity} [vertical rotation] [horizontal rotation]";
 
 		return error;
 	}
@@ -222,7 +306,7 @@ public class LocatedLaunch extends PlayerCommand{
 
 	@Override
 	public String getTemplate() {
-		return "LOCATED_LAUNCH {projectileType} {frontValue positive=front , negative=back} {rightValue right=positive, negative=left} {yValue} {velocity}";
+		return "LOCATED_LAUNCH {projectileType} {frontValue positive=front , negative=back} {rightValue right=positive, negative=left} {yValue} {velocity} [vertical rotation] [horizontal rotation]";
 	}
 
 	@Override

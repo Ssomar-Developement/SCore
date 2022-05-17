@@ -20,6 +20,6 @@ public abstract class FeatureAbstract<T, Y> implements FeatureInterface<T, Y> {
 
     @Override
     public boolean isTheFeatureClicked(String featureClicked) {
-        return featureClicked.contains(name);
+        return featureClicked.contains(editorName);
     }
 }

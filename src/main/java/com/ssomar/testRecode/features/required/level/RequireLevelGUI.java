@@ -14,7 +14,8 @@ public class RequireLevelGUI extends GUI {
 
     public void fillTheGUI() {
 
-        requiredLevel.getCancelEventIfError().initEditorItem(this, 0);
+        requiredLevel.getCancelEventIfError().initItemParentEditor(this, 0).updateItemParentEditor(this);
+        requiredLevel.getErrorMessage().initItemParentEditor(this, 1).updateItemParentEditor(this);
 
         // exit
         createItem(RED, 	1, 18, "&4&l▶&c Back", false, false);

@@ -99,6 +99,8 @@ public abstract class NewGUIManager<T extends GUI> {
 
 	public abstract boolean rightClicked(NewInteractionClickedGUIManager<T> interact);
 
+	public abstract void receiveMessage(Player p, String message, NewInteractionClickedGUIManager<T> interact);
+
 	public abstract void reset(NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void save(NewInteractionClickedGUIManager<T> interact);

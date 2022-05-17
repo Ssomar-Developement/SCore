@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.7.2.5</version>
+	<version>1.7.2.9</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -96,10 +96,10 @@
 								</relocation>
 							</relocations>
 						</configuration> -->
-						<!--<configuration>
+						<configuration>
 						<createDependencyReducedPom>false</createDependencyReducedPom>
-							<outputFile>C:\serveur local 1.18\plugins\SCore.jar</outputFile>
-						</configuration>-->
+							<outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -229,13 +229,13 @@
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableItems</artifactId>
-			<version>master-bbd89d2a77-1</version>
+			<version>master-6bfe9a7c51-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.Ssomar-Developement</groupId>
 			<artifactId>ExecutableBlocks</artifactId>
-			<version>main-ada619ef85-1</version>
+			<version>main-3ab1b3ba32-1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -250,6 +250,14 @@
 			<version>3.2.8</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.2.8.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bekvon.bukkit</groupId>
+			<artifactId>Residence</artifactId>
+			<version>5.0.1.6</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/Residence5.0.1.6.jar</systemPath>
 		</dependency>
 		<!--
             <dependency>
@@ -310,7 +318,7 @@
             <dependency>
                 <groupId>com.github.Ssomar-Developement</groupId>
                 <artifactId>SEvents</artifactId>
-                <version>main-722c9a5196-1</version>
+				<version>44182ba224</version>
                 <scope>compile</scope>
             </dependency>
 

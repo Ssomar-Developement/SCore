@@ -5,10 +5,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.events.BlockBreakEventExtension;
-import com.ssomar.score.usedapi.GriefPreventionAPI;
-import com.ssomar.score.usedapi.IridiumSkyblockTool;
-import com.ssomar.score.usedapi.LandsIntegrationAPI;
-import com.ssomar.score.usedapi.WorldGuardAPI;
+import com.ssomar.score.usedapi.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -102,6 +99,8 @@ public class SafeBreak {
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
 
         if(SCore.hasWorldGuard) if(!WorldGuardAPI.playerCanBreakInRegion(playerUUID, block.getLocation())) return false;
+
+        if(SCore.hasResidence) if(!ResidenceAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
 
         return true;
     }

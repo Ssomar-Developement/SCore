@@ -77,9 +77,15 @@ public class SetExecutableBlock extends BlockCommand{
 			}
 			catch(Exception ignored) {}
 
+			boolean bypassProtection = false;
+			try {
+				bypassProtection = Boolean.parseBoolean(args.get(6));
+			}
+			catch(Exception ignored) {}
+
 			UUID ownerUUID = null;
 			try {
-				ownerUUID = UUID.fromString(args.get(6));
+				ownerUUID = UUID.fromString(args.get(args.size()-1));
 			}
 			catch(Exception ignored) {}
 
@@ -90,7 +96,7 @@ public class SetExecutableBlock extends BlockCommand{
 			UUID uuid = null;
 			if(p != null) uuid = p.getUniqueId();
 
-			if(uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
+			if(uuid != null && !bypassProtection && !SafePlace.verifSafePlace(uuid, block)) return;
 
 			ExecutableBlock eB = oOpt.get();
 
@@ -104,7 +110,7 @@ public class SetExecutableBlock extends BlockCommand{
 
 		String setEB = this.getTemplate();
 
-		if(args.size()>7) {
+		if(args.size()>8) {
 			error = tooManyArgs+setEB;
 			return error;
 		}
@@ -185,7 +191,7 @@ public class SetExecutableBlock extends BlockCommand{
 
 	@Override
 	public String getTemplate() {
-		return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} {replace true or false} [ownerUUID]";
+		return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} {replace true or false} [bypassProtection true or false] [ownerUUID]";
 	}
 
 	@Override

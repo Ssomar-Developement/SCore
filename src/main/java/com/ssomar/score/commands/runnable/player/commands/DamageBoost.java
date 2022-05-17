@@ -57,7 +57,7 @@ public class DamageBoost extends PlayerCommand{
 	public double getNewDamage(UUID uuid, double damage){
 		if(DamageBoost.getInstance().getActiveBoosts().containsKey(uuid)) {
 			if(DEBUG) SsomarDev.testMsg("DamageBoostEvent base: " + damage);
-			int boost = 0;
+			double boost = 0;
 			for(double d : DamageBoost.getInstance().getActiveBoosts().get(uuid)) {
 				boost += d;
 			}

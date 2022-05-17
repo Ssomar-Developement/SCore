@@ -6,6 +6,7 @@ import com.ssomar.score.conditions.condition.player.PlayerCondition;
 import com.ssomar.score.usedapi.GriefDefenderAPI;
 import com.ssomar.score.usedapi.GriefPreventionAPI;
 import com.ssomar.score.usedapi.LandsIntegrationAPI;
+import com.ssomar.score.usedapi.ResidenceAPI;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.entity.Player;
 
@@ -37,6 +38,13 @@ public class IfPlayerMustBeOnHisClaim extends PlayerCondition<Boolean, String> {
 
             if (SCore.hasGriefDefender) {
                 if (!GriefDefenderAPI.playerIsInHisClaim(player, player.getLocation())) {
+                    sendErrorMsg(playerOpt, messageSender);
+                    return false;
+                }
+            }
+
+            if (SCore.hasResidence) {
+                if (!ResidenceAPI.playerIsInHisClaim(player, player.getLocation())) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

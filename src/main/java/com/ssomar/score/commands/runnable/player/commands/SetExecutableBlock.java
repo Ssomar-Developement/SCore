@@ -29,7 +29,7 @@ public class SetExecutableBlock extends PlayerCommand{
 
 		String setEB = this.getTemplate();
 
-		if(args.size()>7) {
+		if(args.size()>8) {
 			error = tooManyArgs+setEB;
 			return error;
 		}
@@ -176,9 +176,15 @@ public class SetExecutableBlock extends PlayerCommand{
 			}
 			catch(Exception ignored) {}
 
+			boolean bypassProtection = false;
+			try {
+				bypassProtection = Boolean.parseBoolean(args.get(6));
+			}
+			catch(Exception ignored) {}
+
 			UUID ownerUUID = null;
 			try {
-				ownerUUID = UUID.fromString(args.get(6));
+				ownerUUID = UUID.fromString(args.get(args.size()-1));
 			}
 			catch(Exception ignored) {}
 
@@ -189,7 +195,7 @@ public class SetExecutableBlock extends PlayerCommand{
 			UUID uuid = null;
 			if(p != null) uuid = p.getUniqueId();
 
-			if(uuid != null && !SafePlace.verifSafePlace(uuid, loc.getBlock())) return;
+			if(uuid != null && !bypassProtection&& !SafePlace.verifSafePlace(uuid, loc.getBlock())) return;
 
 			ExecutableBlock eB = oOpt.get();
 

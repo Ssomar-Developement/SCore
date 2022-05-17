@@ -3,11 +3,13 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
@@ -16,143 +18,242 @@ import java.util.*;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
-public class Launch extends PlayerCommand{
+public class Launch extends PlayerCommand {
 
-	private  Map<String, Class> projectiles;
+    private Map<String, Class> projectiles;
 
-	public Launch() {
-		projectiles = new HashMap<>();
-		projectiles.put("ARROW", Arrow.class);
-		projectiles.put("SPECTRALARROW", SpectralArrow.class);
-		projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
-		projectiles.put("DRAGONFIREBALL", DragonFireball.class);
-		projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
-		projectiles.put("FIREBALL", Fireball.class);
-		projectiles.put("SMALLFIREBALL", SmallFireball.class);
-		projectiles.put("LARGEFIREBALL", LargeFireball.class);
-		projectiles.put("LARGE_FIREBALL", LargeFireball.class);
-		projectiles.put("SIZEDFIREBALL", SizedFireball.class);
-		projectiles.put("SIZED_FIREBALL", SizedFireball.class);
-		projectiles.put("SNOWBALL", Snowball.class);
-		projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
-		projectiles.put("WITHERSKULL", WitherSkull.class);
-		projectiles.put("WITHER_SKULL", WitherSkull.class);
-		projectiles.put("EGG", Egg.class);
-		projectiles.put("ENDERPEARL", EnderPearl.class);
-		projectiles.put("ENDER_PEARL", EnderPearl.class);
-		projectiles.put("LINGERINGPOTION", LingeringPotion.class);
-		projectiles.put("LINGERING_POTION", LingeringPotion.class);
-		projectiles.put("SPLASHPOTION", SplashPotion.class);
-		projectiles.put("SPLASH_POTION", SplashPotion.class);
-		projectiles.put("LLAMASPIT", LlamaSpit.class);
-		projectiles.put("LLAMA_SPIT", LlamaSpit.class);
-		projectiles.put("SHULKERBULLET", ShulkerBullet.class);
-		projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
-		projectiles.put("TRIDENT", Trident.class);
-	}
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
-	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public Launch() {
+        projectiles = new HashMap<>();
+        try {
+            projectiles.put("ARROW", Arrow.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SPECTRALARROW", SpectralArrow.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("DRAGONFIREBALL", DragonFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("FIREBALL", Fireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SMALLFIREBALL", SmallFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("LARGEFIREBALL", LargeFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("LARGE_FIREBALL", LargeFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SIZEDFIREBALL", SizedFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SIZED_FIREBALL", SizedFireball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SNOWBALL", Snowball.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("WITHERSKULL", WitherSkull.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("WITHER_SKULL", WitherSkull.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("EGG", Egg.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("ENDERPEARL", EnderPearl.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("ENDER_PEARL", EnderPearl.class);
+        } catch (Exception | Error e) {
+        }
 
-		double rotationy = 0;
-		double rotationz = 0;
+        try {
+            projectiles.put("LINGERINGPOTION", LingeringPotion.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("LINGERING_POTION", LingeringPotion.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SPLASHPOTION", SplashPotion.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SPLASH_POTION", SplashPotion.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("LLAMASPIT", LlamaSpit.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("LLAMA_SPIT", LlamaSpit.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SHULKERBULLET", ShulkerBullet.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
+        } catch (Exception | Error e) {
+        }
+        try {
+            projectiles.put("TRIDENT", Trident.class);
+        } catch (Exception | Error e) {
+        }
+    }
 
-		if(args.size() == 0) {
-			receiver.launchProjectile(Arrow.class);
-		}
-		else {
-			try {
-				rotationy = Double.parseDouble(args.get(1));
-				rotationy = rotationy * Math.PI/180;
-			}catch(Exception ignored) {}
+    @Override
+    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
-			try {
-				rotationz = Double.parseDouble(args.get(2));
-				rotationz = rotationz * Math.PI/180;
-			}catch(Exception ignored) {}
-			try {
-				Entity entity = null;
+        double rotationVertical = 0;
+        double rotationHorizontal = 0;
 
-				receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
+        if (args.size() == 0) {
+            receiver.launchProjectile(Arrow.class);
+        } else {
+            try {
+                rotationVertical = Double.parseDouble(args.get(1));
+            } catch (Exception ignored) {
+            }
 
-				String type = args.get(0);
-				if(projectiles.containsKey(type)) {
-					entity = receiver.launchProjectile(projectiles.get(type));
-				}
-				else if(ProjectilesManager.getInstance().containsProjectileWithID(type)) {
-					SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
-					entity = receiver.launchProjectile(projectiles.get(projectile.getIdentifierType()));
-					projectile.executeTransformTheProjectile(entity, receiver);
+            try {
+                rotationHorizontal = Double.parseDouble(args.get(2)) * -1;
+            } catch (Exception ignored) {
+            }
+            try {
+                Entity entity = null;
 
-				}	
+                receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
 
-				if(entity != null) {
-					if(!SCore.is1v13Less()) {
-						Vector v;
-						if(entity instanceof Fireball) {
-							Fireball fireball = (Fireball) entity;
-							v = fireball.getDirection();
-							v.rotateAroundY(rotationy);
-							v.rotateAroundZ(rotationz);
-							fireball.setDirection(v);
-						}
-						else if(entity instanceof DragonFireball) {
-							DragonFireball fireball = (DragonFireball) entity;
-							v = fireball.getDirection();
-							v.rotateAroundY(rotationy);
-							v.rotateAroundZ(rotationz);
-							fireball.setDirection(v);
-						}
-						else {
-							v = entity.getVelocity();
-							v.rotateAroundY(rotationy);
-							v.rotateAroundZ(rotationz);
-							entity.setVelocity(v);
-						}
-						//SsomarDev.testMsg("rotation: "+ rotation);
-					}
+                String type = args.get(0);
+                if (projectiles.containsKey(type)) {
+                    entity = receiver.launchProjectile(projectiles.get(type));
+                } else if (ProjectilesManager.getInstance().containsProjectileWithID(type)) {
+                    SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
+                    entity = receiver.launchProjectile(projectiles.get(projectile.getIdentifierType()));
+                    projectile.executeTransformTheProjectile(entity, receiver);
 
-					if(SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
-						ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
-						ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
-					}
-				}
+                } else entity = receiver.launchProjectile(Arrow.class);
 
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
+                if (entity != null) {
+                    if (!SCore.is1v13Less()) {
 
-	@Override
-	public String verify(List<String> args) {	
-		String error = "";
-		String launch = "LAUNCH {projectileType} [angle rotation y] [angle rotation z]";
-		if(args.size()<1) error = notEnoughArgs+launch;
+                        Location loc = receiver.getEyeLocation();
+                        float pitch = loc.getPitch();
+                        float yaw = loc.getYaw();
+                        SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
+                        float newPitch = (float) (pitch + rotationHorizontal);
+                        float newYaw = (float) (yaw + rotationVertical);
+                        if (newPitch > 90) newPitch = 90;
+                        if (newPitch < -90 && rotationVertical != 0) {
+                            newPitch = newPitch + 90;
+                            newPitch = newPitch * -1;
+                            newPitch = -90 + newPitch;
+                            if (newYaw > 0) {
+                                newYaw = -180 + newYaw;
+                            } else if (newYaw < 0) {
+                                newYaw = 180 + newYaw;
+                            } else newYaw = 0;
+                        }
+                        SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw);
+                        loc.setPitch(newPitch);
+                        loc.setYaw(newYaw);
 
-		return error;
-	}
+                        Vector eyeVector = loc.getDirection();
 
-	@Override
-	public List<String> getNames() {
-		List<String> names = new ArrayList<>();
-		names.add("LAUNCH");
-		return names;
-	}
 
-	@Override
-	public String getTemplate() {
-		return "LAUNCH {projectileType} [angle rotation y] [angle rotation z]";
-	}
+                        Vector v;
+                        if (entity instanceof Fireball) {
+                            Fireball fireball = (Fireball) entity;
+                            fireball.setDirection(eyeVector);
+                        } else if (entity instanceof DragonFireball) {
+                            DragonFireball fireball = (DragonFireball) entity;
+                            fireball.setDirection(eyeVector);
+                        } else {
+                            entity.setVelocity(eyeVector);
+                        }
+                        //SsomarDev.testMsg("rotation: "+ rotation);
+                    }
 
-	@Override
-	public ChatColor getColor() {
-		return null;
-	}
+                    if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
+                        ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
+                        ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
+                    }
+                }
 
-	@Override
-	public ChatColor getExtraColor() {
-		return null;
-	}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    @Override
+    public String verify(List<String> args) {
+        String error = "";
+        String launch = "LAUNCH {projectileType} [angle rotation vertical] [angle rotation horizontal]";
+        if (args.size() < 1) error = notEnoughArgs + launch;
+
+        return error;
+    }
+
+    @Override
+    public List<String> getNames() {
+        List<String> names = new ArrayList<>();
+        names.add("LAUNCH");
+        return names;
+    }
+
+    @Override
+    public String getTemplate() {
+        return "LAUNCH {projectileType} [angle rotation y] [angle rotation z]";
+    }
+
+    @Override
+    public ChatColor getColor() {
+        return null;
+    }
+
+    @Override
+    public ChatColor getExtraColor() {
+        return null;
+    }
 }

@@ -44,6 +44,7 @@ public class CooldownsHandler implements Listener {
 		Player p = e.getPlayer();
 
 		List<Cooldown> cooldowns = new ArrayList<>(CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId()));
+        if(cooldowns.isEmpty()) return;
 		
 		Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
             CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
