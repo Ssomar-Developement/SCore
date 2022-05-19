@@ -254,6 +254,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 		return false;
 	}
 
+	@Override
+	public int getMaxSObjectsLimit() {
+		return Integer.MAX_VALUE;
+	}
+
 	public CommandsClass getCommandClass() {
 		return commandClass;
 	}
