@@ -1,8 +1,8 @@
 package com.ssomar.testRecode.features.types;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.NTools;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
@@ -24,12 +24,12 @@ import java.util.Optional;
 import static com.ssomar.score.menu.conditions.RequestMessage.space;
 
 @Getter
-public class ColoredStringFeature extends FeatureAbstract<Optional<String>, ColoredStringFeature> implements FeatureRequireOneMessageInEditor {
+public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeature> implements FeatureRequireOneMessageInEditor {
 
-    private Optional<String> value;
-    private Optional<String> defaultValue;
+    private Optional<Double> value;
+    private Optional<Double> defaultValue;
 
-    public ColoredStringFeature(FeatureParentInterface parent, String name, Optional<String> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public DoubleFeature(FeatureParentInterface parent, String name, Optional<Double> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         reset();
@@ -37,10 +37,20 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        String valueStr = config.getString(getName(), "");
-        if(valueStr.isEmpty()) value = Optional.empty();
-        else value = Optional.of(valueStr);
-        return new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+        String valueStr = config.getString(getName(), "NULL");
+        Optional<Double> valuePotential = NTools.getDouble(valueStr);
+        if(valuePotential.isPresent()) {
+            this.value = valuePotential;
+        }
+        else {
+            errors.add("&cERROR, Couldn't load the double value of " + getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
+            if (defaultValue.isPresent()) {
+                this.value = defaultValue;
+            }
+            else this.value = Optional.empty();
+        }
+        return errors;
     }
 
     @Override
@@ -49,12 +59,12 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     }
 
     @Override
-    public Optional<String> getValue() {
+    public Optional<Double> getValue() {
         return value;
     }
 
     @Override
-    public ColoredStringFeature initItemParentEditor(GUI gui, int slot) {
+    public DoubleFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
@@ -66,20 +76,18 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if(value.isPresent()) gui.updateActually(getEditorName(), getValue().get(), true);
-        else gui.updateActually(getEditorName(), "&cEMPTY STRING", true);
+        if(value.isPresent()) gui.updateDouble(getEditorName(), getValue().get());
+        else gui.updateDouble(getEditorName(), 0);
     }
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        String valueStr = ((GUI)manager.getCache().get(player)).getActuallyWithColor(getEditorName());
-        if(valueStr.isEmpty()) value = Optional.empty();
-        else value = Optional.of(valueStr);
+        value = Optional.of(((GUI) manager.getCache().get(player)).getDouble(getEditorName()));
     }
 
     @Override
-    public ColoredStringFeature clone() {
-        return new ColoredStringFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+    public DoubleFeature clone() {
+        return new DoubleFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
     }
 
     @Override
@@ -94,15 +102,15 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         editor.closeInventory();
         space(editor);
 
-        TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter a string or &aedit &athe &aactual: "));
+        TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter an integer or &aedit &athe &aactual: "));
 
         TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI)manager.getCache().get(editor)).getActuallyWithColor(getEditorName()))));
-        edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current string")).create()));
+        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI)manager.getCache().get(editor)).getActually(getEditorName()))));
+        edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current integer")).create()));
 
         TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));
         newName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "Type the new string here.."));
-        newName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&aClick here to set new string")).create()));
+        newName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&aClick here to set new integer")).create()));
 
         message.addExtra(new TextComponent(" "));
         message.addExtra(edit);
@@ -115,14 +123,14 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
-        return Optional.empty();
+        Optional<Double> verify = NTools.getDouble(StringConverter.decoloredString(message).trim());
+        if(verify.isPresent()) return Optional.empty();
+        else return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a double"));
     }
 
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
-        String valueStr = message;
-        if(valueStr.isEmpty()) value = Optional.empty();
-        else value = Optional.of(valueStr);
+        this.value = NTools.getDouble(StringConverter.decoloredString(message).trim());
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 }

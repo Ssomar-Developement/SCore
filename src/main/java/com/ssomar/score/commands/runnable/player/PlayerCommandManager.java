@@ -35,7 +35,6 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new FlyOff());
 		commands.add(new SetBlock());
 		commands.add(new ReplaceBlock());
-		commands.add(new ParticleCommand());
 		commands.add(new CustomDash1());
 		commands.add(new ProjectileCustomDash1());
 		commands.add(new FrontDash());
@@ -44,6 +43,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new UnsafeTeleportOnCursor());
 		commands.add(new WorldTeleport());
 		commands.add(new SpawnEntityOnCursor());
+		commands.add(DisableFlyActivation.getInstance());
 		/* DAMAGE_RESISTANCE MUST BE BEFORE DAMAGE */
 		commands.add(DamageBoost.getInstance());
 		commands.add(DamageResistance.getInstance());
@@ -88,6 +88,7 @@ public class PlayerCommandManager implements CommandManager{
 		if(!SCore.is1v11Less()) {
 			commands.add(new StunEnable());
 			commands.add(new StunDisable());
+			commands.add(new ParticleCommand());
 		}
 		commands.add(XpBoost.getInstance());
 

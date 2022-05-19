@@ -3,10 +3,7 @@ package com.ssomar.score.events;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
-import com.ssomar.score.commands.runnable.player.events.DamageBoostEvent;
-import com.ssomar.score.commands.runnable.player.events.DamageResistanceEvent;
-import com.ssomar.score.commands.runnable.player.events.StunEvent;
-import com.ssomar.score.commands.runnable.player.events.XPBoostEvent;
+import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
 import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
@@ -43,6 +40,10 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new KeepCustomFlyEvent(), main);
 
 		main.getServer().getPluginManager().registerEvents(new XPBoostEvent(), main);
+
+		main.getServer().getPluginManager().registerEvents(new DisableFlyActivationEvent(), main);
+
+		main.getServer().getPluginManager().registerEvents(PlaceholderLastDamageDealtEvent.getInstance(), main);
 
 		main.getServer().getPluginManager().registerEvents(new DamageResistanceEvent(), main);
 

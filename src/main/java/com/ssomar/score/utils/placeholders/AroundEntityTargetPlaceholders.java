@@ -26,6 +26,7 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 	private String aroundTargetYInt = "";
 	private String aroundTargetZInt = "";
 	private String aroundTargetWorld = "";
+	private double aroundTargetHealth;
 	private double aroundTargetMaxHealth;
 
 
@@ -51,8 +52,12 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 			if(entity instanceof LivingEntity){
 				LivingEntity lE = (LivingEntity) entity;
 				this.aroundTargetMaxHealth = lE.getMaxHealth();
+				this.aroundTargetHealth = lE.getHealth();
 			}
-			else this.aroundTargetMaxHealth = -1;
+			else{
+				this.aroundTargetMaxHealth = -1;
+				this.aroundTargetHealth = -1;
+			}
 		}
 	}
 	
@@ -71,6 +76,7 @@ public class AroundEntityTargetPlaceholders extends PlaceholdersInterface implem
 			toReplace = toReplace.replaceAll("%around_target_world%", aroundTargetWorld);
 			toReplace = toReplace.replaceAll("%around_target_world_lower%", aroundTargetWorld.toLowerCase());
 			if(aroundTargetMaxHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%around_target_max_health%", aroundTargetMaxHealth+"", false);
+			if(aroundTargetHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%around_target_health%", aroundTargetHealth+"", false);
 		}
 		
 		return toReplace;

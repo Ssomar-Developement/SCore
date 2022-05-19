@@ -4,6 +4,10 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -54,13 +58,19 @@ public abstract class NewGUIManager<T extends GUI> {
 
 			interact.msgInfos = msgInfos;
 
-			if (interact.name.contains("Reset")) {
+			if (interact.name.equals(StringConverter.deconvertColor(GUI.RESET))) {
 				reset(interact);
-			} else if (interact.name.contains("Exit")) {
+			} else if (interact.name.equals(StringConverter.deconvertColor(GUI.EXIT))) {
 				interact.player.closeInventory();
-			} else if (interact.name.contains("Save")) {
+			} else if (interact.name.equals(StringConverter.deconvertColor(GUI.SAVE))) {
 				save(interact);
-			} else {
+			}
+			else if (interact.name.equals(StringConverter.deconvertColor(GUI.NEXT_PAGE))) {
+				nextPage(interact);
+			}
+			else if (interact.name.equals(StringConverter.deconvertColor(GUI.PREVIOUS_PAGE))) {
+				previousPage(interact);
+			}else {
 				if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.SHIFT_RIGHT)) {
 					if (click.equals(ClickType.SHIFT_LEFT)) if (this.shiftLeftClicked(interact)) return;
 					else if (this.shiftRightClicked(interact)) return;
@@ -103,11 +113,15 @@ public abstract class NewGUIManager<T extends GUI> {
 
 	public abstract void reset(NewInteractionClickedGUIManager<T> interact);
 
+	public abstract void nextPage(NewInteractionClickedGUIManager<T> interact);
+
+	public abstract void previousPage(NewInteractionClickedGUIManager<T> interact);
+
 	public abstract void save(NewInteractionClickedGUIManager<T> interact);
 
 	@SuppressWarnings("deprecation")
 	public void showCalculationGUI(Player p, String variable, String current) {
-		/*p.sendMessage(StringConverter.coloredString("&8➤ &7&oReplace {number} by the number of your choice !"));
+		p.sendMessage(StringConverter.coloredString("&8➤ &7&oReplace {number} by the number of your choice !"));
 		TextComponent message = new TextComponent( StringConverter.coloredString("&8➤ &7Choose an option: "));
 
 		TextComponent edit = new TextComponent( StringConverter.coloredString("&e&l[EDIT]"));
@@ -153,7 +167,7 @@ public abstract class NewGUIManager<T extends GUI> {
 		message.addExtra(new TextComponent(" "));
 		message.addExtra(noC);
 
-		p.spigot().sendMessage(message);*/
+		p.spigot().sendMessage(message);
 	}
 
 	public void deleteLine(String message, Player p) {

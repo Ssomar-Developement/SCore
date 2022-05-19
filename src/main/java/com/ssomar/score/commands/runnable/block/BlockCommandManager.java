@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.block.commands.*;
 import org.bukkit.ChatColor;
 
@@ -25,7 +26,6 @@ public class BlockCommandManager implements CommandManager{
 		references.add(new SetBlockPos());
 		references.add(new SetBlock());
 		references.add(new SetExecutableBlock());
-		references.add(new ParticleCommand());
 		references.add(new SendMessage());
 		references.add(new Explode());
 		references.add(new Break());
@@ -33,14 +33,20 @@ public class BlockCommandManager implements CommandManager{
 		references.add(new DropItem());
 		references.add(new DropExecutableItem());
 		references.add(new MineInCube());
-		references.add(new FarmInCube());
-		references.add(new FertilizeInCube());
 		references.add(new RemoveBlock());
 		references.add(new Around());
 		references.add(new MobAround());
 		references.add(new VeinBreaker());
 		references.add(new SilkSpawner());
 		references.add(new DrainInCube());
+		/* No BlockData in 1.12 and less */
+		if(!SCore.is1v12Less()) {
+			references.add(new FarmInCube());
+			references.add(new FertilizeInCube());
+		}
+		if(!SCore.is1v11Less()) {
+			references.add(new ParticleCommand());
+		}
 		this.commands = references;
 	}
 

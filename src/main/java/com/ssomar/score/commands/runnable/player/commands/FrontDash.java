@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SCore;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class FrontDash extends PlayerCommand{
 		}
 
 		Location pLoc = receiver.getLocation();
-		pLoc.setPitch(0);
+		if(SCore.is1v11Less() || !p.isGliding()) pLoc.setPitch(0);
 		Vector v = pLoc.getDirection();
 		v.multiply(amount);
 		if(customY != 0) {

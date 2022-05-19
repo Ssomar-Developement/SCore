@@ -13,5 +13,5 @@ public interface FeatureRequireOneMessageInEditor {
      * return an error if there is one **/
     Optional<String> verifyMessageReceived(String message);
 
-    void finishEditInEditor(Player editor, NewGUIManager guiManager);
+    void finishEditInEditor(Player editor, NewGUIManager manager, String message);
 }

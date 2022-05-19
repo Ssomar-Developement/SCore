@@ -24,6 +24,7 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 	private double entityY ;
 	private double entityZ ;
 	private String entityWorld = "";
+	private double entityHealth;
 	private double entityMaxHealth;
 
 	public void setEntityPlcHldr(UUID uuid) {
@@ -44,8 +45,12 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 			if(entity instanceof LivingEntity){
 				LivingEntity lE = (LivingEntity) entity;
 				this.entityMaxHealth = lE.getMaxHealth();
+				this.entityHealth = lE.getHealth();
 			}
-			else this.entityMaxHealth = -1;
+			else{
+				this.entityMaxHealth = -1;
+				this.entityHealth = -1;
+			}
 		}
 	}
 
@@ -67,6 +72,7 @@ public class EntityPlaceholders extends PlaceholdersInterface implements Seriali
 			toReplace = toReplace.replaceAll("%entity_world%", entityWorld);
 			toReplace = toReplace.replaceAll("%entity_world_lower%", entityWorld.toLowerCase());
 			if(entityMaxHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%entity_max_health%", entityMaxHealth+"", false);
+			if(entityHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%entity_health%", entityHealth+"", false);
 		}
 
 		return toReplace;

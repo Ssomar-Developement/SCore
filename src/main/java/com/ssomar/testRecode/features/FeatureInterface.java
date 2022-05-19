@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public interface FeatureInterface<T, Y> {
+public interface FeatureInterface<T, Y extends FeatureInterface> {
 
     /** @return The potential errors during that appear during the loading */
     List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading);
@@ -26,4 +26,6 @@ public interface FeatureInterface<T, Y> {
     void extractInfoFromParentEditor(NewGUIManager manager, Player player);
 
     void reset();
+
+    boolean requirePremium();
 }

@@ -11,6 +11,8 @@ public class NewInteractionClickedGUIManager<T> {
 	public T gui;
 	/* Item clicked name */
 	public String name;
+	public String decoloredName;
+	public String coloredDeconvertName;
 	public Player player;
 	public RequestMessageInfo msgInfos;
 	

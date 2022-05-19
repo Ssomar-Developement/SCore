@@ -15,4 +15,6 @@ public interface SPlugin {
 	Plugin getPlugin();
 	
 	boolean isLotOfWork();
+
+	int getMaxSObjectsLimit();
 }

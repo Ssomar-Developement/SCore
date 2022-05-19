@@ -1,15 +1,14 @@
 package com.ssomar.testRecode.features.required.level;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
+import com.ssomar.testRecode.features.types.IntegerFeature;
 import com.ssomar.testRecode.menu.NewGUIManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,15 +25,16 @@ import java.util.Optional;
 
 import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 
-@Getter@Setter
-public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel> implements RequiredPlayerInterface, FeatureWithHisOwnEditor<RequireLevelGUI, RequireLevelGUIManager>, FeatureParentInterface {
+@Getter
+@Setter
+public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequireLevelGUI, RequireLevelGUIManager>  implements RequiredPlayerInterface{
 
-    private Optional<Integer> level;
+    private IntegerFeature level;
     private ColoredStringFeature errorMessage;
     private BooleanFeature cancelEventIfError;
 
     public RequiredLevel(FeatureParentInterface parent) {
-        super(parent, "requiredLevel", "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL);
+        super(parent, "requiredLevel", "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
         reset();
     }
 
@@ -43,11 +43,10 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
         List<String> error = new ArrayList<>();
         if (config.contains("requiredLevel")) {
             if (!isPremiumLoading) {
-                error.add(plugin.getNameDesign()+" " + getParent().getParentInfo() + " REQUIRE PREMIUM: required Level is only in the premium version");
-            } else {
-                int levelConfig = config.getInt("requiredLevel", -1);
-                if (levelConfig > 0) level = Optional.of(levelConfig);
+                error.add(plugin.getNameDesign() + " " + getParent().getParentInfo() + " REQUIRE PREMIUM: required Level is only in the premium version");
+                return error;
             }
+            level.load(plugin, config, isPremiumLoading);
             errorMessage.load(plugin, config, isPremiumLoading);
             cancelEventIfError.load(plugin, config, isPremiumLoading);
         }
@@ -61,8 +60,8 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
 
     @Override
     public boolean verify(Player player, Event event) {
-        if (level.isPresent()) {
-            if (player.getLevel() < level.get()) {
+        if (level.getValue().isPresent()) {
+            if (player.getLevel() < level.getValue().get()) {
                 if (errorMessage.getValue().isPresent()) {
                     player.sendMessage(errorMessage.getValue().get());
                 }
@@ -77,7 +76,7 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
 
     @Override
     public void take(Player player) {
-       if(level.isPresent()) player.setLevel(player.getLevel() - level.get());
+        if (level.getValue().isPresent()) player.setLevel(player.getLevel() - level.getValue().get());
     }
 
     @Override
@@ -87,11 +86,11 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
 
     @Override
     public RequiredLevel initItemParentEditor(GUI gui, int slot) {
-        String [] finalDescription = new String[getEditorDescription().length + 1];
+        String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -101,18 +100,11 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
 
     }
 
-    @Override
-    public boolean isTheFeatureClickedParentEditor(String featureClicked) {
-        return false;
-    }
-
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-
+        return;
     }
-
-
 
 
     @Override
@@ -126,10 +118,9 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
 
     @Override
     public void reset() {
-        this.level = Optional.empty();
-        this.errorMessage = new ColoredStringFeature(getParent(), "requiredLevelMsg", "&cRequired level error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK);
-        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfInvalidRequiredLevel", false, "cancelEventIfInvalidRequiredLevel", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER);
-
+        this.level = new IntegerFeature(getParent(), "requiredLevel", Optional.of(0), "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
+        this.errorMessage = new ColoredStringFeature(getParent(), "requiredLevelMsg", Optional.of("&4&l>> &cError you don't have the required levels"), "&cRequired level error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false);
+        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfInvalidRequiredLevel", false, "cancelEventIfInvalidRequiredLevel", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false);
     }
 
     @Override
@@ -144,7 +135,7 @@ public class RequiredLevel extends FeatureAbstract<RequiredLevel, RequiredLevel>
 
     @Override
     public String getParentInfo() {
-        return getParent().getParentInfo();
+        return getParent().getParentInfo()+".(requiredLevel)";
     }
 
     @Override

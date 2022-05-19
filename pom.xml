@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.7.2.9</version>
+	<version>1.7.3.1</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -96,10 +96,10 @@
 								</relocation>
 							</relocations>
 						</configuration> -->
-						<configuration>
+						<!--<configuration>
 						<createDependencyReducedPom>false</createDependencyReducedPom>
-							<outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
-						</configuration>
+							<outputFile>C:\serveur local 1.18\plugins\SCore.jar</outputFile>
+						</configuration>-->
 					</execution>
 				</executions>
 			</plugin>
@@ -318,7 +318,7 @@
             <dependency>
                 <groupId>com.github.Ssomar-Developement</groupId>
                 <artifactId>SEvents</artifactId>
-				<version>44182ba224</version>
+				<version>main-08a329cb21-1</version>
                 <scope>compile</scope>
             </dependency>
 

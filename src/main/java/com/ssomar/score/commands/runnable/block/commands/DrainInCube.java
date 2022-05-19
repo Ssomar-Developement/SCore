@@ -18,7 +18,13 @@ public class DrainInCube extends BlockCommand {
 
 
         try {
-            int radius = Integer.parseInt(args.get(0));
+            String radiusString = args.get(0);
+            boolean byPassMaxRadius = false;
+            if(radiusString.contains("*")){
+               radiusString = radiusString.replace("*", "").trim();
+               byPassMaxRadius = true;
+            }
+            int radius = Integer.parseInt(radiusString);
 
             List<Material> whiteList = new ArrayList<>();
             if(args.size() <= 1) {
@@ -32,7 +38,7 @@ public class DrainInCube extends BlockCommand {
                 whiteList.add(Material.WATER);
             }
 
-            if (radius < 10) {
+            if (radius < 10 || byPassMaxRadius){
                 for (int y = -radius; y < radius + 1; y++) {
                     for (int x = -radius; x < radius + 1; x++) {
                         for (int z = -radius; z < radius + 1; z++) {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.entity.commands.*;
 import org.bukkit.ChatColor;
 
@@ -25,7 +26,6 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new TeleportPosition());
 		commands.add(new TeleportEntityToPlayer());
 		commands.add(new TeleportPlayerToEntity());
-		commands.add(new ParticleCommand());
 		commands.add(new SendMessage());
 		commands.add(new Kill());
 		commands.add(new ChangeTo());
@@ -47,6 +47,9 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new StunDisable());
 		commands.add(new StunDisable());
 		commands.add(new PlayerRideOnEntity());
+		if(!SCore.is1v11Less()) {
+			commands.add(new ParticleCommand());
+		}
 	}
 
 	/*

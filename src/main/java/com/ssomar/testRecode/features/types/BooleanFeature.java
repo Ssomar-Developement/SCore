@@ -21,8 +21,8 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     private boolean value;
     private boolean defaultValue;
 
-    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial) {
-        super(parent, name, editorName, editorDescription, editorMaterial);
+    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
     }
@@ -66,7 +66,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public BooleanFeature clone() {
-        return new BooleanFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial());
+        return new BooleanFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
     }
 
     @Override

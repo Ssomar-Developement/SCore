@@ -204,7 +204,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 				SCore.plugin.getServer().getLogger().info("["+NAME+"] PlotSquared hooked !");
 				hasPlotSquared = true;
 			}catch (NoClassDefFoundError e){
-				ExecutableBlocks.plugin.getServer().getLogger().severe("["+NAME+"] PlotSquared hooked BUT you haven't the good version ! (try to update it) !");
+				SCore.plugin.getServer().getLogger().severe("["+NAME+"] PlotSquared hooked BUT you haven't the good version ! (try to update it) !");
 				hasPlotSquared = false;
 			}
 		}

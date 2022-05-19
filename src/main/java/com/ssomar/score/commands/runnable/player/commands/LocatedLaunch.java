@@ -198,7 +198,7 @@ public class LocatedLaunch extends PlayerCommand{
 			}
 			else if(ProjectilesManager.getInstance().containsProjectileWithID(type)) {
 				SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
-				entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc,projectiles.get(type));
+				entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc,projectiles.get(projectile.getIdentifierType()));
 				projectile.executeTransformTheProjectile(entity, receiver);
 			}
 			else  entity = recLoc.getWorld().spawn(toLaunchLoc, Arrow.class);
