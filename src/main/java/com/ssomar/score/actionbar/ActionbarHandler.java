@@ -161,7 +161,6 @@ public class ActionbarHandler {
 		sp.setPlayerPlcHldr(p.getUniqueId());
 		String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_MESSAGE));
 		Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
-		
 	}
 	
 	public static ActionbarHandler getInstance() {

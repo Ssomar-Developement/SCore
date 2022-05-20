@@ -22,7 +22,6 @@ public class PlayerCommandManager implements CommandManager{
 	
 	public PlayerCommandManager() {
 		List<PlayerCommand> commands = new ArrayList<>();
-		commands.add(new ActionbarCommand());
 		commands.add(new Around());
 		commands.add(new MobAround());
 		commands.add(new SendBlankMessage());
@@ -78,17 +77,19 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new ModifyDurability());
 		commands.add(new ForceDrop());
 		commands.add(new CloseInventory());
-		commands.add(new GlacialFreeze());
 		commands.add(new GravityEnable());
 		commands.add(new GravityDisable());
-		commands.add(new OpenEnderchest());
+		commands.add(new CropsGrowthBoost());
 		commands.add(new OpenWorkbench());
 		commands.add(new MinecartBoost());
 		/* No EntityToggleGlideEvent in 1.11 -*/
 		if(!SCore.is1v11Less()) {
+			commands.add(new ActionbarCommand());
 			commands.add(new StunEnable());
 			commands.add(new StunDisable());
 			commands.add(new ParticleCommand());
+			commands.add(new GlacialFreeze());
+			commands.add(new OpenEnderchest());
 		}
 		commands.add(XpBoost.getInstance());
 

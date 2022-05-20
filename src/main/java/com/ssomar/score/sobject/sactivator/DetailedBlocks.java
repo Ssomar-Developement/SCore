@@ -4,6 +4,7 @@ package com.ssomar.score.sobject.sactivator;
 import java.io.Serializable;
 import java.util.*;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Cancellable;
@@ -20,6 +21,8 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private static final boolean DEBUG = true;
 	
 	private boolean cancelEventIfNotDetailedBlocks;
 	
@@ -40,7 +43,9 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 	public boolean verification(Material material, Optional<String> statesStrOpt) {
 		Map<String, String> states = new HashMap<>();
 		try {
+			SsomarDev.testMsg(">> verif statesStrOpt: "+statesStrOpt.isPresent(), DEBUG);
 			if(statesStrOpt.isPresent()) {
+				SsomarDev.testMsg(">> verif statesStr: "+statesStrOpt.get(), DEBUG);
 				String statesStr = statesStrOpt.get().toUpperCase();
 				if (statesStr.contains("[")) {
 					/* States are store like that TORCH[STATE1=VALUE1,STATE2=VALUE2] */
@@ -52,6 +57,7 @@ public class DetailedBlocks extends ArrayList<DetailedBlock> implements Serializ
 
 					for (String state : spliterStates) {
 						String[] spliterState = state.split("\\=");
+						SsomarDev.testMsg(">> spliterState: "+spliterState[0]+"="+spliterState[1], DEBUG);
 						states.put(spliterState[0], spliterState[1]);
 					}
 				}

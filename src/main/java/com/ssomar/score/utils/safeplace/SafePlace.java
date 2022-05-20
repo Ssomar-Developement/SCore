@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class SafePlace {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     public static void placeBlockWithEvent(@NotNull final Block block, @NotNull Material material, Optional<Map<String, String>> statesOpt, @Nullable final UUID playerUUID, boolean generatePlaceEvent, boolean verifSafePlace) {
 
@@ -71,21 +71,23 @@ public class SafePlace {
 
     public static boolean verifSafePlace(@NotNull final UUID playerUUID, @NotNull Block block){
 
-        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
+        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1", DEBUG);
 
         if(SCore.hasGriefPrevention) if(!GriefPreventionAPI.playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
 
-        // SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2");
+        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2", DEBUG);
 
         if(SCore.hasIridiumSkyblock) if(!IridiumSkyblockTool.playerCanPlaceIslandBlock(playerUUID, block.getLocation())) return false;
 
-        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
+        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3", DEBUG);
 
         if(SCore.hasLands) if(!new LandsIntegrationAPI(SCore.plugin).playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
 
-        //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
+        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4", DEBUG);
 
         if(SCore.hasWorldGuard) if(!WorldGuardAPI.playerCanPlaceInRegion(playerUUID, block.getLocation())) return false;
+
+        SsomarDev.testMsg("DEBUG SAFE BREAK CDT 5", DEBUG);
 
         if(SCore.hasResidence) if(!ResidenceAPI.playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
 

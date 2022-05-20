@@ -17,7 +17,7 @@ public class DamageResistance extends PlayerCommand{
 	private static DamageResistance instance;
 	@Getter
 	private Map<UUID, List<Double>> activeResistances;
-	private static final Boolean DEBUG = true;
+	private static final Boolean DEBUG = false;
 
 	public DamageResistance() {
 		activeResistances = new HashMap<>();
