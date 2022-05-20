@@ -28,9 +28,16 @@ public class SilkSpawner extends BlockCommand{
 
 	@Override
 	public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-		if(block.getType().equals(Material.SPAWNER)){
+
+		Material spawer;
+		if(SCore.is1v12Less()) {
+			spawer = Material.valueOf("MOB_SPAWNER");
+		}
+		else spawer = Material.SPAWNER;
+
+		if(block.getType().equals(spawer)){
 			CreatureSpawner cs = (CreatureSpawner)block.getState();
-			ItemStack spawner_to_give = new ItemStack(Material.SPAWNER);
+			ItemStack spawner_to_give = new ItemStack(spawer);
 			BlockStateMeta meta = (BlockStateMeta)spawner_to_give.getItemMeta();
 			CreatureSpawner csm = (CreatureSpawner)meta.getBlockState();
 			csm.setSpawnedType(cs.getSpawnedType());

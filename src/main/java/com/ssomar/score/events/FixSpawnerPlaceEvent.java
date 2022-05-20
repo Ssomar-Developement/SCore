@@ -25,10 +25,17 @@ public class FixSpawnerPlaceEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlaceEvent(BlockPlaceEvent e) {
         /* No Spawner type before the 1.14 */
-        if(SCore.is1v13Less()) return;
         Block block = e.getBlock();
         ItemStack is = e.getItemInHand();
-        if(is.getType().equals(Material.SPAWNER)){
+
+        Material spawer;
+        if(SCore.is1v12Less()) {
+            spawer = Material.valueOf("MOB_SPAWNER");
+        }
+        else spawer = Material.SPAWNER;
+
+
+        if(is.getType().equals(spawer)){
             CreatureSpawner cs = (CreatureSpawner)block.getState();
             BlockStateMeta meta = (BlockStateMeta)is.getItemMeta();
             CreatureSpawner csm = (CreatureSpawner)meta.getBlockState();

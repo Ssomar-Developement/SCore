@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerToggleFlightEvent;
 
 public class DisableFlyActivationEvent implements Listener{
 
-	private static final Boolean DEBUG = true;
+	private static final Boolean DEBUG = false;
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void playerToggleFlightEvent(PlayerToggleFlightEvent e) {

@@ -7,6 +7,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.projectiles.ProjectilesManager;
+import com.ssomar.score.projectiles.features.VelocityFeature;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -163,6 +164,7 @@ public class Launch extends PlayerCommand {
 
                 receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
 
+                double velocity = 1;
                 String type = args.get(0);
                 if (projectiles.containsKey(type)) {
                     entity = receiver.launchProjectile(projectiles.get(type));
@@ -170,6 +172,9 @@ public class Launch extends PlayerCommand {
                     SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
                     entity = receiver.launchProjectile(projectiles.get(projectile.getIdentifierType()));
                     projectile.executeTransformTheProjectile(entity, receiver);
+                    if(projectile.getProjectile() instanceof VelocityFeature) {
+                        velocity = ((VelocityFeature) projectile.getProjectile()).getVelocity();
+                    }
 
                 } else entity = receiver.launchProjectile(Arrow.class);
 
@@ -179,7 +184,7 @@ public class Launch extends PlayerCommand {
                         Location loc = receiver.getEyeLocation();
                         float pitch = loc.getPitch();
                         float yaw = loc.getYaw();
-                        SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
+                        //SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
                         float newPitch = (float) (pitch + rotationHorizontal);
                         float newYaw = (float) (yaw + rotationVertical);
                         if (newPitch > 90) newPitch = 90;
@@ -193,7 +198,7 @@ public class Launch extends PlayerCommand {
                                 newYaw = 180 + newYaw;
                             } else newYaw = 0;
                         }
-                        SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw);
+                        //SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw);
                         loc.setPitch(newPitch);
                         loc.setYaw(newYaw);
 
@@ -203,12 +208,12 @@ public class Launch extends PlayerCommand {
                         Vector v;
                         if (entity instanceof Fireball) {
                             Fireball fireball = (Fireball) entity;
-                            fireball.setDirection(eyeVector);
+                            fireball.setDirection(eyeVector.multiply(velocity));
                         } else if (entity instanceof DragonFireball) {
                             DragonFireball fireball = (DragonFireball) entity;
-                            fireball.setDirection(eyeVector);
+                            fireball.setDirection(eyeVector.multiply(velocity));
                         } else {
-                            entity.setVelocity(eyeVector);
+                            entity.setVelocity(eyeVector.multiply(velocity));
                         }
                         //SsomarDev.testMsg("rotation: "+ rotation);
                     }

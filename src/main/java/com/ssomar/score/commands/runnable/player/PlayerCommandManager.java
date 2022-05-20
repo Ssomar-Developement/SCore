@@ -43,6 +43,7 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new WorldTeleport());
 		commands.add(new SpawnEntityOnCursor());
 		commands.add(DisableFlyActivation.getInstance());
+		commands.add(DisableGlideActivation.getInstance());
 		/* DAMAGE_RESISTANCE MUST BE BEFORE DAMAGE */
 		commands.add(DamageBoost.getInstance());
 		commands.add(DamageResistance.getInstance());

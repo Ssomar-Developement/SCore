@@ -6,6 +6,7 @@ import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.StringConverter;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -14,10 +15,11 @@ import org.bukkit.entity.ShulkerBullet;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+@Getter
 public class VelocityFeature extends DecorateurCustomProjectiles {
 
-    double velocity;
-    boolean askVelocity;
+    private double velocity;
+    private boolean askVelocity;
 
     public VelocityFeature(CustomProjectile cProj){
         super.cProj = cProj;
