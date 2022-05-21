@@ -50,7 +50,10 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new Damage());
 		commands.add(new LaunchEntity());
 		commands.add(new Launch());
-		if(!SCore.is1v12Less()) commands.add(new LocatedLaunch());
+		if(!SCore.is1v12Less()){
+			commands.add(new LocatedLaunch());
+			commands.add(new CropsGrowthBoost());
+		}
 		commands.add(new Burn());
 		commands.add(new Jump());
 		commands.add(new RemoveBurn());
@@ -80,7 +83,6 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new CloseInventory());
 		commands.add(new GravityEnable());
 		commands.add(new GravityDisable());
-		commands.add(new CropsGrowthBoost());
 		commands.add(new OpenWorkbench());
 		commands.add(new MinecartBoost());
 		/* No EntityToggleGlideEvent in 1.11 -*/

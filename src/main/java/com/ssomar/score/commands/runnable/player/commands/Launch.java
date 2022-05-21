@@ -6,9 +6,12 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.events.PlayerCustomLaunchProjectileEvent;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.features.VelocityFeature;
 import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.sevents.events.player.click.left.PlayerLeftClickEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -222,6 +225,9 @@ public class Launch extends PlayerCommand {
                         ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
                         ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
                     }
+
+                    PlayerCustomLaunchProjectileEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchProjectileEvent(receiver, (Projectile) entity);
+                    Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
                 }
 
             } catch (Exception e) {
