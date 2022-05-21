@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.player.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -50,6 +52,9 @@ public class LaunchEntity extends PlayerCommand{
 		v.multiply(speed);
 		if(!SCore.is1v13Less()) v.rotateAroundY(rotation);
 		entity.setVelocity(v);
+
+		PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
+		Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
 	}
 
 	@Override

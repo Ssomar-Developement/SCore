@@ -2,6 +2,7 @@ package com.ssomar.score.events;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.HandlerList;
@@ -9,16 +10,16 @@ import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class PlayerCustomLaunchProjectileEvent extends PlayerEvent {
+public class PlayerCustomLaunchEntityEvent extends PlayerEvent {
 
     private static final HandlerList handlers = new HandlerList();
     @Setter
     private boolean cancelEvent = false;
-    private final Projectile projectile;
+    private final Entity launchedEntity;
 
-    public PlayerCustomLaunchProjectileEvent(final Player player, final @NotNull Projectile projectile){
+    public PlayerCustomLaunchEntityEvent(final Player player, final @NotNull Entity launchedEntity){
         super(player);
-        this.projectile = projectile;
+        this.launchedEntity = launchedEntity;
     }
 
     /**
