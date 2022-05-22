@@ -98,16 +98,16 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
     }
 
     @Override
-    public void receiveMessage(Player p, String message, NewInteractionClickedGUIManager<T> interact) {
+    public void receiveMessage(NewInteractionClickedGUIManager<T> interact) {
         for(FeatureInterface feature : interact.gui.getFeature().getFeatures()){
             if(feature instanceof FeatureRequireOneMessageInEditor){
-                Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(message);
+                Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
                 if(potentialError.isPresent()){
-                    p.sendMessage(potentialError.get());
-                    ((FeatureRequireOneMessageInEditor) feature).askInEditor(p, this);
+                    interact.player.sendMessage(potentialError.get());
+                    ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, this);
                 }
                 else{
-                    ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(p, this, message);
+                    ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
                     interact.gui.openGUISync(interact.player);
                 }
             }

@@ -13,6 +13,7 @@ public class NewInteractionClickedGUIManager<T> {
 	public String name;
 	public String decoloredName;
 	public String coloredDeconvertName;
+	public String message;
 	public Player player;
 	public RequestMessageInfo msgInfos;
 	

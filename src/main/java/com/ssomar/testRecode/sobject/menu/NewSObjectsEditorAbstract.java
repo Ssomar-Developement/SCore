@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.util.*;
 
-public abstract class SObjectsEditorAbstract extends GUI {
+public abstract class NewSObjectsEditorAbstract extends GUI {
 
 	@Getter@Setter
 	private static int index;
@@ -31,7 +31,7 @@ public abstract class SObjectsEditorAbstract extends GUI {
 	private String path;
 	private NewSObjectManager manager;
 
-	public SObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager) {
+	public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager) {
 		super(title+PAGE+"1", 5*9);
 		this.sPlugin = sPlugin;
 		this.title = title;

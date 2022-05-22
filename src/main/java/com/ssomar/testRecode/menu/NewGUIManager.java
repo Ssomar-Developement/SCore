@@ -112,7 +112,15 @@ public abstract class NewGUIManager<T extends GUI> {
 
 	public abstract boolean rightClicked(NewInteractionClickedGUIManager<T> interact);
 
-	public abstract void receiveMessage(Player p, String message, NewInteractionClickedGUIManager<T> interact);
+	public void receiveMessage(Player p, String message) {
+		NewInteractionClickedGUIManager<T> interact = new NewInteractionClickedGUIManager<>();
+		interact.player = p;
+		interact.message = message;
+		interact.gui = cache.get(interact.player);
+		receiveMessage(interact);
+	}
+
+	public abstract void receiveMessage(NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void reset(NewInteractionClickedGUIManager<T> interact);
 
@@ -200,6 +208,7 @@ public abstract class NewGUIManager<T extends GUI> {
 			else currentWriting.get(p).set(nb, edition);
 		}
 	}
+
 
 	public void space(Player p) {
 		p.sendMessage("");

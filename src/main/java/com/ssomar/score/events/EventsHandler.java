@@ -7,6 +7,7 @@ import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
 import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
+import com.ssomar.testRecode.menu.NewEditorInteractionsListener;
 
 public class EventsHandler {
 	
@@ -60,6 +61,9 @@ public class EventsHandler {
 		main.getServer().getPluginManager().registerEvents(new RemoveCancelDamageEventMetadataTagEvent(), main);
 
 		main.getServer().getPluginManager().registerEvents(new TESTEVENT_TODELETE(), main);
+
+		/** Recode event **/
+		main.getServer().getPluginManager().registerEvents(new NewEditorInteractionsListener(), main);
 
 	}
 
