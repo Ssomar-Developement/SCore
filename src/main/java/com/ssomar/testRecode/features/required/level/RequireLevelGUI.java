@@ -8,15 +8,16 @@ public class RequireLevelGUI extends FeatureEditorInterface<RequiredLevel> {
     public RequiredLevel requiredLevel;
 
     public RequireLevelGUI(RequiredLevel requiredLevel) {
-        super("Required Level Editor", 3*9);
+        super("&lRequired Level Editor", 3*9);
         this.requiredLevel = requiredLevel.clone();
+        load();
     }
 
     @Override
     public void load() {
-        requiredLevel.getLevel().initItemParentEditor(this, 0).updateItemParentEditor(this);
-        requiredLevel.getCancelEventIfError().initItemParentEditor(this, 1).updateItemParentEditor(this);
-        requiredLevel.getErrorMessage().initItemParentEditor(this, 2).updateItemParentEditor(this);
+        requiredLevel.getLevel().initAndUpdateItemParentEditor(this, 0);
+        requiredLevel.getCancelEventIfError().initAndUpdateItemParentEditor(this, 1);
+        requiredLevel.getErrorMessage().initAndUpdateItemParentEditor(this, 2);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);

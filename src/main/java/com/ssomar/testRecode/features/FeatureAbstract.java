@@ -1,5 +1,6 @@
 package com.ssomar.testRecode.features;
 
+import com.ssomar.score.menu.GUI;
 import lombok.Getter;
 import org.bukkit.Material;
 
@@ -25,6 +26,10 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     @Override
     public boolean isTheFeatureClickedParentEditor(String featureClicked) {
         return featureClicked.contains(editorName);
+    }
+
+    public void initAndUpdateItemParentEditor(GUI gui, int slot) {
+        initItemParentEditor(gui, slot).updateItemParentEditor(gui);
     }
 
     public void save() {

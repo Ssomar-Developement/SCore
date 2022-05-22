@@ -11,6 +11,7 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
 
     public void startEditing(Player editor, Y feature) {
         cache.put(editor, buildEditor(feature));
+        cache.get(editor).openGUISync(editor);
     }
 
     public abstract T buildEditor(Y parent);
@@ -25,6 +26,10 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
                 }
                 else if(feature instanceof FeatureRequireOneMessageInEditor){
                     ((FeatureRequireOneMessageInEditor) feature).askInEditor(i.player, this);
+                }
+                else if(feature instanceof FeatureParentInterface){
+                    FeatureParentInterface parent = (FeatureParentInterface) feature;
+                    parent.openEditor(i.player);
                 }
                 return true;
             }
@@ -43,7 +48,7 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
     @Override
     public void back(NewInteractionClickedGUIManager<T> interact) {
         Y parent = interact.gui.getParent();
-        if(parent instanceof FeatureInterface){
+        if(parent instanceof FeatureAbstract){
             FeatureAbstract feature = (FeatureAbstract) parent;
             feature.getParent().openEditor(interact.player);
         }
