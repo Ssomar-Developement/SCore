@@ -60,7 +60,10 @@ public abstract class NewGUIManager<T extends GUI> {
 
 			if (interact.name.equals(StringConverter.deconvertColor(GUI.RESET))) {
 				reset(interact);
-			} else if (interact.name.equals(StringConverter.deconvertColor(GUI.EXIT))) {
+			}
+			else if (interact.name.equals(StringConverter.deconvertColor(GUI.BACK))) {
+				back(interact);
+			}else if (interact.name.equals(StringConverter.deconvertColor(GUI.EXIT))) {
 				interact.player.closeInventory();
 			} else if (interact.name.equals(StringConverter.deconvertColor(GUI.SAVE))) {
 				save(interact);
@@ -112,6 +115,8 @@ public abstract class NewGUIManager<T extends GUI> {
 	public abstract void receiveMessage(Player p, String message, NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void reset(NewInteractionClickedGUIManager<T> interact);
+
+	public abstract void back(NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void nextPage(NewInteractionClickedGUIManager<T> interact);
 

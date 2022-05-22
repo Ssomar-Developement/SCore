@@ -36,6 +36,8 @@ public abstract class GUI implements IGUI {
 
     public final static String EXIT = "&4&l▶ &cExit";
 
+    public final static String BACK = "&4&l▶&c Back";
+
     public final static String SAVE = "&2&l✔ &aSave";
 
     public final static String RESET = "&4&l✘ &cReset";

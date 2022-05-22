@@ -3,6 +3,7 @@ package com.ssomar.testRecode.sobject;
 
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.testRecode.features.FeatureParentInterface;
+import com.ssomar.testRecode.sobject.sactivator.NewSActivator;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -18,12 +19,12 @@ public interface NewSObject extends FeatureParentInterface {
 
     String getPath();
 
-    List<NewSObject> getActivators();
+    List<NewSActivator> getActivators();
 
     ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
 
     @Nullable
-    SActivator getActivator(String actID);
+    NewSActivator getActivator(String actID);
 
     List<String> getDescription();
 }

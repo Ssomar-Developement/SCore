@@ -41,6 +41,13 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
     }
 
     @Override
+    public void back(NewInteractionClickedGUIManager<T> interact) {
+        Y featureInterface = interact.gui.getFeature();
+        FeatureParentInterface parentInterface = featureInterface.getParent();
+        parentInterface.openEditor(interact.player);
+    }
+
+    @Override
     public boolean noShiftclicked(NewInteractionClickedGUIManager<T> i) {
         return false;
     }
@@ -113,5 +120,6 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
         FeatureParentInterface parentInterface = featureInterface.getParent();
         featureInterface.save(parentInterface.getConfigurationSection());
         parentInterface.reload();
+        back(interact);
     }
 }

@@ -19,7 +19,7 @@ public class RequireLevelGUI extends FeatureEditorInterface<RequiredLevel> {
         requiredLevel.getErrorMessage().initItemParentEditor(this, 2).updateItemParentEditor(this);
 
         // Back
-        createItem(RED, 	1, 18, "&4&l▶&c Back", false, false);
+        createItem(RED, 	1, 18, GUI.BACK, false, false);
 
         // Reset menu
         createItem(ORANGE, 			1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");

@@ -95,6 +95,11 @@ public class SObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstract>
 	}
 
 	@Override
+	public void back(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
+
+	}
+
+	@Override
 	public void nextPage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 		interact.gui.goNextPage();
 	}
