@@ -1,8 +1,8 @@
 package com.ssomar.testRecode.editor;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.testRecode.features.required.level.RequireLevelGUI;
-import com.ssomar.testRecode.features.required.level.RequireLevelGUIManager;
+import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUI;
+import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUIManager;
 import com.ssomar.testRecode.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.testRecode.sobject.menu.NewSObjectsManagerEditor;
 import org.bukkit.entity.Player;

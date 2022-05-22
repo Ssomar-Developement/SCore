@@ -1,4 +1,4 @@
-package com.ssomar.testRecode.features.required.level;
+package com.ssomar.testRecode.features.custom.required.level;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.editor.FeatureEditorInterface;

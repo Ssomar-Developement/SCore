@@ -1,0 +1,120 @@
+package com.ssomar.testRecode.features.custom.drop;
+
+import com.ssomar.score.SCore;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.features.FeatureInterface;
+import com.ssomar.testRecode.features.FeatureParentInterface;
+import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.testRecode.features.custom.required.level.RequiredLevel;
+import com.ssomar.testRecode.features.types.BooleanFeature;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter @Setter
+public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeatures, DropFeaturesEditor, DropFeaturesEditorManager> {
+
+    private BooleanFeature glowDrop;
+    private BooleanFeature displayNameDrop;
+
+    public DropFeatures(FeatureParentInterface parent) {
+        super(parent, "Drop features", "Drop features", new String[]{"&7&oThe drop features"}, Material.ANVIL, false);
+        reset();
+    }
+
+    @Override
+    public void reset() {
+        this.glowDrop = new BooleanFeature(getParent(), "glowDrop", false, "Glow drop", new String[]{"&7&oGlow drop"}, Material.LEVER, false);
+        this.displayNameDrop = new BooleanFeature(getParent(), "displayNameDrop", false, "Display custom name", new String[]{"&7&oDisplay custom name above the item"}, Material.LEVER, false);
+    }
+
+    @Override
+    public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
+        List<String> error = new ArrayList<>();
+        glowDrop.load(plugin, config, isPremiumLoading);
+        if(glowDrop.getValue() && SCore.is1v11Less()) {
+            error.add(plugin.getNameDesign() + " " + getParent().getParentInfo() + " glowDrop is not supported in 1.11, 1.10, 1.9, 1.8 !");
+            glowDrop.setValue(false);
+        }
+        displayNameDrop.load(plugin, config, isPremiumLoading);
+
+        return error;
+    }
+
+    @Override
+    public void save(ConfigurationSection config) {
+
+    }
+
+    @Override
+    public DropFeatures getValue() {
+        return this;
+    }
+
+    @Override
+    public DropFeatures initItemParentEditor(GUI gui, int slot) {
+        String[] finalDescription = new String[getEditorDescription().length + 1];
+        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        return this;
+    }
+
+    @Override
+    public void updateItemParentEditor(GUI gui) {
+
+    }
+
+    @Override
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
+
+    }
+
+    @Override
+    public DropFeatures clone() {
+        DropFeatures dropFeatures = new DropFeatures(getParent());
+        dropFeatures.setGlowDrop(glowDrop.clone());
+        dropFeatures.setDisplayNameDrop(displayNameDrop.clone());
+        return dropFeatures;
+    }
+
+    @Override
+    public List<FeatureInterface> getFeatures() {
+        return null;
+    }
+
+    @Override
+    public String getParentInfo() {
+        return null;
+    }
+
+    @Override
+    public ConfigurationSection getConfigurationSection() {
+        return null;
+    }
+
+    @Override
+    public void reload() {
+
+    }
+
+    @Override
+    public void openBackEditor(@NotNull Player player) {
+
+    }
+
+    @Override
+    public void openEditor(@NotNull Player player) {
+
+    }
+
+}

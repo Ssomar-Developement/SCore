@@ -15,6 +15,10 @@ public interface FeatureInterface<T, Y extends FeatureInterface> {
 
     void save(ConfigurationSection config);
 
+    String getName();
+
+    String getEditorName();
+
     T getValue();
 
     Y initItemParentEditor(GUI gui, int slot);

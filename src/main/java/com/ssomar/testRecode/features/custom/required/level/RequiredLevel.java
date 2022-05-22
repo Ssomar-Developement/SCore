@@ -1,11 +1,11 @@
-package com.ssomar.testRecode.features.required.level;
+package com.ssomar.testRecode.features.custom.required.level;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
-import com.ssomar.testRecode.features.required.RequiredPlayerInterface;
+import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
 import com.ssomar.testRecode.features.types.IntegerFeature;
@@ -35,7 +35,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     private BooleanFeature cancelEventIfError;
 
     public RequiredLevel(FeatureParentInterface parent) {
-        super(parent, "requiredLevel", "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
+        super(parent, "requiredLevel", "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, true);
         reset();
     }
 
@@ -111,8 +111,8 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public RequiredLevel clone() {
         RequiredLevel requiredLevel = new RequiredLevel(getParent());
-        requiredLevel.setLevel(level);
-        requiredLevel.setErrorMessage(errorMessage);
+        requiredLevel.setLevel(level.clone());
+        requiredLevel.setErrorMessage(errorMessage.clone());
         requiredLevel.setCancelEventIfError(cancelEventIfError.clone());
         return requiredLevel;
     }
@@ -120,7 +120,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public void reset() {
         this.level = new IntegerFeature(getParent(), "requiredLevel", Optional.of(0), "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
-        this.errorMessage = new ColoredStringFeature(getParent(), "requiredLevelMsg", Optional.of("&4&l>> &cError you don't have the required levels"), "&cRequired level error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false);
+        this.errorMessage = new ColoredStringFeature(getParent(), "requiredLevelMsg", Optional.of("&4&l>> &cError you don't have the required levels"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false);
         this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfInvalidRequiredLevel", false, "cancelEventIfInvalidRequiredLevel", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false);
     }
 
@@ -136,7 +136,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return Arrays.asList(errorMessage, cancelEventIfError);
+        return Arrays.asList(level, errorMessage, cancelEventIfError);
     }
 
     @Override

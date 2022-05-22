@@ -1,5 +1,6 @@
 package com.ssomar.testRecode.features.editor;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.testRecode.features.*;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.editor.NewInteractionClickedGUIManager;
@@ -21,10 +22,12 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
 
         for(FeatureInterface feature : i.gui.getParent().getFeatures()){
             if(feature.isTheFeatureClickedParentEditor(i.name)){
+                //SsomarDev.testMsg("Feature clicked: " + feature.getName());
                 if(feature instanceof FeatureRequireOnlyClicksInEditor){
                     ((FeatureRequireOnlyClicksInEditor) feature).clickParentEditor(i.player, this);
                 }
                 else if(feature instanceof FeatureRequireOneMessageInEditor){
+                    //SsomarDev.testMsg("FeatureRequireOneMessageInEditor");
                     ((FeatureRequireOneMessageInEditor) feature).askInEditor(i.player, this);
                 }
                 else if(feature instanceof FeatureParentInterface){
@@ -109,14 +112,15 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
     public void receiveMessage(NewInteractionClickedGUIManager<T> interact) {
         for(FeatureInterface feature : interact.gui.getParent().getFeatures()){
             if(feature instanceof FeatureRequireOneMessageInEditor){
-                Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
-                if(potentialError.isPresent()){
-                    interact.player.sendMessage(potentialError.get());
-                    ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, this);
-                }
-                else{
-                    ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
-                    interact.gui.openGUISync(interact.player);
+                if(feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                    Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
+                    if (potentialError.isPresent()) {
+                        interact.player.sendMessage(potentialError.get());
+                        ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, this);
+                    } else {
+                        ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
+                        interact.gui.openGUISync(interact.player);
+                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.ssomar.testRecode.features.required;
+package com.ssomar.testRecode.features.custom.required;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
