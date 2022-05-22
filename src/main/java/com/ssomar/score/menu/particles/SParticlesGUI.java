@@ -29,7 +29,7 @@ public class SParticlesGUI extends GUIAbstract {
 		this.sParticles = sParticles;
 		this.guiFrom = guiFrom;
 		setIndex(1);
-		loadItems(p);
+		load();
 	}
 
 	// other pages
@@ -38,10 +38,23 @@ public class SParticlesGUI extends GUIAbstract {
 		this.sParticles = sParticles;
 		this.guiFrom = guiFrom;
 		setIndex(index);
-		loadItems(p);
+		load();
 	}
 
-	public void loadItems(Player p) {
+	public static int getIndex() {
+		return index;
+	}
+
+	public static void setIndex(int index) {
+		SParticlesGUI.index = index;
+	}
+
+	@Override
+	public void reloadGUI() {
+		this.load();
+	}
+
+	public void load() {
 		List<SParticle> particles = sParticles.getParticles();
 		int i = 0;
 		int total = 0;
@@ -78,7 +91,7 @@ public class SParticlesGUI extends GUIAbstract {
 			total++;
 
 		}
-	
+
 		//other button
 		if(total>27 && index*27<total) createItem(PURPLE, 	1 , 44, 	"&5&l▶ &dNext page ", 	false, false);
 
@@ -87,23 +100,5 @@ public class SParticlesGUI extends GUIAbstract {
 		createItem(RED, 	1 , 36, 	"&4&l▶ &cBack", 	false, false);
 
 		createItem(GREEN, 	1 , 40, 	"&2&l✚ &aNew Particle", 	false, false);
-
-		//Last Edit
-		if(p != null && SParticlesGUIManager.getInstance().getCache().containsKey(p)) {
-			createItem(BLUE, 							1 , 39, "&3&l✦ &bReturn to your last edit", 		false, false, 	"", "&7&oClick here to continue" , "&7&oyour last edit" );
-		}
-	}
-
-	public static int getIndex() {
-		return index;
-	}
-
-	public static void setIndex(int index) {
-		SParticlesGUI.index = index;
-	}
-
-	@Override
-	public void reloadGUI() {
-		this.loadItems(null);
 	}
 }

@@ -1,13 +1,12 @@
 package com.ssomar.testRecode.features.types;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOneMessageInEditor;
-import com.ssomar.testRecode.menu.NewGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

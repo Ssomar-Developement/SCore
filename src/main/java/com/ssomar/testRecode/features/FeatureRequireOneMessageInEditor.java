@@ -1,6 +1,6 @@
 package com.ssomar.testRecode.features;
 
-import com.ssomar.testRecode.menu.NewGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;

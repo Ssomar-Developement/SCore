@@ -1,12 +1,11 @@
 package com.ssomar.testRecode.features.types;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.testRecode.menu.NewGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

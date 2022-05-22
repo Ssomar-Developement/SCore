@@ -1,27 +1,24 @@
 package com.ssomar.testRecode.features.editor;
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.*;
-import com.ssomar.testRecode.features.required.level.RequireLevelGUI;
-import com.ssomar.testRecode.features.required.level.RequiredLevel;
-import com.ssomar.testRecode.menu.NewGUIManager;
-import com.ssomar.testRecode.menu.NewInteractionClickedGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.editor.NewInteractionClickedGUIManager;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInterface<Y>, Y extends FeatureWithHisOwnEditor> extends NewGUIManager<T> {
+public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
 
     public void startEditing(Player editor, Y feature) {
         cache.put(editor, buildEditor(feature));
     }
 
-    public abstract T buildEditor(Y feature);
+    public abstract T buildEditor(Y parent);
 
     @Override
     public boolean allClicked(NewInteractionClickedGUIManager<T> i) {
 
-        for(FeatureInterface feature : i.gui.getFeature().getFeatures()){
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
             if(feature.isTheFeatureClickedParentEditor(i.name)){
                 if(feature instanceof FeatureRequireOnlyClicksInEditor){
                     ((FeatureRequireOnlyClicksInEditor) feature).clickParentEditor(i.player, this);
@@ -37,14 +34,20 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
 
     @Override
     public void reset(NewInteractionClickedGUIManager<T> interact) {
-        interact.gui.getFeature().reset();
+        for(FeatureInterface feature : interact.gui.getParent().getFeatures()){
+           feature.reset();
+        }
+        interact.gui.load();
     }
 
     @Override
     public void back(NewInteractionClickedGUIManager<T> interact) {
-        Y featureInterface = interact.gui.getFeature();
-        FeatureParentInterface parentInterface = featureInterface.getParent();
-        parentInterface.openEditor(interact.player);
+        Y parent = interact.gui.getParent();
+        if(parent instanceof FeatureInterface){
+            FeatureAbstract feature = (FeatureAbstract) parent;
+            feature.getParent().openEditor(interact.player);
+        }
+        else parent.openBackEditor(interact.player);
     }
 
     @Override
@@ -99,7 +102,7 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
 
     @Override
     public void receiveMessage(NewInteractionClickedGUIManager<T> interact) {
-        for(FeatureInterface feature : interact.gui.getFeature().getFeatures()){
+        for(FeatureInterface feature : interact.gui.getParent().getFeatures()){
             if(feature instanceof FeatureRequireOneMessageInEditor){
                 Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
                 if(potentialError.isPresent()){
@@ -116,10 +119,13 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
 
     @Override
     public void save(NewInteractionClickedGUIManager<T> interact) {
-        Y featureInterface = interact.gui.getFeature();
-        FeatureParentInterface parentInterface = featureInterface.getParent();
-        featureInterface.save(parentInterface.getConfigurationSection());
-        parentInterface.reload();
+        for(FeatureInterface feature : interact.gui.getParent().getFeatures()){
+            if(!(feature instanceof FeatureParentInterface)){
+                feature.extractInfoFromParentEditor(this, interact.player);
+            }
+        }
+        interact.gui.getParent().save();
+        interact.gui.getParent().reload();
         back(interact);
     }
 }

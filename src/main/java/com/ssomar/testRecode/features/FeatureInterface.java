@@ -2,7 +2,7 @@ package com.ssomar.testRecode.features;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.testRecode.menu.NewGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 

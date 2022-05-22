@@ -2,8 +2,8 @@ package com.ssomar.testRecode.sobject.menu;
 
 import com.ssomar.executableitems.configs.ingame.items.DefaultItemsGUI;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.testRecode.menu.NewGUIManager;
-import com.ssomar.testRecode.menu.NewInteractionClickedGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.editor.NewInteractionClickedGUIManager;
 import org.bukkit.entity.Player;
 
 public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbstract> {

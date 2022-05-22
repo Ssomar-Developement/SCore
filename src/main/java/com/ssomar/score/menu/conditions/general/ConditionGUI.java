@@ -32,32 +32,12 @@ public class ConditionGUI extends GUIAbstract {
         this.conditionsManager = conditionsManager;
         this.condition = condition;
         this.detail = detail;
-        this.loadTheGUI();
+        this.load();
     }
 
     @Override
     public void reloadGUI() {
-        this.loadTheGUI();
-    }
-
-    public void loadTheGUI() {
-        int i = 0;
-
-        i = createConditionItem(i);
-
-        i = createMessageItem(i);
-
-        createItem(Material.LEVER, 1, i, TITLE_COLOR + CANCEL_EVENT, false, false, "&a✎ Click here to change", "&7actually:");
-        updateBoolean(CANCEL_EVENT, condition.isErrorCancelEvent());
-
-        createItem(RED, 1, 18, "&4&l▶ &cBack to "+detail, false, false);
-
-        createItem(ORANGE, 1, 19, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall otpions to default");
-
-        createItem(GREEN, 1, 26, "&2&l✔ &aSave", false, false, "", "&a&oClick here to save", "&a&oyour modification of this condition");
-
-        createItem(Material.BOOK, 1, 24, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getId());
-        createItem(Material.BOOK, 1, 25, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
+        this.load();
     }
 
 
@@ -117,4 +97,23 @@ public class ConditionGUI extends GUIAbstract {
         else return msg;
     }
 
+    public void load() {
+        int i = 0;
+
+        i = createConditionItem(i);
+
+        i = createMessageItem(i);
+
+        createItem(Material.LEVER, 1, i, TITLE_COLOR + CANCEL_EVENT, false, false, "&a✎ Click here to change", "&7actually:");
+        updateBoolean(CANCEL_EVENT, condition.isErrorCancelEvent());
+
+        createItem(RED, 1, 18, "&4&l▶ &cBack to "+detail, false, false);
+
+        createItem(ORANGE, 1, 19, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall otpions to default");
+
+        createItem(GREEN, 1, 26, "&2&l✔ &aSave", false, false, "", "&a&oClick here to save", "&a&oyour modification of this condition");
+
+        createItem(Material.BOOK, 1, 24, COLOR_OBJECT_ID, false, false, "", "&7actually: &e" + this.getSObject().getId());
+        createItem(Material.BOOK, 1, 25, COLOR_ACTIVATOR_ID, false, false, "", "&7actually: &e" + this.getSAct().getID());
+    }
 }

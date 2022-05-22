@@ -135,6 +135,10 @@ public abstract class GUI implements IGUI {
         else LIGHTNING_ROD = Material.TRIPWIRE_HOOK;
     }
 
+    public void load() {
+
+    }
+
     public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
         ItemStack item = new ItemStack(material, amount);

@@ -15,7 +15,7 @@ public class RequireLevelGUIManager extends FeatureEditorManagerInterface<Requir
     }
 
     @Override
-    public RequireLevelGUI buildEditor(RequiredLevel feature) {
-        return new RequireLevelGUI(feature.clone());
+    public RequireLevelGUI buildEditor(RequiredLevel parent) {
+        return new RequireLevelGUI(parent.clone());
     }
 }

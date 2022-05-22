@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FeatureParentInterface {
 
@@ -17,5 +18,9 @@ public interface FeatureParentInterface {
     void reload();
 
     void openEditor(@NotNull Player player);
+
+    void openBackEditor(@NotNull Player player);
+
+    void save();
 
 }

@@ -9,7 +9,7 @@ import com.ssomar.testRecode.features.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
 import com.ssomar.testRecode.features.types.IntegerFeature;
-import com.ssomar.testRecode.menu.NewGUIManager;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -17,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,6 +127,11 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public void openEditor(Player player) {
         RequireLevelGUIManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public void openBackEditor(@NotNull Player player) {
+        return;
     }
 
     @Override

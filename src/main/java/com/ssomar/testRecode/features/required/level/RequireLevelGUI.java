@@ -12,8 +12,8 @@ public class RequireLevelGUI extends FeatureEditorInterface<RequiredLevel> {
         this.requiredLevel = requiredLevel.clone();
     }
 
-    public void fillTheGUI() {
-
+    @Override
+    public void load() {
         requiredLevel.getLevel().initItemParentEditor(this, 0).updateItemParentEditor(this);
         requiredLevel.getCancelEventIfError().initItemParentEditor(this, 1).updateItemParentEditor(this);
         requiredLevel.getErrorMessage().initItemParentEditor(this, 2).updateItemParentEditor(this);
@@ -29,7 +29,7 @@ public class RequireLevelGUI extends FeatureEditorInterface<RequiredLevel> {
     }
 
     @Override
-    public RequiredLevel getFeature() {
+    public RequiredLevel getParent() {
         return requiredLevel;
     }
 }

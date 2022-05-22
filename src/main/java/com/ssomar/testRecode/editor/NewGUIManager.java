@@ -1,4 +1,4 @@
-package com.ssomar.testRecode.menu;
+package com.ssomar.testRecode.editor;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
@@ -50,7 +50,7 @@ public abstract class NewGUIManager<T extends GUI> {
 	public void clicked(ItemStack item, NewInteractionClickedGUIManager<T> interact, ClickType click) {
 		if (item != null && item.hasItemMeta()) {
 			interact.cache = this.getCache();
-			interact.name = StringConverter.decoloredString(item.getItemMeta().getDisplayName());
+			interact.setName(item.getItemMeta().getDisplayName());
 			interact.gui = cache.get(interact.player);
 
 			RequestMessageInfo msgInfos = new RequestMessageInfo();
@@ -58,22 +58,25 @@ public abstract class NewGUIManager<T extends GUI> {
 
 			interact.msgInfos = msgInfos;
 
-			if (interact.name.equals(StringConverter.deconvertColor(GUI.RESET))) {
+			if (interact.coloredDeconvertName.equals(GUI.RESET)) {
 				reset(interact);
 			}
-			else if (interact.name.equals(StringConverter.deconvertColor(GUI.BACK))) {
+			else if (interact.coloredDeconvertName.equals(GUI.BACK)) {
 				back(interact);
-			}else if (interact.name.equals(StringConverter.deconvertColor(GUI.EXIT))) {
+			}
+			else if (interact.coloredDeconvertName.equals(GUI.EXIT)) {
 				interact.player.closeInventory();
-			} else if (interact.name.equals(StringConverter.deconvertColor(GUI.SAVE))) {
+			}
+			else if (interact.coloredDeconvertName.equals(GUI.SAVE)) {
 				save(interact);
 			}
-			else if (interact.name.equals(StringConverter.deconvertColor(GUI.NEXT_PAGE))) {
+			else if (interact.coloredDeconvertName.equals(GUI.NEXT_PAGE)) {
 				nextPage(interact);
 			}
-			else if (interact.name.equals(StringConverter.deconvertColor(GUI.PREVIOUS_PAGE))) {
+			else if (interact.coloredDeconvertName.equals(GUI.PREVIOUS_PAGE)) {
 				previousPage(interact);
-			}else {
+			}
+			else {
 				if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.SHIFT_RIGHT)) {
 					if (click.equals(ClickType.SHIFT_LEFT)) if (this.shiftLeftClicked(interact)) return;
 					else if (this.shiftRightClicked(interact)) return;

@@ -7,7 +7,7 @@ import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
 import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
-import com.ssomar.testRecode.menu.NewEditorInteractionsListener;
+import com.ssomar.testRecode.editor.NewEditorInteractionsListener;
 
 public class EventsHandler {
 	
