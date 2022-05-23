@@ -1,6 +1,10 @@
 package com.ssomar.testRecode.editor;
 
 import com.ssomar.score.menu.GUI;
+import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
+import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditorManager;
+import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
+import com.ssomar.testRecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUI;
 import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUIManager;
 import com.ssomar.testRecode.sobject.menu.NewSObjectsEditorAbstract;
@@ -66,6 +70,14 @@ public class NewEditorInteractionsListener implements Listener {
             RequireLevelGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof DropFeaturesEditor) {
+            DropFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof HidersEditor) {
+            HidersEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -80,6 +92,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (RequireLevelGUIManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequireLevelGUIManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (DropFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DropFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (HidersEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            HidersEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

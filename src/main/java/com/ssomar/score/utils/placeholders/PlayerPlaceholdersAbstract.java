@@ -158,7 +158,7 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_last_damage_dealt_int%", ((int) lastDamageTaken)+"", true);
 
             toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_pitch%", pitch+"", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"er_pitch_int%", ((int) pitch)+"", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_pitch_int%", ((int) pitch)+"", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_pitch_positive%", pitchPositive+"", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_pitch_positive_int%", ((int) pitchPositive)+"", false);
 

@@ -9,20 +9,25 @@ import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.custom.required.level.RequiredLevel;
 import com.ssomar.testRecode.features.types.BooleanFeature;
+import com.ssomar.testRecode.features.types.ChatColorFeature;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Getter @Setter
 public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeatures, DropFeaturesEditor, DropFeaturesEditorManager> {
 
     private BooleanFeature glowDrop;
+    private ChatColorFeature dropColor;
     private BooleanFeature displayNameDrop;
 
     public DropFeatures(FeatureParentInterface parent) {
@@ -33,6 +38,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     @Override
     public void reset() {
         this.glowDrop = new BooleanFeature(getParent(), "glowDrop", false, "Glow drop", new String[]{"&7&oGlow drop"}, Material.LEVER, false);
+        this.dropColor = new ChatColorFeature(getParent(), "glowDropColor", Optional.of(ChatColor.WHITE), "Glow color", new String[]{"&7&oGlow drop color"}, Material.REDSTONE, true);
         this.displayNameDrop = new BooleanFeature(getParent(), "displayNameDrop", false, "Display custom name", new String[]{"&7&oDisplay custom name above the item"}, Material.LEVER, false);
     }
 
@@ -44,6 +50,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
             error.add(plugin.getNameDesign() + " " + getParent().getParentInfo() + " glowDrop is not supported in 1.11, 1.10, 1.9, 1.8 !");
             glowDrop.setValue(false);
         }
+        dropColor.load(plugin, config, isPremiumLoading);
         displayNameDrop.load(plugin, config, isPremiumLoading);
 
         return error;
@@ -51,7 +58,9 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
 
     @Override
     public void save(ConfigurationSection config) {
-
+        glowDrop.save(config);
+        dropColor.save(config);
+        displayNameDrop.save(config);
     }
 
     @Override
@@ -83,23 +92,24 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     public DropFeatures clone() {
         DropFeatures dropFeatures = new DropFeatures(getParent());
         dropFeatures.setGlowDrop(glowDrop.clone());
+        dropFeatures.setDropColor(dropColor.clone());
         dropFeatures.setDisplayNameDrop(displayNameDrop.clone());
         return dropFeatures;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return null;
+        return new ArrayList<>(Arrays.asList(glowDrop, dropColor, displayNameDrop));
     }
 
     @Override
     public String getParentInfo() {
-        return null;
+        return getParent().getParentInfo();
     }
 
     @Override
     public ConfigurationSection getConfigurationSection() {
-        return null;
+        return getParent().getConfigurationSection();
     }
 
     @Override
@@ -109,12 +119,12 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
 
     @Override
     public void openBackEditor(@NotNull Player player) {
-
+        getParent().openEditor(player);
     }
 
     @Override
     public void openEditor(@NotNull Player player) {
-
+        DropFeaturesEditorManager.getInstance().startEditing(player, this);
     }
 
 }

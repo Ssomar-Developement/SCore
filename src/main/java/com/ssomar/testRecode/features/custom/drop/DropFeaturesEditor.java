@@ -17,7 +17,8 @@ public class DropFeaturesEditor extends FeatureEditorInterface<DropFeatures> {
     @Override
     public void load() {
         dropFeatures.getGlowDrop().initAndUpdateItemParentEditor(this, 0);
-        dropFeatures.getDisplayNameDrop().initAndUpdateItemParentEditor(this, 1);
+        dropFeatures.getDropColor().initAndUpdateItemParentEditor(this, 1);
+        dropFeatures.getDisplayNameDrop().initAndUpdateItemParentEditor(this, 2);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);
