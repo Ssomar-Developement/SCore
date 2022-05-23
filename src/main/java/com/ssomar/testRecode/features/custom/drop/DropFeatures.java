@@ -18,6 +18,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -110,6 +111,11 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     @Override
     public ConfigurationSection getConfigurationSection() {
         return getParent().getConfigurationSection();
+    }
+
+    @Override
+    public File getFile() {
+        return getParent().getFile();
     }
 
     @Override

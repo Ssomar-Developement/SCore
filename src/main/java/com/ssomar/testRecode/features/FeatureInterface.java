@@ -6,6 +6,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.List;
 
 public interface FeatureInterface<T, Y extends FeatureInterface> {
@@ -14,6 +15,8 @@ public interface FeatureInterface<T, Y extends FeatureInterface> {
     List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading);
 
     void save(ConfigurationSection config);
+
+    void writeInFile(ConfigurationSection config);
 
     String getName();
 

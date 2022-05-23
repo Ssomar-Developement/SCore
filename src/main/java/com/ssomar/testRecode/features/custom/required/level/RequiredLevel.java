@@ -19,6 +19,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +57,9 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void save(ConfigurationSection config) {
-
+        level.save(config);
+        errorMessage.save(config);
+        cancelEventIfError.save(config);
     }
 
     @Override
@@ -147,6 +150,11 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public ConfigurationSection getConfigurationSection() {
         return getParent().getConfigurationSection();
+    }
+
+    @Override
+    public File getFile() {
+        return getParent().getFile();
     }
 
     @Override

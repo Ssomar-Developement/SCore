@@ -1,8 +1,13 @@
 package com.ssomar.testRecode.features;
 
+import com.google.common.base.Charsets;
 import com.ssomar.score.menu.GUI;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.*;
 
 @Getter
 public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y> {
@@ -33,7 +38,24 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     }
 
     public void save() {
-        save(parent.getConfigurationSection());
+        ConfigurationSection config = parent.getConfigurationSection();
+        save(config);
+        writeInFile(config);
+    }
+
+    public void writeInFile(ConfigurationSection config) {
+        File file = parent.getFile();
+        try {
+            Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+            try {
+                writer.write(((FileConfiguration)config).saveToString());
+            } finally {
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

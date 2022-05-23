@@ -17,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +60,11 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
 
     @Override
     public void save(ConfigurationSection config) {
-
+        hideEnchantments.save(config);
+        hideUnbreakable.save(config);
+        hideAttributes.save(config);
+        hidePotionEffects.save(config);
+        hideUsage.save(config);
     }
 
     @Override
@@ -111,6 +116,11 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     @Override
     public ConfigurationSection getConfigurationSection() {
         return getParent().getConfigurationSection();
+    }
+
+    @Override
+    public File getFile() {
+        return getParent().getFile();
     }
 
     @Override
