@@ -6,6 +6,7 @@ import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.features.custom.hiders.Hiders;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -31,6 +32,13 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         this.value = config.getBoolean(getName(), this.defaultValue);
         return new ArrayList<>();
+    }
+
+    @Override
+    public BooleanFeature clone() {
+        BooleanFeature clone = new BooleanFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        clone.setValue(value);
+        return clone;
     }
 
     @Override
@@ -65,11 +73,6 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     }
 
     @Override
-    public BooleanFeature clone() {
-        return new BooleanFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
-    }
-
-    @Override
     public void reset() {
         this.value = defaultValue;
     }
@@ -77,5 +80,45 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     @Override
     public void clickParentEditor(Player editor, NewGUIManager manager) {
         ((GUI)manager.getCache().get(editor)).changeBoolean(getEditorName());
+    }
+
+    @Override
+    public boolean noShiftclicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean noShiftLeftclicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean noShiftRightclicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean shiftClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean shiftLeftClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean leftClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
+    @Override
+    public boolean rightClicked(Player editor, NewGUIManager manager) {
+        return false;
     }
 }

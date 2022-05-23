@@ -87,7 +87,9 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public IntegerFeature clone() {
-        return new IntegerFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        IntegerFeature clone = new IntegerFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        clone.value = value;
+        return clone;
     }
 
     @Override

@@ -120,7 +120,15 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
 
     @Override
     public void reload() {
-
+        for(FeatureInterface feature : getParent().getFeatures()) {
+            if(feature instanceof DropFeatures) {
+                DropFeatures dropFeatures = (DropFeatures) feature;
+                dropFeatures.setGlowDrop(glowDrop);
+                dropFeatures.setDropColor(dropColor);
+                dropFeatures.setDisplayNameDrop(displayNameDrop);
+                break;
+            }
+        }
     }
 
     @Override

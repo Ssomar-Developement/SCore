@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
-public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatColorFeature> implements FeatureRequireOnlyClicksInEditor {
+public class MaterialFeature extends FeatureAbstract<Optional<Material>, MaterialFeature> implements FeatureRequireOnlyClicksInEditor {
 
-    private Optional<ChatColor> value;
-    private Optional<ChatColor> defaultValue;
+    private Optional<Material> value;
+    private Optional<Material> defaultValue;
 
-    public ChatColorFeature(FeatureParentInterface parent, String name, Optional<ChatColor> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
@@ -38,13 +38,13 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(getName(), "NULL").toUpperCase();
         try {
-            value = Optional.ofNullable(ChatColor.valueOf(colorStr));
+            value = Optional.ofNullable(Material.valueOf(colorStr));
             if(requirePremium() && !isPremiumLoading) {
-                errors.add("&cERROR, Couldn't load the ChatColor value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
+                errors.add("&cERROR, Couldn't load the Material value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
                 value = Optional.empty();
             }
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the ChatColor value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> ChatColors available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/ChatColor.html");
+            errors.add("&cERROR, Couldn't load the Material value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
             value = Optional.empty();
         }
         return errors;
@@ -52,18 +52,18 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<ChatColor> value = getValue();
+        Optional<Material> value = getValue();
         if(value.isPresent()) config.set(getName(), value.get().name());
     }
 
     @Override
-    public Optional<ChatColor> getValue() {
+    public Optional<Material> getValue() {
         if(value.isPresent()) return value;
         else return defaultValue;
     }
 
     @Override
-    public ChatColorFeature initItemParentEditor(GUI gui, int slot) {
+    public MaterialFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
@@ -74,19 +74,19 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        Optional<ChatColor> value = getValue();
-        ChatColor finalValue = value.orElse(ChatColor.WHITE);
-        updateChatColor(finalValue, gui);
+        Optional<Material> value = getValue();
+        Material finalValue = value.orElse(Material.STONE);
+        updateMaterial(finalValue, gui);
     }
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        this.value = Optional.of(getChatColor( (GUI) manager.getCache().get(player)));
+        this.value = Optional.of(getMaterial( (GUI) manager.getCache().get(player)));
     }
 
     @Override
-    public ChatColorFeature clone() {
-        ChatColorFeature clone = new ChatColorFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+    public MaterialFeature clone() {
+        MaterialFeature clone = new MaterialFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
         clone.value = value;
         return clone;
     }
@@ -123,67 +123,81 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public boolean shiftLeftClicked(Player editor, NewGUIManager manager) {
-        return false;
+        Material material = getMaterial( (GUI) manager.getCache().get(editor));
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        updateMaterial(material, (GUI) manager.getCache().get(editor));
+        return true;
     }
 
     @Override
     public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
-        return false;
+        Material material = getMaterial( (GUI) manager.getCache().get(editor));
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        updateMaterial(material, (GUI) manager.getCache().get(editor));
+        return true;
     }
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        updateChatColor(nextChatColor(getChatColor( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateMaterial(nextMaterial(getMaterial( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        updateChatColor(prevChatColor(getChatColor( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateMaterial(prevMaterial(getMaterial( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
-    public ChatColor nextChatColor(ChatColor particle) {
+    public Material nextMaterial(Material material) {
         boolean next = false;
-        for (ChatColor check : ChatColor.values()) {
-            if (check.equals(particle)) {
+        for (Material check : Material.values()) {
+            if (check.equals(material)) {
                 next = true;
                 continue;
             }
             if (next) return check;
         }
-        return ChatColor.values()[0];
+        return Material.values()[0];
     }
 
-    public ChatColor prevChatColor(ChatColor color) {
+    public Material prevMaterial(Material material) {
         int i = -1;
         int cpt = 0;
-        for (ChatColor check : ChatColor.values()) {
-            if (check.equals(color)) {
+        for (Material check : Material.values()) {
+            if (check.equals(material)) {
                 i = cpt;
                 break;
             }
             cpt++;
         }
-        if (i == 0) return ChatColor.values()[ChatColor.values().length - 1];
-        else return ChatColor.values()[cpt - 1];
+        if (i == 0) return Material.values()[Material.values().length - 1];
+        else return Material.values()[cpt - 1];
     }
 
-    public void updateChatColor(ChatColor color, GUI gui) {
+    public void updateMaterial(Material material, GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
         boolean find = false;
-        for (ChatColor check : ChatColor.values()) {
-            if (color.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" +color.name()));
+        for (Material check : Material.values()) {
+            if (material.equals(check)) {
+                lore.add(StringConverter.coloredString("&2➤ &a" +material.name()));
                 find = true;
             } else if (find) {
                 if (lore.size() == 17) break;
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
-        for (ChatColor check : ChatColor.values()) {
+        for (Material check : Material.values()) {
             if (lore.size() == 17) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
@@ -200,14 +214,14 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
         }
     }
 
-    public ChatColor getChatColor(GUI gui) {
+    public Material getMaterial(GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return ChatColor.valueOf(str.split("➤ ")[1]);
+                return Material.valueOf(str.split("➤ ")[1]);
             }
         }
         return null;

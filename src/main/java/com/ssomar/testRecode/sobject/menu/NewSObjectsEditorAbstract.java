@@ -83,11 +83,11 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 								descArray[j] = desc.get(j);
 							}
 						}
-						createItem(itemS, 							1 , i, 	COLOR_OBJECT_ID+id, 	false, false, descArray);
+						createItem(itemS, 							1 , i, 	COLOR_OBJECT_ID+" &e&o"+id, 	false, false, descArray);
 					}
 					else {
-						if(sPlugin.isLotOfWork()) createItem(Material.BARRIER, 				1 , i, 	"&4&l✦ ERROR ID: &c"+id, 	false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS "+sPlugin.getObjectName(), "&c&l➤ OR THE LIMIT OF "+sPlugin.getMaxSObjectsLimit()+" "+sPlugin.getObjectName()+" IS REACHED" );
-						else createItem(Material.BARRIER, 				1 , i, 	"&4&l✦ ERROR ID: &c"+id, 	false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS "+sPlugin.getObjectName());
+						if(sPlugin.isLotOfWork()) createItem(Material.BARRIER, 				1 , i, 	"&4&l✦ ERROR ID: &c&o"+id, 	false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS "+sPlugin.getObjectName(), "&c&l➤ OR THE LIMIT OF "+sPlugin.getMaxSObjectsLimit()+" "+sPlugin.getObjectName()+" IS REACHED" );
+						else createItem(Material.BARRIER, 				1 , i, 	"&4&l✦ ERROR ID: &c&o"+id, 	false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS "+sPlugin.getObjectName());
 					}
 				}
 				i++;
@@ -172,6 +172,14 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 			NewSObject sObject = optional.get();
 			p.getInventory().addItem(sObject.buildItem(1, Optional.of(p)));
 			p.sendMessage(StringConverter.coloredString("&2&l["+sPlugin.getNameDesign()+"] &aYou received &e"+objectID));
+		}
+	}
+
+	public void openEditorSObject(String objectID, Player p) {
+		Optional<NewSObject> optional = manager.getLoadedObjectWithID(objectID);
+		if(optional.isPresent()) {
+			NewSObject sObject = optional.get();
+			sObject.openEditor(p);
 		}
 	}
 }

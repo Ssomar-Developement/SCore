@@ -87,7 +87,9 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public DoubleFeature clone() {
-        return new DoubleFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        DoubleFeature clone = new DoubleFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        clone.value = value;
+        return clone;
     }
 
     @Override

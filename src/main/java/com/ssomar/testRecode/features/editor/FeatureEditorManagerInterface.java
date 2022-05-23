@@ -51,50 +51,102 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
     @Override
     public void back(NewInteractionClickedGUIManager<T> interact) {
         Y parent = interact.gui.getParent();
-        if(parent instanceof FeatureAbstract){
-            FeatureAbstract feature = (FeatureAbstract) parent;
-            feature.getParent().openEditor(interact.player);
-        }
-        else parent.openBackEditor(interact.player);
+        parent.openBackEditor(interact.player);
     }
 
     @Override
     public boolean noShiftclicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).noShiftclicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean noShiftLeftclicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).noShiftLeftclicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean noShiftRightclicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).noShiftRightclicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean shiftClicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).shiftClicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean shiftLeftClicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).shiftLeftClicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean shiftRightClicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).shiftRightClicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean leftClicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).leftClicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean rightClicked(NewInteractionClickedGUIManager<T> interact) {
+    public boolean rightClicked(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                if(feature instanceof FeatureRequireOnlyClicksInEditor){
+                    return ((FeatureRequireOnlyClicksInEditor) feature).rightClicked(i.player, this);
+                }
+            }
+        }
         return false;
     }
 

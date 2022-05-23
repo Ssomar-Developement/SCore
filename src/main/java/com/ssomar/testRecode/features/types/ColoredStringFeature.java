@@ -8,6 +8,7 @@ import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOneMessageInEditor;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 import static com.ssomar.score.menu.conditions.RequestMessage.space;
 
-@Getter
+@Getter @Setter
 public class ColoredStringFeature extends FeatureAbstract<Optional<String>, ColoredStringFeature> implements FeatureRequireOneMessageInEditor {
 
     private Optional<String> value;
@@ -44,7 +45,8 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(getName(), value);
+        Optional<String> value = getValue();
+        if(value.isPresent() )config.set(getName(), value.get());
     }
 
     @Override
@@ -78,7 +80,9 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public ColoredStringFeature clone() {
-        return new ColoredStringFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        ColoredStringFeature clone = new ColoredStringFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        clone.setValue(getValue());
+        return clone;
     }
 
     @Override

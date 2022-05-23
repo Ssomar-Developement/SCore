@@ -29,6 +29,9 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 		else if(i.decoloredName.contains("Default Premium") || i.name.contains(" from Custom packs")){
 			new DefaultItemsGUI(i.player).openGUISync(i.player);
 		}
+		else if(i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.COLOR_OBJECT_ID)){
+			i.gui.openEditorSObject(i.decoloredName.split(GUI.OBJECT_ID)[1].trim(), i.player);
+		}
 		else return false;
 		return true;
 	}

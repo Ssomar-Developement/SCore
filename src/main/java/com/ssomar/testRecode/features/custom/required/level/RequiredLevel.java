@@ -5,6 +5,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.testRecode.features.custom.hiders.Hiders;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
@@ -159,6 +160,14 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void reload() {
-        getParent().reload();
+        for(FeatureInterface feature : getParent().getFeatures()) {
+            if(feature instanceof RequiredLevel) {
+                RequiredLevel requiredLevel = (RequiredLevel) feature;
+                requiredLevel.setLevel(level);
+                requiredLevel.setErrorMessage(errorMessage);
+                requiredLevel.setCancelEventIfError(cancelEventIfError);
+                break;
+            }
+        }
     }
 }

@@ -1,12 +1,14 @@
 package com.ssomar.testRecode.features.custom.hiders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.testRecode.features.custom.drop.DropFeatures;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ChatColorFeature;
 import lombok.Getter;
@@ -18,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -125,7 +128,17 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
 
     @Override
     public void reload() {
-
+        for(FeatureInterface feature : getParent().getFeatures()) {
+            if(feature instanceof Hiders) {
+                Hiders hiders = (Hiders) feature;
+                hiders.setHideEnchantments(hideEnchantments);
+                hiders.setHideUnbreakable(hideUnbreakable);
+                hiders.setHideAttributes(hideAttributes);
+                hiders.setHidePotionEffects(hidePotionEffects);
+                hiders.setHideUsage(hideUsage);
+                break;
+            }
+        }
     }
 
     @Override
