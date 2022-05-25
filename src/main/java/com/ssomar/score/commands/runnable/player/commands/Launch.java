@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
@@ -167,17 +168,15 @@ public class Launch extends PlayerCommand {
 
                 double velocity = 1;
                 String type = args.get(0);
+                SProjectiles projectile = null;
                 if (projectiles.containsKey(type)) {
                     entity = receiver.launchProjectile(projectiles.get(type));
-                } else if (ProjectilesManager.getInstance().containsProjectileWithID(type)) {
-                    SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
+                }
+                else if (ProjectilesManager.getInstance().containsProjectileWithID(type)) {
+                    projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
                     entity = receiver.launchProjectile(projectiles.get(projectile.getIdentifierType()));
-                    projectile.executeTransformTheProjectile(entity, receiver);
-                    if(projectile.getProjectile() instanceof VelocityFeature) {
-                        velocity = ((VelocityFeature) projectile.getProjectile()).getVelocity();
-                    }
-
-                } else entity = receiver.launchProjectile(Arrow.class);
+                }
+                else entity = receiver.launchProjectile(Arrow.class);
 
                 if (entity != null) {
                     if (!SCore.is1v13Less()) {
@@ -209,14 +208,16 @@ public class Launch extends PlayerCommand {
                         Vector v;
                         if (entity instanceof Fireball) {
                             Fireball fireball = (Fireball) entity;
-                            fireball.setDirection(eyeVector.multiply(velocity));
+                            fireball.setDirection(eyeVector);
                         } else if (entity instanceof DragonFireball) {
                             DragonFireball fireball = (DragonFireball) entity;
-                            fireball.setDirection(eyeVector.multiply(velocity));
+                            fireball.setDirection(eyeVector);
                         } else {
-                            entity.setVelocity(eyeVector.multiply(velocity));
+                            entity.setVelocity(eyeVector);
                         }
-                        //SsomarDev.testMsg("rotation: "+ rotation);
+                    }
+                    if (projectile != null) {
+                        projectile.executeTransformTheProjectile(entity, receiver);
                     }
 
                     if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

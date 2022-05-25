@@ -1,0 +1,25 @@
+type: SNOWBALL
+particles:
+  '1':
+    particlesType: SWEEP_ATTACK
+    particlesAmount: 10
+    particlesOffSet: 2.0
+    particlesSpeed: 1.0
+    particlesDelay: 1
+removeWhenHitBlock: false
+pickupStatus: ALLOWED
+knockbackStrength: -1
+damage: -1.0
+critical: false
+pierceLevel: -1
+activeColor: true
+color: NO_COLOR
+silent: false
+velocity: 1.0
+despawnDelay: 3
+gravity: false
+bounce: false
+glowing: false
+invisible: true
+customNameVisible: false
+customName: '&cNO NAME'

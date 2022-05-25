@@ -191,12 +191,12 @@ public class LocatedLaunch extends PlayerCommand{
 		try {
 			Projectile entity = null;
 			String type = args.get(0);
-
+			SProjectiles projectile = null;
 			if(projectiles.containsKey(type)) {
 				entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc,projectiles.get(type));
 			}
 			else if(ProjectilesManager.getInstance().containsProjectileWithID(type)) {
-				SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
+				projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
 				entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc,projectiles.get(projectile.getIdentifierType()));
 				projectile.executeTransformTheProjectile(entity, receiver);
 			}
@@ -272,6 +272,10 @@ public class LocatedLaunch extends PlayerCommand{
 					else {
 						entity.setVelocity(last);
 					}
+				}
+
+				if (projectile != null) {
+					projectile.executeTransformTheProjectile(entity, receiver);
 				}
 
 				if(SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

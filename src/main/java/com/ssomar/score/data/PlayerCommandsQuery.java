@@ -118,7 +118,7 @@ public class PlayerCommandsQuery {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            if(!conn.isValid(5))  {
+            if(!SCore.is1v11Less() && !conn.isValid(5))  {
                 SCore.plugin.getLogger().severe("Connection to database is impossible, and can't load the saved commands of player " + uuid.toString());
                 return list;
             }

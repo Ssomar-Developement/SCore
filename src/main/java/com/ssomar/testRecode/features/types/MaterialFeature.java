@@ -1,5 +1,6 @@
 package com.ssomar.testRecode.features.types;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
@@ -17,9 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter @Setter
 public class MaterialFeature extends FeatureAbstract<Optional<Material>, MaterialFeature> implements FeatureRequireOnlyClicksInEditor {
@@ -64,9 +63,11 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public MaterialFeature initItemParentEditor(GUI gui, int slot) {
-        String [] finalDescription = new String[getEditorDescription().length + 1];
+        String [] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = "&8>> &6SHIFT : &eBOOST SCROLL";
+        finalDescription[finalDescription.length - 1] = "&8>> &6UP: &eRIGHT | &6DOWN: &eLEFT";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
         return this;
@@ -129,6 +130,16 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         material = nextMaterial(material);
         material = nextMaterial(material);
         material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
+        material = nextMaterial(material);
         updateMaterial(material, (GUI) manager.getCache().get(editor));
         return true;
     }
@@ -136,6 +147,16 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     @Override
     public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
         Material material = getMaterial( (GUI) manager.getCache().get(editor));
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
+        material = prevMaterial(material);
         material = prevMaterial(material);
         material = prevMaterial(material);
         material = prevMaterial(material);
@@ -159,36 +180,37 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     public Material nextMaterial(Material material) {
         boolean next = false;
-        for (Material check : Material.values()) {
+        for (Material check : getSortMaterials()) {
             if (check.equals(material)) {
                 next = true;
                 continue;
             }
             if (next) return check;
         }
-        return Material.values()[0];
+        return getSortMaterials().get(0);
     }
 
     public Material prevMaterial(Material material) {
         int i = -1;
         int cpt = 0;
-        for (Material check : Material.values()) {
+        for (Material check : getSortMaterials()) {
             if (check.equals(material)) {
                 i = cpt;
                 break;
             }
             cpt++;
         }
-        if (i == 0) return Material.values()[Material.values().length - 1];
-        else return Material.values()[cpt - 1];
+        if (i == 0) return getSortMaterials().get(getSortMaterials().size()- 1);
+        else return getSortMaterials().get(cpt - 1);
     }
 
     public void updateMaterial(Material material, GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
+        item.setType(material);
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore().subList(0, 2);
+        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
         boolean find = false;
-        for (Material check : Material.values()) {
+        for (Material check : getSortMaterials()) {
             if (material.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" +material.name()));
                 find = true;
@@ -197,7 +219,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
-        for (Material check : Material.values()) {
+        for (Material check : getSortMaterials()) {
             if (lore.size() == 17) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
@@ -225,6 +247,14 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
             }
         }
         return null;
+    }
+
+    public List<Material> getSortMaterials() {
+        SortedMap<String, Material> map = new TreeMap<String, Material>();
+        for (Material l : Material.values()) {
+            if(l.isItem() && !l.isAir()) map.put(l.name(), l);
+        }
+        return new ArrayList<>(map.values());
     }
 
 }

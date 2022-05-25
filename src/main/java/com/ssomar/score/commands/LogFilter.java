@@ -38,6 +38,10 @@ public class LogFilter implements Filter, LifeCycle {
 		messageToHide.add("Successfully filled");
 		messageToHide.add("Replaced a slot on");
 		messageToHide.add("The number you have entered");
+		messageToHide.add("Killed");
+		messageToHide.add("No entity was found");
+		messageToHide.add("Unknown command");
+		messageToHide.add("Modified entity data of");
 	}
 
 

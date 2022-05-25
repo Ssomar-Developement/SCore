@@ -131,6 +131,9 @@ public class ProjectilesLoader {
         defaultProjectiles.add("OPM_GENOS_1");
         defaultProjectiles.add("OPM_SPEED_O_SONIC_1");
 
+        defaultProjectiles.add("proj_rainbow_projectile");
+        defaultProjectiles.add("proj_tornado_blade");
+
         return defaultProjectiles;
     }
 

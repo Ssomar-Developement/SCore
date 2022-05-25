@@ -1,5 +1,6 @@
 package com.ssomar.testRecode.editor;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
 import com.ssomar.score.utils.StringConverter;
@@ -78,19 +79,24 @@ public abstract class NewGUIManager<T extends GUI> {
 			}
 			else {
 				if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.SHIFT_RIGHT)) {
-					if (click.equals(ClickType.SHIFT_LEFT)) if (this.shiftLeftClicked(interact)) return;
+					if (click.equals(ClickType.SHIFT_LEFT)) {
+						if (this.shiftLeftClicked(interact)) return;
+					}
 					else if (this.shiftRightClicked(interact)) return;
+
 					if (this.shiftClicked(interact)) return;
 				} else {
-					if (click.equals(ClickType.SHIFT_RIGHT) || click.equals(ClickType.RIGHT))
+					if (click.equals(ClickType.RIGHT)) {
 						if (this.noShiftRightclicked(interact)) return;
-						else if (this.noShiftLeftclicked(interact)) return;
+					}
+					else if (this.noShiftLeftclicked(interact)) return;
 					if (this.noShiftclicked(interact)) return;
 				}
 
-				if (click.equals(ClickType.SHIFT_RIGHT) || click.equals(ClickType.RIGHT)) {
+				if (click.equals(ClickType.RIGHT)) {
 					if (this.rightClicked(interact)) return;
-				} else if (this.leftClicked(interact)) return;
+				}
+				else if (this.leftClicked(interact)) return;
 
 				if (this.allClicked(interact)) return;
 			}
