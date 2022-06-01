@@ -52,7 +52,8 @@ public class ToolsListMaterial {
 			}
 			else if(material.equals(Material.valueOf("BEETROOT_BLOCK"))){
 				return Material.valueOf("BEETROOT_SEEDS");
-			}			
+			}
+			else return material;
 		}
 		else{
 			if(material.equals(Material.WHEAT)){
@@ -61,18 +62,17 @@ public class ToolsListMaterial {
 			else if(material.equals(Material.CARROTS)){
 				return Material.CARROT;
 			}
-			if(material.equals(Material.POTATOES)){
+			else if(material.equals(Material.POTATOES)){
 				return Material.POTATO;
 			}
-			if(material.equals(Material.BEETROOTS)){
+			else if(material.equals(Material.BEETROOTS)){
 				return Material.BEETROOT_SEEDS;
 			}
-			if(material.equals(Material.NETHER_WART)){
+			else if(material.equals(Material.NETHER_WART)){
 				return Material.NETHER_WART;
 			}
+			else return material;
 		}
-		
-		return null;
 	}
 	
 	public static ToolsListMaterial getInstance() {

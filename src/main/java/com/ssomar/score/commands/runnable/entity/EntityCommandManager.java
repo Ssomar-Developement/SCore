@@ -40,6 +40,7 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new BackDash());
 		commands.add(new CustomDash1());
 		commands.add(new SetGlow());
+		commands.add(new Around());
 		commands.add(new MobAround());
 		commands.add(new RemoveGlow());
 		commands.add(new StrikeLightning());

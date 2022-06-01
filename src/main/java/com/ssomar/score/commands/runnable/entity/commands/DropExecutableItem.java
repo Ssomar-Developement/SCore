@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import org.bukkit.ChatColor;
@@ -17,20 +18,27 @@ import com.ssomar.score.commands.runnable.entity.EntityCommand;
 
 public class DropExecutableItem extends EntityCommand{
 
+	public static final Boolean DEBUG = false;
 	//
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		try {
+			SsomarDev.testMsg("DropExecutableItem.run()", DEBUG);
 			if(SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(args.get(0))) {
+				SsomarDev.testMsg("DropExecutableItem.run() - hasExecutableItems", DEBUG);
 				int amount = Integer.parseInt(args.get(1));
-				if(amount>0 && !entity.isDead()) {
+				if(amount > 0) {
+					SsomarDev.testMsg("DropExecutableItem.run() - amount > 0", DEBUG);
 					Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(args.get(0));
 					if(eiOpt.isPresent()) {
+						SsomarDev.testMsg(">> loc: "+entity.getLocation());
 						entity.getWorld().dropItem(entity.getLocation(), eiOpt.get().buildItem(amount, Optional.ofNullable(p)));
 					}
 				}
 			}
-		}catch(Exception ignored) {}
+		}catch(Exception ignored) {
+			ignored.printStackTrace();
+		}
 	}
 
 
@@ -40,7 +48,7 @@ public class DropExecutableItem extends EntityCommand{
 
 		String dropei= "DROPEXECUTABLEITEM {id} {quantity}";
 		if(args.size()<2) error = notEnoughArgs+dropei;
-		else if(args.size()==2) {
+		else if(args.size() == 2) {
 			if(!SCore.hasExecutableItems || !ExecutableItemsAPI.getExecutableItemsManager().isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
 			else {
 				try {
@@ -50,7 +58,7 @@ public class DropExecutableItem extends EntityCommand{
 				}
 			}
 		}
-		else error= tooManyArgs+dropei;
+		else error = tooManyArgs+dropei;
 
 		return error;
 	}

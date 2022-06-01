@@ -23,7 +23,10 @@ public class Around extends PlayerCommand{
 
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+       aroundExecution(receiver, args, aInfo);
+    }
 
+	public static void aroundExecution(Entity receiver, List<String> args, ActionInfo aInfo) {
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -48,7 +51,7 @@ public class Around extends PlayerCommand{
 								prepareCommands.append(s);
 								prepareCommands.append(" ");
 							}
-							prepareCommands.deleteCharAt(prepareCommands.length()-1);				
+							prepareCommands.deleteCharAt(prepareCommands.length()-1);
 
 							String buildCommands = prepareCommands.toString();
 							String [] tab;
@@ -76,7 +79,7 @@ public class Around extends PlayerCommand{
 							cpt++;
 						}
 					}
-					if(cpt == 0 && Boolean.parseBoolean(args.get(1))) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
+					if(cpt == 0 && Boolean.parseBoolean(args.get(1)) && receiver instanceof Player) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
 
 				}catch(Exception e) {
 					e.printStackTrace();

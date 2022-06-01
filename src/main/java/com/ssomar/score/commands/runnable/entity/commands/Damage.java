@@ -3,13 +3,13 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketEvent;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
 import com.ssomar.score.utils.NTools;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -29,17 +29,24 @@ import org.bukkit.potion.PotionEffectType;
 /* DAMAGE {amount} */
 public class Damage extends EntityCommand{
 
-	private final static boolean DEBUG = true;
+	private final static boolean DEBUG = false;
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+		SsomarDev.testMsg("Damage.run()", DEBUG);
 		/* When target a NPC it can occurs */
 		if(entity == null || !(entity instanceof LivingEntity)) return;
 		LivingEntity receiver = (LivingEntity)  entity;
 
 		double damage = com.ssomar.score.commands.runnable.player.commands.Damage.getDamage(p, receiver, args, aInfo);
 
+		boolean hideParticle = false;
+		try{
+			hideParticle = Boolean.valueOf(args.get(3));
+		}catch (Exception ign){}
+
+		SsomarDev.testMsg("Damage.run() damage: "+damage, DEBUG);
 		if(damage > 0 && !entity.isDead()) {
 			if(receiver instanceof EnderDragon){
 				//SsomarDev.testMsg("Passe enderdrag");
@@ -58,11 +65,11 @@ public class Damage extends EntityCommand{
 			receiver.setMaximumNoDamageTicks(0);
 			if(p != null) {
 				p.setMetadata("cancelDamageEvent", (MetadataValue)new FixedMetadataValue((Plugin)SCore.plugin, Integer.valueOf(7772)));
-				SsomarDev.testMsg("Final Damage entity: "+damage);
+				SsomarDev.testMsg("Final Damage entity: "+damage, DEBUG);
 				receiver.damage(damage, (Entity)p);
 			}
 			else{
-				SsomarDev.testMsg("Final Damage entity: "+damage);
+				SsomarDev.testMsg("Final Damage entity: "+damage, DEBUG);
 				receiver.damage(damage);
 			}
 			receiver.setMaximumNoDamageTicks(maximumNoDmg);

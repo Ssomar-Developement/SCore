@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.7.3.7</version>
+	<version>1.7.4.0</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>

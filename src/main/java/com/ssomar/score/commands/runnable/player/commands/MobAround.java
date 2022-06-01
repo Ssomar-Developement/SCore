@@ -134,7 +134,7 @@ public class MobAround extends PlayerCommand{
 							cpt++;
 						}
 					}
-					if(cpt == 0 && !mute) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
+					if(cpt == 0 && !mute && receiver != null && receiver instanceof Player) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
 
 				}catch(Exception e) {
 					e.printStackTrace();

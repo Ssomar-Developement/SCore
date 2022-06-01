@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.entity;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -12,6 +14,7 @@ import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
 import com.ssomar.score.commands.runnable.SCommand;
 
+@Getter@Setter
 public class EntityRunCommand extends RunCommand{
 
 	/**
@@ -58,7 +61,7 @@ public class EntityRunCommand extends RunCommand{
 		Player launcher = Bukkit.getPlayer(launcherUUID);
 		Entity receiver = Bukkit.getEntity(entityUUID);
 
-		if(receiver != null && !receiver.isDead()){
+		if(receiver != null){
 			pCommand.run(launcher, receiver, args, this.getaInfo());
 		}
 	}
@@ -68,23 +71,5 @@ public class EntityRunCommand extends RunCommand{
 	public void insideDelayedCommand() {
 		runCommand(EntityCommandManager.getInstance());
 		CommandsHandler.getInstance().removeDelayedCommand(getUuid(), entityUUID);
-	}
-	public UUID getLauncherUUID() {
-		return launcherUUID;
-	}
-	public void setLauncherUUID(UUID launcherUUID) {
-		this.launcherUUID = launcherUUID;
-	}
-	public UUID getEntityUUID() {
-		return entityUUID;
-	}
-	public void setEntityUUID(UUID entityUUID) {
-		this.entityUUID = entityUUID;
-	}
-	public boolean isSilenceOutput() {
-		return silenceOutput;
-	}
-	public void setSilenceOutput(boolean silenceOutput) {
-		this.silenceOutput = silenceOutput;
 	}
 }

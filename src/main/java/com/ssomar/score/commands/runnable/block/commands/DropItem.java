@@ -2,7 +2,10 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
+import com.ssomar.score.utils.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,9 +23,12 @@ public class DropItem extends BlockCommand{
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 		try {
-			int amount = Integer.parseInt(args.get(1));
-			if(amount > 0) {
-				block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.valueOf(args.get(0).toUpperCase()), amount));
+			Optional<Double> quantityOpt = NTools.getDouble(args.get(1));
+			if(quantityOpt.isPresent()) {
+				int quantity = quantityOpt.get().intValue();
+				if (quantity > 0) {
+					block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.valueOf(args.get(0).toUpperCase()), quantity));
+				}
 			}
 		}catch(Exception ignored) {
 			ignored.printStackTrace();
@@ -36,7 +42,7 @@ public class DropItem extends BlockCommand{
 		String dropitem = "DROPITEM {material} [quantity}";
 		if(args.size() < 2) error = notEnoughArgs+dropitem;
 		else if(args.size() == 2) {
-			if(Material.matchMaterial(args.get(0).toUpperCase()) == null) error = invalidMaterial+args.get(0)+" for command: "+dropitem;
+			if(!args.get(0).contains("%") && Material.matchMaterial(args.get(0).toUpperCase()) == null) error = invalidMaterial+args.get(0)+" for command: "+dropitem;
 			else {
 				if(!args.get(1).contains("%")) {
 					try {

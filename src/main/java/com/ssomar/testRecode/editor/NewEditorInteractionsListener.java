@@ -3,6 +3,10 @@ package com.ssomar.testRecode.editor;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditorManager;
+import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditor;
+import com.ssomar.testRecode.features.custom.enchantments.group.EnchantmentsGroupFeatureEditor;
+import com.ssomar.testRecode.features.custom.enchantments.group.EnchantmentsGroupFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditor;
 import com.ssomar.testRecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
@@ -84,6 +88,14 @@ public class NewEditorInteractionsListener implements Listener {
             GiveFirstJoinFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof EnchantmentWithLevelFeatureEditor) {
+            EnchantmentWithLevelFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof EnchantmentsGroupFeatureEditor) {
+            EnchantmentsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -110,6 +122,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (GiveFirstJoinFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             GiveFirstJoinFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (EnchantmentWithLevelFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            EnchantmentWithLevelFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (EnchantmentsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            EnchantmentsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

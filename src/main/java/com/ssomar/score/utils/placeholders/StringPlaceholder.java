@@ -131,7 +131,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 	}
 
 	public void setAroundTargetEntityPlcHldr(UUID uuid) {
-		aroundEntityTargetPlch.setAroundEntityTargetPlcHldr(uuid);
+		aroundEntityTargetPlch.setEntityPlcHldr(uuid);
 	}
 
 	public void reloadAllPlaceholders() {
@@ -142,7 +142,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 		blockPlch.reloadBlockPlcHldr();
 		targetBlockPlch.reloadTargetBlockPlcHldr();
 		aroundPlayerTargetPlch.reloadPlayerPlcHldr();
-		aroundEntityTargetPlch.reloadAroundEntityTargetPlcHldr();
+		aroundEntityTargetPlch.reloadEntityPlcHldr();
 		/* delayed command with old version has this to null */
 		if(projectilePlch != null ) projectilePlch.reloadProjectilePlcHldr();
 	}
