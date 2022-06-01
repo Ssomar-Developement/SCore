@@ -1,9 +1,9 @@
 package com.ssomar.testRecode.features.custom.hiders;
 
 
-import com.ssomar.testRecode.features.editor.FeatureEditorManagerInterface;
+import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 
-public class HidersEditorManager extends FeatureEditorManagerInterface<HidersEditor, Hiders> {
+public class HidersEditorManager extends FeatureEditorManagerAbstract<HidersEditor, Hiders> {
 
     private static HidersEditorManager instance;
 

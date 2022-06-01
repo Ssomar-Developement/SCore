@@ -6,7 +6,9 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.testRecode.features.FeaturesGroup;
 import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
+import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -18,7 +20,7 @@ import java.io.File;
 import java.util.*;
 
 @Getter @Setter
-public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<EnchantmentsGroupFeature, EnchantmentsGroupFeature, EnchantmentsGroupFeatureEditor, EnchantmentsGroupFeatureEditorManager> {
+public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<EnchantmentsGroupFeature, EnchantmentsGroupFeature, EnchantmentsGroupFeatureEditor, EnchantmentsGroupFeatureEditorManager> implements FeaturesGroup {
 
     private Map<String, EnchantmentWithLevelFeature> enchantments;
 
@@ -133,4 +135,17 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
         EnchantmentsGroupFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public void createNewFeature(@NotNull Player editor) {
+        String baseId = "enchantment";
+        for(int i = 0; i < 1000; i++) {
+            String id = baseId + i;
+            if(!enchantments.containsKey(id)) {
+                EnchantmentWithLevelFeature eF = new EnchantmentWithLevelFeature(this, id);
+                enchantments.put(id, eF);
+                eF.openEditor(editor);
+                break;
+            }
+        }
+    }
 }

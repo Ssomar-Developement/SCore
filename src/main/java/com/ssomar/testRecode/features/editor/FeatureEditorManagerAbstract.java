@@ -1,6 +1,5 @@
 package com.ssomar.testRecode.features.editor;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.testRecode.features.*;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.editor.NewInteractionClickedGUIManager;
@@ -8,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
+public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
 
     public void startEditing(Player editor, Y feature) {
         cache.put(editor, buildEditor(feature));
@@ -46,6 +45,18 @@ public abstract class FeatureEditorManagerInterface<T extends FeatureEditorInter
            feature.reset();
         }
         interact.gui.load();
+    }
+
+    @Override
+    public void newObject(NewInteractionClickedGUIManager<T> i) {
+        for(FeatureInterface feature : i.gui.getParent().getFeatures()){
+            if(feature.isTheFeatureClickedParentEditor(i.name)){
+                //SsomarDev.testMsg("Feature clicked: " + feature.getName());
+                if(feature instanceof FeaturesGroup){
+                    ((FeaturesGroup) feature).createNewFeature(i.player);
+                }
+            }
+        }
     }
 
     @Override

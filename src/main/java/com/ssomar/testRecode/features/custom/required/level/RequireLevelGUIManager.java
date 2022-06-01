@@ -1,9 +1,9 @@
 package com.ssomar.testRecode.features.custom.required.level;
 
 
-import com.ssomar.testRecode.features.editor.FeatureEditorManagerInterface;
+import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 
-public class RequireLevelGUIManager extends FeatureEditorManagerInterface<RequireLevelGUI, RequiredLevel> {
+public class RequireLevelGUIManager extends FeatureEditorManagerAbstract<RequireLevelGUI, RequiredLevel> {
 
     private static RequireLevelGUIManager instance;
 

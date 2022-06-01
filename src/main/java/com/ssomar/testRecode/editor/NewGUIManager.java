@@ -65,6 +65,9 @@ public abstract class NewGUIManager<T extends GUI> {
 			else if (interact.coloredDeconvertName.equals(GUI.BACK)) {
 				back(interact);
 			}
+			else if (interact.coloredDeconvertName.equals(GUI.NEW)) {
+				newObject(interact);
+			}
 			else if (interact.coloredDeconvertName.equals(GUI.EXIT)) {
 				interact.player.closeInventory();
 			}
@@ -130,6 +133,8 @@ public abstract class NewGUIManager<T extends GUI> {
 	}
 
 	public abstract void receiveMessage(NewInteractionClickedGUIManager<T> interact);
+
+	public abstract void newObject(NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void reset(NewInteractionClickedGUIManager<T> interact);
 

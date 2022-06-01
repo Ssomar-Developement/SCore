@@ -36,8 +36,8 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public void reset() {
-        this.enchantment = new EnchantmentFeature(this, "Enchantment", Optional.empty(), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
-        this.level = new IntegerFeature(this, "Level", Optional.of(1), "Level", new String[]{"&7&oThe level of the enchantment"}, Material.BEACON, false);
+        this.enchantment = new EnchantmentFeature(this, "enchantment", Optional.empty(), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
+        this.level = new IntegerFeature(this, "level", Optional.of(1), "Level", new String[]{"&7&oThe level of the enchantment"}, Material.BEACON, false);
     }
 
     @Override

@@ -93,6 +93,11 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 	}
 
 	@Override
+	public void newObject(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+
+	}
+
+	@Override
 	public void reset(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
 
 	}

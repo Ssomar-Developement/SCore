@@ -1,9 +1,9 @@
 package com.ssomar.testRecode.features.custom.givefirstjoin;
 
 
-import com.ssomar.testRecode.features.editor.FeatureEditorManagerInterface;
+import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 
-public class GiveFirstJoinFeaturesEditorManager extends FeatureEditorManagerInterface<GiveFirstJoinFeaturesEditor, GiveFirstJoinFeatures> {
+public class GiveFirstJoinFeaturesEditorManager extends FeatureEditorManagerAbstract<GiveFirstJoinFeaturesEditor, GiveFirstJoinFeatures> {
 
     private static GiveFirstJoinFeaturesEditorManager instance;
 

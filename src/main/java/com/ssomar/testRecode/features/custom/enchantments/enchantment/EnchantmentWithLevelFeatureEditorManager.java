@@ -1,9 +1,9 @@
 package com.ssomar.testRecode.features.custom.enchantments.enchantment;
 
 
-import com.ssomar.testRecode.features.editor.FeatureEditorManagerInterface;
+import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 
-public class EnchantmentWithLevelFeatureEditorManager extends FeatureEditorManagerInterface<EnchantmentWithLevelFeatureEditor, EnchantmentWithLevelFeature> {
+public class EnchantmentWithLevelFeatureEditorManager extends FeatureEditorManagerAbstract<EnchantmentWithLevelFeatureEditor, EnchantmentWithLevelFeature> {
 
     private static EnchantmentWithLevelFeatureEditorManager instance;
 

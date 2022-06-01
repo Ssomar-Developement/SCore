@@ -1,10 +1,9 @@
 package com.ssomar.testRecode.features.custom.drop;
 
 
-import com.ssomar.testRecode.features.custom.required.level.RequiredLevel;
-import com.ssomar.testRecode.features.editor.FeatureEditorManagerInterface;
+import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 
-public class DropFeaturesEditorManager extends FeatureEditorManagerInterface<DropFeaturesEditor, DropFeatures> {
+public class DropFeaturesEditorManager extends FeatureEditorManagerAbstract<DropFeaturesEditor, DropFeatures> {
 
     private static DropFeaturesEditorManager instance;
 

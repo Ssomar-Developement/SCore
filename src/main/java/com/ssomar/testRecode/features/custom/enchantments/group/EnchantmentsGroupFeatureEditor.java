@@ -27,8 +27,8 @@ public class EnchantmentsGroupFeatureEditor extends FeatureEditorInterface<Encha
         // Reset menu
         createItem(ORANGE, 			1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
-        // Save menu
-        createItem(GREEN, 1, 26, GUI.SAVE, false, false, "", "&a&oClick here to save");
+        // new enchant
+        createItem(GREEN, 1, 24, GUI.NEW, false, false, "", "&a&oClick here to add new enchantment");
     }
 
     @Override

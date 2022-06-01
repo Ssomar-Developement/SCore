@@ -34,6 +34,8 @@ public abstract class GUI implements IGUI {
 
     public final static String PREVIOUS_PAGE = "&dPrevious page &5&l◀";
 
+    public final static String NEW = "&2&l▶ &aNew";
+
     public final static String EXIT = "&4&l▶ &cExit";
 
     public final static String BACK = "&4&l▶&c Back";
