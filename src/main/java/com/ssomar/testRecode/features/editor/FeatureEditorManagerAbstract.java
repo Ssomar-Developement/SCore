@@ -1,10 +1,12 @@
 package com.ssomar.testRecode.features.editor;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.editor.NewInteractionClickedGUIManager;
 import com.ssomar.testRecode.features.*;
 import org.bukkit.entity.Player;
 
+import java.net.ServerSocket;
 import java.util.Optional;
 
 public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
@@ -180,7 +182,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
             if (feature instanceof FeatureRequireMultipleMessageInEditor) {
                 if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
-                    ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
+                    ((FeatureRequireMultipleMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
                     interact.gui.openGUISync(interact.player);
                 }
             }
@@ -191,8 +193,8 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public void receiveMessageValue(NewInteractionClickedGUIManager<T> interact) {
         for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
-            if (feature instanceof FeatureRequireOneMessageInEditor) {
-                if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+            if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                if (feature instanceof FeatureRequireOneMessageInEditor) {
                     Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
                     if (potentialError.isPresent()) {
                         interact.player.sendMessage(potentialError.get());
@@ -201,16 +203,13 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                         ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
                         interact.gui.openGUISync(interact.player);
                     }
-                }
-            } else if (feature instanceof FeatureRequireMultipleMessageInEditor) {
-                if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                } else if (feature instanceof FeatureRequireMultipleMessageInEditor) {
                     Optional<String> potentialError = ((FeatureRequireMultipleMessageInEditor) feature).verifyMessageReceived(interact.message);
                     if (potentialError.isPresent()) {
                         interact.player.sendMessage(potentialError.get());
                         ((FeatureRequireMultipleMessageInEditor) feature).askInEditor(interact.player, this);
                     } else {
                         ((FeatureRequireMultipleMessageInEditor) feature).addMessageValue(interact.player, this, interact.message);
-                        interact.gui.openGUISync(interact.player);
                     }
                 }
             }

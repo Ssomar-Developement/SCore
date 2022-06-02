@@ -5,19 +5,19 @@ import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
 
 public class GiveFirstJoinFeaturesEditor extends FeatureEditorInterface<GiveFirstJoinFeatures> {
 
-    public GiveFirstJoinFeatures dropFeatures;
+    public GiveFirstJoinFeatures giveFirstJoinFeatures;
 
     public GiveFirstJoinFeaturesEditor(GiveFirstJoinFeatures dropFeatures) {
         super("&lGive first join features Editor", 3*9);
-        this.dropFeatures = dropFeatures.clone();
+        this.giveFirstJoinFeatures = dropFeatures.clone();
         load();
     }
 
     @Override
     public void load() {
-        dropFeatures.getGiveFirstJoin().initAndUpdateItemParentEditor(this, 0);
-        dropFeatures.getGiveFirstJoinAmount().initAndUpdateItemParentEditor(this, 1);
-        dropFeatures.getGiveFirstJoinSlot().initAndUpdateItemParentEditor(this, 2);
+        giveFirstJoinFeatures.getGiveFirstJoin().initAndUpdateItemParentEditor(this, 0);
+        giveFirstJoinFeatures.getGiveFirstJoinAmount().initAndUpdateItemParentEditor(this, 1);
+        giveFirstJoinFeatures.getGiveFirstJoinSlot().initAndUpdateItemParentEditor(this, 2);
 
 
         // Back
@@ -32,6 +32,6 @@ public class GiveFirstJoinFeaturesEditor extends FeatureEditorInterface<GiveFirs
 
     @Override
     public GiveFirstJoinFeatures getParent() {
-        return dropFeatures;
+        return giveFirstJoinFeatures;
     }
 }

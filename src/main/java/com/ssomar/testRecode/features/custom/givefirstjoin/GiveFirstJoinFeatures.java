@@ -68,9 +68,21 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     @Override
     public GiveFirstJoinFeatures initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 1];
+        int toAdd = 2;
+        if(getGiveFirstJoin().getValue()) {
+            toAdd += 2;
+        }
+        String[] finalDescription = new String[getEditorDescription().length + toAdd];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        if(getGiveFirstJoin().getValue()) {
+            finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 3] = "&7Enable: &a&l✔";
+            finalDescription[finalDescription.length - 2] = "&7Amount: &e" + getGiveFirstJoinAmount().getValue().get();
+            finalDescription[finalDescription.length - 1] = "&7Slot: &e" + getGiveFirstJoinSlot().getValue().get();
+        } else {
+            finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
+        }
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

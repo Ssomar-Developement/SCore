@@ -1,6 +1,5 @@
 package com.ssomar.testRecode.features.types;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
@@ -10,7 +9,6 @@ import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
@@ -35,15 +33,15 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String colorStr = config.getString(getName(), "NULL").toUpperCase();
+        String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
             value = Optional.ofNullable(Material.valueOf(colorStr));
             if(requirePremium() && !isPremiumLoading) {
-                errors.add("&cERROR, Couldn't load the Material value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
+                errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
                 value = Optional.empty();
             }
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the Material value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
+            errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
             value = Optional.empty();
         }
         return errors;
@@ -52,7 +50,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     @Override
     public void save(ConfigurationSection config) {
         Optional<Material> value = getValue();
-        if(value.isPresent()) config.set(getName(), value.get().name());
+        if(value.isPresent()) config.set(this.getName(), value.get().name());
     }
 
     @Override
@@ -87,7 +85,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public MaterialFeature clone() {
-        MaterialFeature clone = new MaterialFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        MaterialFeature clone = new MaterialFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
         clone.value = value;
         return clone;
     }

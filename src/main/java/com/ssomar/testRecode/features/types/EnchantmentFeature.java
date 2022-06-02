@@ -35,10 +35,10 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String enchantStr = config.getString(getName());
+        String enchantStr = config.getString(this.getName());
         Optional<Enchantment> optional = getEnchantment(enchantStr);
         if(!optional.isPresent()){
-            errors.add("&cERROR, Couldn't load the Enchantment value of " + getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html");
+            errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html");
             value = Optional.empty();
         }
         else value = optional;
@@ -50,9 +50,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
         Optional<Enchantment> optional = getValue();
         if (optional.isPresent()){
             String enchantName = getEnchantmentName(optional.get());
-            config.set(getName(), enchantName);
+            config.set(this.getName(), enchantName);
         }
-        else config.set(getName(), null);
+        else config.set(this.getName(), null);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
 
     @Override
     public EnchantmentFeature clone() {
-        EnchantmentFeature clone = new EnchantmentFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        EnchantmentFeature clone = new EnchantmentFeature(getParent(), this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.value = value;
         return clone;
     }

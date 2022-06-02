@@ -2,10 +2,10 @@ package com.ssomar.testRecode.features.types;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.testRecode.editor.NewGUIManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -14,44 +14,50 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter @Setter
-public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> implements FeatureRequireOnlyClicksInEditor {
+public class UUIDFeature extends FeatureAbstract<UUID, UUIDFeature> implements FeatureRequireOnlyClicksInEditor {
 
-    private boolean value;
-    private boolean defaultValue;
+    private UUID value;
 
-    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public UUIDFeature(FeatureParentInterface parent, String name, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
-        this.defaultValue = defaultValue;
-        this.value = defaultValue;
+        this.value = UUID.randomUUID();
     }
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        this.value = config.getBoolean(this.getName(), this.defaultValue);
-        return new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+        try{
+            this.value = UUID.fromString(config.getString(this.getName()));
+        }
+        catch (Exception e){
+            errors.add("&cERROR, Couldn't load the UUID value of " + this.getName() + " from config, value: " + config.getString(this.getName()) + " &7&o"+getParent().getParentInfo()+" &6>> https://www.uuidgenerator.net/version1");
+            this.value = UUID.randomUUID();
+        }
+        return errors;
     }
 
     @Override
-    public BooleanFeature clone() {
-        BooleanFeature clone = new BooleanFeature(getParent(), this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+    public UUIDFeature clone() {
+        UUIDFeature clone = new UUIDFeature(getParent(), this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.setValue(value);
         return clone;
     }
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        config.set(this.getName(), value.toString());
     }
 
     @Override
-    public Boolean getValue() {
+    public UUID getValue() {
         return value;
     }
 
     @Override
-    public BooleanFeature initItemParentEditor(GUI gui, int slot) {
+    public UUIDFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
@@ -63,22 +69,22 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        gui.updateBoolean(getEditorName(), value);
+        gui.updateActually(getEditorName(), value.toString());
     }
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        this.value = ((GUI)manager.getCache().get(player)).getBoolean(getEditorName());
+        this.value = UUID.fromString(((GUI)manager.getCache().get(player)).getActually(getEditorName()));
     }
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = UUID.randomUUID();
     }
 
     @Override
     public void clickParentEditor(Player editor, NewGUIManager manager) {
-        ((GUI)manager.getCache().get(editor)).changeBoolean(getEditorName());
+        ((GUI)manager.getCache().get(editor)).updateActually(getEditorName(), UUID.randomUUID().toString());
     }
 
     @Override

@@ -36,15 +36,15 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String colorStr = config.getString(getName(), "NULL").toUpperCase();
+        String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
             value = Optional.ofNullable(ChatColor.valueOf(colorStr));
             if(requirePremium() && !isPremiumLoading) {
-                errors.add("&cERROR, Couldn't load the ChatColor value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
+                errors.add("&cERROR, Couldn't load the ChatColor value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
                 value = Optional.empty();
             }
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the ChatColor value of " + getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> ChatColors available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/ChatColor.html");
+            errors.add("&cERROR, Couldn't load the ChatColor value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> ChatColors available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/ChatColor.html");
             value = Optional.empty();
         }
         return errors;
@@ -53,7 +53,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
     @Override
     public void save(ConfigurationSection config) {
         Optional<ChatColor> value = getValue();
-        if(value.isPresent()) config.set(getName(), value.get().name());
+        if(value.isPresent()) config.set(this.getName(), value.get().name());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public ChatColorFeature clone() {
-        ChatColorFeature clone = new ChatColorFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        ChatColorFeature clone = new ChatColorFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
         clone.value = value;
         return clone;
     }

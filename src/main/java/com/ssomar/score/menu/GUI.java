@@ -443,6 +443,7 @@ public abstract class GUI implements IGUI {
 
     public int getInt(String itemName) {
         ItemStack item = this.getByName(itemName);
+        if(item == null) throw new NullPointerException("Item with the name: "+itemName+" is null");
         return Integer.parseInt(getActually(item));
     }
 

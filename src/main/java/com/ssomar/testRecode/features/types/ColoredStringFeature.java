@@ -37,7 +37,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        String valueStr = config.getString(getName(), "");
+        String valueStr = config.getString(this.getName(), "");
         if(valueStr.isEmpty()) value = Optional.empty();
         else value = Optional.of(valueStr);
         return new ArrayList<>();
@@ -46,7 +46,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     @Override
     public void save(ConfigurationSection config) {
         Optional<String> value = getValue();
-        if(value.isPresent() )config.set(getName(), value.get());
+        if(value.isPresent() )config.set(this.getName(), value.get());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public ColoredStringFeature clone() {
-        ColoredStringFeature clone = new ColoredStringFeature(getParent(), getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        ColoredStringFeature clone = new ColoredStringFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.setValue(getValue());
         return clone;
     }
@@ -126,6 +126,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         String valueStr = message;
         if(valueStr.isEmpty()) value = Optional.empty();
         else value = Optional.of(valueStr);
+        manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 }

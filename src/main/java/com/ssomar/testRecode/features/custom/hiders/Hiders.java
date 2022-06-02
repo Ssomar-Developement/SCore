@@ -36,7 +36,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     private BooleanFeature hideUsage;
 
     public Hiders(FeatureParentInterface parent) {
-        super(parent, "Hiders", "Hiders", new String[]{"&7&oHiders to hide:", "Attributes, Enchants, ..."}, Material.ANVIL, false);
+        super(parent, "Hiders", "Hiders", new String[]{"&7&oHiders to hide:", "&7&oAttributes, Enchants, ..."}, Material.ANVIL, false);
         reset();
     }
 
@@ -77,9 +77,29 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
 
     @Override
     public Hiders initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 1];
+        String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 6] = gui.CLICK_HERE_TO_CHANGE;
+        if(hideEnchantments.getValue())
+            finalDescription[finalDescription.length - 5] = "&7Hide enchantments: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 5] = "&7Hide enchantments: &c&l✘";
+        if(hideUnbreakable.getValue())
+            finalDescription[finalDescription.length - 4] = "&7Hide unbreakable: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 4] = "&7Hide unbreakable: &c&l✘";
+        if(hideAttributes.getValue())
+            finalDescription[finalDescription.length - 3] = "&7Hide attributes: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 3] = "&7Hide attributes: &c&l✘";
+        if(hidePotionEffects.getValue())
+            finalDescription[finalDescription.length - 2] = "&7Hide effects / banner tags: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 2] = "&7Hide effects / banner tags: &c&l✘";
+        if(hideUsage.getValue())
+            finalDescription[finalDescription.length - 1] = "&7Hide usage: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 1] = "&7Hide usage: &c&l✘";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

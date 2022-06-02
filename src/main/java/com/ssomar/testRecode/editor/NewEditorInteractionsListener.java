@@ -1,6 +1,11 @@
 package com.ssomar.testRecode.editor;
 
 import com.ssomar.score.menu.GUI;
+import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeature;
+import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditor;
+import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditor;
+import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditorManager;
@@ -96,6 +101,14 @@ public class NewEditorInteractionsListener implements Listener {
             EnchantmentsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof AttributeFullOptionsFeatureEditor) {
+            AttributeFullOptionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof AttributesGroupFeatureEditor) {
+            AttributesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -130,6 +143,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (EnchantmentsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             EnchantmentsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (AttributeFullOptionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            AttributeFullOptionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (AttributesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            AttributesGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

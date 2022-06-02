@@ -71,9 +71,24 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
 
     @Override
     public DropFeatures initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 1];
+        String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+        if(glowDrop.getValue())
+            finalDescription[finalDescription.length - 3] = "&7Glow drop: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 3] = "&7Glow drop: &c&l✘";
+
+        if(dropColor.getValue().isPresent()) {
+            finalDescription[finalDescription.length - 2] = "&7Glow drop color: &e" + dropColor.getValue().get().name();
+        } else {
+            finalDescription[finalDescription.length - 2] = "&7Glow drop color: &c&l✘";
+        }
+
+        if(displayNameDrop.getValue())
+            finalDescription[finalDescription.length - 1] = "&7Display custom name: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 1] = "&7Display custom name: &c&l✘";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

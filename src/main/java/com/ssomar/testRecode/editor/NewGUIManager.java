@@ -144,7 +144,7 @@ public abstract class NewGUIManager<T extends GUI> {
 		else if(message.equals("NEXT PAGE")) {
 			this.receiveMessageNextPage(interact);
 		}
-		else if(message.equals("FINISH")) {
+		else if(message.equals("exit")) {
 			this.receiveMessageFinish(interact);
 		}
 		else if(message.contains("delete line <")) {

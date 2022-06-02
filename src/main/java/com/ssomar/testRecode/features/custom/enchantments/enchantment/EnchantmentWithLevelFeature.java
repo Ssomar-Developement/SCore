@@ -48,8 +48,8 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
         List<String> errors = new ArrayList<>();
         if(config.isConfigurationSection(id)){
             ConfigurationSection enchantmentConfig = config.getConfigurationSection(id);
-            enchantment.load(plugin, enchantmentConfig, isPremiumLoading);
-            level.load(plugin, enchantmentConfig, isPremiumLoading);
+            errors.addAll(enchantment.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(level.load(plugin, enchantmentConfig, isPremiumLoading));
         }
         else{
             errors.add("&cERROR, Couldn't load the Enchantment with level value because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
@@ -127,12 +127,10 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public void reload() {
-        SsomarDev.testMsg("Reloading EnchantmentWithLevelFeature");
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature instanceof EnchantmentWithLevelFeature) {
                 EnchantmentWithLevelFeature eF = (EnchantmentWithLevelFeature) feature;
                 if(eF.getId().equals(id)) {
-                    SsomarDev.testMsg("Reloading EnchantmentWithLevelFeature: "+id);
                     eF.setEnchantment(enchantment);
                     eF.setLevel(level);
                     break;

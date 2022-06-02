@@ -6,7 +6,6 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.util.List;
 
 public interface FeatureInterface<T, Y extends FeatureInterface> {

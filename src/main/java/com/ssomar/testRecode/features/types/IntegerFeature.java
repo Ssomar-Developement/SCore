@@ -38,13 +38,13 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String valueStr = config.getString(getName(), "NULL");
+        String valueStr = config.getString(this.getName(), "NULL");
         Optional<Integer> valuePotential = NTools.getInteger(valueStr);
         if(valuePotential.isPresent()) {
             this.value = valuePotential;
         }
         else {
-            errors.add("&cERROR, Couldn't load the integer value of " + getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
+            errors.add("&cERROR, Couldn't load the integer value of " + this.getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
             if (defaultValue.isPresent()) {
                 this.value = defaultValue;
             }
@@ -56,7 +56,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     @Override
     public void save(ConfigurationSection config) {
         if(value.isPresent()) {
-            config.set(getName(), value.get());
+            config.set(this.getName(), value.get());
         }
     }
 
@@ -89,7 +89,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public IntegerFeature clone() {
-        IntegerFeature clone = new IntegerFeature(getParent(), getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        IntegerFeature clone = new IntegerFeature(getParent(), this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.value = value;
         return clone;
     }
@@ -135,6 +135,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
         this.value = NTools.getInteger(StringConverter.decoloredString(message).trim());
+        manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 }
