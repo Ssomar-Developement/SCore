@@ -40,6 +40,9 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     public void save() {
         ConfigurationSection config = parent.getConfigurationSection();
         save(config);
+        while(config.getParent() != null) {
+            config = config.getParent();
+        }
         writeInFile(config);
     }
 

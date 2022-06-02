@@ -1,5 +1,6 @@
 package com.ssomar.testRecode.features.custom.enchantments.group;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.editor.NewGUIManager;
@@ -25,7 +26,7 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     private Map<String, EnchantmentWithLevelFeature> enchantments;
 
     public EnchantmentsGroupFeature(FeatureParentInterface parent) {
-        super(parent, "Enchantments", "Enchantments", new String[]{"&7&oThe enchantments"}, Material.ENCHANTED_BOOK, false);
+        super(parent, "enchantments", "Enchantments", new String[]{"&7&oThe enchantments"}, Material.ENCHANTED_BOOK, false);
         reset();
     }
 
@@ -37,12 +38,11 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if(config.isConfigurationSection("enchantments")) {
-            ConfigurationSection enchantmentsSection = config.getConfigurationSection("enchantments");
+        if(config.isConfigurationSection(getName())) {
+            ConfigurationSection enchantmentsSection = config.getConfigurationSection(getName());
             for(String enchantmentID : enchantmentsSection.getKeys(false)) {
-                ConfigurationSection enchantmentSection = enchantmentsSection.getConfigurationSection(enchantmentID);
                 EnchantmentWithLevelFeature enchantment = new EnchantmentWithLevelFeature(this, enchantmentID);
-                List<String> subErrors = enchantment.load(plugin, enchantmentSection, isPremiumLoading);
+                List<String> subErrors = enchantment.load(plugin, enchantmentsSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                     continue;
@@ -55,10 +55,10 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set("enchantments", null);
+        config.set(getName(), null);
+        ConfigurationSection enchantmentsSection = config.createSection(getName());
         for(String enchantmentID : enchantments.keySet()) {
-            config.createSection("enchantments." + enchantmentID);
-            enchantments.get(enchantmentID).save(config.getConfigurationSection("enchantments." + enchantmentID));
+            enchantments.get(enchantmentID).save(enchantmentsSection);
         }
     }
 
@@ -106,7 +106,11 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
 
     @Override
     public ConfigurationSection getConfigurationSection() {
-        return getParent().getConfigurationSection();
+        ConfigurationSection section = getParent().getConfigurationSection();
+        if(section.isConfigurationSection(getName())) {
+            return section.getConfigurationSection(getName());
+        }
+        else return section.createSection(getName());
     }
 
     @Override

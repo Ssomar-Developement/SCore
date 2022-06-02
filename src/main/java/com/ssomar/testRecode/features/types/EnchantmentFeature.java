@@ -211,7 +211,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
         *
         * */
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
+        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         boolean find = false;
         for (Enchantment check : getSortEnchantments()) {
             if (enchantment.equals(check)) {

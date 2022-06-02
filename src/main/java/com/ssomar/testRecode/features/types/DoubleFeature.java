@@ -55,7 +55,9 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(getName(), value);
+        if(value.isPresent()) {
+            config.set(getName(), value.get());
+        }
     }
 
     @Override

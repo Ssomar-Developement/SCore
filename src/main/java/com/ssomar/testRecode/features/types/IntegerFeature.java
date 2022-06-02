@@ -55,7 +55,9 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(getName(), value);
+        if(value.isPresent()) {
+            config.set(getName(), value.get());
+        }
     }
 
     @Override

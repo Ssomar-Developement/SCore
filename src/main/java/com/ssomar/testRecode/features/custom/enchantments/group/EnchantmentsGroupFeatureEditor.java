@@ -10,15 +10,16 @@ public class EnchantmentsGroupFeatureEditor extends FeatureEditorInterface<Encha
 
     public EnchantmentsGroupFeatureEditor(EnchantmentsGroupFeature enchantsGroupFeature) {
         super("&lEnchantments feature Editor", 3*9);
-        this.enchantsGroupFeature = enchantsGroupFeature.clone();
+        this.enchantsGroupFeature = enchantsGroupFeature;
         load();
     }
 
     @Override
     public void load() {
-        for(int i = 0; i < enchantsGroupFeature.getEnchantments().size(); i++) {
-            EnchantmentWithLevelFeature enchantment = enchantsGroupFeature.getEnchantments().get(i);
+        int i = 0;
+        for(EnchantmentWithLevelFeature enchantment : enchantsGroupFeature.getEnchantments().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
+            i++;
         }
 
         // Back
@@ -28,7 +29,7 @@ public class EnchantmentsGroupFeatureEditor extends FeatureEditorInterface<Encha
         createItem(ORANGE, 			1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
         // new enchant
-        createItem(GREEN, 1, 24, GUI.NEW, false, false, "", "&a&oClick here to add new enchantment");
+        createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add new enchantment");
     }
 
     @Override

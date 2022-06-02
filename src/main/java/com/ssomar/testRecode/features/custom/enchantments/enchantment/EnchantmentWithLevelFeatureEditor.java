@@ -16,7 +16,7 @@ public class EnchantmentWithLevelFeatureEditor extends FeatureEditorInterface<En
     @Override
     public void load() {
         enchantFeature.getEnchantment().initAndUpdateItemParentEditor(this, 0);
-        enchantFeature.getLevel().initItemParentEditor(this, 1);
+        enchantFeature.getLevel().initAndUpdateItemParentEditor(this, 1);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);

@@ -16,7 +16,7 @@ public class EnchantmentsGroupFeatureEditorManager extends FeatureEditorManagerA
 
     @Override
     public EnchantmentsGroupFeatureEditor buildEditor(EnchantmentsGroupFeature parent) {
-        return new EnchantmentsGroupFeatureEditor(parent.clone());
+        return new EnchantmentsGroupFeatureEditor(parent);
     }
 
 }

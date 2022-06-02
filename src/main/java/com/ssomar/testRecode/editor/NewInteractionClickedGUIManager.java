@@ -16,6 +16,8 @@ public class NewInteractionClickedGUIManager<T extends GUI> {
 	public String decoloredName;
 	public String coloredDeconvertName;
 	public String message;
+	public String decoloredMessage;
+	public String coloredDeconvertMessage;
 	public Player player;
 	public RequestMessageInfo msgInfos;
 	
@@ -25,5 +27,11 @@ public class NewInteractionClickedGUIManager<T extends GUI> {
 		this.name = name;
 		this.decoloredName = StringConverter.decoloredString(name);
 		this.coloredDeconvertName = StringConverter.deconvertColor(name);
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+		this.decoloredMessage = StringConverter.decoloredString(message);
+		this.coloredDeconvertMessage = StringConverter.deconvertColor(message);
 	}
 }

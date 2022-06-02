@@ -4,6 +4,8 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.testRecode.features.FeatureInterface;
+import com.ssomar.testRecode.features.FeatureRequireOneMessageInEditor;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -15,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public abstract class NewGUIManager<T extends GUI> {
@@ -127,12 +130,85 @@ public abstract class NewGUIManager<T extends GUI> {
 	public void receiveMessage(Player p, String message) {
 		NewInteractionClickedGUIManager<T> interact = new NewInteractionClickedGUIManager<>();
 		interact.player = p;
-		interact.message = message;
+		interact.setMessage(message);
 		interact.gui = cache.get(interact.player);
 		receiveMessage(interact);
 	}
 
-	public abstract void receiveMessage(NewInteractionClickedGUIManager<T> interact);
+
+	public void receiveMessage(NewInteractionClickedGUIManager<T> interact) {
+		String message = interact.decoloredMessage;
+		if(message.equals("PREVIOUS PAGE")) {
+			this.receiveMessagePreviousPage(interact);
+		}
+		else if(message.equals("NEXT PAGE")) {
+			this.receiveMessageNextPage(interact);
+		}
+		else if(message.equals("FINISH")) {
+			this.receiveMessageFinish(interact);
+		}
+		else if(message.contains("delete line <")) {
+			this.receiveMessageDeleteline(interact);
+		}
+		else if(message.contains("up line <")) {
+			this.receiveMessageUpLine(interact);
+		}
+		else if(message.contains("down line <")) {
+			this.receiveMessageDownLine(interact);
+		}
+		else {
+			this.receiveMessageValue(interact);
+		}
+	}
+
+	public abstract void receiveMessagePreviousPage(NewInteractionClickedGUIManager<T> interact);
+
+	public abstract void receiveMessageNextPage(NewInteractionClickedGUIManager<T> interact);
+
+	public abstract void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact);
+
+	public void receiveMessageDeleteline(NewInteractionClickedGUIManager<T> interact){
+		Player p = interact.player;
+		space(p);
+		space(p);
+		int line = Integer.parseInt(interact.decoloredMessage.split("delete line <")[1].split(">")[0]);
+		currentWriting.get(p).remove(line);
+		p.sendMessage(StringConverter.coloredString("&a&l>> &2&lEDITION &aYou have delete the line: "+line+" !"));
+		space(p);
+		space(p);
+	}
+
+	public void receiveMessageUpLine(NewInteractionClickedGUIManager<T> interact){
+		Player p = interact.player;
+		space(p);
+		space(p);
+		int line = Integer.valueOf(interact.decoloredMessage.split("up line <")[1].split(">")[0]);
+		if (line != 0) {
+			String current = currentWriting.get(p).get(line);
+			currentWriting.get(p).set(line, currentWriting.get(p).get(line-1));
+			currentWriting.get(p).set(line-1, current);
+		}
+		p.sendMessage(StringConverter.coloredString("&a&l>> &2&lEDITION &aYou have up the line: "+line+" to "+(line-1)+" !"));
+		space(p);
+		space(p);
+	}
+
+	public void receiveMessageDownLine(NewInteractionClickedGUIManager<T> interact){
+		Player p = interact.player;
+		space(p);
+		space(p);
+		int line = Integer.valueOf(interact.decoloredMessage.split("down line <")[1].split(">")[0]);
+		if (line != 0) {
+			String current = currentWriting.get(p).get(line);
+			currentWriting.get(p).set(line, currentWriting.get(p).get(line+1));
+			currentWriting.get(p).set(line+1, current);
+		}
+		p.sendMessage(StringConverter.coloredString("&a&l>> &2&lEDITION &aYou have down the line: "+line+" to "+(line+1)+" !"));
+		space(p);
+		space(p);
+	}
+
+	public abstract void receiveMessageValue(NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void newObject(NewInteractionClickedGUIManager<T> interact);
 

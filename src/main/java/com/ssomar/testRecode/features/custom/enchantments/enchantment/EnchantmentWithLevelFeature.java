@@ -1,5 +1,7 @@
 package com.ssomar.testRecode.features.custom.enchantments.enchantment;
 
+import com.ssomar.score.SsomarDev;
+import com.ssomar.score.commands.runnable.block.commands.SilkSpawner;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.editor.NewGUIManager;
@@ -12,6 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,29 +32,42 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
     private String id;
 
     public EnchantmentWithLevelFeature(FeatureParentInterface parent, String id) {
-        super(parent, "Enchantment with level", "Enchantment with level", new String[]{"&7&oAn enchantment with level"}, Material.ENCHANTED_BOOK, false);
+        super(parent, "Enchantment with level", "Enchantment", new String[]{"&7&oAn enchantment with level"}, Material.ENCHANTED_BOOK, false);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.enchantment = new EnchantmentFeature(this, "enchantment", Optional.empty(), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
+        this.enchantment = new EnchantmentFeature(this, "enchantment", Optional.of(Enchantment.DURABILITY), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
         this.level = new IntegerFeature(this, "level", Optional.of(1), "Level", new String[]{"&7&oThe level of the enchantment"}, Material.BEACON, false);
     }
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        List<String> error = new ArrayList<>();
-        enchantment.load(plugin, config, isPremiumLoading);
-        level.load(plugin, config, isPremiumLoading);
-        return error;
+        List<String> errors = new ArrayList<>();
+        if(config.isConfigurationSection(id)){
+            ConfigurationSection enchantmentConfig = config.getConfigurationSection(id);
+            enchantment.load(plugin, enchantmentConfig, isPremiumLoading);
+            level.load(plugin, enchantmentConfig, isPremiumLoading);
+        }
+        else{
+            errors.add("&cERROR, Couldn't load the Enchantment with level value because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
+        }
+        return errors;
+    }
+
+    @Override
+    public boolean isTheFeatureClickedParentEditor(String featureClicked) {
+        return featureClicked.contains(getEditorName()) && featureClicked.contains("("+id+")");
     }
 
     @Override
     public void save(ConfigurationSection config) {
-        enchantment.save(config);
-        level.save(config);
+        config.set(id, null);
+        ConfigurationSection enchantmentConfig = config.createSection(id);
+        enchantment.save(enchantmentConfig);
+        level.save(enchantmentConfig);
     }
 
     @Override
@@ -61,11 +77,13 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public EnchantmentWithLevelFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 1];
+        String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+        finalDescription[finalDescription.length - 3] = "&7Enchantment: &e" + enchantment.getEnchantmentName(enchantment.getValue().get());
+        finalDescription[finalDescription.length - 2] = "&7Level: &e" + level.getValue().get();
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName()+ " - "+"("+id+")", false, false, finalDescription);
         return this;
     }
 
@@ -109,10 +127,12 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public void reload() {
+        SsomarDev.testMsg("Reloading EnchantmentWithLevelFeature");
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature instanceof EnchantmentWithLevelFeature) {
                 EnchantmentWithLevelFeature eF = (EnchantmentWithLevelFeature) feature;
                 if(eF.getId().equals(id)) {
+                    SsomarDev.testMsg("Reloading EnchantmentWithLevelFeature: "+id);
                     eF.setEnchantment(enchantment);
                     eF.setLevel(level);
                     break;
