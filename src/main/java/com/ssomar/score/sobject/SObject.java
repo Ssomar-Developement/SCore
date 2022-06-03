@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 
+import org.bukkit.Location;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,6 +23,8 @@ public interface SObject {
 	List<SActivator> getActivators();
 	
 	ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
+
+	Item dropItem(Location location, int amount);
 	
 	@Nullable
     SActivator getActivator(String actID);

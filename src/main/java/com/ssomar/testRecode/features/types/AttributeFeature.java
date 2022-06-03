@@ -218,18 +218,21 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
         * */
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
+        int maxSize = lore.size();
+        maxSize += getSortAttributes().size();
+        if(maxSize > 17)  maxSize = 17;
         boolean find = false;
         for (Attribute check : getSortAttributes()) {
             if (attribute.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" +attribute.name()));
                 find = true;
             } else if (find) {
-                if (lore.size() == 17) break;
+                if (lore.size() == maxSize) break;
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
         for (Attribute check : getSortAttributes()) {
-            if (lore.size() == 17) break;
+            if (lore.size() == maxSize) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }

@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -40,6 +41,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     private String entityDirection;
     private double entityHealth;
     private double entityMaxHealth;
+
+    private String team;
 
 
     public EntityPlaceholdersAbstract(String particle) {
@@ -114,6 +117,14 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
                 this.entityMaxHealth = -1;
                 this.entityHealth = -1;
             }
+
+            team = "NO_TEAM";
+            for(Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()){
+                if(t.hasEntry(entityUUID.toString())){
+                    team = t.getName();
+                    break;
+                }
+            }
         }
     }
 
@@ -159,6 +170,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
 
             if(entityMaxHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%entity_max_health%", entityMaxHealth+"", false);
             if(entityHealth != -1) toReplace = replaceCalculPlaceholder(toReplace, "%entity_health%", entityHealth+"", false);
+
+            toReplace = toReplace.replaceAll("%"+particle+"_team%", team);
 
         }
 

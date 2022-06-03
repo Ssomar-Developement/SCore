@@ -84,7 +84,8 @@ public class UUIDFeature extends FeatureAbstract<UUID, UUIDFeature> implements F
 
     @Override
     public void clickParentEditor(Player editor, NewGUIManager manager) {
-        ((GUI)manager.getCache().get(editor)).updateActually(getEditorName(), UUID.randomUUID().toString());
+        value = UUID.randomUUID();
+        ((GUI)manager.getCache().get(editor)).updateActually(getEditorName(), value.toString());
     }
 
     @Override

@@ -28,6 +28,8 @@ public class EntityConditionsManager extends ConditionsManager<EntityConditions,
         add(new IfNotEntityType());
         add(new IfIsOnTheBlock());
         add(new IfIsNotOnTheBlock());
+        add(new IfHasTag());
+        add(new IfNotHasTag());
 
     }
 

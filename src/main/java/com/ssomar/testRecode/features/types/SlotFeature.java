@@ -71,9 +71,10 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
 
     @Override
     public SlotFeature initItemParentEditor(GUI gui, int slot) {
-        String [] finalDescription = new String[getEditorDescription().length + 1];
+        String [] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = "&7actually: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
         return this;
@@ -213,19 +214,22 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     public void updateAttributeSlot(AttributeSlot slot, GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
+        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
+        int maxSize = lore.size();
+        maxSize += getSortAttributeSlots().size();
+        if(maxSize > 17)  maxSize = 17;
         boolean find = false;
         for (AttributeSlot check : getSortAttributeSlots()) {
             if (slot.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" +slot.name()));
                 find = true;
             } else if (find) {
-                if (lore.size() == 17) break;
+                if (lore.size() == maxSize) break;
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
         for (AttributeSlot check : getSortAttributeSlots()) {
-            if (lore.size() == 17) break;
+            if (lore.size() == maxSize) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }

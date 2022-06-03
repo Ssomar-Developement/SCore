@@ -47,6 +47,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
         this.slot = new SlotFeature(this, "slot", Optional.of(AttributeSlot.HAND), "Slot", new String[]{"&7&oThe slot"}, Material.ARMOR_STAND, false);
         this.attributeName = new ColoredStringFeature(this, "name", Optional.of("&eDefault name"), "Name", new String[]{"&7&oThe name"}, Material.NAME_TAG, false);
+        this.uuid = new UUIDFeature(this, "uuid", "UUID", new String[]{"&7&oThe UUID"}, Material.NAME_TAG, false);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
             errors.addAll(this.amount.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.slot.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.attributeName.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.uuid.load(plugin, enchantmentConfig, isPremiumLoading));
         }
         else{
             errors.add("&cERROR, Couldn't load the Attribute with its options because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
@@ -80,6 +82,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         this.amount.save(attributeConfig);
         this.slot.save(attributeConfig);
         this.attributeName.save(attributeConfig);
+        this.uuid.save(attributeConfig);
     }
 
     @Override
@@ -119,12 +122,13 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         eF.setAmount(amount.clone());
         eF.setSlot(slot.clone());
         eF.setAttributeName(attributeName.clone());
+        eF.setUuid(uuid.clone());
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(attribute, operation, amount, slot, attributeName));
+        return new ArrayList<>(Arrays.asList(attribute, operation, amount, slot, attributeName, uuid));
     }
 
     @Override
@@ -153,6 +157,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
                     aFOF.setAmount(amount);
                     aFOF.setSlot(slot);
                     aFOF.setAttributeName(attributeName);
+                    aFOF.setUuid(uuid);
                     break;
                 }
             }

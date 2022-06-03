@@ -1,11 +1,13 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.events.PlaceholderLastDamageDealtEvent;
 import com.ssomar.score.utils.NTools;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -34,6 +36,8 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     private float yaw;
     private float yawPositive;
     private String direction;
+
+    private String team;
 
     private int fixSlot;
     private String slot = "";
@@ -107,6 +111,14 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                 this.lastDamageDealt = PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.get(playerUUID);
             }
             else this.lastDamageDealt = 0;
+
+            team = "NO_TEAM";
+            for(Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()){
+                if(t.hasEntry(this.player)){
+                    team = t.getName();
+                    break;
+                }
+            }
         }
     }
 
@@ -167,6 +179,8 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_yaw_positive%", yawPositive+"", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%"+particle+"_yaw_positive_int%", ((int) yawPositive)+"", false);
             toReplace = toReplace.replaceAll("%"+particle+"_direction%", direction);
+
+            toReplace = toReplace.replaceAll("%"+particle+"_team%", team);
         }
 
         return toReplace;

@@ -19,8 +19,8 @@ public class AttributeFullOptionsFeatureEditor extends FeatureEditorInterface<At
         enchantFeature.getOperation().initAndUpdateItemParentEditor(this, 1);
         enchantFeature.getAmount().initAndUpdateItemParentEditor(this, 2);
         enchantFeature.getSlot().initAndUpdateItemParentEditor(this, 3);
-        enchantFeature.getUuid().initAndUpdateItemParentEditor(this, 4);
-        enchantFeature.getAttributeName().initAndUpdateItemParentEditor(this, 5);
+        enchantFeature.getAttributeName().initAndUpdateItemParentEditor(this, 4);
+        enchantFeature.getUuid().initAndUpdateItemParentEditor(this, 5);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);

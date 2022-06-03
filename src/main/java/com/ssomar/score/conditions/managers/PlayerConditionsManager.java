@@ -55,6 +55,8 @@ public class PlayerConditionsManager extends ConditionsManager<PlayerConditions,
         add(new IfNotInWorld());
         add(new IfTargetBlock());
         add(new IfNotTargetBlock());
+        add(new IfHasTag());
+        add(new IfNotHasTag());
 
         add(new IfPlayerHasExecutableItems());
         add(new IfPlayerHasItem());

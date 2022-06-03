@@ -45,7 +45,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
         this.hideEnchantments = new BooleanFeature(getParent(), "hideEnchantments", false, "Hide echantments", new String[]{"&7&oHide enchantments"}, Material.LEVER, false);
         this.hideUnbreakable = new BooleanFeature(getParent(), "hideUnbreakable", false, "Hide unbreakable", new String[]{"&7&oHide unbreakable"}, Material.LEVER, false);
         this.hideAttributes = new BooleanFeature(getParent(), "hideAttributes", false, "Hide attributes", new String[]{"&7&oHide attributes"}, Material.LEVER, false);
-        this.hidePotionEffects = new BooleanFeature(getParent(), "hidePotionEffects", false, "Hide potion effects / banner tags", new String[]{"&7&oHide Potion effects", "and banner tags"}, Material.LEVER, false);
+        this.hidePotionEffects = new BooleanFeature(getParent(), "hidePotionEffects", false, "Hide potion effects / banner tags", new String[]{"&7&oHide Potion effects", "&7&oand banner tags"}, Material.LEVER, false);
         this.hideUsage = new BooleanFeature(getParent(), "hideUsage", false, "Hide usage", new String[]{"&7&oHide usage"}, Material.LEVER, false);
     }
 
