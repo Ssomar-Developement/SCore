@@ -20,10 +20,10 @@ import java.util.Optional;
 
 public abstract class NewSObject<X extends FeatureInterface<X, X>, Y extends GUI, Z extends NewGUIManager<Y>> extends FeatureWithHisOwnEditor<X, X, Y, Z> {
 
-    public NewSObject(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public NewSObject(String name, String editorName, String[] editorDescription, Material editorMaterial) {
+        super(null, name, editorName, editorDescription, editorMaterial, false);
     }
-
+    
     public abstract String getId();
 
     public abstract void setId(String id);
