@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.7.4.0</version>
+	<version>1.7.4.1</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -250,6 +250,14 @@
 			<version>3.2.8</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.2.8.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bgsoftware</groupId>
+			<artifactId>SuperiorSkyblock</artifactId>
+			<version>1.10.2.674</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/SuperiorSkyblock.jar</systemPath>
 		</dependency>
 
 		<dependency>
