@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 public class ProtocolibAPI {
 
     public static void reduceDamageIndicator(){
-        if(SCore.hasProtocolLib) {
+        if(SCore.hasProtocolLib && !SCore.is1v11Less()) {
             try {
                 /* LIMIT the particles of damage */
                 SCore.protocolManager.addPacketListener(
