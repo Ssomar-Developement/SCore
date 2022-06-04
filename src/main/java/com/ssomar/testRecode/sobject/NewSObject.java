@@ -10,7 +10,9 @@ import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
 import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 import com.ssomar.testRecode.sobject.sactivator.NewSActivator;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +38,8 @@ public abstract class NewSObject<X extends FeatureInterface<X, X>, Y extends GUI
     public abstract String getPath();
 
     public abstract List<NewSActivator> getActivators();
+
+    public abstract Item dropItem(Location location, int amount);
 
     public abstract ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
 
