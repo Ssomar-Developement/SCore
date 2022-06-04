@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,6 +30,7 @@ import com.ssomar.score.data.Database;
 import com.ssomar.score.data.EntityCommandsQuery;
 import com.ssomar.score.data.PlayerCommandsQuery;
 
+@Getter @Setter
 public class CommandsHandler implements Listener {
 
 	private static CommandsHandler instance;
@@ -46,18 +50,19 @@ public class CommandsHandler implements Listener {
 	/* for "morph item" timing between delete item and regive item (2 ticks)  player */
 	private Map<Player, Long> stopPickup;
 
+	/* Commands delayed saved that wait to be runned  PLAYER_UUID|PLAYERRUNCOMMAND -> Useful to avoid to call a query at each join*/
+	private Map<UUID, List<PlayerRunCommand>> delayedCommandsSaved;
+
 	@EventHandler(priority = EventPriority.HIGH)
 	public void PlayerJoinEvent(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-
-		List<PlayerRunCommand> commands = PlayerCommandsQuery.selectCommandsForPlayer(Database.getInstance().connect(), p.getUniqueId());
-
-		for(PlayerRunCommand pC : commands) {
-			// run la command et va sauto dans les listes en haut
-			pC.run();
+		if(getInstance().getDelayedCommandsSaved().containsKey(p.getUniqueId())){
+			for (PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(p.getUniqueId())) {
+				SCore.plugin.getLogger().info("SCore will execute the delayed command saved for " + p.getName() + " : " + command.getBrutCommand());
+				command.run();
+			}
 		}
-
-		PlayerCommandsQuery.deleteCommandsForPlayer(Database.getInstance().connect(), p.getUniqueId());
+		getInstance().getDelayedCommandsSaved().remove(p.getUniqueId());
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -72,7 +77,10 @@ public class CommandsHandler implements Listener {
 			}
 		}
 
-		PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commandsToSave, true);
+		if(getInstance().getDelayedCommandsSaved().containsKey(p.getUniqueId())){
+			getInstance().getDelayedCommandsSaved().get(p.getUniqueId()).addAll(commandsToSave);
+		}
+		else getInstance().getDelayedCommandsSaved().put(p.getUniqueId(), commandsToSave);
 
 		for(PlayerRunCommand command : commandsToSave){
 			getInstance().removeDelayedCommand(command.getUuid(), p.getUniqueId());
@@ -80,6 +88,18 @@ public class CommandsHandler implements Listener {
 	}
 	
 	public void onEnable() {
+
+		getInstance().setDelayedCommandsSaved(PlayerCommandsQuery.loadSavedCommands(Database.getInstance().connect()));
+		int cpt = 0;
+		for(UUID uuid : getInstance().getDelayedCommandsSaved().keySet()){
+			OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+			for(PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(uuid)) {
+				SCore.plugin.getLogger().info("SCore loaded the delayed command for " + player.getName() + " : " + command.getBrutCommand());
+				cpt++;
+			}
+		}
+		SCore.plugin.getLogger().info(+ cpt + " saved commands loaded !");
+
 		/* Quite useless because at the start of the server the entities seems not loaded and the Bukkit.getentity return null */
 		List<EntityRunCommand> commands = EntityCommandsQuery.selectEntityCommands(Database.getInstance().connect());
 		for(EntityRunCommand eCommand : commands) {
@@ -96,21 +116,26 @@ public class CommandsHandler implements Listener {
 	}
 
 	public void onDisable() {
-		/* Save all delayed commands in BDD */
-		for(Player p : Bukkit.getServer().getOnlinePlayers()){
-			List<PlayerRunCommand> commands = getInstance().getDelayedCommandsWithReceiver(p.getUniqueId());
-			//System.out.println(" >>> "+p.getName()+ " "+commands.size());
-
-			PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), commands, false);
-
-			getInstance().removeAllDelayedCommands(p.getUniqueId());
+		List<PlayerRunCommand> savedCommands = new ArrayList<>();
+		savedCommands.addAll(getInstance().getDelayedPlayerCommands());
+		for(UUID uuid : getInstance().getDelayedCommandsSaved().keySet()){
+			savedCommands.addAll(getInstance().getDelayedCommandsSaved().get(uuid));
 		}
+		for(PlayerRunCommand command : savedCommands){
+			OfflinePlayer player = Bukkit.getOfflinePlayer(command.getReceiverUUID());
+			SCore.plugin.getLogger().info("SCore saved the delayed command for " + player.getName() + " : " + command.getBrutCommand());
+		}
+		PlayerCommandsQuery.deleteCommands(Database.getInstance().connect());
+		PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), savedCommands, false);
+		getInstance().getDelayedCommandsSaved().clear();
 		
 		EntityCommandsQuery.insertCommand(Database.getInstance().connect(), this.delayedCommandsByEntityUuid);
 		this.delayedCommandsByEntityUuid.clear();
 		
 		BlockCommandsQuery.insertCommand(Database.getInstance().connect(), this.delayedCommandsByBlockUuid);
 		this.delayedCommandsByBlockUuid.clear();
+
+		this.delayedCommandsByReceiverUuid.clear();
 	}
 
 
@@ -120,6 +145,7 @@ public class CommandsHandler implements Listener {
 		delayedCommandsByEntityUuid = new ArrayList<>();
 		delayedCommandsByBlockUuid = new ArrayList<>();
 		stopPickup = new HashMap<>();
+		delayedCommandsSaved = new HashMap<>();
 	}
 
 	public void addDelayedCommand(@NotNull RunCommand command) {
@@ -216,6 +242,16 @@ public class CommandsHandler implements Listener {
 			List<RunCommand> runCommands = delayedCommandsByReceiverUuid.get(receiverUUID);
 			for(RunCommand rC : runCommands) {
 				if(rC instanceof PlayerRunCommand) commands.add((PlayerRunCommand) rC);
+			}
+		}
+		return commands;
+	}
+
+	public List<PlayerRunCommand> getDelayedPlayerCommands() {
+		List<PlayerRunCommand> commands = new ArrayList<>();
+		for(List<RunCommand> runCommands : delayedCommandsByReceiverUuid.values()) {
+			for (RunCommand rC : runCommands) {
+				if (rC instanceof PlayerRunCommand) commands.add((PlayerRunCommand) rC);
 			}
 		}
 		return commands;

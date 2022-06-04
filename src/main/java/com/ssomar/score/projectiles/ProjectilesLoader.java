@@ -17,8 +17,6 @@ public class ProjectilesLoader {
 
     private static ProjectilesLoader instance;
 
-    private int cpt;
-
     private List<EntityType> validProjectiles = new ArrayList<>();
 
     public ProjectilesLoader() {
@@ -242,7 +240,6 @@ public class ProjectilesLoader {
 
 
     public void loadProjectilesbyFile() {
-        cpt = 0;
         List<String> listFiles = Arrays.asList(new File(SCore.plugin.getDataFolder() + "/projectiles").list());
         Collections.sort(listFiles);
 
@@ -261,7 +258,6 @@ public class ProjectilesLoader {
                     continue;
                 }
                 ProjectilesManager.getInstance().addProjectile(projectile);
-                cpt++;
                 SCore.plugin.getServer().getLogger().info("[SCore] projectile " + id + " was loaded !");
             }
         }
@@ -284,7 +280,6 @@ public class ProjectilesLoader {
                     continue;
                 }
                 ProjectilesManager.getInstance().addProjectile(projectile);
-                cpt++;
                 SCore.plugin.getServer().getLogger().info("[SCore] projectile " + id + " was loaded !");
             }
         }

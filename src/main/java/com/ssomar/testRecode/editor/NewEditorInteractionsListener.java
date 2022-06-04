@@ -1,11 +1,14 @@
 package com.ssomar.testRecode.editor;
 
+import com.ssomar.executableitems.executableitems.restrictions.Restriction;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeature;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditor;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditor;
 import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditor;
+import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditorManager;
@@ -18,6 +21,8 @@ import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUI;
 import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUIManager;
+import com.ssomar.testRecode.features.custom.restrictions.RestrictionsEditor;
+import com.ssomar.testRecode.features.custom.restrictions.RestrictionsEditorManager;
 import com.ssomar.testRecode.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.testRecode.sobject.menu.NewSObjectsManagerEditor;
 import org.bukkit.entity.Player;
@@ -109,6 +114,14 @@ public class NewEditorInteractionsListener implements Listener {
             AttributesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof RestrictionsEditor) {
+            RestrictionsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof CancelEventFeaturesEditor) {
+            CancelEventFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -151,6 +164,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (AttributesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             AttributesGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (RestrictionsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RestrictionsEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (CancelEventFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            CancelEventFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

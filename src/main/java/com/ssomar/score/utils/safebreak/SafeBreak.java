@@ -92,6 +92,8 @@ public class SafeBreak {
 
         if(SCore.hasIridiumSkyblock) if(!IridiumSkyblockTool.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
 
+        if(SCore.hasSuperiorSkyblock2) if(!SuperiorSkyblockTool.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
+
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
 
         if(SCore.hasLands) if(!new LandsIntegrationAPI(SCore.plugin).playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;

@@ -54,6 +54,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static boolean hasIridiumSkyblock = false;
 
+    public static boolean hasSuperiorSkyblock2 = false;
+
     public static boolean hasMultiverse = false;
 
     public static boolean hasLands = false;
@@ -154,6 +156,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (Bukkit.getPluginManager().getPlugin("IridiumSkyblock") != null) {
             SCore.plugin.getServer().getLogger().info("[" + NAME + "] IridiumSkyblock hooked !");
             hasIridiumSkyblock = true;
+        }
+        if (Bukkit.getPluginManager().getPlugin("SuperiorSkyblock2") != null) {
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] SuperiorSkyblock2 hooked !");
+            hasSuperiorSkyblock2 = true;
         }
         if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
             SCore.plugin.getServer().getLogger().info("[" + NAME + "] Multiverse-Core hooked !");

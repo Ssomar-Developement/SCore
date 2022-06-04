@@ -4,13 +4,13 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ActionInfoSerializer;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerCommandsQuery {
 
@@ -111,6 +111,28 @@ public class PlayerCommandsQuery {
         }
     }
 
+    public static void deleteCommands(Connection conn) {
+
+        String sql = "DELETE FROM " + TABLE_COMMANDS_PLAYER;
+
+        PreparedStatement pstmt = null;
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static List<PlayerRunCommand> selectCommandsForPlayer(Connection conn, UUID uuid) {
         String sql = "SELECT " + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + " FROM " + TABLE_COMMANDS_PLAYER + " where " + COL_UUID_RECEIVER + "=? ORDER BY " + COL_RUN_TIME;
 
@@ -162,6 +184,63 @@ public class PlayerCommandsQuery {
             }
         }
         return list;
+    }
+
+    public static Map<UUID, List<PlayerRunCommand>> loadSavedCommands(Connection conn) {
+        String sql = "SELECT " + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + ","+ COL_UUID_RECEIVER+" FROM " + TABLE_COMMANDS_PLAYER +" ORDER BY " + COL_RUN_TIME;
+
+        Map<UUID, List<PlayerRunCommand>> map = new HashMap<>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            if(!SCore.is1v11Less() && !conn.isValid(5))  {
+                SCore.plugin.getLogger().severe("Connection to database is impossible, and can't load the saved commands ");
+                return map;
+            }
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setQueryTimeout(5);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String brutCommand = rs.getString(COL_BRUT_COMMAND);
+                long runTime = rs.getLong(COL_RUN_TIME);
+                UUID uuidReceiver = UUID.fromString(rs.getString(COL_UUID_RECEIVER));
+                OfflinePlayer receiver = Bukkit.getOfflinePlayer(uuidReceiver);
+                ActionInfo aInfo = null;
+                try {
+                    aInfo = (ActionInfo) ActionInfoSerializer.fromString(rs.getString(COL_ACTION_INFO));
+                } catch (Exception e) {
+                    SCore.plugin.getLogger().severe("(NOT VERY SERIOUS) The delayed command " + brutCommand + " for "+ receiver.getName()+" has been deleted because it was saved in an outdated version.");
+                    continue;
+                }
+
+                PlayerRunCommand pCommand = new PlayerRunCommand(brutCommand, runTime, aInfo);
+
+                if(map.containsKey(uuidReceiver)) {
+                    map.get(uuidReceiver).add(pCommand);
+                }
+                else map.put(uuidReceiver, new ArrayList<>(Arrays.asList(pCommand)));
+            }
+        } catch (SQLException e) {
+            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
     }
 
 }

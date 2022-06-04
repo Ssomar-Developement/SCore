@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.player.PlayerCondition;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
+import com.ssomar.score.usedapi.SuperiorSkyblockTool;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.entity.Player;
 
@@ -21,6 +22,15 @@ public class IfPlayerMustBeOnHisIsland extends PlayerCondition<Boolean, String> 
         if(SCore.hasIridiumSkyblock) {
             if(getAllCondition(messageSender.getSp())) {
                 if(!IridiumSkyblockTool.playerIsOnHisIsland(player)) {
+                    sendErrorMsg(playerOpt, messageSender);
+                    return false;
+                }
+
+            }
+        }
+        else if(SCore.hasSuperiorSkyblock2) {
+            if(getAllCondition(messageSender.getSp())) {
+                if (!SuperiorSkyblockTool.playerIsOnHisIsland(player)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }
