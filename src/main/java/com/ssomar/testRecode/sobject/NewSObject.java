@@ -23,7 +23,12 @@ public abstract class NewSObject<X extends FeatureInterface<X, X>, Y extends GUI
     public NewSObject(String name, String editorName, String[] editorDescription, Material editorMaterial) {
         super(null, name, editorName, editorDescription, editorMaterial, false);
     }
-    
+
+    /** Useful to have an option to set a parent for the clone option **/
+    public NewSObject(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial) {
+        super(parent, name, editorName, editorDescription, editorMaterial, false);
+    }
+
     public abstract String getId();
 
     public abstract void setId(String id);

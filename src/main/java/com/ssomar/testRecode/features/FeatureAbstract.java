@@ -21,6 +21,9 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
 
     public FeatureAbstract(FeatureParentInterface parent, String name, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         this.parent = parent;
+        if(parent == null && (this instanceof FeatureParentInterface)) {
+            this.parent = (FeatureParentInterface) this;
+        }
         this.name = name;
         this.editorName = editorName;
         this.editorDescription = editorDescription;
