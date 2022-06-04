@@ -1,9 +1,16 @@
 package com.ssomar.testRecode.sobject;
 
 
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.sactivator.SActivator;
+import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
+import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
+import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
 import com.ssomar.testRecode.sobject.sactivator.NewSActivator;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -11,20 +18,24 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public interface NewSObject extends FeatureParentInterface {
+public abstract class NewSObject<X extends FeatureInterface<X, X>, Y extends GUI, Z extends NewGUIManager<Y>> extends FeatureWithHisOwnEditor<X, X, Y, Z> {
 
-    String getId();
+    public NewSObject(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    }
 
-    void setId(String id);
+    public abstract String getId();
 
-    String getPath();
+    public abstract void setId(String id);
 
-    List<NewSActivator> getActivators();
+    public abstract String getPath();
 
-    ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
+    public abstract List<NewSActivator> getActivators();
+
+    public abstract ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
 
     @Nullable
-    NewSActivator getActivator(String actID);
+    public abstract NewSActivator getActivator(String actID);
 
-    List<String> getDescription();
+    public abstract List<String> getDescription();
 }
