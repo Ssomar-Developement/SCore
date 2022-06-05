@@ -1,4 +1,4 @@
-package com.ssomar.testRecode.features.custom.enchantments.group;
+package com.ssomar.testRecode.features.custom.activators.group;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -7,7 +7,7 @@ import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.FeaturesGroup;
-import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
+import com.ssomar.testRecode.features.custom.activators.activator.NewSActivator;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -16,36 +16,41 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
-public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<EnchantmentsGroupFeature, EnchantmentsGroupFeature, EnchantmentsGroupFeatureEditor, EnchantmentsGroupFeatureEditorManager> implements FeaturesGroup<EnchantmentWithLevelFeature> {
+public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature, ActivatorsFeature, ActivatorsFeatureEditor, ActivatorsFeatureEditorManager> implements FeaturesGroup<NewSActivator> {
 
-    private Map<String, EnchantmentWithLevelFeature> enchantments;
+    private Map<String, NewSActivator> activators;
+    private NewSActivator builderInstance;
 
-    public EnchantmentsGroupFeature(FeatureParentInterface parent) {
-        super(parent, "enchantments", "Enchantments", new String[]{"&7&oThe enchantments"}, Material.ENCHANTED_BOOK, false);
+    public ActivatorsFeature(FeatureParentInterface parent, NewSActivator builderInstance) {
+        super(parent, "activators", "Activators", new String[]{"&7&oThe activators / triggers"}, Material.BREWING_STAND, false);
+        this.builderInstance = builderInstance;
         reset();
     }
 
     @Override
     public void reset() {
-        this.enchantments = new HashMap<>();
+        this.activators = new HashMap<>();
     }
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         if(config.isConfigurationSection(this.getName())) {
-            ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
-            for(String enchantmentID : enchantmentsSection.getKeys(false)) {
-                EnchantmentWithLevelFeature enchantment = new EnchantmentWithLevelFeature(this, enchantmentID);
-                List<String> subErrors = enchantment.load(plugin, enchantmentsSection, isPremiumLoading);
+            ConfigurationSection activatorsSection = config.getConfigurationSection(this.getName());
+            for(String activatorID : activatorsSection.getKeys(false)) {
+                NewSActivator activator = builderInstance.getBuilderInstance(this, activatorID);
+                List<String> subErrors = activator.load(plugin, activatorsSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                     continue;
                 }
-                enchantments.put(enchantmentID, enchantment);
+                activators.put(activatorID, activator);
             }
         }
         return error;
@@ -54,19 +59,19 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     @Override
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
-        ConfigurationSection enchantmentsSection = config.createSection(this.getName());
-        for(String enchantmentID : enchantments.keySet()) {
-            enchantments.get(enchantmentID).save(enchantmentsSection);
+        ConfigurationSection attributesSection = config.createSection(this.getName());
+        for(String enchantmentID : activators.keySet()) {
+            activators.get(enchantmentID).save(attributesSection);
         }
     }
 
     @Override
-    public EnchantmentsGroupFeature getValue() {
+    public ActivatorsFeature getValue() {
         return this;
     }
 
     @Override
-    public EnchantmentsGroupFeature initItemParentEditor(GUI gui, int slot) {
+    public ActivatorsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
@@ -86,15 +91,15 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     }
 
     @Override
-    public EnchantmentsGroupFeature clone() {
-        EnchantmentsGroupFeature eF = new EnchantmentsGroupFeature(getParent());
-        eF.setEnchantments(new HashMap<>(getEnchantments()));
+    public ActivatorsFeature clone() {
+        ActivatorsFeature eF = new ActivatorsFeature(getParent(), builderInstance);
+        eF.setActivators(new HashMap<>(this.getActivators()));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(enchantments.values());
+        return new ArrayList<>(activators.values());
     }
 
     @Override
@@ -119,9 +124,9 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     @Override
     public void reload() {
         for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof EnchantmentsGroupFeature) {
-                EnchantmentsGroupFeature eF = (EnchantmentsGroupFeature) feature;
-                eF.setEnchantments(getEnchantments());
+            if(feature instanceof ActivatorsFeature) {
+                ActivatorsFeature eF = (ActivatorsFeature) feature;
+                eF.setActivators(this.getActivators());
                 break;
             }
         }
@@ -134,25 +139,25 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
 
     @Override
     public void openEditor(@NotNull Player player) {
-        EnchantmentsGroupFeatureEditorManager.getInstance().startEditing(player, this);
+        ActivatorsFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
     public void createNewFeature(@NotNull Player editor) {
-        String baseId = "enchantment";
+        String baseId = "activator";
         for(int i = 0; i < 1000; i++) {
             String id = baseId + i;
-            if(!enchantments.containsKey(id)) {
-                EnchantmentWithLevelFeature eF = new EnchantmentWithLevelFeature(this, id);
-                enchantments.put(id, eF);
-                eF.openEditor(editor);
+            if(!activators.containsKey(id)) {
+                NewSActivator activator = builderInstance.getBuilderInstance(this, id);
+                activators.put(id, activator);
+                activator.openEditor(editor);
                 break;
             }
         }
     }
 
     @Override
-    public void deleteFeature(@NotNull Player editor, EnchantmentWithLevelFeature feature) {
-        enchantments.remove(feature.getId());
+    public void deleteFeature(@NotNull Player editor, NewSActivator feature) {
+        activators.remove(feature.getId());
     }
 }

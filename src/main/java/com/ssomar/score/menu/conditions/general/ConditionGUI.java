@@ -109,7 +109,7 @@ public class ConditionGUI extends GUIAbstract {
 
         createItem(RED, 1, 18, "&4&l▶ &cBack to "+detail, false, false);
 
-        createItem(ORANGE, 1, 19, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall otpions to default");
+        createItem(ORANGE, 1, 19, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall options");
 
         createItem(GREEN, 1, 26, "&2&l✔ &aSave", false, false, "", "&a&oClick here to save", "&a&oyour modification of this condition");
 

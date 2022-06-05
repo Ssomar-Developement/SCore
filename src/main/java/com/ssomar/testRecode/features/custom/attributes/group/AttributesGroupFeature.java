@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Getter @Setter
-public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGroupFeature, AttributesGroupFeature, AttributesGroupFeatureEditor, AttributesGroupFeatureEditorManager> implements FeaturesGroup {
+public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGroupFeature, AttributesGroupFeature, AttributesGroupFeatureEditor, AttributesGroupFeatureEditorManager> implements FeaturesGroup<AttributeFullOptionsFeature> {
 
     private Map<String, AttributeFullOptionsFeature> attributes;
 
@@ -153,4 +153,10 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
             }
         }
     }
+
+    @Override
+    public void deleteFeature(@NotNull Player editor, AttributeFullOptionsFeature feature) {
+        attributes.remove(feature.getId());
+    }
+
 }

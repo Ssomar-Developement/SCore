@@ -2,6 +2,8 @@ package com.ssomar.testRecode.editor;
 
 import com.ssomar.executableitems.executableitems.restrictions.Restriction;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.testRecode.features.custom.activators.group.ActivatorsFeatureEditor;
+import com.ssomar.testRecode.features.custom.activators.group.ActivatorsFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeature;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditor;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
@@ -122,6 +124,10 @@ public class NewEditorInteractionsListener implements Listener {
             CancelEventFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof ActivatorsFeatureEditor) {
+            ActivatorsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -172,6 +178,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (CancelEventFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             CancelEventFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (ActivatorsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ActivatorsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

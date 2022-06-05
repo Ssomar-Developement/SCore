@@ -102,10 +102,21 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean shiftClicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
-                if (feature instanceof FeatureRequireOnlyClicksInEditor) {
-                    return ((FeatureRequireOnlyClicksInEditor) feature).shiftClicked(i.player, this);
+        if(i.gui.getParent() instanceof FeaturesGroup){
+            for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+                if (feature.isTheFeatureClickedParentEditor(i.name)) {
+                    ((FeaturesGroup) i.gui.getParent()).deleteFeature(i.player, feature);
+                    i.gui.getParent().openEditor(i.player);
+                    return true;
+                }
+            }
+        }
+        else {
+            for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+                if (feature.isTheFeatureClickedParentEditor(i.name)) {
+                    if (feature instanceof FeatureRequireOnlyClicksInEditor) {
+                        return ((FeatureRequireOnlyClicksInEditor) feature).shiftClicked(i.player, this);
+                    }
                 }
             }
         }

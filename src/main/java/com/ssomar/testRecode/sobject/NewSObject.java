@@ -2,14 +2,11 @@ package com.ssomar.testRecode.sobject;
 
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
-import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
-import com.ssomar.testRecode.features.editor.FeatureEditorManagerAbstract;
-import com.ssomar.testRecode.sobject.sactivator.NewSActivator;
+import com.ssomar.testRecode.features.custom.activators.activator.NewSActivator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
