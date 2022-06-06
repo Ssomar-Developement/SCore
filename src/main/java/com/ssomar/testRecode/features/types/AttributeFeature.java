@@ -8,6 +8,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -44,6 +45,8 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
             try {
                 attribute = Attribute.valueOf(attributeStr.toUpperCase());
                 value = Optional.of(attribute);
+                FeatureReturnCheckPremium<Attribute> checkPremium = checkPremium("Attribute", attribute, defaultValue, isPremiumLoading);
+                if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             } catch (Exception | Error e) {
                 errors.add("&cERROR, Couldn't load the Attribute value of " + this.getName() + " from config, value: " + attributeStr + " &7&o" + getParent().getParentInfo() + " &6>> Attributes available: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html");
                 value = Optional.empty();

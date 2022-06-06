@@ -7,6 +7,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -35,11 +36,10 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            value = Optional.ofNullable(Material.valueOf(colorStr));
-            if(requirePremium() && !isPremiumLoading) {
-                errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
-                value = Optional.empty();
-            }
+            Material material = Material.valueOf(colorStr);
+            value = Optional.ofNullable(material);
+            FeatureReturnCheckPremium<Material> checkPremium = checkPremium("Material", material, defaultValue, isPremiumLoading);
+            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
             errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
             value = Optional.empty();

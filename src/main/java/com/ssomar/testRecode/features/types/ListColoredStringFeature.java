@@ -8,6 +8,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireMultipleMessageInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -38,6 +39,8 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         value = config.getStringList(this.getName());
+        FeatureReturnCheckPremium<List<String>> checkPremium = checkPremium("List of Colored Strings", value, Optional.of(defaultValue), isPremiumLoading);
+        if(checkPremium.isHasError()) value = checkPremium.getNewValue();
         return new ArrayList<>();
     }
 

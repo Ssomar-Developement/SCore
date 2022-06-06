@@ -7,12 +7,14 @@ import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOneMessageInEditor;
 import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -37,10 +39,12 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
+        List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "");
-        if(valueStr.isEmpty()) value = Optional.empty();
-        else value = Optional.of(valueStr);
-        return new ArrayList<>();
+        value = Optional.of(valueStr);
+        FeatureReturnCheckPremium<String> checkPremium = checkPremium("Colored String", valueStr, defaultValue, isPremiumLoading);
+        if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+        return errors;
     }
 
     @Override

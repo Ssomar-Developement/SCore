@@ -6,14 +6,17 @@ import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter @Setter
 public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> implements FeatureRequireOnlyClicksInEditor {
@@ -29,8 +32,11 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
+        List<String> errors = new ArrayList<>();
         this.value = config.getBoolean(this.getName(), this.defaultValue);
-        return new ArrayList<>();
+        FeatureReturnCheckPremium<Boolean> checkPremium = checkPremium("Boolean", value, Optional.of(defaultValue), isPremiumLoading);
+        if(checkPremium.isHasError()) value = checkPremium.getNewValue();
+        return errors;
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -36,7 +37,10 @@ public class OperationFeature extends FeatureAbstract<Optional<AttributeModifier
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            value = Optional.ofNullable(AttributeModifier.Operation.valueOf(colorStr.toUpperCase()));
+            AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(colorStr.toUpperCase());
+            value = Optional.ofNullable(operation);
+            FeatureReturnCheckPremium<AttributeModifier.Operation> checkPremium = checkPremium("Operation", operation, defaultValue, isPremiumLoading);
+            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
             errors.add("&cERROR, Couldn't load the AttributeModifier.Operation value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> AttributeModifier.Operation available: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/AttributeModifier.Operation.html");
             value = Optional.empty();

@@ -8,10 +8,12 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -37,7 +39,10 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            value = Optional.ofNullable(AttributeSlot.valueOf(colorStr.toUpperCase()));
+            AttributeSlot attributeSlot = AttributeSlot.valueOf(colorStr.toUpperCase());
+            value = Optional.ofNullable(attributeSlot);
+            FeatureReturnCheckPremium<AttributeSlot> checkPremium = checkPremium("Slot", attributeSlot, defaultValue, isPremiumLoading);
+            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
             errors.add("&cERROR, Couldn't load the Slot value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> HEAD, CHEST, FEET, LEGS, HAND, OFF_HAND, ALL_SLOTS");
             value = Optional.empty();

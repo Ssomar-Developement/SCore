@@ -8,6 +8,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -35,13 +36,17 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String enchantStr = config.getString(this.getName());
-        Optional<Enchantment> optional = getEnchantment(enchantStr);
+        String enchantStr = config.getString(this.getName(), "NULL");
+        Optional<Enchantment> optional = getEnchantment(enchantStr.toUpperCase());
         if(!optional.isPresent()){
             errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html");
             value = Optional.empty();
         }
-        else value = optional;
+        else{
+            value = optional;
+            FeatureReturnCheckPremium<Enchantment> checkPremium = checkPremium("Enchantment", optional.get(), defaultValue, isPremiumLoading);
+            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+        }
         return errors;
     }
 

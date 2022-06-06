@@ -7,10 +7,12 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -38,11 +40,10 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            value = Optional.ofNullable(ChatColor.valueOf(colorStr));
-            if(requirePremium() && !isPremiumLoading) {
-                errors.add("&cERROR, Couldn't load the ChatColor value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
-                value = Optional.empty();
-            }
+            ChatColor chatColor = ChatColor.valueOf(colorStr);
+            value = Optional.ofNullable(chatColor);
+            FeatureReturnCheckPremium<ChatColor> checkPremium = checkPremium("ChatColor", chatColor, defaultValue, isPremiumLoading);
+            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
             errors.add("&cERROR, Couldn't load the ChatColor value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> ChatColors available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/ChatColor.html");
             value = Optional.empty();

@@ -8,6 +8,7 @@ import com.ssomar.testRecode.features.FeatureAbstract;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureRequireOneMessageInEditor;
 import com.ssomar.testRecode.editor.NewGUIManager;
+import com.ssomar.testRecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -42,6 +43,8 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
         Optional<Double> valuePotential = NTools.getDouble(valueStr);
         if(valuePotential.isPresent()) {
             this.value = valuePotential;
+            FeatureReturnCheckPremium<Double> checkPremium = checkPremium("Double", valuePotential.get(), defaultValue, isPremiumLoading);
+            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         }
         else {
             errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());

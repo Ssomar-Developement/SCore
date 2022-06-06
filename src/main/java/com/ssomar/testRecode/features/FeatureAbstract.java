@@ -2,12 +2,16 @@ package com.ssomar.testRecode.features;
 
 import com.google.common.base.Charsets;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y> {
@@ -29,6 +33,20 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         this.editorDescription = editorDescription;
         this.editorMaterial = editorMaterial;
         this.requirePremium = requirePremium;
+    }
+
+    public <M> FeatureReturnCheckPremium<M> checkPremium(String featureTypeName, M value, Optional<M> defaultValue, boolean isPremiumLoading){
+        if(requirePremium() && !isPremiumLoading) {
+            if(defaultValue.isPresent()){
+                if(!defaultValue.get().equals(value)){
+                    return new FeatureReturnCheckPremium<>("&cERROR, Couldn't load the "+featureTypeName+" value of " + this.getName() + " from config, value: " + value+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature ! (reset to default: "+defaultValue.get()+")", defaultValue.get());
+                }
+            }
+            else{
+                return new FeatureReturnCheckPremium<>("&cERROR, Couldn't load the "+featureTypeName+" value of " + this.getName() + " from config, value: " + value+ " &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !", null);
+            }
+        }
+        return new FeatureReturnCheckPremium<>();
     }
 
     @Override
