@@ -29,4 +29,8 @@ public interface SOption {
 
 	SOption getOption(String optionStr);
 
+	List<SOption> getValues();
+
+	SOption getDefaultValue();
+
 }
