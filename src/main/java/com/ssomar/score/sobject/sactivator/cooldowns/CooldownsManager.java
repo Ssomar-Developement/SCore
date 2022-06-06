@@ -120,6 +120,11 @@ public class CooldownsManager {
 		sbId.append(sAct.getID());
 		String id = sbId.toString();
 
+		return getCooldown(sPlugin, id, uuid);
+	}
+
+	public Optional<Cooldown> getCooldown(SPlugin sPlugin, String id, UUID uuid) {
+
 		if(cooldowns.containsKey(id)) {
 			double maxTimeLeft = -1;
 			int index = -1;
@@ -148,7 +153,7 @@ public class CooldownsManager {
 				if (maxTimeLeft == -1) return Optional.empty();
 				return Optional.ofNullable(cds.get(index));
 			}
-		}	
+		}
 		return Optional.empty();
 	}
 

@@ -15,6 +15,7 @@ import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.testRecode.features.custom.activators.activator.NewSActivator;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeature;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditor;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
@@ -29,12 +30,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter@Setter
 public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeature, NewCooldownFeature, NewCooldownFeatureEditor, NewCooldownFeatureEditorManager> {
@@ -45,17 +44,18 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     private BooleanFeature displayCooldownMessage;
     private BooleanFeature isCooldownInTicks;
     private BooleanFeature cancelEventIfInCooldown;
-
+    private String cooldownId;
     private SPlugin sPlugin;
-    private SObject sO;
-    private SActivator sAct;
     private boolean enableCooldownForOp;
 
-    public NewCooldownFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, SPlugin sPlugin, SObject sO, SActivator sAct, boolean enableCooldownForOp) {
+    public NewCooldownFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, SPlugin sPlugin, boolean enableCooldownForOp) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.sPlugin = sPlugin;
-        this.sO = sO;
-        this.sAct = sAct;
+        if(getParent() instanceof NewSActivator) {
+            NewSActivator newSActivator = (NewSActivator) getParent();
+            this.cooldownId = newSActivator.getParentObjectId()+":"+newSActivator.getId();
+        }
+        else this.cooldownId = UUID.randomUUID().toString();
         this.enableCooldownForOp = enableCooldownForOp;
     }
 
@@ -66,10 +66,10 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      * @param sp The placeholder associate to the event
      * @return True in No coooldown, false if its on cooldown
      */
-    public boolean checkCooldown(Player p, Event e, StringPlaceholder sp){
+    public boolean checkCooldown(Player p, Event e, StringPlaceholder sp, SObject sObject) {
         /* Check if the activator is in cooldown for the player or not  */
-        if (!hasNoCDPerm(p)) {
-            Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(ExecutableItems.plugin, sO, sAct, p.getUniqueId());
+        if (!hasNoCDPerm(p, sObject)) {
+            Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(ExecutableItems.plugin, cooldownId, p.getUniqueId());
             if (inCooldownOpt.isPresent()) {
                 if (this.displayCooldownMessage.getValue()) {
                     displayCooldownMessage(p, inCooldownOpt.get().getTimeLeft(), sp);
@@ -95,15 +95,15 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      *
      * @param p The player
      */
-    public void addCooldown(Player p){
-        if (!hasNoCDPerm(p) && this.cooldown.getValue().get() != 0) {
-            Cooldown cooldown = new Cooldown(ExecutableItems.plugin, sO, sAct, p.getUniqueId(), this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
+    public void addCooldown(Player p, @NotNull SObject sObject){
+        if (!hasNoCDPerm(p, sObject) && this.cooldown.getValue().get() != 0) {
+            Cooldown cooldown = new Cooldown(ExecutableItems.plugin, cooldownId, p.getUniqueId(), this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
             CooldownsManager.getInstance().addCooldown(cooldown);
         }
     }
 
-    public boolean hasNoCDPerm(Player p) {
-        String id = sO.getId();
+    public boolean hasNoCDPerm(Player p, SObject sObject){
+        String id = sObject.getId();
 
         if(sPlugin.isLotOfWork()) return false;
 
@@ -132,7 +132,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
 
     @Override
     public NewCooldownFeature clone() {
-        NewCooldownFeature clone = new NewCooldownFeature(getParent(), getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), getSPlugin(), getSO(), getSAct(), isEnableCooldownForOp());
+        NewCooldownFeature clone = new NewCooldownFeature(getParent(), getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), getSPlugin(), isEnableCooldownForOp());
         clone.setCooldown(getCooldown().clone());
         clone.setDisplayCooldownMessage(getDisplayCooldownMessage().clone());
         clone.setCancelEventIfInCooldown(getCancelEventIfInCooldown().clone());

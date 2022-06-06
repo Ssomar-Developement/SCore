@@ -28,23 +28,27 @@ public class ProtocolibAPI {
 
                                 //SsomarDev.testMsg("Packet sending >> " + event.getPacketType().toString());
                                 if (event.getPacketType() == PacketType.Play.Server.WORLD_PARTICLES) {
-                                    Particle type = event.getPacket().getNewParticles().read(0).getParticle();
-                                    // Item packets (id: 0x29)
-                                    if (type.equals(Particle.DAMAGE_INDICATOR)) {
-                                        try {
-                                            Field privateField = event.getPacket().getHandle().getClass().getDeclaredField("h");
+                                    try {
+                                        Particle type = event.getPacket().getNewParticles().read(0).getParticle();
+                                        // Item packets (id: 0x29)
+                                        if (type.equals(Particle.DAMAGE_INDICATOR)) {
+                                            try {
+                                                Field privateField = event.getPacket().getHandle().getClass().getDeclaredField("h");
 
-                                            // Set the accessibility as true
-                                            privateField.setAccessible(true);
-                                            int amount = +privateField.getInt(event.getPacket().getHandle());
+                                                // Set the accessibility as true
+                                                privateField.setAccessible(true);
+                                                int amount = +privateField.getInt(event.getPacket().getHandle());
 
-                                            if (amount > 10) {
-                                                privateField.setInt(event.getPacket().getHandle(), 10);
+                                                if (amount > 10) {
+                                                    privateField.setInt(event.getPacket().getHandle(), 10);
+                                                }
+                                            } catch (NoSuchFieldException | IllegalAccessException e) {
+                                                //e.printStackTrace();
                                             }
-                                        } catch (NoSuchFieldException | IllegalAccessException e) {
-                                            e.printStackTrace();
-                                        }
 
+                                        }
+                                    } catch (Exception e) {
+                                        //Errors IllegalArgumentException can appear for no reason
                                     }
                                 }
                             }

@@ -15,6 +15,7 @@ public class StunDisable extends PlayerCommand {
 	@Override
 	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 		StunEvent.stunPlayers.remove(receiver.getUniqueId());
+		receiver.setGliding(false);
 	}
 
 

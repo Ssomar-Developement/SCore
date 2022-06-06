@@ -46,19 +46,9 @@ public class DropExecutableItem extends EntityCommand{
 	public String verify(List<String> args) {
 		String error = "";
 
-		String dropei= "DROPEXECUTABLEITEM {id} {quantity}";
-		if(args.size()<2) error = notEnoughArgs+dropei;
-		else if(args.size() == 2) {
-			if(!SCore.hasExecutableItems || !ExecutableItemsAPI.getExecutableItemsManager().isValidID(args.get(0))) error = invalidExecutableItems+args.get(0)+" for command: "+dropei;
-			else {
-				try {
-					Integer.valueOf(args.get(1));
-				}catch(NumberFormatException e){
-					error = invalidQuantity+args.get(1)+" for command: "+dropei;
-				}
-			}
-		}
-		else error = tooManyArgs+dropei;
+		String dropei = "DROPEXECUTABLEITEM {id} {quantity}";
+		if(args.size() < 2) error = notEnoughArgs+dropei;
+		else if(args.size() != 2) error = tooManyArgs+dropei;
 
 		return error;
 	}

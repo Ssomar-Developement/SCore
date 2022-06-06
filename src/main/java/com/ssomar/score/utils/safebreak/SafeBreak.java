@@ -52,8 +52,13 @@ public class SafeBreak {
                 if(breakEB(block, drop)) return;
 
                 if (drop){
-                    if(slot != 40) block.breakNaturally(player.getInventory().getItemInMainHand());
-                    else block.breakNaturally(player.getInventory().getItemInOffHand());
+                    if(SCore.is1v11Less()){
+                        block.breakNaturally(player.getInventory().getItemInHand());
+                    }
+                    else {
+                        if (slot != 40) block.breakNaturally(player.getInventory().getItemInMainHand());
+                        else block.breakNaturally(player.getInventory().getItemInOffHand());
+                    }
                 }
                 else block.setType(Material.AIR);
             }

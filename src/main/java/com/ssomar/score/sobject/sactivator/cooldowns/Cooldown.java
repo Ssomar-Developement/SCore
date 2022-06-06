@@ -36,6 +36,17 @@ public class Cooldown {
 		this.global = global;
 		isNull = false;
 	}
+
+	public Cooldown(SPlugin sPlugin, String id, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
+		super();
+		this.id = id;
+		this.entityUUID = entityUUID;
+		this.cooldown = cooldown;
+		this.isInTick = isInTick;
+		this.time = time;
+		this.global = global;
+		isNull = false;
+	}
 	
 	public Cooldown(String id, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
 		super();

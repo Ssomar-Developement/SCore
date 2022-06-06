@@ -3,9 +3,11 @@ package com.ssomar.score.commands.runnable.entity;
 import java.util.List;
 import java.util.UUID;
 
+import com.ssomar.score.SCore;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -59,7 +61,18 @@ public class EntityRunCommand extends RunCommand{
 		this.pickupInfo();
 		
 		Player launcher = Bukkit.getPlayer(launcherUUID);
-		Entity receiver = Bukkit.getEntity(entityUUID);
+		Entity receiver = null;
+		if(SCore.is1v11Less()){
+			for(World world : Bukkit.getWorlds()){
+				for(Entity entity : world.getEntities()){
+					if(entity.getUniqueId().equals(entityUUID)){
+						receiver = entity;
+						break;
+					}
+				}
+			}
+		}
+		else receiver = Bukkit.getEntity(entityUUID);
 
 		if(receiver != null){
 			pCommand.run(launcher, receiver, args, this.getaInfo());

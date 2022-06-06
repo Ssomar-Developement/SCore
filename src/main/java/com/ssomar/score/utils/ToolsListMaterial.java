@@ -50,7 +50,7 @@ public class ToolsListMaterial {
 			else if(material.equals(Material.valueOf("CARROT"))){
 				return Material.valueOf("CARROT_ITEM");
 			}
-			else if(material.equals(Material.valueOf("BEETROOT_BLOCK"))){
+			else if(!SCore.is1v11Less() && material.equals(Material.valueOf("BEETROOT_BLOCK"))){
 				return Material.valueOf("BEETROOT_SEEDS");
 			}
 			else return material;
