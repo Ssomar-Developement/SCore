@@ -84,9 +84,12 @@ public abstract class GUI implements IGUI {
 
     private Inventory inv;
 
+    private int size;
+
 
     public GUI(String name, int size) {
         inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
+        this.size = size;
         for (int j = 0; j < size; j++) {
             createBackGroundItem(j);
         }
@@ -237,6 +240,13 @@ public abstract class GUI implements IGUI {
 
     public void clear() {
         inv.clear();
+    }
+
+    public void clearAndSetBackground() {
+        inv.clear();
+        for (int j = 0; j < size; j++) {
+            createBackGroundItem(j);
+        }
     }
 
     public ItemStack getByName(String name) {

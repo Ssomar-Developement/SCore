@@ -24,7 +24,7 @@ public abstract class NewSActivator<X extends FeatureInterface<X, X>, Y extends 
     }
 
     public abstract String getParentObjectId();
-    
+
     public abstract SOption getOption();
 
     public abstract void run(HigherFormSObject parentObject, EventInfo eventInfo);
