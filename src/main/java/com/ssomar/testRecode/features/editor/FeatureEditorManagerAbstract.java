@@ -234,8 +234,13 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                 feature.extractInfoFromParentEditor(this, interact.player);
             }
         }
-        interact.gui.getParent().save();
-        interact.gui.getParent().reload();
+        FeatureParentInterface parent = interact.gui.getParent();
+        parent.save();
+        parent.reload();
+        while (parent instanceof FeatureInterface && ((FeatureAbstract)parent).getParent() != parent) {
+            parent = ((FeatureAbstract)parent).getParent();
+            parent.reload();
+        }
         back(interact);
     }
 }

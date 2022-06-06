@@ -11,6 +11,9 @@ import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFea
 import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditor;
 import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditorManager;
+import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeature;
+import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeatureEditor;
+import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditorManager;
@@ -128,6 +131,10 @@ public class NewEditorInteractionsListener implements Listener {
             ActivatorsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof NewCooldownFeatureEditor) {
+            NewCooldownFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -182,6 +189,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (ActivatorsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             ActivatorsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (NewCooldownFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            NewCooldownFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

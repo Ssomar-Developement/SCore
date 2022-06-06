@@ -57,7 +57,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        config.set(this.getName(), value.toString());
     }
 
     @Override
