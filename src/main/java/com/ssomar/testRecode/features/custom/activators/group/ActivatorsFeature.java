@@ -28,7 +28,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     private NewSActivator builderInstance;
 
     public ActivatorsFeature(FeatureParentInterface parent, NewSActivator builderInstance) {
-        super(parent, "activators", "Activators", new String[]{"&7&oThe activators / triggers"}, Material.BREWING_STAND, false);
+        super(parent, "activators", "Activators", new String[]{"&7&oThe activators / triggers"}, Material.BEACON, false);
         this.builderInstance = builderInstance;
         reset();
     }
