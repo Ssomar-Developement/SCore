@@ -1,6 +1,5 @@
 package com.ssomar.score.menu.commands;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.util.UtilCommandsManager;
 import com.ssomar.score.menu.EditorCreator;
@@ -70,7 +69,7 @@ public class CommandsEditor {
         else if(message.contains("down line <")) {
             this.downCommand(p, message);
         }
-        else {
+        else if(!StringConverter.decoloredString(message).equals("exit")) {
             commands.get(p).add(message);
         }
 

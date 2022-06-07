@@ -2,6 +2,7 @@ package com.ssomar.testRecode.editor;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.testRecode.features.FeatureInterface;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -138,25 +140,31 @@ public abstract class NewGUIManager<T extends GUI> {
 
 	public void receiveMessage(NewInteractionClickedGUIManager<T> interact) {
 		String message = interact.decoloredMessage;
-		if(message.equals("PREVIOUS PAGE")) {
-			this.receiveMessagePreviousPage(interact);
+		boolean pass = false;
+		/* The commands editor has the priority */
+		if(!CommandsEditor.getInstance().isAsking(interact.player)) {
+			if (message.equals("PREVIOUS PAGE")) {
+				this.receiveMessagePreviousPage(interact);
+				pass = true;
+			} else if (message.equals("NEXT PAGE")) {
+				this.receiveMessageNextPage(interact);
+				pass = true;
+			} else if (message.contains("delete line <")) {
+				this.receiveMessageDeleteline(interact);
+				pass = true;
+			} else if (message.contains("up line <")) {
+				this.receiveMessageUpLine(interact);
+				pass = true;
+			} else if (message.contains("down line <")) {
+				this.receiveMessageDownLine(interact);
+				pass = true;
+			}
 		}
-		else if(message.equals("NEXT PAGE")) {
-			this.receiveMessageNextPage(interact);
-		}
-		else if(message.equals("exit")) {
+		if(message.equals("exit")) {
 			this.receiveMessageFinish(interact);
+			pass = true;
 		}
-		else if(message.contains("delete line <")) {
-			this.receiveMessageDeleteline(interact);
-		}
-		else if(message.contains("up line <")) {
-			this.receiveMessageUpLine(interact);
-		}
-		else if(message.contains("down line <")) {
-			this.receiveMessageDownLine(interact);
-		}
-		else {
+		if(!pass) {
 			this.receiveMessageValue(interact);
 		}
 	}

@@ -1,6 +1,8 @@
-package com.ssomar.testRecode.features.custom.commands.player;
+package com.ssomar.testRecode.features.custom.commands.entity;
 
 import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import com.ssomar.score.commands.runnable.entity.EntityCommandManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommandManager;
 import com.ssomar.score.menu.GUI;
@@ -16,15 +18,17 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
-public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerCommandsFeature> implements FeatureRequireMultipleMessageInEditor {
+public class EntityCommandsFeature extends FeatureAbstract<List<String>, EntityCommandsFeature> implements FeatureRequireMultipleMessageInEditor {
 
     private List<String> value;
 
-    public PlayerCommandsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public EntityCommandsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         reset();
     }
@@ -32,7 +36,7 @@ public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerC
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        value = PlayerCommandManager.getInstance().getCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
+        value = EntityCommandManager.getInstance().getEntityCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
     }
 
@@ -47,7 +51,7 @@ public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerC
     }
 
     @Override
-    public PlayerCommandsFeature initItemParentEditor(GUI gui, int slot) {
+    public EntityCommandsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
@@ -77,8 +81,8 @@ public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerC
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
 
     @Override
-    public PlayerCommandsFeature clone() {
-        PlayerCommandsFeature clone = new PlayerCommandsFeature(getParent(), this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+    public EntityCommandsFeature clone() {
+        EntityCommandsFeature clone = new EntityCommandsFeature(getParent(), this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.setValue(getValue());
         return clone;
     }
@@ -91,7 +95,7 @@ public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerC
     @Override
     public void askInEditorFirstTime(Player editor, NewGUIManager manager) {
         List<SCommand> commands = new ArrayList<>();
-        for (PlayerCommand command : PlayerCommandManager.getInstance().getCommands()) {
+        for (EntityCommand command : EntityCommandManager.getInstance().getCommands()) {
             commands.add(command);
         }
         CommandsEditor.getInstance().start(editor, value, commands);
