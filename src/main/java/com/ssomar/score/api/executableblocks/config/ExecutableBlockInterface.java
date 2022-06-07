@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ExecutableBlockInterface extends SObject {
 
@@ -31,6 +32,13 @@ public interface ExecutableBlockInterface extends SObject {
      * @param place true if you want that the block will be placed, false if you have already place the block and you want only place the configuration of the EB on this block
      * @return The configuration of the ExecutableBlock placed */
     ExecutableBlockPlaced place(Optional<Player> owner, @NotNull Location location, boolean place);
+
+    /**
+     * @param ownerUUID The optional ownerUUID of the ExecutableBlock, if optional is null there is no owner
+     * @param location The location where the ExecutableBlock will be placed
+     * @param place true if you want that the block will be placed, false if you have already place the block and you want only place the configuration of the EB on this block
+     * @return The configuration of the ExecutableBlock placed */
+    ExecutableBlockPlaced place2(Optional<UUID> ownerUUID, @NotNull Location location, boolean place);
 
     /**
      * @param player The player to whom you want to check the possession of the permission

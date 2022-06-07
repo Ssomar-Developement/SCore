@@ -287,6 +287,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v16v1 = false;
     private static boolean is1v17 = false;
     private static boolean is1v18 = false;
+    private static boolean is1v19 = false;
     private static boolean is1v16Plus = false;
     private static boolean is1v17Plus = false;
     private static boolean is1v18Plus = false;
@@ -304,6 +305,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v16v1 = Bukkit.getServer().getVersion().contains("1.16.1");
         is1v17 = Bukkit.getServer().getVersion().contains("1.17");
         is1v18 = Bukkit.getServer().getVersion().contains("1.18");
+        is1v19 = Bukkit.getServer().getVersion().contains("1.19");
     }
 
 
@@ -367,6 +369,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v18;
     }
 
+    /* The server is in 1.19 ? */
+    public static boolean is1v19() {
+        return is1v19;
+    }
+
     /* The server is in 1.12 or - ? */
     public static boolean is1v11Less() {
         return is1v8() || is1v9() || is1v10() || is1v11();
@@ -384,16 +391,16 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.16 or + ? */
     public static boolean is1v16Plus() {
-        return is1v16() || is1v17() || is1v18();
+        return is1v16() || is1v17() || is1v18() || is1v19();
     }
 
     /* The server is in 1.17 or + ? */
     public static boolean is1v17Plus() {
-        return is1v17() || is1v18();
+        return is1v17() || is1v18() || is1v19();
     }
 
     /* The server is in 1.17 or + ? */
     public static boolean is1v18Plus() {
-        return is1v18();
+        return is1v18() || is1v19();
     }
 }
