@@ -57,6 +57,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         }
         else this.cooldownId = UUID.randomUUID().toString();
         this.enableCooldownForOp = enableCooldownForOp;
+        reset();
     }
 
     /**
@@ -133,11 +134,11 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     @Override
     public NewCooldownFeature clone() {
         NewCooldownFeature clone = new NewCooldownFeature(getParent(), getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), getSPlugin(), isEnableCooldownForOp());
-        clone.setCooldown(getCooldown().clone());
-        clone.setDisplayCooldownMessage(getDisplayCooldownMessage().clone());
-        clone.setCancelEventIfInCooldown(getCancelEventIfInCooldown().clone());
-        clone.setCooldownMessage(getCooldownMessage().clone());
-        clone.setIsCooldownInTicks(getIsCooldownInTicks().clone());
+        clone.setCooldown(cooldown.clone());
+        clone.setDisplayCooldownMessage(displayCooldownMessage.clone());
+        clone.setCancelEventIfInCooldown(cancelEventIfInCooldown.clone());
+        clone.setCooldownMessage(cooldownMessage.clone());
+        clone.setIsCooldownInTicks(isCooldownInTicks.clone());
         return clone;
     }
 

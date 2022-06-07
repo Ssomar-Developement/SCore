@@ -210,6 +210,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         while (!isPremiumLoading && option.getPremiumOption().contains(option)) {
             option = nextOption(option);
         }
+        value = option;
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);

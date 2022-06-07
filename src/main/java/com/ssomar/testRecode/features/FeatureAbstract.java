@@ -51,7 +51,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
 
     @Override
     public boolean isTheFeatureClickedParentEditor(String featureClicked) {
-        return featureClicked.contains(editorName);
+        return featureClicked.equals(editorName);
     }
 
     public void initAndUpdateItemParentEditor(GUI gui, int slot) {

@@ -1,16 +1,15 @@
-package com.ssomar.testRecode.features.custom.required.level;
+package com.ssomar.testRecode.features.custom.required.money;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
-import com.ssomar.testRecode.features.custom.hiders.Hiders;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
 import com.ssomar.testRecode.features.types.IntegerFeature;
-import com.ssomar.testRecode.editor.NewGUIManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -30,14 +29,14 @@ import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 
 @Getter
 @Setter
-public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequireLevelGUI, RequireLevelGUIManager>  implements RequiredPlayerInterface{
+public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, RequiredMoneyGUI, RequiredMoneyGUIManager>  implements RequiredPlayerInterface{
 
-    private IntegerFeature level;
+    private IntegerFeature money;
     private ColoredStringFeature errorMessage;
     private BooleanFeature cancelEventIfError;
 
-    public RequiredLevel(FeatureParentInterface parent) {
-        super(parent, "requiredLevel", "Required Level", new String[]{"&7&oRequired level"}, Material.EXPERIENCE_BOTTLE, true);
+    public RequiredMoney(FeatureParentInterface parent) {
+        super(parent, "requiredMoney", "Required Money", new String[]{"&7&oRequired money"}, Material.GOLD_BLOCK, true);
         reset();
     }
 
@@ -49,7 +48,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
                 error.add("&cERROR, Couldn't load the Required Level value of " + this.getName() + " from config, &7&o"+getParent().getParentInfo()+" &6>> Because it's a premium feature !");
                 return error;
             }
-            level.load(plugin, config, isPremiumLoading);
+            money.load(plugin, config, isPremiumLoading);
             errorMessage.load(plugin, config, isPremiumLoading);
             cancelEventIfError.load(plugin, config, isPremiumLoading);
         }
@@ -58,8 +57,8 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void save(ConfigurationSection config) {
-        if(level.getValue().isPresent() && level.getValue().get() > 0) {
-            level.save(config);
+        if(money.getValue().isPresent() && money.getValue().get() > 0) {
+            money.save(config);
             errorMessage.save(config);
             cancelEventIfError.save(config);
         }
@@ -67,8 +66,8 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public boolean verify(Player player, Event event) {
-        if (level.getValue().isPresent()) {
-            if (player.getLevel() < level.getValue().get()) {
+        if (money.getValue().isPresent()) {
+            if (player.getLevel() < money.getValue().get()) {
                 if (errorMessage.getValue().isPresent()) {
                     player.sendMessage(errorMessage.getValue().get());
                 }
@@ -83,16 +82,16 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void take(Player player) {
-        if (level.getValue().isPresent()) player.setLevel(player.getLevel() - level.getValue().get());
+        if (money.getValue().isPresent()) player.setLevel(player.getLevel() - money.getValue().get());
     }
 
     @Override
-    public RequiredLevel getValue() {
+    public RequiredMoney getValue() {
         return this;
     }
 
     @Override
-    public RequiredLevel initItemParentEditor(GUI gui, int slot) {
+    public RequiredMoney initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
@@ -115,9 +114,9 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
 
     @Override
-    public RequiredLevel clone() {
-        RequiredLevel requiredLevel = new RequiredLevel(getParent());
-        requiredLevel.setLevel(level.clone());
+    public RequiredMoney clone() {
+        RequiredMoney requiredLevel = new RequiredMoney(getParent());
+        requiredLevel.setMoney(money.clone());
         requiredLevel.setErrorMessage(errorMessage.clone());
         requiredLevel.setCancelEventIfError(cancelEventIfError.clone());
         return requiredLevel;
@@ -125,14 +124,14 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void reset() {
-        this.level = new IntegerFeature(getParent(), "requiredLevel", Optional.of(0), "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
+        this.money = new IntegerFeature(getParent(), "requiredLevel", Optional.of(0), "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
         this.errorMessage = new ColoredStringFeature(getParent(), "requiredLevelMsg", Optional.of("&4&l>> &cError you don't have the required levels"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false);
         this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfInvalidRequiredLevel", false, "cancelEventIfInvalidRequiredLevel", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false);
     }
 
     @Override
     public void openEditor(Player player) {
-        RequireLevelGUIManager.getInstance().startEditing(player, this);
+        RequiredMoneyGUIManager.getInstance().startEditing(player, this);
     }
 
     @Override
@@ -142,7 +141,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return Arrays.asList(level, errorMessage, cancelEventIfError);
+        return Arrays.asList(money, errorMessage, cancelEventIfError);
     }
 
     @Override
@@ -163,9 +162,9 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public void reload() {
         for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof RequiredLevel) {
-                RequiredLevel requiredLevel = (RequiredLevel) feature;
-                requiredLevel.setLevel(level);
+            if(feature instanceof RequiredMoney) {
+                RequiredMoney requiredLevel = (RequiredMoney) feature;
+                requiredLevel.setMoney(money);
                 requiredLevel.setErrorMessage(errorMessage);
                 requiredLevel.setCancelEventIfError(cancelEventIfError);
                 break;

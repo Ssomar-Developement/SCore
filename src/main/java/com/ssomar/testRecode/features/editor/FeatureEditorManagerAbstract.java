@@ -22,7 +22,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public boolean allClicked(NewInteractionClickedGUIManager<T> i) {
 
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 //SsomarDev.testMsg("Feature clicked: " + feature.getName());
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     ((FeatureRequireOnlyClicksInEditor) feature).clickParentEditor(i.player, this);
@@ -67,7 +67,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean noShiftclicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).noShiftclicked(i.player, this);
                 }
@@ -79,7 +79,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean noShiftLeftclicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).noShiftLeftclicked(i.player, this);
                 }
@@ -91,7 +91,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean noShiftRightclicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).noShiftRightclicked(i.player, this);
                 }
@@ -104,7 +104,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public boolean shiftClicked(NewInteractionClickedGUIManager<T> i) {
         if(i.gui.getParent() instanceof FeaturesGroup){
             for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-                if (feature.isTheFeatureClickedParentEditor(i.name)) {
+                if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                     ((FeaturesGroup) i.gui.getParent()).deleteFeature(i.player, feature);
                     i.gui.getParent().openEditor(i.player);
                     return true;
@@ -113,7 +113,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         }
         else {
             for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-                if (feature.isTheFeatureClickedParentEditor(i.name)) {
+                if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                     if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                         return ((FeatureRequireOnlyClicksInEditor) feature).shiftClicked(i.player, this);
                     }
@@ -126,7 +126,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean shiftLeftClicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).shiftLeftClicked(i.player, this);
                 }
@@ -138,7 +138,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean shiftRightClicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).shiftRightClicked(i.player, this);
                 }
@@ -150,7 +150,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean leftClicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).leftClicked(i.player, this);
                 }
@@ -162,7 +162,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean rightClicked(NewInteractionClickedGUIManager<T> i) {
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-            if (feature.isTheFeatureClickedParentEditor(i.name)) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).rightClicked(i.player, this);
                 }

@@ -1,5 +1,6 @@
 package com.ssomar.testRecode.features.custom.restrictions;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.editor.NewGUIManager;
@@ -37,27 +38,27 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
         restrictions.put(RestrictionEnum.CANCEL_CONSUMPTION, new BooleanFeature(this, "cancel-consumption", false, "Cancel Consumption", new String[]{"&7&oThe item can't be", "&7&oconsumed"}, Material.POTION, false));
 
         restrictions.put(RestrictionEnum.CANCEL_CRAFT, new BooleanFeature(this, "cancel-item-craft-no-custom", false, "Cancel Craft", new String[]{"&7&oThe item can't be used", "&7&oto craft vanilla item"}, Material.CRAFTING_TABLE, false));
-        restrictions.put(RestrictionEnum.CANCEL_ALL_CRAFT, new BooleanFeature(this, "cancel-item-craft", false, "Cancel All Craft", new String[]{"&7&oThe item can't be used", "&7&oto craft any item", "&&o(Even custom items)"}, Material.CRAFTING_TABLE, false));
+        restrictions.put(RestrictionEnum.CANCEL_ALL_CRAFT, new BooleanFeature(this, "cancel-item-craft", false, "Cancel All Craft", new String[]{"&7&oThe item can't be used", "&7&oto craft any item", "&7&o(Even custom items)"}, Material.CRAFTING_TABLE, false));
 
         restrictions.put(RestrictionEnum.CANCEL_DEPOSIT_IN_CHEST, new BooleanFeature(this, "cancel-deposit-in-chest", false, "Cancel Deposit in Chest", new String[]{"&7&oThe item can't be", "&7&oto deposit in a chest"}, Material.CHEST, false));
         restrictions.put(RestrictionEnum.CANCEL_DEPOSIT_IN_FURNACE, new BooleanFeature(this, "cancel-deposit-in-furnace", false, "Cancel Deposit in Furnace", new String[]{"&7&oThe item can't be", "&7&oto deposit in a furnace"}, Material.FURNACE, false));
-        restrictions.put(RestrictionEnum.CANCEL_STONE_CUTTER, new BooleanFeature(this, "cancel-stone-cutter", false, "Cancel Stone Cutter", new String[]{"&7&oThe item can't be", "&7&oplaced in stone cutter"}, Material.STONECUTTER, false));
+        if(!SCore.is1v13Less()) restrictions.put(RestrictionEnum.CANCEL_STONE_CUTTER, new BooleanFeature(this, "cancel-stone-cutter", false, "Cancel Stone Cutter", new String[]{"&7&oThe item can't be", "&7&oplaced in stone cutter"}, Material.STONECUTTER, false));
         restrictions.put(RestrictionEnum.CANCEL_ENCHANT, new BooleanFeature(this, "cancel-enchant", false, "Cancel Enchant", new String[]{"&7&oThe item can't be", "&7&oenchanted"}, Material.ENCHANTING_TABLE, false));
         restrictions.put(RestrictionEnum.CANCEL_BREWING, new BooleanFeature(this, "cancel-brewing", false, "Cancel Brewing", new String[]{"&7&oThe item can't be", "&7&oplaced in a brewing stand"}, Material.LEVER, false));
         restrictions.put(RestrictionEnum.CANCEL_ANVIL, new BooleanFeature(this, "cancel-anvil", false, "Cancel Anvil", new String[]{"&7&oThe item can't be", "&7&oplaced in an anvil"}, Material.ANVIL, false));
         restrictions.put(RestrictionEnum.CANCEL_ACTION_ENCHANT_IN_ANVIL, new BooleanFeature(this, "cancel-enchant-anvil", false, "Cancel Action Enchant in Anvil", new String[]{"&7&oThe item can't be", "&7&oenchanted in an anvil"}, Material.ANVIL, false));
         restrictions.put(RestrictionEnum.CANCEL_ACTION_RENAME_IN_ANVIL, new BooleanFeature(this, "cancel-rename-anvil", false, "Cancel Action Rename in Anvil", new String[]{"&7&oThe item can't be", "&7&orenamed in an anvil"}, Material.ANVIL, false));
         restrictions.put(RestrictionEnum.CANCEL_BEACON, new BooleanFeature(this, "cancel-beacon", false, "Cancel Beacon", new String[]{"&7&oThe item can't be", "&7&oplaced in a beacon"}, Material.BEACON, false));
-        restrictions.put(RestrictionEnum.CANCEL_CARTOGRAPHY, new BooleanFeature(this, "cancel-cartography", false, "Cancel Cartography", new String[]{"&7&oThe item can't be", "&7&oplaced in a cartography table"}, Material.CARTOGRAPHY_TABLE, false));
-        restrictions.put(RestrictionEnum.CANCEL_COMPOSTER, new BooleanFeature(this, "cancel-composter", false, "Cancel Composter", new String[]{"&7&oThe item can't be", "&7&oplaced in a composter"}, Material.COMPOSTER, false));
+        if(!SCore.is1v13Less()) restrictions.put(RestrictionEnum.CANCEL_CARTOGRAPHY, new BooleanFeature(this, "cancel-cartography", false, "Cancel Cartography", new String[]{"&7&oThe item can't be", "&7&oplaced in a cartography table"}, Material.CARTOGRAPHY_TABLE, false));
+        if(!SCore.is1v13Less()) restrictions.put(RestrictionEnum.CANCEL_COMPOSTER, new BooleanFeature(this, "cancel-composter", false, "Cancel Composter", new String[]{"&7&oThe item can't be", "&7&oplaced in a composter"}, Material.COMPOSTER, false));
         restrictions.put(RestrictionEnum.CANCEL_DISPENSER, new BooleanFeature(this, "cancel-dispenser", false, "Cancel Dispenser", new String[]{"&7&oThe item can't be", "&7&oplaced in a dispenser"}, Material.DISPENSER, false));
         restrictions.put(RestrictionEnum.CANCEL_DROPPER, new BooleanFeature(this, "cancel-dropper", false, "Cancel Dropper", new String[]{"&7&oThe item can't be", "&7&oplaced in a dropper"}, Material.DROPPER, false));
         restrictions.put(RestrictionEnum.CANCEL_HOPPER, new BooleanFeature(this, "cancel-hopper", false, "Cancel Hopper", new String[]{"&7&oThe item can't be", "&7&oplaced in a hopper"}, Material.HOPPER, false));
-        restrictions.put(RestrictionEnum.CANCEL_LECTERN, new BooleanFeature(this, "cancel-lectern", false, "Cancel Lectern", new String[]{"&7&oThe item can't be", "&7&oplaced in a lectern"}, Material.LECTERN, false));
+        if(!SCore.is1v13Less()) restrictions.put(RestrictionEnum.CANCEL_LECTERN, new BooleanFeature(this, "cancel-lectern", false, "Cancel Lectern", new String[]{"&7&oThe item can't be", "&7&oplaced in a lectern"}, Material.LECTERN, false));
         restrictions.put(RestrictionEnum.CANCEL_LOOM, new BooleanFeature(this, "cancel-loom", false, "Cancel Loom", new String[]{"&7&oThe item can't be", "&7&oplaced in a loom"}, Material.LOOM, false));
-        restrictions.put(RestrictionEnum.CANCEL_GRIND_STONE, new BooleanFeature(this, "cancel-grind-stone", false, "Cancel Grind Stone", new String[]{"&7&oThe item can't be", "&7&oplaced in a grind stone"}, Material.GRINDSTONE, false));
+        if(!SCore.is1v13Less()) restrictions.put(RestrictionEnum.CANCEL_GRIND_STONE, new BooleanFeature(this, "cancel-grind-stone", false, "Cancel Grind Stone", new String[]{"&7&oThe item can't be", "&7&oplaced in a grind stone"}, Material.GRINDSTONE, false));
         restrictions.put(RestrictionEnum.CANCEL_ITEM_FRAME, new BooleanFeature(this, "cancel-item-frame", false, "Cancel Item Frame", new String[]{"&7&oThe item can't be", "&7&oplaced in an item frame"}, Material.ITEM_FRAME, false));
-        restrictions.put(RestrictionEnum.CANCEL_SMITHING_TABLE, new BooleanFeature(this, "cancel-smithing-table", false, "Cancel Smithing Table", new String[]{"&7&oThe item can't be", "&7&oplaced in a smithing table"}, Material.SMITHING_TABLE, false));
+        if(!SCore.is1v13Less()) restrictions.put(RestrictionEnum.CANCEL_SMITHING_TABLE, new BooleanFeature(this, "cancel-smithing-table", false, "Cancel Smithing Table", new String[]{"&7&oThe item can't be", "&7&oplaced in a smithing table"}, Material.SMITHING_TABLE, false));
 
         restrictions.put(RestrictionEnum.CANCEL_MERCHANT, new BooleanFeature(this, "cancel-merchant", false, "Cancel Merchant", new String[]{"&7&oThe item can't be", "&7&otraded in a merchant"}, Material.VILLAGER_SPAWN_EGG, false));
 
@@ -66,7 +67,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
         restrictions.put(RestrictionEnum.CANCEL_ITEM_DELETE_BY_LIGHTNING, new BooleanFeature(this, "cancel-item-delete-by-lightning", false, "Cancel Item Delete by Lightning", new String[]{"&7&oThe item can't be", "&7&odestroyed by a lightning"}, Material.LEVER, false));
 
 
-        restrictions.put(RestrictionEnum.CANCEL_SWAPHAND, new BooleanFeature(this, "cancel-swap-hand", false, "Cancel Swap Hand", new String[]{"&7&oThe item can't be", "&7&oswaped between the two hands"}, Material.LEVER, false));
+        if(!SCore.is1v11Less()) restrictions.put(RestrictionEnum.CANCEL_SWAPHAND, new BooleanFeature(this, "cancel-swap-hand", false, "Cancel Swap Hand", new String[]{"&7&oThe item can't be", "&7&oswaped between the two hands"}, Material.LEVER, false));
         restrictions.put(RestrictionEnum.LOCKED_INVENTORY, new BooleanFeature(this, "locked-in-inventory", false, "Locked Inventory", new String[]{"&7&oThe item is locked in the inventory"}, Material.LEVER, false));
     }
 
