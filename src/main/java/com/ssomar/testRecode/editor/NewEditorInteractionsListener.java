@@ -24,6 +24,8 @@ import com.ssomar.testRecode.features.custom.givefirstjoin.GiveFirstJoinFeatures
 import com.ssomar.testRecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditorManager;
+import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditor;
+import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditorManager;
 import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUI;
 import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUIManager;
 import com.ssomar.testRecode.features.custom.restrictions.RestrictionsEditor;
@@ -135,6 +137,10 @@ public class NewEditorInteractionsListener implements Listener {
             NewCooldownFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof LoopFeaturesEditor) {
+            LoopFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -193,6 +199,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (NewCooldownFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             NewCooldownFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (LoopFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            LoopFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }
