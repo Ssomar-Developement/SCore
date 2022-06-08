@@ -57,10 +57,12 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void save(ConfigurationSection config) {
+        config.set(this.getName(), null);
         if(level.getValue().isPresent() && level.getValue().get() > 0) {
-            level.save(config);
-            errorMessage.save(config);
-            cancelEventIfError.save(config);
+            ConfigurationSection requiredLevelSection = config.createSection(this.getName());
+            level.save(requiredLevelSection);
+            errorMessage.save(requiredLevelSection);
+            cancelEventIfError.save(requiredLevelSection);
         }
     }
 
@@ -125,8 +127,8 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public void reset() {
         this.level = new IntegerFeature(getParent(), "requiredLevel", Optional.of(0), "Required Level", new String[]{"&7&oRequired level"}, Material.ANVIL, false);
-        this.errorMessage = new ColoredStringFeature(getParent(), "requiredLevelMsg", Optional.of("&4&l>> &cError you don't have the required levels"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false);
-        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfInvalidRequiredLevel", false, "cancelEventIfInvalidRequiredLevel", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false);
+        this.errorMessage = new ColoredStringFeature(getParent(), "errorMessage", Optional.of("&4&l>> &cError you don't have the required levels"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false);
+        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfError", false, "cancelEventIfInvalidRequiredLevel", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false);
     }
 
     @Override
@@ -151,7 +153,11 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public ConfigurationSection getConfigurationSection() {
-        return getParent().getConfigurationSection();
+        ConfigurationSection section = getParent().getConfigurationSection();
+        if(section.isConfigurationSection(this.getName())) {
+            return section.getConfigurationSection(this.getName());
+        }
+        else return section.createSection(this.getName());
     }
 
     @Override

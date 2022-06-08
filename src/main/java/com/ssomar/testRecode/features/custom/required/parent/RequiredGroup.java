@@ -1,4 +1,4 @@
-package com.ssomar.testRecode.features.custom.required.group;
+package com.ssomar.testRecode.features.custom.required.parent;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -7,6 +7,8 @@ import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.testRecode.features.custom.required.items.group.RequiredItemGroupFeature;
+import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.required.level.RequiredLevel;
 import com.ssomar.testRecode.features.custom.required.money.RequiredMoney;
 import lombok.Getter;
@@ -28,6 +30,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     private RequiredLevel requiredLevel;
     private RequiredMoney requiredMoney;
+    private RequiredItemGroupFeature requiredItems;
 
     public RequiredGroup(FeatureParentInterface parent) {
         super(parent, "requiredGroup", "Required Things", new String[]{"&7&oRequired things"}, Material.ANVIL, false);
@@ -39,6 +42,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         List<String> error = new ArrayList<>();
         error.addAll(requiredLevel.load(plugin, config, isPremiumLoading));
         error.addAll(requiredMoney.load(plugin, config, isPremiumLoading));
+        error.addAll(requiredItems.load(plugin, config, isPremiumLoading));
         return error;
     }
 
@@ -54,6 +58,9 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
             return false;
         }
         if(!requiredMoney.verify(player, event)){
+            return false;
+        }
+        if(!requiredItems.verify(player, event)){
             return false;
         }
         return true;
@@ -72,18 +79,23 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public RequiredGroup initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 3];
+        String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
         if(requiredLevel.getValue().getLevel().getValue().get() > 0)
-            finalDescription[finalDescription.length - 2] = "&7Required level: &a&l✔";
+            finalDescription[finalDescription.length - 3] = "&7Required level: &a&l✔";
         else
-            finalDescription[finalDescription.length - 2] = "&7Required level: &c&l✘";
+            finalDescription[finalDescription.length - 3] = "&7Required level: &c&l✘";
 
         if(requiredMoney.getValue().getMoney().getValue().get() > 0)
-            finalDescription[finalDescription.length - 1] = "&7Required money: &a&l✔";
+            finalDescription[finalDescription.length - 2] = "&7Required money: &a&l✔";
         else
-            finalDescription[finalDescription.length - 1] = "&7Required money: &c&l✘";
+            finalDescription[finalDescription.length - 2] = "&7Required money: &c&l✘";
+
+        if(requiredItems.getValue().getRequiredItems().size() > 0)
+            finalDescription[finalDescription.length - 1] = "&7Required items: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 1] = "&7Required items: &c&l✘";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -107,6 +119,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         RequiredGroup requiredLevel = new RequiredGroup(getParent());
         requiredLevel.setRequiredLevel(getRequiredLevel().clone());
         requiredLevel.setRequiredMoney(getRequiredMoney().clone());
+        requiredLevel.setRequiredItems(getRequiredItems().clone());
         return requiredLevel;
     }
 
@@ -114,6 +127,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     public void reset() {
         this.requiredLevel = new RequiredLevel(this);
         this.requiredMoney = new RequiredMoney(this);
+        this.requiredItems = new RequiredItemGroupFeature(this);
     }
 
     @Override
@@ -128,7 +142,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return Arrays.asList(requiredLevel, requiredMoney);
+        return Arrays.asList(requiredLevel, requiredMoney, requiredItems);
     }
 
     @Override
@@ -153,6 +167,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
                 RequiredGroup requiredgroup = (RequiredGroup) feature;
                 requiredgroup.setRequiredLevel(requiredLevel);
                 requiredgroup.setRequiredMoney(requiredMoney);
+                requiredgroup.setRequiredItems(requiredItems);
                 break;
             }
         }

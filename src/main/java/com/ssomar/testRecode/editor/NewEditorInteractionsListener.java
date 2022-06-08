@@ -23,8 +23,12 @@ import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditor;
 import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditorManager;
-import com.ssomar.testRecode.features.custom.required.group.RequiredGroupEditor;
-import com.ssomar.testRecode.features.custom.required.group.RequiredGroupEditorManager;
+import com.ssomar.testRecode.features.custom.required.items.group.RequiredItemGroupFeatureEditor;
+import com.ssomar.testRecode.features.custom.required.items.group.RequiredItemGroupFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeatureEditor;
+import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.required.parent.RequiredGroupEditor;
+import com.ssomar.testRecode.features.custom.required.parent.RequiredGroupEditorManager;
 import com.ssomar.testRecode.features.custom.required.level.RequiredLevelEditor;
 import com.ssomar.testRecode.features.custom.required.level.RequiredLevelEditorManager;
 import com.ssomar.testRecode.features.custom.required.money.RequiredMoneyEditor;
@@ -98,6 +102,14 @@ public class NewEditorInteractionsListener implements Listener {
             RequiredMoneyEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof RequiredItemFeatureEditor) {
+            RequiredItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof RequiredItemGroupFeatureEditor) {
+            RequiredItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
         else if (holder instanceof RequiredGroupEditor) {
             RequiredGroupEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -168,6 +180,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (RequiredMoneyEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequiredMoneyEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (RequiredItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredItemFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (RequiredItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
         else if (RequiredGroupEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
