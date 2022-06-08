@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.ssomar.executableblocks.blocks.ExecutableBlock;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.Bukkit;
@@ -30,8 +32,7 @@ public class SetExecutableBlock extends BlockCommand{
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
 		if(SCore.hasExecutableBlocks) {
-
-			Optional<ExecutableBlock> oOpt = ExecutableBlockManager.getInstance().getLoadedObjectWithID(args.get(0));
+			Optional<ExecutableBlockInterface> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
 			if(!oOpt.isPresent()) {
 				ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command SETEXECUTABLEBLOCK (object: "+aInfo.getName()+")");
 				return;
@@ -98,9 +99,9 @@ public class SetExecutableBlock extends BlockCommand{
 
 			if(uuid != null && !bypassProtection && !SafePlace.verifSafePlace(uuid, block)) return;
 
-			ExecutableBlock eB = oOpt.get();
+			ExecutableBlockInterface eB = oOpt.get();
 
-			eB.place(Optional.ofNullable(Bukkit.getPlayer(ownerUUID)), loc, true);
+			eB.place2(Optional.ofNullable(ownerUUID), loc, true);
 		}
 	}
 

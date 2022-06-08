@@ -3,11 +3,11 @@ package com.ssomar.testRecode.features.custom.required.level;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
 
-public class RequireLevelGUI extends FeatureEditorInterface<RequiredLevel> {
+public class RequiredLevelGUI extends FeatureEditorInterface<RequiredLevel> {
 
     public RequiredLevel requiredLevel;
 
-    public RequireLevelGUI(RequiredLevel requiredLevel) {
+    public RequiredLevelGUI(RequiredLevel requiredLevel) {
         super("&lRequired Level Editor", 3*9);
         this.requiredLevel = requiredLevel.clone();
         load();

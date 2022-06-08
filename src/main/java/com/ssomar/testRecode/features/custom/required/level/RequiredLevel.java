@@ -5,7 +5,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
-import com.ssomar.testRecode.features.custom.hiders.Hiders;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
@@ -30,7 +29,7 @@ import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 
 @Getter
 @Setter
-public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequireLevelGUI, RequireLevelGUIManager>  implements RequiredPlayerInterface{
+public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequiredLevelGUI, RequiredLevelGUIManager>  implements RequiredPlayerInterface{
 
     private IntegerFeature level;
     private ColoredStringFeature errorMessage;
@@ -132,7 +131,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void openEditor(Player player) {
-        RequireLevelGUIManager.getInstance().startEditing(player, this);
+        RequiredLevelGUIManager.getInstance().startEditing(player, this);
     }
 
     @Override
@@ -147,7 +146,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public String getParentInfo() {
-        return getParent().getParentInfo()+".(requiredLevel)";
+        return getParent().getParentInfo();
     }
 
     @Override

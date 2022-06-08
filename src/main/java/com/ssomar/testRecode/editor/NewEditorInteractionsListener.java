@@ -1,17 +1,14 @@
 package com.ssomar.testRecode.editor;
 
-import com.ssomar.executableitems.executableitems.restrictions.Restriction;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.custom.activators.group.ActivatorsFeatureEditor;
 import com.ssomar.testRecode.features.custom.activators.group.ActivatorsFeatureEditorManager;
-import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeature;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditor;
 import com.ssomar.testRecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditor;
 import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditor;
 import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditorManager;
-import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeature;
 import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
@@ -26,8 +23,10 @@ import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditor;
 import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditorManager;
-import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUI;
-import com.ssomar.testRecode.features.custom.required.level.RequireLevelGUIManager;
+import com.ssomar.testRecode.features.custom.required.level.RequiredLevelGUI;
+import com.ssomar.testRecode.features.custom.required.level.RequiredLevelGUIManager;
+import com.ssomar.testRecode.features.custom.required.money.RequiredMoneyGUI;
+import com.ssomar.testRecode.features.custom.required.money.RequiredMoneyGUIManager;
 import com.ssomar.testRecode.features.custom.restrictions.RestrictionsEditor;
 import com.ssomar.testRecode.features.custom.restrictions.RestrictionsEditorManager;
 import com.ssomar.testRecode.sobject.menu.NewSObjectsEditorAbstract;
@@ -89,8 +88,12 @@ public class NewEditorInteractionsListener implements Listener {
         if (holder instanceof NewSObjectsEditorAbstract) {
             NewSObjectsManagerEditor.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof RequireLevelGUI) {
-            RequireLevelGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+        } else if (holder instanceof RequiredLevelGUI) {
+            RequiredLevelGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof RequiredMoneyGUI) {
+            RequiredMoneyGUIManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
         else if (holder instanceof DropFeaturesEditor) {
@@ -152,9 +155,13 @@ public class NewEditorInteractionsListener implements Listener {
             e.setCancelled(true);
             NewSObjectsManagerEditor.getInstance().receiveMessage(p, e.getMessage());
         }
-        else if (RequireLevelGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+        else if (RequiredLevelGUIManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequireLevelGUIManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredLevelGUIManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (RequiredMoneyGUIManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredMoneyGUIManager.getInstance().receiveMessage(p, e.getMessage());
         }
         else if (DropFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);

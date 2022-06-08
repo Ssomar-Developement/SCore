@@ -2,6 +2,7 @@ package com.ssomar.testRecode.features.custom.required.money;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.VaultAPI;
 import com.ssomar.testRecode.editor.NewGUIManager;
 import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
@@ -67,22 +68,19 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     @Override
     public boolean verify(Player player, Event event) {
         if (money.getValue().isPresent()) {
-            if (player.getLevel() < money.getValue().get()) {
-                if (errorMessage.getValue().isPresent()) {
-                    player.sendMessage(errorMessage.getValue().get());
-                }
-                if (cancelEventIfError.getValue() && event instanceof Cancellable) {
-                    ((Cancellable) event).setCancelled(true);
-                }
-                return false;
-            }
+            VaultAPI v = new VaultAPI();
+            v.verifEconomy(player);
+            return v.hasMoney(player, money.getValue().get(), errorMessage.getValue().get());
         }
         return true;
     }
 
     @Override
     public void take(Player player) {
-        if (money.getValue().isPresent()) player.setLevel(player.getLevel() - money.getValue().get());
+        if (money.getValue().isPresent()){
+            VaultAPI v = new VaultAPI();
+            v.takeMoney(player, money.getValue().get());
+        }
     }
 
     @Override
