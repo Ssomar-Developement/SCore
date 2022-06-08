@@ -1,13 +1,13 @@
-package com.ssomar.testRecode.features.custom.required.level;
+package com.ssomar.testRecode.features.custom.required.money;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
 
-public class RequiredLevelGUI extends FeatureEditorInterface<RequiredLevel> {
+public class RequiredMoneyEditor extends FeatureEditorInterface<RequiredMoney> {
 
-    public RequiredLevel requiredLevel;
+    public RequiredMoney requiredLevel;
 
-    public RequiredLevelGUI(RequiredLevel requiredLevel) {
+    public RequiredMoneyEditor(RequiredMoney requiredLevel) {
         super("&lRequired Level Editor", 3*9);
         this.requiredLevel = requiredLevel.clone();
         load();
@@ -15,7 +15,7 @@ public class RequiredLevelGUI extends FeatureEditorInterface<RequiredLevel> {
 
     @Override
     public void load() {
-        requiredLevel.getLevel().initAndUpdateItemParentEditor(this, 0);
+        requiredLevel.getMoney().initAndUpdateItemParentEditor(this, 0);
         requiredLevel.getCancelEventIfError().initAndUpdateItemParentEditor(this, 1);
         requiredLevel.getErrorMessage().initAndUpdateItemParentEditor(this, 2);
 
@@ -30,7 +30,7 @@ public class RequiredLevelGUI extends FeatureEditorInterface<RequiredLevel> {
     }
 
     @Override
-    public RequiredLevel getParent() {
+    public RequiredMoney getParent() {
         return requiredLevel;
     }
 }

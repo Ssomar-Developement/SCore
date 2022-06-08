@@ -9,15 +9,11 @@ import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.testRecode.features.custom.required.level.RequiredLevel;
 import com.ssomar.testRecode.features.custom.required.money.RequiredMoney;
-import com.ssomar.testRecode.features.types.BooleanFeature;
-import com.ssomar.testRecode.features.types.ColoredStringFeature;
-import com.ssomar.testRecode.features.types.IntegerFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,13 +21,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
-import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 
 @Getter
 @Setter
-public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, RequiredGroup, RequiredGroupGUI, RequiredGroupGUIManager>  implements RequiredPlayerInterface{
+public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, RequiredGroup, RequiredGroupEditor, RequiredGroupEditorManager>  implements RequiredPlayerInterface{
 
     private RequiredLevel requiredLevel;
     private RequiredMoney requiredMoney;
@@ -125,7 +118,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public void openEditor(Player player) {
-        RequiredGroupGUIManager.getInstance().startEditing(player, this);
+        RequiredGroupEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override

@@ -16,7 +16,6 @@ import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +29,7 @@ import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 
 @Getter
 @Setter
-public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, RequiredMoneyGUI, RequiredMoneyGUIManager>  implements RequiredPlayerInterface{
+public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, RequiredMoneyEditor, RequiredMoneyEditorManager>  implements RequiredPlayerInterface{
 
     private IntegerFeature money;
     private ColoredStringFeature errorMessage;
@@ -129,7 +128,7 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
 
     @Override
     public void openEditor(Player player) {
-        RequiredMoneyGUIManager.getInstance().startEditing(player, this);
+        RequiredMoneyEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override

@@ -29,7 +29,7 @@ import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 
 @Getter
 @Setter
-public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequiredLevelGUI, RequiredLevelGUIManager>  implements RequiredPlayerInterface{
+public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequiredLevelEditor, RequiredLevelEditorManager>  implements RequiredPlayerInterface{
 
     private IntegerFeature level;
     private ColoredStringFeature errorMessage;
@@ -131,7 +131,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void openEditor(Player player) {
-        RequiredLevelGUIManager.getInstance().startEditing(player, this);
+        RequiredLevelEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
