@@ -43,9 +43,9 @@ public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfP
     public String [] getEditorDescription(){
         String [] finalDescription = new String[super.getEditorDescription().length + 1];
         if(getCondition().getValue())
-            finalDescription[finalDescription.length - 5] = "&7Enable: &a&l✔";
+            finalDescription[finalDescription.length - 1] = "&7Enable: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7Enable: &c&l✘";
+            finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
         return finalDescription;
     }
 
