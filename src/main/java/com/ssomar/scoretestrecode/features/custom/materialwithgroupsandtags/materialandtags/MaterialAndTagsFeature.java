@@ -142,10 +142,12 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
     }
 
     public boolean isValid(Block block) {
+        // #TODO check if block is valid
         return false;
     }
 
     public boolean isValid(Material type, BlockData blockData) {
+        // #TODO check if block is valid
         return false;
     }
 
