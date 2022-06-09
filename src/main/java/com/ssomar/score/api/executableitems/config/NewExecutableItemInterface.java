@@ -1,7 +1,5 @@
 package com.ssomar.score.api.executableitems.config;
 
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.testRecode.sobject.NewSObject;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
