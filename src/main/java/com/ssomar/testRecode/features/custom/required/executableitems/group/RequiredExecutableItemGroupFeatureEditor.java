@@ -1,15 +1,15 @@
-package com.ssomar.testRecode.features.custom.required.items.group;
+package com.ssomar.testRecode.features.custom.required.executableitems.group;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeature;
+import com.ssomar.testRecode.features.custom.required.executableitems.item.RequiredExecutableItemFeature;
 import com.ssomar.testRecode.features.editor.FeatureEditorInterface;
 
-public class RequiredItemGroupFeatureEditor extends FeatureEditorInterface<RequiredItemGroupFeature> {
+public class RequiredExecutableItemGroupFeatureEditor extends FeatureEditorInterface<RequiredExecutableItemGroupFeature> {
 
-    public RequiredItemGroupFeature attributesGroupFeature;
+    public RequiredExecutableItemGroupFeature attributesGroupFeature;
 
-    public RequiredItemGroupFeatureEditor(RequiredItemGroupFeature enchantsGroupFeature) {
-        super("&lRequired Items feature Editor", 3*9);
+    public RequiredExecutableItemGroupFeatureEditor(RequiredExecutableItemGroupFeature enchantsGroupFeature) {
+        super("&lRequired ExecutableItems feature Editor", 3*9);
         this.attributesGroupFeature = enchantsGroupFeature;
         load();
     }
@@ -17,7 +17,7 @@ public class RequiredItemGroupFeatureEditor extends FeatureEditorInterface<Requi
     @Override
     public void load() {
         int i = 0;
-        for(RequiredItemFeature enchantment : attributesGroupFeature.getRequiredItems().values()) {
+        for(RequiredExecutableItemFeature enchantment : attributesGroupFeature.getRequiredExecutableItems().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
             i++;
         }
@@ -32,14 +32,14 @@ public class RequiredItemGroupFeatureEditor extends FeatureEditorInterface<Requi
         createItem(ORANGE, 			1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
         // new enchant
-        createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add new required item");
+        createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add new required ExecutableItem");
 
         // Save menu
         createItem(GREEN, 1, 26, GUI.SAVE, false, false, "", "&a&oClick here to save");
     }
 
     @Override
-    public RequiredItemGroupFeature getParent() {
+    public RequiredExecutableItemGroupFeature getParent() {
         return attributesGroupFeature;
     }
 }

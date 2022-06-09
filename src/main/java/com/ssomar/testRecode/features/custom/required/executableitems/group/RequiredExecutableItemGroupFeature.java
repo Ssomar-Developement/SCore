@@ -1,4 +1,4 @@
-package com.ssomar.testRecode.features.custom.required.items.group;
+package com.ssomar.testRecode.features.custom.required.executableitems.group;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -8,7 +8,7 @@ import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.FeaturesGroup;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
-import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeature;
+import com.ssomar.testRecode.features.custom.required.executableitems.item.RequiredExecutableItemFeature;
 import com.ssomar.testRecode.features.types.BooleanFeature;
 import com.ssomar.testRecode.features.types.ColoredStringFeature;
 import lombok.Getter;
@@ -24,20 +24,20 @@ import java.io.File;
 import java.util.*;
 
 @Getter @Setter
-public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredItemGroupFeature, RequiredItemGroupFeature, RequiredItemGroupFeatureEditor, RequiredItemGroupFeatureEditorManager> implements FeaturesGroup<RequiredItemFeature>, RequiredPlayerInterface {
+public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<RequiredExecutableItemGroupFeature, RequiredExecutableItemGroupFeature, RequiredExecutableItemGroupFeatureEditor, RequiredExecutableItemGroupFeatureEditorManager> implements FeaturesGroup<RequiredExecutableItemFeature>, RequiredPlayerInterface {
 
-    private Map<String, RequiredItemFeature> requiredItems;
+    private Map<String, RequiredExecutableItemFeature> requiredExecutableItems;
     private ColoredStringFeature errorMessage;
     private BooleanFeature cancelEventIfError;
 
-    public RequiredItemGroupFeature(FeatureParentInterface parent) {
-        super(parent, "requiredItems", "Required Items", new String[]{"&7&oThe required items"}, Material.DIAMOND, false);
+    public RequiredExecutableItemGroupFeature(FeatureParentInterface parent) {
+        super(parent, "requiredExecutableItems", "Required ExecutableItems", new String[]{"&7&oThe required ExecutableItems"}, Material.DIAMOND_PICKAXE, false);
         reset();
     }
 
     @Override
     public void reset() {
-        this.requiredItems = new HashMap<>();
+        this.requiredExecutableItems = new HashMap<>();
         this.errorMessage = new ColoredStringFeature(this, "errorMessage", Optional.of("&4&l>> &cError you don't have the required items"), "Error message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false);
         this.cancelEventIfError = new BooleanFeature(this, "cancelEventIfError", false, "Cancel event if error", new String[]{"&7&oCancel the event if","&7&othe player don't have","&7&othe required items"}, Material.LEVER, false);
     }
@@ -48,13 +48,13 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
         if(config.isConfigurationSection(this.getName())) {
             ConfigurationSection requiredItemGroupSection = config.getConfigurationSection(this.getName());
             for(String attributeID : requiredItemGroupSection.getKeys(false)) {
-                RequiredItemFeature attribute = new RequiredItemFeature(this, attributeID);
+                RequiredExecutableItemFeature attribute = new RequiredExecutableItemFeature(this, attributeID);
                 List<String> subErrors = attribute.load(plugin, requiredItemGroupSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                     continue;
                 }
-                requiredItems.put(attributeID, attribute);
+                requiredExecutableItems.put(attributeID, attribute);
             }
             errorMessage.load(plugin, requiredItemGroupSection, isPremiumLoading);
             cancelEventIfError.load(plugin, requiredItemGroupSection, isPremiumLoading);
@@ -66,24 +66,24 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection attributesSection = config.createSection(this.getName());
-        for(String enchantmentID : requiredItems.keySet()) {
-            requiredItems.get(enchantmentID).save(attributesSection);
+        for(String enchantmentID : requiredExecutableItems.keySet()) {
+            requiredExecutableItems.get(enchantmentID).save(attributesSection);
         }
         errorMessage.save(config);
         cancelEventIfError.save(config);
     }
 
     @Override
-    public RequiredItemGroupFeature getValue() {
+    public RequiredExecutableItemGroupFeature getValue() {
         return this;
     }
 
     @Override
-    public RequiredItemGroupFeature initItemParentEditor(GUI gui, int slot) {
+    public RequiredExecutableItemGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length -2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length -1] = "&7&oRequiredItem(s) added: &e"+ requiredItems.size();
+        finalDescription[finalDescription.length -1] = "&7&oRequiredExecutableItem(s) added: &e"+ requiredExecutableItems.size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -100,9 +100,9 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     }
 
     @Override
-    public RequiredItemGroupFeature clone() {
-        RequiredItemGroupFeature eF = new RequiredItemGroupFeature(getParent());
-        eF.setRequiredItems(new HashMap<>(this.getRequiredItems()));
+    public RequiredExecutableItemGroupFeature clone() {
+        RequiredExecutableItemGroupFeature eF = new RequiredExecutableItemGroupFeature(getParent());
+        eF.setRequiredExecutableItems(new HashMap<>(this.getRequiredExecutableItems()));
         eF.setErrorMessage(this.getErrorMessage().clone());
         eF.setCancelEventIfError(this.getCancelEventIfError().clone());
         return eF;
@@ -110,7 +110,7 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        List<FeatureInterface> features =  new ArrayList<>(requiredItems.values());
+        List<FeatureInterface> features = new ArrayList<>(requiredExecutableItems.values());
         features.add(errorMessage);
         features.add(cancelEventIfError);
         return features;
@@ -138,9 +138,9 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     @Override
     public void reload() {
         for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof RequiredItemGroupFeature) {
-                RequiredItemGroupFeature eF = (RequiredItemGroupFeature) feature;
-                eF.setRequiredItems(this.getRequiredItems());
+            if(feature instanceof RequiredExecutableItemGroupFeature) {
+                RequiredExecutableItemGroupFeature eF = (RequiredExecutableItemGroupFeature) feature;
+                eF.setRequiredExecutableItems(this.getRequiredExecutableItems());
                 eF.setErrorMessage(this.getErrorMessage());
                 eF.setCancelEventIfError(this.getCancelEventIfError());
                 break;
@@ -155,17 +155,17 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
     @Override
     public void openEditor(@NotNull Player player) {
-        RequiredItemGroupFeatureEditorManager.getInstance().startEditing(player, this);
+        RequiredExecutableItemGroupFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
     public void createNewFeature(@NotNull Player editor) {
-        String baseId = "requiredItem";
+        String baseId = "requiredEI";
         for(int i = 0; i < 1000; i++) {
             String id = baseId + i;
-            if(!requiredItems.containsKey(id)) {
-                RequiredItemFeature eF = new RequiredItemFeature(this, id);
-                requiredItems.put(id, eF);
+            if(!requiredExecutableItems.containsKey(id)) {
+                RequiredExecutableItemFeature eF = new RequiredExecutableItemFeature(this, id);
+                requiredExecutableItems.put(id, eF);
                 eF.openEditor(editor);
                 break;
             }
@@ -173,14 +173,14 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     }
 
     @Override
-    public void deleteFeature(@NotNull Player editor, RequiredItemFeature feature) {
-        requiredItems.remove(feature.getId());
+    public void deleteFeature(@NotNull Player editor, RequiredExecutableItemFeature feature) {
+        requiredExecutableItems.remove(feature.getId());
     }
 
     @Override
     public boolean verify(Player player, Event event) {
-        for(RequiredItemFeature feature : requiredItems.values()) {
-            if(!feature.verify(player, event)) {
+        for(RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
+            if(!eF.verify(player, event)) {
                 if (errorMessage.getValue().isPresent()) {
                     player.sendMessage(errorMessage.getValue().get());
                 }
@@ -195,8 +195,8 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
     @Override
     public void take(Player player) {
-        for(RequiredItemFeature feature : requiredItems.values()) {
-            feature.take(player);
+        for(RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
+            eF.take(player);
         }
     }
 }

@@ -6,12 +6,14 @@ import java.lang.reflect.MalformedParametersException;
 
 public class StringCalculation {
 
+	private static final boolean DEBUG = false;
+
 	public static boolean calculation(String s, double value) {
 		String calculStr = s;
 
 		calculStr = calculStr.replaceAll(" ", "");
 
-		SsomarDev.testMsg("calculStr: "+calculStr);
+		SsomarDev.testMsg("calculStr: "+calculStr, 	DEBUG);
 
 		if(calculStr.contains("CONDITION")){
 			if(calculStr.startsWith("CONDITION")) return calculationWithConditionFirst(calculStr.replaceAll("CONDITION", ""), value);
@@ -116,9 +118,30 @@ public class StringCalculation {
 	}
 	
 	public static boolean isStringCalculation(String s) {
-		String calculStr = s;
-		
 		try {
+			if(s.contains("%")){
+				boolean pass = false;
+				boolean passSecond = false;
+				StringBuilder sb = new StringBuilder();
+				for(char c: s.toCharArray()){
+					if(c == '%'){
+						if(pass){
+							passSecond = true;
+						}
+						else{
+							pass = true;
+						}
+					}
+					else if(pass) sb.append(c);
+
+					if(passSecond){
+						sb.append(0);
+						passSecond = false;
+						pass = false;
+					}
+				}
+				s = sb.toString();
+			}
 			calculation(s, 0);
 			return true;
 		}catch (Exception e){

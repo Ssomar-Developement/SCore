@@ -1,5 +1,9 @@
 package com.ssomar.testRecode.features.custom.required.items.item;
 
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
+import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.AttributeSlot;
@@ -17,6 +21,8 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -30,6 +36,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
 
     private MaterialFeature material;
     private IntegerFeature amount;
+    private BooleanFeature notExecutableItem;
     private String id;
 
     public RequiredItemFeature(FeatureParentInterface parent, String id) {
@@ -42,6 +49,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     public void reset() {
         this.material = new MaterialFeature(this, "material", Optional.of(Material.STONE), "Material", new String[]{"&7&oThe material"}, Material.STONE, false);
         this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
+        this.notExecutableItem = new BooleanFeature(this, "notExecutableItem", false, "Not Executable Item", new String[]{"&7&oIs this item not an executable item?"}, Material.LEVER, false);
     }
 
     @Override
@@ -51,6 +59,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
             ConfigurationSection enchantmentConfig = config.getConfigurationSection(id);
             errors.addAll(this.material.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.amount.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.notExecutableItem.load(plugin, enchantmentConfig, isPremiumLoading));
         }
         else{
             errors.add("&cERROR, Couldn't load the Required Item because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
@@ -69,6 +78,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
         ConfigurationSection attributeConfig = config.createSection(id);
         this.material.save(attributeConfig);
         this.amount.save(attributeConfig);
+        this.notExecutableItem.save(attributeConfig);
     }
 
     @Override
@@ -84,7 +94,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
         finalDescription[finalDescription.length - 2] = "&7Material: &e" + material.getValue().get().name();
         finalDescription[finalDescription.length - 1] = "&7Amount: &e" + amount.getValue().get();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName()+ " - "+"("+id+")", false, false, finalDescription);
+        gui.createItem(material.getValue().get(), 1, slot, gui.TITLE_COLOR + getEditorName()+ " - "+"("+id+")", false, false, finalDescription);
         return this;
     }
 
@@ -103,12 +113,13 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
         RequiredItemFeature eF = new RequiredItemFeature(getParent(), id);
         eF.setMaterial(material.clone());
         eF.setAmount(amount.clone());
+        eF.setNotExecutableItem(notExecutableItem.clone());
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(material, amount));
+        return new ArrayList<>(Arrays.asList(material, amount, notExecutableItem));
     }
 
     @Override
@@ -134,6 +145,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
                 if(aFOF.getId().equals(id)) {
                     aFOF.setMaterial(material);
                     aFOF.setAmount(amount);
+                    aFOF.setNotExecutableItem(notExecutableItem);
                     break;
                 }
             }
@@ -152,11 +164,63 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
 
     @Override
     public boolean verify(Player player, Event event) {
-        return false;
+        PlayerInventory inventory = player.getInventory();
+        int needed = amount.getValue().get();
+        for(ItemStack it : inventory.getContents()) {
+            if(it == null && !it.getType().equals(material.getValue().get())) continue;
+
+            if(!notExecutableItem.getValue() || !SCore.hasExecutableItems) {
+                needed -= it.getAmount();
+            }
+            else{
+                Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(it);
+                if(eiOpt.isPresent()) {
+                    continue;
+                }
+                else {
+                    needed -= it.getAmount();
+                }
+            }
+            if(needed <= 0) return true;
+        }
+        if(needed <= 0) return true;
+        else return false;
     }
 
     @Override
     public void take(Player player) {
+        PlayerInventory inventory = player.getInventory();
+        int needed = amount.getValue().get();
+        for(ItemStack it : inventory.getContents()) {
+            if(it == null && !it.getType().equals(material.getValue().get())) continue;
 
+            if(!notExecutableItem.getValue() || !SCore.hasExecutableItems) {
+                if(needed >= it.getAmount()) {
+                    needed -= it.getAmount();
+                    inventory.remove(it);
+                }
+                else {
+                    it.setAmount(it.getAmount() - needed);
+                    needed = 0;
+                }
+            }
+            else{
+                Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(it);
+                if(eiOpt.isPresent()) {
+                    continue;
+                }
+                else {
+                    if(needed >= it.getAmount()) {
+                        needed -= it.getAmount();
+                        inventory.remove(it);
+                    }
+                    else {
+                        it.setAmount(it.getAmount() - needed);
+                        needed = 0;
+                    }
+                }
+            }
+            if(needed <= 0) break;
+        }
     }
 }

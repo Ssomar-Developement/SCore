@@ -34,4 +34,6 @@ public interface FeatureInterface<T, Y extends FeatureInterface> {
     void reset();
 
     boolean requirePremium();
+
+    Y clone();
 }

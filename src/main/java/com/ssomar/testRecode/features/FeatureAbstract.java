@@ -86,4 +86,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     public boolean requirePremium() {
         return requirePremium;
     }
+
+    @Override
+    public abstract Y clone();
 }

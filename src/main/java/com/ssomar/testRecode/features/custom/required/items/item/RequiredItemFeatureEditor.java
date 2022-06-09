@@ -17,6 +17,7 @@ public class RequiredItemFeatureEditor extends FeatureEditorInterface<RequiredIt
     public void load() {
         enchantFeature.getMaterial().initAndUpdateItemParentEditor(this, 0);
         enchantFeature.getAmount().initAndUpdateItemParentEditor(this, 1);
+        enchantFeature.getNotExecutableItem().initAndUpdateItemParentEditor(this, 2);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);

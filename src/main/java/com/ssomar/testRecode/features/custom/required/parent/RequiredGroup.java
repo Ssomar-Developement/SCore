@@ -7,6 +7,8 @@ import com.ssomar.testRecode.features.FeatureInterface;
 import com.ssomar.testRecode.features.FeatureParentInterface;
 import com.ssomar.testRecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.testRecode.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.testRecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeature;
+import com.ssomar.testRecode.features.custom.required.executableitems.item.RequiredExecutableItemFeature;
 import com.ssomar.testRecode.features.custom.required.items.group.RequiredItemGroupFeature;
 import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.required.level.RequiredLevel;
@@ -31,6 +33,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     private RequiredLevel requiredLevel;
     private RequiredMoney requiredMoney;
     private RequiredItemGroupFeature requiredItems;
+    private RequiredExecutableItemGroupFeature requiredExecutableItems;
 
     public RequiredGroup(FeatureParentInterface parent) {
         super(parent, "requiredGroup", "Required Things", new String[]{"&7&oRequired things"}, Material.ANVIL, false);
@@ -43,6 +46,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         error.addAll(requiredLevel.load(plugin, config, isPremiumLoading));
         error.addAll(requiredMoney.load(plugin, config, isPremiumLoading));
         error.addAll(requiredItems.load(plugin, config, isPremiumLoading));
+        error.addAll(requiredExecutableItems.load(plugin, config, isPremiumLoading));
         return error;
     }
 
@@ -63,6 +67,9 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         if(!requiredItems.verify(player, event)){
             return false;
         }
+        if(!requiredExecutableItems.verify(player, event)){
+            return false;
+        }
         return true;
     }
 
@@ -70,6 +77,8 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     public void take(Player player) {
         requiredLevel.take(player);
         requiredMoney.take(player);
+        requiredItems.take(player);
+        requiredExecutableItems.take(player);
     }
 
     @Override
@@ -79,23 +88,28 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public RequiredGroup initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 4];
+        String[] finalDescription = new String[getEditorDescription().length + 5];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 5] = gui.CLICK_HERE_TO_CHANGE;
         if(requiredLevel.getValue().getLevel().getValue().get() > 0)
-            finalDescription[finalDescription.length - 3] = "&7Required level: &a&l✔";
+            finalDescription[finalDescription.length - 4] = "&7Required level: &a&l✔";
         else
-            finalDescription[finalDescription.length - 3] = "&7Required level: &c&l✘";
+            finalDescription[finalDescription.length - 4] = "&7Required level: &c&l✘";
 
         if(requiredMoney.getValue().getMoney().getValue().get() > 0)
-            finalDescription[finalDescription.length - 2] = "&7Required money: &a&l✔";
+            finalDescription[finalDescription.length - 3] = "&7Required money: &a&l✔";
         else
-            finalDescription[finalDescription.length - 2] = "&7Required money: &c&l✘";
+            finalDescription[finalDescription.length - 3] = "&7Required money: &c&l✘";
 
         if(requiredItems.getValue().getRequiredItems().size() > 0)
-            finalDescription[finalDescription.length - 1] = "&7Required items: &a&l✔";
+            finalDescription[finalDescription.length - 2] = "&7Required items: &a&l✔";
         else
-            finalDescription[finalDescription.length - 1] = "&7Required items: &c&l✘";
+            finalDescription[finalDescription.length - 2] = "&7Required items: &c&l✘";
+
+        if(requiredExecutableItems.getValue().getRequiredExecutableItems().size() > 0)
+            finalDescription[finalDescription.length - 1] = "&7Required executable items: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 1] = "&7Required executable items: &c&l✘";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -120,6 +134,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         requiredLevel.setRequiredLevel(getRequiredLevel().clone());
         requiredLevel.setRequiredMoney(getRequiredMoney().clone());
         requiredLevel.setRequiredItems(getRequiredItems().clone());
+        requiredLevel.setRequiredExecutableItems(getRequiredExecutableItems().clone());
         return requiredLevel;
     }
 
@@ -128,6 +143,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         this.requiredLevel = new RequiredLevel(this);
         this.requiredMoney = new RequiredMoney(this);
         this.requiredItems = new RequiredItemGroupFeature(this);
+        this.requiredExecutableItems = new RequiredExecutableItemGroupFeature(this);
     }
 
     @Override
@@ -142,7 +158,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return Arrays.asList(requiredLevel, requiredMoney, requiredItems);
+        return Arrays.asList(requiredLevel, requiredMoney, requiredItems, requiredExecutableItems);
     }
 
     @Override
@@ -168,6 +184,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
                 requiredgroup.setRequiredLevel(requiredLevel);
                 requiredgroup.setRequiredMoney(requiredMoney);
                 requiredgroup.setRequiredItems(requiredItems);
+                requiredgroup.setRequiredExecutableItems(requiredExecutableItems);
                 break;
             }
         }

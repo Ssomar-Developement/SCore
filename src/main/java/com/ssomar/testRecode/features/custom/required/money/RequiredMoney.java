@@ -16,6 +16,7 @@ import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,7 +72,15 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
         if (money.getValue().isPresent()) {
             VaultAPI v = new VaultAPI();
             v.verifEconomy(player);
-            return v.hasMoney(player, money.getValue().get(), errorMessage.getValue().get());
+            if(!v.hasMoney(player, money.getValue().get(), errorMessage.getValue().get())){
+                if (errorMessage.getValue().isPresent()) {
+                    player.sendMessage(errorMessage.getValue().get());
+                }
+                if(cancelEventIfError.getValue() && event instanceof Cancellable){
+                    ((Cancellable) event).setCancelled(true);
+                }
+                return false;
+            }
         }
         return true;
     }

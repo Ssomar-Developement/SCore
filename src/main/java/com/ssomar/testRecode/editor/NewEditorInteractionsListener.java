@@ -9,6 +9,10 @@ import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFea
 import com.ssomar.testRecode.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditor;
 import com.ssomar.testRecode.features.custom.cancelevents.CancelEventFeaturesEditorManager;
+import com.ssomar.testRecode.features.custom.conditions.ConditionFeatureEditor;
+import com.ssomar.testRecode.features.custom.conditions.ConditionFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.conditions.block.parent.BlockConditionsFeatureEditor;
+import com.ssomar.testRecode.features.custom.conditions.block.parent.BlockConditionsFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.testRecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.drop.DropFeaturesEditor;
@@ -23,6 +27,10 @@ import com.ssomar.testRecode.features.custom.hiders.HidersEditor;
 import com.ssomar.testRecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditor;
 import com.ssomar.testRecode.features.custom.loop.LoopFeaturesEditorManager;
+import com.ssomar.testRecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditor;
+import com.ssomar.testRecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditorManager;
+import com.ssomar.testRecode.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditor;
+import com.ssomar.testRecode.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.required.items.group.RequiredItemGroupFeatureEditor;
 import com.ssomar.testRecode.features.custom.required.items.group.RequiredItemGroupFeatureEditorManager;
 import com.ssomar.testRecode.features.custom.required.items.item.RequiredItemFeatureEditor;
@@ -110,6 +118,14 @@ public class NewEditorInteractionsListener implements Listener {
             RequiredItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof RequiredExecutableItemFeatureEditor) {
+            RequiredExecutableItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof RequiredExecutableItemGroupFeatureEditor) {
+            RequiredExecutableItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
         else if (holder instanceof RequiredGroupEditor) {
             RequiredGroupEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -162,6 +178,14 @@ public class NewEditorInteractionsListener implements Listener {
             LoopFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof ConditionFeatureEditor) {
+            ConditionFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof BlockConditionsFeatureEditor) {
+            BlockConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -188,6 +212,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (RequiredItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequiredItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (RequiredExecutableItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredExecutableItemFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (RequiredExecutableItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredExecutableItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
         else if (RequiredGroupEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
@@ -240,6 +272,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (LoopFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             LoopFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (ConditionFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ConditionFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (BlockConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            BlockConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }
