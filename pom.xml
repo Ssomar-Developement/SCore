@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.7.4.1</version>
+	<version>1.7.4.3</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -326,7 +326,7 @@
             <dependency>
                 <groupId>com.github.Ssomar-Developement</groupId>
                 <artifactId>SEvents</artifactId>
-				<version>main-59c0aadaa4-1</version>
+				<version>main-3a27840af5-1</version>
                 <scope>compile</scope>
             </dependency>
 
