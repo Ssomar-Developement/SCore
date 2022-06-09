@@ -1,10 +1,12 @@
 package com.ssomar.scoretestrecode.features.custom.conditions;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
+import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
@@ -29,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter@Setter
-public abstract class ConditionFeature<Y extends FeatureInterface, T extends ConditionFeature<Y, T>> extends FeatureWithHisOwnEditor<T, T, HidersEditor, HidersEditorManager> {
+public abstract class ConditionFeature<Y extends FeatureAbstract, T extends ConditionFeature<Y, T>> extends FeatureWithHisOwnEditor<T, T, HidersEditor, HidersEditorManager> {
 
     private Y condition;
     private ColoredStringFeature errorMessage;
@@ -66,6 +68,8 @@ public abstract class ConditionFeature<Y extends FeatureInterface, T extends Con
         cancelEventIfError.save(config);
     }
 
+    public abstract boolean hasCondition();
+
     public void sendErrorMsg(Optional<Player> playerOpt, SendMessage messageSender){
         if(playerOpt.isPresent() && hasErrorMsg()) messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
     }
@@ -81,19 +85,26 @@ public abstract class ConditionFeature<Y extends FeatureInterface, T extends Con
     @Override
     public T initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 3];
-        finalDescription[0] = gui.CLICK_HERE_TO_CHANGE;
-        System.arraycopy(getEditorDescription(), 0, finalDescription, 1, getEditorDescription().length);
+        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
 
-        if(errorMessage.getValue().isPresent()) {
-            finalDescription[finalDescription.length - 2] = "&7Error Message: &e" + getErrorMessage().getValue();
+        if(getErrorMessage().getValue().isPresent()) {
+            finalDescription[finalDescription.length - 3] = "&7Error Message: &e" + getErrorMessage().getValue().get();
         } else {
-            finalDescription[finalDescription.length - 2] = "&7Error Message: &cNO MESSAGE" ;
+            finalDescription[finalDescription.length - 3] = "&7Error Message: &cNO MESSAGE" ;
         }
 
-        if(cancelEventIfError.getValue())
-            finalDescription[finalDescription.length - 5] = "&7Cancel Event If Error: &a&l✔";
+        if(getCancelEventIfError().getValue())
+            finalDescription[finalDescription.length - 2] = "&7Cancel Event If Error: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7Cancel Event If Error: &c&l✘";
+            finalDescription[finalDescription.length - 2] = "&7Cancel Event If Error: &c&l✘";
+
+        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+
+        for(int i = 0; i < finalDescription.length; i++) {
+            String command = finalDescription[i];
+            if(command.length() > 40) command = command.substring(0, 39) + "...";
+            finalDescription[i] = command;
+        }
 
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
@@ -143,12 +154,14 @@ public abstract class ConditionFeature<Y extends FeatureInterface, T extends Con
 
     @Override
     public void reload() {
+        SsomarDev.testMsg("Reloading ConditionFeature");
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature.getClass() == getNewInstance().getClass()) {
+                SsomarDev.testMsg("Reloading feature: " + feature.getName());
                 T cdt = (T) feature;
-                cdt.setCondition(cdt.getCondition());
-                cdt.setErrorMessage(cdt.getErrorMessage());
-                cdt.setCancelEventIfError(cdt.getCancelEventIfError());
+                cdt.setCondition(condition);
+                cdt.setErrorMessage(errorMessage);
+                cdt.setCancelEventIfError(cancelEventIfError);
                 break;
             }
         }

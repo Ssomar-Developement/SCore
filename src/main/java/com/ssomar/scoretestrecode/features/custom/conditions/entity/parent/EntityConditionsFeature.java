@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.block.parent;
+package com.ssomar.scoretestrecode.features.custom.conditions.entity.parent;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -8,6 +8,8 @@ import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.condition.*;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.condition.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -21,11 +23,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditionsFeature, BlockConditionsFeature, BlockConditionsFeatureEditor, BlockConditionsFeatureEditorManager> {
+public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityConditionsFeature, EntityConditionsFeature, EntityConditionsFeatureEditor, EntityConditionsFeatureEditorManager> {
 
-    private List<BlockConditionFeature> conditions;
+    private List<EntityConditionFeature> conditions;
 
-    public BlockConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription) {
+    public EntityConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription) {
         super(parent, name, editorName, editorDescription, Material.ANVIL, false);
         reset();
     }
@@ -34,26 +36,27 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
     public void reset() {
         conditions = new ArrayList<>();
         /** Boolean features **/
-        conditions.add(new IfIsPowered(this));
-        conditions.add(new IfMustBeNotPowered(this));
-        conditions.add(new IfMustBeNatural(this));
-        conditions.add(new IfPlayerMustBeOnTheBlock(this));
-        conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
-        conditions.add(new IfPlantFullyGrown(this));
+        conditions.add(new IfAdult(this));
+        conditions.add(new IfBaby(this));
+        conditions.add(new IfFrozen(this));
+        conditions.add(new IfGlowing(this));
+        conditions.add(new IfInvulnerable(this));
 
         /** Number condition features **/
-        conditions.add(new IfBlockAge(this));
-        conditions.add(new IfBlockLocationX(this));
-        conditions.add(new IfBlockLocationY(this));
-        conditions.add(new IfBlockLocationZ(this));
-        conditions.add(new IfUsage(this));
+        conditions.add(new IfEntityHealth(this));
+
+        /** List uncolored string **/
+        conditions.add(new IfHasTag(this));
+
+        /** List Material with tags **/
+        conditions.add(new IfIsOnTheBlock(this));
 
     }
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        for(BlockConditionFeature condition : conditions) {
+        for(EntityConditionFeature condition : conditions) {
             error.addAll(condition.load(plugin, config, isPremiumLoading));
         }
 
@@ -64,18 +67,18 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
-        for (BlockConditionFeature condition : conditions) {
+        for (EntityConditionFeature condition : conditions) {
             condition.save(section);
         }
     }
 
     @Override
-    public BlockConditionsFeature getValue() {
+    public EntityConditionsFeature getValue() {
         return this;
     }
 
     @Override
-    public BlockConditionsFeature initItemParentEditor(GUI gui, int slot) {
+    public EntityConditionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
@@ -96,11 +99,11 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
     }
 
     @Override
-    public BlockConditionsFeature clone() {
-        BlockConditionsFeature clone = new BlockConditionsFeature(getParent(), getName(), getEditorName(), getEditorDescription());
-        List<BlockConditionFeature> clones = new ArrayList<>();
-        for (BlockConditionFeature condition : conditions) {
-            clones.add((BlockConditionFeature) condition.clone());
+    public EntityConditionsFeature clone() {
+        EntityConditionsFeature clone = new EntityConditionsFeature(getParent(), getName(), getEditorName(), getEditorDescription());
+        List<EntityConditionFeature> clones = new ArrayList<>();
+        for (EntityConditionFeature condition : conditions) {
+            clones.add((EntityConditionFeature) condition.clone());
         }
         clone.setConditions(clones);
         return clone;
@@ -133,11 +136,11 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
     @Override
     public void reload() {
         for (FeatureInterface feature : getParent().getFeatures()) {
-            if (feature instanceof BlockConditionsFeature) {
-                BlockConditionsFeature bCF = (BlockConditionsFeature) feature;
-                List<BlockConditionFeature> clones = new ArrayList<>();
-                for (BlockConditionFeature condition : conditions) {
-                    clones.add((BlockConditionFeature) condition);
+            if (feature instanceof EntityConditionsFeature) {
+                EntityConditionsFeature bCF = (EntityConditionsFeature) feature;
+                List<EntityConditionFeature> clones = new ArrayList<>();
+                for (EntityConditionFeature condition : conditions) {
+                    clones.add((EntityConditionFeature) condition);
                 }
                 bCF.setConditions(clones);
                 break;
@@ -152,7 +155,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
 
     @Override
     public void openEditor(@NotNull Player player) {
-        BlockConditionsFeatureEditorManager.getInstance().startEditing(player, this);
+        EntityConditionsFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
 }

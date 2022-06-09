@@ -1,15 +1,15 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.block.parent;
+package com.ssomar.scoretestrecode.features.custom.conditions.entity.parent;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorInterface;
 
-public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockConditionsFeature> {
+public class EntityConditionsFeatureEditor extends FeatureEditorInterface<EntityConditionsFeature> {
 
-    public BlockConditionsFeature bCF;
+    public EntityConditionsFeature bCF;
 
-    public BlockConditionsFeatureEditor(BlockConditionsFeature dropFeatures) {
+    public EntityConditionsFeatureEditor(EntityConditionsFeature dropFeatures) {
         super("&lBlock Conditions Editor", 3*9);
         this.bCF = dropFeatures.clone();
         load();
@@ -18,7 +18,7 @@ public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockCo
     @Override
     public void load() {
         int i = 0;
-        for(BlockConditionFeature condition : bCF.getConditions()) {
+        for(EntityConditionFeature condition : bCF.getConditions()) {
             condition.initAndUpdateItemParentEditor(this, i);
             i++;
         }
@@ -34,7 +34,7 @@ public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockCo
     }
 
     @Override
-    public BlockConditionsFeature getParent() {
+    public EntityConditionsFeature getParent() {
         return bCF;
     }
 }

@@ -17,12 +17,17 @@ public class IfMustBeNotPowered extends BlockConditionFeature<BooleanFeature, If
 
 
     public IfMustBeNotPowered(FeatureParentInterface parent) {
-         super(parent, "", "", new String[]{}, Material.ANVIL, false);
+         super(parent, "ifMustBeNotPowered","If must be not powered", new String[]{}, Material.ANVIL, false);
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue();
     }
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender, Event event) {
-        if(getCondition().getValue() && b.getBlockData() instanceof Powerable) {
+        if(hasCondition() && b.getBlockData() instanceof Powerable) {
             Powerable power = (Powerable)b.getBlockData();
             if(power.isPowered()) {
                 sendErrorMsg(playerOpt, messangeSender);
@@ -46,11 +51,6 @@ public class IfMustBeNotPowered extends BlockConditionFeature<BooleanFeature, If
         else
             finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
         return finalDescription;
-    }
-
-    @Override
-    public IfMustBeNotPowered initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override

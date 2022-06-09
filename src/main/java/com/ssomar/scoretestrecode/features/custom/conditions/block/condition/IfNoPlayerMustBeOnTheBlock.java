@@ -17,12 +17,17 @@ import java.util.Optional;
 public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFeature, IfNoPlayerMustBeOnTheBlock> {
 
     public IfNoPlayerMustBeOnTheBlock(FeatureParentInterface parent) {
-        super(parent, "", "", new String[]{}, Material.ANVIL, false);
+        super(parent, "ifNoPlayerMustBeOnTheBlock", "If no player must be on the block", new String[]{}, Material.ANVIL, false);
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue();
     }
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender, Event event) {
-        if(getCondition().getValue()){
+        if(hasCondition()){
             boolean onBlock = false;
             Location bLoc = b.getLocation();
             bLoc = bLoc.add(0.5,1,0.5);
@@ -57,11 +62,6 @@ public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFea
         else
             finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
         return finalDescription;
-    }
-
-    @Override
-    public IfNoPlayerMustBeOnTheBlock initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override

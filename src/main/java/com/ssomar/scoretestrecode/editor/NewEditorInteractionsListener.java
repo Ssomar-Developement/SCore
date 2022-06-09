@@ -13,6 +13,8 @@ import com.ssomar.scoretestrecode.features.custom.conditions.ConditionFeatureEdi
 import com.ssomar.scoretestrecode.features.custom.conditions.ConditionFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.parent.BlockConditionsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.parent.BlockConditionsFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.drop.DropFeaturesEditor;
@@ -27,6 +29,10 @@ import com.ssomar.scoretestrecode.features.custom.hiders.HidersEditor;
 import com.ssomar.scoretestrecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.scoretestrecode.features.custom.loop.LoopFeaturesEditor;
 import com.ssomar.scoretestrecode.features.custom.loop.LoopFeaturesEditorManager;
+import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditor;
@@ -186,6 +192,18 @@ public class NewEditorInteractionsListener implements Listener {
             BlockConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof EntityConditionsFeatureEditor) {
+            EntityConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof MaterialAndTagsFeatureEditor) {
+            MaterialAndTagsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof MaterialAndTagsGroupFeatureEditor) {
+            MaterialAndTagsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -280,6 +298,18 @@ public class NewEditorInteractionsListener implements Listener {
         else if (BlockConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             BlockConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (EntityConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            EntityConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (MaterialAndTagsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            MaterialAndTagsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (MaterialAndTagsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            MaterialAndTagsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

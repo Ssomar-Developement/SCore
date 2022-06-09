@@ -21,7 +21,7 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
 
 
     public IfBlockAge(FeatureParentInterface parent) {
-        super(parent, "", "", new String[]{}, Material.ANVIL, false);
+        super(parent, "ifBlockAge", "If Block Age", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
@@ -46,6 +46,11 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
     }
 
     @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().isPresent();
+    }
+
+    @Override
     public IfBlockAge getNewInstance() {
         return new IfBlockAge(getParent());
     }
@@ -55,7 +60,7 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
         if(b.getState().getBlockData() instanceof Ageable) {
             Ageable ageable = (Ageable) b.getState().getBlockData();
             int age = ageable.getAge();
-            if(!getCondition().getValue().isPresent() && !StringCalculation.calculation(getCondition().getValue().get(), age)) {
+            if(hasCondition() && !StringCalculation.calculation(getCondition().getValue().get(), age)) {
                 sendErrorMsg(playerOpt, messageSender);
                 cancelEvent(event);
                 return false;

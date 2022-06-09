@@ -15,9 +15,9 @@ public class ConditionFeatureEditor extends FeatureEditorInterface<ConditionFeat
 
     @Override
     public void load() {
-        condition.getCondition().initItemParentEditor(this, 0);
-        condition.getErrorMessage().initItemParentEditor(this, 1);
-        condition.getCancelEventIfError().initItemParentEditor(this, 2);
+        condition.getCondition().initAndUpdateItemParentEditor(this,0);
+        condition.getErrorMessage().initAndUpdateItemParentEditor(this,1);
+        condition.getCancelEventIfError().initAndUpdateItemParentEditor(this,2);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);

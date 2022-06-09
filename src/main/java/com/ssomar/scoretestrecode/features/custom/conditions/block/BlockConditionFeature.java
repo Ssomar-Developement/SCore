@@ -1,7 +1,8 @@
 package com.ssomar.scoretestrecode.features.custom.conditions.block;
 
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.scoretestrecode.features.FeatureInterface;
+import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.custom.conditions.ConditionFeature;
 import org.bukkit.Material;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class BlockConditionFeature<Y extends FeatureInterface, T extends BlockConditionFeature<Y, T>> extends ConditionFeature<Y, T> {
+public abstract class BlockConditionFeature<Y extends FeatureAbstract, T extends BlockConditionFeature<Y, T>> extends ConditionFeature<Y, T> {
 
 
     public BlockConditionFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
@@ -20,6 +21,7 @@ public abstract class BlockConditionFeature<Y extends FeatureInterface, T extend
     }
 
     public abstract boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event);
+
 }
 
 

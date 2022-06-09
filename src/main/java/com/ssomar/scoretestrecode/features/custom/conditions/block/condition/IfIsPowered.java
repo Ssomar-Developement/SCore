@@ -16,13 +16,17 @@ import java.util.Optional;
 public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPowered> {
 
     public IfIsPowered(FeatureParentInterface parent) {
-        super(parent, "", "", new String[]{}, Material.ANVIL, false);
+        super(parent, "ifIsPowered","If is powered", new String[]{}, Material.ANVIL, false);
     }
 
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue();
+    }
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if(getCondition().getValue()) {
+        if(hasCondition()) {
             //SsomarDev.testMsg("block: "+b.getType()+ "   isBlockpowered: "+b.isBlockPowered()+ " is Powerable: "+(b.getBlockData() instanceof Powerable)+ "power: "+b.getBlockPower());
             boolean notPowered = !b.isBlockPowered() && b.getBlockPower() == 0;
 
@@ -53,11 +57,6 @@ public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPower
     @Override
     public IfIsPowered getValue() {
         return this;
-    }
-
-    @Override
-    public IfIsPowered initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override

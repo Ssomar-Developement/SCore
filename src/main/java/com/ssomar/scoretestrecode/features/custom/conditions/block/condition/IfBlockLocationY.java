@@ -16,12 +16,17 @@ import java.util.Optional;
 public class IfBlockLocationY extends BlockConditionFeature<NumberConditionFeature, IfBlockLocationY> {
 
     public IfBlockLocationY(FeatureParentInterface parent) {
-        super(parent, "", "", new String[]{}, Material.ANVIL, false);
+        super(parent, "ifBlockLocationY", "If block location Y", new String[]{}, Material.ANVIL, false);
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().isPresent();
     }
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender, Event event) {
-        if (!getCondition().getValue().isPresent() && !StringCalculation.calculation(getCondition().getValue().get(), b.getLocation().getY())) {
+        if (hasCondition() && !StringCalculation.calculation(getCondition().getValue().get(), b.getLocation().getY())) {
             sendErrorMsg(playerOpt, messangeSender);
             cancelEvent(event);
             return false;
@@ -43,11 +48,6 @@ public class IfBlockLocationY extends BlockConditionFeature<NumberConditionFeatu
     @Override
     public IfBlockLocationY getValue() {
         return this;
-    }
-
-    @Override
-    public IfBlockLocationY initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override

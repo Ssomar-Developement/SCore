@@ -16,13 +16,18 @@ import java.util.Optional;
 public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfPlantFullyGrown> {
 
     public IfPlantFullyGrown(FeatureParentInterface parent) {
-        super(parent, "", "", new String[]{}, Material.ANVIL, false);
+        super(parent, "ifPlantFullyGrown", "If plant fully grown", new String[]{}, Material.ANVIL, false);
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue();
     }
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
 
-        if(getCondition().getValue() && b.getState().getBlockData() instanceof Ageable) {
+        if(hasCondition() && b.getState().getBlockData() instanceof Ageable) {
             Ageable ageable = (Ageable) b.getState().getBlockData();
             int age = ageable.getAge();
             if(age != ageable.getMaximumAge()) {
@@ -47,11 +52,6 @@ public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfP
         else
             finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
         return finalDescription;
-    }
-
-    @Override
-    public IfPlantFullyGrown initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override

@@ -26,8 +26,13 @@ public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsa
     }
 
     @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().isPresent();
+    }
+
+    @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if(!getCondition().getValue().isPresent() && SCore.hasExecutableBlocks) {
+        if(hasCondition() && SCore.hasExecutableBlocks) {
 
             Location bLoc = LocationConverter.convert(b.getLocation(), false, false);
             Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
@@ -59,11 +64,6 @@ public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsa
             finalDescription[finalDescription.length - 1] = "&7Condition: &cNO CONDITION";
         }
         return finalDescription;
-    }
-
-    @Override
-    public IfUsage initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override

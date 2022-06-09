@@ -16,12 +16,17 @@ import java.util.Optional;
 public class IfMustBeNatural extends BlockConditionFeature<BooleanFeature, IfMustBeNatural> {
 
     public IfMustBeNatural(FeatureParentInterface parent) {
-        super(parent, "", "", new String[]{}, Material.ANVIL, false);
+        super(parent, "ifMustBeNatural", "If must be natural", new String[]{}, Material.ANVIL, false);
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue();
     }
 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender, Event event) {
-        if (getCondition().getValue()) {
+        if (hasCondition()) {
             if (!MyCoreProtectAPI.isNaturalBlock(b)) {
                 sendErrorMsg(playerOpt, messangeSender);
                 cancelEvent(event);
@@ -44,11 +49,6 @@ public class IfMustBeNatural extends BlockConditionFeature<BooleanFeature, IfMus
         else
             finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
         return finalDescription;
-    }
-
-    @Override
-    public IfMustBeNatural initItemParentEditor(GUI gui, int slot) {
-        return null;
     }
 
     @Override
