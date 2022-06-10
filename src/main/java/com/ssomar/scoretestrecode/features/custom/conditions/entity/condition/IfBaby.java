@@ -38,7 +38,7 @@ public class IfBaby extends EntityConditionFeature<BooleanFeature, IfBaby> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifBaby", false, "If baby", new String[]{}, Material.ANVIL, false));
+        setCondition(new BooleanFeature(getParent(), "ifBaby", false, "If baby", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override

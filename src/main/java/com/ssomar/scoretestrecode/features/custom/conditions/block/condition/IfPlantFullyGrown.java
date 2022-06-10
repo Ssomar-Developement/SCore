@@ -45,18 +45,8 @@ public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfP
     }
 
     @Override
-    public String [] getEditorDescription(){
-        String [] finalDescription = new String[super.getEditorDescription().length + 1];
-        if(getCondition().getValue())
-            finalDescription[finalDescription.length - 1] = "&7Enable: &a&l✔";
-        else
-            finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
-        return finalDescription;
-    }
-
-    @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifPlantFullyGrown", false,"If plant fully grown", new String[]{}, Material.ANVIL, false));
+        setCondition(new BooleanFeature(getParent(), "ifPlantFullyGrown", false,"If plant fully grown", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override

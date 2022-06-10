@@ -20,6 +20,8 @@ public class IfEntityHealth extends EntityConditionFeature<NumberConditionFeatur
         super(parent, "ifEntityHealth", "If entity health", new String[]{}, Material.ANVIL, false);
     }
 
+
+
     @Override
     public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
         if(hasCondition() && entity instanceof LivingEntity) {

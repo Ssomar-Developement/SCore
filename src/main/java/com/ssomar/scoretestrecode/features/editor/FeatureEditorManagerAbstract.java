@@ -31,6 +31,9 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     //SsomarDev.testMsg("FeatureRequireOneMessageInEditor");
                     ((FeatureRequireMultipleMessageInEditor) feature).askInEditorFirstTime(i.player, this);
                 } else if (feature instanceof FeatureParentInterface) {
+                    /** Save the parent is there is one **/
+                    i.gui.getParent().reload();
+                    i.gui.getParent().save();
                     FeatureParentInterface parent = (FeatureParentInterface) feature;
                     parent.openEditor(i.player);
                 }
@@ -104,6 +107,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
                 if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                     ((FeaturesGroup) i.gui.getParent()).deleteFeature(i.player, feature);
+                    i.gui.getParent().save();
                     i.gui.getParent().openEditor(i.player);
                     return true;
                 }

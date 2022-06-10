@@ -3,25 +3,51 @@ package com.ssomar.scoretestrecode.features.custom.conditions.entity.condition;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.entity.EntityCondition;
 import com.ssomar.score.utils.SendMessage;
+import com.ssomar.scoretestrecode.features.FeatureParentInterface;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.scoretestrecode.features.types.BooleanFeature;
+import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import java.util.Optional;
 
-public class IfPowered extends EntityCondition<Boolean, String> {
+public class IfPowered extends EntityConditionFeature<BooleanFeature, IfPowered> {
 
-    public IfPowered() {
-        super(ConditionType.BOOLEAN, "ifPowered", "If powered", new String[]{}, false, " &cThe entity must being powered to active the activator: &6%activator% &cof this item!");
+    public IfPowered(FeatureParentInterface parent) {
+        super(parent, "ifPowered", "If powered", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
-    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender) {
-        if(getAllCondition(messageSender.getSp()) && entity instanceof Creeper && !((Creeper)entity).isPowered()) {
+    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+        if(hasCondition() && entity instanceof Creeper && !((Creeper)entity).isPowered()) {
             sendErrorMsg(playerOpt, messageSender);
+            cancelEvent(event);
             return false;
         }
 
         return true;
+    }
+
+    @Override
+    public IfPowered getValue() {
+        return this;
+    }
+
+    @Override
+    public void subReset() {
+        setCondition(new BooleanFeature(getParent(), "ifPowered", false, "If powered", new String[]{}, Material.ANVIL, false, true));
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue();
+    }
+
+    @Override
+    public IfPowered getNewInstance() {
+        return new IfPowered(getParent());
     }
 }

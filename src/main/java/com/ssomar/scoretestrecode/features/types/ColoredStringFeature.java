@@ -29,10 +29,13 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     private Optional<String> value;
     private Optional<String> defaultValue;
+    private boolean notSaveIfEqualsToDefaultValue;
 
-    public ColoredStringFeature(FeatureParentInterface parent, String name, Optional<String> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public ColoredStringFeature(FeatureParentInterface parent, String name, Optional<String> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
+        this.value = defaultValue;
+        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
     }
 
@@ -49,7 +52,18 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     @Override
     public void save(ConfigurationSection config) {
         Optional<String> value = getValue();
-        if(value.isPresent() )config.set(this.getName(), value.get());
+        if(value.isPresent()) {
+            if(notSaveIfEqualsToDefaultValue && defaultValue.isPresent()) {
+                if(value.get().equals(defaultValue.get())){
+                    config.set(this.getName(), null);
+                    return;
+                }
+            }
+            config.set(this.getName(), value.get());
+        }
+        else {
+            config.set(this.getName(), null);
+        }
     }
 
     @Override
@@ -83,7 +97,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public ColoredStringFeature clone() {
-        ColoredStringFeature clone = new ColoredStringFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        ColoredStringFeature clone = new ColoredStringFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), notSaveIfEqualsToDefaultValue);
         clone.setValue(getValue());
         return clone;
     }

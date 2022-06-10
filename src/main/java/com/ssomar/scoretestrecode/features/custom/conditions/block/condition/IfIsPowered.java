@@ -45,23 +45,13 @@ public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPower
     }
 
     @Override
-    public String [] getEditorDescription(){
-        String [] finalDescription = new String[super.getEditorDescription().length + 1];
-        if(getCondition().getValue())
-            finalDescription[finalDescription.length - 1] = "&7Enable: &a&l✔";
-        else
-            finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
-        return finalDescription;
-    }
-
-    @Override
     public IfIsPowered getValue() {
         return this;
     }
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifIsPowered", false,"If is powered", new String[]{}, Material.ANVIL, false));
+        setCondition(new BooleanFeature(getParent(), "ifIsPowered", false,"If is powered", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.ssomar.scoretestrecode.features.custom.conditions;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
@@ -30,7 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Getter@Setter
+@Getter
+@Setter
 public abstract class ConditionFeature<Y extends FeatureAbstract, T extends ConditionFeature<Y, T>> extends FeatureWithHisOwnEditor<T, T, HidersEditor, HidersEditorManager> {
 
     private Y condition;
@@ -44,8 +44,8 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     @Override
     public void reset() {
-        this.errorMessage = new ColoredStringFeature(this, getEditorName()+"Msg", Optional.ofNullable("&4[ERROR] &cYou can't activate this item > invalid condition: &6"+getEditorName()), "Error Message", new String[]{"&7&oError Message"}, GUI.WRITABLE_BOOK,false);
-        this.cancelEventIfError = new BooleanFeature(this, getEditorName()+"Cancel", false, "Cancel Event If Error", new String[]{"&7&oCancel Event If Error"}, Material.LEVER,false);
+        this.errorMessage = new ColoredStringFeature(this, getName() + "Msg", Optional.ofNullable("&4[ERROR] &cYou can't activate this item > invalid condition: &6" + getEditorName()), "Error Message", new String[]{"&7&oError Message"}, GUI.WRITABLE_BOOK, false, true);
+        this.cancelEventIfError = new BooleanFeature(this, getName() + "Cancel", false, "Cancel Event If Error", new String[]{"&7&oCancel Event If Error"}, Material.LEVER, false, true);
         subReset();
     }
 
@@ -70,44 +70,52 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     public abstract boolean hasCondition();
 
-    public void sendErrorMsg(Optional<Player> playerOpt, SendMessage messageSender){
-        if(playerOpt.isPresent() && hasErrorMsg()) messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
+    public void sendErrorMsg(Optional<Player> playerOpt, SendMessage messageSender) {
+        if (playerOpt.isPresent() && hasErrorMsg())
+            messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
     }
 
-    public boolean hasErrorMsg(){
+    public boolean hasErrorMsg() {
         return errorMessage.getValue().isPresent() && StringConverter.decoloredString(errorMessage.getValue().get().trim()).length() > 0;
     }
 
-    public void cancelEvent(@Nullable Event event){
-        if(event != null && cancelEventIfError.getValue() && event instanceof Cancellable) ((Cancellable)event).setCancelled(true);
+    public void cancelEvent(@Nullable Event event) {
+        if (event != null && cancelEventIfError.getValue() && event instanceof Cancellable)
+            ((Cancellable) event).setCancelled(true);
     }
+
 
     @Override
     public T initItemParentEditor(GUI gui, int slot) {
-        String [] finalDescription = new String[getEditorDescription().length + 3];
+        String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
 
-        if(getErrorMessage().getValue().isPresent()) {
+        if (hasCondition())
+            finalDescription[finalDescription.length - 4] = "&7Enable: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 4] = "&7Enable: &c&l✘";
+
+        if (getErrorMessage().getValue().isPresent()) {
             finalDescription[finalDescription.length - 3] = "&7Error Message: &e" + getErrorMessage().getValue().get();
         } else {
-            finalDescription[finalDescription.length - 3] = "&7Error Message: &cNO MESSAGE" ;
+            finalDescription[finalDescription.length - 3] = "&7Error Message: &cNO MESSAGE";
         }
 
-        if(getCancelEventIfError().getValue())
+        if (getCancelEventIfError().getValue())
             finalDescription[finalDescription.length - 2] = "&7Cancel Event If Error: &a&l✔";
         else
             finalDescription[finalDescription.length - 2] = "&7Cancel Event If Error: &c&l✘";
 
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
-        for(int i = 0; i < finalDescription.length; i++) {
+        for (int i = 0; i < finalDescription.length; i++) {
             String command = finalDescription[i];
-            if(command.length() > 40) command = command.substring(0, 39) + "...";
+            if (command.length() > 40) command = command.substring(0, 39) + "...";
             finalDescription[i] = command;
         }
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return (T) this;
     }
 
@@ -154,10 +162,8 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     @Override
     public void reload() {
-        SsomarDev.testMsg("Reloading ConditionFeature");
-        for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature.getClass() == getNewInstance().getClass()) {
-                SsomarDev.testMsg("Reloading feature: " + feature.getName());
+        for (FeatureInterface feature : getParent().getFeatures()) {
+            if (feature.getClass() == getNewInstance().getClass()) {
                 T cdt = (T) feature;
                 cdt.setCondition(condition);
                 cdt.setErrorMessage(errorMessage);

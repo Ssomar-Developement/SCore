@@ -35,7 +35,7 @@ public class IfInvulnerable extends EntityConditionFeature<BooleanFeature, IfInv
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifInvulnerable", false, "If invulnerable", new String[]{}, Material.ANVIL, false));
+        setCondition(new BooleanFeature(getParent(), "ifInvulnerable", false, "If invulnerable", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override

@@ -79,7 +79,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        updateOption(getValue(), gui, !getPlugin().isLotOfWork());
+        updateOption(getValue(), gui, !getPlugin().isLotOfWork(), true);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         option = nextOption(option);
         option = nextOption(option);
         option = nextOption(option);
-        updateOption(option, (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork());
+        updateOption(option, (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork(), true);
         return true;
     }
 
@@ -164,19 +164,19 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         option = prevOption(option);
         option = prevOption(option);
         option = prevOption(option);
-        updateOption(option, (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork());
+        updateOption(option, (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork(), false);
         return true;
     }
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        updateOption(nextOption(getOption((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork());
+        updateOption(nextOption(getOption((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork(), true);
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        updateOption(prevOption(getOption((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork());
+        updateOption(prevOption(getOption((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor), !getPlugin().isLotOfWork(), false);
         return true;
     }
 
@@ -206,9 +206,10 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         else return getSortOptions().get(cpt - 1);
     }
 
-    public void updateOption(SOption option, GUI gui, boolean isPremiumLoading) {
+    public void updateOption(SOption option, GUI gui, boolean isPremiumLoading, boolean next) {
         while (!isPremiumLoading && option.getPremiumOption().contains(option)) {
-            option = nextOption(option);
+            if(next) option = nextOption(option);
+            else option = prevOption(option);
         }
         value = option;
         ItemStack item = gui.getByName(getEditorName());

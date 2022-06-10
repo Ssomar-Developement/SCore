@@ -46,7 +46,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         this.operation = new OperationFeature(this, "operation", Optional.of(AttributeModifier.Operation.ADD_NUMBER), "Operation", new String[]{"&7&oThe operation"}, Material.DISPENSER, false);
         this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
         this.slot = new SlotFeature(this, "slot", Optional.of(AttributeSlot.HAND), "Slot", new String[]{"&7&oThe slot"}, Material.ARMOR_STAND, false);
-        this.attributeName = new ColoredStringFeature(this, "name", Optional.of("&eDefault name"), "Name", new String[]{"&7&oThe name"}, Material.NAME_TAG, false);
+        this.attributeName = new ColoredStringFeature(this, "name", Optional.of("&eDefault name"), "Name", new String[]{"&7&oThe name"}, Material.NAME_TAG, false, true);
         this.uuid = new UUIDFeature(this, "uuid", "UUID", new String[]{"&7&oThe UUID"}, Material.NAME_TAG, false);
     }
 

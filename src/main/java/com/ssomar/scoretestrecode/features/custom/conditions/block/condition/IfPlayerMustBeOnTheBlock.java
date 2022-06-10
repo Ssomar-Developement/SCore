@@ -55,18 +55,8 @@ public class IfPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFeatu
     }
 
     @Override
-    public String [] getEditorDescription(){
-        String [] finalDescription = new String[super.getEditorDescription().length + 1];
-        if(getCondition().getValue())
-            finalDescription[finalDescription.length - 1] = "&7Enable: &a&l✔";
-        else
-            finalDescription[finalDescription.length - 1] = "&7Enable: &c&l✘";
-        return finalDescription;
-    }
-
-    @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifPlayerMustBeOnTheBlock", false, "If player must be on the block", new String[]{}, Material.ANVIL, false));
+        setCondition(new BooleanFeature(getParent(), "ifPlayerMustBeOnTheBlock", false, "If player must be on the block", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override

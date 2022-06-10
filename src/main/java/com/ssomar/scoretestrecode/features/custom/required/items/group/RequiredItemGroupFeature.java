@@ -38,8 +38,8 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     @Override
     public void reset() {
         this.requiredItems = new HashMap<>();
-        this.errorMessage = new ColoredStringFeature(this, "errorMessage", Optional.of("&4&l>> &cError you don't have the required items"), "Error message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false);
-        this.cancelEventIfError = new BooleanFeature(this, "cancelEventIfError", false, "Cancel event if error", new String[]{"&7&oCancel the event if","&7&othe player don't have","&7&othe required items"}, Material.LEVER, false);
+        this.errorMessage = new ColoredStringFeature(this, "errorMessage", Optional.of("&4&l>> &cError you don't have the required items"), "Error message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false, true);
+        this.cancelEventIfError = new BooleanFeature(this, "cancelEventIfError", false, "Cancel event if error", new String[]{"&7&oCancel the event if","&7&othe player don't have","&7&othe required items"}, Material.LEVER, false, true);
     }
 
     @Override

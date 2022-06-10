@@ -9,9 +9,9 @@ public class EntityConditionsFeatureEditor extends FeatureEditorInterface<Entity
 
     public EntityConditionsFeature bCF;
 
-    public EntityConditionsFeatureEditor(EntityConditionsFeature dropFeatures) {
-        super("&lBlock Conditions Editor", 3*9);
-        this.bCF = dropFeatures.clone();
+    public EntityConditionsFeatureEditor(EntityConditionsFeature bCF) {
+        super("&lEntity Conditions Editor", 3*9);
+        this.bCF = bCF.clone();
         load();
     }
 

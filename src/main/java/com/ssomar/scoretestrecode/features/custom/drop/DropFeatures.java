@@ -37,9 +37,9 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
 
     @Override
     public void reset() {
-        this.glowDrop = new BooleanFeature(getParent(), "glowDrop", false, "Glow drop", new String[]{"&7&oGlow drop"}, Material.LEVER, false);
+        this.glowDrop = new BooleanFeature(getParent(), "glowDrop", false, "Glow drop", new String[]{"&7&oGlow drop"}, Material.LEVER, false, false);
         this.dropColor = new ChatColorFeature(getParent(), "glowDropColor", Optional.of(ChatColor.WHITE), "Glow color", new String[]{"&7&oGlow drop color"}, Material.REDSTONE, true);
-        this.displayNameDrop = new BooleanFeature(getParent(), "displayNameDrop", false, "Display custom name", new String[]{"&7&oDisplay custom name above the item"}, Material.LEVER, false);
+        this.displayNameDrop = new BooleanFeature(getParent(), "displayNameDrop", false, "Display custom name", new String[]{"&7&oDisplay custom name above the item"}, Material.LEVER, false, false);
     }
 
     @Override

@@ -195,10 +195,10 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     @Override
     public void reset() {
         this.cooldown = new IntegerFeature(this, "cooldown", Optional.of(0), "Cooldown", new String[]{"&7&oThe cooldown"}, GUI.CLOCK, false);
-        this.isCooldownInTicks = new BooleanFeature(this, "isCooldownInTicks", false, "Cooldown in ticks", new String[]{"&7&oIs the cooldown in ticks?"}, Material.LEVER, false);
-        this.cooldownMessage = new ColoredStringFeature(this, "cooldownMsg", Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), "Cooldown Message", new String[]{"&7&oThe cooldown message"}, GUI.WRITABLE_BOOK, false);
-        this.displayCooldownMessage = new BooleanFeature(this, "displayCooldownMessage", true, "Display Cooldown Message", new String[]{"&7&oDisplay the cooldown message"}, Material.LEVER, false);
-        this.cancelEventIfInCooldown = new BooleanFeature(this, "cancelEventIfInCooldown", false, "Cancel Event If In Cooldown", new String[]{"&7&oCancel the event if the player is in cooldown?"}, Material.LEVER, false);
+        this.isCooldownInTicks = new BooleanFeature(this, "isCooldownInTicks", false, "Cooldown in ticks", new String[]{"&7&oIs the cooldown in ticks?"}, Material.LEVER, false, false);
+        this.cooldownMessage = new ColoredStringFeature(this, "cooldownMsg", Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), "Cooldown Message", new String[]{"&7&oThe cooldown message"}, GUI.WRITABLE_BOOK, false, false);
+        this.displayCooldownMessage = new BooleanFeature(this, "displayCooldownMessage", true, "Display Cooldown Message", new String[]{"&7&oDisplay the cooldown message"}, Material.LEVER, false, false);
+        this.cancelEventIfInCooldown = new BooleanFeature(this, "cancelEventIfInCooldown", false, "Cancel Event If In Cooldown", new String[]{"&7&oCancel the event if the player is in cooldown?"}, Material.LEVER, false, false);
     }
 
     @Override

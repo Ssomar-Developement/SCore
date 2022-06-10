@@ -44,7 +44,7 @@ public class IfGlowing extends EntityConditionFeature<BooleanFeature, IfGlowing>
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifGlowing", false, "If glowing", new String[]{}, Material.ANVIL, false));
+        setCondition(new BooleanFeature(getParent(), "ifGlowing", false, "If glowing", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override

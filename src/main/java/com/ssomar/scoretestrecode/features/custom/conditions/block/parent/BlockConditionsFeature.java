@@ -8,6 +8,7 @@ import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.scoretestrecode.features.custom.conditions.block.condition.*;
+import com.ssomar.scoretestrecode.features.custom.conditions.entity.EntityConditionFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -76,13 +77,24 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
 
     @Override
     public BlockConditionsFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 1];
+        String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+        finalDescription[finalDescription.length - 2] = "&7Block condition(s) enabled: &e" + getBlockConditionEnabledCount();
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
+    }
+
+    public int getBlockConditionEnabledCount() {
+        int i = 0;
+        for(BlockConditionFeature condition : conditions) {
+            if(condition.hasCondition()) {
+                i++;
+            }
+        }
+        return i;
     }
 
     @Override

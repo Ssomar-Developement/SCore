@@ -32,8 +32,8 @@ public class CancelEventFeatures extends FeatureWithHisOwnEditor<CancelEventFeat
 
     @Override
     public void reset() {
-        this.cancelEventIfNoperm = new BooleanFeature(this, "cancelEventIfNoPerm", false, "Cancel event if no perm", new String[]{"&7&oCancel event if no perm"}, Material.LEVER, false);
-        this.cancelEventIfNotOwner = new BooleanFeature(this, "cancelEventIfNotOwner", false, "Cancel event if not owner", new String[]{"&7&oCancel event if not owner"}, Material.LEVER, false);
+        this.cancelEventIfNoperm = new BooleanFeature(this, "cancelEventIfNoPerm", false, "Cancel event if no perm", new String[]{"&7&oCancel event if no perm"}, Material.LEVER, false, false);
+        this.cancelEventIfNotOwner = new BooleanFeature(this, "cancelEventIfNotOwner", false, "Cancel event if not owner", new String[]{"&7&oCancel event if not owner"}, Material.LEVER, false, false);
     }
 
     @Override

@@ -23,6 +23,10 @@ import com.ssomar.scoretestrecode.features.custom.enchantments.enchantment.Encha
 import com.ssomar.scoretestrecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.enchantments.group.EnchantmentsGroupFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.enchantments.group.EnchantmentsGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.entities.entity.EntityTypeForGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.entities.entity.EntityTypeForGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.entities.group.EntityTypeGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.entities.group.EntityTypeGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditor;
 import com.ssomar.scoretestrecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditorManager;
 import com.ssomar.scoretestrecode.features.custom.hiders.HidersEditor;
@@ -204,6 +208,14 @@ public class NewEditorInteractionsListener implements Listener {
             MaterialAndTagsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof EntityTypeGroupFeatureEditor) {
+            EntityTypeGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof EntityTypeForGroupFeatureEditor) {
+            EntityTypeForGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -310,6 +322,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (MaterialAndTagsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             MaterialAndTagsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (EntityTypeGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            EntityTypeGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (EntityTypeForGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            EntityTypeForGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

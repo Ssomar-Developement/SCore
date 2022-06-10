@@ -1,19 +1,18 @@
-package com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags;
+package com.ssomar.scoretestrecode.features.custom.entities.entity;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.MaterialWithGroups;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.scoretestrecode.features.custom.entities.group.EntityTypeGroupFeature;
 import com.ssomar.scoretestrecode.features.types.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,20 +23,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
-public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndTagsFeature, MaterialAndTagsFeature, MaterialAndTagsFeatureEditor, MaterialAndTagsFeatureEditorManager> {
+public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTypeForGroupFeature, EntityTypeForGroupFeature, EntityTypeForGroupFeatureEditor, EntityTypeForGroupFeatureEditorManager> {
 
-    private MaterialWithGroupsFeature material;
+    private EntityTypeFeature entityType;
     private String id;
 
-    public MaterialAndTagsFeature(FeatureParentInterface parent, String id) {
-        super(parent, "materialAndTags", "Material and Tags", new String[]{"&7&oA material with its options"}, Material.STONE, false);
+    public EntityTypeForGroupFeature(FeatureParentInterface parent, String id) {
+        super(parent, "EntityType", "EntityType", new String[]{"&7&oThe entityType"}, Material.ZOMBIE_HEAD, false);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.material = new MaterialWithGroupsFeature(this, "material", Optional.of(MaterialWithGroups.getMaterialWithGroupsList().get(0)), "Material And Groups", new String[]{"&7&oThe material"}, Material.STONE, false);
+        this.entityType = new EntityTypeFeature(this, "entityType", Optional.of(EntityType.ZOMBIE), "EntityType", new String[]{"&7&oThe entityType"}, Material.ZOMBIE_HEAD, false);
     }
 
     @Override
@@ -45,11 +44,18 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
         List<String> errors = new ArrayList<>();
         if(config.isConfigurationSection(id)){
             ConfigurationSection enchantmentConfig = config.getConfigurationSection(id);
-            errors.addAll(this.material.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.entityType.load(plugin, enchantmentConfig, isPremiumLoading));
         }
         else{
-            errors.add("&cERROR, Couldn't load the Attribute with its options because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
+            errors.add("&cERROR, Couldn't load the EntityType with its options because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
         }
+        return errors;
+    }
+
+    public List<String> load(SPlugin plugin, String config, boolean isPremiumLoading) {
+        List<String> errors = new ArrayList<>();
+        errors.addAll(this.entityType.load(plugin, config, isPremiumLoading));
+
         return errors;
     }
 
@@ -60,24 +66,23 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(id, null);
-        ConfigurationSection attributeConfig = config.createSection(id);
-        this.material.save(attributeConfig);
+        reload();
+        ((EntityTypeGroupFeature)getParent()).save(config);
     }
 
     @Override
-    public MaterialAndTagsFeature getValue() {
+    public EntityTypeForGroupFeature getValue() {
         return this;
     }
 
     @Override
-    public MaterialAndTagsFeature initItemParentEditor(GUI gui, int slot) {
+    public EntityTypeForGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = "&7Material: &e" + material.getValue().get();
+        finalDescription[finalDescription.length - 2] = "&7EntityType: &e" + entityType.getValue().get();
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(MaterialWithGroups.getMaterial(material.getValue().get()), 1, slot, gui.TITLE_COLOR + getEditorName()+ " - "+"("+id+")", false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName()+ " - "+"("+id+")", false, false, finalDescription);
         return this;
     }
 
@@ -92,15 +97,15 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
     }
 
     @Override
-    public MaterialAndTagsFeature clone() {
-        MaterialAndTagsFeature eF = new MaterialAndTagsFeature(getParent(), id);
-        eF.setMaterial(material.clone());
+    public EntityTypeForGroupFeature clone() {
+        EntityTypeForGroupFeature eF = new EntityTypeForGroupFeature(getParent(), id);
+        eF.setEntityType(entityType.clone());
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(material));
+        return new ArrayList<>(Arrays.asList(entityType));
     }
 
     @Override
@@ -121,10 +126,10 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
     @Override
     public void reload() {
         for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof MaterialAndTagsFeature) {
-                MaterialAndTagsFeature aFOF = (MaterialAndTagsFeature) feature;
+            if(feature instanceof EntityTypeForGroupFeature) {
+                EntityTypeForGroupFeature aFOF = (EntityTypeForGroupFeature) feature;
                 if(aFOF.getId().equals(id)) {
-                    aFOF.setMaterial(material);
+                    aFOF.setEntityType(entityType);
                     break;
                 }
             }
@@ -138,18 +143,7 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
 
     @Override
     public void openEditor(@NotNull Player player) {
-        MaterialAndTagsFeatureEditorManager.getInstance().startEditing(player, this);
+        EntityTypeForGroupFeatureEditorManager.getInstance().startEditing(player, this);
     }
-
-    public boolean isValid(Block block) {
-        // #TODO check if block is valid
-        return false;
-    }
-
-    public boolean isValid(Material type, BlockData blockData) {
-        // #TODO check if block is valid
-        return false;
-    }
-
 
 }

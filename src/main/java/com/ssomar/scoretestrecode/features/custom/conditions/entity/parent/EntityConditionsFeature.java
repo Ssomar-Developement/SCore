@@ -41,15 +41,27 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfFrozen(this));
         conditions.add(new IfGlowing(this));
         conditions.add(new IfInvulnerable(this));
+        conditions.add(new IfNamed(this));
+        conditions.add(new IfOnFire(this));
+        conditions.add(new IfPowered(this));
+        conditions.add(new IfTamed(this));
 
         /** Number condition features **/
         conditions.add(new IfEntityHealth(this));
 
         /** List uncolored string **/
         conditions.add(new IfHasTag(this));
+        conditions.add(new IfNotHasTag(this));
 
         /** List Material with tags **/
         conditions.add(new IfIsOnTheBlock(this));
+        conditions.add(new IfIsNotOnTheBlock(this));
+
+        /** List colored string **/
+        conditions.add(new IfName(this));
+
+        /** List EntityType **/
+        conditions.add(new IfNotEntityType(this));
 
     }
 
@@ -79,13 +91,24 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
 
     @Override
     public EntityConditionsFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 1];
+        String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+        finalDescription[finalDescription.length - 2] = "&7Entity condition(s) enabled: &e" + getEntityConditionEnabledCount();
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
+    }
+
+    public int getEntityConditionEnabledCount() {
+        int i = 0;
+        for(EntityConditionFeature condition : conditions) {
+            if(condition.hasCondition()) {
+                i++;
+            }
+        }
+        return i;
     }
 
     @Override

@@ -53,7 +53,7 @@ public enum MaterialWithGroups {
             map.put(materialGroup.name(), materialGroup.name());
         }
         for(Material material : Material.values()) {
-            map.put(material.name(), material.name());
+            if(material.isItem() && !material.isAir()) map.put(material.name(), material.name());
         }
         return new ArrayList<>(map.values());
     }

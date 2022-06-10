@@ -35,7 +35,7 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     @Override
     public void reset() {
-        this.giveFirstJoin = new BooleanFeature(getParent(), "giveFirstJoin", false, "Give first join", new String[]{"&7&oEnable the feature"}, Material.LEVER, false);
+        this.giveFirstJoin = new BooleanFeature(getParent(), "giveFirstJoin", false, "Give first join", new String[]{"&7&oEnable the feature"}, Material.LEVER, false, false);
         this.giveFirstJoinAmount = new IntegerFeature(getParent(), "giveFirstJoinAmount", Optional.of(1), "Amount", new String[]{"&7&oThe amount to give"}, GUI.CLOCK, false);
         this.giveFirstJoinSlot = new IntegerFeature(getParent(), "giveFirstJoinSlot", Optional.of(0), "Slot", new String[]{"&7&oSlot between 0 and 8 includes"}, GUI.CLOCK, false);
     }

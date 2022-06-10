@@ -22,11 +22,13 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     private boolean value;
     private boolean defaultValue;
+    private boolean notSaveIfEqualsToDefaultValue;
 
-    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
+        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
     }
 
     @Override
@@ -40,13 +42,19 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public BooleanFeature clone() {
-        BooleanFeature clone = new BooleanFeature(getParent(), this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        BooleanFeature clone = new BooleanFeature(getParent(), this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), notSaveIfEqualsToDefaultValue);
         clone.setValue(value);
         return clone;
     }
 
     @Override
     public void save(ConfigurationSection config) {
+        if(notSaveIfEqualsToDefaultValue) {
+            if(value == defaultValue){
+                config.set(this.getName(), null);
+                return;
+            }
+        }
         config.set(this.getName(), value);
     }
 

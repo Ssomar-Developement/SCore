@@ -45,7 +45,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     public void reset() {
         this.material = new MaterialFeature(this, "material", Optional.of(Material.STONE), "Material", new String[]{"&7&oThe material"}, Material.STONE, false);
         this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
-        this.notExecutableItem = new BooleanFeature(this, "notExecutableItem", false, "Not Executable Item", new String[]{"&7&oIs this item not an executable item?"}, Material.LEVER, false);
+        this.notExecutableItem = new BooleanFeature(this, "notExecutableItem", false, "Not Executable Item", new String[]{"&7&oIs this item not an executable item?"}, Material.LEVER, false, false);
     }
 
     @Override
