@@ -15,6 +15,8 @@ import com.ssomar.scoretestrecode.features.custom.conditions.block.parent.BlockC
 import com.ssomar.scoretestrecode.features.custom.conditions.block.parent.BlockConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent.WorldConditionsFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent.WorldConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.drop.DropFeaturesEditor;
@@ -200,6 +202,10 @@ public class NewEditorInteractionsListener implements Listener {
             EntityConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof WorldConditionsFeatureEditor) {
+            WorldConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
         else if (holder instanceof MaterialAndTagsFeatureEditor) {
             MaterialAndTagsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -314,6 +320,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (EntityConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             EntityConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (WorldConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            WorldConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
         else if (MaterialAndTagsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
