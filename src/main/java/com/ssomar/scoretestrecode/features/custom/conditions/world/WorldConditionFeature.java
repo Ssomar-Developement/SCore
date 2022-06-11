@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.world.block;
+package com.ssomar.scoretestrecode.features.custom.conditions.world;
 
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
@@ -6,7 +6,6 @@ import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.custom.conditions.ConditionFeature;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;

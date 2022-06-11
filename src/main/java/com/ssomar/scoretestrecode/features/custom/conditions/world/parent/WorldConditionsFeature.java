@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent;
+package com.ssomar.scoretestrecode.features.custom.conditions.world.parent;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -6,9 +6,9 @@ import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.WorldConditionFeature;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.condition.IfWeather;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.condition.IfWorldTime;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.WorldConditionFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.condition.IfWeather;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.condition.IfWorldTime;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

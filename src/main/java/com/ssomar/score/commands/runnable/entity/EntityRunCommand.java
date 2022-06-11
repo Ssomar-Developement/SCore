@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -77,6 +78,7 @@ public class EntityRunCommand extends RunCommand{
 		if(receiver != null){
 			pCommand.run(launcher, receiver, args, this.getaInfo());
 		}
+		else SsomarDev.testMsg("EntityRunCommand: receiver is null for the command: " + this.getBrutCommand());
 	}
 
 

@@ -1,11 +1,9 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.world.block.condition;
+package com.ssomar.scoretestrecode.features.custom.conditions.world.condition;
 
-import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
-import com.ssomar.score.conditions.condition.world.WorldCondition;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.WorldConditionFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.WorldConditionFeature;
 import com.ssomar.scoretestrecode.features.types.NumberConditionFeature;
 import org.bukkit.Material;
 import org.bukkit.World;

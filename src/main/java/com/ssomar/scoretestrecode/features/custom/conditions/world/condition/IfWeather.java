@@ -1,21 +1,15 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.world.block.condition;
+package com.ssomar.scoretestrecode.features.custom.conditions.world.condition;
 
-import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
-import com.ssomar.score.conditions.condition.world.WorldCondition;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.WorldConditionFeature;
-import com.ssomar.scoretestrecode.features.types.ListUncoloredStringFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.WorldConditionFeature;
 import com.ssomar.scoretestrecode.features.types.ListWeatherFeature;
-import com.ssomar.scoretestrecode.features.types.NumberConditionFeature;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeather> {
@@ -49,7 +43,7 @@ public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeath
 
     @Override
     public void subReset() {
-        setCondition(new ListWeatherFeature(this, "ifWeather", new ArrayList<>(), "If weather", new String[]{}, Material.ANVIL, false));
+        setCondition(new ListWeatherFeature(this, "ifWeather", new ArrayList<>(), "If weather", new String[]{"&7The whitelisted weathers"}, Material.ANVIL, false));
     }
 
     @Override

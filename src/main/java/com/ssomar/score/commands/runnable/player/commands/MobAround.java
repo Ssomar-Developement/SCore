@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.sobject.sactivator.features.detailedentities.DetailedEntity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -32,8 +33,8 @@ public class MobAround extends PlayerCommand{
 	}
 
 	public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo){
-		List<EntityType> whiteList = new ArrayList<>();
-		List<EntityType> blackList = new ArrayList<>();
+		List<DetailedEntity> whiteList = new ArrayList<>();
+		List<DetailedEntity> blackList = new ArrayList<>();
 
 		int argToRemove = -1;
 		int cpt = 0;
@@ -47,8 +48,8 @@ public class MobAround extends PlayerCommand{
 					split = blackListString.split(",");
 					for(String s1 : split){
 						try {
-							blackList.add(EntityType.valueOf(s1.toUpperCase()));
-						}catch(IllegalArgumentException e){}
+							blackList.add(new DetailedEntity(s1));
+						}catch(Exception e){}
 					}
 				} else if (s.contains("WHITELIST(")) {
 					argToRemove = cpt;
@@ -57,7 +58,7 @@ public class MobAround extends PlayerCommand{
 					split = whiteListString.split(",");
 					for(String s1 : split){
 						try {
-							whiteList.add(EntityType.valueOf(s1.toUpperCase()));
+							whiteList.add(new DetailedEntity(s1));
 						}catch(IllegalArgumentException e){}
 					}
 				}
@@ -89,9 +90,27 @@ public class MobAround extends PlayerCommand{
 
 							if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
 
-							if(whiteList.size() > 0 && !whiteList.contains(e.getType())) continue;
+							if(whiteList.size() > 0){
+								boolean notValid = true;
+								for(DetailedEntity de : whiteList){
+									if(de.isValidEntity(e)){
+										notValid = false;
+										break;
+									}
+								}
+								if(notValid) continue;
+							}
 
-							if(blackList.size() > 0 && blackList.contains(e.getType())) continue;
+							if(blackList.size() > 0) {
+								boolean notValid = false;
+								for(DetailedEntity de : blackList){
+									if(de.isValidEntity(e)){
+										notValid = true;
+										break;
+									}
+								}
+								if(notValid) continue;
+							}
 
 							StringPlaceholder sp = new StringPlaceholder();
 							sp.setAroundTargetEntityPlcHldr(e.getUniqueId());

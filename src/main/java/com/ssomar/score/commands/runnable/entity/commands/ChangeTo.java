@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import org.bukkit.util.Vector;
 
 /* CHANGETO {entityType} */
 @SuppressWarnings("deprecation")
@@ -20,8 +22,10 @@ public class ChangeTo extends EntityCommand{
 	public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 		/* EXCEPTION */
 		Location loc = entity.getLocation();
+		Vector velocity = entity.getVelocity();
 		entity.remove();
 		Entity newEntity = loc.getWorld().spawnEntity(loc, EntityType.fromName(args.get(0)));
+		newEntity.setVelocity(velocity);
 		aInfo.setEntityUUID(newEntity.getUniqueId());
 	}
 

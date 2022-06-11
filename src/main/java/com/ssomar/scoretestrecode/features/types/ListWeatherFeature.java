@@ -124,7 +124,9 @@ public class ListWeatherFeature extends FeatureAbstract<List<String>, ListWeathe
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
-        if(isValidWeather(message.toUpperCase())) {
+        message = message.toUpperCase();
+        message = StringConverter.decoloredString(message);
+        if(isValidWeather(message)) {
             return Optional.empty();
         } else {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a weather. &7RAIN, CLEAR or STORM");
@@ -133,8 +135,11 @@ public class ListWeatherFeature extends FeatureAbstract<List<String>, ListWeathe
 
     @Override
     public void addMessageValue(Player editor, NewGUIManager manager, String message) {
+        message = message.toUpperCase();
+        message = StringConverter.decoloredString(message);
+
         List<String> value = (List<String>) manager.currentWriting.get(editor);
-        value.add(StringConverter.decoloredString(message));
+        value.add(message);
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -156,12 +161,12 @@ public class ListWeatherFeature extends FeatureAbstract<List<String>, ListWeathe
         beforeMenu.add("&7➤ Your custom " + getEditorName() + ":");
 
         HashMap<String, String> suggestions = new HashMap<>();
-        suggestions.put("STORM", "&7STORM");
-        suggestions.put("RAIN", "&bRAIN");
-        suggestions.put("CLEAR", "&aCLEAR");
+        suggestions.put("&7STORM", "STORM");
+        suggestions.put("&bRAIN", "RAIN");
+        suggestions.put("&aCLEAR", "CLEAR");
 
         EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(playerEditor), getEditorName() + ":", true, true, true, true,
-                true, true, true, "Possible weather: ", suggestions);
+                true, true, true, "&8&oPossible weather: ", suggestions);
         editor.generateTheMenuAndSendIt(playerEditor);
     }
 }

@@ -1,15 +1,15 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent;
+package com.ssomar.scoretestrecode.features.custom.conditions.item.parent;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.WorldConditionFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.item.ItemConditionFeature;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorInterface;
 
-public class WorldConditionsFeatureEditor extends FeatureEditorInterface<WorldConditionsFeature> {
+public class ItemConditionsFeatureEditor extends FeatureEditorInterface<ItemConditionsFeature> {
 
-    public WorldConditionsFeature bCF;
+    public ItemConditionsFeature bCF;
 
-    public WorldConditionsFeatureEditor(WorldConditionsFeature dropFeatures) {
-        super("&lWorld Conditions Editor", 3*9);
+    public ItemConditionsFeatureEditor(ItemConditionsFeature dropFeatures) {
+        super("&lBlock Conditions Editor", 3*9);
         this.bCF = dropFeatures.clone();
         load();
     }
@@ -17,7 +17,7 @@ public class WorldConditionsFeatureEditor extends FeatureEditorInterface<WorldCo
     @Override
     public void load() {
         int i = 0;
-        for(WorldConditionFeature condition : bCF.getConditions()) {
+        for(ItemConditionFeature condition : bCF.getConditions()) {
             condition.initAndUpdateItemParentEditor(this, i);
             i++;
         }
@@ -33,7 +33,7 @@ public class WorldConditionsFeatureEditor extends FeatureEditorInterface<WorldCo
     }
 
     @Override
-    public WorldConditionsFeature getParent() {
+    public ItemConditionsFeature getParent() {
         return bCF;
     }
 }

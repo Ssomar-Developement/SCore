@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent;
+package com.ssomar.scoretestrecode.features.custom.conditions.world.parent;
 
 
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorManagerAbstract;

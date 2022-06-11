@@ -15,8 +15,8 @@ import com.ssomar.scoretestrecode.features.custom.conditions.block.parent.BlockC
 import com.ssomar.scoretestrecode.features.custom.conditions.block.parent.BlockConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditorManager;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent.WorldConditionsFeatureEditor;
-import com.ssomar.scoretestrecode.features.custom.conditions.world.block.parent.WorldConditionsFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldConditionsFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.drop.DropFeaturesEditor;
