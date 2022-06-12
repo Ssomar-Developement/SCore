@@ -3,6 +3,7 @@ package com.ssomar.score.sobject.sactivator.features.detailedentities;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.StringConverter;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTType;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class DetailedEntity {
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = ",";
 
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = true;
 
     public DetailedEntity(String config) throws ConfigException {
         entityData = new HashMap<>();
@@ -63,8 +64,9 @@ public class DetailedEntity {
                 SsomarDev.testMsg("VERIF key: " + key + " value: " + value+ " type: " + type, DEBUG);
 
                 switch (type) {
+                    /* The tag was not found */
                     case NBTTagEnd:
-                        break;
+                        return false;
                     case NBTTagByte:
                         if(value.equals("0") || value.equals("1")){
                             SsomarDev.testMsg("Byte: " + nbtent.getByte(key), DEBUG);
@@ -109,6 +111,17 @@ public class DetailedEntity {
                         if(value.toLowerCase().equals("true") || value.toLowerCase().equals("false")){
                             SsomarDev.testMsg("Boolean: " + nbtent.getBoolean(key), DEBUG);
                             if(nbtent.getBoolean(key) != Boolean.parseBoolean(value)) return false;
+                        }
+                        else{
+                            if(key.equalsIgnoreCase(("CustomName"))){
+                                String customName = entity.getCustomName();
+                                SsomarDev.testMsg("String: " + customName, DEBUG);
+                                if (!StringConverter.decoloredString(customName).equals(value)) return false;
+                            }
+                            else {
+                                SsomarDev.testMsg("String: " + nbtent.getString(key), DEBUG);
+                                if (!nbtent.getString(key).contains("\"" + value + "\"")) return false;
+                            }
                         }
                         break;
                     case NBTTagList:

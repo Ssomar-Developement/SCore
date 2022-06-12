@@ -96,10 +96,10 @@
 								</relocation>
 							</relocations>
 						</configuration> -->
-						<!--<configuration>
+						<configuration>
 						<createDependencyReducedPom>false</createDependencyReducedPom>
-							<outputFile>C:\serveur local 1.18\plugins\SCore.jar</outputFile>
-						</configuration>-->
+							<outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

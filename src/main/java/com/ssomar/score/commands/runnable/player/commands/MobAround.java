@@ -25,182 +25,216 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.jetbrains.annotations.Nullable;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class MobAround extends PlayerCommand{
+public class MobAround extends PlayerCommand {
 
-	@Override
-	public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-		mobAroundExecution(receiver.getLocation(), receiver, false, args, aInfo);
-	}
+    @Override
+    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+        mobAroundExecution(receiver.getLocation(), receiver, false, args, aInfo);
+    }
 
-	public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo){
-		List<DetailedEntity> whiteList = new ArrayList<>();
-		List<DetailedEntity> blackList = new ArrayList<>();
+    public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
+        List<DetailedEntity> whiteList = new ArrayList<>();
+        List<DetailedEntity> blackList = new ArrayList<>();
 
-		int argToRemove = -1;
-		int cpt = 0;
-		for(String s : args){
-			String [] split;
-			try {
-				if (s.contains("BLACKLIST(")) {
-					argToRemove = cpt;
-					split = s.split("BLACKLIST\\(");
-					String blackListString = split[1].split("\\)")[0];
-					split = blackListString.split(",");
-					for(String s1 : split){
-						try {
-							blackList.add(new DetailedEntity(s1));
-						}catch(Exception e){}
-					}
-				} else if (s.contains("WHITELIST(")) {
-					argToRemove = cpt;
-					split = s.split("WHITELIST\\(");
-					String whiteListString = split[1].split("\\)")[0];
-					split = whiteListString.split(",");
-					for(String s1 : split){
-						try {
-							whiteList.add(new DetailedEntity(s1));
-						}catch(IllegalArgumentException e){}
-					}
-				}
-			}catch (Exception e) {}
-			cpt++;
-		}
-		if(argToRemove != -1) args.remove(argToRemove);
+        List<String> verifyArgs = new ArrayList<>();
+        boolean concatNext = false;
+        String toConcat = "";
+        for (String s : args) {
+            if(concatNext){
+                toConcat = toConcat +" "+ s.replaceAll("\"", "");;
+                if(s.contains("\"")){
+                    verifyArgs.add(toConcat);
+                    toConcat = "";
+                    concatNext = false;
+                }
+            }
+            else {
+                int count = 0;
+                for (char c : s.toCharArray()) {
+                    if (c == '"') {
+                        count++;
+                    }
+                }
+                if (count % 2 == 0) {
+                    verifyArgs.add(s);
+                } else {
+                    concatNext = true;
+                    toConcat = toConcat + s.replaceAll("\"", "");
+                }
+            }
+        }
+        args.clear();
+        args.addAll(verifyArgs);
 
-		BukkitRunnable runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				try {
-					double distance =  Double.parseDouble(args.get(0));
-					int cpt = 0;
+        int argToRemove = -1;
+        int cpt = 0;
+        for (String s : args) {
+            String[] split;
+            try {
+                if (s.contains("BLACKLIST(")) {
+                    argToRemove = cpt;
+                    split = s.split("BLACKLIST\\(");
+                    String blackListString = split[1].split("\\)")[0];
+                    split = blackListString.split(",");
+                    for (String s1 : split) {
+                        try {
+                            blackList.add(new DetailedEntity(s1));
+                        } catch (Exception e) {
+                        }
+                    }
+                } else if (s.contains("WHITELIST(")) {
+                    argToRemove = cpt;
+                    split = s.split("WHITELIST\\(");
+                    String whiteListString = split[1].split("\\)")[0];
+                    split = whiteListString.split(",");
+                    for (String s1 : split) {
+                        try {
+                            whiteList.add(new DetailedEntity(s1));
+                        } catch (IllegalArgumentException e) {
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+            cpt++;
+        }
+        if (argToRemove != -1) args.remove(argToRemove);
 
-					int startForCommand = 1;
-					boolean mute = false;
-					if(!forceMute) {
-						if (args.get(1).equalsIgnoreCase("true")) {
-							startForCommand = 2;
-							mute = true;
-						} else if (args.get(1).equalsIgnoreCase("false")) {
-							startForCommand = 2;
-						}
-					}
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    double distance = Double.parseDouble(args.get(0));
+                    int cpt = 0;
 
-					for (Entity e: location.getWorld().getNearbyEntities(location, distance, distance, distance)) {
-						if(e instanceof LivingEntity && !(e instanceof Player)) {
+                    int startForCommand = 1;
+                    boolean mute = false;
+                    if (!forceMute) {
+                        if (args.get(1).equalsIgnoreCase("true")) {
+                            startForCommand = 2;
+                            mute = true;
+                        } else if (args.get(1).equalsIgnoreCase("false")) {
+                            startForCommand = 2;
+                        }
+                    }
 
-							if(e.hasMetadata("NPC") || e.equals(receiver)) continue;
+                    for (Entity e : location.getWorld().getNearbyEntities(location, distance, distance, distance)) {
+                        if (e instanceof LivingEntity && !(e instanceof Player)) {
 
-							if(whiteList.size() > 0){
-								boolean notValid = true;
-								for(DetailedEntity de : whiteList){
-									if(de.isValidEntity(e)){
-										notValid = false;
-										break;
-									}
-								}
-								if(notValid) continue;
-							}
+                            if (e.hasMetadata("NPC") || e.equals(receiver)) continue;
 
-							if(blackList.size() > 0) {
-								boolean notValid = false;
-								for(DetailedEntity de : blackList){
-									if(de.isValidEntity(e)){
-										notValid = true;
-										break;
-									}
-								}
-								if(notValid) continue;
-							}
+                            if (whiteList.size() > 0) {
+                                boolean notValid = true;
+                                for (DetailedEntity de : whiteList) {
+                                    if (de.isValidEntity(e)) {
+                                        notValid = false;
+                                        break;
+                                    }
+                                }
+                                if (notValid) continue;
+                            }
 
-							StringPlaceholder sp = new StringPlaceholder();
-							sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
+                            if (blackList.size() > 0) {
+                                boolean notValid = false;
+                                for (DetailedEntity de : blackList) {
+                                    if (de.isValidEntity(e)) {
+                                        notValid = true;
+                                        break;
+                                    }
+                                }
+                                if (notValid) continue;
+                            }
 
-							ActionInfo aInfo2 = aInfo.clone();
-							aInfo2.setEntityUUID(e.getUniqueId());
+                            StringPlaceholder sp = new StringPlaceholder();
+                            sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
 
-							/* regroup the last args that correspond to the commands */
-							StringBuilder prepareCommands = new StringBuilder();
-							for(String s: args.subList(startForCommand, args.size())) {
-								prepareCommands.append(s);
-								prepareCommands.append(" ");
-							}
-							prepareCommands.deleteCharAt(prepareCommands.length()-1);
+                            ActionInfo aInfo2 = aInfo.clone();
+                            aInfo2.setEntityUUID(e.getUniqueId());
 
-							String buildCommands = prepareCommands.toString();
-							String [] tab;
-							if(buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
-							else {
-								tab = new String[1];
-								tab[0] = buildCommands;
-							}
-							List<String> commands = new ArrayList<>();
-							for(int m = 0 ; m < tab.length; m++) {
-								String s = tab[m];
-								while(s.startsWith(" ")) {
-									s = s.substring(1);
-								}
-								while(s.endsWith(" ")) {
-									s = s.substring(0, s.length()-1);
-								}
-								if(s.startsWith("/")) s = s.substring(1);
+                            /* regroup the last args that correspond to the commands */
+                            StringBuilder prepareCommands = new StringBuilder();
+                            for (String s : args.subList(startForCommand, args.size())) {
+                                prepareCommands.append(s);
+                                prepareCommands.append(" ");
+                            }
+                            prepareCommands.deleteCharAt(prepareCommands.length() - 1);
 
-								s = sp.replacePlaceholder(s);
-								commands.add(s);
-							}
-							EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
-							CommandsExecutor.runCommands(builder);
+                            String buildCommands = prepareCommands.toString();
+                            String[] tab;
+                            if (buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
+                            else {
+                                tab = new String[1];
+                                tab[0] = buildCommands;
+                            }
+                            List<String> commands = new ArrayList<>();
+                            for (int m = 0; m < tab.length; m++) {
+                                String s = tab[m];
+                                while (s.startsWith(" ")) {
+                                    s = s.substring(1);
+                                }
+                                while (s.endsWith(" ")) {
+                                    s = s.substring(0, s.length() - 1);
+                                }
+                                if (s.startsWith("/")) s = s.substring(1);
 
-							cpt++;
-						}
-					}
-					if(cpt == 0 && !mute && receiver != null && receiver instanceof Player) sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
+                                s = sp.replacePlaceholder(s);
+                                commands.add(s);
+                            }
+                            EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
+                            CommandsExecutor.runCommands(builder);
 
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		runnable.runTask(SCore.plugin);
-	}
+                            cpt++;
+                        }
+                    }
+                    if (cpt == 0 && !mute && receiver != null && receiver instanceof Player)
+                        sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
 
-	@Override
-	public String verify(List<String> args) {
-		String error = "";
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        runnable.runTask(SCore.plugin);
+    }
 
-		String around= "MOB_AROUND {distance} {muteMsgIfNoEntity true or false} {Your commands here}";
-		if(args.size()<2) error = notEnoughArgs+around;
-		else if(args.size()>2) { 
-			try {
-				Double.valueOf(args.get(0));
+    @Override
+    public String verify(List<String> args) {
+        String error = "";
 
-			}catch(NumberFormatException e){
-				error = invalidDistance+args.get(0)+" for command: "+around;
-			}
-		}
+        String around = "MOB_AROUND {distance} {muteMsgIfNoEntity true or false} {Your commands here}";
+        if (args.size() < 2) error = notEnoughArgs + around;
+        else if (args.size() > 2) {
+            try {
+                Double.valueOf(args.get(0));
 
-		return error;
-	}
+            } catch (NumberFormatException e) {
+                error = invalidDistance + args.get(0) + " for command: " + around;
+            }
+        }
 
-	@Override
-	public List<String> getNames() {
-		List<String> names = new ArrayList<>();
-		names.add("MOB_AROUND");
-		return names;
-	}
+        return error;
+    }
 
-	@Override
-	public String getTemplate() {
-		return "MOB_AROUND {distance} [muteMsgIfNoEntity true or false] {Your commands here}";
-	}
+    @Override
+    public List<String> getNames() {
+        List<String> names = new ArrayList<>();
+        names.add("MOB_AROUND");
+        return names;
+    }
 
-	@Override
-	public ChatColor getColor() {
-		return null;
-	}
+    @Override
+    public String getTemplate() {
+        return "MOB_AROUND {distance} [muteMsgIfNoEntity true or false] {Your commands here}";
+    }
 
-	@Override
-	public ChatColor getExtraColor() {
-		return null;
-	}
+    @Override
+    public ChatColor getColor() {
+        return null;
+    }
+
+    @Override
+    public ChatColor getExtraColor() {
+        return null;
+    }
 
 }
