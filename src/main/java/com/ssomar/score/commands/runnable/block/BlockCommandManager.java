@@ -1,154 +1,171 @@
 package com.ssomar.score.commands.runnable.block;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.block.commands.*;
-import org.bukkit.ChatColor;
-
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.commands.runnable.block.commands.*;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
+import org.bukkit.ChatColor;
 
-public class BlockCommandManager implements CommandManager{
-	
-	private static BlockCommandManager instance;
-	
-	private List<BlockCommand> commands;
+import java.util.*;
 
-	public BlockCommandManager() {
-		List<BlockCommand> references = new ArrayList<>();
-		references.add(new ApplyBoneMeal());
-		references.add(new SetBlockPos());
-		references.add(new SetBlock());
-		references.add(new SetExecutableBlock());
-		references.add(new SendMessage());
-		references.add(new Explode());
-		references.add(new Break());
-		references.add(new Launch());
-		references.add(new DropItem());
-		references.add(new DropExecutableItem());
-		references.add(new MineInCube());
-		references.add(new RemoveBlock());
-		references.add(new Around());
-		references.add(new MobAround());
-		references.add(new VeinBreaker());
-		references.add(new SilkSpawner());
-		references.add(new DrainInCube());
-		/* No BlockData in 1.12 and less */
-		if(!SCore.is1v12Less()) {
-			references.add(new FarmInCube());
-			references.add(new FertilizeInCube());
-		}
-		if(!SCore.is1v11Less()) {
-			references.add(new ParticleCommand());
-		}
-		this.commands = references;
-	}
+public class BlockCommandManager implements CommandManager {
 
-	/*
-	 *  return "" if no error else return the error
-	 */
-	public String verifArgs(BlockCommand bC, List<String> args) {
-		return bC.verify(args);
-	}
+    private static BlockCommandManager instance;
+
+    private List<BlockCommand> commands;
+
+    public BlockCommandManager() {
+        List<BlockCommand> references = new ArrayList<>();
+        references.add(new ApplyBoneMeal());
+        references.add(new SetBlockPos());
+        references.add(new SetBlock());
+        references.add(new SetExecutableBlock());
+        references.add(new SendMessage());
+        references.add(new Explode());
+        references.add(new Break());
+        references.add(new Launch());
+        references.add(new DropItem());
+        references.add(new DropExecutableItem());
+        references.add(new MineInCube());
+        references.add(new RemoveBlock());
+        references.add(new Around());
+        references.add(new MobAround());
+        references.add(new VeinBreaker());
+        references.add(new SilkSpawner());
+        references.add(new DrainInCube());
+        /* No BlockData in 1.12 and less */
+        if (!SCore.is1v12Less()) {
+            references.add(new FarmInCube());
+            references.add(new FertilizeInCube());
+        }
+        if (!SCore.is1v11Less()) {
+            references.add(new ParticleCommand());
+        }
+        this.commands = references;
+    }
+
+    /*
+     *  return "" if no error else return the error
+     */
+    public String verifArgs(BlockCommand bC, List<String> args) {
+        return bC.verify(args);
+    }
 
 
-	public boolean isValidBlockCommands(String entry) {
-		for(BlockCommand blockCommands : commands) {
-			for(String name: blockCommands.getNames()) {
-				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public List<String> getBlockCommands(SPlugin sPlugin, List<String> commands, List<String> errorList, String id) {
+    public boolean isValidBlockCommands(String entry) {
+        for (BlockCommand blockCommands : commands) {
+            for (String name : blockCommands.getNames()) {
+                if (entry.toUpperCase().startsWith(name.toUpperCase())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-		List<String> result = new ArrayList<>();
+    public List<String> getBlockCommands(SPlugin sPlugin, List<String> commands, List<String> errorList, String id) {
 
-		for (String s : commands) {
+        List<String> result = new ArrayList<>();
 
-			String command = StringConverter.coloredString(s);
+        for (String s : commands) {
 
-			/*
-			 * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if
-			 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
-			 */
+            String command = StringConverter.coloredString(s);
 
-			if (this.isValidBlockCommands(s) && !s.contains("//") && !s.contains("+++")) {
-				BlockCommand bc = (BlockCommand) this.getCommand(command);
-				List<String> args = this.getArgs(command);
+            /*
+             * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if
+             * (command.contains("\\}")) command= command.replaceAll("\\}", "");
+             */
 
-				String error = "";
-				if (!(error = this.verifArgs(bc, args)).isEmpty()) {
-					errorList.add(sPlugin.getNameDesign() + " " + error + " for item: " + id);
-					continue;
-				}
-			}
-			result.add(command);
-		}
-		return result;
-	}
+            if (this.isValidBlockCommands(s) && !s.contains("//") && !s.contains("+++")) {
+                BlockCommand bc = (BlockCommand) this.getCommand(command);
+                List<String> args = this.getArgs(command);
 
-	public static BlockCommandManager getInstance() {
-		if(instance == null) instance = new BlockCommandManager();
-		return instance;
-	}
+                String error = "";
+                if (!(error = this.verifArgs(bc, args)).isEmpty()) {
+                    errorList.add(sPlugin.getNameDesign() + " " + error + " for item: " + id);
+                    continue;
+                }
+            }
+            result.add(command);
+        }
+        return result;
+    }
 
-	public List<BlockCommand> getCommands() {
-		return commands;
-	}
+    public Optional<String> verifCommand(String command) {
 
-	public Map<String, String> getCommandsDisplay() {
-		Map<String, String> result = new HashMap<>();
-		for(SCommand c : this.commands) {
+        command = StringConverter.coloredString(command);
 
-			ChatColor extra = c.getExtraColor();
-			if(extra == null) extra = ChatColor.DARK_PURPLE;
+        /*
+         * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if
+         * (command.contains("\\}")) command= command.replaceAll("\\}", "");
+         */
 
-			ChatColor color = c.getColor();
-			if(color == null) color = ChatColor.LIGHT_PURPLE;
+        if (this.isValidBlockCommands(command) && !command.contains("//") && !command.contains("+++")) {
+            BlockCommand bc = (BlockCommand) this.getCommand(command);
+            List<String> args = this.getArgs(command);
 
-			result.put(extra+"["+color+"&l"+c.getNames().get(0)+extra+"]", c.getTemplate());
-		}
-		return result;
-	}
-	
-	
-	public void setCommands(List<BlockCommand> commands) {
-		this.commands = commands;
-	}
+            String error = "";
+            if (!(error = this.verifArgs(bc, args)).isEmpty()) {
+                return Optional.of("&4&lINVALID COMMAND &c" + " " + error);
+            }
+        }
+        return Optional.empty();
+    }
 
-	@Override
-	public SCommand getCommand(String brutCommand) {
-		for(BlockCommand blockCommands : commands) {
-			for(String name: blockCommands.getNames()) {
-				if(brutCommand.toUpperCase().startsWith(name.toUpperCase())) {
-					return blockCommands;
-				}
-			}
-		}
-		return null;
-	}
+    public static BlockCommandManager getInstance() {
+        if (instance == null) instance = new BlockCommandManager();
+        return instance;
+    }
 
-	@Override
-	public List<String> getArgs(String command) {
-		List<String> args = new ArrayList<>();
-		boolean first = true;
-		for(String s : command.split(" ")) {
-			if(first) {
-				first = false;
-				continue;
-			}
-			args.add(s);
-		}
-		return args;
-	}
+    public List<BlockCommand> getCommands() {
+        return commands;
+    }
+
+    public Map<String, String> getCommandsDisplay() {
+        Map<String, String> result = new HashMap<>();
+        for (SCommand c : this.commands) {
+
+            ChatColor extra = c.getExtraColor();
+            if (extra == null) extra = ChatColor.DARK_PURPLE;
+
+            ChatColor color = c.getColor();
+            if (color == null) color = ChatColor.LIGHT_PURPLE;
+
+            result.put(extra + "[" + color + "&l" + c.getNames().get(0) + extra + "]", c.getTemplate());
+        }
+        return result;
+    }
+
+
+    public void setCommands(List<BlockCommand> commands) {
+        this.commands = commands;
+    }
+
+    @Override
+    public SCommand getCommand(String brutCommand) {
+        for (BlockCommand blockCommands : commands) {
+            for (String name : blockCommands.getNames()) {
+                if (brutCommand.toUpperCase().startsWith(name.toUpperCase())) {
+                    return blockCommands;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> getArgs(String command) {
+        List<String> args = new ArrayList<>();
+        boolean first = true;
+        for (String s : command.split(" ")) {
+            if (first) {
+                first = false;
+                continue;
+            }
+            args.add(s);
+        }
+        return args;
+    }
 }

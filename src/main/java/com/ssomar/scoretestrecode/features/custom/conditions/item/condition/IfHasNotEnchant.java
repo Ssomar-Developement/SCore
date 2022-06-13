@@ -3,8 +3,13 @@ package com.ssomar.scoretestrecode.features.custom.conditions.item.condition;
 import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.utils.SendMessage;
+import com.ssomar.scoretestrecode.features.FeatureParentInterface;
+import com.ssomar.scoretestrecode.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.scoretestrecode.features.types.ListEnchantAndLevelFeature;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -12,17 +17,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class IfHasNotEnchant extends ItemCondition<Map<Enchantment, Integer>, Map<String, String>> {
+public class IfHasNotEnchant extends ItemConditionFeature<ListEnchantAndLevelFeature, IfHasNotEnchant> {
 
-
-    public IfHasNotEnchant() {
-        super(ConditionType.MAP_ENCHANT_AMOUNT, "ifHasNotEnchant", "If has not enchant", new String[]{}, new HashMap<>(), " &cThis item must have the good enchantments to active the activator: &6%activator% &cof this item!");
+    public IfHasNotEnchant(FeatureParentInterface parent) {
+        super(parent, "ifHasNotEnchant", "If has not enchant", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
-    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
+    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
 
-        if(isDefined()){
+        if(hasCondition()){
 
             ItemMeta itemMeta = null;
             boolean hasItemMeta = itemStack.hasItemMeta();
@@ -33,15 +37,36 @@ public class IfHasNotEnchant extends ItemCondition<Map<Enchantment, Integer>, Ma
                 return false;
             }
             Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
-            Map<Enchantment, Integer> condition = getAllCondition(messageSender.getSp());
+            Map<Enchantment, Integer> condition = getCondition().getValue();
             for(Enchantment enchant : condition.keySet()){
                 if(enchants.containsKey(enchant) && condition.get(enchant).equals(enchants.get(enchant))){
                     sendErrorMsg(playerOpt, messageSender);
+                    cancelEvent(event);
                     return false;
                 }
             }
         }
 
         return true;
+    }
+
+    @Override
+    public IfHasNotEnchant getValue() {
+        return this;
+    }
+
+    @Override
+    public void subReset() {
+        setCondition(new ListEnchantAndLevelFeature(this, "ifHasNotEnchant", new HashMap<>(), "If has not enchant", new String[]{}, Material.ANVIL, false));
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().size() > 0;
+    }
+
+    @Override
+    public IfHasNotEnchant getNewInstance() {
+        return new IfHasNotEnchant(getParent());
     }
 }

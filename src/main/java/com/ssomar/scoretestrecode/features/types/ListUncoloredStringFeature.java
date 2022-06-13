@@ -111,6 +111,9 @@ public class ListUncoloredStringFeature extends FeatureAbstract<List<String>, Li
     @Override
     public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
         value = (List<String>) manager.currentWriting.get(editor);
+        for(int i = 0; i < value.size(); i++) {
+            value.set(i, StringConverter.decoloredString(value.get(i)));
+        }
         manager.requestWriting.remove(editor);
         manager.activeTextEditor.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));

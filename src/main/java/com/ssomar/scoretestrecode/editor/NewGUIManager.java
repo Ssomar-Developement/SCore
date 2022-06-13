@@ -56,6 +56,16 @@ public abstract class NewGUIManager<T extends GUI> {
 		activeTextEditor = new HashMap<>();
 	}
 
+	public void enableTextEditor(Player player) {
+		activeTextEditor.put(player, true);
+		suggestionPage.put(player, 0);
+	}
+
+	public void disableTextEditor(Player player) {
+		activeTextEditor.remove(player);
+		suggestionPage.remove(player);
+	}
+
 	public void clicked(Player p, ItemStack item, ClickType click) {
 		NewInteractionClickedGUIManager<T> interact = new NewInteractionClickedGUIManager<>();
 		interact.player = p;
@@ -187,12 +197,10 @@ public abstract class NewGUIManager<T extends GUI> {
 
 	public void receiveMessagePreviousPage(NewInteractionClickedGUIManager<T> interact){
 		suggestionPage.put(interact.player, suggestionPage.get(interact.player)-1);
-		sendEditor(interact.player);
 	}
 
 	public  void receiveMessageNextPage(NewInteractionClickedGUIManager<T> interact){
 		suggestionPage.put(interact.player, suggestionPage.get(interact.player)+1);
-		sendEditor(interact.player);
 	}
 
 	public abstract void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact);
@@ -344,12 +352,7 @@ public abstract class NewGUIManager<T extends GUI> {
 	}
 
 	public void sendEditor(@NotNull Player p){
-		this.sendBeforeTextEditor(p);
 		this.sendSuggestions(p);
-	}
-
-	public void sendBeforeTextEditor(@NotNull Player p){
-
 	}
 
 	public void sendSuggestions(Player p){
@@ -420,7 +423,7 @@ public abstract class NewGUIManager<T extends GUI> {
 			p.spigot().sendMessage(listCommands.get(i));
 		}
 
-		CenteredMessage.sendCenteredMessage(p, "&c&oJust type your command if it's console command");
+		CenteredMessage.sendCenteredMessage(p, "&c&oJust type your command if it's a console command");
 
 		space(p);
 		String changementPage;

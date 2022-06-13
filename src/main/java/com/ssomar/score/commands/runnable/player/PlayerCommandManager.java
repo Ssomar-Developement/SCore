@@ -1,11 +1,9 @@
 package com.ssomar.score.commands.runnable.player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import com.ssomar.score.commands.runnable.player.commands.*;
 import org.bukkit.ChatColor;
 
@@ -142,6 +140,27 @@ public class PlayerCommandManager implements CommandManager{
 			result.add(command);
 		}
 		return result;
+	}
+
+	public Optional<String> verifCommand(String command) {
+
+		command = StringConverter.coloredString(command);
+
+		/*
+		 * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if
+		 * (command.contains("\\}")) command= command.replaceAll("\\}", "");
+		 */
+
+		if (this.isValidPlayerCommads(command) && !command.contains("//") && !command.contains("+++")) {
+			PlayerCommand bc = (PlayerCommand) this.getCommand(command);
+			List<String> args = this.getArgs(command);
+
+			String error = "";
+			if (!(error = this.verifArgs(bc, args)).isEmpty()) {
+				return Optional.of("&4&lINVALID COMMAND &c" + " " + error);
+			}
+		}
+		return Optional.empty();
 	}
 
 	public static PlayerCommandManager getInstance() {

@@ -7,6 +7,7 @@ import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.scoretestrecode.features.custom.conditions.item.condition.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -33,6 +34,16 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
     public void reset() {
         conditions = new ArrayList<>();
         /** Boolean features **/
+        conditions.add(new IfCrossbowMustBeCharged(this));
+        conditions.add(new IfCrossbowMustNotBeCharged(this));
+
+        /** Number condition **/
+        conditions.add(new IfDurability(this));
+        conditions.add(new IfUsage(this));
+
+        /** ListEnchantWithLevel **/
+        conditions.add(new IfHasEnchant(this));
+        conditions.add(new IfHasNotEnchant(this));
 
     }
 

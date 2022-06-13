@@ -5,32 +5,58 @@ import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
 import com.ssomar.score.conditions.condition.item.ItemCondition;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.scoretestrecode.features.FeatureParentInterface;
+import com.ssomar.scoretestrecode.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.scoretestrecode.features.types.NumberConditionFeature;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
-public class IfUsage extends ItemCondition<String, String> {
+public class IfUsage extends ItemConditionFeature<NumberConditionFeature, IfUsage> {
 
 
-    public IfUsage() {
-        super(ConditionType.NUMBER_CONDITION, "ifUsage", "If usage", new String[]{}, "", " &cThis item must have the valid usage to active the activator: &6%activator% &cof this item!");
+    public IfUsage(FeatureParentInterface parent) {
+        super(parent, "ifUsage", "If usage", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
-    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender) {
+    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
 
         ExecutableItemObject executableItem = new ExecutableItemObject(itemStack);
         if(executableItem.isValid()){
             executableItem.loadExecutableItemInfos();
-            if(isDefined()) {
-                if(!StringCalculation.calculation(getAllCondition(messageSender.getSp()), executableItem.getUsage())) {
+            if(hasCondition()) {
+                if(!StringCalculation.calculation(getCondition().getValue().get(), executableItem.getUsage())) {
                     sendErrorMsg(playerOpt, messageSender);
+                    cancelEvent(event);
                     return false;
                 }
             }
         }
 
         return true;
+    }
+
+    @Override
+    public IfUsage getValue() {
+        return this;
+    }
+
+    @Override
+    public void subReset() {
+        setCondition(new NumberConditionFeature(this, "ifUsage",  "If usage", new String[]{}, Material.ANVIL, false));
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().isPresent();
+    }
+
+    @Override
+    public IfUsage getNewInstance() {
+        return new IfUsage(getParent());
     }
 }

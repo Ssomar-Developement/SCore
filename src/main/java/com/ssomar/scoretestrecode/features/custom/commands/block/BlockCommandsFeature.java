@@ -97,7 +97,7 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
-        return Optional.empty();
+        return BlockCommandManager.getInstance().verifCommand(message);
     }
 
     @Override
@@ -107,12 +107,12 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
 
     @Override
     public List<Suggestion> getSuggestions() {
-        List<Suggestion> suggestions = new ArrayList<>();
+        SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
         for (BlockCommand command : BlockCommandManager.getInstance().getCommands()) {
             Suggestion suggestion = new Suggestion("" + command.getTemplate(), command.getExtraColorNotNull() + "[" + command.getColorNotNull() + command.getNames().get(0) + command.getExtraColorNotNull() + "]", "&7ADD command: &e" + command.getNames().get(0));
-            suggestions.add(suggestion);
+            map.put(command.getNames().get(0), suggestion);
         }
-        return suggestions;
+        return new ArrayList<>(map.values());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
 
     @Override
     public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        value = (List<String>) CommandsEditor.getInstance().finish(editor);
+        value = (List<String>) manager.currentWriting.get(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
