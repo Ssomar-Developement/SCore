@@ -51,7 +51,7 @@ public class IfName extends EntityConditionFeature<ListColoredStringFeature, IfN
 
     @Override
     public void subReset() {
-        setCondition(new ListColoredStringFeature(getParent(), "ifName", new ArrayList<>(), "If name", new String[]{}, Material.ANVIL, false));
+        setCondition(new ListColoredStringFeature(getParent(), "ifName", new ArrayList<>(), "If name", new String[]{}, Material.ANVIL, false, Optional.empty()));
     }
 
     @Override

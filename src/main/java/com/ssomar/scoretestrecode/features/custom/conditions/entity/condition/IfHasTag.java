@@ -48,7 +48,7 @@ public class IfHasTag extends EntityConditionFeature<ListUncoloredStringFeature,
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), "ifHasTag", new ArrayList<>(), "If has tag", new String[]{"&7&oThe whitelisted tags"}, Material.ANVIL, false));
+        setCondition(new ListUncoloredStringFeature(getParent(), "ifHasTag", new ArrayList<>(), "If has tag", new String[]{"&7&oThe whitelisted tags"}, Material.ANVIL, false, Optional.empty()));
     }
 
     @Override

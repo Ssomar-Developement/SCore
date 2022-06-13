@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.SCommand;
 
-public class RandomEnd implements SCommand{
+public class RandomEnd extends SCommand{
 
 	@Override
 	public List<String> getNames() {

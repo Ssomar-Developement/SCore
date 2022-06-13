@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.SCommand;
 
-public class Nothing implements SCommand{
+public class Nothing extends SCommand{
 
 	@Override
 	public List<String> getNames() {

@@ -6,7 +6,7 @@
 
 	<groupId>com.ssomar</groupId>
 	<artifactId>SCore</artifactId>
-	<version>1.7.4.5</version>
+	<version>1.7.4.6</version>
 	<packaging>jar</packaging>
 
 	<name>SCore</name>
@@ -96,10 +96,10 @@
 								</relocation>
 							</relocations>
 						</configuration> -->
-						<configuration>
+						<!--<configuration>
 						<createDependencyReducedPom>false</createDependencyReducedPom>
 							<outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-						</configuration>
+						</configuration>-->
 					</execution>
 				</executions>
 			</plugin>

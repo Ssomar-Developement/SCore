@@ -1,20 +1,26 @@
 package com.ssomar.scoretestrecode.editor;
 
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.conditions.RequestMessageInfo;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.messages.CenteredMessage;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 public abstract class NewGUIManager<T extends GUI> {
@@ -23,16 +29,31 @@ public abstract class NewGUIManager<T extends GUI> {
 	public HashMap<Player, String> requestWriting;
 	public HashMap<Player, List<String>> currentWriting;
 
+	public Map<Player, Boolean> activeTextEditor;
+	public Map<Player, List<Suggestion>> suggestions;
+	private int suggestionsPerColumn;
+	public Map<Player, Integer> suggestionPage;
+
 	public NewGUIManager () {
 		cache = new HashMap<>();
 		requestWriting = new HashMap<>();
 		currentWriting = new HashMap<>();
+
+		suggestions = new HashMap<>();
+		suggestionsPerColumn = 12;
+		suggestionPage = new HashMap<>();
+		activeTextEditor = new HashMap<>();
 	}
 
 	public void reload() {
 		cache = new HashMap<>();
 		requestWriting = new HashMap<>();
 		currentWriting = new HashMap<>();
+
+		suggestions = new HashMap<>();
+		suggestionsPerColumn = 12;
+		suggestionPage = new HashMap<>();
+		activeTextEditor = new HashMap<>();
 	}
 
 	public void clicked(Player p, ItemStack item, ClickType click) {
@@ -164,9 +185,15 @@ public abstract class NewGUIManager<T extends GUI> {
 		}
 	}
 
-	public abstract void receiveMessagePreviousPage(NewInteractionClickedGUIManager<T> interact);
+	public void receiveMessagePreviousPage(NewInteractionClickedGUIManager<T> interact){
+		suggestionPage.put(interact.player, suggestionPage.get(interact.player)-1);
+		sendEditor(interact.player);
+	}
 
-	public abstract void receiveMessageNextPage(NewInteractionClickedGUIManager<T> interact);
+	public  void receiveMessageNextPage(NewInteractionClickedGUIManager<T> interact){
+		suggestionPage.put(interact.player, suggestionPage.get(interact.player)+1);
+		sendEditor(interact.player);
+	}
 
 	public abstract void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact);
 
@@ -281,7 +308,7 @@ public abstract class NewGUIManager<T extends GUI> {
 		space(p);
 		int line = Integer.parseInt(message.split("delete line <")[1].split(">")[0]);
 		deleteLine(p, line);
-		p.sendMessage(StringConverter.coloredString("&a&l[ExecutableItems] &2&lEDITION &aYou have delete the line: "+line+" !"));
+		p.sendMessage(StringConverter.coloredString("&a&l>> &2&lEDITION &aYou have delete the line: "+line+" !"));
 		space(p);
 		space(p);
 	}
@@ -314,5 +341,114 @@ public abstract class NewGUIManager<T extends GUI> {
 			else sb.append(c);
 		}
 		return "";
+	}
+
+	public void sendEditor(@NotNull Player p){
+		this.sendBeforeTextEditor(p);
+		this.sendSuggestions(p);
+	}
+
+	public void sendBeforeTextEditor(@NotNull Player p){
+
+	}
+
+	public void sendSuggestions(Player p){
+		space(p);
+		p.sendMessage(StringConverter.coloredString("&5&o>> &dChoose a suggestion below:"));
+		space(p);
+
+		List<TextComponent> listCommands = new ArrayList<>();
+
+		int y = suggestionPage.get(p) * suggestionsPerColumn;
+		while(y < (suggestionPage.get(p)+1) * suggestionsPerColumn && suggestions.get(p).size()-1 >= y ) {
+
+			Suggestion suggestion = suggestions.get(p).get(y);
+			TextComponent cmd1Cpnt = new TextComponent("");
+			TextComponent cmd2Cpnt = new TextComponent("");
+
+
+			String commandStr1 = StringConverter.coloredString(suggestion.getSuggestionDisplay());
+			String commandStr2 = " ";
+
+			cmd1Cpnt.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, suggestion.getSuggestion() ));
+			cmd1Cpnt.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString(suggestion.getSuggestionHover()) ).create() ) );
+
+
+			if(y+1 != suggestions.get(p).size()) {
+
+				Suggestion suggestion2 = suggestions.get(p).get(y+1);
+
+				commandStr2 = StringConverter.coloredString(suggestion2.getSuggestionDisplay());
+
+				/* Try to improve a bit the display in clean column */
+				int charDiff = commandStr1.length()-commandStr2.length();
+				StringBuilder commandStr1Builder = new StringBuilder(commandStr1);
+				StringBuilder commandStr2Builder = new StringBuilder(commandStr2);
+				while(charDiff != 0) {
+					if(charDiff > 0) {
+						commandStr2Builder.append(" ");
+						charDiff--;
+					}
+					else {
+						commandStr1Builder.insert(0, " ");
+						charDiff++;
+					}
+				}
+				commandStr2 = commandStr2Builder.toString();
+				commandStr1 = commandStr1Builder.toString();
+
+				cmd2Cpnt.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, suggestion2.getSuggestion() ));
+				cmd2Cpnt.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString(suggestion2.getSuggestionHover()) ).create() ) );
+
+				y = y+2;
+			}
+			else {
+				y++;
+			}
+			String commandsStr = commandStr1 + "     |     "+commandStr2;
+			commandsStr = CenteredMessage.convertIntoCenteredMessage(commandsStr);
+
+			cmd1Cpnt.setText(commandsStr.split("\\|")[0]);
+			cmd2Cpnt.setText(commandsStr.split("\\|")[1]);
+			cmd1Cpnt.addExtra(cmd2Cpnt);
+			listCommands.add(cmd1Cpnt);
+		}
+
+
+
+		for(int i = 0 ; i < listCommands.size(); i++) {
+			p.spigot().sendMessage(listCommands.get(i));
+		}
+
+		CenteredMessage.sendCenteredMessage(p, "&c&oJust type your command if it's console command");
+
+		space(p);
+		String changementPage;
+		if(suggestionPage.get(p) == 0) {
+			changementPage = " | &d&lNext page &5&l>>>>>";
+		}
+		else if (((suggestionPage.get(p)+1) * suggestionsPerColumn) > suggestions.get(p).size()) {
+			changementPage = "&5&l<<<<< &d&lPrevious page | ";
+		}
+		else  changementPage = "&5&l<<<<< &d&lPrevious page | &d&lNext page &5&l>>>>>";
+
+		changementPage = CenteredMessage.convertIntoCenteredMessage(changementPage);
+
+		String previousStr = changementPage.split("\\|")[0];
+		String nextStr = changementPage.split("\\|")[1];
+
+		TextComponent previousText = new TextComponent( previousStr );
+		previousText.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, "PREVIOUS PAGE" ));
+		previousText.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&5&l<<<<< &d&lPrevious page") ).create() ) );
+
+		TextComponent nextText = new TextComponent( nextStr );
+		nextText.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, "NEXT PAGE" ));
+		nextText.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&d&lNext page &5&l>>>>>") ).create() ) );
+
+		previousText.addExtra(nextText);
+
+		p.spigot().sendMessage(previousText);
+
+		space(p);
 	}
 }

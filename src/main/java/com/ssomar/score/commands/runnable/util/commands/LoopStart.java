@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 
 import com.ssomar.score.commands.runnable.SCommand;
 
-public class LoopStart implements SCommand{
+public class LoopStart extends SCommand{
 
 	@Override
 	public List<String> getNames() {

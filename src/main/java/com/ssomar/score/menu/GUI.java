@@ -131,7 +131,8 @@ public abstract class GUI implements IGUI {
             YELLOW = Material.YELLOW_STAINED_GLASS_PANE;
             PURPLE = Material.MAGENTA_STAINED_GLASS_PANE;
             BLUE = Material.BLUE_STAINED_GLASS_PANE;
-            GRINDSTONE = Material.GRINDSTONE;
+            if(!SCore.is1v13()) GRINDSTONE = Material.GRINDSTONE;
+            else GRINDSTONE = Material.ANVIL;
         }
 
         if (SCore.is1v18Plus()) {

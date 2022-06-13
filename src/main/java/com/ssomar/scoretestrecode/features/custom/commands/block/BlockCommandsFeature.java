@@ -1,28 +1,32 @@
 package com.ssomar.scoretestrecode.features.custom.commands.block;
 
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommandManager;
+import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.StringConverter;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
+import com.ssomar.scoretestrecode.editor.Suggestion;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
-import com.ssomar.scoretestrecode.features.FeatureRequireMultipleMessageInEditor;
+import com.ssomar.scoretestrecode.features.FeatureRequireSubTextEditorInEditor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
-public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCommandsFeature> implements FeatureRequireMultipleMessageInEditor {
+public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
 
     private List<String> value;
 
@@ -53,7 +57,7 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7Your "+getEditorName()+": ";
+        finalDescription[finalDescription.length - 1] = "&7Your " + getEditorName() + ": ";
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -62,21 +66,21 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
     @Override
     public void updateItemParentEditor(GUI gui) {
         List<String> update = new ArrayList<>();
-        if(value.size() > 10) {
-            for(int i = 0; i < 10; i++) update.add(value.get(i));
+        if (value.size() > 10) {
+            for (int i = 0; i < 10; i++) update.add(value.get(i));
             update.add("&6... &e" + value.size() + " &6commands");
-        }
-        else update.addAll(value);
-        for(int i = 0; i < update.size(); i++) {
+        } else update.addAll(value);
+        for (int i = 0; i < update.size(); i++) {
             String command = update.get(i);
-            if(command.length() > 40) command = command.substring(0, 39) + "...";
+            if (command.length() > 40) command = command.substring(0, 39) + "...";
             update.set(i, command);
         }
         gui.updateConditionList(getEditorName(), update, "&cEMPTY");
     }
 
     @Override
-    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
+    }
 
     @Override
     public BlockCommandsFeature clone() {
@@ -90,21 +94,6 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
         this.value = new ArrayList<>();
     }
 
-    @Override
-    public void askInEditorFirstTime(Player editor, NewGUIManager manager) {
-        List<SCommand> commands = new ArrayList<>();
-        for (BlockCommand command : BlockCommandManager.getInstance().getCommands()) {
-            commands.add(command);
-        }
-        CommandsEditor.getInstance().start(editor, value, commands);
-        askInEditor(editor, manager);
-    }
-
-    @Override
-    public void askInEditor(Player editor, NewGUIManager manager) {
-        manager.requestWriting.put(editor, getEditorName());
-        CommandsEditor.getInstance().sendEditor(editor);
-    }
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
@@ -112,13 +101,39 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
     }
 
     @Override
-    public void addMessageValue(Player editor, NewGUIManager manager, String message) {}
-
+    public List<String> getCurrentCValues() {
+        return getValue();
+    }
 
     @Override
-    public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
+    public List<Suggestion> getSuggestions() {
+        List<Suggestion> suggestions = new ArrayList<>();
+        for (BlockCommand command : BlockCommandManager.getInstance().getCommands()) {
+            Suggestion suggestion = new Suggestion("" + command.getTemplate(), command.getExtraColorNotNull() + "[" + command.getColorNotNull() + command.getNames().get(0) + command.getExtraColorNotNull() + "]", "&7ADD command: &e" + command.getNames().get(0));
+            suggestions.add(suggestion);
+        }
+        return suggestions;
+    }
+
+    @Override
+    public void sendBeforeTextEditor(Player p, NewGUIManager manager) {
+        List<String> beforeMenu = new ArrayList<>();
+        beforeMenu.add("&7➤ Your commands: (the '/' is useless)");
+
+        TextComponent variables = new TextComponent(StringConverter.coloredString("&7➤ WIKI of Block commands: &8&l[CLICK HERE]"));
+        variables.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://docs.ssomar.com/tools/custom-commands/block-commands"));
+        variables.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&7&oOpen the wiki")).create()));
+        p.spigot().sendMessage(variables);
+
+        Map<String, String> commands = new HashMap<>();
+        EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(p), "Block Commands", false, true, true, true, true, true, false, "", commands);
+        editor.generateTheMenuAndSendIt(p);
+    }
+
+    @Override
+    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
         value = (List<String>) CommandsEditor.getInstance().finish(editor);
-        manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
+
 }

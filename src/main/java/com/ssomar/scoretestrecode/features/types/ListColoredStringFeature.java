@@ -5,10 +5,8 @@ import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
-import com.ssomar.scoretestrecode.features.FeatureAbstract;
-import com.ssomar.scoretestrecode.features.FeatureParentInterface;
-import com.ssomar.scoretestrecode.features.FeatureRequireMultipleMessageInEditor;
-import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
+import com.ssomar.scoretestrecode.editor.Suggestion;
+import com.ssomar.scoretestrecode.features.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -25,14 +23,16 @@ import static com.ssomar.score.menu.conditions.RequestMessage.space;
 
 @Getter
 @Setter
-public class ListColoredStringFeature extends FeatureAbstract<List<String>, ListColoredStringFeature> implements FeatureRequireMultipleMessageInEditor {
+public class ListColoredStringFeature extends FeatureAbstract<List<String>, ListColoredStringFeature> implements FeatureRequireSubTextEditorInEditor {
 
     private List<String> value;
     private List<String> defaultValue;
+    private Optional<List<Suggestion>> suggestions;
 
-    public ListColoredStringFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public ListColoredStringFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, Optional<List<Suggestion>> suggestions) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
+        this.suggestions = suggestions;
         reset();
     }
 
@@ -77,7 +77,7 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
 
     @Override
     public ListColoredStringFeature clone() {
-        ListColoredStringFeature clone = new ListColoredStringFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        ListColoredStringFeature clone = new ListColoredStringFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), suggestions);
         clone.setValue(getValue());
         return clone;
     }
@@ -87,20 +87,6 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
         this.value = defaultValue;
     }
 
-    @Override
-    public void askInEditorFirstTime(Player editor, NewGUIManager manager) {
-        manager.currentWriting.put(editor, getValue());
-        askInEditor(editor, manager);
-    }
-
-    @Override
-    public void askInEditor(Player editor, NewGUIManager manager) {
-        manager.requestWriting.put(editor, getEditorName());
-        editor.closeInventory();
-        space(editor);
-        showEditor(editor, manager);
-        space(editor);
-    }
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
@@ -108,26 +94,27 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
     }
 
     @Override
-    public void addMessageValue(Player editor, NewGUIManager manager, String message) {
-        List<String> value = (List<String>) manager.currentWriting.get(editor);
-        value.add(message);
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                askInEditor(editor, manager);
-            }
-        };
-        runnable.runTask(SCore.plugin);
+    public List<String> getCurrentCValues() {
+        return value;
     }
 
     @Override
-    public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
+    public List<Suggestion> getSuggestions() {
+        if(suggestions.isPresent()) return suggestions.get();
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
         value = (List<String>) manager.currentWriting.get(editor);
         manager.requestWriting.remove(editor);
+        manager.activeTextEditor.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
-    private void showEditor(Player playerEditor, NewGUIManager manager) {
+
+    @Override
+    public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {
         List<String> beforeMenu = new ArrayList<>();
         beforeMenu.add("&7➤ Your custom " + getEditorName() + ":");
 
