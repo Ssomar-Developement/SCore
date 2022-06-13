@@ -99,7 +99,7 @@ public class EntityCommandsFeature extends FeatureAbstract<List<String>, EntityC
     }
 
     @Override
-    public List<String> getCurrentCValues() {
+    public List<String> getCurrentValues() {
         return getValue();
     }
 

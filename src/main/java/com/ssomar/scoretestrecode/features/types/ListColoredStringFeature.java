@@ -94,7 +94,7 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
     }
 
     @Override
-    public List<String> getCurrentCValues() {
+    public List<String> getCurrentValues() {
         return value;
     }
 

@@ -1,6 +1,5 @@
 package com.ssomar.scoretestrecode.features.types;
 
-import com.ssomar.score.conditions.condition.Condition;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -10,7 +9,6 @@ import com.ssomar.scoretestrecode.editor.Suggestion;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureRequireSubTextEditorInEditor;
-import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -71,7 +69,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        config.set(this.getName(), this.getCurrentValues());
     }
 
     @Override
@@ -92,7 +90,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        gui.updateConditionList(getEditorName(), getCurrentCValues(), "&cEMPTY");
+        gui.updateConditionList(getEditorName(), this.getCurrentValues(), "&cEMPTY");
     }
 
     @Override
@@ -139,10 +137,10 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
     }
 
     @Override
-    public List<String> getCurrentCValues() {
+    public List<String> getCurrentValues() {
         List<String> result = new ArrayList<>();
         for(Map.Entry<Enchantment, Integer> entry : value.entrySet()){
-            result.add(entry.getKey().getName() + ":" + entry.getValue());
+            result.add(entry.getKey().getName().toString() + ":" + entry.getValue());
         }
         return result;
     }

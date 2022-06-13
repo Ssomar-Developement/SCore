@@ -75,7 +75,7 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
     public ItemConditionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = "&7Block condition(s) enabled: &e" + getBlockConditionEnabledCount();
+        finalDescription[finalDescription.length - 2] = "&7Item condition(s) enabled: &e" + getBlockConditionEnabledCount();
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
 

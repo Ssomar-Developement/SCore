@@ -56,7 +56,7 @@ public class IfHasEnchant extends ItemConditionFeature<ListEnchantAndLevelFeatur
 
     @Override
     public void subReset() {
-        setCondition(new ListEnchantAndLevelFeature(this, "ifHasEnchant", new HashMap<>(), "If has enchant", new String[]{}, Material.ANVIL, false));
+        setCondition(new ListEnchantAndLevelFeature(this, "ifHasEnchant", new HashMap<>(), "If has enchant", new String[]{"&7If has enchant condition"}, Material.ANVIL, false));
     }
 
     @Override

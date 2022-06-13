@@ -101,7 +101,7 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
     }
 
     @Override
-    public List<String> getCurrentCValues() {
+    public List<String> getCurrentValues() {
         return getValue();
     }
 

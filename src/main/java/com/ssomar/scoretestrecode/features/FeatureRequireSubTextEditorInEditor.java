@@ -13,7 +13,7 @@ public interface FeatureRequireSubTextEditorInEditor {
      * return an error if there is one **/
     Optional<String> verifyMessageReceived(String message);
 
-    List<String> getCurrentCValues();
+    List<String> getCurrentValues();
 
     List<Suggestion> getSuggestions();
 

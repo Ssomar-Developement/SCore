@@ -98,7 +98,7 @@ public class ListUncoloredStringFeature extends FeatureAbstract<List<String>, Li
     }
 
     @Override
-    public List<String> getCurrentCValues() {
+    public List<String> getCurrentValues() {
         return value;
     }
 

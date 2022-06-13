@@ -9,7 +9,7 @@ public class ItemConditionsFeatureEditor extends FeatureEditorInterface<ItemCond
     public ItemConditionsFeature bCF;
 
     public ItemConditionsFeatureEditor(ItemConditionsFeature dropFeatures) {
-        super("&lBlock Conditions Editor", 3*9);
+        super("&lItem Conditions Editor", 3*9);
         this.bCF = dropFeatures.clone();
         load();
     }

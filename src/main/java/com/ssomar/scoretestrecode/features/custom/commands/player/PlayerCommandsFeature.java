@@ -99,7 +99,7 @@ public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerC
     }
 
     @Override
-    public List<String> getCurrentCValues() {
+    public List<String> getCurrentValues() {
         return getValue();
     }
 

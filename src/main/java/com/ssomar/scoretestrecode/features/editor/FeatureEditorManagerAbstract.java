@@ -34,7 +34,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                 } else if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
                     requestWriting.put(i.player, feature.getEditorName());
-                    currentWriting.put(i.player, featureRequireSubTextEditorInEditor.getCurrentCValues());
+                    currentWriting.put(i.player, featureRequireSubTextEditorInEditor.getCurrentValues());
                     suggestions.put(i.player, featureRequireSubTextEditorInEditor.getSuggestions());
                     enableTextEditor(i.player);
                     i.player.closeInventory();
@@ -306,7 +306,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                         FeatureRequireSubTextEditorInEditor f = (FeatureRequireSubTextEditorInEditor) feature;
                         Optional<String> pErrors = f.verifyMessageReceived(interact.message);
                         if (pErrors.isPresent()) {
-                            interact.player.sendMessage(pErrors.get());
+                            interact.player.sendMessage(StringConverter.coloredString(pErrors.get()));
                             return;
                         } else {
                             currentWriting.get(interact.player).add(interact.message);
