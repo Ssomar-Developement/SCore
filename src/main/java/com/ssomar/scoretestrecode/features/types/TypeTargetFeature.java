@@ -168,17 +168,18 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
         else return getSortTypeTargets().get(cpt - 1);
     }
 
-    public void updateTypeTarget(TypeTarget material, GUI gui) {
+    public void updateTypeTarget(TypeTarget typeTarget, GUI gui) {
+        value = Optional.of(typeTarget);
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
+        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
         maxSize += getSortTypeTargets().size();
         if(maxSize > 17)  maxSize = 17;
         boolean find = false;
         for (TypeTarget check : getSortTypeTargets()) {
-            if (material.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" +material.name()));
+            if (typeTarget.equals(check)) {
+                lore.add(StringConverter.coloredString("&2➤ &a" +typeTarget.name()));
                 find = true;
             } else if (find) {
                 if (lore.size() == maxSize) break;

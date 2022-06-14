@@ -175,7 +175,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
         HashMap<String, String> suggestions = new HashMap<>();
 
         EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(playerEditor), getEditorName() + ":", true, true, true, true,
-                true, true, false, "", suggestions);
+                true, true, true, "", suggestions);
         editor.generateTheMenuAndSendIt(playerEditor);
     }
 }

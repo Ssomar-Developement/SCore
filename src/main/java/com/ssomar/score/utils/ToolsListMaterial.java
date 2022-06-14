@@ -1,7 +1,9 @@
 package com.ssomar.score.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -14,6 +16,7 @@ public class ToolsListMaterial {
 	private static ToolsListMaterial instance;
 	
 	private List<Material> plantWithGrowth;
+	private static Map<Material, Material> blockAndItemMaterial;
 	
 	public ToolsListMaterial() {
 		plantWithGrowth = new ArrayList<>();
@@ -31,48 +34,40 @@ public class ToolsListMaterial {
 			plantWithGrowth.add(Material.POTATOES);
 			plantWithGrowth.add(Material.NETHER_WART);
 		}
-		
+
+		blockAndItemMaterial = new HashMap<>();
+		if(SCore.is1v12Less()) {
+			blockAndItemMaterial.put(Material.valueOf("CROPS"), Material.valueOf("SEEDS"));
+			blockAndItemMaterial.put(Material.valueOf("POTATO"), Material.valueOf("POTATO_ITEM"));
+			if(!SCore.is1v11Less()) blockAndItemMaterial.put(Material.valueOf("BEETROOT_BLOCK"), Material.valueOf("BEETROOT_SEEDS"));
+			blockAndItemMaterial.put(Material.valueOf("CARROT"), Material.valueOf("CARROT_ITEM"));
+		}
+		else{
+			blockAndItemMaterial.put(Material.WHEAT, Material.WHEAT_SEEDS);
+			blockAndItemMaterial.put(Material.CARROTS, Material.CARROT);
+			blockAndItemMaterial.put(Material.BEETROOTS, Material.BEETROOT_SEEDS);
+			blockAndItemMaterial.put(Material.POTATOES, Material.POTATO);
+		}
+		blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
 		
 	}
 	
 	@Nullable
 	public static Material getRealMaterialOfBlock(Material material) {
-		if(SCore.is1v12Less()) {
-			if(material.equals(Material.valueOf("CROPS"))){
-				return Material.valueOf("SEEDS");
-			}
-			else if(material.equals(Material.valueOf("NETHER_WARTS"))){
-				return Material.valueOf("NETHER_WARTS");
-			}
-			else if(material.equals(Material.valueOf("POTATO"))){
-				return Material.valueOf("POTATO_ITEM");
-			}
-			else if(material.equals(Material.valueOf("CARROT"))){
-				return Material.valueOf("CARROT_ITEM");
-			}
-			else if(!SCore.is1v11Less() && material.equals(Material.valueOf("BEETROOT_BLOCK"))){
-				return Material.valueOf("BEETROOT_SEEDS");
-			}
-			else return material;
+		if(blockAndItemMaterial.containsKey(material)) {
+			return blockAndItemMaterial.get(material);
 		}
-		else{
-			if(material.equals(Material.WHEAT)){
-				return Material.WHEAT_SEEDS;
+		else return material;
+	}
+
+	@Nullable
+	public static Material getBlockMaterialOfItem(Material material) {
+		for(Material key : blockAndItemMaterial.keySet()) {
+			if(blockAndItemMaterial.get(key) == material) {
+				return key;
 			}
-			else if(material.equals(Material.CARROTS)){
-				return Material.CARROT;
-			}
-			else if(material.equals(Material.POTATOES)){
-				return Material.POTATO;
-			}
-			else if(material.equals(Material.BEETROOTS)){
-				return Material.BEETROOT_SEEDS;
-			}
-			else if(material.equals(Material.NETHER_WART)){
-				return Material.NETHER_WART;
-			}
-			else return material;
 		}
+		return material;
 	}
 	
 	public static ToolsListMaterial getInstance() {
