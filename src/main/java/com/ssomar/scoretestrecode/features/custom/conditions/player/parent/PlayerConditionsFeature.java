@@ -73,6 +73,13 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfInBiome(this));
         conditions.add(new IfNotInBiome(this));
 
+        /** List Region **/
+        conditions.add(new IfInRegion(this));
+        conditions.add(new IfNotInRegion(this));
+
+        /** List World **/
+        conditions.add(new IfInWorld(this));
+        conditions.add(new IfNotInWorld(this));
     }
 
     @Override

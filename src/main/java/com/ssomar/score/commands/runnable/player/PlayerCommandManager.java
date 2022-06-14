@@ -51,6 +51,8 @@ public class PlayerCommandManager implements CommandManager{
 		if(!SCore.is1v12Less()){
 			commands.add(new LocatedLaunch());
 			commands.add(new CropsGrowthBoost());
+			/** No damageable class before 1.12 **/
+			commands.add(new ModifyDurability());
 		}
 		commands.add(new Burn());
 		commands.add(new Jump());
@@ -76,7 +78,6 @@ public class PlayerCommandManager implements CommandManager{
 		commands.add(new AnimationBreakLeggings());
 		commands.add(new AnimationBreakOffHand());
 		commands.add(new CancelPickup());
-		commands.add(new ModifyDurability());
 		commands.add(new ForceDrop());
 		commands.add(new CloseInventory());
 		commands.add(new GravityEnable());

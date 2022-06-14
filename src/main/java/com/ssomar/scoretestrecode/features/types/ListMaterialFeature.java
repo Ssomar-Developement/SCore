@@ -21,12 +21,12 @@ import java.util.*;
 
 @Getter
 @Setter
-public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeature> implements FeatureRequireSubTextEditorInEditor {
+public class ListMaterialFeature extends FeatureAbstract<List<Material>, ListMaterialFeature> implements FeatureRequireSubTextEditorInEditor {
 
-    private List<Biome> value;
-    private List<Biome> defaultValue;
+    private List<Material> value;
+    private List<Material> defaultValue;
 
-    public ListBiomeFeature(FeatureParentInterface parent, String name, List<Biome> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public ListMaterialFeature(FeatureParentInterface parent, String name, List<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         reset();
@@ -39,13 +39,13 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
         for (String s : config.getStringList(this.getName())) {
             s = StringConverter.decoloredString(s);
             try {
-                Biome biome = Biome.valueOf(s);
-                value.add(biome);
+                Material mat = Material.valueOf(s);
+                value.add(mat);
             } catch (Exception e) {
-                errors.add("&cERROR, Couldn't load the Biome value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
+                errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
             }
         }
-        FeatureReturnCheckPremium<List<Biome>> checkPremium = checkPremium("List of Biomes", value, Optional.of(defaultValue), isPremiumLoading);
+        FeatureReturnCheckPremium<List<Material>> checkPremium = checkPremium("List of Materials", value, Optional.of(defaultValue), isPremiumLoading);
         if (checkPremium.isHasError()) value = checkPremium.getNewValue();
         return errors;
     }
@@ -56,12 +56,12 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
     }
 
     @Override
-    public List<Biome> getValue() {
+    public List<Material> getValue() {
         return value;
     }
 
     @Override
-    public ListBiomeFeature initItemParentEditor(GUI gui, int slot) {
+    public ListMaterialFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
@@ -81,8 +81,8 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
     }
 
     @Override
-    public ListBiomeFeature clone() {
-        ListBiomeFeature clone = new ListBiomeFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+    public ListMaterialFeature clone() {
+        ListMaterialFeature clone = new ListMaterialFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.setValue(getValue());
         return clone;
     }
@@ -96,19 +96,19 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
     public Optional<String> verifyMessageReceived(String message) {
         message = StringConverter.decoloredString(message);
         try {
-            Biome biome = Biome.valueOf(message);
-            value.add(biome);
+            Material mat = Material.valueOf(message);
+            value.add(mat);
             return Optional.empty();
         } catch (Exception e) {
-            return Optional.of("&4&l[ERROR] &cThe message you entered is not a Biome &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
+            return Optional.of("&4&l[ERROR] &cThe message you entered is not a Material &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
         }
     }
 
     @Override
     public List<String> getCurrentValues() {
         List<String> currentValues = new ArrayList<>();
-        for (Biome biome : value) {
-            currentValues.add(biome.name());
+        for (Material mat : value) {
+            currentValues.add(mat.name());
         }
         return currentValues;
     }
@@ -116,8 +116,8 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
     @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
-        for (Biome biome : Biome.values()) {
-            map.put(biome.toString(), new Suggestion(biome+"", "&6[" + "&e" + biome + "&6]", "&7Add &e" + biome));
+        for (Material mat : Material.values()) {
+            map.put(mat.toString(), new Suggestion(mat+"", "&6[" + "&e" + mat + "&6]", "&7Add &e" + mat));
         }
         return new ArrayList<>(map.values());
     }
@@ -128,8 +128,8 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
         for (String s : (List<String>) manager.currentWriting.get(editor)) {
             s = StringConverter.decoloredString(s);
             try {
-                Biome biome = Biome.valueOf(s);
-                value.add(biome);
+                Material mat = Material.valueOf(s);
+                value.add(mat);
             } catch (Exception e) {
             }
         }
