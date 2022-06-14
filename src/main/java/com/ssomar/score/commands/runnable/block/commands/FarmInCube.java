@@ -114,7 +114,7 @@ public class FarmInCube extends BlockCommand {
         if (oldData instanceof Ageable) {
             Ageable ageable = (Ageable) oldData;
 
-            Material required = ToolsListMaterial.getRealMaterialOfBlock(material);
+            Material required = ToolsListMaterial.getInstance().getRealMaterialOfBlock(material);
 
             if (player != null) {
                 Inventory inv = player.getInventory();

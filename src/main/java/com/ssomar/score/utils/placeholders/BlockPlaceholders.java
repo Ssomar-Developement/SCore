@@ -98,8 +98,8 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
         if (blockWorld != null) {
             toReplace = toReplace.replaceAll("%block%", blockType);
             toReplace = toReplace.replaceAll("%block_lower%", blockType.toLowerCase());
-            toReplace = toReplace.replaceAll("%block_item_material%", ToolsListMaterial.getRealMaterialOfBlock(Material.valueOf(blockType)).toString());
-            toReplace = toReplace.replaceAll("%block_item_material_lower%", ToolsListMaterial.getRealMaterialOfBlock(Material.valueOf(blockType)).toString().toLowerCase());
+            toReplace = toReplace.replaceAll("%block_item_material%", ToolsListMaterial.getInstance().getRealMaterialOfBlock(Material.valueOf(blockType)).toString());
+            toReplace = toReplace.replaceAll("%block_item_material_lower%", ToolsListMaterial.getInstance().getRealMaterialOfBlock(Material.valueOf(blockType)).toString().toLowerCase());
             toReplace = toReplace.replaceAll("%block_live%", blockLive);
             toReplace = toReplace.replaceAll("%block_live_lower%", blockLive.toLowerCase());
             toReplace = toReplace.replaceAll("%block_world%", blockWorldName);
