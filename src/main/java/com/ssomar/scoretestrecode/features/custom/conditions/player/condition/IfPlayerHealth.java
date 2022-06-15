@@ -1,26 +1,49 @@
 package com.ssomar.scoretestrecode.features.custom.conditions.player.condition;
 
-import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
-import com.ssomar.score.conditions.condition.player.PlayerCondition;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.scoretestrecode.features.FeatureParentInterface;
+import com.ssomar.scoretestrecode.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.scoretestrecode.features.types.NumberConditionFeature;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import java.util.Optional;
 
-public class IfPlayerHealth extends PlayerCondition<String, String> {
+public class IfPlayerHealth extends PlayerConditionFeature<NumberConditionFeature, IfPlayerHealth> {
 
-
-    public IfPlayerHealth() {
-        super(ConditionType.NUMBER_CONDITION, "ifPlayerHealth", "If player health", new String[]{}, "", " &cYour health is not valid to active the activator: &6%activator% &cof this item!");
+    public IfPlayerHealth(FeatureParentInterface parent) {
+        super(parent, "ifPlayerHealth", "If player health", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender) {
-        if (isDefined() && !StringCalculation.calculation(getAllCondition(messageSender.getSp()), player.getHealth())) {
+    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+        if (hasCondition() && !StringCalculation.calculation(getCondition().getValue().get(), player.getHealth())) {
             sendErrorMsg(playerOpt, messageSender);
+            cancelEvent(event);
             return false;
         }
         return true;
+    }
+
+    @Override
+    public IfPlayerHealth getValue() {
+        return this;
+    }
+
+    @Override
+    public void subReset() {
+        setCondition(new NumberConditionFeature(this, "ifPlayerHealth", "If player health", new String[]{}, Material.ANVIL, false));
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().isPresent();
+    }
+
+    @Override
+    public IfPlayerHealth getNewInstance() {
+        return new IfPlayerHealth(getParent());
     }
 }

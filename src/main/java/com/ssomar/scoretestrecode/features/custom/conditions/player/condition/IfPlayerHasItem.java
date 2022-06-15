@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+// #TODO ADD THIS CONDITION
 public class IfPlayerHasItem extends PlayerCondition<Map<Material, Integer>, Map<String, String>> {
 
 

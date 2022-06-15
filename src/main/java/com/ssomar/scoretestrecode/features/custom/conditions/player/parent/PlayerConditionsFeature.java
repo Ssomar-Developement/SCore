@@ -55,19 +55,31 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
 
         /** Number condition features **/
         conditions.add(new IfCursorDistance(this));
+        conditions.add(new IfLightLevel(this));
+        conditions.add(new IfPlayerEXP(this));
+        conditions.add(new IfPlayerFoodLevel(this));
+        conditions.add(new IfPlayerHealth(this));
+        conditions.add(new IfPlayerLevel(this));
+        conditions.add(new IfPosX(this));
+        conditions.add(new IfPosY(this));
+        conditions.add(new IfPosZ(this));
 
 
         /** List uncolored string **/
         conditions.add(new IfHasPermission(this));
         conditions.add(new IfHasTag(this));
+        conditions.add(new IfNotHasPermission(this));
+        conditions.add(new IfNotHasTag(this));
 
-        /** List Material with tags **/
-
+        /** List Material **/
+        conditions.add(new IfTargetBlock(this));
 
         /** List colored string **/
 
 
         /** List EntityType **/
+        conditions.add(new IfPlayerMounts(this));
+        conditions.add(new IfPlayerNotMounts(this));
 
         /** List Biome **/
         conditions.add(new IfInBiome(this));
@@ -80,6 +92,11 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         /** List World **/
         conditions.add(new IfInWorld(this));
         conditions.add(new IfNotInWorld(this));
+
+        /** List Effects with level **/
+        conditions.add(new IfPlayerHasEffect(this));
+        conditions.add(new IfPlayerHasEffectEquals(this));
+        conditions.add(new IfPlayerNotHasEffect(this));
     }
 
     @Override

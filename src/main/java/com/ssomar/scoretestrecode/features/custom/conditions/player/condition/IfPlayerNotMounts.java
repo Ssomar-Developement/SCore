@@ -1,37 +1,58 @@
 package com.ssomar.scoretestrecode.features.custom.conditions.player.condition;
 
-import com.ssomar.score.conditions.condition.conditiontype.ConditionType;
-import com.ssomar.score.conditions.condition.player.PlayerCondition;
 import com.ssomar.score.utils.SendMessage;
+import com.ssomar.scoretestrecode.features.FeatureParentInterface;
+import com.ssomar.scoretestrecode.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.scoretestrecode.features.types.ListEntityTypeFeature;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-public class IfPlayerNotMounts extends PlayerCondition<List<EntityType>, List<String>> {
+public class IfPlayerNotMounts extends PlayerConditionFeature<ListEntityTypeFeature, IfPlayerNotMounts> {
 
-
-    public IfPlayerNotMounts() {
-        super(ConditionType.LIST_ENTITYTYPE, "ifPlayerNotMounts", "If player not mounts", new String[]{}, new ArrayList<>(), " &cYou must not mount on a specific entity to active the activator: &6%activator% &cof this item!");
+    public IfPlayerNotMounts(FeatureParentInterface parent) {
+        super(parent, "ifPlayerNotMounts", "If player not mounts", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender) {
-        if (isDefined()) {
+    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+        if (hasCondition()) {
             Entity vehicle;
             boolean error = false;
             if ((vehicle = player.getVehicle()) != null) {
-                if(getAllCondition(messageSender.getSp()).contains(vehicle.getType())) error = true;
+                if (getCondition().getValue().contains(vehicle.getType())) error = true;
             }
 
-            if(error) {
+            if (error) {
                 sendErrorMsg(playerOpt, messageSender);
+                cancelEvent(event);
                 return false;
             }
         }
         return true;
+    }
+
+    @Override
+    public IfPlayerNotMounts getValue() {
+        return this;
+    }
+
+    @Override
+    public void subReset() {
+        setCondition(new ListEntityTypeFeature(this, "ifPlayerNotMounts", new ArrayList<>(), "If player not mounts", new String[]{}, Material.ANVIL, false));
+    }
+
+    @Override
+    public boolean hasCondition() {
+        return getCondition().getValue().size() > 0;
+    }
+
+    @Override
+    public IfPlayerNotMounts getNewInstance() {
+        return new IfPlayerNotMounts(getParent());
     }
 }
