@@ -96,13 +96,14 @@ public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCon
             case PLAYER_NUMBER: case TARGET_NUMBER:
                 if(NTools.isNumber(aPart1)) {
                     double nPart1 = Double.parseDouble(aPart1);
-                    if(!comparator.getValue().get().verify(nPart1, part2Number)) return false;
+                    double nPart2 = Double.parseDouble(aPart2);
+                    if(!comparator.getValue().get().verify(nPart1, nPart2)) return false;
                 }
                 else return false;
                 break;
 
             case PLAYER_STRING: case TARGET_STRING:
-                if(!comparator.getValue().get().verify(aPart1, part2)) return false;
+                if(!comparator.getValue().get().verify(aPart1, aPart2)) return false;
                 break;
 
             case PLAYER_PLAYER: case TARGET_TARGET: case PLAYER_TARGET:
