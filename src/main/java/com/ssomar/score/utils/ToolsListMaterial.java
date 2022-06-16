@@ -46,6 +46,7 @@ public class ToolsListMaterial {
             blockAndItemMaterial.put(Material.POTATOES, Material.POTATO);
         }
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
+        blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
 
     }
 

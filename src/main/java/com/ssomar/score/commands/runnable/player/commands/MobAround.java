@@ -57,7 +57,7 @@ public class MobAround extends PlayerCommand {
                     }
                 }
                 if (count % 2 == 0) {
-                    verifyArgs.add(s);
+                    verifyArgs.add(s.replaceAll("\"", ""));
                 } else {
                     concatNext = true;
                     toConcat = toConcat + s.replaceAll("\"", "");
