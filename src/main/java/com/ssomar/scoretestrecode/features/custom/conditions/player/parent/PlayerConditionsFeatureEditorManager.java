@@ -1,6 +1,7 @@
 package com.ssomar.scoretestrecode.features.custom.conditions.player.parent;
 
 
+import com.ssomar.scoretestrecode.editor.NewInteractionClickedGUIManager;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorManagerAbstract;
 
 public class PlayerConditionsFeatureEditorManager extends FeatureEditorManagerAbstract<PlayerConditionsFeatureEditor, PlayerConditionsFeature> {
@@ -17,6 +18,16 @@ public class PlayerConditionsFeatureEditorManager extends FeatureEditorManagerAb
     @Override
     public PlayerConditionsFeatureEditor buildEditor(PlayerConditionsFeature parent) {
         return new PlayerConditionsFeatureEditor(parent.clone());
+    }
+
+    @Override
+    public void nextPage(NewInteractionClickedGUIManager<PlayerConditionsFeatureEditor> interact) {
+        interact.gui.nextPage();
+    }
+
+    @Override
+    public void previousPage(NewInteractionClickedGUIManager<PlayerConditionsFeatureEditor> interact) {
+        interact.gui.prevPage();
     }
 
 }

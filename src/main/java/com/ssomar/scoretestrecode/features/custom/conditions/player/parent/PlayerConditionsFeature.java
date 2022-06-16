@@ -34,24 +34,24 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
     public void reset() {
         conditions = new ArrayList<>();
         /** Boolean features **/
-        conditions.add(new IfBlocking(this));
+        conditions.add(new IfSneaking(this));
+        conditions.add(new IfNotSneaking(this));
+        conditions.add(new IfSprinting(this));
+        conditions.add(new IfNotSprinting(this));
         conditions.add(new IfFlying(this));
+        conditions.add(new IfNotFlying(this));
+        conditions.add(new IfBlocking(this));
+        conditions.add(new IfNotBlocking(this));
         conditions.add(new IfGliding(this));
+        conditions.add(new IfNotGliding(this));
+        conditions.add(new IfSwimming(this));
+        conditions.add(new IfNotSwimming(this));
         conditions.add(new IfIsInTheAir(this));
         conditions.add(new IfIsNotInTheAir(this));
-        conditions.add(new IfNotBlocking(this));
-        conditions.add(new IfNotFlying(this));
-        conditions.add(new IfNotGliding(this));
-        conditions.add(new IfNotSneaking(this));
-        conditions.add(new IfNotSprinting(this));
-        conditions.add(new IfNotSwimming(this));
         conditions.add(new IfPlayerMustBeInHisTown(this));
         conditions.add(new IfPlayerMustBeOnHisClaim(this));
         conditions.add(new IfPlayerMustBeOnHisIsland(this));
         conditions.add(new IfPlayerMustBeOnHisPlot(this));
-        conditions.add(new IfSneaking(this));
-        conditions.add(new IfSprinting(this));
-        conditions.add(new IfSwimming(this));
 
         /** Number condition features **/
         conditions.add(new IfCursorDistance(this));
@@ -127,7 +127,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
     public PlayerConditionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = "&7Entity condition(s) enabled: &e" + getEntityConditionEnabledCount();
+        finalDescription[finalDescription.length - 2] = "&7Player condition(s) enabled: &e" + getEntityConditionEnabledCount();
         finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
 
 

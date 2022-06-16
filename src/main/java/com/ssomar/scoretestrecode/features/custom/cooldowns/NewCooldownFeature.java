@@ -208,7 +208,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
 
     @Override
     public String getParentInfo() {
-        return null;
+        return getParent().getParentInfo();
     }
 
     @Override

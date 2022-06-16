@@ -41,12 +41,13 @@ public class MobAround extends PlayerCommand {
         String toConcat = "";
         for (String s : args) {
             if(concatNext){
-                toConcat = toConcat +" "+ s.replaceAll("\"", "");;
-                if(s.contains("\"")){
+                if(!s.contains("\"")){
                     verifyArgs.add(toConcat);
+                    verifyArgs.add(s);
                     toConcat = "";
                     concatNext = false;
                 }
+                else toConcat = toConcat +" "+ s.replaceAll("\"", "");
             }
             else {
                 int count = 0;
@@ -63,8 +64,12 @@ public class MobAround extends PlayerCommand {
                 }
             }
         }
+        if(!toConcat.isEmpty()) verifyArgs.add(toConcat);
         args.clear();
         args.addAll(verifyArgs);
+        /* for(String s : args) {
+            SsomarDev.testMsg(">>>> " + s);
+        }*/
 
         int argToRemove = -1;
         int cpt = 0;
@@ -78,6 +83,7 @@ public class MobAround extends PlayerCommand {
                     split = blackListString.split(",");
                     for (String s1 : split) {
                         try {
+                            //SsomarDev.testMsg(">>>>> "+s1);
                             blackList.add(new DetailedEntity(s1));
                         } catch (Exception e) {
                         }
