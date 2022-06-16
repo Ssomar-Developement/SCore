@@ -27,7 +27,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void load() {
         List<Integer> slots = detailedSlots.getSlots();
         int i = 0;
-        for(int j=9; j<36; j++) {
+        for(int j = 9; j < 36; j++) {
             this.updateSlot(i, j, slots.contains(j));
             i++;
         }
@@ -40,6 +40,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
         createItem(Material.LEVER,							1 , i, 	"&7&oEnable all slots", 	false,	false, "", "&a✎ Click here to enable");
         i++;
+        i = i+3;
 
         for(int j=0; j<9; j++) {
             this.updateSlot(i, j, slots.contains(j));
@@ -62,6 +63,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
         i++;
 
         updateSlotMainHand(i, slots.contains(-1));
+        i++;
         i++;
 
 
@@ -107,7 +109,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void changeSlotMainHand() {
         ItemStack item = this.getByName("Slot: mainHand");
         if(addOrRemoveEnchant(item)){
-            detailedSlots.getSlots().remove(-1);
+            detailedSlots.getSlots().remove(Integer.valueOf(-1));
         }
         else detailedSlots.getSlots().add(-1);
     }
@@ -123,7 +125,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void changeSlotOffHand() {
         ItemStack item = this.getByName("Slot: offHand");
         if(addOrRemoveEnchant(item)){
-            detailedSlots.getSlots().remove(40);
+            detailedSlots.getSlots().remove(Integer.valueOf(40));
         }
         else detailedSlots.getSlots().add(40);
     }
@@ -153,7 +155,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void changeSlotBoots() {
         ItemStack item = this.getByName("Slot: boots");
         if(addOrRemoveEnchant(item)){
-            detailedSlots.getSlots().remove(36);
+            detailedSlots.getSlots().remove(Integer.valueOf(36));
         }
         else detailedSlots.getSlots().add(36);
     }
@@ -167,7 +169,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void changeSlotLeggings() {
         ItemStack item = this.getByName("Slot: leggings");
         if(addOrRemoveEnchant(item)){
-            detailedSlots.getSlots().remove(37);
+            detailedSlots.getSlots().remove(Integer.valueOf(37));
         }
         else detailedSlots.getSlots().add(37);
     }
@@ -181,7 +183,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void changeSlotChestplate() {
         ItemStack item = this.getByName("Slot: chestplate");
         if(addOrRemoveEnchant(item)){
-            detailedSlots.getSlots().remove(38);
+            detailedSlots.getSlots().remove(Integer.valueOf(38));
         }
         else detailedSlots.getSlots().add(38);
     }
@@ -195,7 +197,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void changeSlotHelmet() {
         ItemStack item = this.getByName("Slot: helmet");
         if(addOrRemoveEnchant(item)){
-            detailedSlots.getSlots().remove(39);
+            detailedSlots.getSlots().remove(Integer.valueOf(39));
         }
         else detailedSlots.getSlots().add(39);
     }
@@ -208,7 +210,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
         }
         else {
             if(!SCore.is1v12Less()) createItem(Material.RED_WOOL,					1 , i, 	"&eSlot: "+slot, 	false,	false, "", "&a✎ Click here to change", "&7actually: &cDisable");
-            createItem(Material.REDSTONE,					1 , i, 	"&eSlot: "+slot, 	false,	false, "", "&a✎ Click here to change", "&7actually: &cDisable");
+            else createItem(Material.REDSTONE,					1 , i, 	"&eSlot: "+slot, 	false,	false, "", "&a✎ Click here to change", "&7actually: &cDisable");
         }
     }
 

@@ -55,6 +55,13 @@ public class DetailedSlotsEditorManager extends FeatureEditorManagerAbstract<Det
                 }
             }
         }
+        else if(i.decoloredName.contains("Disable all slots")) {
+            i.gui.disableAllSlots();
+        }
+
+        else if(i.decoloredName.contains("Enable all slots")) {
+            i.gui.enableAllSlots();
+        }
         return false;
     }
 }

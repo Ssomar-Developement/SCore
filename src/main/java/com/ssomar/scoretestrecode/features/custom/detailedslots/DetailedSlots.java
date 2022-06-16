@@ -25,7 +25,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     private List<Integer> slots;
 
     public DetailedSlots(FeatureParentInterface parent) {
-        super(parent, "detailedSlots", "Detailed Slots", new String[]{"&7&oThe slots where the", "activator will work"}, Material.ARMOR_STAND, false);
+        super(parent, "detailedSlots", "Detailed Slots", new String[]{"&7&oThe slots where the", "&7&oactivator will work"}, Material.ARMOR_STAND, false);
         reset();
     }
 
@@ -44,6 +44,11 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
             }
             catch (Exception e){}
         }
+        if(slots.isEmpty()){
+            for (int i = -1; i <= 40 ; i++){
+                slots.add(i);
+            }
+        }
 
         return error;
     }
@@ -51,8 +56,8 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     @Override
     public void save(ConfigurationSection config) {
         /** Empty list = all slots **/
-        if(slots.size() == 42) slots = new ArrayList<>();
-        config.set(getEditorName(), slots);
+        if(slots.size() == 42) config.set(getEditorName(), new ArrayList<>());
+        else config.set(getEditorName(), slots);
     }
 
     @Override
