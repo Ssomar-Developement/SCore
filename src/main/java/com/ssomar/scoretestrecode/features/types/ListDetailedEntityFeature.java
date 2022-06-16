@@ -32,7 +32,6 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     private List<String> value;
     private List<String> defaultValue;
-    private Optional<List<Suggestion>> suggestions;
 
     private static final String symbolStart = "{";
     private static final String symbolEnd= "}";
@@ -41,10 +40,9 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     private static final Boolean DEBUG = true;
 
-    public ListDetailedEntityFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, Optional<List<Suggestion>> suggestions) {
+    public ListDetailedEntityFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
-        this.suggestions = suggestions;
         reset();
     }
 
@@ -241,7 +239,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     @Override
     public ListDetailedEntityFeature clone() {
-        ListDetailedEntityFeature clone = new ListDetailedEntityFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), suggestions);
+        ListDetailedEntityFeature clone = new ListDetailedEntityFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         clone.setValue(getValue());
         return clone;
     }
@@ -285,7 +283,6 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     @Override
     public List<Suggestion> getSuggestions() {
-        if(suggestions.isPresent()) return suggestions.get();
         return new ArrayList<>();
     }
 
