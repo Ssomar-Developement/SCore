@@ -23,6 +23,8 @@ import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldC
 import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.detailedslots.DetailedSlotsEditor;
+import com.ssomar.scoretestrecode.features.custom.detailedslots.DetailedSlotsEditorManager;
 import com.ssomar.scoretestrecode.features.custom.drop.DropFeaturesEditor;
 import com.ssomar.scoretestrecode.features.custom.drop.DropFeaturesEditorManager;
 import com.ssomar.scoretestrecode.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditorManager;
@@ -234,6 +236,10 @@ public class NewEditorInteractionsListener implements Listener {
             EntityTypeForGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof DetailedSlotsEditor) {
+            DetailedSlotsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -361,5 +367,10 @@ public class NewEditorInteractionsListener implements Listener {
             e.setCancelled(true);
             EntityTypeForGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
+        else if (DetailedSlotsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DetailedSlotsEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+
     }
 }
