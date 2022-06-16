@@ -96,11 +96,11 @@ public class ListDamageCauseFeature extends FeatureAbstract<List<EntityDamageEve
     public Optional<String> verifyMessageReceived(String message) {
         message = StringConverter.decoloredString(message);
         try {
-            Material mat = Material.valueOf(message);
+            EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(message);
             value.add(mat);
             return Optional.empty();
         } catch (Exception e) {
-            return Optional.of("&4&l[ERROR] &cThe message you entered is not a Material &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
+            return Optional.of("&4&l[ERROR] &cThe message you entered is not a DamageCause &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html");
         }
     }
 
@@ -128,7 +128,7 @@ public class ListDamageCauseFeature extends FeatureAbstract<List<EntityDamageEve
         for (String s : (List<String>) manager.currentWriting.get(editor)) {
             s = StringConverter.decoloredString(s);
             try {
-                Material mat = Material.valueOf(s);
+                EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(s);
                 value.add(mat);
             } catch (Exception e) {
             }
