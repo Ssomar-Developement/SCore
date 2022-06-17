@@ -1,5 +1,6 @@
 package com.ssomar.scoretestrecode.features.custom.detailedslots;
 
+import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
@@ -51,6 +52,16 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
         }
 
         return error;
+    }
+
+    public boolean verifSlot(int slot, boolean mainHand) {
+        if(slots.size() != 0) {
+            if(!slots.contains(slot)) {
+                if(mainHand) return slots.contains(-1);
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
