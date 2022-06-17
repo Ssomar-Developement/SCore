@@ -52,7 +52,6 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
 
     public boolean verifClick(DetailedClick dC) {
         if(dC != null && value.isPresent()) {
-            //PlaceholderAPI.testMsg("passe verifClick2: "+dC);
             switch(value.get()) {
                 case RIGHT_OR_LEFT:
                     return true;

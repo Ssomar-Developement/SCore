@@ -1,8 +1,7 @@
 package com.ssomar.score.sobject.sactivator;
 
-import com.iridium.iridiumskyblock.dependencies.ormlite.stmt.query.In;
 import com.ssomar.executableitems.executableitems.activators.DetailedInteraction;
-import com.ssomar.score.sobject.DetailedClick;
+import com.ssomar.score.utils.DetailedClick;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

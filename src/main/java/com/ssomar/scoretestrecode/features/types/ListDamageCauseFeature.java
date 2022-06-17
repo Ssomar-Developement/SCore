@@ -3,6 +3,7 @@ package com.ssomar.scoretestrecode.features.types;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.DetailedClick;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.editor.Suggestion;
@@ -48,6 +49,14 @@ public class ListDamageCauseFeature extends FeatureAbstract<List<EntityDamageEve
         FeatureReturnCheckPremium<List<EntityDamageEvent.DamageCause>> checkPremium = checkPremium("List of DamageCauses", value, Optional.of(defaultValue), isPremiumLoading);
         if (checkPremium.isHasError()) value = checkPremium.getNewValue();
         return errors;
+    }
+    
+    public boolean verifCause(EntityDamageEvent.DamageCause cause) {
+        if(cause != null) {
+            if(value.isEmpty()) return true;
+            return value.contains(cause);
+        }
+        return false;
     }
 
     @Override
