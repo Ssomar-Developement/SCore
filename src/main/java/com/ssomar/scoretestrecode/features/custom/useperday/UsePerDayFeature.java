@@ -1,11 +1,16 @@
 package com.ssomar.scoretestrecode.features.custom.useperday;
 
+import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
+import com.ssomar.scoretestrecode.features.custom.useperday.manager.UsagePerDayManager;
 import com.ssomar.scoretestrecode.features.types.BooleanFeature;
 import com.ssomar.scoretestrecode.features.types.ColoredStringFeature;
 import com.ssomar.scoretestrecode.features.types.IntegerFeature;
@@ -14,13 +19,17 @@ import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @Getter @Setter
 public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, UsePerDayFeature, UsePerDayFeatureEditor, UsePerDayFeatureEditorManager> {
@@ -28,15 +37,17 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     private IntegerFeature maxUsePerDay;
     private ColoredStringFeature messageIfMaxReached;
     private BooleanFeature cancelEventIfMaxReached;
+    private String id;
 
-    public UsePerDayFeature(FeatureParentInterface parent) {
+    public UsePerDayFeature(FeatureParentInterface parent, String id) {
         super(parent, "usePerDay", "Use per day", new String[]{"&7&oUse per day features"}, Material.BUCKET, false);
+        this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.maxUsePerDay = new IntegerFeature(this, "maxUsePerDay", Optional.ofNullable(-1), "Max use per day", new String[]{"&7&oMax use per day"}, Material.BUCKET, false);
+        this.maxUsePerDay = new IntegerFeature(this, "maxUsePerDay", Optional.ofNullable(-1), "Max use per day", new String[]{"&7&oMax use per day", "&a-1 &7&o= infinite"}, Material.BUCKET, false);
         this.messageIfMaxReached = new ColoredStringFeature(this, "messageIfMaxReached", Optional.ofNullable("&4&l[ERROR] &c&oYou have reached the max use per day"), "Message if max reached", new String[]{"&7&oMessage if max reached"}, GUI.WRITABLE_BOOK, false, false);
         this.cancelEventIfMaxReached = new BooleanFeature(this, "cancelEventIfMaxReached", false, "Cancel event if max reached", new String[]{"&7&oCancel event if max reached"}, Material.LEVER, false, false);
     }
@@ -47,11 +58,46 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
         if(config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
             errors.addAll(maxUsePerDay.load(plugin, section, isPremiumLoading));
+            if(maxUsePerDay.getValue().get() < -1) {
+                maxUsePerDay.setValue(Optional.ofNullable(-1));
+            }
             errors.addAll(messageIfMaxReached.load(plugin, section, isPremiumLoading));
             errors.addAll(cancelEventIfMaxReached.load(plugin, section, isPremiumLoading));
         }
 
         return errors;
+    }
+
+    public boolean verify(@NotNull Player player, @Nullable Event event, @Nullable StringPlaceholder sp) {
+        if (!maxUsePerDay.getValue().isPresent() || maxUsePerDay.getValue().get() == -1) {
+            return true;
+        }
+        else{
+            /* Verification of usage per day */
+            if (UsagePerDayManager.getInstance().getCount(player.getName(), this.getId()) >= maxUsePerDay.getValue().get()) {
+                sendMessageIfMaxReached(player, sp);
+                if(event != null && event instanceof Cancellable && cancelEventIfMaxReached.getValue()) {
+                    ((Cancellable) event).setCancelled(true);
+                }
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
+
+    public void incrementUsage(@NotNull Player player) {
+        UsagePerDayManager.getInstance().insertUsage(player.getName(), this.getId());
+    }
+
+    public void sendMessageIfMaxReached(@NotNull Player player, @Nullable StringPlaceholder sp) {
+        String message = messageIfMaxReached.getValue().get();
+        if(StringConverter.decoloredString(message).isEmpty()) return;
+        if(sp != null) {
+            message = sp.replacePlaceholder(message);
+        }
+        player.sendMessage(StringConverter.coloredString(message));
     }
 
     @Override
@@ -78,7 +124,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
         if(maxUsePerDay.getValue().get() != -1)
             finalDescription[finalDescription.length - 3] = "&7Max Use per Day: &e"+maxUsePerDay.getValue().get();
         else
-            finalDescription[finalDescription.length - 3] = "&7Hide enchantments: &c&l✘";
+            finalDescription[finalDescription.length - 3] = "&7Max Use per Day: &c&l✘";
         finalDescription[finalDescription.length - 2] = "&7Message if Max: &e"+messageIfMaxReached.getValue().get();
 
         if(cancelEventIfMaxReached.getValue())
@@ -86,6 +132,11 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
         else
             finalDescription[finalDescription.length - 1] = "&7Cancel event if Max: &c&l✘";
 
+        for (int i = 0; i < finalDescription.length; i++) {
+            String command = finalDescription[i];
+            if (command.length() > 40) command = command.substring(0, 39) + "...";
+            finalDescription[i] = command;
+        }
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -103,7 +154,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
 
     @Override
     public UsePerDayFeature clone() {
-        UsePerDayFeature dropFeatures = new UsePerDayFeature(getParent());
+        UsePerDayFeature dropFeatures = new UsePerDayFeature(getParent(), id);
         dropFeatures.setMaxUsePerDay(maxUsePerDay.clone());
         dropFeatures.setMessageIfMaxReached(messageIfMaxReached.clone());
         dropFeatures.setCancelEventIfMaxReached(cancelEventIfMaxReached.clone());
@@ -135,6 +186,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature instanceof UsePerDayFeature) {
                 UsePerDayFeature hiders = (UsePerDayFeature) feature;
+                if(maxUsePerDay .getValue().get() < -1) maxUsePerDay.setValue(Optional.ofNullable(-1));
                 hiders.setMaxUsePerDay(maxUsePerDay);
                 hiders.setMessageIfMaxReached(messageIfMaxReached);
                 hiders.setCancelEventIfMaxReached(cancelEventIfMaxReached);

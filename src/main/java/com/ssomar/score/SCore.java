@@ -22,6 +22,7 @@ import com.ssomar.score.sobject.sactivator.cooldowns.CooldownsHandler;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.ProtocolibAPI;
 import com.ssomar.score.utils.Utils;
+import com.ssomar.scoretestrecode.features.custom.useperday.manager.UsagePerDayManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -113,6 +114,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         ProjectilesLoader.getInstance().load();
 
         CommandsHandler.getInstance().onEnable();
+
+        UsagePerDayManager.getInstance();
 
         Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
     }
@@ -225,6 +228,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onDisable() {
+        UsagePerDayManager.getInstance().save();
         CommandsHandler.getInstance().onDisable();
         CooldownsHandler.closeServerSaveAll();
     }

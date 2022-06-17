@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.scoretestrecode.features.custom.useperday.data.UsePerDayQuery;
 
 /**
  *
@@ -27,6 +28,7 @@ public class Database {
 		PlayerCommandsQuery.createNewTable(connect());
 		EntityCommandsQuery.createNewTable(connect());
 		BlockCommandsQuery.createNewTable(connect());
+		UsePerDayQuery.createNewTable(connect());
 	}
 	
 	public void createNewDatabase(String fileName) {
@@ -68,7 +70,7 @@ public class Database {
 		if(needOpenConnection) {
 			try {
 				if (GeneralConfig.getInstance().isUseMySQL()) {
-					if(SCore.is1v18()) conn = new Database1v18().get1v18Connection();
+					if(SCore.is1v18Plus()) conn = new Database1v18().get1v18Connection();
 					else conn = new DatabaseOld().getOldConnection();
 				} else conn = DriverManager.getConnection(urlLocal);
 
