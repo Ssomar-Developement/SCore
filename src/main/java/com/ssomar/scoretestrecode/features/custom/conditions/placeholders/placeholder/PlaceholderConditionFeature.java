@@ -47,10 +47,10 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
 
     @Override
     public void reset() {
-        this.type = new PlaceholderConditionTypeFeature(this, "type", Optional.of(PlaceholdersCdtType.PLAYER_STRING),"Type", new String[]{"&7&oThe type of the condition"}, Material.COMPASS, false);
+        this.type = new PlaceholderConditionTypeFeature(this, "type", Optional.of(PlaceholdersCdtType.PLAYER_NUMBER),"Type", new String[]{"&7&oThe type of the condition"}, Material.COMPASS, false);
         this.comparator = new ComparatorFeature(this, "comparator", Optional.of(Comparator.EQUALS),"Comparator", new String[]{"&7&oThe comparator of the condition"}, Material.COMPASS, false);
-        this.part1 = new ColoredStringFeature(this, "part1", Optional.of(""), "Part 1", new String[]{"&7&oThe first part of the condition"}, GUI.WRITABLE_BOOK, false, false);
-        this.part2 = new ColoredStringFeature(this, "part2", Optional.of(""), "Part 2", new String[]{"&7&oThe second part of the condition"}, GUI.WRITABLE_BOOK, false, false);
+        this.part1 = new ColoredStringFeature(this, "part1", Optional.of("%player_health%"), "Part 1", new String[]{"&7&oThe first part of the condition"}, GUI.WRITABLE_BOOK, false, false);
+        this.part2 = new ColoredStringFeature(this, "part2", Optional.of("10"), "Part 2", new String[]{"&7&oThe second part of the condition"}, GUI.WRITABLE_BOOK, false, false);
 
         this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel Event If Not Valid", new String[]{"&7&oCancel the event if the condition is not valid"}, Material.COMPASS, false, false);
         this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.of(""), "Message If Not Valid", new String[]{"&7&oThe message to display if" ,"&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);

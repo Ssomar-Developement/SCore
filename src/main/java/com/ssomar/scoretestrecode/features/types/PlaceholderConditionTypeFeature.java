@@ -75,7 +75,7 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
     @Override
     public void updateItemParentEditor(GUI gui) {
         Optional<PlaceholdersCdtType> value = getValue();
-        PlaceholdersCdtType finalValue = value.orElse(PlaceholdersCdtType.PLAYER_STRING);
+        PlaceholdersCdtType finalValue = value.orElse(PlaceholdersCdtType.PLAYER_NUMBER);
         updatePlaceholdersCdtType(finalValue, gui);
     }
 

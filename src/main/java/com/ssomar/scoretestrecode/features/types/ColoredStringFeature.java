@@ -84,7 +84,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if(value.isPresent()) gui.updateActually(getEditorName(), getValue().get(), true);
+        if(value.isPresent() && !StringConverter.decoloredString(value.get()).isEmpty()) gui.updateActually(getEditorName(), getValue().get(), true);
         else gui.updateActually(getEditorName(), "&cEMPTY STRING", true);
     }
 

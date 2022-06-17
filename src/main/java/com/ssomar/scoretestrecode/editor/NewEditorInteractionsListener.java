@@ -67,6 +67,8 @@ import com.ssomar.scoretestrecode.features.custom.required.money.RequiredMoneyEd
 import com.ssomar.scoretestrecode.features.custom.required.money.RequiredMoneyEditorManager;
 import com.ssomar.scoretestrecode.features.custom.restrictions.RestrictionsEditor;
 import com.ssomar.scoretestrecode.features.custom.restrictions.RestrictionsEditorManager;
+import com.ssomar.scoretestrecode.features.custom.useperday.UsePerDayFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.useperday.UsePerDayFeatureEditorManager;
 import com.ssomar.scoretestrecode.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.scoretestrecode.sobject.menu.NewSObjectsManagerEditor;
 import org.bukkit.entity.Player;
@@ -258,6 +260,10 @@ public class NewEditorInteractionsListener implements Listener {
             DetailedSlotsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof UsePerDayFeatureEditor) {
+            UsePerDayFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -400,6 +406,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (DetailedSlotsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             DetailedSlotsEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (UsePerDayFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            UsePerDayFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
 
     }
