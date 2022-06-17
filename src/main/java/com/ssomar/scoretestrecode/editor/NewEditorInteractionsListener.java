@@ -29,6 +29,8 @@ import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldC
 import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.cooldowns.NewCooldownFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.detailedblocks.DetailedBlocksEditor;
+import com.ssomar.scoretestrecode.features.custom.detailedblocks.DetailedBlocksEditorManager;
 import com.ssomar.scoretestrecode.features.custom.detailedslots.DetailedSlotsEditor;
 import com.ssomar.scoretestrecode.features.custom.detailedslots.DetailedSlotsEditorManager;
 import com.ssomar.scoretestrecode.features.custom.drop.DropFeaturesEditor;
@@ -264,6 +266,10 @@ public class NewEditorInteractionsListener implements Listener {
             UsePerDayFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof DetailedBlocksEditor) {
+            DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
     }
 
 
@@ -410,6 +416,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (UsePerDayFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             UsePerDayFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (DetailedBlocksEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DetailedBlocksEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
 
     }
