@@ -50,7 +50,7 @@ public class ListDamageCauseFeature extends FeatureAbstract<List<EntityDamageEve
         if (checkPremium.isHasError()) value = checkPremium.getNewValue();
         return errors;
     }
-    
+
     public boolean verifCause(EntityDamageEvent.DamageCause cause) {
         if(cause != null) {
             if(value.isEmpty()) return true;

@@ -2,6 +2,7 @@ package com.ssomar.scoretestrecode.features.custom.conditions.world.parent;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.SendMessage;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
@@ -12,13 +13,17 @@ import com.ssomar.scoretestrecode.features.custom.conditions.world.condition.IfW
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -50,6 +55,15 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
         }
 
         return error;
+    }
+
+    public boolean verifCondition(World world, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event){
+        for(WorldConditionFeature condition : conditions) {
+            if(!condition.verifCondition(world, playerOpt, messageSender, event)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

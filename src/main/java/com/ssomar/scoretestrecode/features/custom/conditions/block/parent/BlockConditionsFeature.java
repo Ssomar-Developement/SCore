@@ -2,6 +2,7 @@ package com.ssomar.scoretestrecode.features.custom.conditions.block.parent;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.SendMessage;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
@@ -12,13 +13,17 @@ import com.ssomar.scoretestrecode.features.custom.conditions.entity.EntityCondit
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -50,6 +55,17 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfUsage(this));
 
     }
+
+    public boolean verifConditions(Block b, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event){
+        for(BlockConditionFeature condition : conditions){
+            if(!condition.verifCondition(b, playerOpt, messageSender, event)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {

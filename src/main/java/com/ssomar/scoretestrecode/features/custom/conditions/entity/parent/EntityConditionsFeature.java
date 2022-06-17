@@ -2,6 +2,7 @@ package com.ssomar.scoretestrecode.features.custom.conditions.entity.parent;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.SendMessage;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
@@ -14,12 +15,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -73,6 +78,15 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         }
 
         return error;
+    }
+
+    public boolean verifConditions(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event){
+        for(EntityConditionFeature condition : conditions) {
+            if(!condition.verifCondition(entity, playerOpt, messageSender, event)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
