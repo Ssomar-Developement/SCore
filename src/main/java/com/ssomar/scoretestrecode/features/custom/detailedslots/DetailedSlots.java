@@ -1,13 +1,11 @@
 package com.ssomar.scoretestrecode.features.custom.detailedslots;
 
-import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
-import com.ssomar.scoretestrecode.features.types.BooleanFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -20,7 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, DetailedSlots, DetailedSlotsEditor, DetailedSlotsEditorManager> {
 
     private List<Integer> slots;
@@ -39,14 +38,14 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         slots = new ArrayList<>();
-        for(String s : config.getStringList(getEditorName())){
-            try{
+        for (String s : config.getStringList(getEditorName())) {
+            try {
                 slots.add(Integer.valueOf(s));
+            } catch (Exception e) {
             }
-            catch (Exception e){}
         }
-        if(slots.isEmpty()){
-            for (int i = -1; i <= 40 ; i++){
+        if (slots.isEmpty()) {
+            for (int i = -1; i <= 40; i++) {
                 slots.add(i);
             }
         }
@@ -55,19 +54,18 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     }
 
     public boolean verifSlot(int slot, boolean mainHand) {
-        if(slots.size() != 0) {
-            if(!slots.contains(slot)) {
-                if(mainHand) return slots.contains(-1);
-                return false;
-            }
+        if (!slots.contains(slot)) {
+            if (mainHand) return slots.contains(-1);
+            return false;
         }
+
         return true;
     }
 
     @Override
     public void save(ConfigurationSection config) {
         /** Empty list = all slots **/
-        if(slots.size() == 42) config.set(getEditorName(), new ArrayList<>());
+        if (slots.size() == 42) config.set(getEditorName(), new ArrayList<>());
         else config.set(getEditorName(), slots);
     }
 
@@ -81,7 +79,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7Slot(s) enabled: &e"+slots.size();
+        finalDescription[finalDescription.length - 1] = "&7Slot(s) enabled: &e" + slots.size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -126,8 +124,8 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
 
     @Override
     public void reload() {
-        for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof DetailedSlots) {
+        for (FeatureInterface feature : getParent().getFeatures()) {
+            if (feature instanceof DetailedSlots) {
                 DetailedSlots hiders = (DetailedSlots) feature;
                 hiders.setSlots(slots);
                 break;

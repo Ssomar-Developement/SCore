@@ -1,5 +1,6 @@
 package com.ssomar.scoretestrecode.features.types;
 
+import com.ssomar.executableitems.executableitems.activators.ActivatorEI;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DetailedClick;
@@ -47,6 +48,23 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
             value = Optional.empty();
         }
         return errors;
+    }
+
+    public boolean verifClick(DetailedClick dC) {
+        if(dC != null && value.isPresent()) {
+            //PlaceholderAPI.testMsg("passe verifClick2: "+dC);
+            switch(value.get()) {
+                case RIGHT_OR_LEFT:
+                    return true;
+                case LEFT:
+                    return dC.equals(DetailedClick.LEFT);
+                case RIGHT:
+                    return dC.equals(DetailedClick.RIGHT);
+                default:
+                    return false;
+            }
+        }
+        return false;
     }
 
     @Override
