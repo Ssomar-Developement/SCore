@@ -27,6 +27,12 @@ import java.util.Optional;
 public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndTagsFeature, MaterialAndTagsFeature, MaterialAndTagsFeatureEditor, MaterialAndTagsFeatureEditorManager> {
 
     private MaterialWithGroupsFeature material;
+
+    private static final String symbolStart = "{";
+    private static final String symbolEnd= "}";
+    private static final String symbolEquals = ":";
+    private static final String symbolSeparator = "\\+";
+
     private String id;
 
     public MaterialAndTagsFeature(FeatureParentInterface parent, String id) {
@@ -52,6 +58,8 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
         }
         return errors;
     }
+
+
 
     @Override
     public boolean isTheFeatureClickedParentEditor(String featureClicked) {

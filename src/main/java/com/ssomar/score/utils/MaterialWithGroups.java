@@ -30,6 +30,9 @@ public enum MaterialWithGroups {
     ALL_STAINED_GLASS_PANES,
     ALL_SHULKER_BOXES;
 
+    public static boolean verif(Material material, String name){
+        return false;
+    }
 
     public static Optional<String> getMaterialWithGroups(String name) {
         name = name.toUpperCase();
