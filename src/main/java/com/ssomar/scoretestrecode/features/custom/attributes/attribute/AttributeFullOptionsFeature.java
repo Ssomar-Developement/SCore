@@ -50,6 +50,13 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         this.uuid = new UUIDFeature(this, "uuid", "UUID", new String[]{"&7&oThe UUID"}, Material.NAME_TAG, false);
     }
 
+    public AttributeModifier getAttributeModifier() {
+        if(slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)){
+            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue().get(), operation.getValue().get(), null);
+        }
+        else return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue().get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
