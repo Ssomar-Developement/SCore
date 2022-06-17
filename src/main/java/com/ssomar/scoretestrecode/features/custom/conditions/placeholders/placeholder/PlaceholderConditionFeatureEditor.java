@@ -1,13 +1,13 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.placeholders.attribute;
+package com.ssomar.scoretestrecode.features.custom.conditions.placeholders.placeholder;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorInterface;
 
-public class PlaceholderConditionFeatureEditor extends FeatureEditorInterface<PlaceholderCondition> {
+public class PlaceholderConditionFeatureEditor extends FeatureEditorInterface<PlaceholderConditionFeature> {
 
-    public PlaceholderCondition enchantFeature;
+    public PlaceholderConditionFeature enchantFeature;
 
-    public PlaceholderConditionFeatureEditor(PlaceholderCondition dropFeatures) {
+    public PlaceholderConditionFeatureEditor(PlaceholderConditionFeature dropFeatures) {
         super("&lPlaceholder condition feature Editor", 3*9);
         this.enchantFeature = dropFeatures.clone();
         load();
@@ -33,7 +33,7 @@ public class PlaceholderConditionFeatureEditor extends FeatureEditorInterface<Pl
     }
 
     @Override
-    public PlaceholderCondition getParent() {
+    public PlaceholderConditionFeature getParent() {
         return enchantFeature;
     }
 }

@@ -1,7 +1,7 @@
 package com.ssomar.scoretestrecode.features.custom.conditions.placeholders.group;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.scoretestrecode.features.custom.conditions.placeholders.attribute.PlaceholderCondition;
+import com.ssomar.scoretestrecode.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorInterface;
 
 public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterface<PlaceholderConditionGroupFeature> {
@@ -9,7 +9,7 @@ public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterfa
     public PlaceholderConditionGroupFeature attributesGroupFeature;
 
     public PlaceholderConditionGroupFeatureEditor(PlaceholderConditionGroupFeature enchantsGroupFeature) {
-        super("&lAttributes feature Editor", 3*9);
+        super("&lPlaceholders Conditions feature Editor", 3*9);
         this.attributesGroupFeature = enchantsGroupFeature;
         load();
     }
@@ -17,7 +17,7 @@ public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterfa
     @Override
     public void load() {
         int i = 0;
-        for(PlaceholderCondition enchantment : attributesGroupFeature.getAttributes().values()) {
+        for(PlaceholderConditionFeature enchantment : attributesGroupFeature.getAttributes().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
             i++;
         }

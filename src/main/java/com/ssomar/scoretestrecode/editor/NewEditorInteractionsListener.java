@@ -19,6 +19,10 @@ import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.Entit
 import com.ssomar.scoretestrecode.features.custom.conditions.entity.parent.EntityConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.item.parent.ItemConditionsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.item.parent.ItemConditionsFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.player.parent.PlayerConditionsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.conditions.player.parent.PlayerConditionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.world.parent.WorldConditionsFeatureEditor;
@@ -226,6 +230,14 @@ public class NewEditorInteractionsListener implements Listener {
             CustomEIConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof PlaceholderConditionFeatureEditor) {
+            PlaceholderConditionFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof PlaceholderConditionGroupFeatureEditor) {
+            PlaceholderConditionGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
         else if (holder instanceof MaterialAndTagsFeatureEditor) {
             MaterialAndTagsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -360,6 +372,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (CustomEIConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             CustomEIConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PlaceholderConditionFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PlaceholderConditionFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PlaceholderConditionGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PlaceholderConditionGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
         else if (MaterialAndTagsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);

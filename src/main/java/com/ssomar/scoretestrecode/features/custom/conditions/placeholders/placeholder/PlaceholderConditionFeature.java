@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.conditions.placeholders.attribute;
+package com.ssomar.scoretestrecode.features.custom.conditions.placeholders.placeholder;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.conditions.condition.placeholders.PlaceholdersCdtType;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
-public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCondition, PlaceholderCondition, PlaceholderConditionFeatureEditor, PlaceholderConditionEditorManager> {
+public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<PlaceholderConditionFeature, PlaceholderConditionFeature, PlaceholderConditionFeatureEditor, PlaceholderConditionFeatureEditorManager> {
 
     private PlaceholderConditionTypeFeature type;
     private ComparatorFeature comparator;
@@ -39,8 +39,8 @@ public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCon
     private ColoredStringFeature messageIfNotValid;
     private String id;
 
-    public PlaceholderCondition(FeatureParentInterface parent, String id) {
-        super(parent, "PlaceholderCondition", "Placeholder Condition", new String[]{"&7&oA Placeholder condition with its options"}, Material.WRITABLE_BOOK, false);
+    public PlaceholderConditionFeature(FeatureParentInterface parent, String id) {
+        super(parent, "placeholderCondition", "Placeholder Condition", new String[]{"&7&oA Placeholder condition with its options"}, Material.WRITABLE_BOOK, false);
         this.id = id;
         reset();
     }
@@ -167,12 +167,12 @@ public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCon
     }
 
     @Override
-    public PlaceholderCondition getValue() {
+    public PlaceholderConditionFeature getValue() {
         return this;
     }
 
     @Override
-    public PlaceholderCondition initItemParentEditor(GUI gui, int slot) {
+    public PlaceholderConditionFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 5];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 5] = "&7Type: &e" + type.getValue().get().name();
@@ -196,8 +196,8 @@ public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCon
     }
 
     @Override
-    public PlaceholderCondition clone() {
-        PlaceholderCondition eF = new PlaceholderCondition(getParent(), id);
+    public PlaceholderConditionFeature clone() {
+        PlaceholderConditionFeature eF = new PlaceholderConditionFeature(getParent(), id);
         eF.setType(type.clone());
         eF.setComparator(comparator.clone());
         eF.setPart1(part1.clone());
@@ -230,8 +230,8 @@ public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCon
     @Override
     public void reload() {
         for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof PlaceholderCondition) {
-                PlaceholderCondition aFOF = (PlaceholderCondition) feature;
+            if(feature instanceof PlaceholderConditionFeature) {
+                PlaceholderConditionFeature aFOF = (PlaceholderConditionFeature) feature;
                 if(aFOF.getId().equals(id)) {
                     aFOF.setType(type);
                     aFOF.setComparator(comparator);
@@ -252,7 +252,7 @@ public class PlaceholderCondition extends FeatureWithHisOwnEditor<PlaceholderCon
 
     @Override
     public void openEditor(@NotNull Player player) {
-        PlaceholderConditionEditorManager.getInstance().startEditing(player, this);
+        PlaceholderConditionFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
 }
