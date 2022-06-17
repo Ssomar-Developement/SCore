@@ -88,7 +88,8 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     }
 
     public void incrementUsage(@NotNull Player player) {
-        UsagePerDayManager.getInstance().insertUsage(player.getName(), this.getId());
+        if( maxUsePerDay.getValue().get() != -1)
+            UsagePerDayManager.getInstance().insertUsage(player.getName(), this.getId());
     }
 
     public void sendMessageIfMaxReached(@NotNull Player player, @Nullable StringPlaceholder sp) {
