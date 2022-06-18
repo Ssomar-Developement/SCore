@@ -16,16 +16,18 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-@Getter @Setter
+@Getter
+@Setter
 public class MaterialFeature extends FeatureAbstract<Optional<Material>, MaterialFeature> implements FeatureRequireOnlyClicksInEditor {
 
     private Optional<Material> value;
     private Optional<Material> defaultValue;
 
-    public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
@@ -39,35 +41,36 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
             Material material = Material.valueOf(colorStr);
             value = Optional.ofNullable(material);
             FeatureReturnCheckPremium<Material> checkPremium = checkPremium("Material", material, defaultValue, isPremiumLoading);
-            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+            if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
+            errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
             value = Optional.empty();
         }
         return errors;
     }
 
+
     @Override
     public void save(ConfigurationSection config) {
         Optional<Material> value = getValue();
-        if(value.isPresent()) config.set(this.getName(), value.get().name());
+        if (value.isPresent()) config.set(this.getName(), value.get().name());
     }
 
     @Override
     public Optional<Material> getValue() {
-        if(value.isPresent()) return value;
+        if (value.isPresent()) return value;
         else return defaultValue;
     }
 
     @Override
     public MaterialFeature initItemParentEditor(GUI gui, int slot) {
-        String [] finalDescription = new String[getEditorDescription().length + 3];
+        String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 2] = "&8>> &6SHIFT : &eBOOST SCROLL";
         finalDescription[finalDescription.length - 1] = "&8>> &6UP: &eRIGHT | &6DOWN: &eLEFT";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR+getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -80,7 +83,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        this.value = Optional.of(getMaterial( (GUI) manager.getCache().get(player)));
+        this.value = Optional.of(getMaterial((GUI) manager.getCache().get(player)));
     }
 
     @Override
@@ -122,7 +125,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public boolean shiftLeftClicked(Player editor, NewGUIManager manager) {
-        Material material = getMaterial( (GUI) manager.getCache().get(editor));
+        Material material = getMaterial((GUI) manager.getCache().get(editor));
         material = nextMaterial(material);
         material = nextMaterial(material);
         material = nextMaterial(material);
@@ -144,7 +147,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
-        Material material = getMaterial( (GUI) manager.getCache().get(editor));
+        Material material = getMaterial((GUI) manager.getCache().get(editor));
         material = prevMaterial(material);
         material = prevMaterial(material);
         material = prevMaterial(material);
@@ -166,13 +169,13 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        updateMaterial(nextMaterial(getMaterial( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateMaterial(nextMaterial(getMaterial((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        updateMaterial(prevMaterial(getMaterial( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateMaterial(prevMaterial(getMaterial((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
@@ -198,7 +201,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
             }
             cpt++;
         }
-        if (i == 0) return getSortMaterials().get(getSortMaterials().size()- 1);
+        if (i == 0) return getSortMaterials().get(getSortMaterials().size() - 1);
         else return getSortMaterials().get(cpt - 1);
     }
 
@@ -210,7 +213,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         boolean find = false;
         for (Material check : getSortMaterials()) {
             if (material.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" +material.name()));
+                lore.add(StringConverter.coloredString("&2➤ &a" + material.name()));
                 find = true;
             } else if (find) {
                 if (lore.size() == 17) break;
@@ -250,7 +253,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     public List<Material> getSortMaterials() {
         SortedMap<String, Material> map = new TreeMap<String, Material>();
         for (Material l : Material.values()) {
-            if(l.isItem() && !l.isAir()) map.put(l.name(), l);
+            if (l.isItem() && !l.isAir()) map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());
     }
