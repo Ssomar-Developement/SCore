@@ -55,6 +55,12 @@ import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.grou
 import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.potioneffects.group.PotionEffectGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.potioneffects.group.PotionEffectGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.potioneffects.potioneffect.PotionEffectFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.potioneffects.potioneffect.PotionEffectFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.potionsettings.PotionSettingsFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.potionsettings.PotionSettingsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditor;
@@ -271,8 +277,21 @@ public class NewEditorInteractionsListener implements Listener {
         else if (holder instanceof DetailedBlocksEditor) {
             DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        }else if (holder instanceof HeadFeaturesEditor) {
+        }
+        else if (holder instanceof HeadFeaturesEditor) {
             HeadFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof PotionEffectFeatureEditor) {
+            PotionEffectFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof PotionEffectGroupFeatureEditor) {
+            PotionEffectGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof PotionSettingsFeatureEditor) {
+            PotionSettingsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
 
@@ -430,6 +449,18 @@ public class NewEditorInteractionsListener implements Listener {
         else if (HeadFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             HeadFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PotionEffectFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PotionEffectFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PotionEffectGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PotionEffectGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PotionSettingsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PotionSettingsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
 
     }
