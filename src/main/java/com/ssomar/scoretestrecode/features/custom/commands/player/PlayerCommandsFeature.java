@@ -51,6 +51,7 @@ public class PlayerCommandsFeature extends CommandsAbstractFeature<List<String>,
         commands = prepareActionbarArgs(commands, objectName);
         for(int i = 0; i < commands.size(); i++) {
             String s1 = commands.get(i);
+            /* add blockface for the command setblock (in player cmd) */
             if (s1.startsWith("SETBLOCK")){
                 s1 = s1.replace("SETBLOCK", "SETBLOCK %blockface%");
                 commands.set(i, s1);

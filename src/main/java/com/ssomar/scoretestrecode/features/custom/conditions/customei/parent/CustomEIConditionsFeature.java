@@ -47,6 +47,15 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
 
     }
 
+    public boolean isNeedConfirmation(){
+        for(CustomEIConditionFeature condition : conditions){
+            if(condition instanceof IfNeedPlayerConfirmation){
+                return ((IfNeedPlayerConfirmation) condition).getCondition().getValue();
+            }
+        }
+        return false;
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
