@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.plotsquared.core.PlotAPI;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.CommandsClass;
 import com.ssomar.score.commands.runnable.CommandsHandler;
@@ -78,6 +79,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasNBTAPI = false;
 
     public static ProtocolManager protocolManager;
+
+    public static boolean hasHeadDatabase = false;
+
+    public static boolean hasHeadDB = false;
 
     @Override
     public void onEnable() {
@@ -222,6 +227,16 @@ public final class SCore extends JavaPlugin implements SPlugin {
                 SCore.plugin.getServer().getLogger().severe("[" + NAME + "] PlotSquared hooked BUT you haven't the good version ! (try to update it) !");
                 hasPlotSquared = false;
             }
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("HeadDatabase") != null) {
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] HeadDatabase hooked !");
+            hasHeadDatabase = true;
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("HeadDB") != null) {
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] HeadDB hooked !");
+            hasHeadDB = true;
         }
 
     }

@@ -45,6 +45,8 @@ import com.ssomar.scoretestrecode.features.custom.entities.group.EntityTypeGroup
 import com.ssomar.scoretestrecode.features.custom.entities.group.EntityTypeGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditor;
 import com.ssomar.scoretestrecode.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditorManager;
+import com.ssomar.scoretestrecode.features.custom.headfeatures.HeadFeaturesEditor;
+import com.ssomar.scoretestrecode.features.custom.headfeatures.HeadFeaturesEditorManager;
 import com.ssomar.scoretestrecode.features.custom.hiders.HidersEditor;
 import com.ssomar.scoretestrecode.features.custom.hiders.HidersEditorManager;
 import com.ssomar.scoretestrecode.features.custom.loop.LoopFeaturesEditor;
@@ -269,7 +271,11 @@ public class NewEditorInteractionsListener implements Listener {
         else if (holder instanceof DetailedBlocksEditor) {
             DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
+        }else if (holder instanceof HeadFeaturesEditor) {
+            HeadFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
         }
+
     }
 
 
@@ -420,6 +426,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (DetailedBlocksEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             DetailedBlocksEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (HeadFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            HeadFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
 
     }
