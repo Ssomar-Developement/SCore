@@ -2,6 +2,7 @@ package com.ssomar.score.api.executableitems;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemsManager;
 import com.ssomar.score.api.executableitems.config.ExecutableItemsManagerInterface;
+import com.ssomar.score.api.executableitems.config.NewExecutableItemsManagerInterface;
 
 public class ExecutableItemsAPI {
 

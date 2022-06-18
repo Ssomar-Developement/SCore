@@ -3,6 +3,7 @@ package com.ssomar.scoretestrecode.features.types;
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
+import com.ssomar.score.api.executableitems.config.NewExecutableItemInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;

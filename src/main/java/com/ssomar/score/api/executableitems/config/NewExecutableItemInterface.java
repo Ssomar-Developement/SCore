@@ -1,5 +1,7 @@
 package com.ssomar.score.api.executableitems.config;
 
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.scoretestrecode.features.custom.activators.group.ActivatorsFeature;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -38,4 +40,6 @@ public interface NewExecutableItemInterface {
     /**
      * @return true If the item has the feature to keep the EI on death, false otherwise **/
     boolean hasKeepItemOnDeath();
+
+    ActivatorsFeature getActivators();
 }
