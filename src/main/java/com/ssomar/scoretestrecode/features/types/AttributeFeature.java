@@ -10,6 +10,7 @@ import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-@Getter
+@Getter @Setter
 public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, AttributeFeature> implements FeatureRequireOnlyClicksInEditor {
 
     private Optional<Attribute> value;
