@@ -6,6 +6,8 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.sactivator.SActivator;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.scoretestrecode.features.custom.activators.activator.NewSActivator;
+import com.ssomar.scoretestrecode.sobject.NewSObject;
 
 public class Cooldown {
 	
@@ -25,6 +27,17 @@ public class Cooldown {
 	private boolean isNull;
 
 	private static final boolean DEBUG = false;
+
+	public Cooldown(SPlugin sPlugin, NewSObject sO, NewSActivator sAct, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
+		super();
+		this.id = sPlugin.getShortName()+":"+sO.getId()+":"+sAct.getId();
+		this.entityUUID = entityUUID;
+		this.cooldown = cooldown;
+		this.isInTick = isInTick;
+		this.time = time;
+		this.global = global;
+		isNull = false;
+	}
 
 	public Cooldown(SPlugin sPlugin, SObject sO, SActivator sAct, UUID entityUUID, int cooldown, boolean isInTick, long time, boolean global) {
 		super();
