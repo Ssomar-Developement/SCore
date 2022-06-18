@@ -10,6 +10,7 @@ import com.ssomar.scoretestrecode.features.FeatureRequireOneMessageInEditor;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 import static com.ssomar.score.menu.conditions.RequestMessage.space;
 
-@Getter
+@Getter @Setter
 public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeature> implements FeatureRequireOneMessageInEditor {
 
     private Optional<Double> value;

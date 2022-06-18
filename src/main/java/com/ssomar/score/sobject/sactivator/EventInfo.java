@@ -1,7 +1,7 @@
 package com.ssomar.score.sobject.sactivator;
 
-import com.ssomar.executableitems.executableitems.activators.DetailedInteraction;
 import com.ssomar.score.utils.DetailedClick;
+import com.ssomar.score.utils.DetailedInteraction;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
