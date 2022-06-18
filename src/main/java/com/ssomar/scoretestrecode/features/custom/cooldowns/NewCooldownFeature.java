@@ -19,6 +19,7 @@ import com.ssomar.scoretestrecode.features.custom.activators.activator.NewSActiv
 import com.ssomar.scoretestrecode.features.types.BooleanFeature;
 import com.ssomar.scoretestrecode.features.types.ColoredStringFeature;
 import com.ssomar.scoretestrecode.features.types.IntegerFeature;
+import com.ssomar.scoretestrecode.sobject.NewSObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -62,7 +63,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      * @param sp The placeholder associate to the event
      * @return True in No coooldown, false if its on cooldown
      */
-    public boolean checkCooldown(Player p, Event e, StringPlaceholder sp, SObject sObject) {
+    public boolean checkCooldown(Player p, Event e, StringPlaceholder sp, NewSObject sObject) {
         /* Check if the activator is in cooldown for the player or not  */
         if (!hasNoCDPerm(p, sObject)) {
             Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(ExecutableItems.plugin, cooldownId, p.getUniqueId());
@@ -91,14 +92,14 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      *
      * @param p The player
      */
-    public void addCooldown(Player p, @NotNull SObject sObject){
+    public void addCooldown(Player p, @NotNull NewSObject sObject){
         if (!hasNoCDPerm(p, sObject) && this.cooldown.getValue().get() != 0) {
             Cooldown cooldown = new Cooldown(ExecutableItems.plugin, cooldownId, p.getUniqueId(), this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
             CooldownsManager.getInstance().addCooldown(cooldown);
         }
     }
 
-    public boolean hasNoCDPerm(Player p, SObject sObject){
+    public boolean hasNoCDPerm(Player p, NewSObject sObject){
         String id = sObject.getId();
 
         if(sPlugin.isLotOfWork()) return false;

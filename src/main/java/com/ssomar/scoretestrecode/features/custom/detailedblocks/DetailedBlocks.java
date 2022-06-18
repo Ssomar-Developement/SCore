@@ -57,7 +57,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     }
 
     public boolean isValidMaterial(@NotNull Material material, Optional<String> statesStrOpt, Optional<Player> playerOpt, Event event) {
-        if(!blocks.isValidMaterial(material, statesStrOpt)) {
+        if(!blocks.isValidMaterial(material, statesStrOpt) && !blocks.getValue().isEmpty()) {
             if(event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
                 ((Cancellable) event).setCancelled(true);
             }

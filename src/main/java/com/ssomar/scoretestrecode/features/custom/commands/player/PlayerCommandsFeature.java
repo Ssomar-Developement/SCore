@@ -1,7 +1,11 @@
 package com.ssomar.scoretestrecode.features.custom.commands.player;
 
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommandManager;
+import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -11,6 +15,7 @@ import com.ssomar.scoretestrecode.editor.Suggestion;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.scoretestrecode.features.custom.commands.CommandsAbstractFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -25,7 +30,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
+public class PlayerCommandsFeature extends CommandsAbstractFeature<List<String>, PlayerCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
 
     private List<String> value;
 
@@ -39,6 +44,20 @@ public class PlayerCommandsFeature extends FeatureAbstract<List<String>, PlayerC
         List<String> errors = new ArrayList<>();
         value = PlayerCommandManager.getInstance().getCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
+    }
+
+    public void runCommands(ActionInfo actionInfo, String objectName) {
+        List<String> commands = new ArrayList<>(getValue());
+        commands = prepareActionbarArgs(commands, objectName);
+        for(int i = 0; i < commands.size(); i++) {
+            String s1 = commands.get(i);
+            if (s1.startsWith("SETBLOCK")){
+                s1 = s1.replace("SETBLOCK", "SETBLOCK %blockface%");
+                commands.set(i, s1);
+            }
+        }
+        PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, actionInfo);
+        CommandsExecutor.runCommands(builder);
     }
 
     @Override

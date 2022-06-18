@@ -1,7 +1,11 @@
 package com.ssomar.scoretestrecode.features.custom.commands.entity;
 
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.block.BlockRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import com.ssomar.score.commands.runnable.entity.EntityCommandManager;
+import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -11,6 +15,7 @@ import com.ssomar.scoretestrecode.editor.Suggestion;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.scoretestrecode.features.custom.commands.CommandsAbstractFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -25,7 +30,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class EntityCommandsFeature extends FeatureAbstract<List<String>, EntityCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
+public class EntityCommandsFeature extends CommandsAbstractFeature<List<String>, EntityCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
 
     private List<String> value;
 
@@ -39,6 +44,13 @@ public class EntityCommandsFeature extends FeatureAbstract<List<String>, EntityC
         List<String> errors = new ArrayList<>();
         value = EntityCommandManager.getInstance().getEntityCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
+    }
+
+    public void runCommands(ActionInfo actionInfo, String objectName) {
+        List<String> commands = new ArrayList<>(getValue());
+        commands = prepareActionbarArgs(commands, objectName);
+        EntityRunCommandsBuilder builder2 = new EntityRunCommandsBuilder(commands, actionInfo);
+        CommandsExecutor.runCommands(builder2);
     }
 
     @Override

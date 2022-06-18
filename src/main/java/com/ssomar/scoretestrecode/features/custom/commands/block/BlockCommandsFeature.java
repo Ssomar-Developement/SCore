@@ -1,7 +1,10 @@
 package com.ssomar.scoretestrecode.features.custom.commands.block;
 
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommandManager;
+import com.ssomar.score.commands.runnable.block.BlockRunCommandsBuilder;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
@@ -12,6 +15,7 @@ import com.ssomar.scoretestrecode.editor.Suggestion;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.scoretestrecode.features.custom.commands.CommandsAbstractFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -26,7 +30,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
+public class BlockCommandsFeature extends CommandsAbstractFeature<List<String>, BlockCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
 
     private List<String> value;
 
@@ -40,6 +44,13 @@ public class BlockCommandsFeature extends FeatureAbstract<List<String>, BlockCom
         List<String> errors = new ArrayList<>();
         value = BlockCommandManager.getInstance().getBlockCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
+    }
+
+    public void runCommands(ActionInfo actionInfo, String objectName) {
+        List<String> commands = new ArrayList<>(getValue());
+        commands = prepareActionbarArgs(commands, objectName);
+        BlockRunCommandsBuilder builder4 = new BlockRunCommandsBuilder(commands, actionInfo);
+        CommandsExecutor.runCommands(builder4);
     }
 
     @Override
