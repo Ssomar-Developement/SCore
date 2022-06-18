@@ -8,18 +8,18 @@ public class PotionSettingsFeatureEditor extends FeatureEditorInterface<PotionSe
     public PotionSettingsFeature dropFeatures;
 
     public PotionSettingsFeatureEditor(PotionSettingsFeature dropFeatures) {
-        super("&lHiders Editor", 3*9);
+        super("&lPotion Settings Editor", 3*9);
         this.dropFeatures = dropFeatures.clone();
         load();
     }
 
     @Override
     public void load() {
-        dropFeatures.getHideEnchantments().initAndUpdateItemParentEditor(this, 0);
-        dropFeatures.getHideUnbreakable().initAndUpdateItemParentEditor(this, 1);
-        dropFeatures.getHideAttributes().initAndUpdateItemParentEditor(this, 2);
-        dropFeatures.getHidePotionEffects().initAndUpdateItemParentEditor(this, 3);
-        dropFeatures.getHideUsage().initAndUpdateItemParentEditor(this, 4);
+        dropFeatures.getColor().initAndUpdateItemParentEditor(this, 0);
+        dropFeatures.getPotiontype().initAndUpdateItemParentEditor(this, 1);
+        dropFeatures.getPotionExtended().initAndUpdateItemParentEditor(this, 2);
+        dropFeatures.getPotionUpgraded().initAndUpdateItemParentEditor(this, 3);
+        dropFeatures.getPotionEffects().initAndUpdateItemParentEditor(this, 4);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);
