@@ -1,5 +1,6 @@
 package com.ssomar.scoretestrecode.features.custom.potionsettings;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
@@ -7,6 +8,7 @@ import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.custom.potioneffects.group.PotionEffectGroupFeature;
+import com.ssomar.scoretestrecode.features.custom.potioneffects.potioneffect.PotionEffectFeature;
 import com.ssomar.scoretestrecode.features.types.BooleanFeature;
 import com.ssomar.scoretestrecode.features.types.ColorIntegerFeature;
 import com.ssomar.scoretestrecode.features.types.PotionTypeFeature;
@@ -15,6 +17,10 @@ import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,6 +63,33 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
         errors.addAll(this.potionEffects.load(plugin, config, isPremiumLoading));
 
         return errors;
+    }
+
+    public List<String> load(SPlugin plugin, ItemStack item, boolean isPremiumLoading) {
+        ItemMeta meta;
+        if (item.hasItemMeta() && (meta = item.getItemMeta()) instanceof PotionMeta) {
+            PotionMeta pMeta = ((PotionMeta) meta);
+            if (!SCore.is1v11Less()) {
+                color.setValue(Optional.of(pMeta.getColor().asRGB()));
+                potiontype.setValue(Optional.of(pMeta.getBasePotionData().getType()));
+                potionExtended.setValue(pMeta.getBasePotionData().isExtended());
+                potionUpgraded.setValue(pMeta.getBasePotionData().isUpgraded());
+            }
+
+            int i = 0;
+            for (PotionEffect pE : pMeta.getCustomEffects()) {
+                PotionEffectFeature pEF = new PotionEffectFeature(potionEffects, "pEffect" + i);
+                pEF.getType().setValue(Optional.of(pE.getType()));
+                pEF.getAmplifier().setValue(Optional.of(pE.getAmplifier()));
+                pEF.getDuration().setValue(Optional.of(pE.getDuration()));
+                pEF.getAmbient().setValue(pE.isAmbient());
+                pEF.getParticles().setValue(pE.hasParticles());
+                pEF.getIcon().setValue(pE.hasIcon());
+                potionEffects.getAttributes().put("pEffect" + i, pEF);
+                i++;
+            }
+        }
+        return new ArrayList<>();
     }
 
     @Override
