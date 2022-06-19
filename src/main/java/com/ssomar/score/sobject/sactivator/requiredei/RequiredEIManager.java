@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.ssomar.executableitems.executableitems.ExecutableItem;
 import com.ssomar.executableitems.executableitems.ExecutableItemsManager;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -252,13 +253,13 @@ public class RequiredEIManager {
 					if(eiOpt.isPresent()) cIt = (ExecutableItem) eiOpt.get();
 					if(cIt != null){
 						if(rEI.getEI_ID().equals(cIt.getIdentification())) {
-							if(validUsages.isEmpty() || cIt.getUse()==0 || cIt.getUse()==-1) {
-								if(needed<=it.getAmount()) {
+							if(validUsages.isEmpty() || cIt.getUse() == 0 || cIt.getUse() == -1) {
+								if(needed <= it.getAmount()) {
 									it.setAmount(it.getAmount()-needed);
 									break;
-								}else {
+								} else {
+									needed = needed - it.getAmount();
 									it.setAmount(0);
-									needed=needed-it.getAmount();
 								}
 							}
 							else {
@@ -268,12 +269,12 @@ public class RequiredEIManager {
 								if(lore.get(lore.size()-1).contains(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))) {
 									int use= Integer.parseInt(lore.get(lore.size()-1).split(MessageMain.getInstance().getMessage(ExecutableItems.plugin, Message.USE))[1]);
 									if(validUsages.contains(use)) {
-										if(needed<=it.getAmount()) {
+										if(needed <= it.getAmount()) {
 											it.setAmount(it.getAmount()-needed);
 											break;
 										}else {
+											needed = needed-it.getAmount();
 											it.setAmount(0);
-											needed=needed-it.getAmount();
 										}
 									}
 								}
