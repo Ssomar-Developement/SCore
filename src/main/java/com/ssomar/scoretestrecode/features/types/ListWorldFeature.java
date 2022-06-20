@@ -98,7 +98,7 @@ public class ListWorldFeature extends FeatureAbstract<List<String>, ListWorldFea
     public Optional<String> verifyMessageReceived(String message) {
         message = StringConverter.decoloredString(message);
         World w = MultiverseAPI.getWorld(message);
-        if(w != null){
+        if(w == null){
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a world, please try again.");
         }
         return Optional.empty();

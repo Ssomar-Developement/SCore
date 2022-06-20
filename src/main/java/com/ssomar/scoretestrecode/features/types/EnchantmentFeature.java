@@ -286,7 +286,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
         catch (Exception e) {
             return Optional.empty();
         }
-        return Optional.of(enchantment);
+        return Optional.ofNullable(enchantment);
 
     }
 

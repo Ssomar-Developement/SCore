@@ -71,6 +71,15 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         return value;
     }
 
+    public Optional<String> getColoreValue() {
+        if(value.isPresent()) {
+            return Optional.of(StringConverter.coloredString(value.get()));
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
     @Override
     public ColoredStringFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 2];

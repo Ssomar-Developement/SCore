@@ -15,9 +15,13 @@ public class MultiverseAPI {
 
     public static World getWorld(String worldStr) {
 
-        Core core;
         try {
+            Core core;
             core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+            MVWorldManager multiverseManager = core.getMVWorldManager();
+            MultiverseWorld mv;
+            if ((mv = multiverseManager.getMVWorld(worldStr)) != null)
+                return mv.getCBWorld();
         } catch (NoClassDefFoundError e) {
             SCore.hasMultiverse = false;
             for (World w : Bukkit.getWorlds()) {
@@ -27,29 +31,24 @@ public class MultiverseAPI {
             }
             return null;
         }
-        MVWorldManager multiverseManager = core.getMVWorldManager();
-        MultiverseWorld mv;
-        if ((mv = multiverseManager.getMVWorld(worldStr)) != null)
-            return mv.getCBWorld();
-        else return null;
-
+        return null;
     }
 
     public static List<String> getWorlds() {
         List<String> worlds = new ArrayList<>();
-        Core core;
         try {
+            Core core;
             core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+            MVWorldManager multiverseManager = core.getMVWorldManager();
+            for (MultiverseWorld mv : multiverseManager.getMVWorlds()) {
+                worlds.add(mv.getName());
+            }
         } catch (NoClassDefFoundError e) {
             SCore.hasMultiverse = false;
-            for(World w : Bukkit.getWorlds()) {
+            for (World w : Bukkit.getWorlds()) {
                 worlds.add(w.getName());
             }
             return worlds;
-        }
-        MVWorldManager multiverseManager = core.getMVWorldManager();
-        for (MultiverseWorld mv : multiverseManager.getMVWorlds()) {
-            worlds.add(mv.getName());
         }
         return worlds;
     }

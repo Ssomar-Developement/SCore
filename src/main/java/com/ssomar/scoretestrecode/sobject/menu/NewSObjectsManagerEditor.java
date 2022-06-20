@@ -60,7 +60,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 	public boolean shiftLeftClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
 		if(i.decoloredName.contains(GUI.OBJECT_ID)) {
 			i.player.closeInventory();
-			String id = i.decoloredName.split(GUI.OBJECT_ID)[1];
+			String id = i.decoloredName.split(GUI.OBJECT_ID)[1].trim();
 			i.gui.sendMessageDelete(id, i.player);
 			return true;
 		}
@@ -71,7 +71,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 	@Override
 	public boolean shiftRightClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
 		if(i.decoloredName.contains(GUI.OBJECT_ID) && !i.decoloredName.contains("ERROR ID")) {
-			i.gui.giveSObject(i.decoloredName.split(GUI.OBJECT_ID)[1], i.player);
+			i.gui.giveSObject(i.decoloredName.split(GUI.OBJECT_ID)[1].trim(), i.player);
 			return true;
 		}
 		return false;

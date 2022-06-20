@@ -56,24 +56,26 @@ public class LoopManager {
 				}
 				if(!toActiv.isEmpty()) {
 
-					if(SCore.hasExecutableItems) {	
-						List<ActivatorEI> listEI = new ArrayList<>();
+					if(SCore.hasExecutableItems) {
+						try {
+							List<ActivatorEI> listEI = new ArrayList<>();
 
-						for(SActivator sActivator : toActiv) {
-							if(sActivator instanceof ActivatorEI) {
-								listEI.add((ActivatorEI) sActivator);
+							for (SActivator sActivator : toActiv) {
+								if (sActivator instanceof ActivatorEI) {
+									listEI.add((ActivatorEI) sActivator);
+								}
 							}
-						}
 
-						if(!listEI.isEmpty()) {
-							for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-								LoopEvent e = new LoopEvent();
+							if (!listEI.isEmpty()) {
+								for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+									LoopEvent e = new LoopEvent();
 
-								EventInfo eInfo = new EventInfo(e);
-								eInfo.setPlayer(Optional.of(player));
-								com.ssomar.executableitems.events.EventsManager.getInstance().activeOption(Option.LOOP, eInfo, listEI);
+									EventInfo eInfo = new EventInfo(e);
+									eInfo.setPlayer(Optional.of(player));
+									com.ssomar.executableitems.events.EventsManager.getInstance().activeOption(Option.LOOP, eInfo, listEI);
+								}
 							}
-						}
+						}catch (Exception | Error e) {}
 
 					}
 

@@ -41,18 +41,20 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "NULL");
-        Optional<Integer> valuePotential = NTools.getInteger(valueStr);
-        if(valuePotential.isPresent()) {
-            this.value = valuePotential;
-            FeatureReturnCheckPremium<Integer> checkPremium = checkPremium("Integer", valuePotential.get(), defaultValue, isPremiumLoading);
-            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
-        }
-        else {
-            errors.add("&cERROR, Couldn't load the integer value of " + this.getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
-            if (defaultValue.isPresent()) {
-                this.value = defaultValue;
+        if(!valueStr.equals("NULL")) {
+            Optional<Integer> valuePotential = NTools.getInteger(valueStr);
+            if (valuePotential.isPresent()) {
+                this.value = valuePotential;
+                FeatureReturnCheckPremium<Integer> checkPremium = checkPremium("Integer", valuePotential.get(), defaultValue, isPremiumLoading);
+                if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+            } else {
+                errors.add("&cERROR, Couldn't load the integer value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
+                if (defaultValue.isPresent()) {
+                    this.value = defaultValue;
+                } else this.value = Optional.empty();
             }
-            else this.value = Optional.empty();
+        } else {
+            value = Optional.empty();
         }
         return errors;
     }

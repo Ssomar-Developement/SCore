@@ -160,7 +160,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 	public void sendMessageDelete(String objectID, Player p) {
 		p.sendMessage(StringConverter.coloredString("&4["+sPlugin.getNameDesign()+"] &cHey you want delete the "+sPlugin.getObjectName()+": &6"+objectID));
 		TextComponent delete = new TextComponent( StringConverter.coloredString("&4&l[&c&lCLICK HERE TO DELETE&4&l]"));
-		delete.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/"+ sPlugin.getShortName().toLowerCase()+" delete "+objectID+" confirm"));
+		delete.setClickEvent( new ClickEvent( ClickEvent.Action.SUGGEST_COMMAND, "/"+ sPlugin.getShortName().toLowerCase()+" delete " +objectID+" confirm"));
 		delete.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&4Click here to delete this "+sPlugin.getObjectName())).create() ) );
 		p.spigot().sendMessage(delete);
 		p.updateInventory();

@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.StringConverter;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.editor.Suggestion;
 import com.ssomar.scoretestrecode.features.*;
@@ -42,6 +43,14 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
         FeatureReturnCheckPremium<List<String>> checkPremium = checkPremium("List of Colored Strings", value, Optional.of(defaultValue), isPremiumLoading);
         if(checkPremium.isHasError()) value = checkPremium.getNewValue();
         return new ArrayList<>();
+    }
+
+    public List<String> getColoredValue(){
+        List<String> colored = new ArrayList<>();
+        for(String s : value){
+            colored.add(StringConverter.coloredString(s));
+        }
+        return colored;
     }
 
     @Override
