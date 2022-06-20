@@ -1,6 +1,7 @@
 package com.ssomar.scoretestrecode.sobject;
 
 
+import com.ssomar.executableitems.executableitems.ExecutableItemLoader;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,17 @@ public abstract class NewSObject<X extends FeatureInterface<X, X>, Y extends GUI
     public abstract void setId(String id);
 
     public abstract String getPath();
+
+    public boolean delete() {
+        File file = null;
+
+        if((file = new File(getPath())) != null) {
+            file.delete();
+            return true;
+        }
+        return false;
+
+    }
 
     public abstract List<NewSActivator> getActivators();
 

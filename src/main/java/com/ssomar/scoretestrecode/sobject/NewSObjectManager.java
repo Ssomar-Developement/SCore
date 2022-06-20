@@ -67,7 +67,6 @@ public abstract class NewSObjectManager<T extends NewSObject> {
     }
 
     public void reloadObject(String id) {
-
         Optional<T> loadedObject = this.getLoadedObjectWithID(id);
         if(loadedObject.isPresent()) {
             T o = loadedObject.get();
@@ -82,6 +81,16 @@ public abstract class NewSObjectManager<T extends NewSObject> {
             this.addLoadedObject(oOpt.get());
         }
         else sPlugin.getPlugin().getServer().getLogger().severe(sPlugin.getNameDesign()+" Error when trying to reload the item "+id);
+    }
+
+    public void deleteObject(String id){
+        Optional<T> loadedObject = this.getLoadedObjectWithID(id);
+        if(loadedObject.isPresent()) {
+            T o = loadedObject.get();
+            actionOnObjectWhenReloading(o);
+            this.loadedObjects.remove(o);
+            o.delete();
+        }
     }
 
     public abstract void actionOnObjectWhenReloading(T object);
