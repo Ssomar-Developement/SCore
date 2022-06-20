@@ -27,6 +27,8 @@ public abstract class NewSActivator<X extends FeatureInterface<X, X>, Y extends 
 
     public abstract SOption getOption();
 
+    public abstract List<FeatureInterface> getFeatures();
+
     public abstract void run(HigherFormSObject parentObject, EventInfo eventInfo);
 
     public abstract List<String> getMenuDescription();
