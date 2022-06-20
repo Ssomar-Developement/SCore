@@ -1,5 +1,7 @@
 package com.ssomar.scoretestrecode.features.custom.givefirstjoin;
 
+import com.iridium.iridiumcore.Item;
+import com.palmergames.bukkit.towny.tasks.NewDayScheduler;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
@@ -8,11 +10,13 @@ import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.types.BooleanFeature;
 import com.ssomar.scoretestrecode.features.types.IntegerFeature;
+import com.ssomar.scoretestrecode.sobject.NewSObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -48,6 +52,16 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
         giveFirstJoinSlot.load(plugin, config, isPremiumLoading);
 
         return error;
+    }
+
+    public void giveFirstJoin(@NotNull Player player) {
+        if(giveFirstJoin.getValue()) {
+            if(getParent() instanceof NewSObject){
+                NewSObject object = (NewSObject) getParent();
+                ItemStack item = object.buildItem(giveFirstJoinAmount.getValue().get(), Optional.of(player));
+                player.getInventory().setItem(giveFirstJoinSlot.getValue().get(), item);
+            }
+        }
     }
 
     @Override
