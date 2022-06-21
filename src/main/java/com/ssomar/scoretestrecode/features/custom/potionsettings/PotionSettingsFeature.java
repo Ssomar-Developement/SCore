@@ -14,12 +14,14 @@ import com.ssomar.scoretestrecode.features.types.ColorIntegerFeature;
 import com.ssomar.scoretestrecode.features.types.PotionTypeFeature;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +48,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public void reset() {
-        this.color = new ColorIntegerFeature(this, "potionColor", Optional.ofNullable(255), "Potion color", new String[]{"&7&oColor"}, GUI.ORANGE, false);
+        this.color = new ColorIntegerFeature(this, "potionColor", Optional.ofNullable(255), "Potion color", new String[]{"&7&oColor"}, Material.REDSTONE, false);
         this.potiontype = new PotionTypeFeature(this, "potionType", Optional.ofNullable(PotionType.WATER), "Potion type", new String[]{"&7&oPotion type"}, Material.POTION, false);
         this.potionExtended = new BooleanFeature(this, "potionExtended", false, "Potion extended", new String[]{"&7&oPotion extended"}, Material.LEVER, false, false);
         this.potionUpgraded = new BooleanFeature(this, "potionUpgraded", false, "Potion upgraded", new String[]{"&7&oPotion upgraded"}, Material.LEVER, false, false);
@@ -85,11 +87,40 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
                 pEF.getAmbient().setValue(pE.isAmbient());
                 pEF.getParticles().setValue(pE.hasParticles());
                 pEF.getIcon().setValue(pE.hasIcon());
-                potionEffects.getAttributes().put("pEffect" + i, pEF);
+                potionEffects.getEffects().put("pEffect" + i, pEF);
                 i++;
             }
         }
         return new ArrayList<>();
+    }
+
+    public ItemStack clear(@NotNull ItemStack item){
+        ItemMeta meta;
+        if (item.hasItemMeta() && (meta = item.getItemMeta()) instanceof PotionMeta) {
+            PotionMeta pMeta = ((PotionMeta) meta);
+            pMeta.clearCustomEffects();
+            item.setItemMeta(pMeta);
+        }
+        return item;
+    }
+
+    public ItemStack addTo(@NotNull ItemStack item) {
+
+        ItemMeta meta;
+        if (item.hasItemMeta() && (meta = item.getItemMeta()) instanceof PotionMeta) {
+            PotionMeta pMeta = ((PotionMeta)meta);
+            if(!SCore.is1v11Less()) {
+                if (color.getValue().isPresent()) pMeta.setColor(Color.fromRGB(color.getValue().get()));
+                if (potiontype.getValue().isPresent())
+                    pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue(), potionUpgraded.getValue()));
+            }
+            for (PotionEffectFeature pE : this.potionEffects.getEffects().values()) {
+                pMeta.addCustomEffect(pE.getPotionEffect(), true);
+            }
+            item.setItemMeta(pMeta);
+        }
+
+        return item;
     }
 
     @Override
@@ -122,7 +153,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
         else
             finalDescription[finalDescription.length - 2] = "&7Potion upgraded: &c&l✘";
 
-        finalDescription[finalDescription.length - 1] = "&7Potion effects: &e" + potionEffects.getValue().getAttributes().size();
+        finalDescription[finalDescription.length - 1] = "&7Potion effects: &e" + potionEffects.getValue().getEffects().size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

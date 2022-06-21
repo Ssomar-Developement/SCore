@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,6 +68,10 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
             errors.add("&cERROR, Couldn't load the Attribute with its options because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
         }
         return errors;
+    }
+
+    public PotionEffect getPotionEffect(){
+        return new PotionEffect(type.getValue().get(), duration.getValue().get(), amplifier.getValue().get(), ambient.getValue(), particles.getValue(), icon.getValue());
     }
 
     @Override

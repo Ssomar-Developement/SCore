@@ -184,6 +184,9 @@ public abstract class NewGUIManager<T extends GUI> {
 			} else if (message.contains("down line <")) {
 				this.receiveMessageDownLine(interact);
 				pass = true;
+			} else if (message.contains("NO VALUE / EXIT")) {
+				this.receiveMessageNoValue(interact);
+				pass = true;
 			}
 		}
 		if(message.equals("exit")) {
@@ -202,6 +205,8 @@ public abstract class NewGUIManager<T extends GUI> {
 	public  void receiveMessageNextPage(NewInteractionClickedGUIManager<T> interact){
 		suggestionPage.put(interact.player, suggestionPage.get(interact.player)+1);
 	}
+
+	public abstract void receiveMessageNoValue(NewInteractionClickedGUIManager<T> interact);
 
 	public abstract void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact);
 

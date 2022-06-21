@@ -42,8 +42,8 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
 
     @Override
     public void reset() {
-        this.headValue = new UncoloredStringFeature(this, "headValue", Optional.of(""), "Head Value", new String[]{"&7&oThe value of the head", "&eminecraft-heads.com"}, Material.PLAYER_HEAD, false, false);
-        this.headDBID = new UncoloredStringFeature(this, "headDBID", Optional.of(""), "HeadDB ID", new String[]{"&7&oThe HeadDB ID of the head", "Work with: - &bHeadDB(Free)", "&7&o- &cHead Database(Prem)"}, Material.PLAYER_HEAD, false, false);
+        this.headValue = new UncoloredStringFeature(this, "headValue", Optional.empty(), "Head Value", new String[]{"&7&oThe value of the head", "&eminecraft-heads.com"}, Material.PLAYER_HEAD, false, false);
+        this.headDBID = new UncoloredStringFeature(this, "headDBID", Optional.empty(), "HeadDB ID", new String[]{"&7&oThe HeadDB ID of the head", "&7&oWork with: ", "&7&o- &bHeadDB(Free)", "&7&o- &cHead Database(Prem)"}, Material.PLAYER_HEAD, false, false);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
     }
 
     private ItemStack getHeadOrSub(Material or) {
-        if (!headDBID.getValue().get().isEmpty()) {
+        if (headDBID.getValue().isPresent()) {
             if (SCore.hasHeadDatabase) {
                 ItemStack item = HeadDatabase.getInstance().getHead(headDBID.getValue().get());
                 if (item != null) return item;
@@ -78,7 +78,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                     SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
                 }
             }
-        } else if (!headValue.getValue().get().isEmpty() && !SCore.is1v12Less()) {
+        } else if (headValue.getValue().isPresent() && !SCore.is1v12Less()) {
             ItemStack newHead = new ItemStack(Material.PLAYER_HEAD);
 
             SkullMeta itemMeta = (SkullMeta)newHead.getItemMeta();
@@ -100,6 +100,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                 e.printStackTrace();
             }
             newHead.setItemMeta((ItemMeta)itemMeta);
+            return newHead;
         }
 
         return new ItemStack(or);
@@ -144,17 +145,17 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
         String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
-        if (!headValue.getValue().get().isEmpty())
+        if (headValue.getValue().isPresent())
             finalDescription[finalDescription.length - 2] = "&7Head value: &a&l✔";
         else
             finalDescription[finalDescription.length - 2] = "&7Head value: &c&l✘";
 
-        if (!headDBID.getValue().get().isEmpty())
+        if (headDBID.getValue().isPresent())
             finalDescription[finalDescription.length - 1] = "&7Head DB ID: &a&l✔";
         else
             finalDescription[finalDescription.length - 1] = "&7Head DB ID: &c&l✘";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getHeadOr(Material.PLAYER_HEAD), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

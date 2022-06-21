@@ -132,14 +132,6 @@ public class StringConverter {
 
 	}
 
-
-	public static void main(String[]args) {
-		String s ="#32293A&lV#98141D&lo#FF0000&lr#FF0000&lt#FF7F7F&le#FFFFFF&lx &f&lPrut";
-
-		s = translateHexCodes(s);
-		System.out.println(s);
-	}
-
 	public static String replaceHexCodes (String s) {
 
 		String textToTranslate = s;
@@ -208,10 +200,18 @@ public class StringConverter {
 		StringBuffer buffer = new StringBuffer();
 		while (matcher.find()) {
 			String color = textToTranslate.substring(matcher.start(), matcher.end());
-			String convert = textToTranslate.replace(color, "");
-			matcher = HEX_PATTERN.matcher(convert);
-		} 
+			textToTranslate = textToTranslate.replace(color, "");
+			matcher = HEX_PATTERN.matcher(textToTranslate);
+		}
 		return matcher.appendTail(buffer).toString();
 	}
 
+	public static void main(String[]args) {
+		String s ="#44D800&lPioche à spawner #35A800";
+
+		s = removeHexCodes(s);
+		System.out.println(s);
+	}
+
 }
+

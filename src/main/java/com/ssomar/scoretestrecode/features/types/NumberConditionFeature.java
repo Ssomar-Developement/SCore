@@ -135,7 +135,7 @@ public class NumberConditionFeature extends FeatureAbstract<Optional<String>, Nu
         supE.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&aClick to add condition "+getEditorName()+" >= {number}") ).create()));
 
         TextComponent noC = new TextComponent( StringConverter.coloredString("&c&l[NO CONDITION]"));
-        noC.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, "exit with delete"));
+        noC.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, "NO VALUE / EXIT"));
         noC.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( StringConverter.coloredString("&aClick to don't set condition") ).create()));
 
         message.addExtra(inf);
@@ -167,6 +167,13 @@ public class NumberConditionFeature extends FeatureAbstract<Optional<String>, Nu
         String valueStr = StringConverter.decoloredString(message);
         if(valueStr.isEmpty()) value = Optional.empty();
         else value = Optional.of(valueStr);
+        manager.requestWriting.remove(editor);
+        updateItemParentEditor((GUI) manager.getCache().get(editor));
+    }
+
+    @Override
+    public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
+        value = Optional.empty();
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }

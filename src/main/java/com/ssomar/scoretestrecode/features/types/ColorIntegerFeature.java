@@ -41,18 +41,22 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "NULL");
-        Optional<Integer> valuePotential = NTools.getInteger(valueStr);
-        if(valuePotential.isPresent()) {
-            this.value = valuePotential;
-            FeatureReturnCheckPremium<Integer> checkPremium = checkPremium("Color in integer", valuePotential.get(), defaultValue, isPremiumLoading);
-            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
-        }
-        else {
-            errors.add("&cERROR, Couldn't load the color integer value of " + this.getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
-            if (defaultValue.isPresent()) {
-                this.value = defaultValue;
+        if(!valueStr.equals("NULL")) {
+            Optional<Integer> valuePotential = NTools.getInteger(valueStr);
+            if(valuePotential.isPresent()) {
+                this.value = valuePotential;
+                FeatureReturnCheckPremium<Integer> checkPremium = checkPremium("Color in integer", valuePotential.get(), defaultValue, isPremiumLoading);
+                if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             }
-            else this.value = Optional.empty();
+            else {
+                errors.add("&cERROR, Couldn't load the color integer value of " + this.getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
+                if (defaultValue.isPresent()) {
+                    this.value = defaultValue;
+                }
+                else this.value = Optional.empty();
+            }
+        } else {
+            value = Optional.empty();
         }
         return errors;
     }
@@ -66,7 +70,8 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
 
     @Override
     public Optional<Integer> getValue() {
-        return value;
+        if(value.isPresent()) return value;
+        else return defaultValue;
     }
 
     @Override
@@ -83,13 +88,11 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
     @Override
     public void updateItemParentEditor(GUI gui) {
         if(value.isPresent()) gui.updateInt(getEditorName(), getValue().get());
-        else gui.updateInt(getEditorName(), 0);
+        else gui.updateActually(getEditorName(), "&cNO VALUE");
     }
 
     @Override
-    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        value = Optional.of(((GUI) manager.getCache().get(player)).getInt(getEditorName()));
-    }
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
 
     @Override
     public ColorIntegerFeature clone() {
@@ -120,6 +123,10 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
         newName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "Type the new string here.."));
         newName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&aClick here to set new color integer")).create()));
 
+        TextComponent noValue = new TextComponent(StringConverter.coloredString("&c&l[NO VALUE / EXIT]"));
+        noValue.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "NO VALUE / EXIT"));
+        noValue.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&cClick here to exit or don't set a value")).create()));
+
         TextComponent info = new TextComponent(StringConverter.coloredString("&e&l[GET COLOR WEBSITE]"));
         info.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.tydac.ch/color/"));
         info.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here, select your color and copy the mapInfo Color")).create()));
@@ -128,6 +135,8 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
         message.addExtra(edit);
         message.addExtra(new TextComponent(" "));
         message.addExtra(newName);
+        message.addExtra(new TextComponent(" "));
+        message.addExtra(noValue);
         message.addExtra(new TextComponent(" "));
         message.addExtra(info);
 
@@ -145,6 +154,13 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
         this.value = NTools.getInteger(StringConverter.decoloredString(message).trim());
+        manager.requestWriting.remove(editor);
+        updateItemParentEditor((GUI) manager.getCache().get(editor));
+    }
+
+    @Override
+    public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
+        this.value = Optional.empty();
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }

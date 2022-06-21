@@ -155,4 +155,9 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
+
+    @Override
+    public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
+
+    }
 }

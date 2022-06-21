@@ -17,7 +17,7 @@ public class PotionEffectGroupFeatureEditor extends FeatureEditorInterface<Potio
     @Override
     public void load() {
         int i = 0;
-        for(PotionEffectFeature enchantment : attributesGroupFeature.getAttributes().values()) {
+        for(PotionEffectFeature enchantment : attributesGroupFeature.getEffects().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
             i++;
         }

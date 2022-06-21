@@ -103,6 +103,11 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 	}
 
 	@Override
+	public void receiveMessageNoValue(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+
+	}
+
+	@Override
 	public void receiveMessageFinish(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
 
 	}

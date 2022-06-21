@@ -24,7 +24,7 @@ import java.util.Map;
 @Getter @Setter
 public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffectGroupFeature, PotionEffectGroupFeature, PotionEffectGroupFeatureEditor, PotionEffectGroupFeatureEditorManager> implements FeaturesGroup<PotionEffectFeature> {
 
-    private Map<String, PotionEffectFeature> attributes;
+    private Map<String, PotionEffectFeature> effects;
 
     public PotionEffectGroupFeature(FeatureParentInterface parent) {
         super(parent, "potionEffects", "Potion Effects", new String[]{"&7&oThe potion effects"}, Material.BREWING_STAND, false);
@@ -33,7 +33,7 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
 
     @Override
     public void reset() {
-        this.attributes = new HashMap<>();
+        this.effects = new HashMap<>();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
                     error.addAll(subErrors);
                     continue;
                 }
-                attributes.put(attributeID, attribute);
+                effects.put(attributeID, attribute);
             }
         }
         return error;
@@ -58,8 +58,8 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection attributesSection = config.createSection(this.getName());
-        for(String enchantmentID : attributes.keySet()) {
-            attributes.get(enchantmentID).save(attributesSection);
+        for(String enchantmentID : effects.keySet()) {
+            effects.get(enchantmentID).save(attributesSection);
         }
     }
 
@@ -73,7 +73,7 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length -2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length -1] = "&7&oAttribute(s) added: &e"+ attributes.size();
+        finalDescription[finalDescription.length -1] = "&7&oAttribute(s) added: &e"+ effects.size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -92,13 +92,13 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
     @Override
     public PotionEffectGroupFeature clone() {
         PotionEffectGroupFeature eF = new PotionEffectGroupFeature(getParent());
-        eF.setAttributes(new HashMap<>(this.getAttributes()));
+        eF.setEffects(new HashMap<>(this.getEffects()));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(attributes.values());
+        return new ArrayList<>(effects.values());
     }
 
     @Override
@@ -125,7 +125,7 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature instanceof PotionEffectGroupFeature) {
                 PotionEffectGroupFeature eF = (PotionEffectGroupFeature) feature;
-                eF.setAttributes(this.getAttributes());
+                eF.setEffects(this.getEffects());
                 break;
             }
         }
@@ -146,9 +146,9 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
         String baseId = "pEffect";
         for(int i = 0; i < 1000; i++) {
             String id = baseId + i;
-            if(!attributes.containsKey(id)) {
+            if(!effects.containsKey(id)) {
                 PotionEffectFeature eF = new PotionEffectFeature(this, id);
-                attributes.put(id, eF);
+                effects.put(id, eF);
                 eF.openEditor(editor);
                 break;
             }
@@ -157,7 +157,7 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
 
     @Override
     public void deleteFeature(@NotNull Player editor, PotionEffectFeature feature) {
-        attributes.remove(feature.getId());
+        effects.remove(feature.getId());
     }
 
 }

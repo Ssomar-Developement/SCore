@@ -192,7 +192,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     }
 
-    public void receiveMessageDeleteline(NewInteractionClickedGUIManager<T> i){
+    public void receiveMessageDeleteline(NewInteractionClickedGUIManager<T> i) {
         super.receiveMessageDeleteline(i);
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
@@ -205,7 +205,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         }
     }
 
-    public void receiveMessageUpLine(NewInteractionClickedGUIManager<T> i){
+    public void receiveMessageUpLine(NewInteractionClickedGUIManager<T> i) {
         super.receiveMessageUpLine(i);
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
@@ -218,8 +218,8 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         }
     }
 
-    public void receiveMessageDownLine(NewInteractionClickedGUIManager<T> i){
-       super.receiveMessageDownLine(i);
+    public void receiveMessageDownLine(NewInteractionClickedGUIManager<T> i) {
+        super.receiveMessageDownLine(i);
         for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
@@ -245,93 +245,103 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         }
     }
 
-        @Override
-        public void receiveMessageNextPage (NewInteractionClickedGUIManager < T > i) {
-            for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
-                if (requestWriting.get(i.player).equals(feature.getEditorName())) {
-                    if (feature instanceof FeatureRequireSubTextEditorInEditor) {
-                        FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
-                        suggestionPage.put(i.player, suggestionPage.get(i.player) + 1);
-                        ((FeatureRequireSubTextEditorInEditor) feature).sendBeforeTextEditor(i.player, this);
-                        sendEditor(i.player);
-                    }
+    @Override
+    public void receiveMessageNextPage(NewInteractionClickedGUIManager<T> i) {
+        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+            if (requestWriting.get(i.player).equals(feature.getEditorName())) {
+                if (feature instanceof FeatureRequireSubTextEditorInEditor) {
+                    FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
+                    suggestionPage.put(i.player, suggestionPage.get(i.player) + 1);
+                    ((FeatureRequireSubTextEditorInEditor) feature).sendBeforeTextEditor(i.player, this);
+                    sendEditor(i.player);
                 }
             }
-        }
-
-        public void receiveMessageFinish (NewInteractionClickedGUIManager < T > interact) {
-            for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
-                if (feature instanceof FeatureRequireMultipleMessageInEditor) {
-                    if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
-                        ((FeatureRequireMultipleMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
-                        interact.gui.openGUISync(interact.player);
-                    }
-                } else if (feature instanceof FeatureRequireSubTextEditorInEditor) {
-                    if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
-                        FeatureRequireSubTextEditorInEditor f = (FeatureRequireSubTextEditorInEditor) feature;
-                        f.finishEditInSubEditor(interact.player, this);
-                        currentWriting.remove(interact.player);
-                        requestWriting.remove(interact.player);
-                        disableTextEditor(interact.player);
-                        interact.gui.openGUISync(interact.player);
-                    }
-                }
-            }
-
-        }
-
-
-        @Override
-        public void receiveMessageValue (NewInteractionClickedGUIManager < T > interact) {
-            for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
-                if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
-                    if (feature instanceof FeatureRequireOneMessageInEditor) {
-                        Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
-                        if (potentialError.isPresent()) {
-                            interact.player.sendMessage(potentialError.get());
-                            ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, this);
-                        } else {
-                            ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
-                            interact.gui.openGUISync(interact.player);
-                        }
-                    } else if (feature instanceof FeatureRequireMultipleMessageInEditor) {
-                        Optional<String> potentialError = ((FeatureRequireMultipleMessageInEditor) feature).verifyMessageReceived(interact.message);
-                        if (potentialError.isPresent()) {
-                            interact.player.sendMessage(potentialError.get());
-                            ((FeatureRequireMultipleMessageInEditor) feature).askInEditor(interact.player, this);
-                        } else {
-                            ((FeatureRequireMultipleMessageInEditor) feature).addMessageValue(interact.player, this, interact.message);
-                        }
-                    } else if (feature instanceof FeatureRequireSubTextEditorInEditor) {
-                        FeatureRequireSubTextEditorInEditor f = (FeatureRequireSubTextEditorInEditor) feature;
-                        Optional<String> pErrors = f.verifyMessageReceived(interact.message);
-                        if (pErrors.isPresent()) {
-                            interact.player.sendMessage(StringConverter.coloredString(pErrors.get()));
-                            return;
-                        } else {
-                            currentWriting.get(interact.player).add(interact.message);
-                            f.sendBeforeTextEditor(interact.player, this);
-                            sendEditor(interact.player);
-                        }
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void save (NewInteractionClickedGUIManager < T > interact) {
-            for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
-                if (!(feature instanceof FeatureParentInterface)) {
-                    feature.extractInfoFromParentEditor(this, interact.player);
-                }
-            }
-            FeatureParentInterface parent = interact.gui.getParent();
-            parent.save();
-            parent.reload();
-            while (parent instanceof FeatureInterface && ((FeatureAbstract) parent).getParent() != parent) {
-                parent = ((FeatureAbstract) parent).getParent();
-                parent.reload();
-            }
-            back(interact);
         }
     }
+
+    public void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact) {
+        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+            if (feature instanceof FeatureRequireMultipleMessageInEditor) {
+                if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                    ((FeatureRequireMultipleMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
+                    interact.gui.openGUISync(interact.player);
+                }
+            } else if (feature instanceof FeatureRequireSubTextEditorInEditor) {
+                if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                    FeatureRequireSubTextEditorInEditor f = (FeatureRequireSubTextEditorInEditor) feature;
+                    f.finishEditInSubEditor(interact.player, this);
+                    currentWriting.remove(interact.player);
+                    requestWriting.remove(interact.player);
+                    disableTextEditor(interact.player);
+                    interact.gui.openGUISync(interact.player);
+                }
+            }
+        }
+    }
+
+    public void receiveMessageNoValue(NewInteractionClickedGUIManager<T> interact) {
+        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+            if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                if (feature instanceof FeatureRequireOneMessageInEditor) {
+                    ((FeatureRequireOneMessageInEditor) feature).finishEditInEditorNoValue(interact.player, this);
+                    interact.gui.openGUISync(interact.player);
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void receiveMessageValue(NewInteractionClickedGUIManager<T> interact) {
+        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+            if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
+                if (feature instanceof FeatureRequireOneMessageInEditor) {
+                    Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
+                    if (potentialError.isPresent()) {
+                        interact.player.sendMessage(potentialError.get());
+                        ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, this);
+                    } else {
+                        ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
+                        interact.gui.openGUISync(interact.player);
+                    }
+                } else if (feature instanceof FeatureRequireMultipleMessageInEditor) {
+                    Optional<String> potentialError = ((FeatureRequireMultipleMessageInEditor) feature).verifyMessageReceived(interact.message);
+                    if (potentialError.isPresent()) {
+                        interact.player.sendMessage(potentialError.get());
+                        ((FeatureRequireMultipleMessageInEditor) feature).askInEditor(interact.player, this);
+                    } else {
+                        ((FeatureRequireMultipleMessageInEditor) feature).addMessageValue(interact.player, this, interact.message);
+                    }
+                } else if (feature instanceof FeatureRequireSubTextEditorInEditor) {
+                    FeatureRequireSubTextEditorInEditor f = (FeatureRequireSubTextEditorInEditor) feature;
+                    Optional<String> pErrors = f.verifyMessageReceived(interact.message);
+                    if (pErrors.isPresent()) {
+                        interact.player.sendMessage(StringConverter.coloredString(pErrors.get()));
+                        return;
+                    } else {
+                        currentWriting.get(interact.player).add(interact.message);
+                        f.sendBeforeTextEditor(interact.player, this);
+                        sendEditor(interact.player);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void save(NewInteractionClickedGUIManager<T> interact) {
+        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+            if (!(feature instanceof FeatureParentInterface)) {
+                feature.extractInfoFromParentEditor(this, interact.player);
+            }
+        }
+        FeatureParentInterface parent = interact.gui.getParent();
+        parent.save();
+        parent.reload();
+        while (parent instanceof FeatureInterface && ((FeatureAbstract) parent).getParent() != parent) {
+            parent = ((FeatureAbstract) parent).getParent();
+            parent.reload();
+        }
+        back(interact);
+    }
+}

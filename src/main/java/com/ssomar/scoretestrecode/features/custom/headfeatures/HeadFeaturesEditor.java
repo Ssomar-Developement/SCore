@@ -15,9 +15,8 @@ public class HeadFeaturesEditor extends FeatureEditorInterface<HeadFeatures> {
 
     @Override
     public void load() {
-        dropFeatures.getHeadValue().initItemParentEditor(this, 0);
-        dropFeatures.getHeadDBID().initItemParentEditor(this, 1);
-
+        dropFeatures.getHeadValue().initAndUpdateItemParentEditor(this, 0);
+        dropFeatures.getHeadDBID().initAndUpdateItemParentEditor(this, 1);
 
         // Back
         createItem(RED, 	1, 18, GUI.BACK, false, false);

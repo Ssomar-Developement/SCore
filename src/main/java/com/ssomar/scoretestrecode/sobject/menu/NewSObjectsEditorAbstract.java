@@ -1,5 +1,6 @@
 package com.ssomar.scoretestrecode.sobject.menu;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
@@ -44,6 +45,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
 
 	public void load() {
+		clearAndSetBackground();
 		int i = 0;
 		int total = 0;
 		Plugin plugin = sPlugin.getPlugin();
@@ -123,7 +125,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 	}
 
 	public void goToFolder(String folder) {
-		path = this.getPath()+"/"+folder.split("FOLDER: ")[1];
+		path = this.getPath()+"/"+StringConverter.decoloredString(folder.split("FOLDER: ")[1]).trim();
 		load();
 	}
 

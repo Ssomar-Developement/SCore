@@ -38,14 +38,18 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
-        try {
-            PotionType attributeSlot = PotionType.valueOf(colorStr.toUpperCase());
-            value = Optional.ofNullable(attributeSlot);
-            FeatureReturnCheckPremium<PotionType> checkPremium = checkPremium("PotionType", attributeSlot, defaultValue, isPremiumLoading);
-            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
-        } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the PotionType value of " + this.getName() + " from config, value: " + colorStr+ " &7&o"+getParent().getParentInfo()+" &6>> List: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html");
+        if(colorStr.equals("NULL")) {
             value = Optional.empty();
+        } else {
+            try {
+                PotionType attributeSlot = PotionType.valueOf(colorStr.toUpperCase());
+                value = Optional.ofNullable(attributeSlot);
+                FeatureReturnCheckPremium<PotionType> checkPremium = checkPremium("PotionType", attributeSlot, defaultValue, isPremiumLoading);
+                if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+            } catch (Exception e) {
+                errors.add("&cERROR, Couldn't load the PotionType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> List: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html");
+                value = Optional.empty();
+            }
         }
         return errors;
     }
