@@ -56,7 +56,7 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
         return error;
     }
 
-    public List<Pattern> getPatterns(){
+    public List<Pattern> getMCPatterns(){
         List<Pattern> patterns = new ArrayList<>();
         for(PatternFeature pattern : this.patterns.values()){
             patterns.add(pattern.getPattern());
