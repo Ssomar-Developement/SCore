@@ -38,7 +38,7 @@ public class ListDamageCauseFeature extends FeatureAbstract<List<EntityDamageEve
         List<String> errors = new ArrayList<>();
         value = new ArrayList<>();
         for (String s : config.getStringList(this.getName())) {
-            s = StringConverter.decoloredString(s);
+            s = StringConverter.decoloredString(s.toUpperCase());
             try {
                 EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(s);
                 value.add(mat);

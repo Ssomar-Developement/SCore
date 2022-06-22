@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -17,10 +18,15 @@ public class RegainHealth extends PlayerCommand {
         if (args.size() == 1) {
             regain = Double.parseDouble(args.get(0));
         }
-        if (receiver.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() >= receiver.getHealth() + regain)
+        double maxHealth;
+        if(SCore.is1v8()){
+            maxHealth = 20;
+        }
+        else maxHealth = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        if (maxHealth >= receiver.getHealth() + regain)
             receiver.setHealth(receiver.getHealth() + regain);
         else if (receiver.getHealth() + regain < 0) receiver.setHealth(0);
-        else receiver.setHealth(receiver.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        else receiver.setHealth(maxHealth);
     }
 
     @Override

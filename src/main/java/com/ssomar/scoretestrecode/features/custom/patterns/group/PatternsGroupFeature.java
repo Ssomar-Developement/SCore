@@ -12,16 +12,18 @@ import com.ssomar.scoretestrecode.features.custom.patterns.subpattern.SubPattern
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter @Setter
 public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupFeature, PatternsGroupFeature, PatternsGroupFeatureEditor, PatternsGroupFeatureEditorManager> implements FeaturesGroup<SubPatternFeature> {
@@ -56,9 +58,42 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
         return error;
     }
 
+    public void load(SPlugin plugin, ItemStack item, boolean isPremiumLoading){
+        if(item != null && item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta instanceof BannerMeta) {
+                BannerMeta bmeta = (BannerMeta) meta;
+                List<Pattern> patterns = bmeta.getPatterns();
+                if (patterns.size() > 0){
+                    int i = 0;
+                    for (Pattern pattern : patterns) {
+                        PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
+                        patternFeature.load(plugin, pattern, isPremiumLoading);
+                        this.patterns.put("pattern" + i, patternFeature);
+                    }
+                }
+            }
+            if (meta instanceof BlockStateMeta) {
+                BlockStateMeta bmeta = (BlockStateMeta) meta;
+                Banner banner = (Banner) bmeta.getBlockState();
+                List<Pattern> patterns = banner.getPatterns();
+                if (patterns.size() > 0){
+                    int i = 0;
+                    for (Pattern pattern : patterns) {
+                        PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
+                        patternFeature.load(plugin, pattern, isPremiumLoading);
+                        this.patterns.put("pattern" + i, patternFeature);
+                    }
+                }
+            }
+        }
+
+    }
+
     public List<Pattern> getMCPatterns(){
         List<Pattern> patterns = new ArrayList<>();
-        for(PatternFeature pattern : this.patterns.values()){
+        SortedMap<String, PatternFeature> sortedAttributes = new TreeMap<>(this.patterns);
+        for(PatternFeature pattern : sortedAttributes.values()){
             patterns.add(pattern.getPattern());
         }
         return patterns;
@@ -68,7 +103,8 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection attributesSection = config.createSection(this.getName());
-        for(String enchantmentID : patterns.keySet()) {
+        SortedMap<String, PatternFeature> sortedAttributes = new TreeMap<>(this.patterns);
+        for(String enchantmentID : sortedAttributes.keySet()) {
             patterns.get(enchantmentID).save(attributesSection);
         }
     }

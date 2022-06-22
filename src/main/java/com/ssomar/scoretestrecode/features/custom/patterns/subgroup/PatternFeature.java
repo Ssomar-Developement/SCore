@@ -17,10 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter @Setter
 public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, PatternFeature, PatternFeatureEditor, PatternFeatureEditorManager> implements FeaturesGroup<SubPatternFeature> {
@@ -42,8 +39,8 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if(config.isConfigurationSection(this.getName()+"."+id)) {
-            ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
+        if(config.isConfigurationSection(id)) {
+            ConfigurationSection enchantmentsSection = config.getConfigurationSection(id);
             for(String attributeID : enchantmentsSection.getKeys(false)) {
                 SubPatternFeature attribute = new SubPatternFeature(this, attributeID);
                 List<String> subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
@@ -57,6 +54,18 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
         return error;
     }
 
+    public void load(SPlugin plugin, Pattern pattern, boolean isPremiumLoading){
+        Map<String, Object> map = pattern.serialize();
+        int i = 0;
+        for(String key : map.keySet()){
+            SubPatternFeature subPattern = new SubPatternFeature(this, "subPattern" + i);
+            subPattern.getString().setValue(Optional.of(key));
+            subPattern.getObject().setValue(map.get(key));
+            this.subPattern.put("subPattern" + i, subPattern);
+        }
+
+    }
+
     public Pattern getPattern(){
         HashMap<String,Object> map = new HashMap<>();
         for(SubPatternFeature sP : subPattern.values()){
@@ -68,8 +77,8 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName()+"."+id, null);
-        ConfigurationSection attributesSection = config.createSection(this.getName()+"."+id);
+        config.set(id, null);
+        ConfigurationSection attributesSection = config.createSection(id);
         for(String enchantmentID : subPattern.keySet()) {
             subPattern.get(enchantmentID).save(attributesSection);
         }

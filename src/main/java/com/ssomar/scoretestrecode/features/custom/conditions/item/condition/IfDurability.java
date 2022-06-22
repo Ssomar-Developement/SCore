@@ -26,7 +26,7 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
     public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
 
         if(hasCondition()) {
-            if(!StringCalculation.calculation(getCondition().getValue().get(), itemStack.getDurability())) {
+            if(!StringCalculation.calculation(getCondition().getValue().get(), itemStack.getType().getMaxDurability()-itemStack.getDurability())) {
                 sendErrorMsg(playerOpt, messageSender);
                 cancelEvent(event);
                 return false;

@@ -11,8 +11,12 @@ import com.ssomar.scoretestrecode.features.types.ColorIntegerFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Banner;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -48,6 +52,18 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
         }
 
         return errors;
+    }
+
+    public void load(SPlugin plugin, ItemStack item, boolean isPremiumLoading){
+        if(item != null && item.hasItemMeta()) {
+            patterns.load(plugin, item, isPremiumLoading);
+            ItemMeta meta = item.getItemMeta();
+            if (meta instanceof BlockStateMeta) {
+                BlockStateMeta bmeta = (BlockStateMeta) meta;
+                Banner banner = (Banner) bmeta.getBlockState();
+                color.setValue(Optional.of(banner.getBaseColor().getColor().asRGB()));
+            }
+        }
     }
 
     @Override

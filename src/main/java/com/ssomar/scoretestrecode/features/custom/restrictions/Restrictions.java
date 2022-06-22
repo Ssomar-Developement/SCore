@@ -75,8 +75,11 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        for (RestrictionEnum restriction : restrictions.keySet()) {
-            restrictions.get(restriction).load(plugin, config, isPremiumLoading);
+        if(config.isConfigurationSection(getName())) {
+            ConfigurationSection section = config.getConfigurationSection(getName());
+            for (RestrictionEnum restriction : restrictions.keySet()) {
+                restrictions.get(restriction).load(plugin, section, isPremiumLoading);
+            }
         }
 
         return error;
@@ -84,8 +87,10 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
 
     @Override
     public void save(ConfigurationSection config) {
+        config.set(getName(), null);
+        ConfigurationSection section = config.createSection(getName());
         for (RestrictionEnum restriction : restrictions.keySet()) {
-            restrictions.get(restriction).save(config);
+            restrictions.get(restriction).save(section);
         }
     }
 

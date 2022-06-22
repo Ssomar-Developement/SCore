@@ -22,8 +22,12 @@ import java.util.List;
 
 public class FixSpawnerPlaceEvent implements Listener {
 
+    private static final Boolean DEBUG = false;
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlaceEvent(BlockPlaceEvent e) {
+
+        SsomarDev.testMsg("FixSpawnerPlaceEvent.onBlockPlaceEvent()", DEBUG);
         /* No Spawner type before the 1.14 */
         Block block = e.getBlock();
         ItemStack is = e.getItemInHand();
@@ -34,12 +38,15 @@ public class FixSpawnerPlaceEvent implements Listener {
         }
         else spawer = Material.SPAWNER;
 
-
+        SsomarDev.testMsg("item hand: "+is.getType()+ " equals ? "+((is.getType().equals(spawer))), DEBUG);
         if(is.getType().equals(spawer)){
+            SsomarDev.testMsg(">> Its a spawner ! ", DEBUG);
             CreatureSpawner cs = (CreatureSpawner)block.getState();
             BlockStateMeta meta = (BlockStateMeta)is.getItemMeta();
             CreatureSpawner csm = (CreatureSpawner)meta.getBlockState();
+            SsomarDev.testMsg(">> type of the spawner placed ! "+ csm.getSpawnedType(), DEBUG);
             cs.setSpawnedType(csm.getSpawnedType());
+            cs.update();
         }
     }
 }
