@@ -7,6 +7,7 @@ import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.custom.patterns.group.PatternsGroupFeature;
+import com.ssomar.scoretestrecode.features.types.ColorIntegerFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -18,10 +19,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Getter @Setter
 public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSettingsFeature, BannerSettingsFeature, BannerSettingsFeatureEditor, BannerSettingsFeatureEditorManager> {
 
+    private ColorIntegerFeature color;
     private PatternsGroupFeature patterns;
 
     public BannerSettingsFeature(FeatureParentInterface parent) {
@@ -31,6 +34,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
 
     @Override
     public void reset() {
+        this.color = new ColorIntegerFeature(this, "color", Optional.empty(), "Color", new String[]{"&7&oThe color of the banner"}, Material.REDSTONE, false);
         this.patterns = new PatternsGroupFeature(this);
     }
 
@@ -39,6 +43,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
         List<String> errors = new ArrayList<>();
         if(config.isConfigurationSection(getName())) {
             ConfigurationSection potionSettings = config.getConfigurationSection(getName());
+            errors.addAll(color.load(plugin, potionSettings, isPremiumLoading));
             errors.addAll(this.patterns.load(plugin, potionSettings, isPremiumLoading));
         }
 
@@ -49,6 +54,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection potionSettings = config.createSection(getName());
+        color.save(potionSettings);
         patterns.save(potionSettings);
     }
 
@@ -59,9 +65,11 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
 
     @Override
     public BannerSettingsFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 2];
+        String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        if(color.getValue().isPresent()) finalDescription[finalDescription.length - 2] = "&7Color : &e"+color.getValue().get();
+        else finalDescription[finalDescription.length - 2] = "&7Color : &cNO VALUE";
         finalDescription[finalDescription.length - 1] = "&7Pattern(s) : &e" + patterns.getMCPatterns().size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -81,13 +89,14 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
     @Override
     public BannerSettingsFeature clone() {
         BannerSettingsFeature dropFeatures = new BannerSettingsFeature(getParent());
+        dropFeatures.color = color.clone();
         dropFeatures.setPatterns(this.patterns.clone());
         return dropFeatures;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(patterns));
+        return new ArrayList<>(Arrays.asList(color, patterns));
     }
 
     @Override
@@ -110,7 +119,8 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature instanceof BannerSettingsFeature) {
                 BannerSettingsFeature hiders = (BannerSettingsFeature) feature;
-                hiders.setPatterns(this.patterns);
+                hiders.setColor(color);
+                hiders.setPatterns(patterns);
                 break;
             }
         }
