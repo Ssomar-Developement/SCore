@@ -29,7 +29,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     private BooleanFeature hideUsage;
 
     public Hiders(FeatureParentInterface parent) {
-        super(parent, "Hiders", "Hiders", new String[]{"&7&oHiders to hide:", "&7&oAttributes, Enchants, ..."}, Material.ANVIL, false);
+        super(parent, "hiders", "Hiders", new String[]{"&7&oHiders to hide:", "&7&oAttributes, Enchants, ..."}, Material.ANVIL, false);
         reset();
     }
 
@@ -45,22 +45,27 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        hideEnchantments.load(plugin, config, isPremiumLoading);
-        hideUnbreakable.load(plugin, config, isPremiumLoading);
-        hideAttributes.load(plugin, config, isPremiumLoading);
-        hidePotionEffects.load(plugin, config, isPremiumLoading);
-        hideUsage.load(plugin, config, isPremiumLoading);
+        if(config.isConfigurationSection(this.getName())) {
+            ConfigurationSection section = config.getConfigurationSection(this.getName());
+            hideEnchantments.load(plugin, section, isPremiumLoading);
+            hideUnbreakable.load(plugin, section, isPremiumLoading);
+            hideAttributes.load(plugin, section, isPremiumLoading);
+            hidePotionEffects.load(plugin, section, isPremiumLoading);
+            hideUsage.load(plugin, section, isPremiumLoading);
+        }
 
         return error;
     }
 
     @Override
     public void save(ConfigurationSection config) {
-        hideEnchantments.save(config);
-        hideUnbreakable.save(config);
-        hideAttributes.save(config);
-        hidePotionEffects.save(config);
-        hideUsage.save(config);
+        config.set(getName(), null);
+        ConfigurationSection section = config.createSection(getName());
+        hideEnchantments.save(section);
+        hideUnbreakable.save(section);
+        hideAttributes.save(section);
+        hidePotionEffects.save(section);
+        hideUsage.save(section);
     }
 
     @Override

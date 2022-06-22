@@ -33,7 +33,7 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
     private IntegerFeature giveFirstJoinSlot;
 
     public GiveFirstJoinFeatures(FeatureParentInterface parent) {
-        super(parent, "Give first join features", "Give first join features", new String[]{"&7&oGive the item for", "&7&othe first join of the player"}, Material.ANVIL, false);
+        super(parent, "giveFirstJoin", "Give first join features", new String[]{"&7&oGive the item for", "&7&othe first join of the player"}, Material.ANVIL, false);
         reset();
     }
 
@@ -47,9 +47,12 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        giveFirstJoin.load(plugin, config, isPremiumLoading);
-        giveFirstJoinAmount.load(plugin, config, isPremiumLoading);
-        giveFirstJoinSlot.load(plugin, config, isPremiumLoading);
+        if(config.isConfigurationSection(getName())) {
+            ConfigurationSection section = config.getConfigurationSection(getName());
+            giveFirstJoin.load(plugin, section, isPremiumLoading);
+            giveFirstJoinAmount.load(plugin, section, isPremiumLoading);
+            giveFirstJoinSlot.load(plugin, section, isPremiumLoading);
+        }
 
         return error;
     }
@@ -66,9 +69,11 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     @Override
     public void save(ConfigurationSection config) {
-        giveFirstJoin.save(config);
-        giveFirstJoinAmount.save(config);
-        giveFirstJoinSlot.save(config);
+        config.set(getName(), null);
+        ConfigurationSection section = config.createSection(getName());
+        giveFirstJoin.save(section);
+        giveFirstJoinAmount.save(section);
+        giveFirstJoinSlot.save(section);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     private BooleanFeature displayNameDrop;
 
     public DropFeatures(FeatureParentInterface parent) {
-        super(parent, "Drop features", "Drop features", new String[]{"&7&oThe drop features"}, Material.ANVIL, false);
+        super(parent, "dropOptions", "Drop features", new String[]{"&7&oThe drop features"}, Material.ANVIL, false);
         reset();
     }
 
@@ -45,22 +45,26 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        glowDrop.load(plugin, config, isPremiumLoading);
-        if(glowDrop.getValue() && SCore.is1v11Less()) {
-            error.add(plugin.getNameDesign() + " " + getParent().getParentInfo() + " glowDrop is not supported in 1.11, 1.10, 1.9, 1.8 !");
-            glowDrop.setValue(false);
+        if(config.isConfigurationSection(getName())) {
+            glowDrop.load(plugin, config, isPremiumLoading);
+            if (glowDrop.getValue() && SCore.is1v11Less()) {
+                error.add(plugin.getNameDesign() + " " + getParent().getParentInfo() + " glowDrop is not supported in 1.11, 1.10, 1.9, 1.8 !");
+                glowDrop.setValue(false);
+            }
+            dropColor.load(plugin, config, isPremiumLoading);
+            displayNameDrop.load(plugin, config, isPremiumLoading);
         }
-        dropColor.load(plugin, config, isPremiumLoading);
-        displayNameDrop.load(plugin, config, isPremiumLoading);
 
         return error;
     }
 
     @Override
     public void save(ConfigurationSection config) {
-        glowDrop.save(config);
-        dropColor.save(config);
-        displayNameDrop.save(config);
+        config.set(getName(), null);
+        ConfigurationSection section = config.createSection(getName());
+        glowDrop.save(section);
+        dropColor.save(section);
+        displayNameDrop.save(section);
     }
 
     @Override

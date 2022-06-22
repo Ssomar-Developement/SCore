@@ -58,11 +58,14 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        errors.addAll(this.color.load(plugin, config, isPremiumLoading));
-        errors.addAll(this.potiontype.load(plugin, config, isPremiumLoading));
-        errors.addAll(this.potionExtended.load(plugin, config, isPremiumLoading));
-        errors.addAll(this.potionUpgraded.load(plugin, config, isPremiumLoading));
-        errors.addAll(this.potionEffects.load(plugin, config, isPremiumLoading));
+        if(config.isConfigurationSection(getName())) {
+            ConfigurationSection potionSettings = config.getConfigurationSection(getName());
+            errors.addAll(this.color.load(plugin, potionSettings, isPremiumLoading));
+            errors.addAll(this.potiontype.load(plugin, potionSettings, isPremiumLoading));
+            errors.addAll(this.potionExtended.load(plugin, potionSettings, isPremiumLoading));
+            errors.addAll(this.potionUpgraded.load(plugin, potionSettings, isPremiumLoading));
+            errors.addAll(this.potionEffects.load(plugin, potionSettings, isPremiumLoading));
+        }
 
         return errors;
     }
@@ -112,7 +115,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             if(!SCore.is1v11Less()) {
                 if (color.getValue().isPresent()) pMeta.setColor(Color.fromRGB(color.getValue().get()));
                 if (potiontype.getValue().isPresent())
-                    pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue(), potionUpgraded.getValue()));
+                    pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable()));
             }
             for (PotionEffectFeature pE : this.potionEffects.getEffects().values()) {
                 pMeta.addCustomEffect(pE.getPotionEffect(), true);
@@ -125,11 +128,13 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public void save(ConfigurationSection config) {
-        color.save(config);
-        potiontype.save(config);
-        potionExtended.save(config);
-        potionUpgraded.save(config);
-        potionEffects.save(config);
+        config.set(getName(), null);
+        ConfigurationSection potionSettings = config.createSection(getName());
+        color.save(potionSettings);
+        potiontype.save(potionSettings);
+        potionExtended.save(potionSettings);
+        potionUpgraded.save(potionSettings);
+        potionEffects.save(potionSettings);
     }
 
     @Override

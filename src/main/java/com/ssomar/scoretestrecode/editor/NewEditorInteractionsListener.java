@@ -7,6 +7,8 @@ import com.ssomar.scoretestrecode.features.custom.attributes.attribute.Attribute
 import com.ssomar.scoretestrecode.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.attributes.group.AttributesGroupFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.bannersettings.BannerSettingsFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.bannersettings.BannerSettingsFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.cancelevents.CancelEventFeaturesEditor;
 import com.ssomar.scoretestrecode.features.custom.cancelevents.CancelEventFeaturesEditorManager;
 import com.ssomar.scoretestrecode.features.custom.conditions.ConditionFeatureEditor;
@@ -55,6 +57,12 @@ import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.grou
 import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.patterns.group.PatternsGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.patterns.group.PatternsGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.patterns.subgroup.PatternFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.patterns.subgroup.PatternFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.patterns.subpattern.SubPatternFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.patterns.subpattern.SubPatternFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.potioneffects.group.PotionEffectGroupFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.potioneffects.group.PotionEffectGroupFeatureEditorManager;
 import com.ssomar.scoretestrecode.features.custom.potioneffects.potioneffect.PotionEffectFeatureEditor;
@@ -294,6 +302,22 @@ public class NewEditorInteractionsListener implements Listener {
             PotionSettingsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof SubPatternFeatureEditor) {
+            SubPatternFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof PatternFeatureEditor) {
+            PatternFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof PatternsGroupFeatureEditor) {
+            PatternsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof BannerSettingsFeatureEditor) {
+            BannerSettingsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
 
     }
 
@@ -462,6 +486,21 @@ public class NewEditorInteractionsListener implements Listener {
             e.setCancelled(true);
             PotionSettingsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
-
+        else if (SubPatternFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            SubPatternFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PatternFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PatternFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (PatternsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            PatternsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (BannerSettingsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            BannerSettingsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
     }
 }
