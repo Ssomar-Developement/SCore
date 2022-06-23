@@ -119,11 +119,13 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        errors.addAll(cooldown.load(plugin, config, isPremiumLoading));
-        errors.addAll(displayCooldownMessage.load(plugin, config, isPremiumLoading));
-        errors.addAll(cancelEventIfInCooldown.load(plugin, config, isPremiumLoading));
-        errors.addAll(cooldownMessage.load(plugin, config, isPremiumLoading));
-        errors.addAll(isCooldownInTicks.load(plugin, config, isPremiumLoading));
+        if(config.isConfigurationSection(getName())) {
+            errors.addAll(cooldown.load(plugin, config, isPremiumLoading));
+            errors.addAll(displayCooldownMessage.load(plugin, config, isPremiumLoading));
+            errors.addAll(cancelEventIfInCooldown.load(plugin, config, isPremiumLoading));
+            errors.addAll(cooldownMessage.load(plugin, config, isPremiumLoading));
+            errors.addAll(isCooldownInTicks.load(plugin, config, isPremiumLoading));
+        }
         return errors;
     }
 
@@ -140,11 +142,13 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
 
     @Override
     public void save(ConfigurationSection config) {
-        this.cooldown.save(config);
-        this.isCooldownInTicks.save(config);
-        this.cooldownMessage.save(config);
-        this.displayCooldownMessage.save(config);
-        this.cancelEventIfInCooldown.save(config);
+        config.set(getName(), null);
+        ConfigurationSection section = config.createSection(getName());
+        this.cooldown.save(section);
+        this.isCooldownInTicks.save(section);
+        this.cooldownMessage.save(section);
+        this.displayCooldownMessage.save(section);
+        this.cancelEventIfInCooldown.save(section);
     }
 
     @Override

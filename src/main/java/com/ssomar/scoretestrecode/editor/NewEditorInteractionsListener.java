@@ -87,6 +87,11 @@ import com.ssomar.scoretestrecode.features.custom.restrictions.RestrictionsEdito
 import com.ssomar.scoretestrecode.features.custom.restrictions.RestrictionsEditorManager;
 import com.ssomar.scoretestrecode.features.custom.useperday.UsePerDayFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.useperday.UsePerDayFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.variables.group.VariablesGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.variables.group.VariablesGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeature;
+import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeatureEditorManager;
 import com.ssomar.scoretestrecode.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.scoretestrecode.sobject.menu.NewSObjectsManagerEditor;
 import org.bukkit.entity.Player;
@@ -318,6 +323,14 @@ public class NewEditorInteractionsListener implements Listener {
             BannerSettingsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof VariableFeatureEditor) {
+            VariableFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof VariablesGroupFeatureEditor) {
+            VariablesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
 
     }
 
@@ -501,6 +514,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (BannerSettingsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             BannerSettingsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (VariableFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            VariableFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (VariablesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            VariablesGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

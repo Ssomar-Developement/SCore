@@ -4,6 +4,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.TypeTarget;
+import com.ssomar.score.utils.VariableType;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
@@ -21,12 +22,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 @Getter @Setter
-public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, TypeTargetFeature> implements FeatureRequireOnlyClicksInEditor {
+public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>, VariableTypeFeature> implements FeatureRequireOnlyClicksInEditor {
 
-    private Optional<TypeTarget> value;
-    private Optional<TypeTarget> defaultValue;
+    private Optional<VariableType> value;
+    private Optional<VariableType> defaultValue;
 
-    public TypeTargetFeature(FeatureParentInterface parent, String name, Optional<TypeTarget> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public VariableTypeFeature(FeatureParentInterface parent, String name, Optional<VariableType> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
@@ -44,12 +45,12 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
         }
         else {
             try {
-                TypeTarget material = TypeTarget.valueOf(colorStr);
+                VariableType material = VariableType.valueOf(colorStr);
                 value = Optional.ofNullable(material);
-                FeatureReturnCheckPremium<TypeTarget> checkPremium = checkPremium("Type target", material, defaultValue, isPremiumLoading);
+                FeatureReturnCheckPremium<VariableType> checkPremium = checkPremium("Type target", material, defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             } catch (Exception e) {
-                errors.add("&cERROR, Couldn't load the Type target value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Type target available: ONLY_BLOCK, ONLY_AIR, NO_TYPE_TARGET");
+                errors.add("&cERROR, Couldn't load the VariableType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> VariableType available: STRING, NUMBER");
                 value = Optional.empty();
             }
         }
@@ -58,18 +59,18 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<TypeTarget> value = getValue();
+        Optional<VariableType> value = getValue();
         if(value.isPresent()) config.set(this.getName(), value.get().name());
     }
 
     @Override
-    public Optional<TypeTarget> getValue() {
+    public Optional<VariableType> getValue() {
         if(value.isPresent()) return value;
         else return defaultValue;
     }
 
     @Override
-    public TypeTargetFeature initItemParentEditor(GUI gui, int slot) {
+    public VariableTypeFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
@@ -81,19 +82,19 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        Optional<TypeTarget> value = getValue();
-        TypeTarget finalValue = value.orElse(TypeTarget.NO_TYPE_TARGET);
-        updateTypeTarget(finalValue, gui);
+        Optional<VariableType> value = getValue();
+        VariableType finalValue = value.orElse(VariableType.STRING);
+        updateVariableType(finalValue, gui);
     }
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        this.value = Optional.of(getTypeTarget( (GUI) manager.getCache().get(player)));
+        this.value = Optional.of(getVariableType( (GUI) manager.getCache().get(player)));
     }
 
     @Override
-    public TypeTargetFeature clone() {
-        TypeTargetFeature clone = new TypeTargetFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+    public VariableTypeFeature clone() {
+        VariableTypeFeature clone = new VariableTypeFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
         clone.value = value;
         return clone;
     }
@@ -140,52 +141,52 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        updateTypeTarget(nextTypeTarget(getTypeTarget( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateVariableType(nextVariableType(getVariableType( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        updateTypeTarget(prevTypeTarget(getTypeTarget( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateVariableType(prevVariableType(getVariableType( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
-    public TypeTarget nextTypeTarget(TypeTarget material) {
+    public VariableType nextVariableType(VariableType material) {
         boolean next = false;
-        for (TypeTarget check : getSortTypeTargets()) {
+        for (VariableType check : getSortVariableTypes()) {
             if (check.equals(material)) {
                 next = true;
                 continue;
             }
             if (next) return check;
         }
-        return getSortTypeTargets().get(0);
+        return getSortVariableTypes().get(0);
     }
 
-    public TypeTarget prevTypeTarget(TypeTarget material) {
+    public VariableType prevVariableType(VariableType material) {
         int i = -1;
         int cpt = 0;
-        for (TypeTarget check : getSortTypeTargets()) {
+        for (VariableType check : getSortVariableTypes()) {
             if (check.equals(material)) {
                 i = cpt;
                 break;
             }
             cpt++;
         }
-        if (i == 0) return getSortTypeTargets().get(getSortTypeTargets().size()- 1);
-        else return getSortTypeTargets().get(cpt - 1);
+        if (i == 0) return getSortVariableTypes().get(getSortVariableTypes().size()- 1);
+        else return getSortVariableTypes().get(cpt - 1);
     }
 
-    public void updateTypeTarget(TypeTarget typeTarget, GUI gui) {
+    public void updateVariableType(VariableType typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
-        maxSize += getSortTypeTargets().size();
+        maxSize += getSortVariableTypes().size();
         if(maxSize > 17)  maxSize = 17;
         boolean find = false;
-        for (TypeTarget check : getSortTypeTargets()) {
+        for (VariableType check : getSortVariableTypes()) {
             if (typeTarget.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" +typeTarget.name()));
                 find = true;
@@ -194,7 +195,7 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
-        for (TypeTarget check : getSortTypeTargets()) {
+        for (VariableType check : getSortVariableTypes()) {
             if (lore.size() == maxSize) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
@@ -211,22 +212,22 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
         }
     }
 
-    public TypeTarget getTypeTarget(GUI gui) {
+    public VariableType getVariableType(GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return TypeTarget.valueOf(str.split("➤ ")[1]);
+                return VariableType.valueOf(str.split("➤ ")[1]);
             }
         }
         return null;
     }
 
-    public List<TypeTarget> getSortTypeTargets() {
-        SortedMap<String, TypeTarget> map = new TreeMap<String, TypeTarget>();
-        for (TypeTarget l : TypeTarget.values()) {
+    public List<VariableType> getSortVariableTypes() {
+        SortedMap<String, VariableType> map = new TreeMap<String, VariableType>();
+        for (VariableType l : VariableType.values()) {
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());

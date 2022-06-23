@@ -42,8 +42,18 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String valueStr = config.getString(this.getName(), "");
-        value = Optional.of(valueStr);
+        String valueStr = config.getString(this.getName(), "<<NULL>>");
+        if(valueStr.equals("<<NULL>>")){
+            if(defaultValue.isPresent()){
+                valueStr = defaultValue.get();
+                this.value = defaultValue;
+            }
+            else{
+                valueStr = "";
+                this.value = Optional.empty();
+            }
+        }
+        else value = Optional.of(valueStr);
         FeatureReturnCheckPremium<String> checkPremium = checkPremium("Colored String", valueStr, defaultValue, isPremiumLoading);
         if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         return errors;
@@ -98,11 +108,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     }
 
     @Override
-    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        String valueStr = ((GUI)manager.getCache().get(player)).getActuallyWithColor(getEditorName());
-        if(valueStr.isEmpty()) value = Optional.empty();
-        else value = Optional.of(valueStr);
-    }
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
 
     @Override
     public ColoredStringFeature clone() {
@@ -133,10 +139,16 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         newName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "Type the new string here.."));
         newName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&aClick here to set new string")).create()));
 
+        TextComponent noValue = new TextComponent(StringConverter.coloredString("&c&l[NO VALUE / EXIT]"));
+        noValue.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "NO VALUE / EXIT"));
+        noValue.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&cClick here to exit or don't set a value")).create()));
+
         message.addExtra(new TextComponent(" "));
         message.addExtra(edit);
         message.addExtra(new TextComponent(" "));
         message.addExtra(newName);
+        message.addExtra(new TextComponent(" "));
+        message.addExtra(noValue);
 
         editor.spigot().sendMessage(message);
         space(editor);
@@ -150,7 +162,8 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
         String valueStr = message;
-        if(valueStr.isEmpty()) value = Optional.empty();
+        if(message.contains("EMPTY STRING")) value = Optional.of("");
+        else if(valueStr.isEmpty()) value = Optional.empty();
         else value = Optional.of(valueStr);
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
@@ -158,6 +171,8 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
-
+        this.value = Optional.empty();
+        manager.requestWriting.remove(editor);
+        updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 }

@@ -39,7 +39,10 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         if(colorStr.equals("NULL")) {
-            value = Optional.empty();
+            if(defaultValue.isPresent()) {
+                value = defaultValue;
+            }
+            else value = Optional.empty();
         } else {
             try {
                 PotionType attributeSlot = PotionType.valueOf(colorStr.toUpperCase());

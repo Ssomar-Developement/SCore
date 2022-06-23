@@ -48,7 +48,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public void reset() {
-        this.color = new ColorIntegerFeature(this, "potionColor", Optional.ofNullable(255), "Potion color", new String[]{"&7&oColor"}, Material.REDSTONE, false);
+        this.color = new ColorIntegerFeature(this, "potionColor", Optional.empty(), "Potion color", new String[]{"&7&oColor"}, Material.REDSTONE, false);
         this.potiontype = new PotionTypeFeature(this, "potionType", Optional.ofNullable(PotionType.WATER), "Potion type", new String[]{"&7&oPotion type"}, Material.POTION, false);
         this.potionExtended = new BooleanFeature(this, "potionExtended", false, "Potion extended", new String[]{"&7&oPotion extended"}, Material.LEVER, false, false);
         this.potionUpgraded = new BooleanFeature(this, "potionUpgraded", false, "Potion upgraded", new String[]{"&7&oPotion upgraded"}, Material.LEVER, false, false);
@@ -75,7 +75,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
         if (item.hasItemMeta() && (meta = item.getItemMeta()) instanceof PotionMeta) {
             PotionMeta pMeta = ((PotionMeta) meta);
             if (!SCore.is1v11Less()) {
-                color.setValue(Optional.of(pMeta.getColor().asRGB()));
+                if(pMeta.getColor() != null) color.setValue(Optional.of(pMeta.getColor().asRGB()));
                 potiontype.setValue(Optional.of(pMeta.getBasePotionData().getType()));
                 potionExtended.setValue(pMeta.getBasePotionData().isExtended());
                 potionUpgraded.setValue(pMeta.getBasePotionData().isUpgraded());
@@ -147,7 +147,8 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
         String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 6] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 5] = "&7Potion color : &e" + color.getValue().get();
+        if(color.getValue().isPresent()) finalDescription[finalDescription.length - 5] = "&7Potion color : &e" + color.getValue().get();
+        else finalDescription[finalDescription.length - 5] = "&7Potion color : &cNO VALUE";
         finalDescription[finalDescription.length - 4] = "&7Potion type : &e" + potiontype.getValue().get();
         if(potionExtended.getValue())
             finalDescription[finalDescription.length - 3] = "&7Potion extended: &a&l✔";

@@ -32,13 +32,14 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     @Override
     public void reset() {
         this.slots = new ArrayList<>();
+        slots.add(-1);
     }
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         slots = new ArrayList<>();
-        for (String s : config.getStringList(getEditorName())) {
+        for (String s : config.getStringList(getName())) {
             try {
                 slots.add(Integer.valueOf(s));
             } catch (Exception e) {
@@ -65,7 +66,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     @Override
     public void save(ConfigurationSection config) {
         /** Empty list = all slots **/
-        if (slots.size() == 42) config.set(getEditorName(), new ArrayList<>());
+        if (slots.size() == 42) config.set(getName(), new ArrayList<>());
         else config.set(getEditorName(), slots);
     }
 

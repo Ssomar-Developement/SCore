@@ -70,6 +70,7 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
                         PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
                         patternFeature.load(plugin, pattern, isPremiumLoading);
                         this.patterns.put("pattern" + i, patternFeature);
+                        i++;
                     }
                 }
             }
@@ -83,6 +84,7 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
                         PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
                         patternFeature.load(plugin, pattern, isPremiumLoading);
                         this.patterns.put("pattern" + i, patternFeature);
+                        ;i++;
                     }
                 }
             }

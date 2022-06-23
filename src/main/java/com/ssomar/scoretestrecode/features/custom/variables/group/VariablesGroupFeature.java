@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.patterns.subgroup;
+package com.ssomar.scoretestrecode.features.custom.variables.group;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -7,95 +7,73 @@ import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.FeaturesGroup;
-import com.ssomar.scoretestrecode.features.custom.patterns.subpattern.SubPatternFeature;
+import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.block.banner.Pattern;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
-public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, PatternFeature, PatternFeatureEditor, PatternFeatureEditorManager> implements FeaturesGroup<SubPatternFeature> {
+public class VariablesGroupFeature extends FeatureWithHisOwnEditor<VariablesGroupFeature, VariablesGroupFeature, VariablesGroupFeatureEditor, VariablesGroupFeatureEditorManager> implements FeaturesGroup<VariableFeature> {
 
-    private Map<String, SubPatternFeature> subPattern;
-    private String id;
+    private Map<String, VariableFeature> attributes;
 
-    public PatternFeature(FeatureParentInterface parent, String id) {
-        super(parent, "subPatterns", "Sub Patterns", new String[]{"&7&oThe sub patterns"}, Material.ANVIL, false);
-        this.id = id;
+    public VariablesGroupFeature(FeatureParentInterface parent) {
+        super(parent, "variables", "Variables", new String[]{"&7&oThe variables"}, Material.ANVIL, false);
         reset();
     }
 
     @Override
     public void reset() {
-        this.subPattern = new HashMap<>();
+        this.attributes = new HashMap<>();
     }
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if(config.isConfigurationSection(id)) {
-            ConfigurationSection enchantmentsSection = config.getConfigurationSection(id);
+        if(config.isConfigurationSection(this.getName())) {
+            ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
             for(String attributeID : enchantmentsSection.getKeys(false)) {
-                SubPatternFeature attribute = new SubPatternFeature(this, attributeID);
+                VariableFeature attribute = new VariableFeature(this, attributeID);
                 List<String> subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                     continue;
                 }
-                subPattern.put(attributeID, attribute);
+                attributes.put(attributeID, attribute);
             }
         }
         return error;
     }
 
-    public void load(SPlugin plugin, Pattern pattern, boolean isPremiumLoading){
-        Map<String, Object> map = pattern.serialize();
-        int i = 0;
-        for(String key : map.keySet()){
-            SubPatternFeature subPattern = new SubPatternFeature(this, "subPattern" + i);
-            subPattern.getString().setValue(Optional.of(key));
-            subPattern.getObject().setValue(map.get(key));
-            this.subPattern.put("subPattern" + i, subPattern);
-            i++;
-        }
-
-    }
-
-    public Pattern getPattern(){
-        HashMap<String,Object> map = new HashMap<>();
-        for(SubPatternFeature sP : subPattern.values()){
-            map.put(sP.getString().getValue().get(), sP.getObject().getValue());
-        }
-        Pattern pattern = new Pattern(map);
-        return pattern;
-    }
-
     @Override
     public void save(ConfigurationSection config) {
-        config.set(id, null);
-        ConfigurationSection attributesSection = config.createSection(id);
-        for(String enchantmentID : subPattern.keySet()) {
-            subPattern.get(enchantmentID).save(attributesSection);
+        config.set(this.getName(), null);
+        ConfigurationSection attributesSection = config.createSection(this.getName());
+        for(String enchantmentID : attributes.keySet()) {
+            attributes.get(enchantmentID).save(attributesSection);
         }
     }
 
     @Override
-    public PatternFeature getValue() {
+    public VariablesGroupFeature getValue() {
         return this;
     }
 
     @Override
-    public PatternFeature initItemParentEditor(GUI gui, int slot) {
+    public VariablesGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length -2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length -1] = "&7&oSub Pattern(s) added: &e"+ subPattern.size();
+        finalDescription[finalDescription.length -1] = "&7&oVariable(s) added: &e"+ attributes.size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -112,15 +90,15 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
     }
 
     @Override
-    public PatternFeature clone() {
-        PatternFeature eF = new PatternFeature(getParent(), id);
-        eF.setSubPattern(new HashMap<>(this.getSubPattern()));
+    public VariablesGroupFeature clone() {
+        VariablesGroupFeature eF = new VariablesGroupFeature(getParent());
+        eF.setAttributes(new HashMap<>(this.getAttributes()));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(subPattern.values());
+        return new ArrayList<>(attributes.values());
     }
 
     @Override
@@ -145,9 +123,9 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
     @Override
     public void reload() {
         for(FeatureInterface feature : getParent().getFeatures()) {
-            if(feature instanceof PatternFeature) {
-                PatternFeature eF = (PatternFeature) feature;
-                eF.setSubPattern(this.getSubPattern());
+            if(feature instanceof VariablesGroupFeature) {
+                VariablesGroupFeature eF = (VariablesGroupFeature) feature;
+                eF.setAttributes(this.getAttributes());
                 break;
             }
         }
@@ -160,17 +138,17 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
 
     @Override
     public void openEditor(@NotNull Player player) {
-        PatternFeatureEditorManager.getInstance().startEditing(player, this);
+        VariablesGroupFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
     public void createNewFeature(@NotNull Player editor) {
-        String baseId = "subPattern";
+        String baseId = "var";
         for(int i = 0; i < 1000; i++) {
             String id = baseId + i;
-            if(!subPattern.containsKey(id)) {
-                SubPatternFeature eF = new SubPatternFeature(this, id);
-                subPattern.put(id, eF);
+            if(!attributes.containsKey(id)) {
+                VariableFeature eF = new VariableFeature(this, id);
+                attributes.put(id, eF);
                 eF.openEditor(editor);
                 break;
             }
@@ -178,8 +156,8 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
     }
 
     @Override
-    public void deleteFeature(@NotNull Player editor, SubPatternFeature feature) {
-        subPattern.remove(feature.getId());
+    public void deleteFeature(@NotNull Player editor, VariableFeature feature) {
+        attributes.remove(feature.getId());
     }
 
 }

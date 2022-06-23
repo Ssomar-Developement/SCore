@@ -52,7 +52,11 @@ public class ListBiomeFeature extends FeatureAbstract<List<Biome>, ListBiomeFeat
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        List<String> list = new ArrayList<>();
+        for (Biome biome : value) {
+            list.add(biome.toString());
+        }
+        config.set(this.getName(), list);
     }
 
     @Override

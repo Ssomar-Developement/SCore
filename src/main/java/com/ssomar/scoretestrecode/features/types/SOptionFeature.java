@@ -34,7 +34,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.plugin = sPlugin;
         this.builderInstance = builderInstance;
-        this.value = builderInstance.getDefaultValue();
+        reset();
     }
 
     @Override
@@ -43,14 +43,18 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
             SOption option = builderInstance.getOption(colorStr);
-            value = option;
+            if(option == null){
+                errors.add("&cERROR, Couldn't load the Option value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Options available: https://docs.ssomar.com/");
+                option = builderInstance.getDefaultValue();
+            }
+            this.value = option;
             if (!isPremiumLoading && builderInstance.getPremiumOption().contains(option)) {
                 errors.add("&cERROR, Couldn't load the Option value of " + this.getName() + " from config, value: " + value + " &7&o" + getParent().getParentInfo() + " &6>> Because it's a premium Option !");
                 value = builderInstance.getDefaultValue();
             }
         } catch (Exception e) {
             errors.add("&cERROR, Couldn't load the Option value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Options available: https://docs.ssomar.com/");
-            value = builderInstance.getDefaultValue();
+            this.value = builderInstance.getDefaultValue();
         }
         return errors;
     }
@@ -83,14 +87,12 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
     }
 
     @Override
-    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        this.value = getOption((GUI) manager.getCache().get(player));
-    }
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
 
     @Override
     public SOptionFeature clone() {
         SOptionFeature clone = new SOptionFeature(plugin, builderInstance, getParent(), this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
-        clone.value = value;
+        clone.setValue(value);
         return clone;
     }
 

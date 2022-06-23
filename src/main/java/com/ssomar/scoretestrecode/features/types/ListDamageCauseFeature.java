@@ -14,6 +14,7 @@ import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -61,7 +62,11 @@ public class ListDamageCauseFeature extends FeatureAbstract<List<EntityDamageEve
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        List<String> list = new ArrayList<>();
+        for (EntityDamageEvent.DamageCause cause : value) {
+            list.add(cause.toString());
+        }
+        config.set(this.getName(), list);
     }
 
     @Override

@@ -145,7 +145,8 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
         String valueStr = StringConverter.decoloredString(message);
-        if(valueStr.isEmpty()) value = Optional.empty();
+        if(message.contains("EMPTY STRING")) value = Optional.of("");
+        else if(valueStr.isEmpty()) value = Optional.empty();
         else value = Optional.of(valueStr);
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));

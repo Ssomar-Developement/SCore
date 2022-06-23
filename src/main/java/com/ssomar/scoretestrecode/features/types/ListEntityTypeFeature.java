@@ -13,6 +13,7 @@ import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -52,7 +53,11 @@ public class ListEntityTypeFeature extends FeatureAbstract<List<EntityType>, Lis
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        List<String> list = new ArrayList<>();
+        for (EntityType biome : value) {
+            list.add(biome.toString());
+        }
+        config.set(this.getName(), list);
     }
 
     @Override

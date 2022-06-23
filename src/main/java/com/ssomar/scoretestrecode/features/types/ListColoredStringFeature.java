@@ -80,9 +80,7 @@ public class ListColoredStringFeature extends FeatureAbstract<List<String>, List
     }
 
     @Override
-    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        value = ((GUI) manager.getCache().get(player)).getConditionListWithColor(getEditorName(), "&cEMPTY");
-    }
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
 
     @Override
     public ListColoredStringFeature clone() {

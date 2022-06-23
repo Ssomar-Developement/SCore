@@ -48,7 +48,6 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                 List<String> subErrors = activator.load(plugin, activatorsSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
-                    continue;
                 }
                 activators.put(activatorID, activator);
             }

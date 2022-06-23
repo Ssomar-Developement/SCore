@@ -52,7 +52,11 @@ public class ListMaterialFeature extends FeatureAbstract<List<Material>, ListMat
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), value);
+        List<String> list = new ArrayList<>();
+        for (Material material : value) {
+            list.add(material.toString());
+        }
+        config.set(this.getName(), list);
     }
 
     @Override
