@@ -87,11 +87,14 @@ import com.ssomar.scoretestrecode.features.custom.restrictions.RestrictionsEdito
 import com.ssomar.scoretestrecode.features.custom.restrictions.RestrictionsEditorManager;
 import com.ssomar.scoretestrecode.features.custom.useperday.UsePerDayFeatureEditor;
 import com.ssomar.scoretestrecode.features.custom.useperday.UsePerDayFeatureEditorManager;
-import com.ssomar.scoretestrecode.features.custom.variables.group.VariablesGroupFeatureEditor;
-import com.ssomar.scoretestrecode.features.custom.variables.group.VariablesGroupFeatureEditorManager;
-import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeature;
-import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeatureEditor;
-import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.variables.base.group.VariablesGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.variables.base.group.VariablesGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.variables.base.variable.VariableFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.variables.base.variable.VariableFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.variables.update.group.VariableUpdateGroupFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.variables.update.group.VariableUpdateGroupFeatureEditorManager;
+import com.ssomar.scoretestrecode.features.custom.variables.update.variable.VariableUpdateFeatureEditor;
+import com.ssomar.scoretestrecode.features.custom.variables.update.variable.VariableUpdateFeatureEditorManager;
 import com.ssomar.scoretestrecode.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.scoretestrecode.sobject.menu.NewSObjectsManagerEditor;
 import org.bukkit.entity.Player;
@@ -331,6 +334,14 @@ public class NewEditorInteractionsListener implements Listener {
             VariablesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
+        else if (holder instanceof VariableUpdateFeatureEditor) {
+            VariableUpdateFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof VariableUpdateGroupFeatureEditor) {
+            VariableUpdateGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
 
     }
 
@@ -522,6 +533,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if (VariablesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             VariablesGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (VariableUpdateFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            VariableUpdateFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+        }
+        else if (VariableUpdateGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            VariableUpdateGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
         }
     }
 }

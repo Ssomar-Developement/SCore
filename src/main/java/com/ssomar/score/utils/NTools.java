@@ -3,6 +3,7 @@ package com.ssomar.score.utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class NTools implements Serializable {
@@ -67,7 +68,7 @@ public class NTools implements Serializable {
 		int limit = numbersAfterComma;
 		boolean startCount = false;
 		int cpt = 0;
-		for(char c : (number+"").toCharArray()){
+		for(char c : (new BigDecimal(number).toPlainString()).toCharArray()){
 			if(cpt == limit){
 				break;
 			}

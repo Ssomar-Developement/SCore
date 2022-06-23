@@ -87,9 +87,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     }
 
     @Override
-    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        value = Optional.of(((GUI) manager.getCache().get(player)).getDouble(getEditorName()));
-    }
+    public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {}
 
     @Override
     public DoubleFeature clone() {

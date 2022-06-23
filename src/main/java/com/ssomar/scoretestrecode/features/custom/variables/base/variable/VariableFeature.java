@@ -1,8 +1,7 @@
-package com.ssomar.scoretestrecode.features.custom.variables.variable;
+package com.ssomar.scoretestrecode.features.custom.variables.base.variable;
 
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.AttributeSlot;
 import com.ssomar.score.utils.VariableType;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureInterface;
@@ -12,8 +11,6 @@ import com.ssomar.scoretestrecode.features.types.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +31,7 @@ public class VariableFeature extends FeatureWithHisOwnEditor<VariableFeature, Va
     private String id;
 
     public VariableFeature(FeatureParentInterface parent, String id) {
-        super(parent, "variable", "Variable", new String[]{"&7&oA variable with its options"}, Material.ANVIL, false);
+        super(parent, "variable", "Variable", new String[]{"&7&oA variable with its options"}, GUI.WRITABLE_BOOK, false);
         this.id = id;
         reset();
     }
@@ -44,7 +41,7 @@ public class VariableFeature extends FeatureWithHisOwnEditor<VariableFeature, Va
         this.variableName = new UncoloredStringFeature(this, "variableName", Optional.of("var"), "Variable Name", new String[]{"&7&oThe variable name"}, GUI.WRITABLE_BOOK, false, false);
         this.type = new VariableTypeFeature(this, "type", Optional.of(VariableType.STRING), "Type", new String[]{"&7&oThe variable type"}, Material.COMPASS, false);
         this.stringValue = new ColoredStringFeature(this, "default", Optional.of(""), "String Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false, false);
-        this.doubleValue = new DoubleFeature(this, "default", Optional.of(0.0), "Double Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false);
+        this.doubleValue = new DoubleFeature(this, "default", Optional.of(0.0), "Number Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false);
     }
 
     @Override

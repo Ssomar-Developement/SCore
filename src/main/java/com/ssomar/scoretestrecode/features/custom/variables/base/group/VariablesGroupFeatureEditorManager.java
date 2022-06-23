@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.variables.group;
+package com.ssomar.scoretestrecode.features.custom.variables.base.group;
 
 
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorManagerAbstract;

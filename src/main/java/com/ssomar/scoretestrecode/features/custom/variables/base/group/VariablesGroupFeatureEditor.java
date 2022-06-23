@@ -1,7 +1,7 @@
-package com.ssomar.scoretestrecode.features.custom.variables.group;
+package com.ssomar.scoretestrecode.features.custom.variables.base.group;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.scoretestrecode.features.custom.variables.variable.VariableFeature;
+import com.ssomar.scoretestrecode.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorInterface;
 
 public class VariablesGroupFeatureEditor extends FeatureEditorInterface<VariablesGroupFeature> {
@@ -17,7 +17,7 @@ public class VariablesGroupFeatureEditor extends FeatureEditorInterface<Variable
     @Override
     public void load() {
         int i = 0;
-        for(VariableFeature enchantment : attributesGroupFeature.getAttributes().values()) {
+        for(VariableFeature enchantment : attributesGroupFeature.getVariables().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
             i++;
         }

@@ -3,8 +3,7 @@ package com.ssomar.scoretestrecode.features.types;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.utils.TypeTarget;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.VariableUpdateType;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
@@ -22,12 +21,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 @Getter @Setter
-public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>, VariableTypeFeature> implements FeatureRequireOnlyClicksInEditor {
+public class VariableUpdateTypeFeature extends FeatureAbstract<Optional<VariableUpdateType>, VariableUpdateTypeFeature> implements FeatureRequireOnlyClicksInEditor {
 
-    private Optional<VariableType> value;
-    private Optional<VariableType> defaultValue;
+    private Optional<VariableUpdateType> value;
+    private Optional<VariableUpdateType> defaultValue;
 
-    public VariableTypeFeature(FeatureParentInterface parent, String name, Optional<VariableType> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public VariableUpdateTypeFeature(FeatureParentInterface parent, String name, Optional<VariableUpdateType> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
@@ -45,12 +44,12 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
         }
         else {
             try {
-                VariableType material = VariableType.valueOf(colorStr);
+                VariableUpdateType material = VariableUpdateType.valueOf(colorStr);
                 value = Optional.ofNullable(material);
-                FeatureReturnCheckPremium<VariableType> checkPremium = checkPremium("Variable Type", material, defaultValue, isPremiumLoading);
+                FeatureReturnCheckPremium<VariableUpdateType> checkPremium = checkPremium("VariableUpdate Type", material, defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             } catch (Exception e) {
-                errors.add("&cERROR, Couldn't load the VariableType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> VariableType available: STRING, NUMBER");
+                errors.add("&cERROR, Couldn't load theVariableUpdateType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> VariableUpdateType available: SET, MODIFICATION");
                 value = Optional.empty();
             }
         }
@@ -59,18 +58,18 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<VariableType> value = getValue();
+        Optional<VariableUpdateType> value = getValue();
         if(value.isPresent()) config.set(this.getName(), value.get().name());
     }
 
     @Override
-    public Optional<VariableType> getValue() {
+    public Optional<VariableUpdateType> getValue() {
         if(value.isPresent()) return value;
         else return defaultValue;
     }
 
     @Override
-    public VariableTypeFeature initItemParentEditor(GUI gui, int slot) {
+    public VariableUpdateTypeFeature initItemParentEditor(GUI gui, int slot) {
         String [] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
@@ -82,19 +81,19 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        Optional<VariableType> value = getValue();
-        VariableType finalValue = value.orElse(VariableType.STRING);
-        updateVariableType(finalValue, gui);
+        Optional<VariableUpdateType> value = getValue();
+        VariableUpdateType finalValue = value.orElse(VariableUpdateType.MODIFICATION);
+        updateVariableUpdateType(finalValue, gui);
     }
 
     @Override
     public void extractInfoFromParentEditor(NewGUIManager manager, Player player) {
-        this.value = Optional.of(getVariableType( (GUI) manager.getCache().get(player)));
+        this.value = Optional.of(getVariableUpdateType( (GUI) manager.getCache().get(player)));
     }
 
     @Override
-    public VariableTypeFeature clone() {
-        VariableTypeFeature clone = new VariableTypeFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+    public VariableUpdateTypeFeature clone() {
+        VariableUpdateTypeFeature clone = new VariableUpdateTypeFeature(getParent(), this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
         clone.value = value;
         return clone;
     }
@@ -141,52 +140,52 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        updateVariableType(nextVariableType(getVariableType( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateVariableUpdateType(nextVariableUpdateType(getVariableUpdateType( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        updateVariableType(prevVariableType(getVariableType( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
+        updateVariableUpdateType(prevVariableUpdateType(getVariableUpdateType( (GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
-    public VariableType nextVariableType(VariableType material) {
+    public VariableUpdateType nextVariableUpdateType(VariableUpdateType material) {
         boolean next = false;
-        for (VariableType check : getSortVariableTypes()) {
+        for (VariableUpdateType check : getSortVariableUpdateTypes()) {
             if (check.equals(material)) {
                 next = true;
                 continue;
             }
             if (next) return check;
         }
-        return getSortVariableTypes().get(0);
+        return getSortVariableUpdateTypes().get(0);
     }
 
-    public VariableType prevVariableType(VariableType material) {
+    public VariableUpdateType prevVariableUpdateType(VariableUpdateType material) {
         int i = -1;
         int cpt = 0;
-        for (VariableType check : getSortVariableTypes()) {
+        for (VariableUpdateType check : getSortVariableUpdateTypes()) {
             if (check.equals(material)) {
                 i = cpt;
                 break;
             }
             cpt++;
         }
-        if (i == 0) return getSortVariableTypes().get(getSortVariableTypes().size()- 1);
-        else return getSortVariableTypes().get(cpt - 1);
+        if (i == 0) return getSortVariableUpdateTypes().get(getSortVariableUpdateTypes().size()- 1);
+        else return getSortVariableUpdateTypes().get(cpt - 1);
     }
 
-    public void updateVariableType(VariableType typeTarget, GUI gui) {
+    public void updateVariableUpdateType(VariableUpdateType typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
-        maxSize += getSortVariableTypes().size();
+        maxSize += getSortVariableUpdateTypes().size();
         if(maxSize > 17)  maxSize = 17;
         boolean find = false;
-        for (VariableType check : getSortVariableTypes()) {
+        for (VariableUpdateType check : getSortVariableUpdateTypes()) {
             if (typeTarget.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" +typeTarget.name()));
                 find = true;
@@ -195,7 +194,7 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
-        for (VariableType check : getSortVariableTypes()) {
+        for (VariableUpdateType check : getSortVariableUpdateTypes()) {
             if (lore.size() == maxSize) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
@@ -212,22 +211,22 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
         }
     }
 
-    public VariableType getVariableType(GUI gui) {
+    public VariableUpdateType getVariableUpdateType(GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return VariableType.valueOf(str.split("➤ ")[1]);
+                return VariableUpdateType.valueOf(str.split("➤ ")[1]);
             }
         }
         return null;
     }
 
-    public List<VariableType> getSortVariableTypes() {
-        SortedMap<String, VariableType> map = new TreeMap<String, VariableType>();
-        for (VariableType l : VariableType.values()) {
+    public List<VariableUpdateType> getSortVariableUpdateTypes() {
+        SortedMap<String, VariableUpdateType> map = new TreeMap<String, VariableUpdateType>();
+        for (VariableUpdateType l : VariableUpdateType.values()) {
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());

@@ -1,4 +1,4 @@
-package com.ssomar.scoretestrecode.features.custom.variables.variable;
+package com.ssomar.scoretestrecode.features.custom.variables.base.variable;
 
 
 import com.ssomar.scoretestrecode.editor.NewInteractionClickedGUIManager;
