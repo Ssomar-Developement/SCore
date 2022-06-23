@@ -17,7 +17,7 @@ public class VariableUpdateGroupFeatureEditor extends FeatureEditorInterface<Var
     @Override
     public void load() {
         int i = 0;
-        for(VariableUpdateFeature enchantment : attributesGroupFeature.getAttributes().values()) {
+        for(VariableUpdateFeature enchantment : attributesGroupFeature.getVariablesUpdates().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
             i++;
         }

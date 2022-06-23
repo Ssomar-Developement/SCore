@@ -23,7 +23,7 @@ import java.util.Map;
 @Getter @Setter
 public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<VariableUpdateGroupFeature, VariableUpdateGroupFeature, VariableUpdateGroupFeatureEditor, VariableUpdateGroupFeatureEditorManager> implements FeaturesGroup<VariableUpdateFeature> {
 
-    private Map<String, VariableUpdateFeature> attributes;
+    private Map<String, VariableUpdateFeature> variablesUpdates;
 
     public VariableUpdateGroupFeature(FeatureParentInterface parent) {
         super(parent, "variables", "Variables", new String[]{"&7&oThe variables"}, GUI.WRITABLE_BOOK, false);
@@ -32,7 +32,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
 
     @Override
     public void reset() {
-        this.attributes = new HashMap<>();
+        this.variablesUpdates = new HashMap<>();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
                     error.addAll(subErrors);
                     continue;
                 }
-                attributes.put(attributeID, attribute);
+                variablesUpdates.put(attributeID, attribute);
             }
         }
         return error;
@@ -57,8 +57,8 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection attributesSection = config.createSection(this.getName());
-        for(String enchantmentID : attributes.keySet()) {
-            attributes.get(enchantmentID).save(attributesSection);
+        for(String enchantmentID : variablesUpdates.keySet()) {
+            variablesUpdates.get(enchantmentID).save(attributesSection);
         }
     }
 
@@ -72,7 +72,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length -2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length -1] = "&7&oVariable(s) added: &e"+ attributes.size();
+        finalDescription[finalDescription.length -1] = "&7&oVariable(s) added: &e"+ variablesUpdates.size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -91,13 +91,13 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
     @Override
     public VariableUpdateGroupFeature clone() {
         VariableUpdateGroupFeature eF = new VariableUpdateGroupFeature(getParent());
-        eF.setAttributes(new HashMap<>(this.getAttributes()));
+        eF.setVariablesUpdates(new HashMap<>(this.getVariablesUpdates()));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(attributes.values());
+        return new ArrayList<>(variablesUpdates.values());
     }
 
     @Override
@@ -124,7 +124,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
         for(FeatureInterface feature : getParent().getFeatures()) {
             if(feature instanceof VariableUpdateGroupFeature) {
                 VariableUpdateGroupFeature eF = (VariableUpdateGroupFeature) feature;
-                eF.setAttributes(this.getAttributes());
+                eF.setVariablesUpdates(this.getVariablesUpdates());
                 break;
             }
         }
@@ -145,9 +145,9 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
         String baseId = "varUpdt";
         for(int i = 0; i < 1000; i++) {
             String id = baseId + i;
-            if(!attributes.containsKey(id)) {
+            if(!variablesUpdates.containsKey(id)) {
                 VariableUpdateFeature eF = new VariableUpdateFeature(this, id);
-                attributes.put(id, eF);
+                variablesUpdates.put(id, eF);
                 eF.openEditor(editor);
                 break;
             }
@@ -156,7 +156,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
 
     @Override
     public void deleteFeature(@NotNull Player editor, VariableUpdateFeature feature) {
-        attributes.remove(feature.getId());
+        variablesUpdates.remove(feature.getId());
     }
 
 }
