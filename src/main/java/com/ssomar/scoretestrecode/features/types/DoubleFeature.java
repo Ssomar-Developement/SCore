@@ -1,9 +1,11 @@
 package com.ssomar.scoretestrecode.features.types;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.NTools;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureRequireOneMessageInEditor;
@@ -11,6 +13,7 @@ import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -18,6 +21,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     private Optional<Double> value;
     private Optional<Double> defaultValue;
+    private Optional<String> placeholder;
 
     public DoubleFeature(FeatureParentInterface parent, String name, Optional<Double> defaultValue, String editorName, String [] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
@@ -41,32 +46,76 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "NULL");
-        Optional<Double> valuePotential = NTools.getDouble(valueStr);
-        if(valuePotential.isPresent()) {
-            this.value = valuePotential;
-            FeatureReturnCheckPremium<Double> checkPremium = checkPremium("Double", valuePotential.get(), defaultValue, isPremiumLoading);
-            if(checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+        if(valueStr.contains("%")){
+            placeholder = Optional.of(valueStr);
+            value = Optional.empty();
         }
         else {
-            errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr+ " &7&o"+getParent().getParentInfo());
-            if (defaultValue.isPresent()) {
-                this.value = defaultValue;
+            placeholder = Optional.empty();
+            Optional<Double> valuePotential = NTools.getDouble(valueStr);
+            if (valuePotential.isPresent()) {
+                this.value = valuePotential;
+                FeatureReturnCheckPremium<Double> checkPremium = checkPremium("Double", valuePotential.get(), defaultValue, isPremiumLoading);
+                if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+            } else {
+                errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
+                if (defaultValue.isPresent()) {
+                    this.value = defaultValue;
+                } else this.value = Optional.empty();
             }
-            else this.value = Optional.empty();
         }
         return errors;
     }
 
     @Override
     public void save(ConfigurationSection config) {
-        if(value.isPresent()) {
-            config.set(this.getName(), value.get());
+        if(placeholder.isPresent()){
+            config.set(this.getName(), placeholder.get());
+        }
+        else if(getValue().isPresent()){
+            config.set(this.getName(), getValue().get());
+        }
+    }
+
+    public Optional<Double> getValue(@Nullable Player player, @Nullable StringPlaceholder sp) {
+        if(placeholder.isPresent()) {
+            String placeholderStr = placeholder.get();
+            if (sp != null) {
+                placeholderStr = sp.replacePlaceholder(placeholderStr);
+            }
+            if(player != null && SCore.hasPlaceholderAPI){
+                placeholderStr = PlaceholderAPI.setPlaceholders(player, placeholderStr);
+            }
+            Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
+            if (valuePotential.isPresent()) {
+                return valuePotential;
+            } else if(defaultValue.isPresent()){
+                return defaultValue;
+            }
+            else return Optional.empty();
+        }
+        else if(value.isPresent()){
+            return value;
+        }
+        else if(defaultValue.isPresent()){
+            return defaultValue;
+        }
+        else{
+            return Optional.empty();
         }
     }
 
     @Override
     public Optional<Double> getValue() {
-        return value;
+        if(value.isPresent()){
+            return value;
+        }
+        else if(defaultValue.isPresent()){
+            return defaultValue;
+        }
+        else{
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -82,7 +131,8 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if(value.isPresent()) gui.updateDouble(getEditorName(), getValue().get());
+        if(placeholder.isPresent()) gui.updateActually(getEditorName(), placeholder.get());
+        else if(value.isPresent()) gui.updateDouble(getEditorName(), getValue().get());
         else gui.updateDouble(getEditorName(), 0);
     }
 
@@ -92,7 +142,8 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     @Override
     public DoubleFeature clone() {
         DoubleFeature clone = new DoubleFeature(getParent(), this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
-        clone.value = value;
+        clone.setValue(getValue());
+        clone.setPlaceholder(getPlaceholder());
         return clone;
     }
 
@@ -100,6 +151,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     public void reset() {
         if(defaultValue.isPresent()) this.value = Optional.of(defaultValue.get());
         else this.value = Optional.empty();
+        this.placeholder = Optional.empty();
     }
 
     @Override
@@ -135,6 +187,9 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
+
+        if(message.contains("%")) return Optional.empty();
+
         Optional<Double> verify = NTools.getDouble(StringConverter.decoloredString(message).trim());
         if(verify.isPresent()) return Optional.empty();
         else return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a double"));
@@ -142,7 +197,15 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
-        this.value = NTools.getDouble(StringConverter.decoloredString(message).trim());
+        message = StringConverter.decoloredString(message).trim();
+        if(message.contains("%")){
+            placeholder = Optional.of(message);
+            value = Optional.empty();
+        }
+        else{
+            placeholder = Optional.empty();
+            value = NTools.getDouble(message);
+        }
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
@@ -150,6 +213,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     @Override
     public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
         this.value = Optional.empty();
+        this.placeholder = Optional.empty();
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
