@@ -10,6 +10,7 @@ import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
 import com.ssomar.scoretestrecode.features.FeatureWithHisOwnEditor;
 import com.ssomar.scoretestrecode.features.custom.variables.base.group.VariablesGroupFeature;
+import com.ssomar.scoretestrecode.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.scoretestrecode.features.types.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,6 +63,14 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
         }
 
         return null;
+    }
+
+    public Optional<VariableFeature> getAssociatedVariable() {
+        VariablesGroupFeature variables = getVariables();
+        if (variables == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(variables.getVariable(this.variableName.getValue().get()));
     }
 
     @Override
