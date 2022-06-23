@@ -89,10 +89,12 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
             Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
             if (valuePotential.isPresent()) {
                 return valuePotential;
-            } else if(defaultValue.isPresent()){
-                return defaultValue;
+            } else {
+                if(defaultValue.isPresent()){
+                    return defaultValue;
+                }
+                else return Optional.empty();
             }
-            else return Optional.empty();
         }
         else if(value.isPresent()){
             return value;

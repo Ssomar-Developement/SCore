@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
-public class VariableFeature extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature, VariableFeatureEditor, VariableFeatureEditorManager> {
+public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature<T>, VariableFeatureEditor, VariableFeatureEditorManager> {
 
     private UncoloredStringFeature variableName;
     private VariableTypeFeature type;
@@ -61,6 +61,14 @@ public class VariableFeature extends FeatureWithHisOwnEditor<VariableFeature, Va
             errors.add("&cERROR, Couldn't load the Variable with its options because there is not section with the good ID: "+id+" &7&o" + getParent().getParentInfo());
         }
         return errors;
+    }
+
+    public T getDefaultValue(){
+        if(type.getValue().get().equals(VariableType.STRING)) {
+            return (T) stringValue.getValue().get();
+        } else {
+            return (T) doubleValue.getValue().get();
+        }
     }
 
     @Override

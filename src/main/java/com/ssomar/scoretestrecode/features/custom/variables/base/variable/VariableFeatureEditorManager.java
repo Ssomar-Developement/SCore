@@ -23,7 +23,7 @@ public class VariableFeatureEditorManager extends FeatureEditorManagerAbstract<V
     }
 
     public void reloadEditor(NewInteractionClickedGUIManager<VariableFeatureEditor> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (Object feature : i.gui.getParent().getFeatures()) {
             if (feature instanceof VariableTypeFeature) {
                 i.gui.load();
             }
