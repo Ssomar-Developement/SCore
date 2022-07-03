@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>1.7.5.2</version>
+    <version>1.7.5.8</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -88,14 +88,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <!-- <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.mysql</pattern>
-                                     <shadedPattern>com.ssomar.score.libraries.mysql</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration> -->
                        <!--<configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
@@ -165,9 +157,20 @@
             <id>glaremasters repo</id>
             <url>https://repo.glaremasters.me/repository/towny/</url>
         </repository>
+        <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.0.3-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -326,7 +329,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-bfbdfc588d-1</version>
+            <version>main-f04b053382-1</version>
             <scope>compile</scope>
         </dependency>
 

@@ -23,7 +23,7 @@ public class ToolsListMaterial {
             plantWithGrowth.add(Material.valueOf("NETHER_WARTS"));
             plantWithGrowth.add(Material.valueOf("POTATO"));
             plantWithGrowth.add(Material.valueOf("CARROT"));
-            plantWithGrowth.add(Material.valueOf("BEETROOT_BLOCK"));
+            if (!SCore.is1v11Less()) plantWithGrowth.add(Material.valueOf("BEETROOT_BLOCK"));
         } else {
             plantWithGrowth.add(Material.WHEAT);
             plantWithGrowth.add(Material.CARROTS);

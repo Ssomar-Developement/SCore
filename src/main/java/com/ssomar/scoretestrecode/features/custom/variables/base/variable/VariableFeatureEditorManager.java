@@ -2,7 +2,6 @@ package com.ssomar.scoretestrecode.features.custom.variables.base.variable;
 
 
 import com.ssomar.scoretestrecode.editor.NewInteractionClickedGUIManager;
-import com.ssomar.scoretestrecode.features.FeatureInterface;
 import com.ssomar.scoretestrecode.features.editor.FeatureEditorManagerAbstract;
 import com.ssomar.scoretestrecode.features.types.VariableTypeFeature;
 

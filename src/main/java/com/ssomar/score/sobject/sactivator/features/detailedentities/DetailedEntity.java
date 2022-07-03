@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.sactivator.features.detailedentities;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.usedapi.MythicMobsAPI;
 import com.ssomar.score.utils.NTools;
 import com.ssomar.score.utils.StringConverter;
 import de.tr7zw.nbtapi.NBTEntity;
@@ -25,13 +26,20 @@ public class DetailedEntity {
     private static final String symbolEnd= "}";
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = ",";
+    private static final String mythicMobsSymbol = "MM-";
+
+    private Optional<String> mythicMob = Optional.empty();
 
     private static final Boolean DEBUG = true;
 
     public DetailedEntity(String config) throws ConfigException {
         entityData = new HashMap<>();
         String entityTypeStr = config;
-        if(config.contains(symbolStart)) {
+        if(config.contains(mythicMobsSymbol)) {
+            mythicMob = Optional.of(entityTypeStr.replace(mythicMobsSymbol, ""));
+            return;
+        }
+        else if(config.contains(symbolStart)) {
             entityTypeStr = config.split("\\"+symbolStart)[0];
             String datas = config.split("\\"+symbolStart)[1].replace(symbolEnd, "");
             for(String data : datas.split(symbolSeparator)){
@@ -50,6 +58,15 @@ public class DetailedEntity {
     }
 
     public boolean isValidEntity(Entity entity) {
+
+        if(mythicMob.isPresent()) {
+            if(SCore.hasMythicMobs) {
+                return MythicMobsAPI.isMythicMob(entity, mythicMob.get());
+            }
+            return false;
+        }
+
+
         EntityType entityType = entity.getType();
         if (!entityType.equals(this.entityType)) return false;
 
@@ -116,7 +133,7 @@ public class DetailedEntity {
                             if(key.equalsIgnoreCase(("CustomName"))){
                                 String customName = entity.getCustomName();
                                 SsomarDev.testMsg("String: " + customName, DEBUG);
-                                if (!StringConverter.decoloredString(customName).equals(value)) return false;
+                                if (!StringConverter.decoloredString(customName).equals(value.replaceAll("\"", ""))) return false;
                             }
                             else {
                                 SsomarDev.testMsg("String: " + nbtent.getString(key), DEBUG);

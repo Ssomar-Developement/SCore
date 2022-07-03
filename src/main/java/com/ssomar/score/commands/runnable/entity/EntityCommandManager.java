@@ -27,6 +27,8 @@ public class EntityCommandManager implements CommandManager{
 		commands.add(new SendMessage());
 		commands.add(new Kill());
 		commands.add(new ChangeTo());
+		/* should be place after changeto to be functional */
+		commands.add(new ChangeToMythicMob());
 		commands.add(new DropItem());
 		commands.add(new DropExecutableItem());
 		commands.add(new Heal());
@@ -60,9 +62,12 @@ public class EntityCommandManager implements CommandManager{
 
 
 	public boolean isValidEntityCommand(String entry) {
+		if(entry.contains(" ")) {
+			entry = entry.split(" ")[0];
+		}
 		for(EntityCommand cmd : commands) {
 			for(String name: cmd.getNames()) {
-				if(entry.toUpperCase().startsWith(name.toUpperCase())) {
+				if(entry.equalsIgnoreCase(name)) {
 					return true;
 				}
 			}

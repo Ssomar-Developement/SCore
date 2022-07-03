@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.ToolsListMaterial;
+import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /* FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}*/
 public class FarmInCube extends BlockCommand {
@@ -31,17 +33,22 @@ public class FarmInCube extends BlockCommand {
 
         List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
+        if (aInfo.isEventCallByMineInCube()) return;
+
         try {
             int radius = Integer.parseInt(args.get(0));
 
             boolean drop = true;
-            if (args.size() == 2) drop = Boolean.parseBoolean(args.get(1));
+            if (args.size() >= 2) drop = Boolean.parseBoolean(args.get(1));
 
             boolean onlyMaxAge = true;
-            if (args.size() == 3) onlyMaxAge = Boolean.parseBoolean(args.get(2));
+            if (args.size() >= 3) onlyMaxAge = Boolean.parseBoolean(args.get(2));
 
             boolean replant = false;
-            if (args.size() == 4) replant = Boolean.parseBoolean(args.get(3));
+            if (args.size() >= 4) replant = Boolean.parseBoolean(args.get(3));
+
+            boolean event = false;
+            if (args.size() >= 5) event = Boolean.parseBoolean(args.get(4));
 
             if (radius >= 10) radius = 9;
             for (int y = -radius; y < radius + 1; y++) {
@@ -50,7 +57,7 @@ public class FarmInCube extends BlockCommand {
 
                         Block toDestroy = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
-                        destroyTheBlock(toDestroy, onlyMaxAge, drop, replant, p);
+                        destroyTheBlock(toDestroy, onlyMaxAge, drop, replant, p, event, aInfo.getSlot());
                     }
                 }
             }
@@ -72,7 +79,7 @@ public class FarmInCube extends BlockCommand {
         }
     }
 
-    public static void destroyTheBlock(Block toDestroy, boolean onlyMaxAge, boolean drop, boolean replant, @Nullable Player p) {
+    public static void destroyTheBlock(Block toDestroy, boolean onlyMaxAge, boolean drop, boolean replant, @Nullable Player p, boolean event, int slot) {
 
 
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -88,18 +95,9 @@ public class FarmInCube extends BlockCommand {
                 }
 
                 if (ToolsListMaterial.getInstance().getPlantWithGrowth().contains(bMat)) {
-                    boolean destroy = false;
-                    if (SCore.hasWorldGuard && p != null) {
-                        if (new WorldGuardAPI().canBuild(p, toDestroy.getLocation())) destroy = true;
-                        else return;
-                    } else destroy = true;
-                    if (destroy) {
-                        if (drop) {
-                            if (p != null) toDestroy.breakNaturally(p.getInventory().getItemInMainHand());
-                            else toDestroy.breakNaturally();
-                        } else toDestroy.setType(Material.AIR);
-                    }
-
+                    UUID uuid = null;
+                    if(p != null) uuid = p.getUniqueId();
+                    SafeBreak.breakBlockWithEvent(toDestroy, uuid, slot, drop, event, true);
                     if (replant) replant(toDestroy, data, bMat, p);
                 }
 
@@ -146,7 +144,7 @@ public class FarmInCube extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "FARMINCUBE {radius} [ActiveDrop true or false] [onlyMaxAge true or false] [replant true or false]";
+        return "FARMINCUBE {radius} [ActiveDrop true or false] [onlyMaxAge true or false] [replant true or false] [event true or false]";
     }
 
     @Override

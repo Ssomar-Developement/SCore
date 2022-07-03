@@ -84,6 +84,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static boolean hasHeadDB = false;
 
+    public static boolean hasMythicMobs = false;
+
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -237,6 +240,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (Bukkit.getPluginManager().getPlugin("HeadDB") != null) {
             SCore.plugin.getServer().getLogger().info("[" + NAME + "] HeadDB hooked !");
             hasHeadDB = true;
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] MythicMobs hooked !");
+            hasMythicMobs = true;
         }
 
     }

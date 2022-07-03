@@ -16,7 +16,7 @@ public class GriefDefenderAPI {
 		
 		Claim claim = cM.getClaimAt((int) location.getX(), (int) location.getY(), (int) location.getZ());
 		
-		if(claim.isWilderness()) return false;
+		if(claim.isWilderness() || claim.getOwnerUniqueId() == null) return false;
 		
 		return claim.getOwnerUniqueId().equals(p.getUniqueId()) || claim.getUserTrusts().contains(p.getUniqueId());
 	}

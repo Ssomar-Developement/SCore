@@ -5,6 +5,7 @@ import java.util.UUID;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,18 +21,36 @@ public class GriefPreventionAPI {
 	public static boolean playerIsInHisClaim(@NotNull UUID pUUID, Location location) {
 		DataStore dataStore = GriefPrevention.instance.dataStore;
 		Claim claim = dataStore.getClaimAt(location, false, null);
+
 		if(claim == null) return true;
+		if (claim.getOwnerID() == null) return false;
 
 		return claim.getOwnerID().equals(pUUID);
 	}
 
 
 	public static boolean playerCanBreakClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
-		return playerIsInHisClaim(pUUID, location);
+		DataStore dataStore = GriefPrevention.instance.dataStore;
+		Claim claim = dataStore.getClaimAt(location, false, null);
+
+		if(claim == null) return true;
+
+		Player player = Bukkit.getPlayer(pUUID);
+		if(player == null) return false;
+
+		return claim.allowBreak(player, location.getBlock().getType()) == null;
 	}
 
 	public static boolean playerCanPlaceClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
-		return playerIsInHisClaim(pUUID, location);
+		DataStore dataStore = GriefPrevention.instance.dataStore;
+		Claim claim = dataStore.getClaimAt(location, false, null);
+
+		if(claim == null) return true;
+
+		Player player = Bukkit.getPlayer(pUUID);
+		if(player == null) return false;
+
+		return claim.allowBuild(player, Material.STONE) == null;
 	}
 
 }

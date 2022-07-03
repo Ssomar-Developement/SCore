@@ -3,9 +3,11 @@ package com.ssomar.score.commands.runnable.block.commands;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
+import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,27 +27,11 @@ public class RemoveBlock extends BlockCommand{
 
 	@Override
 	public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-		if(SCore.hasWorldGuard && p != null) {
-			if(new WorldGuardAPI().canBuild(p, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-				this.validBreak(block);
-			}
+		UUID uuid  = null;
+		if(p != null){
+			uuid = p.getUniqueId();
 		}
-		else this.validBreak(block);
-	}
-	
-	public void validBreak(Block block) {
-		Location bLoc = block.getLocation();
-		bLoc.add(0.5, 0.5, 0.5);
-		
-		if(SCore.hasExecutableBlocks) {
-			Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
-			if(eBPOpt.isPresent()) {
-				ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
-				ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
-			}
-		}
-		
-		block.setType(Material.AIR);
+		SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, true);
 	}
 
 	@Override
