@@ -192,8 +192,4 @@ public class LoopManager {
         if (instance == null) instance = new LoopManager();
         return instance;
     }
-
-    public Map<NewSActivator, Integer> getLoopActivators() {
-        return loopActivators;
-    }
 }

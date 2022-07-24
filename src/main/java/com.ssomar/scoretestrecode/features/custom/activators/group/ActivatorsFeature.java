@@ -63,7 +63,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                     LoopManager.getInstance().getLoopActivators().put(activator, 0);
                     //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size());
                 }
-                if(SCore.hasExecutableBlocks && activator.getOption().equals(Option.ENTITY_WALK_ON)){
+                if (SCore.hasExecutableBlocks && activator.getOption().equals(Option.ENTITY_WALK_ON)) {
                     LoopManager.getInstance().getCheckEntityOnofEB().add(activator);
                 }
                 activators.put(activatorID, activator);
@@ -178,7 +178,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
         for (int i = 0; i < 1000; i++) {
             String id = baseId + i;
             if (!activators.containsKey(id)) {
-                SsomarDev.testMsg("INSTANCE CREATE: "+this.hashCode());
+                SsomarDev.testMsg("INSTANCE CREATE: " + this.hashCode());
                 NewSActivator activator = builderInstance.getBuilderInstance(this, id);
                 activators.put(id, activator);
                 activator.openEditor(editor);
