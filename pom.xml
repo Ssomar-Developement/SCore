@@ -285,8 +285,8 @@
         </dependency>
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
-            <artifactId>ExecutableItems5</artifactId>
-            <version>main-0d28c3c70e-1</version>
+            <artifactId>ExecutableItems</artifactId>
+            <version>v5.0.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
