@@ -25,7 +25,7 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
     public void writeStringIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value) {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
-        if(meta.getPersistentDataContainer().get(key4, PersistentDataType.STRING) == null) {
+        if (meta.getPersistentDataContainer().get(key4, PersistentDataType.STRING) == null) {
             meta.getPersistentDataContainer().set(key4, PersistentDataType.STRING, value);
         }
     }
@@ -48,7 +48,7 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
     public void writeIntegerIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, int value) {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
-        if(meta.getPersistentDataContainer().get(key4, PersistentDataType.INTEGER) == null) {
+        if (meta.getPersistentDataContainer().get(key4, PersistentDataType.INTEGER) == null) {
             meta.getPersistentDataContainer().set(key4, PersistentDataType.INTEGER, value);
         }
     }
@@ -71,7 +71,7 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
     public void writeDoubleIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, double value) {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
-        if(meta.getPersistentDataContainer().get(key4, PersistentDataType.DOUBLE) == null) {
+        if (meta.getPersistentDataContainer().get(key4, PersistentDataType.DOUBLE) == null) {
             meta.getPersistentDataContainer().set(key4, PersistentDataType.DOUBLE, value);
         }
     }
@@ -92,7 +92,7 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
 
     @Override
     public Optional<UUID> readItemOwner(ItemStack item, DynamicMeta dMeta) {
-        if(SCore.hasExecutableItems) {
+        if (SCore.hasExecutableItems) {
             NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-OWNER");
             PersistentDataContainer pDC = dMeta.getMeta().getPersistentDataContainer();
             String ownerUUIDStr;

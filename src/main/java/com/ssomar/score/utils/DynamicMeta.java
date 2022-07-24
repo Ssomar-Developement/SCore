@@ -5,10 +5,11 @@ import lombok.Setter;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class DynamicMeta {
-    @Getter@Setter
+    @Getter
+    @Setter
     private ItemMeta meta;
 
-    public DynamicMeta(ItemMeta meta){
+    public DynamicMeta(ItemMeta meta) {
         this.meta = meta;
     }
 }

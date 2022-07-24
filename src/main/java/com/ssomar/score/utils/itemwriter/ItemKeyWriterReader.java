@@ -10,6 +10,11 @@ import java.util.UUID;
 
 public interface ItemKeyWriterReader {
 
+    static ItemKeyWriterReader init() {
+        if (SCore.is1v13Less()) return new NBTWriterReader();
+        else return new NameSpaceKeyWriterReader();
+    }
+
     void writeString(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value);
 
     void writeStringIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value);
@@ -31,9 +36,4 @@ public interface ItemKeyWriterReader {
     void removeKey(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key);
 
     Optional<UUID> readItemOwner(ItemStack item, DynamicMeta dMeta);
-
-    static ItemKeyWriterReader init(){
-        if (SCore.is1v13Less()) return new NBTWriterReader();
-        else return new NameSpaceKeyWriterReader();
-    }
 }

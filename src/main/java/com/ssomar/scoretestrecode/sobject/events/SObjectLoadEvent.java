@@ -24,7 +24,7 @@ public class SObjectLoadEvent extends Event {
      *
      * @return A list of handlers handling this event.
      */
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
@@ -34,7 +34,8 @@ public class SObjectLoadEvent extends Event {
      * @return A list of handlers handling this event.
      */
     @Override
-    public final @NotNull HandlerList getHandlers() {
+    public final @NotNull
+    HandlerList getHandlers() {
         return handlers;
     }
 }
