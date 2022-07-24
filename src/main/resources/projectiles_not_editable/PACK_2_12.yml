@@ -1,0 +1,21 @@
+type: SNOWBALL
+removeWhenHitBlock: false
+visualItem: REDSTONE_BLOCK
+customModelData: -1
+silent: false
+velocity: 1.0
+despawnDelay: 1
+gravity: false
+bounce: false
+glowing: false
+invisible: false
+customNameVisible: false
+customName: '&cNO NAME'
+particles:
+  '1':
+    redstoneColor: RED
+    particlesType: REDSTONE
+    particlesAmount: 10
+    particlesOffSet: 0.1
+    particlesSpeed: 0.3
+    particlesDelay: 1

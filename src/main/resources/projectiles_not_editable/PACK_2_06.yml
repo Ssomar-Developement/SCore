@@ -1,0 +1,20 @@
+type: SNOWBALL
+removeWhenHitBlock: true
+visualItem: WHITE_CONCRETE
+customModelData: -1
+silent: false
+velocity: 2.0
+despawnDelay: 2
+gravity: false
+bounce: false
+glowing: false
+invisible: false
+customNameVisible: false
+customName: '&cNO NAME'
+particles:
+  '1':
+    particlesType: SOUL_FIRE_FLAME
+    particlesAmount: 1
+    particlesOffSet: 0.1
+    particlesSpeed: 0.1
+    particlesDelay: 1
