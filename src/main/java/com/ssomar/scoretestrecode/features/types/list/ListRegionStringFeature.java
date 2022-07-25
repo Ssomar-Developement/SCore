@@ -89,7 +89,7 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = new ArrayList<>(defaultValue);
     }
 
     @Override

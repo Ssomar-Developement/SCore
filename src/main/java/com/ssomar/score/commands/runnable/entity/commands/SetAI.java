@@ -1,32 +1,27 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
-import com.ssomar.score.utils.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* SETNAME {name} */
-public class SetName extends EntityCommand {
+public class SetAI extends EntityCommand {
 
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
-        if (!entity.isDead()) {
-            StringBuilder name = new StringBuilder();
-            for (String s : args) {
-                name.append(s).append(" ");
-            }
-            name = new StringBuilder(name.substring(0, name.length() - 1));
-            try {
-                entity.setCustomNameVisible(true);
-                entity.setCustomName(StringConverter.coloredString(name.toString()));
-            } catch (Exception ignored) {
-            }
+        if (!entity.isDead() && entity instanceof LivingEntity) {
+            LivingEntity receiver = (LivingEntity) entity;
+            boolean ai = Boolean.valueOf(args.get(0));
+            SsomarDev.testMsg("SET AI " + ai);
+            receiver.setAI(ai);
         }
     }
 
@@ -34,8 +29,10 @@ public class SetName extends EntityCommand {
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         String error = "";
 
-        String setname = "SETNAME {name}";
-        if (args.size() < 1) error = notEnoughArgs + setname;
+        if (args.size() < 1) error = notEnoughArgs + getTemplate();
+
+        ArgumentChecker ac = checkBoolean(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
         return error.isEmpty() ? Optional.empty() : Optional.of(error);
     }
@@ -43,13 +40,13 @@ public class SetName extends EntityCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("SETNAME");
+        names.add("SET_AI");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETNAME {name}";
+        return "SET_AI {true or false}";
     }
 
     @Override

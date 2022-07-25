@@ -1,5 +1,6 @@
 package com.ssomar.scoretestrecode.features.types.list;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.scoretestrecode.features.*;
@@ -46,6 +47,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
 
     @Override
     public void save(ConfigurationSection config) {
+        SsomarDev.testMsg("save deVal s: "+defaultValue.size()+" val s: "+value.size()+ " >> "+(defaultValue.containsAll(value)));
         if (notSaveIfEqualsToDefaultValue) {
             //SsomarDev.testMsg("save deVal s: "+defaultValue.size()+" val s: "+value.size()+ " >> "+(defaultValue.containsAll(value)));
             if (defaultValue.containsAll(value)) {
@@ -79,7 +81,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = new ArrayList<>(defaultValue);
     }
 
 }

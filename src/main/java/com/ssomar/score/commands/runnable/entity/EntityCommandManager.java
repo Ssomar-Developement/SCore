@@ -32,6 +32,7 @@ public class EntityCommandManager implements CommandManager {
         commands.add(new Damage());
         commands.add(new SetBaby());
         commands.add(new SetAdult());
+        commands.add(new SetAI());
         commands.add(new SetName());
         commands.add(new Burn());
         commands.add(new BackDash());

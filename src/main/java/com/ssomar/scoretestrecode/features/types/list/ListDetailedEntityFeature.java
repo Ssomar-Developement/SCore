@@ -281,7 +281,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = new ArrayList<>(defaultValue);
     }
 
     @Override

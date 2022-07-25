@@ -93,7 +93,7 @@ public class ListWorldFeature extends FeatureAbstract<List<String>, ListWorldFea
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = new ArrayList<>(defaultValue);
     }
 
     @Override

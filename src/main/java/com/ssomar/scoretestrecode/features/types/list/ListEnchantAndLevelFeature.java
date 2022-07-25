@@ -106,7 +106,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = new HashMap<>(defaultValue);
     }
 
     @Override

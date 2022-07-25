@@ -45,13 +45,14 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         if (config.isConfigurationSection(getName())) {
-            glowDrop.load(plugin, config, isPremiumLoading);
+            ConfigurationSection section = config.getConfigurationSection(getName());
+            glowDrop.load(plugin, section, isPremiumLoading);
             if (glowDrop.getValue() && SCore.is1v11Less()) {
                 error.add(plugin.getNameDesign() + " " + getParent().getParentInfo() + " glowDrop is not supported in 1.11, 1.10, 1.9, 1.8 !");
                 glowDrop.setValue(false);
             }
-            if (!SCore.is1v11Less()) dropColor.load(plugin, config, isPremiumLoading);
-            displayNameDrop.load(plugin, config, isPremiumLoading);
+            if (!SCore.is1v11Less()) dropColor.load(plugin, section, isPremiumLoading);
+            displayNameDrop.load(plugin, section, isPremiumLoading);
         }
 
         return error;

@@ -202,7 +202,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = new ArrayList<>(defaultValue);
     }
 
     @Override

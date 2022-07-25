@@ -2,18 +2,13 @@ package com.ssomar.scoretestrecode.features.types.list;
 
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.scoretestrecode.editor.NewGUIManager;
 import com.ssomar.scoretestrecode.editor.Suggestion;
-import com.ssomar.scoretestrecode.features.FeatureAbstract;
 import com.ssomar.scoretestrecode.features.FeatureParentInterface;
-import com.ssomar.scoretestrecode.features.FeatureRequireSubTextEditorInEditor;
-import com.ssomar.scoretestrecode.features.FeatureReturnCheckPremium;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -23,62 +18,22 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ListUncoloredStringFeature extends FeatureAbstract<List<String>, ListUncoloredStringFeature> implements FeatureRequireSubTextEditorInEditor {
+public class ListUncoloredStringFeature extends ListFeatureAbstract<String, ListUncoloredStringFeature> {
 
-    private List<String> value;
-    private List<String> defaultValue;
     private Optional<List<Suggestion>> suggestions;
-    private boolean notSaveIfEqualsToDefaultValue;
 
     public ListUncoloredStringFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
-        this.defaultValue = defaultValue;
+        super(parent, name, "List of Colored Strings", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
         this.suggestions = suggestions;
-        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
     }
 
-    @Override
-    public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        value = config.getStringList(this.getName());
-        for (int i = 0; i < value.size(); i++) {
-            value.set(i, StringConverter.decoloredString(value.get(i)));
+    public List<String> loadValue(List<String> entries, List<String> errors) {
+        List<String> uncolored = new ArrayList<>();
+        for (String s : entries) {
+            uncolored.add(StringConverter.decoloredString(s));
         }
-        FeatureReturnCheckPremium<List<String>> checkPremium = checkPremium("List of Uncolored Strings", value, Optional.of(defaultValue), isPremiumLoading);
-        if (checkPremium.isHasError()) value = checkPremium.getNewValue();
-        return new ArrayList<>();
-    }
-
-    @Override
-    public void save(ConfigurationSection config) {
-        if (notSaveIfEqualsToDefaultValue) {
-            if (defaultValue.containsAll(value)) {
-                config.set(this.getName(), null);
-                return;
-            }
-        }
-        config.set(this.getName(), value);
-    }
-
-    @Override
-    public List<String> getValue() {
-        return value;
-    }
-
-    @Override
-    public ListUncoloredStringFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 2];
-        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
-
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
-        return this;
-    }
-
-    @Override
-    public void updateItemParentEditor(GUI gui) {
-        gui.updateConditionList(getEditorName(), getValue(), "&cEMPTY");
+        return uncolored;
     }
 
     @Override
@@ -88,10 +43,6 @@ public class ListUncoloredStringFeature extends FeatureAbstract<List<String>, Li
         return clone;
     }
 
-    @Override
-    public void reset() {
-        this.value = defaultValue;
-    }
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
@@ -100,7 +51,7 @@ public class ListUncoloredStringFeature extends FeatureAbstract<List<String>, Li
 
     @Override
     public List<String> getCurrentValues() {
-        return value;
+        return getValue();
     }
 
     @Override
@@ -116,10 +67,11 @@ public class ListUncoloredStringFeature extends FeatureAbstract<List<String>, Li
 
     @Override
     public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        value = (List<String>) manager.currentWriting.get(editor);
-        for (int i = 0; i < value.size(); i++) {
-            value.set(i, StringConverter.decoloredString(value.get(i)));
+        List<String> uncolored = new ArrayList<>();
+        for (String s : (List<String>) manager.currentWriting.get(editor)) {
+            uncolored.add(StringConverter.decoloredString(s));
         }
+        setValue(uncolored);
         manager.requestWriting.remove(editor);
         manager.activeTextEditor.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
