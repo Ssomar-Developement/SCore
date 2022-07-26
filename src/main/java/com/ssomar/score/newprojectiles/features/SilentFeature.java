@@ -1,60 +1,23 @@
 package com.ssomar.score.newprojectiles.features;
 
-/* public class SilentFeature extends DecorateurCustomProjectiles {
+import com.ssomar.score.utils.FixedMaterial;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.types.BooleanFeature;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-    boolean isSilent;
+import java.util.Arrays;
 
-    public SilentFeature(CustomProjectile cProj) {
-        super.cProj = cProj;
-        isSilent = false;
+public class SilentFeature extends BooleanFeature implements SProjectileFeatureInterface {
+
+
+    public SilentFeature(FeatureParentInterface parent) {
+        super(parent, "silent", false, "Silent", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW")), false, false);
     }
 
     @Override
-    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
-        isSilent = projConfig.getBoolean("silent", false);
-        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
+    public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
+        e.setSilent(getValue());
     }
-
-    @Override
-    public void saveConfiguration(FileConfiguration config) {
-        config.set("silent", isSilent);
-        cProj.saveConfiguration(config);
-    }
-
-    @Override
-    public void transformTheProjectile(Entity e, Player launcher) {
-        e.setSilent(isSilent);
-        cProj.transformTheProjectile(e, launcher);
-    }
-
-    @Override
-    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
-        SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        Material bell;
-        if (SCore.is1v13Less()) bell = Material.JUKEBOX;
-        else bell = Material.BELL;
-
-        gui.addItem(bell, 1, GUI.TITLE_COLOR + "Silent", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(GUI.TITLE_COLOR + "Silent", isSilent);
-        return gui;
-    }
-
-    @Override
-    public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
-        if (cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
-        String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String changeBounce = StringConverter.decoloredString(GUI.TITLE_COLOR + "Silent");
-
-        if (itemName.equals(changeBounce)) {
-            boolean bool = gui.getBoolean(GUI.TITLE_COLOR + "Silent");
-            gui.updateBoolean(GUI.TITLE_COLOR + "Silent", !bool);
-        } else return false;
-        return true;
-    }
-
-    @Override
-    public void extractInfosGUI(GUI gui) {
-        cProj.extractInfosGUI(gui);
-        isSilent = gui.getBoolean(GUI.TITLE_COLOR + "Silent");
-    }
-}*/
+}

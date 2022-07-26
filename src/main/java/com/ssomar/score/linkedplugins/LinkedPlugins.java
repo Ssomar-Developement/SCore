@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.scoretestrecode.sobject.NewSObject;
+import com.ssomar.score.sobject.NewSObject;
 import org.jetbrains.annotations.Nullable;
 
 public class LinkedPlugins {
@@ -32,27 +32,5 @@ public class LinkedPlugins {
         }
 
         return null;
-    }
-
-    public static void reloadSObject(SPlugin sPlugin, String objectID) {
-// TODO: Add  plugins here
-		/*switch(sPlugin.getName().toUpperCase()) {
-
-		case "EXECUTABLEBLOCKS":
-			if(SCore.hasExecutableBlocks) {
-				ExecutableBlockManager.getInstance().reloadObject(objectID);
-			}
-			break;
-			
-		case "EXECUTABLEITEMS":
-			if(SCore.hasExecutableItems) {
-				ExecutableItemsManager.getInstance().reloadObject(objectID);
-			}
-			break;
-
-		default:
-			break;
-		}*/
-
     }
 }

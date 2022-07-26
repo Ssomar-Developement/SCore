@@ -1,7 +1,7 @@
 package com.ssomar.score.api.executableitems.config;
 
-import com.ssomar.scoretestrecode.features.custom.activators.activator.NewSActivator;
-import com.ssomar.scoretestrecode.features.custom.activators.group.ActivatorsFeature;
+import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;

@@ -1,8 +1,8 @@
 package com.ssomar.score.newprojectiles.features;
 
 import com.ssomar.score.utils.FixedMaterial;
-import com.ssomar.scoretestrecode.features.FeatureParentInterface;
-import com.ssomar.scoretestrecode.features.types.BooleanFeature;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

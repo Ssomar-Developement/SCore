@@ -1,4 +1,0 @@
-package com.ssomar.scoretestrecode.features;
-
-public interface FeatureRequireClicksOrOneMessageInEditor extends FeatureRequireOneMessageInEditor, FeatureRequireOnlyClicksInEditor {
-}

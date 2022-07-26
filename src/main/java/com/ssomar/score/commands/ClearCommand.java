@@ -4,7 +4,7 @@ import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
-import com.ssomar.scoretestrecode.features.custom.cooldowns.CooldownsManager;
+import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

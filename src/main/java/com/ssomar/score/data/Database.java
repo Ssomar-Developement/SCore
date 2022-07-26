@@ -2,7 +2,7 @@ package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.scoretestrecode.features.custom.useperday.data.UsePerDayQuery;
+import com.ssomar.score.features.custom.useperday.data.UsePerDayQuery;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

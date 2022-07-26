@@ -5,7 +5,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
-import com.ssomar.scoretestrecode.features.custom.detailedblocks.DetailedBlocks;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

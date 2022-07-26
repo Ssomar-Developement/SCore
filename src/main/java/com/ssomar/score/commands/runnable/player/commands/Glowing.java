@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.scoretestrecode.features.custom.drop.glowdrop.GlowDropManager;
+import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

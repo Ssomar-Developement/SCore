@@ -6,8 +6,8 @@ import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPComma
 import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageEvt;
-import com.ssomar.scoretestrecode.editor.NewEditorInteractionsListener;
-import com.ssomar.scoretestrecode.features.custom.cooldowns.CooldownsHandler;
+import com.ssomar.score.editor.NewEditorInteractionsListener;
+import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 
 public class EventsHandler {
 
