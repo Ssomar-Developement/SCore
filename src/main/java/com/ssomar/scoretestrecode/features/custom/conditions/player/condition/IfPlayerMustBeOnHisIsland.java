@@ -1,6 +1,7 @@
 package com.ssomar.scoretestrecode.features.custom.conditions.player.condition;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.usedapi.BentoBoxAPI;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
 import com.ssomar.score.usedapi.SuperiorSkyblockTool;
 import com.ssomar.score.utils.SendMessage;
@@ -33,6 +34,14 @@ public class IfPlayerMustBeOnHisIsland extends PlayerConditionFeature<BooleanFea
         } else if (SCore.hasSuperiorSkyblock2) {
             if (hasCondition()) {
                 if (!SuperiorSkyblockTool.playerIsOnHisIsland(player)) {
+                    sendErrorMsg(playerOpt, messageSender);
+                    cancelEvent(event);
+                    return false;
+                }
+            }
+        } else if (SCore.hasBentoBox) {
+            if (hasCondition()) {
+                if (!BentoBoxAPI.playerIsOnHisIsland(player)) {
                     sendErrorMsg(playerOpt, messageSender);
                     cancelEvent(event);
                     return false;
