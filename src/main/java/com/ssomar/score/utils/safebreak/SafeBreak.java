@@ -162,6 +162,9 @@ public class SafeBreak {
         if (SCore.hasSuperiorSkyblock2)
             if (!SuperiorSkyblockTool.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
 
+        if (SCore.hasBentoBox)
+            if (!BentoBoxAPI.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
+
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
 
         if (SCore.hasLands)
