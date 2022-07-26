@@ -472,6 +472,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>world.bentobox</groupId>
+            <artifactId>bentobox</artifactId>
+            <version>1.21.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!--
                 <dependency>
                     <groupId>com.dutchjelly.craftenhance</groupId>
