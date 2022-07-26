@@ -1,14 +1,14 @@
 package com.ssomar.score.features.custom.conditions.placeholders.group;
 
+import com.ssomar.score.features.FeatureInterface;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

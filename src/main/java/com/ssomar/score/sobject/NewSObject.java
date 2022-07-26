@@ -1,13 +1,13 @@
 package com.ssomar.score.sobject;
 
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
+import com.ssomar.score.menu.GUI;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;

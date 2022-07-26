@@ -1,10 +1,10 @@
 package com.ssomar.score.features.types;
 
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureNotEditable;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

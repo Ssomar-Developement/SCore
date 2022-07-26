@@ -1,15 +1,15 @@
 package com.ssomar.score.features.custom.potioneffects.potioneffect;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.PotionEffectTypeFeature;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

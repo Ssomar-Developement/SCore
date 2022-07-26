@@ -12,17 +12,17 @@ public enum SProjectileType {
     TRIDENT("TRIDENT"),
     WITHER_SKULL("WITHER_SKULL");
 
-    private String [] validNames;
+    private String[] validNames;
 
-    SProjectileType(String ... validNames) {
+    SProjectileType(String... validNames) {
         this.validNames = validNames;
     }
 
 
-    public static SProjectileType valueOfCustom(String str){
-        for(SProjectileType type : values()){
-            for(String name : type.validNames){
-                if(name.equalsIgnoreCase(str)){
+    public static SProjectileType valueOfCustom(String str) {
+        for (SProjectileType type : values()) {
+            for (String name : type.validNames) {
+                if (name.equalsIgnoreCase(str)) {
                     return type;
                 }
             }

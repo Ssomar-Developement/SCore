@@ -1,7 +1,7 @@
 package com.ssomar.score.sobject;
 
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.sobject.events.SObjectLoadEvent;
+import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

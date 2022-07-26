@@ -97,7 +97,7 @@
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                   <!-- <execution>
+                    <execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -140,7 +140,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar</outputFile>
                         </configuration>
-                    </execution> -->
+                    </execution>
                     <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                 </executions>
             </plugin>
@@ -290,14 +290,14 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>ExecutableItems</artifactId>
-            <version>v5.0.8</version>
+            <version>v5.1.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>ExecutableBlocks</artifactId>
-            <version>v3.0.8</version>
+            <version>ff99ef3081</version>
             <scope>provided</scope>
         </dependency>
 

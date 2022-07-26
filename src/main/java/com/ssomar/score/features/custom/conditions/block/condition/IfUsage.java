@@ -5,11 +5,11 @@ import com.ssomar.executableblocks.executableblocks.placedblocks.LocationConvert
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
+import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.types.NumberConditionFeature;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

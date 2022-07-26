@@ -4,7 +4,6 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.scoretestrecode.features.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -48,7 +47,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
 
     @Override
     public void save(ConfigurationSection config) {
-        SsomarDev.testMsg("save deVal s: "+defaultValue.size()+" val s: "+value.size()+ " >> "+(defaultValue.containsAll(value)));
+        SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
         if (notSaveIfEqualsToDefaultValue) {
             //SsomarDev.testMsg("save deVal s: "+defaultValue.size()+" val s: "+value.size()+ " >> "+(defaultValue.containsAll(value)));
             if (defaultValue.containsAll(value)) {

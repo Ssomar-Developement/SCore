@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.conditions.player.parent;
 
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.menu.GUI;
 
 public class PlayerConditionsFeatureEditor extends FeatureEditorInterface<PlayerConditionsFeature> {
 

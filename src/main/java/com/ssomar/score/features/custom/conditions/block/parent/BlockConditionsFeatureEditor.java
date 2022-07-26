@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.conditions.block.parent;
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.menu.GUI;
 
 public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockConditionsFeature> {
 

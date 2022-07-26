@@ -1,12 +1,6 @@
 package com.ssomar.score.features.custom.conditions.placeholders.placeholder;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.Comparator;
-import com.ssomar.score.utils.NTools;
-import com.ssomar.score.utils.PlaceholdersCdtType;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -14,6 +8,12 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;
 import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.Comparator;
+import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.PlaceholdersCdtType;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;

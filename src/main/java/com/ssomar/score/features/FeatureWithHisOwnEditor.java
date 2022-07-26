@@ -1,7 +1,7 @@
 package com.ssomar.score.features;
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.editor.NewGUIManager;
+import com.ssomar.score.menu.GUI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

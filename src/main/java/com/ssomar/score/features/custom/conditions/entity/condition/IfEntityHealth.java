@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringCalculation;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
+import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.StringCalculation;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

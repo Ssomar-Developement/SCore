@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.potioneffects.potioneffect;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.menu.GUI;
 
 public class PotionEffectFeatureEditor extends FeatureEditorInterface<PotionEffectFeature> {
 

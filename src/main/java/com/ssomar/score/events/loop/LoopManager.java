@@ -8,9 +8,9 @@ import com.ssomar.executableitems.executableitems.activators.Option;
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
-import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
+import com.ssomar.score.sobject.sactivator.EventInfo;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -109,7 +109,7 @@ public class LoopManager {
                         //SsomarDev.testMsg("Checking EB on entity >> " + checkEntityOnofEB.size());
                         List<ActivatorEBFeature> listEB = new ArrayList<>();
                         for (NewSActivator sActivator : checkEntityOnofEB) {
-                            if (sActivator instanceof ActivatorEBFeature) {
+                           if (sActivator instanceof ActivatorEBFeature) {
                                 listEB.add((ActivatorEBFeature) sActivator);
                             }
                         }

@@ -1,7 +1,7 @@
 package com.ssomar.score.features.custom.enchantments.enchantment;
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.menu.GUI;
 
 public class EnchantmentWithLevelFeatureEditor extends FeatureEditorInterface<EnchantmentWithLevelFeature> {
 

@@ -1,13 +1,12 @@
 package com.ssomar.score.features.custom.attributes.attribute;
 
+import com.ssomar.score.features.FeatureInterface;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.AttributeSlot;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.scoretestrecode.features.types.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

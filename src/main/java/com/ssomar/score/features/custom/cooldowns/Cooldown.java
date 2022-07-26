@@ -1,9 +1,9 @@
 package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;

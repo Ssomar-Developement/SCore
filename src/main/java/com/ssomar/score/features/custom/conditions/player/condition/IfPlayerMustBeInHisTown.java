@@ -1,11 +1,11 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.usedapi.TownyToolAPI;
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

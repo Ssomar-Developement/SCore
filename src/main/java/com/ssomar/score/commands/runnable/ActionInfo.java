@@ -1,9 +1,9 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.Debugers;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;

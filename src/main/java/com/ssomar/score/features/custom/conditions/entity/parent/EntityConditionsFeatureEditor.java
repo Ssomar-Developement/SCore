@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.conditions.entity.parent;
 
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 
 public class EntityConditionsFeatureEditor extends FeatureEditorInterface<EntityConditionsFeature> {
 

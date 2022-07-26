@@ -1,14 +1,14 @@
 package com.ssomar.score.features.types.list;
 
-import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.score.menu.EditorCreator;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

@@ -1,14 +1,13 @@
 package com.ssomar.score.features.custom.conditions.player.parent;
 
+import com.ssomar.score.features.FeatureInterface;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.condition.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.scoretestrecode.features.custom.conditions.player.condition.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

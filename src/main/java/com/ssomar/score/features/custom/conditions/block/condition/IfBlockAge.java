@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
+import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringCalculation;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.types.NumberConditionFeature;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

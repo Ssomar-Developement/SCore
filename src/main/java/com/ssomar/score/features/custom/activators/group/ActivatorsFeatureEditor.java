@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.activators.group;
 
+import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 
 public class ActivatorsFeatureEditor extends FeatureEditorInterface<ActivatorsFeature> {
 

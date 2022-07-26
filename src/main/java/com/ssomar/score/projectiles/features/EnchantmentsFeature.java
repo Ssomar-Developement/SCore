@@ -1,13 +1,13 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
+import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.SimpleGUI;
 import com.ssomar.score.projectiles.types.CustomProjectile;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
-import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeature;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;

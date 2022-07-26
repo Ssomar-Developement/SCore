@@ -1,9 +1,9 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
 import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

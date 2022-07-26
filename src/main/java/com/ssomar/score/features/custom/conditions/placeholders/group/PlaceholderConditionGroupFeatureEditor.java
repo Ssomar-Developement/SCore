@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.conditions.placeholders.group;
 
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.menu.GUI;
 
 public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterface<PlaceholderConditionGroupFeature> {
 

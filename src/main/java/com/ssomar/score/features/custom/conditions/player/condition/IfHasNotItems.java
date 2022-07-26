@@ -1,9 +1,9 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
-import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
-import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.ifhas.items.group.HasItemGroupFeature;
+import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

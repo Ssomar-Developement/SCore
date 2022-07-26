@@ -1,6 +1,5 @@
 package com.ssomar.score.editor;
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditor;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditorManager;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeatureEditor;
@@ -111,6 +110,7 @@ import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGro
 import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditor;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditorManager;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;

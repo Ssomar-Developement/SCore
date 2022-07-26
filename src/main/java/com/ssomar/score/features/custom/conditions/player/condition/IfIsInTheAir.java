@@ -2,8 +2,8 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
-import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.features.types.BooleanFeature;
+import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

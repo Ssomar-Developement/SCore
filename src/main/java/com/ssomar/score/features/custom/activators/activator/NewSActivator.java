@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.activators.activator;
 
+import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -7,7 +8,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.HigherFormSObject;
 import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.SOption;
-import com.ssomar.score.editor.NewGUIManager;
 import lombok.Getter;
 import org.bukkit.Material;
 

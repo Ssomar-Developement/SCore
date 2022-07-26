@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.variables.update.group;
 
+import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
 
 public class VariableUpdateGroupFeatureEditor extends FeatureEditorInterface<VariableUpdateGroupFeature> {
 

@@ -1,9 +1,5 @@
 package com.ssomar.score.features.custom.conditions;
 
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -12,6 +8,10 @@ import com.ssomar.score.features.custom.hiders.HidersEditor;
 import com.ssomar.score.features.custom.hiders.HidersEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

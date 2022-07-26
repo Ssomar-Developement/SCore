@@ -1,9 +1,9 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
-import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.types.BooleanFeature;
+import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

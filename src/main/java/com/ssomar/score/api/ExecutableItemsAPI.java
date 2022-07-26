@@ -99,7 +99,7 @@ public class ExecutableItemsAPI {
     public static boolean isExecutableItem(ItemStack itemStack, String id) {
         ExecutableItemObject ei = new ExecutableItemObject(itemStack);
         if (ei.isValid()) {
-            return ei.getConfig().getId().equals(id);
+           return ei.getConfig().getId().equals(id);
         } else return false;
     }
 

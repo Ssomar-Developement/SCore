@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WitherSkull;
 
-public class ChargedFeature extends BooleanFeature implements SProjectileFeatureInterface{
+public class ChargedFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public ChargedFeature(FeatureParentInterface parent) {
         super(parent, "charger", false, "Charged", new String[]{""}, Material.NETHER_STAR, false, false);

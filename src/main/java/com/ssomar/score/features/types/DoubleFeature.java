@@ -1,16 +1,16 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.NTools;
-import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOneMessageInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;

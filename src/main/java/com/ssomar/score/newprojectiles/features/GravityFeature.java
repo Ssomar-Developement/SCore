@@ -1,8 +1,8 @@
 package com.ssomar.score.newprojectiles.features;
 
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.types.BooleanFeature;
+import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ public class GravityFeature extends BooleanFeature implements SProjectileFeature
 
 
     public GravityFeature(FeatureParentInterface parent) {
-        super(parent, "gravity", true, "Gravity", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("ELYTRA", "FEATHER")), false , false);
+        super(parent, "gravity", true, "Gravity", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("ELYTRA", "FEATHER")), false, false);
     }
 
     @Override

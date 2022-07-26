@@ -1,13 +1,13 @@
 package com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags;
 
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.MaterialWithGroups;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.MaterialWithGroupsFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.MaterialWithGroups;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

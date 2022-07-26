@@ -5,14 +5,14 @@ import com.ssomar.executableblocks.executableblocks.activators.ActivatorEBFeatur
 import com.ssomar.executableitems.executableitems.activators.ActivatorEIFeature;
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.loop.LoopManager;
+import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.projectiles.ProjectilesGUIManager;
 import com.ssomar.score.projectiles.ProjectilesManager;
 import com.ssomar.score.projectiles.types.CustomArrow;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
-import com.ssomar.score.features.custom.loop.LoopFeatures;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -116,7 +116,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
 
                     int delay = loop.getDelay().getValue().get();
                     if (!loop.getDelayInTick().getValue()) delay = delay * 20;
-                    if (SCore.hasExecutableItems && sAct instanceof ActivatorEIFeature) {
+                   if (SCore.hasExecutableItems && sAct instanceof ActivatorEIFeature) {
                         sm.sendMessage(sender, "&bEI LOOP > &7item: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");
                     } else if (SCore.hasExecutableBlocks && sAct instanceof ActivatorEBFeature) {
                         sm.sendMessage(sender, "&aEB LOOP > &7block: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");

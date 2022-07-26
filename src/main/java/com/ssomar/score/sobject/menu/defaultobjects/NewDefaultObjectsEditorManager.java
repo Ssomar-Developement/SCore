@@ -1,8 +1,8 @@
 package com.ssomar.score.sobject.menu.defaultobjects;
 
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
 import org.bukkit.entity.Player;
 

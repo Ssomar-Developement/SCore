@@ -2,8 +2,8 @@ package com.ssomar.score.commands;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
