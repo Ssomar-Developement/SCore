@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class NewCooldownFeatureEditor extends FeatureEditorInterface<NewCooldownFeature> {
 
-    public NewCooldownFeature cooldownFeature;
+    public final NewCooldownFeature cooldownFeature;
 
     public NewCooldownFeatureEditor(NewCooldownFeature cooldownFeature) {
         super("&lCooldown feature Editor", 3 * 9);

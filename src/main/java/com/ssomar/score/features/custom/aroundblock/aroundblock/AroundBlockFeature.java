@@ -154,13 +154,9 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
     public AroundBlockFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        /*finalDescription[finalDescription.length - 5] = "&7Attribute: &e" + attribute.getValue().get().name();
-        finalDescription[finalDescription.length - 4] = "&7Operation: &e" + operation.getValue().get();
-        finalDescription[finalDescription.length - 3] = "&7Amount: &e" + amount.getValue().get();
-        finalDescription[finalDescription.length - 2] = "&7Slot: &e" + this.slot.getValue().get().name();*/
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 

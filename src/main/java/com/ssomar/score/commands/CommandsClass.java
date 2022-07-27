@@ -116,7 +116,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
 
                     int delay = loop.getDelay().getValue().get();
                     if (!loop.getDelayInTick().getValue()) delay = delay * 20;
-                   if (SCore.hasExecutableItems && sAct instanceof ActivatorEIFeature) {
+                    if (SCore.hasExecutableItems && sAct instanceof ActivatorEIFeature) {
                         sm.sendMessage(sender, "&bEI LOOP > &7item: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");
                     } else if (SCore.hasExecutableBlocks && sAct instanceof ActivatorEBFeature) {
                         sm.sendMessage(sender, "&aEB LOOP > &7block: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");
@@ -135,7 +135,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                             File file = new File(SCore.plugin.getDataFolder() + "/projectiles/" + id + ".yml");
                             try {
                                 file.createNewFile();
-                            } catch (IOException var17) {
+                            } catch (IOException ignored) {
                             }
 
                             FileConfiguration config = YamlConfiguration.loadConfiguration(file);

@@ -44,7 +44,4 @@ public abstract class CustomProjectile {
         this.requestChat = request;
     }
 
-    ;
-
-
 }

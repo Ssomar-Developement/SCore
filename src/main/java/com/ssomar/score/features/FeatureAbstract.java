@@ -15,13 +15,13 @@ import java.util.Optional;
 @Getter
 public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y> {
 
+    private final String name;
+    private final String editorName;
+    private final String[] editorDescription;
+    private final Material editorMaterial;
+    private final boolean requirePremium;
     @Setter
     private FeatureParentInterface parent;
-    private String name;
-    private String editorName;
-    private String[] editorDescription;
-    private Material editorMaterial;
-    private boolean requirePremium;
     @Setter
     private boolean isPremium;
 

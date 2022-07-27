@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class BlockTitleFeaturesEditor extends FeatureEditorInterface<BlockTitleFeatures> {
 
-    public BlockTitleFeatures dropFeatures;
+    public final BlockTitleFeatures dropFeatures;
 
     public BlockTitleFeaturesEditor(BlockTitleFeatures dropFeatures) {
         super("&lTitle features Editor", 3 * 9);

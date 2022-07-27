@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 
 public abstract class NewSObjectLoader<T extends NewSObject> {
 
-    private SPlugin sPlugin;
-    private String defaultObjectsPath;
+    private final SPlugin sPlugin;
+    private final String defaultObjectsPath;
+    private final NewSObjectManager sObjectManager;
+    private final int maxFreeObjects;
+    private final Logger logger;
     @Getter
     private Map<String, String> randomIdsDefaultObjects;
-    private NewSObjectManager sObjectManager;
-    private int maxFreeObjects;
     private int cpt;
-    private Logger logger;
 
     public NewSObjectLoader(SPlugin sPlugin, String defaultObjectsPath, NewSObjectManager<T> sObjectManager, int maxFreeObjects) {
         this.sPlugin = sPlugin;
@@ -254,13 +254,13 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
 
     public Optional<T> getObjectByFile(File file, String id, boolean showError) {
         try {
-            if (this.CreateBackupFilIfNotValid(file)) return null;
+            if (this.CreateBackupFilIfNotValid(file)) return Optional.empty();
             configVersionsConverter(file);
             FileConfiguration objectConfig = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
             return getObject(objectConfig, id, showError);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -273,12 +273,11 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
             }
             YamlConfiguration config = new YamlConfiguration();
             config.loadFromString(toStr);
-            FileConfiguration objectConfig = (FileConfiguration) config;
 
-            return getDefaultObject(objectConfig, id, showError);
+            return getDefaultObject((FileConfiguration) config, id, showError);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 

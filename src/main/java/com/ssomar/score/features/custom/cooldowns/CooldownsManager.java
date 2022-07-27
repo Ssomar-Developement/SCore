@@ -58,37 +58,6 @@ public class CooldownsManager {
         }
     }
 
-
-    //	public void clearCooldownsPassed(SPlugin sPlugin, SObject sO, SActivator sAct) {
-    //
-    //		List<Cooldown> toRemove = new ArrayList<>();
-    //
-    //		List<String> toDelete = new ArrayList<>();
-    //		for(String s : cooldowns.keySet()) {
-    //			for(Cooldown cd : cooldowns.get(s)) {
-    //				if(this.getCooldown(sPlugin, sO, sAct, cd.getEntityUUID()) >= cd.getCooldown()) {
-    //					toRemove.add(cd);
-    //				}
-    //			}
-    //			if(!toRemove.isEmpty()) {
-    //				cooldowns.get(s).removeAll(toRemove);
-    //				if(cooldowns.get(s).isEmpty()) toDelete.add(s);
-    //			}
-    //		}
-    //		for(String s : toDelete) {
-    //			cooldowns.remove(s);
-    //		}
-    //
-    //		List<UUID> toDelete2 = new ArrayList<>();
-    //		for(UUID uuid : cooldownsUUID.keySet()) {
-    //			cooldownsUUID.get(uuid).removeAll(toRemove);
-    //			if(cooldownsUUID.get(uuid).isEmpty()) toDelete2.add(uuid);
-    //		}
-    //		for(UUID uuid : toDelete2) {
-    //			cooldownsUUID.remove(uuid);
-    //		}
-    //	}
-
     public Optional<Cooldown> getCooldown(SPlugin sPlugin, String id, UUID uuid, boolean onlyGlobal) {
 
         if (cooldowns.containsKey(id)) {

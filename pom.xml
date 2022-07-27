@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>2.1.0</version>
+    <version>pre2.1.1</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -105,7 +105,8 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar
+                            </outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -116,7 +117,8 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar</outputFile>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
+                            </outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -127,7 +129,8 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar</outputFile>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
+                            </outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -138,7 +141,9 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar</outputFile>
+                            <outputFile>
+                                C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
+                            </outputFile>
                         </configuration>
                     </execution>
                     <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->

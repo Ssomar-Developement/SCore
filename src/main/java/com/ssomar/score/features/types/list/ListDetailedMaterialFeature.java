@@ -96,7 +96,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
             if (conditions.containsKey(materialStr.toUpperCase())) {
                 conditions.get(materialStr.toUpperCase()).add(tags);
             } else {
-                conditions.put(materialStr.toUpperCase(), new ArrayList<>(Arrays.asList(tags)));
+                conditions.put(materialStr.toUpperCase(), new ArrayList<>(Collections.singletonList(tags)));
             }
         }
         return conditions;
@@ -114,13 +114,13 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
                 if (statesStr.contains("[")) {
                     /* States are store like that TORCH[STATE1=VALUE1,STATE2=VALUE2] */
 
-                    String[] spliter1 = statesStr.split("\\]");
+                    String[] spliter1 = statesStr.split("]");
                     String[] spliter2 = spliter1[0].split("\\[");
 
-                    String[] spliterStates = spliter2[1].split("\\,");
+                    String[] spliterStates = spliter2[1].split(",");
 
                     for (String state : spliterStates) {
-                        String[] spliterState = state.split("\\=");
+                        String[] spliterState = state.split("=");
                         SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
                         states.put(spliterState[0].toUpperCase(), spliterState[1].toUpperCase());
                     }
@@ -181,10 +181,10 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
     public ListDetailedMaterialFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -236,7 +236,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
     public List<Suggestion> getSuggestions() {
         List<Suggestion> suggestions = new ArrayList<>();
         for (MaterialWithGroups materialWithGroups : MaterialWithGroups.values()) {
-            suggestions.add(new Suggestion(materialWithGroups.toString(), "&6[&e" + materialWithGroups.toString() + "&6]", "&7Add &e" + materialWithGroups.toString()));
+            suggestions.add(new Suggestion(materialWithGroups.toString(), "&6[&e" + materialWithGroups + "&6]", "&7Add &e" + materialWithGroups));
         }
         return suggestions;
     }

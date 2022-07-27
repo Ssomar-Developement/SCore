@@ -18,8 +18,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class EnchantmentsFeature extends DecorateurCustomProjectiles {
 
-    boolean askEnchantments;
-    private EnchantmentsGroupFeature enchants;
+    final boolean askEnchantments;
+    private final EnchantmentsGroupFeature enchants;
 
     public EnchantmentsFeature(CustomProjectile cProj) {
         super.cProj = cProj;
@@ -56,7 +56,7 @@ public class EnchantmentsFeature extends DecorateurCustomProjectiles {
                 }
                 item.setItemMeta(meta);
                 t.setItem(item);
-            } catch (NoSuchMethodError exception) {
+            } catch (NoSuchMethodError ignored) {
             }
         }
         cProj.transformTheProjectile(e, launcher);

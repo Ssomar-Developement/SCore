@@ -67,10 +67,10 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
     public ListRegionStringFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

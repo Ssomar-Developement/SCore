@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import org.bukkit.*;
@@ -87,19 +88,12 @@ public class WorldTeleport extends PlayerCommand {
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
 
-        String error = "";
+        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        String wT = "WORLDTELEPORT {world}";
-        if (args.size() != 1) error = notEnoughArgs + wT;
-        else {
-            World world;
-            if (SCore.hasMultiverse) world = MultiverseAPI.getWorld(args.get(0));
-            else world = Bukkit.getWorld(args.get(0));
+        ArgumentChecker ac = checkWorld(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
-            if (world == null) error = invalidWorld + args.get(0) + " for command: " + wT;
-        }
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

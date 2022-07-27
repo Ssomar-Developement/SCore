@@ -20,7 +20,6 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
 
     public ListEntityTypeFeature(FeatureParentInterface parent, String name, List<EntityType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, "List of EntityTypes", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
-        ;
         reset();
     }
 
@@ -89,7 +88,7 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
             try {
                 EntityType mat = EntityType.valueOf(s);
                 getValue().add(mat);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 

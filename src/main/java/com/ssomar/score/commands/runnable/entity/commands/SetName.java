@@ -22,22 +22,17 @@ public class SetName extends EntityCommand {
                 name.append(s).append(" ");
             }
             name = new StringBuilder(name.substring(0, name.length() - 1));
-            try {
-                entity.setCustomNameVisible(true);
-                entity.setCustomName(StringConverter.coloredString(name.toString()));
-            } catch (Exception ignored) {
-            }
+
+            entity.setCustomNameVisible(true);
+            entity.setCustomName(StringConverter.coloredString(name.toString()));
         }
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        String setname = "SETNAME {name}";
-        if (args.size() < 1) error = notEnoughArgs + setname;
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

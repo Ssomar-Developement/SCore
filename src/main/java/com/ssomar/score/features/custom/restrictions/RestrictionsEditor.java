@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RestrictionsEditor extends FeatureEditorInterface<Restrictions> {
 
-    public Restrictions restrictions;
+    public final Restrictions restrictions;
 
     public RestrictionsEditor(Restrictions dropFeatures) {
         super("&lRestrictions Editor", 5 * 9);

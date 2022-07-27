@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class SubPatternFeatureEditor extends FeatureEditorInterface<SubPatternFeature> {
 
-    public SubPatternFeature enchantFeature;
+    public final SubPatternFeature enchantFeature;
 
     public SubPatternFeatureEditor(SubPatternFeature dropFeatures) {
         super("&lPattern feature Editor", 3 * 9);

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class PlaceholderLastDamageDealtEvent implements Listener {
 
     private static PlaceholderLastDamageDealtEvent instance;
-    public Map<UUID, Double> lastDamageDealt;
+    public final Map<UUID, Double> lastDamageDealt;
 
     public PlaceholderLastDamageDealtEvent() {
         lastDamageDealt = new HashMap<>();

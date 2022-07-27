@@ -23,7 +23,6 @@ public class SetMaterialCooldown extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
         if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
@@ -32,7 +31,7 @@ public class SetMaterialCooldown extends PlayerCommand {
         ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
         if (!ac2.isValid()) return Optional.of(ac2.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

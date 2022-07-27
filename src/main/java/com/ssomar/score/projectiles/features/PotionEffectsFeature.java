@@ -21,8 +21,8 @@ import java.util.List;
 
 public class PotionEffectsFeature extends DecorateurCustomProjectiles {
 
+    private final boolean isLingering;
     private List<PotionEffect> potionEffects;
-    private boolean isLingering;
 
     public PotionEffectsFeature(CustomProjectile cProj) {
         super.cProj = cProj;
@@ -65,7 +65,7 @@ public class PotionEffectsFeature extends DecorateurCustomProjectiles {
                 }
                 item.setItemMeta((ItemMeta) pMeta);
                 lp.setItem(item);
-            } catch (NoSuchMethodError exception) {
+            } catch (NoSuchMethodError ignored) {
             }
         }
         cProj.transformTheProjectile(e, launcher);

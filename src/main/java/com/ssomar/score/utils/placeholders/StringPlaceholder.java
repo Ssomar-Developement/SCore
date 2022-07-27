@@ -78,7 +78,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if (result.contains("%rand:")) {
             int part1;
             int part2;
-            String[] decompRand = result.split("\\%rand:");
+            String[] decompRand = result.split("%rand:");
             boolean cont = true;
             for (String strRand : decompRand) {
                 if (cont) {
@@ -87,7 +87,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                 }
 
                 if (strRand.contains("%")) {
-                    String[] decomp = strRand.split("\\%");
+                    String[] decomp = strRand.split("%");
                     if ((decomp.length >= 2 || (strRand.endsWith("%") && decomp.length == 1)) && decomp[0].contains("|")) {
                         decomp = decomp[0].split("\\|");
 

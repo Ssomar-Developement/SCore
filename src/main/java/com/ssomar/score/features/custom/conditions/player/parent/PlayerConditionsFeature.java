@@ -36,7 +36,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
     @Override
     public void reset() {
         conditions = new ArrayList<>();
-        /** Boolean features **/
+        /* Boolean features */
         conditions.add(new IfSneaking(this));
         conditions.add(new IfNotSneaking(this));
         conditions.add(new IfSprinting(this));
@@ -59,7 +59,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPlayerMustBeOnHisIsland(this));
         conditions.add(new IfPlayerMustBeOnHisPlot(this));
 
-        /** Number condition features **/
+        /* Number condition features */
         conditions.add(new IfCursorDistance(this));
         conditions.add(new IfLightLevel(this));
         conditions.add(new IfPlayerEXP(this));
@@ -71,13 +71,13 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPosZ(this));
 
 
-        /** List uncolored string **/
+        /* List uncolored string */
         conditions.add(new IfHasPermission(this));
         conditions.add(new IfNotHasPermission(this));
         conditions.add(new IfHasTag(this));
         conditions.add(new IfNotHasTag(this));
 
-        /** List Material **/
+        /* List Material */
         conditions.add(new IfTargetBlock(this));
         conditions.add(new IfNotTargetBlock(this));
         conditions.add(new IfIsInTheBlock(this));
@@ -85,35 +85,35 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfIsOnTheBlock(this));
         conditions.add(new IfIsNotOnTheBlock(this));
 
-        /** List colored string **/
+        /* List colored string */
 
 
-        /** List EntityType **/
+        /* List EntityType */
         conditions.add(new IfPlayerMounts(this));
         conditions.add(new IfPlayerNotMounts(this));
 
-        /** List Biome **/
+        /* List Biome */
         conditions.add(new IfInBiome(this));
         conditions.add(new IfNotInBiome(this));
 
-        /** List Region **/
+        /* List Region */
         conditions.add(new IfInRegion(this));
         conditions.add(new IfNotInRegion(this));
 
-        /** List World **/
+        /* List World */
         conditions.add(new IfInWorld(this));
         conditions.add(new IfNotInWorld(this));
 
-        /** List Effects with level **/
+        /* List Effects with level */
         conditions.add(new IfPlayerHasEffect(this));
         conditions.add(new IfPlayerHasEffectEquals(this));
         conditions.add(new IfPlayerNotHasEffect(this));
 
-        /** Has executableitems **/
+        /* Has executableitems */
         conditions.add(new IfHasExecutableItems(this));
         conditions.add(new IfHasNotExecutableItems(this));
 
-        /** Has item **/
+        /* Has item */
         conditions.add(new IfHasItems(this));
         conditions.add(new IfHasNotItems(this));
 
@@ -160,10 +160,10 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = "&7Player condition(s) enabled: &e" + getPlayerConditionEnabledCount();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

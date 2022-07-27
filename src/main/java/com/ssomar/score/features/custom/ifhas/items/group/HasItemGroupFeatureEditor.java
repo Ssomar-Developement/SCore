@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class HasItemGroupFeatureEditor extends FeatureEditorInterface<HasItemGroupFeature> {
 
-    public HasItemGroupFeature attributesGroupFeature;
+    public final HasItemGroupFeature attributesGroupFeature;
 
     public HasItemGroupFeatureEditor(HasItemGroupFeature enchantsGroupFeature) {
         super("&lHas Items feature Editor", 3 * 9);

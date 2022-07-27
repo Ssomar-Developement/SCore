@@ -24,8 +24,7 @@ public class TeleportEntityToPlayer extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+       return Optional.empty();
     }
 
     @Override

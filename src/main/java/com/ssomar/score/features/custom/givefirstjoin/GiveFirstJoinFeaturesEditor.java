@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class GiveFirstJoinFeaturesEditor extends FeatureEditorInterface<GiveFirstJoinFeatures> {
 
-    public GiveFirstJoinFeatures giveFirstJoinFeatures;
+    public final GiveFirstJoinFeatures giveFirstJoinFeatures;
 
     public GiveFirstJoinFeaturesEditor(GiveFirstJoinFeatures dropFeatures) {
         super("&lGive first join features Editor", 3 * 9);

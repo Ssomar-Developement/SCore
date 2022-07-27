@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,17 +31,14 @@ public class ChangeTo extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        String changeto = "CHANGETO {entityType}";
-        if (args.size() < 1) error = notEnoughArgs + changeto;
-        else if (args.size() == 1) {
-            if (EntityType.fromName(args.get(0)) == null)
-                error = invalidEntityType + args.get(0) + " for command: " + changeto;
-        } else error = tooManyArgs + changeto;
+        ArgumentChecker ac = checkEntity(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
+
 
     @Override
     public List<String> getNames() {

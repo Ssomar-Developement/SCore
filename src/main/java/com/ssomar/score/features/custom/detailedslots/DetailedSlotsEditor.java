@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
-    public DetailedSlots detailedSlots;
+    public final DetailedSlots detailedSlots;
 
     public DetailedSlotsEditor(DetailedSlots dropFeatures) {
         super("&lDetailed slots Editor", 6 * 9);

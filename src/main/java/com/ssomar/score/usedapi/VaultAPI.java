@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 public class VaultAPI {
 
     private static Economy econ = null;
-    public SendMessage sm = new SendMessage();
+    public final SendMessage sm = new SendMessage();
 
     public VaultAPI() {
     }

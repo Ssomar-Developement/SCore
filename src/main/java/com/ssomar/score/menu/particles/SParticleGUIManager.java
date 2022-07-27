@@ -29,7 +29,6 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
         cache.get(p).openGUISync(p);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean allClicked(InteractionClickedGUIManager<SParticleGUI> i) {
         if (i.name.contains(SParticleGUI.AMOUNT)) {

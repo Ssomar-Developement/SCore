@@ -6,9 +6,9 @@ import com.ssomar.score.menu.GUI;
 
 public class PlayerConditionsFeatureEditor extends FeatureEditorInterface<PlayerConditionsFeature> {
 
-    public PlayerConditionsFeature bCF;
+    public final PlayerConditionsFeature bCF;
+    private final int perPage;
     private int page;
-    private int perPage;
 
     public PlayerConditionsFeatureEditor(PlayerConditionsFeature bCF) {
         super("&lPlayer Conditions Editor", 5 * 9);

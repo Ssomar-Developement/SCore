@@ -7,8 +7,7 @@ import java.util.List;
 public interface MessageInterface {
 
     static List<MessageInterface> getMessagesEnum(MessageInterface[] tab) {
-        List<MessageInterface> result = new ArrayList<>(Arrays.asList(tab));
-        return result;
+        return new ArrayList<>(Arrays.asList(tab));
     }
 
     String getName();

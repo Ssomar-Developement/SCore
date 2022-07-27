@@ -38,17 +38,17 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
     @Override
     public void reset() {
         conditions = new ArrayList<>();
-        /** Boolean features **/
+        /* Boolean features */
         if (!SCore.is1v12Less()) {
             conditions.add(new IfCrossbowMustBeCharged(this));
             conditions.add(new IfCrossbowMustNotBeCharged(this));
         }
 
-        /** Number condition **/
+        /* Number condition */
         conditions.add(new IfDurability(this));
         conditions.add(new IfUsage(this));
 
-        /** ListEnchantWithLevel **/
+        /* ListEnchantWithLevel */
         conditions.add(new IfHasEnchant(this));
         conditions.add(new IfHasNotEnchant(this));
 
@@ -95,10 +95,10 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = "&7Item condition(s) enabled: &e" + getBlockConditionEnabledCount();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

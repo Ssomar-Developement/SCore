@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class MaterialAndTagsFeatureEditor extends FeatureEditorInterface<MaterialAndTagsFeature> {
 
-    public MaterialAndTagsFeature enchantFeature;
+    public final MaterialAndTagsFeature enchantFeature;
 
     public MaterialAndTagsFeatureEditor(MaterialAndTagsFeature dropFeatures) {
         super("&lMaterial and tags feature Editor", 3 * 9);

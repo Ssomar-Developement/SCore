@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import org.bukkit.Material;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FixedMaterial {
@@ -34,7 +35,7 @@ public class FixedMaterial {
     }
 
     public static Material getBrewingStand() {
-        if (!SCore.is1v8()) return FixedMaterial.getMaterial(Arrays.asList("BREWING_STAND"));
-        else return FixedMaterial.getMaterial(Arrays.asList("BREWING_STAND_ITEM"));
+        if (!SCore.is1v8()) return FixedMaterial.getMaterial(Collections.singletonList("BREWING_STAND"));
+        else return FixedMaterial.getMaterial(Collections.singletonList("BREWING_STAND_ITEM"));
     }
 }

@@ -38,9 +38,7 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         if (colorStr.equals("NULL")) {
-            if (defaultValue.isPresent()) {
-                value = defaultValue;
-            } else value = Optional.empty();
+            value = defaultValue;
         } else {
             try {
                 TypeTarget material = TypeTarget.valueOf(colorStr);
@@ -58,7 +56,7 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
     @Override
     public void save(ConfigurationSection config) {
         Optional<TypeTarget> value = getValue();
-        if (value.isPresent()) config.set(this.getName(), value.get().name());
+        value.ifPresent(typeTarget -> config.set(this.getName(), typeTarget.name()));
     }
 
     @Override
@@ -71,10 +69,10 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
     public TypeTargetFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&8>> &6UP: &eRIGHT | &6DOWN: &eLEFT";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

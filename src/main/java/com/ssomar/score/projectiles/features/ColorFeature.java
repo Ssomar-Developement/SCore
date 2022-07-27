@@ -22,10 +22,10 @@ import static org.bukkit.Color.AQUA;
 /* For Arrow and potion color */
 public class ColorFeature extends DecorateurCustomProjectiles {
 
+    private final boolean isLingering;
     boolean activeColor;
     Color color;
     boolean hasColor;
-    private boolean isLingering;
 
     public ColorFeature(CustomProjectile cProj) {
         super.cProj = cProj;
@@ -86,7 +86,7 @@ public class ColorFeature extends DecorateurCustomProjectiles {
                     pMeta.setColor(this.color);
                 item.setItemMeta(pMeta);
                 lp.setItem(item);
-            } catch (NoSuchMethodError exception) {
+            } catch (NoSuchMethodError ignored) {
             }
         }
         cProj.transformTheProjectile(e, launcher);

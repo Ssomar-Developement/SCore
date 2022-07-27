@@ -12,7 +12,7 @@ public enum SProjectileType {
     TRIDENT("TRIDENT"),
     WITHER_SKULL("WITHER_SKULL");
 
-    private String[] validNames;
+    private final String[] validNames;
 
     SProjectileType(String... validNames) {
         this.validNames = validNames;

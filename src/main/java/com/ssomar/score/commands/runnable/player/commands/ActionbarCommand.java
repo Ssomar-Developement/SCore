@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,28 +16,26 @@ public class ActionbarCommand extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        if (args.size() >= 2) {
+        StringBuilder name = new StringBuilder();
 
-            StringBuilder name = new StringBuilder();
-
-            for (int i = 0; i < args.size() - 1; i++) {
-                if (i == 0) name = new StringBuilder(args.get(i));
-                else name.append(" ").append(args.get(i));
-            }
-
-            try {
-                int time = Integer.parseInt(args.get(args.size() - 1));
-                ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(name.toString(), time));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        for (int i = 0; i < args.size() - 1; i++) {
+            if (i == 0) name = new StringBuilder(args.get(i));
+            else name.append(" ").append(args.get(i));
         }
+
+        int time = Double.valueOf(args.get(args.size() - 1)).intValue();
+        ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(name.toString(), time));
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+
+        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
+
+        ArgumentChecker ac = checkInteger(args.get(args.size() - 1), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
+
+        return Optional.empty();
     }
 
     @Override

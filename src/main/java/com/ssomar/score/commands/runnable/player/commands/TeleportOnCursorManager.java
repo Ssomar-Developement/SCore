@@ -10,7 +10,7 @@ public class TeleportOnCursorManager {
 
     private static TeleportOnCursorManager instance;
 
-    private HashMap<UUID, Long> timings = new HashMap<>();
+    private final HashMap<UUID, Long> timings = new HashMap<>();
 
     public static TeleportOnCursorManager getInstance() {
         if (instance == null) instance = new TeleportOnCursorManager();

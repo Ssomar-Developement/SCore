@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class HidersEditor extends FeatureEditorInterface<Hiders> {
 
-    public Hiders dropFeatures;
+    public final Hiders dropFeatures;
 
     public HidersEditor(Hiders dropFeatures) {
         super("&lHiders Editor", 3 * 9);

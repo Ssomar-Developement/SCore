@@ -119,7 +119,7 @@ public class MessageMain {
                 clazz.getDeclaredField("uid");
                 SCore.plugin.getServer().getPluginManager().disablePlugin(SCore.plugin);
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

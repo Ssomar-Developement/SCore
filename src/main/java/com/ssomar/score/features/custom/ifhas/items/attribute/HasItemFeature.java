@@ -86,9 +86,9 @@ public class HasItemFeature extends FeatureWithHisOwnEditor<HasItemFeature, HasI
             finalDescription[finalDescription.length - 4] = "&7Item: &cINVALID EI";
         finalDescription[finalDescription.length - 3] = "&7Amount: &e" + amount.getValue().get();
         finalDescription[finalDescription.length - 2] = "&7Slots count: &e" + detailedSlots.getSlots().size();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 

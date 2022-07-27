@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class UsePerDayFeatureEditor extends FeatureEditorInterface<UsePerDayFeature> {
 
-    public UsePerDayFeature dropFeatures;
+    public final UsePerDayFeature dropFeatures;
 
     public UsePerDayFeatureEditor(UsePerDayFeature dropFeatures) {
         super("&lUse per day Editor", 3 * 9);

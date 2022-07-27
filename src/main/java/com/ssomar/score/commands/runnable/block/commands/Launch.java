@@ -44,12 +44,12 @@ public class Launch extends BlockCommand {
         } else {
             try {
                 speed = Double.parseDouble(args.get(1));
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             try {
                 despawnDelay = Integer.parseInt(args.get(2));
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
         }
@@ -91,9 +91,6 @@ public class Launch extends BlockCommand {
                 SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
 
                 switch (projectile.getIdentifierType()) {
-                    case "ARROW":
-                        entity = launchProjectile(block, directional, Arrow.class, speed);
-                        break;
                     case "SPECTRALARROW":
                         entity = launchProjectile(block, directional, SpectralArrow.class, speed);
                         break;
@@ -151,7 +148,7 @@ public class Launch extends BlockCommand {
                         e.remove();
                 }
             };
-            runnable.runTaskLater(SCore.plugin, despawnDelay * 20);
+            runnable.runTaskLater(SCore.plugin, despawnDelay * 20L);
 
             if (entity != null) {
                 if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

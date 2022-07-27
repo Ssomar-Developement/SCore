@@ -18,8 +18,8 @@ import java.util.List;
 public class SParticlesGUI extends GUIAbstract {
 
     static int index;
-    private SParticles sParticles;
-    private GUI guiFrom;
+    private final SParticles sParticles;
+    private final GUI guiFrom;
 
     //Page 1
     public SParticlesGUI(Player p, SPlugin sPlugin, SParticles sParticles, GUI guiFrom) {

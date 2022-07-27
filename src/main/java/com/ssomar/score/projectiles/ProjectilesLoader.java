@@ -4,7 +4,6 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.types.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -16,26 +15,6 @@ import java.util.List;
 public class ProjectilesLoader {
 
     private static ProjectilesLoader instance;
-
-    private List<EntityType> validProjectiles = new ArrayList<>();
-
-    public ProjectilesLoader() {
-        validProjectiles.add(EntityType.FIREBALL);
-        validProjectiles.add(EntityType.ARROW);
-        validProjectiles.add(EntityType.EGG);
-        validProjectiles.add(EntityType.ENDER_PEARL);
-        validProjectiles.add(EntityType.SNOWBALL);
-        validProjectiles.add(EntityType.WITHER_SKULL);
-
-        if (!SCore.is1v12Less()) {
-            validProjectiles.add(EntityType.TRIDENT);
-        }
-        if (!SCore.is1v11Less()) {
-            validProjectiles.add(EntityType.SPLASH_POTION);
-            validProjectiles.add(EntityType.DRAGON_FIREBALL);
-            validProjectiles.add(EntityType.SHULKER_BULLET);
-        }
-    }
 
     public static File searchFileOfProjectile(String id) {
 

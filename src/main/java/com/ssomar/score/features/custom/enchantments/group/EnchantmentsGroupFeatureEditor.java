@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class EnchantmentsGroupFeatureEditor extends FeatureEditorInterface<EnchantmentsGroupFeature> {
 
-    public EnchantmentsGroupFeature enchantsGroupFeature;
+    public final EnchantmentsGroupFeature enchantsGroupFeature;
 
     public EnchantmentsGroupFeatureEditor(EnchantmentsGroupFeature enchantsGroupFeature) {
         super("&lEnchantments feature Editor", 3 * 9);

@@ -28,11 +28,11 @@ public class SParticleGUI extends GUIAbstract {
     public static final String DELAY = "Particle Delay";
     public static final String REDSTONE_COLOR = "Redstone color";
     public static final String BLOCK_TYPE = "Block type";
+    @Getter
+    private final SParticles sParticles;
+    @Getter
+    private final GUI guiFrom;
     private boolean newRequiredEI = false;
-    @Getter
-    private SParticles sParticles;
-    @Getter
-    private GUI guiFrom;
 
     public SParticleGUI(SPlugin sPlugin, SParticles sParticles, GUI guiFrom) {
         super("&8&l" + sPlugin.getShortName() + " Editor - Particle", 4 * 9, sPlugin);

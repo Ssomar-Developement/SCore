@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class PlaceholderConditionFeatureEditor extends FeatureEditorInterface<PlaceholderConditionFeature> {
 
-    public PlaceholderConditionFeature enchantFeature;
+    public final PlaceholderConditionFeature enchantFeature;
 
     public PlaceholderConditionFeatureEditor(PlaceholderConditionFeature dropFeatures) {
         super("&lPlaceholder condition feature Editor", 3 * 9);

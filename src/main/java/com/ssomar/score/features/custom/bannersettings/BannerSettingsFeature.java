@@ -84,13 +84,13 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
     public BannerSettingsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
         if (color.getValue().isPresent())
             finalDescription[finalDescription.length - 2] = "&7Color : &e" + color.getValue().get();
         else finalDescription[finalDescription.length - 2] = "&7Color : &cNO VALUE";
         finalDescription[finalDescription.length - 1] = "&7Pattern(s) : &e" + patterns.getMCPatterns().size();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

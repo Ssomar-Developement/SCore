@@ -21,11 +21,11 @@ import java.util.Map;
 public class CommandsEditor {
 
     private static CommandsEditor instance;
-    private Map<Player, List<String>> commands;
-    private Map<Player, List<SCommand>> suggestions;
-    private Map<Player, Boolean> isAsking;
-    private int commandsPerColumn;
-    private Map<Player, Integer> commandPage;
+    private final Map<Player, List<String>> commands;
+    private final Map<Player, List<SCommand>> suggestions;
+    private final Map<Player, Boolean> isAsking;
+    private final int commandsPerColumn;
+    private final Map<Player, Integer> commandPage;
 
     public CommandsEditor() {
         commands = new HashMap<>();

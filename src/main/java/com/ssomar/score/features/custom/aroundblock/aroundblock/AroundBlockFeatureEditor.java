@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class AroundBlockFeatureEditor extends FeatureEditorInterface<AroundBlockFeature> {
 
-    public AroundBlockFeature enchantFeature;
+    public final AroundBlockFeature enchantFeature;
 
     public AroundBlockFeatureEditor(AroundBlockFeature dropFeatures) {
         super("&lAroundBlock feature Editor", 3 * 9);

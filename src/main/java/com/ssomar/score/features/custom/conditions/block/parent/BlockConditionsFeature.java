@@ -37,7 +37,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
     @Override
     public void reset() {
         conditions = new ArrayList<>();
-        /** Boolean features **/
+        /* Boolean features */
         conditions.add(new IfIsPowered(this));
         conditions.add(new IfMustBeNotPowered(this));
         conditions.add(new IfMustBeNatural(this));
@@ -45,7 +45,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
         conditions.add(new IfPlantFullyGrown(this));
 
-        /** Number condition features **/
+        /* Number condition features */
         conditions.add(new IfBlockAge(this));
         conditions.add(new IfBlockLocationX(this));
         conditions.add(new IfBlockLocationY(this));
@@ -98,10 +98,10 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = "&7Block condition(s) enabled: &e" + getBlockConditionEnabledCount();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class LoopFeaturesEditor extends FeatureEditorInterface<LoopFeatures> {
 
-    public LoopFeatures loopFeatures;
+    public final LoopFeatures loopFeatures;
 
     public LoopFeaturesEditor(LoopFeatures dropFeatures) {
         super("&lLoop features Editor", 3 * 9);

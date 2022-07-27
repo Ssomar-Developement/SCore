@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class StunEvent implements Listener {
 
-    public static Map<UUID, Boolean> stunPlayers = new HashMap<>();
+    public static final Map<UUID, Boolean> stunPlayers = new HashMap<>();
 
     @EventHandler
     public void PlayerGlideEvent(EntityToggleGlideEvent e) {

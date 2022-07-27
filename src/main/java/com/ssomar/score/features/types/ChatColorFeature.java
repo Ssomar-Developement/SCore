@@ -54,7 +54,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
     @Override
     public void save(ConfigurationSection config) {
         Optional<ChatColor> value = getValue();
-        if (value.isPresent()) config.set(this.getName(), value.get().name());
+        value.ifPresent(chatColor -> config.set(this.getName(), chatColor.name()));
     }
 
     @Override
@@ -68,10 +68,10 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
         String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         if (!isPremium() && requirePremium()) {
-            finalDescription[finalDescription.length - 1] = gui.PREMIUM;
-        } else finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 1] = GUI.PREMIUM;
+        } else finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

@@ -42,7 +42,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     ((FeatureRequireSubTextEditorInEditor) feature).sendBeforeTextEditor(i.player, this);
                     sendEditor(i.player, featureRequireSubTextEditorInEditor.getTips());
                 } else if (feature instanceof FeatureParentInterface) {
-                    /** Save the parent if there is one **/
+                    /* Save the parent if there is one */
                     i.gui.getParent().reload();
                     i.gui.getParent().save();
                     FeatureParentInterface parent = (FeatureParentInterface) feature;

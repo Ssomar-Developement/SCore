@@ -21,118 +21,118 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 public class Launch extends PlayerCommand {
 
-    private Map<String, Class> projectiles;
+    private final Map<String, Class> projectiles;
 
     public Launch() {
         projectiles = new HashMap<>();
         try {
             projectiles.put("ARROW", Arrow.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SPECTRALARROW", SpectralArrow.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("DRAGONFIREBALL", DragonFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("FIREBALL", Fireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SMALLFIREBALL", SmallFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("LARGEFIREBALL", LargeFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("LARGE_FIREBALL", LargeFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SIZEDFIREBALL", SizedFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SIZED_FIREBALL", SizedFireball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SNOWBALL", Snowball.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("WITHERSKULL", WitherSkull.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("WITHER_SKULL", WitherSkull.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("EGG", Egg.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("ENDERPEARL", EnderPearl.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("ENDER_PEARL", EnderPearl.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
 
         try {
             projectiles.put("LINGERINGPOTION", LingeringPotion.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("LINGERING_POTION", LingeringPotion.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SPLASHPOTION", SplashPotion.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SPLASH_POTION", SplashPotion.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("LLAMASPIT", LlamaSpit.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("LLAMA_SPIT", LlamaSpit.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SHULKERBULLET", ShulkerBullet.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
         try {
             projectiles.put("TRIDENT", Trident.class);
-        } catch (Exception | Error e) {
+        } catch (Exception | Error ignored) {
         }
     }
 

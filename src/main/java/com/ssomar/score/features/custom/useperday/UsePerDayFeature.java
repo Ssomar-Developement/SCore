@@ -117,8 +117,8 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         if (!isPremium() && requirePremium()) {
-            finalDescription[finalDescription.length - 4] = gui.PREMIUM;
-        } else finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 4] = GUI.PREMIUM;
+        } else finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         if (maxUsePerDay.getValue().get() != -1)
             finalDescription[finalDescription.length - 3] = "&7Max Use per Day: &e" + maxUsePerDay.getValue().get();
         else
@@ -136,7 +136,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
             finalDescription[i] = command;
         }
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

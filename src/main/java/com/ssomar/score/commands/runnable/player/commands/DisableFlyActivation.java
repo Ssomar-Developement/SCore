@@ -16,7 +16,7 @@ public class DisableFlyActivation extends PlayerCommand {
 
     private static DisableFlyActivation instance;
     @Getter
-    private Map<UUID, Integer> activeDisabled;
+    private final Map<UUID, Integer> activeDisabled;
 
     public DisableFlyActivation() {
         activeDisabled = new HashMap<>();
@@ -46,19 +46,17 @@ public class DisableFlyActivation extends PlayerCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, time * 20);
+        runnable3.runTaskLater(SCore.plugin, time * 20L);
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

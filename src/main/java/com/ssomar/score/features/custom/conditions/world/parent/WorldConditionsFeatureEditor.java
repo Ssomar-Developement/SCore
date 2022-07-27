@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class WorldConditionsFeatureEditor extends FeatureEditorInterface<WorldConditionsFeature> {
 
-    public WorldConditionsFeature bCF;
+    public final WorldConditionsFeature bCF;
 
     public WorldConditionsFeatureEditor(WorldConditionsFeature dropFeatures) {
         super("&lWorld Conditions Editor", 3 * 9);

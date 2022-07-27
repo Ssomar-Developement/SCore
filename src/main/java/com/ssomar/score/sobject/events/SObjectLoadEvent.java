@@ -10,9 +10,9 @@ public class SObjectLoadEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private String id;
+    private final String id;
     @Getter
-    private NewSObject object;
+    private final NewSObject object;
 
     public SObjectLoadEvent(String id, NewSObject object) {
         this.id = id;

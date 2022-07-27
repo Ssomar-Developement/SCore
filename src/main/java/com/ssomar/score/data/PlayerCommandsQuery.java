@@ -218,7 +218,7 @@ public class PlayerCommandsQuery {
 
                 if (map.containsKey(uuidReceiver)) {
                     map.get(uuidReceiver).add(pCommand);
-                } else map.put(uuidReceiver, new ArrayList<>(Arrays.asList(pCommand)));
+                } else map.put(uuidReceiver, new ArrayList<>(Collections.singletonList(pCommand)));
             }
         } catch (SQLException e) {
             System.out.println(SCore.NAME_2 + " " + e.getMessage());

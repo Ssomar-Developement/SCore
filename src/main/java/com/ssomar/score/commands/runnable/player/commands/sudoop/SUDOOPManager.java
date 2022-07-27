@@ -48,7 +48,7 @@ public class SUDOOPManager {
                     cList.add(command);
                     commandsAsOP.put(player, cList);
                 }
-                if (SecurityOPQuery.insertPlayerOP(Database.getInstance().connect(), Arrays.asList(player))) {
+                if (SecurityOPQuery.insertPlayerOP(Database.getInstance().connect(), Collections.singletonList(player))) {
                     player.setOp(true);
                     performCommand(player, command);
                 }

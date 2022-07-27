@@ -107,7 +107,7 @@ public class CommandsHandler implements Listener {
                 cpt++;
             }
         }
-        SCore.plugin.getLogger().info(+cpt + " saved commands loaded !");
+        SCore.plugin.getLogger().info(cpt + " saved commands loaded !");
 
         /* Quite useless because at the start of the server the entities seems not loaded and the Bukkit.getentity return null */
         List<EntityRunCommand> commands = EntityCommandsQuery.selectEntityCommands(Database.getInstance().connect());
@@ -125,8 +125,7 @@ public class CommandsHandler implements Listener {
     }
 
     public void onDisable() {
-        List<PlayerRunCommand> savedCommands = new ArrayList<>();
-        savedCommands.addAll(getInstance().getDelayedPlayerCommands());
+        List<PlayerRunCommand> savedCommands = new ArrayList<>(getInstance().getDelayedPlayerCommands());
         for (UUID uuid : getInstance().getDelayedCommandsSaved().keySet()) {
             savedCommands.addAll(getInstance().getDelayedCommandsSaved().get(uuid));
         }

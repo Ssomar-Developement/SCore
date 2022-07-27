@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class ItemConditionsFeatureEditor extends FeatureEditorInterface<ItemConditionsFeature> {
 
-    public ItemConditionsFeature bCF;
+    public final ItemConditionsFeature bCF;
 
     public ItemConditionsFeatureEditor(ItemConditionsFeature dropFeatures) {
         super("&lItem Conditions Editor", 3 * 9);

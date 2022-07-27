@@ -3,7 +3,10 @@ package com.ssomar.score.commands.runnable;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class RunCommandsBuilder {
 
@@ -105,7 +108,7 @@ public abstract class RunCommandsBuilder {
         if (finalCommands.containsKey(delay)) {
             finalCommands.get(delay).add(runCommand);
         } else {
-            List<RunCommand> result = new ArrayList<>(Arrays.asList(runCommand));
+            List<RunCommand> result = new ArrayList<>(Collections.singletonList(runCommand));
             finalCommands.put(delay, result);
         }
     }

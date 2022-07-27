@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -62,7 +63,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      * @param sp The placeholder associate to the event
      * @return True in No coooldown, false if its on cooldown
      */
-    public boolean checkCooldown(Player p, Event e, StringPlaceholder sp, NewSObject sObject, boolean global) {
+    public boolean checkCooldown(Player p, @Nullable Event e, StringPlaceholder sp, NewSObject sObject, boolean global) {
         /* Check if the activator is in cooldown for the player or not  */
         if (!hasNoCDPerm(p, sObject)) {
             Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(sPlugin, cooldownId, p.getUniqueId(), global);
@@ -170,7 +171,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     public NewCooldownFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 5];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 5] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 5] = GUI.CLICK_HERE_TO_CHANGE;
 
         finalDescription[finalDescription.length - 4] = "&7Cooldown: &e" + getCooldown().getValue().get();
 
@@ -190,7 +191,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
             finalDescription[finalDescription.length - 1] = "&7Cancel event if in cooldown: &c&l✘";
         }
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

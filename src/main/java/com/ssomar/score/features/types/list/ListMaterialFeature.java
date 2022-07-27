@@ -87,7 +87,7 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
             try {
                 Material mat = Material.valueOf(s);
                 getValue().add(mat);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 

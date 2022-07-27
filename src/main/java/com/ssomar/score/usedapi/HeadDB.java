@@ -20,14 +20,14 @@ public class HeadDB {
         try {
             tsp.headdb.api.Head head = (tsp.headdb.api.Head) getByID.invoke(null, id);
             return head.getItemStack();
-        } catch (Exception err) {
-        } catch (Error err) {
+        } catch (Exception ignored) {
+        } catch (Error ignored) {
         }
         try {
             tsp.headdb.implementation.Head head = (tsp.headdb.implementation.Head) getByID.invoke(null, id);
             return head.getMenuItem();
-        } catch (Exception err) {
-        } catch (Error err) {
+        } catch (Exception ignored) {
+        } catch (Error ignored) {
         }
         return null;
     }

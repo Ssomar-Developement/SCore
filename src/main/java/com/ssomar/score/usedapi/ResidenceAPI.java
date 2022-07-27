@@ -22,13 +22,11 @@ public class ResidenceAPI {
 
     public static boolean playerCanBreakClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
         ResidencePlayer rPlayer = Residence.getInstance().getPlayerManager().getResidencePlayer(pUUID);
-        boolean canBreak = rPlayer.canBreakBlock(location.getBlock(), false);
-        return canBreak;
+        return rPlayer.canBreakBlock(location.getBlock(), false);
     }
 
     public static boolean playerCanPlaceClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
         ResidencePlayer rPlayer = Residence.getInstance().getPlayerManager().getResidencePlayer(pUUID);
-        boolean canPlace = rPlayer.canPlaceBlock(location.getBlock(), false);
-        return canPlace;
+        return rPlayer.canPlaceBlock(location.getBlock(), false);
     }
 }

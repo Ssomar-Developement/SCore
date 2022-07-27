@@ -29,8 +29,6 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
         return false;
     }
 
-    ;
-
     @Override
     public boolean messageForConfig(SimpleGUI gui, Player player, String message) {
         if (cProj.messageForConfig(gui, player, message)) return true;
@@ -46,6 +44,4 @@ public abstract class DecorateurCustomProjectiles extends CustomProjectile {
         cProj.setRequestChat(request);
         this.requestChat = request;
     }
-
-    ;
 }

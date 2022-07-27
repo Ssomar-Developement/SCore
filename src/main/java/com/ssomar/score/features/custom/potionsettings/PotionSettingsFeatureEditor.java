@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class PotionSettingsFeatureEditor extends FeatureEditorInterface<PotionSettingsFeature> {
 
-    public PotionSettingsFeature dropFeatures;
+    public final PotionSettingsFeature dropFeatures;
 
     public PotionSettingsFeatureEditor(PotionSettingsFeature dropFeatures) {
         super("&lPotion Settings Editor", 3 * 9);

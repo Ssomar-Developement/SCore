@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class CancelEventFeaturesEditor extends FeatureEditorInterface<CancelEventFeatures> {
 
-    public CancelEventFeatures dropFeatures;
+    public final CancelEventFeatures dropFeatures;
 
     public CancelEventFeaturesEditor(CancelEventFeatures dropFeatures) {
         super("&lCancelEvent features Editor", 3 * 9);

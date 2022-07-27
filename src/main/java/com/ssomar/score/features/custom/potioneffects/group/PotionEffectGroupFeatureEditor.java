@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class PotionEffectGroupFeatureEditor extends FeatureEditorInterface<PotionEffectGroupFeature> {
 
-    public PotionEffectGroupFeature attributesGroupFeature;
+    public final PotionEffectGroupFeature attributesGroupFeature;
 
     public PotionEffectGroupFeatureEditor(PotionEffectGroupFeature enchantsGroupFeature) {
         super("&lPotion Effects feature Editor", 3 * 9);

@@ -107,7 +107,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
         else
             finalDescription[finalDescription.length - 2] = "&7Cancel Event If Error: &c&l✘";
 
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
         for (int i = 0; i < finalDescription.length; i++) {
             String command = finalDescription[i];
@@ -122,7 +122,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
             meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
             item.setItemMeta(meta);
         }
-        gui.createItem(item, 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(item, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return (T) this;
     }
 

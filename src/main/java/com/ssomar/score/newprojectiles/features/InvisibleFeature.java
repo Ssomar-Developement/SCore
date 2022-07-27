@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class InvisibleFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
@@ -27,7 +28,7 @@ public class InvisibleFeature extends BooleanFeature implements SProjectileFeatu
         if (getValue() && SCore.hasProtocolLib) {
             PacketContainer entityPacketContainer = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
             if (!SCore.is1v17Plus()) entityPacketContainer.getIntegerArrays().write(0, new int[]{e.getEntityId()});
-            else entityPacketContainer.getIntLists().write(0, Arrays.asList(e.getEntityId()));
+            else entityPacketContainer.getIntLists().write(0, Collections.singletonList(e.getEntityId()));
             Bukkit.getOnlinePlayers().forEach(p -> {
                 try {
                     ProtocolLibrary.getProtocolManager().sendServerPacket(p, entityPacketContainer);

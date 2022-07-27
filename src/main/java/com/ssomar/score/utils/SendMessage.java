@@ -19,8 +19,7 @@ public class SendMessage implements Serializable {
     private StringPlaceholder sp = new StringPlaceholder();
 
     public static void sendMessageNoPlch(Player p, String s) {
-        CommandSender cs = p;
-        sendMessageNoPlch(cs, s);
+        sendMessageNoPlch((CommandSender) p, s);
     }
 
     public static void sendMessageNoPlch(CommandSender cs, String s) {
@@ -31,8 +30,7 @@ public class SendMessage implements Serializable {
     }
 
     public void sendMessage(Player p, String s) {
-        CommandSender cs = p;
-        this.sendMessage(cs, s);
+        this.sendMessage((CommandSender) p, s);
     }
 
     public void sendMessage(CommandSender cs, String s) {

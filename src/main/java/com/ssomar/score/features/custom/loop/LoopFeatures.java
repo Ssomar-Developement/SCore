@@ -40,8 +40,7 @@ public class LoopFeatures extends FeatureWithHisOwnEditor<LoopFeatures, LoopFeat
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        List<String> errors = new ArrayList<>();
-        errors.addAll(this.delay.load(plugin, config, isPremiumLoading));
+        List<String> errors = new ArrayList<>(this.delay.load(plugin, config, isPremiumLoading));
         if (delay.getValue().get() <= 0) {
             delay.setValue(Optional.of(1));
         }
@@ -65,7 +64,7 @@ public class LoopFeatures extends FeatureWithHisOwnEditor<LoopFeatures, LoopFeat
     public LoopFeatures initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 2] = "&7Delay: &e" + delay.getValue().get();
         if (delayInTick.getValue()) {
             finalDescription[finalDescription.length - 1] = "&7In ticks: &a&l✔";
@@ -73,7 +72,7 @@ public class LoopFeatures extends FeatureWithHisOwnEditor<LoopFeatures, LoopFeat
             finalDescription[finalDescription.length - 1] = "&7In ticks: &c&l✘";
         }
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

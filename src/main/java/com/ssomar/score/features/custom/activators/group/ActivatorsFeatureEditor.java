@@ -6,9 +6,9 @@ import com.ssomar.score.menu.GUI;
 
 public class ActivatorsFeatureEditor extends FeatureEditorInterface<ActivatorsFeature> {
 
-    public ActivatorsFeature activatorsGroupFeature;
+    public final ActivatorsFeature activatorsGroupFeature;
+    private final int perPage;
     private int page;
-    private int perPage;
 
     public ActivatorsFeatureEditor(ActivatorsFeature activatorsFeature) {
         super("&lActivators feature Editor", 3 * 9);

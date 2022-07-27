@@ -146,7 +146,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     public PotionSettingsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 6] = GUI.CLICK_HERE_TO_CHANGE;
         if (SCore.is1v11Less())
             finalDescription[finalDescription.length - 5] = "&7Potion color : &c&lNot for 1.11 or lower";
         else if (color.getValue().isPresent())
@@ -173,7 +173,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
         finalDescription[finalDescription.length - 1] = "&7Potion effects: &e" + potionEffects.getValue().getEffects().size();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

@@ -60,7 +60,7 @@ public class CancelEventFeatures extends FeatureWithHisOwnEditor<CancelEventFeat
     public CancelEventFeatures initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
 
         if (cancelEventIfNoperm.getValue()) {
             finalDescription[finalDescription.length - 2] = "&7CancelEvent No perm: &a&l✔";
@@ -74,7 +74,7 @@ public class CancelEventFeatures extends FeatureWithHisOwnEditor<CancelEventFeat
             finalDescription[finalDescription.length - 1] = "&7CancelEvent Not owner: &c&l✘";
         }
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

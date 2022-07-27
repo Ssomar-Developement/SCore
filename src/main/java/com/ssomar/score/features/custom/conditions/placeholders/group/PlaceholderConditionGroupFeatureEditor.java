@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterface<PlaceholderConditionGroupFeature> {
 
-    public PlaceholderConditionGroupFeature attributesGroupFeature;
+    public final PlaceholderConditionGroupFeature attributesGroupFeature;
 
     public PlaceholderConditionGroupFeatureEditor(PlaceholderConditionGroupFeature enchantsGroupFeature) {
         super("&lPlaceholders Conditions feature Editor", 3 * 9);

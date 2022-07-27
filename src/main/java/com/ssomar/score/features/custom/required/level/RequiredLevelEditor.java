@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredLevelEditor extends FeatureEditorInterface<RequiredLevel> {
 
-    public RequiredLevel requiredLevel;
+    public final RequiredLevel requiredLevel;
 
     public RequiredLevelEditor(RequiredLevel requiredLevel) {
         super("&lRequired Level Editor", 3 * 9);

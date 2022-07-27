@@ -33,12 +33,8 @@ public class Sudo extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-        String sudo = "SUDO {command}";
-        if (args.size() < 1) error = notEnoughArgs + sudo;
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
+        return Optional.empty();
     }
 
     @Override

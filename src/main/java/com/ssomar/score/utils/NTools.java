@@ -60,11 +60,10 @@ public class NTools implements Serializable {
     public static double reduceDouble(@NotNull double number, int numbersAfterComma) {
         /* Limit numbers after , */
         StringBuilder sb = new StringBuilder("");
-        int limit = numbersAfterComma;
         boolean startCount = false;
         int cpt = 0;
         for (char c : (new BigDecimal(number).toPlainString()).toCharArray()) {
-            if (cpt == limit) {
+            if (cpt == numbersAfterComma) {
                 break;
             } else if (startCount) {
                 cpt++;

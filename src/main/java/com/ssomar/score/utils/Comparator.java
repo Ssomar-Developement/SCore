@@ -70,8 +70,6 @@ public enum Comparator {
                 return INFERIOR_OR_EQUALS;
             case INFERIOR_OR_EQUALS:
                 return SUPERIOR_OR_EQUALS;
-            case SUPERIOR_OR_EQUALS:
-                return EQUALS;
             default:
                 return EQUALS;
         }

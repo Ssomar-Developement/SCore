@@ -6,7 +6,7 @@ import com.ssomar.score.utils.VariableType;
 
 public class VariableFeatureEditor extends FeatureEditorInterface<VariableFeature> {
 
-    public VariableFeature enchantFeature;
+    public final VariableFeature enchantFeature;
 
     public VariableFeatureEditor(VariableFeature dropFeatures) {
         super("&lVariable feature Editor", 3 * 9);

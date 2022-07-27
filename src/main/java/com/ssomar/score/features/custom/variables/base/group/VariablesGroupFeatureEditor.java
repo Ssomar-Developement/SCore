@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class VariablesGroupFeatureEditor extends FeatureEditorInterface<VariablesGroupFeature> {
 
-    public VariablesGroupFeature attributesGroupFeature;
+    public final VariablesGroupFeature attributesGroupFeature;
 
     public VariablesGroupFeatureEditor(VariablesGroupFeature enchantsGroupFeature) {
         super("&lVariables feature Editor", 3 * 9);

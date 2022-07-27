@@ -69,7 +69,7 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
     @Override
     public void save(ConfigurationSection config) {
         Optional<DetailedClick> value = getValue();
-        if (value.isPresent()) config.set(this.getName(), value.get().name());
+        value.ifPresent(detailedClick -> config.set(this.getName(), detailedClick.name()));
     }
 
     @Override
@@ -82,10 +82,10 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
     public DetailedClickFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&8>> &6UP: &eRIGHT | &6DOWN: &eLEFT";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

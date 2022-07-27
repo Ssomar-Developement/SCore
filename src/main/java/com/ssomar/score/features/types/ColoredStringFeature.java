@@ -94,7 +94,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     public ColoredStringFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
         for (int i = 0; i < finalDescription.length; i++) {
@@ -103,7 +103,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
             finalDescription[i] = command;
         }
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -125,8 +125,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void reset() {
-        if (defaultValue.isPresent()) this.value = Optional.of(defaultValue.get());
-        else this.value = Optional.empty();
+        this.value = defaultValue;
     }
 
     @Override
@@ -169,10 +168,9 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
-        String valueStr = message;
         if (message.contains("EMPTY STRING")) value = Optional.of("");
-        else if (valueStr.isEmpty()) value = Optional.empty();
-        else value = Optional.of(valueStr);
+        else if (message.isEmpty()) value = Optional.empty();
+        else value = Optional.of(message);
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }

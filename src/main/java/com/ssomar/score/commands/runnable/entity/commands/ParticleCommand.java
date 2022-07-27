@@ -19,7 +19,7 @@ public class ParticleCommand extends EntityCommand {
         try {
             entity.getWorld().spawnParticle(Particle.valueOf(args.get(0).toUpperCase()),
                     entity.getLocation(),
-                    Integer.parseInt(args.get(1)),
+                    Double.valueOf(args.get(1)).intValue(),
                     Double.parseDouble(args.get(2)),
                     Double.parseDouble(args.get(2)),
                     Double.parseDouble(args.get(2)),
@@ -30,8 +30,7 @@ public class ParticleCommand extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return com.ssomar.score.commands.runnable.player.commands.ParticleCommand.staticVerif(args, isFinalVerification, getTemplate());
     }
 
     @Override

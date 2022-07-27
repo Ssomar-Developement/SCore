@@ -81,8 +81,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
     public BlockTitleFeatures initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (isRequirePremium() && !isPremium()) finalDescription[finalDescription.length - 4] = gui.PREMIUM;
-        else finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+        if (isRequirePremium() && !isPremium()) finalDescription[finalDescription.length - 4] = GUI.PREMIUM;
+        else finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         if (activeTitle.getValue())
             finalDescription[finalDescription.length - 3] = "&7Active title: &a&l✔";
         else
@@ -92,7 +92,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
         finalDescription[finalDescription.length - 1] = "&7Title Ajustement: &e" + titleAjustement.getValue().get();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -184,7 +184,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                     Material material = Material.STONE;
                     try {
                         material = Material.valueOf(s.split("ITEM::")[1].trim().toUpperCase());
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                     holo.getLines().appendItem(new ItemStack(material));
                 } else holo.getLines().appendText(s);

@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class DropFeaturesEditor extends FeatureEditorInterface<DropFeatures> {
 
-    public DropFeatures dropFeatures;
+    public final DropFeatures dropFeatures;
 
     public DropFeaturesEditor(DropFeatures dropFeatures) {
         super("&lDrop features Editor", 3 * 9);

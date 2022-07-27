@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredGroupEditor extends FeatureEditorInterface<RequiredGroup> {
 
-    public RequiredGroup requiredGroup;
+    public final RequiredGroup requiredGroup;
 
     public RequiredGroupEditor(RequiredGroup requiredLevel) {
         super("&lRequired Things Editor", 3 * 9);

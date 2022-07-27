@@ -71,9 +71,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v17 = false;
     private static boolean is1v18 = false;
     private static boolean is1v19 = false;
-    private static boolean is1v16Plus = false;
-    private static boolean is1v17Plus = false;
-    private static boolean is1v18Plus = false;
     private CommandsClass commandClass;
 
     /* The server is in 1.12 ? */

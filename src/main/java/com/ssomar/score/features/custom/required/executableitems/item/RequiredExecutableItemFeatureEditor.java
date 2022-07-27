@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredExecutableItemFeatureEditor extends FeatureEditorInterface<RequiredExecutableItemFeature> {
 
-    public RequiredExecutableItemFeature requiredExecutableItemFeature;
+    public final RequiredExecutableItemFeature requiredExecutableItemFeature;
 
     public RequiredExecutableItemFeatureEditor(RequiredExecutableItemFeature dropFeatures) {
         super("&lRequired ExecutableItem feature Editor", 3 * 9);

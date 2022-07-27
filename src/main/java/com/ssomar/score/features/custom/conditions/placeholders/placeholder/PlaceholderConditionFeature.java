@@ -180,9 +180,9 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         finalDescription[finalDescription.length - 4] = "&7Comparator: &e" + comparator.getValue().get();
         finalDescription[finalDescription.length - 3] = "&7Part1: &e" + part1.getValue().get();
         finalDescription[finalDescription.length - 2] = "&7Part2: &e" + part2.getValue().get();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 

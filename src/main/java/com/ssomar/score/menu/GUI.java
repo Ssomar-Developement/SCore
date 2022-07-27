@@ -204,8 +204,7 @@ public abstract class GUI implements IGUI {
 
     public void createItem(ItemStack itemS, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
-        ItemStack item = itemS;
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = itemS.getItemMeta();
         List<String> lore = new ArrayList<>();
 
 
@@ -221,8 +220,8 @@ public abstract class GUI implements IGUI {
         for (String s : loreString) lore.add(StringConverter.coloredString(s));
 
         meta.setLore(lore);
-        item.setItemMeta(meta);
-        inv.setItem(invSlot, item);
+        itemS.setItemMeta(meta);
+        inv.setItem(invSlot, itemS);
 
     }
 

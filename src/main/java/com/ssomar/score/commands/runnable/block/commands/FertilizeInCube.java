@@ -26,9 +26,8 @@ public class FertilizeInCube extends BlockCommand {
             int radius = Integer.parseInt(args.get(0));
             /* Fertilize only the block selected */
             if (radius == 0) {
-                Block toDestroy = block;
-                if (!validMaterial.contains(toDestroy.getType())) return;
-                this.grownUpTheBlock(toDestroy, p);
+                if (!validMaterial.contains(block.getType())) return;
+                this.grownUpTheBlock(block, p);
             } else {
 
                 for (int y = -radius; y < radius + 1; y++) {

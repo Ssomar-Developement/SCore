@@ -42,7 +42,7 @@ public enum RestrictionEnum {
     LOCKED_INVENTORY("locked-in-inventory");
 
     @Getter
-    String editName;
+    public final String editName;
 
     RestrictionEnum(String editName) {
         this.editName = editName;

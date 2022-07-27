@@ -89,7 +89,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
     public RequiredExecutableItemFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         ItemStack item = new ItemStack(Material.STONE);
         if (executableItem.getValue().isPresent()) {
             finalDescription[finalDescription.length - 3] = "&7&oExecutableItem: &a" + executableItem.getValue().get().getId();
@@ -103,7 +103,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
         else
             finalDescription[finalDescription.length - 1] = "&7Usage Condition: &cNO CONDITION";
 
-        gui.createItem(item, 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(item, 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 

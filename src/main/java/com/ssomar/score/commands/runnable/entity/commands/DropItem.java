@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,21 +18,28 @@ public class DropItem extends EntityCommand {
 
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
-        try {
-            int amount = Integer.parseInt(args.get(1));
-            Location eLoc = entity.getLocation();
-            if (amount > 0) {
-                eLoc.getWorld().dropItem(eLoc, new ItemStack(Material.valueOf(args.get(0).toUpperCase()), amount));
-            }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        int amount = Double.valueOf(args.get(1)).intValue();
+        Location eLoc = entity.getLocation();
+        if (amount > 0) {
+            eLoc.getWorld().dropItem(eLoc, new ItemStack(Material.valueOf(args.get(0).toUpperCase()), amount));
         }
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return staticVerif(args, isFinalVerification, getTemplate());
+    }
+
+    public static Optional<String> staticVerif(List<String> args, boolean isFinalVerification, String template) {
+        if (args.size() < 2) return Optional.of(notEnoughArgs + template);
+
+        ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, template);
+        if (!ac.isValid()) return Optional.of(ac.getError());
+
+        ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, template);
+        if (!ac2.isValid()) return Optional.of(ac2.getError());
+
+        return Optional.empty();
     }
 
     @Override

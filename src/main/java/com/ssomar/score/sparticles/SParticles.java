@@ -16,10 +16,10 @@ import java.util.Optional;
 @Getter
 public class SParticles {
 
-    private SPlugin sPlugin;
-    private String filePath;
-    private String configurationSectionPath;
-    private List<SParticle> particles;
+    private final SPlugin sPlugin;
+    private final String filePath;
+    private final String configurationSectionPath;
+    private final List<SParticle> particles;
 
     public SParticles(SPlugin sPlugin, String filePath, String configurationSectionPath, ConfigurationSection section, boolean showError) {
         this.sPlugin = sPlugin;
@@ -36,9 +36,7 @@ public class SParticles {
             ConfigurationSection particlesSection = mainSection.getConfigurationSection("particles");
             for (String id : particlesSection.getKeys(false)) {
                 Optional<SParticle> sParticleOpt = SParticle.loadSParticle(sPlugin, filePath + configurationSectionPath, particlesSection.getConfigurationSection(id), id, showError);
-                if (sParticleOpt.isPresent()) {
-                    particles.add(sParticleOpt.get());
-                }
+                sParticleOpt.ifPresent(sParticle -> particles.add(sParticle));
             }
         }
     }

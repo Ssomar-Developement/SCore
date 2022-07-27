@@ -3,24 +3,24 @@ author: Ssomar
 version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
-softdepend: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs]
-loadbefore: [ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades]
+softdepend: [ ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs ]
+loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades ]
 commands:
   score:
     description: score command
     usage: /<command> [ reload | inspect-loop ]
 permissions:
   score.*:
-   description: SCore permission
-   default: op
-   children:
-     ei.cmds: true
+    description: SCore permission
+    default: op
+    children:
+      ei.cmds: true
   score.cmds:
-   description: Allows SCore commands
-   default: op
-   children:
-     score.cmd.reload: true
-     score.cmd.inspect-loop: true
+    description: Allows SCore commands
+    default: op
+    children:
+      score.cmd.reload: true
+      score.cmd.inspect-loop: true
   score.cmd.reload:
     description: Allows the command /score reload
   score.cmd.inspect-loop:

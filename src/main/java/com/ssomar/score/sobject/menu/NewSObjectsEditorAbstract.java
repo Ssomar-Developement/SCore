@@ -39,7 +39,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         super(title + PAGE + "1", 5 * 9);
         this.sPlugin = sPlugin;
         this.title = title;
-        this.index = 1;
+        index = 1;
         this.defaultPath = path;
         this.path = path;
         this.manager = manager;
@@ -65,10 +65,10 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                 if (fileEntry.isDirectory()) {
                     Material material = Material.CHEST;
                     if (str.contains("[icon-")) {
-                        String[] split = str.split("\\[icon\\-");
+                        String[] split = str.split("\\[icon-");
                         name = split[0];
                         try {
-                            material = Material.valueOf(split[1].split("\\]")[0].toUpperCase());
+                            material = Material.valueOf(split[1].split("]")[0].toUpperCase());
                         } catch (Exception e) {
                             material = Material.CHEST;
                         }

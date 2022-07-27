@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,8 +52,7 @@ public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTyp
     }
 
     public List<String> load(SPlugin plugin, String config, boolean isPremiumLoading) {
-        List<String> errors = new ArrayList<>();
-        errors.addAll(this.entityType.load(plugin, config, isPremiumLoading));
+        List<String> errors = new ArrayList<>(this.entityType.load(plugin, config, isPremiumLoading));
 
         return errors;
     }
@@ -79,9 +78,9 @@ public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTyp
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = "&7EntityType: &e" + entityType.getValue().get();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 
@@ -99,7 +98,7 @@ public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTyp
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(entityType));
+        return new ArrayList<>(Collections.singletonList(entityType));
     }
 
     @Override

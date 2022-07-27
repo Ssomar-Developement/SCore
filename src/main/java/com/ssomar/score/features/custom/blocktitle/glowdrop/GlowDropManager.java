@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class GlowDropManager {
 
     private static GlowDropManager instance;
-    private HashMap<ChatColor, Team> teams;
+    private final HashMap<ChatColor, Team> teams;
 
 
     public GlowDropManager() {

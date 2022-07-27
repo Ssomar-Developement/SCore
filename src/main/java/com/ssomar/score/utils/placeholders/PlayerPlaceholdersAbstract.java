@@ -18,8 +18,8 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
      */
     private static final long serialVersionUID = 1L;
 
-    private String particle;
-    private boolean acceptWithoutParticle;
+    private final String particle;
+    private final boolean acceptWithoutParticle;
 
     /* placeholders of the player */
     @Getter

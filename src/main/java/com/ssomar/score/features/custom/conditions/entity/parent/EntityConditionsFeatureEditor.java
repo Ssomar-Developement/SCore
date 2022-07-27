@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class EntityConditionsFeatureEditor extends FeatureEditorInterface<EntityConditionsFeature> {
 
-    public EntityConditionsFeature bCF;
+    public final EntityConditionsFeature bCF;
 
     public EntityConditionsFeatureEditor(EntityConditionsFeature bCF) {
         super("&lEntity Conditions Editor", 3 * 9);

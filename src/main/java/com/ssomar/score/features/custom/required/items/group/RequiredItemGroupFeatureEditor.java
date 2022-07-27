@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredItemGroupFeatureEditor extends FeatureEditorInterface<RequiredItemGroupFeature> {
 
-    public RequiredItemGroupFeature attributesGroupFeature;
+    public final RequiredItemGroupFeature attributesGroupFeature;
 
     public RequiredItemGroupFeatureEditor(RequiredItemGroupFeature enchantsGroupFeature) {
         super("&lRequired Items feature Editor", 3 * 9);

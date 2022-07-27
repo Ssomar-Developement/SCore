@@ -37,7 +37,7 @@ public class ProtocolibAPI {
 
                                                 // Set the accessibility as true
                                                 privateField.setAccessible(true);
-                                                int amount = +privateField.getInt(event.getPacket().getHandle());
+                                                int amount = privateField.getInt(event.getPacket().getHandle());
 
                                                 if (amount > 10) {
                                                     privateField.setInt(event.getPacket().getHandle(), 10);
@@ -53,7 +53,7 @@ public class ProtocolibAPI {
                                 }
                             }
                         });
-            } catch (Exception | Error e) {
+            } catch (Exception | Error ignored) {
             }
         }
     }

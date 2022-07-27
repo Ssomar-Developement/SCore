@@ -104,9 +104,9 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         finalDescription[finalDescription.length - 4] = "&7Operation: &e" + operation.getValue().get();
         finalDescription[finalDescription.length - 3] = "&7Amount: &e" + amount.getValue().get();
         finalDescription[finalDescription.length - 2] = "&7Slot: &e" + this.slot.getValue().get().name();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 

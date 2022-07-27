@@ -38,7 +38,7 @@ public class ColorFeature extends ColorIntegerFeature implements SProjectileFeat
                     pMeta.setColor(Color.fromRGB(getValue().get()));
                 item.setItemMeta(pMeta);
                 lp.setItem(item);
-            } catch (NoSuchMethodError exception) {
+            } catch (NoSuchMethodError ignored) {
             }
         }
     }

@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class EnchantmentWithLevelFeatureEditor extends FeatureEditorInterface<EnchantmentWithLevelFeature> {
 
-    public EnchantmentWithLevelFeature enchantFeature;
+    public final EnchantmentWithLevelFeature enchantFeature;
 
     public EnchantmentWithLevelFeatureEditor(EnchantmentWithLevelFeature dropFeatures) {
         super("&lEnchantment feature Editor", 3 * 9);

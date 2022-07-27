@@ -97,9 +97,7 @@ public class EntityCommandManager implements CommandManager {
                 List<String> args = this.getArgs(command);
 
                 Optional<String> error = this.verifArgs(eC, args);
-                if (error.isPresent()) {
-                    errorList.add(StringConverter.decoloredString(sPlugin + " " + error.get() + " for item: " + id));
-                }
+                error.ifPresent(value -> errorList.add(StringConverter.decoloredString(sPlugin + " " + value + " for item: " + id)));
             }
             result.add(command);
         }

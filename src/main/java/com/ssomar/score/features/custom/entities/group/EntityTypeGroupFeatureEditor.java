@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class EntityTypeGroupFeatureEditor extends FeatureEditorInterface<EntityTypeGroupFeature> {
 
-    public EntityTypeGroupFeature attributesGroupFeature;
+    public final EntityTypeGroupFeature attributesGroupFeature;
 
     public EntityTypeGroupFeatureEditor(EntityTypeGroupFeature enchantsGroupFeature) {
         super("&lEntityTypes feature Editor", 3 * 9);

@@ -38,7 +38,7 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
     @Override
     public void reset() {
         conditions = new ArrayList<>();
-        /** Boolean features **/
+        /* Boolean features */
         conditions.add(new IfAdult(this));
         conditions.add(new IfBaby(this));
         conditions.add(new IfFrozen(this));
@@ -50,21 +50,21 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfPowered(this));
         conditions.add(new IfTamed(this));
 
-        /** Number condition features **/
+        /* Number condition features */
         conditions.add(new IfEntityHealth(this));
 
-        /** List uncolored string **/
+        /* List uncolored string */
         conditions.add(new IfHasTag(this));
         conditions.add(new IfNotHasTag(this));
 
-        /** List Material with tags **/
+        /* List Material with tags */
         conditions.add(new IfIsOnTheBlock(this));
         conditions.add(new IfIsNotOnTheBlock(this));
 
-        /** List colored string **/
+        /* List colored string */
         conditions.add(new IfName(this));
 
-        /** List EntityType **/
+        /* List EntityType */
         conditions.add(new IfNotEntityType(this));
 
     }
@@ -110,10 +110,10 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = "&7Entity condition(s) enabled: &e" + getEntityConditionEnabledCount();
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

@@ -22,16 +22,14 @@ import java.util.UUID;
 /* CUSTOMDASH1 {x} {y} {z} */
 public class CustomDash1 extends PlayerCommand {
 
-    private static void pullEntityToLocation(Entity e, Location loc) {
+    public static void pullEntityToLocation(Entity e, Location loc) {
         Location entityLoc = e.getLocation();
         Vector vec = e.getVelocity().clone().setY(entityLoc.getY() + 0.5D);
         e.setVelocity(vec);
         double g = -0.08D;
-        double d = loc.distance(entityLoc);
-        double t = d;
-        double v_x = (1.0D + 0.07D * t) * (loc.getX() - entityLoc.getX()) / t;
-        double v_y = (1.0D + 0.03D * t) * (loc.getY() - entityLoc.getY()) / t - 0.5D * g * t;
-        double v_z = (1.0D + 0.07D * t) * (loc.getZ() - entityLoc.getZ()) / t;
+        double v_x = (1.0D + 0.07D * loc.distance(entityLoc)) * (loc.getX() - entityLoc.getX()) / loc.distance(entityLoc);
+        double v_y = (1.0D + 0.03D * loc.distance(entityLoc)) * (loc.getY() - entityLoc.getY()) / loc.distance(entityLoc) - 0.5D * g * loc.distance(entityLoc);
+        double v_z = (1.0D + 0.07D * loc.distance(entityLoc)) * (loc.getZ() - entityLoc.getZ()) / loc.distance(entityLoc);
         Vector v = e.getVelocity();
         v.setX(v_x);
         v.setY(v_y);
@@ -72,22 +70,24 @@ public class CustomDash1 extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+        return staticVerif(args, isFinalVerification, getTemplate());
+    }
 
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
+    public static Optional<String> staticVerif(List<String> args, boolean isFinalVerification, String template){
+        if (args.size() < 3) return Optional.of(notEnoughArgs + template);
 
         for (int i = 0; i < 3; i++) {
-            ArgumentChecker ac = checkDouble(args.get(i), isFinalVerification, getTemplate());
+            ArgumentChecker ac = checkDouble(args.get(i), isFinalVerification, template);
             if (!ac.isValid()) return Optional.of(ac.getError());
         }
 
         if (args.size() >= 4) {
             String value = args.get(3);
-            ArgumentChecker ac = checkBoolean(value, isFinalVerification, getTemplate());
+            ArgumentChecker ac = checkBoolean(value, isFinalVerification, template);
             if (!ac.isValid()) return Optional.of(ac.getError());
         }
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

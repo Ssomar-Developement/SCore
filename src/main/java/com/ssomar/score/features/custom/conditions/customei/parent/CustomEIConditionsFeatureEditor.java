@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class CustomEIConditionsFeatureEditor extends FeatureEditorInterface<CustomEIConditionsFeature> {
 
-    public CustomEIConditionsFeature bCF;
+    public final CustomEIConditionsFeature bCF;
 
     public CustomEIConditionsFeatureEditor(CustomEIConditionsFeature dropFeatures) {
         super("&lBlock Conditions Editor", 3 * 9);

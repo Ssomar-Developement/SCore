@@ -57,8 +57,6 @@ public class ModifyDurability extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
@@ -74,7 +72,7 @@ public class ModifyDurability extends PlayerCommand {
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

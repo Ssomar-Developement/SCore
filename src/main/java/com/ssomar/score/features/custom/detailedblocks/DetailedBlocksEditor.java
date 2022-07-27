@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class DetailedBlocksEditor extends FeatureEditorInterface<DetailedBlocks> {
 
-    public DetailedBlocks dropFeatures;
+    public final DetailedBlocks dropFeatures;
 
     public DetailedBlocksEditor(DetailedBlocks dropFeatures) {
         super("&lDetailed Blocks Editor", 3 * 9);

@@ -29,21 +29,22 @@ public class ParticleCommand extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+       return staticVerif(args, isFinalVerification, getTemplate());
+    }
 
-        if (args.size() < 4) return Optional.of(notEnoughArgs + getTemplate());
+    public static Optional<String> staticVerif(List<String> args, boolean isFinalVerification, String template) {
+        if (args.size() < 4) return Optional.of(notEnoughArgs + template);
 
-        ArgumentChecker ac = checkInteger(args.get(1), isFinalVerification, getTemplate());
+        ArgumentChecker ac = checkInteger(args.get(1), isFinalVerification, template);
         if (!ac.isValid()) return Optional.of(ac.getError());
 
-        ArgumentChecker ac2 = checkDouble(args.get(2), isFinalVerification, getTemplate());
+        ArgumentChecker ac2 = checkDouble(args.get(2), isFinalVerification, template);
         if (!ac2.isValid()) return Optional.of(ac2.getError());
 
-        ArgumentChecker ac3 = checkDouble(args.get(3), isFinalVerification, getTemplate());
+        ArgumentChecker ac3 = checkDouble(args.get(3), isFinalVerification, template);
         if (!ac3.isValid()) return Optional.of(ac3.getError());
 
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

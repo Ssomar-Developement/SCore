@@ -21,21 +21,15 @@ public class Damage extends EntityCommand {
 
     private final static boolean DEBUG = false;
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
         SsomarDev.testMsg("Damage.run()", DEBUG);
         /* When target a NPC it can occurs */
-        if (entity == null || !(entity instanceof LivingEntity)) return;
+        if (!(entity instanceof LivingEntity)) return;
         LivingEntity receiver = (LivingEntity) entity;
 
         double damage = com.ssomar.score.commands.runnable.player.commands.Damage.getDamage(p, receiver, args, aInfo);
 
-        boolean hideParticle = false;
-        try {
-            hideParticle = Boolean.valueOf(args.get(3));
-        } catch (Exception ign) {
-        }
 
         SsomarDev.testMsg("Damage.run() damage: " + damage, DEBUG);
         if (damage > 0 && !entity.isDead()) {
@@ -70,13 +64,7 @@ public class Damage extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-        String damage = "DAMAGE {amount} {amplified If Strength Effect, true or false} {amplified with attack attribute, true or false}";
-        if (args.size() < 1) error = notEnoughArgs + damage;
-        else if (args.size() > 3) error = tooManyArgs + damage;
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+       return com.ssomar.score.commands.runnable.player.commands.Damage.staticVerif(args, isFinalVerification, getTemplate());
     }
 
     @Override
@@ -88,7 +76,7 @@ public class Damage extends EntityCommand {
 
     @Override
     public String getTemplate() {
-        return "DAMAGE {amount} {amplified If Strength Effect, true or false} {amplified with attack attribute, true or false}";
+        return "DAMAGE {amount} [amplified If Strength Effect, true or false] [amplified with attack attribute, true or false]";
     }
 
     @Override

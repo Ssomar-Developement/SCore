@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class NewSActivator<X extends FeatureInterface<X, X>, Y extends GUI, Z extends NewGUIManager<Y>> extends FeatureWithHisOwnEditor<X, X, Y, Z> {
 
     @Getter
-    private String id;
+    private final String id;
 
     public NewSActivator(FeatureParentInterface parent, String id) {
         super(parent, "activator", "Activator", new String[]{"&7&oAn activator"}, Material.BEACON, false);

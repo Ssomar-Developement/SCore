@@ -10,15 +10,14 @@ import java.util.Map;
 
 public class UsePerDayQuery {
 
+    public static final Boolean DEBUG = false;
     private final static String TABLE_USE_PER_DAY = "useperday";
     private final static String TABLE_USE_PER_DAY_NAME = "UsePerDay";
-
     private final static String COL_DATE = "date";
     private final static String COL_PLAYER = "player";
     private final static String COL_ID = "id";
     private final static String COL_NB = "nb";
     public final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_USE_PER_DAY + " (" + COL_DATE + " TEXT NOT NULL, " + COL_PLAYER + " TEXT NOT NULL, " + COL_ID + " TEXT NOT NULL, " + COL_NB + " INTEGER NOT NULL);";
-    public static Boolean DEBUG = false;
 
     public static void createNewTable(Connection conn) {
         try (Statement stmt = conn.createStatement()) {

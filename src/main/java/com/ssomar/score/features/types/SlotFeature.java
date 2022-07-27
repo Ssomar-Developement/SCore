@@ -53,7 +53,7 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     @Override
     public void save(ConfigurationSection config) {
         Optional<AttributeSlot> value = getValue();
-        if (value.isPresent()) config.set(this.getName(), value.get().name());
+        value.ifPresent(attributeSlot -> config.set(this.getName(), attributeSlot.name()));
     }
 
     @Override
@@ -76,10 +76,10 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     public SlotFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

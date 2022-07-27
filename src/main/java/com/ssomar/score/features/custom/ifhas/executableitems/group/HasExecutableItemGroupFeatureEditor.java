@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class HasExecutableItemGroupFeatureEditor extends FeatureEditorInterface<HasExecutableItemGroupFeature> {
 
-    public HasExecutableItemGroupFeature attributesGroupFeature;
+    public final HasExecutableItemGroupFeature attributesGroupFeature;
 
     public HasExecutableItemGroupFeatureEditor(HasExecutableItemGroupFeature enchantsGroupFeature) {
         super("&lHas ExecutableItems feature Editor", 3 * 9);

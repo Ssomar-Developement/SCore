@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockConditionsFeature> {
 
-    public BlockConditionsFeature bCF;
+    public final BlockConditionsFeature bCF;
 
     public BlockConditionsFeatureEditor(BlockConditionsFeature dropFeatures) {
         super("&lBlock Conditions Editor", 3 * 9);

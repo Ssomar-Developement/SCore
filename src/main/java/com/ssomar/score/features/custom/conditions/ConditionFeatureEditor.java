@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class ConditionFeatureEditor extends FeatureEditorInterface<ConditionFeature> {
 
-    public ConditionFeature condition;
+    public final ConditionFeature condition;
 
     public ConditionFeatureEditor(ConditionFeature condition) {
         super("&l" + condition.getEditorName() + " Editor", 3 * 9);

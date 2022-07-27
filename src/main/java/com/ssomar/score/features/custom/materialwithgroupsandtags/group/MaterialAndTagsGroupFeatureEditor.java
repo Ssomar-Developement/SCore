@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class MaterialAndTagsGroupFeatureEditor extends FeatureEditorInterface<MaterialAndTagsGroupFeature> {
 
-    public MaterialAndTagsGroupFeature attributesGroupFeature;
+    public final MaterialAndTagsGroupFeature attributesGroupFeature;
 
     public MaterialAndTagsGroupFeatureEditor(MaterialAndTagsGroupFeature enchantsGroupFeature) {
         super("&lMaterials feature Editor", 3 * 9);

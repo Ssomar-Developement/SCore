@@ -21,7 +21,7 @@ public class GeneralConfig extends Config {
     private String dbPassword;
 
     public GeneralConfig() {
-        super("config.yml");
+        super();
         super.setup(SCore.plugin);
     }
 

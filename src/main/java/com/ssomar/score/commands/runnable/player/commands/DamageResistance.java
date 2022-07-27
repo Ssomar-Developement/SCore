@@ -18,7 +18,7 @@ public class DamageResistance extends PlayerCommand {
     private static final Boolean DEBUG = false;
     private static DamageResistance instance;
     @Getter
-    private Map<UUID, List<Double>> activeResistances;
+    private final Map<UUID, List<Double>> activeResistances;
 
     public DamageResistance() {
         activeResistances = new HashMap<>();
@@ -37,7 +37,7 @@ public class DamageResistance extends PlayerCommand {
         //SsomarDev.testMsg("ADD receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
         if (activeResistances.containsKey(receiver.getUniqueId())) {
             activeResistances.get(receiver.getUniqueId()).add(reduction);
-        } else activeResistances.put(receiver.getUniqueId(), new ArrayList<>(Arrays.asList(reduction)));
+        } else activeResistances.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(reduction)));
 
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
@@ -70,8 +70,6 @@ public class DamageResistance extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
@@ -80,7 +78,7 @@ public class DamageResistance extends PlayerCommand {
         ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());
         if (!ac2.isValid()) return Optional.of(ac2.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

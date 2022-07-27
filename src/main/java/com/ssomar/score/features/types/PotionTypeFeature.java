@@ -38,9 +38,7 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         if (colorStr.equals("NULL")) {
-            if (defaultValue.isPresent()) {
-                value = defaultValue;
-            } else value = Optional.empty();
+            value = defaultValue;
         } else {
             try {
                 PotionType attributeSlot = PotionType.valueOf(colorStr.toUpperCase());
@@ -58,7 +56,7 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
     @Override
     public void save(ConfigurationSection config) {
         Optional<PotionType> value = getValue();
-        if (value.isPresent()) config.set(this.getName(), value.get().name());
+        value.ifPresent(potionType -> config.set(this.getName(), potionType.name()));
     }
 
     @Override
@@ -71,10 +69,10 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
     public PotionTypeFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

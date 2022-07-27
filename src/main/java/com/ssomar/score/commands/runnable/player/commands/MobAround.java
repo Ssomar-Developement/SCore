@@ -36,15 +36,15 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
         List<String> verifyArgs = new ArrayList<>();
         boolean concatNext = false;
-        String toConcat = "";
+        StringBuilder toConcat = new StringBuilder();
         for (String s : args) {
             if (concatNext) {
                 if (!s.contains("\"")) {
-                    verifyArgs.add(toConcat);
+                    verifyArgs.add(toConcat.toString());
                     verifyArgs.add(s);
-                    toConcat = "";
+                    toConcat = new StringBuilder();
                     concatNext = false;
-                } else toConcat = toConcat + " " + s.replaceAll("\"", "");
+                } else toConcat.append(" ").append(s.replaceAll("\"", ""));
             } else {
                 int count = 0;
                 for (char c : s.toCharArray()) {
@@ -56,11 +56,11 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                     verifyArgs.add(s.replaceAll("\"", ""));
                 } else {
                     concatNext = true;
-                    toConcat = toConcat + s.replaceAll("\"", "");
+                    toConcat.append(s.replaceAll("\"", ""));
                 }
             }
         }
-        if (!toConcat.isEmpty()) verifyArgs.add(toConcat);
+        if (toConcat.length() > 0) verifyArgs.add(toConcat.toString());
         args.clear();
         args.addAll(verifyArgs);
 
@@ -85,7 +85,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                     whiteList = new ListDetailedEntityFeature(new MobAround(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
                     whiteList.load(SCore.plugin, Arrays.asList(split), true);
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             cpt++;
         }
@@ -141,7 +141,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
                             String buildCommands = prepareCommands.toString();
                             String[] tab;
-                            if (buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
+                            if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
                             else {
                                 tab = new String[1];
                                 tab[0] = buildCommands;
@@ -166,7 +166,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                             cpt++;
                         }
                     }
-                    if (cpt == 0 && !mute && receiver != null && receiver instanceof Player)
+                    if (cpt == 0 && !mute && receiver instanceof Player)
                         sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
 
                 } catch (Exception e) {
@@ -183,6 +183,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     }
 
     @Override
+    // TODO rework the verification
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         String error = "";
 

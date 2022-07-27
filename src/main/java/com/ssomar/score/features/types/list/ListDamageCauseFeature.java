@@ -96,7 +96,7 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
             try {
                 EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(s);
                 getValue().add(mat);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 

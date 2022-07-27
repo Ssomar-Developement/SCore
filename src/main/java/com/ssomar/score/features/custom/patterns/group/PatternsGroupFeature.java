@@ -83,7 +83,6 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
                         PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
                         patternFeature.load(plugin, pattern, isPremiumLoading);
                         this.patterns.put("pattern" + i, patternFeature);
-                        ;
                         i++;
                     }
                 }
@@ -120,10 +119,10 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
     public PatternsGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oPattern(s) added: &e" + patterns.size();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

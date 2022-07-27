@@ -92,14 +92,14 @@ public class Around extends BlockCommand {
 
                             String buildCommands = prepareCommands.toString();
                             String[] tab;
-                            if (buildCommands.contains("<+>")) tab = buildCommands.split("\\<\\+\\>");
+                            if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
                             else {
                                 tab = new String[1];
                                 tab[0] = buildCommands;
                             }
                             List<String> commands = new ArrayList<>();
-                            for (int m = 0; m < tab.length; m++) {
-                                String s = tab[m];
+                            for (String value : tab) {
+                                String s = value;
                                 while (s.startsWith(" ")) {
                                     s = s.substring(1);
                                 }

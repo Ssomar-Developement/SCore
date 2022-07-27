@@ -60,8 +60,7 @@ public class ListColoredStringFeature extends ListFeatureAbstract<String, ListCo
 
     @Override
     public List<Suggestion> getSuggestions() {
-        if (suggestions.isPresent()) return suggestions.get();
-        return new ArrayList<>();
+        return suggestions.orElseGet(ArrayList::new);
     }
 
     @Override

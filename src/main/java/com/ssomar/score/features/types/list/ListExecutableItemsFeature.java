@@ -49,10 +49,10 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         if (!SCore.hasExecutableItems)
             finalDescription[finalDescription.length - 2] = "&4&l● &c&lRequire ExecutableItems";
-        else finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -68,9 +68,7 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
         if (getValue().size() == 0) return true;
         if (SCore.hasExecutableItems) {
             Optional<ExecutableItemInterface> executableItem = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemStack);
-            if (executableItem.isPresent()) {
-                return getValue().contains(executableItem.get().getId());
-            } else return false;
+            return executableItem.filter(executableItemInterface -> getValue().contains(executableItemInterface.getId())).isPresent();
         } else return true;
     }
 

@@ -106,7 +106,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     public RequiredGroup initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 6] = GUI.CLICK_HERE_TO_CHANGE;
         if (requiredLevel.getValue().getLevel().getValue().get() > 0)
             finalDescription[finalDescription.length - 5] = "&7Required level: &a&l✔";
         else
@@ -132,7 +132,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         else
             finalDescription[finalDescription.length - 1] = "&7Required mana: &c&l✘";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

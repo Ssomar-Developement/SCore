@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class AttributesGroupFeatureEditor extends FeatureEditorInterface<AttributesGroupFeature> {
 
-    public AttributesGroupFeature attributesGroupFeature;
+    public final AttributesGroupFeature attributesGroupFeature;
 
     public AttributesGroupFeatureEditor(AttributesGroupFeature enchantsGroupFeature) {
         super("&lAttributes feature Editor", 3 * 9);

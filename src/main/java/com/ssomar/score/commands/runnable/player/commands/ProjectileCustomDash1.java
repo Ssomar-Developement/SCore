@@ -28,11 +28,9 @@ public class ProjectileCustomDash1 extends PlayerCommand {
         entityLoc.setY(entityLoc.getY() + 0.5D);
         e.teleport(entityLoc);
         double g = -0.08D;
-        double d = loc.distance(entityLoc);
-        double t = d;
-        double v_x = (1.0D + 0.07D * t) * (loc.getX() - entityLoc.getX()) / t;
-        double v_y = (1.0D + 0.03D * t) * (loc.getY() - entityLoc.getY()) / t - 0.5D * g * t;
-        double v_z = (1.0D + 0.07D * t) * (loc.getZ() - entityLoc.getZ()) / t;
+        double v_x = (1.0D + 0.07D * loc.distance(entityLoc)) * (loc.getX() - entityLoc.getX()) / loc.distance(entityLoc);
+        double v_y = (1.0D + 0.03D * loc.distance(entityLoc)) * (loc.getY() - entityLoc.getY()) / loc.distance(entityLoc) - 0.5D * g * loc.distance(entityLoc);
+        double v_z = (1.0D + 0.07D * loc.distance(entityLoc)) * (loc.getZ() - entityLoc.getZ()) / loc.distance(entityLoc);
         Vector v = e.getVelocity();
         v.setX(v_x);
         v.setY(v_y);
@@ -85,14 +83,12 @@ public class ProjectileCustomDash1 extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() >= 1) {
             ArgumentChecker ac = checkBoolean(args.get(0), isFinalVerification, getTemplate());
             if (!ac.isValid()) return Optional.of(ac.getError());
         }
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class HeadDatabase {
 
     private static HeadDatabase instance;
-    private HashMap<String, ItemStack> loadedHeads;
+    private final HashMap<String, ItemStack> loadedHeads;
 
     public HeadDatabase() {
         loadedHeads = new HashMap<>();

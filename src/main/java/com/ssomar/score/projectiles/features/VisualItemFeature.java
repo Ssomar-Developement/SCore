@@ -40,7 +40,7 @@ public class VisualItemFeature extends DecorateurCustomProjectiles {
                     customModeldata = projConfig.getInt("customModelData", 0);
                 }
                 hasItem = true;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return cProj.loadConfiguration(filePath, projConfig, showError) && true;

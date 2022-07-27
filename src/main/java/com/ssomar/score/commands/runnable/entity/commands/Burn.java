@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -15,32 +16,18 @@ public class Burn extends EntityCommand {
 
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
-        try {
-            if (args.size() == 0) {
-                entity.setFireTicks(20 * 10);
-            } else {
-                double time = Double.parseDouble(args.get(0));
-                entity.setFireTicks(20 * (int) time);
-            }
-        } catch (Exception ignored) {
-        }
+        int time = Double.valueOf(args.get(0)).intValue();
+        entity.setFireTicks(20 * time);
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        String burn = "BURN {timeinsecs}";
-        if (args.size() > 1) error = tooManyArgs + burn;
-        else if (args.size() == 1) {
-            try {
-                Double.valueOf(args.get(0));
-            } catch (NumberFormatException e) {
-                error = invalidTime + args.get(0) + " for command: " + burn;
-            }
-        }
+        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

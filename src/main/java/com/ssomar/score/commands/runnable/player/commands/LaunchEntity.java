@@ -61,12 +61,10 @@ public class LaunchEntity extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         String launch = "LAUNCHENTITY {entityType} {speed} [angle rotation y]";
-        if (args.size() < 1) error = notEnoughArgs + launch;
+        if (args.size() < 1) return Optional.of(notEnoughArgs + launch);
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

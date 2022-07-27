@@ -249,49 +249,49 @@ public enum MaterialWithGroups {
         } else {
             switch (materialWithGroups) {
                 case ALL_CHESTS:
-                    return FixedMaterial.getMaterial(Arrays.asList("CHEST"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("CHEST"));
                 case ALL_FURNACES:
-                    return FixedMaterial.getMaterial(Arrays.asList("FURNACE"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("FURNACE"));
                 case ALL_PLANKS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_PLANKS"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_PLANKS"));
                 case ALL_LOGS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_LOG"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_LOG"));
                 case ALL_WOODS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_WOOD"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_WOOD"));
                 case ALL_ORES:
-                    return FixedMaterial.getMaterial(Arrays.asList("COAL_ORE"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("COAL_ORE"));
                 case ALL_WOOLS:
-                    return FixedMaterial.getMaterial(Arrays.asList("LIME_WOOL"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("LIME_WOOL"));
                 case ALL_SLABS:
-                    return FixedMaterial.getMaterial(Arrays.asList("STONE_SLAB"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("STONE_SLAB"));
                 case ALL_STAIRS:
-                    return FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("STONE_STAIRS"));
                 case ALL_FENCES:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_FENCE"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_FENCE"));
                 case ALL_SAPLINGS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_SAPLING"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_SAPLING"));
                 case ALL_CROPS:
                     return FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS"));
                 case ALL_DOORS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_DOOR"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_DOOR"));
                 case ALL_TRAPDOORS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_TRAPDOOR"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_TRAPDOOR"));
                 case ALL_BEDS:
-                    return FixedMaterial.getMaterial(Arrays.asList("OAK_BED"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("OAK_BED"));
                 case ALL_TERRACOTTA:
-                    return FixedMaterial.getMaterial(Arrays.asList("TERRACOTTA"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("TERRACOTTA"));
                 case ALL_NORMAL_TERRACOTTA:
-                    return FixedMaterial.getMaterial(Arrays.asList("LIME_TERRACOTTA"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("LIME_TERRACOTTA"));
                 case ALL_GLAZED_TERRACOTTA:
-                    return FixedMaterial.getMaterial(Arrays.asList("LIME_GLAZED_TERRACOTTA"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("LIME_GLAZED_TERRACOTTA"));
                 case ALL_CONCRETE:
-                    return FixedMaterial.getMaterial(Arrays.asList("LIME_CONCRETE"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("LIME_CONCRETE"));
                 case ALL_GLASS:
-                    return FixedMaterial.getMaterial(Arrays.asList("GLASS"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("GLASS"));
                 case ALL_STAINED_GLASS:
-                    return FixedMaterial.getMaterial(Arrays.asList("LIME_STAINED_GLASS"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("LIME_STAINED_GLASS"));
                 case ALL_SHULKER_BOXES:
-                    return FixedMaterial.getMaterial(Arrays.asList("LIME_SHULKER_BOX"));
+                    return FixedMaterial.getMaterial(Collections.singletonList("LIME_SHULKER_BOX"));
             }
         }
         return Material.STONE;

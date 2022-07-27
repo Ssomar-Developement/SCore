@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredManaEditor extends FeatureEditorInterface<RequiredMana> {
 
-    public RequiredMana requiredMana;
+    public final RequiredMana requiredMana;
 
     public RequiredManaEditor(RequiredMana requiredMana) {
         super("&lRequired Mana Editor", 3 * 9);

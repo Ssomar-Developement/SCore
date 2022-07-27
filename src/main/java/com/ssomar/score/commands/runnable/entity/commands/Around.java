@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -12,33 +13,21 @@ import java.util.Optional;
 
 import static com.ssomar.score.commands.runnable.player.commands.Around.aroundExecution;
 
-/* AROUND {distance} {true or false} {Your commands here} */
 public class Around extends EntityCommand {
 
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        aroundExecution(receiver, args, aInfo);
+        aroundExecution(receiver, args, aInfo, false);
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
-        String around = "AROUND {distance} {Your commands here}";
-        if (args.size() < 2) error = notEnoughArgs + around;
-        else if (args.size() > 2) {
-            try {
-                Double.valueOf(args.get(0));
+        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
-                if (Boolean.valueOf(args.get(1)) == null)
-                    error = invalidBoolean + args.get(1) + " for command: " + around;
-
-            } catch (NumberFormatException e) {
-                error = invalidDistance + args.get(0) + " for command: " + around;
-            }
-        }
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+       return Optional.empty();
     }
 
     @Override

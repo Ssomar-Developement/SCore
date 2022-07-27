@@ -24,9 +24,7 @@ public class ExecutableItemsAPI {
     @Deprecated
     public static ItemStack getExecutableItem(String id) {
         Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-        if (eiOpt.isPresent()) {
-            return eiOpt.get().buildItem(1, Optional.empty(), Optional.empty());
-        } else return null;
+        return eiOpt.map(executableItemInterface -> executableItemInterface.buildItem(1, Optional.empty(), Optional.empty())).orElse(null);
     }
 
     /**
@@ -52,41 +50,31 @@ public class ExecutableItemsAPI {
     @Deprecated
     public static ItemStack getExecutableItem(String id, int amount) {
         Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-        if (eiOpt.isPresent()) {
-            return eiOpt.get().buildItem(amount, Optional.empty(), Optional.empty());
-        } else return null;
+        return eiOpt.map(executableItemInterface -> executableItemInterface.buildItem(amount, Optional.empty(), Optional.empty())).orElse(null);
     }
 
     @Deprecated
     public static ItemStack getExecutableItem(String id, int amount, Player creator) {
         Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-        if (eiOpt.isPresent()) {
-            return eiOpt.get().buildItem(amount, Optional.empty(), Optional.ofNullable(creator));
-        } else return null;
+        return eiOpt.map(executableItemInterface -> executableItemInterface.buildItem(amount, Optional.empty(), Optional.ofNullable(creator))).orElse(null);
     }
 
     @Deprecated
     public static ItemStack getExecutableItemWithUsage(String id, int usage) {
         Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-        if (eiOpt.isPresent()) {
-            return eiOpt.get().buildItem(1, Optional.ofNullable(usage), Optional.empty());
-        } else return null;
+        return eiOpt.map(executableItemInterface -> executableItemInterface.buildItem(1, Optional.ofNullable(usage), Optional.empty())).orElse(null);
     }
 
     @Deprecated
     public static ItemStack getExecutableItemWithUsage(String id, int amount, int usage) {
         Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-        if (eiOpt.isPresent()) {
-            return eiOpt.get().buildItem(amount, Optional.ofNullable(usage), Optional.empty());
-        } else return null;
+        return eiOpt.map(executableItemInterface -> executableItemInterface.buildItem(amount, Optional.ofNullable(usage), Optional.empty())).orElse(null);
     }
 
     @Deprecated
     public static ItemStack getExecutableItemWithUsage(String id, int amount, int usage, Player creator) {
         Optional<ExecutableItemInterface> eiOpt = com.ssomar.score.api.executableitems.ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-        if (eiOpt.isPresent()) {
-            return eiOpt.get().buildItem(amount, Optional.ofNullable(usage), Optional.ofNullable(creator));
-        } else return null;
+        return eiOpt.map(executableItemInterface -> executableItemInterface.buildItem(amount, Optional.ofNullable(usage), Optional.ofNullable(creator))).orElse(null);
     }
 
     @Deprecated
@@ -99,7 +87,7 @@ public class ExecutableItemsAPI {
     public static boolean isExecutableItem(ItemStack itemStack, String id) {
         ExecutableItemObject ei = new ExecutableItemObject(itemStack);
         if (ei.isValid()) {
-           return ei.getConfig().getId().equals(id);
+            return ei.getConfig().getId().equals(id);
         } else return false;
     }
 

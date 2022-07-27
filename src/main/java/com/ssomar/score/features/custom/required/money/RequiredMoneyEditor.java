@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredMoneyEditor extends FeatureEditorInterface<RequiredMoney> {
 
-    public RequiredMoney requiredLevel;
+    public final RequiredMoney requiredLevel;
 
     public RequiredMoneyEditor(RequiredMoney requiredLevel) {
         super("&lRequired Level Editor", 3 * 9);

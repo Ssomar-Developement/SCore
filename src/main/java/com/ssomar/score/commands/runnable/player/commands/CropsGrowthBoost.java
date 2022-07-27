@@ -85,15 +85,13 @@ public class CropsGrowthBoost extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() < 4) return Optional.of(notEnoughArgs + getTemplate());
         for (String arg : args) {
             ArgumentChecker ac = checkInteger(arg, isFinalVerification, getTemplate());
             if (!ac.isValid()) return Optional.of(ac.getError());
         }
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

@@ -12,7 +12,7 @@ public class UsagePerDayManager {
 
     private static UsagePerDayManager instance;
     /* date, player, id -> use */
-    private Map<String, Map<String, Map<String, Integer>>> usagePerDayMap;
+    private final Map<String, Map<String, Map<String, Integer>>> usagePerDayMap;
 
     public UsagePerDayManager() {
         usagePerDayMap = UsePerDayQuery.loadUsePerDay(Database.getInstance().connect());

@@ -87,11 +87,11 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         if (!isPremium() && requirePremium()) {
-            finalDescription[finalDescription.length - 2] = gui.PREMIUM;
-        } else finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
+        } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -111,8 +111,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
 
     @Override
     public void reset() {
-        if (defaultValue.isPresent()) this.value = Optional.of(defaultValue.get());
-        else this.value = Optional.empty();
+        this.value = defaultValue;
     }
 
     @Override

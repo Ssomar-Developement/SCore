@@ -31,7 +31,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     private NewSActivator builderInstance;
     private int premiumLimit = 1;
 
-    public ActivatorsFeature(FeatureParentInterface parent, NewSActivator builderInstance) {
+    public ActivatorsFeature(FeatureParentInterface parent, NewSActivator<?, ?, ?> builderInstance) {
         super(parent, "activators", "Activators", new String[]{"&7&oThe activators / triggers"}, Material.BEACON, false);
         this.builderInstance = builderInstance;
         reset();
@@ -52,7 +52,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                     error.add("&cERROR, Couldn't load the Activator of " + activatorID + " from config, &7&o" + getParent().getParentInfo() + " &6>> Because it requires the premium version to have more than 1 activator !");
                     return error;
                 }
-                NewSActivator activator = builderInstance.getBuilderInstance(this, activatorID);
+                NewSActivator<?, ?, ?>  activator = builderInstance.getBuilderInstance(this, activatorID);
                 List<String> subErrors = activator.load(plugin, activatorsSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
@@ -90,10 +90,10 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     public ActivatorsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oActivator(s) added: &e" + activators.size();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

@@ -44,7 +44,7 @@ public abstract class PlaceholdersInterface {
         }
 
         while (result.contains(placeholder + "-")) {
-            String suit = result.split(placeholder + "\\-")[1];
+            String suit = result.split(placeholder + "-")[1];
             StringBuilder sb = new StringBuilder();
             for (char c : suit.toCharArray()) {
                 if (c == ' ' || c == ',' || c == ')')
@@ -56,9 +56,9 @@ public abstract class PlaceholdersInterface {
                 String finalValue = String.valueOf(d);
                 if (isInteger) finalValue = String.valueOf((int) d);
                 if (convertToRoman) finalValue = RomanNumber.toRoman((int) d);
-                result = result.replaceAll(placeholder + "\\-" + sb, "" + finalValue);
+                result = result.replaceAll(placeholder + "-" + sb, "" + finalValue);
             } else {
-                result = result.replaceAll(placeholder + "\\-" + sb, value);
+                result = result.replaceAll(placeholder + "-" + sb, value);
             }
         }
         while (result.contains(placeholder)) {
@@ -66,7 +66,7 @@ public abstract class PlaceholdersInterface {
                 try {
                     int i = Integer.valueOf(value);
                     result = result.replaceAll(placeholder, RomanNumber.toRoman(i));
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             } else result = result.replaceAll(placeholder, value);
         }

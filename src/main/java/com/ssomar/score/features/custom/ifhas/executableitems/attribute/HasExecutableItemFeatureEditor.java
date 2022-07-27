@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class HasExecutableItemFeatureEditor extends FeatureEditorInterface<HasExecutableItemFeature> {
 
-    public HasExecutableItemFeature enchantFeature;
+    public final HasExecutableItemFeature enchantFeature;
 
     public HasExecutableItemFeatureEditor(HasExecutableItemFeature dropFeatures) {
         super("&lHas ExecutableItem feature Editor", 3 * 9);

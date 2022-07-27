@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class RequiredExecutableItemGroupFeatureEditor extends FeatureEditorInterface<RequiredExecutableItemGroupFeature> {
 
-    public RequiredExecutableItemGroupFeature attributesGroupFeature;
+    public final RequiredExecutableItemGroupFeature attributesGroupFeature;
 
     public RequiredExecutableItemGroupFeatureEditor(RequiredExecutableItemGroupFeature enchantsGroupFeature) {
         super("&lRequired ExecutableItems feature Editor", 3 * 9);

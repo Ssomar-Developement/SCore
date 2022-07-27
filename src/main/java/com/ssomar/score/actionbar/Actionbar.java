@@ -1,5 +1,10 @@
 package com.ssomar.score.actionbar;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Actionbar {
 
     private String name;
@@ -16,38 +21,5 @@ public class Actionbar {
         this.time = time;
         this.active = false;
         this.desactivation = false;
-    }
-
-
-    public boolean isDesactivation() {
-        return desactivation;
-    }
-
-    public void setDesactivation(boolean desactivation) {
-        this.desactivation = desactivation;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Integer getTime() {
-        return time;
-    }
-
-    public void setTime(Integer time) {
-        this.time = time;
     }
 }

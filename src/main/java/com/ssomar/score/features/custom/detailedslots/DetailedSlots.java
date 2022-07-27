@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -41,7 +41,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
         for (String s : config.getStringList(getName())) {
             try {
                 slots.add(Integer.valueOf(s));
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         if (slots.isEmpty()) {
@@ -64,7 +64,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
 
     @Override
     public void save(ConfigurationSection config) {
-        /** Empty list = all slots **/
+        /* Empty list = all slots */
         if (slots.size() == 42) config.set(getName(), new ArrayList<>());
         else config.set(getName(), slots);
     }
@@ -78,10 +78,10 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     public DetailedSlots initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7Slot(s) enabled: &e" + slots.size();
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -99,7 +99,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList());
+        return new ArrayList<>(Collections.emptyList());
     }
 
     @Override

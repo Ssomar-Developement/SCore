@@ -88,7 +88,7 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
             try {
                 Biome biome = Biome.valueOf(s);
                 getValue().add(biome);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 

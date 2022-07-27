@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,14 +17,7 @@ public class BackDash extends EntityCommand {
 
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
-        int amount;
-
-        try {
-            amount = Integer.parseInt(args.get(0));
-        } catch (NumberFormatException e) {
-            return;
-        }
-
+        int amount = Double.valueOf(args.get(0)).intValue();
         Location pLoc = entity.getLocation();
         pLoc.setPitch(0);
         Vector v = pLoc.getDirection();
@@ -34,20 +28,12 @@ public class BackDash extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+       if(args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        String frontdash = "BACKDASH {number}";
-        if (args.size() > 1) error = tooManyArgs + frontdash;
-        else if (args.size() < 1) error = notEnoughArgs + frontdash;
-        else if (args.size() == 1) {
-            try {
-                Integer.valueOf(args.get(0));
-            } catch (NumberFormatException e) {
-                error = invalidTime + args.get(0) + " for command: " + frontdash;
-            }
-        }
+        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
+        if(!ac.isValid()) return Optional.of(ac.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

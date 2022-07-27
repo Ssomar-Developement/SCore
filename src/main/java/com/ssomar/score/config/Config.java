@@ -9,14 +9,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public abstract class Config {
+    protected final String fileName;
     protected File pdfile;
-
     protected FileConfiguration config;
 
-    protected String fileName;
-
-    protected Config(String fileName) {
-        this.fileName = fileName;
+    protected Config() {
+        this.fileName = "config.yml";
     }
 
     public void setup(Plugin plugin) {

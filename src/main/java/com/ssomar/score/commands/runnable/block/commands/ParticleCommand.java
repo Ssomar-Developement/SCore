@@ -18,26 +18,23 @@ public class ParticleCommand extends BlockCommand {
 
     @Override
     public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-        //By default particles is spawn on the side on the block, this part center the spawn
         Location newLoc = block.getLocation().clone();
         newLoc.add(0.5, 0.5, 0.5);
 
         try {
             block.getWorld().spawnParticle(Particle.valueOf(args.get(0).toUpperCase()),
                     newLoc,
-                    Integer.parseInt(args.get(1)),
+                    Double.valueOf(args.get(1)).intValue(),
                     Double.parseDouble(args.get(2)),
                     Double.parseDouble(args.get(2)),
                     Double.parseDouble(args.get(2)),
                     Double.parseDouble(args.get(3)), null);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return com.ssomar.score.commands.runnable.player.commands.ParticleCommand.staticVerif(args, isFinalVerification, getTemplate());
     }
 
     @Override

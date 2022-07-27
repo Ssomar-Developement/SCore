@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class BannerSettingsFeatureEditor extends FeatureEditorInterface<BannerSettingsFeature> {
 
-    public BannerSettingsFeature dropFeatures;
+    public final BannerSettingsFeature dropFeatures;
 
     public BannerSettingsFeatureEditor(BannerSettingsFeature dropFeatures) {
         super("&lBanner Settings Editor", 3 * 9);

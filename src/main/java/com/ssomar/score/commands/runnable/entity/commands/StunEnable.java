@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class StunEnable extends EntityCommand {
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
         if (!(entity instanceof LivingEntity)) return;
@@ -28,9 +27,7 @@ public class StunEnable extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

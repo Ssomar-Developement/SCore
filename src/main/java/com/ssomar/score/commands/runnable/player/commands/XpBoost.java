@@ -15,7 +15,7 @@ public class XpBoost extends PlayerCommand {
 
     private static XpBoost instance;
     @Getter
-    private Map<UUID, List<Double>> activeBoosts;
+    private final Map<UUID, List<Double>> activeBoosts;
 
     public XpBoost() {
         activeBoosts = new HashMap<>();
@@ -33,7 +33,7 @@ public class XpBoost extends PlayerCommand {
 
         if (activeBoosts.containsKey(receiver.getUniqueId())) {
             activeBoosts.get(receiver.getUniqueId()).add(multiplier);
-        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Arrays.asList(multiplier)));
+        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(multiplier)));
 
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
@@ -46,14 +46,11 @@ public class XpBoost extends PlayerCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, time * 20);
+        runnable3.runTaskLater(SCore.plugin, time * 20L);
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-
         if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
@@ -62,7 +59,7 @@ public class XpBoost extends PlayerCommand {
         ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
         if (!ac2.isValid()) return Optional.of(ac2.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

@@ -94,7 +94,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     public DetailedBlocks initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         if (blocks.getValue().isEmpty())
             finalDescription[finalDescription.length - 3] = "&7Blocks: &e&lALL BLOCKS";
         else
@@ -118,7 +118,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         }
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

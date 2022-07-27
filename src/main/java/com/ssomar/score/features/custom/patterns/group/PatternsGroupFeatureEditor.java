@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class PatternsGroupFeatureEditor extends FeatureEditorInterface<PatternsGroupFeature> {
 
-    public PatternsGroupFeature attributesGroupFeature;
+    public final PatternsGroupFeature attributesGroupFeature;
 
     public PatternsGroupFeatureEditor(PatternsGroupFeature enchantsGroupFeature) {
         super("&lPatterns feature Editor", 3 * 9);

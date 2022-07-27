@@ -28,10 +28,10 @@ public class LoopManager {
     public static final int DELAY = 5;
     private static LoopManager instance;
     @Getter
-    private Map<NewSActivator, Integer> loopActivators;
+    private final Map<NewSActivator, Integer> loopActivators;
 
     @Getter
-    private List<NewSActivator> checkEntityOnofEB;
+    private final List<NewSActivator> checkEntityOnofEB;
 
     public LoopManager() {
         loopActivators = new HashMap<>();
@@ -100,7 +100,7 @@ public class LoopManager {
                                     com.ssomar.executableitems.events.EventsManager.getInstance().activeOption(Option.LOOP, eInfo, listEI);
                                 }
                             }
-                        } catch (Exception | Error e) {
+                        } catch (Exception | Error ignored) {
                         }
 
                     }
@@ -109,7 +109,7 @@ public class LoopManager {
                         //SsomarDev.testMsg("Checking EB on entity >> " + checkEntityOnofEB.size());
                         List<ActivatorEBFeature> listEB = new ArrayList<>();
                         for (NewSActivator sActivator : checkEntityOnofEB) {
-                           if (sActivator instanceof ActivatorEBFeature) {
+                            if (sActivator instanceof ActivatorEBFeature) {
                                 listEB.add((ActivatorEBFeature) sActivator);
                             }
                         }

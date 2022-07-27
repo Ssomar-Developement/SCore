@@ -6,7 +6,7 @@ import com.ssomar.score.menu.GUI;
 
 public class PotionEffectFeatureEditor extends FeatureEditorInterface<PotionEffectFeature> {
 
-    public PotionEffectFeature enchantFeature;
+    public final PotionEffectFeature enchantFeature;
 
     public PotionEffectFeatureEditor(PotionEffectFeature dropFeatures) {
         super("&lPotion Effect feature Editor", 3 * 9);

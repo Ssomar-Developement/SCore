@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUI;
 
 public class AttributeFullOptionsFeatureEditor extends FeatureEditorInterface<AttributeFullOptionsFeature> {
 
-    public AttributeFullOptionsFeature enchantFeature;
+    public final AttributeFullOptionsFeature enchantFeature;
 
     public AttributeFullOptionsFeatureEditor(AttributeFullOptionsFeature dropFeatures) {
         super("&lAttribute feature Editor", 3 * 9);

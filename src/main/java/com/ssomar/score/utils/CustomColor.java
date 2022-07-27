@@ -93,8 +93,8 @@ public class CustomColor {
     }
 
     public static Color[] values() {
-        Color[] values = {
-                Color.AQUA,
+        return new Color[]{
+                AQUA,
                 Color.BLACK,
                 Color.BLUE,
                 Color.FUCHSIA,
@@ -113,7 +113,6 @@ public class CustomColor {
                 Color.YELLOW,
                 Color.fromRGB(1, 2, 3)
         };
-        return values;
     }
 
     public static Color getNext(Color color) {

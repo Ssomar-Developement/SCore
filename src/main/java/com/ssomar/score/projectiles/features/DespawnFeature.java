@@ -44,7 +44,7 @@ public class DespawnFeature extends DecorateurCustomProjectiles {
                         e.remove();
                 }
             };
-            runnable.runTaskLater(SCore.plugin, despawnDelay * 20);
+            runnable.runTaskLater(SCore.plugin, despawnDelay * 20L);
         }
         cProj.transformTheProjectile(e, launcher);
     }

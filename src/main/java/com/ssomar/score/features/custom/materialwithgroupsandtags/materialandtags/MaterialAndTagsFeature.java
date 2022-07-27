@@ -93,9 +93,9 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
             if (command.length() > 40) command = command.substring(0, 39) + "...";
             finalDescription[finalDescription.length - 2] = "&7Tags: &e" + command;
         } else finalDescription[finalDescription.length - 2] = "&7Tags: &cNO TAGS DEFINED";
-        finalDescription[finalDescription.length - 1] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
-        gui.createItem(MaterialWithGroups.getMaterial(material.getValue().get()), 1, slot, gui.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
+        gui.createItem(MaterialWithGroups.getMaterial(material.getValue().get()), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
     }
 

@@ -67,7 +67,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new TESTEVENT_TODELETE(), main);
 
-        /** Recode event **/
+        /* Recode event */
         main.getServer().getPluginManager().registerEvents(new NewEditorInteractionsListener(), main);
 
     }

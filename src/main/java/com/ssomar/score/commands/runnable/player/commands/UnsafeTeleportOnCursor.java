@@ -60,14 +60,12 @@ public class UnsafeTeleportOnCursor extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() >= 1) {
             ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

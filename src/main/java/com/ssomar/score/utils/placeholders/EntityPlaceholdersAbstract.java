@@ -19,7 +19,7 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
      */
     private static final long serialVersionUID = 1L;
 
-    private String particle;
+    private final String particle;
 
     /* placeholders of the target entity */
     private UUID entityUUID;
@@ -34,7 +34,6 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     private float pitchPositive;
     private float yaw;
     private float yawPositive;
-    private String direction;
 
     private String entityDirection;
     private double entityHealth;
@@ -155,7 +154,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_int%", ((int) yaw) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive%", yawPositive + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_int%", ((int) yawPositive) + "", false);
-            toReplace = toReplace.replaceAll("%" + particle + "_direction%", direction);
+
+            toReplace = toReplace.replaceAll("%" + particle + "_direction%", entityDirection);
 
             if (entityMaxHealth != -1)
                 toReplace = replaceCalculPlaceholder(toReplace, "%entity_max_health%", entityMaxHealth + "", false);

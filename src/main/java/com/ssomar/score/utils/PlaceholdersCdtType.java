@@ -54,8 +54,6 @@ public enum PlaceholdersCdtType {
         switch (this) {
             case PLAYER_NUMBER:
                 return PLAYER_TARGET;
-            case PLAYER_STRING:
-                return PLAYER_NUMBER;
             case PLAYER_PLAYER:
                 return PLAYER_STRING;
             case TARGET_NUMBER:
@@ -86,8 +84,6 @@ public enum PlaceholdersCdtType {
                 return TARGET_TARGET;
             case TARGET_TARGET:
                 return PLAYER_TARGET;
-            case PLAYER_TARGET:
-                return PLAYER_NUMBER;
             default:
                 return PLAYER_NUMBER;
         }

@@ -50,7 +50,7 @@ public class PlayerCommandManager implements CommandManager {
         if (!SCore.is1v12Less()) {
             commands.add(new LocatedLaunch());
             commands.add(new CropsGrowthBoost());
-            /** No damageable class before 1.12 **/
+            /* No damageable class before 1.12 */
             commands.add(new ModifyDurability());
         }
         commands.add(new MixHotbar());
@@ -131,9 +131,7 @@ public class PlayerCommandManager implements CommandManager {
                 List<String> args = this.getArgs(command);
 
                 Optional<String> error = this.verifArgs(bc, args);
-                if (error.isPresent()) {
-                    errorList.add(StringConverter.decoloredString(sPlugin.getNameDesign() + " " + error.get() + " for item: " + id));
-                }
+                error.ifPresent(value -> errorList.add(StringConverter.decoloredString(sPlugin.getNameDesign() + " " + value + " for item: " + id)));
             }
             result.add(command);
         }

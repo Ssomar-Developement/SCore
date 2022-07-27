@@ -55,8 +55,6 @@ public class SpawnEntityOnCursor extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkEntity(args.get(0), isFinalVerification, getTemplate());
@@ -72,7 +70,7 @@ public class SpawnEntityOnCursor extends PlayerCommand {
             if (!ac3.isValid()) return Optional.of(ac3.getError());
         }
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

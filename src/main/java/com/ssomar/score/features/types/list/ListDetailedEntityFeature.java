@@ -116,7 +116,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
             if (conditions.containsKey(type)) {
                 conditions.get(type).add(tags);
             } else {
-                conditions.put(type, new ArrayList<>(Arrays.asList(tags)));
+                conditions.put(type, new ArrayList<>(Collections.singletonList(tags)));
             }
         }
         return conditions;
@@ -173,6 +173,10 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                                     }
                                     break;
                                 case NBTTagShort:
+                                case NBTTagByteArray:
+                                case NBTTagIntArray:
+                                case NBTTagList:
+                                case NBTTagCompound:
                                     break;
                                 case NBTTagInt:
                                     Optional<Integer> optInt = NTools.getInteger(value);
@@ -202,10 +206,6 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                                         if (nbtent.getDouble(key) != optDouble.get()) invalid = true;
                                     }
                                     break;
-                                case NBTTagByteArray:
-                                    break;
-                                case NBTTagIntArray:
-                                    break;
                                 case NBTTagString:
                                     if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false")) {
                                         SsomarDev.testMsg("Boolean: " + nbtent.getBoolean(key), DEBUG);
@@ -221,10 +221,6 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                                             if (!nbtent.getString(key).contains("\"" + value + "\"")) invalid = true;
                                         }
                                     }
-                                    break;
-                                case NBTTagList:
-                                    break;
-                                case NBTTagCompound:
                                     break;
                             }
                             if (invalid) break;
@@ -259,10 +255,10 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
     public ListDetailedEntityFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

@@ -18,7 +18,7 @@ public class DamageBoost extends PlayerCommand {
     private static final Boolean DEBUG = false;
     private static DamageBoost instance;
     @Getter
-    private Map<UUID, List<Double>> activeBoosts;
+    private final Map<UUID, List<Double>> activeBoosts;
 
 
     public DamageBoost() {
@@ -38,7 +38,7 @@ public class DamageBoost extends PlayerCommand {
         //SsomarDev.testMsg("ADD receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
         if (activeBoosts.containsKey(receiver.getUniqueId())) {
             activeBoosts.get(receiver.getUniqueId()).add(boost);
-        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Arrays.asList(boost)));
+        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(boost)));
 
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
@@ -73,8 +73,6 @@ public class DamageBoost extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
         if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
@@ -83,7 +81,7 @@ public class DamageBoost extends PlayerCommand {
         ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
         if (!ac2.isValid()) return Optional.of(ac2.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

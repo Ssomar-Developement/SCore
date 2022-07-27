@@ -19,8 +19,8 @@ import java.util.List;
 
 public class PickupFeature extends DecorateurCustomProjectiles {
 
+    final boolean isDisable;
     AbstractArrow.PickupStatus pickupStatus;
-    boolean isDisable;
 
     public PickupFeature(CustomProjectile cProj) {
         super.cProj = cProj;

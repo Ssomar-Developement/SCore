@@ -55,7 +55,7 @@ public class ObjectFeature extends FeatureAbstract<Object, ObjectFeature> implem
         finalDescription[finalDescription.length - 1] = "&cFEATURE NOT EDITABLE";
 
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

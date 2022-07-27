@@ -76,7 +76,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     public DropFeatures initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 4] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         if (SCore.is1v12Less())
             finalDescription[finalDescription.length - 3] = "&7Glow drop: &c&lNot for 1.11 or lower";
         else if (glowDrop.getValue())
@@ -96,7 +96,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
         else
             finalDescription[finalDescription.length - 1] = "&7Display custom name: &c&l✘";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

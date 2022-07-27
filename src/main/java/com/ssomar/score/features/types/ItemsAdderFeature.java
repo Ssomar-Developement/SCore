@@ -56,7 +56,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
 
     @Override
     public void save(ConfigurationSection config) {
-        if (value.isPresent()) config.set(this.getName(), value.get());
+        value.ifPresent(s -> config.set(this.getName(), s));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
     public ItemsAdderFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 2] = "&8>> &6SHIFT : &eBOOST SCROLL";
         finalDescription[finalDescription.length - 1] = "&8>> &6UP: &eRIGHT | &6DOWN: &eLEFT";
 
@@ -121,7 +121,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
             item = getItemStack().get();
         }
 
-        gui.createItem(item, 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(item, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 

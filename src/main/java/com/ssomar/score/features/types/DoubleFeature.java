@@ -57,9 +57,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
                 if (checkPremium.isHasError()) value = Optional.ofNullable(checkPremium.getNewValue());
             } else {
                 errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
-                if (defaultValue.isPresent()) {
-                    this.value = defaultValue;
-                } else this.value = Optional.empty();
+                this.value = defaultValue;
             }
         }
         return errors;
@@ -87,38 +85,28 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
             if (valuePotential.isPresent()) {
                 return valuePotential;
             } else {
-                if (defaultValue.isPresent()) {
-                    return defaultValue;
-                } else return Optional.empty();
+                return defaultValue;
             }
         } else if (value.isPresent()) {
             return value;
-        } else if (defaultValue.isPresent()) {
-            return defaultValue;
-        } else {
-            return Optional.empty();
-        }
+        } else return defaultValue;
     }
 
     @Override
     public Optional<Double> getValue() {
         if (value.isPresent()) {
             return value;
-        } else if (defaultValue.isPresent()) {
-            return defaultValue;
-        } else {
-            return Optional.empty();
-        }
+        } else return defaultValue;
     }
 
     @Override
     public DoubleFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = gui.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
-        gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
 
@@ -139,8 +127,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public void reset() {
-        if (defaultValue.isPresent()) this.value = Optional.of(defaultValue.get());
-        else this.value = Optional.empty();
+        this.value = defaultValue;
         this.placeholder = Optional.empty();
     }
 
