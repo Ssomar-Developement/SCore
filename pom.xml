@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>pre2.1.1</version>
+    <version>2.1.1</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -93,11 +93,11 @@
                         <!-- <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>-->
+                        </configuration> -->
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                    <execution>
+                    <!-- <execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -145,7 +145,7 @@
                                 C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
-                    </execution>
+                    </execution> -->
                     <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                 </executions>
             </plugin>

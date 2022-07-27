@@ -48,12 +48,9 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     @Override
     public void save(ConfigurationSection config) {
         SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
-        if (notSaveIfEqualsToDefaultValue) {
-            //SsomarDev.testMsg("save deVal s: "+defaultValue.size()+" val s: "+value.size()+ " >> "+(defaultValue.containsAll(value)));
-            if (defaultValue.containsAll(value)) {
+        if (notSaveIfEqualsToDefaultValue && defaultValue.containsAll(value)) {
                 config.set(this.getName(), null);
                 return;
-            }
         }
         config.set(this.getName(), getCurrentValues());
     }

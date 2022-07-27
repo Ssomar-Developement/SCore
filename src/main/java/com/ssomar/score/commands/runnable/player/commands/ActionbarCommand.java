@@ -3,7 +3,6 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,10 +29,10 @@ public class ActionbarCommand extends PlayerCommand {
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
 
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
+        /* if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkInteger(args.get(args.size() - 1), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+        if (!ac.isValid()) return Optional.of(ac.getError());*/
 
         return Optional.empty();
     }
