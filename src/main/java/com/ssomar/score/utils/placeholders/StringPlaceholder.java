@@ -257,19 +257,6 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return replace;
     }
 
-    //	public static void main(String[] args) {
-    //		 StringPlaceholder sp = new StringPlaceholder();
-    //		 sp.blockXInt = "10";
-    //		 sp.blockYInt = "11";
-    //		 sp.blockZInt = "12";
-    //
-    //		 String base = "SENDMESSAGE oops %block_x_int%,%block_y_int%+1,%block_z_int% youhouu";
-    //
-    //		 base = sp.replacePlaceholder(base);
-    //
-    //		 System.out.println(base);
-    //	}
-
     public boolean hasActivator() {
         return activator.length() != 0;
     }

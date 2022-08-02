@@ -1,4 +1,4 @@
-package com.ssomar.score.commands;
+package com.ssomar.score.commands.clear;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
@@ -16,8 +16,9 @@ public class ClearCommand {
     public static void clearCmd(SPlugin sPlugin, CommandSender sender, String[] args) {
         UUID pUUID = null;
 
+        /* Target of the clear */
         if (sender instanceof Player) {
-            if (args.length > 1) {
+            if (args.length >= 1) {
                 if (Bukkit.getPlayer(args[0]) == null) {
                     sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cInvalid playername."));
                     return;
@@ -33,10 +34,33 @@ public class ClearCommand {
                 return;
             } else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
         }
-        CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
-        CooldownsManager.getInstance().removeCooldownsOf(pUUID);
+
+        ClearType clearType = ClearType.ALL;
+        if(args.length >= 2){
+            try{
+                clearType = ClearType.valueOf(args[1]);
+            }catch (Exception e){}
+        }
+
         Player player = Bukkit.getPlayer(pUUID);
-        ActionbarHandler.getInstance().removeActionbars(player);
+
+        switch (clearType){
+
+            case ALL:
+                CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
+                CooldownsManager.getInstance().removeCooldownsOf(pUUID);
+                ActionbarHandler.getInstance().removeActionbars(player);
+                break;
+            case DELAYED_COMMANDS:
+                CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
+                break;
+            case COOLDOWNS:
+                CooldownsManager.getInstance().removeCooldownsOf(pUUID);
+                break;
+            case ACTIONBARS:
+                ActionbarHandler.getInstance().removeActionbars(player);
+                break;
+        }
         sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()));
 
     }

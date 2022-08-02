@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -14,6 +15,7 @@ public class MixHotbar extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+        SsomarDev.testMsg("MixHotbar.run()");
         PlayerInventory inv = receiver.getInventory();
         List<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
@@ -22,10 +24,13 @@ public class MixHotbar extends PlayerCommand {
         }
         List<Integer> indexes = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
         Collections.shuffle(indexes);
+        int j = 0;
         for (int i : indexes) {
             ItemStack item = items.get(i);
-            if (item != null) inv.setItem(i, item);
+            if (item != null) inv.setItem(j, item);
+            j++;
         }
+        receiver.updateInventory();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.hiders;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
@@ -20,6 +21,9 @@ public class HidersEditor extends FeatureEditorInterface<Hiders> {
         dropFeatures.getHideAttributes().initAndUpdateItemParentEditor(this, 2);
         dropFeatures.getHidePotionEffects().initAndUpdateItemParentEditor(this, 3);
         dropFeatures.getHideUsage().initAndUpdateItemParentEditor(this, 4);
+        if(SCore.is1v17Plus()) {
+            dropFeatures.getHideDye().initAndUpdateItemParentEditor(this, 5);
+        }
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

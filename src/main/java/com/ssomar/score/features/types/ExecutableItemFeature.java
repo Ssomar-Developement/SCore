@@ -219,6 +219,10 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
+        int maxSize = lore.size();
+        maxSize += getSortExecutableItems().size();
+        if (maxSize > 17) maxSize = 17;
+
         if (SCore.hasExecutableItems) {
             boolean find = false;
             for (String check : getSortExecutableItems()) {
@@ -226,12 +230,12 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
                     lore.add(StringConverter.coloredString("&2➤ &a" + id));
                     find = true;
                 } else if (find) {
-                    if (lore.size() == 17) break;
+                    if (lore.size() == maxSize) break;
                     lore.add(StringConverter.coloredString("&6✦ &e" + check));
                 }
             }
             for (String check : getSortExecutableItems()) {
-                if (lore.size() == 17) break;
+                if (lore.size() == maxSize) break;
                 else {
                     lore.add(StringConverter.coloredString("&6✦ &e" + check));
                 }

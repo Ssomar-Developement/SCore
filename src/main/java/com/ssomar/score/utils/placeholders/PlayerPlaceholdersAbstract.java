@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.events.PlaceholderLastDamageDealtEvent;
 import com.ssomar.score.utils.NTools;
 import lombok.Getter;
@@ -35,6 +36,8 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     private float yaw;
     private float yawPositive;
     private String direction;
+
+    private float attackCharge;
 
     private String team;
 
@@ -110,6 +113,11 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                     break;
                 }
             }
+            if(SCore.is1v16Plus()) {
+                attackCharge = player.getAttackCooldown();
+            } else {
+                attackCharge = 0;
+            }
         }
     }
 
@@ -172,6 +180,8 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = toReplace.replaceAll("%" + particle + "_direction%", direction);
 
             toReplace = toReplace.replaceAll("%" + particle + "_team%", team);
+
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_attack_charge%", attackCharge + "", false);
         }
 
         return toReplace;

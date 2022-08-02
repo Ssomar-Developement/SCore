@@ -45,7 +45,11 @@ public class EventInfo {
 
     private Optional<EntityDamageEvent.DamageCause> damageCause;
 
+    /* Projectile velocity */
     private Optional<Vector> velocity;
+
+    /* Bow shoot force */
+    private Optional<Float> bowForce;
 
     private boolean isEventCallByMineinCube;
 
@@ -75,6 +79,7 @@ public class EventInfo {
         this.detailedInteraction = Optional.empty();
         this.damageCause = Optional.empty();
         this.velocity = Optional.empty();
+        this.bowForce = Optional.empty();
         this.command = Optional.empty();
         this.slot = Optional.empty();
     }
@@ -94,6 +99,7 @@ public class EventInfo {
         eInfo.setDetailedInteraction(detailedInteraction);
         eInfo.setDamageCause(damageCause);
         eInfo.setVelocity(velocity);
+        eInfo.setBowForce(bowForce);
         eInfo.setEventCallByMineinCube(isEventCallByMineinCube);
         eInfo.setCommand(command);
         eInfo.setMainHand(mainHand);

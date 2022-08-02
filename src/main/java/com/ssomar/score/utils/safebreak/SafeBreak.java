@@ -35,9 +35,13 @@ public class SafeBreak {
         }
         SsomarDev.testMsg("DEBUG SAFE BREAK 1.5", DEBUG);
 
-        if (verifSafeBreak && !verifSafeBreak(playerUUID, block)) return;
-
         Player player = Bukkit.getServer().getPlayer(playerUUID);
+
+        if(!(player != null && player.isOp()) || player == null){
+            if (verifSafeBreak && !verifSafeBreak(playerUUID, block)) return;
+        }
+
+
         SsomarDev.testMsg("DEBUG SAFE BREAK 2", DEBUG);
         if (player != null) {
             SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
@@ -85,8 +89,8 @@ public class SafeBreak {
                 BukkitRunnable runnable3 = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        block.getRelative(BlockFace.UP).setType(Material.AIR);
                         block.setType(Material.AIR);
+                        block.getRelative(BlockFace.UP).setType(Material.AIR);
                     }
                 };
                 runnable3.runTaskLater(SCore.plugin, 1);

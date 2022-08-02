@@ -2,6 +2,9 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.sevents.events.player.equip.armor.ArmorType;
+import com.ssomar.sevents.events.player.equip.armor.PlayerEquipArmorEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -28,8 +31,13 @@ public class Head extends PlayerCommand {
                 Map<Enchantment, Integer> enchants = headItem.getEnchantments();
                 if (enchants.containsKey(Enchantment.BINDING_CURSE)) return;
             }
-            inv.setHelmet(item);
-            inv.setItemInMainHand(headItem);
+            PlayerEquipArmorEvent bbE = new PlayerEquipArmorEvent(receiver, PlayerEquipArmorEvent.EquipMethod.HOTBAR, ArmorType.HELMET, headItem, item);
+            Bukkit.getPluginManager().callEvent(bbE);
+
+            if(!bbE.isCancelled()) {
+                inv.setHelmet(item);
+                inv.setItemInMainHand(headItem);
+            }
         }
 
     }

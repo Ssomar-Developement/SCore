@@ -49,6 +49,7 @@ public class EntityCommandManager implements CommandManager {
         commands.add(new PlayerRideOnEntity());
         if (!SCore.is1v11Less()) {
             commands.add(new ParticleCommand());
+            commands.add(new GlacialFreeze());
         }
     }
 
