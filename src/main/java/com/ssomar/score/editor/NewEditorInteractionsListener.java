@@ -116,6 +116,7 @@ import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManager;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -124,6 +125,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -367,182 +369,204 @@ public class NewEditorInteractionsListener implements Listener {
 
     }
 
+    /*@EventHandler(priority = EventPriority.LOWEST)
+    public void onChatEvent(AsyncPlayerChatPreviewEvent e) {
+        SsomarDev.testMsg("ChatEventpreview > "+e.getMessage());
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChatEvent(PlayerChatEvent e) {
+        SsomarDev.testMsg("Chat sync > "+e.getMessage());
+    }
+
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChatEvent2(PlayerCommandPreprocessEvent e) {
+       if(e.getMessage().contains("/score interact ")) {
+           String message = e.getMessage().replace("/score interact ", "");
+           receiveMessage(e.getPlayer(), message, e);
+       }
+    }
+
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChatEvent(AsyncPlayerChatEvent e) {
+        receiveMessage(e.getPlayer(), e.getMessage(), e);
+    }
 
-        Player p = e.getPlayer();
+    public void receiveMessage(Player player, String message, Cancellable e){
+        Player p = player;
         if (NewSObjectsManagerEditor.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            NewSObjectsManagerEditor.getInstance().receiveMessage(p, e.getMessage());
+            NewSObjectsManagerEditor.getInstance().receiveMessage(p, message);
         } else if (NewDefaultObjectsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            NewDefaultObjectsEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            NewDefaultObjectsEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredLevelEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredLevelEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredLevelEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredMoneyEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredMoneyEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredMoneyEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredManaEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredManaEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredManaEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredItemFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredItemFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredItemGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredExecutableItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredExecutableItemFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredExecutableItemFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredExecutableItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredExecutableItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredExecutableItemGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredGroupEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RequiredGroupEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RequiredGroupEditorManager.getInstance().receiveMessage(p, message);
         } else if (DropFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            DropFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            DropFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (HidersEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            HidersEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            HidersEditorManager.getInstance().receiveMessage(p, message);
         } else if (GiveFirstJoinFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            GiveFirstJoinFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            GiveFirstJoinFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (EnchantmentWithLevelFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            EnchantmentWithLevelFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            EnchantmentWithLevelFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (EnchantmentsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            EnchantmentsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            EnchantmentsGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (AttributeFullOptionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            AttributeFullOptionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            AttributeFullOptionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (AttributesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            AttributesGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            AttributesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (RestrictionsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            RestrictionsEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            RestrictionsEditorManager.getInstance().receiveMessage(p, message);
         } else if (CancelEventFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            CancelEventFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            CancelEventFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (ActivatorsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            ActivatorsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            ActivatorsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (NewCooldownFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            NewCooldownFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            NewCooldownFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (LoopFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            LoopFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            LoopFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (ConditionFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            ConditionFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            ConditionFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (BlockConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            BlockConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            BlockConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (EntityConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            EntityConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            EntityConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (WorldConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            WorldConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            WorldConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (ItemConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            ItemConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            ItemConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PlayerConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PlayerConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PlayerConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (CustomEIConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            CustomEIConditionsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            CustomEIConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PlaceholderConditionFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PlaceholderConditionFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PlaceholderConditionFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PlaceholderConditionGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PlaceholderConditionGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PlaceholderConditionGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (MaterialAndTagsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            MaterialAndTagsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            MaterialAndTagsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (MaterialAndTagsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            MaterialAndTagsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            MaterialAndTagsGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (EntityTypeGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            EntityTypeGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            EntityTypeGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (EntityTypeForGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            EntityTypeForGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            EntityTypeForGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (DetailedSlotsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            DetailedSlotsEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            DetailedSlotsEditorManager.getInstance().receiveMessage(p, message);
         } else if (UsePerDayFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            UsePerDayFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            UsePerDayFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (DetailedBlocksEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            DetailedBlocksEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            DetailedBlocksEditorManager.getInstance().receiveMessage(p, message);
         } else if (HeadFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            HeadFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            HeadFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (PotionEffectFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PotionEffectFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PotionEffectFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PotionEffectGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PotionEffectGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PotionEffectGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PotionSettingsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PotionSettingsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PotionSettingsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (SubPatternFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            SubPatternFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            SubPatternFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PatternFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PatternFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PatternFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PatternsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            PatternsGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            PatternsGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (BannerSettingsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            BannerSettingsFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            BannerSettingsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (VariableFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            VariableFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            VariableFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (VariablesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            VariablesGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            VariablesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (VariableUpdateFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            VariableUpdateFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            VariableUpdateFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (VariableUpdateGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            VariableUpdateGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            VariableUpdateGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (HasExecutableItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            HasExecutableItemFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            HasExecutableItemFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (HasExecutableItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            HasExecutableItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            HasExecutableItemGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (HasItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            HasItemFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            HasItemFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (HasItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            HasItemGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            HasItemGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (BlockTitleFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            BlockTitleFeaturesEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            BlockTitleFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (AroundBlockFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            AroundBlockFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            AroundBlockFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (AroundBlockGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            AroundBlockGroupFeatureEditorManager.getInstance().receiveMessage(p, e.getMessage());
+            AroundBlockGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

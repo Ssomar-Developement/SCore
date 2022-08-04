@@ -463,11 +463,11 @@ public abstract class NewGUIManager<T extends GUI> {
         String nextStr = changementPage.split("\\|")[1];
 
         TextComponent previousText = new TextComponent(previousStr);
-        previousText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "PREVIOUS PAGE"));
+        previousText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/score interact PREVIOUS PAGE"));
         previousText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&5&l<<<<< &d&lPrevious page")).create()));
 
         TextComponent nextText = new TextComponent(nextStr);
-        nextText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "NEXT PAGE"));
+        nextText.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/score interact NEXT PAGE"));
         nextText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&d&lNext page &5&l>>>>>")).create()));
 
         previousText.addExtra(nextText);

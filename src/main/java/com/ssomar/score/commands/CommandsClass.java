@@ -59,6 +59,8 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 case "projectiles-delete":
                     this.runCommand(sender, "projectiles-delete", args);
                     break;
+                case "interact":
+                    break;
                 default:
                     sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop | projectiles | projectiles-create | projectiles-delete ]"));
                     break;

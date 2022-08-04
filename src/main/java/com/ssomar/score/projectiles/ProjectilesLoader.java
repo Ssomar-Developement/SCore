@@ -162,6 +162,18 @@ public class ProjectilesLoader {
 
         defaultProjectiles.add("proj_tornado_blade");
 
+        defaultProjectiles.add("ONEPIECE_001_1_FIRE_FIST");
+        defaultProjectiles.add("ONEPIECE_001_2_FIRE_GUN");
+        defaultProjectiles.add("ONEPIECE_001_3_FIREFLY");
+        defaultProjectiles.add("ONEPIECE_002_1_FREEZE_BEAM");
+        defaultProjectiles.add("ONEPIECE_002_2_FREEZE_BOMB");
+        defaultProjectiles.add("ONEPIECE_003_1_TELEPORT");
+        defaultProjectiles.add("ONEPIECE_003_2_LIGHTNING_STRIKE");
+        defaultProjectiles.add("ONEPIECE_004_1_BLACK_HOLE");
+        defaultProjectiles.add("ONEPIECE_005_1_FLIGHT");
+        defaultProjectiles.add("ONEPIECE_005_2_FLAME_WALL");
+        defaultProjectiles.add("ONEPIECE_005_3_FIREBALL");
+
         return defaultProjectiles;
     }
 

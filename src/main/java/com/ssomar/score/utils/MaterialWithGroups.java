@@ -1,5 +1,6 @@
 package com.ssomar.score.utils;
 
+import com.ssomar.score.SCore;
 import org.bukkit.Material;
 
 import java.util.*;
@@ -217,7 +218,10 @@ public enum MaterialWithGroups {
             map.put(materialGroup.name(), materialGroup.name());
         }
         for (Material material : Material.values()) {
-            if (material.isAir()) {
+            if (
+                    (!SCore.is1v12Less() && material.isAir())
+                    || (SCore.is1v12Less() && material.equals(Material.AIR))
+            ) {
                 if (acceptAir) {
                     map.put(material.name(), material.name());
                 } else {

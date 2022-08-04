@@ -37,7 +37,7 @@ public class SafeBreak {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
-        if(!(player != null && player.isOp()) || player == null){
+        if(!(player != null && player.isOp())){
             if (verifSafeBreak && !verifSafeBreak(playerUUID, block)) return;
         }
 

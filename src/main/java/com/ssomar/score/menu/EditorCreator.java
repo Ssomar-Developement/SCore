@@ -31,6 +31,7 @@ public class EditorCreator {
      * Key is the command, value is the visual command so you can add extra things like colors
      **/
     private Map<String, String> suggestions = new HashMap<>();
+    private ClickEvent.Action clickAction;
 
 
     public EditorCreator(List<String> beforeMenu, List<String> objects, String objectTitle, boolean isLoreColor,
@@ -49,6 +50,7 @@ public class EditorCreator {
         this.haveSuggestions = haveSuggestions;
         this.suggestionTitle = suggestionTitle;
         this.suggestions = suggestions;
+        this.clickAction = ClickEvent.Action.RUN_COMMAND;
     }
 
     public static StringConverter getSc() {
@@ -101,7 +103,7 @@ public class EditorCreator {
 
                 if (displayDelete) {
                     TextComponent delete = new TextComponent(StringConverter.coloredString("&c&l[X]"));
-                    delete.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "delete line <" + cpt + ">"));
+                    delete.setClickEvent(new ClickEvent(clickAction, "/score interact delete line <" + cpt + ">"));
                     delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&cClick here to delete the line: " + cpt)).create()));
 
                     toSend.addExtra(new TextComponent(" "));
@@ -110,11 +112,11 @@ public class EditorCreator {
 
                 if (displayUpDown) {
                     TextComponent downLine = new TextComponent(StringConverter.coloredString("&a&l[v]"));
-                    downLine.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "down line <" + cpt + ">"));
+                    downLine.setClickEvent(new ClickEvent(clickAction, "/score interact down line <" + cpt + ">"));
                     downLine.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&cClick here to go down the line: " + cpt)).create()));
 
                     TextComponent upLine = new TextComponent(StringConverter.coloredString("&a&l[^]"));
-                    upLine.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "up line <" + cpt + ">"));
+                    upLine.setClickEvent(new ClickEvent(clickAction, "/score interact up line <" + cpt + ">"));
                     upLine.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&cClick here to go up the line: " + cpt)).create()));
 
                     toSend.addExtra(new TextComponent(" "));
@@ -135,7 +137,7 @@ public class EditorCreator {
             TextComponent toSend = new TextComponent(StringConverter.coloredString("&7➤Options: "));
             if (displayFinish) {
                 TextComponent finish = new TextComponent(StringConverter.coloredString("&4&l[FINISH]"));
-                finish.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "exit"));
+                finish.setClickEvent(new ClickEvent(clickAction, "/score interact exit"));
                 finish.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&4Click Here when you have finish to edit the " + objectTitle)).create()));
 
                 toSend.addExtra(new TextComponent(" "));
