@@ -3,3 +3,4 @@ invisible: true
 customNameVisible: false
 customName: '&cNO NAME'
 gravity: false
+pickupStatus: DISALLOWED

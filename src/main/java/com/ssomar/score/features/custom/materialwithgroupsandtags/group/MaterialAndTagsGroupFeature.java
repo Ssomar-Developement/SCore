@@ -146,7 +146,7 @@ public class MaterialAndTagsGroupFeature extends FeatureWithHisOwnEditor<Materia
     @Override
     public void reload() {
         for (FeatureInterface feature : getParent().getFeatures()) {
-            if (feature instanceof MaterialAndTagsGroupFeature) {
+            if (feature instanceof MaterialAndTagsGroupFeature && feature.getName().equals(getName())) {
                 MaterialAndTagsGroupFeature eF = (MaterialAndTagsGroupFeature) feature;
                 eF.setMaterialAndTags(this.getMaterialAndTags());
                 break;

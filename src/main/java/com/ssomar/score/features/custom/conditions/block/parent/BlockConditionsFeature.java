@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.block.parent;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -46,7 +47,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfPlantFullyGrown(this));
 
         /* Number condition features */
-        conditions.add(new IfBlockAge(this));
+        if(!SCore.is1v12Less()) conditions.add(new IfBlockAge(this));
         conditions.add(new IfBlockLocationX(this));
         conditions.add(new IfBlockLocationY(this));
         conditions.add(new IfBlockLocationZ(this));

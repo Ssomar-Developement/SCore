@@ -39,6 +39,10 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         reset();
     }
 
+    public static ColoredStringFeature buildNull(){
+        return new ColoredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();

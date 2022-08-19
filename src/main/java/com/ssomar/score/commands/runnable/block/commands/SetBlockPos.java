@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.RunConsoleCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -23,9 +24,9 @@ public class SetBlockPos extends BlockCommand {
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
         try {
-            int x = Integer.valueOf(args.get(0));
-            int y = Integer.valueOf(args.get(1));
-            int z = Integer.valueOf(args.get(2));
+            double x = Double.valueOf(args.get(0));
+            double y = Double.valueOf(args.get(1));
+            double z = Double.valueOf(args.get(2));
 
             String mat = args.get(3).toUpperCase();
 
@@ -36,7 +37,7 @@ public class SetBlockPos extends BlockCommand {
             if (p != null) uuid = p.getUniqueId();
 
             if (Material.matchMaterial(mat) != null) {
-                SafePlace.placeBlockWithEvent(block, Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
+                SafePlace.placeBlockWithEvent(block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z)), Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
             } else {
                 World w = block.getWorld();
                 List<Entity> entities = w.getEntities();

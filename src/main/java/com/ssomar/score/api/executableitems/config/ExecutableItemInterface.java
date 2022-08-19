@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ExecutableItemInterface {
@@ -29,6 +30,16 @@ public interface ExecutableItemInterface {
      */
     boolean hasItemPerm(@NotNull Player player, boolean showError);
 
+    /**
+     * Build the ExecutableItem
+     *
+     * @param amount  The amount of the ExecutableItem
+     * @param usage   The optional custom usage of the ExecutableItem, otherwise it will use the default one
+     * @param creator The optional creator of the ExecutableItem
+     * @param variables The initialization of the variables of the ExecutableItem
+     * @return The ExecutableItem
+     */
+    ItemStack buildItem(int amount, Optional<Integer> usage, Optional<Player> creator, Map<String, String> variables);
 
     /**
      * Build the ExecutableItem
@@ -39,6 +50,7 @@ public interface ExecutableItemInterface {
      * @return The ExecutableItem
      */
     ItemStack buildItem(int amount, Optional<Integer> usage, Optional<Player> creator);
+
 
     /**
      * Build the ExecutableItem

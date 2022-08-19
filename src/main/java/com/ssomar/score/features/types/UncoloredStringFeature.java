@@ -38,6 +38,10 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
         reset();
     }
 
+    public static UncoloredStringFeature buildNull(){
+        return new UncoloredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();

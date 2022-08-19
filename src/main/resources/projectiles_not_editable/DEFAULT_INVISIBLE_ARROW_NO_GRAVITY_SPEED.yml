@@ -4,3 +4,4 @@ customNameVisible: false
 customName: '&cNO NAME'
 gravity: false
 velocity: 10
+pickupStatus: DISALLOWED

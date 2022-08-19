@@ -153,6 +153,10 @@ public class SafeBreak {
 
     public static boolean verifSafeBreak(@NotNull final UUID playerUUID, @NotNull Block block) {
 
+        Player player = Bukkit.getServer().getPlayer(playerUUID);
+
+        if(player != null && player.isOp()) return true;
+
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
 
         if (SCore.hasGriefPrevention)

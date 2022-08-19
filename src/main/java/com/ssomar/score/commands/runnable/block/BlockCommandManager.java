@@ -75,7 +75,7 @@ public class BlockCommandManager implements CommandManager {
 
         for (String s : commands) {
 
-            String command = StringConverter.coloredString(s);
+            String command = s;
 
             /*
              * if (command.contains("\\{")) command= command.replaceAll("\\{", ""); if

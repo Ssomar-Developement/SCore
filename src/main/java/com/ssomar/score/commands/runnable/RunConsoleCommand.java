@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.FilterManager;
 import com.ssomar.score.usedapi.MultiverseAPI;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
@@ -27,7 +28,7 @@ public class RunConsoleCommand {
 
                 try {
                     String newCommand = addWorldCompatibilityForExecute(command);
-                    Bukkit.dispatchCommand(console, newCommand);
+                    Bukkit.dispatchCommand(console, StringConverter.coloredString(newCommand));
                 } catch (Exception e) {
                     e.printStackTrace();
                     SCore.plugin.getLogger().severe(SCore.NAME_2 + " ERROR WHEN THE CONSOLE COMMAND IS RUN !");

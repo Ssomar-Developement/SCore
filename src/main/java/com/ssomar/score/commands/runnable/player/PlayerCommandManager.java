@@ -124,7 +124,8 @@ public class PlayerCommandManager implements CommandManager {
 
         for (String s : commands) {
 
-            String command = StringConverter.coloredString(s);
+            //String command = StringConverter.coloredString(s); NO COLOR, it causes problem for BRUT_HEX
+            String command = s;
 
             if (this.isValidPlayerCommads(s) && !s.contains("+++")) {
                 PlayerCommand bc = (PlayerCommand) this.getCommand(command);

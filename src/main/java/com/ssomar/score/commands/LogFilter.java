@@ -49,7 +49,7 @@ public class LogFilter implements Filter, LifeCycle {
         if (FilterManager.getInstance().isSilenceOuput()) {
             boolean hide = false;
             for (String s : messageToHide) {
-                if (message.contains(s)) {
+                if (message != null && message.contains(s)) {
                     hide = true;
                     break;
                 }

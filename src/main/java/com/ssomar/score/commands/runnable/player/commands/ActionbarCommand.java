@@ -4,6 +4,7 @@ import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -23,7 +24,7 @@ public class ActionbarCommand extends PlayerCommand {
         }
 
         int time = Double.valueOf(args.get(args.size() - 1)).intValue();
-        ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(name.toString(), time));
+        ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(StringConverter.coloredString(name.toString()), time));
     }
 
     @Override

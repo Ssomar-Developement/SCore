@@ -1,8 +1,11 @@
 package com.ssomar.score.editor;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
+import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -14,10 +17,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public abstract class NewGUIManager<T extends GUI> {
@@ -81,7 +81,11 @@ public abstract class NewGUIManager<T extends GUI> {
             interact.cache = this.getCache();
             interact.setName(item.getItemMeta().getDisplayName());
             //SsomarDev.testMsg("LOCALISZED NAME: " + item.getItemMeta().getLocalizedName());
-            interact.localizedName = item.getItemMeta().getLocalizedName();
+            DynamicMeta meta = new DynamicMeta(item.getItemMeta());
+            Optional<String> folderInfoOpt = ItemKeyWriterReader.init().readString(SCore.plugin, item, meta, "folderInfo");
+            if(folderInfoOpt.isPresent()) {
+                interact.localizedName = folderInfoOpt.get();
+            }
             interact.gui = cache.get(interact.player);
 
             if (interact.coloredDeconvertName.equals(GUI.RESET)) {
@@ -237,7 +241,7 @@ public abstract class NewGUIManager<T extends GUI> {
         space(p);
         space(p);
         int line = Integer.valueOf(interact.decoloredMessage.split("down line <")[1].split(">")[0]);
-        if (line != 0) {
+        if (currentWriting.containsKey(p) && currentWriting.get(p).size()-1 > line) {
             String current = currentWriting.get(p).get(line);
             currentWriting.get(p).set(line, currentWriting.get(p).get(line + 1));
             currentWriting.get(p).set(line + 1, current);

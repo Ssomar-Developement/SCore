@@ -261,7 +261,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 if (str.contains("You must have &6ExecutableItems")) return Optional.empty();
-                str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
+                str = StringConverter.decoloredString(str);
                 return Optional.ofNullable(str.split("➤ ")[1]);
             }
         }

@@ -138,13 +138,17 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
     public boolean isValidEntity(@NotNull Entity entity) {
 
         /* Verif MythicMob */
-        if (SCore.hasMythicMobs && !extractMMCondition().isEmpty()) {
+        boolean hasMMOCondition = !extractMMCondition().isEmpty();
+        if (SCore.hasMythicMobs && hasMMOCondition) {
             if (MythicMobsAPI.isMythicMob(entity, extractMMCondition())) return true;
         }
 
         Map<EntityType, List<Map<String, String>>> conditions = extractCondition();
         /* empty = accept all */
-        if (conditions.isEmpty()) return true;
+        if (conditions.isEmpty()){
+            if(hasMMOCondition) return false;
+            return true;
+        }
 
         EntityType type = entity.getType();
         for (EntityType t : conditions.keySet()) {

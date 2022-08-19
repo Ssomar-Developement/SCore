@@ -2,3 +2,4 @@ type: ARROW
 invisible: true
 customNameVisible: false
 customName: '&cNO NAME'
+pickupStatus: DISALLOWED

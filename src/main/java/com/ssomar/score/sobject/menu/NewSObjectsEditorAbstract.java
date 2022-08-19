@@ -1,11 +1,14 @@
 package com.ssomar.score.sobject.menu;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.sobject.NewSObjectLoader;
 import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -36,7 +39,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     private NewSObjectLoader loader;
 
     public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader) {
-        super(title + PAGE + "1", 5 * 9);
+        super(title, 5 * 9);
         this.sPlugin = sPlugin;
         this.title = title;
         index = 1;
@@ -75,8 +78,9 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                     }
                     ItemStack itemStack = new ItemStack(material);
                     ItemMeta itemMeta = itemStack.getItemMeta();
-                    itemMeta.setLocalizedName(str);
-                    itemStack.setItemMeta(itemMeta);
+                    DynamicMeta dynamicMeta = new DynamicMeta(itemMeta);
+                    ItemKeyWriterReader.init().writeString(SCore.plugin, itemStack, dynamicMeta, "folderInfo", str);
+                    itemStack.setItemMeta(dynamicMeta.getMeta());
                     createItem(itemStack, 1, i, "&2&l✦ FOLDER: &a" + name, false, false, "", "&7(click to open)");
                 } else {
                     if (!fileName.contains(".yml"))
@@ -138,15 +142,18 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
     public void goNextPage() {
         index++;
+
         load();
     }
 
     public void goPreviousPage() {
         index--;
+        setTitle(title + PAGE + index);
         load();
     }
 
     public void goToFolder(String folder) {
+        index = 1;
         path = this.getPath() + "/" + StringConverter.decoloredString(folder).trim();
         load();
     }
@@ -194,7 +201,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         if (optional.isPresent()) {
             NewSObject sObject = optional.get();
             p.getInventory().addItem(sObject.buildItem(1, Optional.of(p)));
-            p.sendMessage(StringConverter.coloredString("&2&l[" + sPlugin.getNameDesign() + "] &aYou received &e" + objectID));
+            p.sendMessage(StringConverter.coloredString("&2&l" + sPlugin.getNameDesign() + " &aYou received &e" + objectID));
         }
     }
 

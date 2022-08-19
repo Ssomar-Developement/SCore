@@ -39,7 +39,9 @@ public class ClearCommand {
         if(args.length >= 2){
             try{
                 clearType = ClearType.valueOf(args[1]);
-            }catch (Exception e){}
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         Player player = Bukkit.getPlayer(pUUID);
@@ -50,18 +52,22 @@ public class ClearCommand {
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
                 ActionbarHandler.getInstance().removeActionbars(player);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(all)"));
                 break;
             case DELAYED_COMMANDS:
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(delayed commands)"));
                 break;
             case COOLDOWNS:
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(cooldowns)"));
                 break;
             case ACTIONBARS:
                 ActionbarHandler.getInstance().removeActionbars(player);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(actionbars)"));
                 break;
         }
-        sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()));
+
 
     }
 }
