@@ -90,14 +90,16 @@
                             <goal>shade</goal>
                         </goals>
                         <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                        <!-- <configuration>
+                        <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration> -->
+                        </configuration>
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                    <!--<execution>
+                    <!-- C:\Users\octav\Documents\GitHub\
+                    C:\Users\marce\Documents\GitHub\ -->
+                    <execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -105,8 +107,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar
-                            </outputFile>
+                            <outputFile>C:\Users\marce\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -117,11 +118,11 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
+                            <outputFile>C:\Users\marce\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!--<execution>
                         <id>build_dep_eg</id>
                         <phase>package</phase>
                         <goals>

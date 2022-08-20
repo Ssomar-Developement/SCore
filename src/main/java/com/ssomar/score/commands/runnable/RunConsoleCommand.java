@@ -2,7 +2,7 @@ package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.FilterManager;
-import com.ssomar.score.usedapi.MultiverseAPI;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public class RunConsoleCommand {
@@ -56,11 +57,9 @@ public class RunConsoleCommand {
             if (spliter.length > 1) {
                 String[] spliter2 = spliter[1].split(">>");
                 String worldName = spliter2[0];
-                World world;
-                if (SCore.hasMultiverse) world = MultiverseAPI.getWorld(worldName);
-                else {
-                    world = Bukkit.getServer().getWorld(worldName);
-                }
+                Optional<World> worldOptional = AllWorldManager.getWorld(worldName);
+                World world = null;
+                if(worldOptional.isPresent()) world = worldOptional.get();
                 if (world != null) {
                     List<Entity> entities = world.getEntities();
                     if (entities.size() > 0) {

@@ -3,11 +3,12 @@ package com.ssomar.score.commands.runnable;
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
-import com.ssomar.score.usedapi.MultiverseAPI;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -200,16 +201,10 @@ public abstract class SCommand {
         ArgumentChecker ac = new ArgumentChecker();
 
         if (isFinalVerification) {
-            if (SCore.hasMultiverse) {
-                if (MultiverseAPI.getWorld(arg) == null) {
-                    ac.setValid(false);
-                    ac.setError(invalidWorld + arg + " &cfor command: &e" + template);
-                }
-            } else {
-                if (Bukkit.getWorld(arg) == null) {
-                    ac.setValid(false);
-                    ac.setError(invalidWorld + arg + " &cfor command: &e" + template);
-                }
+            Optional<World> worldOptional = AllWorldManager.getWorld(arg);
+            if(!worldOptional.isPresent()){
+                ac.setValid(false);
+                ac.setError(invalidWorld + arg + " &cfor command: &e" + template);
             }
         }
 

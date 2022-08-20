@@ -18,6 +18,7 @@ import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.projectiles.ProjectilesLoader;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.ProtocolibAPI;
 import com.ssomar.score.utils.Utils;
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;

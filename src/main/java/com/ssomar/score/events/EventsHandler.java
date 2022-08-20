@@ -26,6 +26,8 @@ public class EventsHandler {
     }
 
     public void setupEvents() {
+        if(SCore.hasBentoBox) main.getServer().getPluginManager().registerEvents(new BentoBoxLoadingListener(), main);
+
         main.getServer().getPluginManager().registerEvents(new SecurityOPCommands(), main);
 
         main.getServer().getPluginManager().registerEvents(new NoFallDamageEvt(), main);

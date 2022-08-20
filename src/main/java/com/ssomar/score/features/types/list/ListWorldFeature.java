@@ -5,6 +5,7 @@ import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
@@ -30,8 +31,8 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
         List<String> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
-            World w = MultiverseAPI.getWorld(s);
-            if (w != null) {
+            Optional<World> worldOptional = AllWorldManager.getWorld(s);
+            if (worldOptional.isPresent()) {
                 value.add(s);
             } else
                 errors.add("&cERROR, Couldn't load the World value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo());

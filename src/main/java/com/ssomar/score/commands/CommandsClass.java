@@ -13,6 +13,7 @@ import com.ssomar.score.projectiles.types.CustomArrow;
 import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -99,7 +100,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
             case "reload":
                 main.onReload();
                 sm.sendMessage(sender, ChatColor.GREEN + "SCore has been reload");
-                System.out.println("SCore reloaded !");
+                Utils.sendConsoleMsg("SCore reloaded !");
                 break;
             case "inspect-loop":
                 Map<NewSActivator, Integer> loops = LoopManager.getInstance().getLoopActivators();

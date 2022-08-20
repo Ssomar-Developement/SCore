@@ -6,6 +6,7 @@ import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.*;
@@ -161,16 +162,10 @@ public class SetExecutableBlock extends BlockCommand {
                     error = invalidWorld + args.get(4) + " for the command: " + setEB;
                     return error.isEmpty() ? Optional.empty() : Optional.of(error);
                 } else {
-                    if (SCore.hasMultiverse) {
-                        if (MultiverseAPI.getWorld(worldStr) == null) {
-                            error = invalidWorld + args.get(4) + " for the command: " + setEB;
-                            return error.isEmpty() ? Optional.empty() : Optional.of(error);
-                        }
-                    } else {
-                        if (Bukkit.getWorld(worldStr) == null) {
-                            error = invalidWorld + args.get(4) + " for the command: " + setEB;
-                            return error.isEmpty() ? Optional.empty() : Optional.of(error);
-                        }
+                    Optional<World> worldOptional = AllWorldManager.getWorld(worldStr);
+                    if (!worldOptional.isPresent()) {
+                        error = invalidWorld + args.get(4) + " for the command: " + setEB;
+                        return error.isEmpty() ? Optional.empty() : Optional.of(error);
                     }
                 }
             }
