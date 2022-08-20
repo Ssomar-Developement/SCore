@@ -147,7 +147,7 @@ public class NumberConditionFeature extends FeatureAbstract<Optional<String>, Nu
         supE.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&aClick to add condition " + getEditorName() + " >= {number}")).create()));
 
         TextComponent noC = new TextComponent(StringConverter.coloredString("&c&l[NO CONDITION]"));
-        noC.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "NO VALUE / EXIT"));
+        noC.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/score interact NO VALUE / EXIT"));
         noC.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&aClick to don't set condition")).create()));
 
         message.addExtra(inf);

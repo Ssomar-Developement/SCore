@@ -1,10 +1,9 @@
 package com.ssomar.score.events;
 
 import com.ssomar.executableblocks.ExecutableBlocks;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
-import com.ssomar.score.usedapi.AllWorldManager;
-import com.ssomar.score.utils.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,6 +15,9 @@ public class BentoBoxLoadingListener implements Listener {
     public void bentoBoxReady(BentoBoxReadyEvent e) {
 
         if(SCore.hasExecutableItems) ExecutableItems.plugin.onReload(false);
-        if(SCore.hasExecutableBlocks) ExecutableBlocks.plugin.onReload(false);
+        if(SCore.hasExecutableBlocks){
+            ExecutableBlocks.plugin.onReload(false);
+            ExecutableBlockPlacedManager.getInstance().load();
+        }
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>2.1.7</version>
+    <version>2.1.8</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -90,16 +90,16 @@
                             <goal>shade</goal>
                         </goals>
                         <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                        <configuration>
+                        <!-- <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>
+                        </configuration> -->
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
                     <!-- C:\Users\octav\Documents\GitHub\
                     C:\Users\marce\Documents\GitHub\ -->
-                    <execution>
+                    <!-- <execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -107,7 +107,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\marce\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -118,10 +118,10 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\marce\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
-                    </execution>
+                    </execution> -->
                     <!--<execution>
                         <id>build_dep_eg</id>
                         <phase>package</phase>
@@ -322,6 +322,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.bergerkiller.bukkit</groupId>
+            <artifactId>mw</artifactId>
+            <version>1.19-v2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/MyWorlds.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblock</artifactId>
             <version>1.10.2.674</version>
@@ -395,7 +403,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-8b20d1979c-1</version>
+            <version>main-03610a9514-1</version>
             <scope>compile</scope>
         </dependency>
 
