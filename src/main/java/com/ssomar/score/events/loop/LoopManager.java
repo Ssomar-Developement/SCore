@@ -29,12 +29,16 @@ public class LoopManager {
     private static LoopManager instance;
     @Getter
     private final Map<NewSActivator, Integer> loopActivators;
+    private final List<NewSActivator> loopActivatorsToAdd;
+    private final List<NewSActivator> loopActivatorsToRemove;
 
     @Getter
     private final List<NewSActivator> checkEntityOnofEB;
 
     public LoopManager() {
         loopActivators = new HashMap<>();
+        loopActivatorsToAdd = new ArrayList<>();
+        loopActivatorsToRemove = new ArrayList<>();
         checkEntityOnofEB = new ArrayList<>();
         this.runLoop();
     }
@@ -52,7 +56,30 @@ public class LoopManager {
             public void run() {
                 //SsomarDev.testMsg("loop activatores registered: " + loopActivators.size());
                 List<NewSActivator> toActiv = new ArrayList<>();
-                for (NewSActivator activator : loopActivators.keySet()) {
+
+                List<NewSActivator> toRemoveList = new ArrayList<>();
+                toRemoveList.addAll(loopActivatorsToAdd);
+                toRemoveList.addAll(loopActivatorsToRemove);
+
+                Iterator<NewSActivator> it1 = loopActivators.keySet().iterator();
+                while (it1.hasNext()) {
+                    NewSActivator activator = it1.next();
+
+                   NewSActivator needRemove = null;
+                    for(NewSActivator toRemove1 : toRemoveList) {
+                        if(activator.isEqualsOrAClone(toRemove1)) {
+                            needRemove = toRemove1;
+                            it1.remove();
+                        }
+                        if(needRemove != null) break;
+                    }
+                    if(needRemove != null){
+                        toRemoveList.remove(needRemove);
+                        loopActivatorsToAdd.remove(needRemove);
+                        loopActivatorsToRemove.remove(needRemove);
+                        continue;
+                    }
+
                     LoopFeatures loop = null;
                     for (Object feature : activator.getFeatures()) {
                         if (feature instanceof LoopFeatures) {
@@ -72,11 +99,17 @@ public class LoopManager {
                         continue;
                     } else {
                         toActiv.add(activator);
+                        //SsomarDev.testMsg("LOOP > "+loop.getDelay().getValue().get());
                         if (loop.getDelayInTick().getValue())
                             loopActivators.put(activator, loop.getDelay().getValue().get());
                         else loopActivators.put(activator, loop.getDelay().getValue().get() * 20);
                     }
                 }
+
+                for(NewSActivator activator : loopActivatorsToAdd) {
+                    loopActivators.put(activator, 0);
+                }
+                loopActivatorsToAdd.clear();
 
                 //SsomarDev.testMsg("To activ: " + toActiv.size());
                 if (!toActiv.isEmpty() || !checkEntityOnofEB.isEmpty()) {
@@ -167,6 +200,18 @@ public class LoopManager {
                 }
             }
         });
+    }
+
+    public void addLoopActivator(NewSActivator activator) {
+        if (activator == null) return;
+
+        loopActivatorsToAdd.add(activator);
+    }
+
+    public void removeLoopActivator(NewSActivator activator) {
+        if (activator == null) return;
+
+        loopActivatorsToRemove.add(activator);
     }
 
     public void runLoopEB(ExecutableBlockPlaced eBP, List<ActivatorEBFeature> listEB) {

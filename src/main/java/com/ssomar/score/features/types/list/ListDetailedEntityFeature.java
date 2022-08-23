@@ -36,6 +36,9 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = "\\+";
     private static final String mythicMobsSymbol = "MM-";
+
+    private static final String symbolNegation = "!";
+
     private static final Boolean DEBUG = true;
     private List<String> value;
     private List<String> defaultValue;
@@ -52,17 +55,19 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         List<String> errors = new ArrayList<>();
         value = new ArrayList<>();
         for (String s : entries) {
-            s = StringConverter.decoloredString(s);
-            String entityTypeStr = s;
+            String baseValue = StringConverter.decoloredString(s);
+            String checkValue = baseValue;
+            if(checkValue.startsWith(symbolNegation)) checkValue = checkValue.substring(1);
+            String entityTypeStr = checkValue;
 
             if (s.contains(mythicMobsSymbol)) {
-                if (SCore.hasMythicMobs) value.add(s);
+                if (SCore.hasMythicMobs) value.add(baseValue);
                 //TODO make a little verification
                 continue;
-            } else if (s.contains(symbolStart)) {
-                entityTypeStr = s.split("\\" + symbolStart)[0];
+            } else if (checkValue.contains(symbolStart)) {
+                entityTypeStr = checkValue.split("\\" + symbolStart)[0];
                 if (SCore.hasNBTAPI) {
-                    String datas = s.split("\\" + symbolStart)[1].replace(symbolEnd, "");
+                    String datas = checkValue.split("\\" + symbolStart)[1].replace(symbolEnd, "");
                     for (String data : datas.split(symbolSeparator)) {
                         String[] dataSplit = data.split(symbolEquals);
                         if (dataSplit.length != 2) {
@@ -80,7 +85,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                 errors.add("&cERROR, Couldn't load the EntityType value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> EntityTypes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html");
                 continue;
             }
-            value.add(s);
+            value.add(baseValue);
         }
         FeatureReturnCheckPremium<List<String>> checkPremium = checkPremium("List of Detailed entities", value, Optional.of(defaultValue), isPremiumLoading);
         if (checkPremium.isHasError()) value = checkPremium.getNewValue();
@@ -92,12 +97,28 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         return this.load(plugin, config.getStringList(this.getName()), isPremiumLoading);
     }
 
+    public List<String> getWhiteListValue() {
+        List<String> whiteList = new ArrayList<>();
+        for (String s : value) {
+            if (!s.startsWith(symbolNegation)) whiteList.add(s);
+        }
+        return whiteList;
+    }
+
+    public List<String> getBlackListValue() {
+        List<String> blackList = new ArrayList<>();
+        for (String s : value) {
+            if (s.startsWith(symbolNegation)) blackList.add(s.substring(1));
+        }
+        return blackList;
+    }
+
     /**
      * Return map with entitytype and tags
      **/
-    public Map<EntityType, List<Map<String, String>>> extractCondition() {
+    public Map<EntityType, List<Map<String, String>>> extractCondition(List<String> values) {
         Map<EntityType, List<Map<String, String>>> conditions = new HashMap<>();
-        for (String s : value) {
+        for (String s : values) {
             if (s.contains(mythicMobsSymbol)) continue;
             String entityTypeStr = s;
             EntityType type;
@@ -122,12 +143,20 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         return conditions;
     }
 
+    public Map<EntityType, List<Map<String, String>>> extractWhiteListCondition() {
+        return extractCondition(getWhiteListValue());
+    }
+
+    public Map<EntityType, List<Map<String, String>>> extractBlackListCondition() {
+        return extractCondition(getBlackListValue());
+    }
+
     /**
      * The list of MM ids
      **/
-    public List<String> extractMMCondition() {
+    public List<String> extractMMCondition(List<String> values) {
         List<String> mythicMobs = new ArrayList<>();
-        for (String s : value) {
+        for (String s : values) {
             if (s.contains(mythicMobsSymbol)) {
                 mythicMobs.add(s.replace(mythicMobsSymbol, ""));
             }
@@ -135,105 +164,133 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         return mythicMobs;
     }
 
+    public List<String> extractWhiteListMMCondition() {
+        return extractMMCondition(getWhiteListValue());
+    }
+
+    public List<String> extractBlackListMMCondition() {
+        return extractMMCondition(getBlackListValue());
+    }
+
     public boolean isValidEntity(@NotNull Entity entity) {
 
         /* Verif MythicMob */
-        boolean hasMMOCondition = !extractMMCondition().isEmpty();
-        if (SCore.hasMythicMobs && hasMMOCondition) {
-            if (MythicMobsAPI.isMythicMob(entity, extractMMCondition())) return true;
+        boolean hasWLMMCondition = !extractWhiteListMMCondition().isEmpty();
+        boolean hasBLMMCondition = !extractBlackListMMCondition().isEmpty();
+
+        if (SCore.hasMythicMobs) {
+            if (hasWLMMCondition && MythicMobsAPI.isMythicMob(entity, extractWhiteListMMCondition())) return true;
+            if (hasBLMMCondition && MythicMobsAPI.isMythicMob(entity, extractBlackListMMCondition())) return false;
         }
 
-        Map<EntityType, List<Map<String, String>>> conditions = extractCondition();
+        Map<EntityType, List<Map<String, String>>> conditionsWL = extractWhiteListCondition();
+        Map<EntityType, List<Map<String, String>>> conditionsBL = extractBlackListCondition();
+
+        EntityType type = entity.getType();
+
+        for (EntityType t : conditionsBL.keySet()) {
+            if (t.equals(type)) {
+                List<Map<String, String>> tagsList = conditionsBL.get(t);
+                if (tagsList.isEmpty()) return false;
+                if(verifTags(entity, tagsList)) return false;
+            }
+        }
+
         /* empty = accept all */
-        if (conditions.isEmpty()){
-            if(hasMMOCondition) return false;
+        if (conditionsWL.isEmpty()){
+            if(hasWLMMCondition) return false;
             return true;
         }
 
-        EntityType type = entity.getType();
-        for (EntityType t : conditions.keySet()) {
+        for (EntityType t : conditionsWL.keySet()) {
             if (t.equals(type)) {
-                List<Map<String, String>> tagsList = conditions.get(t);
+                List<Map<String, String>> tagsList = conditionsWL.get(t);
                 if (tagsList.isEmpty()) return true;
-                for (Map<String, String> tags : tagsList) {
-                    boolean invalid = false;
-                    if (tags.isEmpty()) return true;
-                    else {
-                        NBTEntity nbtent = new NBTEntity(entity);
-                        for (String key : tags.keySet()) {
-                            String value = tags.get(key);
-                            NBTType nbtType = nbtent.getType(key);
+                if(verifTags(entity, tagsList)) return true;
+            }
+        }
 
-                            SsomarDev.testMsg("VERIF key: " + key + " value: " + value + " type: " + type, DEBUG);
+        return false;
+    }
 
-                            switch (nbtType) {
-                                /* The tag was not found */
-                                case NBTTagEnd:
-                                    return false;
-                                case NBTTagByte:
-                                    if (value.equals("0") || value.equals("1")) {
-                                        SsomarDev.testMsg("Byte: " + nbtent.getByte(key), DEBUG);
-                                        if (nbtent.getByte(key) != Byte.parseByte(value)) invalid = true;
-                                    }
-                                    break;
-                                case NBTTagShort:
-                                case NBTTagByteArray:
-                                case NBTTagIntArray:
-                                case NBTTagList:
-                                case NBTTagCompound:
-                                    break;
-                                case NBTTagInt:
-                                    Optional<Integer> optInt = NTools.getInteger(value);
-                                    if (optInt.isPresent()) {
-                                        SsomarDev.testMsg("Int: " + nbtent.getInteger(key), DEBUG);
-                                        if (nbtent.getInteger(key) != optInt.get()) invalid = true;
-                                    }
-                                    break;
-                                case NBTTagLong:
-                                    Optional<Long> optLong = NTools.getLong(value);
-                                    if (optLong.isPresent()) {
-                                        SsomarDev.testMsg("Long: " + nbtent.getLong(key), DEBUG);
-                                        if (nbtent.getLong(key) != optLong.get()) invalid = true;
-                                    }
-                                    break;
-                                case NBTTagFloat:
-                                    Optional<Float> optFloat = NTools.getFloat(value);
-                                    if (optFloat.isPresent()) {
-                                        SsomarDev.testMsg("Float: " + nbtent.getFloat(key), DEBUG);
-                                        if (nbtent.getFloat(key) != optFloat.get()) invalid = true;
-                                    }
-                                    break;
-                                case NBTTagDouble:
-                                    Optional<Double> optDouble = NTools.getDouble(value);
-                                    if (optDouble.isPresent()) {
-                                        SsomarDev.testMsg("Double: " + nbtent.getDouble(key), DEBUG);
-                                        if (nbtent.getDouble(key) != optDouble.get()) invalid = true;
-                                    }
-                                    break;
-                                case NBTTagString:
-                                    if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false")) {
-                                        SsomarDev.testMsg("Boolean: " + nbtent.getBoolean(key), DEBUG);
-                                        if (nbtent.getBoolean(key) != Boolean.parseBoolean(value)) invalid = true;
-                                    } else {
-                                        if (key.equalsIgnoreCase(("CustomName"))) {
-                                            String customName = entity.getCustomName();
-                                            SsomarDev.testMsg("String: " + customName, DEBUG);
-                                            if (!StringConverter.decoloredString(customName).equals(value))
-                                                invalid = true;
-                                        } else {
-                                            SsomarDev.testMsg("String: " + nbtent.getString(key), DEBUG);
-                                            if (!nbtent.getString(key).contains("\"" + value + "\"")) invalid = true;
-                                        }
-                                    }
-                                    break;
+    public boolean verifTags(Entity entity, List<Map<String, String>> tagsList) {
+        for (Map<String, String> tags : tagsList) {
+            boolean invalid = false;
+            if (tags.isEmpty()) return true;
+            else {
+                NBTEntity nbtent = new NBTEntity(entity);
+                for (String key : tags.keySet()) {
+                    String value = tags.get(key);
+                    NBTType nbtType = nbtent.getType(key);
+
+                    SsomarDev.testMsg("VERIF key: " + key + " value: " + value + " type: " + entity.getType(), DEBUG);
+
+                    switch (nbtType) {
+                        /* The tag was not found */
+                        case NBTTagEnd:
+                            return false;
+                        case NBTTagByte:
+                            if (value.equals("0") || value.equals("1")) {
+                                SsomarDev.testMsg("Byte: " + nbtent.getByte(key), DEBUG);
+                                if (nbtent.getByte(key) != Byte.parseByte(value)) invalid = true;
                             }
-                            if (invalid) break;
-                        }
-                        if (invalid) continue;
-
-                        return true;
+                            break;
+                        case NBTTagShort:
+                        case NBTTagByteArray:
+                        case NBTTagIntArray:
+                        case NBTTagList:
+                        case NBTTagCompound:
+                            break;
+                        case NBTTagInt:
+                            Optional<Integer> optInt = NTools.getInteger(value);
+                            if (optInt.isPresent()) {
+                                SsomarDev.testMsg("Int: " + nbtent.getInteger(key), DEBUG);
+                                if (nbtent.getInteger(key) != optInt.get()) invalid = true;
+                            }
+                            break;
+                        case NBTTagLong:
+                            Optional<Long> optLong = NTools.getLong(value);
+                            if (optLong.isPresent()) {
+                                SsomarDev.testMsg("Long: " + nbtent.getLong(key), DEBUG);
+                                if (nbtent.getLong(key) != optLong.get()) invalid = true;
+                            }
+                            break;
+                        case NBTTagFloat:
+                            Optional<Float> optFloat = NTools.getFloat(value);
+                            if (optFloat.isPresent()) {
+                                SsomarDev.testMsg("Float: " + nbtent.getFloat(key), DEBUG);
+                                if (nbtent.getFloat(key) != optFloat.get()) invalid = true;
+                            }
+                            break;
+                        case NBTTagDouble:
+                            Optional<Double> optDouble = NTools.getDouble(value);
+                            if (optDouble.isPresent()) {
+                                SsomarDev.testMsg("Double: " + nbtent.getDouble(key), DEBUG);
+                                if (nbtent.getDouble(key) != optDouble.get()) invalid = true;
+                            }
+                            break;
+                        case NBTTagString:
+                            if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false")) {
+                                SsomarDev.testMsg("Boolean: " + nbtent.getBoolean(key), DEBUG);
+                                if (nbtent.getBoolean(key) != Boolean.parseBoolean(value)) invalid = true;
+                            } else {
+                                if (key.equalsIgnoreCase(("CustomName"))) {
+                                    String customName = entity.getCustomName();
+                                    SsomarDev.testMsg("String: " + customName, DEBUG);
+                                    if (!StringConverter.decoloredString(customName).equals(value))
+                                        invalid = true;
+                                } else {
+                                    SsomarDev.testMsg("String: " + nbtent.getString(key), DEBUG);
+                                    if (!nbtent.getString(key).contains("\"" + value + "\"")) invalid = true;
+                                }
+                            }
+                            break;
                     }
+                    if (invalid) break;
                 }
+                if (invalid) continue;
+
+                return true;
             }
         }
         return false;
@@ -287,6 +344,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
     @Override
     public Optional<String> verifyMessageReceived(String message) {
         String s = StringConverter.decoloredString(message);
+        if(s.startsWith(symbolNegation)) s = s.substring(1);
         String entityTypeStr = s;
 
         if (s.contains(mythicMobsSymbol)) {

@@ -1,7 +1,6 @@
 package com.ssomar.score.usedapi;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.MythicBukkit;
@@ -19,7 +18,7 @@ public class MythicMobsAPI {
             BukkitAPIHelper api = MythicBukkit.inst().getAPIHelper();
             if (api.isMythicMob(entity)) {
                 ActiveMob activeMob = api.getMythicMobInstance(entity);
-                SsomarDev.testMsg("Name/ID: " + activeMob.getType().getInternalName());
+                //SsomarDev.testMsg("Name/ID: " + activeMob.getType().getInternalName());
                 return mobName.equals(activeMob.getType().getInternalName());
             }
         }
@@ -31,7 +30,7 @@ public class MythicMobsAPI {
             BukkitAPIHelper api = MythicBukkit.inst().getAPIHelper();
             if (api.isMythicMob(entity)) {
                 ActiveMob activeMob = api.getMythicMobInstance(entity);
-                SsomarDev.testMsg("Name/ID: " + activeMob.getType().getInternalName());
+                //SsomarDev.testMsg("Name/ID: " + activeMob.getType().getInternalName());
                 return mobNames.contains(activeMob.getType().getInternalName());
             }
         }
@@ -39,7 +38,7 @@ public class MythicMobsAPI {
     }
 
     public static Entity changeToMythicMob(Entity entity, String id) {
-        SsomarDev.testMsg("Changing to MythicMob: " + id);
+        //SsomarDev.testMsg("Changing to MythicMob: " + id);
         if (SCore.hasMythicMobs) {
             BukkitAPIHelper api = MythicBukkit.inst().getAPIHelper();
             /* EXCEPTION */
@@ -47,9 +46,9 @@ public class MythicMobsAPI {
             Vector velocity = entity.getVelocity();
             entity.remove();
             try {
-                SsomarDev.testMsg("Changing to MythicMob SPAWN: " + id);
+                //SsomarDev.testMsg("Changing to MythicMob SPAWN: " + id);
                 Entity newEntity = api.spawnMythicMob(id, loc);
-                SsomarDev.testMsg("Changing to MythicMob SPAWN VALID: " + id);
+                //SsomarDev.testMsg("Changing to MythicMob SPAWN VALID: " + id);
                 newEntity.setVelocity(velocity);
                 return newEntity;
             } catch (InvalidMobTypeException e) {

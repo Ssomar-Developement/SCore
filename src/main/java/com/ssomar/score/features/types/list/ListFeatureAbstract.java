@@ -1,6 +1,5 @@
 package com.ssomar.score.features.types.list;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -47,7 +46,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
 
     @Override
     public void save(ConfigurationSection config) {
-        SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
+        //SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
         if (notSaveIfEqualsToDefaultValue && defaultValue.containsAll(value)) {
                 config.set(this.getName(), null);
                 return;

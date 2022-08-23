@@ -2,7 +2,6 @@ package com.ssomar.score.features.custom.activators.group;
 
 import com.ssomar.executableblocks.executableblocks.activators.Option;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -60,7 +59,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                 //SsomarDev.testMsg("Activator " + activatorID + " loaded");
                 if (activator.getOption().isLoopOption()) {
                     //SsomarDev.testMsg("Activator " + activatorID + " is a loop activator");
-                    LoopManager.getInstance().getLoopActivators().put(activator, 0);
+                    LoopManager.getInstance().addLoopActivator(activator);
                     //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size());
                 }
                 if (SCore.hasExecutableBlocks && activator.getOption().equals(Option.ENTITY_WALK_ON)) {
@@ -178,7 +177,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
         for (int i = 0; i < 1000; i++) {
             String id = baseId + i;
             if (!activators.containsKey(id)) {
-                SsomarDev.testMsg("INSTANCE CREATE: " + this.hashCode());
+                //SsomarDev.testMsg("INSTANCE CREATE: " + this.hashCode());
                 NewSActivator activator = builderInstance.getBuilderInstance(this, id);
                 activators.put(id, activator);
                 activator.openEditor(editor);
@@ -190,7 +189,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     @Override
     public void deleteFeature(@NotNull Player editor, NewSActivator feature) {
         LoopManager.getInstance().getCheckEntityOnofEB().remove(activators.get(feature.getId()));
-        LoopManager.getInstance().getLoopActivators().remove(activators.get(feature.getId()));
+        LoopManager.getInstance().removeLoopActivator(activators.get(feature.getId()));
         activators.remove(feature.getId());
     }
 }
