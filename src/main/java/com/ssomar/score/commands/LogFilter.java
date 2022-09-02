@@ -21,6 +21,8 @@ public class LogFilter implements Filter, LifeCycle {
 
     public LogFilter() {
         messageToHide.add("Applied effect");
+        messageToHide.add("Playing effect");
+        messageToHide.add("Title command successfully executed");
         messageToHide.add("Gave");
         messageToHide.add("Given");
         messageToHide.add("Giving");

@@ -35,6 +35,7 @@ public class BlockCommandManager implements CommandManager {
         references.add(new VeinBreaker());
         references.add(new SilkSpawner());
         references.add(new DrainInCube());
+        references.add(new StrikeLightning());
         /* No BlockData in 1.12 and less */
         if (!SCore.is1v12Less()) {
             references.add(new FarmInCube());
@@ -43,6 +44,7 @@ public class BlockCommandManager implements CommandManager {
         if (!SCore.is1v11Less()) {
             references.add(new ParticleCommand());
         }
+        references.add(new SellContent());
         this.commands = references;
     }
 

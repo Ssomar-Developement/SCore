@@ -53,9 +53,12 @@ public class ActionInfo implements Serializable {
 
     /* ------------------ */
 
-    private Optional<Vector> velocity;
+    private transient Optional<Vector> velocity;
 
     private boolean silenceOutput;
+
+    /* It can cause problem for example with REMOVEBLOCK , its useless to know who is the launcher in block command with LOOP activator */
+    private boolean noPlayerTriggeredTheAction;
 
     private StringPlaceholder sp;
 
@@ -76,6 +79,7 @@ public class ActionInfo implements Serializable {
         this.oldBlockMaterialName = null;
         this.entityUUID = null;
         this.silenceOutput = false;
+        this.noPlayerTriggeredTheAction = false;
         this.velocity = Optional.empty();
         this.debugers = new Debugers();
     }
@@ -89,6 +93,7 @@ public class ActionInfo implements Serializable {
         result.setOldBlockMaterialName(oldBlockMaterialName);
         result.setEntityUUID(entityUUID);
         result.setSilenceOutput(silenceOutput);
+        result.setNoPlayerTriggeredTheAction(noPlayerTriggeredTheAction);
         result.setBlockLocationX(blockLocationX);
         result.setBlockLocationY(blockLocationY);
         result.setBlockLocationZ(blockLocationZ);

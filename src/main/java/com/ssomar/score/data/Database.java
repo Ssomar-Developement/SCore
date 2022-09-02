@@ -49,7 +49,7 @@ public class Database {
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                SCore.plugin.getLogger().info(SCore.NAME_2 + " Connexion to the db...");
+                SCore.plugin.getLogger().info(" Connection to the db...");
             }
 
         } catch (SQLException e) {

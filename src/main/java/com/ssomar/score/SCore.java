@@ -18,7 +18,6 @@ import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.projectiles.ProjectilesLoader;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.ProtocolibAPI;
 import com.ssomar.score.utils.Utils;
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
@@ -59,6 +58,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasAureliumSkills = false;
     public static boolean hasItemsAdder = false;
     public static boolean hasOraxen = false;
+    public static boolean hasShopGUIPlus = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
     private static boolean is1v10 = false;
@@ -370,6 +370,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (Bukkit.getPluginManager().getPlugin("Oraxen") != null) {
             SCore.plugin.getServer().getLogger().info("[" + NAME + "] Oraxen hooked !");
             hasOraxen = true;
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("ShopGUIPlus") != null) {
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] ShopGUIPlus hooked !");
+            hasShopGUIPlus = true;
         }
     }
 

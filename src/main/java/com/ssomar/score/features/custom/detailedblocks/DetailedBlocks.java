@@ -33,7 +33,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     private ListDetailedMaterialFeature blocks;
     private BooleanFeature cancelEventIfNotValid;
-    private ColoredStringFeature messageIfNotValid;
+    private transient ColoredStringFeature messageIfNotValid;
 
     public DetailedBlocks(FeatureParentInterface parent) {
         super(parent, "detailedBlocks", "Detailed Blocks", new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
@@ -67,7 +67,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
             if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
                 ((Cancellable) event).setCancelled(true);
             }
-            if (playerOpt.isPresent() && messageIfNotValid.getValue().isPresent()) {
+            if (playerOpt.isPresent() && messageIfNotValid != null && messageIfNotValid.getValue().isPresent()) {
                 SendMessage.sendMessageNoPlch(playerOpt.get(), sp.replacePlaceholder(messageIfNotValid.getValue().get()));
             }
             return false;

@@ -70,8 +70,8 @@ public class Cooldown {
 
         SsomarDev.testMsg("timeLeft: " + timeLeft, DEBUG);
         double result = timeLeft;
-        SsomarDev.testMsg("pre  result: " + result / 200, DEBUG);
-        if (isInTick()) result = result / 200;
+        SsomarDev.testMsg("pre  result: " + result / 20, DEBUG);
+        if (isInTick()) result = result / 20;
         SsomarDev.testMsg("Cooldown: " + result, DEBUG);
         return result;
     }

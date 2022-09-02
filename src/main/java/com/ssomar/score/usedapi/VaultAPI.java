@@ -64,7 +64,18 @@ public class VaultAPI {
 
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);
-        sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.plugin, Message.NEW_BALANCE).replaceAll("%amount%", amount + "").replaceAll("%balance%", df.format(econ.getBalance(p)) + "")));
+        sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.plugin, Message.NEW_BALANCE_NEGATIVE).replaceAll("%amount%", amount + "").replaceAll("%balance%", df.format(econ.getBalance(p)) + "")));
+    }
+
+    public void addMoney(Player p, double amount) {
+
+        if (!SCore.hasVault) return;
+
+        else econ.depositPlayer(p, amount);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        sm.sendMessage(p, StringConverter.coloredString(MessageMain.getInstance().getMessage(SCore.plugin, Message.NEW_BALANCE_POSITIVE).replaceAll("%amount%", amount + "").replaceAll("%balance%", df.format(econ.getBalance(p)) + "")));
     }
 
 }

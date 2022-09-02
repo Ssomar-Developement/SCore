@@ -12,16 +12,16 @@ import org.bukkit.event.Event;
 
 import java.util.Optional;
 
-public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
+public class IfNotNamed extends EntityConditionFeature<BooleanFeature, IfNotNamed> {
 
 
-    public IfNamed(FeatureParentInterface parent) {
-        super(parent, "ifNamed", "If named", new String[]{}, Material.ANVIL, false);
+    public IfNotNamed(FeatureParentInterface parent) {
+        super(parent, "ifNotNamed", "If not named", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
     public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && entity instanceof Nameable && ((Nameable) entity).getCustomName() == null) {
+        if (hasCondition() && entity instanceof Nameable && ((Nameable) entity).getCustomName() != null) {
             sendErrorMsg(playerOpt, messageSender);
             cancelEvent(event);
             return false;
@@ -31,13 +31,13 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
     }
 
     @Override
-    public IfNamed getValue() {
+    public IfNotNamed getValue() {
         return this;
     }
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNamed", false, "If named", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(), "ifNotNamed", false, "If not named", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
     }
 
     @Override
-    public IfNamed getNewInstance(FeatureParentInterface parent) {
-        return new IfNamed(parent);
+    public IfNotNamed getNewInstance(FeatureParentInterface parent) {
+        return new IfNotNamed(parent);
     }
 }

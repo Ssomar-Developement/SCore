@@ -45,10 +45,14 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfGlowing(this));
         conditions.add(new IfInvulnerable(this));
         /* Nameable not available in 1.8 */
-        if (!SCore.is1v11Less()) conditions.add(new IfNamed(this));
+        if (!SCore.is1v11Less()){
+            conditions.add(new IfNamed(this));
+            conditions.add(new IfNotNamed(this));
+        }
         conditions.add(new IfOnFire(this));
         conditions.add(new IfPowered(this));
         conditions.add(new IfTamed(this));
+        conditions.add(new IfNotTamed(this));
 
         /* Number condition features */
         conditions.add(new IfEntityHealth(this));

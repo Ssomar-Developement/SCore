@@ -5,23 +5,22 @@ import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
-import org.bukkit.Nameable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 
 import java.util.Optional;
 
-public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
+public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTamed> {
 
-
-    public IfNamed(FeatureParentInterface parent) {
-        super(parent, "ifNamed", "If named", new String[]{}, Material.ANVIL, false);
+    public IfNotTamed(FeatureParentInterface parent) {
+        super(parent, "ifNotTamed", "If not tamed", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
     public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && entity instanceof Nameable && ((Nameable) entity).getCustomName() == null) {
+        if (hasCondition() && entity instanceof Tameable && ((Tameable) entity).isTamed()) {
             sendErrorMsg(playerOpt, messageSender);
             cancelEvent(event);
             return false;
@@ -31,13 +30,13 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
     }
 
     @Override
-    public IfNamed getValue() {
+    public IfNotTamed getValue() {
         return this;
     }
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNamed", false, "If named", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(), "ifNotTamed", false, "If not tamed", new String[]{}, Material.ANVIL, false, true));
     }
 
     @Override
@@ -46,7 +45,7 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
     }
 
     @Override
-    public IfNamed getNewInstance(FeatureParentInterface parent) {
-        return new IfNamed(parent);
+    public IfNotTamed getNewInstance(FeatureParentInterface parent) {
+        return new IfNotTamed(parent);
     }
 }

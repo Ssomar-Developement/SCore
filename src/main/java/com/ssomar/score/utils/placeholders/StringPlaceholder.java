@@ -46,7 +46,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     private final ProjectilePlaceholders projectilePlch = new ProjectilePlaceholders();
 
     /* placeholders of the time */
-    private final TimePlaceholders timePlch = new TimePlaceholders();
+    private final transient TimePlaceholders timePlch = new TimePlaceholders();
     /* placeholders of the target entity */
     private final EntityPlaceholders entityPlch = new EntityPlaceholders();
     /* placeholders of the block */
@@ -231,7 +231,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = aroundEntityTargetPlch.replacePlaceholder(s);
 
-        s = timePlch.replacePlaceholder(s);
+        if(timePlch != null) s = timePlch.replacePlaceholder(s);
 
         if (projectilePlch != null) s = projectilePlch.replacePlaceholder(s);
 

@@ -29,7 +29,7 @@ public class RemoveBlock extends BlockCommand {
         if (p != null) {
             uuid = p.getUniqueId();
         }
-        SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, true);
+        SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, true && !aInfo.isNoPlayerTriggeredTheAction());
     }
 
     public void validBreak(Block block) {

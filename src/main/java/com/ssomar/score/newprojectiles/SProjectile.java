@@ -1,6 +1,26 @@
 package com.ssomar.score.newprojectiles;
 
-/* @Getter@Setter
+/* import com.ssomar.score.features.FeatureAbstract;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.newprojectiles.features.SProjectileFeatureInterface;
+import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.splugin.SPlugin;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SProjectileEditorManager> {
 
     private String id;
@@ -8,44 +28,18 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
     private SProjectileType type;
 
-    private BounceFeature bounce;
-    private ChargedFeature charged;
-    private CriticalFeature critical;
-
-    private BooleanFeature despawn;
-    private BooleanFeature glowing;
-    private BooleanFeature gravity;
-    private BooleanFeature incendiary;
-    private BooleanFeature invisible;
-    private BooleanFeature pickup;
-    private BooleanFeature removeWhenHitBlock;
-    private BooleanFeature silent;
-
-    private ColorFeature color;
-
-    private ColoredStringFeature customName;
-
-    private DoubleFeature damage;
-    private DoubleFeature radius;
-    private DoubleFeature velocity;
-
-    private IntegerFeature knockbackStrength;
-    private IntegerFeature piercingLevel;
-
-    private EnchantmentsGroupFeature enchantments;
-
-    private PotionEffectGroupFeature potionEffects;
-
-    private MaterialFeature visualItem;
-    private IntegerFeature visualItemCustomTexture;
+    private List<FeatureAbstract> features;
 
     public void transformTheProjectile(Entity e, Player launcher) {
         if(e instanceof Projectile){
-
+            for(FeatureAbstract f : features){
+                if(f instanceof SProjectileFeatureInterface){
+                    ((SProjectileFeatureInterface) f).transformTheProjectile(e, launcher, Material.RABBIT);
+                }
+            }
         }
     }
 
-    // TODO particles
 
     public SProjectile(FeatureParentInterface parent, String id, String path) {
         super(parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW);
@@ -63,7 +57,14 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        return null;
+        List<String> errors = new ArrayList<>();
+
+        features = type.getFeatures();
+        for(FeatureAbstract f : features){
+            errors.addAll(f.load(plugin, config, isPremiumLoading));
+        }
+
+        return errors;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
     @Override
     public SProjectile getValue() {
-        return null;
+        return this;
     }
 
     @Override

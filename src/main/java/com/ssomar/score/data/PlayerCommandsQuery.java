@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ActionInfoSerializer;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommand;
+import com.ssomar.score.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -65,15 +66,21 @@ public class PlayerCommandsQuery {
                 pstmt.setString(2, command.getReceiverUUID().toString());
                 pstmt.setString(3, command.getBrutCommand());
                 pstmt.setLong(4, command.getRunTime());
-                pstmt.setString(5, ActionInfoSerializer.toString(command.getaInfo()));
+                try {
+                    pstmt.setString(5, ActionInfoSerializer.toString(command.getaInfo()));
+                } catch (IOException err) {
+                    Utils.sendConsoleMsg(SCore.NAME_2 + " Couldn't save the delayed command: "+command.getBrutCommand()+" >>" + err.getMessage());
+                    err.printStackTrace();
+                    continue;
+                }
                 pstmt.addBatch();
                 i++;
                 if (i % 1000 == 0 || i == commands.size()) {
                     pstmt.executeBatch(); // Execute every 1000 items.
                 }
             }
-        } catch (SQLException | IOException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+        } catch (SQLException e) {
+            Utils.sendConsoleMsg(SCore.NAME_2 + " " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (pstmt != null) {

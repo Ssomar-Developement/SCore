@@ -1,6 +1,8 @@
 package com.ssomar.score.newprojectiles;
+/*
+import com.ssomar.score.features.editor.FeatureEditorInterface;
 
-/* public class SProjectileEditor extends FeatureEditorInterface<NewExecutableItem> {
+public class SProjectileEditor extends FeatureEditorInterface<SProjectile> {
 
     private NewExecutableItem newExecutableItem;
 

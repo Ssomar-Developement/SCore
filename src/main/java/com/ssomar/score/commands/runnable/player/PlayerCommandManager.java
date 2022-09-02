@@ -63,6 +63,7 @@ public class PlayerCommandManager implements CommandManager {
         commands.add(new StrikeLightning());
         commands.add(new RegainHealth());
         commands.add(new RegainFood());
+        commands.add(new RegainSaturation());
         commands.add(new Head());
         commands.add(new Chestplate());
         commands.add(new Boots());
@@ -203,7 +204,8 @@ public class PlayerCommandManager implements CommandManager {
         boolean second = command.toUpperCase().startsWith("FLY ON")
                 || command.toUpperCase().startsWith("FLY OFF")
                 || command.toUpperCase().startsWith("REGAIN HEALTH")
-                || command.toUpperCase().startsWith("REGAIN FOOD");
+                || command.toUpperCase().startsWith("REGAIN FOOD")
+                || command.toUpperCase().startsWith("REGAIN SATURATION");
         for (String s : command.split(" ")) {
             if (first) {
                 first = false;

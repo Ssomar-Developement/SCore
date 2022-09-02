@@ -1,6 +1,6 @@
 package com.ssomar.score.newprojectiles;
-
-/* public class SProjectileEditorManager extends FeatureEditorManagerAbstract<com.ssomar.testRecode.executableItems.NewExecutableItemEditor, NewExecutableItem> {
+/*
+ public class SProjectileEditorManager extends FeatureEditorManagerAbstract<com.ssomar.testRecode.executableItems.NewExecutableItemEditor, NewExecutableItem> {
 
     private static SProjectileEditorManager instance;
 

@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.4</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -90,16 +90,16 @@
                             <goal>shade</goal>
                         </goals>
                         <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                        <!--<configuration>
+                        <!-- <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>-->
+                        </configuration> -->
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
                     <!-- C:\Users\octav\Documents\GitHub\
                     C:\Users\marce\Documents\GitHub\ -->
-                     <!--<execution>
+                    <!-- <execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -403,7 +403,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-03610a9514-1</version>
+            <version>main-4355caf505-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -490,6 +490,13 @@
             <groupId>world.bentobox</groupId>
             <artifactId>bentobox</artifactId>
             <version>1.21.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.brcdev-minecraft</groupId>
+            <artifactId>shopgui-api</artifactId>
+            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
 

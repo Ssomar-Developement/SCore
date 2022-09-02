@@ -266,6 +266,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             if (name.contains("minecraft:")) {
                 name = name.split("minecraft:")[1];
             }
+            if (name.contains("space:")) {
+                name = name.split("space:")[1];
+            }
             return name;
         } else {
             return enchantment.getName();
