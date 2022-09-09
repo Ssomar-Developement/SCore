@@ -6,8 +6,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
-import com.ssomar.score.projectiles.ProjectilesManager;
-import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.score.newprojectiles.SProjectile;
+import com.ssomar.score.newprojectiles.manager.SProjectilesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -166,12 +166,14 @@ public class Launch extends PlayerCommand {
 
                 double velocity = 1;
                 String type = args.get(0);
-                SProjectiles projectile = null;
+                Optional<SProjectile> projectileOptional = null;
+                SProjectile projectile = null;
                 if (projectiles.containsKey(type.toUpperCase())) {
                     entity = receiver.launchProjectile(projectiles.get(type.toUpperCase()));
-                } else if (ProjectilesManager.getInstance().containsProjectileWithID(type)) {
-                    projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
-                    entity = receiver.launchProjectile(projectiles.get(projectile.getIdentifierType()));
+                } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
+                    projectile = projectileOptional.get();
+                    //SsomarDev.testMsg("LAUNCH : "+projectile.hashCode());
+                    entity = receiver.launchProjectile(projectiles.get(projectile.getType().getValue().get().getValidNames()[0]));
                 } else entity = receiver.launchProjectile(Arrow.class);
 
                 if (entity != null) {
@@ -215,7 +217,7 @@ public class Launch extends PlayerCommand {
                         }
                     }
                     if (projectile != null) {
-                        projectile.executeTransformTheProjectile(entity, receiver);
+                        projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
                     }
 
                     if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

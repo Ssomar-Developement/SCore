@@ -3,9 +3,6 @@ package com.ssomar.score.menu;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
-import com.ssomar.score.projectiles.ProjectilesGUIManager;
-import com.ssomar.score.projectiles.ProjectilesManager;
-import com.ssomar.score.projectiles.types.SProjectiles;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,20 +80,7 @@ public class InteractionGUI implements Listener {
 
         boolean isShiftLeft = e.getClick().equals(ClickType.SHIFT_LEFT);
 
-
         switch (guiType) {
-            case "ProjectilesEditor":
-                GUI gui = new SimpleGUI(e.getClickedInventory());
-                String id = gui.getActually(GUI.TITLE_COLOR + "&e>>&l &aProjectile ID:");
-                //SsomarDev.testMsg("GUI ID: "+ id);
-                for (SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()) {
-                    if (proj.getId().equals(id)) {
-                        proj.sendInteractionConfigGUI(gui, player, itemS, title);
-                        break;
-                    }
-                }
-                break;
-
             case "SParticlesGUIManager":
                 if (isShiftLeft) {
                     SParticlesGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
@@ -106,11 +90,6 @@ public class InteractionGUI implements Listener {
             case "SParticleGUIManager":
                 SParticleGUIManager.getInstance().clicked(player, itemS, e.getClick());
                 break;
-
-            case "ProjectilesGUIManager":
-                if (isShiftLeft) {
-                    ProjectilesGUIManager.getInstance().shiftLeftClicked(player, itemS, title);
-                } else ProjectilesGUIManager.getInstance().clicked(player, itemS, title);
 
             default:
                 break;
@@ -138,14 +117,6 @@ public class InteractionGUI implements Listener {
         } else if (SParticleGUIManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             SParticleGUIManager.getInstance().receivedMessage(p, e.getMessage());
-        } else {
-            for (SProjectiles proj : ProjectilesManager.getInstance().getProjectiles()) {
-                if (proj.hasRequestChat()) {
-                    e.setCancelled(true);
-                    proj.sendMessageForConfig(proj.getConfigGUI(), p, e.getMessage());
-                    break;
-                }
-            }
         }
     }
 }

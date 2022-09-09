@@ -20,4 +20,11 @@ public class CriticalFeature extends BooleanFeature implements SProjectileFeatur
             aA.setCritical(getValue());
         }
     }
+
+    @Override
+    public CriticalFeature clone(FeatureParentInterface newParent) {
+        CriticalFeature clone = new  CriticalFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

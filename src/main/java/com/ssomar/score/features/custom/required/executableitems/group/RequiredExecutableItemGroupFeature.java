@@ -128,7 +128,7 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
 
     @Override
     public String getParentInfo() {
-        return getParent().getParentInfo();
+        return getParent().getParentInfo()+ ".("+getName()+")";
     }
 
     @Override

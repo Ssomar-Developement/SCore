@@ -1,6 +1,7 @@
 package com.ssomar.score.menu;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -91,51 +93,30 @@ public abstract class GUI implements IGUI {
         for (int j = 0; j < size; j++) {
             createBackGroundItem(j);
         }
-        init();
+        if(WRITABLE_BOOK == null) init();
     }
 
     public GUI(Inventory inv) {
         this.inv = inv;
-        this.init();
+        if(WRITABLE_BOOK == null) init();
     }
 
-    public void init() {
-        if (SCore.is1v12Less()) {
-            WRITABLE_BOOK = Material.valueOf("BOOK_AND_QUILL");
-            CLOCK = Material.valueOf("WATCH");
-            ENCHANTING_TABLE = Material.valueOf("ENCHANTMENT_TABLE");
-            NEXT_PAGE_MAT = Material.ARROW;
-            PREVIOUS_PAGE_MAT = Material.ARROW;
-            HEAD = Material.valueOf("SKULL_ITEM");
-            COMPARATOR = Material.valueOf("REDSTONE_COMPARATOR");
-            RED = Material.REDSTONE_BLOCK;
-            ORANGE = Material.BARRIER;
-            GREEN = Material.EMERALD;
-            YELLOW = Material.HOPPER;
-            PURPLE = Material.HOPPER;
-            BLUE = Material.ANVIL;
-            GRINDSTONE = Material.LEVER;
-        } else {
-            WRITABLE_BOOK = Material.WRITABLE_BOOK;
-            CLOCK = Material.CLOCK;
-            ENCHANTING_TABLE = Material.ENCHANTING_TABLE;
-            NEXT_PAGE_MAT = Material.PURPLE_STAINED_GLASS_PANE;
-            PREVIOUS_PAGE_MAT = Material.PURPLE_STAINED_GLASS_PANE;
-            HEAD = Material.PLAYER_HEAD;
-            COMPARATOR = Material.COMPARATOR;
-            RED = Material.RED_STAINED_GLASS_PANE;
-            ORANGE = Material.ORANGE_STAINED_GLASS_PANE;
-            GREEN = Material.LIME_STAINED_GLASS_PANE;
-            YELLOW = Material.YELLOW_STAINED_GLASS_PANE;
-            PURPLE = Material.MAGENTA_STAINED_GLASS_PANE;
-            BLUE = Material.BLUE_STAINED_GLASS_PANE;
-            if (!SCore.is1v13()) GRINDSTONE = Material.GRINDSTONE;
-            else GRINDSTONE = Material.ANVIL;
-        }
-
-        if (SCore.is1v18Plus()) {
-            LIGHTNING_ROD = Material.LIGHTNING_ROD;
-        } else LIGHTNING_ROD = Material.TRIPWIRE_HOOK;
+    public static void init() {
+        WRITABLE_BOOK = FixedMaterial.getMaterial(Arrays.asList("WRITABLE_BOOK", "BOOK_AND_QUILL"));
+        CLOCK = FixedMaterial.getMaterial(Arrays.asList("CLOCK", "WATCH"));
+        ENCHANTING_TABLE = FixedMaterial.getMaterial(Arrays.asList("ENCHANTING_TABLE", "ENCHANTMENT_TABLE"));
+        HEAD = FixedMaterial.getMaterial(Arrays.asList("PLAYER_HEAD", "SKULL_ITEM"));
+        COMPARATOR = FixedMaterial.getMaterial(Arrays.asList("COMPARATOR", "REDSTONE_COMPARATOR"));
+        NEXT_PAGE_MAT = FixedMaterial.getMaterial(Arrays.asList("PURPLE_STAINED_GLASS_PANE", "ARROW"));
+        PREVIOUS_PAGE_MAT = FixedMaterial.getMaterial(Arrays.asList("PURPLE_STAINED_GLASS_PANE", "ARROW"));
+        RED = FixedMaterial.getMaterial(Arrays.asList("RED_STAINED_GLASS_PANE", "REDSTONE_BLOCK"));
+        ORANGE = FixedMaterial.getMaterial(Arrays.asList("ORANGE_STAINED_GLASS_PANE", "BARRIER"));
+        GREEN = FixedMaterial.getMaterial(Arrays.asList("LIME_STAINED_GLASS_PANE", "EMERALD"));
+        YELLOW = FixedMaterial.getMaterial(Arrays.asList("YELLOW_STAINED_GLASS_PANE", "HOPPER"));
+        PURPLE = FixedMaterial.getMaterial(Arrays.asList("MAGENTA_STAINED_GLASS_PANE", "HOPPER"));
+        BLUE = FixedMaterial.getMaterial(Arrays.asList("BLUE_STAINED_GLASS_PANE", "ANVIL"));
+        GRINDSTONE = FixedMaterial.getMaterial(Arrays.asList("GRINDSTONE", "ANVIL"));
+        LIGHTNING_ROD = FixedMaterial.getMaterial(Arrays.asList("LIGHTNING_ROD", "TRIPWIRE_HOOK"));
     }
 
     public void load() {

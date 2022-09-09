@@ -143,7 +143,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public String getParentInfo() {
-        return getParent().getParentInfo();
+        return getParent().getParentInfo()+ ".("+getName()+")";
     }
 
     @Override

@@ -18,4 +18,11 @@ public class BounceFeature extends BooleanFeature implements SProjectileFeatureI
             ((Projectile) e).setBounce(getValue());
         }
     }
+
+    @Override
+    public BounceFeature clone(FeatureParentInterface newParent) {
+        BounceFeature clone = new BounceFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

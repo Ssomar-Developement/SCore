@@ -47,7 +47,7 @@ public class SafeBreak {
             SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
             boolean canceled = false;
             if (generateBreakEvent) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK 4");
+                SsomarDev.testMsg("DEBUG SAFE BREAK 4", DEBUG);
                 BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
                 bbE.setCancelled(false);
                 /* */
@@ -77,12 +77,12 @@ public class SafeBreak {
     }
 
     public static void breakBlockNaturallyWith(Block block, Optional<ItemStack> itemStack, boolean drop) {
-        SsomarDev.testMsg("DEBUG SAFE BREAK 7");
+        SsomarDev.testMsg("DEBUG SAFE BREAK 7", DEBUG);
         if (!SCore.is1v13Less() && block.getBlockData() instanceof Bisected) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 8");
+            SsomarDev.testMsg("DEBUG SAFE BREAK 8", DEBUG);
             Bisected b = (Bisected) block.getBlockData();
             if (b.getHalf().equals(Bisected.Half.BOTTOM)) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK 9");
+                SsomarDev.testMsg("DEBUG SAFE BREAK 9", DEBUG);
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
 

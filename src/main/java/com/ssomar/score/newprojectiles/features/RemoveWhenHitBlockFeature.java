@@ -23,4 +23,11 @@ public class RemoveWhenHitBlockFeature extends BooleanFeature implements SProjec
             ((Projectile) e).getPersistentDataContainer().set(new NamespacedKey(SCore.plugin, "remove_hit_block"), PersistentDataType.INTEGER, 1);
         }
     }
+
+    @Override
+    public RemoveWhenHitBlockFeature clone(FeatureParentInterface newParent) {
+        RemoveWhenHitBlockFeature clone = new RemoveWhenHitBlockFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

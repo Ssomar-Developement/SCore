@@ -68,8 +68,8 @@ public class CommandsHandler implements Listener {
         Player p = e.getPlayer();
         if (getInstance().getDelayedCommandsSaved().containsKey(p.getUniqueId())) {
             for (PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(p.getUniqueId())) {
-                SCore.plugin.getLogger().info("SCore will execute the delayed command saved for " + p.getName() + " : " + command.getBrutCommand());
                 command.run();
+                SCore.plugin.getLogger().info("SCore will execute the delayed command saved for " + p.getName() + " : " + command.getBrutCommand()+ " >> delay: "+command.getDelay());
             }
         }
         getInstance().getDelayedCommandsSaved().remove(p.getUniqueId());

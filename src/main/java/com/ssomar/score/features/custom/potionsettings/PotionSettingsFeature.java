@@ -10,6 +10,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColorIntegerFeature;
 import com.ssomar.score.features.types.PotionTypeFeature;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.newprojectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
@@ -17,7 +18,9 @@ import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -33,7 +36,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSettingsFeature, PotionSettingsFeature, PotionSettingsFeatureEditor, PotionSettingsFeatureEditorManager> {
+public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSettingsFeature, PotionSettingsFeature, PotionSettingsFeatureEditor, PotionSettingsFeatureEditorManager> implements SProjectileFeatureInterface {
 
     private ColorIntegerFeature color;
     private PotionTypeFeature potiontype;
@@ -244,6 +247,21 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     @Override
     public void openEditor(@NotNull Player player) {
         PotionSettingsFeatureEditorManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
+        if (e instanceof ThrownPotion) {
+            ThrownPotion lp = (ThrownPotion) e;
+            try {
+                ItemStack item = lp.getItem();
+                if (materialLaunched.equals(Material.LINGERING_POTION)) item.setType(Material.LINGERING_POTION);
+                else item.setType(Material.SPLASH_POTION);
+                item = addTo(item);
+                lp.setItem(item);
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
     }
 
 }

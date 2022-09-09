@@ -60,7 +60,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
                 FeatureReturnCheckPremium<Double> checkPremium = checkPremium("Double", valuePotential.get(), defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.ofNullable(checkPremium.getNewValue());
             } else {
-                errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
+                if(!valueStr.equals("NULL")) errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
                 this.value = defaultValue;
             }
         }

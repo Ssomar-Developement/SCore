@@ -23,4 +23,11 @@ public class IncendiaryFeature extends BooleanFeature implements SProjectileFeat
             fireball.setIsIncendiary(getValue());
         }
     }
+
+    @Override
+    public IncendiaryFeature clone(FeatureParentInterface newParent) {
+        IncendiaryFeature clone = new IncendiaryFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

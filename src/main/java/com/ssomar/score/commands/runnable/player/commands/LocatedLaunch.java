@@ -6,8 +6,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
-import com.ssomar.score.projectiles.ProjectilesManager;
-import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.score.newprojectiles.SProjectile;
+import com.ssomar.score.newprojectiles.manager.SProjectilesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -197,13 +197,14 @@ public class LocatedLaunch extends PlayerCommand {
         try {
             Projectile entity = null;
             String type = args.get(0);
-            SProjectiles projectile = null;
+            Optional<SProjectile> projectileOptional = null;
+            SProjectile projectile = null;
             if (projectiles.containsKey(type)) {
                 entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, projectiles.get(type));
-            } else if (ProjectilesManager.getInstance().containsProjectileWithID(type)) {
-                projectile = ProjectilesManager.getInstance().getProjectileWithID(type);
-                entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, projectiles.get(projectile.getIdentifierType()));
-                projectile.executeTransformTheProjectile(entity, receiver);
+            } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
+                projectile = projectileOptional.get();
+                entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, projectiles.get(projectile.getType().getValue().get().getValidNames()[0]));
+                projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
             } else entity = recLoc.getWorld().spawn(toLaunchLoc, Arrow.class);
 
             //	SsomarDev.testMsg("null entity: " + (entity==null));
@@ -274,7 +275,7 @@ public class LocatedLaunch extends PlayerCommand {
                 }
 
                 if (projectile != null) {
-                    projectile.executeTransformTheProjectile(entity, receiver);
+                    projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
                 }
 
                 if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

@@ -20,4 +20,11 @@ public class SilentFeature extends BooleanFeature implements SProjectileFeatureI
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
         e.setSilent(getValue());
     }
+
+    @Override
+    public SilentFeature clone(FeatureParentInterface newParent) {
+        SilentFeature clone = new SilentFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

@@ -24,4 +24,11 @@ public class DamageFeature extends DoubleFeature implements SProjectileFeatureIn
             }
         }
     }
+
+    @Override
+    public DamageFeature clone(FeatureParentInterface newParent) {
+        DamageFeature clone = new DamageFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

@@ -148,7 +148,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public String getParentInfo() {
-        return getParent().getParentInfo();
+        return getParent().getParentInfo()+ ".("+getName()+")";
     }
 
     @Override

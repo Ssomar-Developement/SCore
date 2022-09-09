@@ -168,5 +168,4 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
     public void deleteFeature(@NotNull Player editor, PotionEffectFeature feature) {
         effects.remove(feature.getId());
     }
-
 }

@@ -40,7 +40,7 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "NULL");
-        if (!valueStr.equals("NULL")) {
+        if (!valueStr.equals("NULL") && !valueStr.equals("NO_COLOR")) {
             Optional<Integer> valuePotential = NTools.getInteger(valueStr);
             if (valuePotential.isPresent()) {
                 this.value = valuePotential;

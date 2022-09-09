@@ -19,4 +19,11 @@ public class ChargedFeature extends BooleanFeature implements SProjectileFeature
         }
     }
 
+    @Override
+    public ChargedFeature clone(FeatureParentInterface newParent) {
+        ChargedFeature clone = new  ChargedFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
+
 }

@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 public class GravityFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
-
     public GravityFeature(FeatureParentInterface parent) {
         super(parent, "gravity", true, "Gravity", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("ELYTRA", "FEATHER")), false, false);
     }
@@ -19,5 +18,12 @@ public class GravityFeature extends BooleanFeature implements SProjectileFeature
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
         e.setGravity(getValue());
+    }
+
+    @Override
+    public GravityFeature clone(FeatureParentInterface newParent) {
+        GravityFeature clone = new GravityFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
     }
 }

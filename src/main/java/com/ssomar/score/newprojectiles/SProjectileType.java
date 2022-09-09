@@ -2,64 +2,41 @@ package com.ssomar.score.newprojectiles;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeature;
-import com.ssomar.score.features.custom.potioneffects.group.PotionEffectGroupFeature;
-import com.ssomar.score.features.types.*;
-import com.ssomar.score.newprojectiles.features.BounceFeature;
-import com.ssomar.score.newprojectiles.features.ChargedFeature;
-import com.ssomar.score.newprojectiles.features.ColorFeature;
-import com.ssomar.score.newprojectiles.features.CriticalFeature;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeature;
+import com.ssomar.score.features.custom.potionsettings.PotionSettingsFeature;
+import com.ssomar.score.newprojectiles.features.*;
+import com.ssomar.score.utils.FixedMaterial;
+import lombok.Getter;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public enum SProjectileType {
-    ARROW("ARROW"),
-    EGG("EGG"),
-    FIREBALL("FIREBALL", "SMALL_FIREBALL", "DRAGON_FIREBALL"),
-    SPLASH_POTION("SPLASH_POTION"),
-    LINGERING_POTION("LINGERING_POTION"),
-    ENDER_PEARL("ENDER_PEARL"),
-    SHULKER_BULLET("SHULKER_BULLET"),
-    SNOWBALL("SNOWBALL"),
-    TRIDENT("TRIDENT"),
-    WITHER_SKULL("WITHER_SKULL");
+    ARROW(FixedMaterial.getMaterial(Arrays.asList("ARROW")), "ARROW"),
+    EGG(FixedMaterial.getMaterial(Arrays.asList("EGG")), "EGG"),
+    FIREBALL(FixedMaterial.getMaterial(Arrays.asList("FIRE_CHARGE")), "FIREBALL", "SMALL_FIREBALL"),
+    SPLASH_POTION(FixedMaterial.getMaterial(Arrays.asList("SPLASH_POTION")), "SPLASH_POTION"),
+    LINGERING_POTION(FixedMaterial.getMaterial(Arrays.asList("LINGERING_POTION")), "LINGERING_POTION"),
+    ENDER_PEARL(FixedMaterial.getMaterial(Arrays.asList("ENDER_PEARL")), "ENDER_PEARL"),
+    SHULKER_BULLET(FixedMaterial.getMaterial(Arrays.asList("PURPLE_SHULKER_BOX")), "SHULKER_BULLET"),
+    SNOWBALL(FixedMaterial.getMaterial(Arrays.asList("SNOWBALL", "SNOW_BALL")), "SNOWBALL"),
+    TRIDENT(FixedMaterial.getMaterial(Arrays.asList("TRIDENT")), "TRIDENT"),
+    WITHER_SKULL(FixedMaterial.getMaterial(Arrays.asList("WITHER_SKELETON_SKULL")), "WITHER_SKULL"),
+    DRAGON_FIREBALL(FixedMaterial.getMaterial(Arrays.asList("DRAGON_HEAD")), "DRAGON_FIREBALL"),
+    THROWNEXPBOTTLE(FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), "THROWNEXPBOTTLE");
 
+    private Material material;
     private final String[] validNames;
 
-    private BounceFeature bounce;
-    private ChargedFeature charged;
-    private CriticalFeature critical;
 
-    private BooleanFeature despawn;
-    private BooleanFeature glowing;
-    private BooleanFeature gravity;
-    private BooleanFeature incendiary;
-    private BooleanFeature invisible;
-    private BooleanFeature pickup;
-    private BooleanFeature removeWhenHitBlock;
-    private BooleanFeature silent;
-
-    private ColorFeature color;
-
-    private ColoredStringFeature customName;
-
-    private DoubleFeature damage;
-    private DoubleFeature radius;
-    private DoubleFeature velocity;
-
-    private IntegerFeature knockbackStrength;
-    private IntegerFeature piercingLevel;
-
-    private EnchantmentsGroupFeature enchantments;
-
-    private PotionEffectGroupFeature potionEffects;
-
-    private MaterialFeature visualItem;
-    private IntegerFeature visualItemCustomTexture;
-
-    SProjectileType(String... validNames) {
+    SProjectileType(Material material, String... validNames) {
+        this.material = material;
         this.validNames = validNames;
+
     }
 
 
@@ -74,76 +51,83 @@ public enum SProjectileType {
         return null;
     }
 
-    public List<FeatureAbstract> getFeatures() {
+    public List<FeatureAbstract> getFeatures(FeatureParentInterface parent) {
         List<FeatureAbstract> features = new ArrayList<>();
 
-        features.add(customName);
-        features.add(invisible);
-        features.add(glowing);
-        features.add(bounce);
-        features.add(despawn);
-        features.add(velocity);
-        features.add(silent);
+        features.add(new CustomNameVisisbleFeature(parent));
+        features.add(new CustomNameFeature(parent));
+        features.add(new InvisibleFeature(parent));
+        features.add(new GlowingFeature(parent));
+        features.add(new BounceFeature(parent));
+        features.add(new DespawnFeature(parent));
+        features.add(new VelocityFeature(parent));
+        features.add(new SilentFeature(parent));
 
-        if(!SCore.is1v13Less()) {
-            features.add(removeWhenHitBlock);
+        if (!SCore.is1v13Less()) {
+            features.add(new RemoveWhenHitBlockFeature(parent));
         }
 
-        switch (this){
+        switch (this) {
             case ARROW:
-                features.add(gravity);
-                if(!SCore.is1v13Less()) {
-                    features.add(color);
-                    features.add(piercingLevel);
-                    features.add(critical);
-                    features.add(damage);
-                    features.add(knockbackStrength);
-                    features.add(pickup);
+                features.add(new GravityFeature(parent));
+                if (!SCore.is1v13Less()) {
+                    features.add(new ColorFeature(parent));
+                    features.add(new PierceLevelFeature(parent));
+                    features.add(new CriticalFeature(parent));
+                    features.add(new DamageFeature(parent));
+                    features.add(new KnockbackStrengthFeature(parent));
+                    features.add(new PickupFeature(parent));
                 }
                 break;
-            case EGG: case ENDER_PEARL: case SNOWBALL:
-                features.add(gravity);
-                if(!SCore.is1v13Less()) {
-                    features.add(visualItemCustomTexture);
+            case EGG:
+            case ENDER_PEARL:
+            case SNOWBALL:
+            case THROWNEXPBOTTLE:
+                features.add(new GravityFeature(parent));
+                if (!SCore.is1v13Less()) {
+                    features.add(new VisualItemFeature(parent));
+                    features.add(new CustomModelDataFeature(parent));
                 }
                 break;
-            case FIREBALL:
-                features.add(gravity);
-                features.add(radius);
-                features.add(incendiary);
+            case FIREBALL: case DRAGON_FIREBALL:
+                features.add(new GravityFeature(parent));
+                features.add(new RadiusFeature(parent));
+                features.add(new IncendiaryFeature(parent));
                 break;
-            case SPLASH_POTION: case LINGERING_POTION:
-                features.add(gravity);
-                if(!SCore.is1v13Less()) {
-                    features.add(color);
+            case SPLASH_POTION:
+            case LINGERING_POTION:
+                features.add(new GravityFeature(parent));
+                if (!SCore.is1v13Less()) {
+                    features.add(new ColorFeature(parent));
                 }
-                features.add(potionEffects);
+                features.add(new PotionSettingsFeature(parent));
                 break;
             case SHULKER_BULLET:
-                features.add(gravity);
+                features.add(new GravityFeature(parent));
                 break;
             case TRIDENT:
-                features.add(gravity);
-                if(!SCore.is1v13Less()) {
-                    features.add(piercingLevel);
-                    features.add(critical);
-                    features.add(knockbackStrength);
-                    features.add(pickup);
-                    features.add(visualItemCustomTexture);
+                features.add(new GravityFeature(parent));
+                if (!SCore.is1v13Less()) {
+                    features.add(new PierceLevelFeature(parent));
+                    features.add(new CriticalFeature(parent));
+                    features.add(new KnockbackStrengthFeature(parent));
+                    features.add(new PickupFeature(parent));
+                    features.add(new CustomModelDataFeature(parent));
                 }
-                if(!SCore.is1v12Less()){
-                    features.add(enchantments);
+                if (!SCore.is1v12Less()) {
+                    features.add(new EnchantmentsFeature(parent, false));
                 }
                 break;
             case WITHER_SKULL:
-                features.add(radius);
-                features.add(incendiary);
-                features.add(charged);
+                features.add(new GravityFeature(parent));
+                features.add(new RadiusFeature(parent));
+                features.add(new IncendiaryFeature(parent));
+                features.add(new ChargedFeature(parent));
                 break;
         }
 
-        if(!SCore.is1v11Less()) {
-            //features.add(particles);
+        if (!SCore.is1v11Less()) {
+            features.add(new ParticlesGroupFeature(parent, false));
         }
 
         return features;

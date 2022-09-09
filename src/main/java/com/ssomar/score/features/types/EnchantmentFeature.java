@@ -39,7 +39,8 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String enchantStr = config.getString(this.getName(), "NULL");
-        Optional<Enchantment> optional = getEnchantment(enchantStr.toUpperCase());
+        if(!enchantStr.contains("SPACE_")) enchantStr = enchantStr.toUpperCase();
+        Optional<Enchantment> optional = getEnchantment(enchantStr);
         if (!optional.isPresent()) {
             errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html");
             value = Optional.empty();
@@ -267,7 +268,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
                 name = name.split("minecraft:")[1];
             }
             if (name.contains("space:")) {
-                name = name.split("space:")[1];
+                name = "SPACE_"+enchantment.getName();
             }
             return name;
         } else {
@@ -278,7 +279,10 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public Optional<Enchantment> getEnchantment(String enchantmentName) {
         Enchantment enchantment = null;
         try {
-            if (!SCore.is1v12Less()) {
+            if(enchantmentName.contains("SPACE_")){
+                enchantment = Enchantment.getByName(enchantmentName.replace("SPACE_", ""));
+            }
+            else if (!SCore.is1v12Less()) {
                 enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
             } else {
                 enchantment = Enchantment.getByName(enchantmentName);

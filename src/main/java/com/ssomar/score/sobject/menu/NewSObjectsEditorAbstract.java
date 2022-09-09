@@ -37,6 +37,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     private String path;
     private NewSObjectManager manager;
     private NewSObjectLoader loader;
+    private String deleteArg;
 
     public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader) {
         super(title, 5 * 9);
@@ -47,6 +48,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         this.path = path;
         this.manager = manager;
         this.loader = loader;
+        this.deleteArg = "delete";
         this.load();
     }
 
@@ -190,7 +192,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     public void sendMessageDelete(String objectID, Player p) {
         p.sendMessage(StringConverter.coloredString("&4[" + sPlugin.getNameDesign() + "] &cHey you want delete the " + sPlugin.getObjectName() + ": &6" + objectID));
         TextComponent delete = new TextComponent(StringConverter.coloredString("&4&l[&c&lCLICK HERE TO DELETE&4&l]"));
-        delete.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + sPlugin.getShortName().toLowerCase() + " delete " + objectID + " confirm"));
+        delete.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + sPlugin.getShortName().toLowerCase() + " "+deleteArg+" " + objectID + " confirm"));
         delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&4Click here to delete this " + sPlugin.getObjectName())).create()));
         p.spigot().sendMessage(delete);
         p.updateInventory();

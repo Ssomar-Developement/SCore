@@ -24,4 +24,11 @@ public class KnockbackStrengthFeature extends IntegerFeature implements SProject
         }
     }
 
+    @Override
+    public KnockbackStrengthFeature clone(FeatureParentInterface newParent) {
+        KnockbackStrengthFeature clone = new KnockbackStrengthFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
+
 }

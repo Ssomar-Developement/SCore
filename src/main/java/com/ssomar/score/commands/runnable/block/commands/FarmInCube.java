@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -119,6 +120,11 @@ public class FarmInCube extends BlockCommand {
                     public void run() {
                         block.setType(oldMaterial);
                         BlockData data = block.getState().getBlockData().clone();
+                        if(aInfo.getBlockFace() != null && data instanceof Directional){
+                            Directional directional = (Directional) data;
+                            directional.setFacing(aInfo.getBlockFace());
+                            block.setBlockData(directional);
+                        }
                         replant(block, data, oldMaterial, p);
                     }
                 };

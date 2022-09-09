@@ -45,6 +45,8 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfPlayerMustBeOnTheBlock(this));
         conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
         conditions.add(new IfPlantFullyGrown(this));
+        conditions.add(new IfContainerEmpty(this));
+        conditions.add(new IfContainerNotEmpty(this));
 
         /* Number condition features */
         if(!SCore.is1v12Less()) conditions.add(new IfBlockAge(this));

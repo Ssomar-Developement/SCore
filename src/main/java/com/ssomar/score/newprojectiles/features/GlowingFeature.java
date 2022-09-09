@@ -16,4 +16,11 @@ public class GlowingFeature extends BooleanFeature implements SProjectileFeature
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
         e.setGlowing(getValue());
     }
+
+    @Override
+    public GlowingFeature clone(FeatureParentInterface newParent) {
+        GlowingFeature clone = new GlowingFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

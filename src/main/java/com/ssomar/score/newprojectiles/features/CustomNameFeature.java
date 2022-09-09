@@ -1,88 +1,28 @@
 package com.ssomar.score.newprojectiles.features;
 
-/* public class CustomNameFeature extends DecorateurCustomProjectiles {
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.types.ColoredStringFeature;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-    boolean isCustomNameVisible;
-    String customName;
-    boolean askName;
+import java.util.Optional;
 
-    public CustomNameFeature(CustomProjectile cProj) {
-        super.cProj = cProj;
-        isCustomNameVisible = false;
-        askName = false;
-        customName = "";
+public class CustomNameFeature extends ColoredStringFeature implements SProjectileFeatureInterface {
+
+    public CustomNameFeature(FeatureParentInterface parent) {
+        super(parent, "customName", Optional.of("Default name"), "Custom Name", new String[]{}, Material.NAME_TAG, false, false);
     }
 
     @Override
-    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
-        isCustomNameVisible = projConfig.getBoolean("customNameVisible", false);
-        customName = StringConverter.coloredString(projConfig.getString("customName", ""));
-        return cProj.loadConfiguration(filePath, projConfig, showError);
+    public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
+        if (getColoredValue().isPresent()) e.setCustomName(getColoredValue().get());
     }
 
     @Override
-    public void saveConfiguration(FileConfiguration config) {
-        config.set("customNameVisible", isCustomNameVisible);
-        config.set("customName", customName);
-        cProj.saveConfiguration(config);
+    public CustomNameFeature clone(FeatureParentInterface newParent) {
+        CustomNameFeature clone = new  CustomNameFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
     }
-
-    @Override
-    public void transformTheProjectile(Entity e, Player launcher) {
-        e.setCustomNameVisible(isCustomNameVisible);
-        e.setCustomName(customName);
-        cProj.transformTheProjectile(e, launcher);
-    }
-
-    @Override
-    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
-        SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        gui.addItem(Material.NAME_TAG, 1, GUI.TITLE_COLOR + "1) Custom name visible", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        gui.updateBoolean(GUI.TITLE_COLOR + "1) Custom name visible", isCustomNameVisible);
-
-        gui.addItem(Material.NAME_TAG, 1, GUI.TITLE_COLOR + "2) Custom name", false, false, GUI.CLICK_HERE_TO_CHANGE, "&7actually: ");
-        if (customName.isEmpty()) gui.updateActually(GUI.TITLE_COLOR + "2) Custom name", "&cNO NAME");
-        else gui.updateActually(GUI.TITLE_COLOR + "2) Custom name", customName);
-        return gui;
-    }
-
-    @Override
-    public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
-        if (cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
-        String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change1 = StringConverter.decoloredString(GUI.TITLE_COLOR + "1) Custom name visible");
-        String change2 = StringConverter.decoloredString(GUI.TITLE_COLOR + "2) Custom name");
-
-        if (itemName.equals(change1)) {
-            boolean bool = gui.getBoolean(GUI.TITLE_COLOR + "1) Custom name visible");
-            gui.updateBoolean(GUI.TITLE_COLOR + "1) Custom name visible", !bool);
-        } else if (itemName.equals(change2)) {
-            requestChat = true;
-            askName = true;
-            player.closeInventory();
-            player.sendMessage(StringConverter.coloredString("&2&l>> &aEnter the new &eCustomName&a:"));
-        } else return false;
-        return true;
-    }
-
-    @Override
-    public void extractInfosGUI(GUI gui) {
-        cProj.extractInfosGUI(gui);
-        isCustomNameVisible = gui.getBoolean(GUI.TITLE_COLOR + "1) Custom name visible");
-        customName = gui.getActuallyWithColor(GUI.TITLE_COLOR + "2) Custom name");
-    }
-
-    @Override
-    public boolean messageForConfig(SimpleGUI gui, Player player, String message) {
-        if (cProj.messageForConfig(gui, player, message)) return true;
-        if (askName) {
-            gui.updateActually(GUI.TITLE_COLOR + "2) Custom name", message);
-            gui.openGUISync(player);
-            askName = false;
-            requestChat = false;
-            return true;
-        }
-        return false;
-    }
-
-}*/
+}

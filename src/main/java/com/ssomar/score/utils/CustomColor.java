@@ -1,5 +1,6 @@
 package com.ssomar.score.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
 import static org.bukkit.Color.AQUA;
@@ -152,6 +153,57 @@ public class CustomColor {
             return Color.fromRGB(1, 2, 3);
         } else {
             return Color.AQUA;
+        }
+    }
+
+    public static Color fromChatColor(ChatColor color) {
+        switch (color){
+            case BLACK:
+                return Color.BLACK;
+            case DARK_BLUE:
+                return Color.NAVY;
+            case DARK_GREEN:
+                return Color.GREEN;
+            case DARK_AQUA:
+                return Color.TEAL;
+            case DARK_RED:
+                return Color.MAROON;
+            case DARK_PURPLE:
+                return Color.PURPLE;
+            case GOLD:
+                return Color.ORANGE;
+            case GRAY:
+                return Color.GRAY;
+            case DARK_GRAY:
+                return Color.SILVER;
+            case BLUE:
+                return Color.BLUE;
+            case GREEN:
+                return Color.LIME;
+            case AQUA:
+                return Color.AQUA;
+            case RED:
+                return Color.RED;
+            case LIGHT_PURPLE:
+                return Color.FUCHSIA;
+            case YELLOW:
+                return Color.YELLOW;
+            case WHITE:
+                return Color.WHITE;
+            case MAGIC:
+                return AQUA;
+            case BOLD:
+                return AQUA;
+            case STRIKETHROUGH:
+                return AQUA;
+            case UNDERLINE:
+                return AQUA;
+            case ITALIC:
+                return AQUA;
+            case RESET:
+                return AQUA;
+            default:
+                return AQUA;
         }
     }
 }

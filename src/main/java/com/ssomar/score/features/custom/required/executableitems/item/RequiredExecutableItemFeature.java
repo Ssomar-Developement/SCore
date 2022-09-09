@@ -206,7 +206,8 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
             if (eiOpt.isPresent() && eiOpt.get().getId().equals(executableItem.getValue().get().getId())) {
                 if (needed >= it.getAmount()) {
                     needed -= it.getAmount();
-                    inventory.remove(it);
+                    int slot = inventory.first(it);
+                    inventory.clear(slot);
                 } else {
                     it.setAmount(it.getAmount() - needed);
                     needed = 0;

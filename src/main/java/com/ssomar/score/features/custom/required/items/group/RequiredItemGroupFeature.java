@@ -136,7 +136,7 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
     @Override
     public String getParentInfo() {
-        return getParent().getParentInfo();
+        return getParent().getParentInfo()+ ".("+getName()+")";
     }
 
     @Override

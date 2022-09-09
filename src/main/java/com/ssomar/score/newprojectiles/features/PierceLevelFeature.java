@@ -24,4 +24,11 @@ public class PierceLevelFeature extends IntegerFeature implements SProjectileFea
                 aA.setPierceLevel(getValue().get());
         }
     }
+
+    @Override
+    public PierceLevelFeature clone(FeatureParentInterface newParent) {
+        PierceLevelFeature clone = new PierceLevelFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

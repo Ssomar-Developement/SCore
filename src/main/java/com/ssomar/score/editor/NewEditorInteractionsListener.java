@@ -70,6 +70,10 @@ import com.ssomar.score.features.custom.materialwithgroupsandtags.group.Material
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditor;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditorManager;
+import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeatureEditor;
+import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.particles.particle.ParticleFeatureEditor;
+import com.ssomar.score.features.custom.particles.particle.ParticleFeatureEditorManager;
 import com.ssomar.score.features.custom.patterns.group.PatternsGroupFeatureEditor;
 import com.ssomar.score.features.custom.patterns.group.PatternsGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.patterns.subgroup.PatternFeatureEditor;
@@ -111,6 +115,8 @@ import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGro
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditor;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditorManager;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.newprojectiles.SProjectileEditor;
+import com.ssomar.score.newprojectiles.SProjectileEditorManager;
 import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
@@ -365,6 +371,15 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof AroundBlockGroupFeatureEditor) {
             AroundBlockGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
+        } else if (holder instanceof SProjectileEditor) {
+            SProjectileEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        } else if (holder instanceof ParticleFeatureEditor) {
+            ParticleFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        } else if (holder instanceof ParticlesGroupFeatureEditor) {
+            ParticlesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
         }
 
     }
@@ -567,6 +582,18 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (AroundBlockGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             AroundBlockGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (SProjectileEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            SProjectileEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (ParticleFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ParticleFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (ParticlesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ParticlesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

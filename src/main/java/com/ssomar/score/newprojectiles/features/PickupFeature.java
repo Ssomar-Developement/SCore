@@ -22,4 +22,11 @@ public class PickupFeature extends com.ssomar.score.features.types.PickupFeature
             ((AbstractArrow) e).setPickupStatus(getValue().get());
     }
 
+    @Override
+    public PickupFeature clone(FeatureParentInterface newParent) {
+        PickupFeature clone = new PickupFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
+
 }

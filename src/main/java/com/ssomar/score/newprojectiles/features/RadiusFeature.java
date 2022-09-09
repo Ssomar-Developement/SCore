@@ -24,4 +24,11 @@ public class RadiusFeature extends DoubleFeature implements SProjectileFeatureIn
             fireball.setYield(getValue().get().floatValue());
         }
     }
+
+    @Override
+    public RadiusFeature clone(FeatureParentInterface newParent) {
+        RadiusFeature clone = new RadiusFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

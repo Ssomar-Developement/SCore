@@ -28,4 +28,11 @@ public class DespawnFeature extends IntegerFeature implements SProjectileFeature
             runnable.runTaskLater(SCore.plugin, getValue().get() * 20);
         }
     }
+
+    @Override
+    public DespawnFeature clone(FeatureParentInterface newParent) {
+        DespawnFeature clone = new DespawnFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

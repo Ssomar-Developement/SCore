@@ -29,6 +29,7 @@ public class ToolsListMaterial {
             plantWithGrowth.add(Material.BEETROOTS);
             plantWithGrowth.add(Material.POTATOES);
             plantWithGrowth.add(Material.NETHER_WART);
+            plantWithGrowth.add(Material.COCOA);
         }
 
         blockAndItemMaterial = new HashMap<>();
@@ -43,6 +44,7 @@ public class ToolsListMaterial {
             blockAndItemMaterial.put(Material.CARROTS, Material.CARROT);
             blockAndItemMaterial.put(Material.BEETROOTS, Material.BEETROOT_SEEDS);
             blockAndItemMaterial.put(Material.POTATOES, Material.POTATO);
+            blockAndItemMaterial.put(Material.COCOA, Material.COCOA_BEANS);
         }
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);

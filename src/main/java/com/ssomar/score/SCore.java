@@ -16,7 +16,8 @@ import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
-import com.ssomar.score.projectiles.ProjectilesLoader;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.newprojectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.ProtocolibAPI;
 import com.ssomar.score.utils.Utils;
@@ -185,6 +186,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         this.loadDependency();
 
+        GUI.init();
+
         GeneralConfig.getInstance();
 
         MessageMain.getInstance().load();
@@ -206,7 +209,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         this.getCommand("score").setExecutor(commandClass);
 
         /* Projectiles instance part */
-        ProjectilesLoader.getInstance().load();
+        SProjectileLoader.getInstance().load();
 
         CommandsHandler.getInstance().onEnable();
 
@@ -392,7 +395,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         LoopManager.getInstance();
 
         /* Projectiles instance part */
-        ProjectilesLoader.getInstance().reload();
+        SProjectileLoader.getInstance().reload();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 
@@ -411,7 +414,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public String getObjectName() {
-        return null;
+        return "projectiles";
     }
 
     @Override

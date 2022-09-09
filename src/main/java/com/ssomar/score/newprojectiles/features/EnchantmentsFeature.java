@@ -1,74 +1,44 @@
 package com.ssomar.score.newprojectiles.features;
 
-/* public class EnchantmentsFeature extends DecorateurCustomProjectiles {
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
+import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeature;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-    boolean askEnchantments;
-    private EnchantmentsGroupFeature enchants;
+public class EnchantmentsFeature extends EnchantmentsGroupFeature implements SProjectileFeatureInterface {
 
-    public EnchantmentsFeature(CustomProjectile cProj) {
-        super.cProj = cProj;
-        enchants = new EnchantmentsGroupFeature(null, false);
-        this.askEnchantments = false;
+
+    public EnchantmentsFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
+        super(parent, notSaveIfNoValue);
     }
 
     @Override
-    public boolean loadConfiguration(String filePath, FileConfiguration projConfig, boolean showError) {
-        if (projConfig.contains("enchantments")) {
-            enchants.load(SCore.plugin, projConfig, true);
-        }
-        return cProj.loadConfiguration(filePath, projConfig, showError) && true;
-    }
-
-    @Override
-    public void saveConfiguration(FileConfiguration config) {
-
-        // #TODO test the saving
-        enchants.save(config);
-        cProj.saveConfiguration(config);
-    }
-
-    @Override
-    public void transformTheProjectile(Entity e, Player launcher) {
+    public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
         if (e instanceof Trident) {
             Trident t = (Trident) e;
-
             try {
                 ItemStack item = t.getItem();
                 ItemMeta meta = item.getItemMeta();
-                for (EnchantmentWithLevelFeature enchant : enchants.getEnchantments().values()) {
+                for (EnchantmentWithLevelFeature enchant : getValue().getEnchantments().values()) {
                     meta.addEnchant(enchant.getEnchantment().getValue().get(), enchant.getLevel().getValue().get(), true);
                 }
                 item.setItemMeta(meta);
                 t.setItem(item);
-            } catch (NoSuchMethodError exception) {
+            } catch (NoSuchMethodError ignored) {
             }
         }
-        cProj.transformTheProjectile(e, launcher);
     }
 
     @Override
-    public SimpleGUI loadConfigGUI(SProjectiles sProj) {
-        SimpleGUI gui = cProj.loadConfigGUI(sProj);
-        // TODO echantmentsGUI
-        gui.addItem(Material.ENCHANTED_BOOK, 1, GUI.TITLE_COLOR + "Enchantments", false, false, "&c&oNOT EDITABLE IN GAME FOR THE MOMENT");
-        return gui;
+    public EnchantmentsFeature clone(FeatureParentInterface newParent) {
+        EnchantmentsFeature clone = new EnchantmentsFeature(newParent, false);
+        clone.setEnchantments(getEnchantments());
+        return clone;
     }
 
-    @Override
-    public boolean interactionConfigGUI(GUI gui, Player player, ItemStack itemS, String title) {
-        if (cProj.interactionConfigGUI(gui, player, itemS, title)) return true;
-        String itemName = StringConverter.decoloredString(itemS.getItemMeta().getDisplayName());
-        String change = StringConverter.decoloredString(GUI.TITLE_COLOR + "Pickup");
-
-        if (itemName.equals(change)) {
-            //this.changeEnchantment(gui);
-        }
-
-        return false;
-    }
-
-    @Override
-    public void extractInfosGUI(GUI gui) {
-        cProj.extractInfosGUI(gui);
-    }
-}*/
+}

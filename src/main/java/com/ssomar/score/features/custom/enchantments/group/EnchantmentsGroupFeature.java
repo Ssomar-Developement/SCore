@@ -6,12 +6,17 @@ import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.newprojectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -22,7 +27,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<EnchantmentsGroupFeature, EnchantmentsGroupFeature, EnchantmentsGroupFeatureEditor, EnchantmentsGroupFeatureEditorManager> implements FeaturesGroup<EnchantmentWithLevelFeature> {
+public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<EnchantmentsGroupFeature, EnchantmentsGroupFeature, EnchantmentsGroupFeatureEditor, EnchantmentsGroupFeatureEditorManager> implements FeaturesGroup<EnchantmentWithLevelFeature>, SProjectileFeatureInterface {
 
     private Map<String, EnchantmentWithLevelFeature> enchantments;
     private boolean notSaveIfNoValue;
@@ -170,5 +175,23 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     @Override
     public void deleteFeature(@NotNull Player editor, EnchantmentWithLevelFeature feature) {
         enchantments.remove(feature.getId());
+    }
+
+    @Override
+    public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
+        if (e instanceof Trident) {
+            Trident t = (Trident) e;
+
+            try {
+                ItemStack item = t.getItem();
+                ItemMeta meta = item.getItemMeta();
+                for (EnchantmentWithLevelFeature eF : enchantments.values()) {
+                    meta.addEnchant(eF.getEnchantment().getValue().get(), eF.getLevel().getValue().get(), true);
+                }
+                item.setItemMeta(meta);
+                t.setItem(item);
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
     }
 }

@@ -38,4 +38,11 @@ public class InvisibleFeature extends BooleanFeature implements SProjectileFeatu
             });
         }
     }
+
+    @Override
+    public InvisibleFeature clone(FeatureParentInterface newParent) {
+        InvisibleFeature clone = new InvisibleFeature(newParent);
+        clone.setValue(getValue());
+        return clone;
+    }
 }

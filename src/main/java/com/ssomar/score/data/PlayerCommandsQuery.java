@@ -139,7 +139,7 @@ public class PlayerCommandsQuery {
         }
     }
 
-    public static List<PlayerRunCommand> selectCommandsForPlayer(Connection conn, UUID uuid) {
+    /* public static List<PlayerRunCommand> selectCommandsForPlayer(Connection conn, UUID uuid) {
         String sql = "SELECT " + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + " FROM " + TABLE_COMMANDS_PLAYER + " where " + COL_UUID_RECEIVER + "=? ORDER BY " + COL_RUN_TIME;
 
         List<PlayerRunCommand> list = new ArrayList<>();
@@ -190,7 +190,7 @@ public class PlayerCommandsQuery {
             }
         }
         return list;
-    }
+    }*/
 
     public static Map<UUID, List<PlayerRunCommand>> loadSavedCommands(Connection conn) {
         String sql = "SELECT " + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + "," + COL_UUID_RECEIVER + " FROM " + TABLE_COMMANDS_PLAYER + " ORDER BY " + COL_RUN_TIME;

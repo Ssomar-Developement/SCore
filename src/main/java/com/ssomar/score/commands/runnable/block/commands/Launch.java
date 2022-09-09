@@ -5,8 +5,8 @@ import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
-import com.ssomar.score.projectiles.ProjectilesManager;
-import com.ssomar.score.projectiles.types.SProjectiles;
+import com.ssomar.score.newprojectiles.SProjectile;
+import com.ssomar.score.newprojectiles.manager.SProjectilesManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,6 +56,7 @@ public class Launch extends BlockCommand {
 
         try {
             Entity entity = null;
+            Optional<SProjectile> projectileOptional = null;
             if (args.get(0).equalsIgnoreCase("ARROW"))
                 entity = launchProjectile(block, directional, Arrow.class, speed);
             else if (args.get(0).equalsIgnoreCase("SPECTRALARROW"))
@@ -87,10 +88,10 @@ public class Launch extends BlockCommand {
                 entity = launchProjectile(block, directional, Trident.class, speed);
             else if (args.get(0).equalsIgnoreCase("WITHERSKULL"))
                 entity = launchProjectile(block, directional, WitherSkull.class, speed);
-            else if (ProjectilesManager.getInstance().containsProjectileWithID(args.get(0))) {
-                SProjectiles projectile = ProjectilesManager.getInstance().getProjectileWithID(args.get(0));
+            else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(args.get(0))).isPresent()) {
+                SProjectile projectile = projectileOptional.get();
 
-                switch (projectile.getIdentifierType()) {
+                switch (projectile.getType().getValue().get().getValidNames()[0]) {
                     case "SPECTRALARROW":
                         entity = launchProjectile(block, directional, SpectralArrow.class, speed);
                         break;
@@ -137,7 +138,7 @@ public class Launch extends BlockCommand {
                         entity = launchProjectile(block, directional, Arrow.class, speed);
                         break;
                 }
-                projectile.executeTransformTheProjectile(entity, p);
+                projectile.transformTheProjectile(entity, p, projectile.getType().getValue().get().getMaterial());
 
             }
 

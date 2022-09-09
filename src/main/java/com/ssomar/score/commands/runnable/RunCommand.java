@@ -72,6 +72,10 @@ public abstract class RunCommand implements Serializable {
         if (delay == 0) {
             runTime = 0;
             this.runGetManager();
+        } else if(runTime != -1) {
+            delay = (int) ((runTime - System.currentTimeMillis()) / 50L);
+            if(delay < 0) delay = 0;
+            this.runDelayedCommand();
         } else {
             runTime = System.currentTimeMillis() + delay * 50L;
             this.runDelayedCommand();
