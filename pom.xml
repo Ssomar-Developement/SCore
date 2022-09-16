@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>3.2.8</version>
+    <version>3.3.3</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -93,13 +93,13 @@
                         <!--<configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>-->
+                        </configuration> -->
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
                     <!-- C:\Users\octav\Documents\GitHub\
                     C:\Users\marce\Documents\GitHub\ -->
-                    <!-- <execution>
+                    <!--<execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -121,7 +121,7 @@
                             <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
-                    </execution> -->
+                    </execution>-->
                     <!--<execution>
                         <id>build_dep_eg</id>
                         <phase>package</phase>
@@ -362,7 +362,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>5.10.2</version>
+            <version>6.14.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
