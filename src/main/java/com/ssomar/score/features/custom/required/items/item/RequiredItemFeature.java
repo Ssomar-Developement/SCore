@@ -209,7 +209,8 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
                 } else {
                     if (needed >= it.getAmount()) {
                         needed -= it.getAmount();
-                        inventory.remove(it);
+                        int slot = inventory.first(it);
+                        inventory.clear(slot);
                     } else {
                         it.setAmount(it.getAmount() - needed);
                         SsomarDev.testMsg("new amount: " + it.getAmount(), DEBUG);
