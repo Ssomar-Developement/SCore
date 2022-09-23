@@ -85,9 +85,9 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
             errors.addAll(this.variableName.load(plugin, enchantmentConfig, isPremiumLoading));
 
             if (DEBUG) {
-                SsomarDev.testMsg("should load id " + id + " >> " + (getVariables().getVariablesName().contains(this.variableName.getValue().get())));
+                SsomarDev.testMsg("should load id " + id + " >> " + (getVariables().getVariablesName().contains(this.variableName.getValue().get())), DEBUG);
                 for (String s : getVariables().getVariablesName()) {
-                    SsomarDev.testMsg("EXIST <" + s + "> >> and we need <" + this.variableName.getValue().get() + ">");
+                    SsomarDev.testMsg("EXIST <" + s + "> >> and we need <" + this.variableName.getValue().get() + ">", DEBUG);
                 }
             }
 
@@ -123,9 +123,9 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
         ConfigurationSection attributeConfig = config.createSection(id);
 
         if (DEBUG) {
-            SsomarDev.testMsg("should save id " + id + " >> " + (getVariables().getVariablesName().contains(this.variableName.getValue().get())));
+            SsomarDev.testMsg("should save id " + id + " >> " + (getVariables().getVariablesName().contains(this.variableName.getValue().get())), DEBUG);
             for (String s : getVariables().getVariablesName()) {
-                SsomarDev.testMsg("EXIST <" + s + "> >> and we need <" + this.variableName.getValue().get() + ">");
+                SsomarDev.testMsg("EXIST <" + s + "> >> and we need <" + this.variableName.getValue().get() + ">", DEBUG);
             }
         }
 

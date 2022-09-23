@@ -15,7 +15,7 @@ public class XPBoostEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void playerExpChangeEvent(PlayerExpChangeEvent e) {
         Player player = e.getPlayer();
-        if (DEBUG) SsomarDev.testMsg("XPBoostEvent");
+        SsomarDev.testMsg("XPBoostEvent", DEBUG);
         if (XpBoost.getInstance().getActiveBoosts().containsKey(player.getUniqueId())) {
 
             double multiplier = 1;
@@ -23,8 +23,8 @@ public class XPBoostEvent implements Listener {
                 multiplier *= m;
             }
 
-            if (DEBUG) SsomarDev.testMsg("XPBoostEvent base: " + e.getAmount());
-            if (DEBUG) SsomarDev.testMsg("XPBoostEvent modified " + (int) (e.getAmount() * multiplier));
+            SsomarDev.testMsg("XPBoostEvent base: " + e.getAmount(), DEBUG);
+            SsomarDev.testMsg("XPBoostEvent modified " + (int) (e.getAmount() * multiplier), DEBUG);
             e.setAmount((int) (e.getAmount() * multiplier));
         }
     }

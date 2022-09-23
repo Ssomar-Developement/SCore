@@ -1,9 +1,11 @@
 package com.ssomar.score.features.custom.ifhas.executableitems.group;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
-import com.ssomar.score.features.*;
+import com.ssomar.score.features.FeatureInterface;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.ifhas.executableitems.attribute.HasExecutableItemFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -146,7 +148,7 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
     @Override
     public void save(ConfigurationSection config) {
         ConfigurationSection attributesSection;
-        SsomarDev.testMsg("SAVE : "+multipleChoicesID);
+       //SsomarDev.testMsg("SAVE : "+multipleChoicesID);
         if(multipleChoicesID == null || multipleChoicesID.isEmpty()) {
             config.set(this.getName(), null);
             if (notSaveIfNoValue && hasExecutableItems.size() == 0) return;

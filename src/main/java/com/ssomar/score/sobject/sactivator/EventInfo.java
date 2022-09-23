@@ -5,6 +5,7 @@ import com.ssomar.score.utils.DetailedInteraction;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,24 +22,42 @@ public class EventInfo {
 
     private Event eventSource;
 
+    /* PLAYER */
     private Optional<Player> player;
 
     private Optional<Player> targetPlayer;
 
+    /* ENTITY */
+    private Optional<Entity> entity;
+
     private Optional<Entity> targetEntity;
+
+    /* BLOCK */
+    private Optional<Block> block;
 
     private Optional<Block> targetBlock;
 
     private Optional<Material> oldMaterialBlock;
 
+    private Optional<Material> oldMaterialTargetBlock;
+
     private Optional<String> oldStatesBlock;
+
+    private Optional<String> oldStatesTargetBlock;
 
     private Optional<String> blockface;
 
+    private Optional<String> blockfaceTarget;
+
+    /* WORLD */
+    private Optional<World> world;
+
+    /* PROJECTILE */
     private Optional<Projectile> projectile;
 
     private Optional<String> projectileProvenance;
 
+    /* MISC */
     private Optional<DetailedClick> detailedClick;
 
     private Optional<DetailedInteraction> detailedInteraction;
@@ -68,11 +87,16 @@ public class EventInfo {
         this.eventSource = eventSource;
         this.player = Optional.empty();
         this.targetPlayer = Optional.empty();
+        this.entity = Optional.empty();
         this.targetEntity = Optional.empty();
+        this.block = Optional.empty();
         this.targetBlock = Optional.empty();
         this.oldMaterialBlock = Optional.empty();
+        this.oldMaterialTargetBlock = Optional.empty();
         this.oldStatesBlock = Optional.empty();
+        this.oldStatesTargetBlock = Optional.empty();
         this.blockface = Optional.empty();
+        this.blockfaceTarget = Optional.empty();
         this.projectile = Optional.empty();
         this.projectileProvenance = Optional.empty();
         this.detailedClick = Optional.empty();
@@ -82,17 +106,23 @@ public class EventInfo {
         this.bowForce = Optional.empty();
         this.command = Optional.empty();
         this.slot = Optional.empty();
+        this.world = Optional.empty();
     }
 
     public EventInfo clone() {
         EventInfo eInfo = new EventInfo(eventSource);
         eInfo.setPlayer(player);
         eInfo.setTargetPlayer(targetPlayer);
+        eInfo.setEntity(entity);
         eInfo.setTargetEntity(targetEntity);
+        eInfo.setBlock(block);
         eInfo.setTargetBlock(targetBlock);
         eInfo.setOldMaterialBlock(oldMaterialBlock);
+        eInfo.setOldMaterialTargetBlock(oldMaterialTargetBlock);
         eInfo.setOldStatesBlock(oldStatesBlock);
+        eInfo.setOldStatesTargetBlock(oldStatesTargetBlock);
         eInfo.setBlockface(blockface);
+        eInfo.setBlockfaceTarget(blockfaceTarget);
         eInfo.setProjectile(projectile);
         eInfo.setProjectileProvenance(projectileProvenance);
         eInfo.setDetailedClick(detailedClick);
@@ -106,6 +136,7 @@ public class EventInfo {
         eInfo.setForceMainHand(forceMainHand);
         eInfo.setMustDoNothing(mustDoNothing);
         eInfo.setSlot(slot);
+        eInfo.setWorld(world);
 
         return eInfo;
     }

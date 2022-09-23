@@ -4,14 +4,6 @@ import org.bukkit.Bukkit;
 
 public class SsomarDev {
 
-    public static void testMsg(String message) {
-        try {
-            Bukkit.getPlayer("Ssomar").sendMessage(message);
-        } catch (Exception ignored) {
-
-        }
-    }
-
     public static void testMsg(String message, boolean isActiveDebug) {
         if (isActiveDebug) {
             try {

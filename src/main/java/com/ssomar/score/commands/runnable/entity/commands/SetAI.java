@@ -20,7 +20,7 @@ public class SetAI extends EntityCommand {
         if (!entity.isDead() && entity instanceof LivingEntity) {
             LivingEntity receiver = (LivingEntity) entity;
             boolean ai = Boolean.valueOf(args.get(0));
-            SsomarDev.testMsg("SET AI " + ai);
+            SsomarDev.testMsg("SET AI " + ai, false);
             receiver.setAI(ai);
         }
     }

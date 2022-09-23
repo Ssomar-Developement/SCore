@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>3.3.3</version>
+    <version>%version%</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -93,7 +93,7 @@
                         <!--<configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration> -->
+                        </configuration>-->
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
                     <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
@@ -121,8 +121,8 @@
                             <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
-                    </execution>-->
-                    <!--<execution>
+                    </execution>
+                    <execution>
                         <id>build_dep_eg</id>
                         <phase>package</phase>
                         <goals>
@@ -144,6 +144,19 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>
                                 C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_ee</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>
+                                C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
                     </execution>-->
@@ -403,7 +416,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-4355caf505-1</version>
+            <version>main-bb37f72ed8-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -451,7 +464,7 @@
         <dependency>
             <groupId>api</groupId>
             <artifactId>me.filoghost.holographicdisplays</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/HolographicDisplays.jar</systemPath>
         </dependency>
