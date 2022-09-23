@@ -1,7 +1,6 @@
 package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.executableitems.configs.Message;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -70,7 +69,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
             Optional<Cooldown> inCooldownOpt = CooldownsManager.getInstance().getCooldown(sPlugin, cooldownId, p.getUniqueId(), global);
             if (inCooldownOpt.isPresent()) {
                 if (this.displayCooldownMessage.getValue()) {
-                    SsomarDev.testMsg("DISPLAY COOLDOWN MESSAGE >> "+inCooldownOpt.get().getTimeLeft());
+                    //SsomarDev.testMsg("DISPLAY COOLDOWN MESSAGE >> "+inCooldownOpt.get().getTimeLeft());
                     displayCooldownMessage(p, inCooldownOpt.get().getTimeLeft(), sp);
                 }
                 //SsomarDev.testMsg("COOLDOWN cancel >>"+(e != null && e instanceof Cancellable)+  " >>>"+this.cancelEventIfInCooldown.getValue() );

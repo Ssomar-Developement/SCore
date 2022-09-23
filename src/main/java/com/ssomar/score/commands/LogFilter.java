@@ -64,72 +64,72 @@ public class LogFilter implements Filter, LifeCycle {
     }
 
     public Filter.Result filter(LogEvent event) {
-        if (debug) SsomarDev.testMsg("FILTER: 0");
+        SsomarDev.testMsg("FILTER: 0", debug);
         return checkMessage(event.getMessage().getFormattedMessage());
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object... arg4) {
-        if (debug) SsomarDev.testMsg("FILTER: 1");
+        SsomarDev.testMsg("FILTER: 1", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4) {
-        if (debug) SsomarDev.testMsg("FILTER: 2");
+       SsomarDev.testMsg("FILTER: 2", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, Object message, Throwable arg4) {
-        if (debug) SsomarDev.testMsg("FILTER: 3");
+        SsomarDev.testMsg("FILTER: 3", debug);
         return checkMessage(message.toString());
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, Message message, Throwable arg4) {
-        if (debug) SsomarDev.testMsg("FILTER: 4");
+       SsomarDev.testMsg("FILTER: 4", debug);
         return checkMessage(message.getFormattedMessage());
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5) {
-        if (debug) SsomarDev.testMsg("FILTER: 5");
+        SsomarDev.testMsg("FILTER: 5", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6) {
-        if (debug) SsomarDev.testMsg("FILTER: 6");
+        SsomarDev.testMsg("FILTER: 6", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7) {
-        if (debug) SsomarDev.testMsg("FILTER: 7");
+        SsomarDev.testMsg("FILTER: 7", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8) {
-        if (debug) SsomarDev.testMsg("FILTER: 8");
+       SsomarDev.testMsg("FILTER: 8", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9) {
-        if (debug) SsomarDev.testMsg("FILTER: 9");
+        SsomarDev.testMsg("FILTER: 9", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10) {
-        if (debug) SsomarDev.testMsg("FILTER: 10");
+        SsomarDev.testMsg("FILTER: 10", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10, Object arg11) {
-        if (debug) SsomarDev.testMsg("FILTER: 11");
+        SsomarDev.testMsg("FILTER: 11", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10, Object arg11, Object arg12) {
-        if (debug) SsomarDev.testMsg("FILTER: 12");
+        SsomarDev.testMsg("FILTER: 12", debug);
         return checkMessage(message);
     }
 
     public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10, Object arg11, Object arg12, Object arg13) {
-        if (debug) SsomarDev.testMsg("FILTER: 13");
+        SsomarDev.testMsg("FILTER: 13", debug);
         return checkMessage(message);
     }
 
@@ -144,21 +144,21 @@ public class LogFilter implements Filter, LifeCycle {
     @Override
     public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, String msg,
                          Object... params) {
-        if (debug) SsomarDev.testMsg("FILTER: 14");
+        SsomarDev.testMsg("FILTER: 14", debug);
         return null;
     }
 
     @Override
     public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Object msg,
                          Throwable t) {
-        if (debug) SsomarDev.testMsg("FILTER: 15");
+        SsomarDev.testMsg("FILTER: 15", debug);
         return null;
     }
 
     @Override
     public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Message msg,
                          Throwable t) {
-        if (debug) SsomarDev.testMsg("FILTER: 16");
+        SsomarDev.testMsg("FILTER: 16", debug);
         return null;
     }
 

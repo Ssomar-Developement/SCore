@@ -44,6 +44,7 @@ public class PlayerCommandManager implements CommandManager {
         /* DAMAGE_RESISTANCE MUST BE BEFORE DAMAGE */
         commands.add(DamageBoost.getInstance());
         commands.add(DamageResistance.getInstance());
+        commands.add(new DamageNoKnockback());
         commands.add(new Damage());
         commands.add(new LaunchEntity());
         commands.add(new Launch());
@@ -82,6 +83,7 @@ public class PlayerCommandManager implements CommandManager {
         commands.add(new AnimationBreakHelmet());
         commands.add(new AnimationBreakLeggings());
         commands.add(new AnimationBreakOffHand());
+        commands.add(new AnimationHurt());
         commands.add(new CancelPickup());
         commands.add(new ForceDrop());
         commands.add(new CloseInventory());
@@ -99,6 +101,7 @@ public class PlayerCommandManager implements CommandManager {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
+        commands.add(new Customtest());
 
         this.commands = commands;
     }

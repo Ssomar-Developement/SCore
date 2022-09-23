@@ -44,7 +44,7 @@ public class Damage extends EntityCommand {
                     receiver.getWorld().playSound(receiver.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
                 }
             } else if (receiver instanceof Guardian) {
-                SsomarDev.testMsg("Passe guardian");
+                SsomarDev.testMsg("Passe guardian", DEBUG);
                 receiver.damage(damage);
             } else {
                 int maximumNoDmg = receiver.getMaximumNoDamageTicks();

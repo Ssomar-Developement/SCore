@@ -55,7 +55,7 @@ public class DamageResistance extends PlayerCommand {
 
     public double getNewDamage(UUID uuid, double damage) {
         if (DamageResistance.getInstance().getActiveResistances().containsKey(uuid)) {
-            if (DEBUG) SsomarDev.testMsg("DamageResistanceEvent base: " + damage);
+            if (DEBUG) SsomarDev.testMsg("DamageResistanceEvent base: " + damage, DEBUG);
             double resistance = 0;
             for (double d : DamageResistance.getInstance().getActiveResistances().get(uuid)) {
                 resistance += d;
@@ -63,7 +63,7 @@ public class DamageResistance extends PlayerCommand {
 
             double averagePercent = resistance / 100;
             damage = damage + (damage * averagePercent);
-            if (DEBUG) SsomarDev.testMsg("DamageResistanceEvent modified " + damage);
+            if (DEBUG) SsomarDev.testMsg("DamageResistanceEvent modified " + damage, DEBUG);
         }
         return damage;
     }

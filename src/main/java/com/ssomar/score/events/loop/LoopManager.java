@@ -75,7 +75,6 @@ public class LoopManager {
                     }
                     if(needRemove != null){
                         toRemoveList.remove(needRemove);
-                        loopActivatorsToAdd.remove(needRemove);
                         loopActivatorsToRemove.remove(needRemove);
                         continue;
                     }

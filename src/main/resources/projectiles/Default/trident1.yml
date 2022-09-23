@@ -19,9 +19,6 @@ enchantments:
   enchantment3:
     enchantment: mending
     level: 1
-  enchantment2:
-    enchantment: bunny_hop
-    level: 5
 #visualItem: DIAMOND_SWORD
 #customModelData: 5
 #particlesType: FLAME #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html

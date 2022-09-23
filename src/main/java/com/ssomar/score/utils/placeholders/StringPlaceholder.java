@@ -47,8 +47,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
     /* placeholders of the time */
     private final transient TimePlaceholders timePlch = new TimePlaceholders();
-    /* placeholders of the target entity */
+    /* placeholders of the entity */
     private final EntityPlaceholders entityPlch = new EntityPlaceholders();
+    /* placeholders of the target entity */
+    private final EntityPlaceholders targetEntityPlch = new EntityPlaceholders();
     /* placeholders of the block */
     private final BlockPlaceholders blockPlch = new BlockPlaceholders();
     /* placeholders of the target block */
@@ -134,6 +136,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         entityPlch.setEntityPlcHldr(uuid);
     }
 
+    public void setTargetEntityPlcHldr(UUID uuid) {
+        targetEntityPlch.setEntityPlcHldr(uuid);
+    }
+
     public void setBlockPlcHldr(Block block) {
         blockPlch.setBlockPlcHldr(block);
     }
@@ -163,6 +169,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         targetPlch.reloadPlayerPlcHldr();
         ownerPlch.reloadPlayerPlcHldr();
         entityPlch.reloadEntityPlcHldr();
+        if(targetEntityPlch != null)
+            targetEntityPlch.reloadEntityPlcHldr();
         blockPlch.reloadBlockPlcHldr();
         targetBlockPlch.reloadTargetBlockPlcHldr();
         aroundPlayerTargetPlch.reloadPlayerPlcHldr();
@@ -234,6 +242,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if(timePlch != null) s = timePlch.replacePlaceholder(s);
 
         if (projectilePlch != null) s = projectilePlch.replacePlaceholder(s);
+
+        if(targetEntityPlch != null) s = targetEntityPlch.replacePlaceholder(s);
 
         if (extraPlaceholders != null && !extraPlaceholders.isEmpty()) {
             for (String key : extraPlaceholders.keySet()) {

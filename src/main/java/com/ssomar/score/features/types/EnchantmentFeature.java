@@ -42,7 +42,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
         if(!enchantStr.contains("SPACE_")) enchantStr = enchantStr.toUpperCase();
         Optional<Enchantment> optional = getEnchantment(enchantStr);
         if (!optional.isPresent()) {
-            errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html");
+            errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: Look in-game, it's the same name");
             value = Optional.empty();
         } else {
             value = optional;

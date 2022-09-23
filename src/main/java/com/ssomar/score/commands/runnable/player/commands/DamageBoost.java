@@ -57,16 +57,16 @@ public class DamageBoost extends PlayerCommand {
 
     public double getNewDamage(UUID uuid, double damage) {
         if (DamageBoost.getInstance().getActiveBoosts().containsKey(uuid)) {
-            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent base: " + damage);
+            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent base: " + damage, DEBUG);
             double boost = 0;
             for (double d : DamageBoost.getInstance().getActiveBoosts().get(uuid)) {
                 boost += d;
             }
-            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent bost: " + boost);
+            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent bost: " + boost, DEBUG);
 
             double averagePercent = boost / 100;
             damage = damage + (damage * averagePercent);
-            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent modified " + damage);
+            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent modified " + damage, DEBUG);
         }
         return damage;
     }

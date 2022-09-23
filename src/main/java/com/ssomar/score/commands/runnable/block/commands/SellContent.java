@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.ShopGUIPlusTool;
 import com.ssomar.score.usedapi.VaultAPI;
@@ -30,6 +31,12 @@ public class SellContent extends BlockCommand {
         SsomarDev.testMsg("block type : "+block.getType(), DEBUG);
         SsomarDev.testMsg("SellContent activated > container ? "+(block.getState() instanceof Container)+ " player ? "+(p != null), DEBUG);
 
+
+        double priceBoost = 1;
+        if(args.size() >= 1) {
+            priceBoost = Double.valueOf(args.get(0));
+        }
+
         if(block.getState() instanceof Container && p != null){
             Container container = (Container) block.getState();
             Inventory inv = container.getInventory();
@@ -46,6 +53,7 @@ public class SellContent extends BlockCommand {
                 }
             }
             if(amount > 0){
+                amount = amount * priceBoost;
                 SsomarDev.testMsg("SellContent activated > amount > "+amount, DEBUG);
                 VaultAPI v = new VaultAPI();
                 v.verifEconomy(p);
@@ -56,6 +64,12 @@ public class SellContent extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
+
+        if(args.size() >= 1) {
+            ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
+            if (!ac.isValid()) return Optional.of(ac.getError());
+        }
+
         return Optional.empty();
     }
 
@@ -68,7 +82,7 @@ public class SellContent extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SELL_CONTENT";
+        return "SELL_CONTENT [price_boost]";
     }
 
     @Override

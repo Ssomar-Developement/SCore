@@ -18,9 +18,9 @@ public class DisableGlideActivationEvent implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (DEBUG) SsomarDev.testMsg("DisableFlyActivationEvent");
+            SsomarDev.testMsg("DisableFlyActivationEvent", DEBUG);
             if (event.isGliding() && DisableGlideActivation.getInstance().getActiveDisabled().containsKey(player.getUniqueId())) {
-                SsomarDev.testMsg("DisableGlideActivationEvent: " + player.getName() + " try to glide but he is canceled");
+                SsomarDev.testMsg("DisableGlideActivationEvent: " + player.getName() + " try to glide but he is canceled", DEBUG);
                 event.setCancelled(true);
             }
         }

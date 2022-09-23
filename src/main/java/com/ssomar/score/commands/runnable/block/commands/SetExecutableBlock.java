@@ -90,8 +90,10 @@ public class SetExecutableBlock extends BlockCommand {
             } catch (Exception ignored) {
             }
 
-            Location loc = new Location(world, x, y, z).getBlock().getLocation();
+            block = new Location(world, x, y, z).getBlock();
+            Location loc = block.getLocation();
 
+            //SsomarDev.testMsg("replace:::: "+(!replace)+" >>>>>> "+(!block.isEmpty()));
             if (!replace && !block.isEmpty()) {
                 return;
             }

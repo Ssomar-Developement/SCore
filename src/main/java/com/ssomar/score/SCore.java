@@ -3,7 +3,6 @@ package com.ssomar.score;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.plotsquared.core.PlotAPI;
-import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.CommandsClass;
 import com.ssomar.score.commands.runnable.CommandsHandler;
@@ -21,7 +20,7 @@ import com.ssomar.score.newprojectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.ProtocolibAPI;
 import com.ssomar.score.utils.Utils;
-import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -343,14 +342,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
             try {
-                HolographicDisplaysAPI.get(ExecutableBlocks.plugin);
+                HolographicDisplaysAPI.get(SCore.plugin);
                 SCore.plugin.getServer().getLogger().info("[" + NAME + "] HolographicDisplays hooked for title !");
                 hasHolographicDisplays = true;
-            } catch (Error e) {
+            }  catch (Exception | Error e) {
                 SCore.plugin.getServer().getLogger().severe("[" + NAME + "] HolographicDisplays hooked BUT you haven't the good version ! (require 3.0 or higher) !");
-                hasHolographicDisplays = false;
-            } catch (Exception e) {
-                SCore.plugin.getServer().getLogger().severe("[" + NAME + "] HolographicDisplays hooked BUT you haven't the good version ! (require 3.0 or higher) !");
+                e.printStackTrace();
                 hasHolographicDisplays = false;
             }
         }

@@ -1,6 +1,5 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -19,11 +18,9 @@ public class IfIsOnFire extends PlayerConditionFeature<BooleanFeature, IfIsOnFir
 
     @Override
     public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        //SsomarDev.testMsg("IfIsOnFire.verifCondition() >> "+ player.getFireTicks());
         if (hasCondition() && player.getFireTicks() <= 0) {
             sendErrorMsg(playerOpt, messageSender);
             cancelEvent(event);
-            SsomarDev.testMsg("IfIsOnFire.verifCondition() >> false");
             return false;
         }
         return true;
