@@ -24,12 +24,14 @@ public class Nearest extends PlayerCommand {
             @Override
             public void run() {
 
+                double distance = Double.valueOf(args.get(0));
+
                 Player target = receiver.getWorld().getPlayers().stream()
                         .filter(p -> !p.equals(receiver))
                         .min(Comparator.comparingDouble((p) -> p.getLocation().distanceSquared(receiver.getLocation())))
                         .orElse(null);
 
-                if (target == null) {
+                if (target == null || target.getLocation().distance(receiver.getLocation()) > distance) {
                     return;
                 }
 
@@ -86,7 +88,10 @@ public class Nearest extends PlayerCommand {
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
 
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
+        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
+
+        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
         return Optional.empty();
     }

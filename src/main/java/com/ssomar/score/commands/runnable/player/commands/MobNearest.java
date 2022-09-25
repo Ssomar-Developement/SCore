@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -13,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -32,12 +32,14 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
+                double distance = Double.valueOf(args.get(0));
+
                 Entity e = receiver.getWorld().getEntities().stream()
                         .filter(p -> !p.equals(receiver) && !(p instanceof Player) && p instanceof Mob)
                         .min(Comparator.comparingDouble((p) -> p.getLocation().distanceSquared(receiver.getLocation())))
                         .orElse(null);
 
-                if (e == null) {
+                if (e == null || e.getLocation().distance(receiver.getLocation()) > distance) {
                     return;
                 }
 
@@ -94,7 +96,10 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
         String error = "";
 
         String around = "MOB_NEAREST {Your commands here}";
-        if (args.size() < 1) error = notEnoughArgs + around;
+        if (args.size() < 2) error = notEnoughArgs + around;
+
+        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
         return error.isEmpty() ? Optional.empty() : Optional.of(error);
     }
