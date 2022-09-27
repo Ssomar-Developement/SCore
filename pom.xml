@@ -309,15 +309,17 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>ExecutableItems</artifactId>
-            <version>v5.1.0</version>
-            <scope>provided</scope>
+            <version>v5.3.8</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/ExecutableItems.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>ExecutableBlocks</artifactId>
-            <version>ff99ef3081</version>
-            <scope>provided</scope>
+            <version>3.3.8</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/ExecutableBlocks.jar</systemPath>
         </dependency>
 
         <dependency>
