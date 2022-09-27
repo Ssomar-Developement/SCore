@@ -43,6 +43,7 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("No entity was found");
         messageToHide.add("Unknown command");
         messageToHide.add("Modified entity data of");
+        messageToHide.add("Target has no effects to remove");
     }
 
 
