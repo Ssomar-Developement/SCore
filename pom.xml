@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>3.3.8</version>
+    <version>3.4.1</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -258,7 +258,7 @@
         <dependency>
             <groupId>com.github.LoneDev6</groupId>
             <artifactId>api-itemsadder</artifactId>
-            <version>2.5.0</version>
+            <version>3.2.3c</version>
             <scope>provided</scope>
         </dependency>
 

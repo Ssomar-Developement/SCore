@@ -66,6 +66,14 @@ public interface ExecutableItemInterface {
      **/
     boolean hasKeepItemOnDeath();
 
+    void addCooldown(Player player, int cooldown, boolean isInTicks);
+
+    void addCooldown(Player player, int cooldown, boolean isInTicks, String activatorID);
+
+    void addGlobalCooldown(int cooldown, boolean isInTicks);
+
+    void addGlobalCooldown(int cooldown, boolean isInTicks, String activatorID);
+
     String getId();
 
     ActivatorsFeature getActivators();

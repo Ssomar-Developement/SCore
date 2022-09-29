@@ -51,6 +51,7 @@ public class EntityCommandManager implements CommandManager {
             commands.add(new ParticleCommand());
             commands.add(new GlacialFreeze());
         }
+        //commands.add(new Customtest());
     }
 
     public static EntityCommandManager getInstance() {

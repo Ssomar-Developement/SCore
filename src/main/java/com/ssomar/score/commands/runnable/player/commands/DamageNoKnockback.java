@@ -8,6 +8,7 @@ import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
+import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -88,7 +89,7 @@ public class DamageNoKnockback extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
         /* When target a NPC it can occurs */
-        if (receiver == null) return;
+        if (receiver == null || receiver.getGameMode().equals(GameMode.CREATIVE)) return;
 
         double damage = getDamage(p, receiver, args, aInfo);
 

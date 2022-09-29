@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 /* TOTEM_ANIMATION */
-public class Customtest extends PlayerCommand {
+public class AnimationSwingOffHand extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-
+        receiver.swingOffHand();
     }
 
     @Override
@@ -25,13 +25,14 @@ public class Customtest extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("CUSTOMTEST");
+        names.add("~ANIMATION_SWING_OFF_HAND");
+        names.add("SWING_OFF_HAND");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "CUSTOMTEST";
+        return "SWING_OFF_HAND";
     }
 
     @Override

@@ -1,24 +1,26 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* TOTEM_ANIMATION */
-public class Customtest extends PlayerCommand {
+/* BURN {timeinsecs} */
+public class Customtest extends EntityCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-
+    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+        p.addPassenger(entity);
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
+
         return Optional.empty();
     }
 
@@ -36,11 +38,12 @@ public class Customtest extends PlayerCommand {
 
     @Override
     public ChatColor getColor() {
-        return ChatColor.AQUA;
+        return null;
     }
 
     @Override
     public ChatColor getExtraColor() {
-        return ChatColor.GOLD;
+        return null;
     }
+
 }

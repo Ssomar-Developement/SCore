@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+/**
+ * The ID in my plugins is generally SCore + ":" + ObjectID + ":" + ActivatorID;
+ * **/
 @Getter
 @Setter
 public class Cooldown {

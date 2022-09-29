@@ -84,6 +84,8 @@ public class PlayerCommandManager implements CommandManager {
         commands.add(new AnimationBreakLeggings());
         commands.add(new AnimationBreakOffHand());
         commands.add(new AnimationHurt());
+        commands.add(new AnimationSwingMainHand());
+        commands.add(new AnimationSwingOffHand());
         commands.add(new CancelPickup());
         commands.add(new ForceDrop());
         commands.add(new CloseInventory());

@@ -105,6 +105,30 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         }
     }
 
+    /**
+     * Add the cooldown for a specific player
+     * @param p         The player
+     * @param sObject   The sObject
+     * @param time      The cooldown
+     * @param isInTicks Define if the cooldown is in ticks or in secs
+     */
+    public void addCooldown(Player p, @NotNull NewSObject sObject, int time, boolean isInTicks) {
+        if (!hasNoCDPerm(p, sObject) && time != 0) {
+            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, p.getUniqueId(), time, isInTicks, System.currentTimeMillis(), false);
+            CooldownsManager.getInstance().addCooldown(cooldown);
+        }
+    }
+
+    /**
+     * Add the cooldown for all players
+     * @param time      The cooldown
+     * @param isInTicks Define if the cooldown is in ticks or in secs
+     */
+    public void addGlobalCooldown(int time, boolean isInTicks) {
+        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, time, isInTicks, System.currentTimeMillis(), true);
+        CooldownsManager.getInstance().addCooldown(cooldown);
+    }
+
     public void addGlobalCooldown(@NotNull NewSObject sObject) {
         Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
         CooldownsManager.getInstance().addCooldown(cooldown);
