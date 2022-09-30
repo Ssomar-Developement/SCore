@@ -168,7 +168,7 @@ public abstract class RunCommandsBuilder {
 
         for (String command : commands) {
 
-            if (command.contains("RANDOM RUN:")) {
+            if (command.contains("RANDOM RUN:") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 String secondPart = command.split("RANDOM RUN:")[1].replaceAll(" ", "");
                 if (secondPart.contains("%")) {
                     secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
@@ -176,7 +176,7 @@ public abstract class RunCommandsBuilder {
                 nbRandom = Integer.parseInt(secondPart);
                 inRandom = true;
                 continue;
-            } else if (command.contains("RANDOM END")) {
+            } else if (command.contains("RANDOM END") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 result.addAll(this.selectRandomCommands(commandsRandom, nbRandom));
                 inRandom = false;
                 commandsRandom.clear();
@@ -255,7 +255,7 @@ public abstract class RunCommandsBuilder {
             if (command.trim().length() == 0) continue;
 
             /* The delay for AROUND and MOB_AROUND is catch after */
-            if (command.contains("DELAYTICK ") && !command.contains("AROUND")) {
+            if (command.contains("DELAYTICK ") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 /* Verify that there is no multiple commands after DELAYTICK */
                 String delayStr = command;
                 if (command.contains("+++")) {
@@ -266,7 +266,7 @@ public abstract class RunCommandsBuilder {
                 }
                 /* ---------------------- */
                 delay = delay + (Integer.parseInt(delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "")));
-            } else if (command.contains("DELAY ") && !command.contains("AROUND")) {
+            } else if (command.contains("DELAY ") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 /* Verify that there is no multiple commands after DELAY */
                 String delayStr = command;
                 if (command.contains("+++")) {

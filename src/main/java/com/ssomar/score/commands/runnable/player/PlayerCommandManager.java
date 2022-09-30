@@ -54,8 +54,8 @@ public class PlayerCommandManager implements CommandManager {
             /* No damageable class before 1.12 */
             commands.add(new ModifyDurability());
         }
-        commands.add(new AllMob());
-        commands.add(new AllPlayer());
+        commands.add(new AllMobs());
+        commands.add(new AllPlayers());
         commands.add(new Nearest());
         commands.add(new MobNearest());
         commands.add(new MixHotbar());

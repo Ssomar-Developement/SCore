@@ -39,7 +39,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String enchantStr = config.getString(this.getName(), "NULL");
-        if(!enchantStr.contains("SPACE_")) enchantStr = enchantStr.toUpperCase();
+        if(!enchantStr.contains("SPACE_") && !enchantStr.contains("TOKEN-ENCHANT_")) enchantStr = enchantStr.toUpperCase();
         Optional<Enchantment> optional = getEnchantment(enchantStr);
         if (!optional.isPresent()) {
             errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: Look in-game, it's the same name");
@@ -270,6 +270,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             if (name.contains("space:")) {
                 name = "SPACE_"+enchantment.getName();
             }
+            if (name.contains("tokenenchant:")) {
+                name = "TOKEN-ENCHANT_"+enchantment.getName();
+            }
             return name;
         } else {
             return enchantment.getName();
@@ -281,6 +284,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
         try {
             if(enchantmentName.contains("SPACE_")){
                 enchantment = Enchantment.getByName(enchantmentName.replace("SPACE_", ""));
+            }
+            if(enchantmentName.contains("TOKEN-ENCHANT_")){
+                enchantment = Enchantment.getByName(enchantmentName.replace("TOKEN-ENCHANT_", ""));
             }
             else if (!SCore.is1v12Less()) {
                 enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));

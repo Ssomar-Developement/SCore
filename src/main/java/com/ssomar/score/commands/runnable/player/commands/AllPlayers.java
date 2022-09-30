@@ -1,13 +1,11 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
-import com.ssomar.score.configs.messages.Message;
-import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AllPlayer extends PlayerCommand {
+public class AllPlayers extends PlayerCommand {
 
     public static void aroundExecution(Entity receiver, List<String> args, ActionInfo aInfo, boolean displayMsgIfNoTargetHit) {
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -29,7 +27,7 @@ public class AllPlayer extends PlayerCommand {
                 for (Entity e : Bukkit.getOnlinePlayers()) {
                     if (e instanceof Player) {
                         Player target = (Player) e;
-                        if (target.hasMetadata("NPC") || target.equals(receiver)) continue;
+                        if (target.hasMetadata("NPC")) continue;
 
                         ActionInfo aInfo2 = aInfo.clone();
                         aInfo2.setReceiverUUID(target.getUniqueId());
@@ -47,6 +45,7 @@ public class AllPlayer extends PlayerCommand {
 
                         String buildCommands = prepareCommands.toString();
                         String[] tab;
+                        SsomarDev.testMsg(" buildcommands contains : " + (buildCommands.contains("<+>")), true);
                         if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
                         else {
                             tab = new String[1];
@@ -92,13 +91,13 @@ public class AllPlayer extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("ALL_PLAYER");
+        names.add("ALL_PLAYERS");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ALL_PLAYER {Your commands here}";
+        return "ALL_PLAYERS {Your commands here}";
     }
 
     @Override

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class AllMob extends PlayerCommand implements FeatureParentInterface {
+public class AllMobs extends PlayerCommand implements FeatureParentInterface {
 
     public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
         ListDetailedEntityFeature whiteList = null;
@@ -76,14 +76,14 @@ public class AllMob extends PlayerCommand implements FeatureParentInterface {
                     split = s.split("BLACKLIST\\(");
                     String blackListString = split[1].split("\\)")[0];
                     split = blackListString.split(",");
-                    blackList = new ListDetailedEntityFeature(new AllMob(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
+                    blackList = new ListDetailedEntityFeature(new AllMobs(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
                     blackList.load(SCore.plugin, Arrays.asList(split), true);
                 } else if (s.contains("WHITELIST(")) {
                     argToRemove = cpt;
                     split = s.split("WHITELIST\\(");
                     String whiteListString = split[1].split("\\)")[0];
                     split = whiteListString.split(",");
-                    whiteList = new ListDetailedEntityFeature(new AllMob(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
+                    whiteList = new ListDetailedEntityFeature(new AllMobs(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
                     whiteList.load(SCore.plugin, Arrays.asList(split), true);
                 }
             } catch (Exception ignored) {
@@ -175,7 +175,7 @@ public class AllMob extends PlayerCommand implements FeatureParentInterface {
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         String error = "";
 
-        String around = "ALL_MOB {Your commands here}";
+        String around = "ALL_MOBS {Your commands here}";
         if (args.size() < 1) error = notEnoughArgs + around;
 
         return error.isEmpty() ? Optional.empty() : Optional.of(error);
@@ -184,13 +184,13 @@ public class AllMob extends PlayerCommand implements FeatureParentInterface {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("ALL_MOB");
+        names.add("ALL_MOBS");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ALL_MOB {Your commands here}";
+        return "ALL_MOBS {Your commands here}";
     }
 
     @Override
