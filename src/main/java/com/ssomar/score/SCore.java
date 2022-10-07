@@ -59,6 +59,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasItemsAdder = false;
     public static boolean hasOraxen = false;
     public static boolean hasShopGUIPlus = false;
+    public static boolean hasRoseLoot = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
     private static boolean is1v10 = false;
@@ -375,6 +376,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (Bukkit.getPluginManager().getPlugin("ShopGUIPlus") != null) {
             SCore.plugin.getServer().getLogger().info("[" + NAME + "] ShopGUIPlus hooked !");
             hasShopGUIPlus = true;
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("RoseLoot") != null) {
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] RoseLoot hooked !");
+            hasRoseLoot = true;
         }
     }
 

@@ -6,6 +6,12 @@ import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.usedapi.*;
+import dev.rosewood.roseloot.RoseLoot;
+import dev.rosewood.roseloot.loot.LootResult;
+import dev.rosewood.roseloot.loot.context.LootContext;
+import dev.rosewood.roseloot.loot.context.LootContextParams;
+import dev.rosewood.roseloot.loot.table.LootTableTypes;
+import dev.rosewood.roseloot.manager.LootTableManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +32,7 @@ public class SafeBreak {
 
     private static final boolean DEBUG = false;
 
-    public static void breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, final boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
+    public static void breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
 
         SsomarDev.testMsg("DEBUG SAFE BREAK 1", DEBUG);
         if (playerUUID == null) {
@@ -57,6 +64,21 @@ public class SafeBreak {
 
             if (!canceled) {
                 if (breakEB(block, drop)) return;
+
+                if(drop && SCore.hasRoseLoot) {
+                    LootContext context = LootContext.builder()
+                            .put(LootContextParams.LOOTER, player)
+                            .put(LootContextParams.LOOTED_BLOCK, block)
+                            .put(LootContextParams.ORIGIN, block.getLocation())
+                            .build();
+                    LootResult lootResult = RoseLoot.getInstance().getManager(LootTableManager.class).getLoot(LootTableTypes.BLOCK, context);
+                    List<ItemStack> itemsDropped = lootResult.getLootContents().getItems();
+                    for (ItemStack itemStack : itemsDropped) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                    }
+                    // to have only the custom drop from RoseLoot
+                    drop = false;
+                }
 
                 if (SCore.is1v11Less()) {
                     breakBlockNaturallyWith(block, Optional.ofNullable(player.getInventory().getItemInHand()), drop);

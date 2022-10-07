@@ -515,6 +515,16 @@
             <scope>provided</scope>
         </dependency>
 
+
+
+        <dependency>
+            <groupId>com.github.Rosewood-Development</groupId>
+            <artifactId>RoseLoot</artifactId>
+            <version>6470a69633</version>
+            <scope>provided</scope>
+        </dependency>
+
+
         <!--
                 <dependency>
                     <groupId>com.dutchjelly.craftenhance</groupId>
