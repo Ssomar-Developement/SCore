@@ -37,10 +37,15 @@ public abstract class CommandsAbstractFeature<T, Y extends FeatureInterface<T, Y
                 }
                 continue;
             } else {
-                if (s.contains("DELAYTICK ") && !s.contains("AROUND") && !s.contains("+++")) {
-                    delay = delay + (Integer.valueOf(s.replaceAll("DELAYTICK ", "")));
-                } else if (s.contains("DELAY ") && !s.contains("AROUND") && !s.contains("+++")) {
-                    delay = delay + (Integer.valueOf(s.replaceAll("DELAY ", "")) * 20);
+                /* Try because for some case users will use placeholders, but for the actionbar, I dont accept it*/
+                try {
+                    if (s.contains("DELAYTICK ") && !s.contains("AROUND") && !s.contains("+++")) {
+                        delay = delay + (Integer.valueOf(s.replaceAll("DELAYTICK ", "")));
+                    } else if (s.contains("DELAY ") && !s.contains("AROUND") && !s.contains("+++")) {
+                        delay = delay + (Integer.valueOf(s.replaceAll("DELAY ", "")) * 20);
+                    }
+                } catch (Exception e) {
+                    //e.printStackTrace();
                 }
             }
             result.add(s);

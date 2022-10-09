@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
@@ -21,6 +22,8 @@ import java.util.UUID;
 
 public class SetBlock extends BlockCommand {
 
+    private static final Boolean DEBUG = false;
+
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
@@ -32,10 +35,14 @@ public class SetBlock extends BlockCommand {
         } else {
             World w = block.getWorld();
             List<Entity> entities = w.getEntities();
+            SsomarDev.testMsg("entities size: "+entities.size(), DEBUG);
 
             if (entities.size() > 0) {
-                if (uuid != null && SafePlace.verifSafePlace(uuid, block)) return;
-                RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0).toLowerCase() + " replace", aInfo.isSilenceOutput());
+                SsomarDev.testMsg("entities size PASSE2: "+entities.size(), DEBUG);
+                if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
+                String command = "execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0).toLowerCase() + " replace";
+                SsomarDev.testMsg("RUN: "+ command, DEBUG);
+                RunConsoleCommand.runConsoleCommand(command, aInfo.isSilenceOutput());
             }
         }
     }

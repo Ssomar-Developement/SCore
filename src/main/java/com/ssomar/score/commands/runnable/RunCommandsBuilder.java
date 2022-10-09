@@ -265,7 +265,11 @@ public abstract class RunCommandsBuilder {
                     }
                 }
                 /* ---------------------- */
-                delay = delay + (Integer.parseInt(delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "")));
+                String secondPart = delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "");
+                if (secondPart.contains("%")) {
+                    secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
+                }
+                delay = delay + (Integer.parseInt(secondPart));
             } else if (command.contains("DELAY ") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 /* Verify that there is no multiple commands after DELAY */
                 String delayStr = command;
@@ -276,7 +280,11 @@ public abstract class RunCommandsBuilder {
                     }
                 }
                 /* ----------------------- */
-                delay = delay + (Integer.parseInt(delayStr.replaceAll("DELAY ", "").replaceAll(" ", "")) * 20);
+                String secondPart = delayStr.replaceAll("DELAY ", "").replaceAll(" ", "");
+                if (secondPart.contains("%")) {
+                    secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
+                }
+                delay = delay + (Integer.parseInt(secondPart) * 20);
             } else {
                 this.inserFinalCommands(delay, command);
             }
