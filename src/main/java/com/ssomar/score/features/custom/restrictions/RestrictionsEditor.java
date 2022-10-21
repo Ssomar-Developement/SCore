@@ -22,7 +22,7 @@ public class RestrictionsEditor extends FeatureEditorInterface<Restrictions> {
                     restrictions.get(restriction).initAndUpdateItemParentEditor(this, cpt);
                     cpt++;
                 } catch (Exception e) {
-                    System.out.println("Error in RestrictionsEditor.load() >> " + restriction.toString());
+                    //System.out.println("Error in RestrictionsEditor.load() >> " + restriction.toString());
                 }
             }
         }

@@ -6,7 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
-    <version>3.4.7</version>
+    <version>42.42.42</version>
     <packaging>jar</packaging>
 
     <name>SCore</name>
@@ -90,16 +90,33 @@
                             <goal>shade</goal>
                         </goals>
                         <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                        <!--<configuration>
+
+                        <!--_AUTO_UPDATE_START_COMMENT_-->
+                        <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>-->
+                        </configuration>
+                        <!--_AUTO_UPDATE_END_COMMENT_-->
+
                         <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
-                    <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
                     <!-- C:\Users\octav\Documents\GitHub\
                     C:\Users\marce\Documents\GitHub\ -->
-                    <!--<execution>
+
+                    <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
+                    <!--_AUTO_UPDATE_START_COMMENT_-->
+                    <execution>
+                        <id>build_1v8</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>build_dep_eb</id>
                         <phase>package</phase>
                         <goals>
@@ -159,7 +176,8 @@
                                 C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
                             </outputFile>
                         </configuration>
-                    </execution>-->
+                    </execution>
+                    <!--_AUTO_UPDATE_END_COMMENT_-->
                     <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                 </executions>
             </plugin>
@@ -234,6 +252,13 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>xyz.xenondevs</groupId>
+            <artifactId>particle</artifactId>
+            <version>1.8.1</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.lumine</groupId>
             <artifactId>Mythic-Dist</artifactId>
@@ -418,7 +443,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-bb37f72ed8-1</version>
+            <version>main-5235280702-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -469,6 +494,14 @@
             <version>3.0.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/HolographicDisplays.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>api</groupId>
+            <artifactId>java.eu.decentsofware.holograms</artifactId>
+            <version>2.7.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/DecentHolograms-2.7.5.jar</systemPath>
         </dependency>
 
         <dependency>

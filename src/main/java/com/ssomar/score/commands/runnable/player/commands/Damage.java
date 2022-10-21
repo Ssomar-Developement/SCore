@@ -39,7 +39,6 @@ public class Damage extends PlayerCommand {
             attributeAmplification = Boolean.valueOf(args.get(2));
         }
 
-
         /* percentage damage */
         if (damage.contains("%")) {
             String[] decomp = damage.split("%");
@@ -58,7 +57,7 @@ public class Damage extends PlayerCommand {
             if (potionAmplification) {
                 PotionEffect pE = launcher.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
                 if (pE != null) {
-                    amount = amount + (pE.getAmplifier() + 1) * 1.5;
+                    amount = amount + (pE.getAmplifier() + 1) * 3;
                 }
             }
 

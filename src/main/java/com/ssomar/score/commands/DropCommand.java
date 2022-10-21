@@ -34,7 +34,7 @@ public class DropCommand {
                 Player p = (Player) sender;
                 if (args.length <= 2) {
                     runDrop(sObject, Integer.parseInt(args[1]), p.getLocation());
-                    System.out.println(sPlugin.getNameDesign() + " Succesfully run /" + sPlugin.getShortName().toLowerCase() + " drop " + args[0] + " " + qty + " " + p.getWorld().getName() + " " + (int) p.getLocation().getX() + " " + (int) p.getLocation().getY() + " " + (int) p.getLocation().getZ() + " ");
+                    //System.out.println(sPlugin.getNameDesign() + " Succesfully run /" + sPlugin.getShortName().toLowerCase() + " drop " + args[0] + " " + qty + " " + p.getWorld().getName() + " " + (int) p.getLocation().getX() + " " + (int) p.getLocation().getY() + " " + (int) p.getLocation().getZ() + " ");
                     return;
                 }
             }

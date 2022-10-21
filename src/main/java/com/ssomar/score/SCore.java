@@ -54,6 +54,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasHeadDB = false;
     public static boolean hasMythicMobs = false;
     public static boolean hasHolographicDisplays = false;
+    public static boolean hasDecentHolograms = false;
     public static boolean hasCMI = false;
     public static boolean hasAureliumSkills = false;
     public static boolean hasItemsAdder = false;
@@ -339,6 +340,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {
             SCore.plugin.getServer().getLogger().info("[" + NAME + "] MythicMobs hooked !");
             hasMythicMobs = true;
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("DecentHolograms") != null){
+            SCore.plugin.getServer().getLogger().info("[" + NAME + "] DecentHolograms hooked !");
+            hasDecentHolograms = true;
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {

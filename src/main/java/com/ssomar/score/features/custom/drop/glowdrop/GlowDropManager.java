@@ -2,7 +2,9 @@ package com.ssomar.score.features.custom.drop.glowdrop;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -43,17 +45,21 @@ public class GlowDropManager {
     }
 
     public void addGlow(Entity entity, ChatColor color) {
+        SsomarDev.testMsg("addGlow : "+entity.getType()+ " "+color.name(), false);
         if (teams.containsKey(color)) {
             Team team = teams.get(color);
             team.addEntry(entity.getUniqueId().toString());
+            if(entity instanceof OfflinePlayer) team.addEntry(((OfflinePlayer) entity).getName());
             entity.setGlowing(true);
         }
+        else SsomarDev.testMsg("color not found > "+color.name(), false);
     }
 
     public void removeGlow(Entity entity, ChatColor color) {
         if (teams.containsKey(color)) {
             Team team = teams.get(color);
             team.removeEntry(entity.getUniqueId().toString());
+            if(entity instanceof OfflinePlayer) team.removePlayer((OfflinePlayer) entity);
             entity.setGlowing(false);
         }
     }

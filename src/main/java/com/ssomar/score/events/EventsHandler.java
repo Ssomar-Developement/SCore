@@ -51,7 +51,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new DisableFlyActivationEvent(), main);
 
-        main.getServer().getPluginManager().registerEvents(new DisableGlideActivationEvent(), main);
+        if(!SCore.is1v12Less()) main.getServer().getPluginManager().registerEvents(new DisableGlideActivationEvent(), main);
 
         main.getServer().getPluginManager().registerEvents(PlaceholderLastDamageDealtEvent.getInstance(), main);
 

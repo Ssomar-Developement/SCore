@@ -26,9 +26,11 @@ public class EntityCommandManager implements CommandManager {
         commands.add(new Kill());
         commands.add(new ChangeToMythicMob());
         commands.add(new ChangeTo());
+        commands.add(new DamageResistance());
         commands.add(new DropItem());
         commands.add(new DropExecutableItem());
         commands.add(new Heal());
+        commands.add(new Jump());
         commands.add(new Damage());
         commands.add(new SetBaby());
         commands.add(new SetAdult());
@@ -51,7 +53,7 @@ public class EntityCommandManager implements CommandManager {
             commands.add(new ParticleCommand());
             commands.add(new GlacialFreeze());
         }
-        //commands.add(new Customtest());
+        commands.add(new Customtest());
     }
 
     public static EntityCommandManager getInstance() {

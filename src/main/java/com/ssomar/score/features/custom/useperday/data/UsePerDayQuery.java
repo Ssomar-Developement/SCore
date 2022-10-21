@@ -49,8 +49,7 @@ public class UsePerDayQuery {
                     pstmt.setString(2, player);
                     pstmt.setString(3, item);
                     pstmt.setInt(4, nb);
-                    if (DEBUG)
-                        System.out.println("[ExecutableItems] SAVE USPD >" + date + "<" + player + ">" + item + "<" + nb + ">");
+                    //if (DEBUG) System.out.println("[ExecutableItems] SAVE USPD >" + date + "<" + player + ">" + item + "<" + nb + ">");
                     pstmt.addBatch();
                 }
 
@@ -112,7 +111,7 @@ public class UsePerDayQuery {
             pstmt.setString(1, date);
             rs = pstmt.executeQuery();
 
-            if (DEBUG) System.out.println("[ExecutableItems] TRY LOAD USPD >" + date);
+            //if (DEBUG) System.out.println("[ExecutableItems] TRY LOAD USPD >" + date);
             while (rs.next()) {
                 String player = rs.getString(COL_PLAYER);
                 String item = rs.getString(COL_ID);
@@ -121,16 +120,13 @@ public class UsePerDayQuery {
                     Map<String, Integer> map2 = datas.get(player);
                     if (map2.containsKey(item)) {
                         map2.put(item, map2.get(item) + nb);
-                        if (DEBUG)
-                            System.out.println("[ExecutableItems] LOAD USPD >" + date + "<" + player + ">" + item + " >" + nb);
+                        //if (DEBUG) System.out.println("[ExecutableItems] LOAD USPD >" + date + "<" + player + ">" + item + " >" + nb);
                     } else {
                         map2.put(item, nb);
-                        if (DEBUG)
-                            System.out.println("[ExecutableItems] LOAD USPD >" + date + "<" + player + ">" + item + ">" + nb);
+                        //if (DEBUG) System.out.println("[ExecutableItems] LOAD USPD >" + date + "<" + player + ">" + item + ">" + nb);
                     }
                 } else {
-                    if (DEBUG)
-                        System.out.println("[ExecutableItems] LOAD USPD >" + date + "<" + player + ">" + item + ">" + nb);
+                    //if (DEBUG) System.out.println("[ExecutableItems] LOAD USPD >" + date + "<" + player + ">" + item + ">" + nb);
                     Map<String, Integer> map2 = new HashMap<>();
                     map2.put(item, nb);
                     datas.put(player, map2);

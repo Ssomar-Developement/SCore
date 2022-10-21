@@ -51,6 +51,8 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
 
                 /* regroup the last args that correspond to the commands */
                 StringBuilder prepareCommands = new StringBuilder();
+                /* Remove the maxdistance arg*/
+                args.remove(0);
                 for (String s : args) {
                     prepareCommands.append(s);
                     prepareCommands.append(" ");

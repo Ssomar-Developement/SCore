@@ -1,53 +1,35 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /* GLOWING */
-public class Glowing extends PlayerCommand {
+public class SetGlow extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
         if (!receiver.isDead()) {
-            int time = Double.valueOf(args.get(0)).intValue();
             ChatColor color = ChatColor.WHITE;
-            if (args.size() >= 2) {
-                color = ChatColor.valueOf(args.get(1).toUpperCase());
+            if (args.size() >= 1) {
+                color = ChatColor.valueOf(args.get(0).toUpperCase());
             }
             GlowDropManager.getInstance().addGlow(receiver, color);
-
-            final ChatColor finalColor = color;
-            BukkitRunnable runnable3 = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!receiver.isDead()) {
-                        GlowDropManager.getInstance().removeGlow(receiver, finalColor);
-                    }
-                }
-            };
-            runnable3.runTaskLater(SCore.plugin, time);
         }
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        if (args.size() >= 2) {
-            ArgumentChecker ac2 = checkChatColor(args.get(1), isFinalVerification, getTemplate());
+        if (args.size() >= 1) {
+            ArgumentChecker ac2 = checkChatColor(args.get(0), isFinalVerification, getTemplate());
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }
 
@@ -57,13 +39,13 @@ public class Glowing extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("GLOWING");
+        names.add("SETGLOW");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "GLOWING {time in ticks} [color]";
+        return "SETGLOW [color]";
     }
 
     @Override

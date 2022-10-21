@@ -13,6 +13,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Getter;
 import lombok.Setter;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
@@ -162,7 +163,20 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
     public Location spawn(@NotNull Location location, StringPlaceholder sp) {
         if (!activeTitle.getValue()) return null;
         if (!SCore.hasCMI) {
-            if (SCore.hasHolographicDisplays) {
+            if(SCore.hasDecentHolograms){
+                Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
+                if(DHAPI.getHologram(loc.toString()) != null) remove(loc);
+                List<String> lines = new ArrayList<>();
+                for (String s : getTitle().getValue()) {
+                    s = StringConverter.coloredString(s);
+                    s = sp.replacePlaceholder(s);
+                    lines.add(s);
+                }
+                eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString(),loc, lines);
+                hologram.updateAll();
+                return hologram.getLocation();
+            }
+            else if (SCore.hasHolographicDisplays) {
                 Hologram holo = HolographicDisplaysAPI.get(SCore.plugin).createHologram(location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
                 for (String s : getTitle().getValue()) {
                     s = StringConverter.coloredString(s);
@@ -201,7 +215,12 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      **/
     public void remove(@NotNull Location location) {
         if (!SCore.hasCMI) {
-            if (SCore.hasHolographicDisplays) {
+            if(SCore.hasDecentHolograms){
+                if(DHAPI.getHologram(location.toString()) != null) {
+                    DHAPI.removeHologram(location.toString());
+                }
+            }
+            else if (SCore.hasHolographicDisplays) {
                // SsomarDev.testMsg("Hologram removed >> " + location);
                 for (Hologram holo : HolographicDisplaysAPI.get(SCore.plugin).getHolograms()) {
                     //SsomarDev.testMsg("Hologram location >> " + holo.getPosition().toLocation());
@@ -233,7 +252,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      * location is the location of the block / player
      **/
     public void update(@NotNull Location location, StringPlaceholder sp) {
-        if (SCore.hasHolographicDisplays || SCore.hasCMI) {
+        if (SCore.hasHolographicDisplays || SCore.hasCMI || SCore.hasDecentHolograms) {
             Location loc = spawn(location, sp);
             if (loc != null) remove(loc);
             spawn(location, sp);

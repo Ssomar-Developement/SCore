@@ -34,6 +34,8 @@ public class PlayerCommandManager implements CommandManager {
         commands.add(new ProjectileCustomDash1());
         commands.add(new FrontDash());
         commands.add(new Glowing());
+        commands.add(new SetGlow());
+        commands.add(new RemoveGlow());
         commands.add(new BackDash());
         commands.add(new TeleportOnCursor());
         commands.add(new UnsafeTeleportOnCursor());

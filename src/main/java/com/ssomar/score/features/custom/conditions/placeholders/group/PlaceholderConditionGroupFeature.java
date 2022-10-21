@@ -49,10 +49,13 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
         for (PlaceholderConditionFeature attribute : attributes.values()) {
             if (!attribute.verify(player, target, sp)) {
                 String message = attribute.getMessageIfNotValid().getValue().get();
+                String messageForTarget = attribute.getMessageIfNotValidForTarget().getValue().get();
                 if (sp != null) {
                     message = sp.replacePlaceholder(message);
+                    messageForTarget = sp.replacePlaceholder(messageForTarget);
                 }
                 SendMessage.sendMessageNoPlch(player, message);
+                if(target != null) SendMessage.sendMessageNoPlch(target, messageForTarget);
                 if (event != null && event instanceof Cancellable && attribute.getCancelEventIfNotValid().getValue()) {
                     ((Cancellable) event).setCancelled(true);
                 }

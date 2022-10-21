@@ -1,0 +1,56 @@
+package com.ssomar.score.usedapi;
+
+import com.ssomar.score.SCore;
+import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.CustomFurniture;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+
+public class ItemsAdderAPI {
+
+    public static boolean breakCustomBlock(Block block, ItemStack item, boolean drop) {
+        if (SCore.hasItemsAdder && block != null && !block.isEmpty()) {
+            CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
+            //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
+            if (customBlock != null) {
+                //SsomarDev.testMsg("ITEM ADDER REMOVED", true);
+                if(drop){
+                   List<ItemStack> loots = customBlock.getLoot(item, false);
+                   for(ItemStack loot : loots){
+                       block.getWorld().dropItemNaturally(block.getLocation(), loot);
+                   }
+                }
+                customBlock.playBreakSound();
+                customBlock.playBreakEffect();
+                customBlock.playBreakParticles();
+                customBlock.remove();
+                BukkitRunnable runnable = new BukkitRunnable() {
+                    public void run() {
+                        block.setType(org.bukkit.Material.AIR);
+                    }
+                };
+                runnable.runTaskLater(SCore.plugin, 1);
+                return true;
+            }
+            ArmorStand armorStand;
+            for (Entity e : block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5)) {
+                if (e instanceof ArmorStand) {
+                    armorStand = (ArmorStand) e;
+                    //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+armorStand.getCustomName(), true);
+                    if (armorStand.getCustomName() != null && armorStand.getCustomName().equals("ItemsAdder_furniture")) {
+                        CustomFurniture.byAlreadySpawned(armorStand).remove(drop);
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+
+    }
+}

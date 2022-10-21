@@ -53,6 +53,9 @@ public class SafeBreak {
         if (player != null) {
             SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
             boolean canceled = false;
+
+            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) return;
+
             if (generateBreakEvent) {
                 SsomarDev.testMsg("DEBUG SAFE BREAK 4", DEBUG);
                 BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
@@ -90,6 +93,7 @@ public class SafeBreak {
                 }
             }
         } else {
+            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return;
             if (breakEB(block, drop)) return;
 
             //SsomarDev.testMsg("DEBUG SAFE BREAK 6");
