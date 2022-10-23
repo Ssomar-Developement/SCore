@@ -74,11 +74,12 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public EnchantmentWithLevelFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 3];
+        String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = "&7Enchantment: &e" + enchantment.getEnchantmentName(enchantment.getValue().get());
-        finalDescription[finalDescription.length - 2] = "&7Level: &e" + level.getValue().get();
-        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = "&7Enchantment: &e" + enchantment.getEnchantmentName(enchantment.getValue().get());
+        finalDescription[finalDescription.length - 3] = "&7Level: &e" + level.getValue().get();
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.SHIFT_CLICK_TO_REMOVE;
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;

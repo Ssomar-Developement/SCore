@@ -98,13 +98,14 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     @Override
     public AttributeFullOptionsFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 5];
+        String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 5] = "&7Attribute: &e" + attribute.getValue().get().name();
-        finalDescription[finalDescription.length - 4] = "&7Operation: &e" + operation.getValue().get();
-        finalDescription[finalDescription.length - 3] = "&7Amount: &e" + amount.getValue().get();
-        finalDescription[finalDescription.length - 2] = "&7Slot: &e" + this.slot.getValue().get().name();
-        finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 6] = "&7Attribute: &e" + attribute.getValue().get().name();
+        finalDescription[finalDescription.length - 5] = "&7Operation: &e" + operation.getValue().get();
+        finalDescription[finalDescription.length - 4] = "&7Amount: &e" + amount.getValue().get();
+        finalDescription[finalDescription.length - 3] = "&7Slot: &e" + this.slot.getValue().get().name();
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 1] = GUI.SHIFT_CLICK_TO_REMOVE;
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;

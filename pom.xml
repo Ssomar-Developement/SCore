@@ -6,6 +6,7 @@
 
     <groupId>com.ssomar</groupId>
     <artifactId>SCore</artifactId>
+    <!-- 42.42.42 is a test version, let it like that. -->
     <version>42.42.42</version>
     <packaging>jar</packaging>
 
@@ -89,96 +90,7 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-
-                        <!--_AUTO_UPDATE_START_COMMENT_-->
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>
-                        <!--_AUTO_UPDATE_END_COMMENT_-->
-
-                        <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
-                    <!-- C:\Users\octav\Documents\GitHub\
-                    C:\Users\marce\Documents\GitHub\ -->
-
-                    <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                    <!--_AUTO_UPDATE_START_COMMENT_-->
-                    <execution>
-                        <id>build_1v8</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_eb</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_ei</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_eg</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_cpt</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_ee</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <!--_AUTO_UPDATE_END_COMMENT_-->
-                    <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                 </executions>
             </plugin>
         </plugins>
@@ -307,12 +219,14 @@
             <version>1.5.21</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.10.9</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
@@ -325,12 +239,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>ExecutableItems</artifactId>
@@ -353,6 +269,7 @@
             <artifactId>jsoup</artifactId>
             <version>1.13.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
@@ -384,14 +301,6 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/Residence5.0.1.6.jar</systemPath>
         </dependency>
-        <!--
-            <dependency>
-                <groupId>com.ssomar.test</groupId>
-                <artifactId>Test</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <scope>system</scope>
-                <systemPath>${project.basedir}/src/main/resources/TestNms.jar</systemPath>
-            </dependency> -->
 
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
@@ -399,12 +308,14 @@
             <version>4.3.1</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
             <version>6.14.4</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
@@ -548,24 +459,12 @@
             <scope>provided</scope>
         </dependency>
 
-
-
         <dependency>
             <groupId>com.github.Rosewood-Development</groupId>
             <artifactId>RoseLoot</artifactId>
             <version>6470a69633</version>
             <scope>provided</scope>
         </dependency>
-
-
-        <!--
-                <dependency>
-                    <groupId>com.dutchjelly.craftenhance</groupId>
-                    <artifactId>craftenhance</artifactId>
-                    <version>2.4.3</version>
-                    <scope>system</scope>
-                    <systemPath>${project.basedir}/src/main/resources/CraftEnhance-2.4.3.jar</systemPath>
-                </dependency> -->
 
     </dependencies>
 </project>

@@ -24,6 +24,8 @@ public abstract class GUI implements IGUI {
 
     public final static String CLICK_HERE_TO_CHANGE = "&a✎ Click here to change";
 
+    public final static String SHIFT_CLICK_TO_REMOVE = "&4&lX &cShift + Click to remove";
+
     public final static String PREMIUM = "&5&l❂ &d&lPremium only &5&l❂";
 
     public final static String TITLE_COLOR = "&e&l";
