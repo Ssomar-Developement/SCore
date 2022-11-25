@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
-public interface FeatureParentInterface {
+public interface FeatureParentInterface  {
 
     List<FeatureInterface> getFeatures();
 

@@ -149,9 +149,9 @@ public class AllMobs extends PlayerCommand implements FeatureParentInterface {
                                     }
                                     if (s.startsWith("/")) s = s.substring(1);
 
-                                    s = sp.replacePlaceholder(s);
                                     commands.add(s);
                                 }
+                                commands = sp.replacePlaceholders(commands);
                                 EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
                                 CommandsExecutor.runCommands(builder);
                             }

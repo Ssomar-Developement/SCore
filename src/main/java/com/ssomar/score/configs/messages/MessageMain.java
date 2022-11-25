@@ -6,6 +6,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.FilterManager;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -31,7 +32,7 @@ public class MessageMain {
 
     public void load() {
         messages = new HashMap<>();
-        SCore.plugin.getServer().getLogger().info(SCore.NAME_2 + " Language setup on " + GeneralConfig.getInstance().getLocale());
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language setup on &6"+ GeneralConfig.getInstance().getLocale());
         fileName = "/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml";
     }
 

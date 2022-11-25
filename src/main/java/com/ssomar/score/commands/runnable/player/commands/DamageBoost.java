@@ -35,7 +35,7 @@ public class DamageBoost extends PlayerCommand {
         double boost = Double.valueOf(args.get(0));
         int time = Double.valueOf(args.get(1)).intValue();
 
-        //SsomarDev.testMsg("ADD receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
+        SsomarDev.testMsg("ADD receiver: "+receiver.getUniqueId()+ " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
         if (activeBoosts.containsKey(receiver.getUniqueId())) {
             activeBoosts.get(receiver.getUniqueId()).add(boost);
         } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(boost)));
@@ -43,7 +43,7 @@ public class DamageBoost extends PlayerCommand {
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
             public void run() {
-                //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
+                SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
                 if (activeBoosts.containsKey(receiver.getUniqueId())) {
                     if (activeBoosts.get(receiver.getUniqueId()).size() > 1) {
                         activeBoosts.get(receiver.getUniqueId()).remove(boost);
@@ -56,17 +56,18 @@ public class DamageBoost extends PlayerCommand {
     }
 
     public double getNewDamage(UUID uuid, double damage) {
+        SsomarDev.testMsg("GET NEW DAMAGE FOR: "+uuid+ " Damage: " + damage, DEBUG);
         if (DamageBoost.getInstance().getActiveBoosts().containsKey(uuid)) {
-            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent base: " + damage, DEBUG);
+            SsomarDev.testMsg("DamageBoostEvent base: " + damage, DEBUG);
             double boost = 0;
             for (double d : DamageBoost.getInstance().getActiveBoosts().get(uuid)) {
                 boost += d;
             }
-            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent bost: " + boost, DEBUG);
+            SsomarDev.testMsg("DamageBoostEvent bost: " + boost, DEBUG);
 
             double averagePercent = boost / 100;
             damage = damage + (damage * averagePercent);
-            if (DEBUG) SsomarDev.testMsg("DamageBoostEvent modified " + damage, DEBUG);
+            SsomarDev.testMsg("DamageBoostEvent modified " + damage, DEBUG);
         }
         return damage;
     }

@@ -12,4 +12,5 @@ import java.util.List;
 public interface BlockSCommand {
 
     void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo);
+
 }

@@ -28,8 +28,7 @@ public abstract class PlaceholdersInterface {
             String suit = result.split(placeholder + "\\+")[1];
             StringBuilder sb = new StringBuilder();
             for (char c : suit.toCharArray()) {
-                if (c == ' ' || c == ',' || c == ')')
-                    break;
+                if (c == ' ' || c == ',' || c == ')') break;
                 sb.append(c);
             }
             if (isNumeric(sb.toString())) {

@@ -3,10 +3,17 @@ package com.ssomar.score.utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Optional;
 
 public class NTools implements Serializable {
+
+    public static DecimalFormat numberFormat_1 = new DecimalFormat("#.0", DecimalFormatSymbols.getInstance(Locale.US));
+    public static DecimalFormat numberFormat_2 = new DecimalFormat("#.00", DecimalFormatSymbols.getInstance(Locale.US));
+    public static DecimalFormat numberFormat_3 = new DecimalFormat("#.000", DecimalFormatSymbols.getInstance(Locale.US));
 
     public static Optional<Integer> getInteger(String s) {
         Optional<Integer> result = Optional.empty();
@@ -59,24 +66,32 @@ public class NTools implements Serializable {
 
     public static double reduceDouble(@NotNull double number, int numbersAfterComma) {
         /* Limit numbers after , */
-        StringBuilder sb = new StringBuilder("");
-        boolean startCount = false;
-        int cpt = 0;
-        for (char c : (new BigDecimal(number).toPlainString()).toCharArray()) {
-            if (cpt == numbersAfterComma) {
-                break;
-            } else if (startCount) {
-                cpt++;
-            } else if (c == ',' || c == '.') {
-                startCount = true;
+        /* Static freqeuntly used formats for optimization */
+        if(numbersAfterComma == 1){
+            numberFormat_1.setRoundingMode(RoundingMode.HALF_UP);
+            return Double.parseDouble(numberFormat_1.format(number).replaceAll("\\?", "").replace(",", "."));
+        }
+        else if(numbersAfterComma == 2){
+            numberFormat_2.setRoundingMode(RoundingMode.HALF_UP);
+            //SsomarDev.testMsg(numberFormat_2.format(number).replaceAll("\\?", "").replaceAll(",", "."), true);
+            return Double.parseDouble(numberFormat_2.format(number).replaceAll("\\?", "").replaceAll(",", "."));
+        }
+        else if(numbersAfterComma == 3){
+            numberFormat_3.setRoundingMode(RoundingMode.HALF_UP);
+            return Double.parseDouble(numberFormat_3.format(number).replaceAll("\\?", "").replace(",", "."));
+        }
+        else{
+            String format = "#.";
+            for(int i = 0; i < numbersAfterComma; i++){
+                format = format + "0";
             }
-            sb.append(c);
+            DecimalFormat numberFormat_other = new DecimalFormat(format , DecimalFormatSymbols.getInstance(Locale.US));
+            return Double.valueOf(numberFormat_other.format(number).replace(",", "."));
         }
-        try {
-            return Double.parseDouble(sb.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return number;
-        }
+    }
+
+    public static void main(String[] args) {
+       System.out.println(reduceDouble(1.87656789, 2));
+
     }
 }

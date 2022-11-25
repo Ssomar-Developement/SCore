@@ -21,7 +21,11 @@ public class RunConsoleCommand {
 
         FilterManager fM = FilterManager.getInstance();
 
-        if (silenceOutput) fM.incCurrentlyInRun();
+        if (silenceOutput){
+            fM.setLogFilterPrior();
+            //fM.showDebug();
+            fM.incCurrentlyInRun();
+        }
 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override

@@ -24,7 +24,7 @@ import java.util.Optional;
 /* STRIKELIGHTNING */
 public class SellContent extends BlockCommand {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
@@ -45,7 +45,7 @@ public class SellContent extends BlockCommand {
                 ItemStack item = inv.getItem(i);
                 if(item != null && SCore.hasShopGUIPlus){
                     double check = ShopGUIPlusTool.sellItem(p, item);
-                    SsomarDev.testMsg("item : "+item.getType()+ " check : "+check, DEBUG);
+                    SsomarDev.testMsg("item : "+item.getType()+ " qty: " + item.getAmount()+"check : "+check, DEBUG);
                     if(check > 0){
                         amount += check;
                         item.setAmount(0);

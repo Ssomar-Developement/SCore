@@ -16,7 +16,7 @@ import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.newprojectiles.loader.SProjectileLoader;
+import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.ProtocolibAPI;
 import com.ssomar.score.utils.Utils;
@@ -27,11 +27,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class SCore extends JavaPlugin implements SPlugin {
 
     public static final String NAME = "SCore";
+    public static final String NAME_COLOR = "&eSCore";
     public static final String NAME_2 = "[SCore]";
     public static SCore plugin;
     public static boolean hasPlaceholderAPI = false;
     public static boolean hasExecutableItems = false;
     public static boolean hasExecutableBlocks = false;
+    public static boolean hasExecutableEvents = false;
     public static boolean hasCustomPiglinsTrades = false;
     public static boolean hasSParkour = false;
     public static boolean hasWorldGuard = false;
@@ -181,7 +183,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         plugin = this;
         commandClass = new CommandsClass(this);
 
-        Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
+        Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
 
         this.initVersion();
 
@@ -216,89 +218,94 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         UsagePerDayManager.getInstance();
 
-        Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
+        Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }
 
     public void loadDependency() {
         /* Soft-Dependency part */
         if (Bukkit.getPluginManager().getPlugin("ExecutableItems") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] ExecutableItems hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7ExecutableItems hooked !");
             hasExecutableItems = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("ExecutableBlocks") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] ExecutableBlocks hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7ExecutableBlocks hooked !");
             hasExecutableBlocks = true;
         }
 
+        if (Bukkit.getPluginManager().getPlugin("ExecutableEvents") != null) {
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7ExecutableEvents hooked !");
+            hasExecutableEvents= true;
+        }
+
         if (Bukkit.getPluginManager().getPlugin("CustomPiglinsTrades") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] CustomPiglinsTrades hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7CustomPiglinsTrades hooked !");
             hasCustomPiglinsTrades = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("SParkour") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] SParkour hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7SParkour hooked !");
             hasSParkour = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] PlaceholderAPI hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7PlaceholderAPI hooked !");
             hasPlaceholderAPI = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] WorldGuard hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7WorldGuard hooked !");
             hasWorldGuard = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] Vault hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Vault hooked !");
             hasVault = true;
         }
         if (Bukkit.getPluginManager().getPlugin("IridiumSkyblock") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] IridiumSkyblock hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7IridiumSkyblock hooked !");
             hasIridiumSkyblock = true;
         }
         if (Bukkit.getPluginManager().getPlugin("SuperiorSkyblock2") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] SuperiorSkyblock2 hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7SuperiorSkyblock2 hooked !");
             hasSuperiorSkyblock2 = true;
         }
         if (Bukkit.getPluginManager().getPlugin("BentoBox") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] BentoBox hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7BentoBox hooked !");
             hasBentoBox = true;
         }
         if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] Multiverse-Core hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Multiverse-Core hooked !");
             hasMultiverse = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("Lands") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] Lands hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Lands hooked !");
             hasLands = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] Towny hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Towny hooked !");
             hasTowny = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("GriefPrevention") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] GriefPrevention hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7GriefPrevention hooked !");
             hasGriefPrevention = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("GriefDefender") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] GriefDefender hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7GriefDefender hooked !");
             hasGriefDefender = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("CoreProtect") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] CoreProtect hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7CoreProtect hooked !");
             hasCoreProtect = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] ProtocolLib hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7ProtocolLib hooked !");
             hasProtocolLib = true;
             /* Protocolib */
             protocolManager = ProtocolLibrary.getProtocolManager();
@@ -306,12 +313,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
 
         if (Bukkit.getPluginManager().getPlugin("NBTAPI") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] NBTAPI hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7NBTAPI hooked !");
             hasNBTAPI = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("Residence") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] Residence hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Residence hooked !");
             hasResidence = true;
         }
 
@@ -319,7 +326,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (Bukkit.getPluginManager().getPlugin("PlotSquared") != null) {
             try {
                 PlotAPI plotAPI = new PlotAPI();
-                SCore.plugin.getServer().getLogger().info("[" + NAME + "] PlotSquared hooked !");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7PlotSquared hooked !");
                 hasPlotSquared = true;
             } catch (NoClassDefFoundError e) {
                 SCore.plugin.getServer().getLogger().severe("[" + NAME + "] PlotSquared hooked BUT you haven't the good version ! (try to update it) !");
@@ -328,29 +335,29 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
 
         if (Bukkit.getPluginManager().getPlugin("HeadDatabase") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] HeadDatabase hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7HeadDatabase hooked !");
             hasHeadDatabase = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("HeadDB") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] HeadDB hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7HeadDB hooked !");
             hasHeadDB = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] MythicMobs hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7MythicMobs hooked !");
             hasMythicMobs = true;
         }
 
         if(Bukkit.getPluginManager().getPlugin("DecentHolograms") != null){
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] DecentHolograms hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7DecentHolograms hooked !");
             hasDecentHolograms = true;
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
             try {
                 HolographicDisplaysAPI.get(SCore.plugin);
-                SCore.plugin.getServer().getLogger().info("[" + NAME + "] HolographicDisplays hooked for title !");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7HolographicDisplays hooked !");
                 hasHolographicDisplays = true;
             }  catch (Exception | Error e) {
                 SCore.plugin.getServer().getLogger().severe("[" + NAME + "] HolographicDisplays hooked BUT you haven't the good version ! (require 3.0 or higher) !");
@@ -360,32 +367,32 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
 
         if (Bukkit.getPluginManager().getPlugin("CMI") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] CMI hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7CMI hooked !");
             hasCMI = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("AureliumSkills") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] AureliumSkills hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7AureliumSkills hooked !");
             hasAureliumSkills = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] ItemsAdder hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7ItemsAdder hooked !");
             hasItemsAdder = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("Oraxen") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] Oraxen hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Oraxen hooked !");
             hasOraxen = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("ShopGUIPlus") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] ShopGUIPlus hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7ShopGUIPlus hooked !");
             hasShopGUIPlus = true;
         }
 
         if (Bukkit.getPluginManager().getPlugin("RoseLoot") != null) {
-            SCore.plugin.getServer().getLogger().info("[" + NAME + "] RoseLoot hooked !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7RoseLoot hooked !");
             hasRoseLoot = true;
         }
     }
@@ -398,7 +405,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public void onReload() {
-        Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
+        Utils.sendConsoleMsg("&7================ " + NAME_COLOR+ " &7================");
         GeneralConfig.getInstance().reload();
 
         LoopManager.getInstance();
@@ -408,7 +415,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 
-        Utils.sendConsoleMsg("================ " + NAME_2 + " ================");
+        Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }
 
     @Override
@@ -446,6 +453,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public void initVersion() {
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Version of the server &6"+Bukkit.getServer().getVersion()+" &7!");
         is1v8 = Bukkit.getServer().getVersion().contains("1.8");
         is1v9 = Bukkit.getServer().getVersion().contains("1.9");
         is1v10 = Bukkit.getServer().getVersion().contains("1.10");

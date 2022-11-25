@@ -25,7 +25,13 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
     public void writeStringIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value) {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
-        if (meta.getPersistentDataContainer().get(key4, PersistentDataType.STRING) == null) {
+        try {
+            if (meta.getPersistentDataContainer().get(key4, PersistentDataType.STRING) == null) {
+                meta.getPersistentDataContainer().set(key4, PersistentDataType.STRING, value);
+            }
+        }
+        // Appear when the tag already exists but with a different type
+        catch (IllegalArgumentException e){
             meta.getPersistentDataContainer().set(key4, PersistentDataType.STRING, value);
         }
     }
@@ -48,7 +54,13 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
     public void writeIntegerIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, int value) {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
-        if (meta.getPersistentDataContainer().get(key4, PersistentDataType.INTEGER) == null) {
+        try {
+            if (meta.getPersistentDataContainer().get(key4, PersistentDataType.INTEGER) == null) {
+                meta.getPersistentDataContainer().set(key4, PersistentDataType.INTEGER, value);
+            }
+        }
+        // Appear when the tag already exists but with a different type
+        catch (IllegalArgumentException e){
             meta.getPersistentDataContainer().set(key4, PersistentDataType.INTEGER, value);
         }
     }
@@ -71,7 +83,13 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
     public void writeDoubleIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, double value) {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
-        if (meta.getPersistentDataContainer().get(key4, PersistentDataType.DOUBLE) == null) {
+        try {
+            if (meta.getPersistentDataContainer().get(key4, PersistentDataType.DOUBLE) == null) {
+                meta.getPersistentDataContainer().set(key4, PersistentDataType.DOUBLE, value);
+            }
+        }
+        // Appear when the tag already exists but with a different type
+        catch (IllegalArgumentException e){
             meta.getPersistentDataContainer().set(key4, PersistentDataType.DOUBLE, value);
         }
     }

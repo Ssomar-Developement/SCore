@@ -7,7 +7,7 @@ import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.menu.InteractionGUI;
-import com.ssomar.score.nofalldamage.NoFallDamageEvt;
+import com.ssomar.score.nofalldamage.NoFallDamageListener;
 
 public class EventsHandler {
 
@@ -30,7 +30,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new SecurityOPCommands(), main);
 
-        main.getServer().getPluginManager().registerEvents(new NoFallDamageEvt(), main);
+        main.getServer().getPluginManager().registerEvents(new NoFallDamageListener(), main);
 
         main.getServer().getPluginManager().registerEvents(new PlayerReconnexion(), main);
 

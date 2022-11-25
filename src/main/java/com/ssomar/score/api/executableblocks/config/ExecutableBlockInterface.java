@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +37,15 @@ public interface ExecutableBlockInterface {
      * @return The configuration of the ExecutableBlock placed
      */
     ExecutableBlockPlaced place(Optional<Player> owner, @NotNull Location location, boolean place);
+
+    /**
+     * @param owner    The optional owner of the ExecutableBlock, if optional is null there is no owner
+     * @param location The location where the ExecutableBlock will be placed
+     * @param place    true if you want that the block will be placed, false if you have already place the block and you want only place the configuration of the EB on this block
+     * @param variablesCustom Allow you to set custom values for the variables of the ExecutableBlock
+     * @return The configuration of the ExecutableBlock placed
+     */
+    ExecutableBlockPlaced place(Optional<Player> owner, @NotNull Location location, boolean place, Map<String, String> variablesCustom);
 
     /**
      * @param ownerUUID The optional ownerUUID of the ExecutableBlock, if optional is null there is no owner

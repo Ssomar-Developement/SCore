@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements Serializable {
@@ -25,12 +27,10 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     /* placeholders of the player */
     @Getter
     private UUID playerUUID;
-    private String player = "";
 
     private double x;
     private double y;
     private double z;
-    private String world = "";
     private float pitch;
     private float pitchPositive;
     private float yaw;
@@ -39,18 +39,18 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
 
     private float attackCharge;
 
-    private String team;
-
     private int fixSlot;
-    private String slot = "";
-    private String slotLive = "";
 
     private double lastDamageTaken;
     private double lastDamageDealt;
 
+    @Getter
+    private Map<String, String> placeholders;
+
     public PlayerPlaceholdersAbstract(String particle, boolean acceptWithoutParticle) {
         this.particle = particle;
         this.acceptWithoutParticle = acceptWithoutParticle;
+        this.placeholders = new HashMap<>();
     }
 
     public void setPlayerPlcHldr(UUID uuid) {
@@ -67,16 +67,11 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     public void reloadPlayerPlcHldr() {
         Player player;
         if (this.playerUUID != null && (player = Bukkit.getPlayer(playerUUID)) != null) {
-            this.player = player.getName();
-            this.playerUUID = player.getUniqueId();
+
             Location pLoc = player.getLocation();
-            this.x = pLoc.getX();
-            this.y = pLoc.getY();
-            this.z = pLoc.getZ();
-            this.world = pLoc.getWorld().getName();
-            if (fixSlot != -1) this.slot = fixSlot + "";
-            else this.slot = player.getInventory().getHeldItemSlot() + "";
-            this.slotLive = player.getInventory().getHeldItemSlot() + "";
+            this.x = NTools.reduceDouble(pLoc.getX(), 2);
+            this.y = NTools.reduceDouble(pLoc.getY(), 2);
+            this.z = NTools.reduceDouble(pLoc.getZ(), 2);
             this.lastDamageTaken = player.getLastDamage();
             this.pitch = pLoc.getPitch();
             if (pitch < 0) pitchPositive = pitch * -1;
@@ -102,45 +97,65 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             } else if (yaw > -60 && yaw < -30) {
                 direction = "SE";
             }
-            if (PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.containsKey(playerUUID)) {
-                this.lastDamageDealt = PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.get(playerUUID);
-            } else this.lastDamageDealt = 0;
 
-            team = "NO_TEAM";
+            String slot = player.getInventory().getHeldItemSlot() + "";
+            if (fixSlot != -1) slot = fixSlot + "";
+
+            String team = "NO_TEAM";
             for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
-                if (t.hasEntry(this.player)) {
+                if (t.hasEntry(player.getName())) {
                     team = t.getName();
                     break;
                 }
             }
+
+            if (PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.containsKey(playerUUID)) {
+                this.lastDamageDealt = PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.get(playerUUID);
+            } else this.lastDamageDealt = 0;
+
             if(SCore.is1v16Plus()) {
                 attackCharge = player.getAttackCooldown();
             } else {
                 attackCharge = 0;
             }
+
+            /* Pre save placeholders without calcul */
+
+            placeholders.put("%" + particle + "%", player.getName());
+            placeholders.put("%" + particle + "_name%", player.getName());
+            placeholders.put("%" + particle + "_uuid%", playerUUID.toString());
+
+            /* I need to let that because old versions doesnt have particle */
+            if (acceptWithoutParticle) {
+                placeholders.put("%word%", pLoc.getWorld().getName());
+                placeholders.put("%world_lower%", pLoc.getWorld().getName().toLowerCase());
+                placeholders.put("%slot%", slot);
+                placeholders.put("%slot_live%", player.getInventory().getHeldItemSlot() + "");
+                placeholders.put("%direction%", direction);
+            }
+
+            placeholders.put("%" + particle + "_world%", pLoc.getWorld().getName());
+            placeholders.put("%" + particle + "_world_lower%", pLoc.getWorld().getName().toLowerCase());
+            placeholders.put("%" + particle + "_slot%", slot);
+            placeholders.put("%" + particle + "_slot_live%", player.getInventory().getHeldItemSlot() + "");
+            placeholders.put("%" + particle + "_direction%", direction);
+
+            placeholders.put("%" + particle + "_team%", team);
         }
     }
 
     public String replacePlaceholder(String s) {
         String toReplace = s;
         if (playerUUID != null) {
-            toReplace = toReplace.replaceAll("%" + particle + "%", player);
-            toReplace = toReplace.replaceAll("%" + particle + "_name%", player);
-            toReplace = toReplace.replaceAll("%" + particle + "_uuid%", playerUUID.toString());
 
             /* I need to let that because old versions doesnt have particle */
             if (acceptWithoutParticle) {
-                toReplace = replaceCalculPlaceholder(toReplace, "%x%", NTools.reduceDouble(x, 2) + "", false);
-                toReplace = replaceCalculPlaceholder(toReplace, "%y%", NTools.reduceDouble(y, 2) + "", false);
-                toReplace = replaceCalculPlaceholder(toReplace, "%z%", NTools.reduceDouble(z, 2) + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%x%", x + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%y%", y + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%z%", z + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%x_int%", ((int) x) + "", true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%y_int%", ((int) y) + "", true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%z_int%", ((int) z) + "", true);
-
-                toReplace = toReplace.replaceAll("%world%", world);
-                toReplace = toReplace.replaceAll("%world%_lower%", world);
-                toReplace = toReplace.replaceAll("%slot%", slot);
-                toReplace = toReplace.replaceAll("%slot_live%", slotLive);
 
                 toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_taken%", lastDamageTaken + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
@@ -150,19 +165,14 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_int%", ((int) pitch) + "", true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive%", pitchPositive + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive_int%", ((int) pitchPositive) + "", false);
-                toReplace = toReplace.replaceAll("%direction%", direction);
             }
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", NTools.reduceDouble(x, 2) + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", NTools.reduceDouble(y, 2) + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z%", NTools.reduceDouble(z, 2) + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", x + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", y + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z%", z + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_int%", ((int) x) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_int%", ((int) y) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_int%", ((int) z) + "", true);
-            toReplace = toReplace.replaceAll("%" + particle + "_world%", world);
-            toReplace = toReplace.replaceAll("%" + particle + "_world_lower%", world.toLowerCase());
-            toReplace = toReplace.replaceAll("%" + particle + "_slot%", slot);
-            toReplace = toReplace.replaceAll("%" + particle + "_slot_live%", slotLive);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken%", lastDamageTaken + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_dealt%", lastDamageTaken + "", false);
@@ -177,9 +187,6 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_int%", ((int) yaw) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive%", yawPositive + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_int%", ((int) yawPositive) + "", false);
-            toReplace = toReplace.replaceAll("%" + particle + "_direction%", direction);
-
-            toReplace = toReplace.replaceAll("%" + particle + "_team%", team);
 
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_attack_charge%", attackCharge + "", false);
         }

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface ItemKeyWriterReader {
 
+    //TODO CHANGE THAT TO HAVE ONLY ONE INSTANCE
     static ItemKeyWriterReader init() {
         if (SCore.is1v13Less()) return new NBTWriterReader();
         else return new NameSpaceKeyWriterReader();

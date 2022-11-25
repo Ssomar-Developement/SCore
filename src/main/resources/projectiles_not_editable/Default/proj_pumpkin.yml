@@ -1,0 +1,45 @@
+type: SNOWBALL
+customNameVisible: false
+customName: Default name
+invisible: false
+glowing: false
+bounce: false
+despawnDelay: 15
+silent: false
+removeWhenHitBlock: false
+gravity: false
+visualItem:
+  material: CARVED_PUMPKIN
+particles:
+  particle1:
+    particlesType: REDSTONE
+    particlesAmount: 1
+    particlesOffSet: 0.001
+    particlesSpeed: 0.001
+    particlesDelay: 1
+    particlesDensity: 20
+    redstoneColor: BLACK
+  particle0:
+    particlesType: REDSTONE
+    particlesAmount: 1
+    particlesOffSet: 0.001
+    particlesSpeed: 0.001
+    particlesDelay: 1
+    particlesDensity: 100
+    redstoneColor: ORANGE
+  particle3:
+    particlesType: REDSTONE
+    particlesAmount: 1
+    particlesOffSet: 1.0
+    particlesSpeed: 1.0
+    particlesDelay: 1
+    particlesDensity: 40
+    redstoneColor: BLACK
+  particle2:
+    particlesType: REDSTONE
+    particlesAmount: 1
+    particlesOffSet: 1.0
+    particlesSpeed: 0.5
+    particlesDelay: 1
+    particlesDensity: 40
+    redstoneColor: ORANGE

@@ -67,6 +67,8 @@ public class PlayerRunCommand extends RunCommand {
         Player launcher = Bukkit.getPlayer(launcherUUID);
         Player receiver = Bukkit.getPlayer(receiverUUID);
 
+       // SsomarDev.testMsg("runCommand: "+getBrutCommand(), true);
+
         pCommand.run(launcher, receiver, args, this.getaInfo());
     }
 

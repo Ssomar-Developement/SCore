@@ -9,7 +9,7 @@ activeColor: true
 color: NO_COLOR
 silent: false
 velocity: 0.0
-despawnDelay: -1
+despawnDelay: 10
 gravity: false
 bounce: false
 glowing: false

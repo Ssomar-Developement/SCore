@@ -1,13 +1,12 @@
 package com.ssomar.score.commands;
 
 
-import com.ssomar.score.SsomarDev;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LifeCycle;
 import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
 import java.util.ArrayList;
@@ -51,133 +50,120 @@ public class LogFilter implements Filter, LifeCycle {
 
 
     public Filter.Result checkMessage(String message) {
-        //SsomarDev.testMsg(message+" > "+FilterManager.getInstance().getCurrentlyInRun());
+        boolean hide = false;
         if (FilterManager.getInstance().isSilenceOuput()) {
-            boolean hide = false;
-            for (String s : messageToHide) {
-                if (message != null && message.contains(s)) {
+            if (message == null) {
+                return Result.NEUTRAL;
+            }
+            for (String s : this.messageToHide) {
+                if (message.contains(s)) {
                     hide = true;
                     break;
                 }
             }
-            if (hide) return Filter.Result.DENY;
-            else return Filter.Result.NEUTRAL;
-
         }
-        return Filter.Result.NEUTRAL;
+
+        return hide ? Result.DENY : Result.NEUTRAL;
     }
 
-    public Filter.Result filter(LogEvent event) {
-        SsomarDev.testMsg("FILTER: 0", debug);
-        return checkMessage(event.getMessage().getFormattedMessage());
+    public Result filter(LogEvent event) {
+        return this.checkMessage(event.getMessage().getFormattedMessage());
     }
 
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object... arg4) {
-        SsomarDev.testMsg("FILTER: 1", debug);
-        return checkMessage(message);
+
+    public Result getOnMatch() {
+        return Result.NEUTRAL;
     }
 
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4) {
-       SsomarDev.testMsg("FILTER: 2", debug);
-        return checkMessage(message);
+    public Result getOnMismatch() {
+        return Result.NEUTRAL;
     }
 
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, Object message, Throwable arg4) {
-        SsomarDev.testMsg("FILTER: 3", debug);
-        return checkMessage(message.toString());
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, Message message, Throwable arg4) {
-       SsomarDev.testMsg("FILTER: 4", debug);
-        return checkMessage(message.getFormattedMessage());
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5) {
-        SsomarDev.testMsg("FILTER: 5", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6) {
-        SsomarDev.testMsg("FILTER: 6", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7) {
-        SsomarDev.testMsg("FILTER: 7", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8) {
-       SsomarDev.testMsg("FILTER: 8", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9) {
-        SsomarDev.testMsg("FILTER: 9", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10) {
-        SsomarDev.testMsg("FILTER: 10", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10, Object arg11) {
-        SsomarDev.testMsg("FILTER: 11", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10, Object arg11, Object arg12) {
-        SsomarDev.testMsg("FILTER: 12", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result filter(Logger arg0, Level arg1, Marker arg2, String message, Object arg4, Object arg5, Object arg6, Object arg7, Object arg8, Object arg9, Object arg10, Object arg11, Object arg12, Object arg13) {
-        SsomarDev.testMsg("FILTER: 13", debug);
-        return checkMessage(message);
-    }
-
-    public Filter.Result getOnMatch() {
-        return Filter.Result.NEUTRAL;
-    }
-
-    public Filter.Result getOnMismatch() {
-        return Filter.Result.NEUTRAL;
+    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, String msg, Object... params) {
+        return this.checkMessage(msg);
     }
 
     @Override
-    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, String msg,
-                         Object... params) {
-        SsomarDev.testMsg("FILTER: 14", debug);
-        return null;
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0) {
+        return this.checkMessage(message);
     }
 
     @Override
-    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Object msg,
-                         Throwable t) {
-        SsomarDev.testMsg("FILTER: 15", debug);
-        return null;
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1) {
+        return this.checkMessage(message);
     }
 
     @Override
-    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Message msg,
-                         Throwable t) {
-        SsomarDev.testMsg("FILTER: 16", debug);
-        return null;
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2) {
+        return this.checkMessage(message);
     }
 
     @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3) {
+        return this.checkMessage(message);
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4) {
+        return this.checkMessage(message);
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5) {
+        return this.checkMessage(message);
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6) {
+        return this.checkMessage(message);
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6, Object p7) {
+        return this.checkMessage(message);
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6, Object p7, Object p8) {
+        return this.checkMessage(message);
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6, Object p7, Object p8, Object p9) {
+        return this.checkMessage(message);
+    }
+
+    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Object msg, Throwable t) {
+        return this.checkMessage(msg.toString());
+    }
+
+    public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Message msg, Throwable t) {
+        return this.checkMessage(msg.getFormattedMessage());
+    }
+
+    @Override
+    public State getState() {
+        return State.STARTED;
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
     public void start() {
-
     }
 
-    @Override
     public void stop() {
-
     }
 
-    @Override
     public boolean isStarted() {
         return false;
     }
+
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
+
 }

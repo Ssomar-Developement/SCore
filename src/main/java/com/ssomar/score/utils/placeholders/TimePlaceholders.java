@@ -37,6 +37,7 @@ public class TimePlaceholders extends PlaceholdersInterface implements Serializa
 
 
             toReplace = replaceCalculPlaceholder(toReplace, "%time%", time + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%time_int%", (int)time + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%time_H%", hour + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%time_M%", min + "", true);
         }

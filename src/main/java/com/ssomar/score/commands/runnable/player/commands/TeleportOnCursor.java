@@ -35,6 +35,9 @@ public class TeleportOnCursor extends PlayerCommand {
             Vector checkVec = eyeVec.clone().multiply(2);
             Location checkLoc = eyeLoc.clone().add(checkVec);
 
+            Block faceBlock = checkLoc.add(eyeVec.multiply(0.5)).getBlock();
+            if(faceBlock != null && !isAirBlock(faceBlock)) return;
+
             int cpt = 2;
             /* Invalid if its a cheat movement */
             boolean invalid = false;

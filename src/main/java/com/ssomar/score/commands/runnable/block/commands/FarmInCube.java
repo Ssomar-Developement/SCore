@@ -106,6 +106,8 @@ public class FarmInCube extends BlockCommand {
                 for (int x = -radius; x < radius + 1; x++) {
                     for (int z = -radius; z < radius + 1; z++) {
 
+                        if(x == 0 && y == 0 && z == 0) continue;
+
                         Block toDestroy = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
                         destroyTheBlock(toDestroy, onlyMaxAge, drop, replant, p, event, aInfo.getSlot());

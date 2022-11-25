@@ -3,6 +3,7 @@ package com.ssomar.score.events.loop;
 import com.ssomar.executableblocks.events.EntityWalkOnEvent;
 import com.ssomar.executableblocks.executableblocks.activators.ActivatorEBFeature;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.executableevents.executableevents.activators.ActivatorEEFeature;
 import com.ssomar.executableitems.executableitems.activators.ActivatorEIFeature;
 import com.ssomar.executableitems.executableitems.activators.Option;
 import com.ssomar.score.SCore;
@@ -79,16 +80,8 @@ public class LoopManager {
                         continue;
                     }
 
-                    LoopFeatures loop = null;
-                    for (Object feature : activator.getFeatures()) {
-                        if (feature instanceof LoopFeatures) {
-                            loop = (LoopFeatures) feature;
-                        }
-                    }
-                    if (loop == null) {
-                        //SsomarDev.testMsg("Loop not found for activator " + activator.getId());
-                        continue;
-                    }
+                    LoopFeatures loop;
+                    if((loop = activator.getLoopFeatures()) == null) continue;
 
                     int delay;
                     if ((delay = loopActivators.get(activator)) > 0) {
@@ -168,6 +161,27 @@ public class LoopManager {
                                 if (!listEB.isEmpty() && eBP.hasLoop()) {
                                     runLoopEB(eBP, listEB);
                                 }
+                            }
+                        }
+                    }
+
+                    if (SCore.hasExecutableEvents) {
+                        //SsomarDev.testMsg("Checking EB on entity >> " + checkEntityOnofEB.size());
+                        List<ActivatorEEFeature> listEE = new ArrayList<>();
+
+                        for (NewSActivator sActivator : toActiv) {
+                            if (sActivator instanceof ActivatorEEFeature) {
+                                listEE.add((ActivatorEEFeature) sActivator);
+                            }
+                        }
+
+                        if (!listEE.isEmpty()) {
+                            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                                LoopEvent e = new LoopEvent();
+
+                                EventInfo eInfo = new EventInfo(e);
+                                eInfo.setPlayer(Optional.of(player));
+                                com.ssomar.executableevents.events.EventsManager.getInstance().activeOption(com.ssomar.executableevents.executableevents.activators.Option.LOOP, eInfo, listEE);
                             }
                         }
                     }

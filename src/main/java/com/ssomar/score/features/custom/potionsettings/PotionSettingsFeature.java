@@ -10,7 +10,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColorIntegerFeature;
 import com.ssomar.score.features.types.PotionTypeFeature;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.newprojectiles.features.SProjectileFeatureInterface;
+import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;

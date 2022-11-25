@@ -3,6 +3,7 @@ package com.ssomar.score.data;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.custom.useperday.data.UsePerDayQuery;
+import com.ssomar.score.utils.Utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -49,7 +50,7 @@ public class Database {
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                SCore.plugin.getLogger().info(" Connection to the db...");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7onnection to the db...");
             }
 
         } catch (SQLException e) {
@@ -76,13 +77,22 @@ public class Database {
         if (needOpenConnection) {
             try {
                 if (GeneralConfig.getInstance().isUseMySQL()) {
-                    if (SCore.is1v18Plus()) conn = new Database1v18().get1v18Connection();
-                    else conn = new DatabaseOld().getOldConnection();
+                    try {
+                        if (SCore.is1v18Plus()) conn = new Database1v18().get1v18Connection();
+                        else conn = new DatabaseOld().getOldConnection();
+                    } catch (SQLException e) {
+                        SCore.plugin.getLogger().severe(SCore.NAME_2 + " Error when trying to connect to your mysql database (local db used instead)");
+                        conn = DriverManager.getConnection(urlLocal);
+                    }
+                    catch (NoClassDefFoundError e) {
+                        SCore.plugin.getLogger().severe(SCore.NAME_2 + " Error the library to connect to mysql is not present on your server (local db used instead)");
+                        conn = DriverManager.getConnection(urlLocal);
+                    }
                 } else conn = DriverManager.getConnection(urlLocal);
 
                 //System.out.println("[ExecutableItems] "+"Connexion OKAY");
             } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 SCore.plugin.getLogger().severe(SCore.NAME_2 + " " + e.getMessage());
             }
         }

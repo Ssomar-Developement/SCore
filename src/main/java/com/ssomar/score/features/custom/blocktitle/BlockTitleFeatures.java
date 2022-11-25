@@ -162,25 +162,24 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      **/
     public Location spawn(@NotNull Location location, StringPlaceholder sp) {
         if (!activeTitle.getValue()) return null;
+
+        List<String> lines = new ArrayList<>();
+        for (String s : getTitle().getValue()) {
+            s = StringConverter.coloredString(s);
+            lines.add(s);
+        }
+        lines = sp.replacePlaceholders(lines);
         if (!SCore.hasCMI) {
             if(SCore.hasDecentHolograms){
                 Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
                 if(DHAPI.getHologram(loc.toString()) != null) remove(loc);
-                List<String> lines = new ArrayList<>();
-                for (String s : getTitle().getValue()) {
-                    s = StringConverter.coloredString(s);
-                    s = sp.replacePlaceholder(s);
-                    lines.add(s);
-                }
-                eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString(),loc, lines);
+                eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString().trim(),loc, lines);
                 hologram.updateAll();
                 return hologram.getLocation();
             }
             else if (SCore.hasHolographicDisplays) {
                 Hologram holo = HolographicDisplaysAPI.get(SCore.plugin).createHologram(location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
-                for (String s : getTitle().getValue()) {
-                    s = StringConverter.coloredString(s);
-                    s = sp.replacePlaceholder(s);
+                for (String s : lines) {
                     if (s.contains("ITEM::")) {
                         Material material = Material.STONE;
                         try {
@@ -196,17 +195,11 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             }
         } else {
             CMIHologram holo = new CMIHologram(UUID.randomUUID().toString(), location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
-            List<String> lines = new ArrayList<>();
-            for (String s : title.getValue()) {
-                s = StringConverter.coloredString(s);
-                s = sp.replacePlaceholder(s);
-                lines.add(s);
-            }
             holo.setLines(lines);
             CMI.getInstance().getHologramManager().addHologram(holo);
             holo.update();
             //SsomarDev.testMsg("Hologram spawned >> "+holo.getCenterLocation());
-            return holo.getCenterLocation();
+            return holo.getLocation().getBukkitLoc();
         }
     }
 
@@ -231,31 +224,53 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 }
             }
         } else {
-            List<CMIHologram> toRemove = new ArrayList<>();
-            for (CMIHologram holo : CMI.getInstance().getHologramManager().getHolograms().values()) {
-                //SsomarDev.testMsg("holo locccccc> "+holo.getCenterLocation());
-                if (holo.getCenterLocation().equals(location)) {
-                    toRemove.add(holo);
-                }
-            }
-            if (toRemove.isEmpty()) ;// SsomarDev.testMsg("HOLO NOT FOUND "+location.toString());
-            else {
-                for (CMIHologram holo : toRemove) {
-                    holo.remove();
-                }
-            }
+            CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
+            if(holo != null) holo.remove();
         }
 
     }
 
     /**
-     * location is the location of the block / player
+     * @param location is the location of the hologram
+     * @param objectLocation is the location of the object (block / player) that has the hologram
      **/
-    public void update(@NotNull Location location, StringPlaceholder sp) {
-        if (SCore.hasHolographicDisplays || SCore.hasCMI || SCore.hasDecentHolograms) {
-            Location loc = spawn(location, sp);
-            if (loc != null) remove(loc);
-            spawn(location, sp);
+    public Location update(@NotNull Location location, @NotNull Location objectLocation, StringPlaceholder sp) {
+        if(!activeTitle.getValue()){
+            if(location != null) remove(location);
+            return null;
         }
+        else if(location == null){
+            return spawn(objectLocation, sp);
+        }
+
+        List<String> lines = new ArrayList<>();
+        for (String s : getTitle().getValue()) {
+            s = StringConverter.coloredString(s);
+            lines.add(s);
+        }
+        lines = sp.replacePlaceholders(lines);
+
+        if (!SCore.hasCMI) {
+            if (SCore.hasDecentHolograms) {
+                eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.getHologram(location.toString());
+                if (hologram != null) {
+                    DHAPI.setHologramLines(hologram, lines);
+                }
+                else{
+                    spawn(objectLocation, sp);
+                }
+            }
+            /* not opti */
+            else if (SCore.hasHolographicDisplays) {
+                if (location != null) remove(location);
+                spawn(objectLocation, sp);
+            }
+        }
+        else {
+            CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
+            holo.setLines(lines);
+            holo.update();
+        }
+        return null;
     }
 }

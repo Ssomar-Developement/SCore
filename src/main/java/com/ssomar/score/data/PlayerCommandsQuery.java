@@ -29,7 +29,7 @@ public class PlayerCommandsQuery {
 
     public static void createNewTable(Connection conn) {
         try (Statement stmt = conn.createStatement()) {
-            SCore.plugin.getLogger().info(SCore.NAME_2 + " Verification of the table " + TABLE_COMMANDS_PLAYER_NAME + "...");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_PLAYER_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             System.out.println(SCore.NAME_2 + " " + e.getMessage());
@@ -69,8 +69,8 @@ public class PlayerCommandsQuery {
                 try {
                     pstmt.setString(5, ActionInfoSerializer.toString(command.getaInfo()));
                 } catch (IOException err) {
-                    Utils.sendConsoleMsg(SCore.NAME_2 + " Couldn't save the delayed command: "+command.getBrutCommand()+" >>" + err.getMessage());
-                    err.printStackTrace();
+                    SCore.plugin.getLogger().severe(SCore.NAME_2 + " Couldn't save the delayed command: "+command.getBrutCommand()+" >>" + err.getMessage());
+                    //err.printStackTrace();
                     continue;
                 }
                 pstmt.addBatch();
@@ -217,6 +217,7 @@ public class PlayerCommandsQuery {
                 try {
                     aInfo = (ActionInfo) ActionInfoSerializer.fromString(rs.getString(COL_ACTION_INFO));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     SCore.plugin.getLogger().severe("(NOT VERY SERIOUS) The delayed command " + brutCommand + " for " + receiver.getName() + " has been deleted because it was saved in an outdated version.");
                     continue;
                 }

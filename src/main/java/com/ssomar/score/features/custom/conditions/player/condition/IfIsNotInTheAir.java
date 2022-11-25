@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -27,7 +28,7 @@ public class IfIsNotInTheAir extends PlayerConditionFeature<BooleanFeature, IfIs
 
             Block block = pLoc.getBlock();
             Material type = block.getType();
-            if (type.equals(Material.AIR)) {
+            if ((type.equals(Material.AIR) || SCore.is1v17Plus() && (type.equals(Material.LIGHT) || type.equals(Material.CAVE_AIR)))) {
                 sendErrorMsg(playerOpt, messageSender);
                 cancelEvent(event);
                 return false;

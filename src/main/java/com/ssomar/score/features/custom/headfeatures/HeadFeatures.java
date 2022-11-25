@@ -64,7 +64,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                 ItemStack item = HeadDatabase.getInstance().getHead(headDBID.getValue().get());
                 if (item != null) return item;
                 else {
-                    SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID + " invalid head database id ! (" + headDBID + ")");
+                    SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
                     SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
                 }
             }
@@ -73,11 +73,11 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                     ItemStack item = HeadDB.getHead(Integer.valueOf(headDBID.getValue().get()));
                     if (item != null) return item;
                     else {
-                        SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID + " invalid head database id ! (" + headDBID + ")");
+                        SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
                         SCore.plugin.getLogger().severe(" If you use HeadDD, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
                     }
                 } catch (Exception ignored) {
-                    SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID + " invalid head database id ! (" + headDBID + ")");
+                    SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
                     SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
                 }
             }

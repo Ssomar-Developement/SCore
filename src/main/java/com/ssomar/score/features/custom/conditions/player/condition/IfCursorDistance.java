@@ -22,9 +22,11 @@ public class IfCursorDistance extends PlayerConditionFeature<NumberConditionFeat
     public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
         if (hasCondition()) {
             Block block = player.getTargetBlock(null, 200);
-            if (block.getType().equals(Material.AIR)) return false;
+            double distance;
+            if (block.getType().equals(Material.AIR)) distance = 200;
+            else distance = player.getLocation().distance(block.getLocation());
 
-            if (!StringCalculation.calculation(getCondition().getValue(Optional.of(player), messageSender.getSp()).get(), player.getLocation().distance(block.getLocation()))) {
+            if (!StringCalculation.calculation(getCondition().getValue(Optional.of(player), messageSender.getSp()).get(), distance)) {
                 sendErrorMsg(playerOpt, messageSender);
                 cancelEvent(event);
                 return false;

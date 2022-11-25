@@ -22,7 +22,7 @@ public class FrontDash extends PlayerCommand {
         if (args.size() > 1) customY = Double.parseDouble(args.get(1));
 
         Location pLoc = receiver.getLocation();
-        if (SCore.is1v11Less() || !p.isGliding()) pLoc.setPitch(0);
+        if (SCore.is1v11Less() || !receiver.isGliding()) pLoc.setPitch(0);
         Vector v = pLoc.getDirection();
         v.multiply(amount);
         if (customY != 0) {

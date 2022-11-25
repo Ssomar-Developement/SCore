@@ -25,15 +25,20 @@ public class SetBlock extends PlayerCommand {
 
         Block block = receiver.getTargetBlock(set, 5);
 
+        //SsomarDev.testMsg("block: "+block.getType().toString(), true);
+
         if (block.getType() != Material.AIR) {
 
             block = block.getRelative(BlockFace.valueOf(args.get(0)));
+
+            //SsomarDev.testMsg("block: "+block.getType().toString(), true);
 
             UUID uuid = null;
             if (p != null) uuid = p.getUniqueId();
 
             if (Material.matchMaterial(args.get(1).toUpperCase()) != null) {
                 SafePlace.placeBlockWithEvent(block, Material.matchMaterial(args.get(1).toUpperCase()), Optional.empty(), uuid, false, true);
+                //SsomarDev.testMsg("block: "+block.getType().toString(), true);
             } else {
                 if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
                 RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0).toLowerCase(), aInfo.isSilenceOutput());
@@ -43,10 +48,19 @@ public class SetBlock extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
+        /* different because the arguiement of the blockdace is added automatically in the code and not by the user */
+        if(isFinalVerification){
+            if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+            ArgumentChecker ac = checkMaterial(args.get(1), isFinalVerification, getTemplate());
+            if (!ac.isValid()) return Optional.of(ac.getError());
+        }
+        else {
+            if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
+
+            ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
+            if (!ac.isValid()) return Optional.of(ac.getError());
+        }
 
         return Optional.empty();
     }

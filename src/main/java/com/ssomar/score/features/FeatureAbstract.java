@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.Optional;
 
 @Getter
-public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y> {
+public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y> , Serializable {
 
     private final String name;
     private final String editorName;
@@ -21,7 +21,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     private final Material editorMaterial;
     private final boolean requirePremium;
     @Setter
-    private FeatureParentInterface parent;
+    private transient FeatureParentInterface parent;
     @Setter
     private boolean isPremium;
 

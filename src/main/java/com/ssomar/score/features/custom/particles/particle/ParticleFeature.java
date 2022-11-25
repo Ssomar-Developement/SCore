@@ -32,6 +32,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
     private DoubleFeature particlesOffSet;
     private DoubleFeature particlesSpeed;
     private IntegerFeature particlesDelay;
+    private IntegerFeature particlesDensity;
 
     /* specific for the Particle.REDSTONE */
     private BukkitColorFeature redstoneColor;
@@ -52,6 +53,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
         this.particlesOffSet = new DoubleFeature(this, "particlesOffSet", Optional.of(1.0), "Particles offset", new String[]{"&7&oThe offset of the particle"}, GUI.COMPARATOR, false);
         this.particlesSpeed = new DoubleFeature(this, "particlesSpeed", Optional.of(1.0), "Particles speed", new String[]{"&7&oThe speed of the particle"}, GUI.COMPARATOR, false);
         this.particlesDelay = new IntegerFeature(this, "particlesDelay", Optional.of(1), "Particles delay", new String[]{"&7&oThe delay of the particle"}, GUI.COMPARATOR, false);
+        this.particlesDensity = new IntegerFeature(this, "particlesDensity", Optional.of(1), "Particles density", new String[]{"&7&oThe density of the particle"}, GUI.COMPARATOR, false);
         this.blockType = new MaterialFeature(this, "blockType", Optional.of(Material.STONE), "Block type", new String[]{"&7&oThe type of the block"}, Material.STONE, false);
         this.redstoneColor = new BukkitColorFeature(this, "redstoneColor", Optional.of(Color.RED), "Redstone color", new String[]{"&7&oThe color of the redstone"}, Material.REDSTONE, false);
     }
@@ -66,6 +68,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
             errors.addAll(particlesOffSet.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(particlesSpeed.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(particlesDelay.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(particlesDensity.load(plugin, enchantmentConfig, isPremiumLoading));
 
             if(canHaveRedstoneColor()) errors.addAll(redstoneColor.load(plugin, enchantmentConfig, isPremiumLoading));
             else if(canHaveBlocktype()) errors.addAll(blockType.load(plugin, enchantmentConfig, isPremiumLoading));
@@ -89,6 +92,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
         particlesOffSet.save(enchantmentConfig);
         particlesSpeed.save(enchantmentConfig);
         particlesDelay.save(enchantmentConfig);
+        particlesDensity.save(enchantmentConfig);
         if(canHaveRedstoneColor()) redstoneColor.save(enchantmentConfig);
         else if(canHaveBlocktype()) blockType.save(enchantmentConfig);
     }
@@ -100,14 +104,17 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
 
     @Override
     public ParticleFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 6];
+        String[] finalDescription = new String[getEditorDescription().length + 8];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = "&7Type: &e" + particlesType.getValue().get().name();
-        finalDescription[finalDescription.length - 5] = "&7Amount: &e" + particlesAmount.getValue().get();
-        finalDescription[finalDescription.length - 4] = "&7Offset: &e" + particlesOffSet.getValue().get();
-        finalDescription[finalDescription.length - 3] = "&7Speed: &e" + particlesSpeed.getValue().get();
-        finalDescription[finalDescription.length - 2] = "&7Delay: &e" + particlesDelay.getValue().get();
+        finalDescription[finalDescription.length - 8] = "&7Type: &e" + particlesType.getValue().get().name();
+        finalDescription[finalDescription.length - 7] = "&7Amount: &e" + particlesAmount.getValue().get();
+        finalDescription[finalDescription.length - 6] = "&7Offset: &e" + particlesOffSet.getValue().get();
+        finalDescription[finalDescription.length - 5] = "&7Speed: &e" + particlesSpeed.getValue().get();
+        finalDescription[finalDescription.length - 4] = "&7Delay: &e" + particlesDelay.getValue().get();
+        finalDescription[finalDescription.length - 3] = "&7Density: &e" + particlesDensity.getValue().get();
+        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
+
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
         return this;
@@ -126,6 +133,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
         eF.setParticlesOffSet(particlesOffSet.clone(eF));
         eF.setParticlesSpeed(particlesSpeed.clone(eF));
         eF.setParticlesDelay(particlesDelay.clone(eF));
+        eF.setParticlesDensity(particlesDensity.clone(eF));
         if(canHaveRedstoneColor()) eF.setRedstoneColor(redstoneColor.clone(eF));
         else if(canHaveBlocktype()) eF.setBlockType(blockType.clone(eF));
         return eF;
@@ -133,7 +141,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(particlesType, particlesAmount, particlesOffSet, particlesSpeed, particlesDelay, redstoneColor, blockType));
+        return new ArrayList<>(Arrays.asList(particlesType, particlesAmount, particlesOffSet, particlesSpeed, particlesDelay, particlesDensity, redstoneColor, blockType));
     }
 
     @Override
@@ -165,6 +173,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
                     eF.setParticlesOffSet(particlesOffSet.clone(eF));
                     eF.setParticlesSpeed(particlesSpeed.clone(eF));
                     eF.setParticlesDelay(particlesDelay.clone(eF));
+                    eF.setParticlesDensity(particlesDensity.clone(eF));
                     if(canHaveRedstoneColor()) eF.setRedstoneColor(redstoneColor.clone(eF));
                     else if(canHaveBlocktype()) eF.setBlockType(blockType.clone(eF));
                     break;

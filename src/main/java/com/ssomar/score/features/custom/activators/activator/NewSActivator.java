@@ -4,6 +4,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.HigherFormSObject;
 import com.ssomar.score.sobject.sactivator.EventInfo;
@@ -28,6 +29,8 @@ public abstract class NewSActivator<X extends FeatureInterface<X, X>, Y extends 
     public abstract SOption getOption();
 
     public abstract List<FeatureInterface> getFeatures();
+
+    public abstract LoopFeatures getLoopFeatures();
 
     public abstract void run(HigherFormSObject parentObject, EventInfo eventInfo);
 

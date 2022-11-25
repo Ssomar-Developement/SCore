@@ -38,10 +38,19 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
     private DoubleFeature doubleUpdate;
     private String id;
 
+    private VariablesGroupFeature features;
+
     public VariableUpdateFeature(FeatureParentInterface parent, String id) {
         super(parent, "variableUpdate", "Variable Update", new String[]{"&7&oA variable update with its options"}, GUI.WRITABLE_BOOK, false);
         this.id = id;
         reset();
+    }
+
+    /* For manual variable update */
+    public VariableUpdateFeature(String id, VariablesGroupFeature features) {
+        super(null, "variableUpdate", "Variable Update", new String[]{"&7&oA variable update with its options"}, GUI.WRITABLE_BOOK, false);
+        this.id = id;
+        this.features = features;
     }
 
     @Override
@@ -70,7 +79,10 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
     }
 
     public Optional<VariableFeature> getAssociatedVariable() {
-        VariablesGroupFeature variables = getVariables();
+        VariablesGroupFeature variables = null;
+        if(this.features != null) variables = this.features;
+        else variables = getVariables();
+
         if (variables == null) {
             return Optional.empty();
         }

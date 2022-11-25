@@ -3,8 +3,8 @@ author: Ssomar
 version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
-softdepend: [ ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs, ShopGUIPlus, RoseLoot, ItemsAdder, DecentHolograms ]
-loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, CustomPiglinsTrades ]
+softdepend: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs, ShopGUIPlus, RoseLoot, ItemsAdder, DecentHolograms, HolographicDisplaysAPI ]
+loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades ]
 commands:
   score:
     description: score command

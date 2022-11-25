@@ -20,8 +20,9 @@ public class ParticleFeatureEditor extends FeatureEditorInterface<ParticleFeatur
         sparticleFeature.getParticlesSpeed().initAndUpdateItemParentEditor(this, 2);
         sparticleFeature.getParticlesOffSet().initAndUpdateItemParentEditor(this, 3);
         sparticleFeature.getParticlesDelay().initAndUpdateItemParentEditor(this, 4);
-        if(sparticleFeature.canHaveRedstoneColor()) sparticleFeature.getRedstoneColor().initAndUpdateItemParentEditor(this, 5);
-        else if(sparticleFeature.canHaveBlocktype()) sparticleFeature.getBlockType().initAndUpdateItemParentEditor(this, 5);
+        sparticleFeature.getParticlesDensity().initAndUpdateItemParentEditor(this, 5);
+        if(sparticleFeature.canHaveRedstoneColor()) sparticleFeature.getRedstoneColor().initAndUpdateItemParentEditor(this, 6);
+        else if(sparticleFeature.canHaveBlocktype()) sparticleFeature.getBlockType().initAndUpdateItemParentEditor(this, 7);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

@@ -6,8 +6,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
-import com.ssomar.score.newprojectiles.SProjectile;
-import com.ssomar.score.newprojectiles.manager.SProjectilesManager;
+import com.ssomar.score.projectiles.SProjectile;
+import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -196,12 +196,26 @@ public class Launch extends PlayerCommand {
                                 newYaw = 180 + newYaw;
                             } else newYaw = 0;
                         }
-                        //SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw);
+                        //SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw, true);
                         loc.setPitch(newPitch);
                         loc.setYaw(newYaw);
 
                         Vector eyeVector;
-                        if (aInfo.getVelocity().isPresent()) eyeVector = aInfo.getVelocity().get();
+                        /* Here I take the velocity. It is present only if the command LAUNCH is activated in a projectile launch event
+                        * it's used to keep the bowforce and let the user customize the projectile launched */
+                        if (aInfo.getVelocity().isPresent()){
+                            /* Take the real velocity */
+                            eyeVector = aInfo.getVelocity().get();
+                            double oldVelocity = eyeVector.length();
+                            //SsomarDev.testMsg( "velocity: " + eyeVector.length(), true);
+                            /* add to the real velocity the custom rotation */
+                            Location customLoc = eyeVector.toLocation(receiver.getWorld());
+                            customLoc.setPitch(newPitch);
+                            customLoc.setYaw(newYaw);
+                            eyeVector = customLoc.getDirection();
+                            eyeVector = eyeVector.multiply(oldVelocity);
+
+                        }
                         else eyeVector = loc.getDirection();
 
 

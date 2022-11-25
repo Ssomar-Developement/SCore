@@ -39,4 +39,11 @@ public class Threesome<T, Y, Z> {
     }
 
 
+    public static void main(String[] args){
+        String s = "mmof";
+        if(s.endsWith("of")){
+            s = s.substring(0, s.length()-2);
+        }
+        System.out.println(s);
+    }
 }

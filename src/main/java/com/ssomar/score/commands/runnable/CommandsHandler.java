@@ -9,6 +9,7 @@ import com.ssomar.score.data.BlockCommandsQuery;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.EntityCommandsQuery;
 import com.ssomar.score.data.PlayerCommandsQuery;
+import com.ssomar.score.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -103,11 +104,11 @@ public class CommandsHandler implements Listener {
         for (UUID uuid : getInstance().getDelayedCommandsSaved().keySet()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             for (PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(uuid)) {
-                SCore.plugin.getLogger().info("SCore loaded the delayed command for " + player.getName() + " : " + command.getBrutCommand());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7SCore loaded the delayed command for &a" + player.getName() + " &7: &6" + command.getBrutCommand() + " &7>> delay: &b" + command.getDelay());
                 cpt++;
             }
         }
-        SCore.plugin.getLogger().info(cpt + " saved commands loaded !");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7SCore loaded &6" + cpt + " &7delayed commands saved");
 
         /* Quite useless because at the start of the server the entities seems not loaded and the Bukkit.getentity return null */
         List<EntityRunCommand> commands = EntityCommandsQuery.selectEntityCommands(Database.getInstance().connect());

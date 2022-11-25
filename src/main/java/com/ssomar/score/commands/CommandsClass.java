@@ -2,22 +2,28 @@ package com.ssomar.score.commands;
 
 import com.ssomar.executableblocks.executableblocks.activators.ActivatorEBFeature;
 import com.ssomar.executableitems.executableitems.activators.ActivatorEIFeature;
+import com.ssomar.particles.commands.Shape;
+import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
-import com.ssomar.score.newprojectiles.SProjectile;
-import com.ssomar.score.newprojectiles.SProjectilesEditor;
-import com.ssomar.score.newprojectiles.manager.SProjectilesManager;
+import com.ssomar.score.projectiles.SProjectile;
+import com.ssomar.score.projectiles.SProjectilesEditor;
+import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -55,6 +61,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                     break;
                 case "interact":
                     break;
+                case "particles":
+                    this.runCommand(sender, "particles", args);
+                    break;
                 default:
                     sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument /sCore [ reload | inspect-loop | projectiles | projectiles-create | projectiles-delete ]"));
                     break;
@@ -91,7 +100,56 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                     NewSObjectsManagerEditor.getInstance().startEditing(player, new SProjectilesEditor());
                 }
                 break;
+            case "particles":
+                    ShapesManager shapesManager = ShapesManager.getInstance();
+                    String shapeName = "";
+                    String targetStr = "";
+                    String locationStr = "";
+                    Entity targetEntity = null;
+                    if(player != null) targetEntity = player;
+                    Location targetLocation = null;
+                    for(String arg : args) {
+                        if(arg.contains("shape:")) {
+                            shapeName = arg.split(":")[1];
+                        }
+                        else if(arg.contains("target:")) {
+                            targetStr = arg.split(":")[1];
+                        }
+                        else if(arg.contains("location:")) {
+                            locationStr = arg.split(":")[1];
+                        }
+                    }
+                    if(!targetStr.isEmpty()){
+                        try {
+                            targetEntity = Bukkit.getEntity(UUID.fromString(targetStr));
+                        }catch (Exception e){
+                            SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid target ("+targetStr+") for the command /score particles");
+                            return;
+                        }
+                    }
 
+                    if(targetEntity != null) targetLocation = targetEntity.getLocation();
+
+                    if(!locationStr.isEmpty()){
+                        try {
+                            String[] locStr = locationStr.split(",");
+                            targetLocation = new Location(AllWorldManager.getWorld(locStr[3]).get(), Double.parseDouble(locStr[0]), Double.parseDouble(locStr[1]), Double.parseDouble(locStr[2]));
+                        }catch (Exception e){
+                            SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid location for the command /score particles");
+                            return;
+                        }
+                    }
+
+                    Optional<Shape> shapeOpt = shapesManager.getShape(shapeName);
+                    if(shapeOpt.isPresent()) {
+                        Shape shape = shapeOpt.get();
+                        shape.getParameters().load(args, targetEntity, targetLocation);
+                        shape.run(shape.getParameters());
+                        SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aShape executed !");
+                    }
+                    else SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid shape for the command /score particles");
+
+                break;
             case "reload":
                 main.onReload();
                 sm.sendMessage(sender, ChatColor.GREEN + "SCore has been reload");

@@ -89,7 +89,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
                 String datas = s.split("\\" + symbolStart)[1].replace(symbolEnd, "");
                 for (String data : datas.split(symbolSeparator)) {
                     String[] dataSplit = data.split(symbolEquals);
-                    tags.put(dataSplit[0], dataSplit[1]);
+                    tags.put(dataSplit[0].toUpperCase(), dataSplit[1]);
                 }
             }
 
@@ -142,7 +142,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
                         for (String key : tags.keySet()) {
                             key = key.toUpperCase();
                             if (states.containsKey(key)) {
-                                if (!states.get(key).equals(tags.get(key).toUpperCase())) {
+                                if (!states.get(key).equalsIgnoreCase(tags.get(key))) {
                                     invalid = true;
                                     break;
                                 }

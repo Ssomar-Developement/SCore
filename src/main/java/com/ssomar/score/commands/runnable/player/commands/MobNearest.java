@@ -77,9 +77,9 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
                     }
                     if (s.startsWith("/")) s = s.substring(1);
 
-                    s = sp.replacePlaceholder(s);
                     commands.add(s);
                 }
+                commands = sp.replacePlaceholders(commands);
                 EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
                 CommandsExecutor.runCommands(builder);
             }
@@ -93,17 +93,13 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
     }
 
     @Override
-// TODO rework the verification
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-        String around = "MOB_NEAREST {Your commands here}";
-        if (args.size() < 2) error = notEnoughArgs + around;
+        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override
@@ -115,7 +111,7 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
 
     @Override
     public String getTemplate() {
-        return "MOB_NEAREST {Your commands here}";
+        return "MOB_NEAREST {max distance} {Your commands here}";
     }
 
     @Override

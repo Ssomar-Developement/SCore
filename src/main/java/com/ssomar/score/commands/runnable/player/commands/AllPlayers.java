@@ -62,9 +62,9 @@ public class AllPlayers extends PlayerCommand {
                             }
                             if (s.startsWith("/")) s = s.substring(1);
 
-                            s = sp.replacePlaceholder(s);
                             commands.add(s);
                         }
+                        commands = sp.replacePlaceholders(commands);
                         PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
                         CommandsExecutor.runCommands(builder);
                     }

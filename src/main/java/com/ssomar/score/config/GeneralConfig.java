@@ -1,6 +1,7 @@
 package com.ssomar.score.config;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.utils.Utils;
 
 public class GeneralConfig extends Config {
 
@@ -39,7 +40,7 @@ public class GeneralConfig extends Config {
         /* Locale config (language) */
         locale = config.getString("locale", "EN");
         if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU") || locale.equals("ptBR") || locale.equals("DE")) {
-            SCore.plugin.getServer().getLogger().info("[SCore] Locale setup: " + locale);
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Locale setup: &6" + locale);
         } else {
             SCore.plugin.getServer().getLogger().severe("[SCore] Invalid locale name: " + locale);
             locale = "EN";

@@ -69,18 +69,23 @@ public class SafeBreak {
                 if (breakEB(block, drop)) return;
 
                 if(drop && SCore.hasRoseLoot) {
-                    LootContext context = LootContext.builder()
-                            .put(LootContextParams.LOOTER, player)
-                            .put(LootContextParams.LOOTED_BLOCK, block)
-                            .put(LootContextParams.ORIGIN, block.getLocation())
-                            .build();
-                    LootResult lootResult = RoseLoot.getInstance().getManager(LootTableManager.class).getLoot(LootTableTypes.BLOCK, context);
-                    List<ItemStack> itemsDropped = lootResult.getLootContents().getItems();
-                    for (ItemStack itemStack : itemsDropped) {
-                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                    try {
+                        LootContext context = LootContext.builder()
+                                .put(LootContextParams.LOOTER, player)
+                                .put(LootContextParams.LOOTED_BLOCK, block)
+                                .put(LootContextParams.ORIGIN, block.getLocation())
+                                .build();
+                        LootResult lootResult = RoseLoot.getInstance().getManager(LootTableManager.class).getLoot(LootTableTypes.BLOCK, context);
+                        List<ItemStack> itemsDropped = lootResult.getLootContents().getItems();
+                        for (ItemStack itemStack : itemsDropped) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                        // to have only the custom drop from RoseLoot
+                        // (REMOVED Roseloot + vanilla loot ) drop = false;
+                    }catch (Exception e){
+                        SCore.plugin.getLogger().severe("RoseLoot hook is not working properly");
+                        e.printStackTrace();
                     }
-                    // to have only the custom drop from RoseLoot
-                    drop = false;
                 }
 
                 if (SCore.is1v11Less()) {

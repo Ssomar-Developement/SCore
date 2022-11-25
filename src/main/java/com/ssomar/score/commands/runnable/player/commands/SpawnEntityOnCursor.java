@@ -25,11 +25,11 @@ public class SpawnEntityOnCursor extends PlayerCommand {
         int amount = 1;
         EntityType entityType = EntityType.valueOf(args.get(0).toUpperCase());
 
-        if (args.size() >= 1) {
+        if (args.size() >= 2) {
             amount = Double.valueOf(args.get(1)).intValue();
         }
 
-        if (args.size() >= 2) {
+        if (args.size() >= 3) {
             range = Double.valueOf(args.get(2)).intValue();
         }
 

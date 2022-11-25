@@ -2,6 +2,7 @@ package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.cooldowns.Cooldown;
+import com.ssomar.score.utils.Utils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class CooldownsQuery {
 
     public static void createNewTable(Connection conn) {
         try (Statement stmt = conn.createStatement()) {
-            SCore.plugin.getLogger().info(SCore.NAME_2 + " Verification of the table " + TABLE_COOLDOWNS_NAME + "...");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COOLDOWNS_NAME + "&7 if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             System.out.println(SCore.NAME_2 + " " + e.getMessage());

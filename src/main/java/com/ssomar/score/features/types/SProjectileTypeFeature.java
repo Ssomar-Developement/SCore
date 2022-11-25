@@ -6,7 +6,7 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.newprojectiles.SProjectileType;
+import com.ssomar.score.projectiles.SProjectileType;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;

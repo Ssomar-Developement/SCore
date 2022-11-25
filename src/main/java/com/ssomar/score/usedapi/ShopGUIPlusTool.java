@@ -9,9 +9,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class ShopGUIPlusTool {
 
+    private static final boolean DEBUG = true;
+
     public static double sellItem(Player player, ItemStack item) {
 
-        double amount = ShopGuiPlusApi.getItemStackPriceSell(player, item);
+        double amount = ShopGuiPlusApi.getItemStackPriceSell(item);
+
         if(amount == -1) {
             return -1;
         }
@@ -21,7 +24,9 @@ public class ShopGUIPlusTool {
 
             PriceModifier priceModifier = ShopGuiPlusApi.getPriceModifier(player, shopItem, PriceModifierActionType.SELL);
 
+
             amount = amount * priceModifier.getModifier();
+
         }catch (Exception e) {}
 
 

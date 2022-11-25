@@ -2,6 +2,7 @@ package com.ssomar.score.utils;
 
 import com.ssomar.score.SCore;
 import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,10 @@ public class StringConverter {
     public static final Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public static String coloredString(String s) {
-        String convert = s.replaceAll("& ", "|<-_->|");
-        convert = convert.replaceAll("&", "§");
+        final String[] keys = new String[]{"& ", "&"};
+        final String[] values = new String[]{"|<-_->|", "§"};
+
+        String convert = StringUtils.replaceEach( s, keys, values );
         convert = convert.replaceAll("\\|<-_->\\|", "& ");
         if (SCore.is1v16Plus()) convert = translateHexCodes(convert);
         return convert;

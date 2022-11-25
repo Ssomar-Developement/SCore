@@ -5,11 +5,11 @@ import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.SendMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -22,6 +22,7 @@ public abstract class SCommand {
     protected static final String tooManyArgs = "&cThere are &6too many args &cfor the command: &e";
     protected static final String notEnoughArgs = "&cThere is &6not enough args &cfor the command: &e";
     protected static final String invalidMaterial = "&cA SCommand contains an &6invalid material&c: &e";
+    protected static final String invalidEquipmentSlot = "&cA SCommand contains an &6invalid equipmentSlot&c: &e";
     protected static final String invalidWorld = "&cA SCommand contains an &6invalid world&c: &e";
     protected static final String invalidEntityType = "&cA SCommand contains an &6invalid entityType&c: &e";
     protected static final String invalidQuantity = "&cA SCommand contains an &6invalid quantity&c: &e";
@@ -114,6 +115,25 @@ public abstract class SCommand {
             } catch (Exception e) {
                 ac.setValid(false);
                 ac.setError(invalidMaterial + arg + " &cfor command: &e" + template);
+            }
+        }
+
+        return ac;
+    }
+
+    public static ArgumentChecker checkEquipmentSlot(@NotNull String arg, boolean isFinalVerification, String template) {
+        ArgumentChecker ac = new ArgumentChecker();
+
+        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+            /* Some commands accept FURNCANE[LIT=TRUE] for example */
+            if (arg.contains("[")) {
+                arg = arg.split("\\[")[0];
+            }
+            try {
+                EquipmentSlot.valueOf(arg.toUpperCase());
+            } catch (Exception e) {
+                ac.setValid(false);
+                ac.setError(invalidEquipmentSlot + arg + " &cfor command: &e" + template);
             }
         }
 

@@ -27,6 +27,8 @@ public class FixSpawnerPlaceEvent implements Listener {
 
         if (!is.hasItemMeta()) return;
 
+        /* No localized name in 1.8.9 */
+        if(SCore.is1v11Less()) return;
         ItemMeta im = is.getItemMeta();
         if (!im.hasLocalizedName() || !im.getLocalizedName().equals("FROM_EXECUTABLEITEM")) return;
 

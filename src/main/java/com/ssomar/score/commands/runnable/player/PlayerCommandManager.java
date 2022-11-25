@@ -55,6 +55,7 @@ public class PlayerCommandManager implements CommandManager {
             commands.add(new CropsGrowthBoost());
             /* No damageable class before 1.12 */
             commands.add(new ModifyDurability());
+            commands.add(new EquipmentVisualReplace());
         }
         commands.add(new AllMobs());
         commands.add(new AllPlayers());
@@ -105,7 +106,7 @@ public class PlayerCommandManager implements CommandManager {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
-        //commands.add(new Customtest());
+        commands.add(new Customtest());
 
         this.commands = commands;
     }

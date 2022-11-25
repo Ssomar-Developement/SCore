@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -157,9 +158,9 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                                 }
                                 if (s.startsWith("/")) s = s.substring(1);
 
-                                s = sp.replacePlaceholder(s);
                                 commands.add(s);
                             }
+                            commands = sp.replacePlaceholders(commands);
                             EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
                             CommandsExecutor.runCommands(builder);
 
@@ -183,22 +184,17 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     }
 
     @Override
-    // TODO rework the verification
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
+       return staticVerify(args, isFinalVerification, getTemplate());
+    }
 
-        String around = "MOB_AROUND {distance} {muteMsgIfNoEntity true or false} {Your commands here}";
-        if (args.size() < 2) error = notEnoughArgs + around;
-        else if (args.size() > 2) {
-            try {
-                Double.valueOf(args.get(0));
+    public static Optional<String> staticVerify(List<String> args, boolean isFinalVerification, String template) {
+        if (args.size() < 1) return Optional.of(notEnoughArgs + template);
 
-            } catch (NumberFormatException e) {
-                error = invalidDistance + args.get(0) + " for command: " + around;
-            }
-        }
+        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, template, false);
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

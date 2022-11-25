@@ -19,19 +19,7 @@ public class MobAround extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-        String around = "MOB_AROUND {distance} {Your commands here}";
-        if (args.size() < 2) error = notEnoughArgs + around;
-        else if (args.size() > 2) {
-            try {
-                Double.valueOf(args.get(0));
-            } catch (NumberFormatException e) {
-                error = invalidDistance + args.get(0) + " for command: " + around;
-            }
-        }
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+       return com.ssomar.score.commands.runnable.player.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
     }
 
     @Override

@@ -69,9 +69,9 @@ public class Nearest extends PlayerCommand {
                     }
                     if (s.startsWith("/")) s = s.substring(1);
 
-                    s = sp.replacePlaceholder(s);
                     commands.add(s);
                 }
+                commands = sp.replacePlaceholders(commands);
                 PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
                 CommandsExecutor.runCommands(builder);
 
@@ -105,7 +105,7 @@ public class Nearest extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "NEAREST {Your commands here}";
+        return "NEAREST {max distance} {Your commands here}";
     }
 
     @Override
