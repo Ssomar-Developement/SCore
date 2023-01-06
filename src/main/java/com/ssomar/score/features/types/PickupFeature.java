@@ -8,7 +8,6 @@ import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.utils.TypeTarget;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -23,12 +22,12 @@ import java.util.*;
 
 @Getter
 @Setter
-public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Arrow.PickupStatus>, PickupFeature> implements FeatureRequireOnlyClicksInEditor {
+public class PickupFeature extends FeatureAbstract<Optional<Arrow.PickupStatus>, PickupFeature> implements FeatureRequireOnlyClicksInEditor {
 
-    private Optional<org.bukkit.entity.Arrow.PickupStatus> value;
-    private Optional<org.bukkit.entity.Arrow.PickupStatus> defaultValue;
+    private Optional<Arrow.PickupStatus> value;
+    private Optional<Arrow.PickupStatus> defaultValue;
 
-    public PickupFeature(FeatureParentInterface parent, String name, Optional<org.bukkit.entity.Arrow.PickupStatus> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public PickupFeature(FeatureParentInterface parent, String name, Optional<Arrow.PickupStatus> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
@@ -42,9 +41,9 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
             value = defaultValue;
         } else {
             try {
-                org.bukkit.entity.Arrow.PickupStatus material = org.bukkit.entity.Arrow.PickupStatus.valueOf(colorStr);
+                org.bukkit.entity.Arrow.PickupStatus material = Arrow.PickupStatus.valueOf(colorStr);
                 value = Optional.ofNullable(material);
-                FeatureReturnCheckPremium<org.bukkit.entity.Arrow.PickupStatus> checkPremium = checkPremium("Pickup status", material, defaultValue, isPremiumLoading);
+                FeatureReturnCheckPremium<Arrow.PickupStatus> checkPremium = checkPremium("Pickup status", material, defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             } catch (Exception e) {
                 errors.add("&cERROR, Couldn't load the Pickup status value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Pickup status available: ALLOWED, CREATIVE_ONLY, DISALLOWED");
@@ -56,7 +55,7 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<org.bukkit.entity.Arrow.PickupStatus> value = getValue();
+        Optional<Arrow.PickupStatus> value = getValue();
         value.ifPresent(typeTarget -> config.set(this.getName(), typeTarget.name()));
     }
 
@@ -79,8 +78,8 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        Optional<org.bukkit.entity.Arrow.PickupStatus> value = getValue();
-        org.bukkit.entity.Arrow.PickupStatus finalValue = value.orElse(Arrow.PickupStatus.ALLOWED);
+        Optional<Arrow.PickupStatus> value = getValue();
+        Arrow.PickupStatus finalValue = value.orElse(Arrow.PickupStatus.ALLOWED);
         updateTypeTarget(finalValue, gui);
     }
 
@@ -97,9 +96,7 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
     }
 
     @Override
-    public void clickParentEditor(Player editor, NewGUIManager manager) {
-        return;
-    }
+    public void clickParentEditor(Player editor, NewGUIManager manager) {}
 
     @Override
     public boolean noShiftclicked(Player editor, NewGUIManager manager) {
@@ -143,9 +140,9 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
         return true;
     }
 
-    public org.bukkit.entity.Arrow.PickupStatus nextPickupStatus(org.bukkit.entity.Arrow.PickupStatus material) {
+    public Arrow.PickupStatus nextPickupStatus(Arrow.PickupStatus material) {
         boolean next = false;
-        for (org.bukkit.entity.Arrow.PickupStatus check : getSortPickupStatus()) {
+        for (Arrow.PickupStatus check : getSortPickupStatus()) {
             if (check.equals(material)) {
                 next = true;
                 continue;
@@ -155,10 +152,10 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
         return getSortPickupStatus().get(0);
     }
 
-    public org.bukkit.entity.Arrow.PickupStatus prevPickupStatus(org.bukkit.entity.Arrow.PickupStatus material) {
+    public Arrow.PickupStatus prevPickupStatus(Arrow.PickupStatus material) {
         int i = -1;
         int cpt = 0;
-        for (org.bukkit.entity.Arrow.PickupStatus check : getSortPickupStatus()) {
+        for (Arrow.PickupStatus check : getSortPickupStatus()) {
             if (check.equals(material)) {
                 i = cpt;
                 break;
@@ -169,7 +166,7 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
         else return getSortPickupStatus().get(cpt - 1);
     }
 
-    public void updateTypeTarget(org.bukkit.entity.Arrow.PickupStatus typeTarget, GUI gui) {
+    public void updateTypeTarget(Arrow.PickupStatus typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
@@ -178,7 +175,7 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
         maxSize += getSortPickupStatus().size();
         if (maxSize > 17) maxSize = 17;
         boolean find = false;
-        for (org.bukkit.entity.Arrow.PickupStatus check : getSortPickupStatus()) {
+        for (Arrow.PickupStatus check : getSortPickupStatus()) {
             if (typeTarget.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" + typeTarget.name()));
                 find = true;
@@ -187,7 +184,7 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
             }
         }
-        for (org.bukkit.entity.Arrow.PickupStatus check : getSortPickupStatus()) {
+        for (Arrow.PickupStatus check : getSortPickupStatus()) {
             if (lore.size() == maxSize) break;
             else {
                 lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
@@ -204,22 +201,22 @@ public class PickupFeature extends FeatureAbstract<Optional<org.bukkit.entity.Ar
         }
     }
 
-    public org.bukkit.entity.Arrow.PickupStatus getPickupStatus(GUI gui) {
+    public Arrow.PickupStatus getPickupStatus(GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return org.bukkit.entity.Arrow.PickupStatus.valueOf(str.split("➤ ")[1]);
+                return Arrow.PickupStatus.valueOf(str.split("➤ ")[1]);
             }
         }
         return null;
     }
 
-    public List<org.bukkit.entity.Arrow.PickupStatus> getSortPickupStatus() {
-        SortedMap<String, org.bukkit.entity.Arrow.PickupStatus> map = new TreeMap<String, org.bukkit.entity.Arrow.PickupStatus>();
-        for (org.bukkit.entity.Arrow.PickupStatus l : org.bukkit.entity.Arrow.PickupStatus.values()) {
+    public List<Arrow.PickupStatus> getSortPickupStatus() {
+        SortedMap<String, Arrow.PickupStatus> map = new TreeMap<String, org.bukkit.entity.Arrow.PickupStatus>();
+        for (Arrow.PickupStatus l : Arrow.PickupStatus.values()) {
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());
