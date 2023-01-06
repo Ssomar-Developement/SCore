@@ -16,10 +16,11 @@ public class RequiredGroupEditor extends FeatureEditorInterface<RequiredGroup> {
     @Override
     public void load() {
         requiredGroup.getRequiredLevel().initAndUpdateItemParentEditor(this, 0);
-        requiredGroup.getRequiredMoney().initAndUpdateItemParentEditor(this, 1);
-        requiredGroup.getRequiredItems().initAndUpdateItemParentEditor(this, 2);
-        requiredGroup.getRequiredExecutableItems().initAndUpdateItemParentEditor(this, 3);
-        requiredGroup.getRequiredMana().initAndUpdateItemParentEditor(this, 4);
+        requiredGroup.getRequiredExperience().initAndUpdateItemParentEditor(this, 1);
+        requiredGroup.getRequiredMoney().initAndUpdateItemParentEditor(this, 2);
+        requiredGroup.getRequiredItems().initAndUpdateItemParentEditor(this, 3);
+        requiredGroup.getRequiredExecutableItems().initAndUpdateItemParentEditor(this, 4);
+        requiredGroup.getRequiredMana().initAndUpdateItemParentEditor(this, 5);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

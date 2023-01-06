@@ -847,6 +847,8 @@ public class ParticleDisplay implements Cloneable {
         ParticleDisplay display = clone();
         if (location == null) return display;
         display.location.add(x, y, z);
+        if(locationCaller == null) return display;
+        display.locationCaller = () -> locationCaller.call().add(x, y, z);
         return display;
     }
 

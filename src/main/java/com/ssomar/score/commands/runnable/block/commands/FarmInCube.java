@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
@@ -44,6 +43,7 @@ public class FarmInCube extends BlockCommand {
                     if (ageable.getAge() != ageable.getMaximumAge()) return;
                 }
 
+                //SsomarDev.testMsg(">> "+ToolsListMaterial.getInstance().getPlantWithGrowth().contains(bMat)+" >> "+bMat, true);
                 if (ToolsListMaterial.getInstance().getPlantWithGrowth().contains(bMat)) {
                     UUID uuid = null;
                     if (p != null) uuid = p.getUniqueId();
@@ -53,7 +53,7 @@ public class FarmInCube extends BlockCommand {
 
             }
         };
-        runnable.runTask(SCore.plugin);
+        runnable.runTaskLater(SCore.plugin, 1);
     }
 
     public static void replant(Block block, BlockData oldData, Material material, @Nullable Player player) {
@@ -115,13 +115,31 @@ public class FarmInCube extends BlockCommand {
                 }
             }
 
-            SsomarDev.testMsg("OldMaterial : " + oldMaterial.toString(), DEBUG);
+            //SsomarDev.testMsg("OldMaterial : " + oldMaterial.toString(), DEBUG);
             if (validMaterial.contains(oldMaterial) && replant) {
+                final boolean onlyMaxAgeFinal = onlyMaxAge;
+                final boolean dropFinal = drop;
+                final boolean eventFinal = event;
+                UUID uuid = null;
+                if (p != null) uuid = p.getUniqueId();
+                final UUID uuidFinal = uuid;
                 BukkitRunnable runnable = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        block.setType(oldMaterial);
+
                         BlockData data = block.getState().getBlockData().clone();
+
+                        if (onlyMaxAgeFinal && data instanceof Ageable) {
+                            Ageable ageable = (Ageable) data;
+                            if (ageable.getAge() != ageable.getMaximumAge()) return;
+                        }
+
+                        // Not break (PLAYER_RIGHT_CLICK) so need to break it
+                        if(!block.getType().equals(Material.AIR)) {
+                            SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true);
+                        }
+                        block.setType(oldMaterial);
+                        data = block.getState().getBlockData().clone();
                         if(aInfo.getBlockFace() != null && data instanceof Directional){
                             Directional directional = (Directional) data;
                             directional.setFacing(aInfo.getBlockFace());

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types.list;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
@@ -10,11 +11,13 @@ import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.ItemsAdderAPI;
 import com.ssomar.score.utils.MaterialWithGroups;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -34,11 +37,15 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
     private List<String> value;
     private List<String> defaultValue;
     private boolean notSaveIfEqualsToDefaultValue;
+    private List<String> listOfCustomBlocksPluginSupported;
 
     public ListDetailedMaterialFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
+        this.listOfCustomBlocksPluginSupported = new ArrayList<>();
+        if(SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
+        //if(SCore.hasOraxen) listOfCustomBlocksPluginSupported.add("ORAXEN");
         reset();
     }
 
@@ -49,6 +56,16 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
         for (String s : config.getStringList(this.getName())) {
             s = StringConverter.decoloredString(s.toUpperCase());
             String materialStr = s;
+
+            boolean isCustomBlock = false;
+            for(String customPlugin : listOfCustomBlocksPluginSupported){
+               if(materialStr.startsWith(customPlugin)) {
+                   value.add(s);
+                   isCustomBlock = true;
+                   break;
+               }
+            }
+            if(isCustomBlock) continue;
 
             if (s.contains(symbolStart)) {
                 materialStr = s.split("\\" + symbolStart)[0];
@@ -76,9 +93,9 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
     }
 
     /**
-     * Return map with entityType and tags
+     * Return map with materialand tags
      **/
-    public Map<String, List<Map<String, String>>> extractCondition() {
+    public Map<String, List<Map<String, String>>> extractConditions() {
         Map<String, List<Map<String, String>>> conditions = new HashMap<>();
         for (String s : value) {
             String materialStr = s;
@@ -103,7 +120,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
     }
 
     public boolean isValidMaterial(@NotNull Material material, Optional<String> statesStrOpt) {
-        Map<String, List<Map<String, String>>> conditions = extractCondition();
+        Map<String, List<Map<String, String>>> conditions = extractConditions();
 
         Map<String, String> states = new HashMap<>();
         try {
@@ -161,6 +178,47 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
         return false;
     }
 
+
+    /* Plugin name - list of ID */
+    public Map<String, List<String>> extractCustomBlocksConditions() {
+        Map<String, List<String>> conditions = new HashMap<>();
+        for (String s : value) {
+            String materialStr = s;
+            SsomarDev.testMsg(">> materialStr: " + materialStr, DEBUG);
+            for(String customPlugin : listOfCustomBlocksPluginSupported) {
+                if (materialStr.startsWith(customPlugin)){
+                    if(conditions.containsKey(customPlugin)) conditions.get(customPlugin).add(materialStr.split(":")[1]);
+                    else conditions.put(customPlugin, new ArrayList<>(Collections.singletonList(materialStr.split(":")[1])));
+                    break;
+                }
+            }
+        }
+        return conditions;
+    }
+
+    public boolean isValidCustomBlock(@NotNull Block block) {
+        Map<String, List<String>> conditions = extractCustomBlocksConditions();
+        for(String customPlugin : listOfCustomBlocksPluginSupported) {
+            SsomarDev.testMsg(">> verif customPlugin: " + customPlugin, DEBUG);
+            if (conditions.containsKey(customPlugin)) {
+                SsomarDev.testMsg(">> verif conditions: YES " , DEBUG);
+                if(customPlugin.equals("ITEMSADDER") && SCore.hasItemsAdder){
+                    Optional<String> customOpt = ItemsAdderAPI.getCustomBlockID(block);
+                    SsomarDev.testMsg(">> customOpt: " + customOpt.isPresent(), DEBUG);
+                    if(customOpt.isPresent()){
+                        SsomarDev.testMsg(">> customOpt: " + customOpt.get(), DEBUG);
+                        for(String id : conditions.get(customPlugin)){
+                            SsomarDev.testMsg(">> id: " + id, DEBUG);
+                            if(customOpt.get().equalsIgnoreCase(id)) return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void save(ConfigurationSection config) {
         if (notSaveIfEqualsToDefaultValue) {
@@ -210,6 +268,16 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
         String s = StringConverter.decoloredString(message);
         String entityTypeStr = s;
 
+        boolean isCustomBlock = false;
+        for(String customPlugin : listOfCustomBlocksPluginSupported){
+            if(entityTypeStr.startsWith(customPlugin)) {
+                value.add(s);
+                isCustomBlock = true;
+                break;
+            }
+        }
+        if(isCustomBlock) return Optional.empty();
+
         if (s.contains(symbolStart)) {
             entityTypeStr = s.split("\\" + symbolStart)[0];
             String datas = s.split("\\" + symbolStart)[1].replace(symbolEnd, "");
@@ -243,7 +311,7 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
 
     @Override
     public String getTips() {
-        return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3}";
+        return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
     }
 
     @Override

@@ -68,25 +68,7 @@ public class SafeBreak {
             if (!canceled) {
                 if (breakEB(block, drop)) return;
 
-                if(drop && SCore.hasRoseLoot) {
-                    try {
-                        LootContext context = LootContext.builder()
-                                .put(LootContextParams.LOOTER, player)
-                                .put(LootContextParams.LOOTED_BLOCK, block)
-                                .put(LootContextParams.ORIGIN, block.getLocation())
-                                .build();
-                        LootResult lootResult = RoseLoot.getInstance().getManager(LootTableManager.class).getLoot(LootTableTypes.BLOCK, context);
-                        List<ItemStack> itemsDropped = lootResult.getLootContents().getItems();
-                        for (ItemStack itemStack : itemsDropped) {
-                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                        }
-                        // to have only the custom drop from RoseLoot
-                        // (REMOVED Roseloot + vanilla loot ) drop = false;
-                    }catch (Exception e){
-                        SCore.plugin.getLogger().severe("RoseLoot hook is not working properly");
-                        e.printStackTrace();
-                    }
-                }
+                breakRoseloot(player, block, drop);
 
                 if (SCore.is1v11Less()) {
                     breakBlockNaturallyWith(block, Optional.ofNullable(player.getInventory().getItemInHand()), drop);
@@ -101,6 +83,8 @@ public class SafeBreak {
             if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return;
             if (breakEB(block, drop)) return;
 
+            breakRoseloot(null, block, drop);
+
             //SsomarDev.testMsg("DEBUG SAFE BREAK 6");
             breakBlockNaturallyWith(block, Optional.empty(), drop);
         }
@@ -108,12 +92,12 @@ public class SafeBreak {
     }
 
     public static void breakBlockNaturallyWith(Block block, Optional<ItemStack> itemStack, boolean drop) {
-        SsomarDev.testMsg("DEBUG SAFE BREAK 7", DEBUG);
+        //SsomarDev.testMsg("DEBUG SAFE BREAK 7", DEBUG);
         if (!SCore.is1v13Less() && block.getBlockData() instanceof Bisected) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 8", DEBUG);
+           // SsomarDev.testMsg("DEBUG SAFE BREAK 8", DEBUG);
             Bisected b = (Bisected) block.getBlockData();
             if (b.getHalf().equals(Bisected.Half.BOTTOM)) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK 9", DEBUG);
+                //SsomarDev.testMsg("DEBUG SAFE BREAK 9", DEBUG);
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
 
@@ -168,13 +152,38 @@ public class SafeBreak {
         }
     }
 
+    public static boolean breakRoseloot(@Nullable Player player, Block block, boolean drop) {
+        if(drop && SCore.hasRoseLoot) {
+            try {
+                LootContext context = LootContext.builder()
+                        .put(LootContextParams.LOOTER, player)
+                        .put(LootContextParams.LOOTED_BLOCK, block)
+                        .put(LootContextParams.ORIGIN, block.getLocation())
+                        .build();
+                LootResult lootResult = RoseLoot.getInstance().getManager(LootTableManager.class).getLoot(LootTableTypes.BLOCK, context);
+                List<ItemStack> itemsDropped = lootResult.getLootContents().getItems();
+                SsomarDev.testMsg("DEBUG SAFE BREAK >> "+itemsDropped.size(), true);
+                for (ItemStack itemStack : itemsDropped) {
+                    block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                }
+                // to have only the custom drop from RoseLoot
+                // (REMOVED Roseloot + vanilla loot ) drop = false;
+                return true;
+            }catch (Exception e){
+                SCore.plugin.getLogger().severe("RoseLoot hook is not working properly");
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
     public static boolean breakEB(Block block, boolean drop) {
-        SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
+       //SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
         if (SCore.hasExecutableBlocks) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
+           // SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
             Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
+                //SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
                 eBPOpt.get().breakBlock(null, drop);
                 return true;
             }

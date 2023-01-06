@@ -273,6 +273,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             if (name.contains("tokenenchant:")) {
                 name = "TOKEN-ENCHANT_"+enchantment.getName();
             }
+            if (name.contains("enchantssquared:")) {
+                name = "ENCHANTS-SQUARED_"+enchantment.getName();
+            }
             return name;
         } else {
             return enchantment.getName();
@@ -285,8 +288,11 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             if(enchantmentName.contains("SPACE_")){
                 enchantment = Enchantment.getByName(enchantmentName.replace("SPACE_", ""));
             }
-            if(enchantmentName.contains("TOKEN-ENCHANT_")){
+            else if(enchantmentName.contains("TOKEN-ENCHANT_")){
                 enchantment = Enchantment.getByName(enchantmentName.replace("TOKEN-ENCHANT_", ""));
+            }
+            else if(enchantmentName.contains("ENCHANTS-SQUARED_")){
+                enchantment = Enchantment.getByName(enchantmentName.replace("ENCHANTS-SQUARED_", ""));
             }
             else if (!SCore.is1v12Less()) {
                 enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));

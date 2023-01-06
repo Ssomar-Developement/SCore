@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.block.commands.*;
+import com.ssomar.score.commands.runnable.block.commands.settempblock.SetTempBlock;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.ChatColor;
@@ -21,6 +22,7 @@ public class BlockCommandManager implements CommandManager {
         references.add(new ApplyBoneMeal());
         references.add(new SetBlockPos());
         references.add(new SetBlock());
+        references.add(new SetTempBlock());
         references.add(new SetExecutableBlock());
         references.add(new SendMessage());
         references.add(new Explode());
@@ -28,6 +30,7 @@ public class BlockCommandManager implements CommandManager {
         references.add(new Launch());
         references.add(new DropItem());
         references.add(new DropExecutableItem());
+        references.add(new DropExecutableBlock());
         references.add(new MineInCube());
         references.add(new RemoveBlock());
         references.add(new Around());
@@ -35,6 +38,7 @@ public class BlockCommandManager implements CommandManager {
         references.add(new VeinBreaker());
         references.add(new SilkSpawner());
         references.add(new DrainInCube());
+        references.add(new Move());
         references.add(new StrikeLightning());
         /* No BlockData in 1.12 and less */
         if (!SCore.is1v12Less()) {
@@ -142,9 +146,10 @@ public class BlockCommandManager implements CommandManager {
 
     @Override
     public SCommand getCommand(String brutCommand) {
+        String command = brutCommand.toUpperCase();
         for (BlockCommand blockCommands : commands) {
             for (String name : blockCommands.getNames()) {
-                if (brutCommand.toUpperCase().startsWith(name.toUpperCase())) {
+                if (command.startsWith(name)) {
                     return blockCommands;
                 }
             }

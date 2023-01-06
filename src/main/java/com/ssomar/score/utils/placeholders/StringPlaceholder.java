@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
@@ -51,7 +52,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     /* placeholders of the entity */
     private final EntityPlaceholders entityPlch = new EntityPlaceholders();
     /* placeholders of the target entity */
-    private final EntityPlaceholders targetEntityPlch = new EntityPlaceholders();
+    private final TargetEntityPlaceholders targetEntityPlch = new TargetEntityPlaceholders();
     /* placeholders of the block */
     private final BlockPlaceholders blockPlch = new BlockPlaceholders();
     /* placeholders of the target block */
@@ -137,6 +138,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         entityPlch.setEntityPlcHldr(uuid);
     }
 
+    public void setEntityPlcHldr(Entity entity) {
+        entityPlch.setEntityPlcHldr(entity);
+    }
+
     public void setTargetEntityPlcHldr(UUID uuid) {
         targetEntityPlch.setEntityPlcHldr(uuid);
     }
@@ -189,16 +194,19 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     }
 
     public String replacePlaceholder(String str) {
+        if(!str.contains("%")) return str;
         return replacePlaceholder(str, true);
     }
 
     public String replacePlaceholder(String str, boolean withPAPI) {
+        if(!str.contains("%")) return str;
         this.reloadAllPlaceholders();
         return replacePlaceholderWithoutReload(str, withPAPI);
     }
 
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI) {
         String s = str;
+        if(!s.contains("%")) return str;
 
         if (str.trim().length() == 0) return "";
 
@@ -224,6 +232,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         }
         if (this.hasUsage()) {
             s = replaceCalculPlaceholder(s, "%usage%", usage, true);
+        }
+        if(this.hasUsageLimit()){
+            s = replaceCalculPlaceholder(s, "%usage_limit%", usageLimit, true);
         }
         if (this.hasMaxUsePerDayActivator()) {
             placeholders.put("%max_use_per_day_activator%", this.getMaxUsePerDayActivator());
@@ -290,6 +301,22 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if(SCore.hasPlaceholderAPI) {
             UUID uuid;
             if ((uuid = playerPlch.getPlayerUUID()) == null) {
+                if(!Bukkit.getOnlinePlayers().isEmpty()){
+                    uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
+                }
+            }
+            Player p;
+            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null)
+                replace = PlaceholderAPI.setPlaceholders(p, replace);
+        }
+        return replace;
+    }
+
+    public static String replacePlaceholderOfPAPI(String s, UUID playerUUID) {
+        String replace = s;
+        if(SCore.hasPlaceholderAPI) {
+            UUID uuid = playerUUID;
+            if (playerUUID == null) {
                 if(!Bukkit.getOnlinePlayers().isEmpty()){
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
                 }

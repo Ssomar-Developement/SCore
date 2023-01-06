@@ -29,7 +29,7 @@ public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterfa
         createItem(ORANGE, 1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
         // new enchant
-        createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add new attribute");
+        createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add a new condition");
     }
 
     @Override

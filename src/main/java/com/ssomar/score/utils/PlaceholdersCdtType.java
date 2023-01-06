@@ -2,6 +2,8 @@ package com.ssomar.score.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public enum PlaceholdersCdtType {
 
@@ -49,43 +51,38 @@ public enum PlaceholdersCdtType {
         return result;
     }
 
-
-    public PlaceholdersCdtType getPrev() {
-        switch (this) {
-            case PLAYER_NUMBER:
-                return PLAYER_TARGET;
-            case PLAYER_PLAYER:
-                return PLAYER_STRING;
-            case TARGET_NUMBER:
-                return PLAYER_PLAYER;
-            case TARGET_STRING:
-                return TARGET_NUMBER;
-            case TARGET_TARGET:
-                return TARGET_STRING;
-            case PLAYER_TARGET:
-                return TARGET_TARGET;
-            default:
-                return PLAYER_NUMBER;
+    public PlaceholdersCdtType nextPlaceholdersCdtType(PlaceholdersCdtType pct) {
+        boolean next = false;
+        for (PlaceholdersCdtType check : getPlaceholdersCdtType()) {
+            if (check.equals(pct)) {
+                next = true;
+                continue;
+            }
+            if (next) return check;
         }
+        return getPlaceholdersCdtType().get(0);
     }
 
-
-    public PlaceholdersCdtType getNext() {
-        switch (this) {
-            case PLAYER_NUMBER:
-                return PLAYER_STRING;
-            case PLAYER_STRING:
-                return PLAYER_PLAYER;
-            case PLAYER_PLAYER:
-                return TARGET_NUMBER;
-            case TARGET_NUMBER:
-                return TARGET_STRING;
-            case TARGET_STRING:
-                return TARGET_TARGET;
-            case TARGET_TARGET:
-                return PLAYER_TARGET;
-            default:
-                return PLAYER_NUMBER;
+    public PlaceholdersCdtType prevPlaceholdersCdtType(PlaceholdersCdtType pct) {
+        int i = -1;
+        int cpt = 0;
+        for (PlaceholdersCdtType check : getPlaceholdersCdtType()) {
+            if (check.equals(pct)) {
+                i = cpt;
+                break;
+            }
+            cpt++;
         }
+        if (i == 0) return getPlaceholdersCdtType().get(getPlaceholdersCdtType().size() - 1);
+        else return getPlaceholdersCdtType().get(cpt - 1);
     }
+
+    public List<PlaceholdersCdtType> getPlaceholdersCdtType() {
+        SortedMap<String, PlaceholdersCdtType> map = new TreeMap<String, PlaceholdersCdtType>();
+        for (PlaceholdersCdtType l : PlaceholdersCdtType.values()) {
+            map.put(l.name(), l);
+        }
+        return new ArrayList<>(map.values());
+    }
+
 }

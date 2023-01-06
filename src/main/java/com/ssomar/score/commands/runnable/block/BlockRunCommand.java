@@ -77,7 +77,8 @@ public class BlockRunCommand extends RunCommand {
     @Override
     public void insideDelayedCommand() {
         runCommand(BlockCommandManager.getInstance());
-        CommandsHandler.getInstance().removeDelayedCommand(getUuid(), null);
+        /* cancelTask on false beacuse the task has been already executed */
+        CommandsHandler.getInstance().removeDelayedCommand(getUuid(), null, false);
     }
 
     public UUID getLauncherUUID() {

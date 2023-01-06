@@ -90,6 +90,8 @@ import com.ssomar.score.features.custom.required.executableitems.group.RequiredE
 import com.ssomar.score.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditor;
 import com.ssomar.score.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditorManager;
+import com.ssomar.score.features.custom.required.experience.RequiredExperienceEditor;
+import com.ssomar.score.features.custom.required.experience.RequiredExperienceEditorManager;
 import com.ssomar.score.features.custom.required.items.group.RequiredItemGroupFeatureEditor;
 import com.ssomar.score.features.custom.required.items.group.RequiredItemGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.required.items.item.RequiredItemFeatureEditor;
@@ -117,12 +119,16 @@ import com.ssomar.score.features.custom.variables.update.variable.VariableUpdate
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
+import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEditor;
+import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEditorManager;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditor;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditorManager;
 import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManager;
+import com.ssomar.score.variables.VariableEditor;
+import com.ssomar.score.variables.VariableEditorManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -210,6 +216,9 @@ public class NewEditorInteractionsListener implements Listener {
             return;
         } else if (holder instanceof RequiredLevelEditor) {
             RequiredLevelEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        } else if (holder instanceof RequiredExperienceEditor) {
+            RequiredExperienceEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof RequiredMoneyEditor) {
             RequiredMoneyEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
@@ -376,14 +385,27 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof SProjectileEditor) {
             SProjectileEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof ParticleFeatureEditor) {
+        }
+        else if (holder instanceof VariableEditor) {
+            VariableEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof VisualItemFeatureEditor) {
+            VisualItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof FireworkFeaturesEditor) {
+            FireworkFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof ParticleFeatureEditor) {
             ParticleFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof ParticlesGroupFeatureEditor) {
             ParticlesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if(holder instanceof VisualItemFeatureEditor){
-            VisualItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+        } else if(holder instanceof FireworkFeaturesEditor){
+            FireworkFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
         }
 
     }
@@ -424,6 +446,9 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (RequiredLevelEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequiredLevelEditorManager.getInstance().receiveMessage(p, message);
+        } else if (RequiredExperienceEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredExperienceEditorManager.getInstance().receiveMessage(p, message);
         } else if (RequiredMoneyEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequiredMoneyEditorManager.getInstance().receiveMessage(p, message);
@@ -591,16 +616,28 @@ public class NewEditorInteractionsListener implements Listener {
             e.setCancelled(true);
             SProjectileEditorManager.getInstance().receiveMessage(p, message);
         }
+        else if (VariableEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            VariableEditorManager.getInstance().receiveMessage(p, message);
+        }
         else if (ParticleFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             ParticleFeatureEditorManager.getInstance().receiveMessage(p, message);
         }
+        else if (VisualItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            VisualItemFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (FireworkFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            FireworkFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
         else if (ParticlesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             ParticlesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
-        } else if(VisualItemFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)){
+        } else if(FireworkFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
             e.setCancelled(true);
-            VisualItemFeatureEditorManager.getInstance().receiveMessage(p, message);
+            FireworkFeaturesEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

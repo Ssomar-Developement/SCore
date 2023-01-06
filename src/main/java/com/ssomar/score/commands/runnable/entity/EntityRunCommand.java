@@ -73,6 +73,9 @@ public class EntityRunCommand extends RunCommand {
             }
         } else receiver = Bukkit.getEntity(entityUUID);
 
+        //SsomarDev.testMsg("entity uuid: " + entityUUID, true);
+        //SsomarDev.testMsg("entity: " + receiver.getType(), true);
+
         if (receiver != null) {
             pCommand.run(launcher, receiver, args, this.getaInfo());
         }// else SsomarDev.testMsg("EntityRunCommand: receiver is null for the command: " + this.getBrutCommand());

@@ -17,10 +17,10 @@ public class GriefPreventionAPI {
         return playerCanBreakClaimBlock(p.getUniqueId(), location);
     }
 
-    public static boolean playerIsInHisClaim(@NotNull UUID pUUID, Location location) {
+    public static boolean playerIsInHisClaim(@NotNull UUID pUUID, Location location, boolean acceptWilderness) {
         DataStore dataStore = GriefPrevention.instance.dataStore;
         Claim claim = dataStore.getClaimAt(location, false, null);
-        if (claim == null || claim.getOwnerID() == null) return false;
+        if (claim == null || claim.getOwnerID() == null) return acceptWilderness;
 
         return claim.getOwnerID().equals(pUUID);
     }

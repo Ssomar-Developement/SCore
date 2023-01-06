@@ -6,6 +6,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.projectiles.SProjectile;
+import com.ssomar.score.projectiles.SProjectileType;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -57,90 +58,17 @@ public class Launch extends BlockCommand {
         try {
             Entity entity = null;
             Optional<SProjectile> projectileOptional = null;
-            if (args.get(0).equalsIgnoreCase("ARROW"))
-                entity = launchProjectile(block, directional, Arrow.class, speed);
-            else if (args.get(0).equalsIgnoreCase("SPECTRALARROW"))
-                entity = launchProjectile(block, directional, SpectralArrow.class, speed);
-            else if (args.get(0).equalsIgnoreCase("DRAGONFIREBALL"))
-                entity = launchProjectile(block, directional, DragonFireball.class, speed);
-            else if (args.get(0).equalsIgnoreCase("EGG"))
-                entity = launchProjectile(block, directional, Egg.class, speed);
-            else if (args.get(0).equalsIgnoreCase("ENDERPEARL"))
-                entity = launchProjectile(block, directional, EnderPearl.class, speed);
-            else if (args.get(0).equalsIgnoreCase("FIREBALL"))
-                entity = launchProjectile(block, directional, Fireball.class, speed);
-                //else if(args.get(0).toUpperCase().contains("FIREWORK")) receiver.launchProjectile(Firework.class);
-                //else if(args.get(0).toUpperCase().contains("FISHHOOK")) entity = receiver.launchProjectile(FishHook.class);
-            else if (args.get(0).equalsIgnoreCase("LARGEFIREBALL"))
-                entity = launchProjectile(block, directional, LargeFireball.class, speed);
-            else if (args.get(0).equalsIgnoreCase("LINGERINGPOTION"))
-                entity = launchProjectile(block, directional, LingeringPotion.class, speed);
-            else if (args.get(0).equalsIgnoreCase("LLAMASPIT"))
-                entity = launchProjectile(block, directional, LlamaSpit.class, speed);
-                /* No movement because shulker bullet need to have a target */
-            else if (args.get(0).equalsIgnoreCase("SHULKERBULLET"))
-                entity = launchProjectile(block, directional, ShulkerBullet.class, speed);
-            else if (args.get(0).equalsIgnoreCase("SIZEDFIREBALL"))
-                entity = launchProjectile(block, directional, SizedFireball.class, speed);
-            else if (args.get(0).equalsIgnoreCase("SNOWBALL"))
-                entity = launchProjectile(block, directional, Snowball.class, speed);
-            else if (args.get(0).equalsIgnoreCase("TRIDENT"))
-                entity = launchProjectile(block, directional, Trident.class, speed);
-            else if (args.get(0).equalsIgnoreCase("WITHERSKULL"))
-                entity = launchProjectile(block, directional, WitherSkull.class, speed);
-            else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(args.get(0))).isPresent()) {
-                SProjectile projectile = projectileOptional.get();
+            SProjectile projectile = null;
+            String type = args.get(0);
 
-                switch (projectile.getType().getValue().get().getValidNames()[0]) {
-                    case "SPECTRALARROW":
-                        entity = launchProjectile(block, directional, SpectralArrow.class, speed);
-                        break;
-                    case "DRAGON_FIREBALL":
-                        entity = launchProjectile(block, directional, DragonFireball.class, speed);
-                        break;
-                    case "EGG":
-                        entity = launchProjectile(block, directional, Egg.class, speed);
-                        break;
-                    case "ENDER_PEARL":
-                        entity = launchProjectile(block, directional, EnderPearl.class, speed);
-                        break;
-                    case "FIREBALL":
-                        entity = launchProjectile(block, directional, Fireball.class, speed);
-                        break;
-                    case "LARGE_FIREBALL":
-                        entity = launchProjectile(block, directional, LargeFireball.class, speed);
-                        break;
-                    case "LINGERING_POTION":
-                        entity = launchProjectile(block, directional, LingeringPotion.class, speed);
-                        break;
-                    case "SPLASH_POTION":
-                        entity = launchProjectile(block, directional, SplashPotion.class, speed);
-                        break;
-                    case "LLAMA_SPIT":
-                        entity = launchProjectile(block, directional, LlamaSpit.class, speed);
-                        break;
-                    case "SHULKER_BULLET":
-                        entity = launchProjectile(block, directional, ShulkerBullet.class, speed);
-                        break;
-                    case "SIZED_FIREBALL":
-                        entity = launchProjectile(block, directional, SizedFireball.class, speed);
-                        break;
-                    case "SNOWBALL":
-                        entity = launchProjectile(block, directional, Snowball.class, speed);
-                        break;
-                    case "TRIDENT":
-                        entity = launchProjectile(block, directional, Trident.class, speed);
-                        break;
-                    case "WITHER_SKULL":
-                        entity = launchProjectile(block, directional, WitherSkull.class, speed);
-                        break;
-                    default:
-                        entity = launchProjectile(block, directional, Arrow.class, speed);
-                        break;
-                }
+            if (SProjectileType.getProjectilesClasses().containsKey(type.toUpperCase())) {
+                entity = launchProjectile(block, directional, SProjectileType.getProjectilesClasses().get(type.toUpperCase()), speed);
+            } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
+                projectile = projectileOptional.get();
+
+                entity = launchProjectile(block, directional, SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]), speed);
                 projectile.transformTheProjectile(entity, p, projectile.getType().getValue().get().getMaterial());
-
-            }
+            } else entity = launchProjectile(block, directional, Arrow.class, speed);
 
             final Entity e = entity;
             BukkitRunnable runnable = new BukkitRunnable() {

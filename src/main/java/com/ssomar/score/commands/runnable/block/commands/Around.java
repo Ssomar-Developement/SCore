@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
+import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,8 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ssomar.score.commands.runnable.player.commands.Around.extractConditions;
+import static com.ssomar.score.commands.runnable.player.commands.Around.getFirstCommandWithoutConditions;
+
 /* AROUND {distance} {true or false} {Your commands here} */
 public class Around extends BlockCommand {
+
+    private final static Boolean DEBUG = false;
+
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         String error = "";
@@ -98,8 +105,30 @@ public class Around extends BlockCommand {
                                 tab[0] = buildCommands;
                             }
                             List<String> commands = new ArrayList<>();
-                            for (String value : tab) {
-                                String s = value;
+                            boolean passToNextPlayer = false;
+                            for (int m = 0; m < tab.length; m++) {
+                                String s = tab[m];
+
+                                if (m == 0) {
+                                    //SsomarDev.testMsg("receive : s = " + s, DEBUG);
+                                    s = sp.replacePlaceholder(s);
+                                    s = s.replaceAll("%::", "%");
+                                    s = s.replaceAll("::%", "%");
+                                    List<PlaceholderConditionFeature> conditions = extractConditions(s);
+                                    s = getFirstCommandWithoutConditions(s);
+                                    //SsomarDev.testMsg("s: " + s, true);
+                                    if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
+                                        for (PlaceholderConditionFeature condition : conditions) {
+                                            //SsomarDev.testMsg("condition: " + condition, true);
+                                            if (!condition.verify(target, null)) {
+                                                //SsomarDev.testMsg("condition not verified", DEBUG);
+                                                passToNextPlayer = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
                                 while (s.startsWith(" ")) {
                                     s = s.substring(1);
                                 }
@@ -110,6 +139,8 @@ public class Around extends BlockCommand {
 
                                 commands.add(s);
                             }
+                            if(passToNextPlayer) continue;
+
                             commands = sp.replacePlaceholders(commands);
                             PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
                             CommandsExecutor.runCommands(builder);

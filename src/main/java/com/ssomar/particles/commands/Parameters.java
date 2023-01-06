@@ -1,6 +1,7 @@
 package com.ssomar.particles.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.utils.CustomColor;
 import com.thoughtworks.paranamer.AnnotationParanamer;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
@@ -8,6 +9,7 @@ import com.thoughtworks.paranamer.Paranamer;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
+
 
 import java.awt.*;
 import java.lang.reflect.Method;
@@ -35,7 +37,7 @@ public class Parameters extends ArrayList<Parameter>{
                 i++;
                 continue;
             }
-            System.out.println("Loading parameter: " + parameter);
+            //System.out.println("Loading parameter: " + parameter);
             Object o = null;
             switch (parameters[i].getType().getName()) {
                 case "int":
@@ -43,6 +45,9 @@ public class Parameters extends ArrayList<Parameter>{
                     break;
                 case "double":
                     o = 0.0;
+                    break;
+                case "boolean":
+                    o = false;
                     break;
             }
             this.add(new com.ssomar.particles.commands.Parameter(parameter, o, ""));
@@ -55,12 +60,15 @@ public class Parameters extends ArrayList<Parameter>{
             p.load(parameters);
         }
         if(requireDisplay) {
+            boolean found = false;
             for (String s : parameters) {
                 if (s.contains("color:")){
                     String colorName = s.split(":")[1];
-                    Color color = Color.getColor(colorName);
+                    Color color = new Color(CustomColor.valueOf(colorName.toUpperCase()).getRed(), CustomColor.valueOf(colorName.toUpperCase()).getGreen(), CustomColor.valueOf(colorName.toUpperCase()).getBlue());
                     if(color != null) {
                         display = ParticleDisplay.colored(loc, color, 1);
+                        found = true;
+                        break;
                     }
                     else{
                         //SsomarDev.testMsg("Color not found: " + colorName, true);
@@ -69,11 +77,15 @@ public class Parameters extends ArrayList<Parameter>{
                 }
                 else if (s.contains("particle:")) {
                     String particleName = s.split(":")[1];
-                    Particle particle = XParticle.getParticle(particleName);
+                    Particle particle = XParticle.getParticle(particleName.toUpperCase());
                     display = ParticleDisplay.display(loc, particle);
+                    found = true;
                     break;
                 }
             }
+            // By default its flame particle
+            if(display == null || !found) display = ParticleDisplay.display(loc, Particle.FLAME);
+
             if(display != null) {
                 if(entity != null) display.withEntity(entity);
             }

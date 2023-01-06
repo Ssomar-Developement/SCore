@@ -26,7 +26,7 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
         if (hasCondition()) {
             if (SCore.hasLands) {
                 LandsIntegrationAPI lands = new LandsIntegrationAPI(SCore.plugin);
-                if (!lands.playerIsInHisClaim(player, player.getLocation())) {
+                if (!lands.playerIsInHisClaim(player, player.getLocation(), false)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }
@@ -39,14 +39,14 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
             }
 
             if (SCore.hasGriefDefender) {
-                if (!GriefDefenderAPI.playerIsInHisClaim(player, player.getLocation())) {
+                if (!GriefDefenderAPI.playerIsInHisClaim(player, player.getLocation(), false)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }
             }
 
             if (SCore.hasResidence) {
-                if (!ResidenceAPI.playerIsInHisClaim(player, player.getLocation())) {
+                if (!ResidenceAPI.playerIsInHisClaim(player, player.getLocation(), false)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

@@ -29,6 +29,8 @@ public class PlayerCommandManager implements CommandManager {
         commands.add(new FlyOn());
         commands.add(new FlyOff());
         commands.add(new SetBlock());
+        commands.add(new SetBlockPos());
+        commands.add(new SetTempBlockPos());
         commands.add(new ReplaceBlock());
         commands.add(new CustomDash1());
         commands.add(new ProjectileCustomDash1());

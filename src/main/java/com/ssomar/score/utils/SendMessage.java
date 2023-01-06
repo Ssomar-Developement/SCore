@@ -3,6 +3,8 @@ package com.ssomar.score.utils;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,9 +26,7 @@ public class SendMessage implements Serializable {
 
     public static void sendMessageNoPlch(CommandSender cs, String s) {
         String prepareMsg = s;
-        prepareMsg = StringConverter.coloredString(prepareMsg);
-        if (!(prepareMsg.isEmpty() || StringConverter.decoloredString(prepareMsg).isEmpty()))
-            cs.sendMessage(prepareMsg);
+        sendMessageFinal(cs, prepareMsg);
     }
 
     public void sendMessage(Player p, String s) {
@@ -36,9 +36,26 @@ public class SendMessage implements Serializable {
     public void sendMessage(CommandSender cs, String s) {
         String prepareMsg = s;
         prepareMsg = sp.replacePlaceholder(prepareMsg);
-        prepareMsg = StringConverter.coloredString(prepareMsg);
-        if (!(prepareMsg.isEmpty() || StringConverter.decoloredString(prepareMsg).isEmpty()))
-            cs.sendMessage(prepareMsg);
+        sendMessageFinal(cs, prepareMsg);
+    }
+
+    public static void sendMessageFinal(CommandSender cs, String prepareMsg) {
+        if (!(prepareMsg.isEmpty() || StringConverter.decoloredString(prepareMsg).isEmpty())){
+            if(prepareMsg.contains("&") || prepareMsg.contains("§")) {
+                prepareMsg = StringConverter.coloredString(prepareMsg);
+                cs.sendMessage(prepareMsg);
+            }
+            else {
+                try {
+                    Audience audience = Audience.audience((Audience) cs);
+                    audience.sendMessage(MiniMessage.miniMessage().deserialize(prepareMsg));
+                }
+                catch (Exception | Error e){
+                    prepareMsg = StringConverter.coloredString(prepareMsg);
+                    cs.sendMessage(prepareMsg);
+                }
+            }
+        }
     }
 
     public void resetSp() {

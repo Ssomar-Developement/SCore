@@ -7,6 +7,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
 import com.ssomar.score.projectiles.SProjectile;
+import com.ssomar.score.projectiles.SProjectileType;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,121 +21,6 @@ import java.util.*;
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
 public class Launch extends PlayerCommand {
-
-    private final Map<String, Class> projectiles;
-
-    public Launch() {
-        projectiles = new HashMap<>();
-        try {
-            projectiles.put("ARROW", Arrow.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SPECTRALARROW", SpectralArrow.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("DRAGONFIREBALL", DragonFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("FIREBALL", Fireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SMALLFIREBALL", SmallFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("LARGEFIREBALL", LargeFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("LARGE_FIREBALL", LargeFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SIZEDFIREBALL", SizedFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SIZED_FIREBALL", SizedFireball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SNOWBALL", Snowball.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("WITHERSKULL", WitherSkull.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("WITHER_SKULL", WitherSkull.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("EGG", Egg.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("ENDERPEARL", EnderPearl.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("ENDER_PEARL", EnderPearl.class);
-        } catch (Exception | Error ignored) {
-        }
-
-        try {
-            projectiles.put("LINGERINGPOTION", LingeringPotion.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("LINGERING_POTION", LingeringPotion.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SPLASHPOTION", SplashPotion.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SPLASH_POTION", SplashPotion.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("LLAMASPIT", LlamaSpit.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("LLAMA_SPIT", LlamaSpit.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SHULKERBULLET", ShulkerBullet.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
-        } catch (Exception | Error ignored) {
-        }
-        try {
-            projectiles.put("TRIDENT", Trident.class);
-        } catch (Exception | Error ignored) {
-        }
-    }
 
     @Override
     public int hashCode() {
@@ -168,13 +54,20 @@ public class Launch extends PlayerCommand {
                 String type = args.get(0);
                 Optional<SProjectile> projectileOptional = null;
                 SProjectile projectile = null;
-                if (projectiles.containsKey(type.toUpperCase())) {
-                    entity = receiver.launchProjectile(projectiles.get(type.toUpperCase()));
+                if (SProjectileType.getProjectilesClasses().containsKey(type.toUpperCase())) {
+                    entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(type.toUpperCase()));
                 } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
                     projectile = projectileOptional.get();
                     //SsomarDev.testMsg("LAUNCH : "+projectile.hashCode());
-                    entity = receiver.launchProjectile(projectiles.get(projectile.getType().getValue().get().getValidNames()[0]));
+                    entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]));
                 } else entity = receiver.launchProjectile(Arrow.class);
+
+                if(entity instanceof Firework){
+                    entity.remove();
+                    entity = receiver.getWorld().spawnEntity(receiver.getEyeLocation(), EntityType.FIREWORK);
+                    Firework firework = (Firework) entity;
+                    firework.setShotAtAngle(true);
+                }
 
                 if (entity != null) {
                     if (!SCore.is1v13Less()) {
@@ -226,7 +119,8 @@ public class Launch extends PlayerCommand {
                         } else if (entity instanceof DragonFireball) {
                             DragonFireball fireball = (DragonFireball) entity;
                             fireball.setDirection(eyeVector);
-                        } else {
+                        }
+                        else {
                             entity.setVelocity(eyeVector);
                         }
                     }

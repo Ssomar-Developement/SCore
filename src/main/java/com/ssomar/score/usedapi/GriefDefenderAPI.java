@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class GriefDefenderAPI {
 
-    public static boolean playerIsInHisClaim(@NotNull Player p, Location location) {
+    public static boolean playerIsInHisClaim(@NotNull Player p, Location location, boolean acceptWilderness) {
 
         ClaimManager cM = GriefDefender.getCore().getClaimManager(location.getWorld().getUID());
 
         Claim claim = cM.getClaimAt((int) location.getX(), (int) location.getY(), (int) location.getZ());
 
-        if (claim.isWilderness() || claim.getOwnerUniqueId() == null) return false;
+        if (claim.isWilderness() || claim.getOwnerUniqueId() == null) return acceptWilderness;
 
         return claim.getOwnerUniqueId().equals(p.getUniqueId()) || claim.getUserTrusts().contains(p.getUniqueId());
     }

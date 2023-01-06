@@ -127,7 +127,7 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
 
             /* I need to let that because old versions doesnt have particle */
             if (acceptWithoutParticle) {
-                placeholders.put("%word%", pLoc.getWorld().getName());
+                placeholders.put("%world%", pLoc.getWorld().getName());
                 placeholders.put("%world_lower%", pLoc.getWorld().getName().toLowerCase());
                 placeholders.put("%slot%", slot);
                 placeholders.put("%slot_live%", player.getInventory().getHeldItemSlot() + "");

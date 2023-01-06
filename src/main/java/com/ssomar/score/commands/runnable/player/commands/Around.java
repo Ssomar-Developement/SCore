@@ -8,6 +8,13 @@ import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
+import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
+import com.ssomar.score.features.types.ColoredStringFeature;
+import com.ssomar.score.features.types.ComparatorFeature;
+import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
+import com.ssomar.score.utils.Comparator;
+import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -19,6 +26,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class Around extends PlayerCommand {
+
+    private final static Boolean DEBUG = false;
 
     public static void aroundExecution(Entity receiver, List<String> args, ActionInfo aInfo, boolean displayMsgIfNoTargetHit) {
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -55,8 +64,30 @@ public class Around extends PlayerCommand {
                             tab[0] = buildCommands;
                         }
                         List<String> commands = new ArrayList<>();
+                        boolean passToNextPlayer = false;
                         for (int m = 0; m < tab.length; m++) {
                             String s = tab[m];
+
+                            if (m == 0) {
+                                //SsomarDev.testMsg("receive : s = " + s, DEBUG);
+                                s = sp.replacePlaceholder(s);
+                                s = s.replaceAll("%::", "%");
+                                s = s.replaceAll("::%", "%");
+                                List<PlaceholderConditionFeature> conditions = extractConditions(s);
+                                s = getFirstCommandWithoutConditions(s);
+                                //SsomarDev.testMsg("s: " + s, true);
+                                if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
+                                    for (PlaceholderConditionFeature condition : conditions) {
+                                        //SsomarDev.testMsg("condition: " + condition, true);
+                                        if (!condition.verify(target, null)) {
+                                            //SsomarDev.testMsg("condition not verified", DEBUG);
+                                            passToNextPlayer = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
                             while (s.startsWith(" ")) {
                                 s = s.substring(1);
                             }
@@ -67,6 +98,8 @@ public class Around extends PlayerCommand {
 
                             commands.add(s);
                         }
+                        if(passToNextPlayer) continue;
+
                         commands = sp.replacePlaceholders(commands);
                         PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
                         CommandsExecutor.runCommands(builder);
@@ -79,6 +112,52 @@ public class Around extends PlayerCommand {
             }
         };
         runnable.runTask(SCore.plugin);
+    }
+
+    public static List<PlaceholderConditionFeature> extractConditions(String s) {
+        List<PlaceholderConditionFeature> conditions = new ArrayList<>();
+        if (s.contains("CONDITIONS(")) {
+            String[] tab = s.split("CONDITIONS\\(");
+            int indexOfClose = tab[1].indexOf(")");
+            if (indexOfClose != -1) {
+                String conditionsStr = tab[1].substring(0, indexOfClose);
+                String[] tab3 = conditionsStr.split("&");
+                for (String condition : tab3) {
+                    for (Comparator comparator : Comparator.values()) {
+                        if (condition.contains(comparator.getSymbol())) {
+                            String[] conditionSplit = condition.split(comparator.getSymbol());
+                            String placeholder = conditionSplit[0];
+                            String value = conditionSplit[1];
+                            PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
+                            if ((comparator.equals(Comparator.EQUALS) || comparator.equals(Comparator.DIFFERENT)) && !NTools.isNumber(value)) {
+                                conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_STRING));
+                            } else
+                                conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_NUMBER));
+
+                            conditionFeature.setPart1(ColoredStringFeature.buildNull(placeholder));
+                            conditionFeature.setPart2(ColoredStringFeature.buildNull(value));
+                            conditionFeature.setComparator(ComparatorFeature.buildNull(comparator));
+                            conditions.add(conditionFeature);
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return conditions;
+    }
+
+    public static String getFirstCommandWithoutConditions(String s) {
+        if (s.contains("CONDITIONS(")) {
+            String[] tab = s.split("CONDITIONS\\(");
+            int indexOfClose = tab[1].indexOf(")");
+            if (indexOfClose != -1) {
+                String without = tab[1].substring(indexOfClose + 1);
+                return without;
+            }
+        }
+        return s;
     }
 
     @Override

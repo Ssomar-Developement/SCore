@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.placeholders.placeholder;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -33,6 +34,8 @@ import java.util.Optional;
 @Setter
 public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<PlaceholderConditionFeature, PlaceholderConditionFeature, PlaceholderConditionFeatureEditor, PlaceholderConditionFeatureEditorManager> {
 
+    private final static Boolean DEBUG = false;
+
     private PlaceholderConditionTypeFeature type;
     private ComparatorFeature comparator;
     private ColoredStringFeature part1;
@@ -47,6 +50,10 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         super(parent, "placeholderCondition", "Placeholder Condition", new String[]{"&7&oA Placeholder condition with its options"}, GUI.WRITABLE_BOOK, false);
         this.id = id;
         reset();
+    }
+
+    public static PlaceholderConditionFeature buildNull(){
+        return new PlaceholderConditionFeature(null, "NULL");
     }
 
     @Override
@@ -99,13 +106,27 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                 if (NTools.isNumber(aPart1)) {
                     double nPart1 = Double.parseDouble(aPart1);
                     double nPart2 = Double.parseDouble(aPart2);
-                    if (!comparator.getValue().get().verify(nPart1, nPart2)) return false;
+                    if (!comparator.getValue().get().verify(nPart1, nPart2)){
+                        SsomarDev.testMsg("false because> "+nPart1+" ?? "+nPart2, DEBUG);
+                        return false;
+                    }
                 } else return false;
                 break;
 
             case PLAYER_STRING:
             case TARGET_STRING:
-                if (!comparator.getValue().get().verify(aPart1, aPart2)) return false;
+                if(aPart1.contains("<OR>")) {
+                    List<String> list = new ArrayList<>(Arrays.asList(aPart2.split("<OR>")));
+                    /** Trim strings **/
+                    for(int i = 0; i < list.size(); i++) {
+                        list.set(i, list.get(i).trim());
+                    }
+                    if (!comparator.getValue().get().verify(aPart1, list)) return false;
+                }
+                else if (!comparator.getValue().get().verify(aPart1, aPart2)){
+                    SsomarDev.testMsg("false because> "+aPart1+" ?? "+aPart2, DEBUG);
+                    return false;
+                }
                 break;
 
             case PLAYER_PLAYER:
@@ -117,7 +138,6 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                     if (!comparator.getValue().get().verify(nPart1, nPart2)) return false;
                 } else if (!comparator.getValue().get().verify(aPart1, aPart2)) return false;
                 break;
-
             default:
                 break;
         }
@@ -255,6 +275,20 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
     @Override
     public void openEditor(@NotNull Player player) {
         PlaceholderConditionFeatureEditorManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public String toString() {
+        return "PlaceholderConditionFeature{" +
+                "type=" + type +
+                ", comparator=" + comparator +
+                ", part1=" + part1 +
+                ", part2=" + part2 +
+                ", cancelEventIfNotValid=" + cancelEventIfNotValid +
+                ", messageIfNotValid=" + messageIfNotValid +
+                ", messageIfNotValidForTarget=" + messageIfNotValidForTarget +
+                ", id='" + id + '\'' +
+                '}';
     }
 
 }

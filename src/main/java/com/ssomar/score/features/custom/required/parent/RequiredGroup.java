@@ -6,6 +6,7 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeature;
+import com.ssomar.score.features.custom.required.experience.RequiredExperience;
 import com.ssomar.score.features.custom.required.items.group.RequiredItemGroupFeature;
 import com.ssomar.score.features.custom.required.level.RequiredLevel;
 import com.ssomar.score.features.custom.required.mana.RequiredMana;
@@ -31,6 +32,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     private static final Boolean DEBUG = false;
     private RequiredLevel requiredLevel;
+    private RequiredExperience requiredExperience;
     private RequiredMoney requiredMoney;
     private RequiredItemGroupFeature requiredItems;
     private RequiredExecutableItemGroupFeature requiredExecutableItems;
@@ -45,6 +47,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         error.addAll(requiredLevel.load(plugin, config, isPremiumLoading));
+        error.addAll(requiredExperience.load(plugin, config, isPremiumLoading));
         error.addAll(requiredMoney.load(plugin, config, isPremiumLoading));
         error.addAll(requiredItems.load(plugin, config, isPremiumLoading));
         error.addAll(requiredExecutableItems.load(plugin, config, isPremiumLoading));
@@ -55,6 +58,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     @Override
     public void save(ConfigurationSection config) {
         requiredLevel.save(config);
+        requiredExperience.save(config);
         requiredMoney.save(config);
         requiredItems.save(config);
         requiredExecutableItems.save(config);
@@ -65,6 +69,10 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     public boolean verify(Player player, Event event) {
         if (!requiredLevel.verify(player, event)) {
             SsomarDev.testMsg("Invalid level", DEBUG);
+            return false;
+        }
+        if (!requiredExperience.verify(player, event)) {
+            SsomarDev.testMsg("Invalid experience", DEBUG);
             return false;
         }
         if (!requiredMoney.verify(player, event)) {
@@ -91,6 +99,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     public void take(Player player) {
         SsomarDev.testMsg("Taking required things", DEBUG);
         requiredLevel.take(player);
+        requiredExperience.take(player);
         requiredMoney.take(player);
         requiredItems.take(player);
         requiredExecutableItems.take(player);
@@ -104,13 +113,18 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public RequiredGroup initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 6];
+        String[] finalDescription = new String[getEditorDescription().length + 7];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 7] = GUI.CLICK_HERE_TO_CHANGE;
         if (requiredLevel.getValue().getLevel().getValue().get() > 0)
-            finalDescription[finalDescription.length - 5] = "&7Required level: &a&l✔";
+            finalDescription[finalDescription.length - 6] = "&7Required level: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7Required level: &c&l✘";
+            finalDescription[finalDescription.length - 6] = "&7Required level: &c&l✘";
+
+        if (requiredExperience.getValue().getExperience().getValue().get() > 0)
+            finalDescription[finalDescription.length - 5] = "&7Required experience: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 5] = "&7Required experience: &c&l✘";
 
         if (requiredMoney.getValue().getMoney().getValue().get() > 0)
             finalDescription[finalDescription.length - 4] = "&7Required money: &a&l✔";
@@ -144,18 +158,20 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public RequiredGroup clone(FeatureParentInterface newParent) {
-        RequiredGroup requiredLevel = new RequiredGroup(newParent);
-        requiredLevel.setRequiredLevel(getRequiredLevel().clone(requiredLevel));
-        requiredLevel.setRequiredMoney(getRequiredMoney().clone(requiredLevel));
-        requiredLevel.setRequiredItems(getRequiredItems().clone(requiredLevel));
-        requiredLevel.setRequiredExecutableItems(getRequiredExecutableItems().clone(requiredLevel));
-        requiredLevel.setRequiredMana(getRequiredMana().clone(requiredLevel));
-        return requiredLevel;
+        RequiredGroup requiredGroup = new RequiredGroup(newParent);
+        requiredGroup.setRequiredLevel(getRequiredLevel().clone(requiredGroup));
+        requiredGroup.setRequiredExperience(getRequiredExperience().clone(requiredGroup));
+        requiredGroup.setRequiredMoney(getRequiredMoney().clone(requiredGroup));
+        requiredGroup.setRequiredItems(getRequiredItems().clone(requiredGroup));
+        requiredGroup.setRequiredExecutableItems(getRequiredExecutableItems().clone(requiredGroup));
+        requiredGroup.setRequiredMana(getRequiredMana().clone(requiredGroup));
+        return requiredGroup;
     }
 
     @Override
     public void reset() {
         this.requiredLevel = new RequiredLevel(this);
+        this.requiredExperience = new RequiredExperience(this);
         this.requiredMoney = new RequiredMoney(this);
         this.requiredItems = new RequiredItemGroupFeature(this);
         this.requiredExecutableItems = new RequiredExecutableItemGroupFeature(this);
@@ -174,7 +190,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return Arrays.asList(requiredLevel, requiredMoney, requiredItems, requiredExecutableItems, requiredMana);
+        return Arrays.asList(requiredLevel, requiredExperience, requiredMoney, requiredItems, requiredExecutableItems, requiredMana);
     }
 
     @Override
@@ -198,6 +214,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
             if (feature instanceof RequiredGroup) {
                 RequiredGroup requiredgroup = (RequiredGroup) feature;
                 requiredgroup.setRequiredLevel(requiredLevel);
+                requiredgroup.setRequiredExperience(requiredExperience);
                 requiredgroup.setRequiredMoney(requiredMoney);
                 requiredgroup.setRequiredItems(requiredItems);
                 requiredgroup.setRequiredExecutableItems(requiredExecutableItems);

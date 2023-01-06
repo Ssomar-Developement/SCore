@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ItemsAdderAPI {
 
@@ -52,5 +53,31 @@ public class ItemsAdderAPI {
         }
         return false;
 
+    }
+
+    public static Optional<String> getCustomBlockID(Block block) {
+        if (SCore.hasItemsAdder && block != null && !block.isEmpty()) {
+            CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
+            //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
+            if (customBlock != null) {
+                return Optional.of(customBlock.getId());
+            }
+            ArmorStand armorStand;
+            for (Entity e : block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5)) {
+                if (e instanceof ArmorStand) {
+                    armorStand = (ArmorStand) e;
+                    if (armorStand.getCustomName() != null && armorStand.getCustomName().equals("ItemsAdder_furniture")) {
+                        return Optional.of(CustomFurniture.byAlreadySpawned(armorStand).getId());
+                    }
+                }
+            }
+
+        }
+        return Optional.empty();
+
+    }
+
+    public static boolean isCustomBlock(Block block) {
+       return getCustomBlockID(block).isPresent();
     }
 }

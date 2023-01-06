@@ -6,14 +6,14 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeature;
 import com.ssomar.score.features.custom.potionsettings.PotionSettingsFeature;
 import com.ssomar.score.projectiles.features.*;
+import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeatures;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeature;
 import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.entity.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Getter
 public enum SProjectileType {
@@ -28,7 +28,9 @@ public enum SProjectileType {
     TRIDENT(FixedMaterial.getMaterial(Arrays.asList("TRIDENT")), "TRIDENT"),
     WITHER_SKULL(FixedMaterial.getMaterial(Arrays.asList("WITHER_SKELETON_SKULL")), "WITHER_SKULL"),
     DRAGON_FIREBALL(FixedMaterial.getMaterial(Arrays.asList("DRAGON_HEAD")), "DRAGON_FIREBALL"),
-    THROWNEXPBOTTLE(FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), "THROWNEXPBOTTLE");
+    THROWNEXPBOTTLE(FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), "THROWNEXPBOTTLE"),
+    FIREWORK(FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")), "FIREWORK"),
+    SPECTRAL_ARROW(FixedMaterial.getMaterial(Arrays.asList("SPECTRAL_ARROW")), "SPECTRAL_ARROW"),;
 
     private Material material;
     private final String[] validNames;
@@ -90,7 +92,8 @@ public enum SProjectileType {
                     features.add(new CustomModelDataFeature(parent));
                 }
                 break;
-            case FIREBALL: case DRAGON_FIREBALL:
+            case FIREBALL:
+            case DRAGON_FIREBALL:
                 features.add(new GravityFeature(parent));
                 features.add(new RadiusFeature(parent));
                 features.add(new IncendiaryFeature(parent));
@@ -125,6 +128,9 @@ public enum SProjectileType {
                 features.add(new IncendiaryFeature(parent));
                 features.add(new ChargedFeature(parent));
                 break;
+            case FIREWORK:
+                features.add(new FireworkFeatures(parent));
+                break;
         }
 
         if (!SCore.is1v11Less()) {
@@ -132,5 +138,130 @@ public enum SProjectileType {
         }
 
         return features;
+    }
+
+    public static Map<String, Class> getProjectilesClasses() {
+        Map<String, Class> projectiles = new HashMap<>();
+        try {
+            projectiles.put("ARROW", Arrow.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SPECTRALARROW", SpectralArrow.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("DRAGONFIREBALL", DragonFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("DRAGON_FIREBALL", DragonFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("FIREBALL", Fireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SMALLFIREBALL", SmallFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("LARGEFIREBALL", LargeFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("LARGE_FIREBALL", LargeFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SIZEDFIREBALL", SizedFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SIZED_FIREBALL", SizedFireball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SNOWBALL", Snowball.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("THROWNEXPBOTTLE", ThrownExpBottle.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("WITHERSKULL", WitherSkull.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("WITHER_SKULL", WitherSkull.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("EGG", Egg.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("ENDERPEARL", EnderPearl.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("ENDER_PEARL", EnderPearl.class);
+        } catch (Exception | Error ignored) {
+        }
+
+        try {
+            projectiles.put("LINGERINGPOTION", LingeringPotion.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("LINGERING_POTION", LingeringPotion.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SPLASHPOTION", SplashPotion.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SPLASH_POTION", SplashPotion.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("LLAMASPIT", LlamaSpit.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("LLAMA_SPIT", LlamaSpit.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SHULKERBULLET", ShulkerBullet.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("SHULKER_BULLET", ShulkerBullet.class);
+        } catch (Exception | Error ignored) {
+        }
+        try {
+            projectiles.put("TRIDENT", Trident.class);
+        } catch (Exception | Error ignored) {
+        }
+
+        try {
+            projectiles.put("FIREWORK", Firework.class);
+        } catch (Exception | Error ignored) {
+        }
+
+        try {
+            projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
+        } catch (Exception | Error ignored) {
+        }
+
+        return projectiles;
     }
 }

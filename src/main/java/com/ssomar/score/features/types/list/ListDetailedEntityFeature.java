@@ -230,7 +230,8 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                         case NBTTagEnd:
                             return false;
                         case NBTTagByte:
-                            if (value.equals("0") || value.equals("1")) {
+                            value = value.replace("b", "");
+                            if (NTools.isNumber(value)) {
                                 SsomarDev.testMsg("Byte: " + nbtent.getByte(key), DEBUG);
                                 if (nbtent.getByte(key) != Byte.parseByte(value)) invalid = true;
                             }

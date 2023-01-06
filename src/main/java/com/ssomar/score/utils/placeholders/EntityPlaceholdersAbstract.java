@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scoreboard.Team;
 
@@ -20,6 +21,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     private static final long serialVersionUID = 1L;
 
     private final String particle;
+
+    private Entity entity;
 
     /* placeholders of the target entity */
     private UUID entityUUID;
@@ -51,19 +54,21 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
         this.reloadEntityPlcHldr();
     }
 
-    public void setPlayerPlcHldr(UUID uuid) {
-        this.entityUUID = uuid;
+    public void setEntityPlcHldr(Entity entity) {
+        this.entity = entity;
+        this.entityUUID = entity.getUniqueId();
         this.reloadEntityPlcHldr();
     }
 
     public void reloadEntityPlcHldr() {
-        Entity entity;
-        if (entityUUID == null) return;
+        if (entityUUID == null && entity == null) return;
 
-        if (SCore.is1v11Less()) {
-            entity = getEntityByUniqueId(entityUUID);
-        } else {
-            entity = Bukkit.getEntity(entityUUID);
+        if(entity == null) {
+            if (SCore.is1v11Less()) {
+                entity = getEntityByUniqueId(entityUUID);
+            } else {
+                entity = Bukkit.getEntity(entityUUID);
+            }
         }
         if (entity != null) {
             this.entityType = entity.getType().toString();
@@ -129,12 +134,17 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
 
     public String replacePlaceholder(String s) {
         String toReplace = s;
-        if (entityUUID != null) {
+        if (entityUUID != null || entity != null) {
             toReplace = toReplace.replaceAll("%" + particle + "%", entityType);
             toReplace = toReplace.replaceAll("%" + particle + "_lower_case%", entityType.toLowerCase());
             toReplace = toReplace.replaceAll("%" + particle + "_name%", entityName);
             toReplace = toReplace.replaceAll("%" + particle + "_name_lower_case%", entityName.toLowerCase());
             toReplace = toReplace.replaceAll("%" + particle + "_uuid%", entityUUID.toString());
+
+            if(entity != null && entity instanceof Item){
+                Item item = (Item) entity;
+                toReplace = toReplace.replaceAll("%" + particle + "_item%", item.getItemStack().getType().toString());
+            }
 
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", NTools.reduceDouble(x, 2) + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", NTools.reduceDouble(y, 2) + "", false);

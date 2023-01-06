@@ -341,17 +341,19 @@ public final class XParticle {
      * @param rate       the rate of the 3D ellipses circle points.
      * @param radiusRate the rate of the circle radius change.
      * @param extend     the extension for each ellipse.
+     * @param time       the duration of the beam in ticks
      *
      * @return the animation handler.
      * @see #magicCircles(Plugin, double, double, double, double, ParticleDisplay)
      * @since 3.0.0
      */
-    public static BukkitTask circularBeam(Plugin plugin, double maxRadius, double rate, double radiusRate, double extend, ParticleDisplay display) {
+    public static BukkitTask circularBeam(Plugin plugin, double maxRadius, double rate, double radiusRate, double extend, double time, ParticleDisplay display) {
         return new BukkitRunnable() {
             final double rateDiv = Math.PI / rate;
             final double radiusDiv = Math.PI / radiusRate;
             final Vector dir = display.getLocation().getDirection().normalize().multiply(extend);
             double dynamicRadius = 0;
+            long repeat = 0;
 
             @Override
             public void run() {
@@ -367,8 +369,9 @@ public final class XParticle {
 
                 dynamicRadius += radiusDiv;
                 if (dynamicRadius > Math.PI) dynamicRadius = 0;
-                // Next circle center location.
-                display.getLocation().add(dir);
+                // Next circle center location. (need to clone otherwise it'll change the original)
+                display.getLocation().clone().add(dir);
+                if (++repeat > time) cancel();
             }
         }.runTaskTimerAsynchronously(plugin, 0L, 1L);
     }
@@ -441,11 +444,12 @@ public final class XParticle {
      * @return the animation handler.
      * @since 4.0.0
      */
-    public static BukkitTask chaoticDoublePendulum(Plugin plugin, double radius, double gravity, double length, double length2,
-                                                   double mass1, double mass2,
-                                                   boolean dimension3, int speed, ParticleDisplay display) {
+    public static BukkitTask chaoticDoublePendulum(Plugin plugin, double radius, double gravity, double length, double length2, double mass1, double mass2, boolean dimension3, int speed, int time, ParticleDisplay display) {
         // If you want the particles to stay. But it's gonna lag a lot.
         //Map<Vector, Vector> locs = new HashMap<>();
+
+        if(speed <= 0) speed = 1;
+        final int speedFinal = speed;
 
         return new BukkitRunnable() {
             final Vector rotation = new Vector(Math.PI / 33, Math.PI / 44, Math.PI / 55);
@@ -453,10 +457,11 @@ public final class XParticle {
             double theta2 = Math.PI / 2;
             double thetaPrime = 0;
             double thetaPrime2 = 0;
+            int timer = time;
 
             @Override
             public void run() {
-                int repeat = speed;
+                int repeat = speedFinal;
                 while (repeat-- != 0) {
                     if (dimension3) display.rotate(rotation);
                     double totalMass = mass1 + mass2;
@@ -503,6 +508,7 @@ public final class XParticle {
 //                });
 //                locs.put(new Vector(x2, y2, 0), display.rotation.clone());
                 }
+                if(--timer == 0) cancel();
             }
         }.runTaskTimerAsynchronously(plugin, 0L, 1L);
     }
@@ -520,11 +526,12 @@ public final class XParticle {
      * @see #circularBeam(Plugin, double, double, double, double, ParticleDisplay)
      * @since 3.0.0
      */
-    public static BukkitTask magicCircles(Plugin plugin, double radius, double rate, double radiusRate, double distance, ParticleDisplay display) {
+    public static BukkitTask magicCircles(Plugin plugin, double radius, double rate, double radiusRate, double distance, int time, ParticleDisplay display) {
         return new BukkitRunnable() {
             final double radiusDiv = Math.PI / radiusRate;
             final Vector dir = display.getLocation().getDirection().normalize().multiply(distance);
             double dynamicRadius = radius;
+            int timer = time;
 
             @Override
             public void run() {
@@ -539,6 +546,8 @@ public final class XParticle {
                 // in one axis.
                 dynamicRadius += radiusDiv;
                 display.getLocation().add(dir);
+
+                if(timer-- <= 0) cancel();
             }
         }.runTaskTimerAsynchronously(plugin, 0L, 1L);
     }
@@ -579,6 +588,8 @@ public final class XParticle {
     public static void cone(double height, double radius, double rate, double circleRate, ParticleDisplay display) {
         // Our biggest radius / amount of loop times = the amount to subtract from the biggest radius so it wouldn't be negative.
         double radiusDiv = radius / (height / rate);
+        //if rate == 0 -> infinite loop
+        if(rate < 0) rate = 1;
         // We're going spawn circles with different radiuses and rates to make a cone.
         for (double i = 0; i < height; i += rate) {
             radius -= radiusDiv;
@@ -791,16 +802,18 @@ public final class XParticle {
      * @param plugin the timer handler.
      * @param points the points of the vortex.
      * @param rate   the speed of the vortex.
+     * @param time   the duration of the vortex in ticks
      *
      * @return the task handling the animation.
      * @since 2.0.0
      */
-    public static BukkitTask vortex(Plugin plugin, int points, double rate, ParticleDisplay display) {
+    public static BukkitTask vortex(Plugin plugin, int points, double rate, double time, ParticleDisplay display) {
         double rateDiv = Math.PI / rate;
         display.directional();
 
         return new BukkitRunnable() {
             double theta = 0;
+            long repeat = 0;
 
             @Override
             public void run() {
@@ -820,6 +833,7 @@ public final class XParticle {
                     display.offset(xDirection, 0, zDirection);
                     display.spawn(x, 0, z);
                 }
+                if (++repeat > time) cancel();
             }
         }.runTaskTimerAsynchronously(plugin, 0L, 1L);
     }
@@ -1204,7 +1218,7 @@ public final class XParticle {
      * @see #atom(int, double, double, ParticleDisplay, ParticleDisplay)
      * @since 1.0.0
      */
-    public static BukkitTask atomic(Plugin plugin, int orbits, double radius, double rate, ParticleDisplay orbit) {
+    public static BukkitTask atomic(Plugin plugin, int orbits, double radius, double rate, ParticleDisplay display) {
         return new BukkitRunnable() {
             final double rateDiv = Math.PI / rate;
             final double dist = Math.PI / orbits;
@@ -1219,8 +1233,8 @@ public final class XParticle {
                 double z = radius * Math.sin(theta);
 
                 for (double angle = 0; orbital > 0; angle += dist) {
-                    orbit.setRotation(new Vector(0, 0, angle));
-                    orbit.spawn(x, 0, z);
+                    display.setRotation(new Vector(0, 0, angle));
+                    display.spawn(x, 0, z);
                     orbital--;
                 }
             }
@@ -1808,12 +1822,12 @@ public final class XParticle {
      * @param size   the size of the tesseract. Recommended is 4
      * @param rate   the rate of the tesseract points. Recommended is 0.3
      * @param speed  the speed of the tesseract matrix motion. Recommended is 0.01
-     * @param ticks  the amount of ticks to keep the animation.
+     * @param time  the amount of ticks to keep the animation.
      *
      * @see #hypercube(Location, Location, double, double, int, ParticleDisplay)
      * @since 4.0.0
      */
-    public static BukkitTask tesseract(Plugin plugin, double size, double rate, double speed, long ticks, ParticleDisplay display) {
+    public static BukkitTask tesseract(Plugin plugin, double size, double rate, double speed, double time, ParticleDisplay display) {
         // We can multiply these later to change the size.
         // This array doesn't really need to be a constant as it's initialized once.
         double[][] positions = {
@@ -1920,7 +1934,7 @@ public final class XParticle {
                     line(start, end, rate, display);
                 }
 
-                if (++repeat > ticks) cancel();
+                if (++repeat > time) cancel();
                 else angle += speed;
             }
         }.runTaskTimerAsynchronously(plugin, 0L, 1L);
@@ -2112,6 +2126,9 @@ public final class XParticle {
      * @since 4.0.0
      */
     public static void eye(double radius, double radius2, double rate, double extension, ParticleDisplay display) {
+        if(rate == 0) rate = 1;
+        if(extension == 0) extension = 1;
+
         double rateDiv = Math.PI / rate;
         double limit = Math.PI / extension;
         double x = 0;

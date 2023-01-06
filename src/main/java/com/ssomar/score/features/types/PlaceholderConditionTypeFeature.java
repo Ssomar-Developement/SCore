@@ -33,6 +33,12 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
         this.value = Optional.empty();
     }
 
+    public static PlaceholderConditionTypeFeature buildNull(PlaceholdersCdtType value) {
+        PlaceholderConditionTypeFeature p = new PlaceholderConditionTypeFeature(null, null, Optional.empty(), null, null, null, false);
+        p.setValue(Optional.of(value));
+        return p;
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();

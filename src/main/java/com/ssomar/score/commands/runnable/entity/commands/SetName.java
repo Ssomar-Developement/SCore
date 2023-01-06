@@ -23,6 +23,12 @@ public class SetName extends EntityCommand {
             }
             name = new StringBuilder(name.substring(0, name.length() - 1));
 
+            if(StringConverter.decoloredString(name.toString()).trim().isEmpty()) {
+                entity.setCustomNameVisible(false);
+                entity.setCustomName(null);
+                return;
+            }
+
             entity.setCustomNameVisible(true);
             entity.setCustomName(StringConverter.coloredString(name.toString()));
         }

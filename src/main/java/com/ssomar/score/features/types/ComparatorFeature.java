@@ -33,6 +33,12 @@ public class ComparatorFeature extends FeatureAbstract<Optional<Comparator>, Com
         this.value = Optional.empty();
     }
 
+    public static ComparatorFeature buildNull(Comparator comparator){
+        ComparatorFeature c = new ComparatorFeature(null, null, Optional.empty(), null, null, null, false);
+        c.setValue(Optional.of(comparator));
+        return c;
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();

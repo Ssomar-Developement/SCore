@@ -22,6 +22,8 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
     private Map<String, String> randomIdsDefaultObjects;
     private int cpt;
 
+    private String objectName;
+
     public NewSObjectLoader(SPlugin sPlugin, String defaultObjectsPath, NewSObjectManager<T> sObjectManager, int maxFreeObjects) {
         this.sPlugin = sPlugin;
         this.logger = sPlugin.getPlugin().getServer().getLogger();
@@ -29,6 +31,11 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
         this.sObjectManager = sObjectManager;
         this.maxFreeObjects = maxFreeObjects;
         this.cpt = 0;
+
+        objectName = sPlugin.getObjectName();
+        /* For plugins that have multiple object splugin.getOjectName can't work */
+        if(objectName == null) objectName = sObjectManager.getObjectName();
+        objectName = objectName.toLowerCase();
     }
 
     public static File searchFileOfObjectInFolder(String id, File folder) {
@@ -76,8 +83,6 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
     }
 
     public void createDefaultObjectsFile(Boolean isPremiumLoading, boolean exists) {
-
-        String objectName = sPlugin.getObjectName().toLowerCase();
 
         if (!exists)
             logger.severe(sPlugin.getNameDesign() + " CANT LOAD YOUR " + objectName.toUpperCase() + ", FOLDER '" + objectName + "' not found !");
@@ -196,7 +201,7 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
             String id = fileEntry.getName().split(".yml")[0];
 
             if (!isPremiumLoading && cpt >= maxFreeObjects) {
-                logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than " + maxFreeObjects + " " + sPlugin.getObjectName() + " you need the premium version");
+                logger.severe(sPlugin.getNameDesign() + " REQUIRE PREMIUM: to add more than " + maxFreeObjects + " " + objectName + " you need the premium version");
                 return;
             }
 
@@ -229,11 +234,11 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
 
     public File searchFileOfObject(String id) {
 
-        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName()).list());
+        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName).list());
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName() + "/" + s);
+            File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
             if (fileEntry.isDirectory()) {
                 File result = null;
                 if ((result = searchFileOfObjectInFolder(id, fileEntry)) == null)
@@ -338,12 +343,12 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
 
     public List<String> getAllObjects() {
         ArrayList<String> result = new ArrayList<>();
-        if (new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName()).exists()) {
-            List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName()).list());
+        if (new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName).exists()) {
+            List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" +objectName).list());
             Collections.sort(listFiles);
 
             for (String s : listFiles) {
-                File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + sPlugin.getObjectName() + "/" + s);
+                File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
                 if (fileEntry.isDirectory()) result.addAll(getAllObjectsOfFolder(fileEntry));
                 else {
                     if (!fileEntry.getName().contains(".yml")) continue;

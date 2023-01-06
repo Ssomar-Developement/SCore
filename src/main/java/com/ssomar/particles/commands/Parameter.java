@@ -40,13 +40,25 @@ public class Parameter<T> {
                         value = (T) Float.valueOf(valueStr);
                     }
                     else if(value instanceof Boolean){
-                        value = (T) Boolean.valueOf(valueStr);
+                        value = (T) new Boolean(Boolean.parseBoolean(valueStr));
                     }
                     else if(value instanceof String){
                         value = (T) valueStr;
                     }
                     else if(value instanceof Particle){
                         value = (T) XParticle.getParticle(valueStr);
+                    }
+                    else if(value instanceof Long){
+                        value = (T) Long.valueOf(valueStr);
+                    }
+                    else if(value instanceof Short){
+                        value = (T) Short.valueOf(valueStr);
+                    }
+                    else if(value instanceof Byte){
+                        value = (T) Byte.valueOf(valueStr);
+                    }
+                    else if(value instanceof Character){
+                        value = (T) Character.valueOf(valueStr.charAt(0));
                     }
                     else value = defaultValue;
                     return;

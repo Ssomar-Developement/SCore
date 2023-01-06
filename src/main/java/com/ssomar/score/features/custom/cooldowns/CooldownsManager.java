@@ -62,9 +62,9 @@ public class CooldownsManager {
 
         if (cooldowns.containsKey(id)) {
             double maxTimeLeft = -1;
-            int index = -1;
             List<Cooldown> cds = cooldowns.get(id);
             if (cds.size() != 0) {
+                Cooldown cdMax = null;
                 for (int i = 0; i < cds.size(); i++) {
                     Cooldown cd = cds.get(i);
                     if (cd == null) continue;
@@ -72,21 +72,19 @@ public class CooldownsManager {
                     if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)) continue;
 
                     double timeLeft = cd.getTimeLeft();
-                    if (timeLeft <= 0) {
-                        cd.setNull(true);
-                        cds.set(i, null);
-                    }
 
-                    if (maxTimeLeft < timeLeft) {
+                    if (maxTimeLeft < timeLeft && timeLeft > 0) {
                         maxTimeLeft = timeLeft;
-                        index = i;
+                        cdMax = cd;
                     } else {
                         cd.setNull(true);
-                        cds.set(i, null);
+                        cds.remove(i);
+                        try {
+                            cooldownsUUID.get(uuid).remove(cd);
+                        }catch (Exception ignored){}
                     }
                 }
-                if (maxTimeLeft == -1) return Optional.empty();
-                return Optional.ofNullable(cds.get(index));
+                return Optional.ofNullable(cdMax);
             }
         }
         return Optional.empty();
@@ -125,6 +123,45 @@ public class CooldownsManager {
                 }
             }
         }
+    }
+
+
+    public void printInfo() {
+        System.out.println("--------^^^^^^^^^^^^^^^^^^^^1-------------");
+
+
+        int total = 0;
+        for (String s : cooldowns.keySet()) {
+            List<Cooldown> cds = cooldowns.get(s);
+            total += cds.size();
+        }
+        System.out.println(" total : "+total);
+
+        total = 0;
+        for (UUID s : cooldownsUUID.keySet()) {
+            List<Cooldown> cds = cooldownsUUID.get(s);
+            total += cds.size();
+        }
+        System.out.println(" total : "+total);
+
+
+        for (String s : cooldowns.keySet()) {
+            for (Cooldown cd2 : cooldowns.get(s)) {
+                if(cd2 != null) System.out.println(cd2.toString());
+                else System.out.println("null");
+            }
+        }
+
+        System.out.println("----------------------");
+
+        for (UUID uuid2 : cooldownsUUID.keySet()) {
+            for (Cooldown cd2 : cooldownsUUID.get(uuid2)) {
+                if(cd2 != null) System.out.println(cd2.toString());
+                else System.out.println("null");
+            }
+        }
+
+        System.out.println("---------vvvvvvvvvvv1vvvvvv-------------");
     }
 
 }

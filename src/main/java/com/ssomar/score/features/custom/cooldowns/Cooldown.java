@@ -81,6 +81,6 @@ public class Cooldown {
 
     @Override
     public String toString() {
-        return id + " >>>> " + entityUUID + " >>>> " + cooldown + " >>>> " + isInTick + " >>>> " + time;
+        return id + " >>>> " + entityUUID + " >>>> " + cooldown + " >>>> " + isInTick + " >>>> " + time+ " isNull ? " + isNull;
     }
 }

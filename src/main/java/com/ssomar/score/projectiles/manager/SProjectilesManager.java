@@ -16,7 +16,7 @@ public class SProjectilesManager extends NewSObjectManager<SProjectile> {
     private NamespacedKey key;
 
     public SProjectilesManager() {
-        super(SCore.plugin);
+        super(SCore.plugin, "projectiles");
 
         if (!SCore.is1v13Less()) key = new NamespacedKey(SCore.plugin, "SCORE-ID");
     }

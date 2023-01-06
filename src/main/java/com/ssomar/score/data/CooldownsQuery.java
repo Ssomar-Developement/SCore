@@ -125,6 +125,49 @@ public class CooldownsQuery {
         return list;
     }
 
+    public static List<Cooldown> getGlobalCooldowns(Connection conn) {
+        String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + " FROM " + TABLE_COOLDOWNS + " where " + COL_IS_GLOBAL+ "=true AND " + COL_LOADED + "=0";
+
+        List<Cooldown> list = new ArrayList<>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String id = rs.getString(COL_ID);
+                int cd = rs.getInt(COL_COOLDOWN);
+                boolean isInTick = rs.getBoolean(COL_IS_IN_TICK);
+                boolean isGlobal = rs.getBoolean(COL_IS_GLOBAL);
+                long time = rs.getLong(COL_TIME);
+
+                Cooldown cooldown = new Cooldown(id, null, cd, isInTick, time, isGlobal);
+
+                list.add(cooldown);
+            }
+        } catch (SQLException e) {
+            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return list;
+    }
+
     public static void deleteCooldownsOf(Connection conn, UUID uuid) {
 
         String sql = "DELETE FROM " + TABLE_COOLDOWNS + " where " + COL_UUID + "=?";
@@ -134,6 +177,28 @@ public class CooldownsQuery {
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, uuid.toString());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void deleteGlobalCooldowns(Connection conn) {
+
+        String sql = "DELETE FROM " + TABLE_COOLDOWNS + " where " + COL_IS_GLOBAL + "=true";
+
+        PreparedStatement pstmt = null;
+
+        try {
+            pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(SCore.NAME_2 + " " + e.getMessage());

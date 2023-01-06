@@ -86,6 +86,9 @@ public abstract class NewGUIManager<T extends GUI> {
             if(folderInfoOpt.isPresent()) {
                 interact.localizedName = folderInfoOpt.get();
             }
+            else if(item.getItemMeta().hasLocalizedName()){
+                interact.localizedName = item.getItemMeta().getLocalizedName();
+            }
             interact.gui = cache.get(interact.player);
 
             if (interact.coloredDeconvertName.equals(GUI.RESET)) {

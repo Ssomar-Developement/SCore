@@ -19,6 +19,7 @@ public class StringConverter {
         final String[] keys = new String[]{"& ", "&"};
         final String[] values = new String[]{"|<-_->|", "§"};
 
+
         String convert = StringUtils.replaceEach( s, keys, values );
         convert = convert.replaceAll("\\|<-_->\\|", "& ");
         if (SCore.is1v16Plus()) convert = translateHexCodes(convert);

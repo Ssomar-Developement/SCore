@@ -181,6 +181,7 @@ public class LoopManager {
 
                                 EventInfo eInfo = new EventInfo(e);
                                 eInfo.setPlayer(Optional.of(player));
+                                eInfo.setWorld(Optional.of(player.getWorld()));
                                 com.ssomar.executableevents.events.EventsManager.getInstance().activeOption(com.ssomar.executableevents.executableevents.activators.Option.LOOP, eInfo, listEE);
                             }
                         }

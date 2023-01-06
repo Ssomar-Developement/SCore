@@ -29,8 +29,10 @@ public class EntityCommandManager implements CommandManager {
         commands.add(new DamageResistance());
         commands.add(new DropItem());
         commands.add(new DropExecutableItem());
+        commands.add(new DropExecutableBlock());
         commands.add(new Heal());
         commands.add(new Jump());
+        commands.add(new DamageNoKnockback());
         commands.add(new Damage());
         commands.add(new SetBaby());
         commands.add(new SetAdult());

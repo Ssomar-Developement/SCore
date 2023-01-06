@@ -56,6 +56,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfIsNotInTheAir(this));
         conditions.add(new IfPlayerMustBeInHisTown(this));
         conditions.add(new IfPlayerMustBeOnHisClaim(this));
+        conditions.add(new IfPlayerMustBeOnHisClaimOrWilderness(this));
         conditions.add(new IfPlayerMustBeOnHisIsland(this));
         conditions.add(new IfPlayerMustBeOnHisPlot(this));
 

@@ -48,6 +48,7 @@ public class Damage extends EntityCommand {
                 receiver.damage(damage);
             } else {
                 int maximumNoDmg = receiver.getMaximumNoDamageTicks();
+                receiver.setNoDamageTicks(0);
                 receiver.setMaximumNoDamageTicks(0);
                 if (p != null) {
                     p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));

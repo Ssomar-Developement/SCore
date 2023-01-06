@@ -14,6 +14,7 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -65,9 +66,43 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         return errors;
     }
 
+    public boolean isValid(@NotNull Block block, Material material, Optional<String> statesStrOpt, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
+        if(blocks.getValue().isEmpty()) return true;
+
+        if((block != null && blocks.isValidCustomBlock(block))
+            || (material != null && blocks.isValidMaterial(material, statesStrOpt))){
+            return true;
+        }
+        else {
+            if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
+                ((Cancellable) event).setCancelled(true);
+            }
+            if (playerOpt.isPresent() && messageIfNotValid != null && messageIfNotValid.getValue().isPresent()) {
+                SendMessage.sendMessageNoPlch(playerOpt.get(), sp.replacePlaceholder(messageIfNotValid.getValue().get()));
+            }
+            return false;
+        }
+    }
+
     public boolean isValidMaterial(@NotNull Material material, Optional<String> statesStrOpt, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
         //SsomarDev.testMsg("isValidMaterial ?");
         if (!blocks.isValidMaterial(material, statesStrOpt) && !blocks.getValue().isEmpty()) {
+            //SsomarDev.testMsg("isValidMaterial NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
+                ((Cancellable) event).setCancelled(true);
+            }
+            if (playerOpt.isPresent() && messageIfNotValid != null && messageIfNotValid.getValue().isPresent()) {
+                SendMessage.sendMessageNoPlch(playerOpt.get(), sp.replacePlaceholder(messageIfNotValid.getValue().get()));
+            }
+            return false;
+        }
+        //SsomarDev.testMsg("isValidMaterial yesssssssssssssssssss");
+        return true;
+    }
+
+    public boolean isValidCustomBlock(@NotNull Block block, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
+        //SsomarDev.testMsg("isValidMaterial ?");
+        if (!blocks.isValidCustomBlock(block) && !blocks.getValue().isEmpty()) {
             //SsomarDev.testMsg("isValidMaterial NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
             if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
                 ((Cancellable) event).setCancelled(true);

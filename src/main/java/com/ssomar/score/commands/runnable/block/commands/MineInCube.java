@@ -86,7 +86,7 @@ public class MineInCube extends BlockCommand {
                                         if (!SCore.is1v12Less())
                                             statesStr = Optional.ofNullable(toBreak.getBlockData().getAsString(true));
                                         /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
-                                        if (!whiteList.isValidMaterial(toBreak.getType(), statesStr, Optional.empty(), null, new StringPlaceholder()))
+                                        if (!whiteList.isValid(toBreak, toBreak.getType(), statesStr, Optional.empty(), null, new StringPlaceholder()))
                                             continue;
                                     }
 

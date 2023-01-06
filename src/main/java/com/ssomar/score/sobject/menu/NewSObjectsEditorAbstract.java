@@ -38,6 +38,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     private NewSObjectManager manager;
     private NewSObjectLoader loader;
     private String deleteArg;
+    private String objectName;
 
     public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader) {
         super(title, 5 * 9);
@@ -49,6 +50,12 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         this.manager = manager;
         this.loader = loader;
         this.deleteArg = "delete";
+
+        objectName = sPlugin.getObjectName();
+        /* For plugins that have multiple object splugin.getOjectName can't work */
+        if(objectName == null) objectName = manager.getObjectName();
+        objectName = objectName.toLowerCase();
+
         this.load();
     }
 
@@ -114,9 +121,9 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                         createItem(itemS, 1, i, COLOR_OBJECT_ID + " &e&o" + id, false, false, descArray);
                     } else {
                         if (sPlugin.isLotOfWork())
-                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS " + sPlugin.getObjectName(), "&c&l➤ OR THE LIMIT OF " + sPlugin.getMaxSObjectsLimit() + " " + sPlugin.getObjectName() + " IS REACHED");
+                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS " + objectName, "&c&l➤ OR THE LIMIT OF " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " IS REACHED");
                         else
-                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS " + sPlugin.getObjectName());
+                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS " + objectName);
                     }
                 }
                 i++;
@@ -135,11 +142,11 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
         createItem(Material.ANVIL, 1, 38, "&ePath", false, false, "", "&7actually: &a" + path, "&c&oClick here to come back", "&8&oin previous folder");
 
-        createItem(GREEN, 1, 40, NEW + sPlugin.getObjectName(), false, false);
+        createItem(GREEN, 1, 40, NEW + objectName, false, false);
 
         if (sPlugin.isLotOfWork())
-            createItem(PURPLE, 1, 43, "&5&l✚ &dDefault Premium " + sPlugin.getObjectName(), false, false);
-        else createItem(PURPLE, 1, 43, "&5&l✚ &d" + sPlugin.getObjectName() + " from Custom packs", false, false);
+            createItem(PURPLE, 1, 43, "&5&l✚ &dDefault Premium " + objectName, false, false);
+        else createItem(PURPLE, 1, 43, "&5&l✚ &d" + objectName + " from Custom packs", false, false);
     }
 
     public void goNextPage() {
@@ -177,7 +184,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
     public void sendMessageCreate(Player p) {
         if (sPlugin.isLotOfWork() && manager.getLoadedObjects().size() >= sPlugin.getMaxSObjectsLimit()) {
-            p.sendMessage(StringConverter.coloredString("&4&l" + sPlugin.getNameDesign() + " &cREQUIRE PREMIUM: to add more than " + sPlugin.getMaxSObjectsLimit() + " " + sPlugin.getObjectName() + " you need the premium version"));
+            p.sendMessage(StringConverter.coloredString("&4&l" + sPlugin.getNameDesign() + " &cREQUIRE PREMIUM: to add more than " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " you need the premium version"));
         } else {
             p.closeInventory();
             p.chat("/" + sPlugin.getShortName().toLowerCase() + " create");
@@ -190,10 +197,10 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     }
 
     public void sendMessageDelete(String objectID, Player p) {
-        p.sendMessage(StringConverter.coloredString("&4[" + sPlugin.getNameDesign() + "] &cHey you want delete the " + sPlugin.getObjectName() + ": &6" + objectID));
+        p.sendMessage(StringConverter.coloredString("&4[" + sPlugin.getNameDesign() + "] &cHey you want delete the " + objectName + ": &6" + objectID));
         TextComponent delete = new TextComponent(StringConverter.coloredString("&4&l[&c&lCLICK HERE TO DELETE&4&l]"));
         delete.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + sPlugin.getShortName().toLowerCase() + " "+deleteArg+" " + objectID + " confirm"));
-        delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&4Click here to delete this " + sPlugin.getObjectName())).create()));
+        delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&4Click here to delete this " + objectName)).create()));
         p.spigot().sendMessage(delete);
         p.updateInventory();
     }

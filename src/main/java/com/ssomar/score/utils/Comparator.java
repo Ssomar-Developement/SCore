@@ -1,13 +1,17 @@
 package com.ssomar.score.utils;
 
+import java.util.List;
+
 public enum Comparator {
 
-    EQUALS("="),
     DIFFERENT("!="),
+    INFERIOR_OR_EQUALS("<="),
+    SUPERIOR_OR_EQUALS(">="),
     INFERIOR("<"),
     SUPERIOR(">"),
-    INFERIOR_OR_EQUALS("<="),
-    SUPERIOR_OR_EQUALS(">=");
+    EQUALS("="),
+    IS_CONTAINED_IN("(("),
+    IS_NOT_CONTAINED_IN("(/");
 
     private String symbol;
 
@@ -15,7 +19,7 @@ public enum Comparator {
         this.symbol = symbol;
     }
 
-    public <T> boolean verify(T a, T b) {
+    public <T,U> boolean verify(T a, U b) {
         //SsomarDev.testMsg(a+" / "+b+" > "+ a.equals(b));
         switch (this) {
             case EQUALS:
@@ -23,31 +27,55 @@ public enum Comparator {
             case DIFFERENT:
                 return (!a.equals(b));
             case INFERIOR:
-                if (a instanceof Double) {
+                if (a instanceof Double && b instanceof Double) {
                     Double pA = (Double) a;
                     Double pB = (Double) b;
                     return pA < pB;
                 }
                 break;
             case SUPERIOR:
-                if (a instanceof Double) {
+                if (a instanceof Double && b instanceof Double) {
                     Double pA = (Double) a;
                     Double pB = (Double) b;
                     return pA > pB;
                 }
                 break;
             case INFERIOR_OR_EQUALS:
-                if (a instanceof Double) {
+                if (a instanceof Double && b instanceof Double) {
                     Double pA = (Double) a;
                     Double pB = (Double) b;
                     return pA <= pB;
                 }
                 break;
             case SUPERIOR_OR_EQUALS:
-                if (a instanceof Double) {
+                if (a instanceof Double && b instanceof Double) {
                     Double pA = (Double) a;
                     Double pB = (Double) b;
                     return pA >= pB;
+                }
+                break;
+            case IS_CONTAINED_IN:
+                    if (a instanceof String && b instanceof String) {
+                        String pA = (String) a;
+                        String pB = (String) b;
+                        return pB.contains(pA);
+                    }
+                    else if (a instanceof String && b instanceof List) {
+                        String pA = (String) a;
+                        List pB = (List) b;
+                        return pB.contains(pA);
+                    }
+                    break;
+            case IS_NOT_CONTAINED_IN:
+                if (a instanceof String && b instanceof String) {
+                    String pA = (String) a;
+                    String pB = (String) b;
+                    return (!pB.contains(pA));
+                }
+                else if (a instanceof String && b instanceof List) {
+                    String pA = (String) a;
+                    List pB = (List) b;
+                    return (!pB.contains(pA));
                 }
                 break;
             default:
@@ -70,6 +98,10 @@ public enum Comparator {
                 return INFERIOR_OR_EQUALS;
             case INFERIOR_OR_EQUALS:
                 return SUPERIOR_OR_EQUALS;
+            case SUPERIOR_OR_EQUALS:
+                return IS_CONTAINED_IN;
+            case IS_CONTAINED_IN:
+                return IS_NOT_CONTAINED_IN;
             default:
                 return EQUALS;
         }

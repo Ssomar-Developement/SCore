@@ -66,8 +66,9 @@ public class RunConsoleCommand {
                 if(worldOptional.isPresent()) world = worldOptional.get();
                 if (world != null) {
                     List<Entity> entities = world.getEntities();
-                    if (entities.size() > 0) {
-                        command = command.replace("in <<" + worldName + ">>", "at " + entities.get(0).getUniqueId());
+                    if(entities.size() > 0) {
+                        Entity entity = entities.get(0);
+                        command = command.replace("in <<" + worldName + ">>", "at " + entity.getUniqueId());
                     }
                 }
             }

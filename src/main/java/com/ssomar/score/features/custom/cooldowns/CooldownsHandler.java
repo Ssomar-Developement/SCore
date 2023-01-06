@@ -16,6 +16,25 @@ import java.util.List;
 
 public class CooldownsHandler implements Listener {
 
+    public static void loadCooldowns() {
+        Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+            List<Cooldown> cooldowns = CooldownsQuery.getGlobalCooldowns(Database.getInstance().connect());
+            Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    CooldownsManager.getInstance().addCooldowns(cooldowns);
+
+                    Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            CooldownsQuery.deleteGlobalCooldowns(Database.getInstance().connect());
+                        }
+                    });
+                }
+            });
+        });
+    }
+
     public static void closeServerSaveAll() {
         List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
 
@@ -53,8 +72,11 @@ public class CooldownsHandler implements Listener {
         List<Cooldown> cooldowns = new ArrayList<>(CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId()));
         if (cooldowns.isEmpty()) return;
 
+        if(!SCore.plugin.isEnabled()) return;
+
         Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
             CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
+            if(!SCore.plugin.isEnabled()) return;
             // go back to the tick loop
             Bukkit.getScheduler().runTask(SCore.plugin, () -> {
                 // call the callback with the result

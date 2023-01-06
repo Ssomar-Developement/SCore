@@ -121,6 +121,13 @@ public class NewDefaultObjectsEditor extends GUI {
     public void giveSObject(String objectID, Player p) {
         objectID = (String) loader.getRandomIdsDefaultObjects().get(objectID);
         Optional<NewSObject> optional = manager.getLoadedObjectWithID(objectID);
+
+        String  objectName = sPlugin.getObjectName();
+        /* For plugins that have multiple object splugin.getOjectName can't work */
+        if(objectName == null) objectName = manager.getObjectName();
+        objectName = objectName.toLowerCase();
+
+
         if (optional.isPresent()) {
             NewSObject sObject = optional.get();
             p.getInventory().addItem(sObject.buildItem(1, Optional.of(p)));
@@ -132,7 +139,7 @@ public class NewDefaultObjectsEditor extends GUI {
                 if (SCore.is1v16Plus())
                     sb.append("&#ecfb42&l&oE&#e2fb45&l&ox&#d7fb48&l&oe&#cdfb4b&l&oc&#c2fc4d&l&ou&#b8fc50&l&ot&#adfc53&l&oa&#a3fc56&l&ob&#99fc59&l&ol&#8efc5c&l&oe&#84fc5f&l&oI&#79fd61&l&ot&#6ffd64&l&oe&#64fd67&l&om&#5afd6a&l&os ");
                 else sb.append("&6&l&o").append(sPlugin.getNameDesign()).append(" ");
-                sb.append("&7This ").append(sPlugin.getObjectName()).append(" is from the ");
+                sb.append("&7This ").append(objectName).append(" is from the ");
                 if (SCore.is1v16Plus())
                     sb.append("&#6cdbf4&l&oP&#66dbe4&l&or&#60dad5&l&oe&#5bdac5&l&om&#55d9b5&l&oi&#4fd9a6&l&ou&#49d896&l&om &#44d886&l&oV&#3ed776&l&oe&#38d767&l&or&#32d657&l&os&#2dd647&l&oi&#27d538&l&oo&#21d528&l&on");
                 else sb.append("&a&l&oPremium Version");
@@ -165,7 +172,7 @@ public class NewDefaultObjectsEditor extends GUI {
                 if (SCore.is1v16Plus())
                     sb.append("&#ecfb42&l&oE&#e2fb45&l&ox&#d7fb48&l&oe&#cdfb4b&l&oc&#c2fc4d&l&ou&#b8fc50&l&ot&#adfc53&l&oa&#a3fc56&l&ob&#99fc59&l&ol&#8efc5c&l&oe&#84fc5f&l&oI&#79fd61&l&ot&#6ffd64&l&oe&#64fd67&l&om&#5afd6a&l&os ");
                 else sb.append("&6&l&o").append(sPlugin.getNameDesign()).append(" ");
-                sb.append("&7This ").append(sPlugin.getObjectName()).append(" is from a ");
+                sb.append("&7This ").append(objectName).append(" is from a ");
                 if (SCore.is1v16Plus())
                     sb.append("&#6cdbf4&l&oC&#66dbe4&l&ou&#60dad5&l&os&#5bdac5&l&ot&#55d9b5&l&oo&#4fd9a6&l&om &#49d896&l&oP&#44d886&l&oa&#3ed776&l&oc&#38d767&l&ok");
                 else sb.append("&a&l&oCustom Pack");

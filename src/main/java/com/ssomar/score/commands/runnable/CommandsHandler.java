@@ -13,6 +13,7 @@ import com.ssomar.score.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,8 @@ public class CommandsHandler implements Listener {
     /* for "morph item" timing between delete item and regive item (2 ticks)  player */
     private Map<Player, Long> stopPickup;
 
+    private Map<Player, List<Material>> stopPickupMaterial;
+
     /* Commands delayed saved that wait to be runned  PLAYER_UUID|PLAYERRUNCOMMAND -> Useful to avoid to call a query at each join*/
     private Map<UUID, List<PlayerRunCommand>> delayedCommandsSaved;
 
@@ -56,6 +59,7 @@ public class CommandsHandler implements Listener {
         delayedCommandsByEntityUuid = new ArrayList<>();
         delayedCommandsByBlockUuid = new ArrayList<>();
         stopPickup = new HashMap<>();
+        stopPickupMaterial = new HashMap<>();
         delayedCommandsSaved = new HashMap<>();
     }
 
@@ -165,11 +169,14 @@ public class CommandsHandler implements Listener {
             this.delayedCommandsByBlockUuid.add((BlockRunCommand) command);
         }
     }
-
     public void removeDelayedCommand(UUID uuid, @Nullable UUID receiverUUID) {
+        removeDelayedCommand(uuid, receiverUUID, true);
+    }
+
+    public void removeDelayedCommand(UUID uuid, @Nullable UUID receiverUUID, boolean canelTask) {
         if (delayedCommandsByRcUuid.containsKey(uuid)) {
             BukkitTask task;
-            if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null) task.cancel();
+            if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null && canelTask) task.cancel();
             delayedCommandsByRcUuid.remove(uuid);
         }
 
@@ -180,7 +187,7 @@ public class CommandsHandler implements Listener {
             if (rC.getUuid().equals(uuid)) {
                 toDelete = rC;
                 BukkitTask task;
-                if ((task = rC.getTask()) != null) task.cancel();
+                if ((task = rC.getTask()) != null && canelTask) task.cancel();
             }
         }
         if (toDelete != null) delayedCommandsByEntityUuid.remove(toDelete);
@@ -192,7 +199,7 @@ public class CommandsHandler implements Listener {
             if (rC.getUuid().equals(uuid)) {
                 toDelete = rC;
                 BukkitTask task;
-                if ((task = rC.getTask()) != null) task.cancel();
+                if ((task = rC.getTask()) != null && canelTask) task.cancel();
             }
         }
         if (toDelete != null) delayedCommandsByBlockUuid.remove(toDelete);
@@ -208,7 +215,7 @@ public class CommandsHandler implements Listener {
                     if (rC.getUuid().equals(uuid)) {
                         toDelete = rC;
                         BukkitTask task;
-                        if ((task = rC.getTask()) != null) task.cancel();
+                        if ((task = rC.getTask()) != null && canelTask) task.cancel();
                     }
                 }
                 if (toDelete != null) runCommands.remove(toDelete);
@@ -264,6 +271,21 @@ public class CommandsHandler implements Listener {
         }, delay);
     }
 
+    public void addStopPickup(Player p, Integer delay, Material material) {
+        if(stopPickupMaterial.containsKey(p)){
+            stopPickupMaterial.get(p).add(material);
+        }else{
+            List<Material> list = new ArrayList<>();
+            list.add(material);
+            stopPickupMaterial.put(p, list);
+        }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.plugin, () -> {
+            if (stopPickupMaterial.containsKey(p)) {
+                stopPickupMaterial.get(p).remove(material);
+            }
+        }, delay);
+    }
+
     //FAIRE AVEC LHEURE DE FIN CEST MIEUX
 
     public boolean hasStopPickup(@NotNull Player p) {
@@ -274,6 +296,10 @@ public class CommandsHandler implements Listener {
             stopPickup.remove(p);
         }
         return stop;
+    }
+
+    public boolean hasStopPickup(@NotNull Player p, Material material) {
+        return stopPickupMaterial.containsKey(p) && stopPickupMaterial.get(p).contains(material);
     }
 
     public Map<Player, Long> getStopPickup() {

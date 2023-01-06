@@ -33,6 +33,7 @@ public enum RestrictionEnum {
     CANCEL_LOOM("cancel-loom"),
 
     CANCEL_MERCHANT("cancel-merchant"),
+    CANCEL_HORSE("cancel-horse"),
 
     CANCEL_ITEM_BURN("cancel-item-burn"),
     CANCEL_ITEM_DELETE_BY_CACTUS("cancel-item-delete-by-cactus"),

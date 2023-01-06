@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
@@ -17,10 +16,11 @@ public class SetAI extends EntityCommand {
 
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+        //SsomarDev.testMsg("entity: "+entity.getType(), true);
         if (!entity.isDead() && entity instanceof LivingEntity) {
             LivingEntity receiver = (LivingEntity) entity;
             boolean ai = Boolean.valueOf(args.get(0));
-            SsomarDev.testMsg("SET AI " + ai, false);
+           // SsomarDev.testMsg("SET AI " + ai, true);
             receiver.setAI(ai);
         }
     }

@@ -10,7 +10,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -73,7 +73,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
         if (level.getValue().isPresent() && level.getValue().get() > 0) {
             if (player.getLevel() < level.getValue().get()) {
                 if (errorMessage.getValue().isPresent()) {
-                    player.sendMessage(StringConverter.coloredString(errorMessage.getValue().get()));
+                    SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);

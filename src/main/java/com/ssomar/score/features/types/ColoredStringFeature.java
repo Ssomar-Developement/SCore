@@ -43,6 +43,12 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         return new ColoredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
     }
 
+    public static ColoredStringFeature buildNull(String value){
+        ColoredStringFeature c = new ColoredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
+        c.setValue(Optional.of(value));
+        return c;
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();

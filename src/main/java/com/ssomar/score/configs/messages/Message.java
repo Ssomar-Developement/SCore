@@ -14,7 +14,8 @@ public enum Message implements MessageInterface {
     NEW_BALANCE_POSITIVE("newBalancePositiveMsg"),
     NO_PLAYER_HIT("noPlayerHit"),
     NO_ENTITY_HIT("noEntityHit"),
-    DAMAGE_COMMAND_KILL("damageCommandKill");
+    DAMAGE_COMMAND_KILL("damageCommandKill"),
+    VARIABLE_VALUE_SET("variableValueSet");
 
     private String name;
 

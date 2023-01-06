@@ -46,6 +46,8 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Target doesn't have the requested effect");
         messageToHide.add("Showing new title");
         messageToHide.add("Showing new subtitle");
+        messageToHide.add("Showing new actionbar");
+
     }
 
 

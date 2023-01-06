@@ -19,7 +19,9 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.ProtocolibAPI;
+import com.ssomar.score.usedapi.SCoreExpansion;
 import com.ssomar.score.utils.Utils;
+import com.ssomar.score.variables.loader.VariablesLoader;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -214,9 +216,18 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Projectiles instance part */
         SProjectileLoader.getInstance().load();
 
+        /* Variables instance part */
+        VariablesLoader.getInstance().load();
+
         CommandsHandler.getInstance().onEnable();
 
         UsagePerDayManager.getInstance();
+
+        CooldownsHandler.loadCooldowns();
+
+        if(SCore.hasPlaceholderAPI){
+            new SCoreExpansion(this).register();
+        }
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }
@@ -413,6 +424,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Projectiles instance part */
         SProjectileLoader.getInstance().reload();
 
+        /* Variables instance part */
+        VariablesLoader.getInstance().reload();
+
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
@@ -430,7 +444,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public String getObjectName() {
-        return "projectiles";
+        return null;
     }
 
     @Override
@@ -453,7 +467,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public void initVersion() {
-        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Version of the server &6"+Bukkit.getServer().getVersion()+" &7!");
         is1v8 = Bukkit.getServer().getVersion().contains("1.8");
         is1v9 = Bukkit.getServer().getVersion().contains("1.9");
         is1v10 = Bukkit.getServer().getVersion().contains("1.10");
@@ -468,5 +481,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v18 = Bukkit.getServer().getVersion().contains("1.18");
         is1v19 = Bukkit.getServer().getVersion().contains("1.19");
         is1v19v1 = Bukkit.getServer().getVersion().contains("1.19.1");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Version of the server &6"+Bukkit.getServer().getVersion()+" &7!");
     }
 }

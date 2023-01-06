@@ -11,3 +11,4 @@ newBalancePositiveMsg: '&6&l[SCore] &eTransaktion: &a%amount%$ &eNeuer Kontostan
 noPlayerHit: '&cKein Spieler wurde getroffen'
 noEntityHit: '&cKein Entity wurde getroffen'
 damageCommandKill: '&8%target% &7wurde durch einen Schadensbefehl getötet'
+variableValueSet: "&aValue set !"

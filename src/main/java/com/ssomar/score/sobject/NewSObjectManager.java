@@ -18,12 +18,22 @@ public abstract class NewSObjectManager<T extends NewSObject> {
     private List<T> loadedObjects;
     private List<T> defaultObjects;
     private List<T> allObjects;
+    private String objectName;
 
     public NewSObjectManager(SPlugin sPlugin) {
         this.sPlugin = sPlugin;
         allObjects = new ArrayList<>();
         defaultObjects = new ArrayList<>();
         loadedObjects = new ArrayList<>();
+        objectName = "OBJECT";
+    }
+
+    public NewSObjectManager(SPlugin sPlugin, String objectName) {
+        this.sPlugin = sPlugin;
+        allObjects = new ArrayList<>();
+        defaultObjects = new ArrayList<>();
+        loadedObjects = new ArrayList<>();
+        this.objectName = objectName;
     }
 
     public void addLoadedObject(T object) {

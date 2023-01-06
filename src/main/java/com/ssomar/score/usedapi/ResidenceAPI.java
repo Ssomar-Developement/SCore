@@ -11,10 +11,10 @@ import java.util.UUID;
 
 public class ResidenceAPI {
 
-    public static boolean playerIsInHisClaim(@NotNull Player p, Location location) {
+    public static boolean playerIsInHisClaim(@NotNull Player p, Location location, boolean acceptWilderness) {
 
         ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
-        if (res == null) return false;
+        if (res == null) return acceptWilderness;
 
         return res.getOwnerUUID().equals(p.getUniqueId()) || res.isTrusted(p);
 
