@@ -9,8 +9,7 @@ SCore is a library for Minecraft plugins, particularly Ssomar's plugins. SCore i
 * Spigot / Maven knowledges
 
 #### Compiling from source
-```mvn clean package install
-```
+```mvn clean package install```
 
 ## Contributing
 #### Pull Requests
