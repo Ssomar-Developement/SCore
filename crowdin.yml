@@ -1,3 +1,3 @@
 files:
-  - source: /src/main/resources/languages/*.JSON
-    translation: /src/main/resources/languages/%two_letters_code%/%original_file_name%
+  - source: /src/main/resources/locale/*.yml
+    translation: /src/main/resources/locale/Locale_%two_letters_code%.yml
