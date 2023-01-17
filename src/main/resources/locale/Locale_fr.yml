@@ -1,13 +1,13 @@
-errorMoneyMsg: "&4&l[SCore] &cTu n'as pas: &6%amount%$ &csur ton compte ! &6(&eTu as actuellement: &a%balance%$&6)"
-newBalanceMsg: "&6&l[SCore] &eTransaction: &c-%amount%$ &eTa nouvelle balance: &a%balance%$"
-newBalancePositiveMsg: "&6&l[SCore] &eTransaction: &a%amount%$ &eTa nouvelle balance: &a%balance%$"
-setActionbarOn: "&aTa barre d'action est  désormais &a&lON"
-haveActionbarOn: "&aTa barre d'action est déjà &a&lON"
-setActionbarOfft: "&cTa barre d'action est  désormais &4&lOFF"
-haveActionbarOff: "&cTa barre d'action est déjà &4&lOFF"
-actionbarMessage: "&a&lTemps restant pour &e&l%item% &a&l: &e&l%time%"
-actionbarEnd: "&c&lDESACTIVATION DE &e&l%item%"
+errorMoneyMsg: "&4&l[SCore] &cYou dont have: &6%amount%$ &con your account ! &6(&eActually: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &eTransaction: &c-%amount%$ &eNew balance: &a%balance%$"
+newBalancePositiveMsg: "&6&l[SCore] &eTransaction: &a%amount%$ &eNew balance: &a%balance%$"
+setActionbarOn: '&aBekapcsoltad az action bar opciót.'
+haveActionbarOn: '&aMár bekapcsoltad az action bar opciót.'
+setActionbarOff: '&cKikapcsoltad az action bar opciót.'
+haveActionbarOff: '&cMár kikapcsoltad az action bar opciót.'
+actionbarMessage: '&a&lHátralévő idő: &e&l%item% &a&l: &e&l%time%'
+actionbarEnd: '&c&lKikapcsolás: &e&l%item%'
 damageCommandKill: "&8%target% &7is dead by a damage command"
-noPlayerHit: "&cAucun joueur n'a été touché"
-noEntityHit: "&cAucune entité n'a été touché"
+noPlayerHit: "&cNo player has been hit"
+noEntityHit: "&cNo entity has been hit"
 variableValueSet: "&aValue set !"
