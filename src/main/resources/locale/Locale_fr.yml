@@ -1,0 +1,13 @@
+actionbarMessage: '&a&lVerbleibende Zeit für &e&l%item% &a&l: &e&l%time%'
+actionbarEnd: '&c&lDEAKTIVIERUNG VON &e&l%item%'
+setActionbarOn: '&aDu hast die Aktionsleiste &a&lAN &agestellt'
+setActionbarOff: '&cDu hast die Aktionsleiste &4&lAUS &cgestellt'
+haveActionbarOn: '&aDie Aktionsleiste ist bereits &a&lAN'
+haveActionbarOff: '&cDie Aktionsleiste ist bereits &4&lAUS'
+errorMoneyMsg: '&4&l[SCore] &cDu hast keine &6%amount%$ &cauf deinem Konto! &6(&eDein Konto: &a%balance%$&6)'
+newBalanceMsg: '&6&l[SCore] &eTransaktion: &c-%amount%$ &eNeuer Kontostand: &a%balance%$'
+newBalancePositiveMsg: '&6&l[SCore] &eTransaktion: &a%amount%$ &eNeuer Kontostand: &a%balance%$'
+noPlayerHit: '&cKein Spieler wurde getroffen'
+noEntityHit: '&cKein Entity wurde getroffen'
+damageCommandKill: '&8%target% &7wurde durch einen Schadensbefehl getötet'
+variableValueSet: "&aValue set !"
