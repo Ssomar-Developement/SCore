@@ -1,7 +1,63 @@
+editor:
+  reset:
+    name: "&4&l✘ &cReset"
+    description: "&c&oClick here to reset"
+  save:
+    name: "&a&l✔ &aSave"
+    description: "&a&oClick here to save"
+  back:
+    name: "&4&l⬅ &cBack"
+  exit:
+    name: "&4&l✘ &cExit"
+  new:
+    name: "&a&l➕ &aNew"
 features:
   activators:
     name: "Activateurs"
     description: "&7&oLes activateurs / déclencheurs"
+    editorTitle: "&lActivators feature Editor"
   activator:
     name: "Activateur"
     description: "&7&oUn activateur"
+  aroundBlock:
+    name: "AroundBlock"
+    description: ""
+    editorTitle: "&lAroundBlock feature Editor"
+    features:
+      southValue:
+        name: "South Value"
+        description: "&7&oThe south value"
+      northValue:
+        name: "North Value"
+        description: "&7&oThe north value"
+      eastValue:
+        name: "East Value"
+        description: "&7&oThe east value"
+      westValue:
+        name: "West Value"
+        description: "&7&oThe west value"
+      aboveValue:
+        name: "Above Value"
+        description: "&7&oThe above value"
+      underValue:
+        name: "Under Value"
+        description: "&7&oThe under value"
+      errorMessage:
+        name: "Error Message"
+        description: "&7&oThe error message"
+      blockMustBeExecutableBlock:
+        name: "Block must be executable block"
+        description: "&7&oThe block must be executable block"
+      blockTypeMustBe:
+        name: "Block type must be"
+        description: "&7&oThe block type must be"
+      blockTypeMustNotBe:
+        name: "Block type must not be"
+        description: "&7&oThe block type must not be"
+  aroundBlocks:
+    name: "Around blocks cdt"
+    description: "&7&oThe around blocks cdt"
+    editorTitle: "&lAroundBlockGroup feature Editor"
+    parentDescription:
+      blockAroundAdded: "&7&oBlock around cdt(s) added: &e"
+
