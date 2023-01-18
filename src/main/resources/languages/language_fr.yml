@@ -1,0 +1,7 @@
+features:
+  activators:
+    name: "Activateurs"
+    description: "&7&oLes activateurs / déclencheurs"
+  activator:
+    name: "Activateur"
+    description: "&7&oUn activateur"
