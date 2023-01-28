@@ -439,7 +439,8 @@
             <groupId>com.github.TheSilentPro</groupId>
             <artifactId>HeadDB</artifactId>
             <version>4.2.4</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/HeadDB-4.2.4.jar</systemPath>
         </dependency>
 
         <dependency>
