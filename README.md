@@ -1,6 +1,9 @@
 # SCore
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7dfab7ca1a8e478e91098bd3a5f9d217)](https://app.codacy.com/gh/Ssomar-Developement/SCore?utm_source=github.com&utm_medium=referral&utm_content=Ssomar-Developement/SCore&utm_campaign=Badge_Grade_Settings)
+[![](https://jitpack.io/v/Ssomar-Developement/SCore.svg)](https://jitpack.io/#Ssomar-Developement/SCore)
+
+
 
 SCore is a library for Minecraft plugins, particularly Ssomar's plugins. SCore includes many custom stuff, like custom  player/block/entity commands, custom conditions, has a variables / particles system, and efficient Class to create custom in-game editor.
 
