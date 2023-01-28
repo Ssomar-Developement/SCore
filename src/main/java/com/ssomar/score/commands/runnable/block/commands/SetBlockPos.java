@@ -36,6 +36,8 @@ public class SetBlockPos extends BlockCommand {
             UUID uuid = null;
             if (p != null) uuid = p.getUniqueId();
 
+            block = block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z));
+
             if (Material.matchMaterial(mat) != null) {
                 SafePlace.placeBlockWithEvent(block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z)), Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
             } else {
@@ -44,7 +46,7 @@ public class SetBlockPos extends BlockCommand {
 
                 if (entities.size() > 0) {
                     if (!bypassProtection && uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
-                    RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + x + " " + y + " " + z + " " + args.get(3).toLowerCase() + " replace", aInfo.isSilenceOutput());
+                    RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(3) + " replace", aInfo.isSilenceOutput());
                 }
             }
         } catch (Exception e) {

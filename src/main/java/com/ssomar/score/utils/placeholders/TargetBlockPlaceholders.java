@@ -69,7 +69,7 @@ public class TargetBlockPlaceholders extends PlaceholdersInterface implements Se
             toReplace = toReplace.replaceAll("%target_block_live%", blockLive);
             toReplace = toReplace.replaceAll("%target_block_live_lower%", blockLive.toLowerCase());
             toReplace = toReplace.replaceAll("%target_block_world%", blockWorldName);
-            toReplace = replaceCalculPlaceholder(toReplace, "%targte_block_x%", blockX + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%target_block_x%", blockX + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%target_block_y%", blockY + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%target_block_z%", blockZ + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%target_block_x_int%", blockX + "", true);

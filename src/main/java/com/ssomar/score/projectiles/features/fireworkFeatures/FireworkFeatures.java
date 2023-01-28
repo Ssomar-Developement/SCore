@@ -60,8 +60,8 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
                 builder.withColor(colors.getValue());
                 meta.addEffect(builder.build());
                 meta.setPower(1);
+                firework.setFireworkMeta(meta);
             }
-            firework.setFireworkMeta(meta);
         }
     }
 

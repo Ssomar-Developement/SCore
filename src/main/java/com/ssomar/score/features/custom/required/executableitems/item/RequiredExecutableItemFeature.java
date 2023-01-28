@@ -176,7 +176,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
             if (it != null) {
                 ExecutableItemObject eiObject = new ExecutableItemObject(it);
                 if (eiObject.isValid()) {
-                    if (eiObject.getConfig().getId().equals(executableItem.getValue().get().getId())) {
+                    if (eiObject.getConfig().getId().equalsIgnoreCase(executableItem.getValue().get().getId())) {
                         if (getUsageCondition().getValue().isPresent()) {
                             eiObject.loadExecutableItemInfos();
                             if (!StringCalculation.calculation(getUsageCondition().getValue().get(), eiObject.getUsage())) {
@@ -203,7 +203,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
 
         for (ItemStack it : inventory.getContents()) {
             Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(it);
-            if (eiOpt.isPresent() && eiOpt.get().getId().equals(executableItem.getValue().get().getId())) {
+            if (eiOpt.isPresent() && eiOpt.get().getId().equalsIgnoreCase(executableItem.getValue().get().getId())) {
                 if (needed >= it.getAmount()) {
                     needed -= it.getAmount();
                     int slot = inventory.first(it);

@@ -21,7 +21,7 @@ public class SendMessage extends PlayerCommand {
                 message.append(s).append(" ");
             }
             message = new StringBuilder(message.substring(0, message.length() - 1));
-            sm.sendMessage(receiver, message.toString());
+            sm.sendMessage(receiver, message.toString(), false);
         }
     }
 

@@ -18,6 +18,7 @@ import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTType;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -376,6 +377,11 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
     @Override
     public List<String> getCurrentValues() {
         return value;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

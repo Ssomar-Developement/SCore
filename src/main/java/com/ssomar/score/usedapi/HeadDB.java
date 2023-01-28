@@ -23,6 +23,7 @@ public class HeadDB {
         } catch (Exception ignored) {
         } catch (Error ignored) {
         }
+
         try {
             tsp.headdb.implementation.Head head = (tsp.headdb.implementation.Head) getByID.invoke(null, id);
             return head.getMenuItem();

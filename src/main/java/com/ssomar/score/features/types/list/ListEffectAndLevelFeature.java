@@ -11,6 +11,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -144,9 +145,16 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
     }
 
     @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
+    }
+
+    @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
         for (PotionEffectType effect : PotionEffectType.values()) {
+            // In 1.12 and less some effects are null
+            if (effect == null) continue;
             map.put(effect.getName() + "", new Suggestion(effect.getName() + ":1", "&6[" + "&e" + effect.getName() + "&6]", "&7Add &e" + effect.getName()));
         }
         return new ArrayList<>(map.values());

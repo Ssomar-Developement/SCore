@@ -8,6 +8,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -69,6 +70,11 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
     @Override
     public List<String> getCurrentValues() {
         return getValue();
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

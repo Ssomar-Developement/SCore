@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.HigherFormSObject;
 import com.ssomar.score.sobject.sactivator.EventInfo;
@@ -20,7 +22,7 @@ public abstract class NewSActivator<X extends FeatureInterface<X, X>, Y extends 
     private final String id;
 
     public NewSActivator(FeatureParentInterface parent, String id) {
-        super(parent, "activator", "Activator", new String[]{"&7&oAn activator"}, Material.BEACON, false);
+        super(parent, "activator", TM.g(Text.FEATURES_ACTIVATOR_NAME), TM.gA(Text.FEATURES_ACTIVATOR_DESCRIPTION), Material.BEACON, false);
         this.id = id;
     }
 

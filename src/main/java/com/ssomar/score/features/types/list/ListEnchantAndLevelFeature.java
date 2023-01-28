@@ -11,6 +11,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -141,6 +142,11 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
             result.add(entry.getKey().getName() + ":" + entry.getValue());
         }
         return result;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

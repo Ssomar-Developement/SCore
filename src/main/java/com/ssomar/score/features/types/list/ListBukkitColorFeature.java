@@ -9,6 +9,7 @@ import com.ssomar.score.utils.CustomColor;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -60,6 +61,11 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
             colors.add(CustomColor.getName(c));
         }
         return colors;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return new ArrayList<>();
     }
 
     @Override

@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -169,13 +170,31 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             lines.add(s);
         }
         lines = sp.replacePlaceholders(lines);
+        final List<String> finalLines = lines;
         if (!SCore.hasCMI) {
             if(SCore.hasDecentHolograms){
                 Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
+
+                // 26/01/2023 Double creation needed required to avoid hologram not updating when we use SETEXECUTABLEBLOCK on an EB
+                // One creation sync and one with delay
+                // -> When we use SETEXECUTABLEBLOCK on an EB the title of the EB replaced stay and the title of the EB set is not placed
+                // Idk why it doesnt update without, it's something in DecentHologram
                 if(DHAPI.getHologram(loc.toString()) != null) remove(loc);
-                eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString().trim(),loc, lines);
-                hologram.updateAll();
-                return hologram.getLocation();
+                DHAPI.createHologram(loc.toString().trim(),loc, lines);
+                BukkitRunnable runnable = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if(DHAPI.getHologram(loc.toString()) != null) {
+                            remove(loc);
+                            eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString().trim(), loc, finalLines);
+                            hologram.updateAll();
+                        }
+                        // if null it means that the hologram has been removed during the tick and we don't want to recreate/update it
+                    }
+                };
+                runnable.runTaskLater(SCore.plugin, 1);
+
+                return loc;
             }
             else if (SCore.hasHolographicDisplays) {
                 Hologram holo = HolographicDisplaysAPI.get(SCore.plugin).createHologram(location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
@@ -207,10 +226,14 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      * location is the location of the Holo
      **/
     public void remove(@NotNull Location location) {
+        //SsomarDev.testMsg("Hologram in remove >> "+location, true);
         if (!SCore.hasCMI) {
             if(SCore.hasDecentHolograms){
-                if(DHAPI.getHologram(location.toString()) != null) {
-                    DHAPI.removeHologram(location.toString());
+                //SsomarDev.testMsg("Hologram in remove  DecentHolograms, find the placeholder ?>> "+(DHAPI.getHologram(location.toString()) != null), true);
+                eu.decentsoftware.holograms.api.holograms.Hologram hologram;
+                if((hologram = DHAPI.getHologram(location.toString())) != null) {
+                    hologram.destroy();
+                    //SsomarDev.testMsg("Hologram removed  DecentHolograms", true);
                 }
             }
             else if (SCore.hasHolographicDisplays) {

@@ -32,7 +32,7 @@ public class MessageMain {
 
     public void load() {
         messages = new HashMap<>();
-        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language setup on &6"+ GeneralConfig.getInstance().getLocale());
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language for in-game messages setup on &6"+ GeneralConfig.getInstance().getLocale());
         fileName = "/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml";
     }
 

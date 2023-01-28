@@ -39,7 +39,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String enchantStr = config.getString(this.getName(), "NULL");
-        if(!enchantStr.contains("SPACE_") && !enchantStr.contains("TOKEN-ENCHANT_")) enchantStr = enchantStr.toUpperCase();
+        if(!enchantStr.contains("SPACE_") && !enchantStr.contains("TOKEN-ENCHANT_") && !enchantStr.contains("BETTER-ENCHANTMENTS_") && !enchantStr.contains("ENCHANTS-SQUARED_")) enchantStr = enchantStr.toUpperCase();
         Optional<Enchantment> optional = getEnchantment(enchantStr);
         if (!optional.isPresent()) {
             errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: Look in-game, it's the same name");
@@ -276,6 +276,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             if (name.contains("enchantssquared:")) {
                 name = "ENCHANTS-SQUARED_"+enchantment.getName();
             }
+            if (name.contains("better-enchantments:")) {
+                name = "BETTER-ENCHANTMENTS_"+enchantment.getName();
+            }
             return name;
         } else {
             return enchantment.getName();
@@ -293,6 +296,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             }
             else if(enchantmentName.contains("ENCHANTS-SQUARED_")){
                 enchantment = Enchantment.getByName(enchantmentName.replace("ENCHANTS-SQUARED_", ""));
+            }
+            else if(enchantmentName.contains("BETTER-ENCHANTMENTS_")){
+                enchantment = Enchantment.getByName(enchantmentName.replace("BETTER-ENCHANTMENTS_", ""));
             }
             else if (!SCore.is1v12Less()) {
                 enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));

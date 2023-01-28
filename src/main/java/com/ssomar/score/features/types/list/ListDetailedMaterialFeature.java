@@ -16,6 +16,7 @@ import com.ssomar.score.utils.MaterialWithGroups;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -298,6 +299,11 @@ public class ListDetailedMaterialFeature extends FeatureAbstract<List<String>, L
     @Override
     public List<String> getCurrentValues() {
         return value;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return new ArrayList<>();
     }
 
     @Override

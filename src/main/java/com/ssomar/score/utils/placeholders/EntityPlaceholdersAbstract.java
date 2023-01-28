@@ -135,6 +135,7 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     public String replacePlaceholder(String s) {
         String toReplace = s;
         if (entityUUID != null || entity != null) {
+            //SsomarDev.testMsg("toReplace: "+toReplace+ " entity "+ entity.getType()+ "particle "+particle, true);
             toReplace = toReplace.replaceAll("%" + particle + "%", entityType);
             toReplace = toReplace.replaceAll("%" + particle + "_lower_case%", entityType.toLowerCase());
             toReplace = toReplace.replaceAll("%" + particle + "_name%", entityName);
@@ -145,6 +146,7 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
                 Item item = (Item) entity;
                 toReplace = toReplace.replaceAll("%" + particle + "_item%", item.getItemStack().getType().toString());
             }
+            //SsomarDev.testMsg("toReplace2: "+toReplace, true);
 
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", NTools.reduceDouble(x, 2) + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", NTools.reduceDouble(y, 2) + "", false);

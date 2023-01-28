@@ -21,15 +21,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
 public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<PlaceholderConditionGroupFeature, PlaceholderConditionGroupFeature, PlaceholderConditionGroupFeatureEditor, PlaceholderConditionGroupFeatureEditorManager> implements FeaturesGroup<PlaceholderConditionFeature> {
 
-    private Map<String, PlaceholderConditionFeature> attributes;
+    private LinkedHashMap<String, PlaceholderConditionFeature> attributes;
 
     public PlaceholderConditionGroupFeature(FeatureParentInterface parent) {
         super(parent, "placeholdersConditions", "Placeholders Conditions", new String[]{"&7&oThe placeholders conditions"}, Material.ANVIL, false);
@@ -38,7 +37,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public void reset() {
-        this.attributes = new HashMap<>();
+        this.attributes = new LinkedHashMap<>();
     }
 
     public boolean verify(Player player, Player target, Event event) {
@@ -124,7 +123,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     @Override
     public PlaceholderConditionGroupFeature clone(FeatureParentInterface newParent) {
         PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent);
-        HashMap<String, PlaceholderConditionFeature> newAttributes = new HashMap<>();
+        LinkedHashMap<String, PlaceholderConditionFeature> newAttributes = new LinkedHashMap<>();
         for (String x : attributes.keySet()) {
             newAttributes.put(x, attributes.get(x).clone(eF));
         }

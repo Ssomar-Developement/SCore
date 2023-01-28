@@ -69,13 +69,14 @@ public class Around extends PlayerCommand {
                             String s = tab[m];
 
                             if (m == 0) {
-                                //SsomarDev.testMsg("receive : s = " + s, DEBUG);
+                                //SsomarDev.testMsg("receive : s = " + s, true);
                                 s = sp.replacePlaceholder(s);
                                 s = s.replaceAll("%::", "%");
                                 s = s.replaceAll("::%", "%");
+                                //SsomarDev.testMsg("receive 2 : s = " + s, true);
                                 List<PlaceholderConditionFeature> conditions = extractConditions(s);
                                 s = getFirstCommandWithoutConditions(s);
-                                //SsomarDev.testMsg("s: " + s, true);
+                                //SsomarDev.testMsg("s: " + s+" conditions size: "+conditions.size(), true);
                                 if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
                                     for (PlaceholderConditionFeature condition : conditions) {
                                         //SsomarDev.testMsg("condition: " + condition, true);

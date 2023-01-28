@@ -30,6 +30,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -129,27 +130,67 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 }
                 break;
             case "variables":
-                if(args.length >= 1) {
+                if (args.length >= 1) {
                     if (args[0].equalsIgnoreCase("info")) {
                         if (args.length >= 2) {
                             Optional<Variable> var = VariablesManager.getInstance().getVariable(args[1]);
                             if (var.isPresent()) {
-                                sender.sendMessage(var.get().getValuesStr());
+                                SendMessage.sendMessageFinal(sender, var.get().getValuesStr(), false);
                             } else sender.sendMessage("Variable not found");
                         }
-                    }
-                    else if (args[0].equalsIgnoreCase("list")){
+                    } else if (args[0].equalsIgnoreCase("list")) {
                         sender.sendMessage(VariablesManager.getInstance().getVariableIdsListStr());
-                    }
+                    } else if (args[0].equalsIgnoreCase("set")
+                            || args[0].equalsIgnoreCase("modification")
+                            || args[0].equalsIgnoreCase("list-add")
+                            || args[0].equalsIgnoreCase("list-remove")
+                            || args[0].equalsIgnoreCase("clear")) {
+                        int argIndex = 0;
 
-                    else if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("modification")) {
-                        String modifType = args[0];
-                        String forType = args[1];
-                        String varName = args[2];
-                        String value = args[3];
-                        Optional<Player> optPlayer = Optional.empty();
-                        if (args.length >= 5 && forType.equalsIgnoreCase("player")) {
-                            optPlayer = Optional.ofNullable(Bukkit.getPlayer(args[4]));
+                        String modifType = args[argIndex];
+                        argIndex++;
+                        String forType = args[argIndex];
+                        argIndex++;
+                        String varName = args[argIndex];
+                        argIndex++;
+                        String value = "";
+                        // NO NEED VALUE FOR REMOVE
+                        if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
+                            value = args[3];
+                            argIndex++;
+                        }
+                        Optional<OfflinePlayer> optPlayer = Optional.empty();
+                        if (args.length >= argIndex + 1 && forType.equalsIgnoreCase("player")) {
+                            try {
+                                optPlayer = Optional.ofNullable(Bukkit.getOfflinePlayer(args[argIndex]));
+                            }catch (Exception ignored){
+                                ignored.printStackTrace();
+                            }
+                        }
+                        Optional<Integer> indexOpt = Optional.empty();
+                        if (args.length >= argIndex + 1 && (modifType.equalsIgnoreCase("list-add") || modifType.equalsIgnoreCase("list-remove"))) {
+                            for (int i = argIndex; i < args.length; i++) {
+                                if (args[i].contains("index:")) {
+                                    try {
+                                        indexOpt = Optional.of(Integer.parseInt(args[i].replace("index:", "")));
+                                    } catch (NumberFormatException e) {
+                                        sender.sendMessage("Invalid index");
+                                    }
+                                }
+                            }
+                        }
+
+                        Optional<String> valueOpt = Optional.empty();
+                        if (args.length >= argIndex + 1 && (modifType.equalsIgnoreCase("list-remove"))) {
+                            for (int i = argIndex; i < args.length; i++) {
+                                if (args[i].contains("value:")) {
+                                    try {
+                                        indexOpt = Optional.of(Integer.parseInt(args[i].replace("value:", "")));
+                                    } catch (NumberFormatException e) {
+                                        sender.sendMessage("Invalid index");
+                                    }
+                                }
+                            }
                         }
 
                         Optional<Variable> var = VariablesManager.getInstance().getVariable(varName);
@@ -157,17 +198,34 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                             if (modifType.equalsIgnoreCase("set")) {
                                 Optional<String> err = var.get().setValue(optPlayer, value);
                                 if (err.isPresent()) sender.sendMessage(err.get());
-                                else SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                else
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
                             } else if (modifType.equalsIgnoreCase("modification")) {
                                 Optional<String> err = var.get().modifValue(optPlayer, value);
                                 if (err.isPresent()) sender.sendMessage(err.get());
-                                else SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                else
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                            } else if (modifType.equalsIgnoreCase("list-add")) {
+                                Optional<String> err = var.get().addValue(optPlayer, value, indexOpt);
+                                if (err.isPresent()) sender.sendMessage(err.get());
+                                else
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                            } else if (modifType.equalsIgnoreCase("list-remove")) {
+                                Optional<String> err = var.get().removeValue(optPlayer, indexOpt, valueOpt);
+                                if (err.isPresent()) sender.sendMessage(err.get());
+                                else
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                            }
+                            else if (modifType.equalsIgnoreCase("clear")) {
+                                Optional<String> err = var.get().clearValue(optPlayer);
+                                if (err.isPresent()) sender.sendMessage(err.get());
+                                else
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
                             }
                         } else sender.sendMessage("Variable not found");
 
                     }
-                }
-                else {
+                } else {
                     if (player != null) {
                         NewSObjectsManagerEditor.getInstance().startEditing(player, new VariablesEditor());
                     }
@@ -408,6 +466,44 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("variables-create");
                 arguments.add("variables-delete");
 
+                List<String> argumentsPerm = new ArrayList<String>();
+                for (String str : arguments) {
+                    if (sender.hasPermission("score.cmd." + command) || sender.hasPermission("score.cmds") || sender.hasPermission("score.*")) {
+                        argumentsPerm.add(str);
+                    }
+                }
+
+                Collections.sort(argumentsPerm);
+                return argumentsPerm;
+            } else if (args.length >= 2) {
+
+                switch (args[0]) {
+                    case "variables":
+                        if (args.length == 2) {
+                            arguments.add("info");
+                            arguments.add("list");
+                            arguments.add("set");
+                            arguments.add("modification");
+                            arguments.add("list-add");
+                            arguments.add("list-remove");
+                            arguments.add("clear");
+                        } else if (args.length == 3 && args[1].equalsIgnoreCase("info")) {
+                            arguments.addAll(VariablesManager.getInstance().getVariableIdsList());
+                        } else if (args.length == 3 && (args[1].equalsIgnoreCase("set")
+                                || args[1].equalsIgnoreCase("modification")
+                                || args[1].equalsIgnoreCase("clear")
+                                || args[1].equalsIgnoreCase("list-add")
+                                || args[1].equalsIgnoreCase("list-remove"))) {
+                            arguments.add("global");
+                            arguments.add("player");
+                        } else if (args.length == 4 && (args[1].equalsIgnoreCase("set")
+                                || args[1].equalsIgnoreCase("modification")
+                                || args[1].equalsIgnoreCase("clear")
+                                || args[1].equalsIgnoreCase("list-add")
+                                || args[1].equalsIgnoreCase("list-remove"))) {
+                            arguments.addAll(VariablesManager.getInstance().getVariableIdsList());
+                        }
+                }
                 Collections.sort(arguments);
                 return arguments;
             }

@@ -8,6 +8,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -63,6 +64,11 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
             currentValues.add(mat.name());
         }
         return currentValues;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

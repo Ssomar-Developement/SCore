@@ -52,7 +52,7 @@ public class ShapesManager {
         whitelistedShapes.add("eye");
         whitelistedShapes.add("illuminati");
         whitelistedShapes.add("polygon");
-        whitelistedShapes.add("neopaganPentagram");
+        //ROBLEM DOUBLE PARTICLE whitelistedShapes.add("neopaganPentagram");
         // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("atom");
         whitelistedShapes.add("meguminExplosion");
 

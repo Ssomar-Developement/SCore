@@ -2,6 +2,8 @@ package com.ssomar.score.features.custom.aroundblock.group;
 
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeature;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 
 public class AroundBlockGroupFeatureEditor extends FeatureEditorInterface<AroundBlockGroupFeature> {
@@ -11,7 +13,7 @@ public class AroundBlockGroupFeatureEditor extends FeatureEditorInterface<Around
     private int page;
 
     public AroundBlockGroupFeatureEditor(AroundBlockGroupFeature enchantsGroupFeature) {
-        super("&lAroundBlockGroup feature Editor", 5 * 9);
+        super(TM.g(Text.FEATURES_AROUNDBLOCKS_EDITORTITLE), 5 * 9);
         this.attributesGroupFeature = enchantsGroupFeature;
         this.page = 1;
         this.perPage = 27;
@@ -44,7 +46,7 @@ public class AroundBlockGroupFeatureEditor extends FeatureEditorInterface<Around
         createItem(RED, 1, 36, GUI.BACK, false, false);
 
         // Reset menu
-        createItem(ORANGE, 1, 37, GUI.RESET, false, false, "", "&c&oClick here to reset");
+        createItem(ORANGE, 1, 37, TM.g(Text.EDITOR_RESET_NAME), false, false, "", TM.g(Text.EDITOR_RESET_DESCRIPTION));
 
         // new attribute
         createItem(GREEN, 1, 44, GUI.NEW, false, false, "", "&a&oClick here to add new around block cdt");

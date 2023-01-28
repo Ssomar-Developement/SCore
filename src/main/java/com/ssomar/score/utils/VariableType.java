@@ -8,7 +8,8 @@ import java.io.Serializable;
 public enum VariableType implements Serializable {
 
     STRING("STRING", "STR", "TEXT", "TXT"),
-    NUMBER("NUMBER", "DOUBLE");
+    NUMBER("NUMBER", "DOUBLE"),
+    LIST("LIST", "ARRAY");
 
     @Getter
     @Setter

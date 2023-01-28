@@ -37,6 +37,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     requestWriting.put(i.player, feature.getEditorName());
                     currentWriting.put(i.player, featureRequireSubTextEditorInEditor.getCurrentValues());
                     suggestions.put(i.player, featureRequireSubTextEditorInEditor.getSuggestions());
+                    moreInfo = featureRequireSubTextEditorInEditor.getMoreInfo();
                     enableTextEditor(i.player);
                     i.player.closeInventory();
                     ((FeatureRequireSubTextEditorInEditor) feature).sendBeforeTextEditor(i.player, this);

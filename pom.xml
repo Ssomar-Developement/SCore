@@ -39,6 +39,14 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>com/ssomar/score/configs/languages</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/languages/</directory>
+                <includes>
+                    <include>language_*.yml</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>com/ssomar/score/configs/projectiles</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/projectiles/</directory>
@@ -104,6 +112,11 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>phoenix</id>
+            <url>https://nexus.phoenixdvpt.fr/repository/maven-public/</url>
+        </repository>
+
         <repository>
             <id>griefdefender</id>
             <url>https://repo.glaremasters.me/repository/bloodshot/</url>
@@ -193,11 +206,25 @@
         </dependency>
 
         <dependency>
+            <groupId>net.Indyuce</groupId>
+            <artifactId>MMOCore-API</artifactId>
+            <version>1.9.5-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+         <!-- <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.21</version>
+        </dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>
@@ -377,7 +404,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-50069d6350-1</version>
+            <version>main-8301fa540e-1</version>
             <scope>compile</scope>
         </dependency>
 

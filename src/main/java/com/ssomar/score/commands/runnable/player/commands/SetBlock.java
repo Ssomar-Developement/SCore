@@ -41,7 +41,7 @@ public class SetBlock extends PlayerCommand {
                 //SsomarDev.testMsg("block: "+block.getType().toString(), true);
             } else {
                 if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
-                RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0).toLowerCase(), aInfo.isSilenceOutput());
+                RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0), aInfo.isSilenceOutput());
             }
         }
     }

@@ -15,11 +15,12 @@ import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
+import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.ProtocolibAPI;
-import com.ssomar.score.usedapi.SCoreExpansion;
+import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.utils.Utils;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
@@ -65,6 +66,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasOraxen = false;
     public static boolean hasShopGUIPlus = false;
     public static boolean hasRoseLoot = false;
+    public static boolean hasMMOCore = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
     private static boolean is1v10 = false;
@@ -195,6 +197,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         GeneralConfig.getInstance();
 
+        TM.getInstance().load();
+
+        TM.getInstance().loadTexts();
+
         MessageMain.getInstance().load();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
@@ -226,7 +232,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         CooldownsHandler.loadCooldowns();
 
         if(SCore.hasPlaceholderAPI){
-            new SCoreExpansion(this).register();
+            new PlaceholderAPISCoreExpansion(this).register();
         }
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
@@ -406,6 +412,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
             Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7RoseLoot hooked !");
             hasRoseLoot = true;
         }
+
+        if (Bukkit.getPluginManager().getPlugin("MMOCore") != null) {
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7MMOCore hooked !");
+            hasMMOCore = true;
+        }
     }
 
     @Override
@@ -426,6 +437,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Variables instance part */
         VariablesLoader.getInstance().reload();
+
+        TM.getInstance().loadTexts();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
 

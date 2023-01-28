@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.utils.FixedMaterial;
@@ -17,7 +18,8 @@ public class GravityFeature extends BooleanFeature implements SProjectileFeature
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
-        e.setGravity(getValue());
+        // doesnt work in 1.8
+        if(!SCore.is1v11Less()) e.setGravity(getValue());
     }
 
     @Override

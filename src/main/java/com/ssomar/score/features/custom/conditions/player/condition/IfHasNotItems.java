@@ -18,11 +18,15 @@ public class IfHasNotItems extends PlayerConditionFeature<HasItemGroupFeature, I
 
     @Override
     public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && !getCondition().verifHasNot(player.getInventory().getContents(), player.getInventory().getHeldItemSlot())) {
+        boolean verif = (!getCondition().verifHasNot(player.getInventory().getContents(), player.getInventory().getHeldItemSlot()));
+        //SsomarDev.testMsg("ifHasNotItems >>"+hasCondition()+" >> "+verif, true);
+        if (hasCondition() && verif) {
+            //SsomarDev.testMsg("ifHasNotItems >> PASSE FALSE ", true);
             sendErrorMsg(playerOpt, messageSender);
             cancelEvent(event);
             return false;
         }
+        //SsomarDev.testMsg("ifHasNotItems >>>>>>>>>>>>>>  "+verif, true);
         return true;
     }
 

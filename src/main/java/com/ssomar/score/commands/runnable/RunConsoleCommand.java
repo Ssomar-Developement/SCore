@@ -27,6 +27,7 @@ public class RunConsoleCommand {
             fM.incCurrentlyInRun();
         }
 
+        // By default Bukkit.dispatchCommand() is not sync , so one tick in addition is not a problem, its more to remind me that console commands are not sync
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -70,6 +71,7 @@ public class RunConsoleCommand {
                         Entity entity = entities.get(0);
                         command = command.replace("in <<" + worldName + ">>", "at " + entity.getUniqueId());
                     }
+                    else return "";
                 }
             }
         }

@@ -26,23 +26,34 @@ public class SendMessage implements Serializable {
 
     public static void sendMessageNoPlch(CommandSender cs, String s) {
         String prepareMsg = s;
-        sendMessageFinal(cs, prepareMsg);
+        sendMessageFinal(cs, prepareMsg, true);
     }
 
     public void sendMessage(Player p, String s) {
-        this.sendMessage((CommandSender) p, s);
+        this.sendMessage((CommandSender) p, s, true);
+    }
+
+    public void sendMessage(Player p, String s, boolean checkUncoloredEmpty) {
+        this.sendMessage((CommandSender) p, s, checkUncoloredEmpty);
     }
 
     public void sendMessage(CommandSender cs, String s) {
         String prepareMsg = s;
         prepareMsg = sp.replacePlaceholder(prepareMsg);
-        sendMessageFinal(cs, prepareMsg);
+        sendMessageFinal(cs, prepareMsg, true);
     }
 
-    public static void sendMessageFinal(CommandSender cs, String prepareMsg) {
-        if (!(prepareMsg.isEmpty() || StringConverter.decoloredString(prepareMsg).isEmpty())){
-            if(prepareMsg.contains("&") || prepareMsg.contains("§")) {
+    public void sendMessage(CommandSender cs, String s, boolean checkUncoloredEmpty) {
+        String prepareMsg = s;
+        prepareMsg = sp.replacePlaceholder(prepareMsg);
+        sendMessageFinal(cs, prepareMsg, checkUncoloredEmpty);
+    }
+
+    public static void sendMessageFinal(CommandSender cs, String prepareMsg, boolean checkUncoloredEmpty) {
+        if (!(prepareMsg.isEmpty() || (checkUncoloredEmpty && StringConverter.decoloredString(prepareMsg).isEmpty()))){
+            if(prepareMsg.contains("&") || prepareMsg.contains("§") || prepareMsg.contains("#")) {
                 prepareMsg = StringConverter.coloredString(prepareMsg);
+                //SsomarDev.testMsg("send : s = " + prepareMsg, true);
                 cs.sendMessage(prepareMsg);
             }
             else {

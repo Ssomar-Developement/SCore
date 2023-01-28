@@ -24,9 +24,11 @@ public class CooldownsManager {
         if (cd.getCooldown() == 0) return;
 
         String id = cd.getId();
+        //SsomarDev.testMsg("ADDDD "+cd.getId(), true);
         if (cooldowns.containsKey(id)) {
             List<Cooldown> cds = cooldowns.get(id);
             cds.add(cd);
+            cooldowns.put(id, cds);
         } else {
             List<Cooldown> cds = new ArrayList<>();
             cds.add(cd);
@@ -65,20 +67,24 @@ public class CooldownsManager {
             List<Cooldown> cds = cooldowns.get(id);
             if (cds.size() != 0) {
                 Cooldown cdMax = null;
-                for (int i = 0; i < cds.size(); i++) {
-                    Cooldown cd = cds.get(i);
+                int cptRemoved = 0;
+                int size = cds.size();
+                for (int i = 0; i < size; i++) {
+                    Cooldown cd = cds.get(i-cptRemoved);
                     if (cd == null) continue;
                     if (onlyGlobal && !cd.isGlobal()) continue;
                     if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)) continue;
 
                     double timeLeft = cd.getTimeLeft();
 
+                    //SsomarDev.testMsg(cd.toString(), true);
                     if (maxTimeLeft < timeLeft && timeLeft > 0) {
                         maxTimeLeft = timeLeft;
                         cdMax = cd;
                     } else {
                         cd.setNull(true);
-                        cds.remove(i);
+                        cds.remove(i-cptRemoved);
+                        cptRemoved++;
                         try {
                             cooldownsUUID.get(uuid).remove(cd);
                         }catch (Exception ignored){}

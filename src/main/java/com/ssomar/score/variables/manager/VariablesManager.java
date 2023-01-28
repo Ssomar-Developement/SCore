@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.variables.Variable;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,14 +66,105 @@ public class VariablesManager extends NewSObjectManager<Variable> {
         return list;
     }
 
-    public String getVariableIdsListStr(){
+    public String getVariableIdsListStr() {
         StringBuilder sb = new StringBuilder();
         boolean pass = false;
         for (Variable item : this.getLoadedObjects()) {
             sb.append(item.getId()).append(" | ");
             pass = true;
         }
-        if(pass) sb.delete(sb.length()-3, sb.length());
+        if (pass) sb.delete(sb.length() - 3, sb.length());
         return sb.toString();
+    }
+
+    public String onRequestPlaceholder(OfflinePlayer player, String params) {
+        //System.out.println("params: "+params);
+
+        boolean variables = false;
+        boolean variablesContains = false;
+        boolean variablesSize = false;
+
+        String check = params;
+        if (params.startsWith("variables-contains_")) {
+            variablesContains = true;
+            check = params.substring(19);
+        } else if (params.startsWith("variables-size_")) {
+            variablesSize = true;
+            check = params.substring(15);
+        } else if (params.startsWith("variables_")) {
+            variables = true;
+            check = params.substring(10);
+        }
+
+        if (!variables && !variablesContains && !variablesSize) return null;
+
+        String variableID = null;
+
+        for (String portentialID : getVariableIdsList()) {
+            if (check.startsWith(portentialID)) {
+                variableID = portentialID;
+                break;
+            }
+        }
+
+        if (variableID == null) return "Variable not found";
+
+        check = check.substring(variableID.length());
+
+        Optional<Variable> var = VariablesManager.getInstance().getVariable(variableID);
+
+        if (!var.isPresent()) return "Variable not found";
+
+        // score_variables-contains_<variable-name>_<value>
+        if (variablesContains) {
+            if (check.startsWith("_")) check = check.substring(1);
+            String value = check;
+            return var.get().containsValue(Optional.ofNullable(player.getPlayer()), value) + "";
+        } else if (variablesSize) {
+
+            Optional<Integer> indexOpt = Optional.empty();
+            if (check.startsWith("_")) {
+                check = check.substring(1);
+                if (!check.isEmpty()) {
+                    try {
+                        indexOpt = Optional.of(Integer.parseInt(check));
+                    } catch (Exception ignored) {}
+                }
+            }
+
+            return var.get().sizeValue(Optional.ofNullable(player.getPlayer()), indexOpt) + "";
+        }
+        // score_variables_<variable-name>[_<index>][_int]
+        else if (variables) {
+
+            boolean castInt = false;
+            if (check.endsWith("_int")) {
+                castInt = true;
+                check = check.substring(0, check.length() - 4);
+            }
+
+            Optional<Integer> indexOpt = Optional.empty();
+            if (check.startsWith("_")) {
+                check = check.substring(1);
+                if (!check.isEmpty()) {
+                    try {
+                        indexOpt = Optional.of(Integer.parseInt(check));
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+
+            String value = var.get().getValue(Optional.ofNullable(player.getPlayer()), indexOpt);
+            if (castInt) {
+                try {
+                    return Integer.parseInt(value) + "";
+                } catch (NumberFormatException e) {
+                    return "Variable can't be converted to int";
+                }
+            } else return value;
+
+        }
+
+        return null; // Placeholder is unknown
     }
 }

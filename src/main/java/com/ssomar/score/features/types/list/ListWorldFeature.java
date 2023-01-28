@@ -10,6 +10,7 @@ import com.ssomar.score.usedapi.MultiverseAPI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -61,6 +62,11 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
     @Override
     public List<String> getCurrentValues() {
         return getValue();
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

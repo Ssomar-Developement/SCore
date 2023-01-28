@@ -10,6 +10,8 @@ import com.ssomar.score.features.custom.materialwithgroupsandtags.group.Material
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.SendMessage;
@@ -50,27 +52,27 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
     private String id;
 
     public AroundBlockFeature(FeatureParentInterface parent, String id) {
-        super(parent, "AroundBlock", "AroundBlock", new String[]{}, Material.STONE, false);
+        super(parent, "AroundBlock", TM.g(Text.FEATURES_AROUNDBLOCK_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_DESCRIPTION), Material.STONE, false);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.southValue = new IntegerFeature(this, "southValue", Optional.of(0), "South Value", new String[]{"&7&oThe south value"}, GUI.CLOCK, false);
-        this.northValue = new IntegerFeature(this, "northValue", Optional.of(0), "North Value", new String[]{"&7&oThe north value"}, GUI.CLOCK, false);
-        this.westValue = new IntegerFeature(this, "westValue", Optional.of(0), "West Value", new String[]{"&7&oThe west value"}, GUI.CLOCK, false);
-        this.eastValue = new IntegerFeature(this, "eastValue", Optional.of(0), "East Value", new String[]{"&7&oThe east value"}, GUI.CLOCK, false);
-        this.aboveValue = new IntegerFeature(this, "aboveValue", Optional.of(0), "Above Value", new String[]{"&7&oThe above value"}, GUI.CLOCK, false);
-        this.underValue = new IntegerFeature(this, "underValue", Optional.of(0), "Under Value", new String[]{"&7&oThe under value"}, GUI.CLOCK, false);
+        this.southValue = new IntegerFeature(this, "southValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.northValue = new IntegerFeature(this, "northValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_NAME) , TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.westValue = new IntegerFeature(this, "westValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.eastValue = new IntegerFeature(this, "eastValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.aboveValue = new IntegerFeature(this, "aboveValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.underValue = new IntegerFeature(this, "underValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_DESCRIPTION), GUI.CLOCK, false);
 
-        this.errorMessage = new ColoredStringFeature(this, "errorMsg", Optional.of("&c&oA block is not placed correctly !"), "Error Message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false, false);
+        this.errorMessage = new ColoredStringFeature(this, "errorMsg", Optional.of("&c&oA block is not placed correctly !"), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_DESCRIPTION), GUI.WRITABLE_BOOK, false, false);
 
-        this.blockMustBeExecutableBlock = new ListUncoloredStringFeature(this, "blockMustBeExecutableBlock", new ArrayList(), "Block Must Be Executable Block", new String[]{"&7&oThe block must be executable block"}, GUI.WRITABLE_BOOK, false, false, Optional.empty());
+        this.blockMustBeExecutableBlock = new ListUncoloredStringFeature(this, "blockMustBeExecutableBlock", new ArrayList(), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKMUSTBEEXECUTABLEBLOCK_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKMUSTBEEXECUTABLEBLOCK_DESCRIPTION), GUI.WRITABLE_BOOK, false, false, Optional.empty());
 
-        this.blockTypeMustBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustBe", "Block Type Must Be", new String[]{"&7&oThe block type must be"}, true, false, true, false);
+        this.blockTypeMustBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustBe", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_DESCRIPTION), true, false, true, false);
 
-        this.blockTypeMustNotBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustNotBe", "Block Type Must Not Be", new String[]{"&7&oThe block type must not be"}, true, false, true, false);
+        this.blockTypeMustNotBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustNotBe", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTNOTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTNOTBE_DESCRIPTION), true, false, true, false);
     }
 
     @Override

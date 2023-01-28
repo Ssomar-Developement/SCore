@@ -8,6 +8,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
@@ -64,6 +65,11 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
             currentValues.add(biome.name());
         }
         return currentValues;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

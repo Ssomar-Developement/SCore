@@ -227,6 +227,9 @@ public class SafeBreak {
         if (SCore.hasResidence)
             if (!ResidenceAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
 
+        if(SCore.hasTowny)
+            if(!TownyToolAPI.playerCanBreakBlock(playerUUID, block.getLocation())) return false;
+
         return true;
     }
 

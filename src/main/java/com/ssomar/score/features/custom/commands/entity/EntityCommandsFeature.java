@@ -120,6 +120,14 @@ public class EntityCommandsFeature extends CommandsAbstractFeature<List<String>,
     }
 
     @Override
+    public List<TextComponent> getMoreInfo() {
+        TextComponent component = new TextComponent(StringConverter.coloredString("&7&oClick here for the utility commands (&e&oDELAY, FOR, LOOP, RANDOM, etc.&7&o)"));
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://docs.ssomar.com/tools-for-all-plugins/custom-commands/utility-commands"));
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&7&oClick here for the utility commands (&e&oDELAY, FOR, LOOP, RANDOM, etc.&7&o)")).create()));
+        return Collections.singletonList(component);
+    }
+
+    @Override
     public String getTips() {
         return "&c&oJust type your command if it's a console command";
     }

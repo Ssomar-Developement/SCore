@@ -39,6 +39,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     private NewSObjectLoader loader;
     private String deleteArg;
     private String objectName;
+    private boolean noObject;
 
     public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader) {
         super(title, 5 * 9);
@@ -55,6 +56,29 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         /* For plugins that have multiple object splugin.getOjectName can't work */
         if(objectName == null) objectName = manager.getObjectName();
         objectName = objectName.toLowerCase();
+
+        this.noObject = false;
+
+        this.load();
+    }
+
+    public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader, boolean noObject) {
+        super(title, 5 * 9);
+        this.sPlugin = sPlugin;
+        this.title = title;
+        index = 1;
+        this.defaultPath = path;
+        this.path = path;
+        this.manager = manager;
+        this.loader = loader;
+        this.deleteArg = "delete";
+
+        objectName = sPlugin.getObjectName();
+        /* For plugins that have multiple object splugin.getOjectName can't work */
+        if(objectName == null) objectName = manager.getObjectName();
+        objectName = objectName.toLowerCase();
+
+        this.noObject = noObject;
 
         this.load();
     }
@@ -104,7 +128,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
                         List<String> desc = new ArrayList<>();
                         desc.add("");
-                        desc.add("&2(shift + right click to give to yourself)");
+                        if(!noObject) desc.add("&2(shift + right click to give to yourself)");
                         desc.add("&4(shift + left click to delete)");
                         desc.add("&7(click to edit)");
                         desc.add("&a&l➤ WORK FINE");
@@ -206,6 +230,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     }
 
     public void giveSObject(String objectID, Player p) {
+        if(noObject) return;
         Optional<NewSObject> optional = manager.getLoadedObjectWithID(objectID);
         if (optional.isPresent()) {
             NewSObject sObject = optional.get();

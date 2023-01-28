@@ -40,7 +40,7 @@ public class SetBlock extends BlockCommand {
             if (entities.size() > 0) {
                 SsomarDev.testMsg("entities size PASSE2: "+entities.size(), DEBUG);
                 if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
-                String command = "execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0).toLowerCase() + " replace";
+                String command = "execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(0) + " replace";
                 SsomarDev.testMsg("RUN: "+ command, DEBUG);
                 RunConsoleCommand.runConsoleCommand(command, aInfo.isSilenceOutput());
             }
