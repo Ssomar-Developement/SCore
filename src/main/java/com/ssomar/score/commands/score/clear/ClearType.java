@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.clear;
+package com.ssomar.score.commands.score.clear;
 
 public enum ClearType {
     ALL,

@@ -40,7 +40,7 @@ public class BlockCommandsFeature extends CommandsAbstractFeature<List<String>, 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        value = BlockCommandManager.getInstance().getBlockCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
+        value = BlockCommandManager.getInstance().getCommandsVerified(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
     }
 

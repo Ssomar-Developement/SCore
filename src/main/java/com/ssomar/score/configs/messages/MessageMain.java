@@ -3,7 +3,7 @@ package com.ssomar.score.configs.messages;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.FilterManager;
+import com.ssomar.score.commands.score.FilterManager;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.Utils;

@@ -1,4 +1,4 @@
-package com.ssomar.score.commands;
+package com.ssomar.score.commands.score;
 
 
 import org.apache.logging.log4j.Level;

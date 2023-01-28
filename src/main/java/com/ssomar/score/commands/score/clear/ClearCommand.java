@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.clear;
+package com.ssomar.score.commands.score.clear;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;

@@ -1,11 +1,16 @@
 package com.ssomar.score.usedapi;
 
+import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomFurniture;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,11 +25,11 @@ public class ItemsAdderAPI {
             //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
             if (customBlock != null) {
                 //SsomarDev.testMsg("ITEM ADDER REMOVED", true);
-                if(drop){
-                   List<ItemStack> loots = customBlock.getLoot(item, false);
-                   for(ItemStack loot : loots){
-                       block.getWorld().dropItemNaturally(block.getLocation(), loot);
-                   }
+                if (drop) {
+                    List<ItemStack> loots = customBlock.getLoot(item, false);
+                    for (ItemStack loot : loots) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), loot);
+                    }
                 }
                 customBlock.playBreakSound();
                 customBlock.playBreakEffect();
@@ -78,6 +83,25 @@ public class ItemsAdderAPI {
     }
 
     public static boolean isCustomBlock(Block block) {
-       return getCustomBlockID(block).isPresent();
+        return getCustomBlockID(block).isPresent();
     }
-}
+
+    public static boolean placeItemAdder(Location location, String id) {
+        try {
+            CustomBlock customBlock = CustomBlock.getInstance(id);
+            if (customBlock != null) {
+                //SsomarDev.testMsg("placeItemsAdder Block: " + id, DEBUG);
+                customBlock.place(location);
+                return true;
+            }
+        } catch (Exception e) {
+            try {
+                //SsomarDev.testMsg("placeItemsAdder is Furniture " + id, DEBUG);
+                CustomFurniture.spawnPreciseNonSolid(id, location);
+                return true;
+            } catch (Exception e1) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }

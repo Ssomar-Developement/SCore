@@ -101,10 +101,11 @@ public abstract class RunCommand implements Serializable {
         }
 
 
-        SCommand command = manager.getCommand(finalCommand);
-        if (command != null) {
+        Optional<SCommand> commandOpt = manager.getCommand(finalCommand);
+        if (commandOpt.isPresent()) {
+            SCommand command = commandOpt.get();
             //SsomarDev.testMsg("Command: valid: "+finalCommand, true);
-            List<String> args = manager.getArgs(finalCommand);
+            List<String> args = manager.getArgs(command, finalCommand);
 
             Optional<String> error = command.verify(args, true);
             if (!error.isPresent()) {

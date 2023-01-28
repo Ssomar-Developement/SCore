@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PlayerSCommand {
 
-    void run(Player p, Player receiver, List<String> args, ActionInfo aInfo);
+    void run(Player launcher, Player receiver, List<String> args, ActionInfo aInfo);
 }

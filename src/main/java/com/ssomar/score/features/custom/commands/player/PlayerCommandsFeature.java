@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.commands.player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommandManager;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
@@ -40,7 +41,7 @@ public class PlayerCommandsFeature extends CommandsAbstractFeature<List<String>,
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        value = PlayerCommandManager.getInstance().getCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
+        value = PlayerCommandManager.getInstance().getCommandsVerified(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
     }
 

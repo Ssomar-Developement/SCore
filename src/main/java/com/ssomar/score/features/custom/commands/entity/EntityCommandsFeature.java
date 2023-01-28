@@ -40,7 +40,7 @@ public class EntityCommandsFeature extends CommandsAbstractFeature<List<String>,
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        value = EntityCommandManager.getInstance().getEntityCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
+        value = EntityCommandManager.getInstance().getCommandsVerified(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
     }
 

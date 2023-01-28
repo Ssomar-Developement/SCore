@@ -4,7 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.plotsquared.core.PlotAPI;
 import com.ssomar.score.actionbar.ActionbarHandler;
-import com.ssomar.score.commands.CommandsClass;
+import com.ssomar.score.commands.score.CommandsClass;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.Message;

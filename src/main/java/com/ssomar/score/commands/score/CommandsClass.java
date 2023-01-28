@@ -1,4 +1,4 @@
-package com.ssomar.score.commands;
+package com.ssomar.score.commands.score;
 
 import com.ssomar.executableblocks.executableblocks.activators.ActivatorEBFeature;
 import com.ssomar.executableitems.executableitems.activators.ActivatorEIFeature;

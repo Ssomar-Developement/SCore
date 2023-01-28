@@ -1,4 +1,4 @@
-package com.ssomar.score.commands;
+package com.ssomar.score.commands.score;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
