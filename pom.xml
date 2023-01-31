@@ -220,11 +220,11 @@
             <scope>provided</scope>
         </dependency>
 
-         <!-- <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.21</version>
-        </dependency>-->
+        <!-- <dependency>
+           <groupId>org.yaml</groupId>
+           <artifactId>snakeyaml</artifactId>
+           <version>1.21</version>
+       </dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>
@@ -404,7 +404,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-8301fa540e-1</version>
+            <version>main-3a4aeee29f-1</version>
             <scope>compile</scope>
         </dependency>
 

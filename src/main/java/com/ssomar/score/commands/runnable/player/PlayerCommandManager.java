@@ -2,19 +2,14 @@ package com.ssomar.score.commands.runnable.player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.player.commands.*;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-import org.bukkit.ChatColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerCommandManager extends CommandManager<PlayerCommand> {
 
     private static PlayerCommandManager instance;
-
-    private List<PlayerCommand> commands;
 
     public PlayerCommandManager() {
         List<PlayerCommand> commands = new ArrayList<>();
@@ -110,7 +105,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(XpBoost.getInstance());
         commands.add(new Customtest());
 
-        this.commands = commands;
+        setCommands(commands);
     }
 
     public static PlayerCommandManager getInstance() {

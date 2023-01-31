@@ -1,6 +1,7 @@
 package com.ssomar.score.variables.manager;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.variables.Variable;
 import org.bukkit.NamespacedKey;
@@ -155,9 +156,10 @@ public class VariablesManager extends NewSObjectManager<Variable> {
             }
 
             String value = var.get().getValue(Optional.ofNullable(player.getPlayer()), indexOpt);
+            SsomarDev.testMsg("value: "+value, true);
             if (castInt) {
                 try {
-                    return Integer.parseInt(value) + "";
+                    return Double.valueOf(value).intValue() + "";
                 } catch (NumberFormatException e) {
                     return "Variable can't be converted to int";
                 }

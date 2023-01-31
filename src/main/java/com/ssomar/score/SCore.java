@@ -421,9 +421,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onDisable() {
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Save UsagePerDay....");
         UsagePerDayManager.getInstance().save();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Save UsagePerDay done !");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Save Commands...");
         CommandsHandler.getInstance().onDisable();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Save Commands done !");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Save Cooldowns...");
         CooldownsHandler.closeServerSaveAll();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Save Cooldowns done !");
     }
 
     public void onReload() {

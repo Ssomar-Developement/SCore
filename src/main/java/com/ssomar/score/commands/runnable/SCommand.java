@@ -105,7 +105,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkMaterial(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (((!arg.contains("%") && !isFinalVerification) || isFinalVerification) && !arg.contains("ITEMSADDER:")) {
             /* Some commands accept FURNCANE[LIT=TRUE] for example */
             if (arg.contains("[")) {
                 arg = arg.split("\\[")[0];

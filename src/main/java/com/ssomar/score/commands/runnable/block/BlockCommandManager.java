@@ -2,21 +2,15 @@ package com.ssomar.score.commands.runnable.block;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.block.commands.*;
 import com.ssomar.score.commands.runnable.block.commands.settempblock.SetTempBlock;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockCommandManager extends CommandManager<BlockCommand> {
 
     private static BlockCommandManager instance;
-
-    private List<BlockCommand> commands;
 
     public BlockCommandManager() {
         List<BlockCommand> references = new ArrayList<>();
@@ -29,6 +23,7 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new Explode());
         references.add(new Break());
         references.add(new Launch());
+        references.add(new ChangeBlockType());
         references.add(new DropItem());
         references.add(new DropExecutableItem());
         references.add(new DropExecutableBlock());
@@ -50,7 +45,7 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
             references.add(new ParticleCommand());
         }
         references.add(new SellContent());
-        this.commands = references;
+        setCommands(references);
     }
 
     public static BlockCommandManager getInstance() {
