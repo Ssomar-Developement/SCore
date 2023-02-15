@@ -39,7 +39,8 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String enchantStr = config.getString(this.getName(), "NULL");
-        if(!enchantStr.contains("SPACE_") && !enchantStr.contains("TOKEN-ENCHANT_") && !enchantStr.contains("BETTER-ENCHANTMENTS_") && !enchantStr.contains("ENCHANTS-SQUARED_")) enchantStr = enchantStr.toUpperCase();
+        enchantStr = transformOldFormat(enchantStr);
+        if(!enchantStr.contains(">>")) enchantStr = enchantStr.toUpperCase();
         Optional<Enchantment> optional = getEnchantment(enchantStr);
         if (!optional.isPresent()) {
             errors.add("&cERROR, Couldn't load the Enchantment value of " + this.getName() + " from config, value: " + enchantStr + " &7&o" + getParent().getParentInfo() + " &6>> Enchantments available: Look in-game, it's the same name");
@@ -50,6 +51,25 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         }
         return errors;
+    }
+
+    public String transformOldFormat(String str){
+        if(str.contains("SPACE_")){
+            str = str.replace("SPACE_", "SPACE>>");
+        }
+        else if(str.contains("TOKEN-ENCHANT_")){
+            str = str.replace("TOKEN-ENCHANT_", "TOKENENCHANT>>");
+        }
+        else if(str.contains("ENCHANTS-SQUARED_")){
+           str = str.replace("ENCHANTS-SQUARED_", "ENCHANTSSQUARED>>");
+        }
+        else if(str.contains("BETTER-ENCHANTMENTS_")){
+            str = str.replace("BETTER-ENCHANTMENTS_", "BETTERENCHANTMENTS>>");
+        }
+        else if(str.contains("FILTERED-HOPPERS_")){
+            str = str.replace("FILTERED-HOPPERS_", "FILTEREDHOPPERS>>");
+        }
+        return str;
     }
 
     @Override
@@ -264,20 +284,12 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public String getEnchantmentName(Enchantment enchantment) {
         if (!SCore.is1v12Less()) {
             String name = enchantment.getKey().toString();
+            //SsomarDev.testMsg("Enchantment name : " + name, true);
             if (name.contains("minecraft:")) {
                 name = name.split("minecraft:")[1];
             }
-            if (name.contains("space:")) {
-                name = "SPACE_"+enchantment.getName();
-            }
-            if (name.contains("tokenenchant:")) {
-                name = "TOKEN-ENCHANT_"+enchantment.getName();
-            }
-            if (name.contains("enchantssquared:")) {
-                name = "ENCHANTS-SQUARED_"+enchantment.getName();
-            }
-            if (name.contains("better-enchantments:")) {
-                name = "BETTER-ENCHANTMENTS_"+enchantment.getName();
+            else{
+                name = name.split(":")[0].toUpperCase()+">>"+enchantment.getName();
             }
             return name;
         } else {
@@ -287,18 +299,11 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
 
     public Optional<Enchantment> getEnchantment(String enchantmentName) {
         Enchantment enchantment = null;
+        //SsomarDev.testMsg("Enchantment name2 : " + enchantmentName, true);
         try {
-            if(enchantmentName.contains("SPACE_")){
-                enchantment = Enchantment.getByName(enchantmentName.replace("SPACE_", ""));
-            }
-            else if(enchantmentName.contains("TOKEN-ENCHANT_")){
-                enchantment = Enchantment.getByName(enchantmentName.replace("TOKEN-ENCHANT_", ""));
-            }
-            else if(enchantmentName.contains("ENCHANTS-SQUARED_")){
-                enchantment = Enchantment.getByName(enchantmentName.replace("ENCHANTS-SQUARED_", ""));
-            }
-            else if(enchantmentName.contains("BETTER-ENCHANTMENTS_")){
-                enchantment = Enchantment.getByName(enchantmentName.replace("BETTER-ENCHANTMENTS_", ""));
+            if(enchantmentName.contains(">>")){
+                enchantmentName = enchantmentName.split(">>")[1];
+                enchantment = Enchantment.getByName(enchantmentName);
             }
             else if (!SCore.is1v12Less()) {
                 enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));

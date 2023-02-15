@@ -35,6 +35,7 @@ public abstract class CommandManager<T extends SCommand> {
                 break;
             }
         }
+        if(entry.trim().equals("")) return new ArrayList<>();
         return Arrays.asList(entry.trim().split(" "));
     }
 

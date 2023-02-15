@@ -46,6 +46,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         reset();
     }
 
+
     @Override
     public void reset() {
         this.blocks = new ListDetailedMaterialFeature(this, "blocks", new ArrayList<>(), "Blocks", new String[]{"&7&oBlocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false, false);
@@ -169,7 +170,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public DetailedBlocks clone(FeatureParentInterface newParent) {
-        DetailedBlocks dropFeatures = new DetailedBlocks(newParent);
+        DetailedBlocks dropFeatures = new DetailedBlocks(newParent, getName(), getEditorName());
         dropFeatures.setBlocks(blocks.clone(dropFeatures));
         dropFeatures.setCancelEventIfNotValid(cancelEventIfNotValid.clone(dropFeatures));
         dropFeatures.setMessageIfNotValid(messageIfNotValid.clone(dropFeatures));
@@ -199,7 +200,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     @Override
     public void reload() {
         for (FeatureInterface feature : getParent().getFeatures()) {
-            if (feature instanceof DetailedBlocks) {
+            if (feature instanceof DetailedBlocks && feature.getEditorName().equals(getEditorName())) {
                 DetailedBlocks hiders = (DetailedBlocks) feature;
                 hiders.setBlocks(blocks);
                 hiders.setCancelEventIfNotValid(cancelEventIfNotValid);

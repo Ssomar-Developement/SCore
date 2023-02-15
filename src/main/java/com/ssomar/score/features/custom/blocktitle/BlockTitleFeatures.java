@@ -291,8 +291,13 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
         else {
             CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
-            holo.setLines(lines);
-            holo.update();
+            if(holo != null) {
+                holo.setLines(lines);
+                holo.update();
+            }
+            else{
+                spawn(objectLocation, sp);
+            }
         }
         return null;
     }

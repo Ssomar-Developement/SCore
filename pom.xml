@@ -105,7 +105,131 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
+
+                        <!--_AUTO_UPDATE_START_COMMENT_-->
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
+                        </configuration>
+                        <!--_AUTO_UPDATE_END_COMMENT_-->
+
+                        <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
+                    <!-- C:\Users\octav\Documents\GitHub\
+                    C:\Users\marce\Documents\GitHub\ -->
+
+                    <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
+                    <!--_AUTO_UPDATE_START_COMMENT_-->
+                    <execution>
+                        <id>build_1v8</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_1v12</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\serveur local 1.12\plugins\SCore.jar</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_1v18</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\serveur local 1.18\plugins\SCore.jar</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_eb</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_ei</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_eg</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_cpt</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>
+                                C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_ee</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>
+                                C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build_dep_textures</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>
+                                C:\Users\octav\Documents\GitHub\TexturesPackReader\src\main\resources\SCore.jar
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                    <!--_AUTO_UPDATE_END_COMMENT_-->
+                    <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                 </executions>
             </plugin>
         </plugins>

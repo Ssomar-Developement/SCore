@@ -1,8 +1,8 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.ToolsListMaterial;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BlockPlaceholders extends PlaceholdersInterface implements Serializable {
@@ -65,7 +66,9 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
 
     public void reloadBlockPlcHldr() {
         if (this.blockWorld != null) {
-            World world = Bukkit.getServer().getWorld(blockWorld);
+            Optional<World> worldOpt = AllWorldManager.getWorld(this.blockWorld);
+            if(!worldOpt.isPresent()) return;
+            World world = worldOpt.get();
             Location loc = new Location(world, blockX, blockY, blockZ);
             Block block = loc.getBlock();
 

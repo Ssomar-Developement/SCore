@@ -17,12 +17,13 @@ public class Around extends EntityCommand {
 
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        if(args.size() >= 2){
-            if (!(args.get(1).equalsIgnoreCase("false") || args.get(1).equalsIgnoreCase("true"))) {
-                args.add(1, "false");
+        List<String> newArgs = new ArrayList<>(args);
+        if(newArgs.size() >= 2){
+            if (!(newArgs.get(1).equalsIgnoreCase("false") || newArgs.get(1).equalsIgnoreCase("true"))) {
+                newArgs.add(1, "false");
             }
         }
-        aroundExecution(receiver, args, aInfo, false);
+        aroundExecution(receiver, newArgs, aInfo, false);
     }
 
     @Override
