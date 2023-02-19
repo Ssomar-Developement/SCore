@@ -18,7 +18,7 @@ SCore is a library for Minecraft plugins, particularly Ssomar's plugins. SCore i
 #### Pull Requests
 If you make any changes or improvements to the plugin which you think would be beneficial to others, please consider making a pull request to merge your changes back into the upstream project.
 
-Please make sure to have bug fixes/improvements in seperate pull requests from new features/changing how features work.
+Please make sure to have bug fixes/improvements in separated pull requests from new features/changing how features work.
 
 #### Guide:
 - Add new custom commands: 
