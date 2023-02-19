@@ -141,7 +141,7 @@ public class VeinBreaker extends BlockCommand {
             if (eBPOpt.isPresent()) {
                 ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
                 ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
-                eBP.drop(bLoc);
+                eBP.dropAtLocation(bLoc);
             }
         }
 
