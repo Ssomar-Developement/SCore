@@ -62,6 +62,7 @@ public enum SProjectileType {
         features.add(new InvisibleFeature(parent));
         features.add(new GlowingFeature(parent));
         features.add(new BounceFeature(parent));
+        features.add(new fireFeature(parent));
         features.add(new DespawnFeature(parent));
         features.add(new VelocityFeature(parent));
         features.add(new SilentFeature(parent));
