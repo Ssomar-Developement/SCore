@@ -339,7 +339,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             if ((uuid = playerPlch.getPlayerUUID()) == null) {
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
-                } else replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayers()[0], replace);
+                }
+                else if(Bukkit.getOfflinePlayers().length > 0)
+                    replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayers()[0], replace);
+                /* v If it pass here that means no player already joined the server v */
+                else return replace;
             }
             Player p;
             if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null)
