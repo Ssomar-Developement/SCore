@@ -42,6 +42,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfIsPowered(this));
         conditions.add(new IfMustBeNotPowered(this));
         conditions.add(new IfMustBeNatural(this));
+        conditions.add(new IfMustBeNotNatural(this));
         conditions.add(new IfPlayerMustBeOnTheBlock(this));
         conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
         conditions.add(new IfPlantFullyGrown(this));

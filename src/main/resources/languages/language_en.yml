@@ -166,6 +166,9 @@ features:
         ifMustBeNatural:
           name: "If Must Be Natural"
           description: ""
+        ifMustBeNotNatural:
+          name: "If Must Be Not Natural"
+          description: ""
         ifMustBeNotPowered:
           name: "If Must Be Not Powered"
           description: ""
