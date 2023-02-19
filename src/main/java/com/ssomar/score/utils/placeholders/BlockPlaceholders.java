@@ -88,6 +88,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
             placeholders.put("%block_world%", blockWorldName);
             placeholders.put("%block_world_lower%", blockWorldName.toLowerCase());
             placeholders.put("%block_dimension%", blockDimension);
+            placeholders.put("%block_data%", String.valueOf(block.getBlockData()));
         }
     }
 
