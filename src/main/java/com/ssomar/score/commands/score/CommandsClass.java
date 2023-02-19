@@ -201,9 +201,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                             for (int i = argIndex; i < args.length; i++) {
                                 if (args[i].contains("value:")) {
                                     try {
-                                        indexOpt = Optional.of(Integer.parseInt(args[i].replace("value:", "")));
-                                    } catch (NumberFormatException e) {
-                                        sender.sendMessage("Invalid index");
+                                        valueOpt = Optional.of(args[i].replace("value:", ""));
+                                    } catch (Exception e) {
+                                        sender.sendMessage("Invalid value");
                                     }
                                 }
                             }
