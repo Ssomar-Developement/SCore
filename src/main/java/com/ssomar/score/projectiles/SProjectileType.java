@@ -62,13 +62,16 @@ public enum SProjectileType {
         features.add(new InvisibleFeature(parent));
         features.add(new GlowingFeature(parent));
         features.add(new BounceFeature(parent));
-        features.add(new fireFeature(parent));
         features.add(new DespawnFeature(parent));
         features.add(new VelocityFeature(parent));
         features.add(new SilentFeature(parent));
 
         if (!SCore.is1v13Less()) {
             features.add(new RemoveWhenHitBlockFeature(parent));
+        }
+
+        if(SCore.is1v17Plus()){
+            features.add(new fireFeature(parent));
         }
 
         switch (this) {
