@@ -54,6 +54,9 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
             commands.add(new ModifyDurability());
             commands.add(new EquipmentVisualReplace());
         }
+        if(SCore.is1v16Plus()){
+            commands.add(new Absorption());
+        }
         commands.add(new AllMobs());
         commands.add(new AllPlayers());
         commands.add(new Nearest());
