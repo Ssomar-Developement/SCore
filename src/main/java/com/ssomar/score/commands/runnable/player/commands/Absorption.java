@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
+import com.ssomar.score.utils.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -62,18 +63,12 @@ public class Absorption extends PlayerCommand {
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = null;
-        ArgumentChecker ac2 = null;
+        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
+        if (!ac.isValid()) return Optional.of(ac.getError());
 
-        if(args.size() == 2){
-            ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-            ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());
-            if (!ac.isValid() | !ac2.isValid()) return Optional.of(ac.getError());
-
-        }else{
-            ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
-
+        if(args.size() >= 2){
+            ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());
+            if (!ac2.isValid()) return Optional.of(ac2.getError());
         }
 
         return Optional.empty();
