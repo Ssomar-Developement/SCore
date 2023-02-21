@@ -73,7 +73,9 @@ public class VeinBreaker extends BlockCommand {
                             /* 1.16 woods */
                             || oldMaterial.toString().contains("HYPHAE")
                             || oldMaterial.toString().contains("WARPED_STEM")
-                            || oldMaterial.toString().contains("CRIMSON_STEM")))
+                            || oldMaterial.toString().contains("CRIMSON_STEM")
+                            //wool
+                            || oldMaterial.toString().contains("WOOL")))
                         return;
                 }
 
@@ -165,7 +167,7 @@ public class VeinBreaker extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE and WOOD]";
+        return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE, WOOD and WOOL]";
     }
 
     @Override
