@@ -15,6 +15,9 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
     public BlockCommandManager() {
         List<BlockCommand> references = new ArrayList<>();
         references.add(new ApplyBoneMeal());
+        references.add(new ContentClear());
+        references.add(new ContentAdd());
+        references.add(new ContentRemove());
         references.add(new SetBlockPos());
         references.add(new SetBlock());
         references.add(new SetTempBlock());
