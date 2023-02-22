@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,15 +26,11 @@ public class ContentAdd extends BlockCommand {
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
-        Integer amount;
-        if(args.size() >= 2){
-            amount = Integer.valueOf(args.get(1));
-        }else{
-            amount = 1;
-        }
+        Optional<Double> intOptional = NTools.getDouble(args.get(1));
+        int amount = intOptional.orElse(1.0).intValue();
 
-        if(args.size() >= 1) {
-            ItemStack item = new ItemStack(Material.valueOf(args.get(0)),amount);
+        if (args.size() >= 1) {
+            ItemStack item = new ItemStack(Material.valueOf(args.get(0)), amount);
             if (block.getState() instanceof Container && p != null) {
                 Container container = (Container) block.getState();
                 Inventory inv = container.getInventory();
@@ -50,7 +47,7 @@ public class ContentAdd extends BlockCommand {
         ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
-        if(args.size() >= 2) {
+        if (args.size() >= 2) {
             ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }

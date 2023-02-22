@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,16 +26,10 @@ public class ContentRemove extends BlockCommand {
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
-        Integer amount;
-        if(args.size() >= 2){
+        Optional<Double> intOptional = NTools.getDouble(args.get(1));
+        int amount = intOptional.orElse(1.0).intValue();
 
-            amount = Integer.valueOf(args.get(1));
-
-        }else{
-            amount = 1;
-        }
-
-        if(args.size() >= 1) {
+        if (args.size() >= 1) {
 
             //ItemStack item = new ItemStack(Material.getMaterial(args.get(0)),amount);
 
@@ -46,11 +41,12 @@ public class ContentRemove extends BlockCommand {
                 //inv.remove(item);
                 //I TRIED THE inv.remove() but didn't work, I don't know why, tried many times.
 
-                for(int i = 0 ; i < amount ; i++){
-                    for(ItemStack itemChest : inv.getStorageContents()) {
-                        if(itemChest == null){continue;}
-                        if(itemChest.getType() == Material.getMaterial(args.get(0))) {
-                            itemChest.setAmount(itemChest.getAmount()-1);
+                for (int i = 0; i < amount; i++) {
+                    for (ItemStack itemChest : inv.getStorageContents()) {
+                        if (itemChest == null) continue;
+
+                        if (itemChest.getType() == Material.valueOf(args.get(0))) {
+                            itemChest.setAmount(itemChest.getAmount() - 1);
                             break;
                         }
                     }
@@ -66,7 +62,7 @@ public class ContentRemove extends BlockCommand {
         ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
-        if(args.size() >= 2) {
+        if (args.size() >= 2) {
             ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }

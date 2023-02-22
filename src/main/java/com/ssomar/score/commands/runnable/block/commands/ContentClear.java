@@ -1,19 +1,13 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
-import com.ssomar.score.usedapi.ShopGUIPlusTool;
-import com.ssomar.score.usedapi.VaultAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +23,7 @@ public class ContentClear extends BlockCommand {
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
-        if(block.getState() instanceof Container && p != null){
+        if (block.getState() instanceof Container && p != null) {
             Container container = (Container) block.getState();
             Inventory inv = container.getInventory();
             inv.clear();
