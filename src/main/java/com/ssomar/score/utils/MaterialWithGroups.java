@@ -25,6 +25,7 @@ public enum MaterialWithGroups {
     ALL_NORMAL_TERRACOTTA,
     ALL_GLAZED_TERRACOTTA,
     ALL_CONCRETE,
+    ALL_CONCRETE_POWDERS,
     ALL_GLASS,
     ALL_STAINED_GLASS,
     ALL_SHULKER_BOXES;
@@ -167,6 +168,14 @@ public enum MaterialWithGroups {
                         }
                     }
                     return concrete.contains(material);
+                case ALL_CONCRETE_POWDERS:
+                    List<Material> concretePowders = new ArrayList<>();
+                    for (Material material1 : Material.values()) {
+                        if (material1.name().contains("CONCRETE_POWDER")) {
+                            concretePowders.add(material1);
+                        }
+                    }
+                    return concretePowders.contains(material);
                 case ALL_GLASS:
                     List<Material> glass = new ArrayList<>();
                     for (Material material1 : Material.values()) {
