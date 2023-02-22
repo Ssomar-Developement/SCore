@@ -50,6 +50,7 @@ public class SendMessage implements Serializable {
     }
 
     public static void sendMessageFinal(CommandSender cs, String prepareMsg, boolean checkUncoloredEmpty) {
+        if(cs == null) return;
         if (!(prepareMsg.isEmpty() || (checkUncoloredEmpty && StringConverter.decoloredString(prepareMsg).isEmpty()))){
             if(prepareMsg.contains("&") || prepareMsg.contains("§") || prepareMsg.contains("#")) {
                 prepareMsg = StringConverter.coloredString(prepareMsg);
