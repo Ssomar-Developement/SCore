@@ -4,12 +4,13 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.usedapi.AllWorldManager;
+import com.ssomar.score.utils.BetterEquipmentSlot;
+import com.ssomar.score.utils.GetItem;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -105,7 +106,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkMaterial(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if (((!arg.contains("%") && !isFinalVerification) || isFinalVerification) && !arg.contains("ITEMSADDER:")) {
+        if (((!arg.contains("%") && !isFinalVerification) || isFinalVerification) && !GetItem.containsCustomPluginWord(arg)) {
             /* Some commands accept FURNCANE[LIT=TRUE] for example */
             if (arg.contains("[")) {
                 arg = arg.split("\\[")[0];
@@ -125,13 +126,7 @@ public abstract class SCommand {
         ArgumentChecker ac = new ArgumentChecker();
 
         if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
-            /* Some commands accept FURNCANE[LIT=TRUE] for example */
-            if (arg.contains("[")) {
-                arg = arg.split("\\[")[0];
-            }
-            try {
-                EquipmentSlot.valueOf(arg.toUpperCase());
-            } catch (Exception e) {
+            if(!BetterEquipmentSlot.isEquipmentSlot(arg)) {
                 ac.setValid(false);
                 ac.setError(invalidEquipmentSlot + arg + " &cfor command: &e" + template);
             }
