@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.player.commands.*;
+import com.ssomar.score.commands.runnable.player.commands.Setlore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         List<PlayerCommand> commands = new ArrayList<>();
         commands.add(new Around());
         commands.add(new MobAround());
+        commands.add(new Addlore());
+        commands.add(new Setlore());
         commands.add(new SendBlankMessage());
         commands.add(new SendMessage());
         commands.add(new SendCenteredMessage());
