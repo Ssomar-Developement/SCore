@@ -4,10 +4,13 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.ProtocolibAPI;
+import com.ssomar.score.utils.BetterEquipmentSlot;
+import com.ssomar.score.utils.GetItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +21,11 @@ public class EquipmentVisualReplace extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        EquipmentSlot slot = EquipmentSlot.valueOf(args.get(0).toUpperCase());
-        Material mat = Material.valueOf(args.get(1).toUpperCase());
-        int amount = Integer.parseInt(args.get(2));
+        EquipmentSlot slot = BetterEquipmentSlot.getEquipmentSlot(args.get(0)).orElse(EquipmentSlot.HAND);
+        String material = args.get(1);
+        ItemStack item = GetItem.getItem(material, Integer.parseInt(args.get(2))).orElse(new ItemStack(Material.BARRIER));
         int time = Integer.parseInt(args.get(3));
-        ProtocolibAPI.sendPumpkinHeadPacket(receiver, slot, mat, amount, time);
+        ProtocolibAPI.sendEquipmentVisualReplace(receiver, slot, item, time);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class EquipmentVisualReplace extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "EQUIPMENT_VISUAL_REPLACE {EquipmentSlot} {material} {amount} {timeinticks}";
+        return "EQUIPMENT_VISUAL_REPLACE {EquipmentSlot} {material or EI:} {amount} {timeinticks}";
     }
 
     @Override

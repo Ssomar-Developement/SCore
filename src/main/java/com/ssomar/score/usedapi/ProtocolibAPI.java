@@ -22,9 +22,11 @@ import java.util.List;
 
 public class ProtocolibAPI {
 
-    public static void sendPumpkinHeadPacket(Player player, EquipmentSlot slot, Material material, int amount, int time) {
+    public static void sendEquipmentVisualReplace(Player player, EquipmentSlot slot, Material material, int amount, int time) {
+        sendEquipmentVisualReplace(player, slot, new ItemStack(material, amount), time);
+    }
 
-        ItemStack item = new ItemStack(material, amount);
+    public static void sendEquipmentVisualReplace(Player player, EquipmentSlot slot, ItemStack item, int time) {
 
         for(int i = 0 ; i < time/20; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
