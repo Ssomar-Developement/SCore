@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -89,6 +90,13 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
             placeholders.put("%block_world_lower%", blockWorldName.toLowerCase());
             placeholders.put("%block_dimension%", blockDimension);
             placeholders.put("%block_data%", block.getBlockData().getAsString());
+
+            if(block.getState() instanceof CreatureSpawner){
+                CreatureSpawner spawner = (CreatureSpawner) block.getState();
+                placeholders.put("%block_spawnertype%", spawner.getSpawnedType().toString());
+            }else{
+                placeholders.put("%block_spawnertype%", "null");
+            }
         }
     }
 

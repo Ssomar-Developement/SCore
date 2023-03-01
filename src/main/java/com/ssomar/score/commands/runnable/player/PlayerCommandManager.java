@@ -46,6 +46,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         /* DAMAGE_RESISTANCE MUST BE BEFORE DAMAGE */
         commands.add(DamageBoost.getInstance());
         commands.add(DamageResistance.getInstance());
+        commands.add(new Invulnerability());
         commands.add(new DamageNoKnockback());
         commands.add(new Damage());
         commands.add(new LaunchEntity());
