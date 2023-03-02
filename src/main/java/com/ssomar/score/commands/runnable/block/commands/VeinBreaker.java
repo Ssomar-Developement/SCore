@@ -63,7 +63,7 @@ public class VeinBreaker extends BlockCommand {
 
                 if (aInfo.isEventCallByMineInCube()) return;
 
-                if (args.size() == 2) {
+                if (args.size() >= 2) {
                     if (!oldMaterial.toString().equals(args.get(1)))
                         return;
                 } else {
@@ -85,15 +85,20 @@ public class VeinBreaker extends BlockCommand {
                 } catch (Exception ignored) {
                 }
 
+                boolean triggerevent = true;
+                if(args.size() >= 3) {
+                    if (args.get(2).equalsIgnoreCase("false")) triggerevent = false;
+                }
+
                 List<Block> vein;
                 UUID pUUID = null;
                 if (p != null) pUUID = p.getUniqueId();
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, true);
+                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerevent, true);
 
                 vein = getVein(block, oldMaterial, veinSize);
 
                 for (Block b : vein) {
-                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, true, true);
+                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerevent, true);
                 }
             }
         };
@@ -167,7 +172,7 @@ public class VeinBreaker extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE, WOOD and WOOL]";
+        return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE, WOOD and WOOL] {trigger BREAK event, default true}";
     }
 
     @Override
