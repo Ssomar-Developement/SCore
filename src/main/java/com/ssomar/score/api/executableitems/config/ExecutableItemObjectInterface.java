@@ -12,5 +12,9 @@ public interface ExecutableItemObjectInterface {
 
     String updateVariable(String variableName, String value, VariableUpdateType type);
 
+    int getUsage();
+
+    void updateUsage(int usage);
+
     void refreshItem();
 }

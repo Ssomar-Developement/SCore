@@ -1,9 +1,12 @@
 package com.ssomar.score.api.executableblocks;
 
+import com.ssomar.executableblocks.executableblocks.ExecutableBlockObject;
 import com.ssomar.executableblocks.executableblocks.manager.ExecutableBlocksManager;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.api.executableblocks.config.ExecutableBlocksManagerInterface;
+import com.ssomar.score.api.executableblocks.object.ExecutableBlockObjectInterface;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlocksPlacedManagerInterface;
+import org.bukkit.inventory.ItemStack;
 
 public class ExecutableBlocksAPI {
 
@@ -21,5 +24,10 @@ public class ExecutableBlocksAPI {
      **/
     public static ExecutableBlocksPlacedManagerInterface getExecutableBlocksPlacedManager() {
         return ExecutableBlockPlacedManager.getInstance();
+    }
+
+
+    public static ExecutableBlockObjectInterface getExecutableBlockObject(ItemStack itemStack) {
+        return new ExecutableBlockObject(itemStack);
     }
 }
