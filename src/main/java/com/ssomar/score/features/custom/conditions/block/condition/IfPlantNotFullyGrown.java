@@ -7,8 +7,10 @@ import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockGrowEvent;
 
 import java.util.Optional;
 
@@ -26,8 +28,15 @@ public class IfPlantNotFullyGrown extends BlockConditionFeature<BooleanFeature, 
     @Override
     public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
 
-        if (hasCondition() && b.getState().getBlockData() instanceof Ageable) {
-            Ageable ageable = (Ageable) b.getState().getBlockData();
+        BlockData blockData = b.getState().getBlockData();
+        /* To make the condition works correctly with the BlockGrow event*/
+        if(event instanceof BlockGrowEvent) {
+            BlockGrowEvent blockGrowEvent = (BlockGrowEvent) event;
+            blockData = blockGrowEvent.getNewState().getBlockData();
+        }
+
+        if (hasCondition() && blockData instanceof Ageable) {
+            Ageable ageable = (Ageable) blockData;
             int age = ageable.getAge();
             if (age == ageable.getMaximumAge()) {
                 sendErrorMsg(playerOpt, messageSender);
