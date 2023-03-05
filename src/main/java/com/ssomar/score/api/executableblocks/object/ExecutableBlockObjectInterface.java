@@ -1,0 +1,20 @@
+package com.ssomar.score.api.executableblocks.object;
+
+import com.ssomar.score.utils.VariableUpdateType;
+
+import java.util.HashMap;
+
+public interface ExecutableBlockObjectInterface {
+
+    boolean isValid();
+
+    HashMap<String, String> getVariablesValues();
+
+    String updateVariable(String variableName, String value, VariableUpdateType type);
+
+    int getUsage();
+
+    void updateUsage(int usage);
+
+    void refreshItem();
+}
