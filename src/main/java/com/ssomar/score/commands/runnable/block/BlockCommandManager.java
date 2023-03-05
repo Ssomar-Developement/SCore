@@ -39,10 +39,10 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new SilkSpawner());
         references.add(new DrainInCube());
         references.add(new Move());
-        references.add(new OpenDoor());
         references.add(new StrikeLightning());
         /* No BlockData in 1.12 and less */
         if (!SCore.is1v12Less()) {
+            references.add(new OpenDoor());
             references.add(new FarmInCube());
             references.add(new FertilizeInCube());
         }
