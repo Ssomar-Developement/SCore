@@ -117,8 +117,11 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             PotionMeta pMeta = ((PotionMeta) meta);
             if (!SCore.is1v11Less()) {
                 if (color.getValue().isPresent()) pMeta.setColor(Color.fromRGB(color.getValue().get()));
-                if (potiontype.getValue().isPresent())
-                    pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable()));
+                if (potiontype.getValue().isPresent()) {
+                    try {
+                        pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable()));
+                    }catch (Exception ignored){}
+                }
             }
             for (PotionEffectFeature pE : this.potionEffects.getEffects().values()) {
                 pMeta.addCustomEffect(pE.getPotionEffect(), true);

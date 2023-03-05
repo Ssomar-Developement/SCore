@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -90,6 +92,16 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
             placeholders.put("%block_world_lower%", blockWorldName.toLowerCase());
             placeholders.put("%block_dimension%", blockDimension);
             placeholders.put("%block_data%", block.getBlockData().getAsString());
+
+            try{
+                BlockData data = block.getState().getBlockData();
+                if (data instanceof Ageable)
+                    placeholders.put("%block_is_ageable%", "true");
+                else placeholders.put("%block_is_ageable%", "false");
+            }
+            catch (Exception e) {
+                placeholders.put("%block_is_ageable%", "false");
+            }
 
             if(block.getState() instanceof CreatureSpawner){
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
