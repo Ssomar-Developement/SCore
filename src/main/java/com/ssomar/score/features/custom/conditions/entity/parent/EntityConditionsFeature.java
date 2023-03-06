@@ -53,6 +53,8 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfPowered(this));
         conditions.add(new IfTamed(this));
         conditions.add(new IfNotTamed(this));
+        conditions.add(new IfHasAI(this));
+        conditions.add(new IfNotHasAI(this));
 
         /* Number condition features */
         conditions.add(new IfEntityHealth(this));
