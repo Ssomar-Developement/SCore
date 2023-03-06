@@ -1,10 +1,10 @@
-package com.ssomar.score.api.executableitems.config;
+package com.ssomar.score.api.executableblocks.object;
 
 import com.ssomar.score.utils.VariableUpdateType;
 
 import java.util.HashMap;
 
-public interface ExecutableItemObjectInterface {
+public interface ExecutableBlockObjectInterface {
 
     boolean isValid();
 
