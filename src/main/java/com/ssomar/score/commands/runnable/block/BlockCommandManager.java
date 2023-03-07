@@ -50,6 +50,8 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
             references.add(new ParticleCommand());
         }
         references.add(new SellContent());
+        references.add(new Nearest());
+        references.add(new MobNearest());
         setCommands(references);
     }
 

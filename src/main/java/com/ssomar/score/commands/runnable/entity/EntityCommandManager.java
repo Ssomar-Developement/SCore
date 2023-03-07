@@ -47,6 +47,8 @@ public class EntityCommandManager extends CommandManager<EntityCommand> {
         commands.add(new StunDisable());
         commands.add(new PlayerRideOnEntity());
         commands.add(new Shear());
+        commands.add(new Nearest());
+        commands.add(new MobNearest());
         if (!SCore.is1v11Less()) {
             commands.add(new ParticleCommand());
             commands.add(new GlacialFreeze());
