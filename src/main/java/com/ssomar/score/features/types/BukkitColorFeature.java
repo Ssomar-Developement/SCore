@@ -81,7 +81,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     @Override
     public void updateItemParentEditor(GUI gui) {
         Optional<Color> value = getValue();
-        Color finalValue = value.orElse(Color.WHITE);
+        Color finalValue = value.orElse(CustomColor.getNullColor());
         updateColor(finalValue, gui);
     }
 
