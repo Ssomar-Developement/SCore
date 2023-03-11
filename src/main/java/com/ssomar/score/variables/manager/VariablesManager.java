@@ -155,7 +155,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
                 }
             }
 
-            String value = var.get().getValue(Optional.ofNullable(player.getPlayer()), indexOpt);
+            String value = var.get().getValue(Optional.ofNullable(player), indexOpt);
             SsomarDev.testMsg("value: "+value, true);
             if (castInt) {
                 try {
