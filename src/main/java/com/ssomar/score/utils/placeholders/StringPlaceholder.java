@@ -1,6 +1,8 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
+import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
 import com.ssomar.score.features.custom.variables.real.VariableReal;
 import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.AccessLevel;
@@ -321,7 +323,14 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                     String[] split2 = split[1].split("%");
                     String params = split2[0];
 
-                    replace = replace.replace("%score_" + params + "%", VariablesManager.getInstance().onRequestPlaceholder(p, params));
+                    Optional<String> placeholder = VariablesManager.getInstance().onRequestPlaceholder(p, params);
+                    if(placeholder.isPresent()) replace = replace.replace("%score_" + params + "%", placeholder.get());
+
+                    Optional<String> dmgBoosterPlaceHolder = DamageBoost.getInstance().onRequestPlaceholder(p, params);
+                    if (dmgBoosterPlaceHolder.isPresent()) replace = replace.replace("%score_" + params + "%", dmgBoosterPlaceHolder.get());
+
+                    Optional<String> dmgResistancePlaceHolder = DamageResistance.getInstance().onRequestPlaceholder(p, params);
+                    if (dmgResistancePlaceHolder.isPresent()) replace = replace.replace("%score_" + params + "%", dmgResistancePlaceHolder.get());
 
                 } catch (Exception e) {
                     e.printStackTrace();

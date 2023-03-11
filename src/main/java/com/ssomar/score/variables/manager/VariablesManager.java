@@ -78,7 +78,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
         return sb.toString();
     }
 
-    public String onRequestPlaceholder(OfflinePlayer player, String params) {
+    public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
         //System.out.println("params: "+params);
 
         boolean variables = false;
@@ -97,7 +97,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
             check = params.substring(10);
         }
 
-        if (!variables && !variablesContains && !variablesSize) return null;
+        if (!variables && !variablesContains && !variablesSize) return Optional.empty();
 
         String variableID = null;
 
@@ -108,19 +108,19 @@ public class VariablesManager extends NewSObjectManager<Variable> {
             }
         }
 
-        if (variableID == null) return "Variable not found";
+        if (variableID == null) return Optional.of("Variable not found");
 
         check = check.substring(variableID.length());
 
         Optional<Variable> var = VariablesManager.getInstance().getVariable(variableID);
 
-        if (!var.isPresent()) return "Variable not found";
+        if (!var.isPresent()) return Optional.of("Variable not found");
 
         // score_variables-contains_<variable-name>_<value>
         if (variablesContains) {
             if (check.startsWith("_")) check = check.substring(1);
             String value = check;
-            return var.get().containsValue(Optional.ofNullable(player.getPlayer()), value) + "";
+            return Optional.of(var.get().containsValue(Optional.ofNullable(player.getPlayer()), value) + "");
         } else if (variablesSize) {
 
             Optional<Integer> indexOpt = Optional.empty();
@@ -133,7 +133,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
                 }
             }
 
-            return var.get().sizeValue(Optional.ofNullable(player.getPlayer()), indexOpt) + "";
+            return Optional.of(var.get().sizeValue(Optional.ofNullable(player.getPlayer()), indexOpt) + "");
         }
         // score_variables_<variable-name>[_<index>][_int]
         else if (variables) {
@@ -159,14 +159,14 @@ public class VariablesManager extends NewSObjectManager<Variable> {
             SsomarDev.testMsg("value: "+value, true);
             if (castInt) {
                 try {
-                    return Double.valueOf(value).intValue() + "";
+                    return Optional.of(Double.valueOf(value).intValue() + "");
                 } catch (NumberFormatException e) {
-                    return "Variable can't be converted to int";
+                    return Optional.of("Variable can't be converted to int");
                 }
-            } else return value;
+            } else return Optional.of(value);
 
         }
 
-        return null; // Placeholder is unknown
+        return Optional.empty(); // Placeholder is unknown
     }
 }

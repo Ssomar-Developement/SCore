@@ -2,9 +2,13 @@ package com.ssomar.score.usedapi;
 
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
+import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
 import com.ssomar.score.variables.manager.VariablesManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+
+import java.util.Optional;
 
 public class PlaceholderAPISCoreExpansion extends PlaceholderExpansion {
 
@@ -38,6 +42,15 @@ public class PlaceholderAPISCoreExpansion extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String params) {
         //System.out.println("params: "+params);
 
-        return VariablesManager.getInstance().onRequestPlaceholder(player, params);
+        Optional<String> varPlaceHolder = VariablesManager.getInstance().onRequestPlaceholder(player, params);
+        if (varPlaceHolder.isPresent()) return varPlaceHolder.get();
+
+        Optional<String> dmgBoosterPlaceHolder = DamageBoost.getInstance().onRequestPlaceholder(player, params);
+        if (dmgBoosterPlaceHolder.isPresent()) return dmgBoosterPlaceHolder.get();
+
+        Optional<String> dmgResistancePlaceHolder = DamageResistance.getInstance().onRequestPlaceholder(player, params);
+        if (dmgResistancePlaceHolder.isPresent()) return dmgResistancePlaceHolder.get();
+
+        return null;
     }
 }
