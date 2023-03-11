@@ -7,6 +7,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import lombok.Getter;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -66,6 +67,13 @@ public class DamageResistance extends PlayerCommand {
             if (DEBUG) SsomarDev.testMsg("DamageResistanceEvent modified " + damage, DEBUG);
         }
         return damage;
+    }
+
+    public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
+        if (params.startsWith("cmd-damage-resistance")) {
+            return Optional.of(String.valueOf(getNewDamage(player.getUniqueId(), 1)));
+        }
+        return Optional.empty();
     }
 
     @Override
