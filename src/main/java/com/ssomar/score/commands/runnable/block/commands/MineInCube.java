@@ -6,18 +6,19 @@ import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static org.bukkit.block.BlockFace.*;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
 public class MineInCube extends BlockCommand {
@@ -68,17 +69,54 @@ public class MineInCube extends BlockCommand {
                     boolean createBBEvent = true;
                     if (args.size() >= 3) createBBEvent = Boolean.parseBoolean(args.get(2));
 
+                    boolean offset = false;
+                    if(args.size() >= 4 ) offset = Boolean.parseBoolean(args.get(3));
+
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
                     blackList.add(Material.AIR);
 
+                    Integer offsetx = 0;
+                    Integer offsety = 0;
+                    Integer offsetz = 0;
+
+                    if(offset) {
+                        Set<Material> trasnparent = new HashSet<>();
+                        trasnparent.add(Material.WATER);
+                        trasnparent.add(Material.AIR);
+
+                        List<Block> lastBlocks = p.getLastTwoTargetBlocks(trasnparent, 5);
+                        BlockFace face = lastBlocks.get(1).getFace(lastBlocks.get(0)).getOppositeFace();
+
+                        if (face == NORTH) {
+                            offsetz = (-1 * radius);
+                        } else if (face == SOUTH) {
+                            offsetz = (1 * radius);
+                        } else if (face == WEST) {
+                            offsetx = (-1 * radius);
+                        } else if (face == EAST) {
+                            offsetx = (1 * radius);
+                        } else if (face == UP) {
+                            offsety = (1 * radius);
+                        } else if (face == DOWN) {
+                            offsety = (-1 * radius);
+                        }
+                    }
+
+                    boolean isv18plus = SCore.is1v18Plus();
                     if (radius < 10) {
                         for (int y = -radius; y < radius + 1; y++) {
                             for (int x = -radius; x < radius + 1; x++) {
                                 for (int z = -radius; z < radius + 1; z++) {
 
+                                    if(isv18plus) {
+                                        if ((block.getY() + y + offsety) < -64) continue;
+                                    }else{
+                                        if ((block.getY() + y + offsety) < 0) continue;
+                                    }
+
                                     Location toBreakLoc = new Location(block.getWorld(), block.getX() + x, block.getY() + y, block.getZ() + z);
-                                    Block toBreak = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
+                                    Block toBreak = block.getWorld().getBlockAt(block.getX() + x+offsetx, block.getY() + y+offsety, block.getZ() + z+offsetz);
 
                                     DetailedBlocks whiteList;
                                     if ((whiteList = aInfo.getDetailedBlocks()) != null) {
@@ -123,7 +161,7 @@ public class MineInCube extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "MINEINCUBE {radius} {ActiveDrop true or false} {create blockBreakEvent true or false}";
+        return "MINEINCUBE {radius} {ActiveDrop true or false} {create blockBreakEvent true or false} {offset default false}";
     }
 
     @Override
