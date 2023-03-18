@@ -1,7 +1,6 @@
 package com.ssomar.score.variables.manager;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.variables.Variable;
 import org.bukkit.NamespacedKey;
@@ -156,7 +155,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
             }
 
             String value = var.get().getValue(Optional.ofNullable(player), indexOpt);
-            SsomarDev.testMsg("value: "+value, true);
+            //SsomarDev.testMsg("value: "+value, true);
             if (castInt) {
                 try {
                     return Optional.of(Double.valueOf(value).intValue() + "");
