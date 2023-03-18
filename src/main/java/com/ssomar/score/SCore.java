@@ -20,7 +20,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
-import com.ssomar.score.usedapi.ProtocolibAPI;
+import com.ssomar.score.usedapi.ProtocolLibAPI;
 import com.ssomar.score.utils.Utils;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
@@ -243,7 +243,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public boolean hookSoftDependency(String plugin) {
         Plugin softDepend = null;
         if ((softDepend = Bukkit.getPluginManager().getPlugin(plugin)) != null) {
-            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7" + plugin + " hooked !  &6(" + softDepend.getDescription().getVersion() + "&6)");
+            String when = " 8a&oLoad Before";
+            if (!softDepend.isEnabled()) {
+                when = "&8&oLoad After";
+            }
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7" + plugin + " hooked !  &6(" + softDepend.getDescription().getVersion() + "&6) "+ when);
             return true;
         }
         return false;
@@ -291,7 +295,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
             hasProtocolLib = true;
             /* Protocolib */
             protocolManager = ProtocolLibrary.getProtocolManager();
-            ProtocolibAPI.reduceDamageIndicator();
+            ProtocolLibAPI.reduceDamageIndicator();
         }
 
         hasNBTAPI = hookSoftDependency("NBTAPI");
