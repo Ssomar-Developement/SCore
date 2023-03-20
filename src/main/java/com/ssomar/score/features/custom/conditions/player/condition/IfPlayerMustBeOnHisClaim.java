@@ -32,7 +32,7 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
                 }
             }
             if (SCore.hasGriefPrevention) {
-                if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation())) {
+                if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation(), false)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

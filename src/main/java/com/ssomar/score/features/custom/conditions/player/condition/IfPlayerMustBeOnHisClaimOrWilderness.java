@@ -32,7 +32,7 @@ public class IfPlayerMustBeOnHisClaimOrWilderness extends PlayerConditionFeature
                 }
             }
             if (SCore.hasGriefPrevention) {
-                if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation())) {
+                if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation(), true)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

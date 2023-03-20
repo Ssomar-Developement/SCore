@@ -66,7 +66,7 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     public void modifVariable(VariableUpdateFeature update, Player p, StringPlaceholder sp) {
         SsomarDev.testMsg("VariableRealDouble.modifVariable", DEBUG);
 
-        Optional<Double> optional = update.getDoubleUpdate().getValue(p, sp);
+        Optional<Double> optional = update.getDoubleUpdate().getValue(p.getUniqueId(), sp);
         if (!optional.isPresent()) return;
         double modificationDouble = optional.get();
 

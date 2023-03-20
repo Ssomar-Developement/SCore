@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.usedapi.ProtocolibAPI;
+import com.ssomar.score.usedapi.ProtocolLibAPI;
 import com.ssomar.score.utils.BetterEquipmentSlot;
 import com.ssomar.score.utils.GetItem;
 import org.bukkit.ChatColor;
@@ -25,7 +25,7 @@ public class EquipmentVisualReplace extends PlayerCommand {
         String material = args.get(1);
         ItemStack item = GetItem.getItem(material, Integer.parseInt(args.get(2))).orElse(new ItemStack(Material.BARRIER));
         int time = Integer.parseInt(args.get(3));
-        ProtocolibAPI.sendEquipmentVisualReplace(receiver, slot, item, time);
+        ProtocolLibAPI.sendEquipmentVisualReplace(receiver, slot, item, time);
     }
 
     @Override
