@@ -103,6 +103,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new OpenWorkbench());
         commands.add(new MinecartBoost());
         commands.add(new Steal());
+        //commands.add(new FormatEnchantments());
         commands.add(new Oxygen());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
