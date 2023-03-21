@@ -42,17 +42,21 @@ public class ModifyDurability extends PlayerCommand {
             if (supportUnbreaking && enchants.containsKey(Enchantment.DURABILITY)) {
                 unbreakingLevel = enchants.get(Enchantment.DURABILITY);
             }
-            if(modification < 0) {
-                int random = (int) (Math.random() * 100);
-                if (random <= (100 / (unbreakingLevel + 1))) {
-                    meta.setDamage(meta.getDamage() - modification);
-                    if (meta.getDamage() >= item.getType().getMaxDurability()) {
-                        item.setAmount(item.getAmount() - 1);
-                        return;
+            if (modification < 0) {
+                for (int i = modification; i < 0; i++) {
+                    int random = (int) (Math.random() * 100);
+                    if (random > (100 / (unbreakingLevel + 1))) {
+                        modification++;
                     }
-                    item.setItemMeta(meta);
                 }
-            }else{
+                meta.setDamage(meta.getDamage() - modification);
+                if (meta.getDamage() >= item.getType().getMaxDurability()) {
+                    item.setAmount(item.getAmount() - 1);
+                    return;
+                }
+                item.setItemMeta(meta);
+
+            } else {
                 meta.setDamage(meta.getDamage() - modification);
                 if (meta.getDamage() >= item.getType().getMaxDurability()) {
                     item.setAmount(item.getAmount() - 1);
