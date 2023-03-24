@@ -4,6 +4,7 @@ package com.ssomar.score.usedapi;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
 import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
+import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import com.ssomar.score.variables.manager.VariablesManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -50,6 +51,9 @@ public class PlaceholderAPISCoreExpansion extends PlaceholderExpansion {
 
         Optional<String> dmgResistancePlaceHolder = DamageResistance.getInstance().onRequestPlaceholder(player, params);
         if (dmgResistancePlaceHolder.isPresent()) return dmgResistancePlaceHolder.get();
+
+        Optional<String> glowColorPlaceHolder = GlowDropManager.getInstance().onRequestPlaceholder(player, params);
+        if (glowColorPlaceHolder.isPresent()) return glowColorPlaceHolder.get();
 
         return null;
     }

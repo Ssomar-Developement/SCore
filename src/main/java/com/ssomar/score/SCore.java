@@ -68,6 +68,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasShopGUIPlus = false;
     public static boolean hasRoseLoot = false;
     public static boolean hasMMOCore = false;
+    public static boolean hasProtectionStones = false;
+
+    public static boolean hasTAB = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
     private static boolean is1v10 = false;
@@ -347,6 +350,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasRoseLoot = hookSoftDependency("RoseLoot");
 
         hasMMOCore = hookSoftDependency("MMOCore");
+
+        hasProtectionStones = hookSoftDependency("ProtectionStones");
+
+        hasTAB = hookSoftDependency("TAB");
     }
 
     @Override
