@@ -237,6 +237,9 @@ public class SafeBreak {
         if(SCore.hasTowny)
             if(!TownyToolAPI.playerCanBreakBlock(playerUUID, block.getLocation())) return false;
 
+        if(SCore.hasProtectionStones)
+            if(!ProtectionStonesAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
+
         return true;
     }
 

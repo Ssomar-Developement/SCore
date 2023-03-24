@@ -106,6 +106,9 @@ public class SafePlace {
 
         SsomarDev.testMsg("DEBUG SAFE BREAK CDT 6", DEBUG);
 
+        if(SCore.hasProtectionStones)
+            if(!ProtectionStonesAPI.playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
+
         return true;
     }
 }
