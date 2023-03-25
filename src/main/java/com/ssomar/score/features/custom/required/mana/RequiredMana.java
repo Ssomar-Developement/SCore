@@ -12,6 +12,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.AureliumSkillsAPI;
 import com.ssomar.score.usedapi.MMOCoreAPI;
+import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -76,7 +77,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
             if(SCore.hasAureliumSkills) {
                 if (!AureliumSkillsAPI.checkMana(player, mana.getValue().get())) {
                     if (errorMessage.getValue().isPresent()) {
-                        player.sendMessage(StringConverter.coloredString(errorMessage.getValue().get()));
+                        SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                     }
                     if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                         ((Cancellable) event).setCancelled(true);
@@ -87,7 +88,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
             else if(SCore.hasMMOCore) {
                 if (!MMOCoreAPI.checkMana(player, mana.getValue().get())) {
                     if (errorMessage.getValue().isPresent()) {
-                        player.sendMessage(StringConverter.coloredString(errorMessage.getValue().get()));
+                        SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                     }
                     if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                         ((Cancellable) event).setCancelled(true);
