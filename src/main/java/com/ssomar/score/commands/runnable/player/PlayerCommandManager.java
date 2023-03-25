@@ -2,24 +2,23 @@ package com.ssomar.score.commands.runnable.player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.player.commands.*;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-import org.bukkit.ChatColor;
+import com.ssomar.score.commands.runnable.player.commands.Setlore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerCommandManager extends CommandManager<PlayerCommand> {
 
     private static PlayerCommandManager instance;
 
-    private List<PlayerCommand> commands;
-
     public PlayerCommandManager() {
         List<PlayerCommand> commands = new ArrayList<>();
         commands.add(new Around());
         commands.add(new MobAround());
+        commands.add(new Addlore());
+        commands.add(new Setlore());
+        commands.add(new SetItemName());
         commands.add(new SendBlankMessage());
         commands.add(new SendMessage());
         commands.add(new SendCenteredMessage());
@@ -48,6 +47,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         /* DAMAGE_RESISTANCE MUST BE BEFORE DAMAGE */
         commands.add(DamageBoost.getInstance());
         commands.add(DamageResistance.getInstance());
+        commands.add(new Invulnerability());
         commands.add(new DamageNoKnockback());
         commands.add(new Damage());
         commands.add(new LaunchEntity());
@@ -58,6 +58,9 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
             /* No damageable class before 1.12 */
             commands.add(new ModifyDurability());
             commands.add(new EquipmentVisualReplace());
+        }
+        if(SCore.is1v16Plus()){
+            commands.add(new Absorption());
         }
         commands.add(new AllMobs());
         commands.add(new AllPlayers());
@@ -75,6 +78,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new RegainFood());
         commands.add(new RegainSaturation());
         commands.add(new Head());
+        commands.add(new Swaphand());
         commands.add(new Chestplate());
         commands.add(new Boots());
         commands.add(new Leggings());
@@ -98,6 +102,9 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new GravityDisable());
         commands.add(new OpenWorkbench());
         commands.add(new MinecartBoost());
+        commands.add(new Steal());
+        //commands.add(new FormatEnchantments());
+        commands.add(new Oxygen());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
@@ -110,7 +117,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(XpBoost.getInstance());
         commands.add(new Customtest());
 
-        this.commands = commands;
+        setCommands(commands);
     }
 
     public static PlayerCommandManager getInstance() {

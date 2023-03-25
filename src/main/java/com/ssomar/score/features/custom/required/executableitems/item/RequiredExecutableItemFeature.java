@@ -206,7 +206,15 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
             if (eiOpt.isPresent() && eiOpt.get().getId().equalsIgnoreCase(executableItem.getValue().get().getId())) {
                 if (needed >= it.getAmount()) {
                     needed -= it.getAmount();
-                    int slot = inventory.first(it);
+                    /* .first doesnt check off hand and armor */
+                    // int slot = inventory.first(it);
+                    int slot = -1;
+                    for (ItemStack item : inventory.getContents()) {
+                        slot++;
+                        if (item == null) continue;
+                        if (item.equals(it)) break;
+                    }
+                    //SsomarDev.testMsg("slot: " + slot, DEBUG);
                     inventory.clear(slot);
                 } else {
                     it.setAmount(it.getAmount() - needed);

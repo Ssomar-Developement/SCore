@@ -1,9 +1,11 @@
 package com.ssomar.score.api.executableblocks.placed;
 
+import com.ssomar.score.utils.VariableUpdateType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,4 +31,12 @@ public interface ExecutableBlockPlacedInterface {
      * Remove the ExecutableBlockPlaced without any checks and does not drop the ExecutableBlock
      */
     void remove();
+
+    int getUsage();
+
+    void updateUsage(int usage);
+
+    HashMap<String, String> getVariablesValues();
+
+    String updateVariable(String variableName, String value, VariableUpdateType type);
 }

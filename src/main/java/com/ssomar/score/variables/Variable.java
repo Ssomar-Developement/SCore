@@ -4,6 +4,7 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
+import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.VariableForFeature;
 import com.ssomar.score.features.types.VariableTypeFeature;
 import com.ssomar.score.menu.GUI;
@@ -45,6 +46,8 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
     private VariableForFeature forFeature;
 
     private Map<String, List<String>> values;
+
+    private ColoredStringFeature defaultValue;
 
     public Variable(FeatureParentInterface parent, String id, String path) {
         super(parent, "VAR", "VAR", new String[]{}, GUI.WRITABLE_BOOK);
@@ -113,7 +116,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
 
     @Override
     public void reset() {
-
+        defaultValue = new ColoredStringFeature(this, "default", Optional.empty(), "Default", new String[]{}, GUI.WRITABLE_BOOK, false, true);
         type = new VariableTypeFeature(this, "type", Optional.of(VariableType.NUMBER), "Type", new String[]{}, GUI.COMPARATOR, false);
         forFeature = new VariableForFeature(this, "for", Optional.empty(), "For", new String[]{}, GUI.COMPARATOR, false);
         values = new HashMap<>();
@@ -124,6 +127,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
         Variable clone = new Variable(this, id, path);
         clone.setType(type.clone(clone));
         clone.setForFeature(forFeature.clone(clone));
+        clone.setDefaultValue(defaultValue.clone(clone));
         clone.setValues(new HashMap<>(values));
         return clone;
     }
@@ -133,6 +137,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
         List<FeatureInterface> features = new ArrayList<FeatureInterface>();
         features.add(type);
         features.add(forFeature);
+        features.add(defaultValue);
         return features;
     }
 
@@ -169,6 +174,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
             Variable variable = (Variable) getParent();
             variable.setType(type);
             variable.setForFeature(forFeature);
+            variable.setDefaultValue(defaultValue);
             //SsomarDev.testMsg("RELOAD INTO "+variable.hashCode());
         }
     }
@@ -216,6 +222,10 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
 
     public String getValuesStr() {
         StringBuilder sb = new StringBuilder();
+        if(defaultValue.getValue().isPresent()) {
+            sb.append("&7Default value: &f\n");
+            sb.append("&e").append(defaultValue.getValue().get()).append("\n");
+        }
         sb.append("&7Values: &f\n");
         for (String key : this.values.keySet()) {
             if (!key.equals("global")) {
@@ -254,6 +264,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
                 } else return globalValues.get(0);
             }
         }
+        if(defaultValue.getValue().isPresent()) return defaultValue.getValue().get();
         return "";
     }
 

@@ -1,6 +1,5 @@
 package com.ssomar.score.features.types;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -13,7 +12,6 @@ import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -26,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -41,7 +40,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
         reset();
     }
 
-    public static DoubleFeature buildNull(){
+    public static DoubleFeature buildNull() {
         return new DoubleFeature(null, null, Optional.empty(), null, null, null, false);
     }
 
@@ -60,7 +59,8 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
                 FeatureReturnCheckPremium<Double> checkPremium = checkPremium("Double", valuePotential.get(), defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.ofNullable(checkPremium.getNewValue());
             } else {
-                if(!valueStr.equals("NULL")) errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
+                if (!valueStr.equals("NULL"))
+                    errors.add("&cERROR, Couldn't load the double value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
                 this.value = defaultValue;
             }
         }
@@ -76,31 +76,36 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
         }
     }
 
-    public Optional<Double> getValue(@Nullable Player player, @Nullable StringPlaceholder sp) {
+    public Optional<Double> getValue(@Nullable UUID playerUUID) {
+        return getValue(playerUUID, new StringPlaceholder());
+    }
+
+    public Optional<Double> getValue(@Nullable UUID playerUUID, @Nullable StringPlaceholder sp) {
         if (placeholder.isPresent()) {
             String placeholderStr = placeholder.get();
             if (sp != null) {
                 placeholderStr = sp.replacePlaceholder(placeholderStr);
             }
-            if (player != null && SCore.hasPlaceholderAPI) {
-                placeholderStr = PlaceholderAPI.setPlaceholders(player, placeholderStr);
-            }
+            placeholderStr = StringPlaceholder.replacePlaceholderOfPAPI(placeholderStr, playerUUID);
+
             Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
-            if (valuePotential.isPresent()) {
-                return valuePotential;
-            } else {
-                return defaultValue;
-            }
-        } else if (value.isPresent()) {
-            return value;
-        } else return defaultValue;
+            if (valuePotential.isPresent()) return valuePotential;
+
+        } else if (value.isPresent()) return value;
+        return defaultValue;
     }
 
     @Override
     public Optional<Double> getValue() {
         if (value.isPresent()) {
             return value;
-        } else return defaultValue;
+        } else if (placeholder.isPresent()) {
+            String placeholderStr = placeholder.get();
+            placeholderStr = new StringPlaceholder().replacePlaceholderOfPAPI(placeholderStr);
+            Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
+            if (valuePotential.isPresent()) return valuePotential;
+        }
+        return defaultValue;
     }
 
     @Override
@@ -124,7 +129,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     @Override
     public DoubleFeature clone(FeatureParentInterface newParent) {
         DoubleFeature clone = new DoubleFeature(newParent, this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
-        clone.setValue(getValue());
+        clone.setValue(value);
         clone.setPlaceholder(getPlaceholder());
         return clone;
     }
@@ -173,7 +178,8 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
         Optional<Double> verify = NTools.getDouble(StringConverter.decoloredString(message).trim());
         if (verify.isPresent()) return Optional.empty();
-        else return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a double"));
+        else
+            return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a double or a placeholder"));
     }
 
     @Override

@@ -10,6 +10,10 @@ public class SsomarDev {
                 Bukkit.getPlayer("Ssomar").sendMessage(message);
             } catch (Exception ignored) {
             }
+            try {
+                Bukkit.getPlayer("Vayk_").sendMessage(message);
+            } catch (Exception ignored) {
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.ssomar.score.config;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.Utils;
+import lombok.Getter;
 
 public class GeneralConfig extends Config {
 
@@ -20,6 +21,9 @@ public class GeneralConfig extends Config {
     private String dbUser;
 
     private String dbPassword;
+
+    @Getter
+    private boolean reduceDamageIndicatorWithProtolcolLib;
 
     public GeneralConfig() {
         super();
@@ -52,6 +56,7 @@ public class GeneralConfig extends Config {
         dbName = config.getString("dbName", "");
         dbUser = config.getString("dbUser", "");
         dbPassword = config.getString("dbPassword", "");
+        reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
 
     }
 

@@ -2,25 +2,22 @@ package com.ssomar.score.commands.runnable.block;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.block.commands.*;
 import com.ssomar.score.commands.runnable.block.commands.settempblock.SetTempBlock;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockCommandManager extends CommandManager<BlockCommand> {
 
     private static BlockCommandManager instance;
 
-    private List<BlockCommand> commands;
-
     public BlockCommandManager() {
         List<BlockCommand> references = new ArrayList<>();
         references.add(new ApplyBoneMeal());
+        references.add(new ContentClear());
+        references.add(new ContentAdd());
+        references.add(new ContentRemove());
         references.add(new SetBlockPos());
         references.add(new SetBlock());
         references.add(new SetTempBlock());
@@ -29,6 +26,7 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new Explode());
         references.add(new Break());
         references.add(new Launch());
+        references.add(new ChangeBlockType());
         references.add(new DropItem());
         references.add(new DropExecutableItem());
         references.add(new DropExecutableBlock());
@@ -43,6 +41,7 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new StrikeLightning());
         /* No BlockData in 1.12 and less */
         if (!SCore.is1v12Less()) {
+            references.add(new OpenDoor());
             references.add(new FarmInCube());
             references.add(new FertilizeInCube());
         }
@@ -50,7 +49,9 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
             references.add(new ParticleCommand());
         }
         references.add(new SellContent());
-        this.commands = references;
+        references.add(new Nearest());
+        references.add(new MobNearest());
+        setCommands(references);
     }
 
     public static BlockCommandManager getInstance() {

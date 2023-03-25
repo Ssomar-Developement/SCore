@@ -115,7 +115,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
 
             case PLAYER_STRING:
             case TARGET_STRING:
-                if(aPart1.contains("<OR>")) {
+                if(aPart2.contains("<OR>")) {
                     List<String> list = new ArrayList<>(Arrays.asList(aPart2.split("<OR>")));
                     /** Trim strings **/
                     for(int i = 0; i < list.size(); i++) {

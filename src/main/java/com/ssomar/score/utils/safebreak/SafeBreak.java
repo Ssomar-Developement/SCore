@@ -30,22 +30,28 @@ import java.util.UUID;
 
 public class SafeBreak {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
-    public static void breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
+    /* return false its verifSafeBreak is false */
+    public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
 
         SsomarDev.testMsg("DEBUG SAFE BREAK 1", DEBUG);
         if (playerUUID == null) {
-            if (breakEB(block, drop)) return;
+            if (breakEB(block, drop)) return true;
             block.breakNaturally();
-            return;
+            return true;
         }
         SsomarDev.testMsg("DEBUG SAFE BREAK 1.5", DEBUG);
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
+        SsomarDev.testMsg("DEBUG SAFE BREAK 1.6 p: "+player, DEBUG);
+
         if(!(player != null && player.isOp())){
-            if (verifSafeBreak && !verifSafeBreak(playerUUID, block)) return;
+            if (verifSafeBreak && !verifSafeBreak(playerUUID, block)){
+                SsomarDev.testMsg("DEBUG SAFE BREAK VERIFICATION BLOCKED ", DEBUG);
+                return false;
+            }
         }
 
 
@@ -54,7 +60,7 @@ public class SafeBreak {
             SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
             boolean canceled = false;
 
-            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) return;
+            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) return true;
 
             if (generateBreakEvent) {
                 SsomarDev.testMsg("DEBUG SAFE BREAK 4", DEBUG);
@@ -66,7 +72,7 @@ public class SafeBreak {
             }
 
             if (!canceled) {
-                if (breakEB(block, drop)) return;
+                if (breakEB(block, drop)) return true;
 
                 breakRoseloot(player, block, drop);
 
@@ -80,8 +86,8 @@ public class SafeBreak {
                 }
             }
         } else {
-            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return;
-            if (breakEB(block, drop)) return;
+            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return true;
+            if (breakEB(block, drop)) return true;
 
             breakRoseloot(null, block, drop);
 
@@ -89,6 +95,7 @@ public class SafeBreak {
             breakBlockNaturallyWith(block, Optional.empty(), drop);
         }
 
+        return true;
     }
 
     public static void breakBlockNaturallyWith(Block block, Optional<ItemStack> itemStack, boolean drop) {
@@ -229,6 +236,9 @@ public class SafeBreak {
 
         if(SCore.hasTowny)
             if(!TownyToolAPI.playerCanBreakBlock(playerUUID, block.getLocation())) return false;
+
+        if(SCore.hasProtectionStones)
+            if(!ProtectionStonesAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
 
         return true;
     }

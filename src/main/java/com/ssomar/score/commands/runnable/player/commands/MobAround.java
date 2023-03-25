@@ -62,13 +62,11 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
             }
         }
         if (toConcat.length() > 0) verifyArgs.add(toConcat.toString());
-        args.clear();
-        args.addAll(verifyArgs);
 
 
         int argToRemove = -1;
         int cpt = 0;
-        for (String s : args) {
+        for (String s : verifyArgs) {
             String[] split;
             try {
                 if (s.contains("BLACKLIST(")) {
@@ -90,7 +88,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
             }
             cpt++;
         }
-        if (argToRemove != -1) args.remove(argToRemove);
+        if (argToRemove != -1) verifyArgs.remove(argToRemove);
 
         final ListDetailedEntityFeature finalWhiteList = whiteList;
         final ListDetailedEntityFeature finalBlackList = blackList;
@@ -99,16 +97,16 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
             @Override
             public void run() {
                 try {
-                    double distance = Double.parseDouble(args.get(0));
+                    double distance = Double.parseDouble(verifyArgs.get(0));
                     int cpt = 0;
 
                     int startForCommand = 1;
                     boolean mute = false;
                     if (!forceMute) {
-                        if (args.get(1).equalsIgnoreCase("true")) {
+                        if (verifyArgs.get(1).equalsIgnoreCase("true")) {
                             startForCommand = 2;
                             mute = true;
-                        } else if (args.get(1).equalsIgnoreCase("false")) {
+                        } else if (verifyArgs.get(1).equalsIgnoreCase("false")) {
                             startForCommand = 2;
                         }
                     }
@@ -134,7 +132,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
                             /* regroup the last args that correspond to the commands */
                             StringBuilder prepareCommands = new StringBuilder();
-                            for (String s : args.subList(startForCommand, args.size())) {
+                            for (String s : verifyArgs.subList(startForCommand, verifyArgs.size())) {
                                 prepareCommands.append(s);
                                 prepareCommands.append(" ");
                             }

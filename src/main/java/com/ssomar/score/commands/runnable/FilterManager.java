@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.score;
+package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;

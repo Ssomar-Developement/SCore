@@ -47,7 +47,8 @@ public class FarmInCube extends BlockCommand {
                 if (ToolsListMaterial.getInstance().getPlantWithGrowth().contains(bMat)) {
                     UUID uuid = null;
                     if (p != null) uuid = p.getUniqueId();
-                    SafeBreak.breakBlockWithEvent(toDestroy, uuid, slot, drop, event, true);
+                    //SsomarDev.testMsg(">> "+toDestroy.getType()+" >> "+toDestroy.getLocation()+ " player: "+uuid, true);
+                    if(!SafeBreak.breakBlockWithEvent(toDestroy, uuid, slot, drop, event, true)) return;
                     if (replant) replant(toDestroy, data, bMat, p);
                 }
 
@@ -136,7 +137,7 @@ public class FarmInCube extends BlockCommand {
 
                         // Not break (PLAYER_RIGHT_CLICK) so need to break it
                         if(!block.getType().equals(Material.AIR)) {
-                            SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true);
+                            if(!SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true)) return;
                         }
                         block.setType(oldMaterial);
                         data = block.getState().getBlockData().clone();

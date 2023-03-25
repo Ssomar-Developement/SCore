@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.Pair;
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -20,11 +21,13 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProtocolibAPI {
+public class ProtocolLibAPI {
 
-    public static void sendPumpkinHeadPacket(Player player, EquipmentSlot slot, Material material, int amount, int time) {
+    public static void sendEquipmentVisualReplace(Player player, EquipmentSlot slot, Material material, int amount, int time) {
+        sendEquipmentVisualReplace(player, slot, new ItemStack(material, amount), time);
+    }
 
-        ItemStack item = new ItemStack(material, amount);
+    public static void sendEquipmentVisualReplace(Player player, EquipmentSlot slot, ItemStack item, int time) {
 
         for(int i = 0 ; i < time/20; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
@@ -87,7 +90,7 @@ public class ProtocolibAPI {
 
     public static void reduceDamageIndicator() {
 
-        if (SCore.hasProtocolLib && !SCore.is1v11Less()) {
+        if (SCore.hasProtocolLib && !SCore.is1v11Less() && GeneralConfig.getInstance().isReduceDamageIndicatorWithProtolcolLib()) {
             try {
                 /* LIMIT the particles of damage */
                 SCore.protocolManager.addPacketListener(

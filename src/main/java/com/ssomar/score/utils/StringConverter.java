@@ -127,7 +127,7 @@ public class StringConverter {
 
         if (textToTranslate.contains("BRUT_HEX")) {
             textToTranslate = textToTranslate.replaceAll("§", "&");
-            return textToTranslate.replaceAll("BRUT_HEX", "");
+            return textToTranslate.replaceAll("BRUT_HEX", "").trim();
         }
 
         String convert = textToTranslate;

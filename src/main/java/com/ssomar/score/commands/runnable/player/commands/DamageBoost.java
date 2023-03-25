@@ -7,6 +7,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import lombok.Getter;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,7 +36,7 @@ public class DamageBoost extends PlayerCommand {
         double boost = Double.valueOf(args.get(0));
         int time = Double.valueOf(args.get(1)).intValue();
 
-        SsomarDev.testMsg("ADD receiver: "+receiver.getUniqueId()+ " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
+        SsomarDev.testMsg("ADD receiver: " + receiver.getUniqueId() + " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
         if (activeBoosts.containsKey(receiver.getUniqueId())) {
             activeBoosts.get(receiver.getUniqueId()).add(boost);
         } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(boost)));
@@ -43,7 +44,7 @@ public class DamageBoost extends PlayerCommand {
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
             public void run() {
-                SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
+                SsomarDev.testMsg("REMOVE receiver: " + receiver.getUniqueId() + " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
                 if (activeBoosts.containsKey(receiver.getUniqueId())) {
                     if (activeBoosts.get(receiver.getUniqueId()).size() > 1) {
                         activeBoosts.get(receiver.getUniqueId()).remove(boost);
@@ -56,7 +57,7 @@ public class DamageBoost extends PlayerCommand {
     }
 
     public double getNewDamage(UUID uuid, double damage) {
-        SsomarDev.testMsg("GET NEW DAMAGE FOR: "+uuid+ " Damage: " + damage, DEBUG);
+        SsomarDev.testMsg("GET NEW DAMAGE FOR: " + uuid + " Damage: " + damage, DEBUG);
         if (DamageBoost.getInstance().getActiveBoosts().containsKey(uuid)) {
             SsomarDev.testMsg("DamageBoostEvent base: " + damage, DEBUG);
             double boost = 0;
@@ -70,6 +71,13 @@ public class DamageBoost extends PlayerCommand {
             SsomarDev.testMsg("DamageBoostEvent modified " + damage, DEBUG);
         }
         return damage;
+    }
+
+    public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
+        if (params.startsWith("cmd-damage-boost")) {
+            return Optional.of(String.valueOf(getNewDamage(player.getUniqueId(), 1)));
+        }
+        return Optional.empty();
     }
 
     @Override

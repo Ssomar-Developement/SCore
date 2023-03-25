@@ -18,6 +18,7 @@ public class MixHotbar extends PlayerCommand {
         List<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             ItemStack item = inv.getItem(i);
+            if(item != null) item = item.clone();
             items.add(item);
         }
         List<Integer> indexes = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
@@ -26,6 +27,7 @@ public class MixHotbar extends PlayerCommand {
         for (int i : indexes) {
             ItemStack item = items.get(i);
             if (item != null) inv.setItem(j, item);
+            else inv.setItem(j, null);
             j++;
         }
         receiver.updateInventory();

@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -26,6 +28,8 @@ public class TargetBlockPlaceholders extends PlaceholdersInterface implements Se
 
     private String blockType = "";
     private String blockLive = "";
+
+    private String ageable = "";
 
     public void setTargetBlockPlcHldr(Block block) {
         Location bLoc = block.getLocation();
@@ -58,6 +62,16 @@ public class TargetBlockPlaceholders extends PlaceholdersInterface implements Se
                 this.blockType = fixType.toString();
             } else this.blockType = block.getType().toString();
             this.blockLive = block.getType().toString();
+
+            try{
+                BlockData data = block.getState().getBlockData();
+                if (data instanceof Ageable)
+                   ageable = "true";
+                else ageable = "false";
+            }
+            catch (Exception e) {
+                ageable = "false";
+            }
         }
     }
 
@@ -75,6 +89,8 @@ public class TargetBlockPlaceholders extends PlaceholdersInterface implements Se
             toReplace = replaceCalculPlaceholder(toReplace, "%target_block_x_int%", blockX + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%target_block_y_int%", blockY + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%target_block_z_int%", blockZ + "", true);
+
+            toReplace = toReplace.replaceAll("%target_block_is_ageable%", ageable);
         }
 
         return toReplace;

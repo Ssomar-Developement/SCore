@@ -7,6 +7,14 @@ import com.ssomar.particles.commands.Shape;
 import com.ssomar.particles.commands.ShapesExamples;
 import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.block.BlockCommandManager;
+import com.ssomar.score.commands.runnable.block.BlockRunCommandsBuilder;
+import com.ssomar.score.commands.runnable.entity.EntityCommandManager;
+import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
+import com.ssomar.score.commands.runnable.player.PlayerCommandManager;
+import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.events.loop.LoopManager;
@@ -22,15 +30,14 @@ import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.VariablesEditor;
 import com.ssomar.score.variables.manager.VariablesManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -87,6 +94,15 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                     break;
                 case "particles-info":
                     this.runCommand(sender, "particles-info", args);
+                    break;
+                case "run-player-command":
+                    this.runCommand(sender, "run-player-command", args);
+                    break;
+                case "run-entity-command":
+                    this.runCommand(sender, "run-entity-command", args);
+                    break;
+                case "run-block-command":
+                    this.runCommand(sender, "run-block-command", args);
                     break;
 
                 case "cooldowns":
@@ -163,7 +179,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                         if (args.length >= argIndex + 1 && forType.equalsIgnoreCase("player")) {
                             try {
                                 optPlayer = Optional.ofNullable(Bukkit.getOfflinePlayer(args[argIndex]));
-                            }catch (Exception ignored){
+                            } catch (Exception ignored) {
                                 ignored.printStackTrace();
                             }
                         }
@@ -185,9 +201,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                             for (int i = argIndex; i < args.length; i++) {
                                 if (args[i].contains("value:")) {
                                     try {
-                                        indexOpt = Optional.of(Integer.parseInt(args[i].replace("value:", "")));
-                                    } catch (NumberFormatException e) {
-                                        sender.sendMessage("Invalid index");
+                                        valueOpt = Optional.of(args[i].replace("value:", ""));
+                                    } catch (Exception e) {
+                                        sender.sendMessage("Invalid value");
                                     }
                                 }
                             }
@@ -215,8 +231,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                                 if (err.isPresent()) sender.sendMessage(err.get());
                                 else
                                     SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
-                            }
-                            else if (modifType.equalsIgnoreCase("clear")) {
+                            } else if (modifType.equalsIgnoreCase("clear")) {
                                 Optional<String> err = var.get().clearValue(optPlayer);
                                 if (err.isPresent()) sender.sendMessage(err.get());
                                 else
@@ -444,6 +459,99 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 } else
                     sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm the delete type &6/score variables-delete {varID} confirm"));
                 break;
+
+            case "run-player-command":
+                Optional<Player> playerOpt = Optional.empty();
+                String cmd = "";
+                for (String arg : args) {
+                    if (arg.startsWith("player:")) {
+                        String playerName = arg.replace("player:", "");
+                        try {
+                            UUID playerUUID = UUID.fromString(playerName);
+                            playerOpt = Optional.ofNullable(Bukkit.getPlayer(playerUUID));
+                        } catch (Exception e) {
+                            playerOpt = Optional.ofNullable(Bukkit.getPlayer(playerName));
+                        }
+                    } else cmd += arg + " ";
+                }
+                if (!playerOpt.isPresent()) {
+                    SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cError: &7&oYou must specify a player with &6player:PLAYER_NAME&7&o or &6player:PLAYER_UUID");
+                    return;
+                }
+
+                cmd = cmd.trim();
+
+                ActionInfo info = new ActionInfo("run-player-command", new StringPlaceholder());
+                info.setReceiverUUID(playerOpt.get().getUniqueId());
+
+                PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(cmd), info);
+                CommandsExecutor.runCommands(builder);
+
+                break;
+            case "run-entity-command":
+                Optional<Entity> entityOptional = Optional.empty();
+                String entityCmd = "";
+                for (String arg : args) {
+                    if (arg.startsWith("entity:")) {
+                        String entityName = arg.replace("entity:", "");
+                        try {
+                            UUID playerUUID = UUID.fromString(entityName);
+                            entityOptional = Optional.ofNullable(Bukkit.getEntity(playerUUID));
+                        } catch (Exception e) {}
+                    } else entityCmd += arg + " ";
+                }
+                if (!entityOptional.isPresent()) {
+                    SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cError: &7&oYou must specify an entity with &6entity:ENTITY_UUID");
+                    return;
+                }
+
+                entityCmd = entityCmd.trim();
+
+                ActionInfo infoEntity = new ActionInfo("run-entity-command", new StringPlaceholder());
+                infoEntity.setEntityUUID(entityOptional.get().getUniqueId());
+                infoEntity.setReceiverUUID(entityOptional.get().getUniqueId());
+
+                EntityRunCommandsBuilder entityRunCommandsBuilder = new EntityRunCommandsBuilder(Arrays.asList(entityCmd), infoEntity);
+                CommandsExecutor.runCommands(entityRunCommandsBuilder);
+
+                break;
+            case "run-block-command":
+                Optional<Block> blockOpt = Optional.empty();
+                String blockCmd = "";
+                for (String arg : args) {
+                    if (arg.startsWith("block:")) {
+                        String blockLoc = arg.replace("block:", "");
+                        try {
+                            String loc[] = blockLoc.split(",");
+                            Optional<World> world = AllWorldManager.getWorld(loc[0]);
+                            double x = Double.parseDouble(loc[1]);
+                            double y = Double.parseDouble(loc[2]);
+                            double z = Double.parseDouble(loc[3]);
+
+                            blockOpt = Optional.ofNullable(world.get().getBlockAt(new Location(world.get(), x, y, z)));
+
+                        } catch (Exception e) {}
+                    } else blockCmd += arg + " ";
+                }
+                if (!blockOpt.isPresent()) {
+                    SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cError: &7&oYou must specify a block with &6block:WORLD,X,Y,Z");
+                    return;
+                }
+
+                blockCmd = blockCmd.trim();
+
+                ActionInfo infoBlock = new ActionInfo("run-block-command", new StringPlaceholder());
+                Location blockLocation = blockOpt.get().getLocation();
+                infoBlock.setBlockLocationX(blockLocation.getBlockX());
+                infoBlock.setBlockLocationY(blockLocation.getBlockY());
+                infoBlock.setBlockLocationZ(blockLocation.getBlockZ());
+                infoBlock.setBlockLocationWorld(blockLocation.getWorld().getUID());
+                infoBlock.setOldBlockMaterialName(blockOpt.get().getType().name());
+
+                BlockRunCommandsBuilder blockRunCommandsBuilder = new BlockRunCommandsBuilder(Arrays.asList(blockCmd), infoBlock);
+                CommandsExecutor.runCommands(blockRunCommandsBuilder);
+
+                break;
             default:
                 break;
         }
@@ -465,6 +573,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("variables");
                 arguments.add("variables-create");
                 arguments.add("variables-delete");
+                arguments.add("run-player-command");
+                arguments.add("run-entity-command");
+                arguments.add("run-block-command");
 
                 List<String> argumentsPerm = new ArrayList<String>();
                 for (String str : arguments) {
@@ -503,6 +614,46 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                                 || args[1].equalsIgnoreCase("list-remove"))) {
                             arguments.addAll(VariablesManager.getInstance().getVariableIdsList());
                         }
+
+                    case "run-player-command":
+                        if (args.length == 2) {
+                            arguments.add("player:");
+                        } else if (args.length == 3 && args[1].startsWith("player:")) {
+                            arguments.addAll(PlayerCommandManager.getInstance().getCommandsDisplay().values());
+                            for(int i = 0; i < arguments.size(); i++) {
+                                String arg = arguments.get(i);
+                                if(arg.length() > 50) {
+                                    arguments.set(i, arg.substring(0, 45)+"...");
+                                }
+                            }
+                        }
+                        break;
+                    case "run-entity-command":
+                        if (args.length == 2) {
+                            arguments.add("entity:");
+                        } else if (args.length == 3 && args[1].startsWith("entity:")) {
+                            arguments.addAll(EntityCommandManager.getInstance().getCommandsDisplay().values());
+                            for(int i = 0; i < arguments.size(); i++) {
+                                String arg = arguments.get(i);
+                                if(arg.length() > 50) {
+                                    arguments.set(i, arg.substring(0, 45)+"...");
+                                }
+                            }
+                        }
+                        break;
+                    case "run-block-command":
+                        if (args.length == 2) {
+                            arguments.add("block:");
+                        } else if (args.length == 3 && args[1].startsWith("block:")) {
+                            arguments.addAll(BlockCommandManager.getInstance().getCommandsDisplay().values());
+                            for(int i = 0; i < arguments.size(); i++) {
+                                String arg = arguments.get(i);
+                                if(arg.length() > 50) {
+                                    arguments.set(i, arg.substring(0, 45)+"...");
+                                }
+                            }
+                        }
+                        break;
                 }
                 Collections.sort(arguments);
                 return arguments;

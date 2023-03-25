@@ -249,4 +249,12 @@ public class LoopManager {
         }
         for (NewSActivator sAct : toRemove) loopActivators.remove(sAct);
     }
+
+    public void resetLoopActivatorsEE() {
+        List<NewSActivator> toRemove = new ArrayList<>();
+        for (NewSActivator sAct : loopActivators.keySet()) {
+            if ((sAct instanceof ActivatorEEFeature)) toRemove.add(sAct);
+        }
+        for (NewSActivator sAct : toRemove) loopActivators.remove(sAct);
+    }
 }

@@ -29,10 +29,13 @@ import java.util.Optional;
 public class MobNearest extends PlayerCommand implements FeatureParentInterface {
 
     public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
+
+        List<String> verifyArgs = new ArrayList<>(args);
+
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                double distance = Double.valueOf(args.get(0));
+                double distance = Double.valueOf(verifyArgs.get(0));
 
                 Entity e = receiver.getWorld().getEntities().stream()
                         .filter(p -> !p.equals(receiver) && !(p instanceof Player) && p instanceof Mob)
@@ -52,8 +55,8 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
                 /* regroup the last args that correspond to the commands */
                 StringBuilder prepareCommands = new StringBuilder();
                 /* Remove the maxdistance arg*/
-                args.remove(0);
-                for (String s : args) {
+                verifyArgs.remove(0);
+                for (String s : verifyArgs) {
                     prepareCommands.append(s);
                     prepareCommands.append(" ");
                 }

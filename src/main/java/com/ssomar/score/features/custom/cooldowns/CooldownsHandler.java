@@ -47,7 +47,10 @@ public class CooldownsHandler implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
+        if(!SCore.plugin.isEnabled()) return;
+
         Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+            if(!SCore.plugin.isEnabled()) return;
             List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
             Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
                 @Override

@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.score;
+package com.ssomar.score.commands.runnable;
 
 
 import org.apache.logging.log4j.Level;
@@ -21,6 +21,7 @@ public class LogFilter implements Filter, LifeCycle {
     public LogFilter() {
         messageToHide.add("Applied effect");
         messageToHide.add("Playing effect");
+        messageToHide.add("Removed effect");
         messageToHide.add("Title command successfully executed");
         messageToHide.add("Gave");
         messageToHide.add("Given");
@@ -47,6 +48,9 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Showing new title");
         messageToHide.add("Showing new subtitle");
         messageToHide.add("Showing new actionbar");
+        messageToHide.add("[SCore]");
+        messageToHide.add("Added tag");
+        messageToHide.add("Removed tag");
 
     }
 

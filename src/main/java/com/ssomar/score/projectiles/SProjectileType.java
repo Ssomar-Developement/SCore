@@ -70,6 +70,10 @@ public enum SProjectileType {
             features.add(new RemoveWhenHitBlockFeature(parent));
         }
 
+        if(SCore.is1v17Plus()){
+            features.add(new fireFeature(parent));
+        }
+
         switch (this) {
             case ARROW:
                 features.add(new GravityFeature(parent));

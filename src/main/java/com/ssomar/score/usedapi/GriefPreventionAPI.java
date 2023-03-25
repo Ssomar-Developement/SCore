@@ -13,16 +13,12 @@ import java.util.UUID;
 
 public class GriefPreventionAPI {
 
-    public static boolean playerIsInHisClaim(@NotNull Player p, Location location) {
-        return playerCanBreakClaimBlock(p.getUniqueId(), location);
-    }
-
-    public static boolean playerIsInHisClaim(@NotNull UUID pUUID, Location location, boolean acceptWilderness) {
+    public static boolean playerIsInHisClaim(@NotNull Player p, Location location, boolean acceptWilderness) {
         DataStore dataStore = GriefPrevention.instance.dataStore;
         Claim claim = dataStore.getClaimAt(location, false, null);
         if (claim == null || claim.getOwnerID() == null) return acceptWilderness;
 
-        return claim.getOwnerID().equals(pUUID);
+        return claim.getOwnerID().equals(p.getUniqueId());
     }
 
 

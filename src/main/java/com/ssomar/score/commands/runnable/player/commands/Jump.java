@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* JUMP {amount} */
+/* JUMP {amount} [fall damage]*/
 public class Jump extends PlayerCommand {
 
 
@@ -27,16 +27,31 @@ public class Jump extends PlayerCommand {
         v.setZ(0);
         receiver.setVelocity(v);
 
-        /* NO FALL DAMAGE PART */
-        NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+        if(args.size() >= 2){
+            String falldamage = args.get(1);
+
+            if(falldamage.equalsIgnoreCase("true")){
+
+            }else {
+                NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+            }
+
+        }else{
+            NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+        }
     }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+        ArgumentChecker ac1 = checkDouble(args.get(0), isFinalVerification, getTemplate());
+        if (!ac1.isValid()) return Optional.of(ac1.getError());
+
+        if(args.size() >= 2){
+            ArgumentChecker ac2 = checkBoolean(args.get(1), isFinalVerification, getTemplate());
+            if (!ac2.isValid()) return Optional.of(ac2.getError());
+        }
 
         return Optional.empty();
     }
@@ -50,7 +65,7 @@ public class Jump extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "JUMP {number (max 5)}";
+        return "JUMP {number (max 5)} [fallDamageDefaultFalse]";
     }
 
     @Override

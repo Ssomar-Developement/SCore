@@ -212,6 +212,7 @@ public abstract class RunCommandsBuilder {
         List<String> result = new ArrayList<>();
 
         if (command.contains("nothing*")) {
+            command = actionInfo.getSp().replacePlaceholder(command, true);
             try {
                 int m = 0;
                 if (command.contains("//")) m = Integer.parseInt(command.split("nothing\\*")[1].split("//")[0].trim());
@@ -226,6 +227,7 @@ public abstract class RunCommandsBuilder {
                 return Collections.singletonList(command);
             }
         } else if (command.contains("NOTHING*")) {
+            command = actionInfo.getSp().replacePlaceholder(command, true);
             try {
                 int m = 0;
                 if (command.contains("//") && !command.contains("https://"))

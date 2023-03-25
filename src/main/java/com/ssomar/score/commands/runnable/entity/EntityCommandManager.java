@@ -2,23 +2,18 @@ package com.ssomar.score.commands.runnable.entity;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.entity.commands.*;
-import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-import org.bukkit.ChatColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EntityCommandManager extends CommandManager<EntityCommand> {
 
     private static EntityCommandManager instance;
 
-    private List<EntityCommand> commands;
-
     private EntityCommandManager() {
-        commands = new ArrayList<>();
+        List<EntityCommand> commands = new ArrayList<>();
         commands.add(new TeleportPosition());
         commands.add(new TeleportEntityToPlayer());
         commands.add(new TeleportPlayerToEntity());
@@ -51,11 +46,15 @@ public class EntityCommandManager extends CommandManager<EntityCommand> {
         commands.add(new StunDisable());
         commands.add(new StunDisable());
         commands.add(new PlayerRideOnEntity());
+        commands.add(new Shear());
+        commands.add(new Nearest());
+        commands.add(new MobNearest());
         if (!SCore.is1v11Less()) {
             commands.add(new ParticleCommand());
             commands.add(new GlacialFreeze());
         }
         commands.add(new Customtest());
+        setCommands(commands);
     }
 
     public static EntityCommandManager getInstance() {

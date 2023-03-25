@@ -24,7 +24,6 @@ public class ShopGUIPlusTool {
 
             PriceModifier priceModifier = ShopGuiPlusApi.getPriceModifier(player, shopItem, PriceModifierActionType.SELL);
 
-
             amount = amount * priceModifier.getModifier();
 
         }catch (Exception e) {}

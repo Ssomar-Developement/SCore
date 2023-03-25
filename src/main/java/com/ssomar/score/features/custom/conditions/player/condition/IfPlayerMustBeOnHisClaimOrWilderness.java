@@ -4,10 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.usedapi.GriefDefenderAPI;
-import com.ssomar.score.usedapi.GriefPreventionAPI;
-import com.ssomar.score.usedapi.LandsIntegrationAPI;
-import com.ssomar.score.usedapi.ResidenceAPI;
+import com.ssomar.score.usedapi.*;
 import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,7 +29,7 @@ public class IfPlayerMustBeOnHisClaimOrWilderness extends PlayerConditionFeature
                 }
             }
             if (SCore.hasGriefPrevention) {
-                if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation())) {
+                if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation(), true)) {
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }
@@ -47,6 +44,13 @@ public class IfPlayerMustBeOnHisClaimOrWilderness extends PlayerConditionFeature
 
             if (SCore.hasResidence) {
                 if (!ResidenceAPI.playerIsInHisClaim(player, player.getLocation(), true)) {
+                    sendErrorMsg(playerOpt, messageSender);
+                    return false;
+                }
+            }
+
+            if(SCore.hasProtectionStones){
+                if(!ProtectionStonesAPI.playerIsInHisClaim(player, player.getLocation(), true)){
                     sendErrorMsg(playerOpt, messageSender);
                     return false;
                 }

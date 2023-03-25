@@ -28,7 +28,7 @@ public abstract class PlaceholdersInterface {
             String suit = result.split(placeholder + "\\+")[1];
             StringBuilder sb = new StringBuilder();
             for (char c : suit.toCharArray()) {
-                if (c == ' ' || c == ',' || c == ')') break;
+                if (c == ' ' || c == ',' || c == ')' || c == '#' || c == '&' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) break;
                 sb.append(c);
             }
             if (isNumeric(sb.toString())) {
@@ -36,9 +36,9 @@ public abstract class PlaceholdersInterface {
                 String finalValue = String.valueOf(d);
                 if (isInteger) finalValue = String.valueOf((int) d);
                 if (convertToRoman) finalValue = RomanNumber.toRoman((int) d);
-                result = result.replaceAll(placeholder + "\\+" + sb, "" + finalValue);
+                result = result.replaceFirst(placeholder + "\\+" + sb, "" + finalValue);
             } else {
-                result = result.replaceAll(placeholder + "\\+" + sb, value);
+                result = result.replaceFirst(placeholder + "\\+" + sb, value);
             }
         }
 
@@ -55,9 +55,9 @@ public abstract class PlaceholdersInterface {
                 String finalValue = String.valueOf(d);
                 if (isInteger) finalValue = String.valueOf((int) d);
                 if (convertToRoman) finalValue = RomanNumber.toRoman((int) d);
-                result = result.replaceAll(placeholder + "-" + sb, "" + finalValue);
+                result = result.replaceFirst(placeholder + "-" + sb, "" + finalValue);
             } else {
-                result = result.replaceAll(placeholder + "-" + sb, value);
+                result = result.replaceFirst(placeholder + "-" + sb, value);
             }
         }
         while (result.contains(placeholder)) {

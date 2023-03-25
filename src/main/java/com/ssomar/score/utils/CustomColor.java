@@ -52,6 +52,10 @@ public class CustomColor {
         }
     }
 
+    public static Color getNullColor() {
+        return Color.fromRGB(1, 2, 3);
+    }
+
     public static String getName(Color color) {
         if (AQUA.equals(color)) {
             return "AQUA";

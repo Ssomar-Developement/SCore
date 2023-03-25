@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.score.FilterManager;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.StringConverter;
 import org.bukkit.Bukkit;

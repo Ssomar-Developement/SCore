@@ -70,6 +70,9 @@ public class CommandsHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void PlayerJoinEvent(PlayerJoinEvent e) {
+
+        if(!SCore.plugin.isEnabled()) return;
+
         Player p = e.getPlayer();
         if (getInstance().getDelayedCommandsSaved().containsKey(p.getUniqueId())) {
             for (PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(p.getUniqueId())) {
@@ -82,6 +85,9 @@ public class CommandsHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void PlayerQuitEvent(PlayerQuitEvent e) {
+
+        if(!SCore.plugin.isEnabled()) return;
+
         Player p = e.getPlayer();
 
         List<PlayerRunCommand> commands = getInstance().getDelayedCommandsWithReceiver(p.getUniqueId());

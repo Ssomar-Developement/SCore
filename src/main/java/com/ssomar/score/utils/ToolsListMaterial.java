@@ -4,10 +4,7 @@ import com.ssomar.score.SCore;
 import org.bukkit.Material;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ToolsListMaterial {
 
@@ -17,20 +14,19 @@ public class ToolsListMaterial {
 
     public ToolsListMaterial() {
         plantWithGrowth = new ArrayList<>();
-        if (SCore.is1v12Less()) {
-            plantWithGrowth.add(Material.valueOf("CROPS"));
-            plantWithGrowth.add(Material.valueOf("NETHER_WARTS"));
-            plantWithGrowth.add(Material.valueOf("POTATO"));
-            plantWithGrowth.add(Material.valueOf("CARROT"));
-            if (!SCore.is1v11Less()) plantWithGrowth.add(Material.valueOf("BEETROOT_BLOCK"));
-        } else {
-            plantWithGrowth.add(Material.WHEAT);
-            plantWithGrowth.add(Material.CARROTS);
-            plantWithGrowth.add(Material.BEETROOTS);
-            plantWithGrowth.add(Material.POTATOES);
-            plantWithGrowth.add(Material.NETHER_WART);
-            plantWithGrowth.add(Material.COCOA);
-        }
+
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("BEETROOTS", "BEETROOT_BLOCK")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("POTATOES", "POTATO")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("NETHER_WART", "NETHER_WARTS")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("COCOA")));
+
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("KELP")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("SWEET_BERRY_BUSH")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("MELON_STEM")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_STEM")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CAVE_VINES")));
 
         blockAndItemMaterial = new HashMap<>();
         if (SCore.is1v12Less()) {
@@ -49,6 +45,12 @@ public class ToolsListMaterial {
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
 
+    }
+
+    public void addWithoutProblem(List<Material> list, Material material) {
+        if (material == Material.BARRIER) return;
+
+        list.add(material);
     }
 
     public static ToolsListMaterial getInstance() {
