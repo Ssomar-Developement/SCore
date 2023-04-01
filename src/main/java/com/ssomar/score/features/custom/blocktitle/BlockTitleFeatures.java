@@ -73,7 +73,6 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         this.titleAjustement.save(section);
     }
 
-    @Override
     public BlockTitleFeatures getValue() {
         return this;
     }
@@ -89,7 +88,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         else
             finalDescription[finalDescription.length - 3] = "&7Active title: &c&l✘";
 
-        finalDescription[finalDescription.length - 2] = "&7Title lines: &e&l" + title.getValue().size();
+        finalDescription[finalDescription.length - 2] = "&7Title lines: &e&l" + title.getValues().size();
 
         finalDescription[finalDescription.length - 1] = "&7Title Ajustement: &e" + titleAjustement.getValue().get();
 
@@ -158,6 +157,10 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         BlockTitleFeaturesEditorManager.getInstance().startEditing(player, this);
     }
 
+    public String getSimpleLocString(Location loc){
+        return loc.getWorld().getName() + "-" + loc.getBlockX() + "-" + loc.getBlockY() + "-" + loc.getBlockZ();
+    }
+
     /**
      * Return the location of the Holo
      **/
@@ -165,7 +168,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         if (!activeTitle.getValue()) return null;
 
         List<String> lines = new ArrayList<>();
-        for (String s : getTitle().getValue()) {
+        for (String s : getTitle().getValues()) {
             s = StringConverter.coloredString(s);
             lines.add(s);
         }
@@ -179,14 +182,14 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 // One creation sync and one with delay
                 // -> When we use SETEXECUTABLEBLOCK on an EB the title of the EB replaced stay and the title of the EB set is not placed
                 // Idk why it doesnt update without, it's something in DecentHologram
-                if(DHAPI.getHologram(loc.toString()) != null) remove(loc);
-                DHAPI.createHologram(loc.toString().trim(),loc, lines);
+                if(DHAPI.getHologram(getSimpleLocString(loc)) != null) remove(loc);
+                DHAPI.createHologram(getSimpleLocString(loc), loc, lines);
                 BukkitRunnable runnable = new BukkitRunnable() {
                     @Override
                     public void run() {
                         if(DHAPI.getHologram(loc.toString()) != null) {
                             remove(loc);
-                            eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString().trim(), loc, finalLines);
+                            eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(getSimpleLocString(loc), loc, finalLines);
                             hologram.updateAll();
                         }
                         // if null it means that the hologram has been removed during the tick and we don't want to recreate/update it
@@ -231,7 +234,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             if(SCore.hasDecentHolograms){
                 //SsomarDev.testMsg("Hologram in remove  DecentHolograms, find the placeholder ?>> "+(DHAPI.getHologram(location.toString()) != null), true);
                 eu.decentsoftware.holograms.api.holograms.Hologram hologram;
-                if((hologram = DHAPI.getHologram(location.toString())) != null) {
+                if((hologram = DHAPI.getHologram(getSimpleLocString(location))) != null) {
                     hologram.destroy();
                     //SsomarDev.testMsg("Hologram removed  DecentHolograms", true);
                 }
@@ -267,7 +270,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
 
         List<String> lines = new ArrayList<>();
-        for (String s : getTitle().getValue()) {
+        for (String s : getTitle().getValues()) {
             s = StringConverter.coloredString(s);
             lines.add(s);
         }
