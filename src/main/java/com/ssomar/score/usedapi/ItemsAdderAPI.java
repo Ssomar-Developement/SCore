@@ -3,6 +3,7 @@ package com.ssomar.score.usedapi;
 import com.ssomar.score.SCore;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomFurniture;
+import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -78,8 +79,25 @@ public class ItemsAdderAPI {
 
     }
 
+    public static Optional<String> getCustomItemID(ItemStack item) {
+        if (SCore.hasItemsAdder && item != null) {
+            CustomStack customStack = CustomStack.byItemStack(item);
+            //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
+            if (customStack != null) {
+                return Optional.of(customStack.getId());
+            }
+        }
+        return Optional.empty();
+
+    }
+
     public static boolean isCustomBlock(Block block) {
         return getCustomBlockID(block).isPresent();
+    }
+
+
+    public static boolean isCustomItem(ItemStack item) {
+        return getCustomItemID(item).isPresent();
     }
 
     public static boolean placeItemAdder(Location location, String id) {

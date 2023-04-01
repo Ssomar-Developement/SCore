@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Optional;
@@ -48,6 +49,9 @@ public class EventInfo {
     private Optional<String> blockface;
 
     private Optional<String> blockfaceTarget;
+
+    /* ITEM */
+    private Optional<ItemStack> item;
 
     /* WORLD */
     private Optional<World> world;
@@ -106,6 +110,7 @@ public class EventInfo {
         this.bowForce = Optional.empty();
         this.command = Optional.empty();
         this.slot = Optional.empty();
+        this.item = Optional.empty();
         this.world = Optional.empty();
     }
 
@@ -136,6 +141,7 @@ public class EventInfo {
         eInfo.setForceMainHand(forceMainHand);
         eInfo.setMustDoNothing(mustDoNothing);
         eInfo.setSlot(slot);
+        eInfo.setItem(item);
         eInfo.setWorld(world);
 
         return eInfo;
