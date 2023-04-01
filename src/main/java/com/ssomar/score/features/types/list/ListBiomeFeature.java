@@ -4,7 +4,6 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +24,7 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
     }
 
     @Override
-    public List<Biome> loadValue(List<String> entries, List<String> errors) {
+    public List<Biome> loadValues(List<String> entries, List<String> errors) {
         List<Biome> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
@@ -40,32 +39,31 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
     }
 
     @Override
+    public String transfromToString(Biome value) {
+        return value.name();
+    }
+
+    @Override
     public ListBiomeFeature clone(FeatureParentInterface newParent) {
         ListBiomeFeature clone = new ListBiomeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message);
         try {
             Biome biome = Biome.valueOf(message);
-            getValue().add(biome);
+            getValues().add(biome);
             return Optional.empty();
         } catch (Exception e) {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a Biome &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
         }
     }
 
-    @Override
-    public List<String> getCurrentValues() {
-        List<String> currentValues = new ArrayList<>();
-        for (Biome biome : getValue()) {
-            currentValues.add(biome.name());
-        }
-        return currentValues;
-    }
+
 
     @Override
     public List<TextComponent> getMoreInfo() {
@@ -85,24 +83,6 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
     public String getTips() {
         return "&8Example &7&oFOREST";
     }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue(new ArrayList<>());
-        for (String s : (List<String>) manager.currentWriting.get(editor)) {
-            s = StringConverter.decoloredString(s);
-            try {
-                Biome biome = Biome.valueOf(s);
-                getValue().add(biome);
-            } catch (Exception ignored) {
-            }
-        }
-
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
-    }
-
 
     @Override
     public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {

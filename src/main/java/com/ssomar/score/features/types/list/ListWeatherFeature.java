@@ -4,7 +4,6 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +26,7 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
     }
 
     @Override
-    public List<String> loadValue(List<String> entries, List<String> errors) {
+    public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> value = new ArrayList<>();
         for (String w : entries) {
             if (isValidWeather(w.toUpperCase())) {
@@ -37,6 +36,11 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
                 continue;
             }
         }
+        return value;
+    }
+
+    @Override
+    public String transfromToString(String value) {
         return value;
     }
 
@@ -52,12 +56,13 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
     @Override
     public ListWeatherFeature clone(FeatureParentInterface newParent) {
         ListWeatherFeature clone = new ListWeatherFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         message = message.toUpperCase();
         message = StringConverter.decoloredString(message);
         if (isValidWeather(message)) {
@@ -65,11 +70,6 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
         } else {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a weather. &7RAIN, CLEAR or STORM");
         }
-    }
-
-    @Override
-    public List<String> getCurrentValues() {
-        return getValue();
     }
 
     @Override
@@ -101,13 +101,5 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
         EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(playerEditor), getEditorName() + ":", true, false, false, true,
                 true, false, true, "", suggestions);
         editor.generateTheMenuAndSendIt(playerEditor);
-    }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue((List<String>) manager.currentWriting.get(editor));
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 }

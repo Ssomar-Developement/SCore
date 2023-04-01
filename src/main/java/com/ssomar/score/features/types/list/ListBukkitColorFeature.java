@@ -4,7 +4,6 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.CustomColor;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
@@ -31,7 +30,7 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
         reset();
     }
 
-    public List<Color> loadValue(List<String> entries, List<String> errors) {
+    public List<Color> loadValues(List<String> entries, List<String> errors) {
         List<Color> val = new ArrayList<>();
         for(String s : entries) {
             val.add(CustomColor.valueOf(s));
@@ -40,27 +39,24 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
     }
 
     @Override
+    public String transfromToString(Color value) {
+        return CustomColor.getName(value);
+    }
+
+    @Override
     public ListBukkitColorFeature clone(FeatureParentInterface newParent) {
         ListBukkitColorFeature clone = new ListBukkitColorFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue(), suggestions);
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message).trim();
         if(CustomColor.valueOf(message) == null) return Optional.of("&cThis color doesn't exist &7https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Color.html");
         return Optional.empty();
-    }
-
-    @Override
-    public List<String> getCurrentValues() {
-        List<String> colors = new ArrayList<>();
-        for(Color c : getValue()) {
-            colors.add(CustomColor.getName(c));
-        }
-        return colors;
     }
 
     @Override
@@ -77,20 +73,6 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
     public String getTips() {
         return "";
     }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        List<String> strVal = (List<String>) manager.currentWriting.get(editor);
-        List<Color> val = new ArrayList<>();
-        for(String s : strVal) {
-            val.add(CustomColor.valueOf(s));
-        }
-        setValue(val);
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
-    }
-
 
     @Override
     public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {

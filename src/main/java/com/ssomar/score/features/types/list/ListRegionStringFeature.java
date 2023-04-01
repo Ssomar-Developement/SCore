@@ -59,8 +59,7 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
         config.set(this.getName(), value);
     }
 
-    @Override
-    public List<String> getValue() {
+    public List<String> getValues() {
         return value;
     }
 
@@ -77,14 +76,14 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        gui.updateConditionList(getEditorName(), getValue(), "&cEMPTY");
+        gui.updateConditionList(getEditorName(), getValues(), "&cEMPTY");
     }
 
 
     @Override
     public ListRegionStringFeature clone(FeatureParentInterface newParent) {
         ListRegionStringFeature clone = new ListRegionStringFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 

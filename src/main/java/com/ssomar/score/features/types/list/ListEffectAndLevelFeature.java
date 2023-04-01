@@ -77,8 +77,7 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
         config.set(this.getName(), this.getCurrentValues());
     }
 
-    @Override
-    public Map<PotionEffectType, Integer> getValue() {
+    public Map<PotionEffectType, Integer> getValues() {
         return value;
     }
 
@@ -101,7 +100,7 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
     @Override
     public ListEffectAndLevelFeature clone(FeatureParentInterface newParent) {
         ListEffectAndLevelFeature clone = new ListEffectAndLevelFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 

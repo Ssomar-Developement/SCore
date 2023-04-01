@@ -309,8 +309,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         config.set(this.getName(), value);
     }
 
-    @Override
-    public List<String> getValue() {
+    public List<String> getValues() {
         return value;
     }
 
@@ -327,14 +326,14 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        gui.updateConditionList(getEditorName(), getValue(), "&cEMPTY");
+        gui.updateConditionList(getEditorName(), getValues(), "&cEMPTY");
     }
 
 
     @Override
     public ListDetailedEntityFeature clone(FeatureParentInterface newParent) {
         ListDetailedEntityFeature clone = new ListDetailedEntityFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 

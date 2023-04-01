@@ -4,7 +4,6 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +23,7 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
     }
 
     @Override
-    public List<Material> loadValue(List<String> entries, List<String> errors) {
+    public List<Material> loadValues(List<String> entries, List<String> errors) {
         List<Material> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
@@ -39,31 +38,28 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
     }
 
     @Override
+    public String transfromToString(Material value) {
+        return value.name();
+    }
+
+    @Override
     public ListMaterialFeature clone(FeatureParentInterface newParent) {
         ListMaterialFeature clone = new ListMaterialFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message);
         try {
             Material mat = Material.valueOf(message);
-            getValue().add(mat);
+            getValues().add(mat);
             return Optional.empty();
         } catch (Exception e) {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a Material &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
         }
-    }
-
-    @Override
-    public List<String> getCurrentValues() {
-        List<String> currentValues = new ArrayList<>();
-        for (Material mat : getValue()) {
-            currentValues.add(mat.name());
-        }
-        return currentValues;
     }
 
     @Override
@@ -83,23 +79,6 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
     @Override
     public String getTips() {
         return "&8Example &7&oSTONE";
-    }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue(new ArrayList<>());
-        for (String s : (List<String>) manager.currentWriting.get(editor)) {
-            s = StringConverter.decoloredString(s);
-            try {
-                Material mat = Material.valueOf(s);
-                getValue().add(mat);
-            } catch (Exception ignored) {
-            }
-        }
-
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
 

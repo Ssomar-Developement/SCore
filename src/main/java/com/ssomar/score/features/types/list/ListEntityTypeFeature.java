@@ -4,7 +4,6 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +24,7 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
     }
 
     @Override
-    public List<EntityType> loadValue(List<String> entries, List<String> errors) {
+    public List<EntityType> loadValues(List<String> entries, List<String> errors) {
         List<EntityType> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
@@ -40,31 +39,28 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
     }
 
     @Override
+    public String transfromToString(EntityType value) {
+        return value.name();
+    }
+
+    @Override
     public ListEntityTypeFeature clone(FeatureParentInterface newParent) {
         ListEntityTypeFeature clone = new ListEntityTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message).toUpperCase();
         try {
             EntityType mat = EntityType.valueOf(message);
-            getValue().add(mat);
+            getValues().add(mat);
             return Optional.empty();
         } catch (Exception e) {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a EntityType &6>> EntityTypes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html");
         }
-    }
-
-    @Override
-    public List<String> getCurrentValues() {
-        List<String> currentValues = new ArrayList<>();
-        for (EntityType mat : getValue()) {
-            currentValues.add(mat.name());
-        }
-        return currentValues;
     }
 
     @Override
@@ -84,23 +80,6 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
     @Override
     public String getTips() {
         return "&8Example &7&oBLAZE";
-    }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue(new ArrayList<>());
-        for (String s : (List<String>) manager.currentWriting.get(editor)) {
-            s = StringConverter.decoloredString(s).toUpperCase();
-            try {
-                EntityType mat = EntityType.valueOf(s);
-                getValue().add(mat);
-            } catch (Exception ignored) {
-            }
-        }
-
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
 

@@ -31,7 +31,7 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     }
 
     @Override
-    public List<String> loadValue(List<String> entries, List<String> errors) {
+    public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> result = new ArrayList<>();
         result = entries;
         if (!SCore.hasExecutableItems && entries.size() > 0) {
@@ -42,6 +42,11 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
             result.set(i, StringConverter.decoloredString(result.get(i)));
         }
         return result;
+    }
+
+    @Override
+    public String transfromToString(String value) {
+        return value;
     }
 
     @Override
@@ -61,22 +66,23 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     @Override
     public ListExecutableItemsFeature clone(FeatureParentInterface newParent) {
         ListExecutableItemsFeature clone = new ListExecutableItemsFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     public boolean isValid(ItemStack itemStack) {
-        if (getValue().size() == 0) return true;
+        if (getValues().size() == 0) return true;
         if (SCore.hasExecutableItems) {
             Optional<ExecutableItemInterface> executableItem = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemStack);
-            return executableItem.filter(executableItemInterface -> getValue().contains(executableItemInterface.getId())).isPresent();
+            return executableItem.filter(executableItemInterface -> getValues().contains(executableItemInterface.getId())).isPresent();
         } else return true;
     }
 
     // hey :D
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         if (SCore.hasExecutableItems) {
             message = StringConverter.decoloredString(message.trim());
             if (ExecutableItemsAPI.getExecutableItemsManager().isValidID(message)) {
@@ -85,11 +91,6 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
                 return Optional.of("&4&l[ERROR] &cThe message you entered is not a valid ExecutableItems ID ! (The id is word before the .yml) ");
         }
         return Optional.empty();
-    }
-
-    @Override
-    public List<String> getCurrentValues() {
-        return getValue();
     }
 
     @Override
@@ -111,17 +112,6 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     @Override
     public String getTips() {
         return "";
-    }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue((List<String>) manager.currentWriting.get(editor));
-        for (int i = 0; i < getValue().size(); i++) {
-            getValue().set(i, StringConverter.decoloredString(getValue().get(i)));
-        }
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
 

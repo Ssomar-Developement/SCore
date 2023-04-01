@@ -77,8 +77,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
         config.set(this.getName(), this.getCurrentValues());
     }
 
-    @Override
-    public Map<Enchantment, Integer> getValue() {
+    public Map<Enchantment, Integer> getValues() {
         return value;
     }
 
@@ -101,7 +100,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
     @Override
     public ListEnchantAndLevelFeature clone(FeatureParentInterface newParent) {
         ListEnchantAndLevelFeature clone = new ListEnchantAndLevelFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 
