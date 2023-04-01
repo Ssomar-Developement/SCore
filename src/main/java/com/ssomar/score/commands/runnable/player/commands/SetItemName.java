@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,7 +35,7 @@ public class SetItemName extends PlayerCommand {
             build.append(args.get(i) + " ");
         }
 
-        itemmeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',build.toString()));
+        itemmeta.setDisplayName(StringConverter.coloredString(build.toString()));
 
         item.setItemMeta(itemmeta);
     }
