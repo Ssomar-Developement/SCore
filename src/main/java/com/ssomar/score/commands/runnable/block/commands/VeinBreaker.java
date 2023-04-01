@@ -68,6 +68,7 @@ public class VeinBreaker extends BlockCommand {
                         return;
                 } else {
                     if (!(oldMaterial.toString().contains("ORE")
+                            || oldMaterial.toString().contains("ANCIENT_DEBRIS")
                             || oldMaterial.toString().contains("LOG")
                             || oldMaterial.toString().contains("WOOD")
                             /* 1.16 woods */
