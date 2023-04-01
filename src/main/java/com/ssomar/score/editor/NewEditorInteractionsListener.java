@@ -38,6 +38,8 @@ import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditor;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditorManager;
+import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditor;
+import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditorManager;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditor;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditorManager;
 import com.ssomar.score.features.custom.drop.DropFeaturesEditor;
@@ -325,6 +327,8 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof DetailedBlocksEditor) {
             DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
+        } else if(holder instanceof DetailedItemsEditor){
+            DetailedItemsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
         } else if (holder instanceof HeadFeaturesEditor) {
             HeadFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -554,6 +558,9 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (DetailedBlocksEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             DetailedBlocksEditorManager.getInstance().receiveMessage(p, message);
+        } else if (DetailedItemsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DetailedItemsEditorManager.getInstance().receiveMessage(p, message);
         } else if (HeadFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             HeadFeaturesEditorManager.getInstance().receiveMessage(p, message);
