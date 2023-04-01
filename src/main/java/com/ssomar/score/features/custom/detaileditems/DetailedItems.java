@@ -1,5 +1,7 @@
-package com.ssomar.score.features.custom.detailedblocks;
+package com.ssomar.score.features.custom.detaileditems;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -11,14 +13,15 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -30,28 +33,28 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, DetailedBlocks, DetailedBlocksEditor, DetailedBlocksEditorManager> implements Serializable {
+public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, DetailedItems, DetailedItemsEditor, DetailedItemsEditorManager> implements Serializable {
 
-    private ListDetailedMaterialFeature blocks;
+    private ListDetailedMaterialFeature items;
     private BooleanFeature cancelEventIfNotValid;
     private transient ColoredStringFeature messageIfNotValid;
 
-    public DetailedBlocks(FeatureParentInterface parent, String name, String editorName) {
-        super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
+    public DetailedItems(FeatureParentInterface parent, String name, String editorName) {
+        super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain items", "&7&oempty = all items"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false);
         reset();
     }
 
-    public DetailedBlocks(FeatureParentInterface parent) {
-        super(parent, "detailedBlocks", "Detailed Blocks", new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
+    public DetailedItems(FeatureParentInterface parent) {
+        super(parent, "detailedItems", "Detailed Items", new String[]{"&7&oMake the activator run", "&7&oonly for certain items", "&7&oempty = all items"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false);
         reset();
     }
 
 
     @Override
     public void reset() {
-        this.blocks = new ListDetailedMaterialFeature(this, "blocks", new ArrayList<>(), "Blocks", new String[]{"&7&oBlocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false, false, true);
-        this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the block is not valid?"}, Material.LEVER, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.ofNullable("&4&l[Error] &cthe block is not correct !"), "Message if not valid", new String[]{"&7&oMessage if the block is not valid?"}, GUI.WRITABLE_BOOK, false, false);
+        this.items = new ListDetailedMaterialFeature(this, "items", new ArrayList<>(), "Items", new String[]{"&7&oItems"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false, false, false);
+        this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the item is not valid?"}, Material.LEVER, false, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.ofNullable("&4&l[Error] &cthe item is not correct !"), "Message if not valid", new String[]{"&7&oMessage if the item is not valid?"}, GUI.WRITABLE_BOOK, false, false);
     }
 
     @Override
@@ -59,7 +62,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         List<String> errors = new ArrayList<>();
         if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
-            errors.addAll(blocks.load(plugin, section, isPremiumLoading));
+            errors.addAll(items.load(plugin, section, isPremiumLoading));
             errors.addAll(cancelEventIfNotValid.load(plugin, section, isPremiumLoading));
             errors.addAll(messageIfNotValid.load(plugin, section, isPremiumLoading));
         }
@@ -67,11 +70,18 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         return errors;
     }
 
-    public boolean isValid(@NotNull Block block, Material material, Optional<String> statesStrOpt, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
-        if(blocks.getValues().isEmpty() && blocks.getBlacklistedValues().isEmpty()) return true;
+    public boolean isValid(@NotNull ItemStack item, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
+        String str = "";
+        if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+            NBTItem nbti = new NBTItem(item);
+            SsomarDev.testMsg("isValid DetailedItems >> "+nbti.toString(), true);
+            str = nbti.toString();
+        }
 
-        if((block != null && blocks.isValidCustomBlock(block))
-            || (material != null && blocks.isValidMaterial(material, statesStrOpt))){
+        if(items.getValues().isEmpty() && items.getBlacklistedValues().isEmpty()) return true;
+
+        if((item != null && items.isValidCustomItem(item))
+            || (item != null && items.isValidMaterial(item.getType(), Optional.of(str)))){
             return true;
         }
         else {
@@ -85,61 +95,29 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         }
     }
 
-    public boolean isValidMaterial(@NotNull Material material, Optional<String> statesStrOpt, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
-        //SsomarDev.testMsg("isValidMaterial ?");
-        if (!blocks.isValidMaterial(material, statesStrOpt) && !blocks.getValues().isEmpty()) {
-            //SsomarDev.testMsg("isValidMaterial NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
-                ((Cancellable) event).setCancelled(true);
-            }
-            if (playerOpt.isPresent() && messageIfNotValid != null && messageIfNotValid.getValue().isPresent()) {
-                SendMessage.sendMessageNoPlch(playerOpt.get(), sp.replacePlaceholder(messageIfNotValid.getValue().get()));
-            }
-            return false;
-        }
-        //SsomarDev.testMsg("isValidMaterial yesssssssssssssssssss");
-        return true;
-    }
-
-    public boolean isValidCustomBlock(@NotNull Block block, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
-        //SsomarDev.testMsg("isValidMaterial ?");
-        if (!blocks.isValidCustomBlock(block) && !blocks.getValues().isEmpty()) {
-            //SsomarDev.testMsg("isValidMaterial NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
-                ((Cancellable) event).setCancelled(true);
-            }
-            if (playerOpt.isPresent() && messageIfNotValid != null && messageIfNotValid.getValue().isPresent()) {
-                SendMessage.sendMessageNoPlch(playerOpt.get(), sp.replacePlaceholder(messageIfNotValid.getValue().get()));
-            }
-            return false;
-        }
-        //SsomarDev.testMsg("isValidMaterial yesssssssssssssssssss");
-        return true;
-    }
-
     @Override
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
-        blocks.save(section);
+        items.save(section);
         cancelEventIfNotValid.save(section);
         messageIfNotValid.save(section);
     }
 
     @Override
-    public DetailedBlocks getValue() {
+    public DetailedItems getValue() {
         return this;
     }
 
     @Override
-    public DetailedBlocks initItemParentEditor(GUI gui, int slot) {
+    public DetailedItems initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
-        if (blocks.getValues().isEmpty() && !blocks.getBlacklistedValues().isEmpty())
-            finalDescription[finalDescription.length - 3] = "&7Blocks: &e&lALL BLOCKS";
+        if (items.getValues().isEmpty() && !items.getBlacklistedValues().isEmpty())
+            finalDescription[finalDescription.length - 3] = "&7Blocks: &e&lALL ITEMS";
         else
-            finalDescription[finalDescription.length - 3] = "&7Detailed Blocks: &a+" + blocks.getValues().size()+blocks.getBlacklistedValues().size();
+            finalDescription[finalDescription.length - 3] = "&7Detailed Items: &a+" + items.getValues().size()+ items.getBlacklistedValues().size();
 
         if (messageIfNotValid.getValue().isPresent()) {
             finalDescription[finalDescription.length - 2] = "&7Message if NV: &e" + messageIfNotValid.getValue().get();
@@ -169,9 +147,9 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     }
 
     @Override
-    public DetailedBlocks clone(FeatureParentInterface newParent) {
-        DetailedBlocks dropFeatures = new DetailedBlocks(newParent, getName(), getEditorName());
-        dropFeatures.setBlocks(blocks.clone(dropFeatures));
+    public DetailedItems clone(FeatureParentInterface newParent) {
+        DetailedItems dropFeatures = new DetailedItems(newParent, getName(), getEditorName());
+        dropFeatures.setItems(items.clone(dropFeatures));
         dropFeatures.setCancelEventIfNotValid(cancelEventIfNotValid.clone(dropFeatures));
         dropFeatures.setMessageIfNotValid(messageIfNotValid.clone(dropFeatures));
         return dropFeatures;
@@ -179,7 +157,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(blocks, cancelEventIfNotValid, messageIfNotValid));
+        return new ArrayList<>(Arrays.asList(items, cancelEventIfNotValid, messageIfNotValid));
     }
 
     @Override
@@ -200,9 +178,9 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     @Override
     public void reload() {
         for (FeatureInterface feature : getParent().getFeatures()) {
-            if (feature instanceof DetailedBlocks && feature.getEditorName().equals(getEditorName())) {
-                DetailedBlocks hiders = (DetailedBlocks) feature;
-                hiders.setBlocks(blocks);
+            if (feature instanceof DetailedItems && feature.getEditorName().equals(getEditorName())) {
+                DetailedItems hiders = (DetailedItems) feature;
+                hiders.setItems(items);
                 hiders.setCancelEventIfNotValid(cancelEventIfNotValid);
                 hiders.setMessageIfNotValid(messageIfNotValid);
                 break;
@@ -217,7 +195,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DetailedBlocksEditorManager.getInstance().startEditing(player, this);
+        DetailedItemsEditorManager.getInstance().startEditing(player, this);
     }
 
 }
