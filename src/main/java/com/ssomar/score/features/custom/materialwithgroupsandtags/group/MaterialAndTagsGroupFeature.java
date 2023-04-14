@@ -9,7 +9,7 @@ import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.MaterialWithGroups;
+import com.ssomar.score.utils.emums.MaterialWithGroups;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

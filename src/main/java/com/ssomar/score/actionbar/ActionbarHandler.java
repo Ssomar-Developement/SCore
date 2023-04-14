@@ -61,7 +61,7 @@ public class ActionbarHandler {
                 }
             }
         };
-        runnable.runTaskTimer(SCore.plugin, 0L, 20L);
+        SCore.schedulerHook.runRepeatingTask(runnable, 0L, 20L);
     }
 
     public void removeActionbars(Player p) {

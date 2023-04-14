@@ -8,7 +8,7 @@ import com.ssomar.score.features.custom.conditions.world.condition.IfWeather;
 import com.ssomar.score.features.custom.conditions.world.condition.IfWorldTime;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

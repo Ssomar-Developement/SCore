@@ -1,5 +1,6 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.messages;
 
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,7 +53,7 @@ public class SendMessage implements Serializable {
     public static void sendMessageFinal(CommandSender cs, String prepareMsg, boolean checkUncoloredEmpty) {
         if(cs == null) return;
         if (!(prepareMsg.isEmpty() || (checkUncoloredEmpty && StringConverter.decoloredString(prepareMsg).isEmpty()))){
-            if(prepareMsg.contains("&") || prepareMsg.contains("§") || prepareMsg.contains("#")) {
+            if(prepareMsg.contains("&") || prepareMsg.contains("§") || (prepareMsg.contains("#") && !prepareMsg.contains("gradient:") && !prepareMsg.contains("color:"))) {
                 prepareMsg = StringConverter.coloredString(prepareMsg);
                 //SsomarDev.testMsg("send : s = " + prepareMsg, true);
                 cs.sendMessage(prepareMsg);

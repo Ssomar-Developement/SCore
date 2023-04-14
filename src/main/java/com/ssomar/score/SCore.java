@@ -21,7 +21,10 @@ import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
+import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
+import com.ssomar.score.utils.scheduler.SchedulerHook;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
@@ -34,6 +37,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR = "&eSCore";
     public static final String NAME_2 = "[SCore]";
     public static SCore plugin;
+
+    public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
     public static boolean hasExecutableItems = false;
     public static boolean hasExecutableBlocks = false;
@@ -87,22 +92,27 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v19v1 = false;
     private CommandsClass commandClass;
 
-    /* The server is in 1.12 ? */
+    /* The server is folia? */
+    public static boolean isFolia() {
+        return Bukkit.getServer().getVersion().contains("Folia");
+    }
+
+    /* The server is in 1.8 ? */
     public static boolean is1v8() {
         return is1v8;
     }
 
-    /* The server is in 1.12 ? */
+    /* The server is in 1.9 ? */
     public static boolean is1v9() {
         return is1v9;
     }
 
-    /* The server is in 1.12 ? */
+    /* The server is in 1.10 ? */
     public static boolean is1v10() {
         return is1v10;
     }
 
-    /* The server is in 1.12 ? */
+    /* The server is in 1.11 ? */
     public static boolean is1v11() {
         return is1v11;
     }
@@ -190,9 +200,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        if(isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
+        else schedulerHook = new BukkitSchedulerHook(this);
         commandClass = new CommandsClass(this);
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
+
+        if(isFolia()) {
+            Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &eFolia");
+        }
 
         this.initVersion();
 

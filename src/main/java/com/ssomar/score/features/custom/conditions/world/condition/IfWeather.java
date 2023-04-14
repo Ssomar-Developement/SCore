@@ -3,7 +3,7 @@ package com.ssomar.score.features.custom.conditions.world.condition;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
 import com.ssomar.score.features.types.list.ListWeatherFeature;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

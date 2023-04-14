@@ -1,7 +1,7 @@
 package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

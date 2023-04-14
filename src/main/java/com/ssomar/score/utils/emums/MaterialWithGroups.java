@@ -1,6 +1,7 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.emums;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
 
 import java.util.*;

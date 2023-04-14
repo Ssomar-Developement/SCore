@@ -13,7 +13,7 @@ import com.ssomar.score.projectiles.SProjectileEditorManager;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import lombok.Getter;
 import lombok.Setter;

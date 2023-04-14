@@ -4,7 +4,9 @@ import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.strings.StringConverter;
+import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -23,7 +25,18 @@ public class ActionbarCommand extends PlayerCommand {
             else name.append(" ").append(args.get(i));
         }
 
-        int time = Double.valueOf(args.get(args.size() - 1)).intValue();
+        Optional<Double> d = NTools.getDouble(args.get(args.size() - 1));
+        if (!d.isPresent()) {
+            /* Concat args */
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < args.size(); i++) {
+                if (i == 0) sb = new StringBuilder(args.get(i));
+                else sb.append(" ").append(args.get(i));
+            }
+            Utils.sendConsoleMsg(ChatColor.RED + "The time must be a number ("+sb.toString()+")");
+            return;
+        }
+        int time = d.get().intValue();
         ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(StringConverter.coloredString(name.toString()), time));
     }
 

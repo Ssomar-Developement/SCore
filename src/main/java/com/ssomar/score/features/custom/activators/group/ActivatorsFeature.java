@@ -1,7 +1,5 @@
 package com.ssomar.score.features.custom.activators.group;
 
-import com.ssomar.executableblocks.executableblocks.activators.Option;
-import com.ssomar.score.SCore;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -58,14 +56,11 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                 }
-                //SsomarDev.testMsg("Activator " + activatorID + " loaded");
+                //SsomarDev.testMsg("Activator " + activatorID + " loaded", true);
                 if (activator.getOption().isLoopOption()) {
-                    //SsomarDev.testMsg("Activator " + activatorID + " is a loop activator");
+                    //SsomarDev.testMsg("Activator " + activatorID + " is a loop activator", true);
                     LoopManager.getInstance().addLoopActivator(activator);
-                    //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size());
-                }
-                if (SCore.hasExecutableBlocks && activator.getOption().equals(Option.ENTITY_WALK_ON)) {
-                    LoopManager.getInstance().getCheckEntityOnofEB().add(activator);
+                    //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size(), true);
                 }
                 activators.put(activatorID, activator);
             }
@@ -190,7 +185,6 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
 
     @Override
     public void deleteFeature(@NotNull Player editor, NewSActivator feature) {
-        LoopManager.getInstance().getCheckEntityOnofEB().remove(activators.get(feature.getId()));
         LoopManager.getInstance().removeLoopActivator(activators.get(feature.getId()));
         activators.remove(feature.getId());
     }

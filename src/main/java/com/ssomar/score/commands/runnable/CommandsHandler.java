@@ -9,7 +9,7 @@ import com.ssomar.score.data.BlockCommandsQuery;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.EntityCommandsQuery;
 import com.ssomar.score.data.PlayerCommandsQuery;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

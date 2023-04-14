@@ -2,10 +2,11 @@ package com.ssomar.score.menu;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.FixedMaterial;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -245,7 +246,8 @@ public abstract class GUI implements IGUI {
                 player.openInventory(inv);
             }
         };
-        runnable.runTask(SCore.plugin);
+        Entity entity = (Entity) player;
+        SCore.schedulerHook.runEntityTask(runnable, null, entity, 0);
     }
 
     public String getActually(ItemStack item) {

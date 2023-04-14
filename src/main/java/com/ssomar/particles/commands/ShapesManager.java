@@ -43,7 +43,7 @@ public class ShapesManager {
         // PRBLEM ARGUMENTS + INFINITE LOOP whitelistedShapes.add("lightning");
         //whitelistedShapes.add("dna");
         whitelistedShapes.add("dnaReplication");
-        whitelistedShapes.add("drawLine");
+        //whitelistedShapes.add("drawLine");
         // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("cloud");
         whitelistedShapes.add("tesseract");
         whitelistedShapes.add("mandelbrot");

@@ -5,7 +5,7 @@ import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.sparticles.SParticle;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.CustomColor;
+import com.ssomar.score.utils.emums.CustomColor;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

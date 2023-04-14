@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +26,7 @@ public class SetItemName extends PlayerCommand {
             item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
             itemmeta = item.getItemMeta();
         } catch (NullPointerException e) {
+            e.printStackTrace();
             return;
         }
 

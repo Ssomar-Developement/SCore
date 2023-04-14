@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.strings.StringConverter;
 
 import java.util.*;
 

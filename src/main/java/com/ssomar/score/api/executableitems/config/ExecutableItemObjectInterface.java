@@ -1,6 +1,6 @@
 package com.ssomar.score.api.executableitems.config;
 
-import com.ssomar.score.utils.VariableUpdateType;
+import com.ssomar.score.utils.emums.VariableUpdateType;
 
 import java.util.HashMap;
 

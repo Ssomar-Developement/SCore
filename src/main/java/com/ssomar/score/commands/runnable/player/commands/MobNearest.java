@@ -43,6 +43,7 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
                         .orElse(null);
 
                 if (e == null || e.getLocation().distance(receiver.getLocation()) > distance) {
+                    //System.out.println("MOB_AROUND RUNNABLE >> NO MOB NEAREST");
                     return;
                 }
 
@@ -59,6 +60,7 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
                 for (String s : verifyArgs) {
                     prepareCommands.append(s);
                     prepareCommands.append(" ");
+                    //System.out.println("INIT RUN COMMANDS BUILDER >> " + s + " <<");
                 }
                 prepareCommands.deleteCharAt(prepareCommands.length() - 1);
 

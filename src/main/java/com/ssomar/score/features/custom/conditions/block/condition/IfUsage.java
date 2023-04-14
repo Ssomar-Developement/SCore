@@ -8,8 +8,8 @@ import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterfa
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

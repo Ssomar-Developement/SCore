@@ -2,7 +2,7 @@ package com.ssomar.score.menu.score;
 
 import com.ssomar.score.menu.GUIAbstract;
 import com.ssomar.score.menu.GUIManager;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;

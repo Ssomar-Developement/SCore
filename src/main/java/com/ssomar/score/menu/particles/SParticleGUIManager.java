@@ -6,7 +6,7 @@ import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sparticles.SParticle;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 

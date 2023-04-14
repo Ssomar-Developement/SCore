@@ -4,6 +4,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.player.commands.*;
 import com.ssomar.score.commands.runnable.player.commands.Setlore;
+import com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace.EquipmentVisualCancel;
+import com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace.EquipmentVisualReplace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
             /* No damageable class before 1.12 */
             commands.add(new ModifyDurability());
             commands.add(new EquipmentVisualReplace());
+            commands.add(new EquipmentVisualCancel());
         }
         if(SCore.is1v16Plus()){
             commands.add(new Absorption());

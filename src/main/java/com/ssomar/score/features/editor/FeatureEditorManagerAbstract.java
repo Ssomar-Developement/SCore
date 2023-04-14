@@ -3,7 +3,7 @@ package com.ssomar.score.features.editor;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.features.*;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;

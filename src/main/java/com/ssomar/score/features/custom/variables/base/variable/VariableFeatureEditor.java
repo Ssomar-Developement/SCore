@@ -2,7 +2,7 @@ package com.ssomar.score.features.custom.variables.base.variable;
 
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.emums.VariableType;
 
 public class VariableFeatureEditor extends FeatureEditorInterface<VariableFeature> {
 

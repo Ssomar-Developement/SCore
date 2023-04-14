@@ -1,4 +1,4 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.emums;
 
 import org.bukkit.inventory.EquipmentSlot;
 

@@ -1,6 +1,6 @@
 package com.ssomar.score.utils.placeholders;
 
-import com.ssomar.score.utils.RomanNumber;
+import com.ssomar.score.utils.numbers.RomanNumber;
 
 public abstract class PlaceholdersInterface {
 

@@ -4,35 +4,68 @@ import java.util.List;
 
 public interface SOption {
 
+    public default List<SOption> getOptionWithPlayer(){
+        return OptionGlobal.getOptionWithPlayerST();
+    }
 
-    List<SOption> getOptionWithPlayer();
+    public default List<SOption> getOptionWithEntity(){
+        return OptionGlobal.getOptionWithEntityST();
+    }
 
-    List<SOption> getOptionWithEntity();
+    public default List<SOption> getOptionWithWorld(){
+        return OptionGlobal.getOptionWithWorldST();
+    }
 
-    List<SOption> getOptionWithWorld();
+    public default List<SOption> getOptionWithItem(){
+        return OptionGlobal.getOptionWithItemST();
+    }
 
-    List<SOption> getOptionWithItem();
+    public default List<SOption> getOptionWithOwner(){
+        return OptionGlobal.getOptionWithOwnerST();
+    }
 
-    List<SOption> getOptionWithOwner();
+    public default List<SOption> getOptionWithBlock(){
+        return OptionGlobal.getOptionWithBlockST();
+    }
 
-    List<SOption> getOptionWithBlock();
+    public default List<SOption> getOptionWithTargetBlock(){
+        return OptionGlobal.getOptionWithTargetBlockST();
+    }
 
-    List<SOption> getOptionWithTargetBlock();
+    public default List<SOption> getOptionWithTargetEntity(){
+        return OptionGlobal.getOptionWithTargetEntityST();
+    }
 
-    List<SOption> getOptionWithTargetEntity();
+    public default List<SOption> getOptionWithTargetPlayer(){
+        return OptionGlobal.getOptionWithTargetPlayerST();
+    }
 
-    List<SOption> getOptionWithTargetPlayer();
+    public default List<SOption> getPremiumOption(){
+        return OptionGlobal.getPremiumOptionST();
+    }
 
-    List<SOption> getPremiumOption();
+    public default boolean isValidOption(String optionStr){
+        return OptionGlobal.isValidOptionST(optionStr);
+    }
 
-    boolean isValidOption(String optionStr);
+    public default boolean isLoopOption(){
+        return OptionGlobal.isLoopOptionST(this);
+    }
 
-    boolean isLoopOption();
+    public default SOption getOption(String optionStr){
+        return OptionGlobal.getOptionST(optionStr);
+    }
 
-    SOption getOption(String optionStr);
+    public default List<SOption> getValues(){
+        return OptionGlobal.getValuesST();
+    }
 
-    List<SOption> getValues();
+    public default SOption getDefaultValue(){
+        return OptionGlobal.getDefaultValueST();
+    }
 
-    SOption getDefaultValue();
+    public default boolean containsThisName(String name) {
+        return OptionGlobal.containsThisNameST(name);
+    }
 
 }

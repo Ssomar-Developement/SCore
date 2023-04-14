@@ -6,7 +6,7 @@ import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import lombok.Getter;

@@ -7,8 +7,8 @@ import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.usedapi.ItemsAdderAPI;
-import com.ssomar.score.utils.MaterialWithGroups;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.emums.MaterialWithGroups;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -135,7 +135,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         String symbolSeparator = ",";
 
         if(forBlocks){
-            symbolStart = "\\[";
+            symbolStart = "[";
+            symbolStartSplit = "\\[";
             symbolEnd = "]";
             symbolEquals = "=";
             symbolSeparator = ",";
@@ -334,7 +335,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     @Override
     public String getTips() {
-        return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
+        if(forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
+        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword";
     }
 
     @Override

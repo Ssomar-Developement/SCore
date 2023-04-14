@@ -4,14 +4,19 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.nofalldamage.NoFallDamageManager;
+import com.ssomar.score.utils.Couple;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class FrontDash extends PlayerCommand {
 
@@ -20,6 +25,11 @@ public class FrontDash extends PlayerCommand {
         double amount = Double.parseDouble(args.get(0));
         double customY = 0;
         if (args.size() > 1) customY = Double.parseDouble(args.get(1));
+
+        boolean fallDamage = false;
+        if (args.size() >= 3) {
+            fallDamage = Boolean.parseBoolean(args.get(2));
+        }
 
         Location pLoc = receiver.getLocation();
         if (SCore.is1v11Less() || !receiver.isGliding()) pLoc.setPitch(0);
@@ -32,6 +42,19 @@ public class FrontDash extends PlayerCommand {
         }
         receiver.setVelocity(v);
 
+        UUID uuid = UUID.randomUUID();
+
+        if (!fallDamage) {
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+                }
+            };
+            BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);
+
+            NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
+        }
     }
 
     @Override
@@ -46,6 +69,12 @@ public class FrontDash extends PlayerCommand {
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }
 
+        if (args.size() >= 3) {
+            String value = args.get(2);
+            ArgumentChecker ac3 = checkBoolean(value, isFinalVerification, getTemplate());
+            if (!ac3.isValid()) return Optional.of(ac.getError());
+        }
+
         return Optional.empty();
     }
 
@@ -58,7 +87,7 @@ public class FrontDash extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "FRONTDASH {number} [custom y]";
+        return "FRONTDASH {number} [custom y] [fallDamage]";
     }
 
     @Override

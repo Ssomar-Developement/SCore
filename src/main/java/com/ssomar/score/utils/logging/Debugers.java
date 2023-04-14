@@ -1,5 +1,6 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.logging;
 
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;

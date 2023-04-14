@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ import java.util.List;
 
 public class ProtocolLibAPI {
 
-    public static void sendEquipmentVisualReplace(Player player, EquipmentSlot slot, Material material, int amount, int time) {
-        sendEquipmentVisualReplace(player, slot, new ItemStack(material, amount), time);
+    public static List<BukkitTask> sendEquipmentVisualReplace(Player player, EquipmentSlot slot, Material material, int amount, int time) {
+        return sendEquipmentVisualReplace(player, slot, new ItemStack(material, amount), time);
     }
 
-    public static void sendEquipmentVisualReplace(Player player, EquipmentSlot slot, ItemStack item, int time) {
-
+    public static List<BukkitTask> sendEquipmentVisualReplace(Player player, EquipmentSlot slot, ItemStack item, int time) {
+        List<BukkitTask> tasks = new ArrayList<>();
         for(int i = 0 ; i < time/20; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
@@ -53,7 +54,7 @@ public class ProtocolLibAPI {
                     }
                 }
             };
-            runnable.runTaskLaterAsynchronously(SCore.plugin, i*20);
+            tasks.add(runnable.runTaskLaterAsynchronously(SCore.plugin, i*20));
         }
 
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -79,7 +80,8 @@ public class ProtocolLibAPI {
                 }
             }
         };
-        runnable.runTaskLater(SCore.plugin, time);
+        tasks.add(runnable.runTaskLater(SCore.plugin, time));
+        return tasks;
     }
 
     public static Pair<EnumWrappers.ItemSlot, ItemStack> get(EnumWrappers.ItemSlot slot, ItemStack item) {

@@ -2,7 +2,6 @@ package com.ssomar.score.features.custom.commands.player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
-import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommandManager;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
@@ -14,7 +13,7 @@ import com.ssomar.score.features.custom.commands.CommandsAbstractFeature;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;

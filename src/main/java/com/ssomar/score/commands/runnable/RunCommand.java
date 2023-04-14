@@ -1,17 +1,15 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class RunCommand implements Serializable {
 
@@ -88,7 +86,20 @@ public abstract class RunCommand implements Serializable {
     public void runCommand(CommandManager manager) {
         //SsomarDev.testMsg("Command run command: "+this.getBrutCommand());
         String finalCommand = this.getBrutCommand();
+        String [] split = finalCommand.split(" ");
+        int later = 0;
+        Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
+        for (String s : split) {
+            /* Exception 1 */
+           if(s.contains("%math_") && s.contains("%around")){
+               placeholdersToReplaceLatter.put(later, s);
+               finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
+           }
+        }
         finalCommand = this.getSp().replacePlaceholder(finalCommand);
+        for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
+            finalCommand = finalCommand.replace("PLACEHOLDER_TO_REPLACE_LATER_"+entry.getKey(), entry.getValue());
+        }
 
         if (getBrutCommand().contains("ei giveslot")) {
             try {
@@ -129,7 +140,7 @@ public abstract class RunCommand implements Serializable {
                 insideDelayedCommand();
             }
         };
-        task = runnable.runTaskLater(SCore.plugin, this.getDelay());
+        SCore.schedulerHook.runTask(runnable, this.getDelay());
         CommandsHandler.getInstance().addDelayedCommand(this);
     }
 

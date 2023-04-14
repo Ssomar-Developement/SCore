@@ -2,7 +2,7 @@ package com.ssomar.score.features.custom.variables.real;
 
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.emums.VariableType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

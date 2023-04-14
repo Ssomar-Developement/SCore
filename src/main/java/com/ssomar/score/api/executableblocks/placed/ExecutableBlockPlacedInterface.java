@@ -1,6 +1,6 @@
 package com.ssomar.score.api.executableblocks.placed;
 
-import com.ssomar.score.utils.VariableUpdateType;
+import com.ssomar.score.utils.emums.VariableUpdateType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

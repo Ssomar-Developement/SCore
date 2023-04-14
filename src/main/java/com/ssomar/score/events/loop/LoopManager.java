@@ -1,25 +1,13 @@
 package com.ssomar.score.events.loop;
 
-import com.ssomar.executableblocks.events.EntityWalkOnEvent;
-import com.ssomar.executableblocks.executableblocks.activators.ActivatorEBFeature;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableevents.executableevents.activators.ActivatorEEFeature;
-import com.ssomar.executableitems.executableitems.activators.ActivatorEIFeature;
-import com.ssomar.executableitems.executableitems.activators.Option;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.sobject.sactivator.EventInfo;
+import com.ssomar.score.sobject.sactivator.OptionGlobal;
+import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -33,14 +21,10 @@ public class LoopManager {
     private final List<NewSActivator> loopActivatorsToAdd;
     private final List<NewSActivator> loopActivatorsToRemove;
 
-    @Getter
-    private final List<NewSActivator> checkEntityOnofEB;
-
     public LoopManager() {
         loopActivators = new HashMap<>();
         loopActivatorsToAdd = new ArrayList<>();
         loopActivatorsToRemove = new ArrayList<>();
-        checkEntityOnofEB = new ArrayList<>();
         this.runLoop();
     }
 
@@ -56,32 +40,37 @@ public class LoopManager {
             @Override
             public void run() {
                 //SsomarDev.testMsg("loop activatores registered: " + loopActivators.size());
-                List<NewSActivator> toActiv = new ArrayList<>();
+                /* List of activators that we need to activate for this cycle */
+                List<NewSActivator> toActivate = new ArrayList<>();
 
+                /* The activator to remove for the LOOP CYCLE */
                 List<NewSActivator> toRemoveList = new ArrayList<>();
+                /* Remove the old version of the activators who want to add */
                 toRemoveList.addAll(loopActivatorsToAdd);
+                /* Remove the activators who want to remove */
                 toRemoveList.addAll(loopActivatorsToRemove);
 
+                /* Remove the activators selected before and extract the activators to enable */
                 Iterator<NewSActivator> it1 = loopActivators.keySet().iterator();
                 while (it1.hasNext()) {
                     NewSActivator activator = it1.next();
 
-                   NewSActivator needRemove = null;
-                    for(NewSActivator toRemove1 : toRemoveList) {
-                        if(activator.isEqualsOrAClone(toRemove1)) {
+                    NewSActivator needRemove = null;
+                    for (NewSActivator toRemove1 : toRemoveList) {
+                        if (activator.isEqualsOrAClone(toRemove1)) {
                             needRemove = toRemove1;
                             it1.remove();
                         }
-                        if(needRemove != null) break;
+                        if (needRemove != null) break;
                     }
-                    if(needRemove != null){
+                    if (needRemove != null) {
                         toRemoveList.remove(needRemove);
                         loopActivatorsToRemove.remove(needRemove);
                         continue;
                     }
 
                     LoopFeatures loop;
-                    if((loop = activator.getLoopFeatures()) == null) continue;
+                    if ((loop = activator.getLoopFeatures()) == null) continue;
 
                     int delay;
                     if ((delay = loopActivators.get(activator)) > 0) {
@@ -90,7 +79,7 @@ public class LoopManager {
                         loopActivators.put(activator, delay - toRemove);
                         continue;
                     } else {
-                        toActiv.add(activator);
+                        toActivate.add(activator);
                         //SsomarDev.testMsg("LOOP > "+loop.getDelay().getValue().get());
                         if (loop.getDelayInTick().getValue())
                             loopActivators.put(activator, loop.getDelay().getValue().get());
@@ -98,122 +87,40 @@ public class LoopManager {
                     }
                 }
 
-                for(NewSActivator activator : loopActivatorsToAdd) {
+                /* Add the new activators */
+                for (NewSActivator activator : loopActivatorsToAdd) {
                     loopActivators.put(activator, 0);
                 }
                 loopActivatorsToAdd.clear();
 
-                //SsomarDev.testMsg("To activ: " + toActiv.size());
-                if (!toActiv.isEmpty() || !checkEntityOnofEB.isEmpty()) {
+                //SsomarDev.testMsg("To activ: " + toActivate.size(), true);
+                if (!toActivate.isEmpty()) {
 
-                    if (SCore.hasExecutableItems) {
-                        try {
-                            List<ActivatorEIFeature> listEI = new ArrayList<>();
+                    List<NewSActivator> loopActivators = new ArrayList<>();
 
-                            for (NewSActivator sActivator : toActiv) {
-                                if (sActivator instanceof ActivatorEIFeature) {
-                                    listEI.add((ActivatorEIFeature) sActivator);
-                                }
-                            }
-
-                            if (!listEI.isEmpty()) {
-                                for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                                    LoopEvent e = new LoopEvent();
-
-                                    EventInfo eInfo = new EventInfo(e);
-                                    eInfo.setPlayer(Optional.of(player));
-                                    com.ssomar.executableitems.events.EventsManager.getInstance().activeOption(Option.LOOP, eInfo, listEI);
-                                }
-                            }
-                        } catch (Exception | Error ignored) {
-                        }
-
+                    for (NewSActivator sActivator : toActivate) {
+                        if (sActivator.getOption().isLoopOption())
+                            loopActivators.add(sActivator);
                     }
 
-                    if (SCore.hasExecutableBlocks) {
-                        //SsomarDev.testMsg("Checking EB on entity >> " + checkEntityOnofEB.size());
-                        List<ActivatorEBFeature> listEB = new ArrayList<>();
-                        for (NewSActivator sActivator : checkEntityOnofEB) {
-                            if (sActivator instanceof ActivatorEBFeature) {
-                                listEB.add((ActivatorEBFeature) sActivator);
-                            }
-                        }
+                    LoopEvent e = new LoopEvent();
+                    EventInfo eInfo = new EventInfo(e);
 
-                        for (NewSActivator sActivator : toActiv) {
-                            if (sActivator instanceof ActivatorEBFeature) {
-                                listEB.add((ActivatorEBFeature) sActivator);
-                            }
-                        }
+                    if (!loopActivators.isEmpty()) {
+                        while (!loopActivators.isEmpty()) {
+                            List<NewSActivator> extractToActivPerPlugin = loopActivators.get(0).extractActivatorsSameClass(loopActivators);
 
-                        if (!checkEntityOnofEB.isEmpty() || !listEB.isEmpty()) {
-                            Map<Location, ExecutableBlockPlacedInterface> mapEBP = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getAllExecutableBlocksPlaced();
-                            for (Location loc : mapEBP.keySet()) {
-                                if (!loc.isWorldLoaded() || !loc.getWorld().isChunkLoaded(loc.getBlockX() / 16, loc.getBlockZ() / 16))
-                                    continue;
-                                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) mapEBP.get(loc);
+                            /* for(NewSActivator sAct : extractToActivPerPlugin) {
+                                SsomarDev.testMsg("LOOP > "+sAct.getId(), true);
+                            }*/
 
-                                //SsomarDev.testMsg(" hasentityon: " + eBP.hasEntityOn());
-                                if (!checkEntityOnofEB.isEmpty() && eBP.hasEntityOn()) {
-                                    //SsomarDev.testMsg("RUN ENTITY ON");
-                                    runEntityOnEb(loc, eBP, listEB);
-                                }
-                                //SsomarDev.testMsg(" has loop eb ? "+eBP.hasLoop());
-                                if (!listEB.isEmpty() && eBP.hasLoop()) {
-                                    runLoopEB(eBP, listEB);
-                                }
-                            }
-                        }
-                    }
-
-                    if (SCore.hasExecutableEvents) {
-                        //SsomarDev.testMsg("Checking EB on entity >> " + checkEntityOnofEB.size());
-                        List<ActivatorEEFeature> listEE = new ArrayList<>();
-
-                        for (NewSActivator sActivator : toActiv) {
-                            if (sActivator instanceof ActivatorEEFeature) {
-                                listEE.add((ActivatorEEFeature) sActivator);
-                            }
-                        }
-
-                        if (!listEE.isEmpty()) {
-                            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                                LoopEvent e = new LoopEvent();
-
-                                EventInfo eInfo = new EventInfo(e);
-                                eInfo.setPlayer(Optional.of(player));
-                                eInfo.setWorld(Optional.of(player.getWorld()));
-                                com.ssomar.executableevents.events.EventsManager.getInstance().activeOption(com.ssomar.executableevents.executableevents.activators.Option.LOOP, eInfo, listEE);
-                            }
+                            extractToActivPerPlugin.get(0).activateOptionGlobal(OptionGlobal.LOOP, eInfo, extractToActivPerPlugin);
                         }
                     }
                 }
             }
         };
-        runnable.runTaskTimer(SCore.plugin, 0L, DELAY);
-    }
-
-    public void runEntityOnEb(Location loc, ExecutableBlockPlaced eBP, List<ActivatorEBFeature> listEB) {
-        Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
-            @Override
-            public void run() {
-                Collection<Entity> entities = loc.getWorld().getNearbyEntities(loc, 0.2, 1, 0.2);
-                if (!entities.isEmpty()) {
-                    for (Entity ent : entities) {
-
-                        if (ent instanceof LivingEntity && !(ent instanceof Player)) {
-                            LivingEntity lE = (LivingEntity) ent;
-                            Vector v = lE.getVelocity();
-                            if (v.getX() != 0 || v.getZ() != 0) {
-                                EntityWalkOnEvent e = new EntityWalkOnEvent();
-                                EventInfo eInfo = new EventInfo(e);
-                                eInfo.setTargetEntity(Optional.of(ent));
-                                com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.executableblocks.activators.Option.ENTITY_WALK_ON, eBP, eInfo, listEB);
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        SCore.schedulerHook.runRepeatingTask(runnable, 0L, DELAY);
     }
 
     public void addLoopActivator(NewSActivator activator) {
@@ -228,32 +135,10 @@ public class LoopManager {
         loopActivatorsToRemove.add(activator);
     }
 
-    public void runLoopEB(ExecutableBlockPlaced eBP, List<ActivatorEBFeature> listEB) {
-        LoopEvent e = new LoopEvent();
-        EventInfo eInfo = new EventInfo(e);
-        com.ssomar.executableblocks.events.EventsManager.getInstance().activeOption(com.ssomar.executableblocks.executableblocks.activators.Option.LOOP, eBP, eInfo, listEB);
-    }
-
-    public void resetLoopActivatorsEB() {
+    public void resetLoopActivators(SPlugin sPlugin) {
         List<NewSActivator> toRemove = new ArrayList<>();
         for (NewSActivator sAct : loopActivators.keySet()) {
-            if ((sAct instanceof ActivatorEBFeature)) toRemove.add(sAct);
-        }
-        for (NewSActivator sAct : toRemove) loopActivators.remove(sAct);
-    }
-
-    public void resetLoopActivatorsEI() {
-        List<NewSActivator> toRemove = new ArrayList<>();
-        for (NewSActivator sAct : loopActivators.keySet()) {
-            if ((sAct instanceof ActivatorEIFeature)) toRemove.add(sAct);
-        }
-        for (NewSActivator sAct : toRemove) loopActivators.remove(sAct);
-    }
-
-    public void resetLoopActivatorsEE() {
-        List<NewSActivator> toRemove = new ArrayList<>();
-        for (NewSActivator sAct : loopActivators.keySet()) {
-            if ((sAct instanceof ActivatorEEFeature)) toRemove.add(sAct);
+            if ((sAct.getSPlugin() == sPlugin)) toRemove.add(sAct);
         }
         for (NewSActivator sAct : toRemove) loopActivators.remove(sAct);
     }

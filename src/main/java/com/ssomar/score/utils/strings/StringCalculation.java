@@ -1,6 +1,7 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.strings;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.utils.numbers.NTools;
 
 import java.lang.reflect.MalformedParametersException;
 

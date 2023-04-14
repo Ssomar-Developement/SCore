@@ -13,7 +13,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

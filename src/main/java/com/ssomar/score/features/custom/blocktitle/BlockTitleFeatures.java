@@ -11,7 +11,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.list.ListColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Getter;

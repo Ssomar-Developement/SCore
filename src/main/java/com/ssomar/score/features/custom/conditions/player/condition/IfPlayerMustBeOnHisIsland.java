@@ -7,7 +7,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.usedapi.BentoBoxAPI;
 import com.ssomar.score.usedapi.IridiumSkyblockTool;
 import com.ssomar.score.usedapi.SuperiorSkyblockTool;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

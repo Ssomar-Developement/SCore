@@ -1,7 +1,7 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

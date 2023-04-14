@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.events;
 
 import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
-import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

@@ -1,4 +1,4 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.strings;
 
 import com.ssomar.score.SCore;
 import net.md_5.bungee.api.ChatColor;

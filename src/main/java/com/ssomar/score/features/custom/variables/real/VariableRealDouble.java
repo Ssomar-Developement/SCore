@@ -7,7 +7,7 @@ import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.VariableUpdateType;
+import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

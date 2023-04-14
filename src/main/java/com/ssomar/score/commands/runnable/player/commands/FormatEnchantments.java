@@ -4,6 +4,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.numbers.RomanNumber;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,7 +47,9 @@ public class FormatEnchantments extends PlayerCommand {
                         Enchantment enchant = (Enchantment) enchantments.next();
 
                         String line = getNameOfEnchantment(enchant.getKey().toString());
-                        line = line + " " + getCODIGOROMANO(item.getEnchantmentLevel(enchant));
+                        int level = item.getEnchantmentLevel(enchant);
+                        if(enchant.getMaxLevel() != 1)
+                            line = line + " " + RomanNumber.toRoman(level);
 
                         LoreOfEnchantmentsArtifical.add(line);
                     }
@@ -114,55 +117,5 @@ public class FormatEnchantments extends PlayerCommand {
 
     public static String getNameOfEnchantment(String name) {
         return ChatColor.GRAY + WordUtils.capitalize(name.replace("minecraft:", "").replace("_", " "));
-    }
-
-    public static String getCODIGOROMANO(int numerito) {
-
-        HashMap<Integer, String> codigos_romanos = new HashMap<>();
-
-        codigos_romanos.put(1000, "M");
-        codigos_romanos.put(900, "CM");
-        codigos_romanos.put(500, "D");
-        codigos_romanos.put(400, "CD");
-        codigos_romanos.put(100, "C");
-        codigos_romanos.put(90, "XC");
-        codigos_romanos.put(50, "L");
-        codigos_romanos.put(40, "XL");
-        codigos_romanos.put(10, "X");
-        codigos_romanos.put(9, "IX");
-        codigos_romanos.put(5, "V");
-        codigos_romanos.put(4, "IV");
-        codigos_romanos.put(1, "I");
-
-        ArrayList<Integer> numeros_claves = new ArrayList<>();
-        numeros_claves.add(1000);
-        numeros_claves.add(900);
-        numeros_claves.add(500);
-        numeros_claves.add(400);
-        numeros_claves.add(100);
-        numeros_claves.add(90);
-        numeros_claves.add(50);
-        numeros_claves.add(40);
-        numeros_claves.add(10);
-        numeros_claves.add(9);
-        numeros_claves.add(5);
-        numeros_claves.add(4);
-        numeros_claves.add(1);
-
-        StringBuilder builder = new StringBuilder();
-
-        //for(int i = 0 ; i < 20 ; i++)
-        while (numerito != 0) {
-            for (Integer codigos_romanos_array : numeros_claves) {
-                while (numerito / codigos_romanos_array >= 1) {
-                    builder.append(codigos_romanos.get(codigos_romanos_array));
-                    numerito += -codigos_romanos_array;
-                }
-            }
-        }
-
-        String codigoROMANOIDE = builder.toString();
-
-        return codigoROMANOIDE;
     }
 }

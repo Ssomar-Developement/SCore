@@ -12,9 +12,9 @@ import com.ssomar.score.features.custom.conditions.placeholders.placeholder.Plac
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;
 import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
-import com.ssomar.score.utils.Comparator;
-import com.ssomar.score.utils.NTools;
-import com.ssomar.score.utils.PlaceholdersCdtType;
+import com.ssomar.score.utils.emums.Comparator;
+import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;

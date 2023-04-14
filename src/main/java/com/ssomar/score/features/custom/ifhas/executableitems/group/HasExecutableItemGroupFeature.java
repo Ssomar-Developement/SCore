@@ -9,7 +9,7 @@ import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.ifhas.executableitems.attribute.HasExecutableItemFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;

@@ -4,7 +4,7 @@ import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

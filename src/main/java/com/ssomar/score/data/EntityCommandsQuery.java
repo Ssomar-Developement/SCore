@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ActionInfoSerializer;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommand;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 
 import java.io.IOException;
 import java.sql.*;

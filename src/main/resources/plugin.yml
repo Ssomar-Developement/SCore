@@ -25,3 +25,4 @@ permissions:
     description: Allows the command /score reload
   score.cmd.inspect-loop:
     description: Allows the command /score inspect-loop
+folia-supported: true

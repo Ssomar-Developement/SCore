@@ -1,6 +1,7 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.logging;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.utils.strings.StringConverter;
 
 public class Utils {
 

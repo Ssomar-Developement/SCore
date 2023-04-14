@@ -1,7 +1,7 @@
 package com.ssomar.score.config;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 
 public class GeneralConfig extends Config {

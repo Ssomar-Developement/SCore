@@ -46,7 +46,8 @@ public class ItemsAdderAPI {
                     armorStand = (ArmorStand) e;
                     //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+armorStand.getCustomName(), true);
                     if (armorStand.getCustomName() != null && armorStand.getCustomName().equals("ItemsAdder_furniture")) {
-                        CustomFurniture.byAlreadySpawned(armorStand).remove(drop);
+                        CustomFurniture furniture = CustomFurniture.byAlreadySpawned(armorStand);
+                        furniture.remove(drop);
                         return true;
                     }
                 }

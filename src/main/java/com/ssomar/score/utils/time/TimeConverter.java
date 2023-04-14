@@ -1,4 +1,4 @@
-package com.ssomar.score.utils;
+package com.ssomar.score.utils.time;
 
 import java.sql.Timestamp;
 

@@ -1,10 +1,10 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
-import com.ssomar.score.utils.BetterEquipmentSlot;
+import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import com.ssomar.score.utils.GetItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class EquipmentVisualReplace extends PlayerCommand {
         String material = args.get(1);
         ItemStack item = GetItem.getItem(material, Integer.parseInt(args.get(2))).orElse(new ItemStack(Material.BARRIER));
         int time = Integer.parseInt(args.get(3));
-        ProtocolLibAPI.sendEquipmentVisualReplace(receiver, slot, item, time);
+        EquipmentVisualManager.getInstance().addTask(receiver.getUniqueId(), slot, ProtocolLibAPI.sendEquipmentVisualReplace(receiver, slot, item, time));
     }
 
     @Override
