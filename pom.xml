@@ -199,17 +199,18 @@
         <dependency>
             <groupId>net.Indyuce</groupId>
             <artifactId>MMOCore-API</artifactId>
-            <version>1.9.5-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>1.12-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/MMOCore.jar</systemPath>
         </dependency>
 
 
-       <!-- <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>org.spigotmc</groupId>
+             <artifactId>spigot-api</artifactId>
+             <version>1.19.2-R0.1-SNAPSHOT</version>
+             <scope>provided</scope>
+         </dependency>-->
 
         <dependency>
             <groupId>dev.folia</groupId>
