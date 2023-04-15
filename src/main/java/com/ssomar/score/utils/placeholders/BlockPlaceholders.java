@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.ToolsListMaterial;
 import lombok.Getter;
@@ -91,7 +92,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
             placeholders.put("%block_world%", blockWorldName);
             placeholders.put("%block_world_lower%", blockWorldName.toLowerCase());
             placeholders.put("%block_dimension%", blockDimension);
-            placeholders.put("%block_data%", block.getBlockData().getAsString());
+            if(!SCore.is1v12Less()) placeholders.put("%block_data%", block.getBlockData().getAsString());
 
             try{
                 BlockData data = block.getState().getBlockData();
@@ -99,7 +100,7 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
                     placeholders.put("%block_is_ageable%", "true");
                 else placeholders.put("%block_is_ageable%", "false");
             }
-            catch (Exception e) {
+            catch (Exception | Error e) {
                 placeholders.put("%block_is_ageable%", "false");
             }
 

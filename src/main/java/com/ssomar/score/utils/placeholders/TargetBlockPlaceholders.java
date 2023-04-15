@@ -69,7 +69,7 @@ public class TargetBlockPlaceholders extends PlaceholdersInterface implements Se
                    ageable = "true";
                 else ageable = "false";
             }
-            catch (Exception e) {
+            catch (Exception | Error e) {
                 ageable = "false";
             }
         }
