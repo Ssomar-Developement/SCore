@@ -98,6 +98,20 @@
                         </filter>
                     </filters>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>build_server</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\Users\benja\OneDrive\Desktop\.jar\1.19.2 default\plugins\SCore.jar</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -311,7 +325,7 @@
             <!-- jsoup HTML parser library @ https://jsoup.org/ -->
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.13.1</version>
+            <version>1.15.3</version>
         </dependency>
         <dependency>
             <groupId>com.iridium</groupId>
@@ -403,9 +417,10 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-62d4bbbf0d-1</version>
+            <version>main-8bcecb516c-1</version>
             <scope>compile</scope>
         </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
