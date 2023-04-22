@@ -57,7 +57,6 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
         values = loadValues(forValue, errors);
         blacklistedValues = loadValues(forBlacklistedValues, errors);
 
-
         FeatureReturnCheckPremium<List<T>> checkPremium = checkPremium(featureName, values, Optional.of(defaultValue), isPremiumLoading);
         if (checkPremium.isHasError()) {
             values = checkPremium.getNewValue();

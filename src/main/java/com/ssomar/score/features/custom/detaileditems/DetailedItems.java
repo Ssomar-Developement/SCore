@@ -1,7 +1,5 @@
 package com.ssomar.score.features.custom.detaileditems;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -13,7 +11,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -71,17 +68,10 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
     }
 
     public boolean isValid(@NotNull ItemStack item, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
-        String str = "";
-        if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
-            NBTItem nbti = new NBTItem(item);
-            SsomarDev.testMsg("isValid DetailedItems >> "+nbti.toString(), true);
-            str = nbti.toString();
-        }
 
         if(items.getValues().isEmpty() && items.getBlacklistedValues().isEmpty()) return true;
 
-        if((item != null && items.isValidCustomItem(item))
-            || (item != null && items.isValidMaterial(item.getType(), Optional.of(str)))){
+        if(items.verifItem(item)){
             return true;
         }
         else {

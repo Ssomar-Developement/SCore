@@ -4,6 +4,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.strings.StringConverter;
+import dev.rosewood.rosestacker.api.RoseStackerAPI;
+import dev.rosewood.rosestacker.stack.StackedSpawner;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,6 +26,12 @@ public class SilkSpawner extends BlockCommand {
 
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+
+
+        if(SCore.hasRoseStacker){
+            StackedSpawner sp =  RoseStackerAPI.getInstance().getStackedSpawner(block);
+            sp.
+        }
 
         Material spawer;
         if (SCore.is1v12Less()) {

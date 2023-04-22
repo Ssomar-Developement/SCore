@@ -6,7 +6,6 @@ import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -120,11 +119,8 @@ public class MineInCube extends BlockCommand {
 
                                     DetailedBlocks whiteList;
                                     if ((whiteList = aInfo.getDetailedBlocks()) != null) {
-                                        Optional<String> statesStr = Optional.empty();
-                                        if (!SCore.is1v12Less())
-                                            statesStr = Optional.ofNullable(toBreak.getBlockData().getAsString(true));
                                         /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
-                                        if (!whiteList.isValid(toBreak, toBreak.getType(), statesStr, Optional.empty(), null, new StringPlaceholder()))
+                                        if (!whiteList.isValid(toBreak, Optional.empty(), null, new StringPlaceholder()))
                                             continue;
                                     }
 

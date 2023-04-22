@@ -1,15 +1,11 @@
 package com.ssomar.score.features.custom.aroundblock.aroundblock;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
-import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
+import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
@@ -43,11 +39,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
     private ColoredStringFeature errorMessage;
 
-    private ListUncoloredStringFeature blockMustBeExecutableBlock;
-
-    private MaterialAndTagsGroupFeature blockTypeMustBe;
-
-    private MaterialAndTagsGroupFeature blockTypeMustNotBe;
+    private ListDetailedMaterialFeature blockTypeMustBe;
 
     private String id;
 
@@ -68,11 +60,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
         this.errorMessage = new ColoredStringFeature(this, "errorMsg", Optional.of("&c&oA block is not placed correctly !"), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_DESCRIPTION), GUI.WRITABLE_BOOK, false, false);
 
-        this.blockMustBeExecutableBlock = new ListUncoloredStringFeature(this, "blockMustBeExecutableBlock", new ArrayList(), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKMUSTBEEXECUTABLEBLOCK_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKMUSTBEEXECUTABLEBLOCK_DESCRIPTION), GUI.WRITABLE_BOOK, false, false, Optional.empty());
-
-        this.blockTypeMustBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustBe", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_DESCRIPTION), true, false, true, false);
-
-        this.blockTypeMustNotBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustNotBe", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTNOTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTNOTBE_DESCRIPTION), true, false, true, false);
+        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, "blockTypeMustBe", new ArrayList<>(),  TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_DESCRIPTION), GUI.WRITABLE_BOOK, false, true, true);
     }
 
     @Override
@@ -87,9 +75,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
             errors.addAll(this.aboveValue.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.underValue.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.errorMessage.load(plugin, enchantmentConfig, isPremiumLoading));
-            errors.addAll(this.blockMustBeExecutableBlock.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.blockTypeMustBe.load(plugin, enchantmentConfig, isPremiumLoading));
-            errors.addAll(this.blockTypeMustNotBe.load(plugin, enchantmentConfig, isPremiumLoading));
         } else {
             errors.add("&cERROR, Couldn't load the AroundBlockFeature with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
@@ -112,9 +98,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         this.aboveValue.save(attributeConfig);
         this.underValue.save(attributeConfig);
         this.errorMessage.save(attributeConfig);
-        this.blockMustBeExecutableBlock.save(attributeConfig);
         this.blockTypeMustBe.save(attributeConfig);
-        this.blockTypeMustNotBe.save(attributeConfig);
     }
 
     public boolean verif(Block block, Optional<Player> playerOpt, SendMessage messageSender) {
@@ -127,20 +111,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
         targetBlock = targetLoc.getBlock();
 
-        boolean valid = true;
-
-        if (this.blockTypeMustBe.getMaterialAndTags().size() != 0) {
-            valid = valid && this.blockTypeMustBe.isValid(targetBlock);
-        }
-
-        if (this.blockTypeMustNotBe.getMaterialAndTags().size() != 0)
-            valid = valid && !this.blockTypeMustNotBe.isValid(targetBlock);
-
-        targetLoc.add(0.5, 0.5, 0.5);
-        if (SCore.hasExecutableBlocks && this.blockMustBeExecutableBlock.getValue().size() != 0) {
-            Optional<ExecutableBlockPlacedInterface> eBP = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(targetLoc);
-            valid = valid && (eBP.isPresent() && this.blockMustBeExecutableBlock.getValue().contains(eBP.get().getExecutableBlockID()));
-        }
+        boolean valid = blockTypeMustBe.verifBlock(targetBlock);
 
         if (playerOpt.isPresent() && !valid && errorMessage.getValue().isPresent())
             messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
@@ -177,15 +148,13 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         eF.setAboveValue(this.aboveValue.clone(eF));
         eF.setUnderValue(this.underValue.clone(eF));
         eF.setErrorMessage(this.errorMessage.clone(eF));
-        eF.setBlockMustBeExecutableBlock(this.blockMustBeExecutableBlock.clone(eF));
         eF.setBlockTypeMustBe(this.blockTypeMustBe.clone(eF));
-        eF.setBlockTypeMustNotBe(this.blockTypeMustNotBe.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(this.southValue, this.northValue, this.westValue, this.eastValue, this.aboveValue, this.underValue, this.errorMessage, this.blockMustBeExecutableBlock, this.blockTypeMustBe, this.blockTypeMustNotBe));
+        return new ArrayList<>(Arrays.asList(this.southValue, this.northValue, this.westValue, this.eastValue, this.aboveValue, this.underValue, this.errorMessage, this.blockTypeMustBe));
     }
 
     @Override
@@ -219,9 +188,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
                     aFOF.setAboveValue(this.aboveValue);
                     aFOF.setUnderValue(this.underValue);
                     aFOF.setErrorMessage(this.errorMessage);
-                    aFOF.setBlockMustBeExecutableBlock(this.blockMustBeExecutableBlock);
                     aFOF.setBlockTypeMustBe(this.blockTypeMustBe);
-                    aFOF.setBlockTypeMustNotBe(this.blockTypeMustNotBe);
                     break;
                 }
             }

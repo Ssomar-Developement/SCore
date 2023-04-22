@@ -26,11 +26,7 @@ public class AroundBlockFeatureEditor extends FeatureEditorInterface<AroundBlock
 
         enchantFeature.getErrorMessage().initAndUpdateItemParentEditor(this, 6);
 
-        enchantFeature.getBlockMustBeExecutableBlock().initAndUpdateItemParentEditor(this, 7);
-
         enchantFeature.getBlockTypeMustBe().initAndUpdateItemParentEditor(this, 8);
-
-        enchantFeature.getBlockTypeMustNotBe().initAndUpdateItemParentEditor(this, 9);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

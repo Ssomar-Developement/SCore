@@ -1,7 +1,10 @@
 package com.ssomar.score.features.types.list;
 
+import com.ssomar.executableblocks.executableblocks.ExecutableBlockObject;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -9,6 +12,7 @@ import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.usedapi.ItemsAdderAPI;
 import com.ssomar.score.utils.emums.MaterialWithGroups;
 import com.ssomar.score.utils.strings.StringConverter;
+import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -17,6 +21,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -38,7 +43,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     public ListDetailedMaterialFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue, boolean forBlocks) {
         super(parent, name, "List of Materials", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
         this.listOfCustomBlocksPluginSupported = new ArrayList<>();
-        if(SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
+        if (SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
+        if (SCore.hasExecutableBlocks) listOfCustomBlocksPluginSupported.add("EXECUTABLEBLOCKS");
         //if(SCore.hasOraxen) listOfCustomBlocksPluginSupported.add("ORAXEN");
         this.forBlocks = forBlocks;
         reset();
@@ -52,14 +58,14 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             String materialStr = s;
 
             boolean isCustomBlock = false;
-            for(String customPlugin : listOfCustomBlocksPluginSupported){
-                if(materialStr.startsWith(customPlugin)) {
+            for (String customPlugin : listOfCustomBlocksPluginSupported) {
+                if (materialStr.startsWith(customPlugin)) {
                     values.add(s);
                     isCustomBlock = true;
                     break;
                 }
             }
-            if(isCustomBlock) continue;
+            if (isCustomBlock) continue;
 
             if (s.contains(symbolStart)) {
                 materialStr = s.split("\\" + symbolStart)[0];
@@ -118,15 +124,15 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     public boolean isValidMaterial(@NotNull Material material, Optional<String> statesStrOpt) {
         boolean forValuesBool = isValidMaterial(true, getValues(), material, statesStrOpt);
-        boolean forBlacklistValuesBool = isValidMaterial(false, getBlacklistedValues(), material, statesStrOpt);
         SsomarDev.testMsg(">> verif forValuesBool: " + forValuesBool, DEBUG);
+        boolean forBlacklistValuesBool = isValidMaterial(false, getBlacklistedValues(), material, statesStrOpt);
         SsomarDev.testMsg(">> verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
         return forValuesBool && !forBlacklistValuesBool;
     }
 
-    public boolean isValidMaterial(boolean ifEmpty, List<String> references,  @NotNull Material material, Optional<String> statesStrOpt) {
+    public boolean isValidMaterial(boolean ifEmpty, List<String> references, @NotNull Material material, Optional<String> statesStrOpt) {
         Map<String, List<Map<String, String>>> conditions = extractConditions(references);
-        if(conditions.isEmpty()) return ifEmpty;
+        if (conditions.isEmpty()) return ifEmpty;
 
         String symbolStart = "{";
         String symbolStartSplit = "\\{";
@@ -134,7 +140,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         String symbolEquals = ":";
         String symbolSeparator = ",";
 
-        if(forBlocks){
+        if (forBlocks) {
             symbolStart = "[";
             symbolStartSplit = "\\[";
             symbolEnd = "]";
@@ -209,10 +215,12 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         for (String s : values) {
             String materialStr = s;
             SsomarDev.testMsg(">> materialStr: " + materialStr, DEBUG);
-            for(String customPlugin : listOfCustomBlocksPluginSupported) {
-                if (materialStr.startsWith(customPlugin)){
-                    if(conditions.containsKey(customPlugin)) conditions.get(customPlugin).add(materialStr.split(":")[1]);
-                    else conditions.put(customPlugin, new ArrayList<>(Collections.singletonList(materialStr.split(":")[1])));
+            for (String customPlugin : listOfCustomBlocksPluginSupported) {
+                if (materialStr.startsWith(customPlugin)) {
+                    if (conditions.containsKey(customPlugin))
+                        conditions.get(customPlugin).add(materialStr.split(":")[1]);
+                    else
+                        conditions.put(customPlugin, new ArrayList<>(Collections.singletonList(materialStr.split(":")[1])));
                     break;
                 }
             }
@@ -220,27 +228,41 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         return conditions;
     }
 
-    public boolean isValidCustomBlock(@NotNull Block block) {
+    public boolean isValidCustomBlockOnly(@NotNull Block block) {
         boolean forValuesBool = isValidCustomBlock(true, getValues(), block);
+        SsomarDev.testMsg(">> CUSTOMBLOCK verif forValuesBool: " + forValuesBool, DEBUG);
+
         boolean forBlacklistValuesBool = isValidCustomBlock(false, getBlacklistedValues(), block);
+        SsomarDev.testMsg(">> CUSTOMBLOCK verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
+
         return forValuesBool && !forBlacklistValuesBool;
     }
 
     public boolean isValidCustomBlock(boolean ifEmpty, List<String> references, @NotNull Block block) {
         Map<String, List<String>> conditions = extractCustomBlocksConditions(references);
-        if(conditions.isEmpty()) return true;
+        if (conditions.isEmpty()) return ifEmpty;
         for (String customPlugin : listOfCustomBlocksPluginSupported) {
             SsomarDev.testMsg(">> verif customPlugin: " + customPlugin, DEBUG);
             if (conditions.containsKey(customPlugin)) {
                 SsomarDev.testMsg(">> verif conditions: YES ", DEBUG);
                 if (customPlugin.equals("ITEMSADDER") && SCore.hasItemsAdder) {
                     Optional<String> customOpt = ItemsAdderAPI.getCustomBlockID(block);
-                    SsomarDev.testMsg(">> customOpt: " + customOpt.isPresent(), DEBUG);
+                    SsomarDev.testMsg(">> IA customOpt: " + customOpt.isPresent(), DEBUG);
                     if (customOpt.isPresent()) {
-                        SsomarDev.testMsg(">> customOpt: " + customOpt.get(), DEBUG);
+                        SsomarDev.testMsg(">> IA customOpt: " + customOpt.get(), DEBUG);
                         for (String id : conditions.get(customPlugin)) {
-                            SsomarDev.testMsg(">> id: " + id, DEBUG);
+                            SsomarDev.testMsg(">> IA id: " + id, DEBUG);
                             if (customOpt.get().equalsIgnoreCase(id)) return true;
+                        }
+                    }
+                } else if (customPlugin.equals("EXECUTABLEBLOCKS") && SCore.hasExecutableBlocks) {
+                    Optional<ExecutableBlockPlacedInterface> customOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+                    SsomarDev.testMsg(">> EB customOpt: " + customOpt.isPresent(), DEBUG);
+                    if (customOpt.isPresent()) {
+                        SsomarDev.testMsg(">> EB customOpt: " + customOpt.get().getExecutableBlockID(), DEBUG);
+                        for (String id : conditions.get(customPlugin)) {
+                            SsomarDev.testMsg(">> EB id: " + id, DEBUG);
+                            if (customOpt.get().getExecutableBlockID().equalsIgnoreCase(id)) return true;
                         }
                     }
                 }
@@ -250,7 +272,34 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         return false;
     }
 
-    public boolean isValidCustomItem(@NotNull ItemStack item) {
+    public boolean verifBlock(@NotNull Block block){
+        return verifBlock(block, null, null);
+    }
+
+    public boolean verifBlock(@NotNull Block block, @Nullable Material material, @Nullable Optional<String> statesStrOpt){
+        if(material == null) material = block.getType();
+        if(statesStrOpt == null) {
+            if(!SCore.is1v12Less()) statesStrOpt = Optional.of(block.getBlockData().getAsString(true));
+            else statesStrOpt = Optional.empty();
+        }
+
+        boolean forValuesBoolMat = isValidMaterial(getValue().isEmpty(), getValues(), material, statesStrOpt);
+        SsomarDev.testMsg(">> verif forValuesBool: " + forValuesBoolMat, DEBUG);
+
+        boolean forBlacklistValuesBoolMat = isValidMaterial(false, getBlacklistedValues(), material, statesStrOpt);
+        SsomarDev.testMsg(">> verif forBlacklistValuesBool: " + forBlacklistValuesBoolMat, DEBUG);
+
+
+        boolean forValuesBool = isValidCustomBlock(getValue().isEmpty(), getValues(), block);
+        SsomarDev.testMsg(">> CUSTOMBLOCK verif forValuesBool: " + forValuesBool, DEBUG);
+
+        boolean forBlacklistValuesBool = isValidCustomBlock(false, getBlacklistedValues(), block);
+        SsomarDev.testMsg(">> CUSTOMBLOCK verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
+
+        return (forValuesBool || forValuesBoolMat ) && (!forBlacklistValuesBool && !forBlacklistValuesBoolMat);
+    }
+
+    public boolean isValidCustomItemOnly(@NotNull ItemStack item) {
         boolean forValuesBool = isValidCustomItem(true, getValues(), item);
         boolean forBlacklistValuesBool = isValidCustomItem(false, getBlacklistedValues(), item);
         return forValuesBool && !forBlacklistValuesBool;
@@ -258,7 +307,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     public boolean isValidCustomItem(boolean ifEmpty, List<String> references, @NotNull ItemStack item) {
         Map<String, List<String>> conditions = extractCustomBlocksConditions(references);
-        if(conditions.isEmpty()) return true;
+        if (conditions.isEmpty()) return ifEmpty;
         for (String customPlugin : listOfCustomBlocksPluginSupported) {
             SsomarDev.testMsg(">> verif customPlugin: " + customPlugin, DEBUG);
             if (conditions.containsKey(customPlugin)) {
@@ -274,10 +323,47 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                         }
                     }
                 }
+            } else if (customPlugin.equals("EXECUTABLEBLOCKS") && SCore.hasExecutableBlocks) {
+                ExecutableBlockObject customOpt = (ExecutableBlockObject) ExecutableBlocksAPI.getExecutableBlockObject(item);
+                if (!customOpt.isValid()) continue;
+                for (String id : conditions.get(customPlugin)) {
+                    SsomarDev.testMsg(">> id: " + id, DEBUG);
+                    if (customOpt.getConfig().getId().equalsIgnoreCase(id)) return true;
+                }
+
             }
         }
 
         return false;
+    }
+
+    public boolean verifItem(@NotNull ItemStack item){
+        Material material = item.getType();
+        Optional<String> statesStrOpt = Optional.empty();
+        if(statesStrOpt == null) {
+            String str = "";
+            if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+                NBTItem nbti = new NBTItem(item);
+                SsomarDev.testMsg("isValid DetailedItems >> "+nbti.toString(), true);
+                str = nbti.toString();
+            }
+            statesStrOpt = Optional.of(str);
+        }
+
+        boolean forValuesBoolMat = isValidMaterial(getValue().isEmpty(), getValues(), material, statesStrOpt);
+        SsomarDev.testMsg(">> verif forValuesBool: " + forValuesBoolMat, DEBUG);
+
+        boolean forBlacklistValuesBoolMat = isValidMaterial(false, getBlacklistedValues(), material, statesStrOpt);
+        SsomarDev.testMsg(">> verif forBlacklistValuesBool: " + forBlacklistValuesBoolMat, DEBUG);
+
+
+        boolean forValuesBool = isValidCustomItem(getValue().isEmpty(), getValues(), item);
+        SsomarDev.testMsg(">> CUSTOMBLOCK verif forValuesBool: " + forValuesBool, DEBUG);
+
+        boolean forBlacklistValuesBool = isValidCustomItem(getValue().isEmpty(), getBlacklistedValues(), item);
+        SsomarDev.testMsg(">> CUSTOMBLOCK verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
+
+        return (forValuesBool || forValuesBoolMat ) && (!forBlacklistValuesBool && !forBlacklistValuesBoolMat);
     }
 
     @Override
@@ -291,19 +377,19 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     @Override
     public Optional<String> verifyMessage(String message) {
         String s = StringConverter.decoloredString(message).replace("!", "");
-        String entityTypeStr = s;
+        String str = s;
 
         boolean isCustomBlock = false;
-        for(String customPlugin : listOfCustomBlocksPluginSupported){
-            if(entityTypeStr.startsWith(customPlugin)) {
+        for (String customPlugin : listOfCustomBlocksPluginSupported) {
+            if (str.startsWith(customPlugin)) {
                 isCustomBlock = true;
                 break;
             }
         }
-        if(isCustomBlock) return Optional.empty();
+        if (isCustomBlock) return Optional.empty();
 
         if (s.contains(symbolStart)) {
-            entityTypeStr = s.split("\\" + symbolStart)[0];
+            str = s.split("\\" + symbolStart)[0];
             String datas = s.split("\\" + symbolStart)[1].replace(symbolEnd, "");
             for (String data : datas.split(symbolSeparator)) {
                 String[] dataSplit = data.split(symbolEquals);
@@ -312,7 +398,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                 }
             }
         }
-        if (!MaterialWithGroups.getMaterialWithGroups(entityTypeStr.toUpperCase()).isPresent()) {
+        if (!MaterialWithGroups.getMaterialWithGroups(str.toUpperCase()).isPresent()) {
             return Optional.of("&4&l[ERROR] &cThe message you entered contains an invalid Material + GROUPS ! (Check the wiki if you want the list)");
         }
 
@@ -335,7 +421,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     @Override
     public String getTips() {
-        if(forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
+        if (forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
         else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword";
     }
 
