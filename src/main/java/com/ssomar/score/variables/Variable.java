@@ -5,6 +5,7 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
+import com.ssomar.score.features.types.MaterialFeature;
 import com.ssomar.score.features.types.VariableForFeature;
 import com.ssomar.score.features.types.VariableTypeFeature;
 import com.ssomar.score.menu.GUI;
@@ -48,6 +49,8 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
     private Map<String, List<String>> values;
 
     private ColoredStringFeature defaultValue;
+
+    private MaterialFeature icon;
 
     public Variable(FeatureParentInterface parent, String id, String path) {
         super(parent, "VAR", "VAR", new String[]{}, GUI.WRITABLE_BOOK);
@@ -120,6 +123,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
         type = new VariableTypeFeature(this, "type", Optional.of(VariableType.NUMBER), "Type", new String[]{}, GUI.COMPARATOR, false);
         forFeature = new VariableForFeature(this, "for", Optional.empty(), "For", new String[]{}, GUI.COMPARATOR, false);
         values = new HashMap<>();
+        icon = new MaterialFeature(this, "icon", Optional.of(Material.PAPER), "Icon", new String[]{}, Material.STONE, false);
     }
 
     @Override
@@ -129,6 +133,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
         clone.setForFeature(forFeature.clone(clone));
         clone.setDefaultValue(defaultValue.clone(clone));
         clone.setValues(new HashMap<>(values));
+        clone.setIcon(icon.clone(clone));
         return clone;
     }
 
@@ -138,6 +143,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
         features.add(type);
         features.add(forFeature);
         features.add(defaultValue);
+        features.add(icon);
         return features;
     }
 
@@ -175,6 +181,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
             variable.setType(type);
             variable.setForFeature(forFeature);
             variable.setDefaultValue(defaultValue);
+            variable.setIcon(icon);
             //SsomarDev.testMsg("RELOAD INTO "+variable.hashCode());
         }
     }
@@ -203,7 +210,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
     @Override
     public ItemStack buildItem(int quantity, Optional<Player> creatorOpt) {
         // Useless here
-        return new ItemStack(Material.STONE);
+        return new ItemStack(icon.getValue().get());
     }
 
     @Nullable

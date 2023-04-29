@@ -111,7 +111,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         if (blocks.getValues().isEmpty() && !blocks.getBlacklistedValues().isEmpty())
             finalDescription[finalDescription.length - 3] = "&7Blocks: &e&lALL BLOCKS";
         else
-            finalDescription[finalDescription.length - 3] = "&7Detailed Blocks: &a+" + blocks.getValues().size()+blocks.getBlacklistedValues().size();
+            finalDescription[finalDescription.length - 3] = "&7Detailed Blocks: &a+" + (blocks.getCurrentValues().size());
 
         if (messageIfNotValid.getValue().isPresent()) {
             finalDescription[finalDescription.length - 2] = "&7Message if NV: &e" + messageIfNotValid.getValue().get();

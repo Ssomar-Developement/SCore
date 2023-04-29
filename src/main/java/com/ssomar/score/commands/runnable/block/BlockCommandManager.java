@@ -30,6 +30,7 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new DropItem());
         references.add(new DropExecutableItem());
         references.add(new DropExecutableBlock());
+        references.add(new InlineMineInCube());
         references.add(new MineInCube());
         references.add(new RemoveBlock());
         references.add(new Around());

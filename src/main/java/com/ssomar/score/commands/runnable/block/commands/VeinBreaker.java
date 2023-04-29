@@ -76,7 +76,8 @@ public class VeinBreaker extends BlockCommand {
                             || oldMaterial.toString().contains("WARPED_STEM")
                             || oldMaterial.toString().contains("CRIMSON_STEM")
                             //wool
-                            || oldMaterial.toString().contains("WOOL")))
+                            || oldMaterial.toString().contains("WOOL")
+                            || oldMaterial.toString().contains("LEAVES")))
                         return;
                 }
 

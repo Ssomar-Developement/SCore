@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 public class VariableRealDouble extends VariableReal<Double> implements Serializable {
 
@@ -66,7 +67,10 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     public void modifVariable(VariableUpdateFeature update, Player p, StringPlaceholder sp) {
         SsomarDev.testMsg("VariableRealDouble.modifVariable", DEBUG);
 
-        Optional<Double> optional = update.getDoubleUpdate().getValue(p.getUniqueId(), sp);
+        UUID uuid = null;
+        if (p != null) uuid = p.getUniqueId();
+
+        Optional<Double> optional = update.getDoubleUpdate().getValue(uuid, sp);
         if (!optional.isPresent()) return;
         double modificationDouble = optional.get();
 
