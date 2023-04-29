@@ -344,7 +344,8 @@
             <groupId>net.Indyuce</groupId>
             <artifactId>MMOCore-API</artifactId>
             <version>1.12-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/MMOCore.jar</systemPath>
         </dependency>
 
 
