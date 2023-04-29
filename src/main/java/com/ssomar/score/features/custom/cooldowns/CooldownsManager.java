@@ -73,25 +73,25 @@ public class CooldownsManager {
                 Cooldown cdMax = null;
                 int cptRemoved = 0;
                 int size = cds.size();
-                SsomarDev.testMsg("CD size >> "+size, true);
+                //SsomarDev.testMsg("CD size >> "+size, true);
                 for (int i = 0; i < size; i++) {
                     Cooldown cd = cds.get(i-cptRemoved);
                     if (cd == null){
-                        SsomarDev.testMsg("CD NULL", true);
+                        //SsomarDev.testMsg("CD NULL", true);
                         continue;
                     }
                     if (onlyGlobal && !cd.isGlobal()){
-                        SsomarDev.testMsg("CD NOT GLOBAL", true);
+                        //SsomarDev.testMsg("CD NOT GLOBAL", true);
                         continue;
                     }
                     if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)){
-                        SsomarDev.testMsg("CD NOT GLOBAL AND NOT EQUAL UUID", true);
+                        //SsomarDev.testMsg("CD NOT GLOBAL AND NOT EQUAL UUID", true);
                         continue;
                     }
 
                     double timeLeft = cd.getTimeLeft();
 
-                    SsomarDev.testMsg("CD valid >> "+timeLeft, true);
+                    //SsomarDev.testMsg("CD valid >> "+timeLeft, true);
                     if (maxTimeLeft < timeLeft && timeLeft > 0) {
                         maxTimeLeft = timeLeft;
                         cdMax = cd;
