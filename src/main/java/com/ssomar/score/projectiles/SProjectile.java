@@ -75,8 +75,11 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
         errors.addAll(type.load(plugin, config, isPremiumLoading));
 
+        //SsomarDev.testMsg("type: "+type.getValue().get().name()+ " for "+id, true);
+
         subFeatures = type.getValue().get().getFeatures(this);
         for (FeatureAbstract f : subFeatures) {
+            //SsomarDev.testMsg("feature: "+f.getName(), true);
             errors.addAll(f.load(plugin, config, isPremiumLoading));
         }
 

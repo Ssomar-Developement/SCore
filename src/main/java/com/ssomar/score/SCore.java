@@ -26,6 +26,7 @@ import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
 import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
 import com.ssomar.score.utils.scheduler.SchedulerHook;
 import com.ssomar.score.variables.loader.VariablesLoader;
+import com.ssomar.score.variables.manager.VariablesManager;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -76,6 +77,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasRoseStacker = false;
     public static boolean hasMMOCore = false;
     public static boolean hasProtectionStones = false;
+
+    public static boolean hasTerra = false;
 
     public static boolean hasTAB = false;
     private static boolean is1v8 = false;
@@ -186,17 +189,22 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.16 or + ? */
     public static boolean is1v16Plus() {
-        return is1v16() || is1v17() || is1v18() || is1v19();
+        return is1v16() || is1v17Plus();
     }
 
     /* The server is in 1.17 or + ? */
     public static boolean is1v17Plus() {
-        return is1v17() || is1v18() || is1v19();
+        return is1v17() || is1v18Plus();
     }
 
-    /* The server is in 1.17 or + ? */
+    /* The server is in 1.18 or + ? */
     public static boolean is1v18Plus() {
-        return is1v18() || is1v19();
+        return is1v18() || is1v19Plus();
+    }
+
+    /* The server is in 1.19 or + ? */
+    public static boolean is1v19Plus() {
+        return is1v19() || is1v19v1();
     }
 
     @Override
@@ -206,13 +214,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
         else schedulerHook = new BukkitSchedulerHook(this);
         commandClass = new CommandsClass(this);
 
+        this.initVersion();
+
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
 
         if(isFolia()) {
             Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &eFolia");
         }
-
-        this.initVersion();
+        this.displayVersion();
 
         this.loadDependency();
 
@@ -264,7 +273,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public boolean hookSoftDependency(String plugin) {
         Plugin softDepend = null;
         if ((softDepend = Bukkit.getPluginManager().getPlugin(plugin)) != null) {
-            String when = " 8a&oLoad Before";
+            String when = " &8&oLoad Before";
             if (!softDepend.isEnabled()) {
                 when = "&8&oLoad After";
             }
@@ -374,10 +383,17 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasProtectionStones = hookSoftDependency("ProtectionStones");
 
         hasTAB = hookSoftDependency("TAB");
+
+        hasTerra = hookSoftDependency("Terra");
     }
 
     @Override
     public void onDisable() {
+        if(GeneralConfig.getInstance().isUseMySQL()){
+            VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6"+VariablesManager.getInstance().getLoadedObjects().size()+" &7variables from your MySQL Database !");
+        }
+
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay....");
         UsagePerDayManager.getInstance().save();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay done !");
@@ -457,6 +473,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v18 = Bukkit.getServer().getVersion().contains("1.18");
         is1v19 = Bukkit.getServer().getVersion().contains("1.19");
         is1v19v1 = Bukkit.getServer().getVersion().contains("1.19.1");
+    }
+
+    public void displayVersion(){
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion() + " &7!");
     }
 }

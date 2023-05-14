@@ -36,7 +36,7 @@ public class CooldownsQuery {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COOLDOWNS_NAME + "&7 if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COOLDOWNS_NAME + " in database "+e.getMessage());
         }
     }
 

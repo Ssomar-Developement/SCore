@@ -73,14 +73,16 @@ public class LoopManager {
                     if ((loop = activator.getLoopFeatures()) == null) continue;
 
                     int delay;
-                    if ((delay = loopActivators.get(activator)) > 0) {
+                    if ((delay = loopActivators.get(activator)) > LoopManager.DELAY) {
                         int toRemove = LoopManager.DELAY;
                         if (delay <= toRemove) toRemove = delay;
-                        loopActivators.put(activator, delay - toRemove);
+                        int newDelay = delay - toRemove;
+                        //SsomarDev.testMsg("LOOP > " + newDelay+ " for "+activator.getId()+ " TIME "+System.currentTimeMillis(), true);
+                        loopActivators.put(activator, newDelay);
                         continue;
                     } else {
                         toActivate.add(activator);
-                        //SsomarDev.testMsg("LOOP > "+loop.getDelay().getValue().get());
+                        //SsomarDev.testMsg("LOOP ACTIVATE > "+activator.getId()+ " TIME "+System.currentTimeMillis(), true);
                         if (loop.getDelayInTick().getValue())
                             loopActivators.put(activator, loop.getDelay().getValue().get());
                         else loopActivators.put(activator, loop.getDelay().getValue().get() * 20);

@@ -31,7 +31,7 @@ public class ContentAdd extends BlockCommand {
 
         if (args.size() >= 1) {
             ItemStack item = new ItemStack(Material.valueOf(args.get(0)), amount);
-            if (block.getState() instanceof Container && p != null) {
+            if (block.getState() instanceof Container) {
                 Container container = (Container) block.getState();
                 Inventory inv = container.getInventory();
                 inv.addItem(item);

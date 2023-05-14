@@ -94,6 +94,7 @@ public abstract class RunCommand implements Serializable {
            if(s.contains("%math_") && s.contains("%around")){
                placeholdersToReplaceLatter.put(later, s);
                finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
+                later++;
            }
         }
         finalCommand = this.getSp().replacePlaceholder(finalCommand);

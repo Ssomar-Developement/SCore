@@ -1,14 +1,18 @@
 package com.ssomar.score.features.types.list;
 
+import com.dfsek.terra.bukkit.world.BukkitServerWorld;
+import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
+import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
@@ -73,8 +77,24 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
     @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
+
         for (Biome biome : Biome.values()) {
             map.put(biome.toString(), new Suggestion(biome + "", "&6[" + "&e" + biome + "&6]", "&7Add &e" + biome));
+        }
+
+        if (SCore.hasTerra) {
+            for(String worldStr : AllWorldManager.getWorlds()){
+                Optional<World> worldOpt = AllWorldManager.getWorld(worldStr);
+                if (!worldOpt.isPresent()) continue;
+                World world = worldOpt.get();
+                try {
+                    BukkitServerWorld worldS = new BukkitServerWorld(world);
+                    worldS.getBiomeProvider().getBiomes().forEach(biome -> {
+                        map.put(biome.toString(), new Suggestion(biome + "", "&6[" + "&e" + biome + "&6]", "&7Add &e" + biome));
+                    });
+                }catch (Exception ignored){} // ignore if not terra world
+            }
+
         }
         return new ArrayList<>(map.values());
     }

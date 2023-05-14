@@ -12,8 +12,8 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -103,9 +103,9 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     /**
      * @param entity The entity
      */
-    public void addCooldown(Entity entity, @NotNull NewSObject sObject) {
-        if (!hasNoCDPerm(entity, sObject) && this.cooldown.getValue().get() != 0) {
-            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
+    public void addCooldown(Entity entity, @NotNull NewSObject sObject, @Nullable StringPlaceholder sp) {
+        if (!hasNoCDPerm(entity, sObject) && this.cooldown.getValue(entity.getUniqueId(), sp).get() != 0) {
+            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), this.cooldown.getValue(entity.getUniqueId(), sp).get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
             CooldownsManager.getInstance().addCooldown(cooldown);
         }
     }

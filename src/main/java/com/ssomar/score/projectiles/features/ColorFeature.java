@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.types.BukkitColorFeature;
 import com.ssomar.score.utils.FixedMaterial;
@@ -28,23 +29,23 @@ public class ColorFeature extends BukkitColorFeature implements SProjectileFeatu
         } else if (e instanceof ThrownPotion) {
             ThrownPotion lp = (ThrownPotion) e;
 
+            //SsomarDev.testMsg("ColorFeature transformTheProjectile", true);
             try {
                 ItemStack item = lp.getItem();
-                if (materialLaunched.equals(Material.LINGERING_POTION)) item.setType(Material.LINGERING_POTION);
-                else item.setType(Material.SPLASH_POTION);
                 PotionMeta pMeta = (PotionMeta) item.getItemMeta();
                 if (getValue().isPresent())
                     pMeta.setColor(getValue().get());
                 item.setItemMeta(pMeta);
                 lp.setItem(item);
             } catch (NoSuchMethodError ignored) {
+                SsomarDev.testMsg(ignored.getMessage(), true);
             }
         }
     }
 
     @Override
     public ColorFeature clone(FeatureParentInterface newParent) {
-        ColorFeature clone = new  ColorFeature(newParent);
+        ColorFeature clone = new ColorFeature(newParent);
         clone.setValue(getValue());
         return clone;
     }

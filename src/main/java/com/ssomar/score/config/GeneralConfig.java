@@ -43,7 +43,7 @@ public class GeneralConfig extends Config {
     public void load() {
         /* Locale config (language) */
         locale = config.getString("locale", "EN");
-        if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU") || locale.equals("ptBR") || locale.equals("DE")) {
+        if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU") || locale.equals("ptBR") || locale.equals("DE") || locale.equals("UK")) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Locale setup: &6" + locale);
         } else {
             SCore.plugin.getServer().getLogger().severe("[SCore] Invalid locale name: " + locale);

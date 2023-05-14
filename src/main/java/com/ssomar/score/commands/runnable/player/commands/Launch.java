@@ -9,14 +9,16 @@ import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
 import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.SProjectileType;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
@@ -62,7 +64,7 @@ public class Launch extends PlayerCommand {
                     entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]));
                 } else entity = receiver.launchProjectile(Arrow.class);
 
-                if(entity instanceof Firework){
+                if (entity instanceof Firework) {
                     entity.remove();
                     entity = receiver.getWorld().spawnEntity(receiver.getEyeLocation(), EntityType.FIREWORK);
                     Firework firework = (Firework) entity;
@@ -95,8 +97,8 @@ public class Launch extends PlayerCommand {
 
                         Vector eyeVector;
                         /* Here I take the velocity. It is present only if the command LAUNCH is activated in a projectile launch event
-                        * it's used to keep the bowforce and let the user customize the projectile launched */
-                        if (aInfo.getVelocity().isPresent()){
+                         * it's used to keep the bowforce and let the user customize the projectile launched */
+                        if (aInfo.getVelocity().isPresent()) {
                             /* Take the real velocity */
                             eyeVector = aInfo.getVelocity().get();
                             double oldVelocity = eyeVector.length();
@@ -108,8 +110,7 @@ public class Launch extends PlayerCommand {
                             eyeVector = customLoc.getDirection();
                             eyeVector = eyeVector.multiply(oldVelocity);
 
-                        }
-                        else eyeVector = loc.getDirection();
+                        } else eyeVector = loc.getDirection();
 
 
                         Vector v;
@@ -119,13 +120,22 @@ public class Launch extends PlayerCommand {
                         } else if (entity instanceof DragonFireball) {
                             DragonFireball fireball = (DragonFireball) entity;
                             fireball.setDirection(eyeVector);
-                        }
-                        else {
+                        } else {
                             entity.setVelocity(eyeVector);
                         }
                     }
                     if (projectile != null) {
-                        projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
+                        Material mat = projectile.getType().getValue().get().getMaterial();
+                        /* Fix for potion otherwise the method to getItem is null idk why, (set an item + potionmeta) (it works only on 1.12 plus because setcolor doesnt exists in 1.11)*/
+                        if (entity instanceof ThrownPotion) {
+                            ThrownPotion lp = (ThrownPotion) entity;
+                            ItemStack item = new ItemStack(mat, 1);
+                            PotionMeta pMeta = (PotionMeta) item.getItemMeta();
+                            pMeta.setColor(Color.AQUA);
+                            item.setItemMeta(pMeta);
+                            lp.setItem(item);
+                        }
+                        projectile.transformTheProjectile(entity, receiver, mat);
                     }
 
                     if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

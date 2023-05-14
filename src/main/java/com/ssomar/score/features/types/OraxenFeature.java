@@ -1,6 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -8,28 +9,24 @@ import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
-import io.th0rgal.oraxen.OraxenPlugin;
+import io.th0rgal.oraxen.api.OraxenBlocks;
+import io.th0rgal.oraxen.api.OraxenFurniture;
 import io.th0rgal.oraxen.api.OraxenItems;
-import io.th0rgal.oraxen.mechanics.Mechanic;
-import io.th0rgal.oraxen.mechanics.provided.gameplay.furniture.BlockLocation;
-import io.th0rgal.oraxen.mechanics.provided.gameplay.furniture.FurnitureFactory;
-import io.th0rgal.oraxen.mechanics.provided.gameplay.furniture.FurnitureMechanic;
-import io.th0rgal.oraxen.shaded.customblockdata.CustomBlockData;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Rotation;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
-
-import static io.th0rgal.oraxen.mechanics.provided.gameplay.furniture.FurnitureMechanic.*;
 
 @Getter
 @Setter
@@ -77,17 +74,41 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
         return Optional.empty();
     }
 
-    public void removeBlock(Block block) {
-        if (SCore.hasOraxen) {
-            final PersistentDataContainer customBlockData = new CustomBlockData(block, OraxenPlugin.get());
-            if (!customBlockData.has(FURNITURE_KEY, PersistentDataType.STRING))
-                return;
+    public boolean placeOraxen(Location location, ItemStack itemStack) {
+        if (getValue().isPresent()) {
+            String id = getValue().get();
+            if(OraxenFurniture.isFurniture(id)){
+                OraxenFurniture.place(location, id, Rotation.NONE, BlockFace.UP);
+                return true;
+            }
+            else if (OraxenBlocks.isOraxenBlock(id)) {
+                OraxenBlocks.place(id, location);
+                return true;
+            }
+        }
+        return false;
+    }
 
-            final String oraxenID = customBlockData.get(FURNITURE_KEY, PersistentDataType.STRING);
-            Mechanic mechanic = FurnitureFactory.getInstance().getMechanic(oraxenID);
-            if (mechanic instanceof FurnitureMechanic) {
-                final BlockLocation rootBlockLocation = new BlockLocation(customBlockData.get(ROOT_KEY, PersistentDataType.STRING));
-                ((FurnitureMechanic) mechanic).removeSolid(block.getWorld(), rootBlockLocation, customBlockData.get(ORIENTATION_KEY, PersistentDataType.FLOAT));
+    public void removeBlock(Block block, Optional<Entity> blockEntity) {
+        if (SCore.hasOraxen) {
+            if(blockEntity.isPresent()){
+                Entity entity = blockEntity.get();
+                if(OraxenFurniture.isFurniture(entity)) {
+                    SsomarDev.testMsg("isFurniture IF", true);
+                    OraxenFurniture.remove(entity, null);
+                    return;
+                }
+            }
+            else if(OraxenFurniture.isFurniture(block)) {
+                SsomarDev.testMsg("isFurniture", true);
+                OraxenFurniture.getFurnitureMechanic(block).removeSolid(block);
+            }
+            else if (OraxenBlocks.isOraxenBlock(block)) {
+                SsomarDev.testMsg("isOraxenBlock", true);
+                OraxenBlocks.remove(block.getLocation(), null);
+            }
+            else {
+                SsomarDev.testMsg("isNothing", true);
             }
         }
     }

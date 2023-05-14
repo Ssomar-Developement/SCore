@@ -1,12 +1,16 @@
 package com.ssomar.score.variables.manager;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.data.Database;
+import com.ssomar.score.data.VariablesQuery;
 import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.variables.Variable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +56,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
     }
 
     public Optional<Variable> getVariable(String s) {
+        updateLoadedMySQL(s, MODE.IMPORT);
         for (Variable item : this.getLoadedObjects()) {
             if (item.getId().equals(s)) return Optional.of(item);
         }
@@ -100,10 +105,15 @@ public class VariablesManager extends NewSObjectManager<Variable> {
 
         String variableID = null;
 
+        List<String> valids = new ArrayList<>();
         for (String portentialID : getVariableIdsList()) {
             if (check.startsWith(portentialID)) {
-                variableID = portentialID;
-                break;
+                valids.add(portentialID);
+            }
+        }
+        for (String valid : valids) {
+            if (variableID == null || variableID.length() < valid.length()) {
+                variableID = valid;
             }
         }
 
@@ -167,5 +177,46 @@ public class VariablesManager extends NewSObjectManager<Variable> {
         }
 
         return Optional.empty(); // Placeholder is unknown
+    }
+
+    public void updateAllLoadedMySQL(MODE mode){
+        if(GeneralConfig.getInstance().isUseMySQL()) {
+            if(mode.equals(MODE.IMPORT)) {
+                VariablesQuery.insertVariableNotExists(Database.getInstance().connect(), VariablesManager.getInstance().getAllObjects());
+                VariablesManager.getInstance().deleteAllLoadedObjects();
+                VariablesManager.getInstance().addLoadedObjects(VariablesQuery.selectAllVariables(Database.getInstance().connect()));
+                VariablesManager.getInstance().saveAllLoadedObjects();
+            }
+        }
+    }
+
+    public void updateLoadedMySQL(String id, MODE mode){
+        if(GeneralConfig.getInstance().isUseMySQL()) {
+            if(mode.equals(MODE.IMPORT)) {
+                VariablesManager.getInstance().deleteObject(id);
+                Optional<Variable> var = VariablesQuery.selectVariable(Database.getInstance().connect(), id);
+                if (var.isPresent()) {
+                    VariablesManager.getInstance().addLoadedObject(var.get());
+                    var.get().save();
+                }
+            }
+            else if(mode.equals(MODE.EXPORT)) {
+                Optional<Variable> varOpt = VariablesManager.getInstance().getLoadedObjectWithID(id);
+                if (varOpt.isPresent()) {
+                    VariablesQuery.insertVariablesAndDeleteIfExists(Database.getInstance().connect(), Arrays.asList(varOpt.get()));
+                }
+            }
+        }
+    }
+
+    public void deleteLoadedMYSQL(String id) {
+        if(GeneralConfig.getInstance().isUseMySQL()) {
+            VariablesQuery.deleteVariable(Database.getInstance().connect(), id);
+        }
+    }
+
+    public enum MODE {
+        IMPORT,
+        EXPORT;
     }
 }

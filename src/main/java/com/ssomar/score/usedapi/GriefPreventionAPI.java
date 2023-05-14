@@ -1,6 +1,7 @@
 package com.ssomar.score.usedapi;
 
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
@@ -18,7 +19,8 @@ public class GriefPreventionAPI {
         Claim claim = dataStore.getClaimAt(location, false, null);
         if (claim == null || claim.getOwnerID() == null) return acceptWilderness;
 
-        return claim.getOwnerID().equals(p.getUniqueId());
+
+        return claim.getOwnerID().equals(p.getUniqueId()) || (claim.hasExplicitPermission(p, ClaimPermission.Build) && claim.hasExplicitPermission(p, ClaimPermission.Access) && claim.hasExplicitPermission(p, ClaimPermission.Inventory));
     }
 
 

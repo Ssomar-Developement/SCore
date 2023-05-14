@@ -110,7 +110,9 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     public IntegerFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
+        if (!isPremium() && requirePremium()) {
+            finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
+        } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7actually: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -140,6 +142,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public void askInEditor(Player editor, NewGUIManager manager) {
+        if (requirePremium() && !isPremium()) return;
         manager.requestWriting.put(editor, getEditorName());
         editor.closeInventory();
         space(editor);

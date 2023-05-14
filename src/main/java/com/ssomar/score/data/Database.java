@@ -28,7 +28,8 @@ public class Database {
     }
 
     public void load() {
-        if (!GeneralConfig.getInstance().isUseMySQL()) createNewDatabase("data.db");
+        fileName = "data.db";
+        if (!GeneralConfig.getInstance().isUseMySQL()) createNewDatabase();
         SecurityOPQuery.createNewTable(connect());
         CommandsQuery.createNewTable(connect());
         CooldownsQuery.createNewTable(connect());
@@ -36,11 +37,11 @@ public class Database {
         EntityCommandsQuery.createNewTable(connect());
         BlockCommandsQuery.createNewTable(connect());
         UsePerDayQuery.createNewTable(connect());
+        /* Variables in DB only in MYSQL to share infos between multiple servers */
+        if(GeneralConfig.getInstance().isUseMySQL()) VariablesQuery.createNewTable(connect());
     }
 
-    public void createNewDatabase(String fileName) {
-
-        this.fileName = fileName;
+    public void createNewDatabase() {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -50,7 +51,7 @@ public class Database {
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7onnection to the db...");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Connection to the db...");
             }
 
         } catch (SQLException e) {
@@ -76,16 +77,18 @@ public class Database {
 
         if (needOpenConnection) {
             try {
+                String where = GeneralConfig.getInstance().isUseMySQL() ? "MySQL" : "In Local";
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7will connect to the database hosted: &6" + where);
                 if (GeneralConfig.getInstance().isUseMySQL()) {
                     try {
-                        if (SCore.is1v18Plus()) conn = new Database1v18().get1v18Connection();
+                        if (SCore.is1v17Plus()) conn = new Database1v18().get1v18Connection();
                         else conn = new DatabaseOld().getOldConnection();
                     } catch (SQLException e) {
-                        SCore.plugin.getLogger().severe(SCore.NAME_2 + " Error when trying to connect to your mysql database (local db used instead)");
+                        SCore.plugin.getLogger().severe("Error when trying to connect to your mysql database (local db used instead) "+e.getMessage());
                         conn = DriverManager.getConnection(urlLocal);
                     }
                     catch (NoClassDefFoundError e) {
-                        SCore.plugin.getLogger().severe(SCore.NAME_2 + " Error the library to connect to mysql is not present on your server (local db used instead)");
+                        SCore.plugin.getLogger().severe("Error the library to connect to mysql is not present on your server (local db used instead) "+e.getMessage());
                         conn = DriverManager.getConnection(urlLocal);
                     }
                 } else conn = DriverManager.getConnection(urlLocal);

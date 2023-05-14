@@ -47,6 +47,19 @@ public abstract class NewSObjectManager<T extends NewSObject> {
         allObjects.addAll(loadedObjects);
     }
 
+    public void addLoadedObjects(List<T> object) {
+        loadedObjects.addAll(object);
+
+        for (T o : object) {
+            actionOnObjectWhenLoading(o);
+            generateLoadEvent(o.getId(), o);
+        }
+
+        allObjects = new ArrayList<>();
+        allObjects.addAll(defaultObjects);
+        allObjects.addAll(loadedObjects);
+    }
+
     public abstract void actionOnObjectWhenLoading(T object);
 
     public void addDefaultLoadedObject(T object) {
@@ -112,6 +125,19 @@ public abstract class NewSObjectManager<T extends NewSObject> {
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
             o.delete();
+        }
+    }
+
+    public void deleteAllLoadedObjects() {
+        while (!loadedObjects.isEmpty()) {
+            T o = loadedObjects.get(0);
+            deleteObject(o.getId());
+        }
+    }
+
+    public void saveAllLoadedObjects() {
+        for (T o : loadedObjects) {
+            o.save();
         }
     }
 

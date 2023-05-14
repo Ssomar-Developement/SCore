@@ -237,8 +237,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                                 else
                                     SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
                             }
-                        } else sender.sendMessage("Variable not found");
 
+                            VariablesManager.getInstance().updateLoadedMySQL(var.get().getId(), VariablesManager.MODE.EXPORT);
+                        } else sender.sendMessage("Variable not found");
                     }
                 } else {
                     if (player != null) {
@@ -452,6 +453,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                     Optional<Variable> sProjOpt = VariablesManager.getInstance().getLoadedObjectWithID(args[0]);
                     if (sProjOpt.isPresent()) {
                         VariablesManager.getInstance().deleteObject(args[0]);
+                        VariablesManager.getInstance().deleteLoadedMYSQL(args[0]);
                         sender.sendMessage(StringConverter.coloredString("&2[SCore] &aVariable file (&e" + args[0] + ".yml&a) deleted !"));
                     } else {
                         sender.sendMessage(StringConverter.coloredString("&4[SCore] &cVariable file not found (&6" + args[0] + ".yml&c) so it can't be deleted !"));

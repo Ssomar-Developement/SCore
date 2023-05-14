@@ -33,7 +33,7 @@ public class BlockCommandsQuery {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_BLOCK_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COMMANDS_BLOCK_NAME + " in database "+e.getMessage());
         }
     }
 

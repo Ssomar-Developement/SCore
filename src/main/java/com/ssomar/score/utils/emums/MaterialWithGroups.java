@@ -30,7 +30,8 @@ public enum MaterialWithGroups {
     ALL_GLASS,
     ALL_STAINED_GLASS,
     ALL_SHULKER_BOXES,
-    ALL_LEAVES;
+    ALL_LEAVES,
+    ALL_CARPETS;
 
     public static boolean verif(Material material, String name) {
         name = name.toUpperCase();
@@ -193,7 +194,7 @@ public enum MaterialWithGroups {
                             stainedGlass.add(material1);
                         }
                     }
-                    break;
+                    return stainedGlass.contains(material);
                 case ALL_SHULKER_BOXES:
                     List<Material> shulkerBoxes = new ArrayList<>();
                     for (Material material1 : Material.values()) {
@@ -210,6 +211,14 @@ public enum MaterialWithGroups {
                         }
                     }
                     return leaves.contains(material);
+                case ALL_CARPETS:
+                    List<Material> carpets = new ArrayList<>();
+                    for (Material material1 : Material.values()) {
+                        if (material1.name().contains("CARPET")) {
+                            carpets.add(material1);
+                        }
+                    }
+                    return carpets.contains(material);
             }
         }
         return false;
@@ -317,6 +326,8 @@ public enum MaterialWithGroups {
                     return FixedMaterial.getMaterial(Collections.singletonList("LIME_SHULKER_BOX"));
                 case ALL_LEAVES:
                     return FixedMaterial.getMaterial(Collections.singletonList("OAK_LEAVES"));
+                case ALL_CARPETS:
+                    return FixedMaterial.getMaterial(Arrays.asList("WHITE_CARPET", "CARPET"));
             }
         }
         return Material.STONE;

@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class AllPlayers extends PlayerCommand {
 
-    public static void aroundExecution(Entity receiver, List<String> args, ActionInfo aInfo, boolean displayMsgIfNoTargetHit) {
+    public static void aroundExecution(Entity receiver, List<String> args, ActionInfo aInfo) {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -77,7 +77,7 @@ public class AllPlayers extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        aroundExecution(receiver, args, aInfo, Boolean.valueOf(args.get(1)));
+        aroundExecution(receiver, args, aInfo);
     }
 
     @Override

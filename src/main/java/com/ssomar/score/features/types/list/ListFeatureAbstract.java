@@ -45,7 +45,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
         List<String> forValue = new ArrayList<>();
         List<String> forBlacklistedValues = new ArrayList<>();
         for (String s : entries) {
-           // SsomarDev.testMsg("load: " + s, true);
+           //SsomarDev.testMsg("load: " + s, true);
             if (s.startsWith("!")) {
                 s = s.substring(1);
                 //SsomarDev.testMsg("blacklisted: " + s, true);

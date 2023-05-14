@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.potionsettings;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -68,6 +69,10 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             errors.addAll(this.potionExtended.load(plugin, potionSettings, isPremiumLoading));
             errors.addAll(this.potionUpgraded.load(plugin, potionSettings, isPremiumLoading));
             errors.addAll(this.potionEffects.load(plugin, potionSettings, isPremiumLoading));
+            SsomarDev.testMsg("§aPotion settings loaded for the feature §e"+this.getName(), true);
+        }
+        else {
+            SsomarDev.testMsg("§cNo potion settings found for the feature §e"+this.getName(), true);
         }
 
         return errors;
@@ -111,21 +116,28 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     }
 
     public ItemStack addTo(@NotNull ItemStack item) {
-
+        //SsomarDev.testMsg("§aPotion settings added to the item §e"+potiontype.getValue().get(), true);
+        //SsomarDev.testMsg("§aPotion settings added to the item §e"+item.getType()+ " has meta "+item.hasItemMeta(), true);
         ItemMeta meta;
         if (item.hasItemMeta() && (meta = item.getItemMeta()) instanceof PotionMeta) {
+            //SsomarDev.testMsg("§aPotion settings 2", true);
             PotionMeta pMeta = ((PotionMeta) meta);
             if (!SCore.is1v11Less()) {
+               // SsomarDev.testMsg("§aPotion settings 3", true);
                 if (color.getValue().isPresent()) pMeta.setColor(Color.fromRGB(color.getValue().get()));
                 if (potiontype.getValue().isPresent()) {
+                   // SsomarDev.testMsg("§aPotion settings 4", true);
                     try {
                         pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable()));
-                    }catch (Exception ignored){}
+                    }catch (Exception ignored){
+                        ignored.printStackTrace();
+                    }
                 }
             }
             for (PotionEffectFeature pE : this.potionEffects.getEffects().values()) {
                 pMeta.addCustomEffect(pE.getPotionEffect(), true);
             }
+            //SsomarDev.testMsg("§aPotion settings 5", true);
             item.setItemMeta(pMeta);
         }
 
@@ -219,7 +231,10 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public ConfigurationSection getConfigurationSection() {
-        return getParent().getConfigurationSection();
+        ConfigurationSection section = getParent().getConfigurationSection();
+        if (section.isConfigurationSection(this.getName())) {
+            return section.getConfigurationSection(this.getName());
+        } else return section.createSection(this.getName());
     }
 
     @Override
@@ -258,8 +273,6 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             ThrownPotion lp = (ThrownPotion) e;
             try {
                 ItemStack item = lp.getItem();
-                if (materialLaunched.equals(Material.LINGERING_POTION)) item.setType(Material.LINGERING_POTION);
-                else item.setType(Material.SPLASH_POTION);
                 item = addTo(item);
                 lp.setItem(item);
             } catch (NoSuchMethodError ignored) {

@@ -19,7 +19,7 @@ public class IfOnFire extends EntityConditionFeature<BooleanFeature, IfOnFire> {
 
     @Override
     public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && !entity.isVisualFire()) {
+        if (hasCondition() && entity.getFireTicks() <= 0 ) {
             sendErrorMsg(playerOpt, messageSender);
             cancelEvent(event);
             return false;

@@ -7,9 +7,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
-public class fireFeature extends BooleanFeature implements SProjectileFeatureInterface {
+public class FireFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
-    public fireFeature(FeatureParentInterface parent) {
+    public FireFeature(FeatureParentInterface parent) {
         super(parent, "visualFire", false, "visualFire", new String[]{}, Material.FLINT_AND_STEEL, false, false);
     }
 
@@ -20,8 +20,8 @@ public class fireFeature extends BooleanFeature implements SProjectileFeatureInt
     }
 
     @Override
-    public fireFeature clone(FeatureParentInterface newParent) {
-        fireFeature clone = new fireFeature(newParent);
+    public FireFeature clone(FeatureParentInterface newParent) {
+        FireFeature clone = new FireFeature(newParent);
         clone.setValue(getValue());
         return clone;
     }

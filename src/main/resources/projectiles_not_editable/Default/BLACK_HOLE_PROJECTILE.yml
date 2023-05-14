@@ -1,0 +1,26 @@
+type: ARROW
+customNameVisible: true
+customName: Black Hole Arrow
+invisible: true
+glowing: false
+bounce: false
+despawnDelay: 10
+velocity: 0.2
+silent: false
+removeWhenHitBlock: false
+visualFire: false
+gravity: false
+color: NO_COLOR
+pierceLevel: 60
+critical: false
+damage: 0.0
+knockbackStrength: -1
+pickupStatus: DISALLOWED
+particles:
+  particle0:
+    particlesType: SMOKE_LARGE
+    particlesAmount: 10
+    particlesOffSet: 0.35
+    particlesSpeed: 0.05
+    particlesDelay: 1
+    particlesDensity: 2

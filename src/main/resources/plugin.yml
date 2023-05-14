@@ -14,7 +14,7 @@ permissions:
     description: SCore permission
     default: op
     children:
-      ei.cmds: true
+      score.cmds: true
   score.cmds:
     description: Allows SCore commands
     default: op

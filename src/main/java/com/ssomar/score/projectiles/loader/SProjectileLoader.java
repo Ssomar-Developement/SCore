@@ -163,6 +163,8 @@ public class SProjectileLoader extends NewSObjectLoader<SProjectile> {
         defaultProj.add("proj_rainbow_projectile");
         defaultProj.add("proj_tornado_blade");
         defaultProj.add("proj_pumpkin");
+        defaultProj.add("BLACK_HOLE_PROJECTILE");
+        defaultProj.add("FIRE_WAND_PROJECTILE");
 
 
         defaultBlocks.put(DEFAULT, defaultProj);

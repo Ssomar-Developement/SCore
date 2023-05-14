@@ -5,9 +5,7 @@ import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.scoreboard.Team;
 
 import java.io.Serializable;
@@ -145,6 +143,10 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
             if(entity != null && entity instanceof Item){
                 Item item = (Item) entity;
                 toReplace = toReplace.replaceAll("%" + particle + "_item%", item.getItemStack().getType().toString());
+            }
+            else if(entity != null && SCore.is1v19Plus() && (entity instanceof ChestBoat || entity instanceof Boat)){
+                Boat boat = (Boat) entity;
+                toReplace = toReplace.replaceAll("%" + particle + "_item%", boat.getBoatType().toString()+"_"+entity.getType());
             }
             //SsomarDev.testMsg("toReplace2: "+toReplace, true);
 

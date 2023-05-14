@@ -101,6 +101,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     public Map<String, List<Map<String, String>>> extractConditions(List<String> values) {
         Map<String, List<Map<String, String>>> conditions = new HashMap<>();
         for (String s : values) {
+            SsomarDev.testMsg(">> extractConditions: " + s, DEBUG);
             String materialStr = s;
             Map<String, String> tags = new HashMap<>();
 
@@ -118,6 +119,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             } else {
                 conditions.put(materialStr.toUpperCase(), new ArrayList<>(Collections.singletonList(tags)));
             }
+            SsomarDev.testMsg(" >> conditions size: " + conditions.get(materialStr.toUpperCase()).size(), DEBUG);
         }
         return conditions;
     }
@@ -131,8 +133,13 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     }
 
     public boolean isValidMaterial(boolean ifEmpty, List<String> references, @NotNull Material material, Optional<String> statesStrOpt) {
+
+        for(String s : references) SsomarDev.testMsg(">> verif references: " + s, DEBUG);
         Map<String, List<Map<String, String>>> conditions = extractConditions(references);
-        if (conditions.isEmpty()) return ifEmpty;
+        if (conditions.isEmpty()){
+            SsomarDev.testMsg(">> verif conditions.isEmpty(): " + conditions.isEmpty(), DEBUG);
+            return ifEmpty;
+        }
 
         String symbolStart = "{";
         String symbolStartSplit = "\\{";
@@ -173,7 +180,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                 }
             }
         } catch (Exception ignored) {
-            //ignored.printStackTrace();
+            ignored.printStackTrace();
         }
 
         for (String mat : conditions.keySet()) {
@@ -339,16 +346,13 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     public boolean verifItem(@NotNull ItemStack item){
         Material material = item.getType();
-        Optional<String> statesStrOpt = Optional.empty();
-        if(statesStrOpt == null) {
-            String str = "";
-            if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
-                NBTItem nbti = new NBTItem(item);
-                SsomarDev.testMsg("isValid DetailedItems >> "+nbti.toString(), true);
-                str = nbti.toString();
-            }
+        Optional<String> statesStrOpt;
+        if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+            NBTItem nbti = new NBTItem(item);
+            String str = nbti.toString();
             statesStrOpt = Optional.of(str);
         }
+        else statesStrOpt = Optional.empty();
 
         boolean forValuesBoolMat = isValidMaterial(getValue().isEmpty(), getValues(), material, statesStrOpt);
         SsomarDev.testMsg(">> verif forValuesBool: " + forValuesBoolMat, DEBUG);

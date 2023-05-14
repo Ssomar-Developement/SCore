@@ -73,6 +73,7 @@ public class LogFilter implements Filter, LifeCycle {
     }
 
     public Result filter(LogEvent event) {
+        if(event.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(event.getMessage().getFormattedMessage());
     }
 
@@ -86,64 +87,77 @@ public class LogFilter implements Filter, LifeCycle {
     }
 
     public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, String msg, Object... params) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(msg);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6, Object p7) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6, Object p7, Object p8) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String message, Object p0, Object p1, Object p2, Object p3, Object p4, Object p5, Object p6, Object p7, Object p8, Object p9) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(message);
     }
 
     public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Object msg, Throwable t) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(msg.toString());
     }
 
     public Result filter(org.apache.logging.log4j.core.Logger logger, Level level, Marker marker, Message msg, Throwable t) {
+        if(logger.getLevel() == Level.ERROR) return Result.NEUTRAL;
         return this.checkMessage(msg.getFormattedMessage());
     }
 

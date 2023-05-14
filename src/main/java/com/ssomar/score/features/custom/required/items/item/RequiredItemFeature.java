@@ -186,6 +186,8 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
         PlayerInventory inventory = player.getInventory();
         int needed = amount.getValue().get();
         SsomarDev.testMsg("required item: " + material.getValue().get().name() + " " + amount.getValue().get(), DEBUG);
+        ItemStack itemStack =player.getItemOnCursor();
+        SsomarDev.testMsg("item on cursor: " + itemStack.getType().name() + " " + itemStack.getAmount(), true);
         for (ItemStack it : inventory.getContents()) {
             if (it == null || !it.getType().equals(material.getValue().get())) continue;
 
