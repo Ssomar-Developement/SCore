@@ -134,9 +134,9 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     public boolean isValidMaterial(boolean ifEmpty, List<String> references, @NotNull Material material, Optional<String> statesStrOpt) {
 
-        for(String s : references) SsomarDev.testMsg(">> verif references: " + s, DEBUG);
+        for (String s : references) SsomarDev.testMsg(">> verif references: " + s, DEBUG);
         Map<String, List<Map<String, String>>> conditions = extractConditions(references);
-        if (conditions.isEmpty()){
+        if (conditions.isEmpty()) {
             SsomarDev.testMsg(">> verif conditions.isEmpty(): " + conditions.isEmpty(), DEBUG);
             return ifEmpty;
         }
@@ -168,14 +168,17 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                     String[] spliter1 = statesStr.split(symbolEnd);
                     String[] spliter2 = spliter1[0].split(symbolStartSplit);
 
-                    SsomarDev.testMsg(">> spliter2: " + spliter2[1], DEBUG);
+                    // Otherwise that means states are empty
+                    if (spliter2.length == 2) {
+                        SsomarDev.testMsg(">> spliter2: " + spliter2[1], DEBUG);
 
-                    String[] spliterStates = spliter2[1].split(symbolSeparator);
+                        String[] spliterStates = spliter2[1].split(symbolSeparator);
 
-                    for (String state : spliterStates) {
-                        String[] spliterState = state.split(symbolEquals);
-                        SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
-                        states.put(spliterState[0].toUpperCase(), spliterState[1].toUpperCase());
+                        for (String state : spliterStates) {
+                            String[] spliterState = state.split(symbolEquals);
+                            SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
+                            states.put(spliterState[0].toUpperCase(), spliterState[1].toUpperCase());
+                        }
                     }
                 }
             }
@@ -279,14 +282,14 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         return false;
     }
 
-    public boolean verifBlock(@NotNull Block block){
+    public boolean verifBlock(@NotNull Block block) {
         return verifBlock(block, null, null);
     }
 
-    public boolean verifBlock(@NotNull Block block, @Nullable Material material, @Nullable Optional<String> statesStrOpt){
-        if(material == null) material = block.getType();
-        if(statesStrOpt == null) {
-            if(!SCore.is1v12Less()) statesStrOpt = Optional.of(block.getBlockData().getAsString(true));
+    public boolean verifBlock(@NotNull Block block, @Nullable Material material, @Nullable Optional<String> statesStrOpt) {
+        if (material == null) material = block.getType();
+        if (statesStrOpt == null) {
+            if (!SCore.is1v12Less()) statesStrOpt = Optional.of(block.getBlockData().getAsString(true));
             else statesStrOpt = Optional.empty();
         }
 
@@ -303,7 +306,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         boolean forBlacklistValuesBool = isValidCustomBlock(false, getBlacklistedValues(), block);
         SsomarDev.testMsg(">> CUSTOMBLOCK verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
 
-        return (forValuesBool || forValuesBoolMat ) && (!forBlacklistValuesBool && !forBlacklistValuesBoolMat);
+        return (forValuesBool || forValuesBoolMat) && (!forBlacklistValuesBool && !forBlacklistValuesBoolMat);
     }
 
     public boolean isValidCustomItemOnly(@NotNull ItemStack item) {
@@ -344,15 +347,14 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         return false;
     }
 
-    public boolean verifItem(@NotNull ItemStack item){
+    public boolean verifItem(@NotNull ItemStack item) {
         Material material = item.getType();
         Optional<String> statesStrOpt;
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
             String str = nbti.toString();
             statesStrOpt = Optional.of(str);
-        }
-        else statesStrOpt = Optional.empty();
+        } else statesStrOpt = Optional.empty();
 
         boolean forValuesBoolMat = isValidMaterial(getValue().isEmpty(), getValues(), material, statesStrOpt);
         SsomarDev.testMsg(">> verif forValuesBool: " + forValuesBoolMat, DEBUG);
@@ -367,7 +369,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         boolean forBlacklistValuesBool = isValidCustomItem(getValue().isEmpty(), getBlacklistedValues(), item);
         SsomarDev.testMsg(">> CUSTOMBLOCK verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
 
-        return (forValuesBool || forValuesBoolMat ) && (!forBlacklistValuesBool && !forBlacklistValuesBoolMat);
+        return (forValuesBool || forValuesBoolMat) && (!forBlacklistValuesBool && !forBlacklistValuesBoolMat);
     }
 
     @Override

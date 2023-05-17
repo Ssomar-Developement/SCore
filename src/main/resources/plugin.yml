@@ -3,7 +3,7 @@ author: Ssomar
 version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
-softdepend: [ ProtectionStones, PolymartHelper, Polymart, ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, MMOCore, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs, ShopGUIPlus, RoseLoot, ItemsAdder, DecentHolograms, HolographicDisplaysAPI, HolographicDisplays, Better-Enchantments]
+softdepend: [ Terra, ProtectionStones, PolymartHelper, Polymart, ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, MMOCore, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs, ShopGUIPlus, RoseLoot, ItemsAdder, DecentHolograms, HolographicDisplaysAPI, HolographicDisplays, Better-Enchantments]
 loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, ItemsAdder ]
 commands:
   score:

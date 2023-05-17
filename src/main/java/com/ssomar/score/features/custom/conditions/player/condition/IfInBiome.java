@@ -5,7 +5,6 @@ import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature
 import com.ssomar.score.features.types.list.ListBiomeFeature;
 import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -21,13 +20,7 @@ public class IfInBiome extends PlayerConditionFeature<ListBiomeFeature, IfInBiom
     @Override
     public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
         if (hasCondition()) {
-            boolean notValid = true;
-            for (Biome b : getCondition().getValue()) {
-                if (player.getLocation().getBlock().getBiome().equals(b)) {
-                    notValid = false;
-                    break;
-                }
-            }
+            boolean notValid = !getCondition().isValid(player.getLocation());
             if (notValid) {
                 sendErrorMsg(playerOpt, messageSender);
                 cancelEvent(event);

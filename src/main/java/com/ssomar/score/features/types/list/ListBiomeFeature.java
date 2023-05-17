@@ -11,6 +11,7 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -18,33 +19,57 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
+/* List string to support biomes from custom plugins */
 @Getter
 @Setter
-public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeature> {
+public class ListBiomeFeature extends ListFeatureAbstract<String, ListBiomeFeature> {
 
-    public ListBiomeFeature(FeatureParentInterface parent, String name, List<Biome> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
+    public ListBiomeFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, "List of Biomes", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
     @Override
-    public List<Biome> loadValues(List<String> entries, List<String> errors) {
-        List<Biome> value = new ArrayList<>();
+    public List<String> loadValues(List<String> entries, List<String> errors) {
+        List<String> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
-            try {
-                Biome biome = Biome.valueOf(s);
-                value.add(biome);
-            } catch (Exception e) {
-                errors.add("&cERROR, Couldn't load the Biome value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
+
+            boolean found = false;
+            for (String biome : getBiomes()) {
+                if (biome.equalsIgnoreCase(s)) {
+                    found = true;
+                    value.add(biome);
+                    break;
+                }
             }
+            if (!found)
+                errors.add("&cERROR, Couldn't load the Biome value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
         }
         return value;
     }
 
+    public boolean isValid(Location location) {
+        String biome = location.getBlock().getBiome().name();
+        if (SCore.hasTerra) {
+            try {
+                BukkitServerWorld worldS = new BukkitServerWorld(location.getWorld());
+                biome = worldS.getBiomeProvider().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getSeed()).getID();
+            } catch (Exception ignored) {
+                // ignored.printStackTrace();
+            } // ignore if not terra world
+        }
+        //SsomarDev.testMsg("IfInBiome >> "+biome, true);
+
+        for (String biomeStr : getValues()) {
+            if (biomeStr.equalsIgnoreCase(biome)) return true;
+        }
+        return false;
+    }
+
     @Override
-    public String transfromToString(Biome value) {
-        return value.name();
+    public String transfromToString(String value) {
+        return value;
     }
 
     @Override
@@ -58,15 +83,12 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
     @Override
     public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message);
-        try {
-            Biome biome = Biome.valueOf(message);
-            getValues().add(biome);
-            return Optional.empty();
-        } catch (Exception e) {
-            return Optional.of("&4&l[ERROR] &cThe message you entered is not a Biome &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
-        }
-    }
 
+        for (String biome : getBiomes()) {
+            if (biome.equalsIgnoreCase(message)) return Optional.empty();
+        }
+        return Optional.of("&4&l[ERROR] &cThe message you entered is not a Biome &6>> Biomes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html");
+    }
 
 
     @Override
@@ -78,25 +100,36 @@ public class ListBiomeFeature extends ListFeatureAbstract<Biome, ListBiomeFeatur
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
 
-        for (Biome biome : Biome.values()) {
-            map.put(biome.toString(), new Suggestion(biome + "", "&6[" + "&e" + biome + "&6]", "&7Add &e" + biome));
+        for (String biome : getBiomes()) {
+            map.put(biome, new Suggestion(biome, "&6[" + "&e" + biome + "&6]", "&7Add &e" + biome));
         }
+        return new ArrayList<>(map.values());
+    }
+
+    public List<String> getBiomes() {
+        List<String> biomes = new ArrayList<>();
 
         if (SCore.hasTerra) {
-            for(String worldStr : AllWorldManager.getWorlds()){
+            for (String worldStr : AllWorldManager.getWorlds()) {
+                // SsomarDev.testMsg("world: "+worldStr, true);
                 Optional<World> worldOpt = AllWorldManager.getWorld(worldStr);
                 if (!worldOpt.isPresent()) continue;
                 World world = worldOpt.get();
                 try {
                     BukkitServerWorld worldS = new BukkitServerWorld(world);
                     worldS.getBiomeProvider().getBiomes().forEach(biome -> {
-                        map.put(biome.toString(), new Suggestion(biome + "", "&6[" + "&e" + biome + "&6]", "&7Add &e" + biome));
+                        //SsomarDev.testMsg("biome: "+biome.getID(), true);
+                        biomes.add(biome.getID());
                     });
-                }catch (Exception ignored){} // ignore if not terra world
+                } catch (Exception ignored) {
+                    // ignored.printStackTrace();
+                } // ignore if not terra world
             }
-
         }
-        return new ArrayList<>(map.values());
+        for (Biome biome : Biome.values()) {
+            biomes.add(biome.name());
+        }
+        return biomes;
     }
 
     @Override

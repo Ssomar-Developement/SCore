@@ -23,6 +23,15 @@ public class Setlore extends PlayerCommand {
 
         try {
             item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
+
+            // Not compatible with EI + usageModification
+
+            //boolean isTheEIExecuted = false;
+            /* if(SCore.hasExecutableItems && aInfo.getExecutableItem() != null && item.isSimilar(aInfo.getExecutableItem().getItem())){
+                SsomarDev.testMsg("Setlore isTheEIExecuted", true);
+                item = aInfo.getExecutableItem().getItem();
+                isTheEIExecuted = true;
+            }*/
             itemmeta = item.getItemMeta();
 
             StringBuilder build = new StringBuilder();
