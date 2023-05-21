@@ -50,6 +50,9 @@ public class EntityCommandManager extends CommandManager<EntityCommand> {
         commands.add(new Nearest());
         commands.add(new MobNearest());
         commands.add(new AngryAt());
+        commands.add(new CustomDash2());
+        commands.add(new CustomDash3());
+        commands.add(new Spin());
         if (!SCore.is1v11Less()) {
             commands.add(new ParticleCommand());
             commands.add(new GlacialFreeze());

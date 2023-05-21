@@ -24,11 +24,11 @@ public class AddEnchantment extends PlayerCommand {
 
         ItemStack item;
         ItemMeta itemMeta;
-        Integer slot = NTools.getInteger(args.get(0)).get();
-        Integer level = NTools.getInteger(args.get(2)).get();
+        int slot = NTools.getInteger(args.get(0)).get();
+        int level = NTools.getInteger(args.get(2)).get();
 
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-        else item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
+        else item = receiver.getInventory().getItem(slot);
         if (item == null || item.getType() == Material.AIR) return;
 
         try {
@@ -37,12 +37,16 @@ public class AddEnchantment extends PlayerCommand {
             return;
         }
 
-        org.bukkit.enchantments.Enchantment enchantment = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(args.get(1)));
-        if (enchantment == null) return;
-        if (level <= 0) return;
+        try {
+            org.bukkit.enchantments.Enchantment enchantment = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(args.get(1).toLowerCase()));
+            if (enchantment == null) return;
+            if (level <= 0) return;
 
-        itemMeta.addEnchant(enchantment,level, true);
-        item.setItemMeta(itemMeta);
+            itemMeta.addEnchant(enchantment,level, true);
+            item.setItemMeta(itemMeta);
+        }catch(IllegalArgumentException e){
+            return;
+        }
     }
 
     @Override

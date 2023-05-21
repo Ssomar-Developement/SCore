@@ -3,7 +3,10 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.strings.StringConverter;
+import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,7 +25,11 @@ public class Setlore extends PlayerCommand {
         ItemMeta itemmeta;
 
         try {
-            item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
+            int slot = NTools.getInteger(args.get(0)).get();
+
+            if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+            else item = receiver.getInventory().getItem(slot);
+            if (item == null || item.getType() == Material.AIR) return;
 
             // Not compatible with EI + usageModification
 
@@ -46,7 +53,7 @@ public class Setlore extends PlayerCommand {
 
             Integer index = Integer.valueOf(args.get(1));
             if(index > 0) index += -1;
-            list.set(index, ChatColor.translateAlternateColorCodes('&', build.toString()));
+            list.set(index, StringConverter.coloredString(build.toString()));
 
             itemmeta.setLore(list);
             item.setItemMeta(itemmeta);

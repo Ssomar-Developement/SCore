@@ -1,53 +1,41 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
-import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* ADDLORE {slot} {text} */
-public class Addlore extends PlayerCommand {
+/* SPIN {duration ticks} {velocity} */
+public class Spin extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
-        ItemStack item;
-        ItemMeta itemmeta;
-        ArrayList<String> list;
+        Integer duration = NTools.getInteger(args.get(0)).get();
+        Float velocity = NTools.getFloat(args.get(1)).get();
 
-        int slot = NTools.getInteger(args.get(0)).get();
+        new BukkitRunnable() {
+            int ticks = 0;
 
-        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-        else item = receiver.getInventory().getItem(slot);
-        if (item == null || item.getType() == Material.AIR) return;
-
-        itemmeta = item.getItemMeta();
-
-        StringBuilder build = new StringBuilder();
-
-        for (int i = 1; i < args.size(); i++) {
-            build.append(args.get(i) + " ");
-        }
-
-        list = (ArrayList<String>) itemmeta.getLore();
-
-        if(list == null){
-            list = new ArrayList<>();
-        }
-        list.add(StringConverter.coloredString(build.toString()));
-
-        itemmeta.setLore(list);
-        item.setItemMeta(itemmeta);
+            @Override
+            public void run() {
+                if (ticks >= duration) {
+                    this.cancel();
+                    return;
+                }
+                receiver.teleport(receiver.getLocation().setDirection(receiver.getLocation().getDirection()
+                        .rotateAroundY(Math.toRadians(velocity))));
+                ticks++;
+            }
+        }.runTaskTimer(SCore.plugin, 0, 1);
     }
 
     @Override
@@ -57,19 +45,22 @@ public class Addlore extends PlayerCommand {
         ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
+        ArgumentChecker ac1 = checkDouble(args.get(1), isFinalVerification, getTemplate());
+        if (!ac1.isValid()) return Optional.of(ac1.getError());
+
         return Optional.empty();
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("ADDLORE");
+        names.add("SPIN");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ADDLORE {slot} {text dont need brackets}";
+        return "SPIN {duration} {velocity}";
     }
 
     @Override

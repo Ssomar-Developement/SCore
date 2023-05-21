@@ -34,6 +34,8 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new SetTempBlockPos());
         commands.add(new ReplaceBlock());
         commands.add(new CustomDash1());
+        commands.add(new CustomDash2());
+        commands.add(new CustomDash3());
         commands.add(new ProjectileCustomDash1());
         commands.add(new FrontDash());
         commands.add(new Glowing());
@@ -108,7 +110,14 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new Steal());
         commands.add(new FormatEnchantments());
         commands.add(new AddEnchantment());
+        commands.add(new SortInventory());
         commands.add(new Oxygen());
+        commands.add(new Bossbar());
+        commands.add(new Spin());
+        commands.add(new OpMessage());
+        commands.add(new ConsoleMessage());
+        commands.add(new RemoveEnchantment());
+        commands.add(new Chat());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
