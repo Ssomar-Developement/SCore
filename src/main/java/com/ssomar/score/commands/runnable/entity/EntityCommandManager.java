@@ -53,6 +53,10 @@ public class EntityCommandManager extends CommandManager<EntityCommand> {
         commands.add(new CustomDash2());
         commands.add(new CustomDash3());
         commands.add(new Spin());
+        commands.add(new Frontdash());
+        if(SCore.is1v16Plus()){
+            commands.add(new Awareness());
+        }
         if (!SCore.is1v11Less()) {
             commands.add(new ParticleCommand());
             commands.add(new GlacialFreeze());

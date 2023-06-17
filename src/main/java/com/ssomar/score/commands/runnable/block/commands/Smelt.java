@@ -3,7 +3,6 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safebreak.SafeBreak;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -72,6 +71,7 @@ public class Smelt extends BlockCommand {
                 result = new ItemStack(Material.CHARCOAL);
                 break;
             case COAL_ORE:
+            case DEEPSLATE_COAL_ORE:
                 result = new ItemStack(Material.COAL);
                 break;
             case NETHERRACK:
@@ -88,22 +88,30 @@ public class Smelt extends BlockCommand {
                 break;
             case GOLD_ORE:
             case RAW_GOLD:
+            case DEEPSLATE_GOLD_ORE:
+            case RAW_GOLD_BLOCK:
                 result = new ItemStack(Material.GOLD_INGOT);
                 break;
             case IRON_ORE:
             case RAW_IRON:
+            case DEEPSLATE_IRON_ORE:
+            case RAW_IRON_BLOCK:
                 result = new ItemStack(Material.IRON_INGOT);
                 break;
             case LAPIS_ORE:
+            case DEEPSLATE_LAPIS_ORE:
                 result = new ItemStack(Material.LAPIS_LAZULI);
                 break;
             case REDSTONE_ORE:
+            case DEEPSLATE_REDSTONE_ORE:
                 result = new ItemStack(Material.REDSTONE);
                 break;
             case DIAMOND_ORE:
+            case DEEPSLATE_DIAMOND_ORE:
                 result = new ItemStack(Material.DIAMOND);
                 break;
             case EMERALD_ORE:
+            case DEEPSLATE_EMERALD_ORE:
                 result = new ItemStack(Material.EMERALD);
                 break;
             case CACTUS:
@@ -117,6 +125,28 @@ public class Smelt extends BlockCommand {
                 break;
             case KELP:
                 result = new ItemStack(Material.DRIED_KELP);
+                break;
+            case RED_SAND:
+                result = new ItemStack(Material.RED_STAINED_GLASS);
+                break;
+            case OBSIDIAN:
+                result = new ItemStack(Material.CRYING_OBSIDIAN);
+                break;
+            case GRAVEL:
+                result = new ItemStack(Material.FLINT);
+                break;
+            case SNOW_BLOCK:
+                result = new ItemStack(Material.SNOWBALL);
+                break;
+            case WARPED_STEM:
+            case STRIPPED_WARPED_STEM:
+            case WARPED_HYPHAE:
+            case STRIPPED_WARPED_HYPHAE:
+                result = new ItemStack(Material.WARPED_WART_BLOCK);
+                break;
+            case COPPER_ORE:
+            case DEEPSLATE_COPPER_ORE:
+                result = new ItemStack(Material.COPPER_INGOT);
                 break;
             default:
                 break;

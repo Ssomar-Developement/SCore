@@ -42,6 +42,8 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new DrainInCube());
         references.add(new Move());
         references.add(new StrikeLightning());
+        references.add(new OpMessageBlock());
+        references.add(new ConsoleMessageBlock());
         /* No BlockData in 1.12 and less */
         if (!SCore.is1v12Less()) {
             references.add(new OpenDoor());

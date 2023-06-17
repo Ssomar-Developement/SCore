@@ -118,6 +118,8 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new ConsoleMessage());
         commands.add(new RemoveEnchantment());
         commands.add(new Chat());
+        commands.add(new DropSpecificEI());
+        commands.add(new OpenChest());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
