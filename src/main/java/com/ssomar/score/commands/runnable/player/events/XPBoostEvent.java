@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class XPBoostEvent implements Listener {
 
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = true;
 
     @EventHandler(priority = EventPriority.HIGH)
     public void playerExpChangeEvent(PlayerExpChangeEvent e) {

@@ -48,6 +48,11 @@ public class SellContent extends BlockCommand {
                     SsomarDev.testMsg("item : "+item.getType()+ " qty: " + item.getAmount()+"check : "+check, DEBUG);
                     if(check > 0){
                         amount += check;
+
+                        if (SCore.hasShopGUIPlus){
+                            ShopGUIPlusTool.registerTransaction(item, p, check, priceBoost);
+                        }
+
                         item.setAmount(0);
                     }
                 }

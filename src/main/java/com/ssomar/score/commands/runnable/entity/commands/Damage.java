@@ -32,6 +32,7 @@ public class Damage extends EntityCommand {
 
 
         SsomarDev.testMsg("Damage.run() damage: " + damage, DEBUG);
+
         if (damage > 0 && !entity.isDead()) {
             if (receiver instanceof EnderDragon) {
                 //SsomarDev.testMsg("Passe enderdrag");

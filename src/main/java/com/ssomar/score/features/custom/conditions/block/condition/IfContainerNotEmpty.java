@@ -2,15 +2,11 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfContainerNotEmpty extends BlockConditionFeature<BooleanFeature, IfContainerNotEmpty> {
 
@@ -19,10 +15,10 @@ public class IfContainerNotEmpty extends BlockConditionFeature<BooleanFeature, I
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
+        Block b = request.getBlock();
         if (hasCondition() && b.getState() instanceof Container && ((Container)b.getState()).getInventory().isEmpty()) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+            runInvalidCondition(request);
             return false;
         }
         return true;

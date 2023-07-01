@@ -21,16 +21,19 @@ import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
+import com.ssomar.score.hardness.hardness.Hardness;
+import com.ssomar.score.hardness.hardness.HardnessesEditor;
+import com.ssomar.score.hardness.hardness.manager.HardnessesManager;
 import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.SProjectilesEditor;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.usedapi.AllWorldManager;
-import com.ssomar.score.utils.messages.SendMessage;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.VariablesEditor;
 import com.ssomar.score.variables.manager.VariablesManager;
@@ -77,6 +80,15 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                     break;
                 case "projectiles-delete":
                     this.runCommand(sender, "projectiles-delete", args);
+                    break;
+                case "hardnesses":
+                    this.runCommand(sender, "hardnesses", args);
+                    break;
+                case "hardnesses-create":
+                    this.runCommand(sender, "hardnesses-create", args);
+                    break;
+                case "hardnesses-delete":
+                    this.runCommand(sender, "hardnesses-delete", args);
                     break;
                 case "variables":
                     this.runCommand(sender, "variables", args);
@@ -140,11 +152,6 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
 
         switch (command) {
 
-            case "projectiles":
-                if (player != null) {
-                    NewSObjectsManagerEditor.getInstance().startEditing(player, new SProjectilesEditor());
-                }
-                break;
             case "variables":
                 if (args.length >= 1) {
                     if (args[0].equalsIgnoreCase("info")) {
@@ -394,6 +401,11 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 sm.sendMessage(sender, " ");
 
                 break;
+            case "projectiles":
+                if (player != null) {
+                    NewSObjectsManagerEditor.getInstance().startEditing(player, new SProjectilesEditor());
+                }
+                break;
             case "projectiles-create":
                 if (player != null) {
                     if (args.length >= 1) {
@@ -426,6 +438,44 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                     break;
                 }
                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm the delete type &6/score projectiles-delete {projID} confirm"));
+                break;
+            case "hardnesses":
+                if (player != null) {
+                    NewSObjectsManagerEditor.getInstance().startEditing(player, new HardnessesEditor());
+                }
+                break;
+            case "hardnesses-create":
+                if (player != null) {
+                    if (args.length >= 1) {
+                        if (HardnessesManager.getInstance().getAllObjects().contains(args[0])) {
+                            player.sendMessage(StringConverter.coloredString("&4[SCore] &cError this id already exist re-enter &6/score hardnesses-create ID &7&o(ID is the id you want for your new hardness)"));
+                            break;
+                        }
+                        Hardness hard = new Hardness(args[0], "plugins/SCore/hardnesses/" + args[0] + ".yml");
+                        hard.save();
+                        HardnessesManager.getInstance().addLoadedObject((Hardness) hard);
+                        hard.openEditor(player);
+                        break;
+                    }
+                    player.sendMessage(StringConverter.coloredString("&2[SCore] &aTo create a new hardnesse type &e/score hardnesses-create ID &7&o(ID is the id you want for your new hardnesse)"));
+                }
+                break;
+            case "hardnesses-delete":
+                if (args.length >= 2) {
+                    if (!args[1].equalsIgnoreCase("confirm")) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm the delete type &6/score hardnesses-delete {hardID} confirm"));
+                        return;
+                    }
+                    Optional<Hardness> sProjOpt = HardnessesManager.getInstance().getLoadedObjectWithID(args[0]);
+                    if (sProjOpt.isPresent()) {
+                        HardnessesManager.getInstance().deleteObject(args[0]);
+                        sender.sendMessage(StringConverter.coloredString("&2[SCore] &aHardness file (&e" + args[0] + ".yml&a) deleted !"));
+                        break;
+                    }
+                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cHardness file not found (&6" + args[0] + ".yml&c) so it can't be deleted !"));
+                    break;
+                }
+                sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm the delete type &6/score hardnesses-delete {hardID} confirm"));
                 break;
             case "variables-create":
                 if (player != null) {
@@ -484,7 +534,12 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 cmd = cmd.trim();
 
                 ActionInfo info = new ActionInfo("run-player-command", new StringPlaceholder());
-                info.setReceiverUUID(playerOpt.get().getUniqueId());
+                UUID uuid = playerOpt.get().getUniqueId();
+                info.setLauncherUUID(uuid);
+                info.setReceiverUUID(uuid);
+                StringPlaceholder sp = new StringPlaceholder();
+                sp.setPlayerPlcHldr(uuid);
+                info.setSp(sp);
 
                 PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(Arrays.asList(cmd), info);
                 CommandsExecutor.runCommands(builder);
@@ -518,10 +573,20 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
 
                 break;
             case "run-block-command":
+                Optional<Player> playerOpt2 = Optional.empty();
                 Optional<Block> blockOpt = Optional.empty();
                 String blockCmd = "";
                 for (String arg : args) {
-                    if (arg.startsWith("block:")) {
+                    if (arg.startsWith("player:")) {
+                        String playerName = arg.replace("player:", "");
+                        try {
+                            UUID playerUUID = UUID.fromString(playerName);
+                            playerOpt2 = Optional.ofNullable(Bukkit.getPlayer(playerUUID));
+                        } catch (Exception e) {
+                            playerOpt2 = Optional.ofNullable(Bukkit.getPlayer(playerName));
+                        }
+                    }
+                    else if (arg.startsWith("block:")) {
                         String blockLoc = arg.replace("block:", "");
                         try {
                             String loc[] = blockLoc.split(",");
@@ -549,6 +614,7 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 infoBlock.setBlockLocationZ(blockLocation.getBlockZ());
                 infoBlock.setBlockLocationWorld(blockLocation.getWorld().getUID());
                 infoBlock.setOldBlockMaterialName(blockOpt.get().getType().name());
+                playerOpt2.ifPresent(value -> infoBlock.setLauncherUUID(value.getUniqueId()));
 
                 BlockRunCommandsBuilder blockRunCommandsBuilder = new BlockRunCommandsBuilder(Arrays.asList(blockCmd), infoBlock);
                 CommandsExecutor.runCommands(blockRunCommandsBuilder);
@@ -570,6 +636,9 @@ public class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("projectiles");
                 arguments.add("projectiles-create");
                 arguments.add("projectiles-delete");
+                arguments.add("hardnesses");
+                arguments.add("hardnesses-create");
+                arguments.add("hardnesses-delete");
                 arguments.add("particles");
                 arguments.add("particles-info");
                 arguments.add("variables");

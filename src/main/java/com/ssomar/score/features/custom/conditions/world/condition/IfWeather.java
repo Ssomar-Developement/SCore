@@ -2,15 +2,12 @@ package com.ssomar.score.features.custom.conditions.world.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
+import com.ssomar.score.features.custom.conditions.world.WorldConditionRequest;
 import com.ssomar.score.features.types.list.ListWeatherFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeather> {
 
@@ -19,7 +16,8 @@ public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeath
     }
 
     @Override
-    public boolean verifCondition(World world, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(WorldConditionRequest request) {
+        World world = request.getWorld();
         if (hasCondition()) {
             String currentW = "";
             if (world.isThundering()) currentW = "STORM";
@@ -28,8 +26,7 @@ public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeath
             else currentW = "CLEAR";
 
             if (!getCondition().getValue().contains(currentW)) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

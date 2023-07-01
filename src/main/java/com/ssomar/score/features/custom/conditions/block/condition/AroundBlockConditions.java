@@ -4,13 +4,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeature;
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
-import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class AroundBlockConditions extends BlockConditionFeature<AroundBlockGroupFeature, AroundBlockConditions> {
 
@@ -24,12 +19,11 @@ public class AroundBlockConditions extends BlockConditionFeature<AroundBlockGrou
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
         if (hasCondition()) {
             for (AroundBlockFeature cdt : getCondition().getAroundBlockGroup().values()) {
-                if (!cdt.verif(b, playerOpt, messageSender)) {
-                    sendErrorMsg(playerOpt, messageSender);
-                    cancelEvent(event);
+                if (!cdt.verif(request.getBlock(), request.getPlayerOpt(), request.getErrors())) {
+                    runInvalidCondition(request);
                     return false;
                 }
             }

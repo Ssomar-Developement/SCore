@@ -2,11 +2,11 @@ package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.Serializable;
 import java.util.*;
@@ -35,7 +35,7 @@ public abstract class RunCommand implements Serializable {
 
     private UUID uuid;
 
-    private BukkitTask task;
+    private ScheduledTask task;
 
     public RunCommand(String brutCommand, int delay, ActionInfo aInfo) {
         this.brutCommand = brutCommand;
@@ -84,7 +84,7 @@ public abstract class RunCommand implements Serializable {
 
 
     public void runCommand(CommandManager manager) {
-        //SsomarDev.testMsg("Command run command: "+this.getBrutCommand());
+        //SsomarDev.testMsg("Command run command: "+this.getBrutCommand(), true);
         String finalCommand = this.getBrutCommand();
         String [] split = finalCommand.split(" ");
         int later = 0;
@@ -141,7 +141,7 @@ public abstract class RunCommand implements Serializable {
                 insideDelayedCommand();
             }
         };
-        SCore.schedulerHook.runTask(runnable, this.getDelay());
+        task = SCore.schedulerHook.runTask(runnable, this.getDelay());
         CommandsHandler.getInstance().addDelayedCommand(this);
     }
 
@@ -200,11 +200,11 @@ public abstract class RunCommand implements Serializable {
         this.uuid = uuid;
     }
 
-    public BukkitTask getTask() {
+    public ScheduledTask getTask() {
         return task;
     }
 
-    public void setTask(BukkitTask task) {
+    public void setTask(ScheduledTask task) {
         this.task = task;
     }
 

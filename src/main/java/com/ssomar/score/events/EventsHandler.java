@@ -69,6 +69,5 @@ public class EventsHandler {
 
         /* Recode event */
         main.getServer().getPluginManager().registerEvents(new NewEditorInteractionsListener(), main);
-
     }
 }

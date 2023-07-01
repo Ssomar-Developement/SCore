@@ -10,6 +10,7 @@ import com.ssomar.score.data.Database;
 import com.ssomar.score.data.EntityCommandsQuery;
 import com.ssomar.score.data.PlayerCommandsQuery;
 import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -21,7 +22,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -179,10 +179,14 @@ public class CommandsHandler implements Listener {
         removeDelayedCommand(uuid, receiverUUID, true);
     }
 
-    public void removeDelayedCommand(UUID uuid, @Nullable UUID receiverUUID, boolean canelTask) {
+    public void removeDelayedCommand(UUID uuid, @Nullable UUID receiverUUID, boolean canceltask) {
+        //SsomarDev.testMsg("removeDelayedCommand >> "+uuid, true);
         if (delayedCommandsByRcUuid.containsKey(uuid)) {
-            BukkitTask task;
-            if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null && canelTask) task.cancel();
+            ScheduledTask task;
+            if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null && canceltask){
+                //SsomarDev.testMsg("removeDelayedCommand CANCEL>> "+uuid, true);
+                task.cancel();
+            }
             delayedCommandsByRcUuid.remove(uuid);
         }
 
@@ -192,8 +196,8 @@ public class CommandsHandler implements Listener {
         for (RunCommand rC : delayedCommandsByEntityUuid) {
             if (rC.getUuid().equals(uuid)) {
                 toDelete = rC;
-                BukkitTask task;
-                if ((task = rC.getTask()) != null && canelTask) task.cancel();
+                ScheduledTask task;
+                if ((task = rC.getTask()) != null && canceltask) task.cancel();
             }
         }
         if (toDelete != null) delayedCommandsByEntityUuid.remove(toDelete);
@@ -204,8 +208,8 @@ public class CommandsHandler implements Listener {
         for (RunCommand rC : delayedCommandsByBlockUuid) {
             if (rC.getUuid().equals(uuid)) {
                 toDelete = rC;
-                BukkitTask task;
-                if ((task = rC.getTask()) != null && canelTask) task.cancel();
+                ScheduledTask task;
+                if ((task = rC.getTask()) != null && canceltask) task.cancel();
             }
         }
         if (toDelete != null) delayedCommandsByBlockUuid.remove(toDelete);
@@ -220,8 +224,8 @@ public class CommandsHandler implements Listener {
                 for (RunCommand rC : runCommands) {
                     if (rC.getUuid().equals(uuid)) {
                         toDelete = rC;
-                        BukkitTask task;
-                        if ((task = rC.getTask()) != null && canelTask) task.cancel();
+                        ScheduledTask task;
+                        if ((task = rC.getTask()) != null && canceltask) task.cancel();
                     }
                 }
                 if (toDelete != null) runCommands.remove(toDelete);

@@ -45,6 +45,8 @@ public abstract class GUI implements IGUI {
 
     public final static String SAVE = "&2&l✔ &aSave";
 
+    public final static String REMOVE = "&4&l✘&c Remove";
+
     public final static String RESET = "&4&l✘ &cReset";
 
     public final static String OBJECT_ID = "✚ OBJECT ID:";

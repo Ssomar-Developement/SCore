@@ -2,15 +2,11 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Powerable;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPowered> {
 
@@ -24,8 +20,9 @@ public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPower
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
         if (hasCondition()) {
+            Block b = request.getBlock();
             //SsomarDev.testMsg("block: "+b.getType()+ "   isBlockpowered: "+b.isBlockPowered()+ " is Powerable: "+(b.getBlockData() instanceof Powerable)+ "power: "+b.getBlockPower());
             boolean notPowered = !b.isBlockPowered() && b.getBlockPower() == 0;
 
@@ -35,8 +32,7 @@ public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPower
             }
 
             if (notPowered) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

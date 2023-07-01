@@ -2,15 +2,11 @@ package com.ssomar.score.features.custom.conditions.world.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
+import com.ssomar.score.features.custom.conditions.world.WorldConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfWorldTime extends WorldConditionFeature<NumberConditionFeature, IfWorldTime> {
 
@@ -20,10 +16,10 @@ public class IfWorldTime extends WorldConditionFeature<NumberConditionFeature, I
     }
 
     @Override
-    public boolean verifCondition(World world, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && !StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), world.getTime())) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+    public boolean verifCondition(WorldConditionRequest request) {
+        World world = request.getWorld();
+        if (hasCondition() && !StringCalculation.calculation(getCondition().getValue(request.getPlayerOpt(), request.getSp()).get(), world.getTime())) {
+            runInvalidCondition(request);
             return false;
         }
         return true;

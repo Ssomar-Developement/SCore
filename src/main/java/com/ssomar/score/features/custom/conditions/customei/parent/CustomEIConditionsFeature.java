@@ -4,6 +4,7 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
+import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionRequest;
 import com.ssomar.score.features.custom.conditions.customei.condition.IfNeedPlayerConfirmation;
 import com.ssomar.score.features.custom.conditions.customei.condition.IfNotOwnerOfTheEI;
 import com.ssomar.score.features.custom.conditions.customei.condition.IfOwnerOfTheEI;
@@ -78,8 +79,14 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
     }
 
     public boolean verifConditions(Player player, ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+        CustomEIConditionRequest request = new CustomEIConditionRequest(player, itemStack, playerOpt, messageSender.getSp(), event);
         for (CustomEIConditionFeature condition : conditions) {
-            if (!condition.verifCondition(player, itemStack, playerOpt, messageSender, event)) {
+            if (!condition.verifCondition(request)) {
+                if (messageSender != null && playerOpt.isPresent()) {
+                    for (String error : request.getErrorsFinal()) {
+                        messageSender.sendMessage(playerOpt.get(), error);
+                    }
+                }
                 return false;
             }
         }

@@ -3,14 +3,13 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.usedapi.ShopGUIPlusTool;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,9 +22,11 @@ public class IfContainerContainsSellableItem extends BlockConditionFeature<Boole
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
 
         if (hasCondition()) {
+            Optional<Player> playerOpt = request.getPlayerOpt();
+            Block b = request.getBlock();
             if(playerOpt.isPresent()) {
                 if (b.getState() instanceof Container) {
                     Container container = (Container) b.getState();
@@ -42,8 +43,7 @@ public class IfContainerContainsSellableItem extends BlockConditionFeature<Boole
                 }
             }
 
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+            runInvalidCondition(request);
             return false;
         }
         return true;

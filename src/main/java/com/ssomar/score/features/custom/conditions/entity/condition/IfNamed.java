@@ -2,15 +2,11 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.Nameable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
 
@@ -20,10 +16,10 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
     }
 
     @Override
-    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(EntityConditionRequest request) {
+        Entity entity = request.getEntity();
         if (hasCondition() && entity instanceof Nameable && ((Nameable) entity).getCustomName() == null) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+            runInvalidCondition(request);
             return false;
         }
 

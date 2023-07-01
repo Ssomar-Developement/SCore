@@ -49,7 +49,7 @@ public class ComparatorFeature extends FeatureAbstract<Optional<Comparator>, Com
             FeatureReturnCheckPremium<Comparator> checkPremium = checkPremium("Comparator", material, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the Comparator value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Type target available: EQUALS, DIFFERENT, INFERIOR, SUPERIOR, INFERIOR_OR_EQUALS, SUPERIOR_OR_EQUALS");
+            errors.add("&cERROR, Couldn't load the Comparator value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Type target available: EQUALS, DIFFERENT, INFERIOR, SUPERIOR, INFERIOR_OR_EQUALS, SUPERIOR_OR_EQUALS, IS_CONTAINED_IN, IS_NOT_CONTAINED_IN");
             value = Optional.empty();
         }
         return errors;

@@ -52,7 +52,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     public void reset() {
         this.blocks = new ListDetailedMaterialFeature(this, "blocks", new ArrayList<>(), "Blocks", new String[]{"&7&oBlocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false, false, true);
         this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the block is not valid?"}, Material.LEVER, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.ofNullable("&4&l[Error] &cthe block is not correct !"), "Message if not valid", new String[]{"&7&oMessage if the block is not valid?"}, GUI.WRITABLE_BOOK, false, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe block is not correct !") */, "Message if not valid", new String[]{"&7&oMessage if the block is not valid?"}, GUI.WRITABLE_BOOK, false, false);
     }
 
     @Override

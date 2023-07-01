@@ -43,7 +43,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     @Override
     public void reset() {
         this.variableName = new UncoloredStringFeature(this, "variableName", Optional.of("var"), "Variable Name", new String[]{"&7&oThe variable name"}, GUI.WRITABLE_BOOK, false, false);
-        this.type = new VariableTypeFeature(this, "type", Optional.of(VariableType.STRING), "Type", new String[]{"&7&oThe variable type"}, Material.COMPASS, false);
+        this.type = new VariableTypeFeature(this, "type", Optional.of(VariableType.STRING), "Type", new String[]{"&7&oThe variable type"}, Material.COMPASS, false, true);
         this.stringValue = new ColoredStringFeature(this, "default", Optional.of(""), "String Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false, false);
         this.doubleValue = new DoubleFeature(this, "default", Optional.of(0.0), "Number Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false);
     }

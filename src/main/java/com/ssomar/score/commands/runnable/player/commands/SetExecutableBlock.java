@@ -106,8 +106,10 @@ public class SetExecutableBlock extends PlayerCommand {
         }
 
         UUID ownerUUID = null;
+        Optional<Player> owner = Optional.empty();
         if (args.size() > 7) {
             ownerUUID = UUID.fromString(args.get(7));
+            if(ownerUUID != null) owner = Optional.ofNullable(Bukkit.getPlayer(ownerUUID));
         }
 
         Location loc = new Location(world, x, y, z);
@@ -121,7 +123,7 @@ public class SetExecutableBlock extends PlayerCommand {
 
         ExecutableBlock eB = oOpt.get();
 
-        eB.place(Optional.ofNullable(Bukkit.getPlayer(ownerUUID)), loc, true);
+        eB.place(owner, loc, true);
     }
 
 }

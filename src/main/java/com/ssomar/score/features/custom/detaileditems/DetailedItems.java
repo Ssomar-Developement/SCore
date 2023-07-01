@@ -51,7 +51,7 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
     public void reset() {
         this.items = new ListDetailedMaterialFeature(this, "items", new ArrayList<>(), "Items", new String[]{"&7&oItems"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false, false, false);
         this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the item is not valid?"}, Material.LEVER, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.ofNullable("&4&l[Error] &cthe item is not correct !"), "Message if not valid", new String[]{"&7&oMessage if the item is not valid?"}, GUI.WRITABLE_BOOK, false, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe item is not correct !") */, "Message if not valid", new String[]{"&7&oMessage if the item is not valid?"}, GUI.WRITABLE_BOOK, false, false);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
         if (items.getValues().isEmpty() && !items.getBlacklistedValues().isEmpty())
             finalDescription[finalDescription.length - 3] = "&7Blocks: &e&lALL ITEMS";
         else
-            finalDescription[finalDescription.length - 3] = "&7Detailed Items: &a+" + items.getValues().size()+ items.getBlacklistedValues().size();
+            finalDescription[finalDescription.length - 3] = "&7Detailed Items: &a+" + (items.getValues().size()+items.getBlacklistedValues().size());
 
         if (messageIfNotValid.getValue().isPresent()) {
             finalDescription[finalDescription.length - 2] = "&7Message if NV: &e" + messageIfNotValid.getValue().get();

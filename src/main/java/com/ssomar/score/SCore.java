@@ -15,12 +15,17 @@ import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
+import com.ssomar.score.hardness.HardnessesHandler;
+import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
+import com.ssomar.score.utils.display.Display;
+import com.ssomar.score.utils.display.PacketManager;
+import com.ssomar.score.utils.display.TryDisplayModule;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
 import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
@@ -29,8 +34,11 @@ import com.ssomar.score.variables.loader.VariablesLoader;
 import com.ssomar.score.variables.manager.VariablesManager;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class SCore extends JavaPlugin implements SPlugin {
 
@@ -95,11 +103,28 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v18 = false;
     private static boolean is1v19 = false;
     private static boolean is1v19v1 = false;
+    private static boolean is1v19v4 = false;
+    private static boolean is1v20 = false;
+
+
+    private static boolean isSpigot = false;
+    private static boolean isPaper = false;
+    private static boolean isFolia = false;
     private CommandsClass commandClass;
 
     /* The server is folia? */
     public static boolean isFolia() {
-        return Bukkit.getServer().getVersion().contains("Folia");
+        return isFolia;
+    }
+
+    /* The server is spigot? */
+    public static boolean isSpigot() {
+        return isSpigot;
+    }
+
+    /* The server is paper? */
+    public static boolean isPaper() {
+        return isPaper;
     }
 
     /* The server is in 1.8 ? */
@@ -172,6 +197,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v19v1;
     }
 
+    public static boolean is1v19v4() {
+        return is1v19v4;
+    }
+
+    /* The server is in 1.20? */
+    public static boolean is1v20() {
+        return is1v20;
+    }
+
     /* The server is in 1.12 or - ? */
     public static boolean is1v11Less() {
         return is1v8() || is1v9() || is1v10() || is1v11();
@@ -204,13 +238,22 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.19 or + ? */
     public static boolean is1v19Plus() {
-        return is1v19() || is1v19v1();
+        return is1v19() || is1v19v1() || is1v19v4Plus();
+    }
+
+    public static boolean is1v19v4Plus() {
+        return is1v19v4() || is1v20Plus();
+    }
+
+    /* The server is in 1.19 or + ? */
+    public static boolean is1v20Plus() {
+        return is1v20();
     }
 
     @Override
     public void onEnable() {
         plugin = this;
-        if(isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
+        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
         else schedulerHook = new BukkitSchedulerHook(this);
         commandClass = new CommandsClass(this);
 
@@ -218,7 +261,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
 
-        if(isFolia()) {
+        if (isFolia()) {
             Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &eFolia");
         }
         this.displayVersion();
@@ -254,6 +297,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Projectiles instance part */
         SProjectileLoader.getInstance().load();
 
+        /* Hardnesses instance part */
+        HardnessLoader.getInstance().load();
+
         /* Variables instance part */
         VariablesLoader.getInstance().load();
 
@@ -277,7 +323,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
             if (!softDepend.isEnabled()) {
                 when = "&8&oLoad After";
             }
-            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7" + plugin + " hooked !  &6(" + softDepend.getDescription().getVersion() + "&6) "+ when);
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7" + plugin + " hooked !  &6(" + softDepend.getDescription().getVersion() + "&6) " + when);
             return true;
         }
         return false;
@@ -326,6 +372,30 @@ public final class SCore extends JavaPlugin implements SPlugin {
             /* Protocolib */
             protocolManager = ProtocolLibrary.getProtocolManager();
             ProtocolLibAPI.reduceDamageIndicator();
+
+            Display.registerDisplayModule(new TryDisplayModule());
+            PacketManager.newDisplay();
+
+            BukkitRunnable runnable3 = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+                        //System.out.println(">>>"+player.getName());
+                        ItemStack itemStack = player.getOpenInventory().getCursor();
+                        if (player.getOpenInventory().getCursor() == null || itemStack.getType() == Material.AIR) {
+                           // System.out.println(">>>"+player.getName()+" update");
+                            player.updateInventory();
+                        }
+                        /* else {
+                            System.out.println(">>>"+player.getName()+" no update cursor >> "+player.getOpenInventory().getCursor().getType());
+                        }*/
+                    });
+                }
+            };
+            runnable3.runTaskTimerAsynchronously(SCore.plugin, 0, 20);
+
+
+            new HardnessesHandler().registerListener();
         }
 
         hasNBTAPI = hookSoftDependency("NBTAPI");
@@ -389,9 +459,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onDisable() {
-        if(GeneralConfig.getInstance().isUseMySQL()){
+        if (GeneralConfig.getInstance().isUseMySQL()) {
             VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
-            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6"+VariablesManager.getInstance().getLoadedObjects().size()+" &7variables from your MySQL Database !");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6" + VariablesManager.getInstance().getLoadedObjects().size() + " &7variables from your MySQL Database !");
         }
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay....");
@@ -473,9 +543,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v18 = Bukkit.getServer().getVersion().contains("1.18");
         is1v19 = Bukkit.getServer().getVersion().contains("1.19");
         is1v19v1 = Bukkit.getServer().getVersion().contains("1.19.1");
+        is1v19v4 = Bukkit.getServer().getVersion().contains("1.19.4");
+        is1v20 = Bukkit.getServer().getVersion().contains("1.20");
+
+        isSpigot = Bukkit.getServer().getVersion().contains("Spigot");
+        isPaper = Bukkit.getServer().getVersion().contains("Paper");
+        isFolia = Bukkit.getServer().getVersion().contains("Folia");
     }
 
-    public void displayVersion(){
+    public void displayVersion() {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion() + " &7!");
     }
 }

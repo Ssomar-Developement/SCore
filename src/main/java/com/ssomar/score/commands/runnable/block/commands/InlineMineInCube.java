@@ -7,14 +7,19 @@ import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.bukkit.block.BlockFace.*;
 
@@ -83,13 +88,8 @@ public class InlineMineInCube extends BlockCommand {
                     int maxZ = radius;
                     int maxY = radius;
 
-
-                    Set<Material> trasnparent = new HashSet<>();
-                    trasnparent.add(Material.WATER);
-                    trasnparent.add(Material.AIR);
-
-                    List<Block> lastBlocks = p.getLastTwoTargetBlocks(trasnparent, 5);
-                    BlockFace face = lastBlocks.get(1).getFace(lastBlocks.get(0)).getOppositeFace();
+                    RayTraceResult rayTraceResult = p.rayTraceBlocks(10, FluidCollisionMode.NEVER);
+                    BlockFace face = rayTraceResult.getHitBlockFace().getOppositeFace();
 
                     int multiplier = 1;
 

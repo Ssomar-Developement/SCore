@@ -3,14 +3,10 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
 
@@ -19,10 +15,10 @@ public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
     }
 
     @Override
-    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(EntityConditionRequest request) {
+        Entity entity = request.getEntity();
         if (hasCondition() && SCore.is1v18Plus() && !entity.isFrozen()) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+            runInvalidCondition(request);
             return false;
         }
 

@@ -30,7 +30,7 @@ import java.util.UUID;
 
 public class SafeBreak {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /* return false its verifSafeBreak is false */
     public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
@@ -69,6 +69,7 @@ public class SafeBreak {
                 /* */
                 Bukkit.getPluginManager().callEvent(bbE);
                 canceled = bbE.isCancelled();
+                drop = bbE.isDropItems();
             }
 
             if (!canceled) {

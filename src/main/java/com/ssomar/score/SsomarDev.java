@@ -8,8 +8,7 @@ public class SsomarDev {
         if (isActiveDebug) {
             try {
                 Bukkit.getPlayer("Ssomar").sendMessage(message);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
     }
 

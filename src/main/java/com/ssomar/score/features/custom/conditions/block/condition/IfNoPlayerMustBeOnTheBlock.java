@@ -2,16 +2,13 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFeature, IfNoPlayerMustBeOnTheBlock> {
 
@@ -25,8 +22,9 @@ public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFea
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messangeSender, Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
         if (hasCondition()) {
+            Block b = request.getBlock();
             boolean onBlock = false;
             Location bLoc = b.getLocation();
             bLoc = bLoc.add(0.5, 1, 0.5);
@@ -40,8 +38,7 @@ public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFea
                 }
             }
             if (onBlock) {
-                sendErrorMsg(playerOpt, messangeSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

@@ -12,6 +12,7 @@ import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.Comparator;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -76,9 +77,12 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         String aPart1 = "";
         String aPart2 = "";
 
+        PlaceholdersCdtType t = type.getValue().get();
+
         if (sp != null) {
             aPart1 = sp.replacePlaceholder(part1.getValue().get(), false);
-            aPart2 = sp.replacePlaceholder(part2.getValue().get(), false);
+            if(t == PlaceholdersCdtType.PLAYER_TARGET || t == PlaceholdersCdtType.PLAYER_PLAYER || t == PlaceholdersCdtType.TARGET_TARGET) aPart2 = sp.replacePlaceholder(part2.getValue().get(), false);
+            else aPart2 = part2.getValue().get();
         } else {
             aPart1 = part1.getValue().get();
             aPart2 = part2.getValue().get();
@@ -99,18 +103,23 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         }
 
         // verification
-        switch (type.getValue().get()) {
+        switch (t) {
 
             case PLAYER_NUMBER:
             case TARGET_NUMBER:
-                if (NTools.isNumber(aPart1)) {
-                    double nPart1 = Double.parseDouble(aPart1);
-                    double nPart2 = Double.parseDouble(aPart2);
-                    if (!comparator.getValue().get().verify(nPart1, nPart2)){
-                        SsomarDev.testMsg("false because> "+nPart1+" ?? "+nPart2, DEBUG);
-                        return false;
-                    }
-                } else return false;
+                try {
+                    if (NTools.isNumber(aPart1)) {
+                        double nPart1 = Double.parseDouble(aPart1);
+                        double nPart2 = Double.parseDouble(aPart2);
+                        if (!comparator.getValue().get().verify(nPart1, nPart2)){
+                            SsomarDev.testMsg("false because> "+nPart1+" ?? "+nPart2, DEBUG);
+                            return false;
+                        }
+                    } else return false;
+                } catch (Exception e) {
+                    Utils.sendConsoleMsg("&cSCore, error with the placeholder condition of the object &6&l"+getParentInfo()+" &ccondition: &7" + e.getMessage());
+                    return false;
+                }
                 break;
 
             case PLAYER_STRING:

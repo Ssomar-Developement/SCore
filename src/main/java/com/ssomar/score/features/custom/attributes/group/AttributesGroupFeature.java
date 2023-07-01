@@ -27,7 +27,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
     private Map<String, AttributeFullOptionsFeature> attributes;
     private boolean notSaveIfNoValue;
 
-    private int premiumLimit = 2;
+    private int premiumLimit = 5;
 
     public AttributesGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
         super(parent, "attributes", "Attributes", new String[]{"&7&oThe attributes"}, Material.BREWING_STAND, false);

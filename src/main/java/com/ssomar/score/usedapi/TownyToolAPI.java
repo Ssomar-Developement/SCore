@@ -2,6 +2,7 @@ package com.ssomar.score.usedapi;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,8 +22,13 @@ public class TownyToolAPI {
             /* Not in a town so allow break */
             return true;
         }
-
-        return town.hasResident(uuid);
+        Resident resident = null;
+        try {
+            resident = TownyAPI.getInstance().getResident(uuid);
+            return  town.hasResident(resident) || town.hasTrustedResident(resident);
+        } catch (Exception e) {
+            return true;
+        }
     }
 
     public static boolean playerIsInHisTown(@NotNull Player player, Location location) {

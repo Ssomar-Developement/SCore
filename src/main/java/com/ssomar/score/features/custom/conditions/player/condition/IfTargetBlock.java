@@ -2,15 +2,13 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class IfTargetBlock extends PlayerConditionFeature<ListDetailedMaterialFeature, IfTargetBlock> {
 
@@ -19,19 +17,19 @@ public class IfTargetBlock extends PlayerConditionFeature<ListDetailedMaterialFe
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(PlayerConditionRequest request) {
         if (hasCondition()) {
+            Player player = request.getPlayer();
             Block block = player.getTargetBlock(null, 5);
             Material material = block.getType();
             /* take only the fix block, not hte falling block */
             if ((material.equals(Material.WATER) || material.equals(Material.LAVA)) && !block.getBlockData().getAsString().contains("level=0")) {
-                sendErrorMsg(playerOpt, messageSender);
+                runInvalidCondition(request);
                 return false;
             }
 
             if(!getCondition().verifBlock(block)){
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

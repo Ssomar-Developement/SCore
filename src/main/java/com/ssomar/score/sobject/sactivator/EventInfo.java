@@ -13,6 +13,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import java.util.Optional;
@@ -32,6 +33,9 @@ public class EventInfo {
     private Optional<Entity> entity;
 
     private Optional<Entity> targetEntity;
+
+    /* EFFECT */
+    private Optional<PotionEffect> effect;
 
     /* BLOCK */
     private Optional<Block> block;
@@ -93,6 +97,7 @@ public class EventInfo {
         this.targetPlayer = Optional.empty();
         this.entity = Optional.empty();
         this.targetEntity = Optional.empty();
+        this.effect = Optional.empty();
         this.block = Optional.empty();
         this.targetBlock = Optional.empty();
         this.oldMaterialBlock = Optional.empty();
@@ -120,6 +125,7 @@ public class EventInfo {
         eInfo.setTargetPlayer(targetPlayer);
         eInfo.setEntity(entity);
         eInfo.setTargetEntity(targetEntity);
+        eInfo.setEffect(effect);
         eInfo.setBlock(block);
         eInfo.setTargetBlock(targetBlock);
         eInfo.setOldMaterialBlock(oldMaterialBlock);

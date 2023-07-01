@@ -2,15 +2,10 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfBlockLocationX extends BlockConditionFeature<NumberConditionFeature, IfBlockLocationX> {
 
@@ -19,10 +14,9 @@ public class IfBlockLocationX extends BlockConditionFeature<NumberConditionFeatu
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && !StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), b.getLocation().getX())) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+    public boolean verifCondition(BlockConditionRequest request) {
+        if (hasCondition() && !StringCalculation.calculation(getCondition().getValue(request.getPlayerOpt(), request.getSp()).get(), request.getBlock().getLocation().getX())) {
+            runInvalidCondition(request);
             return false;
         }
         return true;

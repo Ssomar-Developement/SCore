@@ -2,8 +2,8 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -57,13 +55,14 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
+        Optional<Player> playerOpt = request.getPlayerOpt();
+        Block b = request.getBlock();
         if (b.getState().getBlockData() instanceof Ageable) {
             Ageable ageable = (Ageable) b.getState().getBlockData();
             int age = ageable.getAge();
-            if (hasCondition() && !StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), age)) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+            if (hasCondition() && !StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), age)) {
+                runInvalidCondition(request);
                 return false;
             }
         }

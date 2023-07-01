@@ -10,7 +10,6 @@ import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -101,7 +100,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         this.blockTypeMustBe.save(attributeConfig);
     }
 
-    public boolean verif(Block block, Optional<Player> playerOpt, SendMessage messageSender) {
+    public boolean verif(Block block, Optional<Player> playerOpt, List<String> errors) {
 
         Location targetLoc;
         Block targetBlock;
@@ -114,7 +113,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         boolean valid = blockTypeMustBe.verifBlock(targetBlock);
 
         if (playerOpt.isPresent() && !valid && errorMessage.getValue().isPresent())
-            messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
+            errors.add(errorMessage.getValue().get());
         return valid;
     }
 

@@ -1,10 +1,12 @@
 package com.ssomar.score.features.types.list;
 
 import com.ssomar.executableblocks.executableblocks.ExecutableBlockObject;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
+import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -44,6 +46,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         super(parent, name, "List of Materials", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
         this.listOfCustomBlocksPluginSupported = new ArrayList<>();
         if (SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
+        if (SCore.hasExecutableItems) listOfCustomBlocksPluginSupported.add("EXECUTABLEITEMS");
         if (SCore.hasExecutableBlocks) listOfCustomBlocksPluginSupported.add("EXECUTABLEBLOCKS");
         //if(SCore.hasOraxen) listOfCustomBlocksPluginSupported.add("ORAXEN");
         this.forBlocks = forBlocks;
@@ -333,14 +336,23 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                         }
                     }
                 }
-            } else if (customPlugin.equals("EXECUTABLEBLOCKS") && SCore.hasExecutableBlocks) {
-                ExecutableBlockObject customOpt = (ExecutableBlockObject) ExecutableBlocksAPI.getExecutableBlockObject(item);
-                if (!customOpt.isValid()) continue;
-                for (String id : conditions.get(customPlugin)) {
-                    SsomarDev.testMsg(">> id: " + id, DEBUG);
-                    if (customOpt.getConfig().getId().equalsIgnoreCase(id)) return true;
-                }
+                else if (customPlugin.equals("EXECUTABLEBLOCKS") && SCore.hasExecutableBlocks) {
+                    ExecutableBlockObject customOpt = (ExecutableBlockObject) ExecutableBlocksAPI.getExecutableBlockObject(item);
+                    if (!customOpt.isValid()) continue;
+                    for (String id : conditions.get(customPlugin)) {
+                        SsomarDev.testMsg(">> id: " + id, DEBUG);
+                        if (customOpt.getConfig().getId().equalsIgnoreCase(id)) return true;
+                    }
 
+                } else if (customPlugin.equals("EXECUTABLEITEMS") && SCore.hasExecutableItems) {
+                    ExecutableItemObject customOpt = (ExecutableItemObject) ExecutableItemsAPI.getExecutableItemObject(item);
+                    if (!customOpt.isValid()) continue;
+                    for (String id : conditions.get(customPlugin)) {
+                        SsomarDev.testMsg(">> id EI: " + id, DEBUG);
+                        if (customOpt.getConfig().getId().equalsIgnoreCase(id)) return true;
+                    }
+
+                }
             }
         }
 
@@ -428,7 +440,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     @Override
     public String getTips() {
         if (forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
-        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword";
+        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword &8- &7&oEXECUTABLEITEMS:my_ei_sword";
     }
 
     @Override

@@ -2,12 +2,11 @@ package com.ssomar.score.features.custom.conditions.item.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
@@ -20,12 +19,13 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
     }
 
     @Override
-    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(ItemConditionRequest request) {
 
         if (hasCondition()) {
-            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), itemStack.getType().getMaxDurability() - itemStack.getDurability())) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+            Optional<Player> playerOpt = request.getPlayerOpt();
+            ItemStack itemStack = request.getItemStack();
+            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), itemStack.getType().getMaxDurability() - itemStack.getDurability())) {
+                runInvalidCondition(request);
                 return false;
             }
         }

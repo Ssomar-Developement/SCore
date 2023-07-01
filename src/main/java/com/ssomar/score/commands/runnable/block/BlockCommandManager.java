@@ -49,11 +49,11 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
             references.add(new OpenDoor());
             references.add(new FarmInCube());
             references.add(new FertilizeInCube());
+            references.add(new SellContent());
         }
         if (!SCore.is1v11Less()) {
             references.add(new ParticleCommand());
         }
-        references.add(new SellContent());
         references.add(new Nearest());
         references.add(new MobNearest());
         setCommands(references);

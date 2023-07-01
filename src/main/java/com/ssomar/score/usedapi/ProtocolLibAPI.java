@@ -30,22 +30,27 @@ public class ProtocolLibAPI {
 
     public static List<BukkitTask> sendEquipmentVisualReplace(Player player, EquipmentSlot slot, ItemStack item, int time) {
         List<BukkitTask> tasks = new ArrayList<>();
-        for(int i = 0 ; i < time/20; i++) {
+        for (int i = 0; i < time / 20; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    PacketContainer packet= SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
+                    PacketContainer packet = SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
                     packet.getIntegers().write(0, player.getEntityId());
                     List<Pair<EnumWrappers.ItemSlot, ItemStack>> pairList = new ArrayList<>();
-                    if(slot.equals(EquipmentSlot.HEAD)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, item));
-                    else if(slot.equals(EquipmentSlot.CHEST)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.CHEST, item));
-                    else if(slot.equals(EquipmentSlot.LEGS)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.LEGS, item));
-                    else if(slot.equals(EquipmentSlot.FEET)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.FEET, item));
-                    else if(slot.equals(EquipmentSlot.HAND)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.MAINHAND, item));
-                    else if(slot.equals(EquipmentSlot.OFF_HAND)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.OFFHAND, item));
+                    if (slot.equals(EquipmentSlot.HEAD)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, item));
+                    else if (slot.equals(EquipmentSlot.CHEST))
+                        pairList.add(new Pair<>(EnumWrappers.ItemSlot.CHEST, item));
+                    else if (slot.equals(EquipmentSlot.LEGS))
+                        pairList.add(new Pair<>(EnumWrappers.ItemSlot.LEGS, item));
+                    else if (slot.equals(EquipmentSlot.FEET))
+                        pairList.add(new Pair<>(EnumWrappers.ItemSlot.FEET, item));
+                    else if (slot.equals(EquipmentSlot.HAND))
+                        pairList.add(new Pair<>(EnumWrappers.ItemSlot.MAINHAND, item));
+                    else if (slot.equals(EquipmentSlot.OFF_HAND))
+                        pairList.add(new Pair<>(EnumWrappers.ItemSlot.OFFHAND, item));
                     packet.getSlotStackPairLists().write(0, pairList);
 
-                    for(Player p : Bukkit.getOnlinePlayers()) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
                         try {
                             SCore.protocolManager.sendServerPacket(p, packet);
                         } catch (Exception e) {
@@ -54,24 +59,30 @@ public class ProtocolLibAPI {
                     }
                 }
             };
-            tasks.add(runnable.runTaskLaterAsynchronously(SCore.plugin, i*20));
+            tasks.add(runnable.runTaskLaterAsynchronously(SCore.plugin, i * 20));
         }
 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                PacketContainer packet= SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
+                PacketContainer packet = SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
                 packet.getIntegers().write(0, player.getEntityId());
                 List<Pair<EnumWrappers.ItemSlot, ItemStack>> pairList = new ArrayList<>();
-                if(slot.equals(EquipmentSlot.HEAD)) pairList.add(get(EnumWrappers.ItemSlot.HEAD, player.getInventory().getHelmet()));
-                else if(slot.equals(EquipmentSlot.CHEST)) pairList.add(get(EnumWrappers.ItemSlot.CHEST, player.getInventory().getChestplate()));
-                else if(slot.equals(EquipmentSlot.LEGS) ) pairList.add(get(EnumWrappers.ItemSlot.LEGS, player.getInventory().getLeggings()));
-                else if(slot.equals(EquipmentSlot.FEET)) pairList.add(get(EnumWrappers.ItemSlot.FEET, player.getInventory().getBoots()));
-                else if(slot.equals(EquipmentSlot.HAND)) pairList.add(get(EnumWrappers.ItemSlot.MAINHAND, player.getInventory().getItemInMainHand()));
-                else if(slot.equals(EquipmentSlot.OFF_HAND)) pairList.add(get(EnumWrappers.ItemSlot.OFFHAND, player.getInventory().getItemInOffHand()));
+                if (slot.equals(EquipmentSlot.HEAD))
+                    pairList.add(get(EnumWrappers.ItemSlot.HEAD, player.getInventory().getHelmet()));
+                else if (slot.equals(EquipmentSlot.CHEST))
+                    pairList.add(get(EnumWrappers.ItemSlot.CHEST, player.getInventory().getChestplate()));
+                else if (slot.equals(EquipmentSlot.LEGS))
+                    pairList.add(get(EnumWrappers.ItemSlot.LEGS, player.getInventory().getLeggings()));
+                else if (slot.equals(EquipmentSlot.FEET))
+                    pairList.add(get(EnumWrappers.ItemSlot.FEET, player.getInventory().getBoots()));
+                else if (slot.equals(EquipmentSlot.HAND))
+                    pairList.add(get(EnumWrappers.ItemSlot.MAINHAND, player.getInventory().getItemInMainHand()));
+                else if (slot.equals(EquipmentSlot.OFF_HAND))
+                    pairList.add(get(EnumWrappers.ItemSlot.OFFHAND, player.getInventory().getItemInOffHand()));
                 packet.getSlotStackPairLists().write(0, pairList);
 
-                for(Player p : Bukkit.getOnlinePlayers()) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
                     try {
                         SCore.protocolManager.sendServerPacket(p, packet);
                     } catch (Exception e) {
@@ -85,7 +96,7 @@ public class ProtocolLibAPI {
     }
 
     public static Pair<EnumWrappers.ItemSlot, ItemStack> get(EnumWrappers.ItemSlot slot, ItemStack item) {
-        if(item == null) return new Pair<>(slot, new ItemStack(Material.AIR));
+        if (item == null) return new Pair<>(slot, new ItemStack(Material.AIR));
         return new Pair<>(slot, item);
     }
 

@@ -239,6 +239,7 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
 
         for (String s : listFiles) {
             File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
+            //System.out.println("::::::::::::::" +fileEntry.getAbsolutePath());
             if (fileEntry.isDirectory()) {
                 File result = null;
                 if ((result = searchFileOfObjectInFolder(id, fileEntry)) == null)

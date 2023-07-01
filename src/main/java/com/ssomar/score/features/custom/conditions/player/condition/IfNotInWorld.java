@@ -2,14 +2,12 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListWorldFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class IfNotInWorld extends PlayerConditionFeature<ListWorldFeature, IfNotInWorld> {
 
@@ -18,8 +16,9 @@ public class IfNotInWorld extends PlayerConditionFeature<ListWorldFeature, IfNot
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(PlayerConditionRequest request) {
         if (hasCondition()) {
+            Player player = request.getPlayer();
             boolean notValid = false;
             for (String s : getCondition().getValue()) {
                 if (player.getWorld().getName().equalsIgnoreCase(s)) {
@@ -28,8 +27,7 @@ public class IfNotInWorld extends PlayerConditionFeature<ListWorldFeature, IfNot
                 }
             }
             if (notValid) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

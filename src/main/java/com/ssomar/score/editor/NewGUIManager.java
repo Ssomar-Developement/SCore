@@ -106,6 +106,8 @@ public abstract class NewGUIManager<T extends GUI> {
                 interact.player.closeInventory();
             } else if (interact.coloredDeconvertName.equals(GUI.SAVE) || interact.coloredDeconvertName.equals(TM.g(Text.EDITOR_SAVE_NAME))) {
                 save(interact);
+            } else if (interact.coloredDeconvertName.equals(GUI.REMOVE)) {
+                remove(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.NEXT_PAGE)) {
                 nextPage(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.PREVIOUS_PAGE)) {
@@ -289,6 +291,10 @@ public abstract class NewGUIManager<T extends GUI> {
     public abstract void previousPage(NewInteractionClickedGUIManager<T> interact);
 
     public abstract void save(NewInteractionClickedGUIManager<T> interact);
+
+    public void remove(NewInteractionClickedGUIManager<T> interact){
+
+    }
 
     @SuppressWarnings("deprecation")
     public void showCalculationGUI(Player p, String variable, String current) {

@@ -117,67 +117,82 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return result;
     }
 
-    public void setPlayerPlcHldr(UUID uuid) {
+    public StringPlaceholder setPlayerPlcHldr(UUID uuid) {
         playerPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setPlayerPlcHldr(UUID uuid, int fixSlot) {
+    public StringPlaceholder setPlayerPlcHldr(UUID uuid, int fixSlot) {
         playerPlch.setPlayerPlcHldr(uuid, fixSlot);
+        return this;
     }
 
-    public void setTargetPlcHldr(UUID uuid) {
+    public StringPlaceholder setTargetPlcHldr(UUID uuid) {
         targetPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setOwnerPlcHldr(UUID uuid) {
+    public StringPlaceholder setOwnerPlcHldr(UUID uuid) {
         ownerPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setProjectilePlcHldr(Projectile proj, String blockFace) {
+    public StringPlaceholder setProjectilePlcHldr(Projectile proj, String blockFace) {
         projectilePlch.setProjectilePlcHldr(proj, blockFace);
+        return this;
     }
 
-    public void setEntityPlcHldr(UUID uuid) {
+    public StringPlaceholder setEntityPlcHldr(UUID uuid) {
         entityPlch.setEntityPlcHldr(uuid);
+        return this;
     }
 
-    public void setEntityPlcHldr(Entity entity) {
+    public StringPlaceholder setEntityPlcHldr(Entity entity) {
         entityPlch.setEntityPlcHldr(entity);
+        return this;
     }
 
-    public void setTargetEntityPlcHldr(UUID uuid) {
+    public StringPlaceholder setTargetEntityPlcHldr(UUID uuid) {
         targetEntityPlch.setEntityPlcHldr(uuid);
+        return this;
     }
 
-    public void setTargetEntityPlcHldr(Entity entity) {
+    public StringPlaceholder setTargetEntityPlcHldr(Entity entity) {
         targetEntityPlch.setEntityPlcHldr(entity);
+        return this;
     }
 
-    public void setBlockPlcHldr(Block block) {
+    public StringPlaceholder setBlockPlcHldr(Block block) {
         blockPlch.setBlockPlcHldr(block);
+        return this;
     }
 
-    public void setBlockPlcHldr(Block block, Material fixType) {
+    public StringPlaceholder setBlockPlcHldr(Block block, Material fixType) {
         blockPlch.setBlockPlcHldr(block, fixType);
+        return this;
     }
 
-    public void setTargetBlockPlcHldr(Block block) {
+    public StringPlaceholder setTargetBlockPlcHldr(Block block) {
         targetBlockPlch.setTargetBlockPlcHldr(block);
+        return this;
     }
 
-    public void setTargetBlockPlcHldr(Block block, Material fixType) {
+    public StringPlaceholder setTargetBlockPlcHldr(Block block, Material fixType) {
         targetBlockPlch.setTargetBlockPlcHldr(block, fixType);
+        return this;
     }
 
-    public void setAroundTargetPlayerPlcHldr(UUID uuid) {
+    public StringPlaceholder setAroundTargetPlayerPlcHldr(UUID uuid) {
         aroundPlayerTargetPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setAroundTargetEntityPlcHldr(UUID uuid) {
+    public StringPlaceholder setAroundTargetEntityPlcHldr(UUID uuid) {
         aroundEntityTargetPlch.setEntityPlcHldr(uuid);
+        return this;
     }
 
-    public void reloadAllPlaceholders() {
+    public StringPlaceholder reloadAllPlaceholders() {
         playerPlch.reloadPlayerPlcHldr();
         targetPlch.reloadPlayerPlcHldr();
         ownerPlch.reloadPlayerPlcHldr();
@@ -189,6 +204,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         aroundEntityTargetPlch.reloadEntityPlcHldr();
         /* delayed command with old version has this to null */
         if (projectilePlch != null) projectilePlch.reloadProjectilePlcHldr();
+        return this;
     }
 
     public List<String> replacePlaceholders(List<String> list) {

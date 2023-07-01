@@ -38,6 +38,8 @@ import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditor;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditorManager;
+import com.ssomar.score.features.custom.detailedeffects.DetailedEffectsEditor;
+import com.ssomar.score.features.custom.detailedeffects.DetailedEffectsEditorManager;
 import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditor;
 import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditorManager;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditor;
@@ -118,6 +120,8 @@ import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGro
 import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditor;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditorManager;
+import com.ssomar.score.hardness.hardness.HardnessEditor;
+import com.ssomar.score.hardness.hardness.HardnessEditorManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
@@ -327,8 +331,12 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof DetailedBlocksEditor) {
             DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
+        } else if (holder instanceof DetailedEffectsEditor) {
+            DetailedEffectsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
         } else if(holder instanceof DetailedItemsEditor){
             DetailedItemsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
         } else if (holder instanceof HeadFeaturesEditor) {
             HeadFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -388,6 +396,10 @@ public class NewEditorInteractionsListener implements Listener {
             return;
         } else if (holder instanceof SProjectileEditor) {
             SProjectileEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof HardnessEditor) {
+            HardnessEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
         else if (holder instanceof VariableEditor) {
@@ -558,6 +570,9 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (DetailedBlocksEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             DetailedBlocksEditorManager.getInstance().receiveMessage(p, message);
+        } else if (DetailedEffectsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DetailedEffectsEditorManager.getInstance().receiveMessage(p, message);
         } else if (DetailedItemsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             DetailedItemsEditorManager.getInstance().receiveMessage(p, message);
@@ -622,6 +637,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (SProjectileEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             SProjectileEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (HardnessEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            HardnessEditorManager.getInstance().receiveMessage(p, message);
         }
         else if (VariableEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);

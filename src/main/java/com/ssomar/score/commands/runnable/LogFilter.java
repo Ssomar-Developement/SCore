@@ -51,6 +51,7 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("[SCore]");
         messageToHide.add("Added tag");
         messageToHide.add("Removed tag");
+        messageToHide.add("Set the weather");
 
     }
 

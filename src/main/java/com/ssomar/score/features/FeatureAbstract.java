@@ -102,4 +102,19 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         if (this instanceof FeatureParentInterface && parent == this) return (FeatureParentInterface) this;
         else return parent;
     }
+
+    public <B> Optional<B> getParent(B clazz) {
+        FeatureParentInterface parent = getParent();
+        while (parent != null &&  parent instanceof FeatureInterface && ((FeatureAbstract) parent).getParent() != parent) {
+            Class classs = ((Object)clazz).getClass();
+            if(parent.getClass() == classs) {
+                return Optional.of((B) parent);
+            }
+            else {
+                parent = ((FeatureAbstract) parent).getParent();
+                parent.reload();
+            }
+        }
+        return Optional.empty();
+    }
 }

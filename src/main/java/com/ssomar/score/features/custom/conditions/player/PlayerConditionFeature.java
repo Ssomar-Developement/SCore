@@ -3,13 +3,7 @@ package com.ssomar.score.features.custom.conditions.player;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.ConditionFeature;
-import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public abstract class PlayerConditionFeature<Y extends FeatureAbstract, T extends PlayerConditionFeature<Y, T>> extends ConditionFeature<Y, T> {
 
@@ -17,7 +11,7 @@ public abstract class PlayerConditionFeature<Y extends FeatureAbstract, T extend
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
     }
 
-    public abstract boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event);
+    public abstract boolean verifCondition(PlayerConditionRequest playerConditionArgs);
 
 }
 

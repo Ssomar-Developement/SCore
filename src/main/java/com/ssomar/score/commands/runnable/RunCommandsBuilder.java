@@ -29,7 +29,15 @@ public abstract class RunCommandsBuilder {
     }
 
     public void init() {
+        /* System.out.println("=================== init commands ==========================");
+        for (String s : this.commands) {
+            System.out.println(s);
+        }*/
         this.commands = this.replaceFor(this.commands);
+        /*System.out.println("=================== after for  commands ==========================");
+        for (String s : this.commands) {
+            System.out.println(s);
+        }*/
         this.commands = this.replaceLoop(commands);
         this.initFinalCommands();
     }
@@ -100,24 +108,42 @@ public abstract class RunCommandsBuilder {
             int forStart = -1;
             int forEnd = -1;
             List<String> commandsInFor = new ArrayList<>();
+            List<Integer> indexToRemove = new ArrayList<>();
 
             int index = 0;
+            String forId = "";
             for (String s : commands) {
                 String command = s;
                 /* Because the placeholders are not parsed before so we force it for FOR */
-                if(command.contains("FOR")) command =  actionInfo.getSp().replacePlaceholder(command, true);
+                if(command.contains("FOR")) command = actionInfo.getSp().replacePlaceholder(command, true);
                 if (!command.contains("+++")) {
                     //SsomarDev.testMsg("command: "+command, true);
-                    if (command.contains("FOR [") && command.contains("]")) {
+                    if (command.contains("FOR [") && command.contains("]") && !isInFor) {
+                        if(command.contains(">")){
+                            forId = command.split(">")[1];
+                            forId = forId.replaceAll(" ", "");
+                            //SsomarDev.testMsg("forId: "+forId, true);
+                        }
                         commandsInFor.clear();
                         forStart = index;
                         isInFor = true;
                         commandsInFor.add(command);
+                        indexToRemove.add(index);
                     } else if (command.contains("ENDFOR")) {
-                        forEnd = index;
+                        if(!forId.equals("") && (command.split(" ").length < 2 || !command.split(" ")[1].equals(forId))){
+                            commandsInFor.add(command);
+                            indexToRemove.add(index);
+                        }
+                        else {
+                            forEnd = index;
+                            commandsInFor.add(command);
+                            indexToRemove.add(index);
+                            break;
+                        }
+                    } else if (isInFor){
                         commandsInFor.add(command);
-                        break;
-                    } else if (isInFor) commandsInFor.add(command);
+                        indexToRemove.add(index);
+                    }
 
                 }
                 index++;
@@ -125,11 +151,21 @@ public abstract class RunCommandsBuilder {
 
             if(forStart == -1 || forEnd == -1) break;
 
+            /* System.out.println(" ===================== FOR =====================");
+            for (String s : commandsInFor) {
+                System.out.println(s);
+            }*/
+
             List<String> commandsToReplaceWith = transformFor(commandsInFor);
 
-            //SsomarDev.testMsg("commandsToReplace: "+commandsInFor, true);
+            // Sort the list in reverse order
+            Collections.sort(indexToRemove, Collections.reverseOrder());
 
-            commands.removeAll(commandsInFor);
+            // Remove the elements from indexes
+            for (int i : indexToRemove) {
+                commands.remove(i);
+            }
+
             commands.addAll(forStart, commandsToReplaceWith);
 
         }
@@ -138,7 +174,9 @@ public abstract class RunCommandsBuilder {
     }
 
     public boolean containsFor(List<String> commands) {
+       // System.out.println("containsFor ===============================");
         for (String s : commands) {
+           // System.out.println("containsFor: "+s);
             /* Because the placeholders are not parsed before so we force it for FOR */
             if(s.contains("FOR")) s = actionInfo.getSp().replacePlaceholder(s, true);
             if (s.contains("FOR [") && s.contains("]") && !s.contains("+++")) return true;

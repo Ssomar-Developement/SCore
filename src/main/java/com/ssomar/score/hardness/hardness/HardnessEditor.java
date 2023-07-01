@@ -1,0 +1,42 @@
+package com.ssomar.score.hardness.hardness;
+
+import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
+import com.ssomar.score.menu.GUI;
+
+public class HardnessEditor extends FeatureEditorInterface<Hardness> {
+
+    private Hardness hardness;
+
+    public HardnessEditor(Hardness hardness) {
+        super("&lHardness Editor", 6 * 9);
+        this.hardness = hardness;
+        load();
+    }
+
+    @Override
+    public void load() {
+        clearAndSetBackground();
+        int i = 0;
+        hardness.getDetailedBlocks().initAndUpdateItemParentEditor(this, i);
+        i++;
+        hardness.getDetailedItems().initAndUpdateItemParentEditor(this, i);
+        i++;
+        hardness.getPeriod().initAndUpdateItemParentEditor(this, i);
+
+        //Reset menu
+        createItem(ORANGE, 1, 46, TM.g(Text.EDITOR_RESET_NAME), false, false, "", TM.g(Text.EDITOR_RESET_DESCRIPTION), "&c&oall options of this hardness");
+        // exit
+        createItem(RED, 1, 45, GUI.BACK, false, false);
+
+        //Save menu
+        createItem(GREEN, 1, 53, GUI.SAVE, false, false, "", "&a&oClick here to save", "&a&oyour modification in XXXX.yml");
+
+    }
+
+    @Override
+    public Hardness getParent() {
+        return hardness;
+    }
+}

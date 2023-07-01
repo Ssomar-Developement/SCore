@@ -59,15 +59,15 @@ public enum MaterialWithGroups {
                     return furnaces.contains(material);
                 case ALL_PLANKS:
                     List<Material> planks = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_PLANKS", "WARPED_PLANKS", "OAK_PLANKS", "SPRUCE_PLANKS", "BIRCH_PLANKS", "JUNGLE_PLANKS", "ACACIA_PLANKS", "DARK_OAK_PLANKS", "CRIMSON_PLANKS"), planks);
+                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_PLANKS", "WARPED_PLANKS", "OAK_PLANKS", "SPRUCE_PLANKS", "BIRCH_PLANKS", "JUNGLE_PLANKS", "ACACIA_PLANKS", "DARK_OAK_PLANKS", "CRIMSON_PLANKS", "CHERRY_PLANKS"), planks);
                     return planks.contains(material);
                 case ALL_LOGS:
                     List<Material> logs = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_LOG", "WARPED_LOG", "OAK_LOG", "SPRUCE_LOG", "BIRCH_LOG", "JUNGLE_LOG", "ACACIA_LOG", "DARK_OAK_LOG", "CRIMSON_LOG"), logs);
+                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_LOG", "WARPED_LOG", "OAK_LOG", "SPRUCE_LOG", "BIRCH_LOG", "JUNGLE_LOG", "ACACIA_LOG", "DARK_OAK_LOG", "CRIMSON_LOG", "CHERRY_LOG"), logs);
                     return logs.contains(material);
                 case ALL_WOODS:
                     List<Material> woods = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_WOOD", "WARPED_WOOD", "OAK_WOOD", "SPRUCE_WOOD", "BIRCH_WOOD", "JUNGLE_WOOD", "ACACIA_WOOD", "DARK_OAK_WOOD", "CRIMSON_WOOD"), woods);
+                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_WOOD", "WARPED_WOOD", "OAK_WOOD", "SPRUCE_WOOD", "BIRCH_WOOD", "JUNGLE_WOOD", "ACACIA_WOOD", "DARK_OAK_WOOD", "CRIMSON_WOOD", "CHERY_WOOD"), woods);
                     return woods.contains(material);
                 case ALL_ORES:
                     List<Material> ores = new ArrayList<>();

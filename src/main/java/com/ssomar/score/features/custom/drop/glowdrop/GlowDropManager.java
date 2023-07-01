@@ -1,7 +1,6 @@
 package com.ssomar.score.features.custom.drop.glowdrop;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -60,18 +59,23 @@ public class GlowDropManager {
     }
 
     public void addGlow(Entity entity, ChatColor color) {
-        SsomarDev.testMsg("addGlow : " + entity.getType() + " " + color.name(), false);
+        //SsomarDev.testMsg("addGlow : " + entity.getType() + " " + color.name(), false);
         links.put(entity.getUniqueId(), color);
         /* if(SCore.hasTAB && entity instanceof Player){
             TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(entity.getUniqueId());
             TabAPI.getInstance().getTeamManager().updateTeamData(tabPlayer);
         }*/
         if (teams.containsKey(color)) {
-            Team team = teams.get(color);
-            team.addEntry(entity.getUniqueId().toString());
-            if (entity instanceof OfflinePlayer) team.addEntry(((OfflinePlayer) entity).getName());
-            entity.setGlowing(true);
-        } else SsomarDev.testMsg("color not found > " + color.name(), false);
+            try {
+                Team team = teams.get(color);
+                team.addEntry(entity.getUniqueId().toString());
+                if (entity instanceof OfflinePlayer) team.addEntry(((OfflinePlayer) entity).getName());
+                entity.setGlowing(true);
+            }catch (Exception e){
+                SCore.plugin.getLogger().severe("Error with glow drop, the scoreboard team is not registered ! You have probably a plugin that purges the teams, try to find it and disable the purge if you want the glow drop.");
+                //e.printStackTrace();
+            }
+        } //else SsomarDev.testMsg("color not found > " + color.name(), false);
     }
 
     public void removeGlow(Entity entity, ChatColor color) {

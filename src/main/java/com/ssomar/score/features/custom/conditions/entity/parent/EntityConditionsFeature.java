@@ -5,6 +5,7 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.custom.conditions.entity.condition.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -89,8 +90,14 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
     }
 
     public boolean verifConditions(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+        EntityConditionRequest args = new EntityConditionRequest(entity, playerOpt, messageSender.getSp(), event);
         for (EntityConditionFeature condition : conditions) {
-            if (!condition.verifCondition(entity, playerOpt, messageSender, event)) {
+            if (!condition.verifCondition(args)) {
+                if (messageSender != null && playerOpt.isPresent()) {
+                    for (String error : args.getErrorsFinal()) {
+                        messageSender.sendMessage(playerOpt.get(), error);
+                    }
+                }
                 return false;
             }
         }

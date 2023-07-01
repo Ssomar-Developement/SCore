@@ -121,7 +121,7 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
     @Override
     public void reset() {
         defaultValue = new ColoredStringFeature(this, "default", Optional.empty(), "Default", new String[]{}, GUI.WRITABLE_BOOK, false, true);
-        type = new VariableTypeFeature(this, "type", Optional.of(VariableType.NUMBER), "Type", new String[]{}, GUI.COMPARATOR, false);
+        type = new VariableTypeFeature(this, "type", Optional.of(VariableType.NUMBER), "Type", new String[]{}, GUI.COMPARATOR, false, false);
         forFeature = new VariableForFeature(this, "for", Optional.empty(), "For", new String[]{}, GUI.COMPARATOR, false);
         values = new HashMap<>();
         icon = new MaterialFeature(this, "icon", Optional.of(Material.PAPER), "Icon", new String[]{}, Material.STONE, false);
