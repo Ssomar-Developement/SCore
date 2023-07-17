@@ -34,6 +34,7 @@ import com.ssomar.score.variables.loader.VariablesLoader;
 import com.ssomar.score.variables.manager.VariablesManager;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -105,6 +106,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v19v1 = false;
     private static boolean is1v19v4 = false;
     private static boolean is1v20 = false;
+
+    private static boolean is1v20v1 = false;
 
 
     private static boolean isSpigot = false;
@@ -206,6 +209,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v20;
     }
 
+    /* The server is in 1.20.1? */
+    public static boolean is1v20v1() {
+        return is1v20v1;
+    }
+
     /* The server is in 1.12 or - ? */
     public static boolean is1v11Less() {
         return is1v8() || is1v9() || is1v10() || is1v11();
@@ -245,9 +253,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v19v4() || is1v20Plus();
     }
 
-    /* The server is in 1.19 or + ? */
+    /* The server is in 1.20 or + ? */
     public static boolean is1v20Plus() {
-        return is1v20();
+        return is1v20() || is1v20v1Plus();
+    }
+
+    /* The server is in 1.20.1 or + ? */
+    public static boolean is1v20v1Plus() {
+        return is1v20v1();
     }
 
     @Override
@@ -373,26 +386,31 @@ public final class SCore extends JavaPlugin implements SPlugin {
             protocolManager = ProtocolLibrary.getProtocolManager();
             ProtocolLibAPI.reduceDamageIndicator();
 
-            Display.registerDisplayModule(new TryDisplayModule());
-            PacketManager.newDisplay();
+            if(!SCore.is1v12Less()) {
+                Display.registerDisplayModule(new TryDisplayModule());
+                PacketManager.newDisplay();
 
-            BukkitRunnable runnable3 = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-                        //System.out.println(">>>"+player.getName());
-                        ItemStack itemStack = player.getOpenInventory().getCursor();
-                        if (player.getOpenInventory().getCursor() == null || itemStack.getType() == Material.AIR) {
-                           // System.out.println(">>>"+player.getName()+" update");
-                            player.updateInventory();
-                        }
+                BukkitRunnable runnable3 = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        //System.out.println(">>> RUNNABLE DISPLAY");
+                        /* if no modification its not necessary to update the inv of all players  for nothing */
+                        if(!Display.isSomethingToModify()) return;
+                        Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+                            //System.out.println(">>>"+player.getName());
+                            ItemStack itemStack = player.getOpenInventory().getCursor();
+                            if (player.getGameMode() != GameMode.CREATIVE && (itemStack == null || itemStack.getType() == Material.AIR)) {
+                                //System.out.println(">>>"+player.getName()+" update");
+                                player.updateInventory();
+                            }
                         /* else {
                             System.out.println(">>>"+player.getName()+" no update cursor >> "+player.getOpenInventory().getCursor().getType());
                         }*/
-                    });
-                }
-            };
-            runnable3.runTaskTimerAsynchronously(SCore.plugin, 0, 20);
+                        });
+                    }
+                };
+                runnable3.runTaskTimerAsynchronously(SCore.plugin, 0, 20);
+            }
 
 
             new HardnessesHandler().registerListener();
@@ -545,6 +563,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v19v1 = Bukkit.getServer().getVersion().contains("1.19.1");
         is1v19v4 = Bukkit.getServer().getVersion().contains("1.19.4");
         is1v20 = Bukkit.getServer().getVersion().contains("1.20");
+        is1v20v1 = Bukkit.getServer().getVersion().contains("1.20.1");
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot");
         isPaper = Bukkit.getServer().getVersion().contains("Paper");

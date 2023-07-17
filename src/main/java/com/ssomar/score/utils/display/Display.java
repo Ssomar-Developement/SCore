@@ -28,11 +28,21 @@ public final class Display {
         return display(itemStack, null);
     }
 
+    public static boolean isSomethingToModify(){
+        for (List<DisplayModule> modules : REGISTERED_MODULES.values()) {
+            for (DisplayModule module : modules) {
+                //System.out.println("Display.isSomethingToModify: module.getLoadedIDs() called "+module.getLoadedIDs());
+                if(!module.getLoadedIDs().isEmpty()) return true;
+            }
+        }
+        return false;
+    }
+
     public static DisplayRequestResult display(@NotNull ItemStack itemStack, @Nullable Player player) {
         // System.out.println("Display.display: display(itemStack, player) called 0");
         if (itemStack.getType() == Material.AIR || !itemStack.hasItemMeta())
             return new DisplayRequestResult(itemStack, DisplayResult.NOT_MODIFIED);
-        revert(itemStack);
+        //revert(itemStack);
 
         ItemStack original = itemStack.clone();
         Inventory inventory = (player == null) ? null : player.getOpenInventory().getTopInventory();

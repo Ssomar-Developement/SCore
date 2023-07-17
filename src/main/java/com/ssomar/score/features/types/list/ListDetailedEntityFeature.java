@@ -180,7 +180,9 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         boolean hasBLMMCondition = !extractBlackListMMCondition().isEmpty();
 
         if (SCore.hasMythicMobs) {
+            //SsomarDev.testMsg("hasWLMMCondition: " + hasWLMMCondition, true);
             if (hasWLMMCondition && MythicMobsAPI.isMythicMob(entity, extractWhiteListMMCondition())) return true;
+            //SsomarDev.testMsg("hasBLMMCondition: " + hasBLMMCondition, true);
             if (hasBLMMCondition && MythicMobsAPI.isMythicMob(entity, extractBlackListMMCondition())) return false;
         }
 

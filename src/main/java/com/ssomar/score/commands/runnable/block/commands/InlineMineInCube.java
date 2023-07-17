@@ -58,11 +58,12 @@ public class InlineMineInCube extends BlockCommand {
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
+        //SsomarDev.testMsg("InlineMineInCube is running !", true);
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
             public void run() {
                 /* Cancel a Loop of blockBreakEvent that MineInCbe can create */
-                if (aInfo.isEventCallByMineInCube()) return;
+                if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 try {
                     int radius = Integer.parseInt(args.get(0));

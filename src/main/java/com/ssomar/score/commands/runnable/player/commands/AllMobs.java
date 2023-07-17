@@ -32,6 +32,8 @@ import java.util.Optional;
 public class AllMobs extends PlayerCommand implements FeatureParentInterface {
 
     public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
+
+        args = new ArrayList<>(args);
         ListDetailedEntityFeature whiteList = null;
         ListDetailedEntityFeature blackList = null;
 
@@ -95,6 +97,7 @@ public class AllMobs extends PlayerCommand implements FeatureParentInterface {
         final ListDetailedEntityFeature finalWhiteList = whiteList;
         final ListDetailedEntityFeature finalBlackList = blackList;
 
+        List<String> finalArgs = args;
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -125,7 +128,7 @@ public class AllMobs extends PlayerCommand implements FeatureParentInterface {
 
                                 /* regroup the last args that correspond to the commands */
                                 StringBuilder prepareCommands = new StringBuilder();
-                                for (String s : args) {
+                                for (String s : finalArgs) {
                                     prepareCommands.append(s);
                                     prepareCommands.append(" ");
                                 }

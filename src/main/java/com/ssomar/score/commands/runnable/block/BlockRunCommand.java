@@ -67,7 +67,8 @@ public class BlockRunCommand extends RunCommand {
     public void runCommand(SCommand command, List<String> args) {
         BlockSCommand bCommand = (BlockSCommand) command;
 
-        Player launcher = Bukkit.getPlayer(launcherUUID);
+        Player launcher = null;
+        if (launcherUUID != null) launcher =  Bukkit.getPlayer(launcherUUID);
         Optional<World> worldOptional = AllWorldManager.getWorld(blockWorld);
         if(!worldOptional.isPresent()) return;
         Location loc = new Location(worldOptional.get(), blockX, blockY, blockZ);

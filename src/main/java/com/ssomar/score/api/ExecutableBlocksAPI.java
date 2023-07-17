@@ -1,7 +1,7 @@
 package com.ssomar.score.api;
 
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
-import com.ssomar.executableblocks.executableblocks.manager.ExecutableBlocksManager;
+import com.ssomar.executableblocks.executableblocks.ExecutableBlocksManager;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;

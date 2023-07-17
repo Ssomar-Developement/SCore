@@ -1,9 +1,9 @@
 package com.ssomar.score.utils.safeplace;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.usedapi.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -58,7 +58,7 @@ public class SafePlace {
         SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
         if (SCore.hasExecutableBlocks) {
             SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
-            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
                 SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
                 eBPOpt.get().breakBlock(null, drop);

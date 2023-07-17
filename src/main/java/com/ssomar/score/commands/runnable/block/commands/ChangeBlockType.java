@@ -1,9 +1,8 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlacedManager;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -35,7 +34,7 @@ public class ChangeBlockType extends BlockCommand {
         if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
 
         if (SCore.hasExecutableBlocks) {
-            Optional<ExecutableBlockPlacedInterface> eBPO = ExecutableBlockPlacedManager.getInstance().getExecutableBlockPlaced(block);
+            Optional<ExecutableBlockPlaced> eBPO = ExecutableBlocksPlacedManager.getInstance().getExecutableBlockPlaced(block);
             if (eBPO.isPresent()) {
                 ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPO.get();
                 if (Material.matchMaterial(mat) != null) {

@@ -1,11 +1,11 @@
 package com.ssomar.score.features.types.list;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlockObject;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
@@ -269,7 +269,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                         }
                     }
                 } else if (customPlugin.equals("EXECUTABLEBLOCKS") && SCore.hasExecutableBlocks) {
-                    Optional<ExecutableBlockPlacedInterface> customOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+                    Optional<ExecutableBlockPlaced> customOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
                     SsomarDev.testMsg(">> EB customOpt: " + customOpt.isPresent(), DEBUG);
                     if (customOpt.isPresent()) {
                         SsomarDev.testMsg(">> EB customOpt: " + customOpt.get().getExecutableBlockID(), DEBUG);

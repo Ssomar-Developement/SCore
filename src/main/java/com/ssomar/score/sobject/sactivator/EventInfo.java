@@ -78,7 +78,7 @@ public class EventInfo {
     /* Bow shoot force */
     private Optional<Float> bowForce;
 
-    private boolean isEventCallByMineinCube;
+    private boolean isFromCustomBreakCommand;
 
     private Optional<String> command;
 
@@ -141,7 +141,7 @@ public class EventInfo {
         eInfo.setDamageCause(damageCause);
         eInfo.setVelocity(velocity);
         eInfo.setBowForce(bowForce);
-        eInfo.setEventCallByMineinCube(isEventCallByMineinCube);
+        eInfo.setFromCustomBreakCommand(isFromCustomBreakCommand);
         eInfo.setCommand(command);
         eInfo.setMainHand(mainHand);
         eInfo.setForceMainHand(forceMainHand);

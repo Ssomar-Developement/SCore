@@ -1,8 +1,8 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
+import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
@@ -28,7 +28,7 @@ public class DropExecutableBlock extends EntityCommand {
             int amount = Double.valueOf(args.get(1)).intValue();
             if (amount > 0) {
                 //SsomarDev.testMsg("DropExecutableItem.run() - amount > 0", DEBUG);
-                Optional<ExecutableBlockInterface> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
+                Optional<ExecutableBlock> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
                 if (eiOpt.isPresent()) {
                     //SsomarDev.testMsg(">> loc: " + entity.getLocation());
                     entity.getWorld().dropItem(entity.getLocation(), eiOpt.get().buildItem(amount, Optional.ofNullable(p)));

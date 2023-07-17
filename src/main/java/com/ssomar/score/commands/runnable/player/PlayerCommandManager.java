@@ -21,6 +21,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new Addlore());
         commands.add(new Setlore());
         commands.add(new SetItemName());
+        commands.add(new SetItemCustomModelData());
         commands.add(new SendBlankMessage());
         commands.add(new SendMessage());
         commands.add(new SendCenteredMessage());

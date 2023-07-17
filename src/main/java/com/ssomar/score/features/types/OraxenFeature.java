@@ -297,7 +297,7 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
                 }
             }
         } else {
-            lore.add(StringConverter.coloredString("&4➤ &cYou must have &6Oraxenr"));
+            lore.add(StringConverter.coloredString("&4➤ &cYou must have &6Oraxen"));
         }
         meta.setLore(lore);
         item.setItemMeta(meta);

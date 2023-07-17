@@ -35,7 +35,7 @@ public class ActionInfo implements Serializable {
     /* The executableItem that actives the action (to know from which ei a custom projectile has been launched) */
     private transient ExecutableItemObject executableItem;
 
-    private boolean isEventCallByMineInCube;
+    private boolean isEventFromCustomBreakCommand;
 
     /* Important info */
     private UUID launcherUUID;
@@ -74,7 +74,7 @@ public class ActionInfo implements Serializable {
         this.slot = -1;
         this.sp = sp;
         this.executableItem = null;
-        this.isEventCallByMineInCube = false;
+        this.isEventFromCustomBreakCommand = false;
         this.launcherUUID = null;
         this.receiverUUID = null;
         this.blockLocationX = -1;
@@ -92,7 +92,7 @@ public class ActionInfo implements Serializable {
     public ActionInfo clone() {
         ActionInfo result = new ActionInfo(this.name, this.sp);
         result.setExecutableItem(executableItem);
-        result.setEventCallByMineInCube(isEventCallByMineInCube);
+        result.setEventFromCustomBreakCommand(isEventFromCustomBreakCommand);
         result.setLauncherUUID(launcherUUID);
         result.setReceiverUUID(receiverUUID);
         result.setOldBlockMaterialName(oldBlockMaterialName);

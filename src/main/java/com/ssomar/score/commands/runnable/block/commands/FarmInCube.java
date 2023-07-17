@@ -83,7 +83,7 @@ public class FarmInCube extends BlockCommand {
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
-        if (aInfo.isEventCallByMineInCube()) return;
+        if (aInfo.isEventFromCustomBreakCommand()) return;
 
         List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 

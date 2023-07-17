@@ -16,6 +16,7 @@ import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -102,6 +103,9 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
             }
         }
 
+        aPart1 = StringConverter.deconvertColor(aPart1);
+        aPart2 = StringConverter.deconvertColor(aPart2);
+
         // verification
         switch (t) {
 
@@ -133,6 +137,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                     if (!comparator.getValue().get().verify(aPart1, list)) return false;
                 }
                 else if (!comparator.getValue().get().verify(aPart1, aPart2)){
+                    //System.out.println("false because> "+aPart1+" ?? "+aPart2);
                     SsomarDev.testMsg("false because> "+aPart1+" ?? "+aPart2, DEBUG);
                     return false;
                 }

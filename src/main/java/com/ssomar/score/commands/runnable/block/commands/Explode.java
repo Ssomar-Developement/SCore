@@ -1,10 +1,9 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlacedManager;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
@@ -42,11 +41,11 @@ public class Explode extends BlockCommand {
 
         if (SCore.hasExecutableBlocks) {
 
-            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
 
             if (eBPOpt.isPresent()) {
-                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
-                ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
+                ExecutableBlockPlaced eBP = eBPOpt.get();
+                ExecutableBlocksPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
             }
         }
 

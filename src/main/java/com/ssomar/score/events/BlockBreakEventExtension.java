@@ -7,14 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlockBreakEventExtension extends BlockBreakEvent {
 
-    private boolean isMineInCubeCommand = false;
+    private boolean isFromCustomBreakCommand = false;
 
     public BlockBreakEventExtension(@NotNull Block theBlock, @NotNull Player player, boolean isMineInCubeCommand) {
         super(theBlock, player);
-        this.isMineInCubeCommand = isMineInCubeCommand;
+        this.isFromCustomBreakCommand = isMineInCubeCommand;
     }
 
-    public boolean isMineInCubeCommand() {
-        return isMineInCubeCommand;
+    public boolean isFromCustomBreakCommand() {
+        return isFromCustomBreakCommand;
     }
 }

@@ -1,9 +1,11 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableblocks.ExecutableBlocks;
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
+import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
+import com.ssomar.executableblocks.executableblocks.internal.InternalData;
+import com.ssomar.executableblocks.utils.OverrideEBP;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.AllWorldManager;
@@ -25,7 +27,7 @@ public class SetExecutableBlock extends BlockCommand {
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
         if (SCore.hasExecutableBlocks) {
-            Optional<ExecutableBlockInterface> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
+            Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
             if (!oOpt.isPresent()) {
                 ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: " + args.get(0) + " for the command SETEXECUTABLEBLOCK (object: " + aInfo.getName() + ")");
                 return;
@@ -97,15 +99,17 @@ public class SetExecutableBlock extends BlockCommand {
             if (!replace && !block.isEmpty()) {
                 return;
             }
+            OverrideEBP overrideEBP = OverrideEBP.KEEP_EXISTING_EBP;
+            if (replace) overrideEBP = OverrideEBP.REMOVE_EXISTING_EBP;
 
             UUID uuid = null;
             if (p != null) uuid = p.getUniqueId();
 
             if (uuid != null && !bypassProtection && !SafePlace.verifSafePlace(uuid, block)) return;
 
-            ExecutableBlockInterface eB = oOpt.get();
+            ExecutableBlock eB = oOpt.get();
 
-            eB.place2(Optional.ofNullable(ownerUUID), loc, true);
+            eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));
         }
     }
 

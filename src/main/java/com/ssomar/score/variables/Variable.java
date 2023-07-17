@@ -97,7 +97,8 @@ public class Variable extends NewSObject<Variable, SProjectileEditor, SProjectil
         config.set("values", null);
 
         for (String key : this.values.keySet()) {
-            if (type.getValue().get().equals(VariableType.LIST)) {
+            //SsomarDev.testMsg("key: " + key, true);
+            if (type.getValue().get().equals(VariableType.LIST) && !this.values.get(key).isEmpty()) {
                 config.set("values." + key, this.values.get(key));
             } else if(!this.values.get(key).isEmpty())
                 config.set("values." + key, this.values.get(key).get(0));

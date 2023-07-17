@@ -1,11 +1,11 @@
 package com.ssomar.score.commands.runnable;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.usedapi.AllWorldManager;
-import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import com.ssomar.score.utils.GetItem;
+import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -187,7 +187,7 @@ public abstract class SCommand {
             ac.setValid(false);
             ac.setError("&cA SCommand requires &6ExecutableBlocks&c to be executed:  &cfor command: &e" + template);
         } else {
-            if (isFinalVerification && !ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(arg)) {
+             if (isFinalVerification && !ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(arg)) {
                 ac.setValid(false);
                 ac.setError("&cA SCommand contains an &6invalid ExecutableBlock&c: &e" + arg + " &cfor command: &e" + template);
             }

@@ -40,7 +40,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         } else this.isPremium = true;
     }
 
-    protected static void space(Player p) {
+    public static void space(Player p) {
         p.sendMessage("");
     }
 

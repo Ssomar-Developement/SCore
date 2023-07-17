@@ -184,7 +184,9 @@ public class VariablesManager extends NewSObjectManager<Variable> {
             if(mode.equals(MODE.IMPORT)) {
                 VariablesQuery.insertVariableNotExists(Database.getInstance().connect(), VariablesManager.getInstance().getAllObjects());
                 VariablesManager.getInstance().deleteAllLoadedObjects();
-                VariablesManager.getInstance().addLoadedObjects(VariablesQuery.selectAllVariables(Database.getInstance().connect()));
+                /* Not generate issue because  https://discord.com/channels/701066025516531753/1126693934064730112/1126693934064730112
+                * when using MYSQL we reload the variables continuously and sometimes async, the event cant be generated async*/
+                VariablesManager.getInstance().addLoadedObjects(VariablesQuery.selectAllVariables(Database.getInstance().connect()), false);
                 VariablesManager.getInstance().saveAllLoadedObjects();
             }
         }
@@ -196,7 +198,7 @@ public class VariablesManager extends NewSObjectManager<Variable> {
                 VariablesManager.getInstance().deleteObject(id);
                 Optional<Variable> var = VariablesQuery.selectVariable(Database.getInstance().connect(), id);
                 if (var.isPresent()) {
-                    VariablesManager.getInstance().addLoadedObject(var.get());
+                    VariablesManager.getInstance().addLoadedObject(var.get(), false);
                     var.get().save();
                 }
             }

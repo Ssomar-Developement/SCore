@@ -10,14 +10,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-
-import static org.bukkit.block.BlockFace.*;
 
 /* MINEINSPHERE {radius} {ActiveDrop true or false} */
 public class MineInSphere extends BlockCommand {
@@ -58,7 +55,7 @@ public class MineInSphere extends BlockCommand {
             @Override
             public void run() {
                 /* Cancel a Loop of blockBreakEvent that MineInCbe can create */
-                if (aInfo.isEventCallByMineInCube()) return;
+                if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 try {
                     int radius = Integer.parseInt(args.get(0));

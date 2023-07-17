@@ -37,10 +37,14 @@ public abstract class NewSObjectManager<T extends NewSObject> {
     }
 
     public void addLoadedObject(T object) {
+        addLoadedObject(object, true);
+    }
+
+    public void addLoadedObject(T object, boolean generateLoadEvent) {
         loadedObjects.add(object);
 
         actionOnObjectWhenLoading(object);
-        generateLoadEvent(object.getId(), object);
+        if(generateLoadEvent) generateLoadEvent(object.getId(), object);
 
         allObjects = new ArrayList<>();
         allObjects.addAll(defaultObjects);
@@ -48,11 +52,15 @@ public abstract class NewSObjectManager<T extends NewSObject> {
     }
 
     public void addLoadedObjects(List<T> object) {
+       addLoadedObjects(object, true);
+    }
+
+    public void addLoadedObjects(List<T> object, boolean generateLoadEvent) {
         loadedObjects.addAll(object);
 
         for (T o : object) {
             actionOnObjectWhenLoading(o);
-            generateLoadEvent(o.getId(), o);
+            if(generateLoadEvent) generateLoadEvent(o.getId(), o);
         }
 
         allObjects = new ArrayList<>();

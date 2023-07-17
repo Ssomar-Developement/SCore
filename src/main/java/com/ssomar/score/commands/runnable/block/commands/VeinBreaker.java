@@ -1,10 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safebreak.SafeBreak;
@@ -13,10 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +55,7 @@ public class VeinBreaker extends BlockCommand {
             @Override
             public void run() {
 
-                if (aInfo.isEventCallByMineInCube()) return;
+                if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 if (args.size() >= 2) {
                     if (!oldMaterial.toString().equals(args.get(1)))
@@ -139,24 +133,6 @@ public class VeinBreaker extends BlockCommand {
                 }
             }
         }
-    }
-
-    public void validBreak(Block block, @Nullable ItemStack item) {
-        Location bLoc = block.getLocation();
-        bLoc.add(0.5, 0.5, 0.5);
-
-        if (SCore.hasExecutableBlocks) {
-            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
-            if (eBPOpt.isPresent()) {
-                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
-                ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
-                eBP.dropAtLocation(bLoc);
-            }
-        }
-
-        /* Only for axe, for other tools its useless */
-        if (item != null && item.getType().toString().contains("PICKAXE")) block.breakNaturally(item);
-        else block.breakNaturally();
     }
 
     @Override
