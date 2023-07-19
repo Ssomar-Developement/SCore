@@ -148,6 +148,9 @@ public class Smelt extends BlockCommand {
             case DEEPSLATE_COPPER_ORE:
                 result = new ItemStack(Material.COPPER_INGOT);
                 break;
+            case POTATOES:
+                result = new ItemStack(Material.BAKED_POTATO);
+                break;
             default:
                 break;
         }

@@ -78,6 +78,30 @@ public class InlineMineInCube extends BlockCommand {
                     boolean createBBEvent = true;
                     if (args.size() >= 4) createBBEvent = Boolean.parseBoolean(args.get(3));
 
+                    BlockFace directionWritten = null;
+                    if(args.size() >= 5) {
+                        switch (args.get(4).toLowerCase()) {
+                            case "north":
+                                directionWritten = BlockFace.NORTH;
+                                break;
+                            case "south":
+                                directionWritten = BlockFace.SOUTH;
+                                break;
+                            case "east":
+                                directionWritten = BlockFace.EAST;
+                                break;
+                            case "west":
+                                directionWritten = BlockFace.WEST;
+                                break;
+                            case "up":
+                                directionWritten = BlockFace.UP;
+                                break;
+                            case "down":
+                                directionWritten = BlockFace.DOWN;
+                                break;
+                        }
+                    }
+
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
                     blackList.add(Material.AIR);
@@ -90,7 +114,12 @@ public class InlineMineInCube extends BlockCommand {
                     int maxY = radius;
 
                     RayTraceResult rayTraceResult = p.rayTraceBlocks(10, FluidCollisionMode.NEVER);
-                    BlockFace face = rayTraceResult.getHitBlockFace().getOppositeFace();
+                    BlockFace face = null;
+                    if(directionWritten == null){
+                        face = rayTraceResult.getHitBlockFace().getOppositeFace();
+                    }else{
+                        face = directionWritten;
+                    }
 
                     int multiplier = 1;
 
@@ -171,7 +200,7 @@ public class InlineMineInCube extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "INLINE_MINEINCUBE {cube_radius} {depth} {ActiveDrop true or false} {create blockBreakEvent true or false}";
+        return "INLINE_MINEINCUBE {cube_radius} {depth} {ActiveDrop true or false} {create blockBreakEvent true or false} {optional direction}";
     }
 
     @Override
