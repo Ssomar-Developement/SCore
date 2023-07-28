@@ -275,7 +275,7 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter the particle or &aedit &athe &aactual: "));
 
         TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getActually(getEditorName()))));
+        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getCurrently(getEditorName()))));
         edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current particle")).create()));
 
         TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));

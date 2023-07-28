@@ -1,4 +1,4 @@
-errorMoneyMsg: "&4&l[SCore] &cYou dont have: &6%amount%$ &con your account ! &6(&eActually: &a%balance%$&6)"
+errorMoneyMsg: "&4&l[SCore] &cYou dont have: &6%amount%$ &con your account ! &6(&eCurrently: &a%balance%$&6)"
 newBalanceMsg: "&6&l[SCore] &eTransaction: &c-%amount%$ &eNew balance: &a%balance%$"
 newBalancePositiveMsg: "&6&l[SCore] &eTransaction: &a%amount%$ &eNew balance: &a%balance%$"
 setActionbarOn: "&aYou have set your actionbar on &a&lON"

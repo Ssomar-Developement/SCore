@@ -61,6 +61,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPlayerMustBeOnHisClaimOrWilderness(this));
         conditions.add(new IfPlayerMustBeOnHisIsland(this));
         conditions.add(new IfPlayerMustBeOnHisPlot(this));
+        conditions.add(new IfCanBreakTargetedBlock(this));
 
         /* Number condition features */
         conditions.add(new IfCursorDistance(this));

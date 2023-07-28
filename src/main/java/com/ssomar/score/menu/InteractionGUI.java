@@ -97,11 +97,11 @@ public class InteractionGUI implements Listener {
     }
 
 
-    public String getActually(ItemStack item) {
+    public String getCurrently(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("actually: "))
-                return StringConverter.decoloredString(s).split("actually: ")[1];
+            if (StringConverter.decoloredString(s).contains("Currently: "))
+                return StringConverter.decoloredString(s).split("Currently: ")[1];
         }
         return null;
     }

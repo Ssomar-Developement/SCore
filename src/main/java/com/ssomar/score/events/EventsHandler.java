@@ -69,5 +69,7 @@ public class EventsHandler {
 
         /* Recode event */
         main.getServer().getPluginManager().registerEvents(new NewEditorInteractionsListener(), main);
+
+        if(SCore.hasJetsMinions) main.getServer().getPluginManager().registerEvents(new FixJetsMinionsBlockBreakEvent(), main);
     }
 }

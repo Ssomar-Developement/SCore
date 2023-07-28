@@ -113,7 +113,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
         if (!isPremium() && requirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -121,7 +121,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if (placeholder.isPresent()) gui.updateActually(getEditorName(), placeholder.get());
+        if (placeholder.isPresent()) gui.updateCurrently(getEditorName(), placeholder.get());
         else if (value.isPresent()) gui.updateInt(getEditorName(), getValue().get());
         else gui.updateDouble(getEditorName(), 0);
     }
@@ -150,7 +150,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter an integer or &aedit &athe &aactual: "));
 
         TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getActually(getEditorName()))));
+        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getCurrently(getEditorName()))));
         edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current integer")).create()));
 
         TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));

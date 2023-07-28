@@ -104,12 +104,15 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
                 placeholders.put("%block_is_ageable%", "false");
             }
 
+            boolean notValidSpawner = true;
             if(block.getState() instanceof CreatureSpawner){
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
-                placeholders.put("%block_spawnertype%", spawner.getSpawnedType().toString());
-            }else{
-                placeholders.put("%block_spawnertype%", "null");
+                if(spawner.getSpawnedType() != null){
+                    notValidSpawner = false;
+                    placeholders.put("%block_spawnertype%", spawner.getSpawnedType().toString());
+                }
             }
+            if(notValidSpawner)placeholders.put("%block_spawnertype%", "null");
         }
     }
 

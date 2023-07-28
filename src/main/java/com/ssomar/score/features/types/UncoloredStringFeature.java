@@ -93,7 +93,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
         if (!isPremium() && requirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -102,8 +102,8 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
     @Override
     public void updateItemParentEditor(GUI gui) {
         if (value.isPresent() && !StringConverter.decoloredString(value.get()).isEmpty())
-            gui.updateActually(getEditorName(), getValue().get(), true);
-        else gui.updateActually(getEditorName(), "&cEMPTY STRING", true);
+            gui.updateCurrently(getEditorName(), getValue().get(), true);
+        else gui.updateCurrently(getEditorName(), "&cEMPTY STRING", true);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter a string or &aedit &athe &aactual: "));
 
         TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getActuallyWithColor(getEditorName()))));
+        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getCurrentlyWithColor(getEditorName()))));
         edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current string")).create()));
 
         TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));

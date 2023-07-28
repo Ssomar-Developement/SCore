@@ -74,7 +74,7 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -83,7 +83,7 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
     @Override
     public void updateItemParentEditor(GUI gui) {
         if (value.isPresent()) gui.updateInt(getEditorName(), getValue().get());
-        else gui.updateActually(getEditorName(), "&cNO VALUE");
+        else gui.updateCurrently(getEditorName(), "&cNO VALUE");
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ColorIntegerFeature extends FeatureAbstract<Optional<Integer>, Colo
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter an color in integer or &aedit &athe &aactual: "));
 
         TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getActually(getEditorName()))));
+        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getCurrently(getEditorName()))));
         edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current color integer")).create()));
 
         TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));

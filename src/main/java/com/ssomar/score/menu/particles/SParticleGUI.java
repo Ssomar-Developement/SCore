@@ -63,31 +63,31 @@ public class SParticleGUI extends GUIAbstract {
 
     public void fillTheGUI(SParticle sParticle) {
         //Main Options
-        createItem(Material.NETHER_STAR, 1, 0, TITLE_COLOR + TYPE, false, false, "", "&a✎ Click here to change", "&7actually:");
+        createItem(Material.NETHER_STAR, 1, 0, TITLE_COLOR + TYPE, false, false, "", "&a✎ Click here to change", "&7Currently:");
         this.updateType(sParticle.getParticlesType());
 
-        createItem(Material.HOPPER, 1, 1, TITLE_COLOR + AMOUNT, false, false, "", "&a✎ Click here to change", "&7actually:");
+        createItem(Material.HOPPER, 1, 1, TITLE_COLOR + AMOUNT, false, false, "", "&a✎ Click here to change", "&7Currently:");
         this.updateInt(AMOUNT, sParticle.getParticlesAmount());
 
-        createItem(Material.LEVER, 1, 2, TITLE_COLOR + OFFSET, false, false, "", "&a✎ Click here to change", "&7actually:");
+        createItem(Material.LEVER, 1, 2, TITLE_COLOR + OFFSET, false, false, "", "&a✎ Click here to change", "&7Currently:");
         this.updateDouble(OFFSET, sParticle.getParticlesOffSet());
 
-        createItem(Material.LEVER, 1, 3, TITLE_COLOR + SPEED, false, false, "", "&a✎ Click here to change", "&7actually:");
+        createItem(Material.LEVER, 1, 3, TITLE_COLOR + SPEED, false, false, "", "&a✎ Click here to change", "&7Currently:");
         this.updateDouble(SPEED, sParticle.getParticlesSpeed());
 
-        createItem(Material.LEVER, 1, 4, TITLE_COLOR + DELAY, false, false, "", "&a✎ Click here to change", "&7actually:");
+        createItem(Material.LEVER, 1, 4, TITLE_COLOR + DELAY, false, false, "", "&a✎ Click here to change", "&7Currently:");
         this.updateInt(DELAY, sParticle.getParticlesDelay());
 
         if (sParticle.canHaveBlocktype()) {
-            createItem(Material.STONE, 1, 5, TITLE_COLOR + BLOCK_TYPE, false, false, "", "&a✎ Click here to change", "&7actually:");
+            createItem(Material.STONE, 1, 5, TITLE_COLOR + BLOCK_TYPE, false, false, "", "&a✎ Click here to change", "&7Currently:");
             this.updateMaterial(sParticle.getBlockType());
         } else if (sParticle.canHaveRedstoneColor()) {
-            createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7actually:");
+            createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7Currently:");
             this.updateColor(sParticle.getRedstoneColor());
         }
 
 
-        createItem(Material.BOOK, 1, 8, "&a&l" + ID, false, false, "", "&7actually: &e" + sParticle.getId());
+        createItem(Material.BOOK, 1, 8, "&a&l" + ID, false, false, "", "&7Currently: &e" + sParticle.getId());
 
         //Reset menu
         createItem(ORANGE, 1, 28, "&4&l✘ &cReset", false, false, "", "&c&oClick here to reset", "&c&oall options of this particle");
@@ -208,10 +208,10 @@ public class SParticleGUI extends GUIAbstract {
     public void updateType(Particle particle) {
 
         if (SParticle.getHaveBlocktypeParticles().contains(particle)) {
-            createItem(Material.STONE, 1, 5, TITLE_COLOR + BLOCK_TYPE, false, false, "", "&a✎ Click here to change", "&7actually:");
+            createItem(Material.STONE, 1, 5, TITLE_COLOR + BLOCK_TYPE, false, false, "", "&a✎ Click here to change", "&7Currently:");
             this.updateMaterial(Material.STONE);
         } else if (SParticle.getHaveRedstoneColorParticles().contains(particle)) {
-            createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7actually:");
+            createItem(Material.REDSTONE, 1, 5, TITLE_COLOR + REDSTONE_COLOR, false, false, "", "&a✎ Click here to change", "&7Currently:");
             this.updateColor(Color.RED);
         } else createBackGroundItem(5);
 
@@ -260,12 +260,12 @@ public class SParticleGUI extends GUIAbstract {
 
     public void updateMaterial(Material material) {
         ItemStack item = this.getByName(BLOCK_TYPE);
-        updateActually(item, "&e" + material);
+        updateCurrently(item, "&e" + material);
     }
 
     public Material getMaterial() {
         ItemStack item = this.getByName(BLOCK_TYPE);
-        return Material.valueOf(this.getActually(item));
+        return Material.valueOf(this.getCurrently(item));
 
     }
 
