@@ -73,7 +73,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         if (!isPremium() && requirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

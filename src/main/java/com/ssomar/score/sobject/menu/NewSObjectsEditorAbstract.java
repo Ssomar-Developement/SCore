@@ -164,7 +164,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         }
         createItem(RED, 1, 36, EXIT, false, false);
 
-        createItem(Material.ANVIL, 1, 38, "&ePath", false, false, "", "&7actually: &a" + path, "&c&oClick here to come back", "&8&oin previous folder");
+        createItem(Material.ANVIL, 1, 38, "&ePath", false, false, "", "&7Currently: &a" + path, "&c&oClick here to come back", "&8&oin previous folder");
 
         createItem(GREEN, 1, 40, NEW + objectName, false, false);
 
@@ -217,7 +217,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
     public String getPath() {
         ItemStack item = this.getByName("Path");
-        return this.getActually(item);
+        return this.getCurrently(item);
     }
 
     public void sendMessageDelete(String objectID, Player p) {

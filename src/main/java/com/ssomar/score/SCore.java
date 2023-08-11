@@ -89,6 +89,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static boolean hasTerra = false;
 
+    public static boolean hasJetsMinions = false;
+
     public static boolean hasTAB = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
@@ -473,6 +475,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasTAB = hookSoftDependency("TAB");
 
         hasTerra = hookSoftDependency("Terra");
+
+        hasJetsMinions = hookSoftDependency("JetsMinions");
     }
 
     @Override

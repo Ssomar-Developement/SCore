@@ -56,7 +56,7 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
         if (!SCore.hasExecutableItems)
             finalDescription[finalDescription.length - 2] = "&4&l● &c&lRequire ExecutableItems";
         else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

@@ -9,7 +9,7 @@ public class FilterManager {
 
     private static FilterManager instance;
 
-    private static int currentlyInRun = 0;
+    private static int CurrentlyInRun = 0;
 
     public FilterManager() {
         //SsomarDev.testMsg("FilterManager "+LogManager.ROOT_LOGGER_NAME, true);
@@ -41,18 +41,18 @@ public class FilterManager {
     }
 
     public boolean isSilenceOuput() {
-        return currentlyInRun > 0;
+        return CurrentlyInRun > 0;
     }
 
     public void incCurrentlyInRun() {
-        currentlyInRun = currentlyInRun + 1;
+        CurrentlyInRun = CurrentlyInRun + 1;
     }
 
     public void decrCurrentlyInRun() {
-        currentlyInRun = currentlyInRun - 1;
+        CurrentlyInRun = CurrentlyInRun - 1;
     }
 
     public int getCurrentlyInRun() {
-        return currentlyInRun;
+        return CurrentlyInRun;
     }
 }

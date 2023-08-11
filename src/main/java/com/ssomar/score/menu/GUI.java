@@ -252,12 +252,12 @@ public abstract class GUI implements IGUI {
         SCore.schedulerHook.runEntityTask(runnable, null, entity, 0);
     }
 
-    public String getActually(ItemStack item) {
+    public String getCurrently(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("actually: ")) {
+            if (StringConverter.decoloredString(s).contains("Currently: ")) {
                 try {
-                    return StringConverter.decoloredString(s).split("actually: ")[1];
+                    return StringConverter.decoloredString(s).split("Currently: ")[1];
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return "";
                 }
@@ -266,12 +266,12 @@ public abstract class GUI implements IGUI {
         return null;
     }
 
-    public String getActuallyWithColor(ItemStack item) {
+    public String getCurrentlyWithColor(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("actually: ")) {
+            if (StringConverter.decoloredString(s).contains("Currently: ")) {
                 try {
-                    return StringConverter.deconvertColor(s).split("actually: ")[1];
+                    return StringConverter.deconvertColor(s).split("Currently: ")[1];
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return "";
                 }
@@ -280,49 +280,49 @@ public abstract class GUI implements IGUI {
         return null;
     }
 
-    public void updateActually(ItemStack item, String update, boolean withColor) {
+    public void updateCurrently(ItemStack item, String update, boolean withColor) {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         int cpt = 0;
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("actually:")) break;
+            if (StringConverter.decoloredString(s).contains("Currently:")) break;
             cpt++;
         }
-        if (withColor) lore.set(cpt, StringConverter.coloredString("&7actually: " + update));
-        else lore.set(cpt, StringConverter.coloredString("&7actually: &e" + update));
+        if (withColor) lore.set(cpt, StringConverter.coloredString("&7Currently: " + update));
+        else lore.set(cpt, StringConverter.coloredString("&7Currently: &e" + update));
         meta.setLore(lore);
         item.setItemMeta(meta);
     }
 
-    public void updateActually(ItemStack item, String update) {
-        updateActually(item, update, false);
+    public void updateCurrently(ItemStack item, String update) {
+        updateCurrently(item, update, false);
     }
 
-    public String getActually(String itemName) {
-        return this.getActually(this.getByName(itemName));
+    public String getCurrently(String itemName) {
+        return this.getCurrently(this.getByName(itemName));
     }
 
-    public String getActuallyWithColor(String itemName) {
-        return this.getActuallyWithColor(this.getByName(itemName));
+    public String getCurrentlyWithColor(String itemName) {
+        return this.getCurrentlyWithColor(this.getByName(itemName));
     }
 
-    public void updateActually(String itemName, String update) {
-        this.updateActually(this.getByName(itemName), update);
+    public void updateCurrently(String itemName, String update) {
+        this.updateCurrently(this.getByName(itemName), update);
     }
 
-    public void updateActually(String itemName, String update, Boolean withColor) {
-        this.updateActually(this.getByName(itemName), update, withColor);
+    public void updateCurrently(String itemName, String update, Boolean withColor) {
+        this.updateCurrently(this.getByName(itemName), update, withColor);
     }
 
     public void updateCondition(String name, String condition) {
         ItemStack item = this.getByName(name);
-        if (condition.equals("")) this.updateActually(item, "&cNO CONDITION");
-        else this.updateActually(item, condition);
+        if (condition.equals("")) this.updateCurrently(item, "&cNO CONDITION");
+        else this.updateCurrently(item, condition);
     }
 
     public String getCondition(String name) {
-        if (this.getActually(this.getByName(name)).contains("NO CONDITION")) return "";
-        else return this.getActually(this.getByName(name));
+        if (this.getCurrently(this.getByName(name)).contains("NO CONDITION")) return "";
+        else return this.getCurrently(this.getByName(name));
     }
 
     public void updateConditionList(String name, List<String> list, String emptyStr) {
@@ -408,7 +408,7 @@ public abstract class GUI implements IGUI {
             meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
             item.setItemMeta(meta);
 
-            updateActually(item, "&aTrue");
+            updateCurrently(item, "&aTrue");
         } else {
             ItemMeta meta = item.getItemMeta();
             if (meta.hasEnchants()) {
@@ -417,39 +417,39 @@ public abstract class GUI implements IGUI {
                 }
             }
             item.setItemMeta(meta);
-            updateActually(item, "&cFalse");
+            updateCurrently(item, "&cFalse");
         }
     }
 
     public void changeBoolean(String itemName) {
         ItemStack item = this.getByName(itemName);
-        updateBoolean(itemName, !getActually(item).contains("True"));
+        updateBoolean(itemName, !getCurrently(item).contains("True"));
     }
 
     public boolean getBoolean(String itemName) {
         ItemStack item = this.getByName(itemName);
-        return getActually(item).contains("True");
+        return getCurrently(item).contains("True");
     }
 
     public void updateInt(String itemName, int value) {
         ItemStack item = this.getByName(itemName);
-        updateActually(item, value + "");
+        updateCurrently(item, value + "");
     }
 
     public int getInt(String itemName) {
         ItemStack item = this.getByName(itemName);
         if (item == null) throw new NullPointerException("Item with the name: " + itemName + " is null");
-        return Integer.parseInt(getActually(item));
+        return Integer.parseInt(getCurrently(item));
     }
 
     public void updateDouble(String itemName, double value) {
         ItemStack item = this.getByName(itemName);
-        updateActually(item, value + "");
+        updateCurrently(item, value + "");
     }
 
     public double getDouble(String itemName) {
         ItemStack item = this.getByName(itemName);
-        return Double.parseDouble(getActually(item));
+        return Double.parseDouble(getCurrently(item));
     }
 
 }

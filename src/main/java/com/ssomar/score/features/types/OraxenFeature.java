@@ -77,11 +77,13 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
     public boolean placeOraxen(Location location, ItemStack itemStack) {
         if (getValue().isPresent()) {
             String id = getValue().get();
+            //SsomarDev.testMsg("id: " + id, true);
             if(OraxenFurniture.isFurniture(id)){
                 OraxenFurniture.place(location, id, Rotation.NONE, BlockFace.UP);
                 return true;
             }
             else if (OraxenBlocks.isOraxenBlock(id)) {
+                //SsomarDev.testMsg("isOraxenBlock", true);
                 OraxenBlocks.place(id, location);
                 return true;
             }

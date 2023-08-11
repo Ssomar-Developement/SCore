@@ -1,4 +1,4 @@
-errorMoneyMsg: "&4&l[SCore] &cVocê não tem: &6%amount%$ &con sua conta: ! &6(&eActually: &a%balance%$&6)"
+errorMoneyMsg: "&4&l[SCore] &cVocê não tem: &6%amount%$ &con sua conta: ! &6(&eCurrently: &a%balance%$&6)"
 newBalanceMsg: "&6&l[SCore] &eTransação: &c-%amount%$ &eNovo balanço em conta: &a%balance%$"
 newBalancePositiveMsg: "&6&l[SCore] &eTransação: &a%amount%$ &eNovo balanço em conta: &a%balance%$"
 setActionbarOn: '&aVocê definiu a actionbar como ligado &a&lON &apara o ExecutableItems'

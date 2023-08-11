@@ -169,7 +169,7 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
 
     @Override
     public void saveTheConfiguration(Player p) {
-        SParticle sParticle = new SParticle(cache.get(p).getActually(SParticleGUI.ID));
+        SParticle sParticle = new SParticle(cache.get(p).getCurrently(SParticleGUI.ID));
         sParticle.setParticlesAmount(cache.get(p).getInt(SParticleGUI.AMOUNT));
         sParticle.setParticlesDelay(cache.get(p).getInt(SParticleGUI.DELAY));
         sParticle.setParticlesType(cache.get(p).getType());

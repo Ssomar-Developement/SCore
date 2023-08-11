@@ -21,8 +21,9 @@ public class VariablesQuery {
     private final static String COL_VALUES = "col_values";
     private final static String COL_DEFAULTVALUE = "col_defaultvalue";
 
-    public final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_VARIABLES + " (" + COL_INDEX + " INT PRIMARY KEY NOT NULL AUTO_INCREMENT, " + COL_ID + " TEXT NOT NULL, " + COL_TYPE + " TEXT NOT NULL, " + COL_FOR + " TEXT NOT NULL, " + COL_VALUES + " TEXT NOT NULL, " + COL_DEFAULTVALUE + " TEXT NOT NULL)";
+    public final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_VARIABLES + " (" + COL_INDEX + " INT PRIMARY KEY NOT NULL AUTO_INCREMENT, " + COL_ID + " TEXT NOT NULL, " + COL_TYPE + " TEXT NOT NULL, " + COL_FOR + " TEXT NOT NULL, " + COL_VALUES + " LONGTEXT NOT NULL, " + COL_DEFAULTVALUE + " TEXT NOT NULL)";
 
+    public final static String UPDATE_TABLE = "ALTER TABLE " + TABLE_VARIABLES + " MODIFY " + COL_VALUES + " LONGTEXT NOT NULL";
 
     public static void createNewTable(Connection conn) {
         Statement stmt = null;
@@ -30,6 +31,7 @@ public class VariablesQuery {
             stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_VARIABLES_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
+            stmt.execute(UPDATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_VARIABLES_NAME + " in database "+e.getMessage());
         }

@@ -105,7 +105,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         for (int i = 0; i < finalDescription.length; i++) {
             String command = finalDescription[i];
@@ -122,8 +122,8 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         if (getValue().isPresent() && !StringConverter.decoloredString(getValue().get()).isEmpty()) {
             String str = getValue().get();
             if (str.length() > 40) str = str.substring(0, 39) + "...";
-            gui.updateActually(getEditorName(), str, true);
-        } else gui.updateActually(getEditorName(), "&cEMPTY STRING", true);
+            gui.updateCurrently(getEditorName(), str, true);
+        } else gui.updateCurrently(getEditorName(), "&cEMPTY STRING", true);
     }
 
     @Override
