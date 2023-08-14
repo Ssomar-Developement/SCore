@@ -30,8 +30,6 @@ public class Steal extends PlayerCommand {
 
        ItemStack itemtosteal;
        try {
-           System.out.println(args.get(0));
-           System.out.println(args.get(0).equalsIgnoreCase("-1"));
            if (args.get(0).equalsIgnoreCase("-1")) itemtosteal = receiver.getInventory().getItemInMainHand();
            else itemtosteal = receiver.getInventory().getItem(slot);
 
