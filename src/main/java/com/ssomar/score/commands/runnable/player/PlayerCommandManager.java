@@ -123,6 +123,8 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new OpenChest());
         commands.add(new EICooldown());
         commands.add(new CopyEffects());
+        commands.add(new AddItemAttribute());
+        commands.add(new SetItemAttribute());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
