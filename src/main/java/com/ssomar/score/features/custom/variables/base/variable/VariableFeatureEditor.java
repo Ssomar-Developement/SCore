@@ -21,7 +21,10 @@ public class VariableFeatureEditor extends FeatureEditorInterface<VariableFeatur
         enchantFeature.getType().initAndUpdateItemParentEditor(this, 1);
         if (enchantFeature.getType().getValue().get().equals(VariableType.STRING)) {
             enchantFeature.getStringValue().initAndUpdateItemParentEditor(this, 2);
-        } else if (enchantFeature.getType().getValue().get().equals(VariableType.NUMBER)) {
+        } else if (enchantFeature.getType().getValue().get().equals(VariableType.LIST)) {
+            enchantFeature.getListValue().initAndUpdateItemParentEditor(this, 2);
+        }
+        else if (enchantFeature.getType().getValue().get().equals(VariableType.NUMBER)) {
             enchantFeature.getDoubleValue().initAndUpdateItemParentEditor(this, 2);
         }
 

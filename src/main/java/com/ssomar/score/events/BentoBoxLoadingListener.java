@@ -7,6 +7,7 @@ import com.ssomar.score.SCore;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 import world.bentobox.bentobox.api.events.BentoBoxReadyEvent;
 
 public class BentoBoxLoadingListener implements Listener {
@@ -14,10 +15,16 @@ public class BentoBoxLoadingListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void bentoBoxReady(BentoBoxReadyEvent e) {
 
-        if(SCore.hasExecutableItems) ExecutableItems.plugin.onReload(false);
-        if(SCore.hasExecutableBlocks){
-            ExecutableBlocks.plugin.onReload(false);
-            ExecutableBlocksPlacedManager.getInstance().load();
-        }
+        BukkitRunnable runnable3 = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(SCore.hasExecutableItems) ExecutableItems.plugin.onReload(false);
+                if(SCore.hasExecutableBlocks){
+                    ExecutableBlocks.plugin.onReload(false);
+                    ExecutableBlocksPlacedManager.getInstance().load();
+                }
+            }
+        };
+        runnable3.runTaskLater(SCore.plugin, 100L);
     }
 }

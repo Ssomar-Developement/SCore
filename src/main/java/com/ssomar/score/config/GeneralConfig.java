@@ -25,6 +25,9 @@ public class GeneralConfig extends Config {
     @Getter
     private boolean reduceDamageIndicatorWithProtolcolLib;
 
+    @Getter
+    private boolean jetMinionsGenerateBreakActivator;
+
     public GeneralConfig() {
         super();
         super.setup(SCore.plugin);
@@ -57,6 +60,7 @@ public class GeneralConfig extends Config {
         dbUser = config.getString("dbUser", "");
         dbPassword = config.getString("dbPassword", "");
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
+        jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
 
     }
 

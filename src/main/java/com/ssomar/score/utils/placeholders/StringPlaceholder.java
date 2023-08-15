@@ -228,6 +228,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     }
 
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI) {
+        return replacePlaceholderWithoutReload(str, withPAPI, true);
+    }
+    public String replacePlaceholderWithoutReload(String str, boolean withPAPI, boolean withVariables) {
         String s = str;
         if (!s.contains("%")) return str;
 
@@ -269,7 +272,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         placeholders.put("%timestamp%", (System.currentTimeMillis() - 1667000000000L) + "");
 
         /* there are replace with calcul */
-        if (variables != null) {
+        if (withVariables && variables != null) {
             for (VariableReal var : variables) {
                 s = var.replaceVariablePlaceholder(s);
             }
@@ -317,6 +320,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         if (withPAPI) s = replacePlaceholderOfPAPI(s);
         s = replacePlaceholderOfSCore(s);
+
+        /* A second time because the variable contains can require a placeholder */
+        if (withVariables && variables != null) {
+            for (VariableReal var : variables) {
+                s = var.replaceVariablePlaceholder(s);
+            }
+        }
 
         return s;
     }
@@ -371,9 +381,21 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                 else return replace;
             }
             Player p;
-            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null)
+            //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + uuid, true);
+            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null) {
+                //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + p.getName(), true);
                 replace = PlaceholderAPI.setPlaceholders(p, replace);
+                if(replace.contains("%")){
+                    replace = replace.replaceFirst("%", "fAzzAf");
+                    //String cccc = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), "%checkitem_getinfo:mainhand_mat:%");
+                    //SsomarDev.testMsg(">>> TEST "+cccc, true);
+                    //SsomarDev.testMsg(">>> f "+replace.substring(1), true);
+                    replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
+                    replace = replace.replaceFirst("fAzzAf", "%");
+                }
+            }
         }
+        //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + replace, true);
         return replace;
     }
 
@@ -391,6 +413,12 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             if ((p = Bukkit.getPlayer(uuid)) != null)
                 replace = PlaceholderAPI.setPlaceholders(p, replace);
             else replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
+
+            if(replace.contains("%")){
+                replace = replace.replaceFirst("%", "fAzzAf");
+                replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
+                replace = replace.replaceFirst("fAzzAf", "%");
+            }
 
         }
         return replace;

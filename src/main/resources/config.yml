@@ -15,3 +15,4 @@ dbName: myDB
 dbUser: root
 dbPassword: rootPassword
 reduceDamageIndicatorWithProtolcolLib: false # if you have ProtocolLib installed, you can reduce the damage indicator amount (The amount of hearts that are displayed when you take damage)
+jetMinionsGenerateBreakActivator : false

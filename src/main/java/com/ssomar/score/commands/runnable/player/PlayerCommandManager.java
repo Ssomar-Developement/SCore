@@ -20,6 +20,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new MobAround());
         commands.add(new Addlore());
         commands.add(new Setlore());
+        commands.add(new SetItemColor());
         commands.add(new SetItemName());
         commands.add(new SetItemCustomModelData());
         commands.add(new SendBlankMessage());

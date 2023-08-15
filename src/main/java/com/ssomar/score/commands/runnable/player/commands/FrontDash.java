@@ -48,7 +48,7 @@ public class FrontDash extends PlayerCommand {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+                    NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
                 }
             };
             BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);

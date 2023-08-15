@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
+import org.bukkit.OfflinePlayer;
 
 import java.util.*;
 
@@ -20,6 +21,22 @@ public class CooldownsManager {
     public static CooldownsManager getInstance() {
         if (instance == null) instance = new CooldownsManager();
         return instance;
+    }
+
+    public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
+        if (params.startsWith("cooldown_")) {
+            UUID uuid = player.getUniqueId();
+            if(cooldownsUUID.containsKey(uuid)){
+                for(Cooldown cd : cooldownsUUID.get(uuid)){
+                    SsomarDev.testMsg("CD "+cd.toString(), DEBUG);
+                    if(cd.getId().equalsIgnoreCase(params.split("cooldown_")[1])){
+                        return Optional.of(cd.getTimeLeft()+"");
+                    }
+                }
+            }
+            return Optional.of("0");
+        }
+        return Optional.empty();
     }
 
     public void addCooldown(Cooldown cd) {

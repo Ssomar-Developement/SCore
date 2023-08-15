@@ -41,7 +41,7 @@ public class PlayerRunCommand extends RunCommand {
     public void initRunOffline(String brutCommand) {
         if (brutCommand.contains("[<OFFLINE>]")) {
             runOffline = true;
-            this.setBrutCommand(brutCommand.replaceAll("\\[<OFFLINE>]", ""));
+            this.setBrutCommand(brutCommand.replaceAll("\\[<OFFLINE>]", "").trim());
         } else runOffline = false;
     }
 

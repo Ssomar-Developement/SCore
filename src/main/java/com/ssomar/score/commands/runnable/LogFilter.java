@@ -53,6 +53,15 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Removed tag");
         messageToHide.add("Set the weather");
         messageToHide.add(" from any team");
+        messageToHide.add("Set");
+        messageToHide.add("Removed");
+        messageToHide.add("Added");
+        messageToHide.add("Changed title display times for");
+        messageToHide.add("Custom bossbar");
+        messageToHide.add("Set the time");
+        messageToHide.add("Stopped sound");
+        messageToHide.add("started riding");
+
 
     }
 

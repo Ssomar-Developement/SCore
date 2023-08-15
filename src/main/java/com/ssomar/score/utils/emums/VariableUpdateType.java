@@ -2,6 +2,9 @@ package com.ssomar.score.utils.emums;
 
 public enum VariableUpdateType {
 
+    LIST_ADD,
+    LIST_REMOVE,
+    LIST_CLEAR,
     MODIFICATION,
     SET;
 

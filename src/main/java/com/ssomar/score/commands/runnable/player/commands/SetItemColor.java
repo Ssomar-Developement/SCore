@@ -1,19 +1,25 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* SETITEMCUSTOMMODELDATA {slot} {customModelData} */
-public class SetItemCustomModelData extends PlayerCommand {
+/* SETITEMCOLOR {slot} {color in number} */
+public class SetItemColor extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
@@ -22,16 +28,34 @@ public class SetItemCustomModelData extends PlayerCommand {
         ItemMeta itemmeta;
 
         try {
-            item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
+            int slot = Integer.parseInt(args.get(0));
+            if(slot == -1) item = receiver.getInventory().getItemInMainHand();
+            else item = receiver.getInventory().getItem(slot);
             itemmeta = item.getItemMeta();
+
         } catch (NullPointerException e) {
             e.printStackTrace();
             return;
         }
 
-        int cmd = Double.valueOf(args.get(1)).intValue();
+        String colorStr = args.get(1);
+        colorStr = StringPlaceholder.replacePlaceholderOfPAPI(colorStr, null);
+        Optional<Integer> colorOpt = NTools.getInteger(colorStr);
 
-        itemmeta.setCustomModelData(cmd);
+        if (!colorOpt.isPresent())  return;
+
+        int color = colorOpt.get();
+
+        Material material = item.getType();
+        if (material.equals(Material.LEATHER_BOOTS) ||
+                material.equals(Material.LEATHER_CHESTPLATE) ||
+                material.equals(Material.LEATHER_LEGGINGS) ||
+                material.equals(Material.LEATHER_HELMET)
+                || (!SCore.is1v13Less() && material.equals(Material.LEATHER_HORSE_ARMOR))) {
+
+            LeatherArmorMeta aMeta = (LeatherArmorMeta) itemmeta;
+            aMeta.setColor(Color.fromRGB(color));
+        }
 
         item.setItemMeta(itemmeta);
     }
@@ -52,13 +76,13 @@ public class SetItemCustomModelData extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("SETITEMCUSTOMMODELDATA");
+        names.add("SETITEMCOLOR");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETITEMCUSTOMMODELDATA {slot} {customModelData}";
+        return "SETITEMCOLOR {slot} {color in number}";
     }
 
     @Override

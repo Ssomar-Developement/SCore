@@ -10,8 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
 
@@ -99,6 +98,40 @@ public class NameSpaceKeyWriterReader implements ItemKeyWriterReader {
         ItemMeta meta = dMeta.getMeta();
         NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
         return Optional.ofNullable(meta.getPersistentDataContainer().get(key3, PersistentDataType.DOUBLE));
+    }
+
+    @Override
+    public void writeList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
+        ItemMeta meta = dMeta.getMeta();
+        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+        meta.getPersistentDataContainer().set(key3, PersistentDataType.STRING, value.toString());
+    }
+
+    @Override
+    public void writeListIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
+        ItemMeta meta = dMeta.getMeta();
+        NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
+        try {
+            if (meta.getPersistentDataContainer().get(key4, PersistentDataType.STRING) == null) {
+                meta.getPersistentDataContainer().set(key4, PersistentDataType.STRING, value.toString());
+            }
+        }
+        // Appear when the tag already exists but with a different type
+        catch (IllegalArgumentException e){
+            meta.getPersistentDataContainer().set(key4, PersistentDataType.STRING, value.toString());
+        }
+    }
+
+    @Override
+    public Optional<List<String>> readList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+        ItemMeta meta = dMeta.getMeta();
+        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+        //SsomarDev.testMsg("readString key: " + key+ "> " + meta.getPersistentDataContainer().get(key3, PersistentDataType.STRING));
+        String s = meta.getPersistentDataContainer().get(key3, PersistentDataType.STRING);
+        if (s != null) {
+            return Optional.of(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
+        }
+        return Optional.empty();
     }
 
     @Override

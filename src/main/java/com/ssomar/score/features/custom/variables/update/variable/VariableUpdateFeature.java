@@ -107,7 +107,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
                 if (getVariables().getVariablesName().contains(this.variableName.getValue().get())) {
                     errors.addAll(this.type.load(plugin, enchantmentConfig, isPremiumLoading));
                     VariableType variableType = getVariables().getVariable(this.variableName.getValue().get()).getType().getValue().get();
-                    if (variableType.equals(VariableType.STRING)) {
+                    if (variableType.equals(VariableType.STRING) || variableType.equals(VariableType.LIST)) {
                         errors.addAll(this.stringUpdate.load(plugin, enchantmentConfig, isPremiumLoading));
                     } else {
                         errors.addAll(this.doubleUpdate.load(plugin, enchantmentConfig, isPremiumLoading));
@@ -145,7 +145,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
             VariableType variableType = getVariables().getVariable(this.variableName.getValue().get()).getType().getValue().get();
             this.variableName.save(attributeConfig);
             this.type.save(attributeConfig);
-            if (variableType.equals(VariableType.STRING)) {
+            if (variableType.equals(VariableType.STRING) || variableType.equals(VariableType.LIST)) {
                 this.stringUpdate.save(attributeConfig);
             } else {
                 this.doubleUpdate.save(attributeConfig);
@@ -166,7 +166,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
         finalDescription[finalDescription.length - 3] = "&7Type: &e" + type.getValue().get();
         if (getVariables().getVariablesName().contains(this.variableName.getValue().get())) {
             VariableType variableType = getVariables().getVariable(this.variableName.getValue().get()).getType().getValue().get();
-            if (variableType.equals(VariableType.STRING)) {
+            if (variableType.equals(VariableType.STRING) || variableType.equals(VariableType.LIST)) {
                 finalDescription[finalDescription.length - 2] = "&7Update: &e" + stringUpdate.getValue().get();
             } else {
                 finalDescription[finalDescription.length - 2] = "&7Update: &e" + doubleUpdate.getValue().get();

@@ -8,14 +8,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class VariableRealsList extends ArrayList<VariableReal> {
 
-    private final static boolean DEBUG = true;
+    private final static boolean DEBUG = false;
 
     public HashMap<String, String> getFlatValues(){
         HashMap<String, String> flatValues = new HashMap<>();
@@ -41,6 +38,15 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                             VariableRealDouble vRD = (VariableRealDouble) vR;
                             try {
                                 vRD.setValue(Double.parseDouble(variables.get(key)));
+                            }catch (NumberFormatException e){}
+                        }
+                        else if(vR instanceof VariableRealList){
+                            VariableRealList vRD = (VariableRealList) vR;
+                            try {
+                                String s = variables.get(key);
+                                if (s != null) {
+                                    vRD.setValue(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
+                                }
                             }catch (NumberFormatException e){}
                         }
                         else if(vR instanceof VariableRealString){
@@ -71,6 +77,15 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                             VariableRealDouble vRD = (VariableRealDouble) vR;
                             try {
                                 vRD.setValue(Double.parseDouble(variables.get(key)));
+                            }catch (NumberFormatException e){}
+                        }
+                        else if(vR instanceof VariableRealList){
+                            VariableRealList vRD = (VariableRealList) vR;
+                            try {
+                                String s = variables.get(key);
+                                if (s != null) {
+                                    vRD.setValue(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
+                                }
                             }catch (NumberFormatException e){}
                         }
                         else if(vR instanceof VariableRealString){

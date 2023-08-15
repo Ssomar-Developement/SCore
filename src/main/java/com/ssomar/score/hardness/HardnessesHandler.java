@@ -10,6 +10,7 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.hardness.hardness.manager.HardnessesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -46,7 +47,10 @@ public class HardnessesHandler {
         public void onPacketReceiving(final PacketEvent event) {
             final PacketContainer packet = event.getPacket();
             final Player player = event.getPlayer();
-            final ItemStack item = player.getInventory().getItemInMainHand();
+            ItemStack itemNotFinal = null;
+            if (SCore.is1v12Less()) itemNotFinal = player.getInventory().getItemInHand();
+            else itemNotFinal = player.getInventory().getItemInMainHand();
+            final ItemStack item = itemNotFinal;
             if (player.getGameMode() == GameMode.CREATIVE) return;
 
             final StructureModifier<BlockPosition> dataTemp = packet.getBlockPositionModifier();
@@ -76,6 +80,7 @@ public class HardnessesHandler {
             final long period = triggeredModifier.getPeriod(player, block, item);
             if (period == 0) return;
 
+            SsomarDev.testMsg("period: " + period + "block tyep "+block.getType(), true);
             event.setCancelled(true);
 
             final Location location = block.getLocation();

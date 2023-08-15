@@ -43,7 +43,7 @@ public class Smelt extends BlockCommand {
                 }
                 // BREAK
 
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, false, false);
+                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, true, false);
 
                 // Drop the smelted item
                 Location dropLocation = block.getLocation();

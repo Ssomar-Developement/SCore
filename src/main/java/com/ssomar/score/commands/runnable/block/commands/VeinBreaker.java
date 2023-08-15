@@ -3,6 +3,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -57,23 +59,33 @@ public class VeinBreaker extends BlockCommand {
 
                 if (aInfo.isEventFromCustomBreakCommand()) return;
 
-                if (args.size() >= 2) {
-                    if (!oldMaterial.toString().equals(args.get(1)))
+                /* if (args.size() >= 2) {
+                    if (!args.get(1).contains(oldMaterial.toString()))
                         return;
                 } else {
                     if (!(oldMaterial.toString().contains("ORE")
                             || oldMaterial.toString().contains("ANCIENT_DEBRIS")
                             || oldMaterial.toString().contains("LOG")
                             || oldMaterial.toString().contains("WOOD")
-                            /* 1.16 woods */
+
                             || oldMaterial.toString().contains("HYPHAE")
                             || oldMaterial.toString().contains("WARPED_STEM")
                             || oldMaterial.toString().contains("CRIMSON_STEM")
-                            //wool
                             || oldMaterial.toString().contains("WOOL")
                             || oldMaterial.toString().contains("LEAVES")))
                         return;
+                }*/
+
+                DetailedBlocks whiteList;
+                if ((whiteList = aInfo.getDetailedBlocks()) != null) {
+                    /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
+                    if (!whiteList.isValid(block, Optional.empty(), null, new StringPlaceholder(), oldMaterial, null)) {
+                        p.sendMessage(ChatColor.RED + "This block is not allowed to be broken ! : "+block.getType().name());
+                        return;
+                    }
                 }
+
+
 
                 int veinSize = 120;
                 try {
@@ -150,7 +162,7 @@ public class VeinBreaker extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE, WOOD and WOOL] {trigger BREAK event, default true}";
+        return "VEIN_BREAKER [Max_vein_size] [trigger BREAK event, default true]";
     }
 
     @Override

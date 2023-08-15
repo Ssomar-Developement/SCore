@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -57,7 +56,7 @@ public abstract class CommandManager<T extends SCommand> {
 
         Optional<String> error = this.verifArgs(command, args);
         if (error.isPresent()) {
-            return Optional.of("&4&lINVALID COMMAND &c" + " " + error.get());
+            return Optional.of("&6>>" + " " + error.get());
         }
 
         return Optional.empty();
@@ -71,7 +70,7 @@ public abstract class CommandManager<T extends SCommand> {
             if (commandOpt.isPresent() && !entry.contains("+++")) {
                 T command = commandOpt.get();
                 Optional<String> error = verifCommand(command, entry);
-                error.ifPresent(value -> errorList.add(StringConverter.decoloredString(sPlugin.getNameDesign() + " " + value + " for ID: " + id)));
+                error.ifPresent(value -> errorList.add("&cERROR, Invalid command  &7&o(ID: " + id+ ") "+value));
             }
             result.add(entry);
         }
