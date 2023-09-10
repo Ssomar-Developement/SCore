@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.plotsquared.core.PlotAPI;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
+import com.ssomar.score.commands.runnable.FilterManager;
 import com.ssomar.score.commands.score.CommandsClass;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.Message;
@@ -328,6 +329,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
             new PlaceholderAPISCoreExpansion(this).register();
         }
 
+        FilterManager.getInstance().reload();
+
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }
 
@@ -512,6 +515,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         TM.getInstance().loadTexts();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+
+        FilterManager.getInstance().reload();
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }

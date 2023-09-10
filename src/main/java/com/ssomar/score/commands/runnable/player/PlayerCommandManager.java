@@ -136,6 +136,8 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
+        commands.add(new While());
+
         commands.add(new Customtest());
 
         setCommands(commands);

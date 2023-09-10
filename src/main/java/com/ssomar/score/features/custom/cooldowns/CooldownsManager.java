@@ -168,7 +168,7 @@ public class CooldownsManager {
 
 
     public void printInfo() {
-        System.out.println("--------^^^^^^^^^^^^^^^^^^^^1-------------");
+        System.out.println("--------^^^^^^^^^^^^^^^^^^^^-------------");
 
 
         int total = 0;
@@ -202,7 +202,7 @@ public class CooldownsManager {
             }
         }
 
-        System.out.println("---------vvvvvvvvvvv1vvvvvv-------------");
+        System.out.println("---------vvvvvvvvvvvvvvvvv-------------");
     }
 
 }

@@ -17,7 +17,7 @@ public class MobAround extends EntityCommand {
 
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        mobAroundExecution(receiver.getLocation(), receiver, true, args, aInfo);
+        mobAroundExecution(receiver.getLocation(), p, receiver, true, args, aInfo);
     }
 
     @Override

@@ -31,7 +31,7 @@ import java.util.Optional;
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
-    public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
+    public static void mobAroundExecution(Location location, @Nullable Entity launcher, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
         ListDetailedEntityFeature whiteList = null;
         ListDetailedEntityFeature blackList = null;
 
@@ -128,6 +128,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                             sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
 
                             ActionInfo aInfo2 = aInfo.clone();
+                            if(launcher != null) aInfo2.setLauncherUUID(launcher.getUniqueId());
                             aInfo2.setEntityUUID(e.getUniqueId());
 
                             /* regroup the last args that correspond to the commands */
@@ -178,7 +179,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        mobAroundExecution(receiver.getLocation(), receiver, false, args, aInfo);
+        mobAroundExecution(receiver.getLocation(), p, receiver, false, args, aInfo);
     }
 
     @Override

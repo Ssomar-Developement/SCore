@@ -590,7 +590,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-b94e6e9199-1</version>
+            <version>main-5201e73a30-1</version>
             <scope>compile</scope>
         </dependency>
 

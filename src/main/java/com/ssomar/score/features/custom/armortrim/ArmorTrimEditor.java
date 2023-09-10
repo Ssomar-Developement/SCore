@@ -1,21 +1,23 @@
-package com.ssomar.score.features.custom.cancelevents;
+package com.ssomar.score.features.custom.armortrim;
 
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
-public class CancelEventFeaturesEditor extends FeatureEditorInterface<CancelEventFeatures> {
+public class ArmorTrimEditor extends FeatureEditorInterface<ArmorTrim> {
 
-    public final CancelEventFeatures dropFeatures;
+    public final ArmorTrim dropFeatures;
 
-    public CancelEventFeaturesEditor(CancelEventFeatures dropFeatures) {
-        super("&lCancelEvent features Editor", 3 * 9);
+    public ArmorTrimEditor(ArmorTrim dropFeatures) {
+        super("&lArmorTrim Editor", 3 * 9);
         this.dropFeatures = dropFeatures.clone(dropFeatures.getParent());
         load();
     }
 
     @Override
     public void load() {
-        dropFeatures.getCancelEventIfNoperm().initAndUpdateItemParentEditor(this, 0);
+        dropFeatures.getEnableArmorTrim().initAndUpdateItemParentEditor(this, 0);
+        dropFeatures.getTrimMaterial().initAndUpdateItemParentEditor(this, 1);
+        dropFeatures.getPattern().initAndUpdateItemParentEditor(this, 2);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);
@@ -28,7 +30,7 @@ public class CancelEventFeaturesEditor extends FeatureEditorInterface<CancelEven
     }
 
     @Override
-    public CancelEventFeatures getParent() {
+    public ArmorTrim getParent() {
         return dropFeatures;
     }
 }

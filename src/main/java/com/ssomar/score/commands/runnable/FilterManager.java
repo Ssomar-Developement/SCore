@@ -8,14 +8,20 @@ import org.apache.logging.log4j.core.Logger;
 public class FilterManager {
 
     private static FilterManager instance;
+    private static LogFilter logFilter;
 
     private static int CurrentlyInRun = 0;
 
     public FilterManager() {
         //SsomarDev.testMsg("FilterManager "+LogManager.ROOT_LOGGER_NAME, true);
         //LogManager.getRootLogger().always();
+        logFilter = new LogFilter();
         Logger logger = ((Logger) LogManager.getRootLogger());
-        logger.addFilter(new LogFilter());
+        logger.addFilter(logFilter);
+    }
+
+    public void reload(){
+        logFilter.reload();
     }
 
     public static FilterManager getInstance() {
@@ -41,6 +47,7 @@ public class FilterManager {
     }
 
     public boolean isSilenceOuput() {
+        //System.out.println("isSilenceOuput "+CurrentlyInRun);
         return CurrentlyInRun > 0;
     }
 

@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 
+import com.ssomar.score.config.GeneralConfig;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
@@ -16,9 +17,14 @@ public class LogFilter implements Filter, LifeCycle {
 
     private final boolean debug = false;
 
-    private final List<String> messageToHide = new ArrayList<>();
+    private List<String> messageToHide = new ArrayList<>();
 
     public LogFilter() {
+        reload();
+    }
+
+    public void reload(){
+        messageToHide = new ArrayList<>();
         messageToHide.add("Applied effect");
         messageToHide.add("Playing effect");
         messageToHide.add("Removed effect");
@@ -61,8 +67,9 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Set the time");
         messageToHide.add("Stopped sound");
         messageToHide.add("started riding");
-
-
+        for(String s : GeneralConfig.getInstance().getSilenceOutputs()){
+            messageToHide.add(s);
+        }
     }
 
 
@@ -79,6 +86,8 @@ public class LogFilter implements Filter, LifeCycle {
                 }
             }
         }
+
+        //SsomarDev.testMsg( "LogFilter: " + message + " " + hide, true);
 
         return hide ? Result.DENY : Result.NEUTRAL;
     }

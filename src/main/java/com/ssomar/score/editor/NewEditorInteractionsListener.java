@@ -2,6 +2,8 @@ package com.ssomar.score.editor;
 
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditor;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditorManager;
+import com.ssomar.score.features.custom.armortrim.ArmorTrimEditor;
+import com.ssomar.score.features.custom.armortrim.ArmorTrimEditorManager;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeatureEditor;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeatureEditorManager;
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeatureEditor;
@@ -253,7 +255,11 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof HidersEditor) {
             HidersEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof GiveFirstJoinFeaturesEditor) {
+        } else if (holder instanceof ArmorTrimEditor) {
+            ArmorTrimEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof GiveFirstJoinFeaturesEditor) {
             GiveFirstJoinFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof EnchantmentWithLevelFeatureEditor) {
@@ -492,7 +498,12 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (HidersEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             HidersEditorManager.getInstance().receiveMessage(p, message);
-        } else if (GiveFirstJoinFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        }
+        else if (ArmorTrimEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ArmorTrimEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (GiveFirstJoinFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             GiveFirstJoinFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (EnchantmentWithLevelFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
