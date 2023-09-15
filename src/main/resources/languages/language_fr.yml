@@ -8,6 +8,11 @@ editor:
     description: "&a✎ Clique ici pour éditer"
   exit:
     name: "&4&l✘ &cQuitter"
+  folder:
+    name: "&2&l✦ FOLDER: &a"
+    description:
+      - ""
+      - "&7Click here to open"
   delete:
     name: "&4&l✘ &cSupprimer"
     normal:
