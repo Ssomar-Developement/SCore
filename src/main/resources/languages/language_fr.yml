@@ -1,26 +1,44 @@
 editor:
+  back:
+    name: "&4&l⬅ &cRetour"
+  edit:
+    description: "&a✎ Clique ici pour éditer"
+  exit:
+    name: "&4&l✘ &cQuitter"
+  delete:
+    name: "&4&l✘ &cSupprimer"
+    normal:
+      description: "&4&lX &cClique ici pour supprimer"
+    shift:
+      description: "&4&lX &cShift + Clique pour supprimer"
+  new:
+    name: "&a&l➕ &aNouveau"
+  page:
+    name: " - Page "
+    next:
+      name: "&dPage suivante &5&l▶"
+    previous:
+      name: "&5&l◀ &dPage précédente"
+  premium:
+    description: "&5&l❂ &d&lPremium uniquement &5&l❂"
   reset:
-    name: "&4&l✘ &cReset"
-    description: "&c&oClick here to reset"
+    name: "&4&l✘ &cRéinitialiser"
+    description: "&c&oClique ici pour réinitialiser"
   save:
     name: "&a&l✔ &aSauvegarde"
-    description: "&a&oClick here to save"
-  back:
-    name: "&4&l⬅ &cBack"
-  exit:
-    name: "&4&l✘ &cExit"
-  new:
-    name: "&a&l➕ &aNew"
+    description: "&a&oClique ici pour sauvegarder"
+  title:
+    color: "&e&l"
 features:
   activators:
     name: "Activateurs"
     description: "&7&oLes activateurs / déclencheurs"
-    editorTitle: "&lActivators feature Editor"
+    editorTitle: "&lEditeur des paramètres d'activateurs"
   activator:
     name: "Activateur"
     description: "&7&oUn activateur"
   aroundBlock:
-    name: "AroundBlock"
+    name: "Blocks autour"
     description: ""
     editorTitle: "&lAroundBlock feature Editor"
     features:
