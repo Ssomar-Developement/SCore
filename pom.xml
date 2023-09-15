@@ -105,184 +105,212 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-
-                        <!--_AUTO_UPDATE_START_COMMENT_-->
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                        </configuration>
-                        <!--_AUTO_UPDATE_END_COMMENT_-->
-
-                        <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                     </execution>
-                    <!-- C:\Users\octav\Documents\GitHub\
-                    C:\Users\marce\Documents\GitHub\ -->
-
-                    <!-- vvv DELETE THIS PART, ITS ONLY FOR ME vvv -->
-                    <!--_AUTO_UPDATE_START_COMMENT_-->
-                    <execution>
-                        <id>build_1v8</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_folia</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local folia\plugins\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_1v12</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.12\plugins\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_1v17</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.17\plugins\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_1v18</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\serveur local 1.18\plugins\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_eb</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_ei</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_eg</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_cpt</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_ee</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_textures</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\TexturesPackReader\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build_dep_lagassist</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\LagAssist\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>build_dep_minilevers</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>
-                                C:\Users\octav\Documents\GitHub\MiniLevers\src\main\resources\SCore.jar
-                            </outputFile>
-                        </configuration>
-                    </execution>
-                    <!--_AUTO_UPDATE_END_COMMENT_-->
-                    <!--  ^^^ DELETE THIS PART, ITS ONLY FOR ME ^^^ -->
                 </executions>
             </plugin>
         </plugins>
     </build>
+
+
+    <profiles>
+        <!-- vvv This part is only for me (Ssomar) vvv -->
+        <profile>
+            <id>Ssomar</id>
+            <build>
+                <finalName>${project.artifactId}-${project.version}</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/maven/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build_server</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <!--_AUTO_UPDATE_START_COMMENT_-->
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
+                                </configuration>
+                                <!--_AUTO_UPDATE_END_COMMENT_-->
+                            </execution>
+                            <!--_AUTO_UPDATE_START_COMMENT_-->
+                            <execution>
+                                <id>build_1v8</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\serveur local 1.8\plugins\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_folia</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\serveur local folia\plugins\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_1v12</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\serveur local 1.12\plugins\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_1v17</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\serveur local 1.17\plugins\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_1v18</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\serveur local 1.18\plugins\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_eb</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_ei</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_eg</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_cpt</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_ee</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_textures</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\TexturesPackReader\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build_dep_lagassist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\LagAssist\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>build_dep_minilevers</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\MiniLevers\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <!--_AUTO_UPDATE_END_COMMENT_-->
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <repositories>
         <repository>
