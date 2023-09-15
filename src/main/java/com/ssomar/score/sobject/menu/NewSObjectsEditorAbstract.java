@@ -19,6 +19,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -128,12 +129,23 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                         NewSObject sObject = sObjectOpt.get();
                         ItemStack itemS = sObject.buildItem(1, Optional.empty());
 
+                        /* Remove useless tags */
+                        ItemMeta meta = itemS.getItemMeta();
+                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_POTION_EFFECTS});
+                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
+                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
+                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
+                        if (SCore.is1v17Plus())
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE});
+                        if(SCore.is1v20Plus())
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ARMOR_TRIM});
+                        itemS.setItemMeta(meta);
+
                         List<String> desc = new ArrayList<>();
                         desc.add("");
                         if(!noObject) desc.add("&2(shift + right click to give to yourself)");
                         desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                         desc.add(GUI.CLICK_HERE_TO_CHANGE);
-                        desc.add("&a&l➤ WORK FINE");
                         desc.addAll(sObject.getDescription());
 
                         String[] descArray = new String[desc.size()];
@@ -144,7 +156,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                                 descArray[j] = desc.get(j);
                             }
                         }
-                        createItem(itemS, 1, i, COLOR_OBJECT_ID + " &e&o" + id, false, false, descArray);
+                        createItem(itemS, 1, i, CREATION_ID + " &e&o" + id, false, false, descArray);
                     } else {
                         if (sPlugin.isLotOfWork())
                             createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, "&c&l➤ ERROR WITH THIS " + objectName, "&c&l➤ OR THE LIMIT OF " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " IS REACHED");

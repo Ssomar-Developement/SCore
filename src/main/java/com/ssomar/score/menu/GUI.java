@@ -49,13 +49,9 @@ public abstract class GUI implements IGUI {
 
     public static String RESET;
 
-    public static String OBJECT_ID = "✚ OBJECT ID:";
+    public static String CREATION_ID;
 
-    public static String COLOR_OBJECT_ID = "&2&l✚ &a&lOBJECT ID:";
-
-    public static String ACTIVATOR_ID = "✚ ACTIVATOR ID:";
-
-    public static String COLOR_ACTIVATOR_ID = "&2&l✚ &a&lACTIVATOR ID:";
+    public static String ACTIVATOR_ID;
 
     public static Material NEXT_PAGE_MAT = null;
 
@@ -124,6 +120,9 @@ public abstract class GUI implements IGUI {
         LIGHTNING_ROD = FixedMaterial.getMaterial(Arrays.asList("LIGHTNING_ROD", "TRIPWIRE_HOOK"));
 
 
+        ACTIVATOR_ID = TM.g(Text.EDITOR_ACTIVATOR_ID_NAME);
+
+        CREATION_ID = TM.g(Text.EDITOR_CREATION_ID_NAME);
 
         CLICK_HERE_TO_CHANGE = TM.g(Text.EDITOR_EDIT_DESCRIPTION);
 

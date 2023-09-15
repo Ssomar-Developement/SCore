@@ -5,6 +5,7 @@ import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManager;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
 public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbstract> {
@@ -31,8 +32,8 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
             i.gui.sendMessageCreate(i.player);
         } else if (i.decoloredName.contains("Default Premium") || i.name.contains(" from Custom packs")) {
             NewDefaultObjectsEditorManager.getInstance().startEditing(i.player, new NewDefaultObjectsEditor(i.gui.getSPlugin(), i.gui.getManager(), i.gui.getLoader(), i.gui));
-        } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.COLOR_OBJECT_ID)) {
-            i.gui.openEditorSObject(i.decoloredName.split(GUI.OBJECT_ID)[1].trim(), i.player);
+        } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.CREATION_ID)) {
+            i.gui.openEditorSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
         } else return false;
         return true;
     }
@@ -59,9 +60,9 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 
     @Override
     public boolean shiftLeftClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
-        if (i.decoloredName.contains(GUI.OBJECT_ID)) {
+        if (i.decoloredName.contains(StringConverter.decoloredString(GUI.CREATION_ID))) {
             i.player.closeInventory();
-            String id = i.decoloredName.split(GUI.OBJECT_ID)[1].trim();
+            String id = i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim();
             i.gui.sendMessageDelete(id, i.player);
             return true;
         }
@@ -71,8 +72,8 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 
     @Override
     public boolean shiftRightClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
-        if (i.decoloredName.contains(GUI.OBJECT_ID) && !i.decoloredName.contains("ERROR ID")) {
-            i.gui.giveSObject(i.decoloredName.split(GUI.OBJECT_ID)[1].trim(), i.player);
+        if (i.decoloredName.contains(StringConverter.decoloredString(GUI.CREATION_ID)) && !i.decoloredName.contains("ERROR ID")) {
+            i.gui.giveSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
             return true;
         }
         return false;

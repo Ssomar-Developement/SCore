@@ -78,7 +78,7 @@ public class NewDefaultObjectsEditor extends GUI {
                         descArray[j] = desc.get(j);
                     }
                 }
-                createItem(itemS, 1, i, COLOR_OBJECT_ID + " &e&o" + realID, false, false, descArray);
+                createItem(itemS, 1, i, CREATION_ID + " &e&o" + realID, false, false, descArray);
                 i++;
 
             }
