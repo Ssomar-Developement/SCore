@@ -25,7 +25,7 @@ editor:
   give:
     shift:
       right:
-        description: "&2(shift + Clique droit pour te le donner)"
+        description: "&2✔ &aShift + right click to give to yourself"
     receivedMessage: "&aTu as reçu &e"
   invalid:
     file:
