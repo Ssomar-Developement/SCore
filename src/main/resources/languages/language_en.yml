@@ -10,6 +10,8 @@ editor:
     normal:
         description: "&4&lX &cClick here to delete"
     shift:
+        left:
+            description: "&4&lX &cShift + Left Click to delete"
         description: "&4&lX &cShift + Click to delete"
   new:
     name: "&a&l➕ &aNew"

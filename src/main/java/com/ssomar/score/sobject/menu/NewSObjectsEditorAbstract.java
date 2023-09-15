@@ -119,7 +119,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                     createItem(itemStack, 1, i, "&2&l✦ FOLDER: &a" + name, false, false, "", "&7(click to open)");
                 } else {
                     if (!fileName.contains(".yml"))
-                        createItem(Material.BARRIER, 1, i, "&4&l✦ INVALID FILE: &c" + str, false, false, "", "&4(shift + left click to delete)");
+                        createItem(Material.BARRIER, 1, i, "&4&l✦ INVALID FILE: &c" + str, false, false, "", GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                     String id = fileName.split(".yml")[0];
 
 
@@ -131,8 +131,8 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                         List<String> desc = new ArrayList<>();
                         desc.add("");
                         if(!noObject) desc.add("&2(shift + right click to give to yourself)");
-                        desc.add("&4(shift + left click to delete)");
-                        desc.add("&7(click to edit)");
+                        desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
+                        desc.add(GUI.CLICK_HERE_TO_CHANGE);
                         desc.add("&a&l➤ WORK FINE");
                         desc.addAll(sObject.getDescription());
 
@@ -147,9 +147,9 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                         createItem(itemS, 1, i, COLOR_OBJECT_ID + " &e&o" + id, false, false, descArray);
                     } else {
                         if (sPlugin.isLotOfWork())
-                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS " + objectName, "&c&l➤ OR THE LIMIT OF " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " IS REACHED");
+                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, "&c&l➤ ERROR WITH THIS " + objectName, "&c&l➤ OR THE LIMIT OF " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " IS REACHED");
                         else
-                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", "&4(shift + left click to delete)", "&c&l➤ ERROR WITH THIS " + objectName);
+                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, "&c&l➤ ERROR WITH THIS " + objectName);
                     }
                 }
                 i++;
@@ -224,9 +224,9 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
     public void sendMessageDelete(String objectID, Player p) {
         p.sendMessage(StringConverter.coloredString("&4[" + sPlugin.getNameDesign() + "] &cHey you want delete the " + objectName + ": &6" + objectID));
-        TextComponent delete = new TextComponent(StringConverter.coloredString("&4&l[&c&lCLICK HERE TO DELETE&4&l]"));
+        TextComponent delete = new TextComponent(StringConverter.coloredString("&4&l[&c&l"+GUI.CLICK_TO_REMOVE+"&4&l]"));
         delete.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + sPlugin.getShortName().toLowerCase() + " "+deleteArg+" " + objectID + " confirm"));
-        delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&4Click here to delete this " + objectName)).create()));
+        delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString(GUI.CLICK_TO_REMOVE + objectName)).create()));
         p.spigot().sendMessage(delete);
         p.updateInventory();
     }

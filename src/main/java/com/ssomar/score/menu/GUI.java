@@ -25,7 +25,9 @@ public abstract class GUI implements IGUI {
 
     public static String CLICK_HERE_TO_CHANGE;
 
+    public static String CLICK_TO_REMOVE;
     public static String SHIFT_CLICK_TO_REMOVE;
+    public static String SHIFT_LEFT_CLICK_TO_REMOVE;
 
     public static String PREMIUM;
 
@@ -125,7 +127,11 @@ public abstract class GUI implements IGUI {
 
         CLICK_HERE_TO_CHANGE = TM.g(Text.EDITOR_EDIT_DESCRIPTION);
 
+        CLICK_TO_REMOVE = TM.g(Text.EDITOR_DELETE_NORMAL_DESCRIPTION);
+
         SHIFT_CLICK_TO_REMOVE = TM.g(Text.EDITOR_DELETE_SHIFT_DESCRIPTION);
+
+        SHIFT_LEFT_CLICK_TO_REMOVE = TM.g(Text.EDITOR_DELETE_SHIFT_LEFT_DESCRIPTION);
 
         PREMIUM = TM.g(Text.EDITOR_PREMIUM_DESCRIPTION);
 
