@@ -12,29 +12,29 @@ editor:
       left:
         description: "&4&lX &cShift + Clique gauche pour supprimer"
       description: "&4&lX &cShift + Clique pour supprimer"
-    message: "&cHey if you want to delete the %object%"
+    message: "&cHey si tu veux supprimer le %object%"
   edit:
     description: "&a✎ Clique ici pour éditer"
   exit:
     name: "&4&l✘ &cQuitter"
   folder:
-    name: "&2&l✦ FOLDER: &a"
+    name: "&2&l✦ Dossier: &a"
     description:
       - ""
-      - "&7Click here to open the folder"
+      - "&7Clique ici pour ouvrir le dossier"
   give:
     shift:
       right:
-        description: "&2(shift + right click to give to yourself)"
-    receivedMessage: "&aYou received &e"
+        description: "&2(shift + Clique droit pour te le donner)"
+    receivedMessage: "&aTu as reçu &e"
   invalid:
     file:
-      name: "&4&l✦ INVALID FILE: &c&o"
-      description: "&7The plugin can only load &e.yml &7files"
+      name: "&4&l✦ Fichier invalide: &c&o"
+      description: "&7Le Plugin peut seulement charger des fichiers &e.yml"
     configuration:
-      name: "&4&l✦ INVALID CONFIGURATION: &c&o"
-      description: "&7You should edit your configuration file"
-      freeLimit: "&7Also be sure that you haven't reached the limit of the free version"
+      name: "&4&l✦ Configuration invalide: &c&o"
+      description: "&7Corrige ta configuration en ouvrant le fichier directement"
+      freeLimit: "&7Soit aussi sûr que tu ne dépasses pas la limite gratuite"
   new:
     name: "&a&l➕ &aNouveau"
   page:
@@ -44,18 +44,18 @@ editor:
     previous:
       name: "&5&l◀ &dPage précédente"
   path:
-    name: "&6&l✦ &ePATH:"
+    name: "&6&l✦ &eChemin:"
     description:
-      - "&8&oClick here to come back"
-      - "&8&oin previous folder"
+      - "&8&oClique ici pour revenir"
+      - "&8&odans le dossier précédent"
   premade:
     premium:
       name: "&5&l✚ &dDefault Premium %object%"
     packs:
-      name: "&5&l✚ &d%object% from Custom packs"
+      name: "&5&l✚ &d%object% des Custom packs"
   premium:
     description: "&5&l❂ &d&lPremium uniquement &5&l❂"
-    requirePremiumToAddMore: "&cREQUIRE PREMIUM: to add more than %limit% %object% you need the premium version"
+    requirePremiumToAddMore: "&cREQUIERT PREMIUM: pour ajouter plus de %limit% %object% tu dois avoir la version premium"
   reset:
     name: "&4&l✘ &cRéinitialiser"
     description: "&c&oClique ici pour réinitialiser"
