@@ -12,7 +12,7 @@ editor:
     name: "&2&l✦ FOLDER: &a"
     description:
       - ""
-      - "&7Click here to open"
+      - "&7Clique ici pour ouvrir le dossier"
   delete:
     name: "&4&l✘ &cSupprimer"
     normal:
