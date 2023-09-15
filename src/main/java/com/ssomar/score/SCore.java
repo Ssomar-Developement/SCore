@@ -286,8 +286,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         this.loadDependency();
 
-        GUI.init();
-
         GeneralConfig.getInstance();
 
         TM.getInstance().load();
@@ -297,6 +295,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         MessageMain.getInstance().load();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+
+        GUI.init();
 
         /* Loop instance part */
         LoopManager.getInstance();
@@ -516,9 +516,13 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Variables instance part */
         VariablesLoader.getInstance().reload();
 
+        TM.getInstance().load();
+
         TM.getInstance().loadTexts();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+
+        GUI.init();
 
         FilterManager.getInstance().reload();
 

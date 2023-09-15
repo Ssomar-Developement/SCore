@@ -91,7 +91,7 @@ public class TM {
 
             // The for the moment only english
             String defaultLanguage = "EN";
-            // defaultLanguage = GeneralConfig.getInstance().getLocale();
+            defaultLanguage = GeneralConfig.getInstance().getLocale();
 
             InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/" + plugin.getName().toLowerCase() + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);

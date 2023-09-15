@@ -3,13 +3,23 @@ package com.ssomar.score.languages.messages;
 public enum Text implements TextInterface {
 
     /* commands */
+
+    EDITOR_BACK_NAME("editor.back.name"),
+    EDITOR_EDIT_DESCRIPTION("editor.edit.description"),
+    EDITOR_EXIT_NAME("editor.exit.name"),
+    EDITOR_DELETE_NAME("editor.delete.name"),
+    EDITOR_DELETE_NORMAL_DESCRIPTION("editor.delete.normal.description"),
+    EDITOR_DELETE_SHIFT_DESCRIPTION("editor.delete.shift.description"),
+    EDITOR_NEW_NAME("editor.new.name"),
+    EDITOR_PAGE_NAME("editor.page.name"),
+    EDITOR_PAGE_NEXT_NAME("editor.page.next.name"),
+    EDITOR_PAGE_PREVIOUS_NAME("editor.page.previous.name"),
+    EDITOR_PREMIUM_DESCRIPTION("editor.premium.description"),
     EDITOR_RESET_NAME("editor.reset.name"),
     EDITOR_RESET_DESCRIPTION("editor.reset.description"),
     EDITOR_SAVE_NAME("editor.save.name"),
     EDITOR_SAVE_DESCRIPTION("editor.save.description"),
-    EDITOR_BACK_NAME("editor.back.name"),
-    EDITOR_EXIT_NAME("editor.exit.name"),
-    EDITOR_NEW_NAME("editor.new.name"),
+    EDITOR_TITLE_COLOR("editor.title_color"),
     FEATURES_ACTIVATORS_NAME("features.activators.name"),
     FEATURES_ACTIVATORS_DESCRIPTION("features.activators.description"),
     FEATURES_ACTIVATORS_EDITORTITLE("features.activators.editorTitle"),

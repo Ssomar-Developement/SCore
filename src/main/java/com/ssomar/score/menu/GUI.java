@@ -1,6 +1,8 @@
 package com.ssomar.score.menu;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
@@ -21,41 +23,37 @@ import java.util.Map;
 
 public abstract class GUI implements IGUI {
 
-    public final static String DEFAULT_ITEM_NAME = "&e&lDefault Name";
+    public static String CLICK_HERE_TO_CHANGE;
 
-    public final static String CLICK_HERE_TO_CHANGE = "&a✎ Click here to change";
+    public static String SHIFT_CLICK_TO_REMOVE;
 
-    public final static String SHIFT_CLICK_TO_REMOVE = "&4&lX &cShift + Click to remove";
+    public static String PREMIUM;
 
-    public final static String PREMIUM = "&5&l❂ &d&lPremium only &5&l❂";
+    public static String TITLE_COLOR;
 
-    public final static String TITLE_COLOR = "&e&l";
+    public static String PAGE;
+    public static String NEXT_PAGE;
+    public static String PREVIOUS_PAGE;
 
-    public final static String PAGE = " - Page ";
+    public static String NEW;
 
-    public final static String NEXT_PAGE = "&5&l▶ &dNext page";
+    public static String EXIT;
 
-    public final static String PREVIOUS_PAGE = "&dPrevious page &5&l◀";
+    public static String BACK;
 
-    public final static String NEW = "&2&l▶ &aNew";
+    public static String SAVE;
 
-    public final static String EXIT = "&4&l▶ &cExit";
+    public static String REMOVE;
 
-    public final static String BACK = "&4&l▶&c Back";
+    public static String RESET;
 
-    public final static String SAVE = "&2&l✔ &aSave";
+    public static String OBJECT_ID = "✚ OBJECT ID:";
 
-    public final static String REMOVE = "&4&l✘&c Remove";
+    public static String COLOR_OBJECT_ID = "&2&l✚ &a&lOBJECT ID:";
 
-    public final static String RESET = "&4&l✘ &cReset";
+    public static String ACTIVATOR_ID = "✚ ACTIVATOR ID:";
 
-    public final static String OBJECT_ID = "✚ OBJECT ID:";
-
-    public final static String COLOR_OBJECT_ID = "&2&l✚ &a&lOBJECT ID:";
-
-    public final static String ACTIVATOR_ID = "✚ ACTIVATOR ID:";
-
-    public final static String COLOR_ACTIVATOR_ID = "&2&l✚ &a&lACTIVATOR ID:";
+    public static String COLOR_ACTIVATOR_ID = "&2&l✚ &a&lACTIVATOR ID:";
 
     public static Material NEXT_PAGE_MAT = null;
 
@@ -122,6 +120,34 @@ public abstract class GUI implements IGUI {
         BLUE = FixedMaterial.getMaterial(Arrays.asList("BLUE_STAINED_GLASS_PANE", "ANVIL"));
         GRINDSTONE = FixedMaterial.getMaterial(Arrays.asList("GRINDSTONE", "ANVIL"));
         LIGHTNING_ROD = FixedMaterial.getMaterial(Arrays.asList("LIGHTNING_ROD", "TRIPWIRE_HOOK"));
+
+
+
+        CLICK_HERE_TO_CHANGE = TM.g(Text.EDITOR_EDIT_DESCRIPTION);
+
+        SHIFT_CLICK_TO_REMOVE = TM.g(Text.EDITOR_DELETE_SHIFT_DESCRIPTION);
+
+        PREMIUM = TM.g(Text.EDITOR_PREMIUM_DESCRIPTION);
+
+        TITLE_COLOR = TM.g(Text.EDITOR_TITLE_COLOR);
+
+        PAGE = TM.g(Text.EDITOR_PAGE_NAME);
+
+        NEXT_PAGE = TM.g(Text.EDITOR_PAGE_NEXT_NAME);
+
+        PREVIOUS_PAGE = TM.g(Text.EDITOR_PAGE_PREVIOUS_NAME);
+
+        NEW = TM.g(Text.EDITOR_NEW_NAME);
+
+        EXIT = TM.g(Text.EDITOR_EXIT_NAME);
+
+        BACK = TM.g(Text.EDITOR_BACK_NAME);
+
+        SAVE = TM.g(Text.EDITOR_SAVE_NAME);
+
+        REMOVE = TM.g(Text.EDITOR_DELETE_NAME);
+
+        RESET = TM.g(Text.EDITOR_RESET_NAME);
     }
 
     public void load() {
