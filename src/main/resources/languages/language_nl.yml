@@ -1,16 +1,34 @@
 editor:
+  back:
+    name: "&4&l⬅ &cBack"
+  edit:
+    description: "&a✎ Click here to change"
+  exit:
+    name: "&4&l✘ &cExit"
+  delete:
+    name: "&4&l✘ &cDelete"
+    normal:
+      description: "&4&lX &cClick here to delete"
+    shift:
+      description: "&4&lX &cShift + Click to delete"
+  new:
+    name: "&a&l➕ &aNew"
+  page:
+    name: " - Page "
+    next:
+      name: "&dNext page &5&l▶"
+    previous:
+      name: "&5&l◀ &dPrevious page"
+  premium:
+    description: "&5&l❂ &d&lPremium only &5&l❂"
   reset:
     name: "&4&l✘ &cReset"
     description: "&c&oClick here to reset"
   save:
     name: "&a&l✔ &aSave"
     description: "&a&oClick here to save"
-  back:
-    name: "&4&l⬅ &cBack"
-  exit:
-    name: "&4&l✘ &cExit"
-  new:
-    name: "&a&l➕ &aNew"
+  title:
+    color: "&e&l"
 features:
   activators:
     name: "Activators"
