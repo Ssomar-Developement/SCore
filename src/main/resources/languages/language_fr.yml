@@ -1,6 +1,12 @@
 editor:
+  activator:
+    id:
+      name: "\"&2&l✚ &a&lActivator ID:\";"
   back:
     name: "&4&l⬅ &cRetour"
+  creation:
+    id:
+      name: "\"&2&l✚ &a&lCreation ID:\";"
   edit:
     description: "&a✎ Clique ici pour éditer"
   exit:
