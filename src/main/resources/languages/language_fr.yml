@@ -1,3 +1,16 @@
+editor:
+  reset:
+    name: "&4&l✘ &cReset"
+    description: "&c&oClick here to reset"
+  save:
+    name: "&a&l✔ &aSauvegarde"
+    description: "&a&oClick here to save"
+  back:
+    name: "&4&l⬅ &cBack"
+  exit:
+    name: "&4&l✘ &cExit"
+  new:
+    name: "&a&l➕ &aNew"
 features:
   activators:
     name: "Activateurs"
@@ -174,3 +187,4 @@ features:
         ifUsage:
           name: "If Usage"
           description: ""
+
