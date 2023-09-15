@@ -4,10 +4,6 @@ editor:
   creation:
     id:
       name: "&2&l✚ &a&lCréation ID:"
-  edit:
-    description: "&a✎ Clique ici pour éditer"
-  exit:
-    name: "&4&l✘ &cQuitter"
   delete:
     name: "&4&l✘ &cSupprimer"
     normal:
@@ -16,6 +12,29 @@ editor:
       left:
         description: "&4&lX &cShift + Clique gauche pour supprimer"
       description: "&4&lX &cShift + Clique pour supprimer"
+    message: "&cHey si tu veux supprimer le %object%"
+  edit:
+    description: "&a✎ Clique ici pour éditer"
+  exit:
+    name: "&4&l✘ &cQuitter"
+  folder:
+    name: "&2&l✦ Dossier: &a"
+    description:
+      - ""
+      - "&7Clique ici pour ouvrir le dossier"
+  give:
+    shift:
+      right:
+        description: "&2(shift + Clique droit pour te le donner)"
+    receivedMessage: "&aTu as reçu &e"
+  invalid:
+    file:
+      name: "&4&l✦ Fichier invalide: &c&o"
+      description: "&7Le Plugin peut seulement charger des fichiers &e.yml"
+    configuration:
+      name: "&4&l✦ Configuration invalide: &c&o"
+      description: "&7Corrige ta configuration en ouvrant le fichier directement"
+      freeLimit: "&7Soit aussi sûr que tu ne dépasses pas la limite gratuite"
   new:
     name: "&a&l➕ &aNouveau"
   page:
@@ -24,8 +43,19 @@ editor:
       name: "&dPage suivante &5&l▶"
     previous:
       name: "&5&l◀ &dPage précédente"
+  path:
+    name: "&6&l✦ &eChemin:"
+    description:
+      - "&8&oClique ici pour revenir"
+      - "&8&odans le dossier précédent"
+  premade:
+    premium:
+      name: "&5&l✚ &dDefault Premium %object%"
+    packs:
+      name: "&5&l✚ &d%object% des Custom packs"
   premium:
     description: "&5&l❂ &d&lPremium uniquement &5&l❂"
+    requirePremiumToAddMore: "&cREQUIERT PREMIUM: pour ajouter plus de %limit% %object% tu dois avoir la version premium"
   reset:
     name: "&4&l✘ &cRéinitialiser"
     description: "&c&oClique ici pour réinitialiser"

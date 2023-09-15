@@ -2,6 +2,8 @@ package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableitems.events.AddItemInPlayerInventoryEvent;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.sobject.NewSObjectLoader;
@@ -31,7 +33,6 @@ import java.util.*;
 @Setter
 public abstract class NewSObjectsEditorAbstract extends GUI {
 
-    public static final String NEW = "&2&l✚ &aNew ";
     private static final int SOBJECT_PER_PAGE = 27;
     private static int index;
     private SPlugin sPlugin;
@@ -117,10 +118,10 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                     DynamicMeta dynamicMeta = new DynamicMeta(itemMeta);
                     ItemKeyWriterReader.init().writeString(SCore.plugin, itemStack, dynamicMeta, "folderInfo", str);
                     itemStack.setItemMeta(dynamicMeta.getMeta());
-                    createItem(itemStack, 1, i, "&2&l✦ FOLDER: &a" + name, false, false, "", "&7(click to open)");
+                    createItem(itemStack, 1, i, TM.g(Text.EDITOR_FOLDER_NAME) + name, false, false, TM.gA(Text.EDITOR_FOLDER_DESCRIPTION));
                 } else {
                     if (!fileName.contains(".yml"))
-                        createItem(Material.BARRIER, 1, i, "&4&l✦ INVALID FILE: &c" + str, false, false, "", GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
+                        createItem(Material.BARRIER, 1, i, TM.g(Text.EDITOR_INVALID_FILE_NAME) + str, false, false, "", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, TM.g(Text.EDITOR_INVALID_FILE_DESCRIPTION));
                     String id = fileName.split(".yml")[0];
 
 
@@ -143,9 +144,9 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
                         List<String> desc = new ArrayList<>();
                         desc.add("");
-                        if(!noObject) desc.add("&2(shift + right click to give to yourself)");
-                        desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                         desc.add(GUI.CLICK_HERE_TO_CHANGE);
+                        if(!noObject) desc.add(TM.g(Text.EDITOR_GIVE_SHIFT_RIGHT_DESCRIPTION));
+                        desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                         desc.addAll(sObject.getDescription());
 
                         String[] descArray = new String[desc.size()];
@@ -159,9 +160,9 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
                         createItem(itemS, 1, i, CREATION_ID + " &e&o" + id, false, false, descArray);
                     } else {
                         if (sPlugin.isLotOfWork())
-                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, "&c&l➤ ERROR WITH THIS " + objectName, "&c&l➤ OR THE LIMIT OF " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " IS REACHED");
+                            createItem(Material.BARRIER, 1, i, TM.g(Text.EDITOR_INVALID_CONFIGURATION_NAME) + id, false, false, "", TM.g(Text.EDITOR_INVALID_CONFIGURATION_DESCRIPTION), GUI.SHIFT_LEFT_CLICK_TO_REMOVE, TM.g(Text.EDITOR_INVALID_CONFIGURATION_FREELIMIT) + " &7(&e"+sPlugin.getMaxSObjectsLimit() + " " + objectName + "&7)");
                         else
-                            createItem(Material.BARRIER, 1, i, "&4&l✦ ERROR ID: &c&o" + id, false, false, "", "&7(You should edit the file directly)", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, "&c&l➤ ERROR WITH THIS " + objectName);
+                            createItem(Material.BARRIER, 1, i, TM.g(Text.EDITOR_INVALID_CONFIGURATION_NAME) + id, false, false, "", TM.g(Text.EDITOR_INVALID_CONFIGURATION_DESCRIPTION), GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                     }
                 }
                 i++;
@@ -178,13 +179,17 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         }
         createItem(RED, 1, 36, EXIT, false, false);
 
-        createItem(Material.ANVIL, 1, 38, "&ePath", false, false, "", "&7Currently: &a" + path, "&c&oClick here to come back", "&8&oin previous folder");
+        String[] desc = new String[2+TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
+        desc[0] = "";
+        desc[1] = "&7Currently: &a" + path;
+        System.arraycopy(TM.gA(Text.EDITOR_PATH_DESCRIPTION), 0, desc, 2, TM.gA(Text.EDITOR_PATH_DESCRIPTION).length);
+        createItem(Material.ANVIL, 1, 38, TM.g(Text.EDITOR_PATH_NAME), false, false, desc);
 
-        createItem(GREEN, 1, 40, NEW + objectName, false, false);
+        createItem(GREEN, 1, 40, NEW +" "+ objectName, false, false);
 
         if (sPlugin.isLotOfWork())
-            createItem(PURPLE, 1, 43, "&5&l✚ &dDefault Premium " + objectName, false, false);
-        else createItem(PURPLE, 1, 43, "&5&l✚ &d" + objectName + " from Custom packs", false, false);
+            createItem(PURPLE, 1, 43, TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", objectName), false, false);
+        else createItem(PURPLE, 1, 43, TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", objectName), false, false);
     }
 
     public void goNextPage() {
@@ -222,7 +227,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
     public void sendMessageCreate(Player p) {
         if (sPlugin.isLotOfWork() && manager.getLoadedObjects().size() >= sPlugin.getMaxSObjectsLimit()) {
-            p.sendMessage(StringConverter.coloredString("&4&l" + sPlugin.getNameDesign() + " &cREQUIRE PREMIUM: to add more than " + sPlugin.getMaxSObjectsLimit() + " " + objectName + " you need the premium version"));
+            p.sendMessage(StringConverter.coloredString("&4&l" + sPlugin.getNameDesign() + " "+ TM.g(Text.EDITOR_PREMIUM_REQUIREPREMIUMTOADDMORE)));
         } else {
             p.closeInventory();
             p.chat("/" + sPlugin.getShortName().toLowerCase() + " create");
@@ -230,12 +235,12 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     }
 
     public String getPath() {
-        ItemStack item = this.getByName("Path");
+        ItemStack item = this.getByName(StringConverter.decoloredString(TM.g(Text.EDITOR_PATH_NAME)));
         return this.getCurrently(item);
     }
 
     public void sendMessageDelete(String objectID, Player p) {
-        p.sendMessage(StringConverter.coloredString("&4[" + sPlugin.getNameDesign() + "] &cHey you want delete the " + objectName + ": &6" + objectID));
+        p.sendMessage(StringConverter.coloredString(sPlugin.getNameDesign() +" "+TM.g(Text.EDITOR_DELETE_MESSAGE).replace("%object%", objectName)+ ": &6" + objectID));
         TextComponent delete = new TextComponent(StringConverter.coloredString("&4&l[&c&l"+GUI.CLICK_TO_REMOVE+"&4&l]"));
         delete.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/" + sPlugin.getShortName().toLowerCase() + " "+deleteArg+" " + objectID + " confirm"));
         delete.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString(GUI.CLICK_TO_REMOVE + objectName)).create()));
@@ -251,7 +256,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
             int firstEmptySlot = p.getInventory().firstEmpty();
             ItemStack itemStack = sObject.buildItem(1, Optional.of(p));
             p.getInventory().addItem(itemStack);
-            p.sendMessage(StringConverter.coloredString("&2&l" + sPlugin.getNameDesign() + " &aYou received &e" + objectID));
+            p.sendMessage(StringConverter.coloredString("&2&l" + sPlugin.getNameDesign() + " "+TM.g(Text.EDITOR_GIVE_RECEIVEDMESSAGE) + objectID));
 
             AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, itemStack, firstEmptySlot);
             Bukkit.getPluginManager().callEvent(eventToCall);

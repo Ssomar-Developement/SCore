@@ -102,7 +102,7 @@ public class MessageMain {
                 SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE " + what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
             }
         } catch (Exception e) {
-            SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE ");
+            SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE "+ what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
 

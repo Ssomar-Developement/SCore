@@ -23,7 +23,7 @@ editor:
   give:
     shift:
       right:
-        description: "&2(shift + right click to give to yourself)"
+        description: "&2✔ &aShift + right click to give to yourself"
     receivedMessage: "&aYou received &e"
   invalid:
     file:
