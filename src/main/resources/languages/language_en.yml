@@ -1,12 +1,12 @@
 editor:
   activator:
     id:
-        name: "&2&l✚ &a&lActivator ID:";
+        name: "&2&l✚ &a&lActivator ID:"
   back:
     name: "&4&l⬅ &cBack"
   creation:
     id:
-      name: "&2&l✚ &a&lCreation ID:";
+      name: "&2&l✚ &a&lCreation ID:"
   edit:
     description: "&a✎ Click here to change"
   exit:
