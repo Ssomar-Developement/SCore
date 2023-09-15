@@ -1,22 +1,17 @@
 package com.ssomar.score.events;
 
-import com.ssomar.score.SsomarDev;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 public class TESTEVENT implements Listener {
 
 
-    @EventHandler
-    public void onEntityDeathEvent(EntityDeathEvent e) {
+    /*@EventHandler(priority = EventPriority.HIGHEST)
+    public void onInventoryClickEvent(InventoryClickEvent e) {
 
-        LivingEntity entity = e.getEntity();
+        InventoryAction action = e.getAction();
+        ClickType clickType = e.getClick();
+        if (!(e.getWhoClicked() instanceof Player)) return;
 
-        if (entity instanceof Player) return;
-
-        SsomarDev.testMsg("TESTEVENT "+e.getEntityType()+" killer ?"+e.getEntity().getKiller(), true);
-    }
+        SsomarDev.testMsg("Action >> " + e.getAction(), true);
+    }*/
 }
