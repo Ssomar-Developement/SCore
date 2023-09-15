@@ -4,21 +4,35 @@ editor:
   creation:
     id:
       name: "&2&l✚ &a&lCreation ID:"
+  delete:
+    name: "&4&l✘ &cDelete"
+    normal:
+      description: "&4&lX &cClick here to delete"
+    shift:
+      left:
+        description: "&4&lX &cShift + Left Click to delete"
+      description: "&4&lX &cShift + Click to delete"
+    message: "&cHey if you want to delete the %object%"
   edit:
     description: "&a✎ Click here to change"
   exit:
     name: "&4&l✘ &cExit"
   folder:
     name: "&2&l✦ FOLDER: &a"
-    description: ["", "&7Click here to open"]
-  delete:
-    name: "&4&l✘ &cDelete"
-    normal:
-        description: "&4&lX &cClick here to delete"
+    description: ["", "&7Click here to open the folder"]
+  give:
     shift:
-        left:
-            description: "&4&lX &cShift + Left Click to delete"
-        description: "&4&lX &cShift + Click to delete"
+      right:
+        description: "&2(shift + right click to give to yourself)"
+    receivedMessage: "&aYou received &e"
+  invalid:
+    file:
+      name: "&4&l✦ INVALID FILE: &c&o"
+      description: "&7The plugin can only load &e.yml &7files"
+    configuration:
+        name: "&4&l✦ INVALID CONFIGURATION: &c&o"
+        description: "&7You should edit your configuration file"
+        freeLimit: "&7Also be sure that you haven't reached the limit of the free version"
   new:
     name: "&a&l➕ &aNew"
   page:
@@ -27,8 +41,17 @@ editor:
         name: "&dNext page &5&l▶"
     previous:
         name: "&5&l◀ &dPrevious page"
+  path:
+    name: "&6&l✦ &ePATH:"
+    description: ["&8&oClick here to come back", "&8&oin previous folder"]
+  premade:
+    premium:
+      name: "&5&l✚ &dDefault Premium %object%"
+    packs:
+      name: "&5&l✚ &d%object% from Custom packs"
   premium:
     description: "&5&l❂ &d&lPremium only &5&l❂"
+    requirePremiumToAddMore: "&cREQUIRE PREMIUM: to add more than %limit% %object% you need the premium version"
   reset:
     name: "&4&l✘ &cReset"
     description: "&c&oClick here to reset"
