@@ -83,6 +83,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new StrikeLightning());
         commands.add(new RegainHealth());
         commands.add(new RegainFood());
+        commands.add(new RegainMagic());
         commands.add(new RegainSaturation());
         commands.add(new Head());
         commands.add(new Swaphand());
