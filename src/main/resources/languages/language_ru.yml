@@ -1,11 +1,24 @@
+editor:
+  reset:
+    name: "&4&l✘ &cReset"
+    description: "&c&oClick here to reset"
+  save:
+    name: "&a&l✔ &aSave"
+    description: "&a&oClick here to save"
+  back:
+    name: "&4&l⬅ &cBack"
+  exit:
+    name: "&4&l✘ &cExit"
+  new:
+    name: "&a&l➕ &aNew"
 features:
   activators:
-    name: "Activateurs"
-    description: "&7&oLes activateurs / déclencheurs"
+    name: "Activators"
+    description: "&7&oThe activators / triggers"
     editorTitle: "&lActivators feature Editor"
   activator:
-    name: "Activateur"
-    description: "&7&oUn activateur"
+    name: "Activator"
+    description: "&7&oAn activator"
   aroundBlock:
     name: "AroundBlock"
     description: ""
@@ -174,3 +187,4 @@ features:
         ifUsage:
           name: "If Usage"
           description: ""
+
