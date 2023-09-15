@@ -1,7 +1,4 @@
 editor:
-  activator:
-    id:
-        name: "&2&l✚ &a&lActivator ID:"
   back:
     name: "&4&l⬅ &cBack"
   creation:

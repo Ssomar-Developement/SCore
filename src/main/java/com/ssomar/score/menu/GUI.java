@@ -51,8 +51,6 @@ public abstract class GUI implements IGUI {
 
     public static String CREATION_ID;
 
-    public static String ACTIVATOR_ID;
-
     public static Material NEXT_PAGE_MAT = null;
 
     public static Material PREVIOUS_PAGE_MAT = null;
@@ -118,9 +116,6 @@ public abstract class GUI implements IGUI {
         BLUE = FixedMaterial.getMaterial(Arrays.asList("BLUE_STAINED_GLASS_PANE", "ANVIL"));
         GRINDSTONE = FixedMaterial.getMaterial(Arrays.asList("GRINDSTONE", "ANVIL"));
         LIGHTNING_ROD = FixedMaterial.getMaterial(Arrays.asList("LIGHTNING_ROD", "TRIPWIRE_HOOK"));
-
-
-        ACTIVATOR_ID = TM.g(Text.EDITOR_ACTIVATOR_ID_NAME);
 
         CREATION_ID = TM.g(Text.EDITOR_CREATION_ID_NAME);
 

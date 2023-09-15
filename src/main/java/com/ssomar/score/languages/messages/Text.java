@@ -3,8 +3,6 @@ package com.ssomar.score.languages.messages;
 public enum Text implements TextInterface {
 
     /* commands */
-
-    EDITOR_ACTIVATOR_ID_NAME("editor.activator.id.name"),
     EDITOR_BACK_NAME("editor.back.name"),
     EDITOR_CREATION_ID_NAME("editor.creation.id.name"),
     EDITOR_EDIT_DESCRIPTION("editor.edit.description"),
