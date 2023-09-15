@@ -1,10 +1,14 @@
 package com.ssomar.score.features.custom.cooldowns;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
+import org.bukkit.OfflinePlayer;
 
 import java.util.*;
 
 public class CooldownsManager {
+
+    private static final boolean DEBUG = false;
 
     private static CooldownsManager instance;
 
@@ -19,14 +23,32 @@ public class CooldownsManager {
         return instance;
     }
 
+    public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
+        if (params.startsWith("cooldown_")) {
+            UUID uuid = player.getUniqueId();
+            if(cooldownsUUID.containsKey(uuid)){
+                for(Cooldown cd : cooldownsUUID.get(uuid)){
+                    SsomarDev.testMsg("CD "+cd.toString(), DEBUG);
+                    if(cd.getId().equalsIgnoreCase(params.split("cooldown_")[1])){
+                        return Optional.of(cd.getTimeLeft()+"");
+                    }
+                }
+            }
+            return Optional.of("0");
+        }
+        return Optional.empty();
+    }
+
     public void addCooldown(Cooldown cd) {
 
         if (cd.getCooldown() == 0) return;
 
         String id = cd.getId();
+        SsomarDev.testMsg("ADDDD "+cd.toString(), DEBUG);
         if (cooldowns.containsKey(id)) {
             List<Cooldown> cds = cooldowns.get(id);
             cds.add(cd);
+            cooldowns.put(id, cds);
         } else {
             List<Cooldown> cds = new ArrayList<>();
             cds.add(cd);
@@ -60,33 +82,51 @@ public class CooldownsManager {
 
     public Optional<Cooldown> getCooldown(SPlugin sPlugin, String id, UUID uuid, boolean onlyGlobal) {
 
+        SsomarDev.testMsg("GET COOLDOWN "+id+" "+uuid, DEBUG);
         if (cooldowns.containsKey(id)) {
             double maxTimeLeft = -1;
             List<Cooldown> cds = cooldowns.get(id);
             if (cds.size() != 0) {
                 Cooldown cdMax = null;
-                for (int i = 0; i < cds.size(); i++) {
-                    Cooldown cd = cds.get(i);
-                    if (cd == null) continue;
-                    if (onlyGlobal && !cd.isGlobal()) continue;
-                    if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)) continue;
+                int cptRemoved = 0;
+                int size = cds.size();
+                //SsomarDev.testMsg("CD size >> "+size, true);
+                for (int i = 0; i < size; i++) {
+                    Cooldown cd = cds.get(i-cptRemoved);
+                    if (cd == null){
+                        //SsomarDev.testMsg("CD NULL", true);
+                        continue;
+                    }
+                    if (onlyGlobal && !cd.isGlobal()){
+                        //SsomarDev.testMsg("CD NOT GLOBAL", true);
+                        continue;
+                    }
+                    if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)){
+                        //SsomarDev.testMsg("CD NOT GLOBAL AND NOT EQUAL UUID", true);
+                        continue;
+                    }
 
                     double timeLeft = cd.getTimeLeft();
 
+                    //SsomarDev.testMsg("CD valid >> "+timeLeft, true);
                     if (maxTimeLeft < timeLeft && timeLeft > 0) {
                         maxTimeLeft = timeLeft;
                         cdMax = cd;
                     } else {
                         cd.setNull(true);
-                        cds.remove(i);
+                        cds.remove(i-cptRemoved);
+                        cptRemoved++;
                         try {
                             cooldownsUUID.get(uuid).remove(cd);
                         }catch (Exception ignored){}
                     }
                 }
+                if(cdMax != null) SsomarDev.testMsg("COOLDOWN "+cdMax.toString(), DEBUG);
+                else SsomarDev.testMsg("NO COOLDOWN ", DEBUG);
                 return Optional.ofNullable(cdMax);
             }
         }
+        SsomarDev.testMsg("NO COOLDOWN ", DEBUG);
         return Optional.empty();
     }
 
@@ -112,6 +152,7 @@ public class CooldownsManager {
     }
 
     public void removeCooldownsOf(UUID uuid) {
+        SsomarDev.testMsg("REMOVE COOLDOWNS OF "+uuid, DEBUG);
         cooldownsUUID.remove(uuid);
         for (String s : cooldowns.keySet()) {
             List<Cooldown> cds = cooldowns.get(s);
@@ -127,7 +168,7 @@ public class CooldownsManager {
 
 
     public void printInfo() {
-        System.out.println("--------^^^^^^^^^^^^^^^^^^^^1-------------");
+        System.out.println("--------^^^^^^^^^^^^^^^^^^^^-------------");
 
 
         int total = 0;
@@ -161,7 +202,7 @@ public class CooldownsManager {
             }
         }
 
-        System.out.println("---------vvvvvvvvvvv1vvvvvv-------------");
+        System.out.println("---------vvvvvvvvvvvvvvvvv-------------");
     }
 
 }

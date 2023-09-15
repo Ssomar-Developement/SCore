@@ -1,18 +1,15 @@
 package com.ssomar.score.features.custom.aroundblock.aroundblock;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
-import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
+import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -41,36 +38,28 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
     private ColoredStringFeature errorMessage;
 
-    private ListUncoloredStringFeature blockMustBeExecutableBlock;
-
-    private MaterialAndTagsGroupFeature blockTypeMustBe;
-
-    private MaterialAndTagsGroupFeature blockTypeMustNotBe;
+    private ListDetailedMaterialFeature blockTypeMustBe;
 
     private String id;
 
     public AroundBlockFeature(FeatureParentInterface parent, String id) {
-        super(parent, "AroundBlock", "AroundBlock", new String[]{}, Material.STONE, false);
+        super(parent, "AroundBlock", TM.g(Text.FEATURES_AROUNDBLOCK_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_DESCRIPTION), Material.STONE, false);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.southValue = new IntegerFeature(this, "southValue", Optional.of(0), "South Value", new String[]{"&7&oThe south value"}, GUI.CLOCK, false);
-        this.northValue = new IntegerFeature(this, "northValue", Optional.of(0), "North Value", new String[]{"&7&oThe north value"}, GUI.CLOCK, false);
-        this.westValue = new IntegerFeature(this, "westValue", Optional.of(0), "West Value", new String[]{"&7&oThe west value"}, GUI.CLOCK, false);
-        this.eastValue = new IntegerFeature(this, "eastValue", Optional.of(0), "East Value", new String[]{"&7&oThe east value"}, GUI.CLOCK, false);
-        this.aboveValue = new IntegerFeature(this, "aboveValue", Optional.of(0), "Above Value", new String[]{"&7&oThe above value"}, GUI.CLOCK, false);
-        this.underValue = new IntegerFeature(this, "underValue", Optional.of(0), "Under Value", new String[]{"&7&oThe under value"}, GUI.CLOCK, false);
+        this.southValue = new IntegerFeature(this, "southValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.northValue = new IntegerFeature(this, "northValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_NAME) , TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.westValue = new IntegerFeature(this, "westValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.eastValue = new IntegerFeature(this, "eastValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.aboveValue = new IntegerFeature(this, "aboveValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.underValue = new IntegerFeature(this, "underValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_DESCRIPTION), GUI.CLOCK, false);
 
-        this.errorMessage = new ColoredStringFeature(this, "errorMsg", Optional.of("&c&oA block is not placed correctly !"), "Error Message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false, false);
+        this.errorMessage = new ColoredStringFeature(this, "errorMsg", Optional.of("&c&oA block is not placed correctly !"), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_DESCRIPTION), GUI.WRITABLE_BOOK, false, false);
 
-        this.blockMustBeExecutableBlock = new ListUncoloredStringFeature(this, "blockMustBeExecutableBlock", new ArrayList(), "Block Must Be Executable Block", new String[]{"&7&oThe block must be executable block"}, GUI.WRITABLE_BOOK, false, false, Optional.empty());
-
-        this.blockTypeMustBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustBe", "Block Type Must Be", new String[]{"&7&oThe block type must be"}, true, false, true, false);
-
-        this.blockTypeMustNotBe = new MaterialAndTagsGroupFeature(this, "blockTypeMustNotBe", "Block Type Must Not Be", new String[]{"&7&oThe block type must not be"}, true, false, true, false);
+        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, "blockTypeMustBe", new ArrayList<>(),  TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_DESCRIPTION), GUI.WRITABLE_BOOK, false, true, true);
     }
 
     @Override
@@ -85,9 +74,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
             errors.addAll(this.aboveValue.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.underValue.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.errorMessage.load(plugin, enchantmentConfig, isPremiumLoading));
-            errors.addAll(this.blockMustBeExecutableBlock.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.blockTypeMustBe.load(plugin, enchantmentConfig, isPremiumLoading));
-            errors.addAll(this.blockTypeMustNotBe.load(plugin, enchantmentConfig, isPremiumLoading));
         } else {
             errors.add("&cERROR, Couldn't load the AroundBlockFeature with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
@@ -110,12 +97,10 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         this.aboveValue.save(attributeConfig);
         this.underValue.save(attributeConfig);
         this.errorMessage.save(attributeConfig);
-        this.blockMustBeExecutableBlock.save(attributeConfig);
         this.blockTypeMustBe.save(attributeConfig);
-        this.blockTypeMustNotBe.save(attributeConfig);
     }
 
-    public boolean verif(Block block, Optional<Player> playerOpt, SendMessage messageSender) {
+    public boolean verif(Block block, Optional<Player> playerOpt, List<String> errors) {
 
         Location targetLoc;
         Block targetBlock;
@@ -125,23 +110,10 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
         targetBlock = targetLoc.getBlock();
 
-        boolean valid = true;
-
-        if (this.blockTypeMustBe.getMaterialAndTags().size() != 0) {
-            valid = valid && this.blockTypeMustBe.isValid(targetBlock);
-        }
-
-        if (this.blockTypeMustNotBe.getMaterialAndTags().size() != 0)
-            valid = valid && !this.blockTypeMustNotBe.isValid(targetBlock);
-
-        targetLoc.add(0.5, 0.5, 0.5);
-        if (SCore.hasExecutableBlocks && this.blockMustBeExecutableBlock.getValue().size() != 0) {
-            Optional<ExecutableBlockPlacedInterface> eBP = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(targetLoc);
-            valid = valid && (eBP.isPresent() && this.blockMustBeExecutableBlock.getValue().contains(eBP.get().getExecutableBlockID()));
-        }
+        boolean valid = blockTypeMustBe.verifBlock(targetBlock);
 
         if (playerOpt.isPresent() && !valid && errorMessage.getValue().isPresent())
-            messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
+            errors.add(errorMessage.getValue().get());
         return valid;
     }
 
@@ -175,15 +147,13 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         eF.setAboveValue(this.aboveValue.clone(eF));
         eF.setUnderValue(this.underValue.clone(eF));
         eF.setErrorMessage(this.errorMessage.clone(eF));
-        eF.setBlockMustBeExecutableBlock(this.blockMustBeExecutableBlock.clone(eF));
         eF.setBlockTypeMustBe(this.blockTypeMustBe.clone(eF));
-        eF.setBlockTypeMustNotBe(this.blockTypeMustNotBe.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(this.southValue, this.northValue, this.westValue, this.eastValue, this.aboveValue, this.underValue, this.errorMessage, this.blockMustBeExecutableBlock, this.blockTypeMustBe, this.blockTypeMustNotBe));
+        return new ArrayList<>(Arrays.asList(this.southValue, this.northValue, this.westValue, this.eastValue, this.aboveValue, this.underValue, this.errorMessage, this.blockTypeMustBe));
     }
 
     @Override
@@ -217,9 +187,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
                     aFOF.setAboveValue(this.aboveValue);
                     aFOF.setUnderValue(this.underValue);
                     aFOF.setErrorMessage(this.errorMessage);
-                    aFOF.setBlockMustBeExecutableBlock(this.blockMustBeExecutableBlock);
                     aFOF.setBlockTypeMustBe(this.blockTypeMustBe);
-                    aFOF.setBlockTypeMustNotBe(this.blockTypeMustNotBe);
                     break;
                 }
             }

@@ -1,10 +1,12 @@
 package com.ssomar.score.features.editor;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.features.*;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Optional;
 
@@ -37,6 +39,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     requestWriting.put(i.player, feature.getEditorName());
                     currentWriting.put(i.player, featureRequireSubTextEditorInEditor.getCurrentValues());
                     suggestions.put(i.player, featureRequireSubTextEditorInEditor.getSuggestions());
+                    moreInfo = featureRequireSubTextEditorInEditor.getMoreInfo();
                     enableTextEditor(i.player);
                     i.player.closeInventory();
                     ((FeatureRequireSubTextEditorInEditor) feature).sendBeforeTextEditor(i.player, this);
@@ -327,7 +330,15 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
                     if (potentialError.isPresent()) {
                         interact.player.sendMessage(potentialError.get());
-                        ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, this);
+                        // AsyncChat -> Sync close inv / Message
+                        NewGUIManager newGUIManager = this;
+                        BukkitRunnable runnable = new BukkitRunnable() {
+
+                            public void run() {
+                                ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, newGUIManager);
+                            }
+                        };
+                        SCore.schedulerHook.runTask(runnable, 0);
                     } else {
                         ((FeatureRequireOneMessageInEditor) feature).finishEditInEditor(interact.player, this, interact.message);
                         interact.gui.openGUISync(interact.player);
@@ -336,7 +347,15 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     Optional<String> potentialError = ((FeatureRequireMultipleMessageInEditor) feature).verifyMessageReceived(interact.message);
                     if (potentialError.isPresent()) {
                         interact.player.sendMessage(potentialError.get());
-                        ((FeatureRequireMultipleMessageInEditor) feature).askInEditor(interact.player, this);
+                        // AsyncChat -> Sync close inv / Message
+                        NewGUIManager newGUIManager = this;
+                        BukkitRunnable runnable = new BukkitRunnable() {
+
+                            public void run() {
+                                ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, newGUIManager);
+                            }
+                        };
+                        SCore.schedulerHook.runTask(runnable, 0);
                     } else {
                         ((FeatureRequireMultipleMessageInEditor) feature).addMessageValue(interact.player, this, interact.message);
                     }

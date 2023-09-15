@@ -2,16 +2,12 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfEntityHealth extends EntityConditionFeature<NumberConditionFeature, IfEntityHealth> {
 
@@ -22,12 +18,12 @@ public class IfEntityHealth extends EntityConditionFeature<NumberConditionFeatur
 
 
     @Override
-    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(EntityConditionRequest request) {
+        Entity entity = request.getEntity();
         if (hasCondition() && entity instanceof LivingEntity) {
             LivingEntity lE = (LivingEntity) entity;
-            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), lE.getHealth())) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+            if (!StringCalculation.calculation(getCondition().getValue(request.getPlayerOpt(), request.getSp()).get(), lE.getHealth())) {
+                runInvalidCondition(request);
                 return false;
             }
         }

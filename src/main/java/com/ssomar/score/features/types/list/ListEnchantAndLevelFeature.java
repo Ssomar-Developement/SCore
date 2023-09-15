@@ -8,9 +8,10 @@ import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -76,8 +77,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
         config.set(this.getName(), this.getCurrentValues());
     }
 
-    @Override
-    public Map<Enchantment, Integer> getValue() {
+    public Map<Enchantment, Integer> getValues() {
         return value;
     }
 
@@ -86,7 +86,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -100,7 +100,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
     @Override
     public ListEnchantAndLevelFeature clone(FeatureParentInterface newParent) {
         ListEnchantAndLevelFeature clone = new ListEnchantAndLevelFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 
@@ -141,6 +141,11 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
             result.add(entry.getKey().getName() + ":" + entry.getValue());
         }
         return result;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

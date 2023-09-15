@@ -3,6 +3,8 @@ package com.ssomar.score.projectiles;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 
 public class SProjectileEditor extends FeatureEditorInterface<SProjectile> {
@@ -29,7 +31,7 @@ public class SProjectileEditor extends FeatureEditorInterface<SProjectile> {
         }
 
         //Reset menu
-        createItem(ORANGE, 1, 46, GUI.RESET, false, false, "", "&c&oClick here to reset", "&c&oall options of this projectile");
+        createItem(ORANGE, 1, 46, TM.g(Text.EDITOR_RESET_NAME), false, false, "", TM.g(Text.EDITOR_RESET_DESCRIPTION), "&c&oall options of this projectile");
         // exit
         createItem(RED, 1, 45, GUI.BACK, false, false);
 

@@ -1,7 +1,7 @@
 package com.ssomar.score.sobject.sactivator;
 
-import com.ssomar.score.utils.DetailedClick;
-import com.ssomar.score.utils.DetailedInteraction;
+import com.ssomar.score.utils.emums.DetailedClick;
+import com.ssomar.score.utils.emums.DetailedInteraction;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import java.util.Optional;
@@ -32,6 +34,9 @@ public class EventInfo {
 
     private Optional<Entity> targetEntity;
 
+    /* EFFECT */
+    private Optional<PotionEffect> effect;
+
     /* BLOCK */
     private Optional<Block> block;
 
@@ -48,6 +53,9 @@ public class EventInfo {
     private Optional<String> blockface;
 
     private Optional<String> blockfaceTarget;
+
+    /* ITEM */
+    private Optional<ItemStack> item;
 
     /* WORLD */
     private Optional<World> world;
@@ -70,7 +78,7 @@ public class EventInfo {
     /* Bow shoot force */
     private Optional<Float> bowForce;
 
-    private boolean isEventCallByMineinCube;
+    private boolean isFromCustomBreakCommand;
 
     private Optional<String> command;
 
@@ -89,6 +97,7 @@ public class EventInfo {
         this.targetPlayer = Optional.empty();
         this.entity = Optional.empty();
         this.targetEntity = Optional.empty();
+        this.effect = Optional.empty();
         this.block = Optional.empty();
         this.targetBlock = Optional.empty();
         this.oldMaterialBlock = Optional.empty();
@@ -106,6 +115,7 @@ public class EventInfo {
         this.bowForce = Optional.empty();
         this.command = Optional.empty();
         this.slot = Optional.empty();
+        this.item = Optional.empty();
         this.world = Optional.empty();
     }
 
@@ -115,6 +125,7 @@ public class EventInfo {
         eInfo.setTargetPlayer(targetPlayer);
         eInfo.setEntity(entity);
         eInfo.setTargetEntity(targetEntity);
+        eInfo.setEffect(effect);
         eInfo.setBlock(block);
         eInfo.setTargetBlock(targetBlock);
         eInfo.setOldMaterialBlock(oldMaterialBlock);
@@ -130,12 +141,13 @@ public class EventInfo {
         eInfo.setDamageCause(damageCause);
         eInfo.setVelocity(velocity);
         eInfo.setBowForce(bowForce);
-        eInfo.setEventCallByMineinCube(isEventCallByMineinCube);
+        eInfo.setFromCustomBreakCommand(isFromCustomBreakCommand);
         eInfo.setCommand(command);
         eInfo.setMainHand(mainHand);
         eInfo.setForceMainHand(forceMainHand);
         eInfo.setMustDoNothing(mustDoNothing);
         eInfo.setSlot(slot);
+        eInfo.setItem(item);
         eInfo.setWorld(world);
 
         return eInfo;

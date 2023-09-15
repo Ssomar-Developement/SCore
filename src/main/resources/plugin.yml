@@ -3,8 +3,8 @@ author: Ssomar
 version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
-softdepend: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs, ShopGUIPlus, RoseLoot, ItemsAdder, DecentHolograms, HolographicDisplaysAPI, HolographicDisplays]
-loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades ]
+softdepend: [ProtocolLib, Terra, ProtectionStones, PolymartHelper, Polymart, ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, MMOCore, Vault, Multiverse-Core, Lands, WorldGuard, IridiumSkyblock, BentoBox, PlaceholderAPI, GriefPrevention, GriefDefender, CoreProtect, PlotSquared, CMI, AureliumSkills, MythicMobs, ShopGUIPlus, RoseLoot, ItemsAdder, DecentHolograms, HolographicDisplaysAPI, HolographicDisplays, Better-Enchantments]
+loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades, ItemsAdder ]
 commands:
   score:
     description: score command
@@ -14,7 +14,7 @@ permissions:
     description: SCore permission
     default: op
     children:
-      ei.cmds: true
+      score.cmds: true
   score.cmds:
     description: Allows SCore commands
     default: op
@@ -25,3 +25,4 @@ permissions:
     description: Allows the command /score reload
   score.cmd.inspect-loop:
     description: Allows the command /score inspect-loop
+folia-supported: true

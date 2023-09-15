@@ -9,12 +9,15 @@ import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.SProjectileType;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +70,19 @@ public class Launch extends BlockCommand {
                 projectile = projectileOptional.get();
 
                 entity = launchProjectile(block, directional, SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]), speed);
-                projectile.transformTheProjectile(entity, p, projectile.getType().getValue().get().getMaterial());
+
+                Material mat = projectile.getType().getValue().get().getMaterial();
+                /* Fix for potion otherwise the method to getItem is null idk why, (set an item + potionmeta) (it works only on 1.12 plus because setcolor doesnt exists in 1.11)*/
+                if (entity instanceof ThrownPotion) {
+                    ThrownPotion lp = (ThrownPotion) entity;
+                    ItemStack item = new ItemStack(mat, 1);
+                    PotionMeta pMeta = (PotionMeta) item.getItemMeta();
+                    pMeta.setColor(Color.AQUA);
+                    item.setItemMeta(pMeta);
+                    lp.setItem(item);
+                }
+
+                projectile.transformTheProjectile(entity, p, mat);
             } else entity = launchProjectile(block, directional, Arrow.class, speed);
 
             final Entity e = entity;

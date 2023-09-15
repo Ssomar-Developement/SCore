@@ -2,6 +2,7 @@ package com.ssomar.score.features;
 
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface FeatureRequireSubTextEditorInEditor {
     Optional<String> verifyMessageReceived(String message);
 
     List<String> getCurrentValues();
+
+    List<TextComponent> getMoreInfo();
 
     List<Suggestion> getSuggestions();
 

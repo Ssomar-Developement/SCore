@@ -2,15 +2,9 @@ package com.ssomar.score.features.custom.conditions.customei.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
+import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class IfNeedPlayerConfirmation extends CustomEIConditionFeature<BooleanFeature, IfNeedPlayerConfirmation> {
 
@@ -39,7 +33,7 @@ public class IfNeedPlayerConfirmation extends CustomEIConditionFeature<BooleanFe
     }
 
     @Override
-    public boolean verifCondition(Player player, ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+    public boolean verifCondition(CustomEIConditionRequest request){
         return true;
     }
 

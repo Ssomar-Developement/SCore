@@ -28,6 +28,9 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     private BooleanFeature hidePotionEffects;
     private BooleanFeature hideUsage;
     private BooleanFeature hideDye;
+    private BooleanFeature hideArmorTrim;
+    private BooleanFeature hideDestroys;
+    private BooleanFeature hidePlacedOn;
 
     public Hiders(FeatureParentInterface parent) {
         super(parent, "hiders", "Hiders", new String[]{"&7&oHiders to hide:", "&7&oAttributes, Enchants, ..."}, Material.ANVIL, false);
@@ -42,6 +45,9 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
         this.hidePotionEffects = new BooleanFeature(getParent(), "hidePotionEffects", false, "Hide potion effects / banner tags", new String[]{"&7&oHide Potion effects", "&7&oand banner tags"}, Material.LEVER, false, false);
         this.hideUsage = new BooleanFeature(getParent(), "hideUsage", false, "Hide usage", new String[]{"&7&oHide usage"}, Material.LEVER, false, false);
         this.hideDye = new BooleanFeature(getParent(), "hideDye", false, "Hide dye", new String[]{"&7&oHide dye"}, Material.LEVER, false, false);
+        this.hideArmorTrim = new BooleanFeature(getParent(), "hideArmorTrim", false, "Hide armor trim", new String[]{"&7&oHide armor trim"}, Material.LEVER, false, false);
+        this.hideDestroys = new BooleanFeature(getParent(), "hideDestroys", false, "Hide destroys", new String[]{"&7&oHide destroys"}, Material.LEVER, false, false);
+        this.hidePlacedOn = new BooleanFeature(getParent(), "hidePlacedOn", false, "Hide placed on", new String[]{"&7&oHide placed on"}, Material.LEVER, false, false);
     }
 
     @Override
@@ -54,7 +60,12 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
             hideAttributes.load(plugin, section, isPremiumLoading);
             hidePotionEffects.load(plugin, section, isPremiumLoading);
             hideUsage.load(plugin, section, isPremiumLoading);
+            if(!SCore.is1v11Less()){
+                hideDestroys.load(plugin, section, isPremiumLoading);
+                hidePlacedOn.load(plugin, section, isPremiumLoading);
+            }
             if(SCore.is1v17Plus()) hideDye.load(plugin, section, isPremiumLoading);
+            if(SCore.is1v20Plus()) hideArmorTrim.load(plugin, section, isPremiumLoading);
         }
 
         return error;
@@ -69,7 +80,12 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
         hideAttributes.save(section);
         hidePotionEffects.save(section);
         hideUsage.save(section);
+        if(!SCore.is1v11Less()){
+            hideDestroys.save(section);
+            hidePlacedOn.save(section);
+        }
         if(SCore.is1v17Plus()) hideDye.save(section);
+        if(SCore.is1v20Plus()) hideArmorTrim.save(section);
     }
 
     @Override
@@ -79,36 +95,54 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
 
     @Override
     public Hiders initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 7];
+        String[] finalDescription = new String[getEditorDescription().length + 10];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 7] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 10] = GUI.CLICK_HERE_TO_CHANGE;
+
+        if (hideDestroys.getValue())
+            finalDescription[finalDescription.length - 9] = "&7Hide destroys: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 9] = "&7Hide destroys: &c&l✘";
+        if (hidePlacedOn.getValue())
+            finalDescription[finalDescription.length - 8] = "&7Hide placedOn: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 8] = "&7Hide placedOn: &c&l✘";
+
         if (hideEnchantments.getValue())
-            finalDescription[finalDescription.length - 6] = "&7Hide enchantments: &a&l✔";
+            finalDescription[finalDescription.length - 7] = "&7Hide enchantments: &a&l✔";
         else
-            finalDescription[finalDescription.length - 6] = "&7Hide enchantments: &c&l✘";
+            finalDescription[finalDescription.length - 7] = "&7Hide enchantments: &c&l✘";
         if (hideUnbreakable.getValue())
-            finalDescription[finalDescription.length - 5] = "&7Hide unbreakable: &a&l✔";
+            finalDescription[finalDescription.length - 6] = "&7Hide unbreakable: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7Hide unbreakable: &c&l✘";
+            finalDescription[finalDescription.length - 6] = "&7Hide unbreakable: &c&l✘";
         if (hideAttributes.getValue())
-            finalDescription[finalDescription.length - 4] = "&7Hide attributes: &a&l✔";
+            finalDescription[finalDescription.length - 5] = "&7Hide attributes: &a&l✔";
         else
-            finalDescription[finalDescription.length - 4] = "&7Hide attributes: &c&l✘";
+            finalDescription[finalDescription.length - 5] = "&7Hide attributes: &c&l✘";
         if (hidePotionEffects.getValue())
-            finalDescription[finalDescription.length - 3] = "&7Hide effects / banner tags: &a&l✔";
+            finalDescription[finalDescription.length - 4] = "&7Hide effects / banner tags: &a&l✔";
         else
-            finalDescription[finalDescription.length - 3] = "&7Hide effects / banner tags: &c&l✘";
+            finalDescription[finalDescription.length - 4] = "&7Hide effects / banner tags: &c&l✘";
         if (hideUsage.getValue())
-            finalDescription[finalDescription.length - 2] = "&7Hide usage: &a&l✔";
+            finalDescription[finalDescription.length - 3] = "&7Hide usage: &a&l✔";
         else
-            finalDescription[finalDescription.length - 2] = "&7Hide usage: &c&l✘";
+            finalDescription[finalDescription.length - 3] = "&7Hide usage: &c&l✘";
         if(!SCore.is1v17Plus()) {
-            finalDescription[finalDescription.length - 1] = "&7Hide dye: &6&lONLY 1.17 & +";
+            finalDescription[finalDescription.length - 2] = "&7Hide dye: &6&lONLY 1.17 & +";
         }
         else if (hideDye.getValue())
-            finalDescription[finalDescription.length - 1] = "&7Hide dye: &a&l✔";
+            finalDescription[finalDescription.length - 2] = "&7Hide dye: &a&l✔";
         else
-            finalDescription[finalDescription.length - 1] = "&7Hide dye: &c&l✘";
+            finalDescription[finalDescription.length - 2] = "&7Hide dye: &c&l✘";
+
+        if(!SCore.is1v20Plus()) {
+            finalDescription[finalDescription.length - 1] = "&7Hide armor trim: &6&lONLY 1.20 & +";
+        }
+        else if (hideArmorTrim.getValue())
+            finalDescription[finalDescription.length - 1] = "&7Hide armor trim: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 1] = "&7Hide armor trim: &c&l✘";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -128,6 +162,9 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
         dropFeatures.hidePotionEffects = hidePotionEffects.clone(dropFeatures);
         dropFeatures.hideUsage = hideUsage.clone(dropFeatures);
         dropFeatures.hideDye = hideDye.clone(dropFeatures);
+        dropFeatures.hideArmorTrim = hideArmorTrim.clone(dropFeatures);
+        dropFeatures.hideDestroys = hideDestroys.clone(dropFeatures);
+        dropFeatures.hidePlacedOn = hidePlacedOn.clone(dropFeatures);
         return dropFeatures;
     }
 
@@ -139,7 +176,12 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
         features.add(hideAttributes);
         features.add(hidePotionEffects);
         features.add(hideUsage);
+        if(!SCore.is1v11Less()){
+            features.add(hideDestroys);
+            features.add(hidePlacedOn);
+        }
         if(SCore.is1v17Plus()) features.add(hideDye);
+        if(SCore.is1v20Plus()) features.add(hideArmorTrim);
         return features;
     }
 
@@ -168,7 +210,12 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
                 hiders.setHideAttributes(hideAttributes);
                 hiders.setHidePotionEffects(hidePotionEffects);
                 hiders.setHideUsage(hideUsage);
+                if(!SCore.is1v11Less()){
+                    hiders.setHideDestroys(hideDestroys);
+                    hiders.setHidePlacedOn(hidePlacedOn);
+                }
                 if(SCore.is1v17Plus()) hiders.setHideDye(hideDye);
+                if(SCore.is1v20Plus()) hiders.setHideArmorTrim(hideArmorTrim);
                 break;
             }
         }

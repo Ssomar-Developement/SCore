@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
@@ -26,6 +27,8 @@ public class Nearest extends PlayerCommand {
 
                 double distance = Double.valueOf(args.get(0));
 
+                SsomarDev.testMsg("distance: " + distance, true);
+
                 Player target = receiver.getWorld().getPlayers().stream()
                         .filter(p -> !p.equals(receiver))
                         .min(Comparator.comparingDouble((p) -> p.getLocation().distanceSquared(receiver.getLocation())))
@@ -34,6 +37,7 @@ public class Nearest extends PlayerCommand {
                 if (target == null || target.getLocation().distance(receiver.getLocation()) > distance) {
                     return;
                 }
+                SsomarDev.testMsg("target: " + target.getName(), true);
 
                 if (target.hasMetadata("NPC") || target.equals(receiver)) return;
 
@@ -45,7 +49,12 @@ public class Nearest extends PlayerCommand {
 
                 /* regroup the last args that correspond to the commands */
                 StringBuilder prepareCommands = new StringBuilder();
+                boolean removeMaxDistance = true;
                 for (String s : args) {
+                    if (removeMaxDistance) {
+                        removeMaxDistance = false;
+                        continue;
+                    }
                     prepareCommands.append(s);
                     prepareCommands.append(" ");
                 }
@@ -71,6 +80,7 @@ public class Nearest extends PlayerCommand {
 
                     commands.add(s);
                 }
+                SsomarDev.testMsg("commands: " + commands, true);
                 commands = sp.replacePlaceholders(commands);
                 PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
                 CommandsExecutor.runCommands(builder);

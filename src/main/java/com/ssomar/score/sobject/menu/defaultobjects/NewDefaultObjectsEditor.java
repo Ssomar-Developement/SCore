@@ -8,7 +8,7 @@ import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import lombok.Getter;
 import lombok.Setter;

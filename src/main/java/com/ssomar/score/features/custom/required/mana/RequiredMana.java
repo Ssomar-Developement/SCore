@@ -11,7 +11,8 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.AureliumSkillsAPI;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.usedapi.MMOCoreAPI;
+import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -71,15 +72,28 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
 
     @Override
     public boolean verify(Player player, Event event) {
-        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && SCore.hasAureliumSkills) {
-            if (!AureliumSkillsAPI.checkMana(player, mana.getValue().get())) {
-                if (errorMessage.getValue().isPresent()) {
-                    player.sendMessage(StringConverter.coloredString(errorMessage.getValue().get()));
+        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore)) {
+            if(SCore.hasAureliumSkills) {
+                if (!AureliumSkillsAPI.checkMana(player, mana.getValue().get())) {
+                    if (errorMessage.getValue().isPresent()) {
+                        SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    }
+                    if (cancelEventIfError.getValue() && event instanceof Cancellable) {
+                        ((Cancellable) event).setCancelled(true);
+                    }
+                    return false;
                 }
-                if (cancelEventIfError.getValue() && event instanceof Cancellable) {
-                    ((Cancellable) event).setCancelled(true);
+            }
+            else if(SCore.hasMMOCore) {
+                if (!MMOCoreAPI.checkMana(player, mana.getValue().get())) {
+                    if (errorMessage.getValue().isPresent()) {
+                        SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    }
+                    if (cancelEventIfError.getValue() && event instanceof Cancellable) {
+                        ((Cancellable) event).setCancelled(true);
+                    }
+                    return false;
                 }
-                return false;
             }
         }
         return true;
@@ -87,8 +101,9 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
 
     @Override
     public void take(Player player) {
-        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && SCore.hasAureliumSkills) {
-            AureliumSkillsAPI.takeMana(player, mana.getValue().get());
+        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore)) {
+            if(SCore.hasAureliumSkills) AureliumSkillsAPI.takeMana(player, mana.getValue().get());
+            else if(SCore.hasMMOCore) MMOCoreAPI.takeMana(player, mana.getValue().get());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.ssomar.score.linkedplugins;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.splugin.SPlugin;

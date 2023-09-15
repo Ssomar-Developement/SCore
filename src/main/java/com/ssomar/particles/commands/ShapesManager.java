@@ -43,7 +43,7 @@ public class ShapesManager {
         // PRBLEM ARGUMENTS + INFINITE LOOP whitelistedShapes.add("lightning");
         //whitelistedShapes.add("dna");
         whitelistedShapes.add("dnaReplication");
-        whitelistedShapes.add("drawLine");
+        //whitelistedShapes.add("drawLine");
         // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("cloud");
         whitelistedShapes.add("tesseract");
         whitelistedShapes.add("mandelbrot");
@@ -52,7 +52,7 @@ public class ShapesManager {
         whitelistedShapes.add("eye");
         whitelistedShapes.add("illuminati");
         whitelistedShapes.add("polygon");
-        whitelistedShapes.add("neopaganPentagram");
+        //ROBLEM DOUBLE PARTICLE whitelistedShapes.add("neopaganPentagram");
         // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("atom");
         whitelistedShapes.add("meguminExplosion");
 

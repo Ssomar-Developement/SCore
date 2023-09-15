@@ -1,13 +1,14 @@
 package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableitems.events.AddItemInPlayerInventoryEvent;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.sobject.NewSObjectLoader;
 import com.ssomar.score.sobject.NewSObjectManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +41,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     private NewSObjectLoader loader;
     private String deleteArg;
     private String objectName;
+    private boolean noObject;
 
     public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader) {
         super(title, 5 * 9);
@@ -55,6 +58,29 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         /* For plugins that have multiple object splugin.getOjectName can't work */
         if(objectName == null) objectName = manager.getObjectName();
         objectName = objectName.toLowerCase();
+
+        this.noObject = false;
+
+        this.load();
+    }
+
+    public NewSObjectsEditorAbstract(SPlugin sPlugin, String title, String path, NewSObjectManager manager, NewSObjectLoader loader, boolean noObject) {
+        super(title, 5 * 9);
+        this.sPlugin = sPlugin;
+        this.title = title;
+        index = 1;
+        this.defaultPath = path;
+        this.path = path;
+        this.manager = manager;
+        this.loader = loader;
+        this.deleteArg = "delete";
+
+        objectName = sPlugin.getObjectName();
+        /* For plugins that have multiple object splugin.getOjectName can't work */
+        if(objectName == null) objectName = manager.getObjectName();
+        objectName = objectName.toLowerCase();
+
+        this.noObject = noObject;
 
         this.load();
     }
@@ -104,7 +130,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
                         List<String> desc = new ArrayList<>();
                         desc.add("");
-                        desc.add("&2(shift + right click to give to yourself)");
+                        if(!noObject) desc.add("&2(shift + right click to give to yourself)");
                         desc.add("&4(shift + left click to delete)");
                         desc.add("&7(click to edit)");
                         desc.add("&a&l➤ WORK FINE");
@@ -140,7 +166,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         }
         createItem(RED, 1, 36, EXIT, false, false);
 
-        createItem(Material.ANVIL, 1, 38, "&ePath", false, false, "", "&7actually: &a" + path, "&c&oClick here to come back", "&8&oin previous folder");
+        createItem(Material.ANVIL, 1, 38, "&ePath", false, false, "", "&7Currently: &a" + path, "&c&oClick here to come back", "&8&oin previous folder");
 
         createItem(GREEN, 1, 40, NEW + objectName, false, false);
 
@@ -193,7 +219,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
 
     public String getPath() {
         ItemStack item = this.getByName("Path");
-        return this.getActually(item);
+        return this.getCurrently(item);
     }
 
     public void sendMessageDelete(String objectID, Player p) {
@@ -206,11 +232,17 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     }
 
     public void giveSObject(String objectID, Player p) {
+        if(noObject) return;
         Optional<NewSObject> optional = manager.getLoadedObjectWithID(objectID);
         if (optional.isPresent()) {
             NewSObject sObject = optional.get();
-            p.getInventory().addItem(sObject.buildItem(1, Optional.of(p)));
+            int firstEmptySlot = p.getInventory().firstEmpty();
+            ItemStack itemStack = sObject.buildItem(1, Optional.of(p));
+            p.getInventory().addItem(itemStack);
             p.sendMessage(StringConverter.coloredString("&2&l" + sPlugin.getNameDesign() + " &aYou received &e" + objectID));
+
+            AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, itemStack, firstEmptySlot);
+            Bukkit.getPluginManager().callEvent(eventToCall);
         }
     }
 

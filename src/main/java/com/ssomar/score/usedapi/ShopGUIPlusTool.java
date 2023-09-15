@@ -1,9 +1,15 @@
 package com.ssomar.score.usedapi;
 
+import com.ssomar.score.SCore;
 import net.brcdev.shopgui.ShopGuiPlusApi;
+import net.brcdev.shopgui.event.ShopPostTransactionEvent;
 import net.brcdev.shopgui.modifier.PriceModifier;
 import net.brcdev.shopgui.modifier.PriceModifierActionType;
+import net.brcdev.shopgui.shop.ShopManager;
+import net.brcdev.shopgui.shop.ShopTransactionResult;
 import net.brcdev.shopgui.shop.item.ShopItem;
+import net.brcdev.shopgui.shop.item.ShopItemType;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,12 +30,19 @@ public class ShopGUIPlusTool {
 
             PriceModifier priceModifier = ShopGuiPlusApi.getPriceModifier(player, shopItem, PriceModifierActionType.SELL);
 
-
             amount = amount * priceModifier.getModifier();
-
-        }catch (Exception e) {}
+        }
+        catch (Exception e) {}
 
 
         return amount;
+    }
+
+    public static void registerTransaction(ItemStack item, Player p, double price, double priceBoost){
+        if (SCore.hasShopGUIPlus){
+            ShopTransactionResult result = new ShopTransactionResult(ShopManager.ShopAction.SELL, ShopTransactionResult.ShopTransactionResultType.SUCCESS, new ShopItem(null, "", ShopItemType.ITEM, item), p, item.getAmount(), price * priceBoost);
+            ShopPostTransactionEvent event = new ShopPostTransactionEvent(result);
+            Bukkit.getPluginManager().callEvent(event);
+        }
     }
 }

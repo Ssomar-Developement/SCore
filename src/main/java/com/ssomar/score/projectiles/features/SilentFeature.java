@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.utils.FixedMaterial;
@@ -18,7 +19,8 @@ public class SilentFeature extends BooleanFeature implements SProjectileFeatureI
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
-        e.setSilent(getValue());
+        // doesnt work in 1.8
+        if(!SCore.is1v11Less()) e.setSilent(getValue());
     }
 
     @Override

@@ -1,17 +1,15 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class RunCommand implements Serializable {
 
@@ -37,7 +35,7 @@ public abstract class RunCommand implements Serializable {
 
     private UUID uuid;
 
-    private BukkitTask task;
+    private ScheduledTask task;
 
     public RunCommand(String brutCommand, int delay, ActionInfo aInfo) {
         this.brutCommand = brutCommand;
@@ -86,9 +84,27 @@ public abstract class RunCommand implements Serializable {
 
 
     public void runCommand(CommandManager manager) {
-        //SsomarDev.testMsg("Command run command: "+this.getBrutCommand());
+        //SsomarDev.testMsg("Command run command: "+this.getBrutCommand(), true);
         String finalCommand = this.getBrutCommand();
-        finalCommand = this.getSp().replacePlaceholder(finalCommand);
+        String [] split = finalCommand.split(" ");
+        int later = 0;
+        Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
+        for (String s : split) {
+            /* Exception 1 */
+           if(s.contains("%math_") && s.contains("%around")){
+               placeholdersToReplaceLatter.put(later, s);
+               finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
+                later++;
+           }
+        }
+        //Exception for WHILE we don't want to replace the placeholders
+        if(!finalCommand.startsWith("WHILE")){
+            finalCommand = this.getSp().replacePlaceholder(finalCommand);
+        }
+
+        for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
+            finalCommand = finalCommand.replace("PLACEHOLDER_TO_REPLACE_LATER_"+entry.getKey(), entry.getValue());
+        }
 
         if (getBrutCommand().contains("ei giveslot")) {
             try {
@@ -101,10 +117,11 @@ public abstract class RunCommand implements Serializable {
         }
 
 
-        SCommand command = manager.getCommand(finalCommand);
-        if (command != null) {
+        Optional<SCommand> commandOpt = manager.getCommand(finalCommand);
+        if (commandOpt.isPresent()) {
+            SCommand command = commandOpt.get();
             //SsomarDev.testMsg("Command: valid: "+finalCommand, true);
-            List<String> args = manager.getArgs(finalCommand);
+            List<String> args = manager.getArgs(command, finalCommand);
 
             Optional<String> error = command.verify(args, true);
             if (!error.isPresent()) {
@@ -128,7 +145,7 @@ public abstract class RunCommand implements Serializable {
                 insideDelayedCommand();
             }
         };
-        task = runnable.runTaskLater(SCore.plugin, this.getDelay());
+        task = SCore.schedulerHook.runTask(runnable, this.getDelay());
         CommandsHandler.getInstance().addDelayedCommand(this);
     }
 
@@ -187,11 +204,11 @@ public abstract class RunCommand implements Serializable {
         this.uuid = uuid;
     }
 
-    public BukkitTask getTask() {
+    public ScheduledTask getTask() {
         return task;
     }
 
-    public void setTask(BukkitTask task) {
+    public void setTask(ScheduledTask task) {
         this.task = task;
     }
 

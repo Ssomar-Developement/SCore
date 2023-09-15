@@ -46,6 +46,6 @@ public class MobAround extends BlockCommand {
 
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-        mobAroundExecution(block.getLocation(), null, true, args, aInfo);
+        mobAroundExecution(block.getLocation(), p, null, true, args, aInfo);
     }
 }

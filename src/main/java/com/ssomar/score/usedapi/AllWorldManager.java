@@ -7,6 +7,7 @@ import org.bukkit.World;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class AllWorldManager {
 
@@ -24,6 +25,26 @@ public class AllWorldManager {
 
 
         return Optional.ofNullable(Bukkit.getServer().getWorld(worldStr));
+    }
+
+    public static Optional<World> getWorld(UUID worldUUID) {
+
+        if (SCore.hasMultiverse) {
+            for(String s : MultiverseAPI.getWorlds()){
+                World world = MultiverseAPI.getWorld(s);
+                if(world.getUID().equals(worldUUID)) return Optional.of(world);
+            }
+        }
+
+        if(SCore.hasBentoBox){
+            for(String s : BentoBoxAPI.getWorlds()){
+                World world = BentoBoxAPI.getWorld(s);
+                if(world.getUID().equals(worldUUID)) return Optional.of(world);
+            }
+        }
+
+
+        return Optional.ofNullable(Bukkit.getServer().getWorld(worldUUID));
     }
 
     public static List<String> getWorlds() {

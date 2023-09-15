@@ -5,6 +5,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,6 +34,13 @@ public interface ItemKeyWriterReader {
     void writeDoubleIfNull(SPlugin var1, ItemStack var2, DynamicMeta var3, String var4, double var5);
 
     Optional<Double> readDouble(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key);
+
+
+    void writeList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value);
+
+    void writeListIfNull(SPlugin var1, ItemStack var2, DynamicMeta var3, String var4, List<String> var5);
+
+    Optional<List<String>> readList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key);
 
     void removeKey(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key);
 

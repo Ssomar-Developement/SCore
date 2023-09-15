@@ -1,6 +1,8 @@
 package com.ssomar.score.features.custom.attributes.attribute;
 
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 
 public class AttributeFullOptionsFeatureEditor extends FeatureEditorInterface<AttributeFullOptionsFeature> {
@@ -26,10 +28,10 @@ public class AttributeFullOptionsFeatureEditor extends FeatureEditorInterface<At
         createItem(RED, 1, 18, GUI.BACK, false, false);
 
         // Reset menu
-        createItem(ORANGE, 1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
+        createItem(ORANGE, 1, 19, TM.g(Text.EDITOR_RESET_NAME), false, false, "", TM.g(Text.EDITOR_RESET_DESCRIPTION));
 
         // Save menu
-        createItem(GREEN, 1, 26, GUI.SAVE, false, false, "", "&a&oClick here to save");
+        createItem(GREEN, 1, 26, TM.g(Text.EDITOR_SAVE_NAME), false, false, "", TM.g(Text.EDITOR_SAVE_DESCRIPTION));
     }
 
     @Override

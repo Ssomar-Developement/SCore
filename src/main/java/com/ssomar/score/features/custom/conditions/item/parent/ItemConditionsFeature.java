@@ -5,10 +5,12 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.custom.conditions.item.condition.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -68,8 +70,26 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
     }
 
     public boolean verifConditions(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+        ItemConditionRequest request = new ItemConditionRequest(itemStack, playerOpt, new StringPlaceholder(), event);
         for (ItemConditionFeature condition : conditions) {
-            if (!condition.verifCondition(itemStack, playerOpt, messageSender, event)) {
+            if (!condition.verifCondition(request)) {
+                if (messageSender != null && playerOpt.isPresent()) {
+                    for (String error : request.getErrorsFinal()) {
+                        messageSender.sendMessage(playerOpt.get(), error);
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean verifConditions(ItemStack itemStack, List<String> errors, @Nullable StringPlaceholder stringPlaceholder) {
+        if(stringPlaceholder == null) stringPlaceholder = new StringPlaceholder();
+        ItemConditionRequest request = new ItemConditionRequest(itemStack, Optional.empty(), stringPlaceholder, null);
+        for (ItemConditionFeature condition : conditions) {
+            if (!condition.verifCondition(request)) {
+                errors.addAll(request.getErrorsFinal());
                 return false;
             }
         }
@@ -94,7 +114,7 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
     public ItemConditionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = "&7Item condition(s) enabled: &e" + getBlockConditionEnabledCount();
+        finalDescription[finalDescription.length - 2] = "&7Item condition(s) enabled: &e" + getItemConditionEnabledCount();
         finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
 
@@ -102,7 +122,7 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
         return this;
     }
 
-    public int getBlockConditionEnabledCount() {
+    public int getItemConditionEnabledCount() {
         int i = 0;
         for (ItemConditionFeature condition : conditions) {
             if (condition.hasCondition()) {

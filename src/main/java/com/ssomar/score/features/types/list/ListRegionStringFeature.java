@@ -9,9 +9,10 @@ import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -58,8 +59,7 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
         config.set(this.getName(), value);
     }
 
-    @Override
-    public List<String> getValue() {
+    public List<String> getValues() {
         return value;
     }
 
@@ -68,7 +68,7 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -76,14 +76,14 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        gui.updateConditionList(getEditorName(), getValue(), "&cEMPTY");
+        gui.updateConditionList(getEditorName(), getValues(), "&cEMPTY");
     }
 
 
     @Override
     public ListRegionStringFeature clone(FeatureParentInterface newParent) {
         ListRegionStringFeature clone = new ListRegionStringFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 
@@ -100,6 +100,11 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
     @Override
     public List<String> getCurrentValues() {
         return value;
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override

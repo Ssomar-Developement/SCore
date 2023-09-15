@@ -9,7 +9,7 @@ public class CustomEIConditionsFeatureEditor extends FeatureEditorInterface<Cust
     public final CustomEIConditionsFeature bCF;
 
     public CustomEIConditionsFeatureEditor(CustomEIConditionsFeature dropFeatures) {
-        super("&lBlock Conditions Editor", 3 * 9);
+        super("&lCustom EI Conditions Editor", 3 * 9);
         this.bCF = dropFeatures.clone(dropFeatures.getParent());
         load();
     }

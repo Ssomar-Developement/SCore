@@ -3,6 +3,8 @@ package com.ssomar.score.usedapi;
 import com.ssomar.score.SCore;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomFurniture;
+import dev.lone.itemsadder.api.CustomStack;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -20,11 +22,11 @@ public class ItemsAdderAPI {
             //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
             if (customBlock != null) {
                 //SsomarDev.testMsg("ITEM ADDER REMOVED", true);
-                if(drop){
-                   List<ItemStack> loots = customBlock.getLoot(item, false);
-                   for(ItemStack loot : loots){
-                       block.getWorld().dropItemNaturally(block.getLocation(), loot);
-                   }
+                if (drop) {
+                    List<ItemStack> loots = customBlock.getLoot(item, false);
+                    for (ItemStack loot : loots) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), loot);
+                    }
                 }
                 customBlock.playBreakSound();
                 customBlock.playBreakEffect();
@@ -44,7 +46,8 @@ public class ItemsAdderAPI {
                     armorStand = (ArmorStand) e;
                     //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+armorStand.getCustomName(), true);
                     if (armorStand.getCustomName() != null && armorStand.getCustomName().equals("ItemsAdder_furniture")) {
-                        CustomFurniture.byAlreadySpawned(armorStand).remove(drop);
+                        CustomFurniture furniture = CustomFurniture.byAlreadySpawned(armorStand);
+                        furniture.remove(drop);
                         return true;
                     }
                 }
@@ -77,7 +80,44 @@ public class ItemsAdderAPI {
 
     }
 
+    public static Optional<String> getCustomItemID(ItemStack item) {
+        if (SCore.hasItemsAdder && item != null) {
+            CustomStack customStack = CustomStack.byItemStack(item);
+            //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
+            if (customStack != null) {
+                return Optional.of(customStack.getId());
+            }
+        }
+        return Optional.empty();
+
+    }
+
     public static boolean isCustomBlock(Block block) {
-       return getCustomBlockID(block).isPresent();
+        return getCustomBlockID(block).isPresent();
+    }
+
+
+    public static boolean isCustomItem(ItemStack item) {
+        return getCustomItemID(item).isPresent();
+    }
+
+    public static boolean placeItemAdder(Location location, String id) {
+        try {
+            CustomBlock customBlock = CustomBlock.getInstance(id);
+            if (customBlock != null) {
+                //SsomarDev.testMsg("placeItemsAdder Block: " + id, DEBUG);
+                customBlock.place(location);
+                return true;
+            }
+        } catch (Exception e) {
+            try {
+                //SsomarDev.testMsg("placeItemsAdder is Furniture " + id, DEBUG);
+                CustomFurniture.spawnPreciseNonSolid(id, location);
+                return true;
+            } catch (Exception e1) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }

@@ -1,22 +1,18 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlacedManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,21 +57,35 @@ public class VeinBreaker extends BlockCommand {
             @Override
             public void run() {
 
-                if (aInfo.isEventCallByMineInCube()) return;
+                if (aInfo.isEventFromCustomBreakCommand()) return;
 
-                if (args.size() == 2) {
-                    if (!oldMaterial.toString().equals(args.get(1)))
+                /* if (args.size() >= 2) {
+                    if (!args.get(1).contains(oldMaterial.toString()))
                         return;
                 } else {
                     if (!(oldMaterial.toString().contains("ORE")
+                            || oldMaterial.toString().contains("ANCIENT_DEBRIS")
                             || oldMaterial.toString().contains("LOG")
                             || oldMaterial.toString().contains("WOOD")
-                            /* 1.16 woods */
+
                             || oldMaterial.toString().contains("HYPHAE")
                             || oldMaterial.toString().contains("WARPED_STEM")
-                            || oldMaterial.toString().contains("CRIMSON_STEM")))
+                            || oldMaterial.toString().contains("CRIMSON_STEM")
+                            || oldMaterial.toString().contains("WOOL")
+                            || oldMaterial.toString().contains("LEAVES")))
                         return;
+                }*/
+
+                DetailedBlocks whiteList;
+                if ((whiteList = aInfo.getDetailedBlocks()) != null) {
+                    /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
+                    if (!whiteList.isValid(block, Optional.empty(), null, new StringPlaceholder(), oldMaterial, null)) {
+                        p.sendMessage(ChatColor.RED + "This block is not allowed to be broken ! : "+block.getType().name());
+                        return;
+                    }
                 }
+
+
 
                 int veinSize = 120;
                 try {
@@ -83,15 +93,20 @@ public class VeinBreaker extends BlockCommand {
                 } catch (Exception ignored) {
                 }
 
+                boolean triggerevent = true;
+                if(args.size() >= 3) {
+                    if (args.get(2).equalsIgnoreCase("false")) triggerevent = false;
+                }
+
                 List<Block> vein;
                 UUID pUUID = null;
                 if (p != null) pUUID = p.getUniqueId();
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, true);
+                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerevent, true);
 
                 vein = getVein(block, oldMaterial, veinSize);
 
                 for (Block b : vein) {
-                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, true, true);
+                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerevent, true);
                 }
             }
         };
@@ -132,24 +147,6 @@ public class VeinBreaker extends BlockCommand {
         }
     }
 
-    public void validBreak(Block block, @Nullable ItemStack item) {
-        Location bLoc = block.getLocation();
-        bLoc.add(0.5, 0.5, 0.5);
-
-        if (SCore.hasExecutableBlocks) {
-            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
-            if (eBPOpt.isPresent()) {
-                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
-                ExecutableBlockPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);
-                eBP.drop(bLoc);
-            }
-        }
-
-        /* Only for axe, for other tools its useless */
-        if (item != null && item.getType().toString().contains("PICKAXE")) block.breakNaturally(item);
-        else block.breakNaturally();
-    }
-
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         String error = "";
@@ -165,7 +162,7 @@ public class VeinBreaker extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "VEIN_BREAKER [Max_vein_size] [block_type, no need for LOG, ORE and WOOD]";
+        return "VEIN_BREAKER [Max_vein_size] [trigger BREAK event, default true]";
     }
 
     @Override

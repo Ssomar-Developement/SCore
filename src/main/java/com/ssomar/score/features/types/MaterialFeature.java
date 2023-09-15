@@ -8,7 +8,7 @@ import com.ssomar.score.features.FeatureRequireClicksOrOneMessageInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -33,11 +33,20 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     private Optional<Material> value;
     private Optional<Material> defaultValue;
+    private boolean onlyItemMaterial;
 
     public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
+        this.onlyItemMaterial = false;
+    }
+
+    public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean onlyItemMaterial) {
+        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+        this.defaultValue = defaultValue;
+        this.value = Optional.empty();
+        this.onlyItemMaterial = onlyItemMaterial;
     }
 
     @Override
@@ -46,6 +55,8 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
             Material material = Material.valueOf(colorStr);
+            // isItem is only available in 1.12+
+            if(!SCore.is1v11Less() && onlyItemMaterial && !material.isItem()) material = Material.STONE;
             value = Optional.ofNullable(material);
             FeatureReturnCheckPremium<Material> checkPremium = checkPremium("Material", material, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
@@ -189,7 +200,10 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
                 next = true;
                 continue;
             }
-            if (next) return check;
+            if (next){
+                if(!SCore.is1v11Less() && onlyItemMaterial && !check.isItem()) continue;
+                return check;
+            }
         }
         return getSortMaterials().get(0);
     }
@@ -204,8 +218,12 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
             }
             cpt++;
         }
-        if (i == 0) return getSortMaterials().get(getSortMaterials().size() - 1);
-        else return getSortMaterials().get(cpt - 1);
+        Material finalMaterial;
+        if (i == 0) finalMaterial = getSortMaterials().get(getSortMaterials().size() - 1);
+        else finalMaterial = getSortMaterials().get(cpt - 1);
+
+        if(!SCore.is1v11Less() && onlyItemMaterial && !finalMaterial.isItem()) return prevMaterial(finalMaterial);
+        return finalMaterial;
     }
 
     public void updateMaterial(Material material, GUI gui) {
@@ -290,7 +308,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter the material or &aedit &athe &aactual: "));
 
         TextComponent edit = new TextComponent(StringConverter.coloredString("&e&l[EDIT]"));
-        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getActually(getEditorName()))));
+        edit.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, StringConverter.deconvertColor(((GUI) manager.getCache().get(editor)).getCurrently(getEditorName()))));
         edit.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&eClick here to edit the current material")).create()));
 
         TextComponent newName = new TextComponent(StringConverter.coloredString("&a&l[NEW]"));

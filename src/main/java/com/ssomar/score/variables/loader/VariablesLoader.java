@@ -1,12 +1,14 @@
 package com.ssomar.score.variables.loader;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.sobject.NewSObjectLoader;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.manager.VariablesManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
 public class VariablesLoader extends NewSObjectLoader<Variable> {
@@ -25,7 +27,7 @@ public class VariablesLoader extends NewSObjectLoader<Variable> {
         VariablesManager.getInstance().setDefaultObjects(new ArrayList<>());
         /* // TODO if (!GeneralConfig.getInstance().isDisableTestItems()) {*/
         //if (PlaceholderAPI.isLotOfWork()) {
-            this.loadDefaultPremiumObjects(this.getPremiumDefaultObjectsName());
+        this.loadDefaultPremiumObjects(this.getPremiumDefaultObjectsName());
         //}
         //this.loadDefaultEncodedPremiumObjects(this.getPremiumPackObjectsName());
         //}
@@ -35,9 +37,17 @@ public class VariablesLoader extends NewSObjectLoader<Variable> {
 
         this.resetCpt();
 
-        File itemsDirectory;
-        if ((itemsDirectory = new File(SCore.plugin.getDataFolder() + "/variables")).exists()) {
-            this.loadObjectsInFolder(itemsDirectory, true);
+        File variablesDirectory;
+        if ((variablesDirectory = new File(SCore.plugin.getDataFolder() + "/variables")).exists()) {
+            this.loadObjectsInFolder(variablesDirectory, true);
+
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7SCore loaded &6"+VariablesManager.getInstance().getLoadedObjects().size()+" &7variables from local files !");
+
+            if(GeneralConfig.getInstance().isUseMySQL()){
+                VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7SCore loaded &6"+VariablesManager.getInstance().getLoadedObjects().size()+" &7variables from your MySQL Database !");
+            }
+
         } else {
             this.createDefaultObjectsFile(true);
             this.load();

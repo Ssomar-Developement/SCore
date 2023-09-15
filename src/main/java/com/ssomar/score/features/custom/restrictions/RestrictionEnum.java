@@ -9,6 +9,8 @@ public enum RestrictionEnum {
     CANCEL_TOOL_INTERACTIONS("cancel-tool-interactions"),
     CANCEL_CONSUMPTION("cancel-consumption"),
 
+    CANCEL_HORN("cancel-horn"),
+
     CANCEL_CRAFT("cancel-item-craft-no-custom"),
     CANCEL_ALL_CRAFT("cancel-item-craft"),
 

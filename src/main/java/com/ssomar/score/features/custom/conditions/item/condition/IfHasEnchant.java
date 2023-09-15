@@ -2,19 +2,16 @@ package com.ssomar.score.features.custom.conditions.item.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.types.list.ListEnchantAndLevelFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 public class IfHasEnchant extends ItemConditionFeature<ListEnchantAndLevelFeature, IfHasEnchant> {
 
@@ -23,24 +20,23 @@ public class IfHasEnchant extends ItemConditionFeature<ListEnchantAndLevelFeatur
     }
 
     @Override
-    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(ItemConditionRequest request) {
 
         if (hasCondition()) {
-
+            ItemStack itemStack = request.getItemStack();
             ItemMeta itemMeta = null;
             boolean hasItemMeta = itemStack.hasItemMeta();
             if (hasItemMeta) itemMeta = itemStack.getItemMeta();
 
             if (!hasItemMeta) {
-                sendErrorMsg(playerOpt, messageSender);
+                runInvalidCondition(request);
                 return false;
             }
             Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
             Map<Enchantment, Integer> condition = getCondition().getValue();
             for (Enchantment enchant : condition.keySet()) {
                 if (!enchants.containsKey(enchant) || !Objects.equals(condition.get(enchant), enchants.get(enchant))) {
-                    sendErrorMsg(playerOpt, messageSender);
-                    cancelEvent(event);
+                    runInvalidCondition(request);
                     return false;
                 }
             }

@@ -2,6 +2,8 @@ package com.ssomar.score.editor;
 
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditor;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditorManager;
+import com.ssomar.score.features.custom.armortrim.ArmorTrimEditor;
+import com.ssomar.score.features.custom.armortrim.ArmorTrimEditorManager;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeatureEditor;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeatureEditorManager;
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeatureEditor;
@@ -38,6 +40,10 @@ import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditor;
 import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditorManager;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditor;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditorManager;
+import com.ssomar.score.features.custom.detailedeffects.DetailedEffectsEditor;
+import com.ssomar.score.features.custom.detailedeffects.DetailedEffectsEditorManager;
+import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditor;
+import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditorManager;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditor;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditorManager;
 import com.ssomar.score.features.custom.drop.DropFeaturesEditor;
@@ -98,6 +104,10 @@ import com.ssomar.score.features.custom.required.items.item.RequiredItemFeatureE
 import com.ssomar.score.features.custom.required.items.item.RequiredItemFeatureEditorManager;
 import com.ssomar.score.features.custom.required.level.RequiredLevelEditor;
 import com.ssomar.score.features.custom.required.level.RequiredLevelEditorManager;
+import com.ssomar.score.features.custom.required.magic.group.RequiredMagicGroupFeatureEditor;
+import com.ssomar.score.features.custom.required.magic.group.RequiredMagicGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.required.magic.magic.RequiredMagicFeatureEditor;
+import com.ssomar.score.features.custom.required.magic.magic.RequiredMagicFeatureEditorManager;
 import com.ssomar.score.features.custom.required.mana.RequiredManaEditor;
 import com.ssomar.score.features.custom.required.mana.RequiredManaEditorManager;
 import com.ssomar.score.features.custom.required.money.RequiredMoneyEditor;
@@ -116,6 +126,8 @@ import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGro
 import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditor;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeatureEditorManager;
+import com.ssomar.score.hardness.hardness.HardnessEditor;
+import com.ssomar.score.hardness.hardness.HardnessEditorManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
@@ -238,7 +250,13 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof RequiredExecutableItemGroupFeatureEditor) {
             RequiredExecutableItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof RequiredGroupEditor) {
+        } else if (holder instanceof RequiredMagicFeatureEditor) {
+            RequiredMagicFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        } else if (holder instanceof RequiredMagicGroupFeatureEditor) {
+            RequiredMagicGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }else if (holder instanceof RequiredGroupEditor) {
             RequiredGroupEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof DropFeaturesEditor) {
@@ -247,7 +265,11 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof HidersEditor) {
             HidersEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof GiveFirstJoinFeaturesEditor) {
+        } else if (holder instanceof ArmorTrimEditor) {
+            ArmorTrimEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof GiveFirstJoinFeaturesEditor) {
             GiveFirstJoinFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof EnchantmentWithLevelFeatureEditor) {
@@ -325,6 +347,12 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof DetailedBlocksEditor) {
             DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
+        } else if (holder instanceof DetailedEffectsEditor) {
+            DetailedEffectsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        } else if(holder instanceof DetailedItemsEditor){
+            DetailedItemsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
         } else if (holder instanceof HeadFeaturesEditor) {
             HeadFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
@@ -384,6 +412,10 @@ public class NewEditorInteractionsListener implements Listener {
             return;
         } else if (holder instanceof SProjectileEditor) {
             SProjectileEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            return;
+        }
+        else if (holder instanceof HardnessEditor) {
+            HardnessEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         }
         else if (holder instanceof VariableEditor) {
@@ -467,7 +499,13 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (RequiredExecutableItemGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequiredExecutableItemGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
-        } else if (RequiredGroupEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        } else if (RequiredMagicFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredMagicFeatureEditorManager.getInstance().receiveMessage(p, message);
+        } else if (RequiredMagicGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            RequiredMagicGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }else if (RequiredGroupEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             RequiredGroupEditorManager.getInstance().receiveMessage(p, message);
         } else if (DropFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
@@ -476,7 +514,12 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (HidersEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             HidersEditorManager.getInstance().receiveMessage(p, message);
-        } else if (GiveFirstJoinFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        }
+        else if (ArmorTrimEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ArmorTrimEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (GiveFirstJoinFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             GiveFirstJoinFeaturesEditorManager.getInstance().receiveMessage(p, message);
         } else if (EnchantmentWithLevelFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
@@ -554,6 +597,12 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (DetailedBlocksEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             DetailedBlocksEditorManager.getInstance().receiveMessage(p, message);
+        } else if (DetailedEffectsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DetailedEffectsEditorManager.getInstance().receiveMessage(p, message);
+        } else if (DetailedItemsEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DetailedItemsEditorManager.getInstance().receiveMessage(p, message);
         } else if (HeadFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             HeadFeaturesEditorManager.getInstance().receiveMessage(p, message);
@@ -615,6 +664,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if (SProjectileEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             SProjectileEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (HardnessEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            HardnessEditorManager.getInstance().receiveMessage(p, message);
         }
         else if (VariableEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);

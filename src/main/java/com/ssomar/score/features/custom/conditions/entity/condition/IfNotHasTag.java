@@ -2,12 +2,10 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -19,8 +17,9 @@ public class IfNotHasTag extends EntityConditionFeature<ListUncoloredStringFeatu
     }
 
     @Override
-    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(EntityConditionRequest request) {
         if (hasCondition()) {
+            Entity entity = request.getEntity();
             boolean notValid = false;
             for (String tag : getCondition().getValue()) {
                 if (entity.getScoreboardTags().contains(tag)) {
@@ -29,8 +28,7 @@ public class IfNotHasTag extends EntityConditionFeature<ListUncoloredStringFeatu
                 }
             }
             if (notValid) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

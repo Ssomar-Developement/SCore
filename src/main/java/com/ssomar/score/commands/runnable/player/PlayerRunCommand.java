@@ -7,6 +7,7 @@ import com.ssomar.score.commands.runnable.SCommand;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +41,7 @@ public class PlayerRunCommand extends RunCommand {
     public void initRunOffline(String brutCommand) {
         if (brutCommand.contains("[<OFFLINE>]")) {
             runOffline = true;
-            this.setBrutCommand(brutCommand.replaceAll("\\[<OFFLINE>]", ""));
+            this.setBrutCommand(brutCommand.replaceAll("\\[<OFFLINE>]", "").trim());
         } else runOffline = false;
     }
 
@@ -64,7 +65,8 @@ public class PlayerRunCommand extends RunCommand {
     public void runCommand(SCommand command, List<String> args) {
         PlayerSCommand pCommand = (PlayerSCommand) command;
 
-        Player launcher = Bukkit.getPlayer(launcherUUID);
+        @Nullable Player launcher = null;
+        if(launcherUUID != null) launcher = Bukkit.getPlayer(launcherUUID);
         Player receiver = Bukkit.getPlayer(receiverUUID);
 
        // SsomarDev.testMsg("runCommand: "+getBrutCommand(), true);

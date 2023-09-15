@@ -4,10 +4,10 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -28,7 +28,7 @@ public class ListUncoloredStringFeature extends ListFeatureAbstract<String, List
         reset();
     }
 
-    public List<String> loadValue(List<String> entries, List<String> errors) {
+    public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> uncolored = new ArrayList<>();
         for (String s : entries) {
             uncolored.add(StringConverter.decoloredString(s));
@@ -37,21 +37,27 @@ public class ListUncoloredStringFeature extends ListFeatureAbstract<String, List
     }
 
     @Override
+    public String transfromToString(String value) {
+        return value;
+    }
+
+    @Override
     public ListUncoloredStringFeature clone(FeatureParentInterface newParent) {
         ListUncoloredStringFeature clone = new ListUncoloredStringFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue(), suggestions);
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         return Optional.empty();
     }
 
     @Override
-    public List<String> getCurrentValues() {
-        return getValue();
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override
@@ -63,19 +69,6 @@ public class ListUncoloredStringFeature extends ListFeatureAbstract<String, List
     public String getTips() {
         return "";
     }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        List<String> uncolored = new ArrayList<>();
-        for (String s : (List<String>) manager.currentWriting.get(editor)) {
-            uncolored.add(StringConverter.decoloredString(s));
-        }
-        setValue(uncolored);
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
-    }
-
 
     @Override
     public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {

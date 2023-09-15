@@ -2,13 +2,10 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.ifhas.items.group.HasItemGroupFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfHasNotItems extends PlayerConditionFeature<HasItemGroupFeature, IfHasNotItems> {
 
@@ -17,12 +14,16 @@ public class IfHasNotItems extends PlayerConditionFeature<HasItemGroupFeature, I
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && !getCondition().verifHasNot(player.getInventory().getContents(), player.getInventory().getHeldItemSlot())) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
+    public boolean verifCondition(PlayerConditionRequest request) {
+        Player player = request.getPlayer();
+        boolean verif = (!getCondition().verifHasNot(player.getInventory().getContents(), player.getInventory().getHeldItemSlot()));
+        //SsomarDev.testMsg("ifHasNotItems >>"+hasCondition()+" >> "+verif, true);
+        if (hasCondition() && verif) {
+            //SsomarDev.testMsg("ifHasNotItems >> PASSE FALSE ", true);
+            runInvalidCondition(request);
             return false;
         }
+        //SsomarDev.testMsg("ifHasNotItems >>>>>>>>>>>>>>  "+verif, true);
         return true;
     }
 

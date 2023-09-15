@@ -4,6 +4,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
 import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.usedapi.AllWorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BlockRunCommand extends RunCommand {
@@ -65,9 +67,11 @@ public class BlockRunCommand extends RunCommand {
     public void runCommand(SCommand command, List<String> args) {
         BlockSCommand bCommand = (BlockSCommand) command;
 
-        Player launcher = Bukkit.getPlayer(launcherUUID);
-        World world = Bukkit.getServer().getWorld(blockWorld);
-        Location loc = new Location(world, blockX, blockY, blockZ);
+        Player launcher = null;
+        if (launcherUUID != null) launcher =  Bukkit.getPlayer(launcherUUID);
+        Optional<World> worldOptional = AllWorldManager.getWorld(blockWorld);
+        if(!worldOptional.isPresent()) return;
+        Location loc = new Location(worldOptional.get(), blockX, blockY, blockZ);
         Block block = loc.getBlock();
 
         bCommand.run(launcher, block, oldBlockMaterial, args, this.getaInfo());

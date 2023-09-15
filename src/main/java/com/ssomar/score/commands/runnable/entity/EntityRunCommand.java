@@ -60,7 +60,8 @@ public class EntityRunCommand extends RunCommand {
 
         this.pickupInfo();
 
-        Player launcher = Bukkit.getPlayer(launcherUUID);
+        Player launcher = null;
+        if(launcherUUID != null) launcher = Bukkit.getPlayer(launcherUUID);
         Entity receiver = null;
         if (SCore.is1v11Less()) {
             for (World world : Bukkit.getWorlds()) {

@@ -8,8 +8,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class NBTWriterReader implements ItemKeyWriterReader {
 
@@ -115,6 +114,44 @@ public class NBTWriterReader implements ItemKeyWriterReader {
             }
         }
         return Optional.ofNullable(null);
+    }
+
+    @Override
+    public void writeList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
+        item.setItemMeta(dMeta.getMeta());
+        if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+            NBTItem nbti = new NBTItem(item);
+            nbti.setString(key, value.toString());
+            nbti.applyNBT(item);
+        }
+        dMeta.setMeta(item.getItemMeta());
+    }
+
+    @Override
+    public void writeListIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
+        item.setItemMeta(dMeta.getMeta());
+        if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+            NBTItem nbti = new NBTItem(item);
+            if (!nbti.hasKey(key)) {
+                nbti.setString(key, value.toString());
+                nbti.applyNBT(item);
+            }
+        }
+        dMeta.setMeta(item.getItemMeta());
+    }
+
+    @Override
+    public Optional<List<String>> readList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+        if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+            NBTItem nbti = new NBTItem(item);
+            if (nbti.hasKey(key)) {
+                String s = nbti.getString(key);
+                if (s != null) {
+                    return Optional.of(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

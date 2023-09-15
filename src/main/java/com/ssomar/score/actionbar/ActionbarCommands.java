@@ -3,7 +3,7 @@ package com.ssomar.score.actionbar;
 import com.ssomar.score.SCore;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.entity.Player;
 
 import java.util.List;

@@ -4,12 +4,11 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import com.ssomar.score.damagewithoutknockback.DamageWithoutKnockbackManager;
 import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -17,8 +16,6 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.ssomar.score.commands.runnable.player.commands.DamageNoKnockback.getDamage;
 
 public class DamageNoKnockback extends EntityCommand {
 
@@ -28,19 +25,20 @@ public class DamageNoKnockback extends EntityCommand {
 
         LivingEntity livingReceiver = (LivingEntity) receiver;
 
-        double damage = getDamage(p, livingReceiver, args, aInfo);
+        double damage = com.ssomar.score.commands.runnable.player.commands.Damage.getDamage(p, livingReceiver, args, aInfo);
 
         if (damage > 0 && !receiver.isDead()) {
             int maximumNoDmg = livingReceiver.getMaximumNoDamageTicks();
             livingReceiver.setMaximumNoDamageTicks(0);
             if (p != null) {
                 p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
-                receiver.setLastDamageCause(new EntityDamageEvent((Entity) p, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
-                receiver.playEffect(EntityEffect.HURT);
-                livingReceiver.setHealth(Math.max(livingReceiver.getHealth() - damage, 0));
+                DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
+                livingReceiver.damage(damage, (Entity) p);
+
             } else {
-                receiver.playEffect(EntityEffect.HURT);
-                livingReceiver.setHealth(Math.max(livingReceiver.getHealth() - damage, 0));
+                boolean doDamage = true;
+                DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
+                livingReceiver.damage(damage);
             }
             livingReceiver.setMaximumNoDamageTicks(maximumNoDmg);
         }

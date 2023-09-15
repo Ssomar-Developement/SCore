@@ -7,9 +7,10 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.features.types.VariableTypeFeature;
+import com.ssomar.score.features.types.list.ListColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     private VariableTypeFeature type;
     private ColoredStringFeature stringValue;
     private DoubleFeature doubleValue;
+    private ListColoredStringFeature listValue;
     private String id;
 
     public VariableFeature(FeatureParentInterface parent, String id) {
@@ -43,9 +45,10 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     @Override
     public void reset() {
         this.variableName = new UncoloredStringFeature(this, "variableName", Optional.of("var"), "Variable Name", new String[]{"&7&oThe variable name"}, GUI.WRITABLE_BOOK, false, false);
-        this.type = new VariableTypeFeature(this, "type", Optional.of(VariableType.STRING), "Type", new String[]{"&7&oThe variable type"}, Material.COMPASS, false);
+        this.type = new VariableTypeFeature(this, "type", Optional.of(VariableType.STRING), "Type", new String[]{"&7&oThe variable type"}, Material.COMPASS, false, false);
         this.stringValue = new ColoredStringFeature(this, "default", Optional.of(""), "String Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false, false);
         this.doubleValue = new DoubleFeature(this, "default", Optional.of(0.0), "Number Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false);
+        this.listValue = new ListColoredStringFeature(this, "default", new ArrayList<>(), "List Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false, false, Optional.empty());
     }
 
     @Override
@@ -57,6 +60,8 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
             errors.addAll(this.type.load(plugin, enchantmentConfig, isPremiumLoading));
             if (type.getValue().get().equals(VariableType.STRING)) {
                 errors.addAll(this.stringValue.load(plugin, enchantmentConfig, isPremiumLoading));
+            } else if (type.getValue().get().equals(VariableType.LIST)) {
+                errors.addAll(this.listValue.load(plugin, enchantmentConfig, isPremiumLoading));
             } else {
                 errors.addAll(this.doubleValue.load(plugin, enchantmentConfig, isPremiumLoading));
             }
@@ -69,7 +74,10 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     public T getDefaultValue() {
         if (type.getValue().get().equals(VariableType.STRING)) {
             return (T) stringValue.getValue().get();
-        } else {
+        } else if (type.getValue().get().equals(VariableType.LIST)) {
+            return (T) listValue.getValue();
+        }
+        else {
             return (T) doubleValue.getValue(null, new StringPlaceholder()).get();
         }
     }
@@ -87,7 +95,10 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         this.type.save(attributeConfig);
         if (type.getValue().get().equals(VariableType.STRING)) {
             this.stringValue.save(attributeConfig);
-        } else {
+        } else if (type.getValue().get().equals(VariableType.LIST)) {
+            this.listValue.save(attributeConfig);
+        }
+        else {
             this.doubleValue.save(attributeConfig);
         }
     }
@@ -105,6 +116,8 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         finalDescription[finalDescription.length - 3] = "&7Type: &e" + type.getValue().get();
         if (type.getValue().get().equals(VariableType.STRING))
             finalDescription[finalDescription.length - 2] = "&7Default: &e" + stringValue.getValue().get();
+        else if (type.getValue().get().equals(VariableType.LIST))
+            finalDescription[finalDescription.length - 2] = "&7Default: &e" + Arrays.toString(listValue.getValue().toArray());
         else finalDescription[finalDescription.length - 2] = "&7Default: &e" + doubleValue.getValue().get();
         finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
@@ -124,12 +137,13 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         eF.setType(type.clone(eF));
         eF.setStringValue(stringValue.clone(eF));
         eF.setDoubleValue(doubleValue.clone(eF));
+        eF.setListValue(listValue.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(variableName, type, stringValue, doubleValue));
+        return new ArrayList<>(Arrays.asList(variableName, type, stringValue, doubleValue, listValue));
     }
 
     @Override
@@ -157,6 +171,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
                     aFOF.setType(type);
                     aFOF.setStringValue(stringValue);
                     aFOF.setDoubleValue(doubleValue);
+                    aFOF.setListValue(listValue);
                     break;
                 }
             }

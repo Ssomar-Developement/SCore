@@ -1,7 +1,7 @@
 package com.ssomar.score.features.custom.useperday.data;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;

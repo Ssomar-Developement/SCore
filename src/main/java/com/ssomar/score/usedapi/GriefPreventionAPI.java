@@ -1,6 +1,7 @@
 package com.ssomar.score.usedapi;
 
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
@@ -13,16 +14,13 @@ import java.util.UUID;
 
 public class GriefPreventionAPI {
 
-    public static boolean playerIsInHisClaim(@NotNull Player p, Location location) {
-        return playerCanBreakClaimBlock(p.getUniqueId(), location);
-    }
-
-    public static boolean playerIsInHisClaim(@NotNull UUID pUUID, Location location, boolean acceptWilderness) {
+    public static boolean playerIsInHisClaim(@NotNull Player p, Location location, boolean acceptWilderness) {
         DataStore dataStore = GriefPrevention.instance.dataStore;
         Claim claim = dataStore.getClaimAt(location, false, null);
         if (claim == null || claim.getOwnerID() == null) return acceptWilderness;
 
-        return claim.getOwnerID().equals(pUUID);
+
+        return claim.getOwnerID().equals(p.getUniqueId()) || (claim.hasExplicitPermission(p, ClaimPermission.Build) && claim.hasExplicitPermission(p, ClaimPermission.Access) && claim.hasExplicitPermission(p, ClaimPermission.Inventory));
     }
 
 

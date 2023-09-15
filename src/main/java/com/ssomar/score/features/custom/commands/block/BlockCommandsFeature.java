@@ -13,7 +13,7 @@ import com.ssomar.score.features.custom.commands.CommandsAbstractFeature;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -40,7 +40,7 @@ public class BlockCommandsFeature extends CommandsAbstractFeature<List<String>, 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        value = BlockCommandManager.getInstance().getBlockCommands(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
+        value = BlockCommandManager.getInstance().getCommandsVerified(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
         return errors;
     }
 
@@ -118,6 +118,14 @@ public class BlockCommandsFeature extends CommandsAbstractFeature<List<String>, 
             map.put(command.getNames().get(0), suggestion);
         }
         return new ArrayList<>(map.values());
+    }
+
+    @Override
+    public List<TextComponent> getMoreInfo() {
+        TextComponent component = new TextComponent(StringConverter.coloredString("&7&oClick here for the utility commands (&e&oDELAY, FOR, LOOP, RANDOM, etc.&7&o)"));
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://docs.ssomar.com/tools-for-all-plugins/custom-commands/utility-commands"));
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&7&oClick here for the utility commands (&e&oDELAY, FOR, LOOP, RANDOM, etc.&7&o)")).create()));
+        return Collections.singletonList(component);
     }
 
     @Override

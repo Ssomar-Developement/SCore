@@ -4,6 +4,9 @@
 # HU by ?
 # ptBR (Brazil) by Seytani
 # DE by N.T.G
+# UK
+# RU by thed1vine?
+#zhCN
 locale: EN
 useMySQL: false
 dbIP: 127.0.0.1
@@ -11,3 +14,5 @@ dbPort: 3306
 dbName: myDB
 dbUser: root
 dbPassword: rootPassword
+reduceDamageIndicatorWithProtolcolLib: false # if you have ProtocolLib installed, you can reduce the damage indicator amount (The amount of hearts that are displayed when you take damage)
+jetMinionsGenerateBreakActivator : false

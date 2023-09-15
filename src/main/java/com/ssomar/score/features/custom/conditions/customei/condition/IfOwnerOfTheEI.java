@@ -3,17 +3,15 @@ package com.ssomar.score.features.custom.conditions.customei.condition;
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
+import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfOwnerOfTheEI> {
@@ -23,8 +21,10 @@ public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfO
     }
 
     @Override
-    public boolean verifCondition(Player player, ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(CustomEIConditionRequest request) {
         if (hasCondition()) {
+            ItemStack itemStack = request.getItemStack();
+            Player player = request.getPlayer();
             if (itemStack.hasItemMeta()) {
                 ItemMeta iM = itemStack.getItemMeta();
 
@@ -38,8 +38,7 @@ public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfO
                     invalid = true;
                 }
                 if (invalid || !uuid.equals(player.getUniqueId())) {
-                    sendErrorMsg(playerOpt, messageSender);
-                    cancelEvent(event);
+                    runInvalidCondition(request);
                     return false;
                 }
             }

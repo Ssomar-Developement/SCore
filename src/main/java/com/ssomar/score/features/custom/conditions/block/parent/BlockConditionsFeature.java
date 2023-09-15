@@ -5,10 +5,11 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.custom.conditions.block.condition.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -42,9 +43,11 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfIsPowered(this));
         conditions.add(new IfMustBeNotPowered(this));
         conditions.add(new IfMustBeNatural(this));
+        conditions.add(new IfMustBeNotNatural(this));
         conditions.add(new IfPlayerMustBeOnTheBlock(this));
         conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
-        conditions.add(new IfPlantFullyGrown(this));
+        if(!SCore.is1v12Less()) conditions.add(new IfPlantFullyGrown(this));
+        if(!SCore.is1v12Less()) conditions.add(new IfPlantNotFullyGrown(this));
         conditions.add(new IfContainerEmpty(this));
         conditions.add(new IfContainerNotEmpty(this));
         conditions.add(new IfContainerContainsSellableItem(this));
@@ -60,9 +63,15 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
 
     }
 
-    public boolean verifConditions(Block b, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+    public boolean verifConditions(Block block, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+        BlockConditionRequest request = new BlockConditionRequest(block, playerOpt, messageSender.getSp(), event);
         for (BlockConditionFeature condition : conditions) {
-            if (!condition.verifCondition(b, playerOpt, messageSender, event)) {
+            if (!condition.verifCondition(request)) {
+                if (messageSender != null && playerOpt.isPresent()) {
+                    for (String error : request.getErrorsFinal()) {
+                        messageSender.sendMessage(playerOpt.get(), error);
+                    }
+                }
                 return false;
             }
         }

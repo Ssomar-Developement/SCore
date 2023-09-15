@@ -7,8 +7,8 @@ import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.CustomColor;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.emums.CustomColor;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;
@@ -81,7 +81,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     @Override
     public void updateItemParentEditor(GUI gui) {
         Optional<Color> value = getValue();
-        Color finalValue = value.orElse(Color.WHITE);
+        Color finalValue = value.orElse(CustomColor.getNullColor());
         updateColor(finalValue, gui);
     }
 

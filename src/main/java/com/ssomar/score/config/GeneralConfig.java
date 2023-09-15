@@ -1,7 +1,10 @@
 package com.ssomar.score.config;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
+import lombok.Getter;
+
+import java.util.List;
 
 public class GeneralConfig extends Config {
 
@@ -21,6 +24,15 @@ public class GeneralConfig extends Config {
 
     private String dbPassword;
 
+    @Getter
+    private List<String> silenceOutputs;
+
+    @Getter
+    private boolean reduceDamageIndicatorWithProtolcolLib;
+
+    @Getter
+    private boolean jetMinionsGenerateBreakActivator;
+
     public GeneralConfig() {
         super();
         super.setup(SCore.plugin);
@@ -39,7 +51,7 @@ public class GeneralConfig extends Config {
     public void load() {
         /* Locale config (language) */
         locale = config.getString("locale", "EN");
-        if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU") || locale.equals("ptBR") || locale.equals("DE")) {
+        if (locale.equals("FR") || locale.equals("EN") || locale.equals("ES") || locale.equals("HU") || locale.equals("ptBR") || locale.equals("DE") || locale.equals("UK")) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Locale setup: &6" + locale);
         } else {
             SCore.plugin.getServer().getLogger().severe("[SCore] Invalid locale name: " + locale);
@@ -52,6 +64,9 @@ public class GeneralConfig extends Config {
         dbName = config.getString("dbName", "");
         dbUser = config.getString("dbUser", "");
         dbPassword = config.getString("dbPassword", "");
+        reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
+        jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
+        silenceOutputs = config.getStringList("silenceOutputs");
 
     }
 

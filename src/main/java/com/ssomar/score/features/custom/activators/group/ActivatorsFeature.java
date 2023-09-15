@@ -1,13 +1,13 @@
 package com.ssomar.score.features.custom.activators.group;
 
-import com.ssomar.executableblocks.executableblocks.activators.Option;
-import com.ssomar.score.SCore;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     private int premiumLimit = 1;
 
     public ActivatorsFeature(FeatureParentInterface parent, NewSActivator<?, ?, ?> builderInstance) {
-        super(parent, "activators", "Activators", new String[]{"&7&oThe activators / triggers"}, Material.BEACON, false);
+        super(parent, "activators", TM.g(Text.FEATURES_ACTIVATORS_NAME), TM.gA(Text.FEATURES_ACTIVATORS_DESCRIPTION), Material.BEACON, false);
         this.builderInstance = builderInstance;
         reset();
     }
@@ -56,14 +56,11 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                 }
-                //SsomarDev.testMsg("Activator " + activatorID + " loaded");
+                //SsomarDev.testMsg("Activator " + activatorID + " loaded", true);
                 if (activator.getOption().isLoopOption()) {
-                    //SsomarDev.testMsg("Activator " + activatorID + " is a loop activator");
+                    //SsomarDev.testMsg("Activator " + activatorID + " is a loop activator", true);
                     LoopManager.getInstance().addLoopActivator(activator);
-                    //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size());
-                }
-                if (SCore.hasExecutableBlocks && activator.getOption().equals(Option.ENTITY_WALK_ON)) {
-                    LoopManager.getInstance().getCheckEntityOnofEB().add(activator);
+                    //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size(), true);
                 }
                 activators.put(activatorID, activator);
             }
@@ -188,7 +185,6 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
 
     @Override
     public void deleteFeature(@NotNull Player editor, NewSActivator feature) {
-        LoopManager.getInstance().getCheckEntityOnofEB().remove(activators.get(feature.getId()));
         LoopManager.getInstance().removeLoopActivator(activators.get(feature.getId()));
         activators.remove(feature.getId());
     }

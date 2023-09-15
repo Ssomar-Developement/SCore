@@ -12,9 +12,8 @@ import com.ssomar.score.features.custom.conditions.placeholders.placeholder.Plac
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;
 import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
-import com.ssomar.score.utils.Comparator;
-import com.ssomar.score.utils.NTools;
-import com.ssomar.score.utils.PlaceholdersCdtType;
+import com.ssomar.score.utils.emums.Comparator;
+import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -69,13 +68,14 @@ public class Around extends PlayerCommand {
                             String s = tab[m];
 
                             if (m == 0) {
-                                //SsomarDev.testMsg("receive : s = " + s, DEBUG);
+                                //SsomarDev.testMsg("receive : s = " + s, true);
                                 s = sp.replacePlaceholder(s);
                                 s = s.replaceAll("%::", "%");
                                 s = s.replaceAll("::%", "%");
+                                //SsomarDev.testMsg("receive 2 : s = " + s, true);
                                 List<PlaceholderConditionFeature> conditions = extractConditions(s);
                                 s = getFirstCommandWithoutConditions(s);
-                                //SsomarDev.testMsg("s: " + s, true);
+                                //SsomarDev.testMsg("s: " + s+" conditions size: "+conditions.size(), true);
                                 if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
                                     for (PlaceholderConditionFeature condition : conditions) {
                                         //SsomarDev.testMsg("condition: " + condition, true);
@@ -121,7 +121,7 @@ public class Around extends PlayerCommand {
             int indexOfClose = tab[1].indexOf(")");
             if (indexOfClose != -1) {
                 String conditionsStr = tab[1].substring(0, indexOfClose);
-                String[] tab3 = conditionsStr.split("&");
+                String[] tab3 = conditionsStr.split("&&");
                 for (String condition : tab3) {
                     for (Comparator comparator : Comparator.values()) {
                         if (condition.contains(comparator.getSymbol())) {
@@ -129,10 +129,7 @@ public class Around extends PlayerCommand {
                             String placeholder = conditionSplit[0];
                             String value = conditionSplit[1];
                             PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
-                            if ((comparator.equals(Comparator.EQUALS) || comparator.equals(Comparator.DIFFERENT)) && !NTools.isNumber(value)) {
-                                conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_STRING));
-                            } else
-                                conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_NUMBER));
+                            conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
 
                             conditionFeature.setPart1(ColoredStringFeature.buildNull(placeholder));
                             conditionFeature.setPart2(ColoredStringFeature.buildNull(value));

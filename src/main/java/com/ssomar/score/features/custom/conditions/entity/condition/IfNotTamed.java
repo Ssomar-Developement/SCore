@@ -2,15 +2,11 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
+import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTamed> {
 
@@ -19,11 +15,14 @@ public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTame
     }
 
     @Override
-    public boolean verifCondition(Entity entity, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
-        if (hasCondition() && entity instanceof Tameable && ((Tameable) entity).isTamed()) {
-            sendErrorMsg(playerOpt, messageSender);
-            cancelEvent(event);
-            return false;
+    public boolean verifCondition(EntityConditionRequest request) {
+        Entity entity = request.getEntity();
+        if (hasCondition()) {
+            if(!(entity instanceof Tameable)) return true;
+            else if((entity instanceof Tameable && ((Tameable) entity).isTamed())) {
+                runInvalidCondition(request);
+                return false;
+            }
         }
 
         return true;

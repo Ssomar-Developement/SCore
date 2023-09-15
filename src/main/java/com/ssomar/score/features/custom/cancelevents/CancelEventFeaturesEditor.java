@@ -16,7 +16,6 @@ public class CancelEventFeaturesEditor extends FeatureEditorInterface<CancelEven
     @Override
     public void load() {
         dropFeatures.getCancelEventIfNoperm().initAndUpdateItemParentEditor(this, 0);
-        dropFeatures.getCancelEventIfNotOwner().initAndUpdateItemParentEditor(this, 1);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

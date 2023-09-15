@@ -70,6 +70,10 @@ public enum SProjectileType {
             features.add(new RemoveWhenHitBlockFeature(parent));
         }
 
+        if(SCore.is1v17Plus()){
+            features.add(new FireFeature(parent));
+        }
+
         switch (this) {
             case ARROW:
                 features.add(new GravityFeature(parent));
@@ -101,9 +105,10 @@ public enum SProjectileType {
             case SPLASH_POTION:
             case LINGERING_POTION:
                 features.add(new GravityFeature(parent));
-                if (!SCore.is1v13Less()) {
+                /* color feature already in PotionSettingsFeature
+                 if (!SCore.is1v13Less()) {
                     features.add(new ColorFeature(parent));
-                }
+                } */
                 features.add(new PotionSettingsFeature(parent));
                 break;
             case SHULKER_BULLET:

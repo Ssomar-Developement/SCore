@@ -2,15 +2,12 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListBiomeFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class IfInBiome extends PlayerConditionFeature<ListBiomeFeature, IfInBiome> {
 
@@ -19,18 +16,12 @@ public class IfInBiome extends PlayerConditionFeature<ListBiomeFeature, IfInBiom
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(PlayerConditionRequest request) {
         if (hasCondition()) {
-            boolean notValid = true;
-            for (Biome b : getCondition().getValue()) {
-                if (player.getLocation().getBlock().getBiome().equals(b)) {
-                    notValid = false;
-                    break;
-                }
-            }
+            Player player = request.getPlayer();
+            boolean notValid = !getCondition().isValid(player.getLocation());
             if (notValid) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

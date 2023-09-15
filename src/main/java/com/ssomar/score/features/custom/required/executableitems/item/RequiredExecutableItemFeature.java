@@ -13,7 +13,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -176,7 +176,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
             if (it != null) {
                 ExecutableItemObject eiObject = new ExecutableItemObject(it);
                 if (eiObject.isValid()) {
-                    if (eiObject.getConfig().getId().equals(executableItem.getValue().get().getId())) {
+                    if (eiObject.getConfig().getId().equalsIgnoreCase(executableItem.getValue().get().getId())) {
                         if (getUsageCondition().getValue().isPresent()) {
                             eiObject.loadExecutableItemInfos();
                             if (!StringCalculation.calculation(getUsageCondition().getValue().get(), eiObject.getUsage())) {
@@ -203,10 +203,18 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
 
         for (ItemStack it : inventory.getContents()) {
             Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(it);
-            if (eiOpt.isPresent() && eiOpt.get().getId().equals(executableItem.getValue().get().getId())) {
+            if (eiOpt.isPresent() && eiOpt.get().getId().equalsIgnoreCase(executableItem.getValue().get().getId())) {
                 if (needed >= it.getAmount()) {
                     needed -= it.getAmount();
-                    int slot = inventory.first(it);
+                    /* .first doesnt check off hand and armor */
+                    // int slot = inventory.first(it);
+                    int slot = -1;
+                    for (ItemStack item : inventory.getContents()) {
+                        slot++;
+                        if (item == null) continue;
+                        if (item.equals(it)) break;
+                    }
+                    //SsomarDev.testMsg("slot: " + slot, DEBUG);
                     inventory.clear(slot);
                 } else {
                     it.setAmount(it.getAmount() - needed);

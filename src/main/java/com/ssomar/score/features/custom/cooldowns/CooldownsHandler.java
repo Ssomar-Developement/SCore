@@ -14,9 +14,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ssomar.score.SCore.isFolia;
+
 public class CooldownsHandler implements Listener {
 
     public static void loadCooldowns() {
+        if(isFolia()) return;
         Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
             List<Cooldown> cooldowns = CooldownsQuery.getGlobalCooldowns(Database.getInstance().connect());
             Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
@@ -47,7 +50,11 @@ public class CooldownsHandler implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
+        if(!SCore.plugin.isEnabled()) return;
+
+        if(isFolia()) return;
         Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+            if(!SCore.plugin.isEnabled()) return;
             List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
             Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
                 @Override
@@ -74,6 +81,7 @@ public class CooldownsHandler implements Listener {
 
         if(!SCore.plugin.isEnabled()) return;
 
+        if(isFolia()) return;
         Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
             CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
             if(!SCore.plugin.isEnabled()) return;

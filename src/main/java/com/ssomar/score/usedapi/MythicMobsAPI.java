@@ -28,9 +28,10 @@ public class MythicMobsAPI {
     public static boolean isMythicMob(Entity entity, List<String> mobNames) {
         if (SCore.hasMythicMobs) {
             BukkitAPIHelper api = MythicBukkit.inst().getAPIHelper();
-            if (api.isMythicMob(entity)) {
+            //SsomarDev.testMsg("isMythicMob: " + api.isMythicMob(entity.getUniqueId())+ " "+entity.getType(), true);
+            if (api.isMythicMob(entity.getUniqueId())) {
                 ActiveMob activeMob = api.getMythicMobInstance(entity);
-                //SsomarDev.testMsg("Name/ID: " + activeMob.getType().getInternalName());
+                //SsomarDev.testMsg("Name/ID: " + activeMob.getType().getInternalName(), true);
                 return mobNames.contains(activeMob.getType().getInternalName());
             }
         }

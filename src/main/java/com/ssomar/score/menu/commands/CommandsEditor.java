@@ -3,7 +3,7 @@ package com.ssomar.score.menu.commands;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.util.UtilCommandsManager;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

@@ -2,7 +2,7 @@ package com.ssomar.score.features.custom.variables.update.variable;
 
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.emums.VariableType;
 
 public class VariableUpdateFeatureEditor extends FeatureEditorInterface<VariableUpdateFeature> {
 
@@ -21,7 +21,7 @@ public class VariableUpdateFeatureEditor extends FeatureEditorInterface<Variable
         enchantFeature.getType().initAndUpdateItemParentEditor(this, 1);
         if (enchantFeature.getVariables().getVariablesName().contains(enchantFeature.getVariableName().getValue().get())) {
             VariableType variableType = enchantFeature.getVariables().getVariable(enchantFeature.getVariableName().getValue().get()).getType().getValue().get();
-            if (variableType.equals(VariableType.STRING)) {
+            if (variableType.equals(VariableType.STRING) || variableType.equals(VariableType.LIST)) {
                 enchantFeature.getStringUpdate().initAndUpdateItemParentEditor(this, 2);
             } else if (variableType.equals(VariableType.NUMBER)) {
                 enchantFeature.getDoubleUpdate().initAndUpdateItemParentEditor(this, 2);

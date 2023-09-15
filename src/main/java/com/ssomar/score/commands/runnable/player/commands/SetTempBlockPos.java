@@ -10,7 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.*;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -43,6 +44,8 @@ public class SetTempBlockPos extends PlayerCommand {
 
             UUID uuid = receiver.getUniqueId();
             boolean placed = false;
+
+            if(data instanceof Bisected || data instanceof Orientable || data instanceof Rotatable || data instanceof Slab || data instanceof Directional || data instanceof Levelled) return;
 
             if (Material.matchMaterial(mat) != null) {
                 SafePlace.placeBlockWithEvent(block, Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);

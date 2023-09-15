@@ -10,8 +10,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -22,7 +21,6 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,18 +69,24 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     public abstract boolean hasCondition();
 
-    public void sendErrorMsg(Optional<Player> playerOpt, SendMessage messageSender) {
-        if (playerOpt.isPresent() && hasErrorMsg())
-            messageSender.sendMessage(playerOpt.get(), errorMessage.getValue().get());
+    public void addInErrorsInRequest(ConditionRequest request) {
+        if (hasErrorMsg())
+            request.getErrors().add(errorMessage.getValue().get());
     }
 
     public boolean hasErrorMsg() {
         return errorMessage.getValue().isPresent() && StringConverter.decoloredString(errorMessage.getValue().get().trim()).length() > 0;
     }
 
-    public void cancelEvent(@Nullable Event event) {
+    public void cancelEvent(ConditionRequest request) {
+        Event event = request.getEvent();
         if (event != null && cancelEventIfError.getValue() && event instanceof Cancellable)
             ((Cancellable) event).setCancelled(true);
+    }
+
+    public void runInvalidCondition(ConditionRequest request){
+        addInErrorsInRequest(request);
+        cancelEvent(request);
     }
 
 

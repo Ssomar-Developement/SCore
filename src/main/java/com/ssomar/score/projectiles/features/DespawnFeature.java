@@ -2,7 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.types.IntegerFeature;
+import com.ssomar.score.features.types.DoubleFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -10,10 +10,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Optional;
 
-public class DespawnFeature extends IntegerFeature implements SProjectileFeatureInterface {
+public class DespawnFeature extends DoubleFeature implements SProjectileFeatureInterface {
 
     public DespawnFeature(FeatureParentInterface parent) {
-        super(parent, "despawnDelay", Optional.of(-1), "Despawn delay", new String[]{"&7&o-1 for vanilla despawn"}, Material.DEAD_BUSH, false);
+        super(parent, "despawnDelay", Optional.of(-1.0), "Despawn delay", new String[]{"&7&o-1 for vanilla despawn"}, Material.DEAD_BUSH, false);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class DespawnFeature extends IntegerFeature implements SProjectileFeature
                         e.remove();
                 }
             };
-            runnable.runTaskLater(SCore.plugin, getValue().get() * 20);
+            runnable.runTaskLater(SCore.plugin, (int)(getValue().get() * 20));
         }
     }
 

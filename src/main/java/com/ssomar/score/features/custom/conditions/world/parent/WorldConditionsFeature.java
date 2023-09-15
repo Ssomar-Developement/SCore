@@ -4,11 +4,13 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
+import com.ssomar.score.features.custom.conditions.world.WorldConditionRequest;
 import com.ssomar.score.features.custom.conditions.world.condition.IfWeather;
 import com.ssomar.score.features.custom.conditions.world.condition.IfWorldTime;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -59,9 +61,28 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
         return error;
     }
 
-    public boolean verifCondition(World world, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+    public boolean verifConditions(World world, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+        WorldConditionRequest request = new WorldConditionRequest(world, playerOpt, messageSender.getSp(), event);
         for (WorldConditionFeature condition : conditions) {
-            if (!condition.verifCondition(world, playerOpt, messageSender, event)) {
+            if (!condition.verifCondition(request)) {
+                if (messageSender != null && playerOpt.isPresent()) {
+                    for (String error : request.getErrorsFinal()) {
+                        messageSender.sendMessage(playerOpt.get(), error);
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean verifConditions(World world, List<String> errors, @Nullable StringPlaceholder stringPlaceholder) {
+        if(stringPlaceholder == null) stringPlaceholder = new StringPlaceholder();
+
+        WorldConditionRequest request = new WorldConditionRequest(world, Optional.empty(), stringPlaceholder, null);
+        for (WorldConditionFeature condition : conditions) {
+            if (!condition.verifCondition(request)) {
+                errors.addAll(request.getErrorsFinal());
                 return false;
             }
         }
@@ -86,7 +107,7 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
     public WorldConditionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = "&7World condition(s) enabled: &e" + getBlockConditionEnabledCount();
+        finalDescription[finalDescription.length - 2] = "&7World condition(s) enabled: &e" + getWorldConditionEnabledCount();
         finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
 
@@ -94,7 +115,7 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
         return this;
     }
 
-    public int getBlockConditionEnabledCount() {
+    public int getWorldConditionEnabledCount() {
         int i = 0;
         for (WorldConditionFeature condition : conditions) {
             if (condition.hasCondition()) {

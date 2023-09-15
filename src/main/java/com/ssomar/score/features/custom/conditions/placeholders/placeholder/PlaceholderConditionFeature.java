@@ -11,13 +11,14 @@ import com.ssomar.score.features.types.ComparatorFeature;
 import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.Comparator;
-import com.ssomar.score.utils.NTools;
-import com.ssomar.score.utils.PlaceholdersCdtType;
+import com.ssomar.score.utils.emums.Comparator;
+import com.ssomar.score.utils.emums.PlaceholdersCdtType;
+import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -76,46 +77,69 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         String aPart1 = "";
         String aPart2 = "";
 
+        PlaceholdersCdtType t = type.getValue().get();
+
         if (sp != null) {
             aPart1 = sp.replacePlaceholder(part1.getValue().get(), false);
-            aPart2 = sp.replacePlaceholder(part2.getValue().get(), false);
+            if(t == PlaceholdersCdtType.PLAYER_TARGET || t == PlaceholdersCdtType.PLAYER_PLAYER || t == PlaceholdersCdtType.TARGET_TARGET) aPart2 = sp.replacePlaceholder(part2.getValue().get(), false);
+            else aPart2 = part2.getValue().get();
         } else {
             aPart1 = part1.getValue().get();
             aPart2 = part2.getValue().get();
         }
 
         if (SCore.hasPlaceholderAPI) {
+            //SsomarDev.testMsg("PlaceholderConditionFeature verify() hasPlaceholderAPI", true);
             // replace placeholders in first part
             if (PlaceholdersCdtType.getpCdtTypeWithPlayer().contains(type.getValue().get()) && player != null) {
-                aPart1 = PlaceholderAPI.setPlaceholders(player, aPart1);
-            } else if (target != null) aPart1 = PlaceholderAPI.setPlaceholders(target, aPart1);
+                //SsomarDev.testMsg("PlaceholderConditionFeature verify() getpCdtTypeWithPlayer", true);
+                aPart1 = StringPlaceholder.replacePlaceholderOfPAPI(aPart1, player.getUniqueId());
+            } else if (target != null){
+                //SsomarDev.testMsg("PlaceholderConditionFeature verify() target != null", true);
+                aPart1 = StringPlaceholder.replacePlaceholderOfPAPI(aPart1, target.getUniqueId());
+            }
 
             // replace placeholders in second part
             if (PlaceholdersCdtType.PLAYER_PLAYER.equals(type.getValue().get()) && player != null) {
-                aPart2 = PlaceholderAPI.setPlaceholders(player, aPart2);
+                aPart2 = StringPlaceholder.replacePlaceholderOfPAPI(aPart2, player.getUniqueId());
             } else if ((PlaceholdersCdtType.TARGET_TARGET.equals(type.getValue().get()) || PlaceholdersCdtType.PLAYER_TARGET.equals(type.getValue().get())) && target != null) {
-                aPart2 = PlaceholderAPI.setPlaceholders(target, aPart2);
+                aPart2 = StringPlaceholder.replacePlaceholderOfPAPI(aPart2, target.getUniqueId());
+            }
+
+            /* Second time for the variables contains with papi placeholder in*/
+            if (sp != null) {
+                aPart1 = sp.replacePlaceholder(aPart1, false);
+                if(t == PlaceholdersCdtType.PLAYER_TARGET || t == PlaceholdersCdtType.PLAYER_PLAYER || t == PlaceholdersCdtType.TARGET_TARGET) aPart2 = sp.replacePlaceholder(aPart2, false);
             }
         }
 
+        aPart1 = StringConverter.deconvertColor(aPart1);
+        //SsomarDev.testMsg("aPart1: "+aPart1, true);
+        aPart2 = StringConverter.deconvertColor(aPart2);
+
         // verification
-        switch (type.getValue().get()) {
+        switch (t) {
 
             case PLAYER_NUMBER:
             case TARGET_NUMBER:
-                if (NTools.isNumber(aPart1)) {
-                    double nPart1 = Double.parseDouble(aPart1);
-                    double nPart2 = Double.parseDouble(aPart2);
-                    if (!comparator.getValue().get().verify(nPart1, nPart2)){
-                        SsomarDev.testMsg("false because> "+nPart1+" ?? "+nPart2, DEBUG);
-                        return false;
-                    }
-                } else return false;
+                try {
+                    if (NTools.isNumber(aPart1)) {
+                        double nPart1 = Double.parseDouble(aPart1);
+                        double nPart2 = Double.parseDouble(aPart2);
+                        if (!comparator.getValue().get().verify(nPart1, nPart2)){
+                            SsomarDev.testMsg("false because> "+nPart1+" ?? "+nPart2, DEBUG);
+                            return false;
+                        }
+                    } else return false;
+                } catch (Exception e) {
+                    Utils.sendConsoleMsg("&cSCore, error with the placeholder condition of the object &6&l"+getParentInfo()+" &ccondition: &7" + e.getMessage());
+                    return false;
+                }
                 break;
 
             case PLAYER_STRING:
             case TARGET_STRING:
-                if(aPart1.contains("<OR>")) {
+                if(aPart2.contains("<OR>")) {
                     List<String> list = new ArrayList<>(Arrays.asList(aPart2.split("<OR>")));
                     /** Trim strings **/
                     for(int i = 0; i < list.size(); i++) {
@@ -124,6 +148,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                     if (!comparator.getValue().get().verify(aPart1, list)) return false;
                 }
                 else if (!comparator.getValue().get().verify(aPart1, aPart2)){
+                    //System.out.println("false because> "+aPart1+" ?? "+aPart2);
                     SsomarDev.testMsg("false because> "+aPart1+" ?? "+aPart2, DEBUG);
                     return false;
                 }

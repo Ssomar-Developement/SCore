@@ -1,7 +1,11 @@
 package com.ssomar.score.variables;
 
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
+import com.ssomar.score.features.FeatureAbstract;
+import com.ssomar.score.features.FeatureInterface;
+import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.editor.FeatureEditorManagerAbstract;
+import com.ssomar.score.variables.manager.VariablesManager;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,6 +59,21 @@ public class VariableEditorManager extends FeatureEditorManagerAbstract<Variable
             reloadEditor(i);
         }
         return result;
+    }
+
+    @Override
+    public void save(NewInteractionClickedGUIManager<VariableEditor> interact) {
+        FeatureParentInterface parent = interact.gui.getParent();
+        parent.save();
+        parent.reload();
+        while (parent instanceof FeatureInterface && ((FeatureAbstract) parent).getParent() != parent) {
+            parent = ((FeatureAbstract) parent).getParent();
+            parent.reload();
+        }
+        back(interact);
+
+        // save variable in MySQL
+        VariablesManager.getInstance().updateLoadedMySQL(interact.gui.getParent().getId(), VariablesManager.MODE.EXPORT);
     }
 
 }

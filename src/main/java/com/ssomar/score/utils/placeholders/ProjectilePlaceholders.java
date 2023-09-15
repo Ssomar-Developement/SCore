@@ -1,9 +1,11 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.score.SCore;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 
@@ -38,15 +40,34 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 
     public void reloadProjectilePlcHldr() {
         Entity entity;
-        if (this.projectileUUID != null && (entity = Bukkit.getEntity(projectileUUID)) != null) {
-            this.projectileType = entity.getType().toString();
-            this.projectileName = entity.getName();
-            Location eLoc = entity.getLocation();
-            this.projectileX = eLoc.getX();
-            this.projectileY = eLoc.getY();
-            this.projectileZ = eLoc.getZ();
-            this.projectileWorld = eLoc.getWorld().getName();
+        if(this.projectileUUID != null) {
+            if (SCore.is1v11Less()) {
+                entity = getEntityByUniqueId(projectileUUID);
+            } else {
+                entity = Bukkit.getEntity(projectileUUID);
+            }
+
+            if (entity != null) {
+                this.projectileType = entity.getType().toString();
+                this.projectileName = entity.getName();
+                Location eLoc = entity.getLocation();
+                this.projectileX = eLoc.getX();
+                this.projectileY = eLoc.getY();
+                this.projectileZ = eLoc.getZ();
+                this.projectileWorld = eLoc.getWorld().getName();
+            }
         }
+    }
+
+    public Entity getEntityByUniqueId(UUID uniqueId) {
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity.getUniqueId().equals(uniqueId))
+                    return entity;
+            }
+        }
+
+        return null;
     }
 
     public String replacePlaceholder(String s) {

@@ -6,7 +6,7 @@ import com.ssomar.score.menu.score.InteractionClickedGUIManager;
 import com.ssomar.score.sparticles.SParticle;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -169,7 +169,7 @@ public class SParticleGUIManager extends GUIManagerSCore<SParticleGUI> {
 
     @Override
     public void saveTheConfiguration(Player p) {
-        SParticle sParticle = new SParticle(cache.get(p).getActually(SParticleGUI.ID));
+        SParticle sParticle = new SParticle(cache.get(p).getCurrently(SParticleGUI.ID));
         sParticle.setParticlesAmount(cache.get(p).getInt(SParticleGUI.AMOUNT));
         sParticle.setParticlesDelay(cache.get(p).getInt(SParticleGUI.DELAY));
         sParticle.setParticlesType(cache.get(p).getType());

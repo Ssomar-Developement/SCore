@@ -7,8 +7,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOneMessageInEditor;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringCalculation;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringCalculation;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,7 +84,7 @@ public class NumberConditionFeature extends FeatureAbstract<Optional<String>, Nu
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -92,7 +92,7 @@ public class NumberConditionFeature extends FeatureAbstract<Optional<String>, Nu
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if (value.isPresent()) gui.updateActually(getEditorName(), getValue().get(), true);
+        if (value.isPresent()) gui.updateCurrently(getEditorName(), getValue().get(), true);
         else gui.updateCondition(getEditorName(), "");
     }
 

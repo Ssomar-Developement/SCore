@@ -1,10 +1,12 @@
 package com.ssomar.score.editor;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import lombok.Getter;
@@ -27,6 +29,7 @@ public abstract class NewGUIManager<T extends GUI> {
     public HashMap<Player, List<String>> currentWriting;
 
     public Map<Player, Boolean> activeTextEditor;
+    public List<TextComponent> moreInfo;
     public Map<Player, List<Suggestion>> suggestions;
     public Map<Player, Integer> suggestionPage;
     private int suggestionsPerColumn;
@@ -36,6 +39,7 @@ public abstract class NewGUIManager<T extends GUI> {
         requestWriting = new HashMap<>();
         currentWriting = new HashMap<>();
 
+        moreInfo = new ArrayList<>();
         suggestions = new HashMap<>();
         suggestionsPerColumn = 12;
         suggestionPage = new HashMap<>();
@@ -47,6 +51,7 @@ public abstract class NewGUIManager<T extends GUI> {
         requestWriting = new HashMap<>();
         currentWriting = new HashMap<>();
 
+        moreInfo = new ArrayList<>();
         suggestions = new HashMap<>();
         suggestionsPerColumn = 12;
         suggestionPage = new HashMap<>();
@@ -86,7 +91,7 @@ public abstract class NewGUIManager<T extends GUI> {
             if(folderInfoOpt.isPresent()) {
                 interact.localizedName = folderInfoOpt.get();
             }
-            else if(item.getItemMeta().hasLocalizedName()){
+            else if(!SCore.is1v11Less() && item.getItemMeta().hasLocalizedName()){
                 interact.localizedName = item.getItemMeta().getLocalizedName();
             }
             interact.gui = cache.get(interact.player);
@@ -99,8 +104,10 @@ public abstract class NewGUIManager<T extends GUI> {
                 newObject(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.EXIT)) {
                 interact.player.closeInventory();
-            } else if (interact.coloredDeconvertName.equals(GUI.SAVE)) {
+            } else if (interact.coloredDeconvertName.equals(GUI.SAVE) || interact.coloredDeconvertName.equals(TM.g(Text.EDITOR_SAVE_NAME))) {
                 save(interact);
+            } else if (interact.coloredDeconvertName.equals(GUI.REMOVE)) {
+                remove(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.NEXT_PAGE)) {
                 nextPage(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.PREVIOUS_PAGE)) {
@@ -285,6 +292,10 @@ public abstract class NewGUIManager<T extends GUI> {
 
     public abstract void save(NewInteractionClickedGUIManager<T> interact);
 
+    public void remove(NewInteractionClickedGUIManager<T> interact){
+
+    }
+
     @SuppressWarnings("deprecation")
     public void showCalculationGUI(Player p, String variable, String current) {
         p.sendMessage(StringConverter.coloredString("&8➤ &7&oReplace {number} by the number of your choice !"));
@@ -381,6 +392,11 @@ public abstract class NewGUIManager<T extends GUI> {
 
     public void sendSuggestions(Player p, String tips) {
         space(p);
+        if(moreInfo != null) {
+            for (TextComponent tc : moreInfo) {
+                p.spigot().sendMessage(tc);
+            }
+        }
         if (suggestions.get(p).size() > 0) {
             p.sendMessage(StringConverter.coloredString("&5&o>> &dChoose a suggestion below:"));
             space(p);

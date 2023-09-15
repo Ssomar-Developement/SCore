@@ -7,7 +7,7 @@ import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.variables.VariableForEnum;
 import lombok.Getter;
 import lombok.Setter;

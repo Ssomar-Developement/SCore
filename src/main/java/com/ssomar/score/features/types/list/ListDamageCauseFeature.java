@@ -4,10 +4,10 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -24,7 +24,7 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     }
 
     @Override
-    public List<EntityDamageEvent.DamageCause> loadValue(List<String> entries, List<String> errors) {
+    public List<EntityDamageEvent.DamageCause> loadValues(List<String> entries, List<String> errors) {
         List<EntityDamageEvent.DamageCause> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s.toUpperCase());
@@ -38,10 +38,15 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
         return value;
     }
 
+    @Override
+    public String transfromToString(EntityDamageEvent.DamageCause value) {
+        return value.name();
+    }
+
     public boolean verifCause(EntityDamageEvent.DamageCause cause) {
         if (cause != null) {
-            if (getValue().isEmpty()) return true;
-            return getValue().contains(cause);
+            if (getValues().isEmpty()) return true;
+            return getValues().contains(cause);
         }
         return false;
     }
@@ -49,16 +54,17 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     @Override
     public ListDamageCauseFeature clone(FeatureParentInterface newParent) {
         ListDamageCauseFeature clone = new ListDamageCauseFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message);
         try {
             EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(message);
-            getValue().add(mat);
+            getValues().add(mat);
             return Optional.empty();
         } catch (Exception e) {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a DamageCause &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html");
@@ -66,12 +72,8 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     }
 
     @Override
-    public List<String> getCurrentValues() {
-        List<String> currentValues = new ArrayList<>();
-        for (EntityDamageEvent.DamageCause mat : getValue()) {
-            currentValues.add(mat.name());
-        }
-        return currentValues;
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override
@@ -87,24 +89,6 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     public String getTips() {
         return "";
     }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue(new ArrayList<>());
-        for (String s : (List<String>) manager.currentWriting.get(editor)) {
-            s = StringConverter.decoloredString(s);
-            try {
-                EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(s);
-                getValue().add(mat);
-            } catch (Exception ignored) {
-            }
-        }
-
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
-    }
-
 
     @Override
     public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {

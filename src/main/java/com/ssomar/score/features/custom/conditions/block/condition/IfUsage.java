@@ -1,20 +1,16 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.executableblocks.placedblocks.LocationConverter;
 import com.ssomar.score.SCore;
-import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
-import com.ssomar.score.api.executableblocks.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
+import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.Optional;
 
@@ -30,18 +26,17 @@ public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsa
     }
 
     @Override
-    public boolean verifCondition(Block b, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(BlockConditionRequest request) {
         if (hasCondition() && SCore.hasExecutableBlocks) {
 
-            Location bLoc = LocationConverter.convert(b.getLocation(), false, false);
-            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+            Location bLoc = LocationConverter.convert(request.getBlock().getLocation(), false, false);
+            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
             if (eBPOpt.isPresent()) {
-                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
+                ExecutableBlockPlaced eBP = eBPOpt.get();
                 int usage = eBP.getUsage();
 
-                if (!StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), usage)) {
-                    sendErrorMsg(playerOpt, messageSender);
-                    cancelEvent(event);
+                if (!StringCalculation.calculation(getCondition().getValue(request.getPlayerOpt(), request.getSp()).get(), usage)) {
+                    runInvalidCondition(request);
                     return false;
                 }
             }

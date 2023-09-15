@@ -5,9 +5,10 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
-import org.bukkit.Sound;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Guardian;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -32,8 +33,10 @@ public class Damage extends EntityCommand {
 
 
         SsomarDev.testMsg("Damage.run() damage: " + damage, DEBUG);
+
         if (damage > 0 && !entity.isDead()) {
-            if (receiver instanceof EnderDragon) {
+            /* I dont remember why I coded this part of code, but i need to comment it for https://discord.com/channels/701066025516531753/1145591634038358086 */
+            /*if (receiver instanceof EnderDragon) {
                 //SsomarDev.testMsg("Passe enderdrag");
                 double newHealth = receiver.getHealth() - damage;
                 if (newHealth <= 0) {
@@ -43,7 +46,7 @@ public class Damage extends EntityCommand {
                     receiver.playEffect(EntityEffect.HURT);
                     receiver.getWorld().playSound(receiver.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 100, 1);
                 }
-            } else if (receiver instanceof Guardian) {
+            } else*/ if (receiver instanceof Guardian) {
                 SsomarDev.testMsg("Passe guardian", DEBUG);
                 receiver.damage(damage);
             } else {

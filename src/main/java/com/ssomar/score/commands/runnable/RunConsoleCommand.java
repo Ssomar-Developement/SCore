@@ -1,9 +1,8 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.FilterManager;
 import com.ssomar.score.usedapi.AllWorldManager;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
@@ -27,6 +26,7 @@ public class RunConsoleCommand {
             fM.incCurrentlyInRun();
         }
 
+        // By default Bukkit.dispatchCommand() is not sync , so one tick in addition is not a problem, its more to remind me that console commands are not sync
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -41,7 +41,7 @@ public class RunConsoleCommand {
 
             }
         };
-        runnable.runTaskLater(SCore.plugin, 1);
+        SCore.schedulerHook.runTask(runnable, 1);
 
 
         BukkitRunnable runnable3 = new BukkitRunnable() {
@@ -52,7 +52,7 @@ public class RunConsoleCommand {
 
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 2);
+        SCore.schedulerHook.runTask(runnable3, 2);
     }
 
     public static String addWorldCompatibilityForExecute(String command) {
@@ -70,6 +70,7 @@ public class RunConsoleCommand {
                         Entity entity = entities.get(0);
                         command = command.replace("in <<" + worldName + ">>", "at " + entity.getUniqueId());
                     }
+                    else return "";
                 }
             }
         }

@@ -15,7 +15,7 @@ public class RegainSaturation extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
         int regain = Double.valueOf(args.get(0)).intValue();
-        receiver.setSaturation(receiver.getFoodLevel() + regain);
+        receiver.setSaturation(receiver.getSaturation() + regain);
     }
 
     @Override

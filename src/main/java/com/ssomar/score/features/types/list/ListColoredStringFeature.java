@@ -4,10 +4,10 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
-import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -28,13 +28,18 @@ public class ListColoredStringFeature extends ListFeatureAbstract<String, ListCo
         reset();
     }
 
-    public List<String> loadValue(List<String> entries, List<String> errors) {
+    public List<String> loadValues(List<String> entries, List<String> errors) {
         return entries;
+    }
+
+    @Override
+    public String transfromToString(String value) {
+        return value;
     }
 
     public List<String> getColoredValue() {
         List<String> colored = new ArrayList<>();
-        for (String s : getValue()) {
+        for (String s : getValues()) {
             colored.add(StringConverter.coloredString(s));
         }
         return colored;
@@ -43,19 +48,20 @@ public class ListColoredStringFeature extends ListFeatureAbstract<String, ListCo
     @Override
     public ListColoredStringFeature clone(FeatureParentInterface newParent) {
         ListColoredStringFeature clone = new ListColoredStringFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue(), suggestions);
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         return Optional.empty();
     }
 
     @Override
-    public List<String> getCurrentValues() {
-        return getValue();
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override
@@ -67,15 +73,6 @@ public class ListColoredStringFeature extends ListFeatureAbstract<String, ListCo
     public String getTips() {
         return "";
     }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue((List<String>) manager.currentWriting.get(editor));
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
-    }
-
 
     @Override
     public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {

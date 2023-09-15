@@ -10,14 +10,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static org.bukkit.block.BlockFace.*;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
 public class MineInCube extends BlockCommand {
@@ -54,11 +54,12 @@ public class MineInCube extends BlockCommand {
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
+        //SsomarDev.testMsg("MINEINCUBE command", true);
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override
             public void run() {
                 /* Cancel a Loop of blockBreakEvent that MineInCbe can create */
-                if (aInfo.isEventCallByMineInCube()) return;
+                if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 try {
                     int radius = Integer.parseInt(args.get(0));
@@ -68,25 +69,69 @@ public class MineInCube extends BlockCommand {
                     boolean createBBEvent = true;
                     if (args.size() >= 3) createBBEvent = Boolean.parseBoolean(args.get(2));
 
+                    boolean offset = false;
+                    if(args.size() >= 4 ) offset = Boolean.parseBoolean(args.get(3));
+
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
                     blackList.add(Material.AIR);
 
+                    Integer offsetx = 0;
+                    Integer offsety = 0;
+                    Integer offsetz = 0;
+
+                    if(offset) {
+                        Set<Material> transparent = new HashSet<>();
+                        transparent.add(Material.WATER);
+                        transparent.add(Material.AIR);
+                        if(SCore.is1v18Plus()) transparent.add(Material.CAVE_AIR);
+
+                        List<Block> lastBlocks = p.getLastTwoTargetBlocks(transparent, 5);
+                        /* for (Block b : lastBlocks) {
+                            SsomarDev.testMsg("lastBlocks: " + b.getType().name(), true);
+                        }*/
+                        BlockFace face = null;
+                        try{
+                            face = lastBlocks.get(1).getFace(lastBlocks.get(0)).getOppositeFace();
+                        }catch (Exception ignored){
+                            // IndexOutOfBoundsException: Index 1 out of bounds for length 1 where the player has a fence or non full block in its line of view but don't break the block
+                            return;
+                        }
+
+                        if (face == NORTH) {
+                            offsetz = (-1 * radius);
+                        } else if (face == SOUTH) {
+                            offsetz = (1 * radius);
+                        } else if (face == WEST) {
+                            offsetx = (-1 * radius);
+                        } else if (face == EAST) {
+                            offsetx = (1 * radius);
+                        } else if (face == UP) {
+                            offsety = (1 * radius);
+                        } else if (face == DOWN) {
+                            offsety = (-1 * radius);
+                        }
+                    }
+
+                    boolean isv18plus = SCore.is1v18Plus();
                     if (radius < 10) {
                         for (int y = -radius; y < radius + 1; y++) {
                             for (int x = -radius; x < radius + 1; x++) {
                                 for (int z = -radius; z < radius + 1; z++) {
 
+                                    if(isv18plus) {
+                                        if ((block.getY() + y + offsety) < -64) continue;
+                                    }else{
+                                        if ((block.getY() + y + offsety) < 0) continue;
+                                    }
+
                                     Location toBreakLoc = new Location(block.getWorld(), block.getX() + x, block.getY() + y, block.getZ() + z);
-                                    Block toBreak = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
+                                    Block toBreak = block.getWorld().getBlockAt(block.getX() + x+offsetx, block.getY() + y+offsety, block.getZ() + z+offsetz);
 
                                     DetailedBlocks whiteList;
                                     if ((whiteList = aInfo.getDetailedBlocks()) != null) {
-                                        Optional<String> statesStr = Optional.empty();
-                                        if (!SCore.is1v12Less())
-                                            statesStr = Optional.ofNullable(toBreak.getBlockData().getAsString(true));
                                         /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
-                                        if (!whiteList.isValid(toBreak, toBreak.getType(), statesStr, Optional.empty(), null, new StringPlaceholder()))
+                                        if (!whiteList.isValid(toBreak, Optional.empty(), null, new StringPlaceholder()))
                                             continue;
                                     }
 
@@ -123,7 +168,7 @@ public class MineInCube extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "MINEINCUBE {radius} {ActiveDrop true or false} {create blockBreakEvent true or false}";
+        return "MINEINCUBE {radius} {ActiveDrop true or false} {create blockBreakEvent true or false} {offset default false}";
     }
 
     @Override

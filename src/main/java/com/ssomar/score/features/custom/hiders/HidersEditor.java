@@ -21,8 +21,15 @@ public class HidersEditor extends FeatureEditorInterface<Hiders> {
         dropFeatures.getHideAttributes().initAndUpdateItemParentEditor(this, 2);
         dropFeatures.getHidePotionEffects().initAndUpdateItemParentEditor(this, 3);
         dropFeatures.getHideUsage().initAndUpdateItemParentEditor(this, 4);
+        if(!SCore.is1v11Less()){
+            dropFeatures.getHideDestroys().initAndUpdateItemParentEditor(this, 5);
+            dropFeatures.getHidePlacedOn().initAndUpdateItemParentEditor(this, 6);
+        }
         if(SCore.is1v17Plus()) {
-            dropFeatures.getHideDye().initAndUpdateItemParentEditor(this, 5);
+            dropFeatures.getHideDye().initAndUpdateItemParentEditor(this, 7);
+        }
+        if(SCore.is1v20Plus()){
+            dropFeatures.getHideArmorTrim().initAndUpdateItemParentEditor(this, 8);
         }
 
         // Back

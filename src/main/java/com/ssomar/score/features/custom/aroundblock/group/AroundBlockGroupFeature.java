@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -28,7 +30,7 @@ public class AroundBlockGroupFeature extends FeatureWithHisOwnEditor<AroundBlock
     private boolean notSaveIfNoValue;
 
     public AroundBlockGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
-        super(parent, "blockAroundCdts", "Around blocks cdt", new String[]{"&7&oThe around blocks cdt"}, Material.STONE, false);
+        super(parent, "blockAroundCdts", TM.g(Text.FEATURES_AROUNDBLOCKS_NAME), TM.gA(Text.FEATURES_AROUNDBLOCKS_DESCRIPTION), Material.STONE, false);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }
@@ -76,7 +78,7 @@ public class AroundBlockGroupFeature extends FeatureWithHisOwnEditor<AroundBlock
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7&oBlock around cdt(s) added: &e" + aroundBlockGroup.size();
+        finalDescription[finalDescription.length - 1] = TM.g(Text.FEATURES_AROUNDBLOCKS_PARENTDESCRIPTION_BLOCKAROUNDADDED) + aroundBlockGroup.size();
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

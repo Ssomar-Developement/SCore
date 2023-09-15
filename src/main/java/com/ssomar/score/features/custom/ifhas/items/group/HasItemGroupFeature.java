@@ -83,7 +83,28 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     }
 
     public boolean verifHasNot(ItemStack[] items, int heldSlot) {
-        return !verifHas(items, heldSlot);
+        for (HasItemFeature feature : hasItems.values()) {
+            boolean valid = false;
+
+            int needed = feature.getAmount().getValue().get();
+            int slot = 0;
+            for (ItemStack item : items) {
+                if (feature.getDetailedSlots().verifSlot(slot, slot == heldSlot)) {
+                    if (item != null) {
+                        if (item.getType().equals(feature.getMaterial().getValue().get())) {
+                            needed = needed - item.getAmount();
+                        }
+                    }
+                }
+                if (needed <= 0) {
+                    valid = true;
+                    break;
+                }
+                slot++;
+            }
+            if (valid) return false;
+        }
+        return true;
     }
 
 

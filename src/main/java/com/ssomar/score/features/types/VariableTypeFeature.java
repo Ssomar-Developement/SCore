@@ -7,8 +7,8 @@ import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.strings.StringConverter;
+import com.ssomar.score.utils.emums.VariableType;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -26,11 +26,13 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     private Optional<VariableType> value;
     private Optional<VariableType> defaultValue;
+    private boolean noList;
 
-    public VariableTypeFeature(FeatureParentInterface parent, String name, Optional<VariableType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public VariableTypeFeature(FeatureParentInterface parent, String name, Optional<VariableType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean noList) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
+        this.noList = noList;
     }
 
     @Override
@@ -41,9 +43,9 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
             value = defaultValue;
         } else {
             try {
-                VariableType material = VariableType.valueOf(colorStr);
-                value = Optional.ofNullable(material);
-                FeatureReturnCheckPremium<VariableType> checkPremium = checkPremium("Variable Type", material, defaultValue, isPremiumLoading);
+                VariableType type = VariableType.valueOf(colorStr);
+                value = Optional.ofNullable(type);
+                FeatureReturnCheckPremium<VariableType> checkPremium = checkPremium("Variable Type", type, defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             } catch (Exception e) {
                 errors.add("&cERROR, Couldn't load the VariableType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> VariableType available: STRING, NUMBER");
@@ -85,7 +87,7 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     @Override
     public VariableTypeFeature clone(FeatureParentInterface newParent) {
-        VariableTypeFeature clone = new VariableTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        VariableTypeFeature clone = new VariableTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium(), isNoList());
         clone.value = value;
         return clone;
     }
@@ -219,6 +221,7 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
     public List<VariableType> getSortVariableTypes() {
         SortedMap<String, VariableType> map = new TreeMap<String, VariableType>();
         for (VariableType l : VariableType.values()) {
+            if(noList && l == VariableType.LIST) continue;
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());

@@ -4,10 +4,12 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.conditions.player.condition.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -59,6 +61,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPlayerMustBeOnHisClaimOrWilderness(this));
         conditions.add(new IfPlayerMustBeOnHisIsland(this));
         conditions.add(new IfPlayerMustBeOnHisPlot(this));
+        conditions.add(new IfCanBreakTargetedBlock(this));
 
         /* Number condition features */
         conditions.add(new IfCursorDistance(this));
@@ -133,9 +136,27 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         return error;
     }
 
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
+    public boolean verifConditions(Player player, Optional<Player> launcher, SendMessage messageSender, @Nullable Event event) {
         for (PlayerConditionFeature condition : conditions) {
-            if (!condition.verifCondition(player, playerOpt, messageSender, event)) {
+            PlayerConditionRequest args = new PlayerConditionRequest(player, launcher, messageSender.getSp(), event);
+            if (!condition.verifCondition(args)) {
+                if (messageSender != null && launcher.isPresent()) {
+                    for (String error : args.getErrorsFinal()) {
+                        messageSender.sendMessage(launcher.get(), error);
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean verifConditions(Player player, List<String> errors, @Nullable StringPlaceholder placeholder) {
+        if(placeholder == null) placeholder = new StringPlaceholder();
+        PlayerConditionRequest args = new PlayerConditionRequest(player, Optional.empty(), placeholder.setPlayerPlcHldr(player.getUniqueId()), null);
+        for (PlayerConditionFeature condition : conditions) {
+            if (!condition.verifCondition(args)) {
+                errors.addAll(args.getErrorsFinal());
                 return false;
             }
         }

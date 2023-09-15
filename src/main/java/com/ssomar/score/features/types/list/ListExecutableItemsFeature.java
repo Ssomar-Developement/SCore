@@ -8,9 +8,10 @@ import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +31,7 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     }
 
     @Override
-    public List<String> loadValue(List<String> entries, List<String> errors) {
+    public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> result = new ArrayList<>();
         result = entries;
         if (!SCore.hasExecutableItems && entries.size() > 0) {
@@ -44,13 +45,18 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     }
 
     @Override
+    public String transfromToString(String value) {
+        return value;
+    }
+
+    @Override
     public ListExecutableItemsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         if (!SCore.hasExecutableItems)
             finalDescription[finalDescription.length - 2] = "&4&l● &c&lRequire ExecutableItems";
         else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -60,22 +66,23 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     @Override
     public ListExecutableItemsFeature clone(FeatureParentInterface newParent) {
         ListExecutableItemsFeature clone = new ListExecutableItemsFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValues(getValues());
+        clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
     }
 
     public boolean isValid(ItemStack itemStack) {
-        if (getValue().size() == 0) return true;
+        if (getValues().size() == 0) return true;
         if (SCore.hasExecutableItems) {
             Optional<ExecutableItemInterface> executableItem = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(itemStack);
-            return executableItem.filter(executableItemInterface -> getValue().contains(executableItemInterface.getId())).isPresent();
+            return executableItem.filter(executableItemInterface -> getValues().contains(executableItemInterface.getId())).isPresent();
         } else return true;
     }
 
     // hey :D
 
     @Override
-    public Optional<String> verifyMessageReceived(String message) {
+    public Optional<String> verifyMessage(String message) {
         if (SCore.hasExecutableItems) {
             message = StringConverter.decoloredString(message.trim());
             if (ExecutableItemsAPI.getExecutableItemsManager().isValidID(message)) {
@@ -87,8 +94,8 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     }
 
     @Override
-    public List<String> getCurrentValues() {
-        return getValue();
+    public List<TextComponent> getMoreInfo() {
+        return null;
     }
 
     @Override
@@ -105,17 +112,6 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
     @Override
     public String getTips() {
         return "";
-    }
-
-    @Override
-    public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
-        setValue((List<String>) manager.currentWriting.get(editor));
-        for (int i = 0; i < getValue().size(); i++) {
-            getValue().set(i, StringConverter.decoloredString(getValue().get(i)));
-        }
-        manager.requestWriting.remove(editor);
-        manager.activeTextEditor.remove(editor);
-        updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
 

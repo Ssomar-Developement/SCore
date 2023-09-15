@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
@@ -14,7 +15,8 @@ public class GlowingFeature extends BooleanFeature implements SProjectileFeature
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
-        e.setGlowing(getValue());
+        // doesnt work in 1.8
+        if(!SCore.is1v11Less()) e.setGlowing(getValue());
     }
 
     @Override

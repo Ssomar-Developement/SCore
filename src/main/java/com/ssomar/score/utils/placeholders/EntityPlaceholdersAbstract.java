@@ -1,13 +1,11 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.NTools;
+import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.scoreboard.Team;
 
 import java.io.Serializable;
@@ -135,6 +133,7 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     public String replacePlaceholder(String s) {
         String toReplace = s;
         if (entityUUID != null || entity != null) {
+            //SsomarDev.testMsg("toReplace: "+toReplace+ " entity "+ entity.getType()+ "particle "+particle, true);
             toReplace = toReplace.replaceAll("%" + particle + "%", entityType);
             toReplace = toReplace.replaceAll("%" + particle + "_lower_case%", entityType.toLowerCase());
             toReplace = toReplace.replaceAll("%" + particle + "_name%", entityName);
@@ -145,6 +144,11 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
                 Item item = (Item) entity;
                 toReplace = toReplace.replaceAll("%" + particle + "_item%", item.getItemStack().getType().toString());
             }
+            else if(entity != null && SCore.is1v19Plus() && (entity instanceof ChestBoat || entity instanceof Boat)){
+                Boat boat = (Boat) entity;
+                toReplace = toReplace.replaceAll("%" + particle + "_item%", boat.getBoatType().toString()+"_"+entity.getType());
+            }
+            //SsomarDev.testMsg("toReplace2: "+toReplace, true);
 
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", NTools.reduceDouble(x, 2) + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", NTools.reduceDouble(y, 2) + "", false);

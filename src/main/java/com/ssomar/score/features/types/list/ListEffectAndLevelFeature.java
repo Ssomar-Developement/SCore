@@ -8,9 +8,10 @@ import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -76,8 +77,7 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
         config.set(this.getName(), this.getCurrentValues());
     }
 
-    @Override
-    public Map<PotionEffectType, Integer> getValue() {
+    public Map<PotionEffectType, Integer> getValues() {
         return value;
     }
 
@@ -86,7 +86,7 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7actually: ";
+        finalDescription[finalDescription.length - 1] = "&7Currently: ";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -100,7 +100,7 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
     @Override
     public ListEffectAndLevelFeature clone(FeatureParentInterface newParent) {
         ListEffectAndLevelFeature clone = new ListEffectAndLevelFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
-        clone.setValue(getValue());
+        clone.setValue(getValues());
         return clone;
     }
 
@@ -144,9 +144,16 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
     }
 
     @Override
+    public List<TextComponent> getMoreInfo() {
+        return null;
+    }
+
+    @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
         for (PotionEffectType effect : PotionEffectType.values()) {
+            // In 1.12 and less some effects are null
+            if (effect == null) continue;
             map.put(effect.getName() + "", new Suggestion(effect.getName() + ":1", "&6[" + "&e" + effect.getName() + "&6]", "&7Add &e" + effect.getName()));
         }
         return new ArrayList<>(map.values());

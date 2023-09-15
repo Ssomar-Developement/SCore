@@ -2,7 +2,7 @@ package com.ssomar.score.sparticles;
 
 import com.google.common.base.Charsets;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.CustomColor;
+import com.ssomar.score.utils.emums.CustomColor;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

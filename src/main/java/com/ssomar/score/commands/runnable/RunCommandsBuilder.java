@@ -1,12 +1,9 @@
 package com.ssomar.score.commands.runnable;
 
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.strings.StringConverter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public abstract class RunCommandsBuilder {
 
@@ -32,6 +29,15 @@ public abstract class RunCommandsBuilder {
     }
 
     public void init() {
+        /* System.out.println("=================== init commands ==========================");
+        for (String s : this.commands) {
+            System.out.println(s);
+        }*/
+        this.commands = this.replaceFor(this.commands);
+        /*System.out.println("=================== after for  commands ==========================");
+        for (String s : this.commands) {
+            System.out.println(s);
+        }*/
         this.commands = this.replaceLoop(commands);
         this.initFinalCommands();
     }
@@ -93,6 +99,126 @@ public abstract class RunCommandsBuilder {
         return result;
     }
 
+    public List<String> replaceFor(List<String> commands) {
+
+        while (containsFor(commands)) {
+
+
+            boolean isInFor = false;
+            int forStart = -1;
+            int forEnd = -1;
+            List<String> commandsInFor = new ArrayList<>();
+            List<Integer> indexToRemove = new ArrayList<>();
+
+            int index = 0;
+            String forId = "";
+            for (String s : commands) {
+                String command = s;
+                /* Because the placeholders are not parsed before so we force it for FOR */
+                if(command.contains("FOR")) command = actionInfo.getSp().replacePlaceholder(command, true);
+                if (!command.contains("+++")) {
+                    //SsomarDev.testMsg("command: "+command, true);
+                    if (command.contains("FOR [") && command.contains("]") && !isInFor) {
+                        if(command.contains(">")){
+                            forId = command.split(">")[1];
+                            forId = forId.replaceAll(" ", "");
+                            //SsomarDev.testMsg("forId: "+forId, true);
+                        }
+                        commandsInFor.clear();
+                        forStart = index;
+                        isInFor = true;
+                        commandsInFor.add(command);
+                        indexToRemove.add(index);
+                    } else if (command.contains("ENDFOR")) {
+                        if(!forId.equals("") && (command.split(" ").length < 2 || !command.split(" ")[1].equals(forId))){
+                            commandsInFor.add(command);
+                            indexToRemove.add(index);
+                        }
+                        else {
+                            forEnd = index;
+                            commandsInFor.add(command);
+                            indexToRemove.add(index);
+                            break;
+                        }
+                    } else if (isInFor){
+                        commandsInFor.add(command);
+                        indexToRemove.add(index);
+                    }
+
+                }
+                index++;
+            }
+
+            if(forStart == -1 || forEnd == -1) break;
+
+            /* System.out.println(" ===================== FOR =====================");
+            for (String s : commandsInFor) {
+                System.out.println(s);
+            }*/
+
+            List<String> commandsToReplaceWith = transformFor(commandsInFor);
+
+            // Sort the list in reverse order
+            Collections.sort(indexToRemove, Collections.reverseOrder());
+
+            // Remove the elements from indexes
+            for (int i : indexToRemove) {
+                commands.remove(i);
+            }
+
+            commands.addAll(forStart, commandsToReplaceWith);
+
+        }
+
+        return commands;
+    }
+
+    public boolean containsFor(List<String> commands) {
+       // System.out.println("containsFor ===============================");
+        for (String s : commands) {
+           // System.out.println("containsFor: "+s);
+            /* Because the placeholders are not parsed before so we force it for FOR */
+            if(s.contains("FOR")) s = actionInfo.getSp().replacePlaceholder(s, true);
+            if (s.contains("FOR [") && s.contains("]") && !s.contains("+++")) return true;
+        }
+        return false;
+    }
+
+    public List<String> transformFor(List<String> commands) {
+        if (commands != null) {
+            if (commands.size() > 2) {
+                List<String> results = new ArrayList<>();
+                String forCommand = commands.get(0);
+
+                // delete for command
+                commands.remove(0);
+                // delete endfor command
+                commands.remove(commands.size() - 1);
+
+                if (forCommand.contains("FOR [") && forCommand.contains("]")) {
+                    String[] split = forCommand.split("FOR \\[");
+                    String[] split2 = split[1].split("]");
+                    String values = split2[0];
+                    Optional<String> optionalID = Optional.empty();
+                    try{
+                        optionalID = Optional.of("%"+split2[1].split("\\>")[1].trim()+"%");
+                        //SsomarDev.testMsg(optionalID.get(), true);
+                    } catch (Exception ignored) {}
+                    String[] split3 = values.split(",");
+                    for(String s : split3) {
+                        s = s.trim();
+                        for(String command : commands) {
+                            results.add(command.replaceAll(optionalID.orElse("%for%"), s));
+                        }
+                    }
+                }
+
+                return results;
+            }
+        }
+        return new ArrayList<>();
+    }
+
     public abstract RunCommand buildRunCommand(Integer delay, String command, ActionInfo aInfo);
 
     public List<RunCommand> buildRunCommands(Integer delay, List<String> command) {
@@ -124,6 +250,7 @@ public abstract class RunCommandsBuilder {
         List<String> result = new ArrayList<>();
 
         if (command.contains("nothing*")) {
+            command = actionInfo.getSp().replacePlaceholder(command, true);
             try {
                 int m = 0;
                 if (command.contains("//")) m = Integer.parseInt(command.split("nothing\\*")[1].split("//")[0].trim());
@@ -138,6 +265,7 @@ public abstract class RunCommandsBuilder {
                 return Collections.singletonList(command);
             }
         } else if (command.contains("NOTHING*")) {
+            command = actionInfo.getSp().replacePlaceholder(command, true);
             try {
                 int m = 0;
                 if (command.contains("//") && !command.contains("https://"))
@@ -247,6 +375,8 @@ public abstract class RunCommandsBuilder {
         commands = this.replaceRandomCommands(commands);
 
         commands = this.decompMultipleCommandsAndMsg(commands);
+
+        commands = this.replaceFor(commands);
 
         commands = this.replaceLoop(commands);
 

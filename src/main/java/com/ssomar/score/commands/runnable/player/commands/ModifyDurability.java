@@ -35,15 +35,34 @@ public class ModifyDurability extends PlayerCommand {
         if (slot == -1) slot = pInv.getHeldItemSlot();
 
         ItemStack item = pInv.getItem(slot);
-        if (item != null && item.hasItemMeta() && item.getItemMeta() instanceof Damageable) {
+        if(item == null) return;
+
+        if(!item.hasItemMeta()){
+            item.setItemMeta(new ItemStack(item).getItemMeta());
+        }
+
+        if (item.getItemMeta() instanceof Damageable) {
             Damageable meta = (Damageable) item.getItemMeta();
             Map<Enchantment, Integer> enchants = item.getEnchantments();
             int unbreakingLevel = 0;
             if (supportUnbreaking && enchants.containsKey(Enchantment.DURABILITY)) {
                 unbreakingLevel = enchants.get(Enchantment.DURABILITY);
             }
-            int random = (int) (Math.random() * 100);
-            if (random <= (100 / (unbreakingLevel + 1))) {
+            if (modification < 0) {
+                for (int i = modification; i < 0; i++) {
+                    int random = (int) (Math.random() * 100);
+                    if (random > (100 / (unbreakingLevel + 1))) {
+                        modification++;
+                    }
+                }
+                meta.setDamage(meta.getDamage() - modification);
+                if (meta.getDamage() >= item.getType().getMaxDurability()) {
+                    item.setAmount(item.getAmount() - 1);
+                    return;
+                }
+                item.setItemMeta(meta);
+
+            } else {
                 meta.setDamage(meta.getDamage() - modification);
                 if (meta.getDamage() >= item.getType().getMaxDurability()) {
                     item.setAmount(item.getAmount() - 1);

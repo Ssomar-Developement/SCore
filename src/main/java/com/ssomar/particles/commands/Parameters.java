@@ -1,7 +1,7 @@
 package com.ssomar.particles.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.CustomColor;
+import com.ssomar.score.utils.emums.CustomColor;
 import com.thoughtworks.paranamer.AnnotationParanamer;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;

@@ -3,7 +3,7 @@ package com.ssomar.score.menu;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.menu.particles.SParticleGUIManager;
 import com.ssomar.score.menu.particles.SParticlesGUIManager;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -97,11 +97,11 @@ public class InteractionGUI implements Listener {
     }
 
 
-    public String getActually(ItemStack item) {
+    public String getCurrently(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("actually: "))
-                return StringConverter.decoloredString(s).split("actually: ")[1];
+            if (StringConverter.decoloredString(s).contains("Currently: "))
+                return StringConverter.decoloredString(s).split("Currently: ")[1];
         }
         return null;
     }

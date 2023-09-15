@@ -2,7 +2,7 @@ package com.ssomar.score.sparticles;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.CustomColor;
+import com.ssomar.score.utils.emums.CustomColor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;

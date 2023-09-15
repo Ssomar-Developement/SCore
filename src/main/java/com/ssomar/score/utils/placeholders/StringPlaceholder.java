@@ -1,7 +1,10 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
+import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
 import com.ssomar.score.features.custom.variables.real.VariableReal;
+import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -114,74 +117,94 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return result;
     }
 
-    public void setPlayerPlcHldr(UUID uuid) {
+    public StringPlaceholder setPlayerPlcHldr(UUID uuid) {
         playerPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setPlayerPlcHldr(UUID uuid, int fixSlot) {
+    public StringPlaceholder setPlayerPlcHldr(UUID uuid, int fixSlot) {
         playerPlch.setPlayerPlcHldr(uuid, fixSlot);
+        return this;
     }
 
-    public void setTargetPlcHldr(UUID uuid) {
+    public StringPlaceholder setTargetPlcHldr(UUID uuid) {
         targetPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setOwnerPlcHldr(UUID uuid) {
+    public StringPlaceholder setOwnerPlcHldr(UUID uuid) {
         ownerPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setProjectilePlcHldr(Projectile proj, String blockFace) {
+    public StringPlaceholder setProjectilePlcHldr(Projectile proj, String blockFace) {
         projectilePlch.setProjectilePlcHldr(proj, blockFace);
+        return this;
     }
 
-    public void setEntityPlcHldr(UUID uuid) {
+    public StringPlaceholder setEntityPlcHldr(UUID uuid) {
         entityPlch.setEntityPlcHldr(uuid);
+        return this;
     }
 
-    public void setEntityPlcHldr(Entity entity) {
+    public StringPlaceholder setEntityPlcHldr(Entity entity) {
         entityPlch.setEntityPlcHldr(entity);
+        return this;
     }
 
-    public void setTargetEntityPlcHldr(UUID uuid) {
+    public StringPlaceholder setTargetEntityPlcHldr(UUID uuid) {
         targetEntityPlch.setEntityPlcHldr(uuid);
+        return this;
     }
 
-    public void setBlockPlcHldr(Block block) {
+    public StringPlaceholder setTargetEntityPlcHldr(Entity entity) {
+        targetEntityPlch.setEntityPlcHldr(entity);
+        return this;
+    }
+
+    public StringPlaceholder setBlockPlcHldr(Block block) {
         blockPlch.setBlockPlcHldr(block);
+        return this;
     }
 
-    public void setBlockPlcHldr(Block block, Material fixType) {
+    public StringPlaceholder setBlockPlcHldr(Block block, Material fixType) {
         blockPlch.setBlockPlcHldr(block, fixType);
+        return this;
     }
 
-    public void setTargetBlockPlcHldr(Block block) {
+    public StringPlaceholder setTargetBlockPlcHldr(Block block) {
         targetBlockPlch.setTargetBlockPlcHldr(block);
+        return this;
     }
 
-    public void setTargetBlockPlcHldr(Block block, Material fixType) {
+    public StringPlaceholder setTargetBlockPlcHldr(Block block, Material fixType) {
         targetBlockPlch.setTargetBlockPlcHldr(block, fixType);
+        return this;
     }
 
-    public void setAroundTargetPlayerPlcHldr(UUID uuid) {
+    public StringPlaceholder setAroundTargetPlayerPlcHldr(UUID uuid) {
         aroundPlayerTargetPlch.setPlayerPlcHldr(uuid);
+        return this;
     }
 
-    public void setAroundTargetEntityPlcHldr(UUID uuid) {
+    public StringPlaceholder setAroundTargetEntityPlcHldr(UUID uuid) {
         aroundEntityTargetPlch.setEntityPlcHldr(uuid);
+        return this;
     }
 
-    public void reloadAllPlaceholders() {
+    public StringPlaceholder reloadAllPlaceholders() {
         playerPlch.reloadPlayerPlcHldr();
         targetPlch.reloadPlayerPlcHldr();
         ownerPlch.reloadPlayerPlcHldr();
         entityPlch.reloadEntityPlcHldr();
-        if(targetEntityPlch != null) targetEntityPlch.reloadEntityPlcHldr();
+        if (targetEntityPlch != null) targetEntityPlch.reloadEntityPlcHldr();
         blockPlch.reloadBlockPlcHldr();
         targetBlockPlch.reloadTargetBlockPlcHldr();
         aroundPlayerTargetPlch.reloadPlayerPlcHldr();
         aroundEntityTargetPlch.reloadEntityPlcHldr();
         /* delayed command with old version has this to null */
         if (projectilePlch != null) projectilePlch.reloadProjectilePlcHldr();
+        return this;
     }
 
     public List<String> replacePlaceholders(List<String> list) {
@@ -194,19 +217,22 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     }
 
     public String replacePlaceholder(String str) {
-        if(!str.contains("%")) return str;
+        if (!str.contains("%")) return str;
         return replacePlaceholder(str, true);
     }
 
     public String replacePlaceholder(String str, boolean withPAPI) {
-        if(!str.contains("%")) return str;
+        if (!str.contains("%")) return str;
         this.reloadAllPlaceholders();
         return replacePlaceholderWithoutReload(str, withPAPI);
     }
 
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI) {
+        return replacePlaceholderWithoutReload(str, withPAPI, true);
+    }
+    public String replacePlaceholderWithoutReload(String str, boolean withPAPI, boolean withVariables) {
         String s = str;
-        if(!s.contains("%")) return str;
+        if (!s.contains("%")) return str;
 
         if (str.trim().length() == 0) return "";
 
@@ -233,7 +259,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if (this.hasUsage()) {
             s = replaceCalculPlaceholder(s, "%usage%", usage, true);
         }
-        if(this.hasUsageLimit()){
+        if (this.hasUsageLimit()) {
             s = replaceCalculPlaceholder(s, "%usage_limit%", usageLimit, true);
         }
         if (this.hasMaxUsePerDayActivator()) {
@@ -243,10 +269,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             placeholders.put("%max_use_per_day_item%", this.getMaxUsePerDayItem());
         }
 
-        placeholders.put("%timestamp%", (System.currentTimeMillis()-1667000000000L)+"");
+        placeholders.put("%timestamp%", (System.currentTimeMillis() - 1667000000000L) + "");
 
         /* there are replace with calcul */
-        if (variables != null) {
+        if (withVariables && variables != null) {
             for (VariableReal var : variables) {
                 s = var.replaceVariablePlaceholder(s);
             }
@@ -275,11 +301,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = aroundEntityTargetPlch.replacePlaceholder(s);
 
-        if(timePlch != null) s = timePlch.replacePlaceholder(s);
+        if (timePlch != null) s = timePlch.replacePlaceholder(s);
 
         if (projectilePlch != null) s = projectilePlch.replacePlaceholder(s);
 
-        if(targetEntityPlch != null) s = targetEntityPlch.replacePlaceholder(s);
+        if (targetEntityPlch != null) s = targetEntityPlch.replacePlaceholder(s);
 
         if (extraPlaceholders != null && !extraPlaceholders.isEmpty()) {
             for (String key : extraPlaceholders.keySet()) {
@@ -290,40 +316,110 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         final String[] keys = placeholders.keySet().toArray(new String[0]);
         final String[] values = placeholders.values().toArray(new String[0]);
 
-        s = StringUtils.replaceEach( s, keys, values );
+        s = StringUtils.replaceEach(s, keys, values);
 
-        if (withPAPI) return replacePlaceholderOfPAPI(s);
-        else return s;
+        if (withPAPI) s = replacePlaceholderOfPAPI(s);
+        s = replacePlaceholderOfSCore(s);
+
+        /* A second time because the variable contains can require a placeholder */
+        if (withVariables && variables != null) {
+            for (VariableReal var : variables) {
+                s = var.replaceVariablePlaceholder(s);
+            }
+        }
+
+        return s;
     }
 
-    public String replacePlaceholderOfPAPI(String s) {
+    public String replacePlaceholderOfSCore(String s) {
         String replace = s;
-        if(SCore.hasPlaceholderAPI) {
+
+        while (replace.contains("%score_")) {
             UUID uuid;
             if ((uuid = playerPlch.getPlayerUUID()) == null) {
-                if(!Bukkit.getOnlinePlayers().isEmpty()){
+                if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
                 }
             }
             Player p;
-            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null)
-                replace = PlaceholderAPI.setPlaceholders(p, replace);
+            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null) {
+
+                try {
+                    String[] split = replace.split("%score_");
+                    String[] split2 = split[1].split("%");
+                    String params = split2[0];
+
+                    Optional<String> placeholder = VariablesManager.getInstance().onRequestPlaceholder(p, params);
+                    if(placeholder.isPresent()) replace = replace.replace("%score_" + params + "%", placeholder.get());
+
+                    Optional<String> dmgBoosterPlaceHolder = DamageBoost.getInstance().onRequestPlaceholder(p, params);
+                    if (dmgBoosterPlaceHolder.isPresent()) replace = replace.replace("%score_" + params + "%", dmgBoosterPlaceHolder.get());
+
+                    Optional<String> dmgResistancePlaceHolder = DamageResistance.getInstance().onRequestPlaceholder(p, params);
+                    if (dmgResistancePlaceHolder.isPresent()) replace = replace.replace("%score_" + params + "%", dmgResistancePlaceHolder.get());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
+                }
+            } else break;
         }
+        return replace;
+    }
+
+    public String replacePlaceholderOfPAPI(String s) {
+        String replace = s;
+        if (SCore.hasPlaceholderAPI) {
+            UUID uuid;
+            if ((uuid = playerPlch.getPlayerUUID()) == null) {
+                if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                    uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
+                }
+                else if(Bukkit.getOfflinePlayers().length > 0)
+                    replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayers()[0], replace);
+                /* v If it pass here that means no player already joined the server v */
+                else return replace;
+            }
+            Player p;
+            //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + uuid, true);
+            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null) {
+                //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + p.getName(), true);
+                replace = PlaceholderAPI.setPlaceholders(p, replace);
+                if(replace.contains("%")){
+                    replace = replace.replaceFirst("%", "fAzzAf");
+                    //String cccc = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), "%checkitem_getinfo:mainhand_mat:%");
+                    //SsomarDev.testMsg(">>> TEST "+cccc, true);
+                    //SsomarDev.testMsg(">>> f "+replace.substring(1), true);
+                    replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
+                    replace = replace.replaceFirst("fAzzAf", "%");
+                }
+            }
+        }
+        //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + replace, true);
         return replace;
     }
 
     public static String replacePlaceholderOfPAPI(String s, UUID playerUUID) {
         String replace = s;
-        if(SCore.hasPlaceholderAPI) {
+        if (SCore.hasPlaceholderAPI) {
             UUID uuid = playerUUID;
             if (playerUUID == null) {
-                if(!Bukkit.getOnlinePlayers().isEmpty()){
+                if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
-                }
+                } else uuid = Bukkit.getOfflinePlayers()[0].getUniqueId();
             }
+
             Player p;
-            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null)
+            if ((p = Bukkit.getPlayer(uuid)) != null)
                 replace = PlaceholderAPI.setPlaceholders(p, replace);
+            else replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
+
+            if(replace.contains("%")){
+                replace = replace.replaceFirst("%", "fAzzAf");
+                replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
+                replace = replace.replaceFirst("fAzzAf", "%");
+            }
+
         }
         return replace;
     }

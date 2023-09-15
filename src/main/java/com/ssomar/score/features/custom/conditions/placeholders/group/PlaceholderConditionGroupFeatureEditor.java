@@ -17,7 +17,7 @@ public class PlaceholderConditionGroupFeatureEditor extends FeatureEditorInterfa
     @Override
     public void load() {
         int i = 0;
-        for (PlaceholderConditionFeature enchantment : attributesGroupFeature.getAttributes().values()) {
+        for (PlaceholderConditionFeature enchantment : attributesGroupFeature.getPlaceholdersConditions().values()) {
             enchantment.initAndUpdateItemParentEditor(this, i);
             i++;
         }

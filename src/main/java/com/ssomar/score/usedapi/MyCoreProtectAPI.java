@@ -8,7 +8,9 @@ import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Queue;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -19,6 +21,30 @@ import java.util.Locale;
 
 public class MyCoreProtectAPI {
 
+    public static void logRemoval(String user, Location location, Material type, BlockData blockData){
+        if (SCore.hasCoreProtect) {
+            Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
+
+            if (!plugin.isEnabled()) return;
+
+            // Check that CoreProtect is loaded
+            if (!(plugin instanceof CoreProtect)) {
+                return;
+            }
+
+            CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
+            if (!CoreProtect.isEnabled()) {
+                return;
+            }
+
+            // Check that a compatible version of the API is loaded
+            if (CoreProtect.APIVersion() < 9) {
+                return;
+            }
+
+            CoreProtect.logRemoval(user, location, type, blockData);
+        }
+    }
 
     public static boolean isNaturalBlock(Block block) {
         if (SCore.hasCoreProtect) {

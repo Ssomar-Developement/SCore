@@ -1,7 +1,7 @@
 package com.ssomar.score.editor;
 
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

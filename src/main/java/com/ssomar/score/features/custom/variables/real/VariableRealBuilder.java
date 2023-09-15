@@ -2,7 +2,7 @@ package com.ssomar.score.features.custom.variables.real;
 
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.VariableType;
+import com.ssomar.score.utils.emums.VariableType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +14,8 @@ public class VariableRealBuilder {
     public static Optional<VariableReal> build(VariableFeature vF, ItemStack item, @NotNull DynamicMeta dMeta) {
         if (vF.getType().getValue().get().equals(VariableType.STRING)) {
             return Optional.ofNullable(new VariableRealString(vF, item, dMeta));
+        } else if (vF.getType().getValue().get().equals(VariableType.LIST)) {
+            return Optional.ofNullable(new VariableRealList(vF, item, dMeta));
         } else if (vF.getType().getValue().get().equals(VariableType.NUMBER)) {
             return Optional.ofNullable(new VariableRealDouble(vF, item, dMeta));
         }
@@ -24,7 +26,11 @@ public class VariableRealBuilder {
     public static Optional<VariableReal> build(VariableFeature vF, ConfigurationSection configurationSection) {
         if (vF.getType().getValue().get().equals(VariableType.STRING)) {
             return Optional.ofNullable(new VariableRealString(vF, configurationSection));
-        } else if (vF.getType().getValue().get().equals(VariableType.NUMBER)) {
+        }
+        else if (vF.getType().getValue().get().equals(VariableType.LIST)) {
+            return Optional.ofNullable(new VariableRealList(vF, configurationSection));
+        }
+        else if (vF.getType().getValue().get().equals(VariableType.NUMBER)) {
             return Optional.ofNullable(new VariableRealDouble(vF, configurationSection));
         }
 

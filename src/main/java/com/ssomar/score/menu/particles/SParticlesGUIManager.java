@@ -4,7 +4,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.GUIManager;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

@@ -7,8 +7,8 @@ import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.Comparator;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.emums.Comparator;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -49,7 +49,7 @@ public class ComparatorFeature extends FeatureAbstract<Optional<Comparator>, Com
             FeatureReturnCheckPremium<Comparator> checkPremium = checkPremium("Comparator", material, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the Comparator value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Type target available: EQUALS, DIFFERENT, INFERIOR, SUPERIOR, INFERIOR_OR_EQUALS, SUPERIOR_OR_EQUALS");
+            errors.add("&cERROR, Couldn't load the Comparator value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Type target available: EQUALS, DIFFERENT, INFERIOR, SUPERIOR, INFERIOR_OR_EQUALS, SUPERIOR_OR_EQUALS, IS_CONTAINED_IN, IS_NOT_CONTAINED_IN");
             value = Optional.empty();
         }
         return errors;

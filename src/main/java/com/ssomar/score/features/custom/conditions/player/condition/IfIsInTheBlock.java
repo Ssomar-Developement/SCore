@@ -2,16 +2,13 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
+import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
-import com.ssomar.score.utils.SendMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-
-import java.util.Optional;
 
 public class IfIsInTheBlock extends PlayerConditionFeature<MaterialAndTagsGroupFeature, IfIsInTheBlock> {
 
@@ -20,8 +17,9 @@ public class IfIsInTheBlock extends PlayerConditionFeature<MaterialAndTagsGroupF
     }
 
     @Override
-    public boolean verifCondition(Player player, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(PlayerConditionRequest request) {
         if (hasCondition()) {
+            Player player = request.getPlayer();
             Location pLoc = player.getLocation();
             Block block = pLoc.getBlock();
             Material type = block.getType();
@@ -30,8 +28,7 @@ public class IfIsInTheBlock extends PlayerConditionFeature<MaterialAndTagsGroupF
             Material type2 = block2.getType();
 
             if (!getCondition().isValid(block) && !getCondition().isValid(block2)) {
-                sendErrorMsg(playerOpt, messageSender);
-                cancelEvent(event);
+                runInvalidCondition(request);
                 return false;
             }
         }

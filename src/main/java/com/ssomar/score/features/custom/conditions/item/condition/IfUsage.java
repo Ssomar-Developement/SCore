@@ -3,12 +3,11 @@ package com.ssomar.score.features.custom.conditions.item.condition;
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
+import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
-import com.ssomar.score.utils.SendMessage;
-import com.ssomar.score.utils.StringCalculation;
+import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
@@ -21,15 +20,16 @@ public class IfUsage extends ItemConditionFeature<NumberConditionFeature, IfUsag
     }
 
     @Override
-    public boolean verifCondition(ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, Event event) {
+    public boolean verifCondition(ItemConditionRequest request) {
 
+        ItemStack itemStack = request.getItemStack();
+        Optional<Player> playerOpt = request.getPlayerOpt();
         ExecutableItemObject executableItem = new ExecutableItemObject(itemStack);
         if (executableItem.isValid()) {
             executableItem.loadExecutableItemInfos();
             if (hasCondition()) {
-                if (!StringCalculation.calculation(getCondition().getValue(playerOpt, messageSender.getSp()).get(), executableItem.getUsage())) {
-                    sendErrorMsg(playerOpt, messageSender);
-                    cancelEvent(event);
+                if (!StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), executableItem.getUsage())) {
+                   runInvalidCondition(request);
                     return false;
                 }
             }

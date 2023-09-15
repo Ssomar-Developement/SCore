@@ -10,7 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.*;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,8 @@ public class SetTempBlock extends BlockCommand {
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
         BlockData data = block.getBlockData().clone();
+
+        if(data instanceof Bisected || data instanceof Orientable || data instanceof Rotatable || data instanceof Slab || data instanceof Directional || data instanceof Levelled) return;
 
         String mat = args.get(0).toUpperCase();
         UUID uuid = null;

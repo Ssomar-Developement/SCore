@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ActionInfoSerializer;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommand;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 
 import java.io.IOException;
 import java.sql.*;
@@ -30,7 +30,7 @@ public class EntityCommandsQuery {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_ENTITY_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COMMANDS_ENTITY_NAME + " in database "+e.getMessage());
         }
     }
 

@@ -2,7 +2,9 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
-import com.ssomar.executableblocks.executableblocks.manager.ExecutableBlocksManager;
+import com.ssomar.executableblocks.executableblocks.ExecutableBlocksManager;
+import com.ssomar.executableblocks.executableblocks.internal.InternalData;
+import com.ssomar.executableblocks.utils.OverrideEBP;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
@@ -106,13 +108,18 @@ public class SetExecutableBlock extends PlayerCommand {
         }
 
         UUID ownerUUID = null;
+        Optional<Player> owner = Optional.empty();
         if (args.size() > 7) {
             ownerUUID = UUID.fromString(args.get(7));
+            if(ownerUUID != null) owner = Optional.ofNullable(Bukkit.getPlayer(ownerUUID));
         }
 
         Location loc = new Location(world, x, y, z);
 
         if (!replace && !loc.getBlock().isEmpty()) return;
+
+        OverrideEBP overrideEBP = OverrideEBP.KEEP_EXISTING_EBP;
+        if (replace) overrideEBP = OverrideEBP.REMOVE_EXISTING_EBP;
 
         UUID uuid = null;
         if (p != null) uuid = p.getUniqueId();
@@ -121,7 +128,7 @@ public class SetExecutableBlock extends PlayerCommand {
 
         ExecutableBlock eB = oOpt.get();
 
-        eB.place(Optional.ofNullable(Bukkit.getPlayer(ownerUUID)), loc, true);
+        eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));
     }
 
 }

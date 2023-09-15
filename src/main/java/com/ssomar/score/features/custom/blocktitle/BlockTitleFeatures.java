@@ -11,7 +11,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.list.ListColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.StringConverter;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Getter;
@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -72,7 +73,6 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         this.titleAjustement.save(section);
     }
 
-    @Override
     public BlockTitleFeatures getValue() {
         return this;
     }
@@ -88,7 +88,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         else
             finalDescription[finalDescription.length - 3] = "&7Active title: &c&l✘";
 
-        finalDescription[finalDescription.length - 2] = "&7Title lines: &e&l" + title.getValue().size();
+        finalDescription[finalDescription.length - 2] = "&7Title lines: &e&l" + title.getValues().size();
 
         finalDescription[finalDescription.length - 1] = "&7Title Ajustement: &e" + titleAjustement.getValue().get();
 
@@ -157,6 +157,10 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         BlockTitleFeaturesEditorManager.getInstance().startEditing(player, this);
     }
 
+    public String getSimpleLocString(Location loc){
+        return loc.getWorld().getName() + "-" + loc.getBlockX() + "-" + loc.getBlockY() + "-" + loc.getBlockZ();
+    }
+
     /**
      * Return the location of the Holo
      **/
@@ -164,18 +168,36 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         if (!activeTitle.getValue()) return null;
 
         List<String> lines = new ArrayList<>();
-        for (String s : getTitle().getValue()) {
+        for (String s : getTitle().getValues()) {
             s = StringConverter.coloredString(s);
             lines.add(s);
         }
         lines = sp.replacePlaceholders(lines);
+        final List<String> finalLines = lines;
         if (!SCore.hasCMI) {
             if(SCore.hasDecentHolograms){
                 Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
-                if(DHAPI.getHologram(loc.toString()) != null) remove(loc);
-                eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(loc.toString().trim(),loc, lines);
-                hologram.updateAll();
-                return hologram.getLocation();
+
+                // 26/01/2023 Double creation needed required to avoid hologram not updating when we use SETEXECUTABLEBLOCK on an EB
+                // One creation sync and one with delay
+                // -> When we use SETEXECUTABLEBLOCK on an EB the title of the EB replaced stay and the title of the EB set is not placed
+                // Idk why it doesnt update without, it's something in DecentHologram
+                if(DHAPI.getHologram(getSimpleLocString(loc)) != null) remove(loc);
+                DHAPI.createHologram(getSimpleLocString(loc), loc, lines);
+                BukkitRunnable runnable = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if(DHAPI.getHologram(loc.toString()) != null) {
+                            remove(loc);
+                            eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.createHologram(getSimpleLocString(loc), loc, finalLines);
+                            hologram.updateAll();
+                        }
+                        // if null it means that the hologram has been removed during the tick and we don't want to recreate/update it
+                    }
+                };
+                runnable.runTaskLater(SCore.plugin, 1);
+
+                return loc;
             }
             else if (SCore.hasHolographicDisplays) {
                 Hologram holo = HolographicDisplaysAPI.get(SCore.plugin).createHologram(location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
@@ -207,10 +229,14 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      * location is the location of the Holo
      **/
     public void remove(@NotNull Location location) {
+        //SsomarDev.testMsg("Hologram in remove >> "+location, true);
         if (!SCore.hasCMI) {
             if(SCore.hasDecentHolograms){
-                if(DHAPI.getHologram(location.toString()) != null) {
-                    DHAPI.removeHologram(location.toString());
+                //SsomarDev.testMsg("Hologram in remove  DecentHolograms, find the placeholder ?>> "+(DHAPI.getHologram(location.toString()) != null), true);
+                eu.decentsoftware.holograms.api.holograms.Hologram hologram;
+                if((hologram = DHAPI.getHologram(getSimpleLocString(location))) != null) {
+                    hologram.destroy();
+                    //SsomarDev.testMsg("Hologram removed  DecentHolograms", true);
                 }
             }
             else if (SCore.hasHolographicDisplays) {
@@ -244,7 +270,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
 
         List<String> lines = new ArrayList<>();
-        for (String s : getTitle().getValue()) {
+        for (String s : getTitle().getValues()) {
             s = StringConverter.coloredString(s);
             lines.add(s);
         }
@@ -268,8 +294,13 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
         else {
             CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
-            holo.setLines(lines);
-            holo.update();
+            if(holo != null) {
+                holo.setLines(lines);
+                holo.update();
+            }
+            else{
+                spawn(objectLocation, sp);
+            }
         }
         return null;
     }

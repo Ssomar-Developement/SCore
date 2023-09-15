@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ActionInfoSerializer;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommand;
-import com.ssomar.score.utils.Utils;
+import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,7 +32,7 @@ public class PlayerCommandsQuery {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_PLAYER_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COMMANDS_PLAYER_NAME + " in database "+e.getMessage());
         }
     }
 

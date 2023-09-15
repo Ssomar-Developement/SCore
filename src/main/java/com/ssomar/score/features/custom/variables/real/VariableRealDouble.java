@@ -7,7 +7,7 @@ import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.VariableUpdateType;
+import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 public class VariableRealDouble extends VariableReal<Double> implements Serializable {
 
@@ -66,7 +67,10 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     public void modifVariable(VariableUpdateFeature update, Player p, StringPlaceholder sp) {
         SsomarDev.testMsg("VariableRealDouble.modifVariable", DEBUG);
 
-        Optional<Double> optional = update.getDoubleUpdate().getValue(p, sp);
+        UUID uuid = null;
+        if (p != null) uuid = p.getUniqueId();
+
+        Optional<Double> optional = update.getDoubleUpdate().getValue(uuid, sp);
         if (!optional.isPresent()) return;
         double modificationDouble = optional.get();
 

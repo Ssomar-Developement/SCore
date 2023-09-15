@@ -20,6 +20,8 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
     private final Logger logger;
     @Getter
     private Map<String, String> randomIdsDefaultObjects;
+
+    @Getter
     private int cpt;
 
     private String objectName;
@@ -212,7 +214,7 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
             }
             sObjectManager.addLoadedObject(oOpt.get());
             cpt++;
-            logger.fine(sPlugin.getNameDesign() + " " + id + " was loaded !");
+            //Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &e" + id + " &7was loaded !");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -227,6 +229,14 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
             if (fileEntry.isDirectory()) {
                 loadObjectsInFolder(fileEntry, isPremiumLoading);
             } else {
+                /*
+                BukkitRunnable runnable3 = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        loadObjectByFile(folder.getPath() + "/" + s, isPremiumLoading);
+                    }
+                };
+                runnable3.runTaskLater(SCore.plugin, cpt* 10L);*/
                 loadObjectByFile(folder.getPath() + "/" + s, isPremiumLoading);
             }
         }
@@ -239,6 +249,7 @@ public abstract class NewSObjectLoader<T extends NewSObject> {
 
         for (String s : listFiles) {
             File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
+            //System.out.println("::::::::::::::" +fileEntry.getAbsolutePath());
             if (fileEntry.isDirectory()) {
                 File result = null;
                 if ((result = searchFileOfObjectInFolder(id, fileEntry)) == null)

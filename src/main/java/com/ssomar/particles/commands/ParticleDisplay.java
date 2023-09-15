@@ -506,7 +506,7 @@ public class ParticleDisplay implements Cloneable {
      */
     @Nonnull
     public Location rotate(@Nonnull Location location, double x, double y, double z) {
-        if (location == null) throw new IllegalStateException("Attempting to spawn particle when no location is set");
+        if (location == null) return null;
         if (rotation == null) return cloneLocation(location).add(x, y, z);
 
         Vector rotate = new Vector(x, y, z);
@@ -1044,7 +1044,7 @@ public class ParticleDisplay implements Cloneable {
      */
     @Nonnull
     public Location spawn(Location loc, @Nullable Player... players) {
-        if (loc == null) throw new IllegalStateException("Attempting to spawn particle when no location is set");
+        if (loc == null) return null;
         if (onSpawn != null) {
             if (!onSpawn.test(loc)) return loc;
         }

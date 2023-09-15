@@ -7,7 +7,7 @@ import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.SendMessage;
+import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,15 +21,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
 public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<PlaceholderConditionGroupFeature, PlaceholderConditionGroupFeature, PlaceholderConditionGroupFeatureEditor, PlaceholderConditionGroupFeatureEditorManager> implements FeaturesGroup<PlaceholderConditionFeature> {
 
-    private Map<String, PlaceholderConditionFeature> attributes;
+    private LinkedHashMap<String, PlaceholderConditionFeature> placeholdersConditions;
 
     public PlaceholderConditionGroupFeature(FeatureParentInterface parent) {
         super(parent, "placeholdersConditions", "Placeholders Conditions", new String[]{"&7&oThe placeholders conditions"}, Material.ANVIL, false);
@@ -38,7 +37,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public void reset() {
-        this.attributes = new HashMap<>();
+        this.placeholdersConditions = new LinkedHashMap<>();
     }
 
     public boolean verify(Player player, Player target, Event event) {
@@ -46,7 +45,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     }
 
     public boolean verify(Player player, Player target, @Nullable StringPlaceholder sp, Event event) {
-        for (PlaceholderConditionFeature attribute : attributes.values()) {
+        for (PlaceholderConditionFeature attribute : placeholdersConditions.values()) {
             if (!attribute.verify(player, target, sp)) {
                 String message = attribute.getMessageIfNotValid().getValue().get();
                 String messageForTarget = attribute.getMessageIfNotValidForTarget().getValue().get();
@@ -54,10 +53,32 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
                     message = sp.replacePlaceholder(message);
                     messageForTarget = sp.replacePlaceholder(messageForTarget);
                 }
-                SendMessage.sendMessageNoPlch(player, message);
-                if(target != null) SendMessage.sendMessageNoPlch(target, messageForTarget);
+                String[] split = message.split("\n");
+                for (String s : split) {
+                    SendMessage.sendMessageNoPlch(player, s);
+                }
+                if(target != null){
+                    String[] split2 = messageForTarget.split("\n");
+                    for (String s : split2) {
+                        SendMessage.sendMessageNoPlch(target, s);
+                    }
+                }
                 if (event != null && event instanceof Cancellable && attribute.getCancelEventIfNotValid().getValue()) {
                     ((Cancellable) event).setCancelled(true);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean verifConditions(Player player, List<String> errors) {
+        for (PlaceholderConditionFeature attribute : placeholdersConditions.values()) {
+            if (!attribute.verify(player, null, new StringPlaceholder())) {
+                String message = attribute.getMessageIfNotValid().getValue().get();
+                String[] split = message.split("\n");
+                for (String s : split) {
+                    errors.add(s);
                 }
                 return false;
             }
@@ -77,7 +98,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
                     error.addAll(subErrors);
                     continue;
                 }
-                attributes.put(attributeID, attribute);
+                placeholdersConditions.put(attributeID, attribute);
             }
         }
         return error;
@@ -87,8 +108,8 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection attributesSection = config.createSection(this.getName());
-        for (String enchantmentID : attributes.keySet()) {
-            attributes.get(enchantmentID).save(attributesSection);
+        for (String enchantmentID : placeholdersConditions.keySet()) {
+            placeholdersConditions.get(enchantmentID).save(attributesSection);
         }
     }
 
@@ -101,7 +122,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     public PlaceholderConditionGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = "&7&oPlaceholder cdt(s) added: &e" + attributes.size();
+        finalDescription[finalDescription.length - 2] = "&7&oPlaceholder cdt(s) added: &e" + placeholdersConditions.size();
         finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -115,7 +136,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public PlaceholderConditionFeature getTheChildFeatureClickedParentEditor(String featureClicked) {
-        for (PlaceholderConditionFeature x : attributes.values()) {
+        for (PlaceholderConditionFeature x : placeholdersConditions.values()) {
             if (x.isTheFeatureClickedParentEditor(featureClicked)) return x;
         }
         return null;
@@ -124,17 +145,17 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     @Override
     public PlaceholderConditionGroupFeature clone(FeatureParentInterface newParent) {
         PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent);
-        HashMap<String, PlaceholderConditionFeature> newAttributes = new HashMap<>();
-        for (String x : attributes.keySet()) {
-            newAttributes.put(x, attributes.get(x).clone(eF));
+        LinkedHashMap<String, PlaceholderConditionFeature> newAttributes = new LinkedHashMap<>();
+        for (String x : placeholdersConditions.keySet()) {
+            newAttributes.put(x, placeholdersConditions.get(x).clone(eF));
         }
-        eF.setAttributes(newAttributes);
+        eF.setPlaceholdersConditions(newAttributes);
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(attributes.values());
+        return new ArrayList<>(placeholdersConditions.values());
     }
 
     @Override
@@ -160,7 +181,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
         for (FeatureInterface feature : getParent().getFeatures()) {
             if (feature instanceof PlaceholderConditionGroupFeature && feature.getName().equals(getName())) {
                 PlaceholderConditionGroupFeature eF = (PlaceholderConditionGroupFeature) feature;
-                eF.setAttributes(this.getAttributes());
+                eF.setPlaceholdersConditions(this.getPlaceholdersConditions());
                 break;
             }
         }
@@ -181,9 +202,9 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
         String baseId = "plchCdt";
         for (int i = 0; i < 1000; i++) {
             String id = baseId + i;
-            if (!attributes.containsKey(id)) {
+            if (!placeholdersConditions.containsKey(id)) {
                 PlaceholderConditionFeature eF = new PlaceholderConditionFeature(this, id);
-                attributes.put(id, eF);
+                placeholdersConditions.put(id, eF);
                 eF.openEditor(editor);
                 break;
             }
@@ -192,7 +213,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public void deleteFeature(@NotNull Player editor, PlaceholderConditionFeature feature) {
-        attributes.remove(feature.getId());
+        placeholdersConditions.remove(feature.getId());
     }
 
 }
