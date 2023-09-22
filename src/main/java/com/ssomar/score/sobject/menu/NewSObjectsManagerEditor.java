@@ -2,6 +2,8 @@ package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManager;
@@ -24,13 +26,13 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 
     @Override
     public boolean allClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
-        if (i.decoloredName.contains("FOLDER: ")) {
+        if (i.decoloredName.contains(TM.g(Text.EDITOR_FOLDER_NAME))) {
             i.gui.goToFolder(i.localizedName);
-        } else if (i.decoloredName.contains("Path")) {
+        } else if (i.decoloredName.contains(TM.g(Text.EDITOR_PATH_NAME))) {
             i.gui.goBack();
         } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.NEW)) {
             i.gui.sendMessageCreate(i.player);
-        } else if (i.decoloredName.contains("Default Premium") || i.name.contains(" from Custom packs")) {
+        } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", i.gui.getObjectName())) || i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", i.gui.getObjectName()))) {
             NewDefaultObjectsEditorManager.getInstance().startEditing(i.player, new NewDefaultObjectsEditor(i.gui.getSPlugin(), i.gui.getManager(), i.gui.getLoader(), i.gui));
         } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.CREATION_ID)) {
             i.gui.openEditorSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);

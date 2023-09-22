@@ -42,6 +42,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
     private NewSObjectManager manager;
     private NewSObjectLoader loader;
     private String deleteArg;
+    private String createArg;
     private String objectName;
     private boolean noObject;
 
@@ -55,6 +56,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
         this.manager = manager;
         this.loader = loader;
         this.deleteArg = "delete";
+        this.createArg = "create";
 
         objectName = sPlugin.getObjectName();
         /* For plugins that have multiple object splugin.getOjectName can't work */
@@ -230,7 +232,7 @@ public abstract class NewSObjectsEditorAbstract extends GUI {
             p.sendMessage(StringConverter.coloredString("&4&l" + sPlugin.getNameDesign() + " "+ TM.g(Text.EDITOR_PREMIUM_REQUIREPREMIUMTOADDMORE)));
         } else {
             p.closeInventory();
-            p.chat("/" + sPlugin.getShortName().toLowerCase() + " create");
+            p.chat("/" + sPlugin.getShortName().toLowerCase() + " "+createArg);
         }
     }
 

@@ -10,5 +10,6 @@ public class HardnessesEditor extends NewSObjectsEditorAbstract {
     public HardnessesEditor() {
         super(SCore.plugin, "&lHardnesses", "/hardnesses", HardnessesManager.getInstance(), HardnessLoader.getInstance());
         this.setDeleteArg("hardnesses-delete");
+        this.setCreateArg("hardnesses-create");
     }
 }
