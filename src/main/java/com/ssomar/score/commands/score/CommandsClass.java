@@ -72,6 +72,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 	@NotNull
 	private final SCore main;
 
+	private final String[] commands = new String[]{"cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info","projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-delete"};
+
 	/**
 	 * Called when a {@link CommandSender} types /score.
 	 *
@@ -83,85 +85,16 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 	 */
 	@Override
 	public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-		if (args.length > 0)
-			switch (args[0].toLowerCase()) {
-				case "reload":
-					this.runCommand(sender, "reload", args);
-
-					break;
-				case "inspect-loop":
-					this.runCommand(sender, "inspect-loop", args);
-
-					break;
-				case "projectiles":
-					this.runCommand(sender, "projectiles", args);
-
-					break;
-				case "projectiles-create":
-					this.runCommand(sender, "projectiles-create", args);
-
-					break;
-				case "projectiles-delete":
-					this.runCommand(sender, "projectiles-delete", args);
-
-					break;
-				case "hardnesses":
-					this.runCommand(sender, "hardnesses", args);
-
-					break;
-				case "hardnesses-create":
-					this.runCommand(sender, "hardnesses-create", args);
-
-					break;
-				case "hardnesses-delete":
-					this.runCommand(sender, "hardnesses-delete", args);
-
-					break;
-				case "variables":
-					this.runCommand(sender, "variables", args);
-
-					break;
-				case "variables-create":
-					this.runCommand(sender, "variables-create", args);
-
-					break;
-				case "variables-delete":
-					this.runCommand(sender, "variables-delete", args);
-
-					break;
-				case "interact":
-					break;
-				case "particles":
-					this.runCommand(sender, "particles", args);
-
-					break;
-				case "particles-info":
-					this.runCommand(sender, "particles-info", args);
-
-					break;
-				case "run-player-command":
-					this.runCommand(sender, "run-player-command", args);
-
-					break;
-				case "run-entity-command":
-					this.runCommand(sender, "run-entity-command", args);
-
-					break;
-				case "run-block-command":
-					this.runCommand(sender, "run-block-command", args);
-
-					break;
-				case "cooldowns":
-					CooldownsManager.getInstance().printInfo();
-
-					break;
-				default:
-					sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument! Usage: /score [ reload | inspect-loop | projectiles | projectiles-create | projectiles-delete | variables | variables-create | variables-delete ]."));
-
-					break;
+		if (args.length > 0) {
+			String commandName = args[0].toLowerCase();
+			if(Arrays.asList(commands).contains(commandName)) {
+				this.runCommand(sender, commandName, args);
 			}
-		else
-			sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument! Usage: /score [ reload | inspect-loop | projectiles | projectiles-create | projectiles-delete | variables | variables-create | variables-delete ]."));
+			else {
+				sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument! Usage: /score &8[ &7"+ StringJoiner.join(commands, " &c| &7") +" &8]"));
+			}
+		}
+		else sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument! Usage: /score &8[ &7"+ StringJoiner.join(commands, " &c| &7") +" &8]"));
 
 		return true;
 	}
@@ -198,6 +131,10 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 		}
 
 		switch (command.toLowerCase()) {
+			case "cooldowns":
+				CooldownsManager.getInstance().printInfo();
+				sender.sendMessage(StringConverter.coloredString("&2[SCore] &aCooldowns printed in console!"));
+				break;
 			case "variables":
 				if (args.length >= 1) {
 					if (args[0].equalsIgnoreCase("info")) {
