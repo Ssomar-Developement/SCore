@@ -25,7 +25,7 @@ editor:
   give:
     shift:
       right:
-        description: "&2(shift + right click to give to yourself)"
+        description: "&2✔ &aShift + right click to give to yourself"
     receivedMessage: "&aYou received &e"
   invalid:
     file:
@@ -61,7 +61,10 @@ editor:
     description: "&c&oClick here to reset"
   save:
     name: "&a&l✔ &aSave"
-    description: "&a&oClick here to save"
+    description:
+      - ""
+      - "&a&oClick here to save"
+      - "&a&oyour configuration !"
   title:
     color: "&e&l"
 features:
