@@ -384,6 +384,12 @@ public abstract class RunCommandsBuilder {
 
             if (command.trim().length() == 0) continue;
 
+            /* No edits for the commands executed by score run-... the edits are made after */
+            if (command.startsWith("score run-")) {
+                this.inserFinalCommands(delay, command);
+                continue;
+            }
+
             /* The delay for AROUND and MOB_AROUND is catch after */
             if (command.contains("DELAYTICK ") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 /* Verify that there is no multiple commands after DELAYTICK */
