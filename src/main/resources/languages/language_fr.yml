@@ -72,22 +72,22 @@ editor:
     color: "&e&l"
 features:
   enchantments:
-    description: "&7&oThe enchantments of the item"
+    description: "&7&oLes enchantements"
   drops:
-    description: "&7&oThe drop features"
+    description: "&7&oLes options de drop"
   restrictions:
-    description: "&7&oThe restrictions features"
+    description: "&7&oLes options de restrictions"
   hiders:
     description:
-      - "&7&oThe hiders features"
-      - "&7&oHiders to hide:"
-      - "&7&oAttributes, Enchants, ..."
+      - "&7&oLes options pour cacher"
+      - "&7&oPar exemple pour cacher:"
+      - "&7&oLes attributes, les enchants..."
   armorTrim:
     description: "&7&oThe armor trim features"
   variables:
     description:
-      - "&7&oThe variables"
-      - "&7&oVariables are used to store data like kills / deaths ..."
+      - "&7&oLes variables"
+      - "&7&oLes variables sont utilisées pour stocker des données comme les kills / morts..."
   giveFirstJoin:
     description: "&7&oThe give first join features"
   activators:
@@ -268,36 +268,36 @@ features:
 ei:
   features:
     lore:
-      description: "&7&oThe lore of the item"
+      description: "&7&oLa description de l'item"
     material:
-      description: "&7&oThe material of the item"
+      description: "&7&oLe matériel de l'item"
     name:
-      description: "&7&oThe custom name of the item"
+      description: "&7&oLe nom personnalisé de l'item"
     glow:
       description:
-        - "&7&oItem glowing effect"
-        - "&4⚠ &cIt adds an useless enchant"
-        - "&c+ hide enchants"
+        - "&7&oEffet de brillance sur l'item"
+        - "&4⚠ &cCa ajoutera un enchant inutile"
+        - "&c+ l'otpion pour cacher les enchantements"
     usage:
       description:
-        - "&7&oThe usage of the item"
-        - "&a-1 &7&o= Infinite"
+        - "&7&oNombre d'utilisation de l'item"
+        - "&a-1 &7&o= Infini"
     usageLimit:
       description:
-        - "&7&oThe usage limit of the item"
-        - "&7&oUsage can't be increased above this value"
+        - "&7&oLa limite d'utilisation maximum de l'item"
+        - "&7&oLe nombre d'utilisation ne pourra pas dépasser cette limite"
     usePerDay:
       description:
-        - "&7&oThe use per day features"
+        - "&7&oLes options d'utilisations par jour"
     durability:
-      description: "&7&oThe durability of the item"
+      description: "&7&oLa durabiité de l'item"
     customModelData:
       description:
-        - "&7&oThe custom model data of the item"
+        - "&7&oLe custom model data de l'item"
         - "&7&oTo customize the item texture"
-        - "&2✔ &a&oTutorial in the wiki !"
+        - "&2✔ &a&oTutoriel dans le wiki !"
     unbreakable:
-      description: "&7&oItem unbreakable ?"
+      description: "&7&oItem incassable ?"
     attributes:
       description: "&7&oThe attributes of the item"
     keepItemOnDeath:
