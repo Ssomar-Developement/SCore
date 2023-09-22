@@ -71,6 +71,25 @@ editor:
   title:
     color: "&e&l"
 features:
+  enchantments:
+    description: "&7&oLes enchantements"
+  drops:
+    description: "&7&oLes options de drop"
+  restrictions:
+    description: "&7&oLes options de restrictions"
+  hiders:
+    description:
+      - "&7&oLes options pour cacher"
+      - "&7&oPar exemple pour cacher:"
+      - "&7&oLes attributes, les enchants..."
+  armorTrim:
+    description: "&7&oThe armor trim features"
+  variables:
+    description:
+      - "&7&oLes variables"
+      - "&7&oLes variables sont utilisées pour stocker des données comme les kills / morts..."
+  giveFirstJoin:
+    description: "&7&oThe give first join features"
   activators:
     name: "Activateurs"
     description: "&7&oLes activateurs / déclencheurs"
@@ -246,4 +265,56 @@ features:
         ifUsage:
           name: "If Usage"
           description: ""
-
+ei:
+  features:
+    lore:
+      description: "&7&oLa description de l'item"
+    material:
+      description: "&7&oLe matériel de l'item"
+    name:
+      description: "&7&oLe nom personnalisé de l'item"
+    glow:
+      description:
+        - "&7&oEffet de brillance sur l'item"
+        - "&4⚠ &cCa ajoutera un enchant inutile"
+        - "&c+ l'otpion pour cacher les enchantements"
+    usage:
+      description:
+        - "&7&oNombre d'utilisation de l'item"
+        - "&a-1 &7&o= Infini"
+    usageLimit:
+      description:
+        - "&7&oLa limite d'utilisation maximum de l'item"
+        - "&7&oLe nombre d'utilisation ne pourra pas dépasser cette limite"
+    usePerDay:
+      description:
+        - "&7&oLes options d'utilisations par jour"
+    durability:
+      description: "&7&oLa durabiité de l'item"
+    customModelData:
+      description:
+        - "&7&oLe custom model data de l'item"
+        - "&7&oTo customize the item texture"
+        - "&2✔ &a&oTutoriel dans le wiki !"
+    unbreakable:
+      description: "&7&oItem incassable ?"
+    attributes:
+      description: "&7&oThe attributes of the item"
+    keepItemOnDeath:
+      description: "&7&oKeep the item on death ?"
+    disableStack:
+      description: "&7&oDisable item stacking ?"
+    displayConditions:
+      description:
+        - "&7&oThe display conditions features"
+        - "&7&oThe lore will changed depending on the conditions"
+    canBeUsedOnlyByTheOwner:
+      description: "&7&oCan be used only by the owner ?"
+    storeItemInfo:
+      description:
+        - "&7&oStore item info ?"
+        - "&7&oStore the item info like the owner"
+    disabledWorlds:
+      description: "&7&oThe disabled worlds features"
+    nbtTags:
+      description: "&7&oThe NBT tags features"

@@ -76,7 +76,7 @@ public enum Text implements TextInterface {
     EI_FEATURES_GLOW_DESCRIPTION("ei.features.glow.description"),
     EI_FEATURES_USAGE_DESCRIPTION("ei.features.usage.description"),
     EI_FEATURES_USAGELIMIT_DESCRIPTION("ei.features.usageLimit.description"),
-    EI_FEATURES_USEPERDAY_DESCRIPTION("ei.features.usePerDay.description"),
+    FEATURES_USEPERDAY_DESCRIPTION("features.usePerDay.description"),
     FEATURES_GIVEFIRSTJOIN_DESCRIPTION("features.giveFirstJoin.description"),
     EI_FEATURES_DURABILITY_DESCRIPTION("ei.features.durability.description"),
     EI_FEATURES_CUSTOMMODELDATA_DESCRIPTION("ei.features.customModelData.description"),
@@ -94,7 +94,7 @@ public enum Text implements TextInterface {
     FEATURES_CANCELEVENTS_DESCRIPTION("features.cancelEvents.description"),
     EI_FEATURES_CANBEUSEDONLYBYTHEOWNER_DESCRIPTION("ei.features.canBeUsedOnlyByTheOwner.description"),
     EI_FEATURES_STOREITEMINFO_DESCRIPTION("ei.features.storeItemInfo.description"),
-    EI_FEATURES_DISABLEWORLDS_DESCRIPTION("ei.features.disableWorlds.description"),
+    EI_FEATURES_DISABLEDWORLDS_DESCRIPTION("ei.features.disabledWorlds.description"),
     FEATURES_VARIABLES_DESCRIPTION("features.variables.description");
 
 
