@@ -90,6 +90,9 @@ features:
       - "&7&oVariables are used to store data like kills / deaths ..."
   giveFirstJoin:
     description: "&7&oThe give first join features"
+  usePerDay:
+    description:
+      - "&7&oThe use per day features"
   activators:
     name: "Activators"
     description: "&7&oThe activators / triggers"
@@ -286,9 +289,6 @@ ei:
       description:
         - "&7&oThe usage limit of the item"
         - "&7&oUsage can't be increased above this value"
-    usePerDay:
-      description:
-        - "&7&oThe use per day features"
     durability:
       description: "&7&oThe durability of the item"
     customModelData:
