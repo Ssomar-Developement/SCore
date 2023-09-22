@@ -68,7 +68,34 @@ public enum Text implements TextInterface {
     FEATURES_AROUNDBLOCKS_NAME("features.aroundBlocks.name"),
     FEATURES_AROUNDBLOCKS_DESCRIPTION("features.aroundBlocks.description"),
     FEATURES_AROUNDBLOCKS_EDITORTITLE("features.aroundBlocks.editorTitle"),
-    FEATURES_AROUNDBLOCKS_PARENTDESCRIPTION_BLOCKAROUNDADDED("features.aroundBlocks.parentDescription.blockAroundAdded");
+    FEATURES_AROUNDBLOCKS_PARENTDESCRIPTION_BLOCKAROUNDADDED("features.aroundBlocks.parentDescription.blockAroundAdded"),
+
+    EI_FEATURES_LORE_DESCRIPTION("ei.features.lore.description"),
+    EI_FEATURES_MATERIAL_DESCRIPTION("ei.features.material.description"),
+    EI_FEATURES_NAME_DESCRIPTION("ei.features.name.description"),
+    EI_FEATURES_GLOW_DESCRIPTION("ei.features.glow.description"),
+    EI_FEATURES_USAGE_DESCRIPTION("ei.features.usage.description"),
+    EI_FEATURES_USAGELIMIT_DESCRIPTION("ei.features.usageLimit.description"),
+    EI_FEATURES_USEPERDAY_DESCRIPTION("ei.features.usePerDay.description"),
+    FEATURES_GIVEFIRSTJOIN_DESCRIPTION("features.giveFirstJoin.description"),
+    EI_FEATURES_DURABILITY_DESCRIPTION("ei.features.durability.description"),
+    EI_FEATURES_CUSTOMMODELDATA_DESCRIPTION("ei.features.customModelData.description"),
+    FEATURES_ENCHANTMENTS_DESCRIPTION("features.enchantments.description"),
+    EI_FEATURES_UNBREAKABLE_DESCRIPTION("ei.features.unbreakable.description"),
+    FEATURES_ATTRIBUTES_DESCRIPTION("features.attributes.description"),
+    EI_FEATURES_KEEPITEMONDEATH_DESCRIPTION("ei.features.keepItemOnDeath.description"),
+    EI_FEATURES_DISABLESTACK_DESCRIPTION("ei.features.disableStack.description"),
+    EI_FEATURES_DISPLAYCONDITIONS_DESCRIPTION("ei.features.displayConditions.description"),
+    FEATURES_DROPS_DESCRIPTION("features.drops.description"),
+    FEATURES_RESTRICTIONS_DESCRIPTION("features.restrictions.description"),
+    FEATURES_HIDERS_DESCRIPTION("features.hiders.description"),
+    FEATURES_ARMORTRIM_DESCRIPTION("features.armorTrim.description"),
+    EI_FEATURES_NBTTAGS_DESCRIPTION("ei.features.nbtTags.description"),
+    FEATURES_CANCELEVENTS_DESCRIPTION("features.cancelEvents.description"),
+    EI_FEATURES_CANBEUSEDONLYBYTHEOWNER_DESCRIPTION("ei.features.canBeUsedOnlyByTheOwner.description"),
+    EI_FEATURES_STOREITEMINFO_DESCRIPTION("ei.features.storeItemInfo.description"),
+    EI_FEATURES_DISABLEWORLDS_DESCRIPTION("ei.features.disableWorlds.description"),
+    FEATURES_VARIABLES_DESCRIPTION("features.variables.description");
 
 
     private String key;

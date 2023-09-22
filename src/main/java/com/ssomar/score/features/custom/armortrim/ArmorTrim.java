@@ -7,6 +7,8 @@ import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.TrimMaterialFeature;
 import com.ssomar.score.features.types.TrimPatternFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
@@ -34,7 +36,7 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Arm
     private TrimPatternFeature pattern;
 
     public ArmorTrim(FeatureParentInterface parent) {
-        super(parent, "armorTrim", "Armor Trim", new String[]{"&7&oArmor Trim:"}, FixedMaterial.getMaterial(Arrays.asList("COAST_ARMOR_TRIM_SMITHING_TEMPLATE")), false);
+        super(parent, "armorTrim", "Armor Trim", TM.gA(Text.FEATURES_ARMORTRIM_DESCRIPTION), FixedMaterial.getMaterial(Arrays.asList("COAST_ARMOR_TRIM_SMITHING_TEMPLATE")), false);
         reset();
     }
 

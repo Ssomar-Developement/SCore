@@ -25,7 +25,7 @@ editor:
   give:
     shift:
       right:
-        description: "&2✔ &aShift + right click to give to yourself"
+        description: "&2✔ &aShift + clique droit pour l'obtenir"
     receivedMessage: "&aTu as reçu &e"
   invalid:
     file:
@@ -58,13 +58,16 @@ editor:
     requirePremiumToAddMore: "&cREQUIERT PREMIUM: pour ajouter plus de %limit% %object% tu dois avoir la version premium"
   reset:
     name: "&4&l✘ &cRéinitialiser"
-    description: "&c&oClique ici pour réinitialiser"
+    description:
+      - ""
+      - "&c&oClique ici pour réinitialiser"
+      - "&c&otoutes les options de cette création"
   save:
     name: "&a&l✔ &aSauvegarde"
     description:
       - ""
-      - "&a&oClick here to save"
-      - "&a&oyour configuration !"
+      - "&a&oClique ici pour sauvegarder"
+      - "&a&ota configuration !"
   title:
     color: "&e&l"
 features:
@@ -100,7 +103,7 @@ features:
         description: "&7&oThe under value"
       errorMessage:
         name: "Error Message"
-        description: "&7&oThe error message"
+        description: "&7&oLe message d'erreur"
       blockMustBeExecutableBlock:
         name: "Block must be executable block"
         description: "&7&oThe block must be executable block"
@@ -129,25 +132,25 @@ features:
         description: "&7&oThe operation"
       amount:
         name: "Amount"
-        description: "&7&oThe amount"
+        description: "&7&oLa quantité"
       slot:
         name: "Slot"
-        description: "&7&oThe slot"
+        description: "&7&oLe slot"
       name:
         name: "Name"
-        description: "&7&oThe name"
+        description: "&7&oLe nom"
       uuid:
         name: "UUID"
-        description: "&7&oThe UUID"
+        description: "&7&oL'UUID"
   attributes:
     name: "Attributes"
-    description: "&7&oThe attributes"
+    description: "&7&oLes attributs"
     editorTitle: "&lAttributes feature Editor"
     parentDescription:
       attributeAdded: "&7&oAttribute(s) added: &e"
   title:
     name: "Title features"
-    description: "&7&oThe title features"
+    description: "&7&oLes options du titre"
     editorTitle: "&lTitle features Editor"
     features:
       activeTitle:

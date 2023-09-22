@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
@@ -33,7 +35,7 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
     private boolean notSaveIfNoValue;
 
     public EnchantmentsGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
-        super(parent, "enchantments", "Enchantments", new String[]{"&7&oThe enchantments"}, Material.ENCHANTED_BOOK, false);
+        super(parent, "enchantments", "Enchantments", TM.gA(Text.FEATURES_ENCHANTMENTS_DESCRIPTION), Material.ENCHANTED_BOOK, false);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }

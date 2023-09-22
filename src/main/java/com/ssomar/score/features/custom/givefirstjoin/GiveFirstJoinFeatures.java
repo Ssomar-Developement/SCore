@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.NewSObject;
 import com.ssomar.score.splugin.SPlugin;
@@ -31,7 +33,7 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
     private IntegerFeature giveFirstJoinSlot;
 
     public GiveFirstJoinFeatures(FeatureParentInterface parent) {
-        super(parent, "giveFirstJoin", "Give first join features", new String[]{"&7&oGive the item for", "&7&othe first join of the player"}, Material.ANVIL, false);
+        super(parent, "giveFirstJoin", "Give first join features", TM.gA(Text.FEATURES_GIVEFIRSTJOIN_DESCRIPTION), Material.ANVIL, false);
         reset();
     }
 

@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -33,7 +35,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     private BooleanFeature hidePlacedOn;
 
     public Hiders(FeatureParentInterface parent) {
-        super(parent, "hiders", "Hiders", new String[]{"&7&oHiders to hide:", "&7&oAttributes, Enchants, ..."}, Material.ANVIL, false);
+        super(parent, "hiders", "Hiders", TM.gA(Text.FEATURES_HIDERS_DESCRIPTION), Material.ANVIL, false);
         reset();
     }
 
