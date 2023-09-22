@@ -61,7 +61,10 @@ editor:
     description: "&c&oClick here to reset"
   save:
     name: "&a&l✔ &aSave"
-    description: "&a&oClick here to save"
+    description:
+      - ""
+      - "&a&oClick here to save"
+      - "&a&oyour configuration !"
   title:
     color: "&e&l"
 features:
