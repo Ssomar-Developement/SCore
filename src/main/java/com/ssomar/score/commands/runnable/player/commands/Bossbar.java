@@ -23,11 +23,8 @@ public class Bossbar extends PlayerCommand {
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
         BarColor color = null;
         Integer duration = NTools.getInteger(args.get(0)).get();
-        try {
-            color = BarColor.valueOf(args.get(1));
-        } catch (IllegalArgumentException e) {
-            return;
-        }
+        color = BarColor.valueOf(args.get(1));
+
 
         StringBuilder build = new StringBuilder();
         for (int i = 2; i < args.size(); i++) {
@@ -52,6 +49,9 @@ public class Bossbar extends PlayerCommand {
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
+
+        ArgumentChecker ac2 = checkBarColor(args.get(1), isFinalVerification, getTemplate());
+        if (!ac2.isValid()) return Optional.of(ac2.getError());
 
         return Optional.empty();
     }
