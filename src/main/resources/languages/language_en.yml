@@ -54,7 +54,10 @@ editor:
     requirePremiumToAddMore: "&cREQUIRE PREMIUM: to add more than %limit% %object% you need the premium version"
   reset:
     name: "&4&l✘ &cReset"
-    description: "&c&oClick here to reset"
+    description:
+      - ""
+      - "&c&oClick here to reset"
+      - "&c&oall options of this creation"
   save:
     name: "&a&l✔ &aSave"
     description:

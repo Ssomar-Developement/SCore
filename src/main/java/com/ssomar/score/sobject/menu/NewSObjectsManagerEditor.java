@@ -26,9 +26,9 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
 
     @Override
     public boolean allClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
-        if (i.decoloredName.contains(TM.g(Text.EDITOR_FOLDER_NAME))) {
+        if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_FOLDER_NAME))) {
             i.gui.goToFolder(i.localizedName);
-        } else if (i.decoloredName.contains(TM.g(Text.EDITOR_PATH_NAME))) {
+        } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PATH_NAME))) {
             i.gui.goBack();
         } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.NEW)) {
             i.gui.sendMessageCreate(i.player);
