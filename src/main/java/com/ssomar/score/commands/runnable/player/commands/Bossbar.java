@@ -1,80 +1,88 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.strings.StringConverter;
+import com.ssomar.score.utils.strings.StringJoiner;
 
-/* BOSSBAR {ticks} {color} {text} */
-public class Bossbar extends PlayerCommand {
+/**
+ * A simple command that sends a boss bar to a player.
+ * <p>
+ * Syntax: BOSSBAR {ticks} {color} {text}.
+ */
+public final class Bossbar extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        BarColor color = null;
-        Integer duration = NTools.getInteger(args.get(0)).get();
-        color = BarColor.valueOf(args.get(1));
+	@Override
+	public void run(final Player player, final Player receiver, final List<String> args, final ActionInfo aInfo) {
+		final Integer duration = NTools.getInteger(args.get(0)).get();
+		final BarColor color = BarColor.valueOf(args.get(1));
 
+		final BossBar bossBar = Bukkit.createBossBar(StringJoiner.joinRange(2, StringConverter.coloredString(args)), color, BarStyle.SOLID);
+		bossBar.addPlayer(receiver);
 
-        StringBuilder build = new StringBuilder();
-        for (int i = 2; i < args.size(); i++) {
-            build.append(args.get(i) + " ");
-        }
-        String text = build.toString();
+		Bukkit.getScheduler().runTaskLater(SCore.plugin, bossBar::removeAll, duration);
+	}
 
-        BossBar bossBar = Bukkit.createBossBar(text, color, BarStyle.SOLID);
-        bossBar.addPlayer(receiver);
+	@NotNull
+	@Override
+	public Optional<String> verify(final List<String> args, final boolean isFinalVerification) {
+		if (args.size() < 3)
+			return Optional.of(notEnoughArgs + this.getTemplate());
 
-        Bukkit.getScheduler().runTaskLater(SCore.plugin, new Runnable() {
-            @Override
-            public void run() {
-                bossBar.removeAll();
-            }
-        }, duration);
-    }
+		final ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, this.getTemplate());
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
+		if (!ac.isValid())
+			return Optional.of(ac.getError());
 
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+		final ArgumentChecker ac2 = checkBarColor(args.get(1), isFinalVerification, this.getTemplate());
 
-        ArgumentChecker ac2 = checkBarColor(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
+		if (!ac2.isValid())
+			return Optional.of(ac2.getError());
 
-        return Optional.empty();
-    }
+		return Optional.empty();
+	}
 
-    @Override
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        names.add("BOSSBAR");
-        return names;
-    }
+	@NotNull
+	@Override
+	public List<String> getNames() {
+		final List<String> names = new ArrayList<>();
 
-    @Override
-    public String getTemplate() {
-        return "BOSSBAR {ticks} {color} {text}";
-    }
+		names.add("BOSSBAR");
 
-    @Override
-    public ChatColor getColor() {
-        return null;
-    }
+		return names;
+	}
 
-    @Override
-    public ChatColor getExtraColor() {
-        return null;
-    }
+	@NotNull
+	@Override
+	public String getTemplate() {
+		return "BOSSBAR {ticks} {color} {text}";
+	}
+
+	@Nullable
+	@Override
+	public ChatColor getColor() {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ChatColor getExtraColor() {
+		return null;
+	}
 }

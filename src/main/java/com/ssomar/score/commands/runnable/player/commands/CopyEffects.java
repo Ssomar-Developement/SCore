@@ -1,55 +1,60 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
-import java.util.*;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* COPYEFFECTS */
-public class CopyEffects extends PlayerCommand {
+public final class CopyEffects extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        if(p.isDead() | receiver.isDead()) return;
+	@Override
+	public void run(@Nullable final Player player, final Player receiver, final List<String> args, final ActionInfo aInfo) {
+		if (player == null || player.isDead() || receiver.isDead())
+			return;
 
-        Set<PotionEffect> potionEffects = new HashSet<>(receiver.getActivePotionEffects());
-        p.addPotionEffects(potionEffects);
+		player.addPotionEffects(new HashSet<>(receiver.getActivePotionEffects()));
+	}
 
-    }
+	@NotNull
+	@Override
+	public Optional<String> verify(final List<String> args, final boolean isFinalVerification) {
+		return Optional.empty();
+	}
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        //if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
-    }
+	@NotNull
+	@Override
+	public List<String> getNames() {
+		final List<String> names = new ArrayList<>();
 
-    @Override
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        names.add("COPYEFFECTS");
-        return names;
-    }
+		names.add("COPYEFFECTS");
 
-    @Override
-    public String getTemplate() {
-        return "COPYEFFECTS";
-    }
+		return names;
+	}
 
-    @Override
-    public ChatColor getColor() {
-        return null;
-    }
+	@NotNull
+	@Override
+	public String getTemplate() {
+		return "COPYEFFECTS";
+	}
 
-    @Override
-    public ChatColor getExtraColor() {
-        return null;
-    }
+	@Nullable
+	@Override
+	public ChatColor getColor() {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ChatColor getExtraColor() {
+		return null;
+	}
 }

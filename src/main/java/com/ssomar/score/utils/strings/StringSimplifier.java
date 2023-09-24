@@ -1,12 +1,16 @@
 package com.ssomar.score.utils.strings;
 
+import java.util.Collection;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 
-import java.util.Collection;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringSimplifier {
 
 	public static String simplify(final Object object) {

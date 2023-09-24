@@ -1,7 +1,9 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommand;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,49 +11,49 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.strings.StringJoiner;
 
-public class ConsoleMessageBlock extends BlockCommand {
+public final class ConsoleMessageBlock extends BlockCommand {
 
-    @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-        StringBuilder build = new StringBuilder();
+	@Override
+	public void run(@Nullable final Player player, @NotNull final Block block, final Material oldMaterial, final List<String> args, final ActionInfo aInfo) {
+		System.out.println(StringJoiner.join(args, " "));
+	}
 
-        for (String arg : args) {
-            build.append(arg + " ");
-        }
+	@NotNull
+	@Override
+	public Optional<String> verify(final List<String> args, final boolean isFinalVerification) {
+		if (args.isEmpty())
+			return Optional.of(notEnoughArgs + this.getTemplate());
+		return Optional.empty();
+	}
 
-        System.out.println(build);
-    }
+	@NotNull
+	@Override
+	public List<String> getNames() {
+		final List<String> names = new ArrayList<>();
+		names.add("CONSOLEMESSAGE");
+		return names;
+	}
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification){
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
-    }
+	@NotNull
+	@Override
+	public String getTemplate() {
+		return "CONSOLEMESSAGE {text}";
+	}
 
-    @Override
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        names.add("CONSOLEMESSAGE");
-        return names;
-    }
+	@Nullable
+	@Override
+	public ChatColor getColor() {
+		return null;
+	}
 
-    @Override
-    public String getTemplate() {
-        return "CONSOLEMESSAGE {text}";
-    }
-
-    @Override
-    public ChatColor getColor() {
-        return null;
-    }
-
-    @Override
-    public ChatColor getExtraColor() {
-        return null;
-    }
+	@Nullable
+	@Override
+	public ChatColor getExtraColor() {
+		return null;
+	}
 
 }
