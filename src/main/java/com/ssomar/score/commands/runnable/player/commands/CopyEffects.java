@@ -1,14 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.*;
@@ -22,7 +17,6 @@ public class CopyEffects extends PlayerCommand {
 
         Set<PotionEffect> potionEffects = new HashSet<>(receiver.getActivePotionEffects());
         p.addPotionEffects(potionEffects);
-
     }
 
     @Override

@@ -1,20 +1,17 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +21,30 @@ public class EICooldown extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        //EICOOLDOWN PLAYER ID SECONDS TICKS
+        //EICOOLDOWN PLAYER ID SECONDS TICKS {optional activator id}
         OfflinePlayer player = Bukkit.getOfflinePlayer(args.get(0));
         String id = args.get(1);
         Integer number = NTools.getInteger(args.get(2)).get();
         boolean ticks = Boolean.parseBoolean(args.get(3));
 
         Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-          if(eiOpt.isPresent()) {
-              eiOpt.get().addCooldown(player.getPlayer(), number, ticks);
-          }
+
+        if(args.size() < 5){
+            if(eiOpt.isPresent()) {
+                eiOpt.get().addCooldown(player.getPlayer(), number, ticks);
+            }
+        }else{
+            if(eiOpt.isPresent()) {
+                try {
+                    eiOpt.get().addCooldown(player.getPlayer(), number, ticks, args.get(4));
+                }catch(NullPointerException e){
+                    return;
+                }
+            }
+        }
+
+
+
     }
 
     @Override
@@ -58,8 +69,7 @@ public class EICooldown extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        //return "CUSTOMDASH3 {function} {max x value} {y or x} {front z default TRUE}";
-        return "EICOOLDOWN {PLAYER} {ID} {SECONDS} {boolean TICKS}";
+        return "EICOOLDOWN {PLAYER} {ID} {SECONDS} {boolean TICKS} {optional activator}";
     }
 
     @Override

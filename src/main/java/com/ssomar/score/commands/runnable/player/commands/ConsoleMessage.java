@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -16,6 +17,7 @@ public class ConsoleMessage extends PlayerCommand {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
+            arg = StringConverter.coloredString(arg);
             build.append(arg + " ");
         }
 

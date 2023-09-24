@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,7 +21,7 @@ public class ConsoleMessageBlock extends BlockCommand {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
-            build.append(arg + " ");
+            build.append(StringConverter.coloredString(arg) + " ");
         }
 
         System.out.println(build);

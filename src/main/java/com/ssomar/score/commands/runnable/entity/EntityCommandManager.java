@@ -54,6 +54,10 @@ public class EntityCommandManager extends CommandManager<EntityCommand> {
         commands.add(new CustomDash3());
         commands.add(new Spin());
         commands.add(new Frontdash());
+        commands.add(new ConsoleMessageEntity());
+        commands.add(new OpMessageEntity());
+        commands.add(new Invulnerable());
+        commands.add(new Steal());
         if(SCore.is1v16Plus()){
             commands.add(new Awareness());
         }

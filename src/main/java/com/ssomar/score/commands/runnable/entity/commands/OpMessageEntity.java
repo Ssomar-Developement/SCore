@@ -1,24 +1,22 @@
-package com.ssomar.score.commands.runnable.block.commands;
+package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OpMessageBlock extends BlockCommand {
+/*  */
+public class OpMessageEntity extends EntityCommand {
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
