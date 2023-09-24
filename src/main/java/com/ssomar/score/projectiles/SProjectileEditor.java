@@ -31,12 +31,12 @@ public class SProjectileEditor extends FeatureEditorInterface<SProjectile> {
         }
 
         //Reset menu
-        createItem(ORANGE, 1, 46, TM.g(Text.EDITOR_RESET_NAME), false, false, "", TM.g(Text.EDITOR_RESET_DESCRIPTION), "&c&oall options of this projectile");
+        createItem(ORANGE, 1, 46, TM.g(Text.EDITOR_RESET_NAME), false, false, TM.gA(Text.EDITOR_RESET_DESCRIPTION));
         // exit
         createItem(RED, 1, 45, GUI.BACK, false, false);
 
         //Save menu
-        createItem(GREEN, 1, 53, GUI.SAVE, false, false, "", "&a&oClick here to save", "&a&oyour modification in config.yml");
+        createItem(GREEN, 1, 53, GUI.SAVE, false, false, TM.gA(Text.EDITOR_SAVE_DESCRIPTION));
 
     }
 

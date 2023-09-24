@@ -4,6 +4,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 
+import java.util.List;
+
 public class GeneralConfig extends Config {
 
     private static GeneralConfig instance;
@@ -21,6 +23,9 @@ public class GeneralConfig extends Config {
     private String dbUser;
 
     private String dbPassword;
+
+    @Getter
+    private List<String> silenceOutputs;
 
     @Getter
     private boolean reduceDamageIndicatorWithProtolcolLib;
@@ -61,6 +66,7 @@ public class GeneralConfig extends Config {
         dbPassword = config.getString("dbPassword", "");
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
         jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
+        silenceOutputs = config.getStringList("silenceOutputs");
 
     }
 

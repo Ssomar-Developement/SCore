@@ -97,7 +97,11 @@ public abstract class RunCommand implements Serializable {
                 later++;
            }
         }
-        finalCommand = this.getSp().replacePlaceholder(finalCommand);
+        //Exception for WHILE we don't want to replace the placeholders
+        if(!finalCommand.startsWith("WHILE")){
+            finalCommand = this.getSp().replacePlaceholder(finalCommand);
+        }
+
         for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
             finalCommand = finalCommand.replace("PLACEHOLDER_TO_REPLACE_LATER_"+entry.getKey(), entry.getValue());
         }

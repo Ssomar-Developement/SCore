@@ -10,6 +10,7 @@ import com.ssomar.score.utils.messages.SendMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.boss.BarColor;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,6 +38,8 @@ public abstract class SCommand {
     protected static final String invalidRange = "&cA SCommand contains an &6invalid range&c: &e";
     protected static final String invalidBoolean = "&cA SCommand contains an &6invalid boolean&c: &e";
     protected static final String invalidColor = "&cA SCommand contains an &6invalid color &7&o( &8https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html &7&o) &c: &e";
+
+    protected static final String invalidBarColor = "&cA SCommand contains an &6invalid bar color &7&o( &8https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html &7&o) &c: &e";
     protected static String invalidExecutableItems = "&cA SCommand contains an &6invalid id of ExecutableItems&c: &e";
 
     public static ArgumentChecker checkInteger(@NotNull String arg, boolean isFinalVerification, String template) {
@@ -174,6 +177,21 @@ public abstract class SCommand {
             } catch (Exception e) {
                 ac.setValid(false);
                 ac.setError(invalidColor + arg + " &cfor command: &e" + template);
+            }
+        }
+
+        return ac;
+    }
+
+    public static ArgumentChecker checkBarColor(@NotNull String arg, boolean isFinalVerification, String template) {
+        ArgumentChecker ac = new ArgumentChecker();
+
+        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+            try {
+                BarColor.valueOf(arg.toUpperCase());
+            } catch (Exception e) {
+                ac.setValid(false);
+                ac.setError(invalidBarColor + arg + " &cfor command: &e" + template);
             }
         }
 

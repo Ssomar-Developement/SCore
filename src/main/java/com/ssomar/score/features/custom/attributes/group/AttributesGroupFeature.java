@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.FeaturesGroup;
 import com.ssomar.score.features.custom.attributes.attribute.AttributeFullOptionsFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -30,7 +32,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
     private int premiumLimit = 5;
 
     public AttributesGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
-        super(parent, "attributes", "Attributes", new String[]{"&7&oThe attributes"}, Material.BREWING_STAND, false);
+        super(parent, "attributes", "Attributes", TM.gA(Text.FEATURES_ATTRIBUTES_DESCRIPTION), Material.BREWING_STAND, false);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }

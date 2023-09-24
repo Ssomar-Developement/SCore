@@ -227,6 +227,8 @@ public final class XParticle {
      */
     public static void blackSun(double radius, double radiusRate, double rate, double rateChange, ParticleDisplay display) {
         double j = 0;
+        if(radiusRate < 0) radiusRate = -radiusRate;
+        else if(radiusRate == 0) radiusRate = 1;
         for (double i = 10; i > 0; i -= radiusRate) {
             j += rateChange;
             circle(radius + i, rate - j, display);

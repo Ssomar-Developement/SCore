@@ -4,6 +4,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
 public class NewDefaultObjectsEditorManager extends NewGUIManager<NewDefaultObjectsEditor> {
@@ -24,8 +25,8 @@ public class NewDefaultObjectsEditorManager extends NewGUIManager<NewDefaultObje
     public boolean allClicked(NewInteractionClickedGUIManager<NewDefaultObjectsEditor> i) {
         if (i.decoloredName.contains("Give to you all items")) {
             i.gui.giveAllObjects(i.player);
-        } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.COLOR_OBJECT_ID)) {
-            i.gui.giveSObject(i.decoloredName.split(GUI.OBJECT_ID)[1].trim(), i.player);
+        } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.CREATION_ID)) {
+            i.gui.giveSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
         } else return false;
         return true;
     }

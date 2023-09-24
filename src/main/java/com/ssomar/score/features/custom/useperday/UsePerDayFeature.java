@@ -7,6 +7,8 @@ import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -37,7 +39,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     private String id;
 
     public UsePerDayFeature(FeatureParentInterface parent, String id) {
-        super(parent, "usePerDay", "Use per day", new String[]{"&7&oUse per day features"}, Material.BUCKET, true);
+        super(parent, "usePerDay", "Use per day", TM.gA(Text.FEATURES_USEPERDAY_DESCRIPTION), Material.BUCKET, true);
         this.id = id;
         reset();
     }

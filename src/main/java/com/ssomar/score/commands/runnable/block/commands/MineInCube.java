@@ -81,12 +81,22 @@ public class MineInCube extends BlockCommand {
                     Integer offsetz = 0;
 
                     if(offset) {
-                        Set<Material> trasnparent = new HashSet<>();
-                        trasnparent.add(Material.WATER);
-                        trasnparent.add(Material.AIR);
+                        Set<Material> transparent = new HashSet<>();
+                        transparent.add(Material.WATER);
+                        transparent.add(Material.AIR);
+                        if(SCore.is1v18Plus()) transparent.add(Material.CAVE_AIR);
 
-                        List<Block> lastBlocks = p.getLastTwoTargetBlocks(trasnparent, 5);
-                        BlockFace face = lastBlocks.get(1).getFace(lastBlocks.get(0)).getOppositeFace();
+                        List<Block> lastBlocks = p.getLastTwoTargetBlocks(transparent, 5);
+                        /* for (Block b : lastBlocks) {
+                            SsomarDev.testMsg("lastBlocks: " + b.getType().name(), true);
+                        }*/
+                        BlockFace face = null;
+                        try{
+                            face = lastBlocks.get(1).getFace(lastBlocks.get(0)).getOppositeFace();
+                        }catch (Exception ignored){
+                            // IndexOutOfBoundsException: Index 1 out of bounds for length 1 where the player has a fence or non full block in its line of view but don't break the block
+                            return;
+                        }
 
                         if (face == NORTH) {
                             offsetz = (-1 * radius);

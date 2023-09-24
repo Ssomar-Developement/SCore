@@ -23,33 +23,36 @@ public class Smelt extends BlockCommand {
 
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+
+
         UUID pUUID = null;
         if (p != null) pUUID = p.getUniqueId();
 
-        try {
-            if (SafeBreak.verifSafeBreak(pUUID, block)) {
-                ItemStack itemInHand = p.getInventory().getItemInMainHand();
+        boolean event = true;
+        if (args.size() >= 1) {
+            event = Boolean.parseBoolean(args.get(0));
+        }
+        // if its from an event generated
+        if(event && aInfo.isEventFromCustomBreakCommand()) return;
 
-                ItemStack smelted = getSmeltedItem(block.getType());
-                if (smelted == null) {
-                    return;
-                }
+        if (SafeBreak.verifSafeBreak(pUUID, block)) {
+            ItemStack itemInHand = p.getInventory().getItemInMainHand();
 
-                // Determine the amount of smelted item to drop
-                int amountToDrop = 1;
-                if (itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
-                    int fortuneLevel = itemInHand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
-                    amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
-                }
-                // BREAK
+            ItemStack smelted = getSmeltedItem(block.getType());
+            if (smelted == null) return;
 
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, true, false);
-
-                // Drop the smelted item
-                Location dropLocation = block.getLocation();
-                block.getWorld().dropItemNaturally(dropLocation, new ItemStack(smelted.getType(), amountToDrop));
+            // Determine the amount of smelted item to drop
+            int amountToDrop = 1;
+            if (itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
+                int fortuneLevel = itemInHand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+                amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
             }
-        }catch(Exception ignored){
+            // BREAK
+            SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, event, false);
+
+            // Drop the smelted item
+            Location dropLocation = block.getLocation();
+            block.getWorld().dropItemNaturally(dropLocation, new ItemStack(smelted.getType(), amountToDrop));
         }
     }
 
@@ -159,7 +162,7 @@ public class Smelt extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-      return Optional.empty();
+        return Optional.empty();
     }
 
     @Override
@@ -171,7 +174,7 @@ public class Smelt extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SMELT";
+        return "SMELT [generateEvent true or false]";
     }
 
     @Override

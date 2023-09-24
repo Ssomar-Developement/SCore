@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.plotsquared.core.PlotAPI;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
+import com.ssomar.score.commands.runnable.FilterManager;
 import com.ssomar.score.commands.score.CommandsClass;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.Message;
@@ -90,6 +91,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasTerra = false;
 
     public static boolean hasJetsMinions = false;
+
+    public static boolean hasEcoSkills = false;
 
     public static boolean hasTAB = false;
     private static boolean is1v8 = false;
@@ -283,8 +286,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         this.loadDependency();
 
-        GUI.init();
-
         GeneralConfig.getInstance();
 
         TM.getInstance().load();
@@ -294,6 +295,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         MessageMain.getInstance().load();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+
+        GUI.init();
 
         /* Loop instance part */
         LoopManager.getInstance();
@@ -327,6 +330,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();
         }
+
+        FilterManager.getInstance().reload();
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }
@@ -477,6 +482,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasTerra = hookSoftDependency("Terra");
 
         hasJetsMinions = hookSoftDependency("JetsMinions");
+
+        hasEcoSkills = hookSoftDependency("EcoSkills");
     }
 
     @Override
@@ -509,9 +516,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Variables instance part */
         VariablesLoader.getInstance().reload();
 
+        TM.getInstance().load();
+
         TM.getInstance().loadTexts();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
+
+        GUI.init();
+
+        FilterManager.getInstance().reload();
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
     }

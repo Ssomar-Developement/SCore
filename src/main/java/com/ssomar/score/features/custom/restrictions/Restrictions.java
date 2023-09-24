@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
@@ -27,7 +29,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
     private Map<RestrictionEnum, Boolean> defaultValues;
 
     public Restrictions(FeatureParentInterface parent, Map<RestrictionEnum, Boolean> defaultValues) {
-        super(parent, "restrictions", "Restrictions", new String[]{"&7&oThe restrictions features"}, Material.ANVIL, false);
+        super(parent, "restrictions", "Restrictions", TM.gA(Text.FEATURES_RESTRICTIONS_DESCRIPTION), Material.ANVIL, false);
         this.defaultValues = defaultValues;
         reset();
     }

@@ -6,6 +6,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ChatColorFeature;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -30,7 +32,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     private BooleanFeature displayNameDrop;
 
     public DropFeatures(FeatureParentInterface parent) {
-        super(parent, "dropOptions", "Drop features", new String[]{"&7&oThe drop features"}, Material.ANVIL, false);
+        super(parent, "dropOptions", "Drop features", TM.gA(Text.FEATURES_DROPS_DESCRIPTION), Material.ANVIL, false);
         reset();
     }
 

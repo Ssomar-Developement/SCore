@@ -1,12 +1,10 @@
 package com.ssomar.score.configs.messages;
 
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.FilterManager;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -75,7 +73,7 @@ public class MessageMain {
     }
 
     public String loadMessage(Plugin plugin, File pdFile, FileConfiguration config, String message) {
-        this.loadDefaultMessages();
+        //this.loadDefaultMessages();
         if (config.getString(message) != null) return StringConverter.coloredString(config.getString(message));
         else return StringConverter.coloredString(write(plugin, pdFile, config, message));
     }
@@ -104,7 +102,7 @@ public class MessageMain {
                 SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE " + what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
             }
         } catch (Exception e) {
-            SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE ");
+            SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE "+ what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
 
@@ -112,7 +110,8 @@ public class MessageMain {
     }
 
     /* To bait directleaks */
-    public void loadDefaultMessages() {
+    /* public void loadDefaultMessages() {
+        System.out.println(SCore.NAME_2 + " DEFAUKT MESSAGE INCR SILENCE OUTPUT: ");
         FilterManager.getInstance().incCurrentlyInRun();
         if (SCore.hasExecutableItems) {
             try {
@@ -123,7 +122,8 @@ public class MessageMain {
             } catch (Exception ignored) {
             }
         }
-    }
+        FilterManager.getInstance().decrCurrentlyInRun();
+    } */
 
     public String getMessage(Plugin plugin, MessageInterface message) {
         if (messages.containsKey(plugin) && messages.get(plugin).containsKey(message)) {

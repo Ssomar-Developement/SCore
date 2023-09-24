@@ -9,6 +9,7 @@ import com.ssomar.score.features.custom.required.executableitems.group.RequiredE
 import com.ssomar.score.features.custom.required.experience.RequiredExperience;
 import com.ssomar.score.features.custom.required.items.group.RequiredItemGroupFeature;
 import com.ssomar.score.features.custom.required.level.RequiredLevel;
+import com.ssomar.score.features.custom.required.magic.group.RequiredMagicGroupFeature;
 import com.ssomar.score.features.custom.required.mana.RequiredMana;
 import com.ssomar.score.features.custom.required.money.RequiredMoney;
 import com.ssomar.score.menu.GUI;
@@ -37,6 +38,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     private RequiredItemGroupFeature requiredItems;
     private RequiredExecutableItemGroupFeature requiredExecutableItems;
     private RequiredMana requiredMana;
+    private RequiredMagicGroupFeature requiredMagics;
 
     public RequiredGroup(FeatureParentInterface parent) {
         super(parent, "requiredGroup", "Required Things", new String[]{"&7&oRequired things"}, Material.ANVIL, false);
@@ -52,6 +54,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         error.addAll(requiredItems.load(plugin, config, isPremiumLoading));
         error.addAll(requiredExecutableItems.load(plugin, config, isPremiumLoading));
         error.addAll(requiredMana.load(plugin, config, isPremiumLoading));
+        error.addAll(requiredMagics.load(plugin, config, isPremiumLoading));
         return error;
     }
 
@@ -63,6 +66,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         requiredItems.save(config);
         requiredExecutableItems.save(config);
         requiredMana.save(config);
+        requiredMagics.save(config);
     }
 
     @Override
@@ -91,6 +95,10 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
             SsomarDev.testMsg("Invalid mana", DEBUG);
             return false;
         }
+        if (!requiredMagics.verify(player, event)) {
+            SsomarDev.testMsg("Invalid magics", DEBUG);
+            return false;
+        }
 
         return true;
     }
@@ -104,6 +112,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         requiredItems.take(player);
         requiredExecutableItems.take(player);
         requiredMana.take(player);
+        requiredMagics.take(player);
     }
 
     @Override
@@ -113,38 +122,43 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public RequiredGroup initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 7];
+        String[] finalDescription = new String[getEditorDescription().length + 8];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 7] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 8] = GUI.CLICK_HERE_TO_CHANGE;
         if (requiredLevel.getValue().getLevel().getValue().get() > 0)
-            finalDescription[finalDescription.length - 6] = "&7Required level: &a&l✔";
+            finalDescription[finalDescription.length - 7] = "&7Required level: &a&l✔";
         else
-            finalDescription[finalDescription.length - 6] = "&7Required level: &c&l✘";
+            finalDescription[finalDescription.length - 7] = "&7Required level: &c&l✘";
 
         if (requiredExperience.getValue().getExperience().getValue().get() > 0)
-            finalDescription[finalDescription.length - 5] = "&7Required experience: &a&l✔";
+            finalDescription[finalDescription.length - 6] = "&7Required experience: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7Required experience: &c&l✘";
+            finalDescription[finalDescription.length - 6] = "&7Required experience: &c&l✘";
 
         if (requiredMoney.getValue().getMoney().getValue().get() > 0)
-            finalDescription[finalDescription.length - 4] = "&7Required money: &a&l✔";
+            finalDescription[finalDescription.length - 5] = "&7Required money: &a&l✔";
         else
-            finalDescription[finalDescription.length - 4] = "&7Required money: &c&l✘";
+            finalDescription[finalDescription.length - 5] = "&7Required money: &c&l✘";
 
         if (requiredItems.getValue().getRequiredItems().size() > 0)
-            finalDescription[finalDescription.length - 3] = "&7Required items: &a&l✔";
+            finalDescription[finalDescription.length - 4] = "&7Required items: &a&l✔";
         else
-            finalDescription[finalDescription.length - 3] = "&7Required items: &c&l✘";
+            finalDescription[finalDescription.length - 4] = "&7Required items: &c&l✘";
 
         if (requiredExecutableItems.getValue().getRequiredExecutableItems().size() > 0)
-            finalDescription[finalDescription.length - 2] = "&7Required executable items: &a&l✔";
+            finalDescription[finalDescription.length - 3] = "&7Required executable items: &a&l✔";
         else
-            finalDescription[finalDescription.length - 2] = "&7Required executable items: &c&l✘";
+            finalDescription[finalDescription.length - 3] = "&7Required executable items: &c&l✘";
 
         if (requiredMana.getValue().getMana().getValue().get() > 0)
-            finalDescription[finalDescription.length - 1] = "&7Required mana: &a&l✔";
+            finalDescription[finalDescription.length - 2] = "&7Required mana: &a&l✔";
         else
-            finalDescription[finalDescription.length - 1] = "&7Required mana: &c&l✘";
+            finalDescription[finalDescription.length - 2] = "&7Required mana: &c&l✘";
+
+        if (requiredMagics.getValue().getRequiredMagics().size() > 0)
+            finalDescription[finalDescription.length - 1] = "&7Required magics: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 1] = "&7Required magics: &c&l✘";
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -165,6 +179,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         requiredGroup.setRequiredItems(getRequiredItems().clone(requiredGroup));
         requiredGroup.setRequiredExecutableItems(getRequiredExecutableItems().clone(requiredGroup));
         requiredGroup.setRequiredMana(getRequiredMana().clone(requiredGroup));
+        requiredGroup.setRequiredMagics(getRequiredMagics().clone(requiredGroup));
         return requiredGroup;
     }
 
@@ -176,6 +191,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         this.requiredItems = new RequiredItemGroupFeature(this);
         this.requiredExecutableItems = new RequiredExecutableItemGroupFeature(this);
         this.requiredMana = new RequiredMana(this);
+        this.requiredMagics = new RequiredMagicGroupFeature(this);
     }
 
     @Override
@@ -190,7 +206,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return Arrays.asList(requiredLevel, requiredExperience, requiredMoney, requiredItems, requiredExecutableItems, requiredMana);
+        return Arrays.asList(requiredLevel, requiredExperience, requiredMoney, requiredItems, requiredExecutableItems, requiredMana, requiredMagics);
     }
 
     @Override
@@ -219,6 +235,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
                 requiredgroup.setRequiredItems(requiredItems);
                 requiredgroup.setRequiredExecutableItems(requiredExecutableItems);
                 requiredgroup.setRequiredMana(requiredMana);
+                requiredgroup.setRequiredMagics(requiredMagics);
                 break;
             }
         }

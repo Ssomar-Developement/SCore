@@ -21,6 +21,7 @@ public class RequiredGroupEditor extends FeatureEditorInterface<RequiredGroup> {
         requiredGroup.getRequiredItems().initAndUpdateItemParentEditor(this, 3);
         requiredGroup.getRequiredExecutableItems().initAndUpdateItemParentEditor(this, 4);
         requiredGroup.getRequiredMana().initAndUpdateItemParentEditor(this, 5);
+        requiredGroup.getRequiredMagics().initAndUpdateItemParentEditor(this, 6);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);
