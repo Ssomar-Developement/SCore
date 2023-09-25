@@ -1,49 +1,60 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 
 /* COPYEFFECTS */
-public class CopyEffects extends PlayerCommand {
+public final class CopyEffects extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        if(p.isDead() | receiver.isDead()) return;
+	@Override
+	public void run(@Nullable final Player player, final Player receiver, final List<String> args, final ActionInfo aInfo) {
+		if (player == null || player.isDead() || receiver.isDead())
+			return;
 
-        Set<PotionEffect> potionEffects = new HashSet<>(receiver.getActivePotionEffects());
-        p.addPotionEffects(potionEffects);
-    }
+		player.addPotionEffects(new HashSet<>(receiver.getActivePotionEffects()));
+	}
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        //if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
-    }
+	@NotNull
+	@Override
+	public Optional<String> verify(final List<String> args, final boolean isFinalVerification) {
+		return Optional.empty();
+	}
 
-    @Override
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        names.add("COPYEFFECTS");
-        return names;
-    }
+	@NotNull
+	@Override
+	public List<String> getNames() {
+		final List<String> names = new ArrayList<>();
 
-    @Override
-    public String getTemplate() {
-        return "COPYEFFECTS";
-    }
+		names.add("COPYEFFECTS");
 
-    @Override
-    public ChatColor getColor() {
-        return null;
-    }
+		return names;
+	}
 
-    @Override
-    public ChatColor getExtraColor() {
-        return null;
-    }
+	@NotNull
+	@Override
+	public String getTemplate() {
+		return "COPYEFFECTS";
+	}
+
+	@Nullable
+	@Override
+	public ChatColor getColor() {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ChatColor getExtraColor() {
+		return null;
+	}
 }

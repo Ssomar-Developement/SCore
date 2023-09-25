@@ -1,61 +1,63 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.strings.StringConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.strings.StringJoiner;
+
 /* OPMESSAGE {text} */
-public class OpMessage extends PlayerCommand {
+public final class OpMessage extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        StringBuilder build = new StringBuilder();
+	@Override
+	public void run(@Nullable final Player player, final Player receiver, final List<String> args, final ActionInfo aInfo) {
+		final String joined = StringJoiner.join(args, " ");
+		System.out.println(joined);
 
-        for (String arg : args) {
-            build.append(StringConverter.coloredString(arg) + " ");
-        }
+		for (final Player online : Bukkit.getServer().getOnlinePlayers())
+			if (online.isOp())
+				sm.sendMessage(online, joined);
+	}
 
-        System.out.println(build);
+	@NotNull
+	@Override
+	public Optional<String> verify(final List<String> args, final boolean isFinalVerification) {
+		return args.isEmpty() ? Optional.of(notEnoughArgs + this.getTemplate()) : Optional.empty();
+	}
 
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (player.isOp()) {
-                player.sendMessage(build.toString());
-            }
-        }
-    }
+	@NotNull
+	@Override
+	public List<String> getNames() {
+		final List<String> names = new ArrayList<>();
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
-    }
+		names.add("OPMESSAGE");
 
-    @Override
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        names.add("OPMESSAGE");
-        return names;
-    }
+		return names;
+	}
 
-    @Override
-    public String getTemplate() {
-        return "OPMESSAGE {text}";
-    }
+	@NotNull
+	@Override
+	public String getTemplate() {
+		return "OPMESSAGE {text}";
+	}
 
-    @Override
-    public ChatColor getColor() {
-        return null;
-    }
+	@Nullable
+	@Override
+	public ChatColor getColor() {
+		return null;
+	}
 
-    @Override
-    public ChatColor getExtraColor() {
-        return null;
-    }
+	@Nullable
+	@Override
+	public ChatColor getExtraColor() {
+		return null;
+	}
 }
