@@ -127,6 +127,7 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new CopyEffects());
         commands.add(new AddItemAttribute());
         commands.add(new SetItemAttribute());
+        commands.add(new SetArmorTrim());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());

@@ -25,16 +25,16 @@ public final class ConsoleMessageBlock extends BlockCommand {
 	@NotNull
 	@Override
 	public Optional<String> verify(final List<String> args, final boolean isFinalVerification) {
-		if (args.isEmpty())
-			return Optional.of(notEnoughArgs + this.getTemplate());
-		return Optional.empty();
+		return args.isEmpty() ? Optional.of(notEnoughArgs + this.getTemplate()) : Optional.empty();
 	}
 
 	@NotNull
 	@Override
 	public List<String> getNames() {
 		final List<String> names = new ArrayList<>();
+
 		names.add("CONSOLEMESSAGE");
+
 		return names;
 	}
 
@@ -55,5 +55,4 @@ public final class ConsoleMessageBlock extends BlockCommand {
 	public ChatColor getExtraColor() {
 		return null;
 	}
-
 }

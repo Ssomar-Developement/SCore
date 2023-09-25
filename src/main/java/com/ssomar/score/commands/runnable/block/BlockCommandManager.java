@@ -44,6 +44,7 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
         references.add(new StrikeLightning());
         references.add(new OpMessageBlock());
         references.add(new ConsoleMessageBlock());
+        references.add(new CropsGrowthBoost());
         /* No BlockData in 1.12 and less */
         if (!SCore.is1v12Less()) {
             references.add(new OpenDoor());
