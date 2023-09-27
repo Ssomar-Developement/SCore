@@ -38,7 +38,6 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         commands.add(new Nearest());
         commands.add(new MobNearest());
         commands.add(new AngryAt());
-        commands.add(new Spin());
         commands.add(new ConsoleMessageEntity());
         commands.add(new OpMessageEntity());
         commands.add(new Steal());
