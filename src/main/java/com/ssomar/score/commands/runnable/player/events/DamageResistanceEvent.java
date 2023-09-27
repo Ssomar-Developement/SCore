@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.events;
 
-import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageResistance;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

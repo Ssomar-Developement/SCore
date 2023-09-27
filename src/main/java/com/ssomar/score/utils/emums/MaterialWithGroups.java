@@ -273,7 +273,8 @@ public enum MaterialWithGroups {
         if (materialWithGroups == null) {
             for (Material material : Material.values()) {
                 if (material.name().equals(name)) {
-                    if (material.isAir()) return Material.BARRIER;
+                    if (SCore.is1v12Less() && material.equals(Material.AIR))return Material.BARRIER;
+                    else if (!SCore.is1v12Less() && material.isAir()) return Material.BARRIER;
                     else if (!material.isItem()) return Material.BARRIER;
                     return material;
                 }

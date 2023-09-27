@@ -2,8 +2,8 @@ package com.ssomar.score.usedapi;
 
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
-import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageBoost;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageResistance;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import com.ssomar.score.variables.manager.VariablesManager;

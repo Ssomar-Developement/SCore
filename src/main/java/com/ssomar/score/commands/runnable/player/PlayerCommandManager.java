@@ -2,20 +2,23 @@ package com.ssomar.score.commands.runnable.player;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
+import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommandsManager;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.CopyEffects;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.Spin;
 import com.ssomar.score.commands.runnable.player.commands.*;
-import com.ssomar.score.commands.runnable.player.commands.Setlore;
 import com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace.EquipmentVisualCancel;
 import com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace.EquipmentVisualReplace;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerCommandManager extends CommandManager<PlayerCommand> {
+public class PlayerCommandManager extends CommandManager<SCommand> {
 
     private static PlayerCommandManager instance;
 
     public PlayerCommandManager() {
-        List<PlayerCommand> commands = new ArrayList<>();
+        List<SCommand> commands = new ArrayList<>();
         commands.add(new Around());
         commands.add(new MobAround());
         commands.add(new Addlore());
@@ -35,27 +38,12 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new SetBlock());
         commands.add(new SetTempBlockPos());
         commands.add(new ReplaceBlock());
-        commands.add(new CustomDash1());
-        commands.add(new CustomDash2());
-        commands.add(new CustomDash3());
         commands.add(new ProjectileCustomDash1());
-        commands.add(new FrontDash());
-        commands.add(new Glowing());
-        commands.add(new SetGlow());
-        commands.add(new RemoveGlow());
-        commands.add(new BackDash());
-        commands.add(new TeleportOnCursor());
-        commands.add(new UnsafeTeleportOnCursor());
         commands.add(new WorldTeleport());
         commands.add(new SpawnEntityOnCursor());
         commands.add(DisableFlyActivation.getInstance());
         commands.add(DisableGlideActivation.getInstance());
         /* DAMAGE_RESISTANCE MUST BE BEFORE DAMAGE */
-        commands.add(DamageBoost.getInstance());
-        commands.add(DamageResistance.getInstance());
-        commands.add(new Invulnerability());
-        commands.add(new DamageNoKnockback());
-        commands.add(new Damage());
         commands.add(new LaunchEntity());
         commands.add(new Launch());
         if (!SCore.is1v12Less()) {
@@ -74,13 +62,8 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new Nearest());
         commands.add(new MobNearest());
         commands.add(new MixHotbar());
-        commands.add(new Burn());
-        commands.add(new Jump());
-        commands.add(new RemoveBurn());
-        commands.add(new SetHealth());
         commands.add(new SetExecutableBlock());
         commands.add(new SetMaterialCooldown());
-        commands.add(new StrikeLightning());
         commands.add(new RegainHealth());
         commands.add(new RegainFood());
         commands.add(new RegainMagic());
@@ -90,8 +73,6 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new Chestplate());
         commands.add(new Boots());
         commands.add(new Leggings());
-        commands.add(new SetPitch());
-        commands.add(new SetYaw());
         commands.add(new AnimationTotem());
         commands.add(new AnimationTeleportEnder());
         commands.add(new AnimationBreakBoots());
@@ -104,7 +85,6 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         commands.add(new AnimationSwingMainHand());
         commands.add(new AnimationSwingOffHand());
         commands.add(new CancelPickup());
-        commands.add(new ForceDrop());
         commands.add(new CloseInventory());
         commands.add(new GravityEnable());
         commands.add(new GravityDisable());
@@ -131,16 +111,13 @@ public class PlayerCommandManager extends CommandManager<PlayerCommand> {
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
-            commands.add(new StunEnable());
-            commands.add(new StunDisable());
             commands.add(new ParticleCommand());
-            commands.add(new GlacialFreeze());
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
         commands.add(new While());
 
-        commands.add(new Customtest());
+        commands.addAll(MixedCommandsManager.getInstance().getCommands());
 
         setCommands(commands);
     }

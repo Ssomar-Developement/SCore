@@ -2,7 +2,7 @@ package com.ssomar.score.features.custom.commands.entity;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
-import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.entity.EntityCommandManager;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.editor.NewGUIManager;
@@ -112,7 +112,7 @@ public class EntityCommandsFeature extends CommandsAbstractFeature<List<String>,
     @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
-        for (EntityCommand command : EntityCommandManager.getInstance().getCommands()) {
+        for (SCommand command : EntityCommandManager.getInstance().getCommands()) {
             Suggestion suggestion = new Suggestion("" + command.getTemplate(), command.getExtraColorNotNull() + "[" + command.getColorNotNull() + command.getNames().get(0) + command.getExtraColorNotNull() + "]", "&7ADD command: &e" + command.getNames().get(0));
             map.put(command.getNames().get(0), suggestion);
         }

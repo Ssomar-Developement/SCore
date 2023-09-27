@@ -1,8 +1,8 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.player.commands.DamageBoost;
-import com.ssomar.score.commands.runnable.player.commands.DamageResistance;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageBoost;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageResistance;
 import com.ssomar.score.features.custom.variables.real.VariableReal;
 import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.AccessLevel;

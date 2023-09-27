@@ -214,7 +214,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
 
         BlockData typeData = block.getType().createBlockData();
         block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation().add(0.5,0.5,0.5), 25, 0.5, 0.5, 0.5, 1, typeData);
-        block.getWorld().playSound(block.getLocation(), block.getBlockSoundGroup().getBreakSound(), 1, 1);
+        block.getWorld().playSound(block.getLocation(), block.getBlockData().getSoundGroup().getBreakSound(), 1, 1);
 
         block.breakNaturally();
         // play sound and particles

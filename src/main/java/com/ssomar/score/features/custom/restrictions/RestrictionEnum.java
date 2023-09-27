@@ -21,6 +21,8 @@ public enum RestrictionEnum {
     CANCEL_ANVIL("cancel-anvil"),
     CANCEL_ACTION_RENAME_IN_ANVIL("cancel-rename-anvil"),
     CANCEL_ACTION_ENCHANT_IN_ANVIL("cancel-enchant-anvil"),
+
+    CANCEL_ARMORSTAND("cancel-armorstand"),
     CANCEL_GRIND_STONE("cancel-grind-stone"),
     CANCEL_ITEM_FRAME("cancel-item-frame"),
     CANCEL_SMITHING_TABLE("cancel-smithing-table"),

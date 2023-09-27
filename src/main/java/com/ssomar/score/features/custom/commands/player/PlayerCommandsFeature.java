@@ -2,7 +2,7 @@ package com.ssomar.score.features.custom.commands.player;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommandManager;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.editor.NewGUIManager;
@@ -128,7 +128,7 @@ public class PlayerCommandsFeature extends CommandsAbstractFeature<List<String>,
     @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
-        for (PlayerCommand command : PlayerCommandManager.getInstance().getCommands()) {
+        for (SCommand command : PlayerCommandManager.getInstance().getCommands()) {
             Suggestion suggestion = new Suggestion("" + command.getTemplate(), command.getExtraColorNotNull() + "[" + command.getColorNotNull() + command.getNames().get(0) + command.getExtraColorNotNull() + "]", "&7ADD command: &e" + command.getNames().get(0));
             map.put(command.getNames().get(0), suggestion);
         }
