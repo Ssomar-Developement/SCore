@@ -1,27 +1,27 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.strings.StringConverter;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
+import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ConsoleMessage extends PlayerCommand {
+public class ConsoleMessage extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
-            arg = StringConverter.coloredString(arg);
             build.append(arg + " ");
         }
 
-        System.out.println(build);
+        Utils.sendConsoleMsg(build.toString());
     }
 
     @Override

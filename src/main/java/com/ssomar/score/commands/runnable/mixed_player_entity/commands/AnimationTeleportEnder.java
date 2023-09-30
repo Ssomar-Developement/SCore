@@ -1,21 +1,21 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* TOTEM_ANIMATION */
-public class AnimationHurt extends PlayerCommand {
+public class AnimationTeleportEnder extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        receiver.playEffect(EntityEffect.HURT);
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+        receiver.playEffect(EntityEffect.TELEPORT_ENDER);
     }
 
     @Override
@@ -26,14 +26,14 @@ public class AnimationHurt extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("~ANIMATION_HURT");
-        names.add("HURT_ANIMATION");
+        names.add("~ANIMATION_TELEPORT_ENDER");
+        names.add("TELEPORT_ENDER_ANIMATION");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "HURT_ANIMATION";
+        return "TELEPORT_ENDER_ANIMATION";
     }
 
     @Override
@@ -45,4 +45,6 @@ public class AnimationHurt extends PlayerCommand {
     public ChatColor getExtraColor() {
         return ChatColor.GOLD;
     }
+
+
 }

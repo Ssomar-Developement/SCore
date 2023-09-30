@@ -1,13 +1,14 @@
-package com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
-import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import com.ssomar.score.utils.GetItem;
+import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -17,10 +18,10 @@ import java.util.List;
 import java.util.Optional;
 
 /* TOTEM_ANIMATION */
-public class EquipmentVisualReplace extends PlayerCommand {
+public class EquipmentVisualReplace extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         EquipmentSlot slot = BetterEquipmentSlot.getEquipmentSlot(args.get(0)).orElse(EquipmentSlot.HAND);
         String material = args.get(1);
         ItemStack item = GetItem.getItem(material, Integer.parseInt(args.get(2))).orElse(new ItemStack(Material.BARRIER));

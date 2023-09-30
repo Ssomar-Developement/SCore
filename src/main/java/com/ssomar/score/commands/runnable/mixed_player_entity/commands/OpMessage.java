@@ -1,22 +1,22 @@
-package com.ssomar.score.commands.runnable.entity.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/*  */
-public class OpMessageEntity extends EntityCommand {
+/* OPMESSAGE {text} */
+public class OpMessage extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
@@ -59,5 +59,4 @@ public class OpMessageEntity extends EntityCommand {
     public ChatColor getExtraColor() {
         return null;
     }
-
 }

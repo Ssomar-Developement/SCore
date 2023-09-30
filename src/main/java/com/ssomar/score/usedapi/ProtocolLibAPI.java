@@ -12,7 +12,9 @@ import com.ssomar.score.config.GeneralConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,14 +30,14 @@ public class ProtocolLibAPI {
         return sendEquipmentVisualReplace(player, slot, new ItemStack(material, amount), time);
     }
 
-    public static List<BukkitTask> sendEquipmentVisualReplace(Player player, EquipmentSlot slot, ItemStack item, int time) {
+    public static List<BukkitTask> sendEquipmentVisualReplace(LivingEntity entity, EquipmentSlot slot, ItemStack item, int time) {
         List<BukkitTask> tasks = new ArrayList<>();
         for (int i = 0; i < time / 20; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
                     PacketContainer packet = SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
-                    packet.getIntegers().write(0, player.getEntityId());
+                    packet.getIntegers().write(0, entity.getEntityId());
                     List<Pair<EnumWrappers.ItemSlot, ItemStack>> pairList = new ArrayList<>();
                     if (slot.equals(EquipmentSlot.HEAD)) pairList.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, item));
                     else if (slot.equals(EquipmentSlot.CHEST))
@@ -66,20 +68,22 @@ public class ProtocolLibAPI {
             @Override
             public void run() {
                 PacketContainer packet = SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
-                packet.getIntegers().write(0, player.getEntityId());
+                packet.getIntegers().write(0, entity.getEntityId());
                 List<Pair<EnumWrappers.ItemSlot, ItemStack>> pairList = new ArrayList<>();
+                EntityEquipment equipment = entity.getEquipment();
+                if(equipment == null) return;
                 if (slot.equals(EquipmentSlot.HEAD))
-                    pairList.add(get(EnumWrappers.ItemSlot.HEAD, player.getInventory().getHelmet()));
+                    pairList.add(get(EnumWrappers.ItemSlot.HEAD, equipment.getHelmet()));
                 else if (slot.equals(EquipmentSlot.CHEST))
-                    pairList.add(get(EnumWrappers.ItemSlot.CHEST, player.getInventory().getChestplate()));
+                    pairList.add(get(EnumWrappers.ItemSlot.CHEST, equipment.getChestplate()));
                 else if (slot.equals(EquipmentSlot.LEGS))
-                    pairList.add(get(EnumWrappers.ItemSlot.LEGS, player.getInventory().getLeggings()));
+                    pairList.add(get(EnumWrappers.ItemSlot.LEGS, equipment.getLeggings()));
                 else if (slot.equals(EquipmentSlot.FEET))
-                    pairList.add(get(EnumWrappers.ItemSlot.FEET, player.getInventory().getBoots()));
+                    pairList.add(get(EnumWrappers.ItemSlot.FEET, equipment.getBoots()));
                 else if (slot.equals(EquipmentSlot.HAND))
-                    pairList.add(get(EnumWrappers.ItemSlot.MAINHAND, player.getInventory().getItemInMainHand()));
+                    pairList.add(get(EnumWrappers.ItemSlot.MAINHAND, equipment.getItemInMainHand()));
                 else if (slot.equals(EquipmentSlot.OFF_HAND))
-                    pairList.add(get(EnumWrappers.ItemSlot.OFFHAND, player.getInventory().getItemInOffHand()));
+                    pairList.add(get(EnumWrappers.ItemSlot.OFFHAND, equipment.getItemInOffHand()));
                 packet.getSlotStackPairLists().write(0, pairList);
 
                 for (Player p : Bukkit.getOnlinePlayers()) {

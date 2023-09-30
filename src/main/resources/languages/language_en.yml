@@ -313,4 +313,6 @@ ei:
     disabledWorlds:
         description: "&7&oThe disabled worlds features"
     nbtTags:
-      description: "&7&oThe NBT tags features"
+      description:
+      - "&7&oThe NBT tags features"
+      - "&7&oRequires the plugin &eNBTAPI"

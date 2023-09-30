@@ -1,9 +1,9 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 /* TOTEM_ANIMATION */
-public class AnimationBreakLeggings extends PlayerCommand {
+public class AnimationSwingOffHand extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        receiver.playEffect(EntityEffect.BREAK_EQUIPMENT_LEGGINGS);
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+        receiver.swingOffHand();
     }
 
     @Override
@@ -26,14 +26,14 @@ public class AnimationBreakLeggings extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("~ANIMATION_BREAK_LEGGINGS");
-        names.add("BREAK_LEGGINGS_ANIMATION");
+        names.add("~ANIMATION_SWING_OFF_HAND");
+        names.add("SWING_OFF_HAND");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "BREAK_LEGGINGS_ANIMATION";
+        return "SWING_OFF_HAND";
     }
 
     @Override

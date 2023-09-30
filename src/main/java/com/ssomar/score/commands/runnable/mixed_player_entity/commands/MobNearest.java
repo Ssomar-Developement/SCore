@@ -1,11 +1,11 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class MobNearest extends PlayerCommand implements FeatureParentInterface {
+public class MobNearest extends MixedCommand implements FeatureParentInterface {
 
     public static void mobAroundExecution(Location location, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
 
@@ -93,7 +94,7 @@ public class MobNearest extends PlayerCommand implements FeatureParentInterface 
     }
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         mobAroundExecution(receiver.getLocation(), receiver, false, args, aInfo);
     }
 

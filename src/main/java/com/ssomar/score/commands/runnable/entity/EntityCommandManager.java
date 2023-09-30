@@ -16,6 +16,7 @@ public class EntityCommandManager extends CommandManager<SCommand> {
 
     private EntityCommandManager() {
         List<SCommand> commands = new ArrayList<>();
+        commands.add(new Around());
         commands.add(new TeleportPosition());
         commands.add(new TeleportEntityToPlayer());
         commands.add(new TeleportPlayerToEntity());
@@ -31,15 +32,9 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         commands.add(new SetAdult());
         commands.add(new SetAI());
         commands.add(new SetName());
-        commands.add(new Around());
-        commands.add(new MobAround());
         commands.add(new PlayerRideOnEntity());
         commands.add(new Shear());
-        commands.add(new Nearest());
-        commands.add(new MobNearest());
         commands.add(new AngryAt());
-        commands.add(new ConsoleMessageEntity());
-        commands.add(new OpMessageEntity());
         commands.add(new Steal());
         if(SCore.is1v16Plus()){
             commands.add(new Awareness());

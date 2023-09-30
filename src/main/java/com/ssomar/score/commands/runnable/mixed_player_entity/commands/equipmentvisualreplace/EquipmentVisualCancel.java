@@ -1,10 +1,11 @@
-package com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -13,10 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 /* TOTEM_ANIMATION */
-public class EquipmentVisualCancel extends PlayerCommand {
+public class EquipmentVisualCancel extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         EquipmentSlot slot = BetterEquipmentSlot.getEquipmentSlot(args.get(0)).orElse(EquipmentSlot.HAND);
         EquipmentVisualManager.getInstance().cancelTasks(receiver.getUniqueId(), slot);
     }

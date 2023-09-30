@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.runnable.player.commands.equipmentvisualreplace;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace;
 
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitTask;

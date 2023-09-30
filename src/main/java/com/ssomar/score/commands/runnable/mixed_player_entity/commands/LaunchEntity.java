@@ -1,14 +1,15 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -17,10 +18,10 @@ import java.util.List;
 import java.util.Optional;
 
 /* LAUNCHENTITY {entityType} */
-public class LaunchEntity extends PlayerCommand {
+public class LaunchEntity extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         Location loc = receiver.getEyeLocation();
         //loc.setY(loc.getY()-1);
         EntityType entityType = EntityType.PIG;
@@ -55,8 +56,10 @@ public class LaunchEntity extends PlayerCommand {
         if (!SCore.is1v13Less()) v.rotateAroundY(rotation);
         entity.setVelocity(v);
 
-        PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
-        Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
+        if(receiver instanceof Player) {
+            PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent((Player) receiver, entity);
+            Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
+        }
     }
 
     @Override

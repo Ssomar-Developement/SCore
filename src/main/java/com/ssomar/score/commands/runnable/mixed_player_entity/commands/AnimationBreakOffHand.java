@@ -1,8 +1,10 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.EntityEffect;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -10,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 /* TOTEM_ANIMATION */
-public class AnimationSwingMainHand extends PlayerCommand {
+public class AnimationBreakOffHand extends MixedCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        receiver.swingMainHand();
+    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+        receiver.playEffect(EntityEffect.TOTEM_RESURRECT);
     }
 
     @Override
@@ -25,14 +27,14 @@ public class AnimationSwingMainHand extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("~ANIMATION_SWING_MAIN_HAND");
-        names.add("SWING_MAIN_HAND");
+        names.add("~ANIMATION_BREAK_OFF_HAND");
+        names.add("BREAK_OFF_HAND_ANIMATION");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SWING_MAIN_HAND";
+        return "BREAK_OFF_HAND_ANIMATION";
     }
 
     @Override

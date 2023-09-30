@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
+import static com.ssomar.score.commands.runnable.mixed_player_entity.commands.MobAround.mobAroundExecution;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-       return com.ssomar.score.commands.runnable.player.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
+       return com.ssomar.score.commands.runnable.mixed_player_entity.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
     }
 
     @Override
