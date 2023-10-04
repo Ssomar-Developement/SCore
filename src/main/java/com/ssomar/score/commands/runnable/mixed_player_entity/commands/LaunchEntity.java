@@ -20,6 +20,11 @@ import java.util.Optional;
 /* LAUNCHENTITY {entityType} */
 public class LaunchEntity extends MixedCommand {
 
+    public LaunchEntity() {
+        super();
+        setPriority(2);
+    }
+
     @Override
     public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         Location loc = receiver.getEyeLocation();

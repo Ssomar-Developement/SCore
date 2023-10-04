@@ -7,6 +7,8 @@ import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.GetItem;
 import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import com.ssomar.score.utils.messages.SendMessage;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -41,6 +43,13 @@ public abstract class SCommand {
 
     protected static final String invalidBarColor = "&cA SCommand contains an &6invalid bar color &7&o( &8https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html &7&o) &c: &e";
     protected static String invalidExecutableItems = "&cA SCommand contains an &6invalid id of ExecutableItems&c: &e";
+
+    @Setter @Getter
+    private int priority;
+
+    public SCommand() {
+        this.priority = 1;
+    }
 
     public static ArgumentChecker checkInteger(@NotNull String arg, boolean isFinalVerification, String template) {
         return checkInteger(arg, isFinalVerification, template, false);

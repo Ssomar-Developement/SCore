@@ -37,10 +37,10 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new CustomDash2());
         commands.add(new CustomDash3());
         //commands.add(new Customtest());
-        commands.add(new Damage());
         commands.add(DamageBoost.getInstance());
         commands.add(new DamageNoKnockback());
         commands.add(DamageResistance.getInstance());
+        commands.add(new Damage());
         commands.add(new ForceDrop());
         commands.add(new FrontDash());
         commands.add(new GlacialFreeze());

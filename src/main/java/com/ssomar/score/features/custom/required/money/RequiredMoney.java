@@ -6,7 +6,7 @@ import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
-import com.ssomar.score.features.types.IntegerFeature;
+import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.VaultAPI;
@@ -31,7 +31,7 @@ import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
 @Setter
 public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, RequiredMoneyEditor, RequiredMoneyEditorManager> implements RequiredPlayerInterface {
 
-    private IntegerFeature money;
+    private DoubleFeature money;
     private ColoredStringFeature errorMessage;
     private BooleanFeature cancelEventIfError;
 
@@ -128,7 +128,7 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
 
     @Override
     public void reset() {
-        this.money = new IntegerFeature(getParent(), "requiredMoney", Optional.of(0), "Required Money", new String[]{"&7&oRequired money"}, Material.ANVIL, false);
+        this.money = new DoubleFeature(getParent(), "requiredMoney", Optional.of(0.0), "Required Money", new String[]{"&7&oRequired money"}, Material.ANVIL, false);
         this.errorMessage = new ColoredStringFeature(getParent(), "errorMessage", Optional.of("&4&l>> &cError you don't have the required money"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false, true);
         this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfError", false, "cancelEventIfInvalidRequiredMoney", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false, true);
     }
