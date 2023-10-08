@@ -77,18 +77,47 @@ public class HardnessesHandler {
                     break;
                 }
             if (triggeredModifier == null) return;
-            final long period = triggeredModifier.getPeriod(player, block, item);
-            if (period == 0) return;
+            long period = triggeredModifier.getPeriod(player, block, item);
+            //if (period == 0) return;
+
+            switch (item.getEnchantmentLevel(Enchantment.DIG_SPEED)){
+                case 0:
+                    break;
+                case 1:
+                    period = (long) (period*0.75);
+                    break;
+                case 2:
+                    period = (long) (period*0.70);
+                    break;
+                case 3:
+                    period = (long) (period*0.65);
+                    break;
+                case 4:
+                    period = (long) (period*0.60);
+                    break;
+                case 5:
+                    period = (long) (period*0.55);
+                    break;
+                default:
+                    period = (long) (period*0.55);
+                    break;
+            }
+
+            final long finalPeriod = period;
+            final Location location = block.getLocation();
+            final HardnessModifier modifier = triggeredModifier;
 
             SsomarDev.testMsg("period: " + period + "block tyep "+block.getType(), true);
             event.setCancelled(true);
+            if (finalPeriod <= 0){
+                Bukkit.getScheduler().runTask(SCore.plugin, () -> breakBlock(location, world, block, player, item, modifier, null));
+            }
 
-            final Location location = block.getLocation();
             if (type == EnumWrappers.PlayerDigType.START_DESTROY_BLOCK) {
 
                 //SsomarDev.testMsg("START_DESTROY_BLOCK", true);
 
-                Bukkit.getScheduler().runTask(SCore.plugin, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (period * 11), Integer.MAX_VALUE, false, false, false)));
+                Bukkit.getScheduler().runTask(SCore.plugin, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (finalPeriod * 20)+1, Integer.MAX_VALUE, true, true, true)));
                 if (breakerPerLocation.containsKey(location))
                     breakerPerLocation.get(location).cancelTasks(SCore.plugin);
 
@@ -102,52 +131,33 @@ public class HardnessesHandler {
                 if (blockDamageEventCancelled(block, player)) return;
 
                 breakerPerLocation.put(location, scheduler);
-                final HardnessModifier modifier = triggeredModifier;
 
-                //SsomarDev.testMsg("before runTaskTimer", true);
+                SsomarDev.testMsg("before runTaskTimer", true);
                 scheduler.runTaskTimer(SCore.plugin, new Consumer<BukkitTask>() {
                     int value = 0;
 
                     @Override
                     public void accept(final BukkitTask bukkitTask) {
-                        // SsomarDev.testMsg("accept runTaskTimer", true);
+                         SsomarDev.testMsg("accept runTaskTimer > "+value+" time >"+System.currentTimeMillis(), true);
 
                         if (!breakerPerLocation.containsKey(location)) {
                             bukkitTask.cancel();
                             return;
                         }
 
-                        if (item.getEnchantmentLevel(Enchantment.DIG_SPEED) >= 5)
-                            value = 10;
-
                         for (final Entity entity : world.getNearbyEntities(location, 16, 16, 16))
                             if (entity instanceof Player) {
                                 Player viewer = (Player) entity;
-                                sendBlockBreak(viewer, location, value);
+                                int stage = (int) (value*10/finalPeriod);
+                                SsomarDev.testMsg("stage > "+stage, true);
+                                sendBlockBreak(viewer, location, stage);
                             }
 
-                        if (value++ < 10) return;
+                        if (value++ < finalPeriod) return;
 
-                        final BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
-                        Bukkit.getPluginManager().callEvent(blockBreakEvent);
-
-                        if (!blockBreakEvent.isCancelled() /* && ProtectionLib.canBreak(player, block.getLocation()) */) {
-                            modifier.breakBlock(player, block, item);
-                            PlayerItemDamageEvent playerItemDamageEvent = new PlayerItemDamageEvent(player, item, 1);
-                            Bukkit.getPluginManager().callEvent(playerItemDamageEvent);
-                        }
-
-                        Bukkit.getScheduler().runTask(SCore.plugin, () ->
-                                player.removePotionEffect(PotionEffectType.SLOW_DIGGING));
-                        breakerPerLocation.remove(location);
-                        for (final Entity entity : world.getNearbyEntities(location, 16, 16, 16))
-                            if (entity instanceof Player) {
-                                Player viewer = (Player) entity;
-                                sendBlockBreak(viewer, location, 10);
-                            }
-                        bukkitTask.cancel();
+                        breakBlock(location, world, block, player, item, modifier, bukkitTask);
                     }
-                }, period, period);
+                }, 0, 20L);
             } else {
                 Bukkit.getScheduler().runTask(SCore.plugin, () -> {
                     player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
@@ -164,6 +174,27 @@ public class HardnessesHandler {
             }
         }
     };
+
+    public void breakBlock(Location location, World world, Block block, Player player, ItemStack item, HardnessModifier modifier, BukkitTask bukkitTask){
+        final BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
+        Bukkit.getPluginManager().callEvent(blockBreakEvent);
+
+        if (!blockBreakEvent.isCancelled() /* && ProtectionLib.canBreak(player, block.getLocation()) */) {
+            modifier.breakBlock(player, block, item);
+            PlayerItemDamageEvent playerItemDamageEvent = new PlayerItemDamageEvent(player, item, 1);
+            Bukkit.getPluginManager().callEvent(playerItemDamageEvent);
+        }
+
+        Bukkit.getScheduler().runTask(SCore.plugin, () ->
+                player.removePotionEffect(PotionEffectType.SLOW_DIGGING));
+        breakerPerLocation.remove(location);
+        for (final Entity entity : world.getNearbyEntities(location, 16, 16, 16))
+            if (entity instanceof Player) {
+                Player viewer = (Player) entity;
+                sendBlockBreak(viewer, location, 10);
+            }
+        if(bukkitTask != null) bukkitTask.cancel();
+    }
 
     public HardnessesHandler() {
         protocolManager = SCore.protocolManager;

@@ -1,12 +1,11 @@
-package com.ssomar.score.commands.runnable.block.commands;
+package com.ssomar.score.commands.runnable.entity.commands;
+
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +13,16 @@ import java.util.Optional;
 
 import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
 
-/* MOB_AROUND {distance} {Your commands here} */
-public class MobAround extends BlockCommand {
+public class MobAround  extends EntityCommand {
+
+    @Override
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+        mobAroundExecution(receiver.getLocation(), p, receiver, true, args, aInfo);
+    }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-       return com.ssomar.score.commands.runnable.player.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
+        return com.ssomar.score.commands.runnable.player.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
     }
 
     @Override
@@ -44,8 +47,4 @@ public class MobAround extends BlockCommand {
         return null;
     }
 
-    @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-        mobAroundExecution(block.getLocation(), p, null, true, args, aInfo);
-    }
 }

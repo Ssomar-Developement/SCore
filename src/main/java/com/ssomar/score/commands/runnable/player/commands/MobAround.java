@@ -1,11 +1,11 @@
-package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
+package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
-import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
+import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.FeatureInterface;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class MobAround extends MixedCommand implements FeatureParentInterface {
+public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
     public static void mobAroundExecution(Location location, @Nullable Entity launcher, @Nullable Entity receiver, boolean forceMute, List<String> args, ActionInfo aInfo) {
         ListDetailedEntityFeature whiteList = null;
@@ -178,7 +178,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
     }
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
         mobAroundExecution(receiver.getLocation(), p, receiver, false, args, aInfo);
     }
 

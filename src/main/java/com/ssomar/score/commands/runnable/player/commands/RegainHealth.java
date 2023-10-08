@@ -21,9 +21,9 @@ public class RegainHealth extends PlayerCommand {
         if (SCore.is1v8()) {
             maxHealth = 20;
         } else maxHealth = receiver.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        if (maxHealth >= receiver.getHealth() + regain)
+        if (receiver.getHealth() + regain < 0) receiver.setHealth(0);
+        else if (maxHealth >= receiver.getHealth() + regain)
             receiver.setHealth(receiver.getHealth() + regain);
-        else if (receiver.getHealth() + regain < 0) receiver.setHealth(0);
         else{
             receiver.setHealth(maxHealth);
         }

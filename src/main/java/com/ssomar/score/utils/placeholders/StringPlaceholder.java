@@ -12,6 +12,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -341,8 +342,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
                 }
             }
-            Player p;
-            if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null) {
+            OfflinePlayer p;
+            if (uuid != null && (p = Bukkit.getOfflinePlayer(uuid)) != null) {
 
                 try {
                     String[] split = replace.split("%score_");

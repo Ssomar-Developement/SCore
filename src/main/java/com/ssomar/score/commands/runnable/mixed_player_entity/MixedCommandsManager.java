@@ -48,7 +48,6 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new Invulnerability());
         commands.add(new Jump());
         commands.add(new LaunchEntity());
-        commands.add(new MobAround());
         commands.add(new MobNearest());
         commands.add(new Nearest());
         commands.add(new OpMessage());
