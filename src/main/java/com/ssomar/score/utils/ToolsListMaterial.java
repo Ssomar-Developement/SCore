@@ -12,8 +12,14 @@ public class ToolsListMaterial {
     private static Map<Material, Material> blockAndItemMaterial;
     private List<Material> plantWithGrowth;
 
+    private List<Material> plantWithGrowthOnlyFarmland;
+
+    private List<Material> plantWithGrowthOnlySoulSand;
+
     public ToolsListMaterial() {
         plantWithGrowth = new ArrayList<>();
+        plantWithGrowthOnlyFarmland = new ArrayList<>();
+        plantWithGrowthOnlySoulSand = new ArrayList<>();
 
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
@@ -27,6 +33,17 @@ public class ToolsListMaterial {
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("MELON_STEM")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_STEM")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CAVE_VINES")));
+
+
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("BEETROOTS", "BEETROOT_BLOCK")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("POTATOES", "POTATO")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("SWEET_BERRY_BUSH")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("MELON_STEM")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_STEM")));
+
+        addWithoutProblem(plantWithGrowthOnlySoulSand, FixedMaterial.getMaterial(Arrays.asList("NETHER_WART", "NETHER_WARTS")));
 
         blockAndItemMaterial = new HashMap<>();
         if (SCore.is1v12Less()) {
@@ -77,6 +94,14 @@ public class ToolsListMaterial {
 
     public List<Material> getPlantWithGrowth() {
         return plantWithGrowth;
+    }
+
+    public List<Material> getPlantWithGrowthOnlyFarmland() {
+        return plantWithGrowthOnlyFarmland;
+    }
+
+    public List<Material> getPlantWithGrowthOnlySoulSand() {
+        return plantWithGrowthOnlySoulSand;
     }
 
     public void setPlantWithGrowth(List<Material> plantWithGrowth) {

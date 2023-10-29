@@ -150,7 +150,7 @@ public class MineInCube extends BlockCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 1);
+        SCore.schedulerHook.runTask(runnable3, 1);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Spin extends MixedCommand {
         Integer duration = NTools.getInteger(args.get(0)).get();
         Float velocity = NTools.getFloat(args.get(1)).get();
 
-        new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             int ticks = 0;
 
             @Override
@@ -36,7 +36,8 @@ public class Spin extends MixedCommand {
                         .rotateAroundY(Math.toRadians(velocity))));
                 ticks++;
             }
-        }.runTaskTimer(SCore.plugin, 0, 1);
+        };
+        SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0, 1);
     }
 
     @Override

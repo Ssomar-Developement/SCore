@@ -111,7 +111,7 @@ public class Around extends PlayerCommand {
 
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
     public static List<PlaceholderConditionFeature> extractConditions(String s) {

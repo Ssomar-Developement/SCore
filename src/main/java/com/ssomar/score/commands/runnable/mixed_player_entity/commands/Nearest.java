@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
@@ -28,7 +27,7 @@ public class Nearest extends MixedCommand {
 
                 double distance = Double.valueOf(args.get(0));
 
-                SsomarDev.testMsg("distance: " + distance, true);
+                //SsomarDev.testMsg("distance: " + distance, true);
 
                 Player target = receiver.getWorld().getPlayers().stream()
                         .filter(p -> !p.equals(receiver))
@@ -38,7 +37,7 @@ public class Nearest extends MixedCommand {
                 if (target == null || target.getLocation().distance(receiver.getLocation()) > distance) {
                     return;
                 }
-                SsomarDev.testMsg("target: " + target.getName(), true);
+               // SsomarDev.testMsg("target: " + target.getName(), true);
 
                 if (target.hasMetadata("NPC") || target.equals(receiver)) return;
 
@@ -81,14 +80,14 @@ public class Nearest extends MixedCommand {
 
                     commands.add(s);
                 }
-                SsomarDev.testMsg("commands: " + commands, true);
+                //SsomarDev.testMsg("commands: " + commands, true);
                 commands = sp.replacePlaceholders(commands);
                 PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
                 CommandsExecutor.runCommands(builder);
 
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
     @Override

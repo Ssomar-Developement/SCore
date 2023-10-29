@@ -24,12 +24,25 @@ public class BukkitSchedulerHook implements SchedulerHook {
     }
 
     @Override
+    public ScheduledTask runAsyncTask(Runnable runnable, long delay) {
+        if(delay > 0){
+            return new BukkitScheduledTask(Bukkit.getScheduler().runTaskLaterAsynchronously(SCore, runnable, delay).getTaskId());
+        }
+        else return new BukkitScheduledTask(Bukkit.getScheduler().runTaskAsynchronously(SCore, runnable).getTaskId());
+    }
+
+    @Override
+    public ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period) {
+        return new BukkitScheduledTask(Bukkit.getScheduler().scheduleAsyncRepeatingTask(SCore, runnable, initDelay, period));
+    }
+
+    @Override
     public ScheduledTask runEntityTask(Runnable runnable, Runnable retired, Entity entity, long delay) {
         return runTask(runnable, delay);
     }
 
     @Override
-    public ScheduledTask runLocationTask(Runnable runnable, Runnable retired, Location location, long delay) {
+    public ScheduledTask runLocationTask(Runnable runnable, Location location, long delay) {
         return runTask(runnable, delay);
     }
 

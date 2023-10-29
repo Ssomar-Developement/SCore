@@ -73,7 +73,7 @@ public class SecurityOPQuery {
                     deletePlayerOP(conn, p);
                 }
             };
-            runnable.runTaskAsynchronously(SCore.plugin);
+            SCore.schedulerHook.runAsyncTask(runnable, 0);
         } else deletePlayerOP(conn, p);
     }
 

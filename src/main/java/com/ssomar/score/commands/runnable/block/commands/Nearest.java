@@ -80,7 +80,7 @@ public class Nearest extends BlockCommand {
 
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
 

@@ -10,7 +10,6 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.hardness.hardness.manager.HardnessesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -107,17 +106,21 @@ public class HardnessesHandler {
             final Location location = block.getLocation();
             final HardnessModifier modifier = triggeredModifier;
 
-            SsomarDev.testMsg("period: " + period + "block tyep "+block.getType(), true);
+            //SsomarDev.testMsg("period: " + period + "block tyep "+block.getType(), true);
             event.setCancelled(true);
             if (finalPeriod <= 0){
                 Bukkit.getScheduler().runTask(SCore.plugin, () -> breakBlock(location, world, block, player, item, modifier, null));
             }
 
+            int delay = 20;
+            if(modifier.isPeriodInTicks()) delay = 1;
+            final int delayFinal = delay;
+
             if (type == EnumWrappers.PlayerDigType.START_DESTROY_BLOCK) {
 
                 //SsomarDev.testMsg("START_DESTROY_BLOCK", true);
 
-                Bukkit.getScheduler().runTask(SCore.plugin, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (finalPeriod * 20)+1, Integer.MAX_VALUE, true, true, true)));
+                Bukkit.getScheduler().runTask(SCore.plugin, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (finalPeriod * delayFinal)+1, Integer.MAX_VALUE, false, false, false)));
                 if (breakerPerLocation.containsKey(location))
                     breakerPerLocation.get(location).cancelTasks(SCore.plugin);
 
@@ -132,13 +135,13 @@ public class HardnessesHandler {
 
                 breakerPerLocation.put(location, scheduler);
 
-                SsomarDev.testMsg("before runTaskTimer", true);
+                //SsomarDev.testMsg("before runTaskTimer", true);
                 scheduler.runTaskTimer(SCore.plugin, new Consumer<BukkitTask>() {
                     int value = 0;
 
                     @Override
                     public void accept(final BukkitTask bukkitTask) {
-                         SsomarDev.testMsg("accept runTaskTimer > "+value+" time >"+System.currentTimeMillis(), true);
+                         //SsomarDev.testMsg("accept runTaskTimer > "+value+" time >"+System.currentTimeMillis(), true);
 
                         if (!breakerPerLocation.containsKey(location)) {
                             bukkitTask.cancel();
@@ -149,7 +152,7 @@ public class HardnessesHandler {
                             if (entity instanceof Player) {
                                 Player viewer = (Player) entity;
                                 int stage = (int) (value*10/finalPeriod);
-                                SsomarDev.testMsg("stage > "+stage, true);
+                                //SsomarDev.testMsg("stage > "+stage, true);
                                 sendBlockBreak(viewer, location, stage);
                             }
 
@@ -157,7 +160,7 @@ public class HardnessesHandler {
 
                         breakBlock(location, world, block, player, item, modifier, bukkitTask);
                     }
-                }, 0, 20L);
+                }, 0, delayFinal);
             } else {
                 Bukkit.getScheduler().runTask(SCore.plugin, () -> {
                     player.removePotionEffect(PotionEffectType.SLOW_DIGGING);

@@ -1,5 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.executableitems.executableitems.manager.ExecutableItemsManager;
+import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -30,7 +32,17 @@ public class ContentAdd extends BlockCommand {
         int amount = intOptional.orElse(1.0).intValue();
 
         if (args.size() >= 1) {
-            ItemStack item = new ItemStack(Material.valueOf(args.get(0)), amount);
+            ItemStack item;
+            if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
+                item = new ItemStack(Material.valueOf(args.get(0)), amount);
+            }
+            else{
+                Optional<ExecutableItemInterface> ei = ExecutableItemsManager.getInstance().getExecutableItem(args.get(0));
+                if(ei.isPresent()) {
+                    item = ei.get().buildItem(amount, Optional.empty(), Optional.ofNullable(p));
+                }
+                else return;
+            }
             if (block.getState() instanceof Container) {
                 Container container = (Container) block.getState();
                 Inventory inv = container.getInventory();
@@ -44,8 +56,10 @@ public class ContentAdd extends BlockCommand {
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+        if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
+            ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
+            if (!ac.isValid()) return Optional.of(ac.getError());
+        }
 
         if (args.size() >= 2) {
             ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());

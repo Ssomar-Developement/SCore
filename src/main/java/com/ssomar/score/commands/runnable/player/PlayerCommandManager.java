@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommandsManager;
 import com.ssomar.score.commands.runnable.player.commands.Around;
 import com.ssomar.score.commands.runnable.player.commands.*;
+import com.ssomar.score.commands.runnable.player.commands.While;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
-        commands.add(new While());
+        commands.add(While.getInstance());
 
         commands.addAll(MixedCommandsManager.getInstance().getCommands());
 

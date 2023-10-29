@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -45,9 +46,20 @@ public class ContentRemove extends BlockCommand {
                     for (ItemStack itemChest : inv.getStorageContents()) {
                         if (itemChest == null) continue;
 
-                        if (itemChest.getType() == Material.valueOf(args.get(0))) {
-                            itemChest.setAmount(itemChest.getAmount() - 1);
-                            break;
+                        if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
+                            if (itemChest.getType() == Material.valueOf(args.get(0))) {
+                                itemChest.setAmount(itemChest.getAmount() - 1);
+                                break;
+                            }
+                        }
+                        else{
+                            ExecutableItemObject eio = new ExecutableItemObject(itemChest);
+                            if(eio.isValid()){
+                                if(eio.getConfig().getId().equalsIgnoreCase(args.get(0).replace("EI:", "").replace("ei:", ""))){
+                                    itemChest.setAmount(itemChest.getAmount() - 1);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -59,8 +71,10 @@ public class ContentRemove extends BlockCommand {
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+        if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
+            ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
+            if (!ac.isValid()) return Optional.of(ac.getError());
+        }
 
         if (args.size() >= 2) {
             ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());

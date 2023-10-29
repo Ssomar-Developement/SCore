@@ -23,7 +23,6 @@ public class AllWorldManager {
             if(world != null) return Optional.of(world);
         }
 
-
         return Optional.ofNullable(Bukkit.getServer().getWorld(worldStr));
     }
 

@@ -116,7 +116,7 @@ public class SafeBreak {
                         block.getRelative(BlockFace.UP).setType(Material.AIR);
                     }
                 };
-                runnable3.runTaskLater(SCore.plugin, 1);
+                SCore.schedulerHook.runTask(runnable3, 1);
             } else {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
@@ -127,7 +127,7 @@ public class SafeBreak {
                         block.setType(Material.AIR);
                     }
                 };
-                runnable3.runTaskLater(SCore.plugin, 1);
+                SCore.schedulerHook.runTask(runnable3, 1);
             }
         } else if (block.getType().toString().toUpperCase().contains("DOOR")) {
             if (block.getRelative(BlockFace.UP).getType().toString().toUpperCase().contains("DOOR")) {
@@ -140,7 +140,7 @@ public class SafeBreak {
                         block.setType(Material.AIR);
                     }
                 };
-                runnable3.runTaskLater(SCore.plugin, 1);
+                SCore.schedulerHook.runTask(runnable3, 1);
             } else {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
@@ -151,7 +151,7 @@ public class SafeBreak {
                         block.setType(Material.AIR);
                     }
                 };
-                runnable3.runTaskLater(SCore.plugin, 1);
+                SCore.schedulerHook.runTask(runnable3, 1);
             }
         } else {
             if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
@@ -203,7 +203,7 @@ public class SafeBreak {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
-        if(player != null && player.isOp()) return true;
+        if(player != null && (player.isOp() || player.hasPermission("*"))) return true;
 
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
 

@@ -576,7 +576,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>6.28.11</version>
+            <version>6.37.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -632,7 +632,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-5201e73a30-1</version>
+            <version>main-9b1808d982-1</version>
             <scope>compile</scope>
         </dependency>
 

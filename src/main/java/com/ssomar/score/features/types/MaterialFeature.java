@@ -302,7 +302,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
                 editor.closeInventory();
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
         space(editor);
 
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter the material or &aedit &athe &aactual: "));

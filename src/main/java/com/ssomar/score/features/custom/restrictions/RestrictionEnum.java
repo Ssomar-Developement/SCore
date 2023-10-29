@@ -49,8 +49,15 @@ public enum RestrictionEnum {
     @Getter
     public final String editName;
 
+    public final boolean deprecated = false;
+
     RestrictionEnum(String editName) {
         this.editName = editName;
+    }
+
+    RestrictionEnum(String editName, boolean deprecated) {
+        this.editName = editName;
+        deprecated = deprecated;
     }
 
 }

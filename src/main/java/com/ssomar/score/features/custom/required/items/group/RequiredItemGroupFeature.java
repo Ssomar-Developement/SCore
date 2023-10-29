@@ -18,7 +18,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -210,6 +212,20 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
         }
         return true;
     }
+
+    public boolean verify(Inventory inventory, @Nullable Event event) {
+        for (RequiredItemFeature feature : requiredItems.values()) {
+            if (!feature.verify(inventory, event)) {
+                if (event != null && cancelEventIfError.getValue() && event instanceof Cancellable) {
+                    ((Cancellable) event).setCancelled(true);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     @Override
     public void take(Player player) {

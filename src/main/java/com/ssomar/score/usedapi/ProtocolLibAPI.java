@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.Pair;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,7 +33,9 @@ public class ProtocolLibAPI {
 
     public static List<BukkitTask> sendEquipmentVisualReplace(LivingEntity entity, EquipmentSlot slot, ItemStack item, int time) {
         List<BukkitTask> tasks = new ArrayList<>();
-        for (int i = 0; i < time / 20; i++) {
+
+        /* Update for other */
+        for (int i = 0; i < time ; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -61,7 +64,7 @@ public class ProtocolLibAPI {
                     }
                 }
             };
-            tasks.add(runnable.runTaskLaterAsynchronously(SCore.plugin, i * 20));
+            tasks.add(runnable.runTaskLaterAsynchronously(SCore.plugin, i ));
         }
 
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -89,6 +92,7 @@ public class ProtocolLibAPI {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     try {
                         SCore.protocolManager.sendServerPacket(p, packet);
+                        SsomarDev.testMsg("send packet RESET EQUIPMENT", true);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

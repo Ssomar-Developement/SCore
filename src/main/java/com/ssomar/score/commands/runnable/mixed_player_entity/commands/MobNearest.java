@@ -90,7 +90,7 @@ public class MobNearest extends MixedCommand implements FeatureParentInterface {
                 CommandsExecutor.runCommands(builder);
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
     @Override

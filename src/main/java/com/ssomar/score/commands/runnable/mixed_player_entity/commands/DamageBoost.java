@@ -53,7 +53,7 @@ public class DamageBoost extends MixedCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, time);
+        SCore.schedulerHook.runTask(runnable3, time);
 
     }
 

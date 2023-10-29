@@ -24,6 +24,8 @@ public class HardnessEditor extends FeatureEditorInterface<Hardness> {
         hardness.getDetailedItems().initAndUpdateItemParentEditor(this, i);
         i++;
         hardness.getPeriod().initAndUpdateItemParentEditor(this, i);
+        i++;
+        hardness.getPeriodInTicks().initAndUpdateItemParentEditor(this, i);
 
         //Reset menu
         createItem(ORANGE, 1, 46, TM.g(Text.EDITOR_RESET_NAME), false, false, TM.gA(Text.EDITOR_RESET_DESCRIPTION));

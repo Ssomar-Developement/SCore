@@ -18,7 +18,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -203,6 +205,18 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
                     SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
+                    ((Cancellable) event).setCancelled(true);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean verify(Inventory inventory, @Nullable  Event event) {
+        for (RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
+            if (!eF.verify(inventory, event)) {
+                if (event != null && cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);
                 }
                 return false;

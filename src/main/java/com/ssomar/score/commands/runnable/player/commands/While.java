@@ -18,11 +18,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class While extends PlayerCommand {
+
+    private static While instance;
+
+    private final Map<UUID, List<BukkitRunnable>> whileTasks;
+
+    public While() {
+        whileTasks = new HashMap<>();
+    }
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
@@ -79,7 +85,11 @@ public class While extends PlayerCommand {
             }
         };
         runnable3.runTaskTimerAsynchronously(SCore.plugin, 0, delay);
-
+        // add the task to the list of tasks
+        List<BukkitRunnable> tasks = whileTasks.get(receiver.getUniqueId());
+        if(tasks == null) tasks = new ArrayList<>();
+        tasks.add(runnable3);
+        whileTasks.put(receiver.getUniqueId(), tasks);
 
     }
 
@@ -114,6 +124,21 @@ public class While extends PlayerCommand {
     @Override
     public ChatColor getExtraColor() {
         return null;
+    }
+
+    public void removeWhile(Player p) {
+        List<BukkitRunnable> tasks = whileTasks.get(p.getUniqueId());
+        if(tasks != null) {
+            for (BukkitRunnable task : tasks) {
+                task.cancel();
+            }
+        }
+        whileTasks.remove(p.getUniqueId());
+    }
+
+    public static While getInstance(){
+        if(instance == null) instance = new While();
+        return instance;
     }
 
 }

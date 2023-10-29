@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.cooldowns;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -164,6 +165,29 @@ public class CooldownsManager {
                 }
             }
         }
+    }
+
+    public void clearCooldown(String cooldownId, @Nullable UUID uuid) {
+        for (String s : cooldowns.keySet()) {
+            List<Cooldown> cds = cooldowns.get(s);
+            for (int i = 0; i < cds.size(); i++) {
+                Cooldown cd = cds.get(i);
+                if (cd != null && cd.getId().equalsIgnoreCase(cooldownId)) {
+                    if(uuid != null && (cd.getEntityUUID() == null || !cd.getEntityUUID().equals(uuid))) continue;
+                    cooldownsUUID.get(cd.getEntityUUID()).remove(cd);
+                    cds.set(i, null);
+                    break;
+                }
+            }
+        }
+    }
+
+    public List<String> getAllCooldownIds() {
+        List<String> result = new ArrayList<>();
+        for (String id : cooldowns.keySet()) {
+            result.add(id);
+        }
+        return result;
     }
 
 

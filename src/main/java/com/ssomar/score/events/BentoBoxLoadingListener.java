@@ -25,6 +25,6 @@ public class BentoBoxLoadingListener implements Listener {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 100L);
+        SCore.schedulerHook.runTask(runnable3, 100);
     }
 }

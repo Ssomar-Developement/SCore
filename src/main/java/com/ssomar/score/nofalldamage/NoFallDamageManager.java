@@ -2,9 +2,9 @@ package com.ssomar.score.nofalldamage;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.Couple;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ import java.util.*;
 public class NoFallDamageManager {
 
     private static NoFallDamageManager instance;
-    private final Map<Entity, List<Couple<UUID, BukkitTask>>> noFallDamageMap = new HashMap<>();
+    private final Map<Entity, List<Couple<UUID, ScheduledTask>>> noFallDamageMap = new HashMap<>();
 
     public static NoFallDamageManager getInstance() {
         if (instance == null) instance = new NoFallDamageManager();
@@ -28,16 +28,16 @@ public class NoFallDamageManager {
                 NoFallDamageManager.getInstance().removeNoFallDamage(e, uuid);
             }
         };
-        BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);
+        ScheduledTask task = SCore.schedulerHook.runTask(runnable, 300); // 300 ticks = 15 seconds (1 tick = 0.05 seconds
 
         NoFallDamageManager.getInstance().addNoFallDamage(e, new Couple<>(uuid, task));
     }
 
-    public void addNoFallDamage(Entity e, Couple<UUID, BukkitTask> c) {
+    public void addNoFallDamage(Entity e, Couple<UUID, ScheduledTask> c) {
         if (noFallDamageMap.containsKey(e)) {
             noFallDamageMap.get(e).add(c);
         } else {
-            List<Couple<UUID, BukkitTask>> newList = new ArrayList<>();
+            List<Couple<UUID, ScheduledTask>> newList = new ArrayList<>();
             newList.add(c);
             noFallDamageMap.put(e, newList);
         }
@@ -48,10 +48,10 @@ public class NoFallDamageManager {
         for (Entity entity : noFallDamageMap.keySet()) {
 
             if (e.equals(entity)) {
-                List<Couple<UUID, BukkitTask>> tasks = noFallDamageMap.get(e);
+                List<Couple<UUID, ScheduledTask>> tasks = noFallDamageMap.get(e);
 
-                Couple<UUID, BukkitTask> toRemove = null;
-                for (Couple<UUID, BukkitTask> c : tasks) {
+                Couple<UUID, ScheduledTask> toRemove = null;
+                for (Couple<UUID, ScheduledTask> c : tasks) {
                     if (c.getElem1().equals(uuid)) {
                         c.getElem2().cancel();
                         toRemove = c;

@@ -26,7 +26,6 @@ import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
 import com.ssomar.score.utils.display.Display;
 import com.ssomar.score.utils.display.PacketManager;
-import com.ssomar.score.utils.display.TryDisplayModule;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
 import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
@@ -118,6 +117,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean isSpigot = false;
     private static boolean isPaper = false;
     private static boolean isFolia = false;
+
+    private static boolean isMohist = false;
     private CommandsClass commandClass;
 
     /* The server is folia? */
@@ -133,6 +134,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     /* The server is paper? */
     public static boolean isPaper() {
         return isPaper;
+    }
+
+    /* The server is mohist? */
+    public static boolean isMohist() {
+        return isMohist;
     }
 
     /* The server is in 1.8 ? */
@@ -271,16 +277,20 @@ public final class SCore extends JavaPlugin implements SPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+
+        this.initVersion();
+
         if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
         else schedulerHook = new BukkitSchedulerHook(this);
         commandClass = new CommandsClass(this);
-
-        this.initVersion();
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
 
         if (isFolia()) {
             Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &eFolia");
+        }
+        if (isMohist()) {
+            Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &eMohist");
         }
         this.displayVersion();
 
@@ -385,16 +395,19 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         hasCoreProtect = hookSoftDependency("CoreProtect");
 
+        /* Test for verzante and qvazzar */
+        //hasProtocolLib = false;
+
 
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7ProtocolLib hooked !");
             hasProtocolLib = true;
-            /* Protocolib */
+
             protocolManager = ProtocolLibrary.getProtocolManager();
             ProtocolLibAPI.reduceDamageIndicator();
 
             if(!SCore.is1v12Less()) {
-                Display.registerDisplayModule(new TryDisplayModule());
+                //Display.registerDisplayModule(new TryDisplayModule());
                 PacketManager.newDisplay();
 
                 BukkitRunnable runnable3 = new BukkitRunnable() {
@@ -416,7 +429,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
                         });
                     }
                 };
-                runnable3.runTaskTimerAsynchronously(SCore.plugin, 0, 20);
+                SCore.schedulerHook.runAsyncRepeatingTask(runnable3, 0, 20);
             }
 
 
@@ -583,6 +596,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v20v1 = Bukkit.getServer().getVersion().contains("1.20.1");
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot");
+        isMohist = Bukkit.getServer().getName().contains("Mohist");
         isPaper = Bukkit.getServer().getVersion().contains("Paper");
         isFolia = Bukkit.getServer().getVersion().contains("Folia");
     }

@@ -165,7 +165,7 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
                 }
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
     @Override

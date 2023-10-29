@@ -92,7 +92,7 @@ public class Move extends BlockCommand {
                         } else cancel();
                     }
                 };
-                runnable.runTaskLaterAsynchronously(SCore.plugin, delay);
+                SCore.schedulerHook.runAsyncTask(runnable, delay);
             }
 
 

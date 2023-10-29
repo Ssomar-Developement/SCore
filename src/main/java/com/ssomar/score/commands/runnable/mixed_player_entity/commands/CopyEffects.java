@@ -16,7 +16,13 @@ public class CopyEffects extends MixedCommand {
     public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
         if(receiver == null || p == null || p.isDead() ||  receiver.isDead()) return;
 
+        int limitDuration = Integer.MAX_VALUE;
+        if(args.size() > 0) limitDuration = Integer.parseInt(args.get(0));
+
         Set<PotionEffect> potionEffects = new HashSet<>(receiver.getActivePotionEffects());
+        for(PotionEffect pe : potionEffects){
+            if(pe.getDuration() > limitDuration) pe = new PotionEffect(pe.getType(), limitDuration, pe.getAmplifier(), pe.isAmbient(), pe.hasParticles(), pe.hasIcon());
+        }
         p.addPotionEffects(potionEffects);
     }
 
@@ -35,7 +41,7 @@ public class CopyEffects extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "COPYEFFECTS";
+        return "COPYEFFECTS [limitDuration]";
     }
 
     @Override

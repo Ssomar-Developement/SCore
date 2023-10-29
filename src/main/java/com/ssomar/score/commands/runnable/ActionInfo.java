@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.logging.Debugers;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -12,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.io.Serializable;
@@ -116,13 +118,19 @@ public class ActionInfo implements Serializable {
         this.blockLocationY = bLoc.getBlockY();
         this.blockLocationZ = bLoc.getBlockZ();
         this.blockLocationWorld = bLoc.getWorld().getUID();
-        BlockData blockData = null;
         // second condition is the whitelist to check only the blocks useful for the plugin
-        if(block != null && block.getType().equals(Material.COCOA) && (blockData = block.getBlockData()) != null) {
-            if(blockData instanceof Directional){
-                this.blockFace = ((Directional) blockData).getFacing();
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                BlockData blockData = null;
+                if(block != null && block.getType().equals(Material.COCOA) && (blockData = block.getBlockData()) != null) {
+                    if(blockData instanceof Directional){
+                        blockFace = ((Directional) blockData).getFacing();
+                    }
+                }
+                else blockFace = null;
             }
-        }
-        else this.blockFace = null;
+        };
+        SCore.schedulerHook.runLocationTask(runnable, bLoc, 0);
     }
 }

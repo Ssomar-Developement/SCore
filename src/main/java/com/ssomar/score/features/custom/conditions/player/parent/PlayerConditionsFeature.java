@@ -52,6 +52,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfSwimming(this));
         conditions.add(new IfNotSwimming(this));
         conditions.add(new IfStunned(this));
+        conditions.add(new IfNotStunned(this));
         conditions.add(new IfIsOnFire(this));
         conditions.add(new IfIsNotOnFire(this));
         conditions.add(new IfIsInTheAir(this));

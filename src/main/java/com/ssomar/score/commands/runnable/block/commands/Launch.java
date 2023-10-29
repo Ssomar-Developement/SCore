@@ -92,7 +92,7 @@ public class Launch extends BlockCommand {
                         e.remove();
                 }
             };
-            runnable.runTaskLater(SCore.plugin, despawnDelay * 20L);
+            SCore.schedulerHook.runTask(runnable, despawnDelay * 20L);
 
             if (entity != null) {
                 if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {

@@ -30,7 +30,7 @@ public class StunEnable extends MixedCommand {
                     StunEvent.stunPlayers.put(receiver.getUniqueId(), true);
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 20);
+        SCore.schedulerHook.runTask(runnable3, 20);
     }
 
 

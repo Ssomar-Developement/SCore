@@ -2,6 +2,7 @@ package com.ssomar.score.commands.score.clear;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
+import com.ssomar.score.commands.runnable.player.commands.While;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -52,19 +53,23 @@ public class ClearCommand {
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
                 ActionbarHandler.getInstance().removeActionbars(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(all)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(all)"));
                 break;
             case DELAYED_COMMANDS:
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(delayed commands)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(delayed commands)"));
                 break;
             case COOLDOWNS:
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(cooldowns)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(cooldowns)"));
                 break;
             case ACTIONBARS:
                 ActionbarHandler.getInstance().removeActionbars(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccesfully clear the user: &e" + player.getName()+" &7&o(actionbars)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(actionbars)"));
+                break;
+            case WHILE:
+                While.getInstance().removeWhile(player);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(while)"));
                 break;
         }
 

@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -159,6 +160,10 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     @Override
     public boolean verify(Player player, Event event) {
         PlayerInventory inventory = player.getInventory();
+        return verify(inventory, event);
+    }
+
+    public boolean verify(Inventory inventory, Event event) {
         int needed = amount.getValue().get();
         for (ItemStack it : inventory.getContents()) {
             if (it == null || !it.getType().equals(material.getValue().get())) continue;

@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,6 +51,8 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         if(!SCore.is1v12Less()) conditions.add(new IfPlantNotFullyGrown(this));
         conditions.add(new IfContainerEmpty(this));
         conditions.add(new IfContainerNotEmpty(this));
+        conditions.add(new IfContainerContains(this));
+        conditions.add(new IfContainerContainsEI(this));
         conditions.add(new IfContainerContainsSellableItem(this));
 
         /* Number condition features */
@@ -64,18 +67,30 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
     }
 
     public boolean verifConditions(Block block, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
-        BlockConditionRequest request = new BlockConditionRequest(block, playerOpt, messageSender.getSp(), event);
-        for (BlockConditionFeature condition : conditions) {
-            if (!condition.verifCondition(request)) {
-                if (messageSender != null && playerOpt.isPresent()) {
-                    for (String error : request.getErrorsFinal()) {
-                        messageSender.sendMessage(playerOpt.get(), error);
+
+        final boolean[] result = {true};
+
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                BlockConditionRequest request = new BlockConditionRequest(block, playerOpt, messageSender.getSp(), event);
+                for (BlockConditionFeature condition : conditions) {
+                    if (!condition.verifCondition(request)) {
+                        if (messageSender != null && playerOpt.isPresent()) {
+                            for (String error : request.getErrorsFinal()) {
+                                messageSender.sendMessage(playerOpt.get(), error);
+                            }
+                        }
+                        result[0] = false;
                     }
                 }
-                return false;
+                result[0] = true;
             }
-        }
-        return true;
+        };
+        SCore.schedulerHook.runLocationTask(runnable, block.getLocation(), 0);
+
+        return result[0];
+
     }
 
 

@@ -37,7 +37,7 @@ public class ItemsAdderAPI {
                         block.setType(org.bukkit.Material.AIR);
                     }
                 };
-                runnable.runTaskLater(SCore.plugin, 1);
+                SCore.schedulerHook.runTask(runnable, 1);
                 return true;
             }
             ArmorStand armorStand;

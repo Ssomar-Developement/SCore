@@ -54,7 +54,7 @@ public class FarmInCube extends BlockCommand {
 
             }
         };
-        runnable.runTaskLater(SCore.plugin, 1);
+        SCore.schedulerHook.runTask(runnable, 1);
     }
 
     public static void replant(Block block, BlockData oldData, Material material, @Nullable Player player) {
@@ -149,7 +149,7 @@ public class FarmInCube extends BlockCommand {
                         replant(block, data, oldMaterial, p);
                     }
                 };
-                runnable.runTask(SCore.plugin);
+                SCore.schedulerHook.runTask(runnable, 0);
             }
         } catch (Exception e) {
             e.printStackTrace();

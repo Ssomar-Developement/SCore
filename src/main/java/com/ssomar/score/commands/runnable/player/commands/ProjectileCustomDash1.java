@@ -6,13 +6,13 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import com.ssomar.score.utils.Couple;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -74,9 +74,9 @@ public class ProjectileCustomDash1 extends PlayerCommand {
                     NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
                 }
             };
-            BukkitTask task = runnable.runTaskLater(SCore.plugin, 300);
+            ScheduledTask scheduledTask = SCore.schedulerHook.runTask(runnable, 300);
 
-            NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
+            NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, scheduledTask));
         }
 
     }

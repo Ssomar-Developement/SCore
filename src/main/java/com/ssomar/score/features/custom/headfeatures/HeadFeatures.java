@@ -127,7 +127,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
     }
 
     public GameProfile getGameProfile(String input) {
-        GameProfile profile = new GameProfile(UUID.fromString("b33183ad-e9c0-4d48-8eea-f8c9358d3568"), null);
+        GameProfile profile = new GameProfile(UUID.fromString("b33183ad-e9c0-4d48-8eea-f8c9358d3568"), "test");
         profile.getProperties().put("textures", new Property("textures", input));
         return profile;
     }

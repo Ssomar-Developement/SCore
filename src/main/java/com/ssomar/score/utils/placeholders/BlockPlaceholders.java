@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -74,45 +75,51 @@ public class BlockPlaceholders extends PlaceholdersInterface implements Serializ
             if(!worldOpt.isPresent()) return;
             World world = worldOpt.get();
             Location loc = new Location(world, blockX, blockY, blockZ);
-            Block block = loc.getBlock();
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Block block = loc.getBlock();
 
-            this.blockWorldName = world.getName();
-            Material type = block.getType();
+                    blockWorldName = world.getName();
+                    Material type = block.getType();
 
-            String blockType = type.toString();
-            if (this.fixType != null)
-                blockType = fixType.toString();
+                    String blockType = type.toString();
+                    if (fixType != null)
+                        blockType = fixType.toString();
 
-            placeholders.put("%block%", blockType);
-            placeholders.put("%block_lower%", blockType.toLowerCase());
-            placeholders.put("%block_item_material%", ToolsListMaterial.getInstance().getRealMaterialOfBlock(Material.valueOf(blockType)).toString());
-            placeholders.put("%block_item_material_lower%", ToolsListMaterial.getInstance().getRealMaterialOfBlock(Material.valueOf(blockType)).toString().toLowerCase());
-            placeholders.put("%block_live%", type.toString());
-            placeholders.put("%block_live_lower%", type.toString().toLowerCase());
-            placeholders.put("%block_world%", blockWorldName);
-            placeholders.put("%block_world_lower%", blockWorldName.toLowerCase());
-            placeholders.put("%block_dimension%", blockDimension);
-            if(!SCore.is1v12Less()) placeholders.put("%block_data%", block.getBlockData().getAsString());
+                    placeholders.put("%block%", blockType);
+                    placeholders.put("%block_lower%", blockType.toLowerCase());
+                    placeholders.put("%block_item_material%", ToolsListMaterial.getInstance().getRealMaterialOfBlock(Material.valueOf(blockType)).toString());
+                    placeholders.put("%block_item_material_lower%", ToolsListMaterial.getInstance().getRealMaterialOfBlock(Material.valueOf(blockType)).toString().toLowerCase());
+                    placeholders.put("%block_live%", type.toString());
+                    placeholders.put("%block_live_lower%", type.toString().toLowerCase());
+                    placeholders.put("%block_world%", blockWorldName);
+                    placeholders.put("%block_world_lower%", blockWorldName.toLowerCase());
+                    placeholders.put("%block_dimension%", blockDimension);
+                    if(!SCore.is1v12Less()) placeholders.put("%block_data%", block.getBlockData().getAsString());
 
-            try{
-                BlockData data = block.getState().getBlockData();
-                if (data instanceof Ageable)
-                    placeholders.put("%block_is_ageable%", "true");
-                else placeholders.put("%block_is_ageable%", "false");
-            }
-            catch (Exception | Error e) {
-                placeholders.put("%block_is_ageable%", "false");
-            }
+                    try{
+                        BlockData data = block.getState().getBlockData();
+                        if (data instanceof Ageable)
+                            placeholders.put("%block_is_ageable%", "true");
+                        else placeholders.put("%block_is_ageable%", "false");
+                    }
+                    catch (Exception | Error e) {
+                        placeholders.put("%block_is_ageable%", "false");
+                    }
 
-            boolean notValidSpawner = true;
-            if(block.getState() instanceof CreatureSpawner){
-                CreatureSpawner spawner = (CreatureSpawner) block.getState();
-                if(spawner.getSpawnedType() != null){
-                    notValidSpawner = false;
-                    placeholders.put("%block_spawnertype%", spawner.getSpawnedType().toString());
+                    boolean notValidSpawner = true;
+                    if(block.getState() instanceof CreatureSpawner){
+                        CreatureSpawner spawner = (CreatureSpawner) block.getState();
+                        if(spawner.getSpawnedType() != null){
+                            notValidSpawner = false;
+                            placeholders.put("%block_spawnertype%", spawner.getSpawnedType().toString());
+                        }
+                    }
+                    if(notValidSpawner)placeholders.put("%block_spawnertype%", "null");
                 }
-            }
-            if(notValidSpawner)placeholders.put("%block_spawnertype%", "null");
+            };
+            SCore.schedulerHook.runLocationTask(runnable, loc, 0);
         }
     }
 

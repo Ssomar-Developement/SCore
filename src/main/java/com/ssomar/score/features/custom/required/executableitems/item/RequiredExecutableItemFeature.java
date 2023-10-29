@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -169,6 +170,10 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
     @Override
     public boolean verify(Player player, Event event) {
         PlayerInventory inventory = player.getInventory();
+        return verify(inventory, event);
+    }
+
+    public boolean verify(Inventory inventory, Event event) {
         int needed = amount.getValue().get();
         if (!SCore.hasExecutableItems || !getExecutableItem().getValue().isPresent()) return true;
 

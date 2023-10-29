@@ -4,13 +4,11 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
-import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -49,7 +47,7 @@ public class CropsGrowthBoost extends BlockCommand {
                 }
             }
         };
-        runnable3.runTaskTimer(SCore.plugin, 0, delay);
+        SCore.schedulerHook.runRepeatingTask(runnable3, 0, delay);
     }
 
     public void grownAgeableBlocks(Location start, int radius, int finalChance, Player receiver) {

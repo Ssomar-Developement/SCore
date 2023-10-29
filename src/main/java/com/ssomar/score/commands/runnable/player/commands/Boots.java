@@ -39,7 +39,7 @@ public class Boots extends PlayerCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 1);
+        SCore.schedulerHook.runTask(runnable3, 1);
 
     }
 

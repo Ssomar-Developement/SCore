@@ -19,4 +19,9 @@ public class RealHardnessModifier implements HardnessModifier{
     public long getPeriod(Player player, Block block, ItemStack tool) {
         return 10;
     }
+
+    @Override
+    public boolean isPeriodInTicks() {
+        return false;
+    }
 }

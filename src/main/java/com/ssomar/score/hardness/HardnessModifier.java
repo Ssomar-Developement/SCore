@@ -10,4 +10,6 @@ public interface HardnessModifier {
     void breakBlock(Player player, Block block, ItemStack tool);
 
     long getPeriod(Player player, Block block, ItemStack tool);
+
+    boolean isPeriodInTicks();
 }

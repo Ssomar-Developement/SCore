@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
+import java.util.concurrent.TimeUnit;
+
 public class RegionisedSchedulerHook implements SchedulerHook {
     private final SCore SCore;
 
@@ -20,10 +22,30 @@ public class RegionisedSchedulerHook implements SchedulerHook {
             return new RegionisedScheduledTask(Bukkit.getGlobalRegionScheduler().run(SCore, task -> runnable.run()));
     }
 
+
     @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
         if(initDelay <= 0) initDelay = 1;
         return new RegionisedScheduledTask(Bukkit.getGlobalRegionScheduler().runAtFixedRate(SCore, task -> runnable.run(), initDelay, period));
+    }
+
+    @Override
+    public ScheduledTask runAsyncTask(Runnable runnable, long delay) {
+        // convert tick to ms
+        delay *= 50;
+        if(delay > 0)
+            return new RegionisedScheduledTask(Bukkit.getAsyncScheduler().runDelayed(SCore, task -> runnable.run(), delay, TimeUnit.MILLISECONDS));
+        else
+            return new RegionisedScheduledTask(Bukkit.getAsyncScheduler().runNow(SCore, task -> runnable.run()));
+    }
+
+    @Override
+    public ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period) {
+        // convert tick to ms
+        initDelay *= 50;
+        period *= 50;
+        if(initDelay <= 0) initDelay = 1;
+        return new RegionisedScheduledTask(Bukkit.getAsyncScheduler().runAtFixedRate(SCore, task -> runnable.run(), initDelay, period, TimeUnit.MILLISECONDS));
     }
 
     @Override
@@ -36,7 +58,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
     }
 
     @Override
-    public ScheduledTask runLocationTask(Runnable runnable, Runnable retired, Location location, long delay) {
+    public ScheduledTask runLocationTask(Runnable runnable,Location location, long delay) {
         io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
         if(delay > 0)
             scheduledTask = Bukkit.getRegionScheduler().runDelayed(SCore, location, task -> runnable.run(), delay);

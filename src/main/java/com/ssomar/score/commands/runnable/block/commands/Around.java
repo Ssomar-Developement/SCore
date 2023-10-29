@@ -153,8 +153,6 @@ public class Around extends BlockCommand {
                 }
             }
         };
-        runnable.runTask(SCore.plugin);
-
-
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 }

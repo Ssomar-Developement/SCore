@@ -17,7 +17,7 @@ public class RestrictionsEditor extends FeatureEditorInterface<Restrictions> {
     public void load() {
         int cpt = 0;
         for (RestrictionEnum restriction : RestrictionEnum.values()) {
-            if (restrictions.get(restriction) != null) {
+            if (restrictions.get(restriction) != null && !restriction.deprecated) {
                 try {
                     restrictions.get(restriction).initAndUpdateItemParentEditor(this, cpt);
                     cpt++;

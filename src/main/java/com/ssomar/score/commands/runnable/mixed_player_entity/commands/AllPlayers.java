@@ -73,7 +73,7 @@ public class AllPlayers extends MixedCommand {
 
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
     @Override

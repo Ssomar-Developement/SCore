@@ -6,6 +6,7 @@ import com.ssomar.score.features.custom.activators.activator.NewSActivator;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.features.custom.detaileditems.DetailedItems;
+import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.hardness.HardnessModifier;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
@@ -49,6 +50,8 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
 
     private IntegerFeature period;
 
+    private BooleanFeature periodInTicks;
+
     public Hardness(FeatureParentInterface parent, String id, String path) {
         super(parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW);
         this.id = id;
@@ -70,6 +73,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
         errors.addAll(detailedBlocks.load(plugin, config, isPremiumLoading));
         errors.addAll(detailedItems.load(plugin, config, isPremiumLoading));
         errors.addAll(period.load(plugin, config, isPremiumLoading));
+        errors.addAll(periodInTicks.load(plugin, config, isPremiumLoading));
 
         return errors;
     }
@@ -104,6 +108,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
         detailedBlocks = new DetailedBlocks(this);
         detailedItems = new DetailedItems(this);
         period = new IntegerFeature(this, "period", Optional.of(3), "Period", new String[]{}, GUI.CLOCK, false);
+        periodInTicks = new BooleanFeature(this, "periodInTicks", false, "Period in ticks", new String[]{}, GUI.CLOCK, false, false);
 
     }
 
@@ -113,6 +118,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
         clone.setDetailedBlocks(detailedBlocks.clone(clone));
         clone.setDetailedItems(detailedItems.clone(clone));
         clone.setPeriod(period.clone(clone));
+        clone.setPeriodInTicks(periodInTicks.clone(clone));
         return clone;
     }
 
@@ -122,6 +128,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
         features.add(detailedBlocks);
         features.add(detailedItems);
         features.add(period);
+        features.add(periodInTicks);
         return features;
     }
 
@@ -159,6 +166,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
             sProjectile.setDetailedBlocks(detailedBlocks);
             sProjectile.setDetailedItems(detailedItems);
             sProjectile.setPeriod(period);
+            sProjectile.setPeriodInTicks(periodInTicks);
             //SsomarDev.testMsg("RELOAD INTO "+sProjectile.hashCode());
         }
     }
@@ -224,5 +232,10 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
     @Override
     public long getPeriod(Player player, Block block, ItemStack tool) {
         return period.getValue().get();
+    }
+
+    @Override
+    public boolean isPeriodInTicks() {
+        return periodInTicks.getValue();
     }
 }

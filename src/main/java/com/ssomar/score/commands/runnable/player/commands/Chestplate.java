@@ -39,7 +39,7 @@ public class Chestplate extends PlayerCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 1);
+        SCore.schedulerHook.runTask(runnable3, 1);
 
     }
 

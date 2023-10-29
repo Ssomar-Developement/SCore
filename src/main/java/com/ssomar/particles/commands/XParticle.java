@@ -23,12 +23,15 @@ package com.ssomar.particles.commands;
  */
 
 import com.google.common.base.Enums;
+import com.ssomar.score.SCore;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.Color;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -349,8 +352,8 @@ public final class XParticle {
      * @see #magicCircles(Plugin, double, double, double, double, ParticleDisplay)
      * @since 3.0.0
      */
-    public static BukkitTask circularBeam(Plugin plugin, double maxRadius, double rate, double radiusRate, double extend, double time, ParticleDisplay display) {
-        return new BukkitRunnable() {
+    public static ScheduledTask circularBeam(Plugin plugin, double maxRadius, double rate, double radiusRate, double extend, double time, ParticleDisplay display) {
+        BukkitRunnable runnable = new BukkitRunnable() {
             final double rateDiv = Math.PI / rate;
             final double radiusDiv = Math.PI / radiusRate;
             final Vector dir = display.getLocation().getDirection().normalize().multiply(extend);
@@ -375,7 +378,8 @@ public final class XParticle {
                 display.getLocation().clone().add(dir);
                 if (++repeat > time) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return  SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -446,14 +450,14 @@ public final class XParticle {
      * @return the animation handler.
      * @since 4.0.0
      */
-    public static BukkitTask chaoticDoublePendulum(Plugin plugin, double radius, double gravity, double length, double length2, double mass1, double mass2, boolean dimension3, int speed, int time, ParticleDisplay display) {
+    public static ScheduledTask chaoticDoublePendulum(Plugin plugin, double radius, double gravity, double length, double length2, double mass1, double mass2, boolean dimension3, int speed, int time, ParticleDisplay display) {
         // If you want the particles to stay. But it's gonna lag a lot.
         //Map<Vector, Vector> locs = new HashMap<>();
 
         if(speed <= 0) speed = 1;
         final int speedFinal = speed;
 
-        return new BukkitRunnable() {
+        BukkitRunnable runnable =  new BukkitRunnable() {
             final Vector rotation = new Vector(Math.PI / 33, Math.PI / 44, Math.PI / 55);
             double theta = Math.PI / 2;
             double theta2 = Math.PI / 2;
@@ -512,7 +516,8 @@ public final class XParticle {
                 }
                 if(--timer == 0) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -528,8 +533,8 @@ public final class XParticle {
      * @see #circularBeam(Plugin, double, double, double, double, ParticleDisplay)
      * @since 3.0.0
      */
-    public static BukkitTask magicCircles(Plugin plugin, double radius, double rate, double radiusRate, double distance, int time, ParticleDisplay display) {
-        return new BukkitRunnable() {
+    public static ScheduledTask magicCircles(Plugin plugin, double radius, double rate, double radiusRate, double distance, int time, ParticleDisplay display) {
+        BukkitRunnable runnable = new BukkitRunnable() {
             final double radiusDiv = Math.PI / radiusRate;
             final Vector dir = display.getLocation().getDirection().normalize().multiply(distance);
             double dynamicRadius = radius;
@@ -551,7 +556,8 @@ public final class XParticle {
 
                 if(timer-- <= 0) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -630,11 +636,11 @@ public final class XParticle {
      *
      * @since 3.0.0
      */
-    public static BukkitTask blackhole(Plugin plugin, int points, double radius, double rate, int mode, int time, ParticleDisplay display) {
+    public static ScheduledTask blackhole(Plugin plugin, int points, double radius, double rate, int mode, int time, ParticleDisplay display) {
         display.directional();
         display.extra = 0.1;
 
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             final double rateDiv = Math.PI / rate;
             int timer = time;
             double theta = 0;
@@ -677,7 +683,8 @@ public final class XParticle {
                 theta += rateDiv;
                 if (--timer <= 0) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -809,11 +816,11 @@ public final class XParticle {
      * @return the task handling the animation.
      * @since 2.0.0
      */
-    public static BukkitTask vortex(Plugin plugin, int points, double rate, double time, ParticleDisplay display) {
+    public static ScheduledTask vortex(Plugin plugin, int points, double rate, double time, ParticleDisplay display) {
         double rateDiv = Math.PI / rate;
         display.directional();
 
-        return new BukkitRunnable() {
+        BukkitRunnable runnable =  new BukkitRunnable() {
             double theta = 0;
             long repeat = 0;
 
@@ -837,7 +844,8 @@ public final class XParticle {
                 }
                 if (++repeat > time) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -874,9 +882,9 @@ public final class XParticle {
      * @see #guard(Plugin, long, double, double, double, double, Runnable, ParticleDisplay...)
      * @since 1.0.0
      */
-    public static BukkitTask moveRotatingAround(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
+    public static ScheduledTask moveRotatingAround(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
                                                 Runnable runnable, ParticleDisplay... displays) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable1 =  new BukkitRunnable() {
             double rotation = 180;
 
             @Override
@@ -896,7 +904,8 @@ public final class XParticle {
                 runnable.run();
                 for (ParticleDisplay display : displays) display.getLocation().subtract(vector);
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, update);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable1, 0L, update);
     }
 
     /**
@@ -914,9 +923,9 @@ public final class XParticle {
      * @see #guard(Plugin, long, double, double, double, double, Runnable, ParticleDisplay...)
      * @since 1.0.0
      */
-    public static BukkitTask moveAround(Plugin plugin, long update, double rate, double endRate, double offsetx, double offsety, double offsetz,
+    public static ScheduledTask moveAround(Plugin plugin, long update, double rate, double endRate, double offsetx, double offsety, double offsetz,
                                         Runnable runnable, ParticleDisplay... displays) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable1 = new BukkitRunnable() {
             double multiplier = 0;
             boolean opposite = false;
 
@@ -939,7 +948,8 @@ public final class XParticle {
                     if (multiplier >= endRate) opposite = true;
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, update);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable1, 0L, update);
     }
 
     /**
@@ -951,8 +961,8 @@ public final class XParticle {
      * @return the timer task handling the displays.
      * @since 1.0.0
      */
-    public static BukkitTask testDisplay(Plugin plugin, Runnable runnable) {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, runnable, 0L, 1L);
+    public static ScheduledTask testDisplay(Plugin plugin, Runnable runnable) {
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -970,9 +980,9 @@ public final class XParticle {
      * @see #guard(Plugin, long, double, double, double, double, Runnable, ParticleDisplay...)
      * @since 1.0.0
      */
-    public static BukkitTask rotateAround(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
+    public static ScheduledTask rotateAround(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
                                           Runnable runnable, ParticleDisplay... displays) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable1 = new BukkitRunnable() {
             double rotation = 180;
 
             @Override
@@ -986,7 +996,8 @@ public final class XParticle {
                 for (ParticleDisplay display : displays) display.rotate(vector);
                 runnable.run();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, update);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable1, 0L, update);
     }
 
     /**
@@ -1012,9 +1023,9 @@ public final class XParticle {
      * @see #moveRotatingAround(Plugin, long, double, double, double, double, Runnable, ParticleDisplay...)
      * @since 1.0.0
      */
-    public static BukkitTask guard(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
+    public static ScheduledTask guard(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
                                    Runnable runnable, ParticleDisplay... displays) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable1 = new BukkitRunnable() {
             double rotation = 180;
 
             @Override
@@ -1034,7 +1045,8 @@ public final class XParticle {
                 runnable.run();
                 for (ParticleDisplay display : displays) display.getLocation().subtract(vector);
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, update);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable1, 0L, update);
     }
 
     /**
@@ -1160,9 +1172,9 @@ public final class XParticle {
      *
      * @since 1.0.0
      */
-    public static BukkitTask spread(Plugin plugin, int amount, int rate, Location start, Location originEnd,
+    public static ScheduledTask spread(Plugin plugin, int amount, int rate, Location start, Location originEnd,
                                     double offsetx, double offsety, double offsetz, ParticleDisplay display) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             int count = amount;
 
             @Override
@@ -1180,7 +1192,8 @@ public final class XParticle {
 
                 if (count-- == 0) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -1220,9 +1233,9 @@ public final class XParticle {
      * @see #atom(int, double, double, ParticleDisplay, ParticleDisplay)
      * @since 1.0.0
      */
-    public static BukkitTask atomic(Plugin plugin, int orbits, double radius, double rate, double time, ParticleDisplay display) {
+    public static ScheduledTask atomic(Plugin plugin, int orbits, double radius, double rate, double time, ParticleDisplay display) {
 
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             final double rateDiv = Math.PI / rate;
             final double dist = Math.PI / orbits;
             double theta = 0;
@@ -1243,7 +1256,8 @@ public final class XParticle {
                 }
                 if (++repeat > time) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -1263,9 +1277,9 @@ public final class XParticle {
      * @see #dnaReplication(Plugin, double, double, int, double, int, int, ParticleDisplay)
      * @since 3.0.0
      */
-    public static BukkitTask helix(Plugin plugin, int strings, double radius, double rate, double extension, int height, int speed,
+    public static ScheduledTask helix(Plugin plugin, int strings, double radius, double rate, double extension, int height, int speed,
                                    boolean fadeUp, boolean fadeDown, ParticleDisplay display) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             // If we look at a helix string from above, we'll see a circle tunnel.
             // To make this tunnel we're going to generate circles while moving
             // upwards to get a curvy tunnel.
@@ -1305,7 +1319,8 @@ public final class XParticle {
                     if (y > height) cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -1429,7 +1444,7 @@ public final class XParticle {
      * @see #dna(double, double, double, int, int, ParticleDisplay, ParticleDisplay)
      * @since 3.0.0
      */
-    public static BukkitTask dnaReplication(Plugin plugin, double radius, double rate, int speed, double extension,
+    public static ScheduledTask dnaReplication(Plugin plugin, double radius, double rate, int speed, double extension,
                                             int height, int hydrogenBondDist, ParticleDisplay display) {
         // We'll use the common nucleotide colors.
         ParticleDisplay adenine = ParticleDisplay.colored(null, java.awt.Color.BLUE, 1); // Blue
@@ -1437,7 +1452,7 @@ public final class XParticle {
         ParticleDisplay guanine = ParticleDisplay.colored(null, java.awt.Color.GREEN, 1); // Green
         ParticleDisplay cytosine = ParticleDisplay.colored(null, java.awt.Color.RED, 1); // Red
 
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             double y = 0;
             int nucleotideDist = 0;
 
@@ -1482,7 +1497,8 @@ public final class XParticle {
                     if (y >= height) cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -1510,14 +1526,15 @@ public final class XParticle {
      * @return the timer task handling the animation.
      * @since 1.0.0
      */
-    public static BukkitTask cloud(Plugin plugin, ParticleDisplay cloud, ParticleDisplay rain) {
-        return new BukkitRunnable() {
+    public static ScheduledTask cloud(Plugin plugin, ParticleDisplay cloud, ParticleDisplay rain) {
+        BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 cloud.spawn();
                 rain.spawn();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -1832,7 +1849,7 @@ public final class XParticle {
      * @see #hypercube(Location, Location, double, double, int, ParticleDisplay)
      * @since 4.0.0
      */
-    public static BukkitTask tesseract(Plugin plugin, double size, double rate, double speed, double time, ParticleDisplay display) {
+    public static ScheduledTask tesseract(Plugin plugin, double size, double rate, double speed, double time, ParticleDisplay display) {
         // We can multiply these later to change the size.
         // This array doesn't really need to be a constant as it's initialized once.
         double[][] positions = {
@@ -1882,7 +1899,7 @@ public final class XParticle {
         }
         for (int i = 0; i < (level + 1) * 4; i++) connections.add(new int[]{i, i + 8});
 
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             double angle = 0;
             long repeat = 0;
 
@@ -1942,7 +1959,8 @@ public final class XParticle {
                 if (++repeat > time) cancel();
                 else angle += speed;
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -2085,7 +2103,7 @@ public final class XParticle {
         for (int i = 0; i < spikes * 2; i++) {
             double spikeAngle = i * Math.PI / spikes;
 
-            new BukkitRunnable() {
+            BukkitRunnable runnable = new BukkitRunnable() {
                 double vein = 0;
                 double theta = 0;
 
@@ -2116,7 +2134,8 @@ public final class XParticle {
                         if (theta >= PII) cancel();
                     }
                 }
-            }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+            };
+            SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
         }
     }
 
@@ -2263,8 +2282,8 @@ public final class XParticle {
      *
      * @since 1.0.0
      */
-    public static BukkitTask explosionWave(Plugin plugin, double rate, ParticleDisplay display, ParticleDisplay secDisplay) {
-        return new BukkitRunnable() {
+    public static ScheduledTask explosionWave(Plugin plugin, double rate, ParticleDisplay display, ParticleDisplay secDisplay) {
+        BukkitRunnable runnable = new BukkitRunnable() {
             final double addition = Math.PI * 0.1;
             final double rateDiv = Math.PI / rate;
             double times = Math.PI / 4;
@@ -2286,7 +2305,8 @@ public final class XParticle {
 
                 if (times > 20) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, 1L);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
     }
 
     /**
@@ -2421,9 +2441,9 @@ public final class XParticle {
      * @return the async bukkit task displaying the image.
      * @since 1.0.0
      */
-    public static BukkitTask displayRenderedImage(Plugin plugin, Map<double[], Color> render, Callable<Location> location,
+    public static ScheduledTask displayRenderedImage(Plugin plugin, Map<double[], Color> render, Callable<Location> location,
                                                   int repeat, long period, int quality, int speed, float size) {
-        return new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             int times = repeat;
 
             @Override
@@ -2435,7 +2455,8 @@ public final class XParticle {
                 }
                 if (times-- < 1) cancel();
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, period);
+        };
+        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, period);
     }
 
     /**
