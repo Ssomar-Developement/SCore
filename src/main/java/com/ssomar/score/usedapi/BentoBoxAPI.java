@@ -5,11 +5,11 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import world.bentobox.bentobox.BentoBox;
-import world.bentobox.bentobox.database.objects.Island;
+import world.bentobox.bentobox.api.user.User;
+import world.bentobox.bentobox.lists.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class BentoBoxAPI {
@@ -19,26 +19,29 @@ public class BentoBoxAPI {
     }
 
     public static boolean playerIsOnHisIsland(@NotNull UUID pUUID, @NotNull Location location) {
-        Optional<Island> islandOpt = BentoBox.getInstance().getIslandsManager().getIslandAt(location);
-        if (islandOpt.isPresent()) {
-            Island island = islandOpt.get();
-            if (island.getMemberSet().contains(pUUID)) {
-                return true;
-            }
-
-            return false;
-        }
-
-        /* He is not on an Island */
-        return true;
+        // Check if given user is a member on island at the given location.
+        
+        return BentoBox.getInstance().getIslandsManager().getIslandAt(location).
+            map(island -> island.getMemberSet().contains(pUUID)).
+            orElse(false);
     }
 
     public static boolean playerCanBreakIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
-        return playerIsOnHisIsland(pUUID, location);
+        // Checks if player is allowed to break blocks on island he is standing on,
+        // or if he is allowed to break blocks in the world outside protection area.
+
+        return BentoBox.getInstance().getIslandsManager().getIslandAt(location).
+            map(island -> island.isAllowed(User.getInstance(pUUID), Flags.BREAK_BLOCKS)).
+            orElse(Flags.BREAK_BLOCKS.isSetForWorld(location.getWorld()));
     }
 
     public static boolean playerCanPlaceIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
-        return playerIsOnHisIsland(pUUID, location);
+        // Checks if player is allowed to place blocks on island he is standing on,
+        // or if he is allowed to place blocks in the world outside protection area.
+
+        return BentoBox.getInstance().getIslandsManager().getIslandAt(location).
+            map(island -> island.isAllowed(User.getInstance(pUUID), Flags.PLACE_BLOCKS)).
+            orElse(Flags.PLACE_BLOCKS.isSetForWorld(location.getWorld()));
     }
 
     public static World getWorld(String worldStr) {
