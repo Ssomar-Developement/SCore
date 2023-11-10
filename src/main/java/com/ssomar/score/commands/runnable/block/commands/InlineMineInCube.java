@@ -82,15 +82,23 @@ public class InlineMineInCube extends BlockCommand {
                     if(args.size() >= 5) {
                         switch (args.get(4).toLowerCase()) {
                             case "north":
+                            case "n":
+                            case "-z":
                                 directionWritten = BlockFace.NORTH;
                                 break;
                             case "south":
+                            case "s":
+                            case "+z":
                                 directionWritten = BlockFace.SOUTH;
                                 break;
                             case "east":
+                            case "e":
+                            case "+x":
                                 directionWritten = BlockFace.EAST;
                                 break;
                             case "west":
+                            case "w":
+                            case "-x":
                                 directionWritten = BlockFace.WEST;
                                 break;
                             case "up":
