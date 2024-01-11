@@ -26,8 +26,12 @@ public class LaunchEntity extends MixedCommand {
     }
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
-        Location loc = receiver.getEyeLocation();
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
+
+        Location loc = livingReceiver.getEyeLocation();
         //loc.setY(loc.getY()-1);
         EntityType entityType = EntityType.PIG;
         double speed = 1;
@@ -56,7 +60,7 @@ public class LaunchEntity extends MixedCommand {
         }
 
         Entity entity = receiver.getWorld().spawnEntity(loc, entityType);
-        Vector v = receiver.getEyeLocation().getDirection();
+        Vector v = livingReceiver.getEyeLocation().getDirection();
         v.multiply(speed);
         if (!SCore.is1v13Less()) v.rotateAroundY(rotation);
         entity.setVelocity(v);

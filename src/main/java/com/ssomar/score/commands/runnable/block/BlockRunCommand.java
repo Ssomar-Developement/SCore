@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
@@ -11,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,12 +71,14 @@ public class BlockRunCommand extends RunCommand {
 
         Player launcher = null;
         if (launcherUUID != null) launcher =  Bukkit.getPlayer(launcherUUID);
+
         Optional<World> worldOptional = AllWorldManager.getWorld(blockWorld);
         if(!worldOptional.isPresent()) return;
         Location loc = new Location(worldOptional.get(), blockX, blockY, blockZ);
         Block block = loc.getBlock();
 
-        bCommand.run(launcher, block, oldBlockMaterial, args, this.getaInfo());
+        bCommand.run(launcher, block, oldBlockMaterial, args, getaInfo());
+
     }
 
 
@@ -83,6 +87,15 @@ public class BlockRunCommand extends RunCommand {
         runCommand(BlockCommandManager.getInstance());
         /* cancelTask on false beacuse the task has been already executed */
         CommandsHandler.getInstance().removeDelayedCommand(getUuid(), null, false);
+    }
+
+    @Override
+    public void executeRunnable(BukkitRunnable runnable) {
+        Optional<World> worldOptional = AllWorldManager.getWorld(blockWorld);
+        if(!worldOptional.isPresent()) return;
+        Location loc = new Location(worldOptional.get(), blockX, blockY, blockZ);
+
+        SCore.schedulerHook.runLocationTaskAsap(runnable, loc);
     }
 
     public UUID getLauncherUUID() {

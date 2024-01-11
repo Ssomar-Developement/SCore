@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
@@ -26,7 +27,7 @@ import java.util.UUID;
 /* FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}*/
 public class FarmInCube extends BlockCommand {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     public static void destroyTheBlock(Block toDestroy, boolean onlyMaxAge, boolean drop, boolean replant, @Nullable Player p, boolean event, int slot) {
 
@@ -116,7 +117,7 @@ public class FarmInCube extends BlockCommand {
                 }
             }
 
-            //SsomarDev.testMsg("OldMaterial : " + oldMaterial.toString(), DEBUG);
+            SsomarDev.testMsg("OldMaterial : " + oldMaterial.toString(), DEBUG);
             if (validMaterial.contains(oldMaterial) && replant) {
                 final boolean onlyMaxAgeFinal = onlyMaxAge;
                 final boolean dropFinal = drop;
@@ -149,7 +150,7 @@ public class FarmInCube extends BlockCommand {
                         replant(block, data, oldMaterial, p);
                     }
                 };
-                SCore.schedulerHook.runTask(runnable, 0);
+                SCore.schedulerHook.runLocationTask(runnable, block.getLocation(), 1);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +36,12 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
         super(parent, "placeholdersConditions", "Placeholders Conditions", new String[]{"&7&oThe placeholders conditions"}, Material.ANVIL, false);
         reset();
     }
+
+    public PlaceholderConditionGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] description, Material material, boolean requirePremium) {
+        super(parent, name, editorName, description, material, requirePremium);
+        reset();
+    }
+
 
     @Override
     public void reset() {
@@ -113,6 +121,15 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
         }
     }
 
+    public String getConfigAsString() {
+        String configuration = "";
+        Reader reader = new java.io.StringReader(configuration);
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(reader);
+        save(yamlConfiguration);
+        configuration = yamlConfiguration.saveToString();
+        return configuration;
+    }
+
     @Override
     public PlaceholderConditionGroupFeature getValue() {
         return this;
@@ -144,7 +161,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public PlaceholderConditionGroupFeature clone(FeatureParentInterface newParent) {
-        PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent);
+        PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
         LinkedHashMap<String, PlaceholderConditionFeature> newAttributes = new LinkedHashMap<>();
         for (String x : placeholdersConditions.keySet()) {
             newAttributes.put(x, placeholdersConditions.get(x).clone(eF));

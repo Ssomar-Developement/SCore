@@ -3,13 +3,13 @@ package com.ssomar.score.projectiles.loader;
 import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
-import com.ssomar.score.sobject.NewSObjectLoader;
+import com.ssomar.score.sobject.SObjectWithFileLoader;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.*;
 import java.util.*;
 
-public class SProjectileLoader extends NewSObjectLoader<SProjectile> {
+public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
 
     private static SProjectileLoader instance;
 

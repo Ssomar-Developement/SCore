@@ -1,5 +1,6 @@
 package com.ssomar.score.damagewithoutknockback;
 
+import lombok.Getter;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.UUID;
 public class DamageWithoutKnockbackManager {
 
     private static DamageWithoutKnockbackManager instance;
+    @Getter
     private final List<UUID> damageWithoutKnockbackList = new ArrayList<>();
 
     public static DamageWithoutKnockbackManager getInstance() {

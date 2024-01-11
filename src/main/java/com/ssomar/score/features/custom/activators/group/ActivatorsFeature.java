@@ -5,7 +5,7 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.FeaturesGroup;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
@@ -24,13 +24,13 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature, ActivatorsFeature, ActivatorsFeatureEditor, ActivatorsFeatureEditorManager> implements FeaturesGroup<NewSActivator> {
+public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature, ActivatorsFeature, ActivatorsFeatureEditor, ActivatorsFeatureEditorManager> implements FeaturesGroup<SActivator> {
 
-    private LinkedHashMap<String, NewSActivator> activators;
-    private NewSActivator builderInstance;
+    private LinkedHashMap<String, SActivator> activators;
+    private SActivator builderInstance;
     private int premiumLimit = 1;
 
-    public ActivatorsFeature(FeatureParentInterface parent, NewSActivator<?, ?, ?> builderInstance) {
+    public ActivatorsFeature(FeatureParentInterface parent, SActivator<?, ?, ?> builderInstance) {
         super(parent, "activators", TM.g(Text.FEATURES_ACTIVATORS_NAME), TM.gA(Text.FEATURES_ACTIVATORS_DESCRIPTION), Material.BEACON, false);
         this.builderInstance = builderInstance;
         reset();
@@ -51,7 +51,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                     error.add("&cERROR, Couldn't load the Activator of " + activatorID + " from config, &7&o" + getParent().getParentInfo() + " &6>> Because it requires the premium version to have more than 1 activator !");
                     return error;
                 }
-                NewSActivator<?, ?, ?>  activator = builderInstance.getBuilderInstance(this, activatorID);
+                SActivator<?, ?, ?> activator = builderInstance.getBuilderInstance(this, activatorID);
                 List<String> subErrors = activator.load(plugin, activatorsSection, isPremiumLoading);
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
@@ -99,8 +99,8 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     }
 
     @Override
-    public NewSActivator getTheChildFeatureClickedParentEditor(String featureClicked) {
-        for (NewSActivator x : activators.values()) {
+    public SActivator getTheChildFeatureClickedParentEditor(String featureClicked) {
+        for (SActivator x : activators.values()) {
             if (x.isTheFeatureClickedParentEditor(featureClicked)) return x;
         }
         return null;
@@ -114,9 +114,9 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     @Override
     public ActivatorsFeature clone(FeatureParentInterface newParent) {
         ActivatorsFeature eF = new ActivatorsFeature(newParent, builderInstance);
-        LinkedHashMap<String, NewSActivator> newActivators = new LinkedHashMap<>();
+        LinkedHashMap<String, SActivator> newActivators = new LinkedHashMap<>();
         for (String key : activators.keySet()) {
-            NewSActivator clone = (NewSActivator) activators.get(key).clone(eF);
+            SActivator clone = (SActivator) activators.get(key).clone(eF);
             newActivators.put(key, clone);
         }
         eF.setActivators(newActivators);
@@ -175,7 +175,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
             String id = baseId + i;
             if (!activators.containsKey(id)) {
                 //SsomarDev.testMsg("INSTANCE CREATE: " + this.hashCode());
-                NewSActivator activator = builderInstance.getBuilderInstance(this, id);
+                SActivator activator = builderInstance.getBuilderInstance(this, id);
                 activators.put(id, activator);
                 activator.openEditor(editor);
                 break;
@@ -184,7 +184,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     }
 
     @Override
-    public void deleteFeature(@NotNull Player editor, NewSActivator feature) {
+    public void deleteFeature(@NotNull Player editor, SActivator feature) {
         LoopManager.getInstance().removeLoopActivator(activators.get(feature.getId()));
         activators.remove(feature.getId());
     }

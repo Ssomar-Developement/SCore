@@ -4,6 +4,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class ForceDrop extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
 
         int slot = Double.valueOf(args.get(0)).intValue();
 
@@ -34,7 +35,11 @@ public class ForceDrop extends MixedCommand {
             inventory.clear(slot);
         }
         else {
-            EntityEquipment equipment = receiver.getEquipment();
+
+            if(!(receiver instanceof LivingEntity)) return;
+            LivingEntity livingReceiver = (LivingEntity) receiver;
+
+            EntityEquipment equipment = livingReceiver.getEquipment();
             if(equipment == null) return;
             switch (slot){
                case -1: {

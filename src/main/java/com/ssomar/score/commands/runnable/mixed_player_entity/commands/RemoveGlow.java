@@ -5,7 +5,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class RemoveGlow extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         if (!receiver.isDead()) {
             ChatColor color = ChatColor.WHITE;
             if (args.size() >= 1) {

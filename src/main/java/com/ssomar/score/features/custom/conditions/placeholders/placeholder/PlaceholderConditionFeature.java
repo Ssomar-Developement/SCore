@@ -157,7 +157,9 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
             case PLAYER_PLAYER:
             case TARGET_TARGET:
             case PLAYER_TARGET:
+                SsomarDev.testMsg(">>>>>>>>>> aPart1: "+aPart1+" aPart2: "+aPart2, true);
                 if (NTools.isNumber(aPart1) && NTools.isNumber(aPart2)) {
+                    SsomarDev.testMsg("aPart1: "+aPart1+" aPart2: "+aPart2, true);
                     double nPart1 = Double.parseDouble(aPart1);
                     double nPart2 = Double.parseDouble(aPart2);
                     if (!comparator.getValue().get().verify(nPart1, nPart2)) return false;

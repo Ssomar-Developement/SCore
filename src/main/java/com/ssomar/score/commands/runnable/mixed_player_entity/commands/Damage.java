@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -24,27 +25,31 @@ import java.util.Optional;
 
 public class Damage extends MixedCommand {
 
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
 
         /* When target a NPC it can occurs */
         if (receiver == null) return;
 
-        double damage = getDamage(p, receiver, args, aInfo);
+        double damage = getDamage(p, livingReceiver, args, aInfo);
 
         if (damage > 0 && !receiver.isDead()) {
-            int maximumNoDmg = receiver.getMaximumNoDamageTicks();
-            receiver.setMaximumNoDamageTicks(0);
+            int maximumNoDmg = livingReceiver.getNoDamageTicks();
+            livingReceiver.setNoDamageTicks(0);
             boolean doDamage = true;
             if (SCore.hasWorldGuard && receiver instanceof Player) doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
             if (doDamage) {
                 if (p != null) {
                     p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
-                    receiver.damage(damage, p);
+                    livingReceiver.damage(damage, p);
                 } else {
-                    receiver.damage(damage);
+                    livingReceiver.damage(damage);
                 }
             }
-            receiver.setMaximumNoDamageTicks(maximumNoDmg);
+
+            livingReceiver.setNoDamageTicks(maximumNoDmg);
         }
     }
 

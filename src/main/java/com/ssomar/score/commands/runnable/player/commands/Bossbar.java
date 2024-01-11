@@ -24,7 +24,7 @@ public class Bossbar extends PlayerCommand {
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
         BarColor color = null;
         Integer duration = NTools.getInteger(args.get(0)).get();
-        color = BarColor.valueOf(args.get(1));
+        color = BarColor.valueOf(args.get(1).toUpperCase());
 
 
         StringBuilder build = new StringBuilder();

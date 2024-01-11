@@ -10,7 +10,7 @@ import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManag
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
-public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbstract> {
+public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstract> {
 
     private static NewSObjectsManagerEditor instance;
 
@@ -19,49 +19,49 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
         return instance;
     }
 
-    public void startEditing(Player editor, NewSObjectsEditorAbstract gui) {
+    public void startEditing(Player editor, SObjectsEditorAbstract gui) {
         cache.put(editor, gui);
         gui.openGUISync(editor);
     }
 
     @Override
-    public boolean allClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean allClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_FOLDER_NAME))) {
             i.gui.goToFolder(i.localizedName);
         } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PATH_NAME))) {
             i.gui.goBack();
-        } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.NEW)) {
+        } else if (i.coloredDeconvertName.contains(SObjectsWithFileEditor.NEW)) {
             i.gui.sendMessageCreate(i.player);
-        } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", i.gui.getObjectName())) || i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", i.gui.getObjectName()))) {
+        } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", i.gui.getManager().getObjectName())) || i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", i.gui.getManager().getObjectName()))) {
             NewDefaultObjectsEditorManager.getInstance().startEditing(i.player, new NewDefaultObjectsEditor(i.gui.getSPlugin(), i.gui.getManager(), i.gui.getLoader(), i.gui));
-        } else if (i.coloredDeconvertName.contains(NewSObjectsEditorAbstract.CREATION_ID)) {
+        } else if (i.coloredDeconvertName.contains(SObjectsWithFileEditor.CREATION_ID)) {
             i.gui.openEditorSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
         } else return false;
         return true;
     }
 
     @Override
-    public boolean noShiftclicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean noShiftclicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         return false;
     }
 
     @Override
-    public boolean noShiftLeftclicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean noShiftLeftclicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         return false;
     }
 
     @Override
-    public boolean noShiftRightclicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean noShiftRightclicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         return false;
     }
 
     @Override
-    public boolean shiftClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean shiftClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         return false;
     }
 
     @Override
-    public boolean shiftLeftClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean shiftLeftClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         if (i.decoloredName.contains(StringConverter.decoloredString(GUI.CREATION_ID))) {
             i.player.closeInventory();
             String id = i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim();
@@ -73,7 +73,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
     }
 
     @Override
-    public boolean shiftRightClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean shiftRightClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         if (i.decoloredName.contains(StringConverter.decoloredString(GUI.CREATION_ID)) && !i.decoloredName.contains("ERROR ID")) {
             i.gui.giveSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
             return true;
@@ -82,77 +82,77 @@ public class NewSObjectsManagerEditor extends NewGUIManager<NewSObjectsEditorAbs
     }
 
     @Override
-    public boolean leftClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> i) {
+    public boolean leftClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
         return false;
     }
 
     @Override
-    public boolean rightClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public boolean rightClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
         return false;
     }
 
     @Override
-    public boolean middleClicked(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public boolean middleClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
         return false;
     }
 
     @Override
-    public void receiveMessage(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void receiveMessage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void receiveMessagePreviousPage(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void receiveMessagePreviousPage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void receiveMessageNextPage(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void receiveMessageNextPage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void receiveMessageNoValue(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void receiveMessageNoValue(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void receiveMessageFinish(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void receiveMessageFinish(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void receiveMessageValue(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void receiveMessageValue(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void newObject(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void newObject(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void reset(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void reset(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void back(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void back(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 
     @Override
-    public void nextPage(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void nextPage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
         interact.gui.goNextPage();
     }
 
     @Override
-    public void previousPage(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void previousPage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
         interact.gui.goPreviousPage();
     }
 
     @Override
-    public void save(NewInteractionClickedGUIManager<NewSObjectsEditorAbstract> interact) {
+    public void save(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
 }

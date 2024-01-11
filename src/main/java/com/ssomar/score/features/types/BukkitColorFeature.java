@@ -40,7 +40,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
-        if (!colorStr.equals("NULL") && !colorStr.equals("NO_COLOR")) {
+        if (!(colorStr.equals("NULL") || colorStr.equals("NO_COLOR"))) {
             try {
                 Color chatColor = CustomColor.valueOf(colorStr);
                 value = Optional.ofNullable(chatColor);

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -206,7 +207,8 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
     }
 
     public void updateOption(SOption option, GUI gui, boolean isPremiumLoading, boolean next) {
-        while (!isPremiumLoading && option.getPremiumOption().contains(option)) {
+       SsomarDev.testMsg("updateOption  "+ option+" >>"+builderInstance.getPremiumOption().contains(option), true);
+        while (!isPremiumLoading && builderInstance.getPremiumOption().contains(option)) {
             if (next) option = nextOption(option);
             else option = prevOption(option);
         }
@@ -221,7 +223,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
                 find = true;
             } else if (find) {
                 if (lore.size() == 17) break;
-                if (!isPremiumLoading && option.getPremiumOption().contains(check))
+                if (!isPremiumLoading && builderInstance.getPremiumOption().contains(check))
                     lore.add(StringConverter.coloredString("&6✦ &e" + check + " &7Premium"));
                 else
                     lore.add(StringConverter.coloredString("&6✦ &e" + check));
@@ -230,7 +232,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         for (SOption check : getSortOptions()) {
             if (lore.size() == 17) break;
             else {
-                if (!isPremiumLoading && option.getPremiumOption().contains(check))
+                if (!isPremiumLoading && builderInstance.getPremiumOption().contains(check))
                     lore.add(StringConverter.coloredString("&6✦ &e" + check + " &7Premium"));
                 else
                     lore.add(StringConverter.coloredString("&6✦ &e" + check));

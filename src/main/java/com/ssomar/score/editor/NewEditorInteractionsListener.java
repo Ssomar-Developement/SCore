@@ -135,8 +135,8 @@ import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEd
 import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEditorManager;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditor;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditorManager;
-import com.ssomar.score.sobject.menu.NewSObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
+import com.ssomar.score.sobject.menu.SObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManager;
 import com.ssomar.score.variables.VariableEditor;
@@ -220,10 +220,11 @@ public class NewEditorInteractionsListener implements Listener {
 
         InventoryHolder holder = e.getInventory().getHolder();
 
-        if (holder instanceof NewSObjectsEditorAbstract) {
+        if (holder instanceof SObjectsEditorAbstract) {
             NewSObjectsManagerEditor.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof NewDefaultObjectsEditor) {
+        }
+        else if (holder instanceof NewDefaultObjectsEditor) {
             NewDefaultObjectsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof RequiredLevelEditor) {

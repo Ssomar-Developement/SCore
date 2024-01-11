@@ -3,42 +3,30 @@ package com.ssomar.score.projectiles;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
-import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
 import com.ssomar.score.features.types.SProjectileTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
-import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.sobject.SObjectWithFile;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
 @Setter
-public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SProjectileEditorManager> {
-
-    private String id;
-    private String path;
+public class SProjectile extends SObjectWithFile<SProjectile, SProjectileEditor, SProjectileEditorManager> {
 
     private SProjectileTypeFeature type;
 
@@ -56,16 +44,12 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
 
     public SProjectile(FeatureParentInterface parent, String id, String path) {
-        super(parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW);
-        this.id = id;
-        this.path = path;
+        super(id, parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW, path, SProjectileLoader.getInstance());
         reset();
     }
 
     public SProjectile(String id, String path) {
-        super("SPROJ", "SPROJ", new String[]{}, Material.ARROW);
-        this.id = id;
-        this.path = path;
+        super(id, "SPROJ", "SPROJ", new String[]{}, Material.ARROW, path, SProjectileLoader.getInstance());
         reset();
     }
 
@@ -120,7 +104,7 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
     @Override
     public SProjectile clone(FeatureParentInterface newParent) {
-        SProjectile clone = new SProjectile(this, id, path);
+        SProjectile clone = new SProjectile(this, getId(), getPath());
         clone.setType(type.clone(clone));
         List<FeatureAbstract> newFeatures = new ArrayList<>();
         for (FeatureAbstract f : subFeatures) {
@@ -140,29 +124,7 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
     @Override
     public String getParentInfo() {
-        return "SProjectile: " + id;
-    }
-
-    @Override
-    public ConfigurationSection getConfigurationSection() {
-        File file = getFile();
-
-        FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
-        return config;
-    }
-
-    @Override
-    public File getFile() {
-        File file = new File(path);
-        if (!file.exists()) {
-            try {
-                new File(path).createNewFile();
-                file = SProjectileLoader.getInstance().searchFileOfObject(id);
-            } catch (IOException ignored) {
-                return null;
-            }
-        }
-        return file;
+        return "SProjectile: " + getId();
     }
 
     @Override
@@ -207,31 +169,7 @@ public class SProjectile extends NewSObject<SProjectile, SProjectileEditor, SPro
 
 
     @Override
-    public ActivatorsFeature getActivators() {
-        return null;
-    }
-
-    @Override
-    public Item dropItem(Location location, int amount) {
-        return null;
-    }
-
-    @Override
     public ItemStack buildItem(int quantity, Optional<Player> creatorOpt) {
         return new ItemStack(type.getValue().get().getMaterial());
-    }
-
-    @Nullable
-    @Override
-    public NewSActivator getActivator(String actID) {
-        return null;
-    }
-
-    @Override
-    public List<String> getDescription() {
-        List<String> description = new ArrayList<>();
-        description.add("§7ID: §f" + id);
-        description.add("§7Path: §f" + path);
-        return description;
     }
 }

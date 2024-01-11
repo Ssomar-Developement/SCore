@@ -2,7 +2,8 @@ package com.ssomar.score.commands.score;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.linkedplugins.LinkedPlugins;
-import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.SObjectDroppable;
 import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,11 +15,18 @@ public class DropCommand {
 
     public DropCommand(SPlugin sPlugin, CommandSender sender, String[] args) {
         try {
-            NewSObject sObject;
+            SObject sObject;
             if ((sObject = LinkedPlugins.getSObject(sPlugin, args[0])) == null) {
                 sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " " + sPlugin.getObjectName() + " " + args[0] + " not found");
                 return;
             }
+
+            if(!(sObject instanceof SObjectDroppable)) {
+                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " " + sPlugin.getObjectName() + " " + args[0] + " is not droppable");
+                return;
+            }
+
+            SObjectDroppable droppable = (SObjectDroppable) sObject;
 
             int qty;
             if (args.length == 1) qty = 1;
@@ -33,7 +41,7 @@ public class DropCommand {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (args.length <= 2) {
-                    runDrop(sObject, Integer.parseInt(args[1]), p.getLocation());
+                    runDrop(droppable, Integer.parseInt(args[1]), p.getLocation());
                     //System.out.println(sPlugin.getNameDesign() + " Succesfully run /" + sPlugin.getShortName().toLowerCase() + " drop " + args[0] + " " + qty + " " + p.getWorld().getName() + " " + (int) p.getLocation().getX() + " " + (int) p.getLocation().getY() + " " + (int) p.getLocation().getZ() + " ");
                     return;
                 }
@@ -61,7 +69,7 @@ public class DropCommand {
                 sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " Z " + args[3] + " is invalid.");
                 return;
             }
-            runDrop(sObject, qty, new Location(Bukkit.getServer().getWorld(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), Double.parseDouble(args[5])));
+            runDrop(droppable, qty, new Location(Bukkit.getServer().getWorld(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), Double.parseDouble(args[5])));
             ExecutableItems.plugin.getLogger().fine(sPlugin.getNameDesign() + " Succesfully run /" + sPlugin.getShortName().toLowerCase() + " drop " + args[0] + " " + qty + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5] + " ");
             return;
         } catch (ArrayIndexOutOfBoundsException error) {
@@ -70,7 +78,7 @@ public class DropCommand {
 
     }
 
-    public void runDrop(NewSObject sObject, int qty, Location loc) {
+    public void runDrop(SObjectDroppable sObject, int qty, Location loc) {
         sObject.dropItem(loc, qty);
     }
 

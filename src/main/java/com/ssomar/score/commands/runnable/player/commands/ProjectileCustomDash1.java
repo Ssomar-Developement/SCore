@@ -71,7 +71,7 @@ public class ProjectileCustomDash1 extends PlayerCommand {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+                    NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
                 }
             };
             ScheduledTask scheduledTask = SCore.schedulerHook.runTask(runnable, 300);

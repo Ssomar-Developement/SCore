@@ -36,10 +36,24 @@ public class CooldownsHandler implements Listener {
                 }
             });
         });
+
+        /* Async task to update and pause cooldowns if necessary */
+        Bukkit.getScheduler().runTaskTimerAsynchronously(SCore.plugin, new Runnable() {
+            @Override
+            public void run() {
+                List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
+                for (Cooldown cd : cooldowns) {
+                    if(cd != null) cd.updatePausePlaceholdersConditions();
+                }
+            }
+        }, 0L, 20L);
     }
 
     public static void closeServerSaveAll() {
         List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
+        for (Cooldown cd : cooldowns) {
+            cd.updatePlayerDisconnect();
+        }
 
         CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
 
@@ -56,9 +70,13 @@ public class CooldownsHandler implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
             if(!SCore.plugin.isEnabled()) return;
             List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
+            for (Cooldown cd : cooldowns) {
+                cd.updatePlayerReconnect();
+            }
             Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
                 @Override
                 public void run() {
+                    //SsomarDev.testMsg("COOLDOWNS SIZE: "+cooldowns.size(), true);
                     CooldownsManager.getInstance().addCooldowns(cooldowns);
 
                     Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
@@ -78,6 +96,10 @@ public class CooldownsHandler implements Listener {
 
         List<Cooldown> cooldowns = new ArrayList<>(CooldownsManager.getInstance().getCooldownsOf(p.getUniqueId()));
         if (cooldowns.isEmpty()) return;
+
+        for (Cooldown cd : cooldowns) {
+            cd.updatePlayerDisconnect();
+        }
 
         if(!SCore.plugin.isEnabled()) return;
 

@@ -6,7 +6,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class Glowing extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         if (!receiver.isDead()) {
             int time = Double.valueOf(args.get(0)).intValue();
             ChatColor color = ChatColor.WHITE;

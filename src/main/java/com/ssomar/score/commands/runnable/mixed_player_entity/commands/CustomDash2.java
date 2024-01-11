@@ -5,7 +5,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class CustomDash2 extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         double x = Double.parseDouble(args.get(0));
         double y = Double.parseDouble(args.get(1));
         double z = Double.parseDouble(args.get(2));

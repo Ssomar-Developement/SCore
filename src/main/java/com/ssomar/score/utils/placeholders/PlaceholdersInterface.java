@@ -28,7 +28,8 @@ public abstract class PlaceholdersInterface {
             String suit = result.split(placeholder + "\\+")[1];
             StringBuilder sb = new StringBuilder();
             for (char c : suit.toCharArray()) {
-                if (c == ' ' || c == ',' || c == ')' || c == '#' || c == '&' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) break;
+                /* . is accepted because we accept double , not , because its used as separator for list so it can cause issue */
+                if ((c < '0' || c > '9') && !(c == '.')) break;
                 sb.append(c);
             }
             if (isNumeric(sb.toString())) {
@@ -46,8 +47,8 @@ public abstract class PlaceholdersInterface {
             String suit = result.split(placeholder + "-")[1];
             StringBuilder sb = new StringBuilder();
             for (char c : suit.toCharArray()) {
-                if (c == ' ' || c == ',' || c == ')')
-                    break;
+                /* . is accepted because we accept double , not , because its used as separator for list so it can cause issue */
+                if ((c < '0' || c > '9') && !(c == '.')) break;
                 sb.append(c);
             }
             if (isNumeric(sb.toString())) {

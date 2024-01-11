@@ -34,6 +34,14 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
         reset();
     }
 
+    public ListFeatureAbstract() {
+        super(null, null, null, null, null, false);
+        defaultValue = new ArrayList<>();
+        notSaveIfEqualsToDefaultValue = false;
+        featureName = null;
+        reset();
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> entries = config.getStringList(this.getName());
@@ -45,7 +53,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
         List<String> forValue = new ArrayList<>();
         List<String> forBlacklistedValues = new ArrayList<>();
         for (String s : entries) {
-           //SsomarDev.testMsg("load: " + s, true);
+            //SsomarDev.testMsg("load: " + s, true);
             if (s.startsWith("!")) {
                 s = s.substring(1);
                 //SsomarDev.testMsg("blacklisted: " + s, true);
@@ -73,8 +81,8 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     public void save(ConfigurationSection config) {
         //SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
         if (notSaveIfEqualsToDefaultValue && defaultValue.containsAll(values)) {
-                config.set(this.getName(), null);
-                return;
+            config.set(this.getName(), null);
+            return;
         }
         config.set(this.getName(), getCurrentValues());
     }
@@ -110,7 +118,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     @Override
     public List<String> getCurrentValues() {
         List<String> currentValues = new ArrayList<>();
-        for(T value : values){
+        for (T value : values) {
             currentValues.add(transfromToString(value));
         }
         for (T value : blacklistedValues) {

@@ -16,8 +16,8 @@ public class DetailedBlocksEditor extends FeatureEditorInterface<DetailedBlocks>
     @Override
     public void load() {
         dropFeatures.getBlocks().initAndUpdateItemParentEditor(this, 0);
-        dropFeatures.getMessageIfNotValid().initAndUpdateItemParentEditor(this, 1);
-        dropFeatures.getCancelEventIfNotValid().initAndUpdateItemParentEditor(this, 2);
+        if(!dropFeatures.isDisableMessageIfNotValid()) dropFeatures.getMessageIfNotValid().initAndUpdateItemParentEditor(this, 1);
+        if(!dropFeatures.isDisableCancelEventIfNotValid()) dropFeatures.getCancelEventIfNotValid().initAndUpdateItemParentEditor(this, 2);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

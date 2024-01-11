@@ -5,12 +5,13 @@ import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.activators.activator.SActivator;
+import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -40,6 +41,9 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     private BooleanFeature displayCooldownMessage;
     private BooleanFeature isCooldownInTicks;
     private BooleanFeature cancelEventIfInCooldown;
+    private BooleanFeature pauseWhenOffline;
+    private PlaceholderConditionGroupFeature pausePlaceholdersConditions;
+
     private String cooldownId;
     private SPlugin sPlugin;
     private boolean enableCooldownForOp;
@@ -50,8 +54,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.sPlugin = sPlugin;
         this.isPremium = !sPlugin.isLotOfWork();
-        if (getParent() instanceof NewSActivator) {
-            NewSActivator newSActivator = (NewSActivator) getParent();
+        if (getParent() instanceof SActivator) {
+            SActivator newSActivator = (SActivator) getParent();
             //String id = newSActivator.getParentObjectId();
             //SsomarDev.testMsg("CREATE NEW COOLDOWN FEATURE FOR ACTIVATOR >> "+ newSActivator.getId()+" >>>> item "+id);
             this.cooldownId = sPlugin.getShortName() + ":" + newSActivator.getParentObjectId() + ":" + newSActivator.getId();
@@ -66,7 +70,7 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      * @param sp The placeholder associate to the event
      * @return True in No coooldown, false if its on cooldown
      */
-    public boolean checkCooldown(Entity entity, @Nullable Event event, StringPlaceholder sp, NewSObject sObject, boolean global) {
+    public boolean checkCooldown(Entity entity, @Nullable Event event, StringPlaceholder sp, SObject sObject, boolean global) {
         //SsomarDev.testMsg("CHECK COOLDOWN FOR ENTITY " + entity.getName() + " >>>> " + cooldownId, true);
         /* Check if the activator is in cooldown for the player or not  */
         if (!(entity instanceof Permissible) || !hasNoCDPerm(entity, sObject)) {
@@ -103,9 +107,10 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     /**
      * @param entity The entity
      */
-    public void addCooldown(Entity entity, @NotNull NewSObject sObject, @Nullable StringPlaceholder sp) {
+    public void addCooldown(Entity entity, @NotNull SObject sObject, @Nullable StringPlaceholder sp) {
         if (!hasNoCDPerm(entity, sObject) && this.cooldown.getValue(entity.getUniqueId(), sp).get() != 0) {
             Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), this.cooldown.getValue(entity.getUniqueId(), sp).get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
+            cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
             CooldownsManager.getInstance().addCooldown(cooldown);
         }
     }
@@ -117,9 +122,10 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
      * @param time      The cooldown
      * @param isInTicks Define if the cooldown is in ticks or in secs
      */
-    public void addCooldown(Entity entity, @NotNull NewSObject sObject, int time, boolean isInTicks) {
+    public void addCooldown(Entity entity, @NotNull SObject sObject, int time, boolean isInTicks) {
         if (!hasNoCDPerm(entity, sObject) && time != 0) {
             Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), time, isInTicks, System.currentTimeMillis(), false);
+            cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
             CooldownsManager.getInstance().addCooldown(cooldown);
         }
     }
@@ -134,12 +140,12 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
 
-    public void addGlobalCooldown(@NotNull NewSObject sObject) {
+    public void addGlobalCooldown(@NotNull SObject sObject) {
         Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
 
-    public boolean hasNoCDPerm(Permissible p, NewSObject sObject) {
+    public boolean hasNoCDPerm(Permissible p, SObject sObject) {
         String id = sObject.getId();
 
         if (sPlugin.isLotOfWork()) return false;
@@ -165,6 +171,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
             errors.addAll(cancelEventIfInCooldown.load(plugin, section, isPremiumLoading));
             errors.addAll(cooldownMessage.load(plugin, section, isPremiumLoading));
             errors.addAll(isCooldownInTicks.load(plugin, section, isPremiumLoading));
+            errors.addAll(pauseWhenOffline.load(plugin, section, isPremiumLoading));
+            errors.addAll(pausePlaceholdersConditions.load(plugin, section, isPremiumLoading));
         }
         return errors;
     }
@@ -178,6 +186,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         clone.setCooldownMessage(cooldownMessage.clone(clone));
         clone.setIsCooldownInTicks(isCooldownInTicks.clone(clone));
         clone.setCooldownId(cooldownId);
+        clone.setPauseWhenOffline(pauseWhenOffline.clone(clone));
+        clone.setPausePlaceholdersConditions(pausePlaceholdersConditions.clone(clone));
         return clone;
     }
 
@@ -190,6 +200,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         this.cooldownMessage.save(section);
         this.displayCooldownMessage.save(section);
         this.cancelEventIfInCooldown.save(section);
+        this.pauseWhenOffline.save(section);
+        this.pausePlaceholdersConditions.save(section);
     }
 
     @Override
@@ -238,11 +250,13 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
         this.cooldownMessage = new ColoredStringFeature(this, "cooldownMsg", Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), "Cooldown Message", new String[]{"&7&oThe cooldown message"}, GUI.WRITABLE_BOOK, false, false);
         this.displayCooldownMessage = new BooleanFeature(this, "displayCooldownMessage", true, "Display Cooldown Message", new String[]{"&7&oDisplay the cooldown message"}, Material.LEVER, false, false);
         this.cancelEventIfInCooldown = new BooleanFeature(this, "cancelEventIfInCooldown", false, "Cancel Event If In Cooldown", new String[]{"&7&oCancel the event if the player is in cooldown?"}, Material.LEVER, false, false);
+        this.pauseWhenOffline = new BooleanFeature(this, "pauseWhenOffline", false, "Pause When Offline", new String[]{"&7&oPause the cooldown when the player is offline?"}, Material.LEVER, false, false);
+        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(cooldown, isCooldownInTicks, cooldownMessage, displayCooldownMessage, cancelEventIfInCooldown));
+        return new ArrayList<>(Arrays.asList(cooldown, isCooldownInTicks, cooldownMessage, displayCooldownMessage, cancelEventIfInCooldown, pauseWhenOffline, pausePlaceholdersConditions));
     }
 
     @Override
@@ -270,6 +284,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
                 coolodwn.setCooldownMessage(this.cooldownMessage);
                 coolodwn.setDisplayCooldownMessage(this.displayCooldownMessage);
                 coolodwn.setCancelEventIfInCooldown(this.cancelEventIfInCooldown);
+                coolodwn.setPauseWhenOffline(this.pauseWhenOffline);
+                coolodwn.setPausePlaceholdersConditions(this.pausePlaceholdersConditions);
                 break;
             }
         }

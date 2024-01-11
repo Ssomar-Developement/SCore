@@ -2,13 +2,13 @@ package com.ssomar.score.hardness.hardness.manager;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.hardness.hardness.Hardness;
-import com.ssomar.score.sobject.NewSObjectManager;
+import com.ssomar.score.sobject.SObjectManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HardnessesManager extends NewSObjectManager<Hardness> {
+public class HardnessesManager extends SObjectManager<Hardness> {
 
     private static HardnessesManager instance;
 

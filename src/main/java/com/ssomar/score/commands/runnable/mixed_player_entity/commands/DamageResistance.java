@@ -8,7 +8,7 @@ import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -32,7 +32,7 @@ public class DamageResistance extends MixedCommand {
     }
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         double reduction = Double.valueOf(args.get(0));
         int time = Double.valueOf(args.get(1)).intValue();
 

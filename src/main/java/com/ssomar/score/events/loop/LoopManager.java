@@ -1,7 +1,7 @@
 package com.ssomar.score.events.loop;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.OptionGlobal;
@@ -17,9 +17,9 @@ public class LoopManager {
     public static final int DELAY = 5;
     private static LoopManager instance;
     @Getter
-    private final Map<NewSActivator, Integer> loopActivators;
-    private final List<NewSActivator> loopActivatorsToAdd;
-    private final List<NewSActivator> loopActivatorsToRemove;
+    private final Map<SActivator, Integer> loopActivators;
+    private final List<SActivator> loopActivatorsToAdd;
+    private final List<SActivator> loopActivatorsToRemove;
 
     public LoopManager() {
         loopActivators = new HashMap<>();
@@ -41,22 +41,22 @@ public class LoopManager {
             public void run() {
                 //SsomarDev.testMsg("loop activatores registered: " + loopActivators.size());
                 /* List of activators that we need to activate for this cycle */
-                List<NewSActivator> toActivate = new ArrayList<>();
+                List<SActivator> toActivate = new ArrayList<>();
 
                 /* The activator to remove for the LOOP CYCLE */
-                List<NewSActivator> toRemoveList = new ArrayList<>();
+                List<SActivator> toRemoveList = new ArrayList<>();
                 /* Remove the old version of the activators who want to add */
                 toRemoveList.addAll(loopActivatorsToAdd);
                 /* Remove the activators who want to remove */
                 toRemoveList.addAll(loopActivatorsToRemove);
 
                 /* Remove the activators selected before and extract the activators to enable */
-                Iterator<NewSActivator> it1 = loopActivators.keySet().iterator();
+                Iterator<SActivator> it1 = loopActivators.keySet().iterator();
                 while (it1.hasNext()) {
-                    NewSActivator activator = it1.next();
+                    SActivator activator = it1.next();
 
-                    NewSActivator needRemove = null;
-                    for (NewSActivator toRemove1 : toRemoveList) {
+                    SActivator needRemove = null;
+                    for (SActivator toRemove1 : toRemoveList) {
                         if (activator.isEqualsOrAClone(toRemove1)) {
                             needRemove = toRemove1;
                             it1.remove();
@@ -90,7 +90,7 @@ public class LoopManager {
                 }
 
                 /* Add the new activators */
-                for (NewSActivator activator : loopActivatorsToAdd) {
+                for (SActivator activator : loopActivatorsToAdd) {
                     loopActivators.put(activator, 0);
                 }
                 loopActivatorsToAdd.clear();
@@ -98,9 +98,9 @@ public class LoopManager {
                 //SsomarDev.testMsg("To activ: " + toActivate.size(), true);
                 if (!toActivate.isEmpty()) {
 
-                    List<NewSActivator> loopActivators = new ArrayList<>();
+                    List<SActivator> loopActivators = new ArrayList<>();
 
-                    for (NewSActivator sActivator : toActivate) {
+                    for (SActivator sActivator : toActivate) {
                         if (sActivator.getOption().isLoopOption())
                             loopActivators.add(sActivator);
                     }
@@ -110,7 +110,7 @@ public class LoopManager {
 
                     if (!loopActivators.isEmpty()) {
                         while (!loopActivators.isEmpty()) {
-                            List<NewSActivator> extractToActivPerPlugin = loopActivators.get(0).extractActivatorsSameClass(loopActivators);
+                            List<SActivator> extractToActivPerPlugin = loopActivators.get(0).extractActivatorsSameClass(loopActivators);
 
                             /* for(NewSActivator sAct : extractToActivPerPlugin) {
                                 SsomarDev.testMsg("LOOP > "+sAct.getId(), true);
@@ -125,23 +125,23 @@ public class LoopManager {
         SCore.schedulerHook.runRepeatingTask(runnable, 0L, DELAY);
     }
 
-    public void addLoopActivator(NewSActivator activator) {
+    public void addLoopActivator(SActivator activator) {
         if (activator == null) return;
 
         loopActivatorsToAdd.add(activator);
     }
 
-    public void removeLoopActivator(NewSActivator activator) {
+    public void removeLoopActivator(SActivator activator) {
         if (activator == null) return;
 
         loopActivatorsToRemove.add(activator);
     }
 
     public void resetLoopActivators(SPlugin sPlugin) {
-        List<NewSActivator> toRemove = new ArrayList<>();
-        for (NewSActivator sAct : loopActivators.keySet()) {
+        List<SActivator> toRemove = new ArrayList<>();
+        for (SActivator sAct : loopActivators.keySet()) {
             if ((sAct.getSPlugin() == sPlugin)) toRemove.add(sAct);
         }
-        for (NewSActivator sAct : toRemove) loopActivators.remove(sAct);
+        for (SActivator sAct : toRemove) loopActivators.remove(sAct);
     }
 }

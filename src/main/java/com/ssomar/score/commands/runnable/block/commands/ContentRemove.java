@@ -53,9 +53,10 @@ public class ContentRemove extends BlockCommand {
                             }
                         }
                         else{
-                            ExecutableItemObject eio = new ExecutableItemObject(itemChest);
+                           ExecutableItemObject eio = new ExecutableItemObject(itemChest);
                             if(eio.isValid()){
-                                if(eio.getConfig().getId().equalsIgnoreCase(args.get(0).replace("EI:", "").replace("ei:", ""))){
+                                String id = args.get(0).split(":")[1];
+                                if(eio.getConfig().getId().equalsIgnoreCase(id)){
                                     itemChest.setAmount(itemChest.getAmount() - 1);
                                     break;
                                 }

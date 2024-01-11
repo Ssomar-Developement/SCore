@@ -1,0 +1,99 @@
+package com.ssomar.score.sobject.menu;
+
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.SObjectManager;
+import com.ssomar.score.sobject.SObjectWithFileLoader;
+import com.ssomar.score.splugin.SPlugin;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Getter
+@Setter
+public abstract class SObjectsNoFileEditor<T extends SObject> extends SObjectsEditorAbstract<T> {
+
+    public SObjectsNoFileEditor(SPlugin sPlugin, String title, SObjectManager manager) {
+        super(sPlugin, title, manager);
+        this.load();
+    }
+
+
+    public void load() {
+        clearAndSetBackground();
+        int i = 0;
+        int total = 0;
+
+        //SsomarDev.testMsg(">>>>>>>>>>>>"+getManager().getObjects(getComparator(), getPredicate()).size(), true);
+        for (Object object : getManager().getObjects(getComparator(), getPredicates())) {
+            //SsomarDev.testMsg(">>>>>>>>>>>>"+object, true);
+            SObject sObject = (SObject) object;
+            if ((index - 1) * SOBJECT_PER_PAGE <= total && total < index * SOBJECT_PER_PAGE) {
+
+                ItemStack itemS = sObject.buildItem(1, Optional.empty());
+
+                List<String> desc = new ArrayList<>();
+                desc.add("");
+                desc.add(GUI.CLICK_HERE_TO_CHANGE);
+                if (isGiveButton()) desc.add(TM.g(Text.EDITOR_GIVE_SHIFT_RIGHT_DESCRIPTION));
+                if (isDeleteButton()) desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
+                desc.addAll(sObject.getDescription());
+
+                String[] descArray = new String[desc.size()];
+                for (int j = 0; j < desc.size(); j++) {
+                    if (desc.get(j).length() > 40) {
+                        descArray[j] = desc.get(j).substring(0, 39) + "...";
+                    } else {
+                        descArray[j] = desc.get(j);
+                    }
+                }
+                createItem(itemS, 1, i, CREATION_ID + " &e&o" + sObject.getId(), false, false, descArray);
+                i++;
+            }
+            total++;
+        }
+        //other button
+        if (getManager().getObjects().size() > SOBJECT_PER_PAGE && index * SOBJECT_PER_PAGE < getManager().getObjects().size()) {
+            createItem(NEXT_PAGE_MAT, 1, 44, NEXT_PAGE, false, false);
+        }
+        if (index > 1) {
+            createItem(PREVIOUS_PAGE_MAT, 1, 37, PREVIOUS_PAGE, false, false);
+        }
+        createItem(RED, 1, 36, EXIT, false, false);
+
+        String[] desc = new String[1 + TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
+        desc[0] = "&7";
+        System.arraycopy(TM.gA(Text.EDITOR_PATH_DESCRIPTION), 0, desc, 1, TM.gA(Text.EDITOR_PATH_DESCRIPTION).length);
+        if(isPathButton()) createItem(Material.ANVIL, 1, 38, TM.g(Text.EDITOR_PATH_NAME), false, false, desc);
+
+        if(isNewButton()) createItem(GREEN, 1, 40, NEW + " " + getManager().getObjectName(), false, false);
+
+        if(isDefaultObjectsButton()) {
+            if (getSPlugin().isLotOfWork())
+                createItem(PURPLE, 1, 43, TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", getManager().getObjectName()), false, false);
+            else
+                createItem(PURPLE, 1, 43, TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", getManager().getObjectName()), false, false);
+        }
+    }
+
+
+    public void goToFolder(String folder) {
+    }
+
+    public void goBack() {
+
+    }
+
+    public SObjectWithFileLoader getLoader() {
+        return null;
+    }
+
+
+}

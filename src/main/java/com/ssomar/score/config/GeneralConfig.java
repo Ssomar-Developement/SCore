@@ -33,6 +33,9 @@ public class GeneralConfig extends Config {
     @Getter
     private boolean jetMinionsGenerateBreakActivator;
 
+    @Getter
+    private boolean debugCheckDamages;
+
     public GeneralConfig() {
         super();
         super.setup(SCore.plugin);
@@ -67,6 +70,7 @@ public class GeneralConfig extends Config {
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
         jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
         silenceOutputs = config.getStringList("silenceOutputs");
+        debugCheckDamages = config.getBoolean("debugCheckDamages", false);
 
     }
 

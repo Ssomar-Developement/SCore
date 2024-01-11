@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,7 +62,8 @@ public class EntityRunCommand extends RunCommand {
         this.pickupInfo();
 
         Player launcher = null;
-        if(launcherUUID != null) launcher = Bukkit.getPlayer(launcherUUID);
+        if (launcherUUID != null) launcher = Bukkit.getPlayer(launcherUUID);
+
         Entity receiver = null;
         if (SCore.is1v11Less()) {
             for (World world : Bukkit.getWorlds()) {
@@ -76,10 +78,10 @@ public class EntityRunCommand extends RunCommand {
 
         //SsomarDev.testMsg("entity uuid: " + entityUUID, true);
         //SsomarDev.testMsg("entity: " + receiver.getType(), true);
-
         if (receiver != null) {
-            pCommand.run(launcher, receiver, args, this.getaInfo());
-        }// else SsomarDev.testMsg("EntityRunCommand: receiver is null for the command: " + this.getBrutCommand());
+            pCommand.run(launcher, receiver, args, getaInfo());
+        }
+        //else SsomarDev.testMsg("EntityRunCommand: receiver is null for the command: " + this.getBrutCommand(), true);
     }
 
 
@@ -87,5 +89,21 @@ public class EntityRunCommand extends RunCommand {
     public void insideDelayedCommand() {
         runCommand(EntityCommandManager.getInstance());
         CommandsHandler.getInstance().removeDelayedCommand(getUuid(), entityUUID);
+    }
+
+    @Override
+    public void executeRunnable(BukkitRunnable runnable) {
+        Entity receiver = null;
+        if (SCore.is1v11Less()) {
+            for (World world : Bukkit.getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getUniqueId().equals(entityUUID)) {
+                        receiver = entity;
+                        break;
+                    }
+                }
+            }
+        } else receiver = Bukkit.getEntity(entityUUID);
+        if (receiver != null) SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
     }
 }

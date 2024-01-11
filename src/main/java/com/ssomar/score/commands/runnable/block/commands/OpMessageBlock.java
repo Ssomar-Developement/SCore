@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,7 +26,7 @@ public class OpMessageBlock extends BlockCommand {
             build.append(StringConverter.coloredString(arg) + " ");
         }
 
-        System.out.println(build);
+        Utils.sendConsoleMsg(build.toString());
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             if (player.isOp()) {

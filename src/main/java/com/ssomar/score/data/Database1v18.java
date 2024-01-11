@@ -18,6 +18,7 @@ public class Database1v18 {
         dataSource.setPassword(GeneralConfig.getInstance().getDbPassword());
         dataSource.setServerTimezone("UTC");
         dataSource.setUseSSL(false);
+        dataSource.setAutoReconnect(true);
         return dataSource.getConnection();
     }
 }

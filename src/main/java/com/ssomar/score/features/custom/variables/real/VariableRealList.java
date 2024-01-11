@@ -8,6 +8,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.writerreader.WriterReaderPersistentDataContainer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,6 +28,10 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
         super(config, item, dMeta);
     }
 
+    public VariableRealList(VariableFeature<List<String>> config, WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+        super(config, writerReaderPersistentDataContainer);
+    }
+
     public VariableRealList(VariableFeature<List<String>> config, ConfigurationSection configurationSection) {
         super(config, configurationSection);
     }
@@ -40,6 +45,14 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     }
 
     @Override
+    public Optional<List<String>> readValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+        writerReaderPersistentDataContainer.writeListIfNull((SPlugin) SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
+        Optional<List<String>> value;
+        value = writerReaderPersistentDataContainer.readList(SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
+        return value;
+    }
+
+    @Override
     public Optional<List<String>> readValue(ConfigurationSection configurationSection) {
         String varUpper = getConfig().getVariableName().getValue().get().toUpperCase();
         if (!configurationSection.contains(varUpper)) writeValue(configurationSection);
@@ -49,6 +62,11 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     @Override
     public void writeValue(ItemStack item, DynamicMeta dMeta) {
         getItemKeyWriterReader().writeList(SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
+    }
+
+    @Override
+    public void writeValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+        writerReaderPersistentDataContainer.writeList(SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
     }
 
     @Override
@@ -85,6 +103,12 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     public void modifVariable(ItemStack item, @NotNull DynamicMeta dMeta, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
         modifVariable(update, p, sp);
         writeValue(item, dMeta);
+    }
+
+    @Override
+    public void modifVariable(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
+        modifVariable(update, p, sp);
+        writeValue(writerReaderPersistentDataContainer);
     }
 
     @Override

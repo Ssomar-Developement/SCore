@@ -33,10 +33,15 @@ public class SetBlockPos extends BlockCommand {
             boolean bypassProtection = false;
             if (args.size() >= 5) bypassProtection = Boolean.parseBoolean(args.get(4));
 
+            boolean replace = false;
+            if (args.size() >= 6) replace = Boolean.parseBoolean(args.get(5));
+
             UUID uuid = null;
             if (p != null) uuid = p.getUniqueId();
 
             block = block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z));
+
+            if(!block.isEmpty() && !replace) return;
 
             if (Material.matchMaterial(mat) != null) {
                 SafePlace.placeBlockWithEvent(block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z)), Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
@@ -76,7 +81,7 @@ public class SetBlockPos extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SETBLOCKPOS {x} {y} {z} {material} [bypassProtection true or false]";
+        return "SETBLOCKPOS {x} {y} {z} {material} [bypassProtection true or false] [replace true or false]";
     }
 
     @Override

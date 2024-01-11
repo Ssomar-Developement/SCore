@@ -1,6 +1,6 @@
 package com.ssomar.score.sobject.events;
 
-import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.sobject.SObject;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,9 +12,9 @@ public class SObjectLoadEvent extends Event {
     @Getter
     private final String id;
     @Getter
-    private final NewSObject object;
+    private final SObject object;
 
-    public SObjectLoadEvent(String id, NewSObject object) {
+    public SObjectLoadEvent(String id, SObject object) {
         this.id = id;
         this.object = object;
     }

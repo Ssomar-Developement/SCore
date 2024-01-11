@@ -81,9 +81,9 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
             }
 
             try {
-                EntityType.valueOf(entityTypeStr.toUpperCase());
+                if(!entityTypeStr.equals("*")) EntityType.valueOf(entityTypeStr.toUpperCase());
             } catch (IllegalArgumentException e) {
-                errors.add("&cERROR, Couldn't load the EntityType value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> EntityTypes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html");
+                errors.add("&cERROR, Couldn't load the EntityType value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> EntityTypes available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html , you can also use MythicMobs entities with the prefix MM- , or accept all entities with *");
                 continue;
             }
             value.add(baseValue);
@@ -133,12 +133,23 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                     tags.put(dataSplit[0], dataSplit[1]);
                 }
             }
-            type = EntityType.valueOf(entityTypeStr.toUpperCase());
+            if(entityTypeStr.equals("*")){
+                for(EntityType entityType : EntityType.values()){
+                    if (conditions.containsKey(entityType)) {
+                        conditions.get(entityType).add(tags);
+                    } else {
+                        conditions.put(entityType, new ArrayList<>(Collections.singletonList(tags)));
+                    }
+                }
+            }
+            else {
+                type = EntityType.valueOf(entityTypeStr.toUpperCase());
 
-            if (conditions.containsKey(type)) {
-                conditions.get(type).add(tags);
-            } else {
-                conditions.put(type, new ArrayList<>(Collections.singletonList(tags)));
+                if (conditions.containsKey(type)) {
+                    conditions.get(type).add(tags);
+                } else {
+                    conditions.put(type, new ArrayList<>(Collections.singletonList(tags)));
+                }
             }
         }
         return conditions;
@@ -281,6 +292,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
                                 if (key.equalsIgnoreCase(("CustomName"))) {
                                     String customName = entity.getCustomName();
                                     SsomarDev.testMsg("String: " + customName, DEBUG);
+                                    if(value.equals("*")) break;
                                     if (!StringConverter.decoloredString(customName).equals(value))
                                         invalid = true;
                                 } else {

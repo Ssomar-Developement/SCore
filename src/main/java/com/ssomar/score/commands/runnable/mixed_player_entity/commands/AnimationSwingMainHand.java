@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -14,8 +15,12 @@ import java.util.Optional;
 public class AnimationSwingMainHand extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
-        receiver.swingMainHand();
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
+
+        livingReceiver.swingMainHand();
     }
 
     @Override

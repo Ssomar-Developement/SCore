@@ -9,7 +9,7 @@ public class EntityConditionsFeatureEditor extends FeatureEditorInterface<Entity
     public final EntityConditionsFeature bCF;
 
     public EntityConditionsFeatureEditor(EntityConditionsFeature bCF) {
-        super("&lEntity Conditions Editor", 3 * 9);
+        super("&lEntity Conditions Editor", 4 * 9);
         this.bCF = bCF.clone(bCF.getParent());
         load();
     }
@@ -23,13 +23,13 @@ public class EntityConditionsFeatureEditor extends FeatureEditorInterface<Entity
         }
 
         // Back
-        createItem(RED, 1, 18, GUI.BACK, false, false);
+        createItem(RED, 1, 27, GUI.BACK, false, false);
 
         // Reset menu
-        createItem(ORANGE, 1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
+        createItem(ORANGE, 1, 28, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
         // Save menu
-        createItem(GREEN, 1, 26, GUI.SAVE, false, false, "", "&a&oClick here to save");
+        createItem(GREEN, 1, 35, GUI.SAVE, false, false, "", "&a&oClick here to save");
     }
 
     @Override

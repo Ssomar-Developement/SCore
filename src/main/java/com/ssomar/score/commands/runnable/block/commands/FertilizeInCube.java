@@ -3,12 +3,14 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public class FertilizeInCube extends BlockCommand {
             Ageable ageable = (Ageable) data;
             if (ageable.getAge() != ageable.getMaximumAge()) {
                 ageable.setAge(ageable.getAge() + 1);
+                BlockGrowEvent event = new BlockGrowEvent(toGrownUp, toGrownUp.getState());
+                Bukkit.getPluginManager().callEvent(event);
             }
         }
 

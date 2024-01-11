@@ -34,7 +34,6 @@ public class Launch extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
-        Runnable r = () -> {
             double rotationVertical = 0;
             double rotationHorizontal = 0;
 
@@ -154,8 +153,6 @@ public class Launch extends PlayerCommand {
                     e.printStackTrace();
                 }
             }
-        };
-        SCore.schedulerHook.runTask(r, 0);
     }
 
 

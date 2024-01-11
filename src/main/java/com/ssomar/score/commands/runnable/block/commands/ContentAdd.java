@@ -31,13 +31,17 @@ public class ContentAdd extends BlockCommand {
         Optional<Double> intOptional = NTools.getDouble(args.get(1));
         int amount = intOptional.orElse(1.0).intValue();
 
+        Optional<Integer> slotOptional = NTools.getInteger(args.get(2));
+        int slot = slotOptional.orElse(-1);
+
         if (args.size() >= 1) {
             ItemStack item;
             if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
                 item = new ItemStack(Material.valueOf(args.get(0)), amount);
             }
             else{
-                Optional<ExecutableItemInterface> ei = ExecutableItemsManager.getInstance().getExecutableItem(args.get(0));
+                String id = args.get(0).split(":")[1];
+                Optional<ExecutableItemInterface> ei = ExecutableItemsManager.getInstance().getExecutableItem(id);
                 if(ei.isPresent()) {
                     item = ei.get().buildItem(amount, Optional.empty(), Optional.ofNullable(p));
                 }
@@ -46,7 +50,20 @@ public class ContentAdd extends BlockCommand {
             if (block.getState() instanceof Container) {
                 Container container = (Container) block.getState();
                 Inventory inv = container.getInventory();
-                inv.addItem(item);
+
+                if(slot == -1) inv.addItem(item);
+                else {
+                    ItemStack item2 = inv.getItem(slot);
+                    if(item2 == null) inv.setItem(slot, item);
+                    else {
+                        if(item2.isSimilar(item)) {
+                            item2.setAmount(item2.getAmount() + item.getAmount());
+                            inv.setItem(slot, item2);
+                        }
+                        // else The item in the slot "+slot+" is not similar to the item you want to add"
+                        else inv.addItem(item);
+                    }
+                }
             }
         }
 
@@ -66,6 +83,11 @@ public class ContentAdd extends BlockCommand {
             if (!ac2.isValid()) return Optional.of(ac2.getError());
         }
 
+        if (args.size() >= 3) {
+            ArgumentChecker ac3 = checkInteger(args.get(2), isFinalVerification, getTemplate());
+            if (!ac3.isValid()) return Optional.of(ac3.getError());
+        }
+
         return Optional.empty();
     }
 
@@ -78,7 +100,7 @@ public class ContentAdd extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "CONTENT_ADD {Item} [Amount]";
+        return "CONTENT_ADD {Item} [Amount] [slot]";
     }
 
     @Override

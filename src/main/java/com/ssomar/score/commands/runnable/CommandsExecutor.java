@@ -12,6 +12,7 @@ public class CommandsExecutor {
             runCommands.addAll(builder.getFinalCommands().get(i));
         }
         for (RunCommand runCommand : runCommands) {
+            //SsomarDev.testMsg("RUN COMMAND: >>>" + runCommand.getBrutCommand(), true);
             runCommand.run();
         }
     }

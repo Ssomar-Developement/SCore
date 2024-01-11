@@ -27,7 +27,7 @@ public class SetExecutableBlock extends BlockCommand {
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
         if (SCore.hasExecutableBlocks) {
-            Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
+          Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
             if (!oOpt.isPresent()) {
                 ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: " + args.get(0) + " for the command SETEXECUTABLEBLOCK (object: " + aInfo.getName() + ")");
                 return;
@@ -111,6 +111,7 @@ public class SetExecutableBlock extends BlockCommand {
 
             eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));
         }
+
     }
 
     @Override

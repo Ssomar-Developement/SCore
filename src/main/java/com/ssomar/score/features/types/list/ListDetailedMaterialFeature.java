@@ -53,6 +53,17 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         reset();
     }
 
+    public ListDetailedMaterialFeature(boolean forBlocks) {
+        super();
+        this.listOfCustomBlocksPluginSupported = new ArrayList<>();
+        if (SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
+        if (SCore.hasExecutableItems) listOfCustomBlocksPluginSupported.add("EXECUTABLEITEMS");
+        if (SCore.hasExecutableBlocks) listOfCustomBlocksPluginSupported.add("EXECUTABLEBLOCKS");
+        //if(SCore.hasOraxen) listOfCustomBlocksPluginSupported.add("ORAXEN");
+        this.forBlocks = forBlocks;
+        reset();
+    }
+
     @Override
     public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> values = new ArrayList<>();
@@ -351,6 +362,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                         SsomarDev.testMsg(">> id EI: " + id, DEBUG);
                         if (customOpt.getConfig().getId().equalsIgnoreCase(id)) return true;
                     }
+
+
 
                 }
             }

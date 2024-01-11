@@ -1,7 +1,5 @@
 package com.ssomar.score.utils.safeplace;
 
-import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.usedapi.*;
@@ -20,11 +18,15 @@ public class SafePlace {
 
     private static final boolean DEBUG = false;
 
-    public static void placeBlockWithEvent(@NotNull final Block block, @NotNull Material material, Optional<Map<String, String>> statesOpt, @Nullable final UUID playerUUID, boolean generatePlaceEvent, boolean verifSafePlace) {
+    public static void placeBlockWithEvent(@NotNull final Block block, @NotNull Material material, Optional<Map<String, String>> statesOpt, @Nullable final UUID playerUUID, boolean generatePlaceEvent, boolean verifSafePlace){
+        placeBlockWithEvent(block, material, statesOpt, playerUUID, generatePlaceEvent, verifSafePlace, true);
+    }
+
+    public static void placeBlockWithEvent(@NotNull final Block block, @NotNull Material material, Optional<Map<String, String>> statesOpt, @Nullable final UUID playerUUID, boolean generatePlaceEvent, boolean verifSafePlace, boolean enablePhysics) {
 
         SsomarDev.testMsg("DEBUG SAFE PLACE 1", DEBUG);
         if (playerUUID == null) {
-            block.setType(material);
+            block.setType(material, enablePhysics);
             return;
         }
         SsomarDev.testMsg("DEBUG SAFE PLACE 1.5", DEBUG);
@@ -54,20 +56,6 @@ public class SafePlace {
 
     }
 
-    public static boolean placeEB(Block block, boolean drop) {
-        SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
-        if (SCore.hasExecutableBlocks) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
-            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
-            if (eBPOpt.isPresent()) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
-                eBPOpt.get().breakBlock(null, drop);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean verifSafePlace(@NotNull final UUID playerUUID, @NotNull Block block) {
 
         if (Bukkit.getOfflinePlayer(playerUUID).isOp()) return true;
@@ -93,6 +81,9 @@ public class SafePlace {
         if (SCore.hasLands)
             if (!new LandsIntegrationAPI(SCore.plugin).playerCanPlaceClaimBlock(playerUUID, block.getLocation()))
                 return false;
+
+        if(SCore.hasFactionsUUID)
+            	if(!new FactionsUUIDAPI().playerCanPlaceClaimBlock(playerUUID, block.getLocation())) return false;
 
         SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4", DEBUG);
 

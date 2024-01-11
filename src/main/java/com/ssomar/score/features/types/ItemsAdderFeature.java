@@ -76,7 +76,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
         return Optional.empty();
     }
 
-    public boolean placeItemAdder(Location location, ItemStack itemStack) {
+    public Object placeItemAdder(Location location, ItemStack itemStack) {
         if (getValue().isPresent()) {
             String id = getValue().get();
             try {
@@ -84,7 +84,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
                 if (customBlock != null) {
                     SsomarDev.testMsg("placeItemsAdder Block: " + id, DEBUG);
                     customBlock.place(location);
-                    return true;
+                    return customBlock;
                 }
             } catch (Exception e) {
                 try {
@@ -98,13 +98,13 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
                         }
                     };
                     runnable3.runTaskLater(ExecutableBlocks.plugin, 10);
-                    return true;
+                    return customFurniture;
                 } catch (Exception e1) {
                     e.printStackTrace();
                 }
             }
         }
-        return false;
+        return null;
     }
 
 

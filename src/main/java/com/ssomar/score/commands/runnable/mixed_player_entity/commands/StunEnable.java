@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.commands.runnable.player.events.StunEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,11 +18,14 @@ import java.util.Optional;
 public class StunEnable extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
+
         Location correctAnimation = receiver.getLocation();
         correctAnimation.setPitch(-10);
         receiver.teleport(correctAnimation);
-        receiver.setGliding(true);
+        livingReceiver.setGliding(true);
         StunEvent.stunPlayers.put(receiver.getUniqueId(), false);
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override

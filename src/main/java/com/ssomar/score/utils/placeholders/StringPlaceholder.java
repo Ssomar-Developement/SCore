@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.*;
@@ -65,9 +66,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
     /* placeholders of the around target entity */
     AroundEntityTargetPlaceholders aroundEntityTargetPlch = new AroundEntityTargetPlaceholders();
-    /* placeholders of the item */
-    private String activator = "";
-    private String item = "";
+    /* placeholders of the SObject */
+    private String id = "";
+    private String name = "";
+    private String activator_id = "";
+    private String activator_name = "";
     private String quantity = "";
     private String usage = "";
     private String usageLimit = "";
@@ -80,6 +83,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     private String cooldown = "";
     private List<VariableReal> variables = new ArrayList<>();
     private Map<String, String> extraPlaceholders = new HashMap<>();
+
+    /* OLD */
+    private String item = "";
+    private String activator = "";
 
     public static String replaceRandomPlaceholders(String s) {
         String result = s;
@@ -163,23 +170,23 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return this;
     }
 
-    public StringPlaceholder setBlockPlcHldr(Block block) {
+    public StringPlaceholder setBlockPlcHldr(@NotNull Block block) {
         blockPlch.setBlockPlcHldr(block);
         return this;
     }
 
-    public StringPlaceholder setBlockPlcHldr(Block block, Material fixType) {
+    public StringPlaceholder setBlockPlcHldr(@NotNull Block block, Material fixType) {
         blockPlch.setBlockPlcHldr(block, fixType);
         return this;
     }
 
-    public StringPlaceholder setTargetBlockPlcHldr(Block block) {
-        targetBlockPlch.setTargetBlockPlcHldr(block);
+    public StringPlaceholder setTargetBlockPlcHldr(@NotNull Block block) {
+        targetBlockPlch.setBlockPlcHldr(block);
         return this;
     }
 
-    public StringPlaceholder setTargetBlockPlcHldr(Block block, Material fixType) {
-        targetBlockPlch.setTargetBlockPlcHldr(block, fixType);
+    public StringPlaceholder setTargetBlockPlcHldr(@NotNull Block block, Material fixType) {
+        targetBlockPlch.setBlockPlcHldr(block, fixType);
         return this;
     }
 
@@ -200,7 +207,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         entityPlch.reloadEntityPlcHldr();
         if (targetEntityPlch != null) targetEntityPlch.reloadEntityPlcHldr();
         blockPlch.reloadBlockPlcHldr();
-        targetBlockPlch.reloadTargetBlockPlcHldr();
+        targetBlockPlch.reloadBlockPlcHldr();
         aroundPlayerTargetPlch.reloadPlayerPlcHldr();
         aroundEntityTargetPlch.reloadEntityPlcHldr();
         /* delayed command with old version has this to null */
@@ -247,6 +254,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if (this.hasItem()) {
             placeholders.put("%item%", Matcher.quoteReplacement(this.getItem()));
         }
+        if(hasId()) placeholders.put("%id%", this.getId());
+        if(hasName()) placeholders.put("%name%", this.getName());
+        if(hasActivatorId()) placeholders.put("%activator_id%", this.getActivator_id());
+        if(hasActivatorName()) placeholders.put("%activator_name%", this.getActivator_name());
+
         if (this.hasQuantity()) {
             s = replaceCalculPlaceholder(s, "%quantity%", quantity, true);
             s = replaceCalculPlaceholder(s, "%amount%", quantity, true);
@@ -290,12 +302,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = entityPlch.replacePlaceholder(s);
 
-        /* //TODO oen abstract class for block and targetblock*/
         placeholders.putAll(blockPlch.getPlaceholders());
         s = blockPlch.replacePlaceholder(s);
 
+        placeholders.putAll(targetBlockPlch.getPlaceholders());
         s = targetBlockPlch.replacePlaceholder(s);
-        /* ^^^ ^^^*/
 
         placeholders.putAll(aroundPlayerTargetPlch.getPlaceholders());
         s = aroundPlayerTargetPlch.replacePlaceholder(s);
@@ -429,6 +440,20 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return activator.length() != 0;
     }
 
+    public boolean hasId() {
+        return id != null && id.length() != 0;
+    }
+
+    public boolean hasName() {
+        return name != null && name.length() != 0;
+    }
+    public boolean hasActivatorId() {
+        return  activator_id != null && activator_id.length() != 0;
+    }
+
+    public boolean hasActivatorName() {
+        return  activator_name != null && activator_name.length() != 0;
+    }
     public boolean hasItem() {
         return item.length() != 0;
     }

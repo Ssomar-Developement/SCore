@@ -7,7 +7,7 @@ import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class WorldTeleport extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
 
         if (args.size() == 1) {
             Location locP = receiver.getLocation();

@@ -9,7 +9,6 @@ import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -91,7 +90,7 @@ public class Nearest extends MixedCommand {
     }
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         aroundExecution(receiver, args, aInfo, Boolean.valueOf(args.get(1)));
     }
 

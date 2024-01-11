@@ -12,7 +12,8 @@ import java.util.*;
 public class NoFallDamageManager {
 
     private static NoFallDamageManager instance;
-    private final Map<Entity, List<Couple<UUID, ScheduledTask>>> noFallDamageMap = new HashMap<>();
+
+    private final Map<UUID, List<Couple<UUID, ScheduledTask>>> noFallDamageMap = new HashMap<>();
 
     public static NoFallDamageManager getInstance() {
         if (instance == null) instance = new NoFallDamageManager();
@@ -34,21 +35,21 @@ public class NoFallDamageManager {
     }
 
     public void addNoFallDamage(Entity e, Couple<UUID, ScheduledTask> c) {
-        if (noFallDamageMap.containsKey(e)) {
-            noFallDamageMap.get(e).add(c);
+        if (noFallDamageMap.containsKey(e.getUniqueId())) {
+            noFallDamageMap.get(e.getUniqueId()).add(c);
         } else {
             List<Couple<UUID, ScheduledTask>> newList = new ArrayList<>();
             newList.add(c);
-            noFallDamageMap.put(e, newList);
+            noFallDamageMap.put(e.getUniqueId(), newList);
         }
     }
 
     public void removeNoFallDamage(Entity e, UUID uuid) {
         boolean emptyList = false;
-        for (Entity entity : noFallDamageMap.keySet()) {
+        for (UUID eUUID : noFallDamageMap.keySet()) {
 
-            if (e.equals(entity)) {
-                List<Couple<UUID, ScheduledTask>> tasks = noFallDamageMap.get(e);
+            if (e.getUniqueId() == eUUID) {
+                List<Couple<UUID, ScheduledTask>> tasks = noFallDamageMap.get(e.getUniqueId());
 
                 Couple<UUID, ScheduledTask> toRemove = null;
                 for (Couple<UUID, ScheduledTask> c : tasks) {
@@ -64,7 +65,7 @@ public class NoFallDamageManager {
                 break;
             }
         }
-        if (emptyList) noFallDamageMap.remove(e);
+        if (emptyList) noFallDamageMap.remove(e.getUniqueId());
 
     }
 
@@ -73,8 +74,8 @@ public class NoFallDamageManager {
     }
 
     public boolean contains(Entity e) {
-        for (Entity entity : noFallDamageMap.keySet()) {
-            if (e.equals(entity)) {
+        for (UUID eUUID : noFallDamageMap.keySet()) {
+            if (e.getUniqueId() == eUUID) {
                 return true;
             }
         }

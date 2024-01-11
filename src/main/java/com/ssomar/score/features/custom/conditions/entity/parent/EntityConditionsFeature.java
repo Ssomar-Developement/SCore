@@ -56,6 +56,12 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfNotTamed(this));
         conditions.add(new IfHasAI(this));
         conditions.add(new IfNotHasAI(this));
+        if(!SCore.is1v13Less()) {
+            conditions.add(new IfFromSpawner(this));
+            conditions.add(new IfNotFromSpawner(this));
+        }
+        conditions.add(new IfHasSaddle(this));
+        conditions.add(new IfNotHasSaddle(this));
 
         /* Number condition features */
         conditions.add(new IfEntityHealth(this));
@@ -70,6 +76,7 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
 
         /* List colored string */
         conditions.add(new IfName(this));
+
 
         /* List EntityType */
         conditions.add(new IfNotEntityType(this));

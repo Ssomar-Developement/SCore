@@ -6,7 +6,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class Spin extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
 
         Integer duration = NTools.getInteger(args.get(0)).get();
         Float velocity = NTools.getFloat(args.get(1)).get();
@@ -37,7 +37,7 @@ public class Spin extends MixedCommand {
                 ticks++;
             }
         };
-        SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0, 1);
+        SCore.schedulerHook.runRepeatingTask(runnable, 0, 1);
     }
 
     @Override

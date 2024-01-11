@@ -27,7 +27,7 @@ public class CompileEnum {
                String value = key + "." + str;
                 value = value.substring(1, value.length());
                String enumName = value.replace(".", "_").toUpperCase();
-               System.out.println(enumName + "(\""+value+"\"),");
+               //System.out.println(enumName + "(\""+value+"\"),");
            }
         }
     }

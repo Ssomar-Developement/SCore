@@ -3,13 +3,13 @@ package com.ssomar.score.hardness.hardness.loader;
 import com.ssomar.score.SCore;
 import com.ssomar.score.hardness.hardness.Hardness;
 import com.ssomar.score.hardness.hardness.manager.HardnessesManager;
-import com.ssomar.score.sobject.NewSObjectLoader;
+import com.ssomar.score.sobject.SObjectWithFileLoader;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.*;
 import java.util.*;
 
-public class HardnessLoader extends NewSObjectLoader<Hardness> {
+public class HardnessLoader extends SObjectWithFileLoader<Hardness> {
 
     private static HardnessLoader instance;
 

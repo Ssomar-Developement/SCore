@@ -119,7 +119,7 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
             if (f.getDetailedSlots().verifSlot(slot, slot == heldSlot)) {
                 if (item != null) {
                     ExecutableItemObject eiObject = new ExecutableItemObject(item);
-                    if (eiObject.isValid()) {
+                   if (eiObject.isValid()) {
                         if (eiObject.getConfig().getId().equals(executableItem.getId())) {
                             if (f.getUsageCondition().getValue().isPresent()) {
                                 eiObject.loadExecutableItemInfos();

@@ -68,6 +68,7 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Stopped sound");
         messageToHide.add("started riding");
         messageToHide.add("has no modifier"); // related to attrbute command
+        messageToHide.add("Replaced a slot at");
         for(String s : GeneralConfig.getInstance().getSilenceOutputs()){
             messageToHide.add(s);
         }

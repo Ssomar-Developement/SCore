@@ -5,7 +5,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class BackDash extends MixedCommand {
 
     @Override
-    protected void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         double amount = Double.valueOf(args.get(0));
         Location pLoc = receiver.getLocation();
         pLoc.setPitch(0);

@@ -169,7 +169,7 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
     }
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         mobAroundExecution(receiver.getLocation(), receiver, false, args, aInfo);
     }
 

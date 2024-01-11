@@ -139,6 +139,7 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = toReplace.replaceAll("%" + particle + "_name%", entityName);
             toReplace = toReplace.replaceAll("%" + particle + "_name_lower_case%", entityName.toLowerCase());
             toReplace = toReplace.replaceAll("%" + particle + "_uuid%", entityUUID.toString());
+            toReplace = toReplace.replaceAll("%" + particle + "_uuid_array%", PlayerPlaceholdersAbstract.convertedUUID(entityUUID));
 
             if(entity != null && entity instanceof Item){
                 Item item = (Item) entity;

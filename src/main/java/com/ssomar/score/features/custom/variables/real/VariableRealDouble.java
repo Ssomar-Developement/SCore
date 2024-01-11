@@ -9,6 +9,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.writerreader.WriterReaderPersistentDataContainer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,10 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
 
     public VariableRealDouble(VariableFeature<Double> config, ItemStack item, @NotNull DynamicMeta dMeta) {
         super(config, item, dMeta);
+    }
+
+    public VariableRealDouble(VariableFeature<Double> config, WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+        super(config, writerReaderPersistentDataContainer);
     }
 
     public VariableRealDouble(VariableFeature<Double> config, ConfigurationSection configurationSection) {
@@ -47,6 +52,20 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     }
 
     @Override
+    public Optional<Double> readValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+        writerReaderPersistentDataContainer.writeDoubleIfNull((SPlugin) SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
+        Optional<Double> value;
+        Optional<Double> potentialOldEIValue;
+        if (SCore.hasExecutableItems && (potentialOldEIValue = writerReaderPersistentDataContainer.readDouble(ExecutableItems.plugin, "EI-" + getConfig().getVariableName().getValue().get().toUpperCase())).isPresent()) {
+            value = potentialOldEIValue;
+            setValue(value.get());
+            writeValue(writerReaderPersistentDataContainer);
+        } else
+            value = writerReaderPersistentDataContainer.readDouble(SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
+        return value;
+    }
+
+    @Override
     public Optional<Double> readValue(ConfigurationSection configurationSection) {
         String varUpper = getConfig().getVariableName().getValue().get().toUpperCase();
         if (!configurationSection.contains(varUpper)) writeValue(configurationSection);
@@ -56,6 +75,11 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     @Override
     public void writeValue(ItemStack item, DynamicMeta dMeta) {
         getItemKeyWriterReader().writeDouble(SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
+    }
+
+    @Override
+    public void writeValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+        writerReaderPersistentDataContainer.writeDouble(SCore.plugin,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
     }
 
     @Override
@@ -88,6 +112,12 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     public void modifVariable(ItemStack item, @NotNull DynamicMeta dMeta, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
         modifVariable(update, p, sp);
         writeValue(item, dMeta);
+    }
+
+    @Override
+    public void modifVariable(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
+        modifVariable(update, p, sp);
+        writeValue(writerReaderPersistentDataContainer);
     }
 
     @Override

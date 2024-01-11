@@ -23,16 +23,26 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFeature, HasItemGroupFeature, HasItemGroupFeatureEditor, HasItemGroupFeatureEditorManager> implements FeaturesGroup<HasItemFeature> {
+public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFeature, HasItemGroupFeature, HasItemGroupFeatureEditor, HasItemGroupFeatureEditorManager> implements FeaturesGroup<FeatureInterface> {
 
-    private Map<String, HasItemFeature> hasItems;
+    private Map<String, FeatureInterface> hasItems;
     private boolean notSaveIfNoValue;
+    private String multipleChoicesID;
 
     public HasItemGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] description, Material material, Boolean requirePremium, boolean notSaveIfNoValue) {
         super(parent, name, editorName, description, material, requirePremium);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }
+
+    /* Multiple choices construtor */
+    public HasItemGroupFeature(FeatureParentInterface parent, String multipleChoicesID) {
+        super(parent, "multi-choices", "Multi-choices", new String[]{}, Material.DIAMOND, false);
+        this.notSaveIfNoValue = true;
+        this.multipleChoicesID = multipleChoicesID;
+        reset();
+    }
+
 
     @Override
     public void reset() {
@@ -42,56 +52,73 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (config.isConfigurationSection(this.getName())) {
-            ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
+
+        String section;
+        if(multipleChoicesID == null || multipleChoicesID.isEmpty()){
+            section = this.getName();
+        }
+        else{
+            section = multipleChoicesID+".multi-choices";
+        }
+
+
+        if (config.isConfigurationSection(section)) {
+            ConfigurationSection enchantmentsSection = config.getConfigurationSection(section);
             for (String attributeID : enchantmentsSection.getKeys(false)) {
-                HasItemFeature attribute = new HasItemFeature(this, attributeID);
-                List<String> subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
+                ConfigurationSection cdtSection = enchantmentsSection.getConfigurationSection(attributeID);
+
+                List<String> subErrors = new ArrayList<>();
+                if(cdtSection.isConfigurationSection("multi-choices")){
+                    HasItemGroupFeature multiChoices = new HasItemGroupFeature(this, attributeID);
+                    multiChoices.load(plugin, enchantmentsSection, isPremiumLoading);
+                    hasItems.put(attributeID, multiChoices);
+                }else {
+                    HasItemFeature attribute = new HasItemFeature(this, attributeID);
+                    subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
+                    hasItems.put(attributeID, attribute);
+                }
+
                 if (subErrors.size() > 0) {
                     error.addAll(subErrors);
                     continue;
                 }
-                hasItems.put(attributeID, attribute);
             }
         }
         return error;
     }
 
     public boolean verifHas(ItemStack[] items, int heldSlot) {
-        for (HasItemFeature feature : hasItems.values()) {
-            boolean valid = false;
 
-            int needed = feature.getAmount().getValue().get();
-            int slot = 0;
-            for (ItemStack item : items) {
-                if (feature.getDetailedSlots().verifSlot(slot, slot == heldSlot)) {
-                    if (item != null) {
-                        if (item.getType().equals(feature.getMaterial().getValue().get())) {
-                            needed = needed - item.getAmount();
-                        }
+        for (FeatureInterface feature : hasItems.values()) {
+            if(feature instanceof HasItemFeature) {
+                if(!verifHasItem(items, heldSlot, (HasItemFeature) feature)) return false;
+            }
+            else if(feature instanceof HasItemGroupFeature){
+                HasItemGroupFeature f = (HasItemGroupFeature) feature;
+                boolean has = false;
+                for(FeatureInterface feature1 : f.getHasItems().values()){
+                    if(feature1 instanceof HasItemFeature) {
+                        if(verifHasItem(items, heldSlot, (HasItemFeature) feature1)) has = has ||true;
+                    }
+                    else if(feature1 instanceof HasItemGroupFeature){
+                        if(!verifHas(items, heldSlot)) return false;
                     }
                 }
-                if (needed <= 0) {
-                    valid = true;
-                    break;
-                }
-                slot++;
+                if(!has) return false;
             }
-            if (!valid) return false;
         }
         return true;
     }
 
-    public boolean verifHasNot(ItemStack[] items, int heldSlot) {
-        for (HasItemFeature feature : hasItems.values()) {
+    public boolean verifHasItem(ItemStack[] items, int heldSlot, HasItemFeature f) {
             boolean valid = false;
 
-            int needed = feature.getAmount().getValue().get();
+            int needed = f.getAmount().getValue().get();
             int slot = 0;
             for (ItemStack item : items) {
-                if (feature.getDetailedSlots().verifSlot(slot, slot == heldSlot)) {
+                if (f.getDetailedSlots().verifSlot(slot, slot == heldSlot)) {
                     if (item != null) {
-                        if (item.getType().equals(feature.getMaterial().getValue().get())) {
+                        if (item.getType().equals(f.getMaterial().getValue().get())) {
                             needed = needed - item.getAmount();
                         }
                     }
@@ -102,17 +129,27 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
                 }
                 slot++;
             }
-            if (valid) return false;
-        }
-        return true;
+             return valid;
+    }
+
+    public boolean verifHasNot(ItemStack[] items, int heldSlot) {
+       return !verifHas(items, heldSlot);
     }
 
 
     @Override
     public void save(ConfigurationSection config) {
-        config.set(this.getName(), null);
-        if (notSaveIfNoValue && hasItems.size() == 0) return;
-        ConfigurationSection attributesSection = config.createSection(this.getName());
+        ConfigurationSection attributesSection;
+        //SsomarDev.testMsg("SAVE : "+multipleChoicesID);
+        if(multipleChoicesID == null || multipleChoicesID.isEmpty()) {
+            config.set(this.getName(), null);
+            if (notSaveIfNoValue && hasItems.size() == 0) return;
+            attributesSection = config.createSection(this.getName());
+        }
+        else{
+            config.set(this.getMultipleChoicesID(), null);
+            attributesSection = config.createSection(this.getMultipleChoicesID()+".multi-choices");
+        }
         for (String enchantmentID : hasItems.keySet()) {
             hasItems.get(enchantmentID).save(attributesSection);
         }
@@ -140,8 +177,8 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     }
 
     @Override
-    public HasItemFeature getTheChildFeatureClickedParentEditor(String featureClicked) {
-        for (HasItemFeature x : hasItems.values()) {
+    public FeatureInterface getTheChildFeatureClickedParentEditor(String featureClicked) {
+        for (FeatureInterface x : hasItems.values()) {
             if (x.isTheFeatureClickedParentEditor(featureClicked)) return x;
         }
         return null;
@@ -150,11 +187,12 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     @Override
     public HasItemGroupFeature clone(FeatureParentInterface newParent) {
         HasItemGroupFeature eF = new HasItemGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfNoValue());
-        HashMap<String, HasItemFeature> newHasItems = new HashMap<>();
+        HashMap<String, FeatureInterface> newHasExecutableItems = new HashMap<>();
         for (String key : hasItems.keySet()) {
-            newHasItems.put(key, hasItems.get(key).clone(eF));
+            newHasExecutableItems.put(key, hasItems.get(key).clone(eF));
         }
-        eF.setHasItems(newHasItems);
+        eF.setHasItems(newHasExecutableItems);
+        eF.setMultipleChoicesID(getMultipleChoicesID());
         return eF;
     }
 
@@ -171,9 +209,16 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     @Override
     public ConfigurationSection getConfigurationSection() {
         ConfigurationSection section = getParent().getConfigurationSection();
-        if (section.isConfigurationSection(this.getName())) {
-            return section.getConfigurationSection(this.getName());
-        } else return section.createSection(this.getName());
+        if(multipleChoicesID == null || multipleChoicesID.isEmpty()) {
+            if (section.isConfigurationSection(this.getName())) {
+                return section.getConfigurationSection(this.getName());
+            } else return section.createSection(this.getName());
+        }
+        else{
+            if (section.isConfigurationSection(this.getMultipleChoicesID()+".multi-choices")) {
+                return section.getConfigurationSection(this.getMultipleChoicesID()+".multi-choices");
+            } else return section.createSection(this.getMultipleChoicesID()+".multi-choices");
+        }
     }
 
     @Override
@@ -217,8 +262,15 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     }
 
     @Override
-    public void deleteFeature(@NotNull Player editor, HasItemFeature feature) {
-        hasItems.remove(feature.getId());
+    public void deleteFeature(@NotNull Player editor, FeatureInterface feature) {
+        if(feature instanceof HasItemFeature){
+            HasItemFeature eF = (HasItemFeature) feature;
+            hasItems.remove(eF.getId());
+        }
+        else if (feature instanceof HasItemGroupFeature) {
+            HasItemGroupFeature eF = (HasItemGroupFeature) feature;
+            hasItems.remove(eF.getMultipleChoicesID());
+        }
     }
 
 }

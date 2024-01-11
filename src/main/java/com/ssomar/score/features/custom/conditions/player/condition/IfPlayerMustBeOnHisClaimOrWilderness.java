@@ -26,6 +26,13 @@ public class IfPlayerMustBeOnHisClaimOrWilderness extends PlayerConditionFeature
                     return false;
                 }
             }
+            if (SCore.hasFactionsUUID) {
+                FactionsUUIDAPI lands = new FactionsUUIDAPI();
+                if (!lands.playerIsInHisClaim(player.getUniqueId(), player.getLocation(), true)) {
+                    runInvalidCondition(request);
+                    return false;
+                }
+            }
             if (SCore.hasGriefPrevention) {
                 if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation(), true)) {
                     runInvalidCondition(request);

@@ -12,7 +12,7 @@ public abstract class RunCommandsBuilder {
     private List<String> commands;
     private ActionInfo actionInfo;
     /* delay in tick - commands */
-    private HashMap<Integer, List<RunCommand>> finalCommands = new HashMap<>();
+    private TreeMap<Integer, List<RunCommand>> finalCommands = new TreeMap<>();
 
     public RunCommandsBuilder(List<String> commands, ActionInfo actionInfo) {
         this.actionInfo = actionInfo;
@@ -74,7 +74,7 @@ public abstract class RunCommandsBuilder {
                         if (secondPart.contains("%")) {
                             secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
                         }
-                        loopAmount = Integer.parseInt(secondPart);
+                        loopAmount = Double.valueOf(secondPart).intValue();
                         isInLoop = true;
                         continue;
                     } catch (Exception e) {
@@ -391,7 +391,7 @@ public abstract class RunCommandsBuilder {
             }
 
             /* The delay for AROUND and MOB_AROUND is catch after */
-            if (command.contains("DELAYTICK ") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
+            if (command.contains("DELAYTICK ") && !command.startsWith("AROUND") && !command.startsWith("IF") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 /* Verify that there is no multiple commands after DELAYTICK */
                 String delayStr = command;
                 if (command.contains("+++")) {
@@ -406,7 +406,7 @@ public abstract class RunCommandsBuilder {
                     secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
                 }
                 delay = delay + (Integer.parseInt(secondPart));
-            } else if (command.contains("DELAY ") && !command.startsWith("AROUND") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
+            } else if (command.contains("DELAY ") && !command.startsWith("AROUND") && !command.startsWith("IF") && !command.startsWith("MOB_AROUND") && !command.startsWith("ALL_PLAYERS") && !command.startsWith("ALL_MOBS") && !command.startsWith("NEAREST") && !command.startsWith("MOB_NEAREST")) {
                 /* Verify that there is no multiple commands after DELAY */
                 String delayStr = command;
                 if (command.contains("+++")) {
@@ -445,11 +445,11 @@ public abstract class RunCommandsBuilder {
         this.actionInfo = actionInfo;
     }
 
-    public HashMap<Integer, List<RunCommand>> getFinalCommands() {
+    public TreeMap<Integer, List<RunCommand>> getFinalCommands() {
         return finalCommands;
     }
 
-    public void setFinalCommands(HashMap<Integer, List<RunCommand>> finalCommands) {
+    public void setFinalCommands(TreeMap<Integer, List<RunCommand>> finalCommands) {
         this.finalCommands = finalCommands;
     }
 }

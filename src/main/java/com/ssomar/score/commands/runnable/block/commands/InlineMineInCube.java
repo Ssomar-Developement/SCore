@@ -7,12 +7,12 @@ import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
-import org.bukkit.FluidCollisionMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 
@@ -109,6 +109,7 @@ public class InlineMineInCube extends BlockCommand {
                                 break;
                         }
                     }
+                   // SsomarDev.testMsg("directionWritten: " + directionWritten, true);
 
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
@@ -121,13 +122,18 @@ public class InlineMineInCube extends BlockCommand {
                     int maxZ = radius;
                     int maxY = radius;
 
-                    RayTraceResult rayTraceResult = p.rayTraceBlocks(10, FluidCollisionMode.NEVER);
+                    BoundingBox bb = new BoundingBox(block.getX(), block.getY(), block.getZ(), block.getX()+1, block.getY()+1, block.getZ()+1);
+                    RayTraceResult rayTraceResult = bb.rayTrace(p.getEyeLocation().toVector(), p.getEyeLocation().getDirection(), 10);
+                    //SsomarDev.testMsg("rayTraceResult: " + rayTraceResult.getHitBlockFace(), true);
+
                     BlockFace face = null;
                     if(directionWritten == null){
-                        face = rayTraceResult.getHitBlockFace().getOppositeFace();
+                        if(rayTraceResult != null &&  rayTraceResult.getHitBlockFace() != null)  face = rayTraceResult.getHitBlockFace().getOppositeFace();
+                        else face = p.getFacing().getOppositeFace();
                     }else{
                         face = directionWritten;
                     }
+                    //SsomarDev.testMsg("face: " + face, true);
 
                     int multiplier = 1;
 

@@ -93,6 +93,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static boolean hasEcoSkills = false;
 
+    public static boolean hasFactionsUUID = false;
+
     public static boolean hasTAB = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
@@ -117,8 +119,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean isSpigot = false;
     private static boolean isPaper = false;
     private static boolean isFolia = false;
-
     private static boolean isMohist = false;
+
+    private static boolean isPurpur = false;
+
     private CommandsClass commandClass;
 
     /* The server is folia? */
@@ -139,6 +143,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     /* The server is mohist? */
     public static boolean isMohist() {
         return isMohist;
+    }
+
+    /* The server is purpur? */
+    public static boolean isPurpur() {
+        return isPurpur;
     }
 
     /* The server is in 1.8 ? */
@@ -274,6 +283,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v20v1();
     }
 
+    public static boolean isSpigotOrFork(){
+        return isSpigot() || isPaperOrFork();
+    }
+
+    public static boolean isPaperOrFork(){
+        return isPaper() || isFolia() || isMohist() || isPurpur();
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -394,6 +411,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasGriefDefender = hookSoftDependency("GriefDefender");
 
         hasCoreProtect = hookSoftDependency("CoreProtect");
+
+        hasFactionsUUID = hookSoftDependency("Factions");
 
         /* Test for verzante and qvazzar */
         //hasProtocolLib = false;
@@ -599,6 +618,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isMohist = Bukkit.getServer().getName().contains("Mohist");
         isPaper = Bukkit.getServer().getVersion().contains("Paper");
         isFolia = Bukkit.getServer().getVersion().contains("Folia");
+        isPurpur = Bukkit.getServer().getVersion().contains("Purpur");
     }
 
     public void displayVersion() {

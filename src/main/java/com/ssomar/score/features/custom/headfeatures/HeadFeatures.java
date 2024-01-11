@@ -26,10 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.net.MalformedURLException;
+import java.util.*;
 
 @Getter
 @Setter
@@ -83,26 +81,35 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
             }
         } else if (headValue.getValue().isPresent() && !SCore.is1v12Less()) {
             ItemStack newHead = new ItemStack(Material.PLAYER_HEAD);
-
             SkullMeta itemMeta = (SkullMeta) newHead.getItemMeta();
-            GameProfile profile = getGameProfile(this.headValue.getValue().get());
-            Field profileField = null;
-            try {
-                profileField = itemMeta.getClass().getDeclaredField("profile");
-            } catch (NoSuchFieldException e1) {
-                e1.printStackTrace();
-            } catch (SecurityException e1) {
-                e1.printStackTrace();
+
+            if(SCore.is1v18Plus()){
+                try {
+                    newHead = HeadBuilder118.getHead(HeadBuilder118.getUrlFromBase64(headValue.getValue().get()).toString());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
             }
-            profileField.setAccessible(true);
-            try {
-                profileField.set(itemMeta, profile);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            else {
+                GameProfile profile = getGameProfile(this.headValue.getValue().get());
+                Field profileField = null;
+                try {
+                    profileField = itemMeta.getClass().getDeclaredField("profile");
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                } catch (SecurityException e1) {
+                    e1.printStackTrace();
+                }
+                profileField.setAccessible(true);
+                try {
+                    profileField.set(itemMeta, profile);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                newHead.setItemMeta((ItemMeta) itemMeta);
             }
-            newHead.setItemMeta((ItemMeta) itemMeta);
             return newHead;
         }
 

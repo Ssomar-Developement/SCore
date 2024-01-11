@@ -51,6 +51,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new MobNearest());
         commands.add(new Nearest());
         commands.add(new OpMessage());
+        commands.add(new RegainHealth());
         commands.add(new RemoveBurn());
         commands.add(new RemoveGlow());
         commands.add(new SetGlow());

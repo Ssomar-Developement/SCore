@@ -1,6 +1,6 @@
 package com.ssomar.score.features.custom.activators.group;
 
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
@@ -23,7 +23,7 @@ public class ActivatorsFeatureEditor extends FeatureEditorInterface<ActivatorsFe
         int i = 0;
         int total = 0;
 
-        for (NewSActivator activator : activatorsGroupFeature.getActivators().values()) {
+        for (SActivator activator : activatorsGroupFeature.getActivators().values()) {
             if ((page - 1) * perPage <= total && total < page * perPage) {
                 activator.initAndUpdateItemParentEditor(this, i);
                 i++;

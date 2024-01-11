@@ -3,15 +3,16 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
-import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 
-public class IfIsOnTheBlock extends EntityConditionFeature<MaterialAndTagsGroupFeature, IfIsOnTheBlock> {
+import java.util.Optional;
 
+public class IfIsOnTheBlock extends EntityConditionFeature<DetailedBlocks, IfIsOnTheBlock> {
 
     public IfIsOnTheBlock(FeatureParentInterface parent) {
         super(parent, "ifIsOnTheBlock", "If is on the block", new String[]{}, Material.ANVIL, false);
@@ -20,15 +21,13 @@ public class IfIsOnTheBlock extends EntityConditionFeature<MaterialAndTagsGroupF
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         if (hasCondition()) {
-            Entity entity = request.getEntity();
-            Location pLoc = entity.getLocation();
+            Entity player = request.getEntity();
+            Location pLoc = player.getLocation();
             pLoc.subtract(0, 0.1, 0);
 
             Block block = pLoc.getBlock();
-            Material type = block.getType();
-            BlockData blockData = block.getBlockData();
 
-            if (!getCondition().isValid(block)) {
+            if (!getCondition().isValid(block, Optional.empty(), null, new StringPlaceholder())) {
                 runInvalidCondition(request);
                 return false;
             }
@@ -43,12 +42,14 @@ public class IfIsOnTheBlock extends EntityConditionFeature<MaterialAndTagsGroupF
 
     @Override
     public void subReset() {
-        setCondition(new MaterialAndTagsGroupFeature(this, "ifIsOnTheBlock", "If is on the block", new String[]{}, true, false, true, true));
+        setCondition(new DetailedBlocks(this,"ifIsOnTheBlock","If is on the block", true ,true, true));
+
+        // new MaterialAndTagsGroupFeature(this, "ifIsOnTheBlock", "If is on the block", new String[]{}, true, false, true, true));
     }
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue().getMaterialAndTags().size() > 0;
+        return getCondition().getBlocks().getValues().size() > 0;
     }
 
     @Override

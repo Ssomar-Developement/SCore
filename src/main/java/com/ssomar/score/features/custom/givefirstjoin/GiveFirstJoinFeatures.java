@@ -8,7 +8,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,8 +59,8 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     public void giveFirstJoin(@NotNull Player player) {
         if (giveFirstJoin.getValue()) {
-            if (getParent() instanceof NewSObject) {
-                NewSObject object = (NewSObject) getParent();
+            if (getParent() instanceof SObject) {
+                SObject object = (SObject) getParent();
                 ItemStack item = object.buildItem(giveFirstJoinAmount.getValue().get(), Optional.of(player));
                 player.getInventory().setItem(giveFirstJoinSlot.getValue().get(), item);
             }

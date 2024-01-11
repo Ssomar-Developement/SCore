@@ -10,7 +10,6 @@ import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -39,7 +38,7 @@ public class CustomDash1 extends MixedCommand {
     }
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         boolean fallDamage = false;
         if (args.size() >= 4) {
             fallDamage = Boolean.parseBoolean(args.get(3));
@@ -60,7 +59,7 @@ public class CustomDash1 extends MixedCommand {
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    NoFallDamageManager.getInstance().removeNoFallDamage(p, uuid);
+                    NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
                 }
             };
             ScheduledTask task = SCore.schedulerHook.runTask(runnable, 300);

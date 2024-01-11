@@ -2,6 +2,7 @@ package com.ssomar.particles.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.emums.CustomColor;
+import com.ssomar.score.utils.numbers.NTools;
 import com.thoughtworks.paranamer.AnnotationParanamer;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
@@ -10,10 +11,10 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 
-
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Parameters extends ArrayList<Parameter>{
 
@@ -64,7 +65,16 @@ public class Parameters extends ArrayList<Parameter>{
             for (String s : parameters) {
                 if (s.contains("color:")){
                     String colorName = s.split(":")[1];
-                    Color color = new Color(CustomColor.valueOf(colorName.toUpperCase()).getRed(), CustomColor.valueOf(colorName.toUpperCase()).getGreen(), CustomColor.valueOf(colorName.toUpperCase()).getBlue());
+                    Optional<Integer> optionalInteger = NTools.getInteger(colorName);
+                    Color color = null;
+                    if(optionalInteger.isPresent()){
+                        color = new Color(optionalInteger.get());
+                    }else{
+                        org.bukkit.Color bukkitColor = CustomColor.valueOf(colorName.toUpperCase());
+                        if(bukkitColor != null) {
+                            color = new Color(bukkitColor.getRed(), bukkitColor.getGreen(), bukkitColor.getBlue());
+                        }
+                    }
                     if(color != null) {
                         display = ParticleDisplay.colored(loc, color, 1);
                         found = true;

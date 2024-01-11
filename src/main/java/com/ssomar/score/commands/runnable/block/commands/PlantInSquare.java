@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -39,7 +40,7 @@ public class PlantInSquare extends BlockCommand {
         else return;
 
 
-        int resourcesNeeded = radius * radius;
+        int resourcesNeeded = (radius*2+1)* (radius*2+1);
         if(radius == 0) resourcesNeeded = 1;
 
         List<Material> validMaterial = new ArrayList<>();
@@ -53,8 +54,11 @@ public class PlantInSquare extends BlockCommand {
 
         if(takeFromInventory) {
             int slot = 0;
+            SsomarDev.testMsg("resourcesNeeded: "+resourcesNeeded ,true);
             for (ItemStack item : p.getInventory().getContents()) {
+                SsomarDev.testMsg("item: "+item ,true);
                 if (item != null && validMaterial.contains(item.getType()) && (accepteEI || !new ExecutableItemObject(item).isValid())) {
+                    SsomarDev.testMsg("item valis: "+item ,true);
                     resources.put(slot, item);
                     resourcesNeeded = resourcesNeeded - item.getAmount();
                 }
@@ -77,6 +81,15 @@ public class PlantInSquare extends BlockCommand {
                 resourcesNeeded = resourcesNeeded - randomAmount;
                 slot++;
             }
+        }
+
+        //print resources to ssomar
+        if(!resources.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (ItemStack item : resources.values()) {
+                sb.append(item.getAmount()).append(" ").append(item.getType().toString()).append(", ");
+            }
+            SsomarDev.testMsg(ChatColor.GREEN + "Resources: " + sb.toString(), true);
         }
 
         if(radius == 0){

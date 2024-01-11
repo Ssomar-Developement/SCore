@@ -2,8 +2,6 @@ package com.ssomar.score.hardness.hardness;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
-import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.features.custom.detaileditems.DetailedItems;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -11,38 +9,28 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.hardness.HardnessModifier;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.NewSObject;
+import com.ssomar.score.sobject.SObjectWithFile;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
 @Setter
-public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEditorManager> implements HardnessModifier {
-
-    private String id;
-    private String path;
+public class Hardness extends SObjectWithFile<Hardness, HardnessEditor, HardnessEditorManager> implements HardnessModifier {
 
     private DetailedBlocks detailedBlocks;
 
@@ -53,16 +41,12 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
     private BooleanFeature periodInTicks;
 
     public Hardness(FeatureParentInterface parent, String id, String path) {
-        super(parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW);
-        this.id = id;
-        this.path = path;
+        super(id, parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW, path, HardnessLoader.getInstance());
         reset();
     }
 
     public Hardness(String id, String path) {
-        super("HARDNESS", "HARDNESS", new String[]{}, Material.ARROW);
-        this.id = id;
-        this.path = path;
+        super(id, "HARDNESS", "HARDNESS", new String[]{}, Material.ARROW, path, HardnessLoader.getInstance());
         reset();
     }
 
@@ -114,7 +98,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
 
     @Override
     public Hardness clone(FeatureParentInterface newParent) {
-        Hardness clone = new Hardness(this, id, path);
+        Hardness clone = new Hardness(this, getId(), getPath());
         clone.setDetailedBlocks(detailedBlocks.clone(clone));
         clone.setDetailedItems(detailedItems.clone(clone));
         clone.setPeriod(period.clone(clone));
@@ -134,29 +118,7 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
 
     @Override
     public String getParentInfo() {
-        return "Hardness: " + id;
-    }
-
-    @Override
-    public ConfigurationSection getConfigurationSection() {
-        File file = getFile();
-
-        FileConfiguration config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
-        return config;
-    }
-
-    @Override
-    public File getFile() {
-        File file = new File(path);
-        if (!file.exists()) {
-            try {
-                new File(path).createNewFile();
-                file = HardnessLoader.getInstance().searchFileOfObject(id);
-            } catch (IOException ignored) {
-                return null;
-            }
-        }
-        return file;
+        return "Hardness: " + getId();
     }
 
     @Override
@@ -183,32 +145,8 @@ public class Hardness extends NewSObject<Hardness, HardnessEditor, HardnessEdito
 
 
     @Override
-    public ActivatorsFeature getActivators() {
-        return null;
-    }
-
-    @Override
-    public Item dropItem(Location location, int amount) {
-        return null;
-    }
-
-    @Override
     public ItemStack buildItem(int quantity, Optional<Player> creatorOpt) {
         return new ItemStack(Material.BOOK);
-    }
-
-    @Nullable
-    @Override
-    public NewSActivator getActivator(String actID) {
-        return null;
-    }
-
-    @Override
-    public List<String> getDescription() {
-        List<String> description = new ArrayList<>();
-        description.add("§7ID: §f" + id);
-        description.add("§7Path: §f" + path);
-        return description;
     }
 
     @Override

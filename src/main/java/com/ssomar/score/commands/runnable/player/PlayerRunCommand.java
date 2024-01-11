@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
@@ -7,6 +8,7 @@ import com.ssomar.score.commands.runnable.SCommand;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -67,11 +69,10 @@ public class PlayerRunCommand extends RunCommand {
 
         @Nullable Player launcher = null;
         if(launcherUUID != null) launcher = Bukkit.getPlayer(launcherUUID);
+
         Player receiver = Bukkit.getPlayer(receiverUUID);
 
-       // SsomarDev.testMsg("runCommand: "+getBrutCommand(), true);
-
-        pCommand.run(launcher, receiver, args, this.getaInfo());
+        pCommand.run(launcher, receiver, args, getaInfo());
     }
 
 
@@ -87,6 +88,12 @@ public class PlayerRunCommand extends RunCommand {
         /* No need >> onPlayerQuitEvent its auto delete and save in the DB */
         //}
         CommandsHandler.getInstance().removeDelayedCommand(getUuid(), receiverUUID);
+    }
+
+    @Override
+    public void executeRunnable(BukkitRunnable runnable) {
+        Player receiver = Bukkit.getPlayer(receiverUUID);
+        SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
     }
 
     public UUID getLauncherUUID() {

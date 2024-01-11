@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -23,6 +24,7 @@ public class Absorption extends PlayerCommand {
 
         try {
             time = Integer.valueOf(args.get(1));
+            SsomarDev.testMsg("time: "+time, true);
         }catch(ArrayIndexOutOfBoundsException e){
             time = 0;
         }
@@ -31,7 +33,9 @@ public class Absorption extends PlayerCommand {
             if(time <= 0) {
                 receiver.setAbsorptionAmount(currentabsorption + absorption);
             }else{
+                SsomarDev.testMsg(" total absorption: "+(currentabsorption + absorption), true);
                 receiver.setAbsorptionAmount(currentabsorption + absorption);
+                SsomarDev.testMsg(" get absorption: "+receiver.getAbsorptionAmount(), true);
 
                 BukkitRunnable runnable3 = new BukkitRunnable() {
                     @Override
@@ -51,6 +55,7 @@ public class Absorption extends PlayerCommand {
 
             }
         }catch(IllegalArgumentException e){
+            SsomarDev.testMsg("ABSORPTION Error: "+e.getMessage(), true);
             //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
             //like ABSORPTION -5, if the player has ABSORPTION 5, it will work, but once it worked now the player
             //has ABSORPTION 0, if he tries again, error

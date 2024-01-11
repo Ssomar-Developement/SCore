@@ -26,6 +26,13 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
                     return false;
                 }
             }
+            if (SCore.hasFactionsUUID) {
+                FactionsUUIDAPI factionsUUIDAPI = new FactionsUUIDAPI();
+                if (!factionsUUIDAPI.playerIsInHisClaim(player.getUniqueId(), player.getLocation(), false)) {
+                    runInvalidCondition(request);
+                    return false;
+                }
+            }
             if (SCore.hasGriefPrevention) {
                 if (!GriefPreventionAPI.playerIsInHisClaim(player, player.getLocation(), false)) {
                     runInvalidCondition(request);

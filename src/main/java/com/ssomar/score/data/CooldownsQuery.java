@@ -1,9 +1,14 @@
 package com.ssomar.score.data;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import com.ssomar.score.SCore;
+import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.custom.cooldowns.Cooldown;
 import com.ssomar.score.utils.logging.Utils;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +25,9 @@ public class CooldownsQuery {
     private final static String COL_IS_IN_TICK = "isInTick";
     private final static String COL_IS_GLOBAL = "isGlobal";
     private final static String COL_TIME = "time";
-    private final static String COL_LOADED = "loaded";
+    private final static String COL_PAUSED = "paused";
+    private final static String COL_PAUSE_OFFLINE = "pauseOffline";
+    private final static String COL_PAUSE_PLACEHOLDERS_CONDITIONS = "pausePlaceholdersConditions";
 
     public final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_COOLDOWNS + " (" + COL_ID + " TEXT NOT NULL, "
             + COL_UUID + " TEXT NOT NULL, "
@@ -28,12 +35,42 @@ public class CooldownsQuery {
             + COL_IS_IN_TICK + " BOOLEAN NOT NULL, "
             + COL_IS_GLOBAL + " BOOLEAN NOT NULL, "
             + COL_TIME + " LONG NOT NULL, "
-            + COL_LOADED + " BOOLEAN NOT NULL );";
+            + COL_PAUSED + " BOOLEAN NOT NULL,"
+            + COL_PAUSE_OFFLINE + " BOOLEAN NOT NULL,"
+            + COL_PAUSE_PLACEHOLDERS_CONDITIONS + " TEXT NOT NULL);";
+
+    public final static String CHECK_BEFORE_UPDATE_4_24_1_4 = "SELECT `COLUMN_NAME` " +
+            "FROM `INFORMATION_SCHEMA`.`COLUMNS`" +
+            "WHERE `TABLE_SCHEMA`= DATABASE()" +
+            "AND `TABLE_NAME`='"+TABLE_COOLDOWNS+"'" +
+            "AND `COLUMN_NAME`='"+COL_PAUSE_OFFLINE+"';";
+
+    /* INFORMATION_SCHEMA doesnt exist in SQLITE */
+    public final static String CHECK_BEFORE_UPDATE_4_24_1_4_SQLITE = "SELECT name " +
+            "FROM pragma_table_info('"+TABLE_COOLDOWNS+"')" +
+            "WHERE name='"+COL_PAUSE_OFFLINE+"';";
 
 
     public static void createNewTable(Connection conn) {
         try (Statement stmt = conn.createStatement()) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COOLDOWNS_NAME + "&7 if not exists...");
+
+            String checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4_SQLITE;
+            try {
+                if (conn instanceof MysqlDataSource) checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4;
+            } catch (Exception | Error ignored) {}
+
+
+            PreparedStatement pstmt = conn.prepareStatement(checkBeforeUpdate);
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) {
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Table &6" + TABLE_COOLDOWNS_NAME + " &7exists, but it's not up to date, updating...");
+                stmt.execute("ALTER TABLE "+TABLE_COOLDOWNS+" DROP COLUMN loaded;");
+                stmt.execute("ALTER TABLE "+TABLE_COOLDOWNS+" ADD COLUMN "+COL_PAUSED+" BOOLEAN NOT NULL DEFAULT FALSE;");
+            	stmt.execute("ALTER TABLE "+TABLE_COOLDOWNS+" ADD COLUMN "+COL_PAUSE_OFFLINE+" BOOLEAN NOT NULL DEFAULT FALSE;");
+            	stmt.execute("ALTER TABLE "+TABLE_COOLDOWNS+" ADD COLUMN "+COL_PAUSE_PLACEHOLDERS_CONDITIONS+" TEXT NOT NULL DEFAULT '';");
+            }
+
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COOLDOWNS_NAME + " in database "+e.getMessage());
@@ -43,7 +80,7 @@ public class CooldownsQuery {
 
     public static void insertCooldowns(Connection conn, List<Cooldown> cooldowns) {
 
-        String sql = "INSERT INTO " + TABLE_COOLDOWNS + " (" + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + "," + COL_LOADED + ") VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO " + TABLE_COOLDOWNS + " (" + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + "," + COL_PAUSED+ "," + COL_PAUSE_OFFLINE + "," + COL_PAUSE_PLACEHOLDERS_CONDITIONS + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement pstmt = null;
         int i = 0;
@@ -59,7 +96,9 @@ public class CooldownsQuery {
                     pstmt.setBoolean(4, cd.isInTick());
                     pstmt.setBoolean(5, cd.isGlobal());
                     pstmt.setLong(6, cd.getTime());
-                    pstmt.setBoolean(7, false);
+                    pstmt.setBoolean(7, cd.isPaused());
+                    pstmt.setBoolean(8, cd.isPauseWhenOffline());
+                    pstmt.setString(9, cd.getPausePlaceholdersConditions().getConfigAsString());
                     pstmt.addBatch();
                 }
 
@@ -81,7 +120,7 @@ public class CooldownsQuery {
     }
 
     public static List<Cooldown> getCooldownsOf(Connection conn, UUID uuid) {
-        String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + " FROM " + TABLE_COOLDOWNS + " where " + COL_UUID + "=? AND " + COL_LOADED + "=0";
+        String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + "," + COL_PAUSED + "," + COL_PAUSE_OFFLINE + "," + COL_PAUSE_PLACEHOLDERS_CONDITIONS + " FROM " + TABLE_COOLDOWNS + " where " + COL_UUID + "=?";
 
         List<Cooldown> list = new ArrayList<>();
         PreparedStatement pstmt = null;
@@ -99,8 +138,17 @@ public class CooldownsQuery {
                 boolean isInTick = rs.getBoolean(COL_IS_IN_TICK);
                 boolean isGlobal = rs.getBoolean(COL_IS_GLOBAL);
                 long time = rs.getLong(COL_TIME);
+                boolean paused = rs.getBoolean(COL_PAUSED);
+                boolean pauseOffline = rs.getBoolean(COL_PAUSE_OFFLINE);
+                String pausePlaceholdersConditions = rs.getString(COL_PAUSE_PLACEHOLDERS_CONDITIONS);
+                PlaceholderConditionGroupFeature placeholderConditionGroupFeature = new PlaceholderConditionGroupFeature(null, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
+                Reader reader = new java.io.StringReader(pausePlaceholdersConditions);
+                YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(reader);
+                placeholderConditionGroupFeature.load(SCore.plugin, yamlConfiguration, true);
 
                 Cooldown cooldown = new Cooldown(id, UUID.fromString(uuidStr), cd, isInTick, time, isGlobal);
+                cooldown.setPauseFeatures(pauseOffline, placeholderConditionGroupFeature);
+                cooldown.setPaused(paused);
 
                 list.add(cooldown);
             }
@@ -126,7 +174,7 @@ public class CooldownsQuery {
     }
 
     public static List<Cooldown> getGlobalCooldowns(Connection conn) {
-        String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + " FROM " + TABLE_COOLDOWNS + " where " + COL_IS_GLOBAL+ "=true AND " + COL_LOADED + "=0";
+        String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + " FROM " + TABLE_COOLDOWNS + " where " + COL_IS_GLOBAL+ "=true";
 
         List<Cooldown> list = new ArrayList<>();
         PreparedStatement pstmt = null;

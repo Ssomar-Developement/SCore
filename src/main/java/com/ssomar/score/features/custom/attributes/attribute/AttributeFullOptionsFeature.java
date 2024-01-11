@@ -7,6 +7,7 @@ import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.AttributeSlot;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -52,9 +53,9 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     public AttributeModifier getAttributeModifier() {
         if (slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)) {
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue().get(), operation.getValue().get(), null);
+            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), null);
         } else
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue().get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
+            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
     }
 
     @Override

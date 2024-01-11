@@ -124,6 +124,7 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             placeholders.put("%" + particle + "%", player.getName());
             placeholders.put("%" + particle + "_name%", player.getName());
             placeholders.put("%" + particle + "_uuid%", playerUUID.toString());
+            placeholders.put("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
 
             /* I need to let that because old versions doesnt have particle */
             if (acceptWithoutParticle) {
@@ -192,5 +193,34 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
         }
 
         return toReplace;
+    }
+
+    public static String convertedUUID (UUID uuid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[I;");
+        String uuidStr = uuid.toString().replaceAll("-", "").toUpperCase();
+        sb.append(getDecimal(uuidStr.substring(0, 8)));
+        //SsomarDev.testMsg("uuidStr.substring(0, 8) : "+uuidStr.substring(0, 8), true);
+        sb.append(",");
+        sb.append(getDecimal(uuidStr.substring(8, 16)));
+        sb.append(",");
+        sb.append(getDecimal(uuidStr.substring(16, 24)));
+        sb.append(",");
+        sb.append(getDecimal(uuidStr.substring(24, 32)));
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public static int getDecimal(String hex){
+        String digits = "0123456789ABCDEF";
+        hex = hex.toUpperCase();
+        int val = 0;
+        for (int i = 0; i < hex.length(); i++)
+        {
+            char c = hex.charAt(i);
+            int d = digits.indexOf(c);
+            val = 16*val + d;
+        }
+        return val;
     }
 }

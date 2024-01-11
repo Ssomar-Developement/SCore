@@ -84,58 +84,65 @@ public abstract class RunCommand implements Serializable {
 
 
     public void runCommand(CommandManager manager) {
-        //SsomarDev.testMsg("Command run command: "+this.getBrutCommand(), true);
-        String finalCommand = this.getBrutCommand();
-        String [] split = finalCommand.split(" ");
-        int later = 0;
-        Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
-        for (String s : split) {
-            /* Exception 1 */
-           if(s.contains("%math_") && s.contains("%around")){
-               placeholdersToReplaceLatter.put(later, s);
-               finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
-                later++;
-           }
-        }
-        //Exception for WHILE we don't want to replace the placeholders
-        if(!finalCommand.startsWith("WHILE")){
-            finalCommand = this.getSp().replacePlaceholder(finalCommand);
-        }
 
-        for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
-            finalCommand = finalCommand.replace("PLACEHOLDER_TO_REPLACE_LATER_"+entry.getKey(), entry.getValue());
-        }
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                //SsomarDev.testMsg("Command run command: "+this.getBrutCommand(), true);
+                String finalCommand = getBrutCommand();
+                String [] split = finalCommand.split(" ");
+                int later = 0;
+                Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
+                for (String s : split) {
+                    /* Exception 1 */
+                    if(s.contains("%math_") && s.contains("%around")){
+                        placeholdersToReplaceLatter.put(later, s);
+                        finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
+                        later++;
+                    }
+                }
+                //Exception for WHILE we don't want to replace the placeholders
+                if(!(finalCommand.startsWith("WHILE") || finalCommand.startsWith("IF"))) {
+                    finalCommand = getSp().replacePlaceholder(finalCommand);
+                }
 
-        if (getBrutCommand().contains("ei giveslot")) {
-            try {
-                String playeName = finalCommand.split("ei giveslot ")[1].split(" ")[0];
-                Player pgive = Bukkit.getServer().getPlayer(playeName);
-                CommandsHandler.getInstance().addStopPickup(pgive, 20);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+                for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
+                    finalCommand = finalCommand.replace("PLACEHOLDER_TO_REPLACE_LATER_"+entry.getKey(), entry.getValue());
+                }
+
+                if (getBrutCommand().contains("ei giveslot")) {
+                    try {
+                        String playeName = finalCommand.split("ei giveslot ")[1].split(" ")[0];
+                        Player pgive = Bukkit.getServer().getPlayer(playeName);
+                        CommandsHandler.getInstance().addStopPickup(pgive, 20);
+                    } catch (Exception ignored) {
+                        ignored.printStackTrace();
+                    }
+                }
+
+
+                Optional<SCommand> commandOpt = manager.getCommand(finalCommand);
+                if (commandOpt.isPresent()) {
+                    SCommand command = commandOpt.get();
+                    //SsomarDev.testMsg("Command: valid: "+finalCommand, true);
+                    List<String> args = manager.getArgs(command, finalCommand);
+
+                    Optional<String> error = command.verify(args, true);
+                    if (!error.isPresent()) {
+                        runCommand(command, args);
+                    } else aInfo.getDebugers().sendDebug(error.get());
+                } else {
+                    if (finalCommand.trim().isEmpty()) return;
+
+                    if (finalCommand.charAt(0) == '/') finalCommand = finalCommand.substring(1);
+                    // accept the "color": HEX COLOR in title
+                    if (finalCommand.contains("\"color\"") && finalCommand.contains("title"))
+                        finalCommand = StringConverter.deconvertColor(finalCommand);
+                    RunConsoleCommand.runConsoleCommand(finalCommand, aInfo.isSilenceOutput());
+                }
             }
-        }
-
-
-        Optional<SCommand> commandOpt = manager.getCommand(finalCommand);
-        if (commandOpt.isPresent()) {
-            SCommand command = commandOpt.get();
-            //SsomarDev.testMsg("Command: valid: "+finalCommand, true);
-            List<String> args = manager.getArgs(command, finalCommand);
-
-            Optional<String> error = command.verify(args, true);
-            if (!error.isPresent()) {
-                this.runCommand(command, args);
-            } else aInfo.getDebugers().sendDebug(error.get());
-        } else {
-            if (finalCommand.trim().isEmpty()) return;
-
-            if (finalCommand.charAt(0) == '/') finalCommand = finalCommand.substring(1);
-            // accept the "color": HEX COLOR in title
-            if (finalCommand.contains("\"color\"") && finalCommand.contains("title"))
-                finalCommand = StringConverter.deconvertColor(finalCommand);
-            RunConsoleCommand.runConsoleCommand(finalCommand, aInfo.isSilenceOutput());
-        }
+        };
+        executeRunnable(runnable);
     }
 
     public void runDelayedCommand() {
@@ -146,11 +153,13 @@ public abstract class RunCommand implements Serializable {
             }
         };
         task = SCore.schedulerHook.runTask(runnable, this.getDelay());
-        CommandsHandler.getInstance().addDelayedCommand(this);
+        /* if It is a saved delayed command  the delay can be 0 now */
+        if(this.getDelay() > 0) CommandsHandler.getInstance().addDelayedCommand(this);
     }
 
     public abstract void insideDelayedCommand();
 
+    public abstract void executeRunnable(BukkitRunnable runnable);
     public abstract void runCommand(SCommand command, List<String> args);
 
     public abstract void pickupInfo();

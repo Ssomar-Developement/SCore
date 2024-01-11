@@ -47,7 +47,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new InteractionGUI(), main);
 
-        main.getServer().getPluginManager().registerEvents(new CommandsHandler(), main);
+        main.getServer().getPluginManager().registerEvents(CommandsHandler.getInstance(), main);
 
         main.getServer().getPluginManager().registerEvents(new KeepCustomFlyEvent(), main);
 
@@ -76,6 +76,10 @@ public class EventsHandler {
 
         if(SCore.hasJetsMinions && GeneralConfig.getInstance().isJetMinionsGenerateBreakActivator()) main.getServer().getPluginManager().registerEvents(new FixJetsMinionsBlockBreakEvent(), main);
 
-        //main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
+        if(!SCore.is1v13Less()) main.getServer().getPluginManager().registerEvents(new EntitiesFromSpawnerListener(), main);
+
+        main.getServer().getPluginManager().registerEvents(CheckIfDamageIsPosssibleListener.getInstance(), main);
+
+        main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
     }
 }

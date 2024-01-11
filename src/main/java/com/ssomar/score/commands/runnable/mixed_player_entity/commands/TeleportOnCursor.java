@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -20,7 +21,11 @@ import java.util.Optional;
 public class TeleportOnCursor extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
+
         int amount = 200;
         boolean acceptAir = false;
         if (args.size() >= 1) {
@@ -31,7 +36,7 @@ public class TeleportOnCursor extends MixedCommand {
         }
         try {
 
-            Location eyeLoc = receiver.getEyeLocation();
+            Location eyeLoc = livingReceiver.getEyeLocation();
             Vector eyeVec = eyeLoc.getDirection();
             Vector checkVec = eyeVec.clone().multiply(2);
             Location checkLoc = eyeLoc.clone().add(checkVec);

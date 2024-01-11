@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.score;
 
 import com.ssomar.executableblocks.executableblocks.activators.ActivatorEBFeature;
+import com.ssomar.executableevents.executableevents.activators.ActivatorEEFeature;
 import com.ssomar.executableitems.executableitems.activators.ActivatorEIFeature;
 import com.ssomar.particles.commands.Parameter;
 import com.ssomar.particles.commands.Shape;
@@ -20,7 +21,7 @@ import com.ssomar.score.commands.score.clear.ClearType;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.events.loop.LoopManager;
-import com.ssomar.score.features.custom.activators.activator.NewSActivator;
+import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.hardness.hardness.Hardness;
@@ -409,14 +410,14 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                 break;
             case "inspect-loop":
-                final Map<NewSActivator, Integer> loops = LoopManager.getInstance().getLoopActivators();
+                final Map<SActivator, Integer> loops = LoopManager.getInstance().getLoopActivators();
 
                 this.sm.sendMessage(sender, " ");
                 this.sm.sendMessage(sender, "&8==== &7SCore contains &e" + loops.size() + " &7loop(s) &8====");
                 this.sm.sendMessage(sender, "&7&o(The loop of ExecutableItems requires more performance when there are many players)");
                 this.sm.sendMessage(sender, " ");
 
-                for (final NewSActivator sAct : loops.keySet()) {
+                for (final SActivator sAct : loops.keySet()) {
                     LoopFeatures loop = null;
 
                     for (final Object feature : sAct.getFeatures())
@@ -435,6 +436,9 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         this.sm.sendMessage(sender, "&bEI LOOP > &7item: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");
                     else if (SCore.hasExecutableBlocks && sAct instanceof ActivatorEBFeature)
                         this.sm.sendMessage(sender, "&aEB LOOP > &7block: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");
+                    else if (SCore.hasExecutableEvents && sAct instanceof ActivatorEEFeature)
+                        this.sm.sendMessage(sender, "&6EE LOOP > &7event: &e" + sAct.getParentObjectId() + " &7delay: &e" + delay + " &7(in ticks)");
+
                 }
 
                 this.sm.sendMessage(sender, " ");

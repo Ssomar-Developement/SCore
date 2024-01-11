@@ -8,6 +8,7 @@ import com.ssomar.score.utils.GetItem;
 import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -21,12 +22,15 @@ import java.util.Optional;
 public class EquipmentVisualReplace extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
+
         EquipmentSlot slot = BetterEquipmentSlot.getEquipmentSlot(args.get(0)).orElse(EquipmentSlot.HAND);
         String material = args.get(1);
         ItemStack item = GetItem.getItem(material, Integer.parseInt(args.get(2))).orElse(new ItemStack(Material.BARRIER));
         int time = Integer.parseInt(args.get(3));
-        EquipmentVisualManager.getInstance().addTask(receiver.getUniqueId(), slot, ProtocolLibAPI.sendEquipmentVisualReplace(receiver, slot, item, time));
+        EquipmentVisualManager.getInstance().addTask(receiver.getUniqueId(), slot, ProtocolLibAPI.sendEquipmentVisualReplace(livingReceiver, slot, item, time));
     }
 
     @Override

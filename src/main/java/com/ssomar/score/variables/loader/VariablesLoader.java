@@ -2,7 +2,7 @@ package com.ssomar.score.variables.loader;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.sobject.NewSObjectLoader;
+import com.ssomar.score.sobject.SObjectWithFileLoader;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.manager.VariablesManager;
@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 import java.util.*;
 
-public class VariablesLoader extends NewSObjectLoader<Variable> {
+public class VariablesLoader extends SObjectWithFileLoader<Variable> {
 
     private static VariablesLoader instance;
 

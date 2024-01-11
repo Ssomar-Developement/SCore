@@ -58,15 +58,6 @@ public class RegionisedSchedulerHook implements SchedulerHook {
     }
 
     @Override
-    public ScheduledTask runLocationTask(Runnable runnable,Location location, long delay) {
-        io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
-        if(delay > 0)
-            scheduledTask = Bukkit.getRegionScheduler().runDelayed(SCore, location, task -> runnable.run(), delay);
-        else scheduledTask = Bukkit.getRegionScheduler().run(SCore, location, task -> runnable.run());
-        return scheduledTask == null ? null : new RegionisedScheduledTask(scheduledTask);
-    }
-
-    @Override
     public ScheduledTask runEntityTaskAsap(Runnable runnable, Runnable retired, Entity entity) {
         if (Bukkit.isOwnedByCurrentRegion(entity)) {
             runnable.run();
@@ -81,6 +72,32 @@ public class RegionisedSchedulerHook implements SchedulerHook {
             };
         }
         return runEntityTask(runnable, retired, entity, 0);
+    }
+
+    @Override
+    public ScheduledTask runLocationTask(Runnable runnable,Location location, long delay) {
+        io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
+        if(delay > 0)
+            scheduledTask = Bukkit.getRegionScheduler().runDelayed(SCore, location, task -> runnable.run(), delay);
+        else scheduledTask = Bukkit.getRegionScheduler().run(SCore, location, task -> runnable.run());
+        return scheduledTask == null ? null : new RegionisedScheduledTask(scheduledTask);
+    }
+
+    @Override
+    public ScheduledTask runLocationTaskAsap(Runnable runnable, Location location) {
+        if (Bukkit.isOwnedByCurrentRegion(location)) {
+            runnable.run();
+            return new ScheduledTask() {
+                @Override
+                public void cancel() {}
+
+                @Override
+                public boolean isCancelled() {
+                    return false;
+                }
+            };
+        }
+        return runLocationTask(runnable, location, 0);
     }
 
     public static boolean isCompatible() {

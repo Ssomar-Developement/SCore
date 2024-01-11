@@ -14,8 +14,10 @@ public interface SchedulerHook {
     ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period);
     ScheduledTask runEntityTask(Runnable runnable, Runnable retired, Entity entity, long delay);
 
+    ScheduledTask runEntityTaskAsap(Runnable runnable, Runnable retired, Entity entity);
+
     ScheduledTask runLocationTask(Runnable runnable, Location location, long delay);
 
-    ScheduledTask runEntityTaskAsap(Runnable runnable, Runnable retired, Entity entity);
+    ScheduledTask runLocationTaskAsap(Runnable runnable, Location location);
 
 }

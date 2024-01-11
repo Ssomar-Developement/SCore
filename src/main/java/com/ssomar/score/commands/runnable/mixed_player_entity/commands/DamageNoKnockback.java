@@ -1,12 +1,14 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.damagewithoutknockback.DamageWithoutKnockbackManager;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -20,28 +22,41 @@ import java.util.Optional;
 public class DamageNoKnockback extends MixedCommand {
 
     @Override
-    public void run(Player p, LivingEntity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+
+        if(!(receiver instanceof LivingEntity)) return;
+        LivingEntity livingReceiver = (LivingEntity) receiver;
+
+        //SsomarDev.testMsg("DamageNoKnockback.java -> run()", true);
         /* When target a NPC it can occurs */
         if (receiver == null) return;
 
-        double damage = Damage.getDamage(p, receiver, args, aInfo);
+        double damage = Damage.getDamage(p, livingReceiver, args, aInfo);
+
+        //SsomarDev.testMsg("DamageNoKnockback.java -> run() 2 ", true);
 
         if (damage > 0 && !receiver.isDead()) {
-            int maximumNoDmg = receiver.getMaximumNoDamageTicks();
-            receiver.setMaximumNoDamageTicks(0);
+            int maximumNoDmg = livingReceiver.getNoDamageTicks();
+            livingReceiver.setNoDamageTicks(0);
             boolean doDamage = true;
-            if (SCore.hasWorldGuard && receiver instanceof Player) doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
-            if(doDamage) {
+            if (SCore.hasWorldGuard && receiver instanceof Player)
+                doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
+            if (doDamage) {
                 if (p != null) {
-                        p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
-                        DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
-                        receiver.damage(damage, p);
+                    //SsomarDev.testMsg("DamageNoKnockback.java -> run() 3", true);
+                    p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
+                    DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
+                    SsomarDev.testMsg(DamageWithoutKnockbackManager.getInstance().getDamageWithoutKnockbackList().size() + "<<<<<<<<<", true);
+                    //SsomarDev.testMsg("Damage ?" + damage, true);
+                    livingReceiver.damage(damage, p);
                 } else {
-                        DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
-                        receiver.damage(damage);
+                    //SsomarDev.testMsg("DamageNoKnockback.java -> run() 4", true);
+                    DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
+                    livingReceiver.damage(damage);
                 }
             }
-            receiver.setMaximumNoDamageTicks(maximumNoDmg);
+            //SsomarDev.testMsg("DamageNoKnockback.java -> run() 5", true);
+            livingReceiver.setNoDamageTicks(maximumNoDmg);
         }
     }
 

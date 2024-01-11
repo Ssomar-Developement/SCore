@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -101,8 +102,8 @@ public class SafeBreak {
 
     public static void breakBlockNaturallyWith(Block block, Optional<ItemStack> itemStack, boolean drop) {
         //SsomarDev.testMsg("DEBUG SAFE BREAK 7", DEBUG);
-        if (!SCore.is1v13Less() && block.getBlockData() instanceof Bisected) {
-           // SsomarDev.testMsg("DEBUG SAFE BREAK 8", DEBUG);
+        if (!SCore.is1v13Less() && block.getBlockData() instanceof Door) {
+             SsomarDev.testMsg("DEBUG SAFE BREAK 8 BISECTED", DEBUG);
             Bisected b = (Bisected) block.getBlockData();
             if (b.getHalf().equals(Bisected.Half.BOTTOM)) {
                 //SsomarDev.testMsg("DEBUG SAFE BREAK 9", DEBUG);
@@ -129,7 +130,7 @@ public class SafeBreak {
                 };
                 SCore.schedulerHook.runTask(runnable3, 1);
             }
-        } else if (block.getType().toString().toUpperCase().contains("DOOR")) {
+        } else if (block.getType().toString().toUpperCase().contains("DOOR") && !block.getType().toString().toUpperCase().contains("TRAPDOOR")) {
             if (block.getRelative(BlockFace.UP).getType().toString().toUpperCase().contains("DOOR")) {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
@@ -192,7 +193,7 @@ public class SafeBreak {
             Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
                 //SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
-                eBPOpt.get().breakBlock(null, drop);
+                eBPOpt.get().breakBlock(null, drop, ExecutableBlockPlaced.BreakMethod.CUSTOM);
                 return true;
             }
         }
@@ -226,6 +227,9 @@ public class SafeBreak {
         if (SCore.hasLands)
             if (!new LandsIntegrationAPI(SCore.plugin).playerCanBreakClaimBlock(playerUUID, block.getLocation()))
                 return false;
+
+        if(SCore.hasFactionsUUID)
+            if(!new FactionsUUIDAPI().playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
 
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
 

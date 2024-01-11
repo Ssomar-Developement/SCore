@@ -20,6 +20,8 @@ public class NewCooldownFeatureEditor extends FeatureEditorInterface<NewCooldown
         cooldownFeature.getDisplayCooldownMessage().initAndUpdateItemParentEditor(this, 2);
         cooldownFeature.getCooldownMessage().initAndUpdateItemParentEditor(this, 3);
         cooldownFeature.getCancelEventIfInCooldown().initAndUpdateItemParentEditor(this, 4);
+        cooldownFeature.getPauseWhenOffline().initAndUpdateItemParentEditor(this, 5);
+        cooldownFeature.getPausePlaceholdersConditions().initAndUpdateItemParentEditor(this, 6);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

@@ -71,13 +71,8 @@ public class CooldownsManager {
     /* FROM DB */
     public void addCooldowns(List<Cooldown> cds) {
         for (Cooldown cd : cds) {
-            long current = System.currentTimeMillis();
-            long delay = current - cd.getTime();
-            int div = 1000;
-            if (cd.isInTick()) div = 50;
-            int delayInt = (int) (delay / div);
-
-            if (delayInt < cd.getCooldown()) this.addCooldown(cd);
+            double timeLeft = cd.getTimeLeft();
+            if (timeLeft > 0) this.addCooldown(cd);
         }
     }
 
