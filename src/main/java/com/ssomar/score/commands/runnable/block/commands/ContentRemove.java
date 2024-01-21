@@ -34,7 +34,7 @@ public class ContentRemove extends BlockCommand {
 
             //ItemStack item = new ItemStack(Material.getMaterial(args.get(0)),amount);
 
-            if (block.getState() instanceof Container && p != null) {
+            if (block.getState() instanceof Container) {
 
                 Container container = (Container) block.getState();
                 Inventory inv = container.getInventory();

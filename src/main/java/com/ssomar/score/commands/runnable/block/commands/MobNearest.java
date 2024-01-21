@@ -3,12 +3,10 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
-import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +28,10 @@ import java.util.Optional;
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobNearest extends BlockCommand implements FeatureParentInterface {
 
+    public MobNearest(){
+        setCanExecuteCommands(true);
+    }
+
     public static void mobAroundExecution(Location location, boolean forceMute, List<String> args, ActionInfo aInfo) {
 
         List<String> verifyArgs = new ArrayList<>(args);
@@ -47,46 +49,10 @@ public class MobNearest extends BlockCommand implements FeatureParentInterface {
                 if (e == null || e.getLocation().distance(location) > distance) {
                     return;
                 }
+                List<Entity> targets = new ArrayList<>();
+                targets.add(e);
 
-                StringPlaceholder sp = new StringPlaceholder();
-                sp.setAroundTargetEntityPlcHldr(e.getUniqueId());
-
-                ActionInfo aInfo2 = aInfo.clone();
-                aInfo2.setEntityUUID(e.getUniqueId());
-
-                /* regroup the last args that correspond to the commands */
-                StringBuilder prepareCommands = new StringBuilder();
-                /* Remove the maxdistance arg*/
-                verifyArgs.remove(0);
-                for (String s : verifyArgs) {
-                    prepareCommands.append(s);
-                    prepareCommands.append(" ");
-                }
-                prepareCommands.deleteCharAt(prepareCommands.length() - 1);
-
-                String buildCommands = prepareCommands.toString();
-                String[] tab;
-                if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
-                else {
-                    tab = new String[1];
-                    tab[0] = buildCommands;
-                }
-                List<String> commands = new ArrayList<>();
-                for (int m = 0; m < tab.length; m++) {
-                    String s = tab[m];
-                    while (s.startsWith(" ")) {
-                        s = s.substring(1);
-                    }
-                    while (s.endsWith(" ")) {
-                        s = s.substring(0, s.length() - 1);
-                    }
-                    if (s.startsWith("/")) s = s.substring(1);
-
-                    commands.add(s);
-                }
-                commands = sp.replacePlaceholders(commands);
-                EntityRunCommandsBuilder builder = new EntityRunCommandsBuilder(commands, aInfo2);
-                CommandsExecutor.runCommands(builder);
+                CommmandThatRunsCommand.ruEntityCommands(targets, verifyArgs.subList(1, verifyArgs.size()), aInfo);
             }
         };
         runnable.runTask(SCore.plugin);

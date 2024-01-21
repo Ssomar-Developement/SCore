@@ -2,9 +2,8 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;
@@ -20,6 +19,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class If extends PlayerCommand {
+
+    public If() {
+        setCanExecuteCommands(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
@@ -27,47 +31,40 @@ public class If extends PlayerCommand {
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
         conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
         String condition = args.get(0);
+        SsomarDev.testMsg("IF condition: " + condition, true);
+
+        boolean conditionContainsPlaceholder = condition.contains("%");
+        String split = conditionContainsPlaceholder ? "%" : "";
 
         // "%"+c.getSymbol() because the placeholder can also contains comparator so to be sure the comparator is outside the placeholder we need to be sure there is a % before
         Comparator comparator = null;
         for (Comparator c : Comparator.values()) {
-            if (condition.contains("%" + c.getSymbol())) {
+            /* Check if it contains placeholder or if its just a direct value */
+            if (condition.contains(split + c.getSymbol())) {
                 conditionFeature.setComparator(ComparatorFeature.buildNull(c));
                 comparator = c;
                 break;
             }
         }
-        if (comparator == null){
+        if (comparator == null) {
             SsomarDev.testMsg("IF STOPPED because comparator null ", true);
             return;
         }
-        String[] parts = condition.split("%" + comparator.getSymbol());
-        conditionFeature.setPart1(ColoredStringFeature.buildNull(parts[0] + "%"));
+        String[] parts = condition.split(split + comparator.getSymbol());
+        conditionFeature.setPart1(ColoredStringFeature.buildNull(parts[0] + split));
         conditionFeature.setPart2(ColoredStringFeature.buildNull(parts[1]));
 
         StringPlaceholder sp = aInfo.getSp();
         if (sp == null) sp = new StringPlaceholder();
         sp.setPlayerPlcHldr(receiver.getUniqueId());
-
-        String cmdsDef = "";
-        for (int i = 1; i < args.size(); i++) {
-            String cmd = args.get(i);
-            cmdsDef += cmd + " ";
-        }
-        cmdsDef = cmdsDef.trim();
-        SsomarDev.testMsg("IF CMD DEF: " + cmdsDef, true);
-        String[] cmdsArray = cmdsDef.split("<\\+>");
-        List<String> cmds = new ArrayList<>();
-        for (String cmd : cmdsArray) {
-            cmds.add(cmd);
-            SsomarDev.testMsg("IF CMD: " + cmd, true);
-        }
-
         sp.reloadAllPlaceholders();
-        //SsomarDev.testMsg("IF CMD DEF: " + cmdsDef, true);
+
+        List<Player> targets = new ArrayList<>();
+        targets.add(receiver);
+
+
         if (conditionFeature.verify(receiver, null, sp)) {
-            PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(cmds, aInfo);
-            CommandsExecutor.runCommands(builder);
+            CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
         } else {
             SsomarDev.testMsg("IF STOPPED", true);
         }

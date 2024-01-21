@@ -60,6 +60,7 @@ public class CooldownsQuery {
                 if (conn instanceof MysqlDataSource) checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4;
             } catch (Exception | Error ignored) {}
 
+            stmt.execute(CREATE_TABLE);
 
             PreparedStatement pstmt = conn.prepareStatement(checkBeforeUpdate);
             ResultSet rs = pstmt.executeQuery();
@@ -71,7 +72,6 @@ public class CooldownsQuery {
             	stmt.execute("ALTER TABLE "+TABLE_COOLDOWNS+" ADD COLUMN "+COL_PAUSE_PLACEHOLDERS_CONDITIONS+" TEXT NOT NULL DEFAULT '';");
             }
 
-            stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COOLDOWNS_NAME + " in database "+e.getMessage());
         }

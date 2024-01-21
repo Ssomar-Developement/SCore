@@ -85,6 +85,8 @@ public abstract class GUI implements IGUI {
 
     private int size;
 
+    private final static boolean test = false;
+
 
     public GUI(String name, int size) {
         inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
@@ -156,6 +158,8 @@ public abstract class GUI implements IGUI {
 
     public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
+        if(test && size >= 54 & invSlot == 27) material = Material.DIAMOND_SWORD;
+
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
@@ -171,6 +175,8 @@ public abstract class GUI implements IGUI {
         meta.setDisplayName(StringConverter.coloredString(displayName));
 
         for (String s : loreString) lore.add(StringConverter.coloredString(s));
+
+        if(test && size >= 54 & invSlot == 27) meta.setCustomModelData(3);
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -238,6 +244,7 @@ public abstract class GUI implements IGUI {
     }
 
     public void createBackGroundItem(int slot) {
+        if(test && (size < 54 || slot != 27)) return;
         if (!SCore.is1v13Less()) createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, slot, "&7", true, false);
         else removeItem(slot);
     }

@@ -13,7 +13,11 @@ import java.util.Optional;
 
 import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
 
-public class MobAround  extends EntityCommand {
+public class MobAround extends EntityCommand {
+
+    public MobAround() {
+        setCanExecuteCommands(true);
+    }
 
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {

@@ -69,6 +69,9 @@ public class ActionInfo implements Serializable {
 
     private StringPlaceholder sp;
 
+    /* For custom commands that can runs other custom commands ...*/
+    private int step;
+
     private Debugers debugers;
 
     public ActionInfo(String name, StringPlaceholder sp) {
@@ -89,6 +92,7 @@ public class ActionInfo implements Serializable {
         this.noPlayerTriggeredTheAction = false;
         this.velocity = Optional.empty();
         this.debugers = new Debugers();
+        this.step = 0;
     }
 
     public ActionInfo clone() {
@@ -108,6 +112,7 @@ public class ActionInfo implements Serializable {
         result.setBlockFace(blockFace);
         result.setDetailedBlocks(detailedBlocks);
         result.setVelocity(velocity);
+        result.setStep(step);
 
         return result;
     }

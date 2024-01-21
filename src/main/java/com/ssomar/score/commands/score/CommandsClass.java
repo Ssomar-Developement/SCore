@@ -140,6 +140,10 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 if (args.length >= 1) {
                     switch (args[0]) {
                         case "clear":
+                            if (args.length == 2) {
+                                sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument! Usage: /score cooldowns clear &8[ &7cooldownId &8]"));
+                                return;
+                            }
                             String cooldownId = args[1];
                             UUID uuid = null;
                             if (args.length >= 3) {
@@ -757,7 +761,9 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         if (args.length == 2) {
                             arguments.add("clear");
                         } else if (args.length == 3 && args[1].equalsIgnoreCase("clear")) {
-                            arguments.addAll(CooldownsManager.getInstance().getAllCooldownIds());
+                            List<String> cooldowns = CooldownsManager.getInstance().getAllCooldownIds();
+                            if (cooldowns.isEmpty()) arguments.add("No cooldowns to clear");
+                            else arguments.addAll(cooldowns);
                         } else if (args.length == 4 && args[1].equalsIgnoreCase("clear")) {
                             arguments.add("[UUID]");
                         }

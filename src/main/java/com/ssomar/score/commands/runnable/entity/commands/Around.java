@@ -15,6 +15,10 @@ import static com.ssomar.score.commands.runnable.player.commands.Around.aroundEx
 
 public class Around extends EntityCommand {
 
+    public Around() {
+        setCanExecuteCommands(true);
+    }
+
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         List<String> newArgs = new ArrayList<>(args);

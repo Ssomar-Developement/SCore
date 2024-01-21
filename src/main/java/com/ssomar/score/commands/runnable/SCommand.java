@@ -47,8 +47,12 @@ public abstract class SCommand {
     @Setter @Getter
     private int priority;
 
+    @Setter @Getter
+    private boolean canExecuteCommands;
+
     public SCommand() {
         this.priority = 1;
+        this.canExecuteCommands = false;
     }
 
     public static ArgumentChecker checkInteger(@NotNull String arg, boolean isFinalVerification, String template) {

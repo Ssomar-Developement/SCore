@@ -3,10 +3,8 @@ package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
-import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -19,7 +17,8 @@ import java.util.Optional;
 
 public class Nearest extends MixedCommand {
 
-    public static void aroundExecution(Entity receiver, List<String> args, ActionInfo aInfo, boolean displayMsgIfNoTargetHit) {
+    @Override
+    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -36,62 +35,18 @@ public class Nearest extends MixedCommand {
                 if (target == null || target.getLocation().distance(receiver.getLocation()) > distance) {
                     return;
                 }
-               // SsomarDev.testMsg("target: " + target.getName(), true);
+                // SsomarDev.testMsg("target: " + target.getName(), true);
 
                 if (target.hasMetadata("NPC") || target.equals(receiver)) return;
 
-                ActionInfo aInfo2 = aInfo.clone();
-                aInfo2.setReceiverUUID(target.getUniqueId());
+                List<Player> targets = new ArrayList<>();
+                targets.add(target);
 
-                StringPlaceholder sp = new StringPlaceholder();
-                sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
-
-                /* regroup the last args that correspond to the commands */
-                StringBuilder prepareCommands = new StringBuilder();
-                boolean removeMaxDistance = true;
-                for (String s : args) {
-                    if (removeMaxDistance) {
-                        removeMaxDistance = false;
-                        continue;
-                    }
-                    prepareCommands.append(s);
-                    prepareCommands.append(" ");
-                }
-                prepareCommands.deleteCharAt(prepareCommands.length() - 1);
-
-                String buildCommands = prepareCommands.toString();
-                String[] tab;
-                if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
-                else {
-                    tab = new String[1];
-                    tab[0] = buildCommands;
-                }
-                List<String> commands = new ArrayList<>();
-                for (int m = 0; m < tab.length; m++) {
-                    String s = tab[m];
-                    while (s.startsWith(" ")) {
-                        s = s.substring(1);
-                    }
-                    while (s.endsWith(" ")) {
-                        s = s.substring(0, s.length() - 1);
-                    }
-                    if (s.startsWith("/")) s = s.substring(1);
-
-                    commands.add(s);
-                }
-                //SsomarDev.testMsg("commands: " + commands, true);
-                commands = sp.replacePlaceholders(commands);
-                PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
-                CommandsExecutor.runCommands(builder);
+                CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
 
             }
         };
         SCore.schedulerHook.runTask(runnable, 0);
-    }
-
-    @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        aroundExecution(receiver, args, aInfo, Boolean.valueOf(args.get(1)));
     }
 
     @Override

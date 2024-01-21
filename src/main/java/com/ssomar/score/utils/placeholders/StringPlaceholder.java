@@ -346,7 +346,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     public String replacePlaceholderOfSCore(String s) {
         String replace = s;
 
-        while (replace.contains("%score_")) {
+        int maxReplace = StringUtils.countMatches(replace, "%score_");
+        int cpt = 0;
+        while (replace.contains("%score_") && cpt < maxReplace) {
+            cpt++;
             UUID uuid;
             if ((uuid = playerPlch.getPlayerUUID()) == null) {
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {

@@ -72,6 +72,7 @@ public class PlayerRunCommand extends RunCommand {
 
         Player receiver = Bukkit.getPlayer(receiverUUID);
 
+        //SsomarDev.testMsg("PRE RUN COMMAND STEP: "+this.getaInfo().getStep(), true);
         pCommand.run(launcher, receiver, args, getaInfo());
     }
 

@@ -3,10 +3,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
-import com.ssomar.score.commands.runnable.CommandsExecutor;
+import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
-import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +21,14 @@ import java.util.Optional;
 
 public class Nearest extends BlockCommand {
 
-    public static void aroundExecution(Location location, List<String> args, ActionInfo aInfo, boolean displayMsgIfNoTargetHit) {
+    public Nearest() {
+        setCanExecuteCommands(true);
+    }
+
+
+    @Override
+    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+        Location location = block.getLocation();
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -39,54 +44,14 @@ public class Nearest extends BlockCommand {
                 }
 
                 if (target.hasMetadata("NPC")) return;
+                List<Player> targets = new ArrayList<>();
+                targets.add(target);
 
-                ActionInfo aInfo2 = aInfo.clone();
-                aInfo2.setReceiverUUID(target.getUniqueId());
-
-                StringPlaceholder sp = new StringPlaceholder();
-                sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
-
-                /* regroup the last args that correspond to the commands */
-                StringBuilder prepareCommands = new StringBuilder();
-                for (String s : args) {
-                    prepareCommands.append(s);
-                    prepareCommands.append(" ");
-                }
-                prepareCommands.deleteCharAt(prepareCommands.length() - 1);
-
-                String buildCommands = prepareCommands.toString();
-                String[] tab;
-                if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
-                else {
-                    tab = new String[1];
-                    tab[0] = buildCommands;
-                }
-                List<String> commands = new ArrayList<>();
-                for (int m = 0; m < tab.length; m++) {
-                    String s = tab[m];
-                    while (s.startsWith(" ")) {
-                        s = s.substring(1);
-                    }
-                    while (s.endsWith(" ")) {
-                        s = s.substring(0, s.length() - 1);
-                    }
-                    if (s.startsWith("/")) s = s.substring(1);
-
-                    commands.add(s);
-                }
-                commands = sp.replacePlaceholders(commands);
-                PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
-                CommandsExecutor.runCommands(builder);
+                CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
 
             }
         };
         SCore.schedulerHook.runTask(runnable, 0);
-    }
-
-
-    @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-        aroundExecution(block.getLocation(), args, aInfo, Boolean.valueOf(args.get(1)));
     }
 
     @Override

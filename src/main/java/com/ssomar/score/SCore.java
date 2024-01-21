@@ -22,6 +22,7 @@ import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
 import com.ssomar.score.utils.display.Display;
@@ -37,7 +38,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -361,64 +361,53 @@ public final class SCore extends JavaPlugin implements SPlugin {
         FilterManager.getInstance().reload();
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
+
     }
 
-    public boolean hookSoftDependency(String plugin) {
-        Plugin softDepend = null;
-        if ((softDepend = Bukkit.getPluginManager().getPlugin(plugin)) != null) {
-            String when = " &8&oLoad Before";
-            if (!softDepend.isEnabled()) {
-                when = "&8&oLoad After";
-            }
-            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7" + plugin + " hooked !  &6(" + softDepend.getDescription().getVersion() + "&6) " + when);
-            return true;
-        }
-        return false;
-    }
 
     public void loadDependency() {
         /* Soft-Dependency part */
-        hasExecutableItems = hookSoftDependency("ExecutableItems");
+        hasExecutableItems = Dependency.EXECUTABLE_ITEMS.hookSoftDependency();
 
-        hasExecutableBlocks = hookSoftDependency("ExecutableBlocks");
+        hasExecutableBlocks = Dependency.EXECUTABLE_BLOCKS.hookSoftDependency();
 
-        hasExecutableEvents = hookSoftDependency("ExecutableEvents");
+        hasExecutableEvents = Dependency.EXECUTABLE_EVENTS.hookSoftDependency();
 
-        hasCustomPiglinsTrades = hookSoftDependency("CustomPiglinsTrades");
+        hasCustomPiglinsTrades = Dependency.CUSTOM_PIGLINS_TRADES.hookSoftDependency();
 
-        hasSParkour = hookSoftDependency("SParkour");
+        hasSParkour = Dependency.SPARKOUR.hookSoftDependency();
 
-        hasPlaceholderAPI = hookSoftDependency("PlaceholderAPI");
+        hasPlaceholderAPI = Dependency.PLACEHOLDER_API.hookSoftDependency();
 
-        hasWorldGuard = hookSoftDependency("WorldGuard");
+        hasWorldGuard = Dependency.WORLD_GUARD.hookSoftDependency();
 
-        hasVault = hookSoftDependency("Vault");
+        hasVault = Dependency.VAULT.hookSoftDependency();
 
-        hasIridiumSkyblock = hookSoftDependency("IridiumSkyblock");
+        hasIridiumSkyblock = Dependency.IRIDIUM_SKYBLOCK.hookSoftDependency();
 
-        hasSuperiorSkyblock2 = hookSoftDependency("SuperiorSkyblock2");
+        hasSuperiorSkyblock2 = Dependency.SUPERIOR_SKYBLOCK2.hookSoftDependency();
 
-        hasBentoBox = hookSoftDependency("BentoBox");
+        hasBentoBox = Dependency.BENTO_BOX.hookSoftDependency();
 
-        hasMultiverse = hookSoftDependency("Multiverse-Core");
+        hasMultiverse = Dependency.MULTIVERSE_CORE.hookSoftDependency();
 
-        hasLands = hookSoftDependency("Lands");
+        hasLands = Dependency.LANDS.hookSoftDependency();
 
-        hasTowny = hookSoftDependency("Towny");
+        hasTowny = Dependency.TOWNY.hookSoftDependency();
 
-        hasGriefPrevention = hookSoftDependency("GriefPrevention");
+        hasGriefPrevention = Dependency.GRIEF_PREVENTION.hookSoftDependency();
 
-        hasGriefDefender = hookSoftDependency("GriefDefender");
+        hasGriefDefender = Dependency.GRIEF_DEFENDER.hookSoftDependency();
 
-        hasCoreProtect = hookSoftDependency("CoreProtect");
+        hasCoreProtect = Dependency.CORE_PROTECT.hookSoftDependency();
 
-        hasFactionsUUID = hookSoftDependency("Factions");
+        hasFactionsUUID = Dependency.FACTIONS_UUID.hookSoftDependency();
 
         /* Test for verzante and qvazzar */
         //hasProtocolLib = false;
 
 
-        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+        if (Bukkit.getPluginManager().getPlugin(Dependency.PROTOCOL_LIB.name()) != null) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7ProtocolLib hooked !");
             hasProtocolLib = true;
 
@@ -455,12 +444,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
             new HardnessesHandler().registerListener();
         }
 
-        hasNBTAPI = hookSoftDependency("NBTAPI");
+        hasNBTAPI = Dependency.NBTAPI.hookSoftDependency();
 
-        hasResidence = hookSoftDependency("Residence");
+        hasResidence = Dependency.RESIDENCE.hookSoftDependency();
 
 
-        if (Bukkit.getPluginManager().getPlugin("PlotSquared") != null) {
+        if (Bukkit.getPluginManager().getPlugin(Dependency.PLOT_SQUARED.name()) != null) {
             try {
                 PlotAPI plotAPI = new PlotAPI();
                 Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7PlotSquared hooked !");
@@ -471,15 +460,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
             }
         }
 
-        hasHeadDatabase = hookSoftDependency("HeadDatabase");
+        hasHeadDatabase = Dependency.HEAD_DATABASE.hookSoftDependency();
 
-        hasHeadDB = hookSoftDependency("HeadDB");
+        hasHeadDB = Dependency.HEAD_DB.hookSoftDependency();
 
-        hasMythicMobs = hookSoftDependency("MythicMobs");
+        hasMythicMobs = Dependency.MYTHIC_MOBS.hookSoftDependency();
 
-        hasDecentHolograms = hookSoftDependency("DecentHolograms");
+        hasDecentHolograms = Dependency.DECENT_HOLOGRAMS.hookSoftDependency();
 
-        if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
+        if (Bukkit.getPluginManager().isPluginEnabled(Dependency.HOLOGRAPHIC_DISPLAYS.name())) {
             try {
                 HolographicDisplaysAPI.get(SCore.plugin);
                 Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7HolographicDisplays hooked !");
@@ -491,31 +480,31 @@ public final class SCore extends JavaPlugin implements SPlugin {
             }
         }
 
-        hasCMI = hookSoftDependency("CMI");
+        hasCMI = Dependency.CMI.hookSoftDependency();
 
-        hasAureliumSkills = hookSoftDependency("AureliumSkills");
+        hasAureliumSkills = Dependency.AURELIUM_SKILLS.hookSoftDependency();
 
-        hasItemsAdder = hookSoftDependency("ItemsAdder");
+        hasItemsAdder = Dependency.ITEMS_ADDER.hookSoftDependency();
 
-        hasOraxen = hookSoftDependency("Oraxen");
+        hasOraxen = Dependency.ORAXEN.hookSoftDependency();
 
-        hasShopGUIPlus = hookSoftDependency("ShopGUIPlus");
+        hasShopGUIPlus = Dependency.SHOP_GUI_PLUS.hookSoftDependency();
 
-        hasRoseLoot = hookSoftDependency("RoseLoot");
+        hasRoseLoot = Dependency.ROSE_LOOT.hookSoftDependency();
 
-        hasRoseStacker = hookSoftDependency("RoseStacker");
+        hasRoseStacker = Dependency.ROSE_STACKER.hookSoftDependency();
 
-        hasMMOCore = hookSoftDependency("MMOCore");
+        hasMMOCore = Dependency.MMO_CORE.hookSoftDependency();
 
-        hasProtectionStones = hookSoftDependency("ProtectionStones");
+        hasProtectionStones = Dependency.PROTECTION_STONES.hookSoftDependency();
 
-        hasTAB = hookSoftDependency("TAB");
+        hasTAB = Dependency.TAB.hookSoftDependency();
 
-        hasTerra = hookSoftDependency("Terra");
+        hasTerra = Dependency.TERRA.hookSoftDependency();
 
-        hasJetsMinions = hookSoftDependency("JetsMinions");
+        hasJetsMinions = Dependency.JETS_MINIONS.hookSoftDependency();
 
-        hasEcoSkills = hookSoftDependency("EcoSkills");
+        hasEcoSkills = Dependency.ECO_SKILLS.hookSoftDependency();
     }
 
     @Override

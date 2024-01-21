@@ -46,6 +46,7 @@ public abstract class RunCommand implements Serializable {
         this.uuid = UUID.randomUUID();
         this.task = null;
         this.pickupInfo();
+        //SsomarDev.testMsg("CURRENT STEP BUILD RUN COMMAND: "+aInfo.getStep(), true);
     }
 
     public RunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
@@ -85,23 +86,28 @@ public abstract class RunCommand implements Serializable {
 
     public void runCommand(CommandManager manager) {
 
+        //SsomarDev.testMsg("PRE PRE RUN step "+aInfo.getStep(), true);
+
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                //SsomarDev.testMsg("Command run command: "+this.getBrutCommand(), true);
+                //SsomarDev.testMsg("Command run command: "+getBrutCommand(), true);
                 String finalCommand = getBrutCommand();
                 String [] split = finalCommand.split(" ");
                 int later = 0;
                 Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
                 for (String s : split) {
-                    /* Exception 1 */
-                    if(s.contains("%math_") && s.contains("%around")){
+                    /* Exception 1  for example %parseother_{%around_target%}_{player_name}
+                    * He we dont want to replace PAIPI placeholders now, we want to replace them later when the %around_target% will be parsed
+                    *
+                    * The good condition is contains %???? and %around to make sure it works with all papi libs*/
+                    if((s.contains("%math_") || s.contains("%parseother_")) && s.contains("%around")){
                         placeholdersToReplaceLatter.put(later, s);
                         finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
                         later++;
                     }
                 }
-                //Exception for WHILE we don't want to replace the placeholders
+                //Exception 2 for WHILE we don't want to replace the placeholders
                 if(!(finalCommand.startsWith("WHILE") || finalCommand.startsWith("IF"))) {
                     finalCommand = getSp().replacePlaceholder(finalCommand);
                 }
@@ -199,10 +205,6 @@ public abstract class RunCommand implements Serializable {
 
     public ActionInfo getaInfo() {
         return aInfo;
-    }
-
-    public void setaInfo(ActionInfo aInfo) {
-        this.aInfo = aInfo;
     }
 
     public UUID getUuid() {

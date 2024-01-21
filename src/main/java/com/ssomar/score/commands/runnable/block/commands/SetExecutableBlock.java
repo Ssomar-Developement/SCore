@@ -9,6 +9,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.AllWorldManager;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.*;
@@ -26,7 +27,7 @@ public class SetExecutableBlock extends BlockCommand {
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
-        if (SCore.hasExecutableBlocks) {
+        if (SCore.hasExecutableBlocks && Dependency.EXECUTABLE_BLOCKS.isEnabled()) {
           Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
             if (!oOpt.isPresent()) {
                 ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: " + args.get(0) + " for the command SETEXECUTABLEBLOCK (object: " + aInfo.getName() + ")");
@@ -127,7 +128,7 @@ public class SetExecutableBlock extends BlockCommand {
             error = notEnoughArgs + setEB;
         } else {
 
-            if (SCore.hasExecutableBlocks) {
+            if (SCore.hasExecutableBlocks && Dependency.EXECUTABLE_BLOCKS.isEnabled()) {
                 /* Ne pas verif car ca peut bloquer si on veut poser le block qui est associé à l'activator */
 //				if(!ExecutableBlockManager.getInstance().containsBlockWithID(args.get(0))) {
 //					error = "There is no ExecutableBlock associate with the ID: "+args.get(0)+" for the command"+setEB;

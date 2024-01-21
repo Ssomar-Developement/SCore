@@ -21,11 +21,14 @@ public class SetItemCustomModelData extends PlayerCommand {
         ItemStack item;
         ItemMeta itemmeta;
 
+        int slot = Integer.valueOf(args.get(0));
+
         try {
-            item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
+            if(slot == -1) item = receiver.getInventory().getItemInMainHand();
+            else item = receiver.getInventory().getItem(slot);
+
             itemmeta = item.getItemMeta();
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return;
         }
 
