@@ -34,6 +34,8 @@ public class ProtocolLibAPI {
     public static List<BukkitTask> sendEquipmentVisualReplace(LivingEntity entity, EquipmentSlot slot, ItemStack item, int time) {
         List<BukkitTask> tasks = new ArrayList<>();
 
+        if (!Dependency.PROTOCOL_LIB.isEnabled()) return tasks;
+
         /* Update for other */
         for (int i = 0; i < time ; i++) {
             BukkitRunnable runnable = new BukkitRunnable() {
@@ -111,7 +113,7 @@ public class ProtocolLibAPI {
 
     public static void reduceDamageIndicator() {
 
-        if (SCore.hasProtocolLib && !SCore.is1v11Less() && GeneralConfig.getInstance().isReduceDamageIndicatorWithProtolcolLib()) {
+        if (Dependency.PROTOCOL_LIB.isEnabled() && !SCore.is1v11Less() && GeneralConfig.getInstance().isReduceDamageIndicatorWithProtolcolLib()) {
             try {
                 /* LIMIT the particles of damage */
                 SCore.protocolManager.addPacketListener(
@@ -156,4 +158,5 @@ public class ProtocolLibAPI {
             }
         }
     }
+
 }

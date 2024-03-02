@@ -77,6 +77,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new DropSpecificEI());
         commands.add(new OpenChest());
         commands.add(new EICooldown());
+        commands.add(new EECooldown());
         commands.add(new AddItemAttribute());
         commands.add(new SetItemAttribute());
         commands.add(new SetArmorTrim());

@@ -36,7 +36,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     private static final String symbolEnd = "}";
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = "\\+";
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = false
+            ;
     private List<String> listOfCustomBlocksPluginSupported;
 
     /* If it checks blocks tags or not, if not it checks item tags */
@@ -88,14 +89,19 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                 for (String data : datas.split(symbolSeparator)) {
                     String[] dataSplit = data.split(symbolEquals);
                     if (dataSplit.length != 2) {
-                        errors.add("&cERROR, Couldn't load the The tags value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Example : FURNACE{lit:true}  BEETROOTS{age:3}, List of tags: https://minecraft.fandom.com/wiki/Block_states");
+                        String parentInfo = "";
+                        if(getParent() != null) parentInfo = getParent().getParentInfo();
+
+                        errors.add("&cERROR, Couldn't load the The tags value of " + this.getName() + " from config, value: " + s + " &7&o" + parentInfo + " &6>> Example : FURNACE{lit:true}  BEETROOTS{age:3}, List of tags: https://minecraft.fandom.com/wiki/Block_states");
                         continue;
                     }
                 }
             }
 
             if (!MaterialWithGroups.getMaterialWithGroups(materialStr.toUpperCase()).isPresent()) {
-                errors.add("&cERROR, Couldn't load the Material + GROUPS value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Check the wiki if you want the list of materials and groups");
+                String parentInfo = "";
+                if(getParent() != null) parentInfo = getParent().getParentInfo();
+                errors.add("&cERROR, Couldn't load the Material + GROUPS value of " + this.getName() + " from config, value: " + s + " &7&o" + parentInfo + " &6>> Check the wiki if you want the list of materials and groups");
                 continue;
             }
             values.add(s);
@@ -183,14 +189,18 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                     String[] spliter2 = spliter1[0].split(symbolStartSplit);
 
                     // Otherwise that means states are empty
-                    if (spliter2.length == 2) {
+                    if (spliter2.length >= 2) {
                         SsomarDev.testMsg(">> spliter2: " + spliter2[1], DEBUG);
 
                         String[] spliterStates = spliter2[1].split(symbolSeparator);
 
                         for (String state : spliterStates) {
                             String[] spliterState = state.split(symbolEquals);
-                            SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
+                            if(spliterState.length < 2) {
+                                SsomarDev.testMsg(">> spliterState.length: " + spliterState.length, DEBUG);
+                                continue;
+                            }
+                            //SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
                             states.put(spliterState[0].toUpperCase(), spliterState[1].toUpperCase());
                         }
                     }
@@ -211,9 +221,11 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                     if (tags.isEmpty()) return true;
                     else {
                         for (String key : tags.keySet()) {
-                            key = key.toUpperCase();
-                            if (states.containsKey(key)) {
+                            SsomarDev.testMsg(">> verif key: " + key, DEBUG);
+                            String keyUpper = key.toUpperCase();
+                            if (states.containsKey(keyUpper)) {
                                 if (!states.get(key).equalsIgnoreCase(tags.get(key))) {
+                                    SsomarDev.testMsg(">> verif states.get(key): " + states.get(key)+ " != tags.get(key): " + tags.get(key), DEBUG);
                                     invalid = true;
                                     break;
                                 }

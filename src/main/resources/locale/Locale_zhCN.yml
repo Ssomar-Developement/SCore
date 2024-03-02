@@ -1,13 +1,12 @@
-actionbarMessage: '&e&l%item% &a&l的剩余时间: &e&l%time%'
-actionbarEnd: '&e&l%item% &c&l不再激活'
-setActionbarOn: '&a你 &a&l开启 &a了你的行动条(ActionBar)'
-setActionbarOff: '&c你 &4&l关闭 &c了你的行动条(ActionBar)'
-haveActionbarOn: '&a你已经 &a&l开启 &a了你的行动条(ActionBar)'
-haveActionbarOff: '&c你已经 &4&l关闭 &c了你的行动条(ActionBar)'
-errorMoneyMsg: '&4&l[SCore] &c你账户上并没有: &6%amount%$&c! &6(&e现在数额:
-  &a%balance%$&6)'
-newBalanceMsg: '&6&l[SCore] &e交易: &c-%amount%$ &e最新余额: &a%balance%$'
-noPlayerHit: '&c没有玩家被击中'
-noEntityHit: '&c没有实体被击中'
-damageCommandKill: '&8%target% &7因攻击性的指令而死亡了'
+actionbarMessage: "&e&l%item% &a&l的剩余时间: &e&l%time%"
+actionbarEnd: "&e&l%item% &c&l不再激活"
+setActionbarOn: "&a你 &a&l开启 &a了你的行动条(ActionBar)"
+setActionbarOff: "&c你 &4&l关闭 &c了你的行动条(ActionBar)"
+haveActionbarOn: "&a你已经 &a&l开启 &a了你的行动条(ActionBar)"
+haveActionbarOff: "&c你已经 &4&l关闭 &c了你的行动条(ActionBar)"
+errorMoneyMsg: "&4&l[SCore] &c你账户上并没有: &6%amount%$&c! &6(&e现在数额: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &e交易: &c-%amount%$ &e最新余额: &a%balance%$"
+noPlayerHit: "&c没有玩家被击中"
+noEntityHit: "&c没有实体被击中"
+damageCommandKill: "&8%target% &7因攻击性的指令而死亡了"
 variableValueSet: "&aValue set !"

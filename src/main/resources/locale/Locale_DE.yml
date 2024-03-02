@@ -1,14 +1,13 @@
-actionbarMessage: '&a&lVerbleibende Zeit für &e&l%item% &a&l: &e&l%time%'
-actionbarEnd: '&c&lDEAKTIVIERUNG VON &e&l%item%'
-setActionbarOn: '&aSie haben Ihre Aktionsleiste an &a&lAN'
-setActionbarOff: '&cSie haben Ihre Aktionsleiste an &4&lAUS'
-haveActionbarOn: '&aSie haben bereits eine Actionbar &a&lON'
-haveActionbarOff: '&cSie haben bereits actionbar &4&lOFF'
-errorMoneyMsg: '&4&l[SCore] &cSie müssen nicht: &6%amount%$ &cauf Ihr Konto ! &6(&eDerzeit:
-  &a%balance%$&6)'
-newBalanceMsg: '&6&l[SCore] &eTransaktion: &c-%amount%$ &eNeues Guthaben: &a%balance%$'
-newBalancePositiveMsg: '&6&l[SCore] &eTransaktion: &a%amount%$ &eNeues Guthaben: &a%balance%$'
-noPlayerHit: '&cKein Spieler wurde getroffen'
-noEntityHit: '&cKeine Entität wurde getroffen'
-damageCommandKill: '&8%target% &7ist durch einen Schadensbefehl tot'
-variableValueSet: '&e&l[SCore] &aWert gesetzt !'
+actionbarMessage: "&a&lVerbleibende Zeit für &e&l%item% &a&l: &e&l%time%"
+actionbarEnd: "&c&lDEAKTIVIERUNG VON &e&l%item%"
+setActionbarOn: "&aSie haben Ihre Aktionsleiste an &a&lAN"
+setActionbarOff: "&cSie haben Ihre Aktionsleiste an &4&lAUS"
+haveActionbarOn: "&aSie haben bereits eine Actionbar &a&lON"
+haveActionbarOff: "&cSie haben bereits actionbar &4&lOFF"
+errorMoneyMsg: "&4&l[SCore] &cSie müssen nicht: &6%amount%$ &cauf Ihr Konto ! &6(&eDerzeit: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &eTransaktion: &c-%amount%$ &eNeues Guthaben: &a%balance%$"
+newBalancePositiveMsg: "&6&l[SCore] &eTransaktion: &a%amount%$ &eNeues Guthaben: &a%balance%$"
+noPlayerHit: "&cKein Spieler wurde getroffen"
+noEntityHit: "&cKeine Entität wurde getroffen"
+damageCommandKill: "&8%target% &7ist durch einen Schadensbefehl tot"
+variableValueSet: "&e&l[SCore] &aWert gesetzt !"

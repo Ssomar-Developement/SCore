@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.player.parent;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -49,8 +50,10 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfNotBlocking(this));
         conditions.add(new IfGliding(this));
         conditions.add(new IfNotGliding(this));
-        conditions.add(new IfSwimming(this));
-        conditions.add(new IfNotSwimming(this));
+        if(!SCore.is1v11Less()) {
+            conditions.add(new IfSwimming(this));
+            conditions.add(new IfNotSwimming(this));
+        }
         conditions.add(new IfStunned(this));
         conditions.add(new IfNotStunned(this));
         conditions.add(new IfIsOnFire(this));

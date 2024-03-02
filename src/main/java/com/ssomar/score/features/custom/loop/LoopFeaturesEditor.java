@@ -1,5 +1,7 @@
 package com.ssomar.score.features.custom.loop;
 
+import com.ssomar.score.features.FeatureAbstract;
+import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
@@ -7,16 +9,22 @@ public class LoopFeaturesEditor extends FeatureEditorInterface<LoopFeatures> {
 
     public final LoopFeatures loopFeatures;
 
-    public LoopFeaturesEditor(LoopFeatures dropFeatures) {
+    public LoopFeaturesEditor(LoopFeatures loopFeatures) {
         super("&lLoop features Editor", 3 * 9);
-        this.loopFeatures = dropFeatures.clone(dropFeatures.getParent());
+        this.loopFeatures = loopFeatures.clone(loopFeatures.getParent());
         load();
     }
 
     @Override
     public void load() {
-        loopFeatures.getDelay().initAndUpdateItemParentEditor(this, 0);
-        loopFeatures.getDelayInTick().initAndUpdateItemParentEditor(this, 1);
+        int i = 0;
+        for(FeatureInterface feature : loopFeatures.getFeatures()) {
+            if(feature instanceof FeatureAbstract)  {
+                FeatureAbstract featureAbstract = (FeatureAbstract) feature;
+                featureAbstract.initAndUpdateItemParentEditor(this, i);
+                i++;
+            }
+        }
 
 
         // Back

@@ -56,12 +56,15 @@ public class If extends PlayerCommand {
 
         StringPlaceholder sp = aInfo.getSp();
         if (sp == null) sp = new StringPlaceholder();
-        sp.setPlayerPlcHldr(receiver.getUniqueId());
+        sp.setPlayerPlcHldr(receiver.getUniqueId(), aInfo.getSlot());
         sp.reloadAllPlaceholders();
 
         List<Player> targets = new ArrayList<>();
         targets.add(receiver);
 
+        /* for (String commandToRun: args.subList(1, args.size())){
+            SsomarDev.testMsg("Command to run IF >> "+commandToRun, true);
+        } */
 
         if (conditionFeature.verify(receiver, null, sp)) {
             CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);

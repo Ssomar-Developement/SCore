@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -66,6 +67,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     AroundPlayerTargetPlaceholders aroundPlayerTargetPlch = new AroundPlayerTargetPlaceholders();
     /* placeholders of the around target entity */
     AroundEntityTargetPlaceholders aroundEntityTargetPlch = new AroundEntityTargetPlaceholders();
+    /* placeholders of the effect */
+    private final EffectPlaceholders effectPlch = new EffectPlaceholders();
     /* placeholders of the SObject */
     private String id = "";
     private String name = "";
@@ -200,6 +203,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return this;
     }
 
+    public StringPlaceholder setEffectPlcHldr(PotionEffect effect) {
+        effectPlch.setEffectPlcHldr(effect);
+        return this;
+    }
+
     public StringPlaceholder reloadAllPlaceholders() {
         playerPlch.reloadPlayerPlcHldr();
         targetPlch.reloadPlayerPlcHldr();
@@ -210,6 +218,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         targetBlockPlch.reloadBlockPlcHldr();
         aroundPlayerTargetPlch.reloadPlayerPlcHldr();
         aroundEntityTargetPlch.reloadEntityPlcHldr();
+        if(effectPlch != null) effectPlch.reloadEffectPlcHldr();
         /* delayed command with old version has this to null */
         if (projectilePlch != null) projectilePlch.reloadProjectilePlcHldr();
         return this;
@@ -312,6 +321,11 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         s = aroundPlayerTargetPlch.replacePlaceholder(s);
 
         s = aroundEntityTargetPlch.replacePlaceholder(s);
+
+        if (effectPlch != null){
+            placeholders.putAll(effectPlch.getPlaceholders());
+            s = effectPlch.replacePlaceholder(s);
+        }
 
         if (timePlch != null) s = timePlch.replacePlaceholder(s);
 

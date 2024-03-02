@@ -15,7 +15,9 @@ public class RemoveCancelDamageEventMetadataTagEvent implements Listener {
             Player damager = (Player) e.getDamager();
             if (damager.hasMetadata("cancelDamageEvent")) {
                 damager.removeMetadata("cancelDamageEvent", (Plugin) SCore.plugin);
-                return;
+            }
+            if (damager.hasMetadata("damageFromCustomCommand")) {
+                damager.removeMetadata("damageFromCustomCommand", (Plugin) SCore.plugin);
             }
         }
     }

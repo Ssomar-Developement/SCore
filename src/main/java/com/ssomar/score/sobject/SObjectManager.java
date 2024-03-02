@@ -1,11 +1,13 @@
 package com.ssomar.score.sobject;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.sobject.events.SObjectLoadEvent;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -82,8 +84,14 @@ public abstract class SObjectManager<T extends SObject> {
     }
 
     public void generateLoadEvent(String id, T object) {
-        SObjectLoadEvent event = new SObjectLoadEvent(id, object);
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                SObjectLoadEvent event = new SObjectLoadEvent(id, object);
+                Bukkit.getServer().getPluginManager().callEvent(event);
+            }
+        };
+        SCore.schedulerHook.runTask(runnable, 0);
     }
 
     public Optional<T> getDefaultObjectWithID(String ID) {

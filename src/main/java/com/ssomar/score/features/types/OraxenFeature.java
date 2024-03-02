@@ -79,7 +79,7 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
             String id = getValue().get();
             //SsomarDev.testMsg("id: " + id, true);
             if(OraxenFurniture.isFurniture(id)){
-                OraxenFurniture.place(location, id, Rotation.NONE, BlockFace.UP);
+                OraxenFurniture.place(id, location, Rotation.NONE, BlockFace.UP);
                 return true;
             }
             else if (OraxenBlocks.isOraxenBlock(id)) {
@@ -103,7 +103,7 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
             }
             else if(OraxenFurniture.isFurniture(block)) {
                 SsomarDev.testMsg("isFurniture", true);
-                OraxenFurniture.getFurnitureMechanic(block).removeSolid(block);
+                OraxenFurniture.remove(block.getLocation(), null);
             }
             else if (OraxenBlocks.isOraxenBlock(block)) {
                 SsomarDev.testMsg("isOraxenBlock", true);

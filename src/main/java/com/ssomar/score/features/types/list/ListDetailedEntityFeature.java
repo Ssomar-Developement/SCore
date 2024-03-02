@@ -11,6 +11,7 @@ import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.MythicMobsAPI;
 import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -231,7 +232,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         for (Map<String, String> tags : tagsList) {
             boolean invalid = false;
             if (tags.isEmpty()) return true;
-            else {
+            else if(Dependency.NBTAPI.isEnabled()){
                 NBTEntity nbtent = new NBTEntity(entity);
                 for (String key : tags.keySet()) {
                     String value = tags.get(key);

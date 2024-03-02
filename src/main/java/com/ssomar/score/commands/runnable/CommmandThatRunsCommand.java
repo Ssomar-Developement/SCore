@@ -52,6 +52,8 @@ public interface CommmandThatRunsCommand {
             aInfo2.setStep(aInfo.getStep() + 1);
 
             StringPlaceholder sp = new StringPlaceholder();
+            /* Necessary to replace old system with normal placeholders for IF */
+            sp.setPlayerPlcHldr(target.getUniqueId(), aInfo.getSlot());
             sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
 
             /* regroup the last args that correspond to the commands */

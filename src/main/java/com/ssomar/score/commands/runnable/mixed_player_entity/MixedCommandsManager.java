@@ -63,6 +63,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new StunDisable());
         commands.add(new StunEnable());
         commands.add(new TeleportOnCursor());
+        commands.add(new TranferItem());
         commands.add(new UnsafeTeleportOnCursor());
         commands.add(new WorldTeleport());
 

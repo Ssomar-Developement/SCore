@@ -28,7 +28,7 @@ public class Nearest extends MixedCommand {
                 //SsomarDev.testMsg("distance: " + distance, true);
 
                 Player target = receiver.getWorld().getPlayers().stream()
-                        .filter(p -> !p.equals(receiver))
+                        .filter(p -> !p.equals(receiver) && p.getLocation().getWorld().equals(receiver.getLocation().getWorld()))
                         .min(Comparator.comparingDouble((p) -> p.getLocation().distanceSquared(receiver.getLocation())))
                         .orElse(null);
 

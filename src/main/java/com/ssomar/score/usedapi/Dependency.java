@@ -84,7 +84,13 @@ public enum Dependency {
 
     JETS_MINIONS("JetsMinions"),
 
-    ECO_SKILLS("EcoSkills");
+    ECO_SKILLS("EcoSkills"),
+
+    WILD_STACKER("WildStacker"),
+
+    CUSTOM_CRAFTING("CustomCrafting"),
+
+    WORLD_EDIT("WorldEdit");
 
     private final String name;
 
@@ -103,6 +109,10 @@ public enum Dependency {
             return true;
         }
         return false;
+    }
+
+    public boolean isInstalled() {
+        return  Bukkit.getPluginManager().getPlugin(name) != null;
     }
 
     public boolean isEnabled() {

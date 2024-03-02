@@ -93,6 +93,11 @@ public class PlayerRunCommand extends RunCommand {
 
     @Override
     public void executeRunnable(BukkitRunnable runnable) {
+        /* Exceptional case for server loop */
+        /* if(receiverUUID == null) {
+            SCore.schedulerHook.runTask(runnable, 0);
+            return;
+        } */
         Player receiver = Bukkit.getPlayer(receiverUUID);
         SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
     }

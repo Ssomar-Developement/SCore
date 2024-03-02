@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.types.BooleanFeature;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,7 +26,7 @@ public class InvisibleFeature extends BooleanFeature implements SProjectileFeatu
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
-        if (getValue() && SCore.hasProtocolLib) {
+        if (getValue() && Dependency.PROTOCOL_LIB.isEnabled()) {
             PacketContainer entityPacketContainer = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
             if (!SCore.is1v17Plus()) entityPacketContainer.getIntegerArrays().write(0, new int[]{e.getEntityId()});
             else entityPacketContainer.getIntLists().write(0, Collections.singletonList(e.getEntityId()));

@@ -1,7 +1,6 @@
 package com.ssomar.score.features.custom.potionsettings;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -69,10 +68,10 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             errors.addAll(this.potionExtended.load(plugin, potionSettings, isPremiumLoading));
             errors.addAll(this.potionUpgraded.load(plugin, potionSettings, isPremiumLoading));
             errors.addAll(this.potionEffects.load(plugin, potionSettings, isPremiumLoading));
-            SsomarDev.testMsg("§aPotion settings loaded for the feature §e"+this.getName(), true);
+            //SsomarDev.testMsg("§aPotion settings loaded for the feature §e"+this.getName(), true);
         }
         else {
-            SsomarDev.testMsg("§cNo potion settings found for the feature §e"+this.getName(), true);
+            //SsomarDev.testMsg("§cNo potion settings found for the feature §e"+this.getName(), true);
         }
 
         return errors;

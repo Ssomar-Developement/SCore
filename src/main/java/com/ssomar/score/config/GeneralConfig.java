@@ -36,6 +36,8 @@ public class GeneralConfig extends Config {
     @Getter
     private boolean debugCheckDamages;
 
+    private boolean enableDetectionEntitiesFromSpawner;
+
     public GeneralConfig() {
         super();
         super.setup(SCore.plugin);
@@ -71,6 +73,7 @@ public class GeneralConfig extends Config {
         jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
         silenceOutputs = config.getStringList("silenceOutputs");
         debugCheckDamages = config.getBoolean("debugCheckDamages", false);
+        enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
 
     }
 
@@ -128,6 +131,10 @@ public class GeneralConfig extends Config {
 
     public void setDbPort(int dbPort) {
         this.dbPort = dbPort;
+    }
+
+    public boolean isEnableDetectionEntitiesFromSpawner() {
+        return enableDetectionEntitiesFromSpawner;
     }
 
 }

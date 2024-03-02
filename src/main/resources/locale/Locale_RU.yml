@@ -1,14 +1,13 @@
-actionbarMessage: '&a&lВремя до конца &e&l%item% &a&l: &e&l%time%'
-actionbarEnd: '&c&lДеактивация &e&l%item%'
-setActionbarOn: '&aВы &a&lактивировали Actionbar!'
-setActionbarOff: '&cВы &4&lдеактивировали Actionbar!'
-haveActionbarOn: '&aActionbar уже&a&lвключен!'
-haveActionbarOff: '&cActionbar уже&4&lвыключен!'
-errorMoneyMsg: '&4&l[SCore] &cУ вас не хватает столько: &6%amount%$ &cденег для активации предмета! &6(&eCurrently:
-  &a%balance%$&6)'
-newBalanceMsg: '&6&l[SCore] &eTransaction: &c-%amount%$ &eТекущий балланс: &a%balance%$'
-newBalancePositiveMsg: '&6&l[SCore] &eTransaction: &a%amount%$ &eТекущий балланс: &a%balance%$'
-noPlayerHit: '&cНи один игрок не был поражен!'
-noEntityHit: '&cНи одно существо не было поражено!'
-damageCommandKill: '&8%target% &7убит(а) командой.'
-variableValueSet: '&aValue установлена !'
+actionbarMessage: "&a&lВремя до конца &e&l%item% &a&l: &e&l%time%"
+actionbarEnd: "&c&lДеактивация &e&l%item%"
+setActionbarOn: "&aВы &a&lактивировали Actionbar!"
+setActionbarOff: "&cВы &4&lдеактивировали Actionbar!"
+haveActionbarOn: "&aActionbar уже&a&lвключен!"
+haveActionbarOff: "&cActionbar уже&4&lвыключен!"
+errorMoneyMsg: "&4&l[SCore] &cУ вас не хватает столько: &6%amount%$ &cденег для активации предмета! &6(&eCurrently: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &eTransaction: &c-%amount%$ &eТекущий балланс: &a%balance%$"
+newBalancePositiveMsg: "&6&l[SCore] &eTransaction: &a%amount%$ &eТекущий балланс: &a%balance%$"
+noPlayerHit: "&cНи один игрок не был поражен!"
+noEntityHit: "&cНи одно существо не было поражено!"
+damageCommandKill: "&8%target% &7убит(а) командой."
+variableValueSet: "&aValue установлена !"

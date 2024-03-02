@@ -2,5 +2,5 @@ jdk: openjdk16
 before_install:
   - source "$HOME/.sdkman/bin/sdkman-init.sh"
   - sdk update
-  - sdk install java 16.0.2
-  - sdk use java 16.0.2
+  - sdk install java 16.0.2-tem
+  - sdk use java 16.0.2-tem

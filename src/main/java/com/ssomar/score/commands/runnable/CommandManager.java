@@ -70,7 +70,7 @@ public abstract class CommandManager<T extends SCommand> {
             if (commandOpt.isPresent() && !entry.contains("+++")) {
                 T command = commandOpt.get();
                 Optional<String> error = verifCommand(command, entry);
-                error.ifPresent(value -> errorList.add("&cERROR, Invalid command  &7&o(ID: " + id+ ") "+value));
+                error.ifPresent(value -> errorList.add("&cERROR, Invalid command &7&o(Command: "+entry+")  &7&o(ID: " + id+ ") "+value));
             }
             result.add(entry);
         }

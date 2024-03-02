@@ -227,7 +227,8 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File(folder.getPath() + "/" + s);
+            String folderPath = folder.getPath();
+            File fileEntry = new File(folderPath + "/" + s);
             if (fileEntry.isDirectory()) {
                 loadObjectsInFolder(fileEntry, isPremiumLoading);
             } else {
@@ -239,7 +240,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
                     }
                 };
                 runnable3.runTaskLater(SCore.plugin, cpt* 10L);*/
-                loadObjectByFile(folder.getPath() + "/" + s, isPremiumLoading);
+                loadObjectByFile(folderPath + "/" + s, isPremiumLoading);
             }
         }
     }
@@ -336,7 +337,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             if (this.CreateBackupFilIfNotValid(file)) return Optional.empty();
             configVersionsConverter(file);
             FileConfiguration objectConfig = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
-            return getObject(objectConfig, id, showError);
+            return getObject(file, objectConfig, id, showError);
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();
@@ -364,6 +365,10 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     public Optional<T> getObjectById(String id, boolean showError) {
         return getObjectByFile(searchFileOfObject(id), id, showError);
+    }
+
+    public Optional<T> getObject(File file, FileConfiguration objectConfig, String id, boolean showError) {
+        return getObject(objectConfig, id, showError, !sPlugin.isLotOfWork(), file.getPath());
     }
 
     public Optional<T> getObject(FileConfiguration objectConfig, String id, boolean showError) {
@@ -468,13 +473,14 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         load();
     }
 
-    public void reloadFolder(String folderName) {
+    public boolean reloadFolder(String folderName) {
         File folder = searchFolder(folderName);
-        if(folder == null) return;
+        if(folder == null) return false;
         List<String> listFiles = getObjectsNameInFolder(folder);
         for(String s : listFiles){
             sObjectManager.reloadObject(s);
         }
+        return true;
     }
 
     public void resetCpt() {

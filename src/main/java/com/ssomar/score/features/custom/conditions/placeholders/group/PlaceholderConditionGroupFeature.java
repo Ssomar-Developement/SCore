@@ -53,7 +53,9 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     }
 
     public boolean verify(Player player, Player target, @Nullable StringPlaceholder sp, Event event) {
+        boolean valid = true;
         for (PlaceholderConditionFeature attribute : placeholdersConditions.values()) {
+
             if (!attribute.verify(player, target, sp)) {
                 String message = attribute.getMessageIfNotValid().getValue().get();
                 String messageForTarget = attribute.getMessageIfNotValidForTarget().getValue().get();
@@ -74,10 +76,11 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
                 if (event != null && event instanceof Cancellable && attribute.getCancelEventIfNotValid().getValue()) {
                     ((Cancellable) event).setCancelled(true);
                 }
-                return false;
+                if (attribute.getStopCheckingOtherConditionsIfNotValid().getValue()) return false;
+                else valid = false;
             }
         }
-        return true;
+        return valid;
     }
 
     public boolean verifConditions(Player player, List<String> errors) {

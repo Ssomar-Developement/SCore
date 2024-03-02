@@ -88,6 +88,10 @@ public class LogFilter implements Filter, LifeCycle {
                 }
             }
         }
+        // Remove dependency message
+        if(message.contains("[SCore] Loaded class")) {
+            hide = true;
+        }
 
         //SsomarDev.testMsg( "LogFilter: " + message + " " + hide, true);
 

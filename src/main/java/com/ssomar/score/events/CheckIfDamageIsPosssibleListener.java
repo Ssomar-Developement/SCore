@@ -11,9 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class CheckIfDamageIsPosssibleListener implements Listener {
 
@@ -21,8 +19,11 @@ public class CheckIfDamageIsPosssibleListener implements Listener {
     private static CheckIfDamageIsPosssibleListener instance;
     private Map<UUID, Boolean> canDamage;
 
+    private List<UUID> damageList;
+
     public CheckIfDamageIsPosssibleListener() {
         this.canDamage = new HashMap<>();
+        this.damageList = new ArrayList<>();
     }
 
     public static CheckIfDamageIsPosssibleListener getInstance() {
@@ -36,6 +37,10 @@ public class CheckIfDamageIsPosssibleListener implements Listener {
        if(e.getDamage() == 0){
            //SsomarDev.testMsg("CheckIfDamageIsPosssibleListener: checkIfDamageEventCancelled: damage = 0 >> "+e.isCancelled(), true);
            canDamage.put(damager.getUniqueId(), !e.isCancelled());
+           if(damageList.contains(damager.getUniqueId())){
+               e.setCancelled(true);
+               damageList.remove(damager.getUniqueId());
+           }
        }
     }
 
@@ -60,6 +65,7 @@ public class CheckIfDamageIsPosssibleListener implements Listener {
     }
 
     public boolean canDamage(@NotNull Entity damager, @NotNull Damageable damaged) {
+        damageList.add(damager.getUniqueId());
         damaged.damage((double) 0, damager);
         //if(!canDamage.containsKey(damager.getUniqueId())) SsomarDev.testMsg("CheckIfDamageIsPosssibleListener: canDamage: canDamage not containsKey", true);
         return canDamage.getOrDefault(damager.getUniqueId(), true);

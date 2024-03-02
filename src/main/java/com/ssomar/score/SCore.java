@@ -41,6 +41,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static com.ssomar.score.usedapi.Dependency.PROTOCOL_LIB;
+
 public final class SCore extends JavaPlugin implements SPlugin {
 
     public static final String NAME = "SCore";
@@ -56,6 +58,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasCustomPiglinsTrades = false;
     public static boolean hasSParkour = false;
     public static boolean hasWorldGuard = false;
+
+    public static boolean hasWorldEdit = false;
     public static boolean hasVault = false;
     public static boolean hasIridiumSkyblock = false;
     public static boolean hasSuperiorSkyblock2 = false;
@@ -94,6 +98,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasEcoSkills = false;
 
     public static boolean hasFactionsUUID = false;
+    public static boolean hasCustomCrafting = false;
+    public static boolean hasWildStacker = false;
 
     public static boolean hasTAB = false;
     private static boolean is1v8 = false;
@@ -407,7 +413,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         //hasProtocolLib = false;
 
 
-        if (Bukkit.getPluginManager().getPlugin(Dependency.PROTOCOL_LIB.name()) != null) {
+        if (PROTOCOL_LIB.isEnabled()) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7ProtocolLib hooked !");
             hasProtocolLib = true;
 
@@ -449,7 +455,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasResidence = Dependency.RESIDENCE.hookSoftDependency();
 
 
-        if (Bukkit.getPluginManager().getPlugin(Dependency.PLOT_SQUARED.name()) != null) {
+        if (Dependency.PLOT_SQUARED.isInstalled()) {
             try {
                 PlotAPI plotAPI = new PlotAPI();
                 Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7PlotSquared hooked !");
@@ -468,7 +474,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         hasDecentHolograms = Dependency.DECENT_HOLOGRAMS.hookSoftDependency();
 
-        if (Bukkit.getPluginManager().isPluginEnabled(Dependency.HOLOGRAPHIC_DISPLAYS.name())) {
+        if (Dependency.HOLOGRAPHIC_DISPLAYS.isEnabled()) {
             try {
                 HolographicDisplaysAPI.get(SCore.plugin);
                 Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7HolographicDisplays hooked !");
@@ -505,6 +511,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasJetsMinions = Dependency.JETS_MINIONS.hookSoftDependency();
 
         hasEcoSkills = Dependency.ECO_SKILLS.hookSoftDependency();
+
+        hasWildStacker = Dependency.WILD_STACKER.hookSoftDependency();
+
+        hasCustomCrafting = Dependency.CUSTOM_CRAFTING.hookSoftDependency();
+
+        hasWorldEdit = Dependency.WORLD_EDIT.hookSoftDependency();
     }
 
     @Override

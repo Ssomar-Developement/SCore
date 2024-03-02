@@ -1,14 +1,13 @@
-actionbarMessage: '&e&l%item% &a&lстане доступним через: &e&l%time%'
-actionbarEnd: '&c&lДЕАКТИВАЦІЯ &e&l%item%'
-setActionbarOn: '&aВи перемкнули панель дій на &a&lУВІМК'
-setActionbarOff: '&cВи перемкнули панель дій на &4&lВИМК'
-haveActionbarOn: '&aВаша панель дій вже &a&lУВІМК'
-haveActionbarOff: '&cВаша панель дій вже &4&lВИМК'
-errorMoneyMsg: '&4&l[SCore] &cУ Вас немає: &6%amount%$ &cна Вашому рахунку! &6(&eПоточний баланс:
-  &a%balance%$&6)'
-newBalanceMsg: '&6&l[SCore] &eТранзакція: &c-%amount%$ &eПоточний баланс: &a%balance%$'
-newBalancePositiveMsg: '&6&l[SCore] &eТранзакція: &a%amount%$ &eПоточний баланс: &a%balance%$'
-noPlayerHit: '&cЖоден гравець не постраждав'
-noEntityHit: '&cЖодна сутність не постраждала'
-damageCommandKill: '&8%target% &7вбито командою пошкодження'
-variableValueSet: '&aЗначення встановлено!'
+actionbarMessage: "&e&l%item% &a&lстане доступним через: &e&l%time%"
+actionbarEnd: "&c&lДЕАКТИВАЦІЯ &e&l%item%"
+setActionbarOn: "&aВи перемкнули панель дій на &a&lУВІМК"
+setActionbarOff: "&cВи перемкнули панель дій на &4&lВИМК"
+haveActionbarOn: "&aВаша панель дій вже &a&lУВІМК"
+haveActionbarOff: "&cВаша панель дій вже &4&lВИМК"
+errorMoneyMsg: "&4&l[SCore] &cУ Вас немає: &6%amount%$ &cна Вашому рахунку! &6(&eПоточний баланс: &a%balance%$&6)"
+newBalanceMsg: "&6&l[SCore] &eТранзакція: &c-%amount%$ &eПоточний баланс: &a%balance%$"
+newBalancePositiveMsg: "&6&l[SCore] &eТранзакція: &a%amount%$ &eПоточний баланс: &a%balance%$"
+noPlayerHit: "&cЖоден гравець не постраждав"
+noEntityHit: "&cЖодна сутність не постраждала"
+damageCommandKill: "&8%target% &7вбито командою пошкодження"
+variableValueSet: "&aЗначення встановлено!"

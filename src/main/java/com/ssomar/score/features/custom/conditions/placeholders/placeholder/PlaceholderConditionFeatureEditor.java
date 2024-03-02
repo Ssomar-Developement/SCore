@@ -22,6 +22,7 @@ public class PlaceholderConditionFeatureEditor extends FeatureEditorInterface<Pl
         enchantFeature.getMessageIfNotValid().initAndUpdateItemParentEditor(this, 4);
         enchantFeature.getMessageIfNotValidForTarget().initAndUpdateItemParentEditor(this, 5);
         enchantFeature.getCancelEventIfNotValid().initAndUpdateItemParentEditor(this, 6);
+        enchantFeature.getStopCheckingOtherConditionsIfNotValid().initAndUpdateItemParentEditor(this, 7);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

@@ -107,6 +107,19 @@ public class SetTempBlockPos extends PlayerCommand {
 //		if(args.size()<1) error = notEnoughArgs+setblock;
 //		else if(args.size()>1)error = tooManyArgs+setblock;
 
+        if(args.size() >= 7) {
+            List<String> list = new ArrayList<>();
+            String listStr = args.get(6);
+            if(listStr.contains(",")) list = Arrays.asList(listStr.split(","));
+            else list.add(listStr);
+
+            ListDetailedMaterialFeature listDetailedMaterialFeature = new ListDetailedMaterialFeature(true);
+            List<String> errors = listDetailedMaterialFeature.load(SCore.plugin, list, true);
+            if(errors.size() > 0) {
+                error = errors.get(0);
+            }
+        }
+
         return error.isEmpty() ? Optional.empty() : Optional.of(error);
     }
 

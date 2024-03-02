@@ -31,7 +31,8 @@ public class ContentAdd extends BlockCommand {
         Optional<Double> intOptional = NTools.getDouble(args.get(1));
         int amount = intOptional.orElse(1.0).intValue();
 
-        Optional<Integer> slotOptional = NTools.getInteger(args.get(2));
+        Optional<Integer> slotOptional = Optional.empty();
+        if(args.size() >= 3) slotOptional = NTools.getInteger(args.get(2));
         int slot = slotOptional.orElse(-1);
 
         if (args.size() >= 1) {

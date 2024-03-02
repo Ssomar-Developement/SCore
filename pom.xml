@@ -676,7 +676,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-edebc1d51a-1</version>
+            <version>main-c527b39417-1</version>
             <scope>compile</scope>
         </dependency>
 

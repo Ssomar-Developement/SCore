@@ -13,10 +13,10 @@ public class FactionsUUIDAPI {
     public boolean playerIsInHisClaim(@NotNull UUID pUUID, Location location, boolean acceptWilderness) {
         SsomarDev.testMsg("PASSSEEE 1", true);
 
-       FLocation fLocation = new FLocation(location);
+        FLocation fLocation = new FLocation(location);
         // get a land area from a location
         final Faction area = Board.getInstance().getFactionAt(fLocation);
-        if (area == null) return acceptWilderness;
+        if (area == null || area.isWilderness()) return acceptWilderness;
 
         FPlayer fplayer = FPlayers.getInstance().getById(pUUID.toString());
 

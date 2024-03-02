@@ -76,7 +76,7 @@ public class EventsHandler {
 
         if(SCore.hasJetsMinions && GeneralConfig.getInstance().isJetMinionsGenerateBreakActivator()) main.getServer().getPluginManager().registerEvents(new FixJetsMinionsBlockBreakEvent(), main);
 
-        if(!SCore.is1v13Less()) main.getServer().getPluginManager().registerEvents(new EntitiesFromSpawnerListener(), main);
+        if(!SCore.is1v13Less() && GeneralConfig.getInstance().isEnableDetectionEntitiesFromSpawner()) main.getServer().getPluginManager().registerEvents(new EntitiesFromSpawnerListener(), main);
 
         main.getServer().getPluginManager().registerEvents(CheckIfDamageIsPosssibleListener.getInstance(), main);
 

@@ -45,6 +45,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
     private BooleanFeature cancelEventIfNotValid;
     private ColoredStringFeature messageIfNotValid;
     private ColoredStringFeature messageIfNotValidForTarget;
+    private BooleanFeature stopCheckingOtherConditionsIfNotValid;
     private String id;
 
     public PlaceholderConditionFeature(FeatureParentInterface parent, String id) {
@@ -67,6 +68,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel Event If Not Valid", new String[]{"&7&oCancel the event if the condition is not valid"}, Material.COMPASS, false, false);
         this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.of(""), "Message If Not Valid", new String[]{"&7&oThe message to display if", "&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);
         this.messageIfNotValidForTarget = new ColoredStringFeature(this, "messageIfNotValidForTarget", Optional.of(""), "Message If Not Valid For Target", new String[]{"&7&oThe message to display if", "&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);
+        this.stopCheckingOtherConditionsIfNotValid = new BooleanFeature(this, "stopCheckingOtherConditionsIfNotValid", true, "Stop Checking Other Conditions If Not Valid", new String[]{"&7&oStop checking other conditions", "&7&oif this condition is not valid"}, Material.COMPASS, false, false);
     }
 
     public boolean verify(Player player, Player target) {
@@ -194,6 +196,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
             errors.addAll(this.messageIfNotValid.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.messageIfNotValidForTarget.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.cancelEventIfNotValid.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.stopCheckingOtherConditionsIfNotValid.load(plugin, enchantmentConfig, isPremiumLoading));
         } else {
             errors.add("&cERROR, Couldn't load the Placeholder Condition with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
@@ -216,6 +219,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         this.cancelEventIfNotValid.save(attributeConfig);
         this.messageIfNotValid.save(attributeConfig);
         this.messageIfNotValidForTarget.save(attributeConfig);
+        this.stopCheckingOtherConditionsIfNotValid.save(attributeConfig);
     }
 
     @Override
@@ -252,12 +256,13 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         eF.setCancelEventIfNotValid(cancelEventIfNotValid.clone(eF));
         eF.setMessageIfNotValid(messageIfNotValid.clone(eF));
         eF.setMessageIfNotValidForTarget(messageIfNotValidForTarget.clone(eF));
+        eF.setStopCheckingOtherConditionsIfNotValid(stopCheckingOtherConditionsIfNotValid.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(type, comparator, part1, part2, cancelEventIfNotValid, messageIfNotValid, messageIfNotValidForTarget));
+        return new ArrayList<>(Arrays.asList(type, comparator, part1, part2, cancelEventIfNotValid, messageIfNotValid, messageIfNotValidForTarget, stopCheckingOtherConditionsIfNotValid));
     }
 
     @Override
@@ -288,6 +293,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                     aFOF.setCancelEventIfNotValid(cancelEventIfNotValid);
                     aFOF.setMessageIfNotValid(messageIfNotValid);
                     aFOF.setMessageIfNotValidForTarget(messageIfNotValidForTarget);
+                    aFOF.setStopCheckingOtherConditionsIfNotValid(stopCheckingOtherConditionsIfNotValid);
                     break;
                 }
             }
@@ -314,6 +320,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                 ", cancelEventIfNotValid=" + cancelEventIfNotValid +
                 ", messageIfNotValid=" + messageIfNotValid +
                 ", messageIfNotValidForTarget=" + messageIfNotValidForTarget +
+                ", stopCheckingOtherConditionsIfNotValid=" + stopCheckingOtherConditionsIfNotValid +
                 ", id='" + id + '\'' +
                 '}';
     }

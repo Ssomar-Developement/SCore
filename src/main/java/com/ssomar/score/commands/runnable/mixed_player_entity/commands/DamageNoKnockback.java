@@ -43,8 +43,9 @@ public class DamageNoKnockback extends MixedCommand {
                 doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
             if (doDamage) {
                 if (p != null) {
-                    //SsomarDev.testMsg("DamageNoKnockback.java -> run() 3", true);
-                    p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
+                    /* To avoid looping damage */
+                    if(aInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
+                    p.setMetadata("damageFromCustomCommand", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7773)));
                     DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
                     SsomarDev.testMsg(DamageWithoutKnockbackManager.getInstance().getDamageWithoutKnockbackList().size() + "<<<<<<<<<", true);
                     //SsomarDev.testMsg("Damage ?" + damage, true);

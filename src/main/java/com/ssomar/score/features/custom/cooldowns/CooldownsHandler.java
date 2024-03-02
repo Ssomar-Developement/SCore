@@ -52,7 +52,7 @@ public class CooldownsHandler implements Listener {
     public static void closeServerSaveAll() {
         List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
         for (Cooldown cd : cooldowns) {
-            cd.updatePlayerDisconnect();
+            if(cd != null) cd.updatePlayerDisconnect();
         }
 
         CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);

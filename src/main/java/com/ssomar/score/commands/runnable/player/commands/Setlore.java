@@ -1,10 +1,11 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,9 +27,10 @@ public class Setlore extends PlayerCommand {
 
         try {
             int slot = NTools.getInteger(args.get(0)).get();
+            SsomarDev.testMsg("SLOT >> "+slot, true);
 
-            if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-            else item = receiver.getInventory().getItem(slot);
+            if (slot == -1) slot = receiver.getInventory().getHeldItemSlot();
+            item = receiver.getInventory().getItem(slot);
             if (item == null || item.getType() == Material.AIR) return;
 
             // Not compatible with EI + usageModification
@@ -58,7 +60,7 @@ public class Setlore extends PlayerCommand {
             itemmeta.setLore(list);
             item.setItemMeta(itemmeta);
 
-            receiver.getInventory().setItem(Integer.valueOf(args.get(0)),item);
+            receiver.getInventory().setItem(slot, item);
 
         } catch (NullPointerException e) {
             return;

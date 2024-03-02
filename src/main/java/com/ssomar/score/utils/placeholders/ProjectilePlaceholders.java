@@ -78,6 +78,7 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
             toReplace = toReplace.replaceAll("%projectile_name%", projectileName);
             toReplace = toReplace.replaceAll("%projectile_name_lower_case%", projectileName.toLowerCase());
             toReplace = toReplace.replaceAll("%projectile_uuid%", projectileUUID.toString());
+            toReplace = toReplace.replaceAll("%projectile_uuid_array%",  convertedUUID(projectileUUID));
             toReplace = replaceCalculPlaceholder(toReplace, "%projectile_x%", projectileX + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%projectile_y%", projectileY + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%projectile_z%", projectileZ + "", false);
@@ -94,5 +95,34 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
         }
 
         return toReplace;
+    }
+
+    public static String convertedUUID (UUID uuid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[I;");
+        String uuidStr = uuid.toString().replaceAll("-", "").toUpperCase();
+        sb.append(getDecimal(uuidStr.substring(0, 8)));
+        //SsomarDev.testMsg("uuidStr.substring(0, 8) : "+uuidStr.substring(0, 8), true);
+        sb.append(",");
+        sb.append(getDecimal(uuidStr.substring(8, 16)));
+        sb.append(",");
+        sb.append(getDecimal(uuidStr.substring(16, 24)));
+        sb.append(",");
+        sb.append(getDecimal(uuidStr.substring(24, 32)));
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public static int getDecimal(String hex){
+        String digits = "0123456789ABCDEF";
+        hex = hex.toUpperCase();
+        int val = 0;
+        for (int i = 0; i < hex.length(); i++)
+        {
+            char c = hex.charAt(i);
+            int d = digits.indexOf(c);
+            val = 16*val + d;
+        }
+        return val;
     }
 }

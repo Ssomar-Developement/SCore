@@ -70,7 +70,7 @@ public class SafeBreak {
                 /* */
                 Bukkit.getPluginManager().callEvent(bbE);
                 canceled = bbE.isCancelled();
-                drop = bbE.isDropItems() && drop;
+                if(!SCore.is1v11Less()) drop = bbE.isDropItems() && drop;
             }
 
             if (!canceled) {

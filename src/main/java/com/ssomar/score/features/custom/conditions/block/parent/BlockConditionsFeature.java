@@ -46,13 +46,17 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfMustBeNotNatural(this));
         conditions.add(new IfPlayerMustBeOnTheBlock(this));
         conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
-        if (!SCore.is1v12Less()) conditions.add(new IfPlantFullyGrown(this));
-        if (!SCore.is1v12Less()) conditions.add(new IfPlantNotFullyGrown(this));
-        conditions.add(new IfContainerEmpty(this));
-        conditions.add(new IfContainerNotEmpty(this));
-        conditions.add(new IfContainerContains(this));
-        conditions.add(new IfContainerContainsEI(this));
-        conditions.add(new IfContainerContainsSellableItem(this));
+        if (!SCore.is1v12Less()) {
+            conditions.add(new IfPlantFullyGrown(this));
+            conditions.add(new IfPlantNotFullyGrown(this));
+        }
+        if (!SCore.is1v11Less()) {
+            conditions.add(new IfContainerEmpty(this));
+            conditions.add(new IfContainerNotEmpty(this));
+            conditions.add(new IfContainerContains(this));
+            conditions.add(new IfContainerContainsEI(this));
+            conditions.add(new IfContainerContainsSellableItem(this));
+        }
 
         /* Number condition features */
         if (!SCore.is1v12Less()) conditions.add(new IfBlockAge(this));

@@ -1,6 +1,5 @@
 package com.ssomar.score.utils.itemwriter;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
@@ -168,7 +167,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     @Override
     public Optional<UUID> readItemOwner(ItemStack item, DynamicMeta dMeta) {
         if (SCore.hasExecutableItems) {
-            if (ExecutableItems.hasNBTAPI && !item.getType().equals(Material.AIR)) {
+            if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
                 NBTItem nbti = new NBTItem(item);
                 if (nbti.hasKey("EI-OWNER")) {
                     String ownerUUIDStr = nbti.getString("EI-OWNER");

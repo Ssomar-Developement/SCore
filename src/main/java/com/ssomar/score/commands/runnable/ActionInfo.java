@@ -5,6 +5,10 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.logging.Debugers;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.sevents.events.player.click.onentity.left.PlayerLeftClickOnEntityEvent;
+import com.ssomar.sevents.events.player.click.onplayer.left.PlayerLeftClickOnPlayerEvent;
+import com.ssomar.sevents.events.player.receivehit.byentity.PlayerReceiveHitByEntityEvent;
+import com.ssomar.sevents.events.player.receivehit.byplayer.PlayerReceiveHitByPlayerEvent;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -13,6 +17,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -38,6 +44,8 @@ public class ActionInfo implements Serializable {
     private transient ExecutableItemObject executableItem;
 
     private boolean isEventFromCustomBreakCommand;
+
+    private boolean isActionRelatedToDamageEvent;
 
     /* Important info */
     private UUID launcherUUID;
@@ -137,5 +145,12 @@ public class ActionInfo implements Serializable {
             }
         };
         SCore.schedulerHook.runLocationTask(runnable, bLoc, 0);
+    }
+
+    public void initActionRelatedToDamageEvent(Event event){
+
+        isActionRelatedToDamageEvent = event instanceof EntityDamageByEntityEvent || event instanceof PlayerReceiveHitByPlayerEvent
+        || event instanceof PlayerReceiveHitByEntityEvent || event instanceof PlayerLeftClickOnPlayerEvent || event instanceof PlayerLeftClickOnEntityEvent;
+
     }
 }
