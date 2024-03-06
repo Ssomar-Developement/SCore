@@ -137,14 +137,13 @@ public class CommandsHandler implements Listener {
         for (EntityRunCommand eCommand : commands) {
             eCommand.run();
         }
-        EntityCommandsQuery.deleteEntityCommands(Database.getInstance().connect());
-
+        EntityCommandsQuery.deleteEntityCommands(Database.getInstance().connect(true));
 
         List<BlockRunCommand> commands2 = BlockCommandsQuery.selectAllCommands(Database.getInstance().connect());
         for (BlockRunCommand bCommand : commands2) {
             bCommand.run();
         }
-        BlockCommandsQuery.deleteCommands(Database.getInstance().connect());
+        BlockCommandsQuery.deleteCommands(Database.getInstance().connect(true));
     }
 
     public void onDisable() {

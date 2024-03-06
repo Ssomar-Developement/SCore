@@ -37,6 +37,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     public IntegerFeature(FeatureParentInterface parent, String name, Optional<Integer> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
         this.defaultValue = defaultValue;
+        this.value = defaultValue;
         reset();
     }
 

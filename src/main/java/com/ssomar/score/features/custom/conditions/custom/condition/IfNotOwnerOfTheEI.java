@@ -1,9 +1,9 @@
-package com.ssomar.score.features.custom.conditions.customei.condition;
+package com.ssomar.score.features.custom.conditions.custom.condition;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
-import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionRequest;
+import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
+import com.ssomar.score.features.custom.conditions.custom.CustomConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -14,18 +14,19 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.UUID;
 
-public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfOwnerOfTheEI> {
+public class IfNotOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, IfNotOwnerOfTheEI> {
 
-    public IfOwnerOfTheEI(FeatureParentInterface parent) {
-        super(parent, "ifOwnerOfTheEI", "If owner of the EI", new String[]{}, Material.ANVIL, false);
+
+    public IfNotOwnerOfTheEI(FeatureParentInterface parent) {
+        super(parent, "ifNotOwnerOfTheEI", "If not owner of the EI", new String[]{}, Material.ANVIL, false);
     }
 
     @Override
-    public boolean verifCondition(CustomEIConditionRequest request) {
+    public boolean verifCondition(CustomConditionRequest request) {
         if (hasCondition()) {
             ItemStack itemStack = request.getItemStack();
-            Player player = request.getPlayer();
-            if (itemStack.hasItemMeta()) {
+            Player player = request.getLauncher();
+            if (itemStack.hasItemMeta() && player != null) {
                 ItemMeta iM = itemStack.getItemMeta();
 
                 NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-OWNER");
@@ -37,7 +38,7 @@ public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfO
                 } catch (Exception e) {
                     invalid = true;
                 }
-                if (invalid || !uuid.equals(player.getUniqueId())) {
+                if (!invalid && uuid.equals(player.getUniqueId())) {
                     runInvalidCondition(request);
                     return false;
                 }
@@ -47,13 +48,13 @@ public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfO
     }
 
     @Override
-    public IfOwnerOfTheEI getValue() {
+    public IfNotOwnerOfTheEI getValue() {
         return this;
     }
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(this, "ifOwnerOfTheEI", false, "If owner of the EI", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(this, "ifNotOwnerOfTheEI", false, "If not owner of the EI", new String[]{}, Material.LEVER, false, true));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class IfOwnerOfTheEI extends CustomEIConditionFeature<BooleanFeature, IfO
     }
 
     @Override
-    public IfOwnerOfTheEI getNewInstance(FeatureParentInterface parent) {
-        return new IfOwnerOfTheEI(parent);
+    public IfNotOwnerOfTheEI getNewInstance(FeatureParentInterface parent) {
+        return new IfNotOwnerOfTheEI(parent);
     }
 }

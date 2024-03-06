@@ -1,4 +1,4 @@
-package com.ssomar.score.features.custom.useperday.data;
+package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.logging.Utils;
@@ -21,15 +21,27 @@ public class UsePerDayQuery {
     public final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_USE_PER_DAY + " (" + COL_DATE + " TEXT NOT NULL, " + COL_PLAYER + " TEXT NOT NULL, " + COL_ID + " TEXT NOT NULL, " + COL_NB + " INTEGER NOT NULL);";
 
     public static void createNewTable(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("UsePerDayQuery createNewTable");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_USE_PER_DAY_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe(e.getMessage());
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public static boolean insertPlayerUserPerDay(Connection conn, Map<String, Map<String, Map<String, Integer>>> map) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("UsePerDayQuery insertPlayerUserPerDay");
         purgeUserPerDay(conn);
 
         String sql = "INSERT INTO " + TABLE_USE_PER_DAY + " (" + COL_DATE + "," + COL_PLAYER + ", " + COL_ID + ", " + COL_NB + ") VALUES(?, ?, ?, ?)";
@@ -74,6 +86,7 @@ public class UsePerDayQuery {
     }
 
     public static void purgeUserPerDay(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("UsePerDayQuery purgeUserPerDay");
         String sql = "DELETE FROM " + TABLE_USE_PER_DAY;
 
         PreparedStatement pstmt = null;
@@ -96,6 +109,7 @@ public class UsePerDayQuery {
 
 
     public static Map<String, Map<String, Map<String, Integer>>> loadUsePerDay(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("UsePerDayQuery loadUsePerDay");
         String sql = "SELECT * FROM " + TABLE_USE_PER_DAY + " where " + COL_DATE + "=?";
 
         ResultSet rs = null;

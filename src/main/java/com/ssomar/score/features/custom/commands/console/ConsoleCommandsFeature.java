@@ -32,9 +32,11 @@ import java.util.*;
 public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>, ConsoleCommandsFeature> implements FeatureRequireSubTextEditorInEditor {
 
     private List<String> value;
+    private boolean notSaveIfEqualsToDefaultValue;
 
-    public ConsoleCommandsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public ConsoleCommandsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
     }
 
@@ -53,6 +55,10 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
 
     @Override
     public void save(ConfigurationSection config) {
+        if(notSaveIfEqualsToDefaultValue && value.isEmpty()){
+            config.set(this.getName(), null);
+            return;
+        }
         config.set(this.getName(), value);
     }
 
@@ -89,7 +95,7 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
 
     @Override
     public ConsoleCommandsFeature clone(FeatureParentInterface newParent) {
-        ConsoleCommandsFeature clone = new ConsoleCommandsFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        ConsoleCommandsFeature clone = new ConsoleCommandsFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
         clone.setValue(getValue());
         return clone;
     }

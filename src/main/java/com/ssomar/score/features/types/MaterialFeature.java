@@ -231,7 +231,12 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         value = Optional.of(material);
         item.setType(material);
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 4);
+        List<String> lore = meta.getLore();
+        if (lore == null){
+            lore = new ArrayList<>();
+            for (String str : getEditorDescription()) lore.add(StringConverter.coloredString(str));
+        }
+        else lore = lore.subList(0, getEditorDescription().length + 4);
         boolean find = false;
         for (Material check : getSortMaterials()) {
             if (material.equals(check)) {

@@ -172,6 +172,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
         dropFeatures.setMessageIfNotValid(messageIfNotValid.clone(dropFeatures));
         dropFeatures.setDisableMessageIfNotValid(disableMessageIfNotValid);
         dropFeatures.setDisableCancelEventIfNotValid(disableCancelEventIfNotValid);
+        dropFeatures.setNotSaveIfEqualsToDefaultValue(notSaveIfEqualsToDefaultValue);
         return dropFeatures;
     }
 

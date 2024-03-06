@@ -20,13 +20,9 @@ public class BlockConditionRequest extends ConditionRequest {
     private Block block;
     private Optional<Player> playerOpt;
 
-    private StringPlaceholder sp;
-
     public BlockConditionRequest(@NotNull Block block, @NotNull Optional<Player> playerOpt, @Nullable StringPlaceholder sp, @Nullable Event event) {
-        super(event);
+        super(event, Optional.ofNullable(sp).orElse(new StringPlaceholder()));
         this.block = block;
         this.playerOpt = playerOpt;
-        if (sp == null) this.sp = new StringPlaceholder();
-        else this.sp = sp;
     }
 }

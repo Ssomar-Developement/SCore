@@ -50,13 +50,15 @@ public class SilkSpawner extends BlockCommand {
                 BlockStateMeta meta = (BlockStateMeta) spawner_to_give.getItemMeta();
                 CreatureSpawner csm = (CreatureSpawner) meta.getBlockState();
                 csm.setSpawnedType(cs.getSpawnedType());
-                String name = csm.getSpawnedType().toString().replace("_", " ");
-                name = name.toLowerCase();
-                name = (name.charAt(0) + "").toUpperCase() + name.substring(1, name.length());
-                name = "&e" + name;
-                name = StringConverter.coloredString(name);
-                meta.setDisplayName(name);
-                meta.setLocalizedName("FROM_EXECUTABLEITEM");
+                if(csm.getSpawnedType() != null) {
+                    String name = csm.getSpawnedType().toString().replace("_", " ");
+                    name = name.toLowerCase();
+                    name = (name.charAt(0) + "").toUpperCase() + name.substring(1, name.length());
+                    name = "&e" + name;
+                    name = StringConverter.coloredString(name);
+                    meta.setDisplayName(name);
+                    meta.setLocalizedName("FROM_EXECUTABLEITEM");
+                }
                 meta.setBlockState((BlockState) csm);
                 meta.addItemFlags(new org.bukkit.inventory.ItemFlag[0]);
                 spawner_to_give.setItemMeta((ItemMeta) meta);

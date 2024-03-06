@@ -41,6 +41,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.SQLException;
+
 import static com.ssomar.score.usedapi.Dependency.PROTOCOL_LIB;
 
 public final class SCore extends JavaPlugin implements SPlugin {
@@ -347,7 +349,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Projectiles instance part */
         SProjectileLoader.getInstance().load();
-
         /* Hardnesses instance part */
         HardnessLoader.getInstance().load();
 
@@ -535,6 +536,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save Cooldowns...");
         CooldownsHandler.closeServerSaveAll();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save Cooldowns done !");
+
+        try {
+            Database.getInstance().connect().close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onReload() {

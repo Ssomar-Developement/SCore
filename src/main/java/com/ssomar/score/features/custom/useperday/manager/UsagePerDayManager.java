@@ -1,7 +1,7 @@
 package com.ssomar.score.features.custom.useperday.manager;
 
 import com.ssomar.score.data.Database;
-import com.ssomar.score.features.custom.useperday.data.UsePerDayQuery;
+import com.ssomar.score.data.UsePerDayQuery;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

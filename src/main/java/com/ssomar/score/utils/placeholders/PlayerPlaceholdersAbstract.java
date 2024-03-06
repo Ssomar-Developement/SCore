@@ -6,6 +6,7 @@ import com.ssomar.score.utils.numbers.NTools;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -65,9 +66,38 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     }
 
     public void reloadPlayerPlcHldr() {
-        Player player;
-        if (this.playerUUID != null && (player = Bukkit.getPlayer(playerUUID)) != null) {
+        if (this.playerUUID != null) {
 
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+            if (offlinePlayer.getName() != null) {
+                String  playerName = offlinePlayer.getName();
+
+                String team = "NO_TEAM";
+                for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
+                    if (t.hasEntry(playerName)) {
+                        team = t.getName();
+                        break;
+                    }
+                }
+
+                /* Pre save placeholders without calcul */
+                placeholders.put("%" + particle + "%", playerName);
+                placeholders.put("%" + particle + "_name%", playerName);
+                placeholders.put("%" + particle + "_team%", team);
+            }
+
+            if (PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.containsKey(playerUUID)) {
+                this.lastDamageDealt = PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.get(playerUUID);
+            } else this.lastDamageDealt = 0;
+
+
+            /* Pre save placeholders without calcul */
+            placeholders.put("%" + particle + "_uuid%", playerUUID.toString());
+            placeholders.put("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
+
+
+            Player player;
+            if((player = Bukkit.getPlayer(playerUUID)) != null){
             Location pLoc = player.getLocation();
             this.x = NTools.reduceDouble(pLoc.getX(), 2);
             this.y = NTools.reduceDouble(pLoc.getY(), 2);
@@ -101,18 +131,6 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             String slot = player.getInventory().getHeldItemSlot() + "";
             if (fixSlot != -1) slot = fixSlot + "";
 
-            String team = "NO_TEAM";
-            for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
-                if (t.hasEntry(player.getName())) {
-                    team = t.getName();
-                    break;
-                }
-            }
-
-            if (PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.containsKey(playerUUID)) {
-                this.lastDamageDealt = PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.get(playerUUID);
-            } else this.lastDamageDealt = 0;
-
             if(SCore.is1v16Plus()) {
                 attackCharge = player.getAttackCooldown();
             } else {
@@ -120,12 +138,6 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             }
 
             /* Pre save placeholders without calcul */
-
-            placeholders.put("%" + particle + "%", player.getName());
-            placeholders.put("%" + particle + "_name%", player.getName());
-            placeholders.put("%" + particle + "_uuid%", playerUUID.toString());
-            placeholders.put("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
-
             /* I need to let that because old versions doesnt have particle */
             if (acceptWithoutParticle) {
                 placeholders.put("%world%", pLoc.getWorld().getName());
@@ -140,8 +152,7 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             placeholders.put("%" + particle + "_slot%", slot);
             placeholders.put("%" + particle + "_slot_live%", player.getInventory().getHeldItemSlot() + "");
             placeholders.put("%" + particle + "_direction%", direction);
-
-            placeholders.put("%" + particle + "_team%", team);
+            }
         }
     }
 

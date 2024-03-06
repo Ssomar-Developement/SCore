@@ -1,13 +1,13 @@
-package com.ssomar.score.features.custom.conditions.customei.parent;
+package com.ssomar.score.features.custom.conditions.custom.parent;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
-import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionRequest;
-import com.ssomar.score.features.custom.conditions.customei.condition.IfNeedPlayerConfirmation;
-import com.ssomar.score.features.custom.conditions.customei.condition.IfNotOwnerOfTheEI;
-import com.ssomar.score.features.custom.conditions.customei.condition.IfOwnerOfTheEI;
+import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
+import com.ssomar.score.features.custom.conditions.custom.CustomConditionRequest;
+import com.ssomar.score.features.custom.conditions.custom.condition.IfNotOwnerOfTheEI;
+import com.ssomar.score.features.custom.conditions.custom.condition.IfOwnerOfTheEI;
+import com.ssomar.score.features.custom.conditions.custom.condition.confirmation.IfNeedPlayerConfirmation;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
@@ -24,16 +24,17 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
-public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIConditionsFeature, CustomEIConditionsFeature, CustomEIConditionsFeatureEditor, CustomEIConditionsFeatureEditorManager> {
+public class CustomConditionsFeature extends FeatureWithHisOwnEditor<CustomConditionsFeature, CustomConditionsFeature, CustomConditionsFeatureEditor, CustomConditionsFeatureEditorManager> {
 
-    private List<CustomEIConditionFeature> conditions;
+    private List<CustomConditionFeature> conditions;
+    private SPlugin sPlugin;
 
-    public CustomEIConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription) {
+    public CustomConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, SPlugin sPlugin) {
         super(parent, name, editorName, editorDescription, Material.ANVIL, false);
+        this.sPlugin = sPlugin;
         reset();
     }
 
@@ -42,35 +43,22 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
         conditions = new ArrayList<>();
         /* Boolean features */
         conditions.add(new IfNeedPlayerConfirmation(this));
-        conditions.add(new IfOwnerOfTheEI(this));
-        conditions.add(new IfNotOwnerOfTheEI(this));
-
-    }
-
-    public boolean isNeedConfirmation() {
-        for (CustomEIConditionFeature condition : conditions) {
-            if (condition instanceof IfNeedPlayerConfirmation) {
-                return ((IfNeedPlayerConfirmation) condition).getCondition().getValue();
-            }
+        /* Conditions specific to EI */
+        if(sPlugin.getShortName().equalsIgnoreCase("ei")) {
+            conditions.add(new IfOwnerOfTheEI(this));
+            conditions.add(new IfNotOwnerOfTheEI(this));
         }
-        return false;
+
     }
 
-    public String getNeedConfirmationMessage() {
-        for (CustomEIConditionFeature condition : conditions) {
-            if (condition instanceof IfNeedPlayerConfirmation) {
-                return ((IfNeedPlayerConfirmation) condition).getErrorMessage().getValue().get();
-            }
-        }
-        return "";
-    }
+
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
-            for (CustomEIConditionFeature condition : conditions) {
+            for (CustomConditionFeature condition : conditions) {
                 error.addAll(condition.load(plugin, section, isPremiumLoading));
             }
         }
@@ -78,13 +66,13 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
         return error;
     }
 
-    public boolean verifConditions(Player player, ItemStack itemStack, Optional<Player> playerOpt, SendMessage messageSender, @Nullable Event event) {
-        CustomEIConditionRequest request = new CustomEIConditionRequest(player, itemStack, playerOpt, messageSender.getSp(), event);
-        for (CustomEIConditionFeature condition : conditions) {
+    public boolean verifConditions(Player player, ItemStack itemStack, @NotNull SendMessage messageSender, @Nullable Event event) {
+        CustomConditionRequest request = new CustomConditionRequest(player, itemStack, messageSender.getSp(), event);
+        for (CustomConditionFeature condition : conditions) {
             if (!condition.verifCondition(request)) {
-                if (messageSender != null && playerOpt.isPresent()) {
+                if (player != null) {
                     for (String error : request.getErrorsFinal()) {
-                        messageSender.sendMessage(playerOpt.get(), error);
+                        messageSender.sendMessage(player, error);
                     }
                 }
                 return false;
@@ -98,18 +86,18 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
-        for (CustomEIConditionFeature condition : conditions) {
+        for (CustomConditionFeature condition : conditions) {
             condition.save(section);
         }
     }
 
     @Override
-    public CustomEIConditionsFeature getValue() {
+    public CustomConditionsFeature getValue() {
         return this;
     }
 
     @Override
-    public CustomEIConditionsFeature initItemParentEditor(GUI gui, int slot) {
+    public CustomConditionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = "&7Block condition(s) enabled: &e" + getBlockConditionEnabledCount();
@@ -122,7 +110,7 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
 
     public int getBlockConditionEnabledCount() {
         int i = 0;
-        for (CustomEIConditionFeature condition : conditions) {
+        for (CustomConditionFeature condition : conditions) {
             if (condition.hasCondition()) {
                 i++;
             }
@@ -136,11 +124,11 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
     }
 
     @Override
-    public CustomEIConditionsFeature clone(FeatureParentInterface newParent) {
-        CustomEIConditionsFeature clone = new CustomEIConditionsFeature(newParent, getName(), getEditorName(), getEditorDescription());
-        List<CustomEIConditionFeature> clones = new ArrayList<>();
-        for (CustomEIConditionFeature condition : conditions) {
-            clones.add((CustomEIConditionFeature) condition.clone(clone));
+    public CustomConditionsFeature clone(FeatureParentInterface newParent) {
+        CustomConditionsFeature clone = new CustomConditionsFeature(newParent, getName(), getEditorName(), getEditorDescription(), getSPlugin());
+        List<CustomConditionFeature> clones = new ArrayList<>();
+        for (CustomConditionFeature condition : conditions) {
+            clones.add((CustomConditionFeature) condition.clone(clone));
         }
         clone.setConditions(clones);
         return clone;
@@ -172,11 +160,11 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
     @Override
     public void reload() {
         for (FeatureInterface feature : getParent().getFeatures()) {
-            if (feature instanceof CustomEIConditionsFeature && feature.getName().equals(getName())) {
-                CustomEIConditionsFeature bCF = (CustomEIConditionsFeature) feature;
-                List<CustomEIConditionFeature> clones = new ArrayList<>();
-                for (CustomEIConditionFeature condition : conditions) {
-                    clones.add((CustomEIConditionFeature) condition);
+            if (feature instanceof CustomConditionsFeature && feature.getName().equals(getName())) {
+                CustomConditionsFeature bCF = (CustomConditionsFeature) feature;
+                List<CustomConditionFeature> clones = new ArrayList<>();
+                for (CustomConditionFeature condition : conditions) {
+                    clones.add((CustomConditionFeature) condition);
                 }
                 bCF.setConditions(clones);
                 break;
@@ -191,7 +179,7 @@ public class CustomEIConditionsFeature extends FeatureWithHisOwnEditor<CustomEIC
 
     @Override
     public void openEditor(@NotNull Player player) {
-        CustomEIConditionsFeatureEditorManager.getInstance().startEditing(player, this);
+        CustomConditionsFeatureEditorManager.getInstance().startEditing(player, this);
     }
 
 }

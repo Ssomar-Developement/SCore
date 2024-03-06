@@ -22,8 +22,8 @@ import com.ssomar.score.features.custom.conditions.ConditionFeatureEditor;
 import com.ssomar.score.features.custom.conditions.ConditionFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.block.parent.BlockConditionsFeatureEditor;
 import com.ssomar.score.features.custom.conditions.block.parent.BlockConditionsFeatureEditorManager;
-import com.ssomar.score.features.custom.conditions.customei.parent.CustomEIConditionsFeatureEditor;
-import com.ssomar.score.features.custom.conditions.customei.parent.CustomEIConditionsFeatureEditorManager;
+import com.ssomar.score.features.custom.conditions.custom.parent.CustomConditionsFeatureEditor;
+import com.ssomar.score.features.custom.conditions.custom.parent.CustomConditionsFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.entity.parent.EntityConditionsFeatureEditor;
 import com.ssomar.score.features.custom.conditions.entity.parent.EntityConditionsFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.item.parent.ItemConditionsFeatureEditor;
@@ -318,8 +318,8 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof PlayerConditionsFeatureEditor) {
             PlayerConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof CustomEIConditionsFeatureEditor) {
-            CustomEIConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+        } else if (holder instanceof CustomConditionsFeatureEditor) {
+            CustomConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof PlaceholderConditionFeatureEditor) {
             PlaceholderConditionFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
@@ -568,9 +568,9 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (PlayerConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             PlayerConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
-        } else if (CustomEIConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        } else if (CustomConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            CustomEIConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
+            CustomConditionsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (PlaceholderConditionFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             PlaceholderConditionFeatureEditorManager.getInstance().receiveMessage(p, message);

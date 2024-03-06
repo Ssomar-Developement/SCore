@@ -52,7 +52,10 @@ public class CooldownsQuery {
 
 
     public static void createNewTable(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CooldownsQuery createNewTable");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COOLDOWNS_NAME + "&7 if not exists...");
 
             String checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4_SQLITE;
@@ -74,12 +77,21 @@ public class CooldownsQuery {
 
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COOLDOWNS_NAME + " in database "+e.getMessage());
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
     }
 
 
     public static void insertCooldowns(Connection conn, List<Cooldown> cooldowns) {
-
+        if (Database.DEBUG) Utils.sendConsoleMsg("CooldownsQuery insertCooldowns");
         String sql = "INSERT INTO " + TABLE_COOLDOWNS + " (" + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + "," + COL_PAUSED+ "," + COL_PAUSE_OFFLINE + "," + COL_PAUSE_PLACEHOLDERS_CONDITIONS + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement pstmt = null;
@@ -120,6 +132,7 @@ public class CooldownsQuery {
     }
 
     public static List<Cooldown> getCooldownsOf(Connection conn, UUID uuid) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CooldownsQuery getCooldownsOf");
         String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + "," + COL_PAUSED + "," + COL_PAUSE_OFFLINE + "," + COL_PAUSE_PLACEHOLDERS_CONDITIONS + " FROM " + TABLE_COOLDOWNS + " where " + COL_UUID + "=?";
 
         List<Cooldown> list = new ArrayList<>();
@@ -174,6 +187,7 @@ public class CooldownsQuery {
     }
 
     public static List<Cooldown> getGlobalCooldowns(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CooldownsQuery getGlobalCooldowns");
         String sql = "SELECT " + COL_ID + "," + COL_UUID + "," + COL_COOLDOWN + "," + COL_IS_IN_TICK + "," + COL_IS_GLOBAL + "," + COL_TIME + " FROM " + TABLE_COOLDOWNS + " where " + COL_IS_GLOBAL+ "=true";
 
         List<Cooldown> list = new ArrayList<>();
@@ -217,6 +231,7 @@ public class CooldownsQuery {
     }
 
     public static void deleteCooldownsOf(Connection conn, UUID uuid) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CooldownsQuery deleteCooldownsOf");
 
         String sql = "DELETE FROM " + TABLE_COOLDOWNS + " where " + COL_UUID + "=?";
 
@@ -240,6 +255,7 @@ public class CooldownsQuery {
     }
 
     public static void deleteGlobalCooldowns(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CooldownsQuery deleteGlobalCooldowns");
 
         String sql = "DELETE FROM " + TABLE_COOLDOWNS + " where " + COL_IS_GLOBAL + "=true";
 

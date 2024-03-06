@@ -2,7 +2,6 @@ package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.features.custom.useperday.data.UsePerDayQuery;
 import com.ssomar.score.utils.logging.Utils;
 
 import java.sql.Connection;
@@ -17,6 +16,8 @@ public class Database {
     private static Database instance;
 
     private static Connection conn;
+
+    public static boolean DEBUG = false;
 
     private String fileName;
 
@@ -49,7 +50,7 @@ public class Database {
         }
         String url = "jdbc:sqlite:" + SCore.plugin.getDataFolder() + "/" + fileName;
 
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = connect()) {
             if (conn != null) {
                 Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Connection to the db...");
             }
@@ -60,6 +61,10 @@ public class Database {
     }
 
     public Connection connect() {
+        return connect(false);
+    }
+
+    public Connection connect(boolean forceReopen) {
         // SQLite connection string
         try {
             Class.forName("org.sqlite.JDBC");
@@ -75,10 +80,20 @@ public class Database {
             needOpenConnection = true;
         }
 
+        if(conn != null && forceReopen) {
+            try {
+                conn.close();
+                if(DEBUG) Utils.sendConsoleMsg("Connection closed");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            needOpenConnection = true;
+        }
+
         if (needOpenConnection) {
             try {
                 String where = GeneralConfig.getInstance().isUseMySQL() ? "MySQL" : "In Local";
-                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7will connect to the database hosted: &6" + where);
+                if(!forceReopen) Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7will connect to the database hosted: &6" + where);
                 if (GeneralConfig.getInstance().isUseMySQL()) {
                     try {
                         if (SCore.is1v17Plus()) conn = new Database1v18().get1v18Connection();

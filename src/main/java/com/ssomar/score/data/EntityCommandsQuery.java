@@ -26,16 +26,28 @@ public class EntityCommandsQuery {
 
 
     public static void createNewTable(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("EntityCommandsQuery createNewTable");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_ENTITY_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COMMANDS_ENTITY_NAME + " in database "+e.getMessage());
+        }finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
 
     public static void insertCommand(Connection conn, List<EntityRunCommand> commands) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("EntityCommandsQuery insertCommand");
         String sql = "INSERT INTO " + TABLE_COMMANDS_ENTITY + " (" + COL_UUID_LAUNCHER + "," + COL_UUID_ENTITY + "," + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + ") VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = null;
@@ -71,11 +83,11 @@ public class EntityCommandsQuery {
 
 
     public static void deleteEntityCommands(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("EntityCommandsQuery deleteEntityCommands");
 
         String sql = "DELETE FROM " + TABLE_COMMANDS_ENTITY;
 
         PreparedStatement pstmt = null;
-
         try {
             pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
@@ -93,6 +105,7 @@ public class EntityCommandsQuery {
     }
 
     public static List<EntityRunCommand> selectEntityCommands(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("EntityCommandsQuery selectEntityCommands");
         String sql = "SELECT " + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + " FROM " + TABLE_COMMANDS_ENTITY + " ORDER BY " + COL_RUN_TIME;
 
         List<EntityRunCommand> list = new ArrayList<>();
@@ -121,6 +134,7 @@ public class EntityCommandsQuery {
         } catch (SQLException e) {
             System.out.println(SCore.NAME_2 + " " + e.getMessage());
         } finally {
+
             if (rs != null) {
                 try {
                     rs.close();

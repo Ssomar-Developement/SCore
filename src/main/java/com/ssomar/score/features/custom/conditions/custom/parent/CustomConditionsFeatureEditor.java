@@ -1,14 +1,14 @@
-package com.ssomar.score.features.custom.conditions.customei.parent;
+package com.ssomar.score.features.custom.conditions.custom.parent;
 
-import com.ssomar.score.features.custom.conditions.customei.CustomEIConditionFeature;
+import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
-public class CustomEIConditionsFeatureEditor extends FeatureEditorInterface<CustomEIConditionsFeature> {
+public class CustomConditionsFeatureEditor extends FeatureEditorInterface<CustomConditionsFeature> {
 
-    public final CustomEIConditionsFeature bCF;
+    public final CustomConditionsFeature bCF;
 
-    public CustomEIConditionsFeatureEditor(CustomEIConditionsFeature dropFeatures) {
+    public CustomConditionsFeatureEditor(CustomConditionsFeature dropFeatures) {
         super("&lCustom EI Conditions Editor", 3 * 9);
         this.bCF = dropFeatures.clone(dropFeatures.getParent());
         load();
@@ -17,7 +17,7 @@ public class CustomEIConditionsFeatureEditor extends FeatureEditorInterface<Cust
     @Override
     public void load() {
         int i = 0;
-        for (CustomEIConditionFeature condition : bCF.getConditions()) {
+        for (CustomConditionFeature condition : bCF.getConditions()) {
             condition.initAndUpdateItemParentEditor(this, i);
             i++;
         }
@@ -33,7 +33,7 @@ public class CustomEIConditionsFeatureEditor extends FeatureEditorInterface<Cust
     }
 
     @Override
-    public CustomEIConditionsFeature getParent() {
+    public CustomConditionsFeature getParent() {
         return bCF;
     }
 }

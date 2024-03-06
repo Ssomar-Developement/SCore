@@ -26,7 +26,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
 
                 //SsomarDev.testMsg("Feature clicked: " + feature.getName());
-                if (feature instanceof FeatureRequireOnlyClicksInEditor && !(feature instanceof FeatureRequireOneMessageInEditor)) {
+                if ((feature instanceof FeatureRequireOnlyClicksInEditor && !(feature instanceof FeatureRequireOneMessageInEditor)) || feature instanceof FeatureRequireClicksOrOneMessageInEditor) {
                     ((FeatureRequireOnlyClicksInEditor) feature).clickParentEditor(i.player, this);
                 } else if (feature instanceof FeatureRequireOneMessageInEditor && !(feature instanceof FeatureRequireOnlyClicksInEditor)) {
                     //SsomarDev.testMsg("FeatureRequireOneMessageInEditor");

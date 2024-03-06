@@ -29,16 +29,29 @@ public class BlockCommandsQuery {
 
 
     public static void createNewTable(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
+        if(Database.DEBUG) Utils.sendConsoleMsg("BlockCommandsQuery createNewTable");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_BLOCK_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COMMANDS_BLOCK_NAME + " in database "+e.getMessage());
         }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
     public static void insertCommand(Connection conn, List<BlockRunCommand> commands) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("BlockCommandsQuery insertCommand");
         String sql = "INSERT INTO " + TABLE_COMMANDS_BLOCK + " (" + COL_UUID_LAUNCHER + "," + COL_BLOCK_X + "," + COL_BLOCK_Y + "," + COL_BLOCK_Z + "," + COL_BLOCK_WORLD + "," + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + ") VALUES(?,?,?,?,?,?,?,?)";
 
         PreparedStatement pstmt = null;
@@ -77,7 +90,7 @@ public class BlockCommandsQuery {
 
 
     public static void deleteCommands(Connection conn) {
-
+        if (Database.DEBUG) Utils.sendConsoleMsg("BlockCommandsQuery deleteCommands");
         String sql = "DELETE FROM " + TABLE_COMMANDS_BLOCK;
 
         PreparedStatement pstmt = null;
@@ -99,6 +112,7 @@ public class BlockCommandsQuery {
     }
 
     public static List<BlockRunCommand> selectAllCommands(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("BlockCommandsQuery selectAllCommands");
         String sql = "SELECT " + COL_BRUT_COMMAND + "," + COL_RUN_TIME + "," + COL_ACTION_INFO + " FROM " + TABLE_COMMANDS_BLOCK + " ORDER BY " + COL_RUN_TIME;
 
         List<BlockRunCommand> list = new ArrayList<>();

@@ -22,15 +22,28 @@ public class SecurityOPQuery {
 
 
     public static void createNewTable(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("SecurityOPQuery createNewTable");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_SECURITYOP_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_SECURITYOP_NAME + " in database "+e.getMessage());
         }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static boolean insertPlayerOP(Connection conn, List<Player> players) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("SecurityOPQuery insertPlayerOP");
         String sql = "INSERT INTO " + TABLE_SECURITYOP + " (" + COL_PLAYER + ") VALUES(?)";
 
         PreparedStatement pstmt = null;
@@ -78,6 +91,7 @@ public class SecurityOPQuery {
     }
 
     public static void deletePlayerOP(Connection conn, Player p) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("SecurityOPQuery deletePlayerOP");
         String sql = "DELETE FROM " + TABLE_SECURITYOP + " where " + COL_PLAYER + "=?";
 
         PreparedStatement pstmt = null;
@@ -101,6 +115,7 @@ public class SecurityOPQuery {
 
 
     public static boolean selectIfSecurityOPcontains(Connection conn, Player p) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("SecurityOPQuery selectIfSecurityOPcontains");
         String sql = "SELECT " + COL_PLAYER + " FROM " + TABLE_SECURITYOP + " where " + COL_PLAYER + "=?";
 
         PreparedStatement pstmt = null;
@@ -135,6 +150,7 @@ public class SecurityOPQuery {
     }
 
     public static List<UUID> loadUsersOp(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("SecurityOPQuery loadUsersOp");
         String sql = "SELECT * FROM " + TABLE_SECURITYOP;
 
         ResultSet rs = null;

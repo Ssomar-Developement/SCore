@@ -26,6 +26,7 @@ public class VariablesQuery {
     public final static String UPDATE_TABLE = "ALTER TABLE " + TABLE_VARIABLES + " MODIFY " + COL_VALUES + " LONGTEXT NOT NULL";
 
     public static void createNewTable(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery createNewTable");
         Statement stmt = null;
         try  {
             stmt = conn.createStatement();
@@ -48,6 +49,7 @@ public class VariablesQuery {
 
 
     public static void insertVariableNotExists(Connection conn, List<Variable> variables) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery insertVariableNotExists");
 
         String sql ="INSERT INTO " + TABLE_VARIABLES + " (" + COL_ID + "," + COL_TYPE + "," + COL_FOR + "," + COL_VALUES + "," + COL_DEFAULTVALUE + ") SELECT ?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM "+TABLE_VARIABLES+" WHERE "+COL_ID+" = ?)";
 
@@ -86,7 +88,7 @@ public class VariablesQuery {
     }
 
     public static void insertVariablesAndDeleteIfExists(Connection conn, List<Variable> variables) {
-
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery insertVariablesAndDeleteIfExists");
         for (Variable variable : variables) {
             deleteVariable(conn, variable.getId());
         }
@@ -126,6 +128,7 @@ public class VariablesQuery {
     }
 
     public static void updateVariable(Connection conn, List<Variable> variables) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery updateVariable");
 
         /*String sql ="BEGIN\n" +
                 "   IF NOT EXISTS (SELECT * FROM "+TABLE_VARIABLES+" \n" +
@@ -198,6 +201,7 @@ public class VariablesQuery {
 
 
     public static void deleteVariables(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery deleteVariables");
 
         String sql = "DELETE FROM " + TABLE_VARIABLES;
 
@@ -220,6 +224,7 @@ public class VariablesQuery {
     }
 
     public static void deleteVariable(Connection conn, String id) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery deleteVariable");
 
         String sql = "DELETE FROM " + TABLE_VARIABLES+" WHERE "+COL_ID+" = '"+id+"'";
 
@@ -242,6 +247,7 @@ public class VariablesQuery {
     }
 
     public static List<Variable> selectAllVariables(Connection conn) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery selectAllVariables");
         String sql = "SELECT " + COL_ID + "," + COL_TYPE + "," + COL_FOR + "," + COL_VALUES + "," + COL_DEFAULTVALUE + " FROM " + TABLE_VARIABLES;
 
         List<Variable> list = new ArrayList<>();
@@ -300,6 +306,7 @@ public class VariablesQuery {
     }
 
     public static Optional<Variable> selectVariable(Connection conn, String id) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("VariablesQuery selectVariable");
         String sql = "SELECT " + COL_TYPE + "," + COL_FOR + "," + COL_VALUES + "," + COL_DEFAULTVALUE + " FROM " + TABLE_VARIABLES+" WHERE "+COL_ID+" = '"+id+"'";
 
         Optional<Variable> varOpt = Optional.empty();

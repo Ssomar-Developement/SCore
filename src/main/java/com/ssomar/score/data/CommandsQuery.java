@@ -20,16 +20,29 @@ public class CommandsQuery {
 
 
     public static void createNewTable(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CommandsQuery createNewTable");
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COMMANDS_NAME + " &7if not exists...");
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_COMMANDS_NAME+ " in database "+e.getMessage());
         }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
     public static void insertCommand(Connection conn, Player p, String command) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CommandsQuery insertCommand");
 
         String sql = "INSERT INTO " + TABLE_COMMANDS + " (" + COL_PLAYER + "," + COL_COMMAND + ") VALUES(?,?)";
 
@@ -55,6 +68,7 @@ public class CommandsQuery {
 
 
     public static void deleteCommandsForPlayer(Connection conn, Player player) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CommandsQuery deleteCommandsForPlayer");
 
         String sql = "DELETE FROM " + TABLE_COMMANDS + " where " + COL_PLAYER + "=?";
 
@@ -78,6 +92,7 @@ public class CommandsQuery {
     }
 
     public static List<String> selectCommandsForPlayer(Connection conn, Player player) {
+        if (Database.DEBUG) Utils.sendConsoleMsg("CommandsQuery selectCommandsForPlayer");
         String sql = "SELECT " + COL_COMMAND + " FROM " + TABLE_COMMANDS + " where " + COL_PLAYER + "=?";
 
         List<String> list = new ArrayList<>();
