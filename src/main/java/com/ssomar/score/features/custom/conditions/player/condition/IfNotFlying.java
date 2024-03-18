@@ -16,7 +16,7 @@ public class IfNotFlying extends PlayerConditionFeature<BooleanFeature, IfNotFly
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && player.isFlying()) {
+        if (getCondition().getValue(request.getSp()) && player.isFlying()) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfNotFlying extends PlayerConditionFeature<BooleanFeature, IfNotFly
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

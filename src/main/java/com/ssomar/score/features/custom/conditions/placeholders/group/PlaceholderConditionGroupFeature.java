@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.placeholders.group;
 
+import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -76,6 +77,10 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
                 if (event != null && event instanceof Cancellable && attribute.getCancelEventIfNotValid().getValue()) {
                     ((Cancellable) event).setCancelled(true);
                 }
+
+                ActionInfo actionInfo = new ActionInfo("", sp);
+                attribute.getConsoleCommandsIfError().runCommands(actionInfo, "");
+
                 if (attribute.getStopCheckingOtherConditionsIfNotValid().getValue()) return false;
                 else valid = false;
             }

@@ -22,7 +22,7 @@ public class IfName extends EntityConditionFeature<ListColoredStringFeature, IfN
         if (hasCondition()) {
             Entity entity = request.getEntity();
             boolean notValid = true;
-            for (String name : getCondition().getValue()) {
+            for (String name : getCondition().getValue(request.getSp())) {
                 if (StringConverter.decoloredString(entity.getName()).equalsIgnoreCase(name)) {
                     notValid = false;
                     break;

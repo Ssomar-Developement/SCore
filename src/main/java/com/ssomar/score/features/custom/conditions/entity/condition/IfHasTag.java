@@ -22,7 +22,7 @@ public class IfHasTag extends EntityConditionFeature<ListUncoloredStringFeature,
         if (hasCondition()) {
             Entity entity = request.getEntity();
             boolean notValid = false;
-            for (String tag : getCondition().getValue()) {
+            for (String tag : getCondition().getValue(request.getSp())) {
                 if (!entity.getScoreboardTags().contains(tag)) {
                     notValid = true;
                     break;

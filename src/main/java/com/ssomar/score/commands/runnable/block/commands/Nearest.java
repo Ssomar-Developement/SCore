@@ -35,7 +35,7 @@ public class Nearest extends BlockCommand {
 
                 double distance = Double.valueOf(args.get(0));
 
-                Player target = location.getWorld().getPlayers().stream()
+                Player target = location.getWorld().getPlayers().stream().filter(p -> p.getLocation().getWorld().equals(block.getLocation().getWorld()))
                         .min(Comparator.comparingDouble((p) -> p.getLocation().distanceSquared(location)))
                         .orElse(null);
 

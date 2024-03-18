@@ -18,12 +18,12 @@ public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFea
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
     public boolean verifCondition(BlockConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Block b = request.getBlock();
             boolean onBlock = false;
             Location bLoc = b.getLocation();

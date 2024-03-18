@@ -18,7 +18,7 @@ public class IfNotStunned extends PlayerConditionFeature<BooleanFeature, IfNotSt
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && StunEvent.stunPlayers.containsKey(player.getUniqueId())) {
+        if (getCondition().getValue(request.getSp()) && StunEvent.stunPlayers.containsKey(player.getUniqueId())) {
             runInvalidCondition(request);
             return false;
         }
@@ -37,7 +37,7 @@ public class IfNotStunned extends PlayerConditionFeature<BooleanFeature, IfNotSt
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

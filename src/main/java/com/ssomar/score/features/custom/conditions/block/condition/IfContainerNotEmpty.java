@@ -17,7 +17,7 @@ public class IfContainerNotEmpty extends BlockConditionFeature<BooleanFeature, I
     @Override
     public boolean verifCondition(BlockConditionRequest request) {
         Block b = request.getBlock();
-        if (hasCondition() && b.getState() instanceof Container && ((Container)b.getState()).getInventory().isEmpty()) {
+        if (getCondition().getValue(request.getSp()) && b.getState() instanceof Container && ((Container)b.getState()).getInventory().isEmpty()) {
             runInvalidCondition(request);
             return false;
         }
@@ -26,7 +26,7 @@ public class IfContainerNotEmpty extends BlockConditionFeature<BooleanFeature, I
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

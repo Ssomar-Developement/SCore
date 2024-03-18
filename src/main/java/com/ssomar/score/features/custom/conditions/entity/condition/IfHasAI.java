@@ -21,7 +21,7 @@ public class IfHasAI extends EntityConditionFeature<BooleanFeature, IfHasAI> {
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IfHasAI extends EntityConditionFeature<BooleanFeature, IfHasAI> {
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && entity instanceof LivingEntity && !((LivingEntity) entity).hasAI()) {
+        if (getCondition().getValue(request.getSp()) && entity instanceof LivingEntity && !((LivingEntity) entity).hasAI()) {
             runInvalidCondition(request);
             return false;
         }

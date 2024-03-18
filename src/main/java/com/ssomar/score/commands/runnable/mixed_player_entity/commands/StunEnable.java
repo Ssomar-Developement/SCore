@@ -23,9 +23,15 @@ public class StunEnable extends MixedCommand {
         LivingEntity livingReceiver = (LivingEntity) receiver;
 
         Location correctAnimation = receiver.getLocation();
-        correctAnimation.setPitch(-10);
+        if(receiver instanceof Player) {
+            correctAnimation.setPitch(-10);
+            livingReceiver.setGliding(true);
+        }
+        else {
+            correctAnimation.setPitch(45F);
+            livingReceiver.setAI(false);
+        }
         receiver.teleport(correctAnimation);
-        livingReceiver.setGliding(true);
         StunEvent.stunPlayers.put(receiver.getUniqueId(), false);
         BukkitRunnable runnable3 = new BukkitRunnable() {
             @Override

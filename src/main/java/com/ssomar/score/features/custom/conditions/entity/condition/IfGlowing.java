@@ -17,7 +17,7 @@ public class IfGlowing extends EntityConditionFeature<BooleanFeature, IfGlowing>
 
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Entity entity = request.getEntity();
             boolean hasError = !entity.isGlowing();
             LivingEntity lE = (LivingEntity) entity;
@@ -45,7 +45,7 @@ public class IfGlowing extends EntityConditionFeature<BooleanFeature, IfGlowing>
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

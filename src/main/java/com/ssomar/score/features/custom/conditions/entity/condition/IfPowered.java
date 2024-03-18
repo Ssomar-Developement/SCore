@@ -17,7 +17,7 @@ public class IfPowered extends EntityConditionFeature<BooleanFeature, IfPowered>
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && entity instanceof Creeper && !((Creeper) entity).isPowered()) {
+        if (getCondition().getValue(request.getSp()) && entity instanceof Creeper && !((Creeper) entity).isPowered()) {
             runInvalidCondition(request);
             return false;
         }
@@ -37,7 +37,7 @@ public class IfPowered extends EntityConditionFeature<BooleanFeature, IfPowered>
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

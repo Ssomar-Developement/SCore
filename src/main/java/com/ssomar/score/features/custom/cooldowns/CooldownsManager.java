@@ -28,10 +28,16 @@ public class CooldownsManager {
         if (params.startsWith("cooldown_")) {
             UUID uuid = player.getUniqueId();
             if(cooldownsUUID.containsKey(uuid)){
+                boolean castInt = false;
+                if(params.contains("_int")){
+                    castInt = true;
+                    params = params.replaceFirst("_int", "");
+                }
                 for(Cooldown cd : cooldownsUUID.get(uuid)){
                     SsomarDev.testMsg("CD "+cd.toString(), DEBUG);
                     if(cd.getId().equalsIgnoreCase(params.split("cooldown_")[1])){
-                        return Optional.of(cd.getTimeLeft()+"");
+                        if(castInt) return Optional.of((int)cd.getTimeLeft()+"");
+                        else return Optional.of(cd.getTimeLeft()+"");
                     }
                 }
             }

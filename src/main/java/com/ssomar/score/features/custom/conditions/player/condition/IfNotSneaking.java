@@ -16,7 +16,7 @@ public class IfNotSneaking extends PlayerConditionFeature<BooleanFeature, IfNotS
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && player.isSneaking()) {
+        if (getCondition().getValue(request.getSp()) && player.isSneaking()) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfNotSneaking extends PlayerConditionFeature<BooleanFeature, IfNotS
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

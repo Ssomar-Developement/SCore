@@ -16,7 +16,7 @@ public class IfOnFire extends EntityConditionFeature<BooleanFeature, IfOnFire> {
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && entity.getFireTicks() <= 0 ) {
+        if (getCondition().getValue(request.getSp()) && entity.getFireTicks() <= 0 ) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfOnFire extends EntityConditionFeature<BooleanFeature, IfOnFire> {
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

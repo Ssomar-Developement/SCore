@@ -20,7 +20,7 @@ public class IfFromSpawner extends EntityConditionFeature<BooleanFeature, IfFrom
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class IfFromSpawner extends EntityConditionFeature<BooleanFeature, IfFrom
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && !entity.hasMetadata("fromSpawner")) {
+        if (getCondition().getValue(request.getSp()) && !entity.hasMetadata("fromSpawner")) {
             runInvalidCondition(request);
             return false;
         }

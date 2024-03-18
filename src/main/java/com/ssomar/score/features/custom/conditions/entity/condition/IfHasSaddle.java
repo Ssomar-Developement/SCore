@@ -22,7 +22,7 @@ public class IfHasSaddle extends EntityConditionFeature<BooleanFeature, IfHasSad
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class IfHasSaddle extends EntityConditionFeature<BooleanFeature, IfHasSad
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && (!(entity instanceof InventoryHolder) || !(((InventoryHolder) entity).getInventory() instanceof AbstractHorseInventory) || ((AbstractHorseInventory) ((InventoryHolder) entity).getInventory()).getSaddle() == null)) {
+        if (getCondition().getValue(request.getSp()) && (!(entity instanceof InventoryHolder) || !(((InventoryHolder) entity).getInventory() instanceof AbstractHorseInventory) || ((AbstractHorseInventory) ((InventoryHolder) entity).getInventory()).getSaddle() == null)) {
             runInvalidCondition(request);
             return false;
         }

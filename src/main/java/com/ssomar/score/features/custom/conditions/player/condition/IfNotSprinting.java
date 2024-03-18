@@ -16,7 +16,7 @@ public class IfNotSprinting extends PlayerConditionFeature<BooleanFeature, IfNot
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && player.isSprinting()) {
+        if (getCondition().getValue(request.getSp()) && player.isSprinting()) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfNotSprinting extends PlayerConditionFeature<BooleanFeature, IfNot
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

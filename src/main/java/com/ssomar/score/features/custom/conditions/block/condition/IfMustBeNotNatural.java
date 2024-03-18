@@ -16,12 +16,12 @@ public class IfMustBeNotNatural extends BlockConditionFeature<BooleanFeature, If
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
     public boolean verifCondition(BlockConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Block b = request.getBlock();
             if (MyCoreProtectAPI.isNaturalBlock(b)) {
                 runInvalidCondition(request);

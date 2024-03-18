@@ -17,7 +17,7 @@ public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTame
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             if(!(entity instanceof Tameable)) return true;
             else if((entity instanceof Tameable && ((Tameable) entity).isTamed())) {
                 runInvalidCondition(request);
@@ -40,7 +40,7 @@ public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTame
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.ssomar.score.features.FeatureReturnCheckPremium;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -140,5 +141,13 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
         EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(playerEditor), getEditorName() + ":", true, true, true, true,
                 true, true, false, "", suggestions);
         editor.generateTheMenuAndSendIt(playerEditor);
+    }
+
+    public List<String> getValue(StringPlaceholder sp){
+        List<String> result = new ArrayList<>();
+        for(String s : this.getValues()) {
+            result.add(sp.replacePlaceholder(s));
+        }
+        return result;
     }
 }

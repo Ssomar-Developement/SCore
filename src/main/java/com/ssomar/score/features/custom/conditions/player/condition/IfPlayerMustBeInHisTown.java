@@ -17,7 +17,7 @@ public class IfPlayerMustBeInHisTown extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Player player = request.getPlayer();
             if (SCore.hasTowny) {
                 if (!TownyToolAPI.playerIsInHisTown(player, player.getLocation())) {
@@ -41,7 +41,7 @@ public class IfPlayerMustBeInHisTown extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class IfPlayerMustBeOnHisPlot extends PlayerConditionFeature<BooleanFeatu
     public boolean verifCondition(PlayerConditionRequest request) {
         if (SCore.hasPlotSquared) {
             Player player = request.getPlayer();
-            if (hasCondition()) {
+            if (getCondition().getValue(request.getSp())) {
                 if (!PlotSquaredAPI.playerIsInHisPlot(player, player.getLocation())) {
                     runInvalidCondition(request);
                     return false;
@@ -41,7 +41,7 @@ public class IfPlayerMustBeOnHisPlot extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

@@ -20,8 +20,14 @@ public class StunDisable extends MixedCommand {
         if(!(receiver instanceof LivingEntity)) return;
         LivingEntity livingReceiver = (LivingEntity) receiver;
 
+        if(receiver instanceof Player){
+            livingReceiver.setGliding(false);
+        }
+        else {
+            livingReceiver.setAI(true);
+        }
+
         StunEvent.stunPlayers.remove(receiver.getUniqueId());
-        livingReceiver.setGliding(false);
     }
 
 

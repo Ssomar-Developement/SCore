@@ -17,7 +17,7 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
 
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Player player = request.getPlayer();
             if (SCore.hasLands) {
                 LandsIntegrationAPI lands = new LandsIntegrationAPI(SCore.plugin);
@@ -76,7 +76,7 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfP
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfP
             blockData = blockGrowEvent.getNewState().getBlockData();
         }
 
-        if (hasCondition() && blockData instanceof Ageable) {
+        if (getCondition().getValue(request.getSp()) && blockData instanceof Ageable) {
             Ageable ageable = (Ageable) blockData;
             int age = ageable.getAge();
             if (age != ageable.getMaximumAge()) {

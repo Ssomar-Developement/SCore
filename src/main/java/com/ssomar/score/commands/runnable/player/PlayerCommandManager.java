@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommandsManager;
 import com.ssomar.score.commands.runnable.player.commands.*;
+import com.ssomar.score.commands.runnable.player.commands.absorption.Absorption;
 
 import java.util.ArrayList;
 import java.util.List;

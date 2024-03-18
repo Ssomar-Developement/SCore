@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Getter
@@ -151,5 +153,23 @@ public class EventInfo {
         eInfo.setWorld(world);
 
         return eInfo;
+    }
+
+    public Map<String, String> getPlaceholderOfCommand(){
+        Map<String, String> placeholders = new HashMap<>();
+        if(command.isPresent()){
+            placeholders.put("%all_args%", command.get());
+            String[] split = command.get().split(" ");
+            String allArgsWithoutFirst = "";
+            int i = 0;
+            for (String arg : split) {
+                if(i != 0) allArgsWithoutFirst += arg + " ";
+                placeholders.put("%arg" + i + "%", arg);
+                i++;
+            }
+            allArgsWithoutFirst = allArgsWithoutFirst.trim();
+            placeholders.put("%all_args_without_first%", allArgsWithoutFirst);
+        }
+        return placeholders;
     }
 }

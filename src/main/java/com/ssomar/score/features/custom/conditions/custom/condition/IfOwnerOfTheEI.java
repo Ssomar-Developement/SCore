@@ -22,7 +22,7 @@ public class IfOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, IfOwn
 
     @Override
     public boolean verifCondition(CustomConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             ItemStack itemStack = request.getItemStack();
             Player player = request.getLauncher();
             if (itemStack.hasItemMeta() && player != null) {
@@ -58,7 +58,7 @@ public class IfOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, IfOwn
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

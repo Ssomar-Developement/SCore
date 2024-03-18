@@ -22,7 +22,7 @@ public class IfHasPermission extends PlayerConditionFeature<ListUncoloredStringF
         Player player = request.getPlayer();
         if (hasCondition()) {
             boolean valid = true;
-            for (String perm : getCondition().getValue()) {
+            for (String perm : getCondition().getValue(request.getSp())) {
                 if (!player.hasPermission(perm)) {
                     valid = false;
                     break;

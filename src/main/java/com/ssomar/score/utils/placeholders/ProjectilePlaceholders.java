@@ -1,6 +1,7 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -20,6 +21,8 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
     private static final long serialVersionUID = 1L;
 
     /* placeholders of the target projectile */
+
+    private Projectile projectile;
     private UUID projectileUUID;
 
     private String projectileType = "";
@@ -33,6 +36,7 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
     private String projectileWorld = "";
 
     public void setProjectilePlcHldr(Projectile projectile, String blockFace) {
+        this.projectile = projectile;
         this.projectileUUID = projectile.getUniqueId();
         this.projectileBlockFace = blockFace;
         this.reloadProjectilePlcHldr();
@@ -40,13 +44,17 @@ public class ProjectilePlaceholders extends PlaceholdersInterface implements Ser
 
     public void reloadProjectilePlcHldr() {
         Entity entity;
-        if(this.projectileUUID != null) {
-            if (SCore.is1v11Less()) {
-                entity = getEntityByUniqueId(projectileUUID);
-            } else {
-                entity = Bukkit.getEntity(projectileUUID);
+        if(projectile != null || this.projectileUUID != null) {
+            if(projectile != null) entity = projectile;
+            else {
+                if (SCore.is1v11Less()) {
+                    entity = getEntityByUniqueId(projectileUUID);
+                } else {
+                    entity = Bukkit.getEntity(projectileUUID);
+                }
             }
 
+            SsomarDev.testMsg("entity : "+entity, true);
             if (entity != null) {
                 this.projectileType = entity.getType().toString();
                 this.projectileName = entity.getName();

@@ -16,7 +16,7 @@ public class IfNotGliding extends PlayerConditionFeature<BooleanFeature, IfNotGl
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && player.isGliding()) {
+        if (getCondition().getValue(request.getSp()) && player.isGliding()) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfNotGliding extends PlayerConditionFeature<BooleanFeature, IfNotGl
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

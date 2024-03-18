@@ -1,4 +1,4 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.player.commands.absorption;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
@@ -7,7 +7,6 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,26 +32,12 @@ public class Absorption extends PlayerCommand {
             if(time <= 0) {
                 receiver.setAbsorptionAmount(currentabsorption + absorption);
             }else{
-                SsomarDev.testMsg(" total absorption: "+(currentabsorption + absorption), true);
-                receiver.setAbsorptionAmount(currentabsorption + absorption);
-                SsomarDev.testMsg(" get absorption: "+receiver.getAbsorptionAmount(), true);
-
-                BukkitRunnable runnable3 = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (!receiver.isDead()) {
-                            try {
-                                receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption);
-                            }catch(IllegalArgumentException e){
-                                //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
-                                //like ABSORPTION -5, if the player has ABSORPTION 5, it will work, but once it worked now the player
-                                //has ABSORPTION 0, if he tries again, error
-                            }
-                        }
-                    }
-                };
-                runnable3.runTaskLater(SCore.plugin, time);
-
+                long timestamp = System.currentTimeMillis();
+                /* convert time ticks to time secs */
+                time = time * 50;
+                long finalTime = time+timestamp;
+                AbsorptionObject absorptionObject = new AbsorptionObject(receiver.getUniqueId(), absorption, finalTime);
+                AbsorptionManager.getInstance().addAbsorption(AbsorptionManager.getInstance().applyAbsorption(absorptionObject));
             }
         }catch(IllegalArgumentException e){
             SsomarDev.testMsg("ABSORPTION Error: "+e.getMessage(), true);
@@ -64,6 +49,11 @@ public class Absorption extends PlayerCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
+
+        if(SCore.is1v20v4Plus()){
+            return Optional.of("This command is not available for 1.20.4+, you should now use the vanilla command /attribute ( https://discord.com/channels/701066025516531753/1184977479467794572/1188938447474409593 )");
+        }
+
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());

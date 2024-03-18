@@ -16,7 +16,7 @@ public class IfSwimming extends PlayerConditionFeature<BooleanFeature, IfSwimmin
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && !player.isSwimming()) {
+        if (getCondition().getValue(request.getSp()) && !player.isSwimming()) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfSwimming extends PlayerConditionFeature<BooleanFeature, IfSwimmin
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class IfNeedPlayerConfirmation extends CustomConditionFeature<BooleanFeat
         StringPlaceholder sp = request.getSp();
         String id = sp.getId() + "-" + sp.getActivator_id();
 
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             boolean needConfirmation = true;
             Map<Player, String> needConfirmationMap = ConfirmationManager.getInstance().getNeedConfirm();
             if (needConfirmationMap.containsKey(p) && id.equals(needConfirmationMap.get(p))) {
@@ -51,7 +51,7 @@ public class IfNeedPlayerConfirmation extends CustomConditionFeature<BooleanFeat
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

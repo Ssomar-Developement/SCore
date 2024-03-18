@@ -21,7 +21,7 @@ public class IfHasTag extends PlayerConditionFeature<ListUncoloredStringFeature,
         Player player = request.getPlayer();
         if (hasCondition()) {
             boolean notValid = false;
-            for (String tag : getCondition().getValue()) {
+            for (String tag : getCondition().getValue(request.getSp())) {
                 if (!player.getScoreboardTags().contains(tag)) {
                     notValid = true;
                     break;

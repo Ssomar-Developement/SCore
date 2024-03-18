@@ -17,7 +17,7 @@ public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && SCore.is1v18Plus() && !entity.isFrozen()) {
+        if (getCondition().getValue(request.getSp()) && SCore.is1v18Plus() && !entity.isFrozen()) {
             runInvalidCondition(request);
             return false;
         }
@@ -37,7 +37,7 @@ public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

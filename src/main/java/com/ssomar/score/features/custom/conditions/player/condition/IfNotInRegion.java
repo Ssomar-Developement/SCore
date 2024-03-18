@@ -21,7 +21,7 @@ public class IfNotInRegion extends PlayerConditionFeature<ListRegionStringFeatur
     public boolean verifCondition(PlayerConditionRequest request) {
         if (SCore.hasWorldGuard) {
             Player player = request.getPlayer();
-            if (hasCondition() && new WorldGuardAPI().isInRegion(player, getCondition().getValue())) {
+            if (hasCondition() && new WorldGuardAPI().isInRegion(player, getCondition().getValue(request.getSp()))) {
                 runInvalidCondition(request);
                 return false;
             }

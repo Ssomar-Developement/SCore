@@ -17,7 +17,7 @@ public class IfCanBreakTargetedBlock extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Player player = request.getPlayer();
             Block block = player.getTargetBlock(null, 5);
             if (!SafeBreak.verifSafeBreak(player.getUniqueId(), block)) {
@@ -40,7 +40,7 @@ public class IfCanBreakTargetedBlock extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

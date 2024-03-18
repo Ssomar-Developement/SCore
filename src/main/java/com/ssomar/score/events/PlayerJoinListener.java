@@ -1,5 +1,6 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionManager;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
@@ -10,7 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerReconnexion implements Listener {
+public class PlayerJoinListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -25,6 +26,8 @@ public class PlayerReconnexion implements Listener {
         if (FlyManager.getInstance().isPlayerWithFly(p)) {
             p.setAllowFlight(true);
         }
+
+        AbsorptionManager.getInstance().onConnect(p);
     }
 
    /*  @EventHandler

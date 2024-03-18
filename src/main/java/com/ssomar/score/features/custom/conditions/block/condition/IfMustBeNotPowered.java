@@ -17,13 +17,13 @@ public class IfMustBeNotPowered extends BlockConditionFeature<BooleanFeature, If
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
     public boolean verifCondition(BlockConditionRequest request) {
         Block b = request.getBlock();
-        if (hasCondition() && b.getBlockData() instanceof Powerable) {
+        if (getCondition().getValue(request.getSp()) && b.getBlockData() instanceof Powerable) {
             Powerable power = (Powerable) b.getBlockData();
             if (power.isPowered()) {
                 runInvalidCondition(request);

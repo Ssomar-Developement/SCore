@@ -4,6 +4,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,5 +85,13 @@ public class ListColoredStringFeature extends ListFeatureAbstract<String, ListCo
         EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(playerEditor), getEditorName() + ":", true, true, true, true,
                 true, true, false, "", suggestions);
         editor.generateTheMenuAndSendIt(playerEditor);
+    }
+
+    public List<String> getValue(StringPlaceholder sp){
+        List<String> result = new ArrayList<>();
+        for(String s : this.getValues()) {
+            result.add(sp.replacePlaceholder(s));
+        }
+        return result;
     }
 }

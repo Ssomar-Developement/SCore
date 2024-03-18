@@ -16,7 +16,7 @@ public class IfInvulnerable extends EntityConditionFeature<BooleanFeature, IfInv
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && !entity.isInvulnerable()) {
+        if (getCondition().getValue(request.getSp()) && !entity.isInvulnerable()) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfInvulnerable extends EntityConditionFeature<BooleanFeature, IfInv
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

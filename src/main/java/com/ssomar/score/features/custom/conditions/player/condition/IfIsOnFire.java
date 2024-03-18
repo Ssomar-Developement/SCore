@@ -16,7 +16,7 @@ public class IfIsOnFire extends PlayerConditionFeature<BooleanFeature, IfIsOnFir
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if (hasCondition() && player.getFireTicks() <= 0) {
+        if (getCondition().getValue(request.getSp()) && player.getFireTicks() <= 0) {
             runInvalidCondition(request);
             return false;
         }
@@ -35,7 +35,7 @@ public class IfIsOnFire extends PlayerConditionFeature<BooleanFeature, IfIsOnFir
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

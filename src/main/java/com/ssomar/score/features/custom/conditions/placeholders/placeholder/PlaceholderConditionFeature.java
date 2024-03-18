@@ -5,12 +5,14 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.custom.commands.console.ConsoleCommandsFeature;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;
 import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.logging.Utils;
@@ -46,6 +48,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
     private ColoredStringFeature messageIfNotValid;
     private ColoredStringFeature messageIfNotValidForTarget;
     private BooleanFeature stopCheckingOtherConditionsIfNotValid;
+    private ConsoleCommandsFeature consoleCommandsIfError;
     private String id;
 
     public PlaceholderConditionFeature(FeatureParentInterface parent, String id) {
@@ -69,6 +72,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.of(""), "Message If Not Valid", new String[]{"&7&oThe message to display if", "&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);
         this.messageIfNotValidForTarget = new ColoredStringFeature(this, "messageIfNotValidForTarget", Optional.of(""), "Message If Not Valid For Target", new String[]{"&7&oThe message to display if", "&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);
         this.stopCheckingOtherConditionsIfNotValid = new BooleanFeature(this, "stopCheckingOtherConditionsIfNotValid", true, "Stop Checking Other Conditions If Not Valid", new String[]{"&7&oStop checking other conditions", "&7&oif this condition is not valid"}, Material.COMPASS, false, false);
+        this.consoleCommandsIfError = new ConsoleCommandsFeature(this, getName() + "Cmds", "Console Commands If Error", new String[]{"&7&oConsole Commands If Error"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "WRITABLE_BOOK", "BOOK_AND_QUILL")), false, true);
     }
 
     public boolean verify(Player player, Player target) {
@@ -197,6 +201,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
             errors.addAll(this.messageIfNotValidForTarget.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.cancelEventIfNotValid.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.stopCheckingOtherConditionsIfNotValid.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.consoleCommandsIfError.load(plugin, enchantmentConfig, isPremiumLoading));
         } else {
             errors.add("&cERROR, Couldn't load the Placeholder Condition with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
@@ -220,6 +225,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         this.messageIfNotValid.save(attributeConfig);
         this.messageIfNotValidForTarget.save(attributeConfig);
         this.stopCheckingOtherConditionsIfNotValid.save(attributeConfig);
+        this.consoleCommandsIfError.save(attributeConfig);
     }
 
     @Override
@@ -229,12 +235,14 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
 
     @Override
     public PlaceholderConditionFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 5];
+        String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 5] = "&7Type: &e" + type.getValue().get().name();
-        finalDescription[finalDescription.length - 4] = "&7Comparator: &e" + comparator.getValue().get();
-        finalDescription[finalDescription.length - 3] = "&7Part1: &e" + part1.getValue().get();
-        finalDescription[finalDescription.length - 2] = "&7Part2: &e" + part2.getValue().get();
+        finalDescription[finalDescription.length - 6] = "&7Type: &e" + type.getValue().get().name();
+        finalDescription[finalDescription.length - 5] = "&7Comparator: &e" + comparator.getValue().get();
+        finalDescription[finalDescription.length - 4] = "&7Part1: &e" + part1.getValue().get();
+        finalDescription[finalDescription.length - 3] = "&7Part2: &e" + part2.getValue().get();
+        finalDescription[finalDescription.length - 2] = "&7Console commands If Error: &e"+consoleCommandsIfError.getCurrentValues().size();
+
         finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName() + " - " + "(" + id + ")", false, false, finalDescription);
@@ -257,12 +265,13 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         eF.setMessageIfNotValid(messageIfNotValid.clone(eF));
         eF.setMessageIfNotValidForTarget(messageIfNotValidForTarget.clone(eF));
         eF.setStopCheckingOtherConditionsIfNotValid(stopCheckingOtherConditionsIfNotValid.clone(eF));
+        eF.setConsoleCommandsIfError(consoleCommandsIfError.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(type, comparator, part1, part2, cancelEventIfNotValid, messageIfNotValid, messageIfNotValidForTarget, stopCheckingOtherConditionsIfNotValid));
+        return new ArrayList<>(Arrays.asList(type, comparator, part1, part2, cancelEventIfNotValid, messageIfNotValid, messageIfNotValidForTarget, stopCheckingOtherConditionsIfNotValid, consoleCommandsIfError));
     }
 
     @Override
@@ -294,6 +303,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                     aFOF.setMessageIfNotValid(messageIfNotValid);
                     aFOF.setMessageIfNotValidForTarget(messageIfNotValidForTarget);
                     aFOF.setStopCheckingOtherConditionsIfNotValid(stopCheckingOtherConditionsIfNotValid);
+                    aFOF.setConsoleCommandsIfError(consoleCommandsIfError);
                     break;
                 }
             }

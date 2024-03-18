@@ -18,7 +18,7 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && entity instanceof Nameable && ((Nameable) entity).getCustomName() == null) {
+        if (getCondition().getValue(request.getSp()) && entity instanceof Nameable && ((Nameable) entity).getCustomName() == null) {
             runInvalidCondition(request);
             return false;
         }
@@ -38,7 +38,7 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

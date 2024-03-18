@@ -80,6 +80,10 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         } else value.ifPresent(aBoolean -> config.set(this.getName(), aBoolean));
     }
 
+    public Boolean getValue(@Nullable StringPlaceholder sp) {
+        return getValue(null, sp);
+    }
+
     public Boolean getValue(@Nullable UUID playerUUID, @Nullable StringPlaceholder sp) {
         if (placeholder.isPresent()) {
             String placeholderStr = placeholder.get();
@@ -105,6 +109,9 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
             return Boolean.valueOf(placeholderStr);
         }
         return defaultValue;
+    }
+    public boolean isConfigured() {
+        return (value.isPresent() && value.get()) || placeholder.isPresent();
     }
 
     @Override
@@ -140,6 +147,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         if (requirePremium() && !isPremium()) return;
         ((GUI) manager.getCache().get(editor)).changeBoolean(getEditorName());
         value = Optional.of(!getValue());
+        this.placeholder = Optional.empty();
     }
 
     @Override

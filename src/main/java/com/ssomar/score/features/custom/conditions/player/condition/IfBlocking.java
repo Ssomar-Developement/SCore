@@ -14,7 +14,7 @@ public class IfBlocking extends PlayerConditionFeature<BooleanFeature, IfBlockin
 
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
-        if (hasCondition() && !request.getPlayer().isBlocking()) {
+        if (getCondition().getValue(request.getSp()) && !request.getPlayer().isBlocking()) {
             runInvalidCondition(request);
             return false;
         }
@@ -33,7 +33,7 @@ public class IfBlocking extends PlayerConditionFeature<BooleanFeature, IfBlockin
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

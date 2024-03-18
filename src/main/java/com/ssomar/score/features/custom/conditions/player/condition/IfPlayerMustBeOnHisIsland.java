@@ -21,7 +21,7 @@ public class IfPlayerMustBeOnHisIsland extends PlayerConditionFeature<BooleanFea
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
         if (SCore.hasIridiumSkyblock) {
-            if (hasCondition()) {
+            if (getCondition().getValue(request.getSp())) {
                 if (!IridiumSkyblockTool.playerIsOnHisIsland(player)) {
                     runInvalidCondition(request);
                     return false;
@@ -58,7 +58,7 @@ public class IfPlayerMustBeOnHisIsland extends PlayerConditionFeature<BooleanFea
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

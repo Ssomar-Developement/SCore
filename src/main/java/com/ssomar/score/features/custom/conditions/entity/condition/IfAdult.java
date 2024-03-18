@@ -21,7 +21,7 @@ public class IfAdult extends EntityConditionFeature<BooleanFeature, IfAdult> {
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IfAdult extends EntityConditionFeature<BooleanFeature, IfAdult> {
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
-        if (hasCondition() && entity instanceof Ageable && !((Ageable) entity).isAdult()) {
+        if (getCondition().getValue(request.getSp()) && entity instanceof Ageable && !((Ageable) entity).isAdult()) {
             runInvalidCondition(request);
             return false;
         }

@@ -19,7 +19,7 @@ public class IfCrossbowMustNotBeCharged extends ItemConditionFeature<BooleanFeat
     public boolean verifCondition(ItemConditionRequest request) {
 
         ItemStack itemStack = request.getItemStack();
-        if (hasCondition() && itemStack.getType().toString().contains("CROSSBOW")) {
+        if (getCondition().getValue(request.getSp()) && itemStack.getType().toString().contains("CROSSBOW")) {
 
             ItemMeta itemMeta = null;
             boolean hasItemMeta = itemStack.hasItemMeta();
@@ -51,7 +51,7 @@ public class IfCrossbowMustNotBeCharged extends ItemConditionFeature<BooleanFeat
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override

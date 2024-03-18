@@ -20,7 +20,7 @@ public class IfNotHasPermission extends PlayerConditionFeature<ListUncoloredStri
     public boolean verifCondition(PlayerConditionRequest request) {
         if (hasCondition()) {
             Player player = request.getPlayer();
-            for (String perm : getCondition().getValue()) {
+            for (String perm : getCondition().getValue(request.getSp())) {
                 if (player.hasPermission(perm)) {
                     runInvalidCondition(request);
                     return false;

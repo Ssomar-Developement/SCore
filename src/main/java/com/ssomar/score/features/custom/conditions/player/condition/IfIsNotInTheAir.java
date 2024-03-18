@@ -19,7 +19,7 @@ public class IfIsNotInTheAir extends PlayerConditionFeature<BooleanFeature, IfIs
 
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
-        if (hasCondition()) {
+        if (getCondition().getValue(request.getSp())) {
             Player player = request.getPlayer();
             Location pLoc = player.getLocation();
             pLoc.subtract(0, 0.1, 0);
@@ -46,7 +46,7 @@ public class IfIsNotInTheAir extends PlayerConditionFeature<BooleanFeature, IfIs
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue();
+        return getCondition().isConfigured();
     }
 
     @Override
