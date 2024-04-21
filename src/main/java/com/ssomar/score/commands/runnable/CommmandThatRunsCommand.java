@@ -66,7 +66,7 @@ public interface CommmandThatRunsCommand {
 
             String buildCommands = prepareCommands.toString();
             String[] tab;
-            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
+            SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
             if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
             else {
                 tab = new String[1];
@@ -247,6 +247,7 @@ public interface CommmandThatRunsCommand {
 
             ActionInfo aInfo2 = aInfo.clone();
             aInfo2.setEntityUUID(entity.getUniqueId());
+            aInfo2.setStep(aInfo.getStep() + 1);
 
             /* regroup the last args that correspond to the commands */
             StringBuilder prepareCommands = new StringBuilder();

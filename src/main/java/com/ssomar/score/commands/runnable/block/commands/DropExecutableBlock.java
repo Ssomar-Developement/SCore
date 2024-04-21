@@ -19,6 +19,7 @@ public class DropExecutableBlock extends BlockCommand {
 
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+
         if (SCore.hasExecutableBlocks && ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(args.get(0))) {
             int amount = Double.valueOf(args.get(1)).intValue();
             if (amount > 0) {

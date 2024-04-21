@@ -10,6 +10,8 @@ import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.menu.InteractionGUI;
 import com.ssomar.score.nofalldamage.NoFallDamageListener;
+import com.ssomar.score.usedapi.Dependency;
+import com.ssomar.score.usedapi.JobsAPI;
 
 public class EventsHandler {
 
@@ -61,6 +63,8 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(PlaceholderLastDamageDealtEvent.getInstance(), main);
 
+        main.getServer().getPluginManager().registerEvents(new OpenChestEvent(), main);
+
         main.getServer().getPluginManager().registerEvents(new DamageResistanceEvent(), main);
 
         main.getServer().getPluginManager().registerEvents(new DamageBoostEvent(), main);
@@ -83,5 +87,7 @@ public class EventsHandler {
         main.getServer().getPluginManager().registerEvents(CheckIfDamageIsPosssibleListener.getInstance(), main);
 
         main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
+
+        if(Dependency.JOBS.isInstalled())  main.getServer().getPluginManager().registerEvents(new JobsAPI(), main);
     }
 }

@@ -5,9 +5,9 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.SObjectManager;
+import com.ssomar.score.sobject.*;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
+import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
@@ -25,7 +25,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public abstract class SObjectsWithFileEditor<T extends SObject> extends SObjectsEditorAbstract<T> {
+public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable> extends SObjectsEditorAbstract<T> {
 
     private String defaultPath;
     private String path;
@@ -78,10 +78,10 @@ public abstract class SObjectsWithFileEditor<T extends SObject> extends SObjects
                     String id = fileName.split(".yml")[0];
 
 
-                    Optional<SObject> sObjectOpt = getManager().getLoadedObjectWithID(id);
+                    Optional<T> sObjectOpt = getManager().getLoadedObjectWithID(id);
                     if (sObjectOpt.isPresent()) {
-                        SObject sObject = sObjectOpt.get();
-                        ItemStack itemS = sObject.buildItem(1, Optional.empty());
+                        T sObject = sObjectOpt.get();
+                        ItemStack itemS = sObject.getIconItem();
 
                         /* Remove useless tags */
                         ItemMeta meta = itemS.getItemMeta();

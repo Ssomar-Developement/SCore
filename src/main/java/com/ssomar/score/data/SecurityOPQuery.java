@@ -62,7 +62,7 @@ public class SecurityOPQuery {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
             return false;
         } finally {
             if (pstmt != null) {
@@ -101,7 +101,7 @@ public class SecurityOPQuery {
             pstmt.setString(1, p.getUniqueId().toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -129,7 +129,7 @@ public class SecurityOPQuery {
 
             if (rs.next()) return true;
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (rs != null) {
                 try {

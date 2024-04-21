@@ -105,5 +105,6 @@ public class EntityRunCommand extends RunCommand {
             }
         } else receiver = Bukkit.getEntity(entityUUID);
         if (receiver != null) SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
+        //else SsomarDev.testMsg("EntityRunCommand2: receiver is null for the command: " + this.getBrutCommand(), true);
     }
 }

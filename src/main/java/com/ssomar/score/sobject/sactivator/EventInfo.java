@@ -158,17 +158,17 @@ public class EventInfo {
     public Map<String, String> getPlaceholderOfCommand(){
         Map<String, String> placeholders = new HashMap<>();
         if(command.isPresent()){
-            placeholders.put("%all_args%", command.get());
+            placeholders.put("%all_args%", command.get().replaceAll("%[^ ]*%", ""));
             String[] split = command.get().split(" ");
             String allArgsWithoutFirst = "";
             int i = 0;
             for (String arg : split) {
                 if(i != 0) allArgsWithoutFirst += arg + " ";
-                placeholders.put("%arg" + i + "%", arg);
+                placeholders.put("%arg" + i + "%", arg.replaceAll("%[^ ]*%", ""));
                 i++;
             }
             allArgsWithoutFirst = allArgsWithoutFirst.trim();
-            placeholders.put("%all_args_without_first%", allArgsWithoutFirst);
+            placeholders.put("%all_args_without_first%", allArgsWithoutFirst.replaceAll("%[^ ]*%", ""));
         }
         return placeholders;
     }

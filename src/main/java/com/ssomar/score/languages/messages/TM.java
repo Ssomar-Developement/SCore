@@ -120,12 +120,12 @@ public class TM {
             }
 
             if(!isNotUpdate){
-                SCore.plugin.getServer().getLogger().info(SCore.NAME_2 + " Update of " + what + " in your for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+                SCore.plugin.getServer().getLogger().info(SCore.NAME_COLOR_WITH_BRACKETS + " Update of " + what + " in your for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
                 config.save(pdFile);
-            } else SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE " + what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+            } else SCore.plugin.getServer().getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR LOAD MESSAGE " + what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
             buff.close();
         } catch (Exception e) {
-            SCore.plugin.getServer().getLogger().severe(SCore.NAME_2 + " ERROR LOAD MESSAGE "+what+" for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+            SCore.plugin.getServer().getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR LOAD MESSAGE "+what+" for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
     }

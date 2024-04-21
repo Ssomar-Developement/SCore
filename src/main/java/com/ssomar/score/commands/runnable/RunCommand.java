@@ -100,8 +100,12 @@ public abstract class RunCommand implements Serializable {
                     /* Exception 1  for example %parseother_{%around_target%}_{player_name}
                     * He we dont want to replace PAIPI placeholders now, we want to replace them later when the %around_target% will be parsed
                     *
-                    * The good condition is contains %???? and %around to make sure it works with all papi libs*/
-                    if((s.contains("%math_") || s.contains("%parseother_")) && s.contains("%around")){
+                    * The good condition is contains %????_ and %around to make sure it works with all papi libs*/
+
+                    // Check if the string contains %?????_ and %around
+                    String regex = "%[a-zA-Z0-9_]*_*%around_[a-zA-Z0-9_]*%*";
+
+                    if(s.matches(regex)){
                         placeholdersToReplaceLatter.put(later, s);
                         finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
                         later++;

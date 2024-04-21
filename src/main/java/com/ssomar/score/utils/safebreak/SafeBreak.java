@@ -188,6 +188,7 @@ public class SafeBreak {
 
     public static boolean breakEB(Block block, boolean drop) {
        //SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
+
         if (SCore.hasExecutableBlocks) {
            // SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
             Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);

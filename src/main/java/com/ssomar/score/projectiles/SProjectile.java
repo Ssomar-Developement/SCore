@@ -7,7 +7,7 @@ import com.ssomar.score.features.types.SProjectileTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
-import com.ssomar.score.sobject.SObjectWithFile;
+import com.ssomar.score.sobject.SObjectWithFileEditable;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class SProjectile extends SObjectWithFile<SProjectile, SProjectileEditor, SProjectileEditorManager> {
+public class SProjectile extends SObjectWithFileEditable<SProjectile, SProjectileEditor, SProjectileEditorManager> {
 
     private SProjectileTypeFeature type;
 
@@ -167,9 +167,8 @@ public class SProjectile extends SObjectWithFile<SProjectile, SProjectileEditor,
         SProjectileEditorManager.getInstance().startEditing(player, this);
     }
 
-
     @Override
-    public ItemStack buildItem(int quantity, Optional<Player> creatorOpt) {
-        return new ItemStack(type.getValue().get().getMaterial());
+    public ItemStack getIconItem() {
+        return new ItemStack(getType().getEditorMaterial());
     }
 }

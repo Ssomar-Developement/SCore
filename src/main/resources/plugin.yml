@@ -4,7 +4,7 @@ version: ${project.version}
 main: com.ssomar.score.SCore
 api-version: 1.13
 softdepend: [ProtocolLib, NBTAPI, PolymartHelper, Polymart, Vault, Multiverse-Core, WorldGuard, PlaceholderAPI, CoreProtect, DecentHolograms, HolographicDisplaysAPI, HolographicDisplays]
-loadbefore: [ ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades]
+loadbefore: [ExecutableItems, SParkour, ExecutableBlocks, ExecutableEvents, CustomPiglinsTrades]
 commands:
   score:
     description: score command

@@ -1,6 +1,5 @@
 package com.ssomar.score.data;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.custom.cooldowns.Cooldown;
@@ -59,9 +58,7 @@ public class CooldownsQuery {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_COOLDOWNS_NAME + "&7 if not exists...");
 
             String checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4_SQLITE;
-            try {
-                if (conn instanceof MysqlDataSource) checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4;
-            } catch (Exception | Error ignored) {}
+            if (Database.useMySQL) checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4;
 
             stmt.execute(CREATE_TABLE);
 
@@ -119,7 +116,7 @@ public class CooldownsQuery {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -166,7 +163,7 @@ public class CooldownsQuery {
                 list.add(cooldown);
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (rs != null) {
                 try {
@@ -210,7 +207,7 @@ public class CooldownsQuery {
                 list.add(cooldown);
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (rs != null) {
                 try {
@@ -242,7 +239,7 @@ public class CooldownsQuery {
             pstmt.setString(1, uuid.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -265,7 +262,7 @@ public class CooldownsQuery {
             pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {

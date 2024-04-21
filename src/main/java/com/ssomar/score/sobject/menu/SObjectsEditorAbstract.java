@@ -4,9 +4,9 @@ import com.ssomar.score.api.executableitems.events.AddItemInPlayerInventoryEvent
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.SObjectManager;
+import com.ssomar.score.sobject.*;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
+import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 
 @Getter
 @Setter
-public abstract class SObjectsEditorAbstract<T extends SObject> extends GUI{
+public abstract class SObjectsEditorAbstract<T extends SObject & SObjectEditable> extends GUI{
 
     public static final int SOBJECT_PER_PAGE = 27;
     public static int index;
@@ -51,9 +51,9 @@ public abstract class SObjectsEditorAbstract<T extends SObject> extends GUI{
         }
     };
 
-    private SObjectManager manager;
+    private SObjectManager<T> manager;
 
-    public SObjectsEditorAbstract(SPlugin sPlugin, String title, SObjectManager manager) {
+    public SObjectsEditorAbstract(SPlugin sPlugin, String title, SObjectManager<T> manager) {
         super(title, 5 * 9);
         this.sPlugin = sPlugin;
         this.title = title;
@@ -120,16 +120,19 @@ public abstract class SObjectsEditorAbstract<T extends SObject> extends GUI{
 
     public void giveSObject(String objectID, Player p) {
         if(!giveButton) return;
-        Optional<SObject> optional = manager.getLoadedObjectWithID(objectID);
+        Optional<T> optional = manager.getLoadedObjectWithID(objectID);
         if (optional.isPresent()) {
             SObject sObject = optional.get();
-            int firstEmptySlot = p.getInventory().firstEmpty();
-            ItemStack itemStack = sObject.buildItem(1, Optional.of(p));
-            p.getInventory().addItem(itemStack);
-            p.sendMessage(StringConverter.coloredString("&2&l" + sPlugin.getNameDesign() + " "+TM.g(Text.EDITOR_GIVE_RECEIVEDMESSAGE) + objectID));
+            if(sObject instanceof SObjectBuildable) {
+                SObjectBuildable buildable = (SObjectBuildable) sObject;
+                int firstEmptySlot = p.getInventory().firstEmpty();
+                ItemStack itemStack = buildable.buildItem(1, Optional.of(p));
+                p.getInventory().addItem(itemStack);
+                p.sendMessage(StringConverter.coloredString("&2&l" + sPlugin.getNameDesign() + " " + TM.g(Text.EDITOR_GIVE_RECEIVEDMESSAGE) + objectID));
 
-            AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, itemStack, firstEmptySlot);
-            Bukkit.getPluginManager().callEvent(eventToCall);
+                AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, itemStack, firstEmptySlot);
+                Bukkit.getPluginManager().callEvent(eventToCall);
+            }
         }
     }
 }

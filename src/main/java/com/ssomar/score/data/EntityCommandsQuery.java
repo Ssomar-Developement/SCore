@@ -68,7 +68,7 @@ public class EntityCommandsQuery {
                 }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (pstmt != null) {
@@ -92,7 +92,7 @@ public class EntityCommandsQuery {
             pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -132,7 +132,7 @@ public class EntityCommandsQuery {
                 list.add(pCommand);
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
 
             if (rs != null) {

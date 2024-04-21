@@ -9,7 +9,7 @@ import com.ssomar.score.features.types.VariableTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
-import com.ssomar.score.sobject.SObjectWithFile;
+import com.ssomar.score.sobject.SObjectWithFileEditable;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.VariableType;
@@ -28,7 +28,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class Variable extends SObjectWithFile<Variable, SProjectileEditor, SProjectileEditorManager> {
+public class Variable extends SObjectWithFileEditable<Variable, SProjectileEditor, SProjectileEditorManager> {
 
     private VariableTypeFeature type;
 
@@ -160,20 +160,6 @@ public class Variable extends SObjectWithFile<Variable, SProjectileEditor, SProj
         VariableEditorManager.getInstance().startEditing(player, this);
     }
 
-
-    @Override
-    public ItemStack buildItem(int quantity, Optional<Player> creatorOpt) {
-        // Useless here
-        return new ItemStack(icon.getValue().get());
-    }
-
-    @Override
-    public List<String> getDescription() {
-        List<String> description = new ArrayList<>();
-        description.add("§7ID: §f" + getId());
-        description.add("§7Path: §f" + getPath());
-        return description;
-    }
 
     public String getValuesStr() {
         StringBuilder sb = new StringBuilder();
@@ -389,5 +375,10 @@ public class Variable extends SObjectWithFile<Variable, SProjectileEditor, SProj
         this.save();
 
         return Optional.empty();
+    }
+
+    @Override
+    public ItemStack getIconItem() {
+        return new ItemStack(icon.getValue().get());
     }
 }

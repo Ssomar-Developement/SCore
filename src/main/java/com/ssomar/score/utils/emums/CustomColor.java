@@ -46,14 +46,14 @@ public class CustomColor {
             case "YELLOW":
                 return Color.YELLOW;
             case "NO_COLOR":
-                return Color.fromRGB(1, 2, 3);
+                return getNullColor();
             default:
                 return null;
         }
     }
 
     public static Color getNullColor() {
-        return Color.fromRGB(1, 2, 3);
+        return Color.fromARGB(0,0,0,0);
     }
 
     public static String getName(Color color) {
@@ -91,7 +91,7 @@ public class CustomColor {
             return "WHITE";
         } else if (color.equals(Color.YELLOW)) {
             return "YELLOW";
-        } else if (color.equals(Color.fromRGB(1, 2, 3))) {
+        } else if (color.equals(getNullColor())) {
             return "NO_COLOR";
         }
         return "AQUA";
@@ -116,7 +116,7 @@ public class CustomColor {
                 Color.TEAL,
                 Color.WHITE,
                 Color.YELLOW,
-                Color.fromRGB(1, 2, 3)
+                getNullColor()
         };
     }
 
@@ -154,7 +154,7 @@ public class CustomColor {
         } else if (color.equals(Color.WHITE)) {
             return Color.YELLOW;
         } else if (color.equals(Color.YELLOW)) {
-            return Color.fromRGB(1, 2, 3);
+            return getNullColor();
         } else {
             return Color.AQUA;
         }

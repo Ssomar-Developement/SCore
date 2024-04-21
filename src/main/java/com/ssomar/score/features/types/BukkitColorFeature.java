@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -40,6 +41,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
+        //SsomarDev.testMsg("ColorStr: " + colorStr, true);
         if (!(colorStr.equals("NULL") || colorStr.equals("NO_COLOR"))) {
             try {
                 Color chatColor = CustomColor.valueOf(colorStr);
@@ -175,6 +177,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     public void updateColor(Color color, GUI gui) {
         ItemStack item = gui.getByName(getEditorName());
         value = Optional.of(color);
+        if(CustomColor.getNullColor().equals(color)) value = Optional.empty();
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
         boolean find = false;

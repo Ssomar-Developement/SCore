@@ -8,10 +8,8 @@ import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +67,7 @@ public class EICooldown extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "EICOOLDOWN {PLAYER} {ID} {SECONDS} {boolean TICKS} {optional activator}";
+        return "EICOOLDOWN {PLAYER} {ID} {SECONDS} {boolean TICKS} [optional activator]";
     }
 
     @Override

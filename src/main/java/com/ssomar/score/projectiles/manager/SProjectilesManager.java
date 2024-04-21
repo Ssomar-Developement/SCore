@@ -2,14 +2,14 @@ package com.ssomar.score.projectiles.manager;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.projectiles.SProjectile;
-import com.ssomar.score.sobject.SObjectManager;
+import com.ssomar.score.sobject.SObjectWithFileManager;
 import org.bukkit.NamespacedKey;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SProjectilesManager extends SObjectManager<SProjectile> {
+public class SProjectilesManager extends SObjectWithFileManager<SProjectile> {
 
     private static SProjectilesManager instance;
 

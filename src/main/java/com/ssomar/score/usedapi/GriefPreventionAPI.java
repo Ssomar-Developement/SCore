@@ -19,7 +19,7 @@ public class GriefPreventionAPI {
         Claim claim = dataStore.getClaimAt(location, false, null);
         if (claim == null || claim.getOwnerID() == null) return acceptWilderness;
 
-        return claim.getOwnerID().equals(p.getUniqueId()) || (claim.hasExplicitPermission(p, ClaimPermission.Build) && claim.hasExplicitPermission(p, ClaimPermission.Access) && claim.hasExplicitPermission(p, ClaimPermission.Inventory));
+        return claim.getOwnerID().equals(p.getUniqueId()) || claim.getPermission("public") != null || (claim.hasExplicitPermission(p, ClaimPermission.Build) && claim.hasExplicitPermission(p, ClaimPermission.Access) && claim.hasExplicitPermission(p, ClaimPermission.Inventory));
     }
 
 

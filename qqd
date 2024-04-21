@@ -1,0 +1,417 @@
+warning: in the working copy of 'pom.xml', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/pom.xml b/pom.xml[m
+[1mindex fa9ec0c5..8ed06c26 100644[m
+[1m--- a/pom.xml[m
+[1m+++ b/pom.xml[m
+[36m@@ -243,6 +243,17 @@[m
+                                     <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocksEvo\src\main\resources\SCore.jar</outputFile>[m
+                                 </configuration>[m
+                             </execution>[m
+[32m+[m[32m                            <execution>[m
+[32m+[m[32m                                <id>build_dep_test</id>[m
+[32m+[m[32m                                <phase>package</phase>[m
+[32m+[m[32m                                <goals>[m
+[32m+[m[32m                                    <goal>shade</goal>[m
+[32m+[m[32m                                </goals>[m
+[32m+[m[32m                                <configuration>[m
+[32m+[m[32m                                    <createDependencyReducedPom>false</createDependencyReducedPom>[m
+[32m+[m[32m                                    <outputFile>C:\Users\octav\Documents\GitHub\TestPlugin\src\main\resources\SCore.jar</outputFile>[m
+[32m+[m[32m                                </configuration>[m
+[32m+[m[32m                            </execution>[m
+                             <execution>[m
+                                 <id>build_dep_ei</id>[m
+                                 <phase>package</phase>[m
+[36m@@ -534,6 +545,14 @@[m
+             <systemPath>${project.basedir}/src/main/resources/ExecutableItems.jar</systemPath>[m
+         </dependency>[m
+ [m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>net.goldtreeservers</groupId>[m
+[32m+[m[32m            <artifactId>WorldGuardExtraFlags</artifactId>[m
+[32m+[m[32m            <version>4.2.3</version>[m
+[32m+[m[32m            <scope>system</scope>[m
+[32m+[m[32m            <systemPath>${project.basedir}/src/main/resources/WorldGuardExtraFlags.jar</systemPath>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+         <dependency>[m
+             <groupId>com.ssomar</groupId>[m
+             <artifactId>ExecutableEvents</artifactId>[m
+[36m@@ -574,9 +593,9 @@[m
+         <dependency>[m
+             <groupId>com.iridium</groupId>[m
+             <artifactId>IridiumSkyblock</artifactId>[m
+[31m-            <version>3.2.9</version>[m
+[32m+[m[32m            <version>4.0.10</version>[m
+             <scope>system</scope>[m
+[31m-            <systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.2.9.jar</systemPath>[m
+[32m+[m[32m            <systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-4.0.10-BETA-2.jar</systemPath>[m
+         </dependency>[m
+ [m
+         <dependency>[m
+[36m@@ -587,6 +606,14 @@[m
+             <systemPath>${project.basedir}/src/main/resources/MyWorlds.jar</systemPath>[m
+         </dependency>[m
+ [m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>com.github.Zrips</groupId>[m
+[32m+[m[32m            <artifactId>Jobs</artifactId>[m
+[32m+[m[32m            <version>5.2.2.3</version> <!-- Change the LATEST to the current version of jobs -->[m
+[32m+[m[32m            <scope>system</scope>[m
+[32m+[m[32m            <systemPath>${project.basedir}/src/main/resources/Jobs5.2.2.3.jar</systemPath>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m
+         <dependency>[m
+             <groupId>com.bgsoftware</groupId>[m
+             <artifactId>SuperiorSkyblock</artifactId>[m
+[1mdiff --git a/src/main/java/com/ssomar/score/SCore.java b/src/main/java/com/ssomar/score/SCore.java[m
+[1mindex 45312405..67b465ab 100644[m
+[1m--- a/src/main/java/com/ssomar/score/SCore.java[m
+[1m+++ b/src/main/java/com/ssomar/score/SCore.java[m
+[36m@@ -7,6 +7,7 @@[m [mimport com.ssomar.score.actionbar.ActionbarHandler;[m
+ import com.ssomar.score.commands.runnable.CommandsHandler;[m
+ import com.ssomar.score.commands.runnable.FilterManager;[m
+ import com.ssomar.score.commands.score.CommandsClass;[m
+[32m+[m[32mimport com.ssomar.score.config.Config;[m
+ import com.ssomar.score.config.GeneralConfig;[m
+ import com.ssomar.score.configs.messages.Message;[m
+ import com.ssomar.score.configs.messages.MessageInterface;[m
+[36m@@ -49,7 +50,7 @@[m [mpublic final class SCore extends JavaPlugin implements SPlugin {[m
+ [m
+     public static final String NAME = "SCore";[m
+     public static final String NAME_COLOR = "&eSCore";[m
+[31m-    public static final String NAME_2 = "[SCore]";[m
+[32m+[m[32m    public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";[m
+     public static SCore plugin;[m
+ [m
+     public static SchedulerHook schedulerHook;[m
+[36m@@ -129,6 +130,8 @@[m [mpublic final class SCore extends JavaPlugin implements SPlugin {[m
+     private static boolean isSpigot = false;[m
+     private static boolean isPaper = false;[m
+     private static boolean isFolia = false;[m
+[32m+[m
+[32m+[m[32m    private static boolean isLuminol = false;[m
+     private static boolean isMohist = false;[m
+ [m
+     private static boolean isPurpur = false;[m
+[36m@@ -137,7 +140,7 @@[m [mpublic final class SCore extends JavaPlugin implements SPlugin {[m
+ [m
+     /* The server is folia? */[m
+     public static boolean isFolia() {[m
+[31m-        return isFolia;[m
+[32m+[m[32m        return isFolia || isLuminol;[m
+     }[m
+ [m
+     /* The server is spigot? */[m
+[36m@@ -383,7 +386,6 @@[m [mpublic final class SCore extends JavaPlugin implements SPlugin {[m
+ [m
+     }[m
+ [m
+[31m-[m
+     public void loadDependency() {[m
+         /* Soft-Dependency part */[m
+         hasExecutableItems = Dependency.EXECUTABLE_ITEMS.hookSoftDependency();[m
+[36m@@ -586,9 +588,19 @@[m [mpublic final class SCore extends JavaPlugin implements SPlugin {[m
+         return NAME;[m
+     }[m
+ [m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    public String getNameWithBrackets() {[m
+[32m+[m[32m        return "[" + NAME + "]";[m
+[32m+[m[32m    }[m
+[32m+[m
+     @Override[m
+     public String getNameDesign() {[m
+[31m-        return NAME_2;[m
+[32m+[m[32m        return NAME_COLOR;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    public String getNameDesignWithBrackets() {[m
+[32m+[m[32m        return NAME_COLOR_WITH_BRACKETS;[m
+     }[m
+ [m
+     @Override[m
+[36m@@ -639,10 +651,16 @@[m [mpublic final class SCore extends JavaPlugin implements SPlugin {[m
+         isMohist = Bukkit.getServer().getName().contains("Mohist");[m
+         isPaper = Bukkit.getServer().getVersion().contains("Paper");[m
+         isFolia = Bukkit.getServer().getVersion().contains("Folia");[m
+[32m+[m[32m        isLuminol = Bukkit.getServer().getVersion().contains("Luminol");[m
+         isPurpur = Bukkit.getServer().getVersion().contains("Purpur");[m
+     }[m
+ [m
+     public void displayVersion() {[m
+         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion() + " &7!");[m
+     }[m
+[32m+[m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    public Config getPluginConfig() {[m
+[32m+[m[32m        return GeneralConfig.getInstance();[m
+[32m+[m[32m    }[m
+ }[m
+[1mdiff --git a/src/main/java/com/ssomar/score/api/executableitems/ExecutableItemsAPI.java b/src/main/java/com/ssomar/score/api/executableitems/ExecutableItemsAPI.java[m
+[1mindex 0982a4cc..e1921137 100644[m
+[1m--- a/src/main/java/com/ssomar/score/api/executableitems/ExecutableItemsAPI.java[m
+[1m+++ b/src/main/java/com/ssomar/score/api/executableitems/ExecutableItemsAPI.java[m
+[36m@@ -12,6 +12,7 @@[m [mpublic class ExecutableItemsAPI {[m
+      * Get the ExecutableItems Manager,[m
+      * It allow you to get / retrieve the ExecutableBlocks Placed[m
+      **/[m
+[32m+[m
+     public static ExecutableItemsManagerInterface getExecutableItemsManager() {[m
+        return (ExecutableItemsManagerInterface) ExecutableItemsManager.getInstance();[m
+     }[m
+[1mdiff --git a/src/main/java/com/ssomar/score/api/executableitems/config/ExecutableItemInterface.java b/src/main/java/com/ssomar/score/api/executableitems/config/ExecutableItemInterface.java[m
+[1mindex d341961e..1ebec75a 100644[m
+[1m--- a/src/main/java/com/ssomar/score/api/executableitems/config/ExecutableItemInterface.java[m
+[1m+++ b/src/main/java/com/ssomar/score/api/executableitems/config/ExecutableItemInterface.java[m
+[36m@@ -61,6 +61,19 @@[m [mpublic interface ExecutableItemInterface {[m
+      */[m
+     ItemStack buildItem(int amount, Optional<Player> creator);[m
+ [m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Build the ExecutableItem[m
+[32m+[m[32m     *[m
+[32m+[m[32m     * @param amount  The amount of the ExecutableItem[m
+[32m+[m[32m     * @param creator The optional creator of the ExecutableItem[m
+[32m+[m[32m     * @param settings The settings of the ExecutableItem :[m
+[32m+[m[32m     *                 The variables of the ExecutableItem[m
+[32m+[m[32m     *                 - key "Variables" | Value Map<String -> variableId, String ->  variableValue>[m
+[32m+[m[32m     *                 - key "Usage" | Value Integer -> usage[m
+[32m+[m[32m     * @return The ExecutableItem with default usage.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    ItemStack buildItem(int amount, Optional<Player> creator, Map<String, Object> settings);[m
+[32m+[m
+     /**[m
+      * @return true If the item has the feature to keep the EI on death, false otherwise[m
+      **/[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/CommmandThatRunsCommand.java b/src/main/java/com/ssomar/score/commands/runnable/CommmandThatRunsCommand.java[m
+[1mindex 57b06b9c..a2aedaae 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/CommmandThatRunsCommand.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/CommmandThatRunsCommand.java[m
+[36m@@ -66,7 +66,7 @@[m [mpublic interface CommmandThatRunsCommand {[m
+ [m
+             String buildCommands = prepareCommands.toString();[m
+             String[] tab;[m
+[31m-            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);[m
+[32m+[m[32m            SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);[m
+             if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));[m
+             else {[m
+                 tab = new String[1];[m
+[36m@@ -247,6 +247,7 @@[m [mpublic interface CommmandThatRunsCommand {[m
+ [m
+             ActionInfo aInfo2 = aInfo.clone();[m
+             aInfo2.setEntityUUID(entity.getUniqueId());[m
+[32m+[m[32m            aInfo2.setStep(aInfo.getStep() + 1);[m
+ [m
+             /* regroup the last args that correspond to the commands */[m
+             StringBuilder prepareCommands = new StringBuilder();[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/LogFilter.java b/src/main/java/com/ssomar/score/commands/runnable/LogFilter.java[m
+[1mindex b46e041a..4656dcd6 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/LogFilter.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/LogFilter.java[m
+[36m@@ -55,6 +55,8 @@[m [mpublic class LogFilter implements Filter, LifeCycle {[m
+         messageToHide.add("Showing new subtitle");[m
+         messageToHide.add("Showing new actionbar");[m
+         messageToHide.add("[SCore]");[m
+[32m+[m[32m        messageToHide.add("[ExecutableBlocks]");[m
+[32m+[m[32m        messageToHide.add("[ExecutableItems]");[m
+         messageToHide.add("Added tag");[m
+         messageToHide.add("Removed tag");[m
+         messageToHide.add("Set the weather");[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/RunCommand.java b/src/main/java/com/ssomar/score/commands/runnable/RunCommand.java[m
+[1mindex 173b6a7a..85cd8232 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/RunCommand.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/RunCommand.java[m
+[36m@@ -100,8 +100,12 @@[m [mpublic abstract class RunCommand implements Serializable {[m
+                     /* Exception 1  for example %parseother_{%around_target%}_{player_name}[m
+                     * He we dont want to replace PAIPI placeholders now, we want to replace them later when the %around_target% will be parsed[m
+                     *[m
+[31m-                    * The good condition is contains %???? and %around to make sure it works with all papi libs*/[m
+[31m-                    if((s.contains("%math_") || s.contains("%parseother_")) && s.contains("%around")){[m
+[32m+[m[32m                    * The good condition is contains %????_ and %around to make sure it works with all papi libs*/[m
+[32m+[m
+[32m+[m[32m                    // Check if the string contains %?????_ and %around[m
+[32m+[m[32m                    String regex = "%[a-zA-Z0-9_]*_*%around_[a-zA-Z0-9_]*%*";[m
+[32m+[m
+[32m+[m[32m                    if(s.matches(regex)){[m
+                         placeholdersToReplaceLatter.put(later, s);[m
+                         finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);[m
+                         later++;[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/RunConsoleCommand.java b/src/main/java/com/ssomar/score/commands/runnable/RunConsoleCommand.java[m
+[1mindex b1c5cac3..efc5d2ba 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/RunConsoleCommand.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/RunConsoleCommand.java[m
+[36m@@ -36,7 +36,7 @@[m [mpublic class RunConsoleCommand {[m
+                     Bukkit.dispatchCommand(console, StringConverter.coloredString(newCommand));[m
+                 } catch (Exception e) {[m
+                     e.printStackTrace();[m
+[31m-                    SCore.plugin.getLogger().severe(SCore.NAME_2 + " ERROR WHEN THE CONSOLE COMMAND IS RUN !");[m
+[32m+[m[32m                    SCore.plugin.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR WHEN THE CONSOLE COMMAND IS RUN !");[m
+                 }[m
+ [m
+             }[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentAdd.java b/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentAdd.java[m
+[1mindex f667154e..821efb81 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentAdd.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentAdd.java[m
+[36m@@ -6,6 +6,7 @@[m [mimport com.ssomar.score.commands.runnable.ActionInfo;[m
+ import com.ssomar.score.commands.runnable.ArgumentChecker;[m
+ import com.ssomar.score.commands.runnable.block.BlockCommand;[m
+ import com.ssomar.score.utils.numbers.NTools;[m
+[32m+[m[32mimport com.ssomar.score.utils.strings.StringSetting;[m
+ import org.bukkit.ChatColor;[m
+ import org.bukkit.Material;[m
+ import org.bukkit.block.Block;[m
+[36m@@ -16,9 +17,7 @@[m [mimport org.bukkit.inventory.ItemStack;[m
+ import org.jetbrains.annotations.NotNull;[m
+ import org.jetbrains.annotations.Nullable;[m
+ [m
+[31m-import java.util.ArrayList;[m
+[31m-import java.util.List;[m
+[31m-import java.util.Optional;[m
+[32m+[m[32mimport java.util.*;[m
+ [m
+ /* CONTENT_ADD ITEM AMOUNT*/[m
+ public class ContentAdd extends BlockCommand {[m
+[36m@@ -27,6 +26,12 @@[m [mpublic class ContentAdd extends BlockCommand {[m
+ [m
+     @Override[m
+     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {[m
+[32m+[m[32m        args = new ArrayList<>(args);[m
+[32m+[m[32m        Map<String, Object> settings = StringSetting.extractSettingsAndRebuildCorrectly(args, 0, Arrays.asList("EI:", "ei:"));[m
+[32m+[m
+[32m+[m[32m        /*for (String s : settings.keySet()) {[m
+[32m+[m[32m            System.out.println(s + " : " + settings.get(s));[m
+[32m+[m[32m        }*/[m
+ [m
+         Optional<Double> intOptional = NTools.getDouble(args.get(1));[m
+         int amount = intOptional.orElse(1.0).intValue();[m
+[36m@@ -42,9 +47,10 @@[m [mpublic class ContentAdd extends BlockCommand {[m
+             }[m
+             else{[m
+                 String id = args.get(0).split(":")[1];[m
+[32m+[m
+                 Optional<ExecutableItemInterface> ei = ExecutableItemsManager.getInstance().getExecutableItem(id);[m
+                 if(ei.isPresent()) {[m
+[31m-                    item = ei.get().buildItem(amount, Optional.empty(), Optional.ofNullable(p));[m
+[32m+[m[32m                    item = ei.get().buildItem(amount, Optional.ofNullable(p), settings);[m
+                 }[m
+                 else return;[m
+             }[m
+[36m@@ -72,12 +78,15 @@[m [mpublic class ContentAdd extends BlockCommand {[m
+ [m
+     @Override[m
+     public Optional<String> verify(List<String> args, boolean isFinalVerification) {[m
+[32m+[m[32m        args = new ArrayList<>(args);[m
+[32m+[m
+         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());[m
+ [m
+         if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {[m
+             ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());[m
+             if (!ac.isValid()) return Optional.of(ac.getError());[m
+         }[m
+[32m+[m[32m        else StringSetting.extractSettingsAndRebuildCorrectly(args, 0, Arrays.asList("EI:", "ei:"));[m
+ [m
+         if (args.size() >= 2) {[m
+             ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentClear.java b/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentClear.java[m
+[1mindex c4fe0133..895792c1 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentClear.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/block/commands/ContentClear.java[m
+[36m@@ -23,7 +23,7 @@[m [mpublic class ContentClear extends BlockCommand {[m
+     @Override[m
+     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {[m
+ [m
+[31m-        if (block.getState() instanceof Container && p != null) {[m
+[32m+[m[32m        if (block.getState() instanceof Container) {[m
+             Container container = (Container) block.getState();[m
+             Inventory inv = container.getInventory();[m
+             inv.clear();[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/block/commands/DropExecutableBlock.java b/src/main/java/com/ssomar/score/commands/runnable/block/commands/DropExecutableBlock.java[m
+[1mindex 871ddcf1..fec2b96c 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/block/commands/DropExecutableBlock.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/block/commands/DropExecutableBlock.java[m
+[36m@@ -19,6 +19,7 @@[m [mpublic class DropExecutableBlock extends BlockCommand {[m
+ [m
+     @Override[m
+     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {[m
+[32m+[m
+         if (SCore.hasExecutableBlocks && ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(args.get(0))) {[m
+             int amount = Double.valueOf(args.get(1)).intValue();[m
+             if (amount > 0) {[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/block/commands/SetExecutableBlock.java b/src/main/java/com/ssomar/score/commands/runnable/block/commands/SetExecutableBlock.java[m
+[1mindex c5f8909b..9306148f 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/block/commands/SetExecutableBlock.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/block/commands/SetExecutableBlock.java[m
+[36m@@ -27,6 +27,7 @@[m [mpublic class SetExecutableBlock extends BlockCommand {[m
+     @Override[m
+     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {[m
+ [m
+[32m+[m
+         if (SCore.hasExecutableBlocks && Dependency.EXECUTABLE_BLOCKS.isEnabled()) {[m
+           Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));[m
+             if (!oOpt.isPresent()) {[m
+[36m@@ -112,7 +113,6 @@[m [mpublic class SetExecutableBlock extends BlockCommand {[m
+ [m
+             eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));[m
+         }[m
+[31m-[m
+     }[m
+ [m
+     @Override[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/entity/EntityRunCommand.java b/src/main/java/com/ssomar/score/commands/runnable/entity/EntityRunCommand.java[m
+[1mindex 6a274ec9..f83ed87e 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/entity/EntityRunCommand.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/entity/EntityRunCommand.java[m
+[36m@@ -105,5 +105,6 @@[m [mpublic class EntityRunCommand extends RunCommand {[m
+             }[m
+         } else receiver = Bukkit.getEntity(entityUUID);[m
+         if (receiver != null) SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);[m
+[32m+[m[32m        //else SsomarDev.testMsg("EntityRunCommand2: receiver is null for the command: " + this.getBrutCommand(), true);[m
+     }[m
+ }[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/mixed_player_entity/commands/SetPitch.java b/src/main/java/com/ssomar/score/commands/runnable/mixed_player_entity/commands/SetPitch.java[m
+[1mindex 0e1070d6..0600b13f 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/mixed_player_entity/commands/SetPitch.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/mixed_player_entity/commands/SetPitch.java[m
+[36m@@ -22,7 +22,7 @@[m [mpublic class SetPitch extends MixedCommand {[m
+         boolean keepVelocity = false;[m
+         if(args.size() > 1) keepVelocity = Boolean.parseBoolean(args.get(1));[m
+ [m
+[31m-        Vector velocity = receiver.getVelocity();[m
+[32m+[m[32m        Vector velocity = receiver.getVelocity().clone();[m
+         Location location = receiver.getLocation();[m
+         location.setPitch(pitch);[m
+         receiver.teleport(location);[m
+[1mdiff --git a/src/main/java/com/ssomar/score/commands/runnable/player/PlayerCommandManager.java b/src/main/java/com/ssomar/score/commands/runnable/player/PlayerCommandManager.java[m
+[1mindex 8e6481ac..79a537ec 100644[m
+[1m--- a/src/main/java/com/ssomar/score/commands/runnable/player/PlayerCommandManager.java[m
+[1m+++ b/src/main/java/com/ssomar/score/commands/runnable/player/PlayerCommandManager.java[m
+[36m@@ -6,6 +6,7 @@[m [mimport com.ssomar.score.commands.runnable.SCommand;[m
+ import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommandsManager;[m
+ import com.ssomar.score.commands.runnable.player.commands.*;[m
+ import com.ssomar.score.commands.runnable.player.commands.absorption.Absorption;[m
+[32m+[m[32mimport com.ssomar.score.commands.runnable.player.commands.openchest.OpenChest;[m
+ [m
+ import java.util.ArrayList;[m
+ import java.util.List;[m
+[36m@@ -76,8 +77,9 @@[m [mpublic class PlayerCommandManager extends CommandManager<SCommand> {[m
+         commands.add(new RemoveEnchantment());[m
+         commands.add(new Chat());[m
+         commands.add(new DropSpecificEI());[m
+[31m-        commands.add(new OpenChest());[m
+[32m+[m[32m        commands.add(OpenChest.getInstance());[m
+         commands.add(new EICooldown());[m
+[32m+[m[32m        commands.add(new EBCooldown());[m
+         commands.add(new EECooldown());[m
+         commands.add(new AddItemAttribute());[m
+         commands.add(new SetItemAttribute());[m
+[36m@@ -89,6 +91,7 @@[m [mpublic class PlayerCommandManager extends CommandManager<SCommand> {[m
+             commands.add(new OpenEnderchest());[m
+         }[m
+         commands.add(XpBoost.getInstance());[m
+[32m+[m[32m        commands.add(JobsMoneyBoost.getInstance());[m
+         commands.add(While.getInstance());[m
+         commands.add(new If());[m
+ [m
+[1mdiff --git a/src/main/

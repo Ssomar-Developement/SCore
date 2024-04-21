@@ -19,6 +19,7 @@ public class EECooldown extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+
         //EECOOLDOWN PLAYER ID SECONDS TICKS {optional activator id}
         OfflinePlayer player = Bukkit.getOfflinePlayer(args.get(0));
         String id = args.get(1);
@@ -67,7 +68,7 @@ public class EECooldown extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "EECOOLDOWN {PLAYER} {ID} {SECONDS} {boolean TICKS} {optional activator}";
+        return "EECOOLDOWN {PLAYER} {ID} {SECONDS} {boolean TICKS} [optional activator]";
     }
 
     @Override

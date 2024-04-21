@@ -36,7 +36,7 @@ public class RunConsoleCommand {
                     Bukkit.dispatchCommand(console, StringConverter.coloredString(newCommand));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    SCore.plugin.getLogger().severe(SCore.NAME_2 + " ERROR WHEN THE CONSOLE COMMAND IS RUN !");
+                    SCore.plugin.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR WHEN THE CONSOLE COMMAND IS RUN !");
                 }
 
             }

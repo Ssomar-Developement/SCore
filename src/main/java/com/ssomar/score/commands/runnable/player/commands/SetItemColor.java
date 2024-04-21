@@ -8,9 +8,11 @@ import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -55,6 +57,11 @@ public class SetItemColor extends PlayerCommand {
 
             LeatherArmorMeta aMeta = (LeatherArmorMeta) itemmeta;
             aMeta.setColor(Color.fromRGB(color));
+        }
+        else if(itemmeta instanceof FireworkEffectMeta){
+            FireworkEffectMeta fMeta = (FireworkEffectMeta) itemmeta;
+            FireworkEffect aa = FireworkEffect.builder().withColor(Color.fromRGB(color)).build();
+            fMeta.setEffect(aa);
         }
 
         item.setItemMeta(itemmeta);

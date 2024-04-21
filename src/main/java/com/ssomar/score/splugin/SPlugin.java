@@ -1,5 +1,6 @@
 package com.ssomar.score.splugin;
 
+import com.ssomar.score.config.Config;
 import org.bukkit.plugin.Plugin;
 
 public interface SPlugin {
@@ -8,7 +9,11 @@ public interface SPlugin {
 
     String getName();
 
+    String getNameWithBrackets();
+
     String getNameDesign();
+
+    String getNameDesignWithBrackets();
 
     String getObjectName();
 
@@ -17,4 +22,6 @@ public interface SPlugin {
     boolean isLotOfWork();
 
     int getMaxSObjectsLimit();
+
+    Config getPluginConfig();
 }

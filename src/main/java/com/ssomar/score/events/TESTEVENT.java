@@ -10,13 +10,21 @@ public class TESTEVENT implements Listener {
 
         SsomarDev.testMsg("PlayerInteractAtEntityEvent >> ",true);
 
-    }
+    }*/
 
-    @EventHandler
-    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent e) {
+     /* @EventHandler
+    public void onPlayerInteractEntityEvent(PlayerInteractEvent e) {
 
-        SsomarDev.testMsg("PlayerInteractAtEntityEvent >> ",true);
+         Block block = e.getClickedBlock();
+         Material material = block.getType();
 
-    } */
+         SsomarDev.testMsg(" PlayerInteractEvent >> "+Tag.MINEABLE_AXE.getKey(),true);
+
+            if(Tag.MINEABLE_AXE.isTagged(material)) {
+                SsomarDev.testMsg(" PlayerInteractEvent >> TRUEEEE ",true);
+            }
+
+
+    }*/
 
 }

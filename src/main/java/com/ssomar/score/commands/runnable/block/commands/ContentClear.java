@@ -23,7 +23,7 @@ public class ContentClear extends BlockCommand {
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
-        if (block.getState() instanceof Container && p != null) {
+        if (block.getState() instanceof Container) {
             Container container = (Container) block.getState();
             Inventory inv = container.getInventory();
             inv.clear();

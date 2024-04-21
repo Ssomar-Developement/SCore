@@ -9,7 +9,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.hardness.HardnessModifier;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.SObjectWithFile;
+import com.ssomar.score.sobject.SObjectWithFileEditable;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class Hardness extends SObjectWithFile<Hardness, HardnessEditor, HardnessEditorManager> implements HardnessModifier {
+public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, HardnessEditorManager> implements HardnessModifier {
 
     private DetailedBlocks detailedBlocks;
 
@@ -143,12 +143,6 @@ public class Hardness extends SObjectWithFile<Hardness, HardnessEditor, Hardness
         HardnessEditorManager.getInstance().startEditing(player, this);
     }
 
-
-    @Override
-    public ItemStack buildItem(int quantity, Optional<Player> creatorOpt) {
-        return new ItemStack(Material.BOOK);
-    }
-
     @Override
     public boolean isTriggered(Player player, Block block, ItemStack tool) {
         return detailedBlocks.isValid(block, Optional.ofNullable(player), null, new StringPlaceholder()) && detailedItems.isValid(tool, Optional.ofNullable(player), null, new StringPlaceholder());
@@ -175,5 +169,10 @@ public class Hardness extends SObjectWithFile<Hardness, HardnessEditor, Hardness
     @Override
     public boolean isPeriodInTicks() {
         return periodInTicks.getValue();
+    }
+
+    @Override
+    public ItemStack getIconItem() {
+        return new ItemStack(GUI.WRITABLE_BOOK);
     }
 }

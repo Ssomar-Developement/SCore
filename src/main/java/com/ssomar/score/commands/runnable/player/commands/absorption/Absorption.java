@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.player.commands.absorption;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
@@ -50,9 +49,9 @@ public class Absorption extends PlayerCommand {
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
 
-        if(SCore.is1v20v4Plus()){
+        /* if(SCore.is1v20v4Plus()){
             return Optional.of("This command is not available for 1.20.4+, you should now use the vanilla command /attribute ( https://discord.com/channels/701066025516531753/1184977479467794572/1188938447474409593 )");
-        }
+        } */
 
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 

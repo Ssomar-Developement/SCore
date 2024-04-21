@@ -33,14 +33,23 @@ public class SetArmorTrim extends PlayerCommand {
             return;
         }
 
+
         if (itemMeta instanceof ArmorMeta) {
             ArmorMeta armor = (ArmorMeta) itemMeta;
+
+            String arg1 = args.get(1);
+            if(arg1.equalsIgnoreCase("remove") || arg1.equalsIgnoreCase("null")){
+                armor.setTrim(null);
+                item.setItemMeta(itemMeta);
+                return;
+            }
+
+            TrimPattern trimPattern = getTrimPattern(args.get(1));
+            if (trimPattern == null) return;
 
             TrimMaterial trimMaterial = getTrimMaterial(args.get(2));
             if (trimMaterial == null) return;
 
-            TrimPattern trimPattern = getTrimPattern(args.get(1));
-            if (trimPattern == null) return;
 
             ArmorTrim armorTrim = new ArmorTrim(trimMaterial,trimPattern);
 

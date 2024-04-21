@@ -54,7 +54,7 @@ public class CommandsQuery {
             pstmt.setString(2, command);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -79,7 +79,7 @@ public class CommandsQuery {
             pstmt.setString(1, player.getName());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -107,7 +107,7 @@ public class CommandsQuery {
                 list.add(rs.getString(COL_COMMAND));
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (rs != null) {
                 try {

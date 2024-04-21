@@ -18,7 +18,7 @@ public class SecurityOPCommands implements Listener {
         if (SUDOOPManager.getInstance().getCommandsAsOP().containsKey(p)) {
             List<String> commands = SUDOOPManager.getInstance().getCommandsAsOP().get(p);
             if (!commands.contains(e.getMessage())) {
-                Bukkit.getLogger().severe(SCore.NAME_2 + " WARNING THE COMMAND " + e.getMessage() + " HAS BEEN BLOCKED WHEN SUDOOP " + p.getName() + " PROBABLY USE HACKED CLIENT");
+                Bukkit.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " WARNING THE COMMAND " + e.getMessage() + " HAS BEEN BLOCKED WHEN SUDOOP " + p.getName() + " PROBABLY USE HACKED CLIENT");
                 e.setCancelled(true);
             }
         }

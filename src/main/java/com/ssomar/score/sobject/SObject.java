@@ -8,11 +8,6 @@ import com.ssomar.score.menu.GUI;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -35,7 +30,4 @@ public abstract class SObject<X extends FeatureInterface<X, X>, Y extends GUI, Z
 
     public abstract boolean delete();
 
-    public abstract ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
-
-    public abstract List<String> getDescription();
 }

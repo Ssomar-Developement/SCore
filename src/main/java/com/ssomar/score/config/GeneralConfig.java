@@ -3,7 +3,9 @@ package com.ssomar.score.config;
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
+import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.util.List;
 
 public class GeneralConfig extends Config {
@@ -39,7 +41,7 @@ public class GeneralConfig extends Config {
     private boolean enableDetectionEntitiesFromSpawner;
 
     public GeneralConfig() {
-        super();
+        super("config.yml");
         super.setup(SCore.plugin);
     }
 
@@ -50,6 +52,11 @@ public class GeneralConfig extends Config {
 
     public void reload() {
         super.setup(SCore.plugin);
+    }
+
+    @Override
+    public boolean converter(FileConfiguration config) {
+        return false;
     }
 
     @Override

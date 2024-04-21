@@ -27,6 +27,7 @@ public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsa
 
     @Override
     public boolean verifCondition(BlockConditionRequest request) {
+
         if (hasCondition() && SCore.hasExecutableBlocks) {
 
             Location bLoc = LocationConverter.convert(request.getBlock().getLocation(), false, false);

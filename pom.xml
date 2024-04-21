@@ -244,6 +244,17 @@
                                 </configuration>
                             </execution>
                             <execution>
+                                <id>build_dep_test</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>C:\Users\octav\Documents\GitHub\TestPlugin\src\main\resources\SCore.jar</outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
                                 <id>build_dep_ei</id>
                                 <phase>package</phase>
                                 <goals>
@@ -535,6 +546,14 @@
         </dependency>
 
         <dependency>
+            <groupId>net.goldtreeservers</groupId>
+            <artifactId>WorldGuardExtraFlags</artifactId>
+            <version>4.2.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/WorldGuardExtraFlags.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>com.ssomar</groupId>
             <artifactId>ExecutableEvents</artifactId>
             <version>v1.0.0</version>
@@ -574,9 +593,9 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
-            <version>3.2.9</version>
+            <version>4.0.10</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-3.2.9.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/IridiumSkyblock-4.0.10-BETA-2.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -585,6 +604,14 @@
             <version>1.19-v2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/MyWorlds.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.Zrips</groupId>
+            <artifactId>Jobs</artifactId>
+            <version>5.2.2.3</version> <!-- Change the LATEST to the current version of jobs -->
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/Jobs5.2.2.3.jar</systemPath>
         </dependency>
 
         <dependency>

@@ -101,7 +101,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
     @Override
     public String getTemplate() {
-        return "MOB_AROUND {distance} [muteMsgIfNoEntity true or false] [conditions] {Your commands here}";
+        return "MOB_AROUND {distance} [DisplayMsgIfNoEntity true or false] [conditions] {Your commands here}";
     }
 
     @Override

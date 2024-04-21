@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommandsManager;
 import com.ssomar.score.commands.runnable.player.commands.*;
 import com.ssomar.score.commands.runnable.player.commands.absorption.Absorption;
+import com.ssomar.score.commands.runnable.player.commands.openchest.OpenChest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +77,9 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new RemoveEnchantment());
         commands.add(new Chat());
         commands.add(new DropSpecificEI());
-        commands.add(new OpenChest());
+        commands.add(OpenChest.getInstance());
         commands.add(new EICooldown());
+        commands.add(new EBCooldown());
         commands.add(new EECooldown());
         commands.add(new AddItemAttribute());
         commands.add(new SetItemAttribute());
@@ -89,6 +91,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
+        commands.add(JobsMoneyBoost.getInstance());
         commands.add(While.getInstance());
         commands.add(new If());
 

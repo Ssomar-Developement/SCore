@@ -15,7 +15,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     private final SPlugin sPlugin;
     private final String defaultObjectsPath;
-    private final SObjectManager sObjectManager;
+    private final SObjectManager<T> sObjectManager;
     private final int maxFreeObjects;
     private final Logger logger;
     @Getter
@@ -26,11 +26,12 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     private String objectName;
 
-    public SObjectWithFileLoader(SPlugin sPlugin, String defaultObjectsPath, SObjectManager<T> sObjectManager, int maxFreeObjects) {
+    public SObjectWithFileLoader(SPlugin sPlugin, String defaultObjectsPath, SObjectWithFileManager<T> sObjectManager, int maxFreeObjects) {
         this.sPlugin = sPlugin;
         this.logger = sPlugin.getPlugin().getServer().getLogger();
         this.defaultObjectsPath = defaultObjectsPath;
         this.sObjectManager = sObjectManager;
+        sObjectManager.setFileLoader(this);
         this.maxFreeObjects = maxFreeObjects;
         this.cpt = 0;
 
@@ -99,13 +100,13 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
         for (String folder : defaultObjects.keySet()) {
 
-            File fileFolder = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + folder);
+            File fileFolder = new File(getConfigsPath()+ "/" + folder);
 
             fileFolder.mkdirs();
 
             for (String id : defaultObjects.get(folder)) {
                 try {
-                    File pdfile = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + folder + "/" + id + ".yml");
+                    File pdfile = new File(getConfigsPath()+ "/" + folder + "/" + id + ".yml");
                     InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + folder + "/" + id + ".yml");
 
                     if (!pdfile.exists()) {
@@ -246,12 +247,12 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     }
 
     public List<String> getAllFoldersName(){
-        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName).list());
+        List<String> listFiles = Arrays.asList(new File(getConfigsPath()).list());
         Collections.sort(listFiles);
         List<String> foldersName = new ArrayList<>();
 
         for (String s : listFiles) {
-            File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
+            File fileEntry = new File(getConfigsPath() + "/" + s);
             if (fileEntry.isDirectory()) {
                 foldersName.add(s);
             }
@@ -282,11 +283,11 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     public File searchFileOfObject(String id) {
 
-        List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName).list());
+        List<String> listFiles = Arrays.asList(new File(getConfigsPath()).list());
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
+            File fileEntry = new File(getConfigsPath() + "/" + s);
             //System.out.println("::::::::::::::" +fileEntry.getAbsolutePath());
             if (fileEntry.isDirectory()) {
                 File result = null;
@@ -307,7 +308,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     }
 
     public File searchFolder(String folderName){
-        return searchFolder(new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName), folderName);
+        return searchFolder(new File(getConfigsPath()), folderName);
     }
 
     public File searchFolder(File folder, String folderName){
@@ -316,7 +317,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         Collections.sort(listFiles);
 
         for (String s : listFiles) {
-            File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
+            File fileEntry = new File(getConfigsPath() + "/" + s);
             if (fileEntry.isDirectory()) {
                 if (fileEntry.getName().equals(folderName))
                     return fileEntry;
@@ -422,12 +423,12 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     public List<String> getAllObjects() {
         ArrayList<String> result = new ArrayList<>();
-        if (new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName).exists()) {
-            List<String> listFiles = Arrays.asList(new File(sPlugin.getPlugin().getDataFolder() + "/" +objectName).list());
+        if (new File(getConfigsPath()).exists()) {
+            List<String> listFiles = Arrays.asList(new File(getConfigsPath()).list());
             Collections.sort(listFiles);
 
             for (String s : listFiles) {
-                File fileEntry = new File(sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/" + s);
+                File fileEntry = new File(getConfigsPath() + "/" + s);
                 if (fileEntry.isDirectory()) result.addAll(getAllObjectsOfFolder(fileEntry));
                 else {
                     if (!fileEntry.getName().contains(".yml")) continue;
@@ -483,7 +484,22 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         return true;
     }
 
+    public List<T> getAllLoadedObjectsOfFolder(String folderName) {
+        List<T> result = new ArrayList<>();
+        File folder = searchFolder(folderName);
+        if(folder == null) return result;
+        List<String> listFiles = getObjectsNameInFolder(folder);
+        for(String s : listFiles){
+            sObjectManager.getLoadedObjectWithID(s).ifPresent(result::add);
+        }
+        return result;
+    }
+
     public void resetCpt() {
         this.cpt = 0;
+    }
+
+    public String getConfigsPath() {
+        return sPlugin.getPlugin().getDataFolder() + "/" + objectName + "/";
     }
 }

@@ -8,7 +8,6 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -75,14 +74,15 @@ public class WorldGuardAPI {
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
+
         ApplicableRegionSet set = query.getApplicableRegions(loc);
 
         int allowMaxPriority = -2147483648;
 
         for (ProtectedRegion region : set) {
             if (region != null) {
-                State state = region.getFlag(Flags.PVP);
-                if (state != null && state.equals(State.ALLOW)) {
+                StateFlag.State state = region.getFlag(Flags.PVP);
+                if (state != null && state.equals(StateFlag.State.ALLOW)) {
                     //SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority());
                     if (allowMaxPriority < region.getPriority()) allowMaxPriority = region.getPriority();
                 }
@@ -91,8 +91,8 @@ public class WorldGuardAPI {
 
         for (ProtectedRegion region : set) {
             if (region != null) {
-                State state = region.getFlag(Flags.PVP);
-                if (state != null && state.equals(State.DENY) && region.getPriority() > allowMaxPriority) {
+                StateFlag.State state = region.getFlag(Flags.PVP);
+                if (state != null && state.equals(StateFlag.State.DENY) && region.getPriority() > allowMaxPriority) {
                     //SsomarDev.testMsg("arene: "+region.getId()+ " >> "+region.getPriority()+" || "+allowMaxPriority);
                     isPVP = false;
                     break;
@@ -135,6 +135,25 @@ public class WorldGuardAPI {
             if (region.getId().equalsIgnoreCase(name)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean isInRegionWithKeepInventory(Player p) {
+
+        if(!Dependency.WORLD_GUARD_EXTRA_FLAGS.isEnabled()) return false;
+
+        Location loc = BukkitAdapter.adapt(p.getLocation());
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(p.getWorld()));
+
+        if (regions == null) return false;
+
+        ApplicableRegionSet set = regions.getApplicableRegions(loc.toVector().toBlockPoint());
+
+        for (ProtectedRegion region : set) {
+            boolean keepInv = region.getFlag(net.goldtreeservers.worldguardextraflags.flags.Flags.KEEP_INVENTORY);
+            if (keepInv) return true;
         }
         return false;
     }

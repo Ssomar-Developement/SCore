@@ -55,6 +55,8 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Showing new subtitle");
         messageToHide.add("Showing new actionbar");
         messageToHide.add("[SCore]");
+        messageToHide.add("[ExecutableBlocks]");
+        messageToHide.add("[ExecutableItems]");
         messageToHide.add("Added tag");
         messageToHide.add("Removed tag");
         messageToHide.add("Set the weather");

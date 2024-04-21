@@ -3,6 +3,7 @@ package com.ssomar.score.sobject.menu;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObjectEditable;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
@@ -14,11 +15,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
-public abstract class SObjectsNoFileEditor<T extends SObject> extends SObjectsEditorAbstract<T> {
+public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> extends SObjectsEditorAbstract<T> {
 
     public SObjectsNoFileEditor(SPlugin sPlugin, String title, SObjectManager manager) {
         super(sPlugin, title, manager);
@@ -32,19 +32,18 @@ public abstract class SObjectsNoFileEditor<T extends SObject> extends SObjectsEd
         int total = 0;
 
         //SsomarDev.testMsg(">>>>>>>>>>>>"+getManager().getObjects(getComparator(), getPredicate()).size(), true);
-        for (Object object : getManager().getObjects(getComparator(), getPredicates())) {
-            //SsomarDev.testMsg(">>>>>>>>>>>>"+object, true);
-            SObject sObject = (SObject) object;
+        for (T object : getManager().getObjects(getComparator(), getPredicates())) {
+
             if ((index - 1) * SOBJECT_PER_PAGE <= total && total < index * SOBJECT_PER_PAGE) {
 
-                ItemStack itemS = sObject.buildItem(1, Optional.empty());
+                ItemStack itemS = object.getIconItem();
 
                 List<String> desc = new ArrayList<>();
                 desc.add("");
                 desc.add(GUI.CLICK_HERE_TO_CHANGE);
                 if (isGiveButton()) desc.add(TM.g(Text.EDITOR_GIVE_SHIFT_RIGHT_DESCRIPTION));
                 if (isDeleteButton()) desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
-                desc.addAll(sObject.getDescription());
+                desc.addAll(object.getDescription());
 
                 String[] descArray = new String[desc.size()];
                 for (int j = 0; j < desc.size(); j++) {
@@ -54,7 +53,7 @@ public abstract class SObjectsNoFileEditor<T extends SObject> extends SObjectsEd
                         descArray[j] = desc.get(j);
                     }
                 }
-                createItem(itemS, 1, i, CREATION_ID + " &e&o" + sObject.getId(), false, false, descArray);
+                createItem(itemS, 1, i, CREATION_ID + " &e&o" + object.getId(), false, false, descArray);
                 i++;
             }
             total++;

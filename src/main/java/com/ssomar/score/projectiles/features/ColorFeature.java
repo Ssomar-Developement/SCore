@@ -26,6 +26,7 @@ public class ColorFeature extends BukkitColorFeature implements SProjectileFeatu
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
         //SsomarDev.testMsg("ColorFeature transformTheProjectile ?? "+getValue().isPresent()+" type>> "+e.getType()+" >>> "+(e instanceof Arrow)+" >>>>>> "+e, true);
 
+        //SsomarDev.testMsg("ColorFeature transformTheProjectile >> "+getValue(), true);
 
         if (e instanceof Arrow && getValue().isPresent()) {
             //SsomarDev.testMsg("ColorFeature transformTheProjectile >> "+getValue().get(), true);

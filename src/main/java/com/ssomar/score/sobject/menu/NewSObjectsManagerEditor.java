@@ -5,6 +5,7 @@ import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObjectWithFileManager;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditorManager;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -33,7 +34,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstra
         } else if (i.coloredDeconvertName.contains(SObjectsWithFileEditor.NEW)) {
             i.gui.sendMessageCreate(i.player);
         } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", i.gui.getManager().getObjectName())) || i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", i.gui.getManager().getObjectName()))) {
-            NewDefaultObjectsEditorManager.getInstance().startEditing(i.player, new NewDefaultObjectsEditor(i.gui.getSPlugin(), i.gui.getManager(), i.gui.getLoader(), i.gui));
+            NewDefaultObjectsEditorManager.getInstance().startEditing(i.player, new NewDefaultObjectsEditor(i.gui.getSPlugin(), (SObjectWithFileManager) i.gui.getManager(), i.gui));
         } else if (i.coloredDeconvertName.contains(SObjectsWithFileEditor.CREATION_ID)) {
             i.gui.openEditorSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
         } else return false;

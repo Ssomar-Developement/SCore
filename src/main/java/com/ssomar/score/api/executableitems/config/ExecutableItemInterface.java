@@ -62,6 +62,19 @@ public interface ExecutableItemInterface {
     ItemStack buildItem(int amount, Optional<Player> creator);
 
     /**
+     * Build the ExecutableItem
+     *
+     * @param amount  The amount of the ExecutableItem
+     * @param creator The optional creator of the ExecutableItem
+     * @param settings The settings of the ExecutableItem :
+     *                 The variables of the ExecutableItem
+     *                 - key "Variables" | Value Map<String -> variableId, String ->  variableValue>
+     *                 - key "Usage" | Value Integer -> usage
+     * @return The ExecutableItem with default usage.
+     */
+    ItemStack buildItem(int amount, Optional<Player> creator, Map<String, Object> settings);
+
+    /**
      * @return true If the item has the feature to keep the EI on death, false otherwise
      **/
     boolean hasKeepItemOnDeath();

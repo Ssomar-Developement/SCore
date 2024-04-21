@@ -14,11 +14,13 @@ import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.usedapi.ItemsAdderAPI;
 import com.ssomar.score.utils.emums.MaterialWithGroups;
 import com.ssomar.score.utils.strings.StringConverter;
+import com.ssomar.score.utils.tags.MinecraftTags;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,8 +38,9 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     private static final String symbolEnd = "}";
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = "\\+";
-    private static final Boolean DEBUG = false
-            ;
+    private static final Boolean DEBUG = false;
+
+    private static final String symbolStartMaterialTag = "#"; // #minecraft:mineable/pickaxe
     private List<String> listOfCustomBlocksPluginSupported;
 
     /* If it checks blocks tags or not, if not it checks item tags */
@@ -82,6 +85,13 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             }
             if (isCustomBlock) continue;
 
+            boolean isMaterialTag = false;
+            if (s.startsWith(symbolStartMaterialTag)) {
+                isMaterialTag = true;
+                values.add(s);
+            }
+            if(isMaterialTag) continue;
+
             if (s.contains(symbolStart)) {
                 materialStr = s.split("\\" + symbolStart)[0];
 
@@ -123,6 +133,17 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         for (String s : values) {
             SsomarDev.testMsg(">> extractConditions: " + s, DEBUG);
             String materialStr = s;
+
+            boolean isCustomBlock = false;
+            for (String customPlugin : listOfCustomBlocksPluginSupported) {
+                if (materialStr.startsWith(customPlugin)) {
+                    isCustomBlock = true;
+                    break;
+                }
+            }
+            if (isCustomBlock) continue;
+
+
             Map<String, String> tags = new HashMap<>();
 
             if (s.contains(symbolStart)) {
@@ -211,7 +232,16 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         }
 
         for (String mat : conditions.keySet()) {
-            if (MaterialWithGroups.verif(material, mat)) {
+
+            // Verif custom material tag
+            if(!SCore.is1v11Less() && mat.startsWith(symbolStartMaterialTag)) {
+               mat = mat.substring(1).toLowerCase();
+                Tag<Material> tag = MinecraftTags.getInstance().getTag(mat);
+                if(tag != null) {
+                    if(MinecraftTags.getInstance().checkIfTagged(material, tag)) return true;
+                }
+            }
+            else if (MaterialWithGroups.verif(material, mat)) {
                 SsomarDev.testMsg(">> verif mat: " + mat, DEBUG);
                 List<Map<String, String>> tagsList = conditions.get(mat);
                 SsomarDev.testMsg(">> verif tagsList empty ?: " + tagsList.isEmpty(), DEBUG);
@@ -243,7 +273,6 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         }
         return false;
     }
-
 
     /* Plugin name - list of ID */
     public Map<String, List<String>> extractCustomBlocksConditions(List<String> values) {
@@ -430,6 +459,12 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             }
         }
         if (isCustomBlock) return Optional.empty();
+
+        boolean isMaterialTag = false;
+        if (s.startsWith(symbolStartMaterialTag)) {
+            isMaterialTag = true;
+        }
+        if(isMaterialTag) return Optional.empty();
 
         if (s.contains(symbolStart)) {
             str = s.split("\\" + symbolStart)[0];

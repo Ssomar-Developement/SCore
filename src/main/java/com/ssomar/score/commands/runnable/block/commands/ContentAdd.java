@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.strings.StringSetting;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,9 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /* CONTENT_ADD ITEM AMOUNT*/
 public class ContentAdd extends BlockCommand {
@@ -27,6 +26,12 @@ public class ContentAdd extends BlockCommand {
 
     @Override
     public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+        args = new ArrayList<>(args);
+        Map<String, Object> settings = StringSetting.extractSettingsAndRebuildCorrectly(args, 0, Arrays.asList("EI:", "ei:"));
+
+        /*for (String s : settings.keySet()) {
+            System.out.println(s + " : " + settings.get(s));
+        }*/
 
         Optional<Double> intOptional = NTools.getDouble(args.get(1));
         int amount = intOptional.orElse(1.0).intValue();
@@ -42,9 +47,10 @@ public class ContentAdd extends BlockCommand {
             }
             else{
                 String id = args.get(0).split(":")[1];
+
                 Optional<ExecutableItemInterface> ei = ExecutableItemsManager.getInstance().getExecutableItem(id);
                 if(ei.isPresent()) {
-                    item = ei.get().buildItem(amount, Optional.empty(), Optional.ofNullable(p));
+                    item = ei.get().buildItem(amount, Optional.ofNullable(p), settings);
                 }
                 else return;
             }
@@ -72,12 +78,15 @@ public class ContentAdd extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
+        args = new ArrayList<>(args);
+
         if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
 
         if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
             ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
             if (!ac.isValid()) return Optional.of(ac.getError());
         }
+        else StringSetting.extractSettingsAndRebuildCorrectly(args, 0, Arrays.asList("EI:", "ei:"));
 
         if (args.size() >= 2) {
             ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());

@@ -22,7 +22,7 @@ public class SetPitch extends MixedCommand {
         boolean keepVelocity = false;
         if(args.size() > 1) keepVelocity = Boolean.parseBoolean(args.get(1));
 
-        Vector velocity = receiver.getVelocity();
+        Vector velocity = receiver.getVelocity().clone();
         Location location = receiver.getLocation();
         location.setPitch(pitch);
         receiver.teleport(location);

@@ -134,12 +134,12 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
         String toReplace = s;
         if (entityUUID != null || entity != null) {
             //SsomarDev.testMsg("toReplace: "+toReplace+ " entity "+ entity.getType()+ "particle "+particle, true);
-            toReplace = toReplace.replaceAll("%" + particle + "%", entityType);
-            toReplace = toReplace.replaceAll("%" + particle + "_lower_case%", entityType.toLowerCase());
-            toReplace = toReplace.replaceAll("%" + particle + "_name%", entityName);
-            toReplace = toReplace.replaceAll("%" + particle + "_name_lower_case%", entityName.toLowerCase());
-            toReplace = toReplace.replaceAll("%" + particle + "_uuid%", entityUUID.toString());
-            toReplace = toReplace.replaceAll("%" + particle + "_uuid_array%", PlayerPlaceholdersAbstract.convertedUUID(entityUUID));
+            toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + StringPlaceholder.end, entityType);
+            toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_lower_case"+StringPlaceholder.end, entityType.toLowerCase());
+            toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_name"+StringPlaceholder.end, entityName);
+            toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_name_lower_case"+StringPlaceholder.end, entityName.toLowerCase());
+            toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_uuid"+StringPlaceholder.end, entityUUID.toString());
+            toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_uuid_array"+StringPlaceholder.end, PlayerPlaceholdersAbstract.convertedUUID(entityUUID));
 
             if(entity != null && entity instanceof Item){
                 Item item = (Item) entity;
@@ -173,9 +173,9 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = toReplace.replaceAll("%" + particle + "_direction%", entityDirection);
 
             if (entityMaxHealth != -1)
-                toReplace = replaceCalculPlaceholder(toReplace, "%entity_max_health%", entityMaxHealth + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_max_health%", entityMaxHealth + "", false);
             if (entityHealth != -1)
-                toReplace = replaceCalculPlaceholder(toReplace, "%entity_health%", entityHealth + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_health%", entityHealth + "", false);
 
             toReplace = toReplace.replaceAll("%" + particle + "_team%", team);
 

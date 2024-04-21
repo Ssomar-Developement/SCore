@@ -30,7 +30,11 @@ public class FormatEnchantments extends PlayerCommand {
                     ItemMeta itemmeta;
                     List<String> LoreCURRENT;
 
-                    item = receiver.getInventory().getItem(Integer.valueOf(args.get(0)));
+                    int slot = Integer.valueOf(args.get(0));
+
+                    if(slot == -1) item = receiver.getInventory().getItemInMainHand();
+                    else item = receiver.getInventory().getItem(slot);
+
                     if (item == null) return;
 
                     itemmeta = item.getItemMeta();

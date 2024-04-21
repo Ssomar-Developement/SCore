@@ -183,5 +183,26 @@ public abstract class SObjectManager<T extends SObject> {
         return getLoadedObjectWithID(id);
     }
 
+    public List<String> getLoadedObjectsWith(String str) {
+        List<String> arguments = new ArrayList<>();
+
+        if (!str.isEmpty()) {
+            for (SObject item : getLoadedObjects()) {
+                if (item.getId().toUpperCase().contains(str.toUpperCase()))
+                    arguments.add(item.getId());
+            }
+        } else {
+            for (SObject item :getLoadedObjects()) {
+                arguments.add(item.getId());
+            }
+        }
+
+        /* SsomarDev.testMsg("Loaded objects with "+str+" : "+arguments, true);
+        for(SObject item : getLoadedObjects()) {
+            SsomarDev.testMsg(item.getId(), true);
+        }*/
+
+        return arguments;
+    }
 
 }

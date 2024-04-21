@@ -107,9 +107,9 @@ public class SetTempBlockPos extends PlayerCommand {
 //		if(args.size()<1) error = notEnoughArgs+setblock;
 //		else if(args.size()>1)error = tooManyArgs+setblock;
 
-        if(args.size() >= 7) {
+        if(args.size() >= 4) {
             List<String> list = new ArrayList<>();
-            String listStr = args.get(6);
+            String listStr = args.get(3);
             if(listStr.contains(",")) list = Arrays.asList(listStr.split(","));
             else list.add(listStr);
 

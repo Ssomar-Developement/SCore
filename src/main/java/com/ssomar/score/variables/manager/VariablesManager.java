@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.VariablesQuery;
-import com.ssomar.score.sobject.SObjectManager;
+import com.ssomar.score.sobject.SObjectWithFileManager;
 import com.ssomar.score.variables.Variable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class VariablesManager extends SObjectManager<Variable> {
+public class VariablesManager extends SObjectWithFileManager<Variable> {
 
     private static VariablesManager instance;
 

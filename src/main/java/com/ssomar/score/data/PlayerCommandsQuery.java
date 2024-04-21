@@ -81,7 +81,7 @@ public class PlayerCommandsQuery {
                 try {
                     pstmt.setString(5, ActionInfoSerializer.toString(command.getaInfo()));
                 } catch (IOException err) {
-                    SCore.plugin.getLogger().severe(SCore.NAME_2 + " Couldn't save the delayed command: "+command.getBrutCommand()+" >>" + err.getMessage());
+                    SCore.plugin.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " Couldn't save the delayed command: "+command.getBrutCommand()+" >>" + err.getMessage());
                     //err.printStackTrace();
                     continue;
                 }
@@ -92,7 +92,7 @@ public class PlayerCommandsQuery {
                 }
             }
         } catch (SQLException e) {
-            Utils.sendConsoleMsg(SCore.NAME_2 + " " + e.getMessage());
+            Utils.sendConsoleMsg(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (pstmt != null) {
@@ -118,7 +118,7 @@ public class PlayerCommandsQuery {
             pstmt.setString(1, uuid.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -141,7 +141,7 @@ public class PlayerCommandsQuery {
             pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (pstmt != null) {
                 try {
@@ -244,7 +244,7 @@ public class PlayerCommandsQuery {
                 } else map.put(uuidReceiver, new ArrayList<>(Collections.singletonList(pCommand)));
             }
         } catch (SQLException e) {
-            System.out.println(SCore.NAME_2 + " " + e.getMessage());
+            System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
         } finally {
             if (rs != null) {
                 try {

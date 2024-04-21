@@ -27,6 +27,7 @@ public class SetExecutableBlock extends BlockCommand {
     @Override
     public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
 
+
         if (SCore.hasExecutableBlocks && Dependency.EXECUTABLE_BLOCKS.isEnabled()) {
           Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
             if (!oOpt.isPresent()) {
@@ -112,7 +113,6 @@ public class SetExecutableBlock extends BlockCommand {
 
             eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));
         }
-
     }
 
     @Override

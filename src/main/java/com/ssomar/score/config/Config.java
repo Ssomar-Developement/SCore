@@ -1,5 +1,7 @@
 package com.ssomar.score.config;
 
+import com.google.common.base.Charsets;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -7,14 +9,20 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Config {
     protected final String fileName;
     protected File pdfile;
     protected FileConfiguration config;
 
-    protected Config() {
-        this.fileName = "config.yml";
+    @Getter
+    private Map<String, Object> loadedSettings;
+
+    protected Config(String fileName) {
+        this.fileName = fileName;
+        this.loadedSettings = new HashMap<>();
     }
 
     public void setup(Plugin plugin) {
@@ -45,9 +53,24 @@ public abstract class Config {
             } catch (NullPointerException e) {/* locale */}
         }
         this.config = YamlConfiguration.loadConfiguration(this.pdfile);
+        if(converter(this.config)){
+            try {
+                Writer writer = new OutputStreamWriter(new FileOutputStream(pdfile), Charsets.UTF_8);
+
+                try {
+                    writer.write(config.saveToString());
+                } finally {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         plugin.reloadConfig();
         load();
     }
+
+    public abstract boolean converter(FileConfiguration config);
 
     public abstract void load();
 
@@ -66,6 +89,29 @@ public abstract class Config {
 
     public String getFileName() {
         return this.fileName;
+    }
+
+    public boolean loadBooleanSetting(String setting, boolean defaultValue) {
+        boolean value = config.getBoolean(setting, defaultValue);
+        loadedSettings.put(setting, value);
+        //System.out.println("Setting: " + setting + " Value: " + value);
+        return value;
+    }
+
+    public boolean getBooleanSetting(String setting) {
+        return (boolean) loadedSettings.get(setting);
+    }
+
+    public int loadIntSetting(String setting, int defaultValue) {
+        int value = config.getInt(setting, defaultValue);
+        loadedSettings.put(setting, value);
+        //System.out.println("Setting: " + setting + " Value: " + value);
+        return value;
+    }
+
+    public int getIntSetting(String setting, int defaultValue) {
+        if (!loadedSettings.containsKey(setting)) return defaultValue;
+        return (int) loadedSettings.get(setting);
     }
 }
 

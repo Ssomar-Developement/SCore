@@ -7,6 +7,7 @@ import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.FilterManager;
 import com.ssomar.score.commands.score.CommandsClass;
+import com.ssomar.score.config.Config;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageInterface;
@@ -49,7 +50,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static final String NAME = "SCore";
     public static final String NAME_COLOR = "&eSCore";
-    public static final String NAME_2 = "[SCore]";
+    public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
 
     public static SchedulerHook schedulerHook;
@@ -129,6 +130,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean isSpigot = false;
     private static boolean isPaper = false;
     private static boolean isFolia = false;
+
+    private static boolean isLuminol = false;
     private static boolean isMohist = false;
 
     private static boolean isPurpur = false;
@@ -137,7 +140,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is folia? */
     public static boolean isFolia() {
-        return isFolia;
+        return isFolia || isLuminol;
     }
 
     /* The server is spigot? */
@@ -383,7 +386,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     }
 
-
     public void loadDependency() {
         /* Soft-Dependency part */
         hasExecutableItems = Dependency.EXECUTABLE_ITEMS.hookSoftDependency();
@@ -587,8 +589,18 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     @Override
+    public String getNameWithBrackets() {
+        return "[" + NAME + "]";
+    }
+
+    @Override
     public String getNameDesign() {
-        return NAME_2;
+        return NAME_COLOR;
+    }
+
+    @Override
+    public String getNameDesignWithBrackets() {
+        return NAME_COLOR_WITH_BRACKETS;
     }
 
     @Override
@@ -639,10 +651,16 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isMohist = Bukkit.getServer().getName().contains("Mohist");
         isPaper = Bukkit.getServer().getVersion().contains("Paper");
         isFolia = Bukkit.getServer().getVersion().contains("Folia");
+        isLuminol = Bukkit.getServer().getVersion().contains("Luminol");
         isPurpur = Bukkit.getServer().getVersion().contains("Purpur");
     }
 
     public void displayVersion() {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion() + " &7!");
+    }
+
+    @Override
+    public Config getPluginConfig() {
+        return GeneralConfig.getInstance();
     }
 }

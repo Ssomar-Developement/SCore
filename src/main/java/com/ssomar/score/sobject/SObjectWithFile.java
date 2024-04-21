@@ -14,8 +14,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -42,7 +40,6 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     @Override
     public boolean delete() {
         File file = null;
-
         if ((file = new File(getPath())) != null) {
             file.delete();
             return true;
@@ -70,13 +67,5 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
             }
         }
         return file;
-    }
-
-    @Override
-    public List<String> getDescription() {
-        List<String> description = new ArrayList<>();
-        description.add("§7ID: §f" + getId());
-        description.add("§7Path: §f" + path);
-        return description;
     }
 }

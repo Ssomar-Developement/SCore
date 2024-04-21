@@ -21,6 +21,8 @@ public enum Dependency {
 
     WORLD_GUARD("WorldGuard"),
 
+    WORLD_GUARD_EXTRA_FLAGS("WorldGuardExtraFlags"),
+
     VAULT("Vault"),
 
     IRIDIUM_SKYBLOCK("IridiumSkyblock"),
@@ -54,7 +56,9 @@ public enum Dependency {
 
     HEAD_DB("HeadDB"),
 
-   MYTHIC_MOBS("MythicMobs"),
+    JOBS("Jobs"),
+
+    MYTHIC_MOBS("MythicMobs"),
 
     DECENT_HOLOGRAMS("DecentHolograms"),
 
@@ -112,7 +116,7 @@ public enum Dependency {
     }
 
     public boolean isInstalled() {
-        return  Bukkit.getPluginManager().getPlugin(name) != null;
+        return Bukkit.getPluginManager().getPlugin(name) != null;
     }
 
     public boolean isEnabled() {

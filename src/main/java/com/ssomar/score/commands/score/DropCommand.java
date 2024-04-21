@@ -1,86 +1,136 @@
 package com.ssomar.score.commands.score;
 
-import com.ssomar.executableitems.ExecutableItems;
-import com.ssomar.score.linkedplugins.LinkedPlugins;
 import com.ssomar.score.sobject.SObject;
-import com.ssomar.score.sobject.SObjectDroppable;
+import com.ssomar.score.sobject.SObjectBuildable;
+import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringSetting;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class DropCommand {
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-    public DropCommand(SPlugin sPlugin, CommandSender sender, String[] args) {
-        try {
-            SObject sObject;
-            if ((sObject = LinkedPlugins.getSObject(sPlugin, args[0])) == null) {
-                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " " + sPlugin.getObjectName() + " " + args[0] + " not found");
-                return;
-            }
+public class DropCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z extends SObject & SObjectBuildable> extends CustomCommandWithManagerAbstract<X, Y, Z>{
 
-            if(!(sObject instanceof SObjectDroppable)) {
-                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " " + sPlugin.getObjectName() + " " + args[0] + " is not droppable");
-                return;
-            }
+    public DropCommand(X sPlugin, Y sObjectManager) {
+        super(sPlugin, sObjectManager);
+    }
 
-            SObjectDroppable droppable = (SObjectDroppable) sObject;
-
-            int qty;
-            if (args.length == 1) qty = 1;
-            else {
-                if (!args[1].matches("\\d+")) {
-                    sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " Quantity " + args[1] + " is invalid.");
+    @Override
+    public void run(CommandSender sender, String command, String[] args, String typedCommand) {
+        switch (command) {
+            case "drop":
+                if(args.length == 0){
+                    getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &c" + getSObjectManager().getObjectName() + " &6" + args[0] + " &cnot found");
                     return;
                 }
-                qty = Integer.parseInt(args[1]);
-            }
 
-            if (sender instanceof Player) {
-                Player p = (Player) sender;
-                if (args.length <= 2) {
-                    runDrop(droppable, Integer.parseInt(args[1]), p.getLocation());
-                    //System.out.println(sPlugin.getNameDesign() + " Succesfully run /" + sPlugin.getShortName().toLowerCase() + " drop " + args[0] + " " + qty + " " + p.getWorld().getName() + " " + (int) p.getLocation().getX() + " " + (int) p.getLocation().getY() + " " + (int) p.getLocation().getZ() + " ");
+                List<String> arguments = new ArrayList<>(Arrays.asList(args));
+                Map<String, Object> settings = StringSetting.extractSettingsAndRebuildCorrectly(arguments, 0, new ArrayList<>());
+
+                Optional<Z> objectOpt = checkSObject(sender, arguments.get(0));
+                if (!objectOpt.isPresent()) return;
+
+                SObjectBuildable droppable = (SObjectBuildable) objectOpt.get();
+
+                AtomicInteger qty = new AtomicInteger();
+                if (arguments.size() == 1) qty.set(1);
+                else{
+                    Optional<Integer> amount = checkAmount(sender, arguments.get(1));
+                    if (!amount.isPresent()) {
+                        getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &cInvalid amount : &6" + arguments.get(1));
+                        return;
+                    }
+                    qty.set(amount.get());
+                }
+
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
+                    if (arguments.size() <= 2) {
+                        objectOpt.get().dropItem(p.getLocation(), qty.get(), Optional.empty(), settings);
+                        return;
+                    }
+                }
+
+                if(arguments.size() < 6) {
+                    getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &cUsage: &6/" + getSPlugin().getShortName().toLowerCase() + " drop <" + getSObjectManager().getObjectName() + "> <quantity> <world> <x> <y> <z>");
                     return;
                 }
-            }
 
-            if (Bukkit.getServer().getWorld(args[2]) == null) {
-                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " WORLD " + args[2] + " is invalid.");
-                return;
-            }
-            try {
-                Double.valueOf(args[3]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " X " + args[3] + " is invalid.");
-                return;
-            }
-            try {
-                Double.valueOf(args[4]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " Y " + args[3] + " is invalid.");
-                return;
-            }
-            try {
-                Double.valueOf(args[5]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " Z " + args[3] + " is invalid.");
-                return;
-            }
-            runDrop(droppable, qty, new Location(Bukkit.getServer().getWorld(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), Double.parseDouble(args[5])));
-            ExecutableItems.plugin.getLogger().fine(sPlugin.getNameDesign() + " Succesfully run /" + sPlugin.getShortName().toLowerCase() + " drop " + args[0] + " " + qty + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5] + " ");
-            return;
-        } catch (ArrayIndexOutOfBoundsException error) {
-            sender.sendMessage(ChatColor.RED + sPlugin.getNameDesign() + " SCommand invalid, verify your args /" + sPlugin.getShortName().toLowerCase() + " drop {id} {quantity} {world} {x} {y} {z}");
+                Optional<Optional<World>> worldOptional = checkWorld(sender, arguments.get(2));
+                if (!worldOptional.isPresent() || !worldOptional.get().isPresent()){
+                    getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &c WORLD &6" + arguments.get(2) + " &cis invalid.");
+                    return;
+                }
+                World world = worldOptional.get().get();
+
+                Optional<Double> xOpt = checkDouble(sender, arguments.get(3));
+                if (!xOpt.isPresent()){
+                    getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &c X &6" + arguments.get(3) + " &cis invalid.");
+                    return;
+                }
+
+                Optional<Double> yOpt = checkDouble(sender, arguments.get(4));
+                if (!yOpt.isPresent()){
+                    getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &c Y &6" + arguments.get(4) + " &cis invalid.");
+                    return;
+                }
+
+                Optional<Double> zOpt = checkDouble(sender, arguments.get(5));
+                if (!zOpt.isPresent()){
+                    getSm().sendMessage(sender, "&c"+getSPlugin().getNameWithBrackets()+" &c Z &6" + arguments.get(5) + " &cis invalid.");
+                    return;
+                }
+
+                objectOpt.get().dropItem(new Location(world, xOpt.get(), yOpt.get(), zOpt.get()), qty.get(), Optional.empty(), settings);
+                getSm().sendMessage(sender, "&c"+getSPlugin().getNameDesign() + " &7Successfully run &e/" + getSPlugin().getShortName().toLowerCase() + " drop " + arguments.get(0) + " " + qty + " " + world.getName() + " " + xOpt.get() + " " + yOpt.get() + " " + zOpt.get());
+                break;
         }
-
     }
 
-    public void runDrop(SObjectDroppable sObject, int qty, Location loc) {
-        sObject.dropItem(loc, qty);
+    @Override
+    public List<String> getCommands() {
+        List<String> commands = new ArrayList<>();
+        commands.add("drop");
+        return commands;
     }
 
+    @Override
+    public List<String> getArguments(String command, String[] args) {
+        ArrayList<String> arguments = new ArrayList<String>();
+        switch (args[0]) {
+            case "drop":
+                if (args.length == 2) {
+                    return getSObjectManager().getLoadedObjectsWith(args[1]);
+                } else if (args.length == 3) {
+                    arguments.addAll(getArgumentsQuantity());
 
+                    return arguments;
+                } else if (args.length == 4) {
+                    for (World world : Bukkit.getServer().getWorlds()) {
+                        arguments.add(world.getName());
+                    }
+
+                    return arguments;
+                } else if (args.length == 5) {
+                    arguments.add("X");
+
+                    return arguments;
+                } else if (args.length == 6) {
+                    arguments.add("Y");
+
+                    return arguments;
+                } else if (args.length == 7) {
+                    arguments.add("Z");
+
+                    return arguments;
+                }
+                break;
+        }
+        return new ArrayList<>();
+    }
 }

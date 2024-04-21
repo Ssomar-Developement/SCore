@@ -282,8 +282,9 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     }
 
     public String getEnchantmentName(Enchantment enchantment) {
+        String name = "";
         if (!SCore.is1v12Less()) {
-            String name = enchantment.getKey().toString();
+            name = enchantment.getKey().toString();
             //SsomarDev.testMsg("Enchantment name : " + name, true);
             if (name.contains("minecraft:")) {
                 name = name.split("minecraft:")[1];
@@ -291,10 +292,10 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
             else{
                 name = name.split(":")[0].toUpperCase()+">>"+enchantment.getName();
             }
-            return name;
         } else {
-            return enchantment.getName();
+            name = enchantment.getName();
         }
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public Optional<Enchantment> getEnchantment(String enchantmentName) {

@@ -33,6 +33,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
      */
     private static final long serialVersionUID = 1L;
 
+    public static final String start = "\\%";
+    public static final String end = "\\%";
+
     /* placeholders of the player */
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
