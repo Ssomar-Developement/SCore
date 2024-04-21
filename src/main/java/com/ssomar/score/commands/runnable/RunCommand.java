@@ -103,7 +103,7 @@ public abstract class RunCommand implements Serializable {
                     * The good condition is contains %????_ and %around to make sure it works with all papi libs*/
 
                     // Check if the string contains %?????_ and %around
-                    String regex = "%[a-zA-Z0-9_]*_*%around_[a-zA-Z0-9_]*%*";
+                    String regex = "%[a-zA-Z0-9_]*_[{(]*%around_[a-zA-Z0-9_]*%[})]*";
 
                     if(s.matches(regex)){
                         placeholdersToReplaceLatter.put(later, s);

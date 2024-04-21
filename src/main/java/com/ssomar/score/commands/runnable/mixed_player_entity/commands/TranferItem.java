@@ -20,18 +20,21 @@ public class TranferItem extends MixedCommand {
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
 
-        int slot = Double.valueOf(args.get(0)).intValue();
+        int initalSlot = Double.valueOf(args.get(0)).intValue();
 
         ItemStack toTransfer = null;
         PlayerInventory inventory = p.getInventory();
-        if (slot == -1)
-            slot = inventory.getHeldItemSlot();
-        toTransfer = inventory.getItem(slot);
-        inventory.clear(slot);
+        if (initalSlot == -1)
+            initalSlot = inventory.getHeldItemSlot();
+        toTransfer = inventory.getItem(initalSlot);
+        inventory.clear(initalSlot);
 
         if (toTransfer == null) return;
 
-        slot = Double.valueOf(args.get(1)).intValue();
+        int slot = Double.valueOf(args.get(1)).intValue();
+
+        boolean drop = false;
+        if(args.size() > 2) drop = Boolean.parseBoolean(args.get(2));
 
         ItemStack toDrop = null;
         if (receiver instanceof Player) {
@@ -78,7 +81,10 @@ public class TranferItem extends MixedCommand {
                 }
             }
         }
-        if (toDrop != null) receiver.getLocation().getWorld().dropItem(receiver.getLocation(), toDrop);
+        if (toDrop != null){
+            if(drop) receiver.getLocation().getWorld().dropItem(receiver.getLocation(), toDrop);
+            else inventory.setItem(initalSlot, toDrop);
+        }
     }
 
 
@@ -105,7 +111,7 @@ public class TranferItem extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "TRANSFER_ITEM {slot of launcher} {slot of receiver}";
+        return "TRANSFER_ITEM {slot of launcher} {slot of receiver} [boolean drop]";
     }
 
     @Override
