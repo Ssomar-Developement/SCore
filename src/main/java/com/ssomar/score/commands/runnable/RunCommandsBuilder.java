@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringConverter;
 
@@ -43,10 +42,10 @@ public abstract class RunCommandsBuilder {
         }*/
         this.commands = this.replaceLoop(commands);
         this.initFinalCommands();
-        System.out.println("=================== finals  for  commands ==========================");
+        /* System.out.println("=================== finals  for  commands ==========================");
         for (String s : this.commands) {
             SsomarDev.testMsg(s, true);
-        }
+        } */
     }
 
     public List<String> selectRandomCommands(List<String> commands, Integer amount) {
