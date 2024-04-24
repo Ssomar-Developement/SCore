@@ -6,13 +6,12 @@ import com.ssomar.score.sparticles.SParticle;
 import com.ssomar.score.sparticles.SParticles;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.CustomColor;
+import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -145,13 +144,8 @@ public class SParticleGUI extends GUIAbstract {
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
-        /* Update the gui only for the right click , for the left it updated automaticaly idk why */
-        for (HumanEntity e : this.getInv().getViewers()) {
-            if (e instanceof Player) {
-                Player p = (Player) e;
-                p.updateInventory();
-            }
-        }
+        /* Bug item no update idk why */
+        UpdateItemInGUI.updateItemInGUI(this, REDSTONE_COLOR, meta.getDisplayName(), lore, item.getType());
     }
 
     public Color getColor() {
@@ -236,13 +230,8 @@ public class SParticleGUI extends GUIAbstract {
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
-        /* Update the gui only for the right click , for the left it updated automaticaly idk why */
-        for (HumanEntity e : this.getInv().getViewers()) {
-            if (e instanceof Player) {
-                Player p = (Player) e;
-                p.updateInventory();
-            }
-        }
+        /* Bug item no update idk why */
+        UpdateItemInGUI.updateItemInGUI(this, TYPE, meta.getDisplayName(), lore, item.getType());
     }
 
     public Particle getType() {

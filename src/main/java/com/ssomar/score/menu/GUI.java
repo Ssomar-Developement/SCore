@@ -278,6 +278,17 @@ public abstract class GUI implements IGUI {
         return null;
     }
 
+    public int getSlotByName(String name) {
+        int i = -1;
+        for (ItemStack item : inv.getContents()) {
+            i++;
+            if (item != null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))) {
+                return i;
+            }
+        }
+        return i;
+    }
+
     public void openGUISync(Player player) {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
