@@ -31,10 +31,10 @@ public abstract class RunCommandsBuilder {
     }
 
     public void init() {
-        /* System.out.println("=================== init commands ==========================");
+        /* SsomarDev.testMsg("=================== init  commands ==========================", true);
         for (String s : this.commands) {
-            System.out.println(s);
-        }*/
+            SsomarDev.testMsg(s, true);
+        } */
         this.commands = this.replaceFor(this.commands);
         /*System.out.println("=================== after for  commands ==========================");
         for (String s : this.commands) {
@@ -42,7 +42,7 @@ public abstract class RunCommandsBuilder {
         }*/
         this.commands = this.replaceLoop(commands);
         this.initFinalCommands();
-        /* System.out.println("=================== finals  for  commands ==========================");
+        /* SsomarDev.testMsg("=================== finals   commands ==========================", true);
         for (String s : this.commands) {
             SsomarDev.testMsg(s, true);
         } */

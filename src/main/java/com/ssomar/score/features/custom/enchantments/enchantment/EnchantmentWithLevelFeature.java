@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.enchantments.enchantment;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -37,8 +38,12 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public void reset() {
-        this.enchantment = new EnchantmentFeature(this, "enchantment", Optional.of(Enchantment.DURABILITY), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
+        this.enchantment = new EnchantmentFeature(this, "enchantment", Optional.of(getDefaultEnchantment()), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
         this.level = new IntegerFeature(this, "level", Optional.of(1), "Level", new String[]{"&7&oThe level of the enchantment"}, Material.BEACON, false);
+    }
+
+    public static Enchantment getDefaultEnchantment() {
+        return SCore.is1v20v5Plus() ? Enchantment.UNBREAKING : Enchantment.getByName("DURABILITY");
     }
 
     @Override

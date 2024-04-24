@@ -84,8 +84,10 @@ public final class Display {
         ItemMeta meta = fast.getItemMeta();
         if(!meta.hasLore()) return itemStack;
         List<String> lore = meta.getLore();
-        if (!lore.isEmpty() && lore.removeIf(line -> line.startsWith(StringConverter.coloredString(PREFIX))))
-                fast.setLore(lore);
+        if (!lore.isEmpty() && lore.removeIf(line -> line.startsWith(StringConverter.coloredString(PREFIX)))) {
+            meta.setLore(lore);
+            fast.setItemMeta(meta);
+        }
         for (List<DisplayModule> modules : REGISTERED_MODULES.values()) {
             for (DisplayModule module : modules)
                 module.revert(itemStack);

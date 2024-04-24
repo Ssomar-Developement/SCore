@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.utils.FixedMaterial;
+import com.ssomar.score.utils.item.MakeItemGlow;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -166,8 +167,7 @@ public abstract class GUI implements IGUI {
 
 
         if (glow || haveEnchant) {
-            meta.addEnchant(Enchantment.PROTECTION_FALL, 6, true);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta = MakeItemGlow.makeGlow(meta);
         }
 
         //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -203,8 +203,7 @@ public abstract class GUI implements IGUI {
 
 
         if (glow || haveEnchant) {
-            meta.addEnchant(Enchantment.PROTECTION_FALL, 6, true);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta = MakeItemGlow.makeGlow(meta);
         }
 
         //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -227,8 +226,7 @@ public abstract class GUI implements IGUI {
 
 
         if (glow || haveEnchant) {
-            meta.addEnchant(Enchantment.PROTECTION_FALL, 6, true);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta = MakeItemGlow.makeGlow(meta);
         }
 
         //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -245,7 +243,13 @@ public abstract class GUI implements IGUI {
 
     public void createBackGroundItem(int slot) {
         if(test && (size < 54 || slot != 27)) return;
-        if (!SCore.is1v13Less()) createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, slot, "&7", true, false);
+        ItemStack item = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1);
+        if(SCore.is1v20v5Plus()){
+            ItemMeta meta = item.getItemMeta();
+            meta.setHideTooltip(true);
+            item.setItemMeta(meta);
+        }
+        if (!SCore.is1v13Less()) createItem(item, 1, slot, "&7", true, false);
         else removeItem(slot);
     }
 
@@ -436,11 +440,7 @@ public abstract class GUI implements IGUI {
     public void updateBoolean(String itemName, boolean value) {
         ItemStack item = this.getByName(itemName);
         if (value) {
-            ItemMeta meta = item.getItemMeta();
-            meta.addEnchant(org.bukkit.enchantments.Enchantment.DURABILITY, 1, true);
-            meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
-            item.setItemMeta(meta);
-
+            MakeItemGlow.makeGlow(item);
             updateCurrently(item, "&aTrue");
         } else {
             ItemMeta meta = item.getItemMeta();

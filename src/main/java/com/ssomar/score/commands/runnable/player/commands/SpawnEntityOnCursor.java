@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -40,7 +41,8 @@ public class SpawnEntityOnCursor extends PlayerCommand {
             Location loc = block.getLocation();
             loc.add(0, 1, 0);
 
-            if (entityType.equals(EntityType.LIGHTNING)) {
+            EntityType lightning = SCore.is1v20v5Plus() ? EntityType.LIGHTNING_BOLT : EntityType.valueOf("LIGHTNING");
+            if (entityType.equals(lightning)) {
                 for (int i = 0; i < amount; i++) receiver.getWorld().strikeLightning(loc);
             } else {
                 for (int i = 0; i < amount; i++) {

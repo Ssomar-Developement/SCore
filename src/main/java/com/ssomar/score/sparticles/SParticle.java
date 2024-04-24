@@ -116,8 +116,14 @@ public class SParticle {
 
     public static List<Particle> getHaveBlocktypeParticles() {
         List<Particle> particles = new ArrayList<>();
-        particles.add(Particle.BLOCK_CRACK);
-        particles.add(Particle.BLOCK_DUST);
+        if(SCore.is1v20v5Plus()){
+            particles.add(Particle.BLOCK);
+            particles.add(Particle.DUST);
+        }
+        else {
+            particles.add(Particle.valueOf("BLOCK_CRACK"));
+            particles.add(Particle.valueOf("BLOCK_DUST"));
+        }
         if (SCore.is1v18Plus()) {
             particles.add(Particle.BLOCK_MARKER);
         }
@@ -126,7 +132,12 @@ public class SParticle {
 
     public static List<Particle> getHaveRedstoneColorParticles() {
         List<Particle> particles = new ArrayList<>();
-        particles.add(Particle.REDSTONE);
+        if(SCore.is1v20v5Plus()){
+            particles.add(Particle.DUST);
+        }
+        else {
+            particles.add(Particle.valueOf("REDSTONE"));
+        }
         return particles;
     }
 

@@ -2477,7 +2477,8 @@ public final class XParticle {
             double[] pixelLoc = pixel.getKey();
 
             Location loc = new Location(world, location.getX() - pixelLoc[0], location.getY() - pixelLoc[1], location.getZ());
-            world.spawnParticle(Particle.REDSTONE, loc, quality, 0, 0, 0, speed, data);
+            Particle particle = SCore.is1v20v5Plus() ? Particle.DUST_COLOR_TRANSITION : Particle.valueOf("REDSTONE");
+            world.spawnParticle(particle, loc, quality, 0, 0, 0, speed, data);
         }
     }
 

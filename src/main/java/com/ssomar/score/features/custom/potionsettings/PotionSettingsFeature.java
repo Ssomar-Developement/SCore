@@ -65,8 +65,10 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             ConfigurationSection potionSettings = config.getConfigurationSection(getName());
             errors.addAll(this.color.load(plugin, potionSettings, isPremiumLoading));
             errors.addAll(this.potiontype.load(plugin, potionSettings, isPremiumLoading));
-            errors.addAll(this.potionExtended.load(plugin, potionSettings, isPremiumLoading));
-            errors.addAll(this.potionUpgraded.load(plugin, potionSettings, isPremiumLoading));
+            if(!SCore.is1v20v5Plus()) {
+                errors.addAll(this.potionExtended.load(plugin, potionSettings, isPremiumLoading));
+                errors.addAll(this.potionUpgraded.load(plugin, potionSettings, isPremiumLoading));
+            }
             errors.addAll(this.potionEffects.load(plugin, potionSettings, isPremiumLoading));
             //SsomarDev.testMsg("§aPotion settings loaded for the feature §e"+this.getName(), true);
         }
@@ -83,9 +85,9 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
             PotionMeta pMeta = ((PotionMeta) meta);
             if (!SCore.is1v11Less()) {
                 if (pMeta.getColor() != null) color.setValue(Optional.of(pMeta.getColor().asRGB()));
-                potiontype.setValue(Optional.of(pMeta.getBasePotionData().getType()));
-                potionExtended.setValue(pMeta.getBasePotionData().isExtended());
-                potionUpgraded.setValue(pMeta.getBasePotionData().isUpgraded());
+                //potiontype.setValue(Optional.of(pMeta.getBasePotionData().getType()));
+                //potionExtended.setValue(pMeta.getBasePotionData().isExtended());
+                //potionUpgraded.setValue(pMeta.getBasePotionData().isUpgraded());
             }
 
             int i = 0;
@@ -126,10 +128,16 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
                 if (color.getValue().isPresent()) pMeta.setColor(Color.fromRGB(color.getValue().get()));
                 if (potiontype.getValue().isPresent()) {
                    // SsomarDev.testMsg("§aPotion settings 4", true);
-                    try {
-                        pMeta.setBasePotionData(new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable()));
-                    }catch (Exception ignored){
-                        ignored.printStackTrace();
+                    if(SCore.is1v20v5Plus()){
+                        pMeta.setBasePotionType(potiontype.getValue().get());
+                    }
+                    else {
+                        try {
+                            PotionData data = new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable());
+                            PotionMeta.class.getMethod("setBasePotionData", PotionData.class).invoke(pMeta, data);
+                        } catch (Exception ignored) {
+                            ignored.printStackTrace();
+                        }
                     }
                 }
             }
@@ -149,8 +157,10 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
         ConfigurationSection potionSettings = config.createSection(getName());
         color.save(potionSettings);
         potiontype.save(potionSettings);
-        potionExtended.save(potionSettings);
-        potionUpgraded.save(potionSettings);
+        if(!SCore.is1v20v5Plus()) {
+            potionExtended.save(potionSettings);
+            potionUpgraded.save(potionSettings);
+        }
         potionEffects.save(potionSettings);
     }
 
@@ -161,34 +171,45 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public PotionSettingsFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 6];
+        int settingsNumber = 6;
+        if(SCore.is1v20v5Plus()) settingsNumber = 4;
+
+        String[] finalDescription = new String[getEditorDescription().length + settingsNumber];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - settingsNumber] = GUI.CLICK_HERE_TO_CHANGE;
+        settingsNumber--;
+
         if (SCore.is1v11Less())
-            finalDescription[finalDescription.length - 5] = "&7Potion color : &c&lNot for 1.11 or lower";
+            finalDescription[finalDescription.length - settingsNumber] = "&7Potion color : &c&lNot for 1.11 or lower";
         else if (color.getValue().isPresent())
-            finalDescription[finalDescription.length - 5] = "&7Potion color : &e" + color.getValue().get();
-        else finalDescription[finalDescription.length - 5] = "&7Potion color : &cNO VALUE";
+            finalDescription[finalDescription.length - settingsNumber] = "&7Potion color : &e" + color.getValue().get();
+        else finalDescription[finalDescription.length - settingsNumber] = "&7Potion color : &cNO VALUE";
+        settingsNumber--;
 
         if (SCore.is1v11Less())
-            finalDescription[finalDescription.length - 4] = "&7Potion type : &c&lNot for 1.11 or lower";
-        else finalDescription[finalDescription.length - 4] = "&7Potion type : &e" + potiontype.getValue().get();
+            finalDescription[finalDescription.length - settingsNumber] = "&7Potion type : &c&lNot for 1.11 or lower";
+        else finalDescription[finalDescription.length - settingsNumber] = "&7Potion type : &e" + potiontype.getValue().get();
+        settingsNumber--;
 
-        if (SCore.is1v11Less())
-            finalDescription[finalDescription.length - 3] = "&7Potion extended : &c&lNot for 1.11 or lower";
-        else if (potionExtended.getValue())
-            finalDescription[finalDescription.length - 3] = "&7Potion extended: &a&l✔";
-        else
-            finalDescription[finalDescription.length - 3] = "&7Potion extended: &c&l✘";
+        if(!SCore.is1v20v5Plus()) {
+            if (SCore.is1v11Less())
+                finalDescription[finalDescription.length - settingsNumber] = "&7Potion extended : &c&lNot for 1.11 or lower";
+            else if (potionExtended.getValue())
+                finalDescription[finalDescription.length - settingsNumber] = "&7Potion extended: &a&l✔";
+            else
+                finalDescription[finalDescription.length - settingsNumber] = "&7Potion extended: &c&l✘";
+            settingsNumber--;
 
-        if (SCore.is1v11Less())
-            finalDescription[finalDescription.length - 2] = "&7Potion upgraded : &c&lNot for 1.11 or lower";
-        else if (potionUpgraded.getValue())
-            finalDescription[finalDescription.length - 2] = "&7Potion upgraded: &a&l✔";
-        else
-            finalDescription[finalDescription.length - 2] = "&7Potion upgraded: &c&l✘";
+            if (SCore.is1v11Less())
+                finalDescription[finalDescription.length - settingsNumber] = "&7Potion upgraded : &c&lNot for 1.11 or lower";
+            else if (potionUpgraded.getValue())
+                finalDescription[finalDescription.length - settingsNumber] = "&7Potion upgraded: &a&l✔";
+            else
+                finalDescription[finalDescription.length - settingsNumber] = "&7Potion upgraded: &c&l✘";
+            settingsNumber--;
+        }
 
-        finalDescription[finalDescription.length - 1] = "&7Potion effects: &e" + potionEffects.getValue().getEffects().size();
+        finalDescription[finalDescription.length - settingsNumber] = "&7Potion effects: &e" + potionEffects.getValue().getEffects().size();
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

@@ -68,7 +68,8 @@ public class Launch extends PlayerCommand {
 
                     if (entity instanceof Firework) {
                         entity.remove();
-                        entity = receiver.getWorld().spawnEntity(receiver.getEyeLocation(), EntityType.FIREWORK);
+                        EntityType fireworkType =  SCore.is1v20v5Plus() ? EntityType.FIREWORK_ROCKET : EntityType.valueOf("FIREWORK");
+                        entity = receiver.getWorld().spawnEntity(receiver.getEyeLocation(), fireworkType);
                         Firework firework = (Firework) entity;
                         firework.setShotAtAngle(true);
                     }

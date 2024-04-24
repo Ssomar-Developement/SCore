@@ -1,14 +1,11 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -21,7 +18,9 @@ public class Shear extends EntityCommand {
     @Override
     public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
 
-        if (entity.getType() == EntityType.MUSHROOM_COW) {
+        EntityType mushroomCowType = SCore.is1v20v5Plus() ? EntityType.MOOSHROOM : EntityType.fromName("MUSHROOM_COW");
+        EntityType snowmanType = SCore.is1v20v5Plus() ? EntityType.SNOW_GOLEM : EntityType.fromName("SNOWMAN");
+        if (entity.getType() == mushroomCowType) {
 
             Location loc = entity.getLocation();
             Vector velocity = entity.getVelocity();
@@ -37,7 +36,7 @@ public class Shear extends EntityCommand {
             if (sheep.isSheared()) return;
 
             sheep.setSheared(true);
-        } else if (entity.getType() == EntityType.SNOWMAN) {
+        } else if (entity.getType() == snowmanType) {
             Snowman snowman = (Snowman) entity;
             if (snowman.isDerp()) return;
 

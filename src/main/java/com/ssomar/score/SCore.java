@@ -126,6 +126,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     private static boolean is1v20v4 = false;
 
+    private static boolean is1v20v5 = false;
+
 
     private static boolean isSpigot = false;
     private static boolean isPaper = false;
@@ -252,6 +254,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v20v4;
     }
 
+    /* The server is in 1.20.5? */
+    public static boolean is1v20v5() {
+        return is1v20v5;
+    }
+
     /* The server is in 1.12 or - ? */
     public static boolean is1v11Less() {
         return is1v8() || is1v9() || is1v10() || is1v11();
@@ -303,7 +310,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.20.4 or + ? */
     public static boolean is1v20v4Plus() {
-        return is1v20v4();
+        return is1v20v4() || is1v20v5Plus();
+    }
+
+    /* The server is in 1.20.5 or + ? */
+    public static boolean is1v20v5Plus() {
+        return is1v20v5();
     }
 
     public static boolean isSpigotOrFork(){
@@ -646,6 +658,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v20 = Bukkit.getServer().getVersion().contains("1.20");
         is1v20v1 = Bukkit.getServer().getVersion().contains("1.20.1");
         is1v20v4 = Bukkit.getServer().getVersion().contains("1.20.4");
+        is1v20v5 = Bukkit.getServer().getVersion().contains("1.20.5");
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot");
         isMohist = Bukkit.getServer().getName().contains("Mohist");

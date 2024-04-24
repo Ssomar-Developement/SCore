@@ -3,10 +3,10 @@ package com.ssomar.score.features.custom.detailedslots;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.utils.item.MakeItemGlow;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,9 +139,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
             return true;
         } else {
             this.updateCurrently(item, "&aEnable");
-            ItemMeta meta = item.getItemMeta();
-            meta.addEnchant(Enchantment.DURABILITY, 1, true);
-            item.setItemMeta(meta);
+            MakeItemGlow.makeGlow(item);
             return false;
         }
     }

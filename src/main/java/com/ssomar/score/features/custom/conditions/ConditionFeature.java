@@ -13,6 +13,7 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.FixedMaterial;
+import com.ssomar.score.utils.item.MakeItemGlow;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -133,8 +134,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
         ItemStack item = new ItemStack(getEditorMaterial());
         if (hasCondition()) {
             ItemMeta meta = item.getItemMeta();
-            meta.addEnchant(org.bukkit.enchantments.Enchantment.DURABILITY, 1, true);
-            meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+            meta = MakeItemGlow.makeGlow(meta);
             item.setItemMeta(meta);
         }
         gui.createItem(item, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);

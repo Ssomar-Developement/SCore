@@ -1,6 +1,7 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageBoost;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageResistance;
 import com.ssomar.score.features.custom.variables.real.VariableReal;
@@ -416,7 +417,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + uuid, true);
             if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null) {
                 //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + p.getName(), true);
-                replace = PlaceholderAPI.setPlaceholders(p, replace);
+                //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + replace, true);
+                try{
+                    replace = PlaceholderAPI.setPlaceholders(p, replace);
+                } catch (Exception e) {
+                    // NEED TO DO THAT BECAUSE SOME PAPI LIB CAN THROW EXCEPTION
+                    SsomarDev.testMsg(e.getMessage(), true);
+                }
                 if(replace.contains("%")){
                     replace = replace.replaceFirst("%", "fAzzAf");
                     //String cccc = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), "%checkitem_getinfo:mainhand_mat:%");

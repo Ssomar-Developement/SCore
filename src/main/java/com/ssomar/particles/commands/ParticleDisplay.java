@@ -28,6 +28,7 @@ package com.ssomar.particles.commands;
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import com.ssomar.score.SCore;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -111,7 +112,8 @@ public class ParticleDisplay implements Cloneable {
      */
     @Nonnull
     public static ParticleDisplay colored(@Nullable Location location, int r, int g, int b, float size) {
-        return ParticleDisplay.simple(location, Particle.REDSTONE).withColor(r, g, b, size);
+        Particle particle = SCore.is1v20v5Plus() ? Particle.DUST_COLOR_TRANSITION : Particle.valueOf("REDSTONE");
+        return ParticleDisplay.simple(location, particle).withColor(r, g, b, size);
     }
 
     /**

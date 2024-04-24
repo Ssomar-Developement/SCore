@@ -44,9 +44,10 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
 
     @Override
     public void reset() {
+        PotionEffectType type = SCore.is1v20v5Plus() ? PotionEffectType.HEALTH_BOOST : PotionEffectType.getByName("HEAL");
         this.amplifier = new IntegerFeature(this, "amplifier", Optional.ofNullable(0), "Amplifier", new String[]{"&7&oThe amplifier of the potion effect"}, GUI.CLOCK, false);
         this.duration = new IntegerFeature(this, "duration", Optional.ofNullable(30), "Duration", new String[]{"&7&oThe duration of the potion effect", "&4⚠ &cIn ticks !", "&7&o1 sec = 20 ticks"}, GUI.CLOCK, false);
-        this.type = new PotionEffectTypeFeature(this, "potionEffectType", Optional.ofNullable(PotionEffectType.HEAL), "Type", new String[]{"&7&oThe type of the potion effect"}, Material.COMPASS, false);
+        this.type = new PotionEffectTypeFeature(this, "potionEffectType", Optional.ofNullable(type), "Type", new String[]{"&7&oThe type of the potion effect"}, Material.COMPASS, false);
         this.ambient = new BooleanFeature(this, "isAmbient", false, "Ambient", new String[]{"&7&oIf the potion effect is ambient"}, Material.LEVER, false, false);
         this.particles = new BooleanFeature(this, "hasParticles", false, "Particles", new String[]{"&7&oIf the potion effect has particles"}, Material.LEVER, false, false);
         this.icon = new BooleanFeature(this, "hasIcon", false, "Icon", new String[]{"&7&oIf the potion effect has an icon"}, Material.LEVER, false, false);

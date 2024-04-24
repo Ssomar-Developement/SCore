@@ -6,6 +6,7 @@ import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -102,7 +103,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     public void updateItemParentEditor(GUI gui) {
         Optional<Enchantment> optional = getValue();
         if (optional.isPresent()) updateEnchantment(optional.get(), gui);
-        else updateEnchantment(Enchantment.DURABILITY, gui);
+        else updateEnchantment(EnchantmentWithLevelFeature.getDefaultEnchantment(), gui);
     }
 
     @Override

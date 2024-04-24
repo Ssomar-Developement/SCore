@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     public AttributeModifier getAttributeModifier() {
         if (slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)) {
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), null);
+            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), (EquipmentSlot) null);
         } else
             return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
     }

@@ -459,17 +459,17 @@
         </dependency>
 
 
-        <!-- <dependency>
+        <dependency>
              <groupId>org.spigotmc</groupId>
              <artifactId>spigot-api</artifactId>
-             <version>1.19.2-R0.1-SNAPSHOT</version>
+             <version>1.20.5-R0.1-SNAPSHOT</version>
              <scope>provided</scope>
-         </dependency>-->
+         </dependency>
 
         <dependency>
             <groupId>dev.folia</groupId>
             <artifactId>folia-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

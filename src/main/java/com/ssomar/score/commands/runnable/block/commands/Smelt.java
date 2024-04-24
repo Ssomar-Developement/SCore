@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safebreak.SafeBreak;
@@ -43,8 +44,9 @@ public class Smelt extends BlockCommand {
 
             // Determine the amount of smelted item to drop
             int amountToDrop = 1;
-            if (itemInHand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
-                int fortuneLevel = itemInHand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+            Enchantment fortune = SCore.is1v20v5Plus() ? Enchantment.FORTUNE : Enchantment.getByName("LOOT_BONUS_BLOCKS");
+            if (itemInHand.containsEnchantment(fortune)) {
+                int fortuneLevel = itemInHand.getEnchantmentLevel(fortune);
                 amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
             }
             // BREAK

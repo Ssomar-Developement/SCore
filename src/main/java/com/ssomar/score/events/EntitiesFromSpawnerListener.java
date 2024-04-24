@@ -7,7 +7,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -16,11 +15,11 @@ public class EntitiesFromSpawnerListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onEntitySpawnEvent(EntitySpawnEvent e) {
+    public void onEntitySpawnEvent(CreatureSpawnEvent e) {
         Entity entity = e.getEntity();
 
         try {
-            CreatureSpawnEvent.SpawnReason spawnReason = entity.getEntitySpawnReason();
+            CreatureSpawnEvent.SpawnReason spawnReason = e.getSpawnReason();
 
             if (spawnReason == CreatureSpawnEvent.SpawnReason.SPAWNER) {
                 entity.setMetadata("fromSpawner", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(1)));

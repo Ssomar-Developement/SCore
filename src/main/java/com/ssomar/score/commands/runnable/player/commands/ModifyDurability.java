@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -45,8 +46,9 @@ public class ModifyDurability extends PlayerCommand {
             Damageable meta = (Damageable) item.getItemMeta();
             Map<Enchantment, Integer> enchants = item.getEnchantments();
             int unbreakingLevel = 0;
-            if (supportUnbreaking && enchants.containsKey(Enchantment.DURABILITY)) {
-                unbreakingLevel = enchants.get(Enchantment.DURABILITY);
+            Enchantment unbreaking = SCore.is1v20v5Plus() ? Enchantment.UNBREAKING : Enchantment.getByName("DURABILITY");
+            if (supportUnbreaking && enchants.containsKey(unbreaking)) {
+                unbreakingLevel = enchants.get(unbreaking);
             }
             if (modification < 0) {
                 for (int i = modification; i < 0; i++) {

@@ -75,7 +75,7 @@ public class PotionEffectTypeFeature extends FeatureAbstract<Optional<PotionEffe
     @Override
     public void updateItemParentEditor(GUI gui) {
         Optional<PotionEffectType> value = getValue();
-        PotionEffectType finalValue = value.orElse(PotionEffectType.HEAL);
+        PotionEffectType finalValue = value.orElse(PotionEffectType.getByName("HEAL"));
         updatePotionEffectType(finalValue, gui);
     }
 

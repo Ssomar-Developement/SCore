@@ -79,7 +79,8 @@ public class HardnessesHandler {
             long period = triggeredModifier.getPeriod(player, block, item);
             //if (period == 0) return;
 
-            switch (item.getEnchantmentLevel(Enchantment.DIG_SPEED)){
+            Enchantment enchantment = SCore.is1v20v5Plus() ? Enchantment.EFFICIENCY : Enchantment.getByName("DIG_SPEED");
+            switch (item.getEnchantmentLevel(enchantment)){
                 case 0:
                     break;
                 case 1:
@@ -119,8 +120,7 @@ public class HardnessesHandler {
             if (type == EnumWrappers.PlayerDigType.START_DESTROY_BLOCK) {
 
                 //SsomarDev.testMsg("START_DESTROY_BLOCK", true);
-
-                Bukkit.getScheduler().runTask(SCore.plugin, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (finalPeriod * delayFinal)+1, Integer.MAX_VALUE, false, false, false)));
+                Bukkit.getScheduler().runTask(SCore.plugin, () -> player.addPotionEffect(new PotionEffect(getSlowType(), (int) (finalPeriod * delayFinal)+1, Integer.MAX_VALUE, false, false, false)));
                 if (breakerPerLocation.containsKey(location))
                     breakerPerLocation.get(location).cancelTasks(SCore.plugin);
 
@@ -163,7 +163,7 @@ public class HardnessesHandler {
                 }, 0, delayFinal);
             } else {
                 Bukkit.getScheduler().runTask(SCore.plugin, () -> {
-                    player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+                    player.removePotionEffect(getSlowType());
                     /* if (!ProtectionLib.canBreak(player, block.getLocation()))
                         player.sendBlockChange(block.getLocation(), block.getBlockData()); */
 
@@ -178,6 +178,10 @@ public class HardnessesHandler {
         }
     };
 
+    public PotionEffectType getSlowType(){
+        return SCore.is1v20v5Plus() ? PotionEffectType.MINING_FATIGUE : PotionEffectType.getByName("SLOW_DIGGING");
+    }
+
     public void breakBlock(Location location, World world, Block block, Player player, ItemStack item, HardnessModifier modifier, BukkitTask bukkitTask){
         final BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
         Bukkit.getPluginManager().callEvent(blockBreakEvent);
@@ -189,7 +193,7 @@ public class HardnessesHandler {
         }
 
         Bukkit.getScheduler().runTask(SCore.plugin, () ->
-                player.removePotionEffect(PotionEffectType.SLOW_DIGGING));
+                player.removePotionEffect(getSlowType()));
         breakerPerLocation.remove(location);
         for (final Entity entity : world.getNearbyEntities(location, 16, 16, 16))
             if (entity instanceof Player) {

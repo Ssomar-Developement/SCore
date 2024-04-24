@@ -85,7 +85,8 @@ public class Damage extends MixedCommand {
 
         if (launcher != null) {
             if (potionAmplification) {
-                PotionEffect pE = launcher.getPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                PotionEffectType incDamage = SCore.is1v20v5Plus() ? PotionEffectType.STRENGTH : PotionEffectType.getByName("INCREASE_DAMAGE");
+                PotionEffect pE = launcher.getPotionEffect(incDamage);
                 if (pE != null) {
                     amount = amount + (pE.getAmplifier() + 1) * 3;
                 }
