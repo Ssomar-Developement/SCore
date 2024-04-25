@@ -52,7 +52,7 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
                         }
                     }
 
-                    CommmandThatRunsCommand.ruEntityCommands(entities, args, aInfo);
+                    CommmandThatRunsCommand.runEntityCommands(entities, args, aInfo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

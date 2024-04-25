@@ -37,6 +37,7 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         commands.add(new Shear());
         commands.add(new AngryAt());
         commands.add(new Steal());
+        commands.add(new If());
         if(SCore.is1v16Plus()){
             commands.add(new Awareness());
         }

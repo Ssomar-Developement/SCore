@@ -85,7 +85,9 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
 
                         /* Remove useless tags */
                         ItemMeta meta = itemS.getItemMeta();
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_POTION_EFFECTS});
+                        ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+                        meta.addItemFlags(additionnalFlag);
+                        meta.addItemFlags(new ItemFlag[]{additionnalFlag});
                         meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
                         meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
                         meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});

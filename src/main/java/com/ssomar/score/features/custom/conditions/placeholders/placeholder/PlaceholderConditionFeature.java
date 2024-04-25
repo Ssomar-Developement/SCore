@@ -117,6 +117,12 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                 aPart1 = sp.replacePlaceholder(aPart1, false);
                 if(t == PlaceholdersCdtType.PLAYER_TARGET || t == PlaceholdersCdtType.PLAYER_PLAYER || t == PlaceholdersCdtType.TARGET_TARGET) aPart2 = sp.replacePlaceholder(aPart2, false);
             }
+
+            /* For IF block */
+            if(t == PlaceholdersCdtType.PLAYER_PLAYER && player == null) {
+                aPart1 = StringPlaceholder.replacePlaceholderOfPAPI(aPart1, null);
+                aPart2 = StringPlaceholder.replacePlaceholderOfPAPI(aPart2, null);
+            }
         }
 
         aPart1 = StringConverter.deconvertColor(aPart1);

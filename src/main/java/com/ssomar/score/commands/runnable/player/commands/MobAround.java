@@ -60,7 +60,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                         }
                     }
 
-                    boolean hit = CommmandThatRunsCommand.ruEntityCommands(entities, args.subList(startForCommand, args.size()), aInfo);
+                    boolean hit = CommmandThatRunsCommand.runEntityCommands(entities, args.subList(startForCommand, args.size()), aInfo);
 
                     if (!hit && !mute && receiver instanceof Player)
                         sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));

@@ -52,7 +52,7 @@ public class MobNearest extends BlockCommand implements FeatureParentInterface {
                 List<Entity> targets = new ArrayList<>();
                 targets.add(e);
 
-                CommmandThatRunsCommand.ruEntityCommands(targets, verifyArgs.subList(1, verifyArgs.size()), aInfo);
+                CommmandThatRunsCommand.runEntityCommands(targets, verifyArgs.subList(1, verifyArgs.size()), aInfo);
             }
         };
         runnable.runTask(SCore.plugin);

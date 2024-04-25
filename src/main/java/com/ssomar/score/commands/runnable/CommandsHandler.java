@@ -106,7 +106,7 @@ public class CommandsHandler implements Listener {
         for (PlayerRunCommand command : commands) {
             if (!command.isRunOffline()) {
                 //System.out.println("QUTI >> "+command.getBrutCommand());
-                commandsToSave.add(command);
+                if(!command.isClearIfDisconnect()) commandsToSave.add(command);
             }
         }
 

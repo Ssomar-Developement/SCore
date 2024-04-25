@@ -5,6 +5,7 @@ import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.item.MakeItemGlow;
+import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -171,7 +172,8 @@ public abstract class GUI implements IGUI {
         }
 
         //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+        meta.addItemFlags(additionnalFlag);
         meta.setDisplayName(StringConverter.coloredString(displayName));
 
         for (String s : loreString) lore.add(StringConverter.coloredString(s));
@@ -207,7 +209,8 @@ public abstract class GUI implements IGUI {
         }
 
         //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+        meta.addItemFlags(additionnalFlag);
         meta.setDisplayName(StringConverter.coloredString(displayName));
 
         for (String s : loreString) lore.add(StringConverter.coloredString(s));
@@ -230,7 +233,8 @@ public abstract class GUI implements IGUI {
         }
 
         //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+        meta.addItemFlags(additionnalFlag);
         meta.setDisplayName(StringConverter.coloredString(displayName));
 
         for (String s : loreString) lore.add(StringConverter.coloredString(s));
@@ -393,6 +397,8 @@ public abstract class GUI implements IGUI {
         }
         toChange.setLore(loreUpdate);
         item.setItemMeta(toChange);
+
+        UpdateItemInGUI.updateItemInGUI(this, name, item.getItemMeta().getDisplayName(), loreUpdate, item.getType());
     }
 
     public List<String> getConditionList(String name, String emptyStr) {

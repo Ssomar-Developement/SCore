@@ -30,14 +30,19 @@ public class PlayerRunCommand extends RunCommand {
     @Getter
     private boolean runOffline;
 
+    @Getter
+    private boolean clearIfDisconnect;
+
     public PlayerRunCommand(String brutCommand, int delay, ActionInfo aInfo) {
         super(brutCommand, delay, aInfo);
         this.initRunOffline(brutCommand);
+        this.initClearIfDisconnect(brutCommand);
     }
 
     public PlayerRunCommand(String brutCommand, long runTime, ActionInfo aInfo) {
         super(brutCommand, runTime, aInfo);
         this.initRunOffline(brutCommand);
+        this.initClearIfDisconnect(brutCommand);
     }
 
     public void initRunOffline(String brutCommand) {
@@ -45,6 +50,13 @@ public class PlayerRunCommand extends RunCommand {
             runOffline = true;
             this.setBrutCommand(brutCommand.replaceAll("\\[<OFFLINE>]", "").trim());
         } else runOffline = false;
+    }
+
+    public void initClearIfDisconnect(String brutCommand) {
+        if (brutCommand.contains("[<CLEAR_IF_DISCONNECT>]")) {
+            clearIfDisconnect = true;
+            this.setBrutCommand(brutCommand.replaceAll("\\[<CLEAR_IF_DISCONNECT>]", "").trim());
+        } else clearIfDisconnect = false;
     }
 
     @Override

@@ -167,7 +167,7 @@ public interface CommmandThatRunsCommand {
 
     /* True > an entity has been hit
      *  False > no entity hit */
-    static boolean ruEntityCommands(Collection<? extends Entity> entities, List<String> argsCommands, ActionInfo aInfo){
+    static boolean runEntityCommands(Collection<? extends Entity> entities, List<String> argsCommands, ActionInfo aInfo){
 
         ListDetailedEntityFeature whiteList = null;
         ListDetailedEntityFeature blackList = null;
