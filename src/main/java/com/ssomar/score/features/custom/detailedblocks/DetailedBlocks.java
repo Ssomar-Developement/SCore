@@ -92,10 +92,10 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     }
 
     public boolean isValid(@NotNull Block block, Optional<Player> playerOpt, Event event, StringPlaceholder sp) {
-       return  isValid(block, playerOpt, event, sp, null, null);
+       return isValid(block, playerOpt, event, sp, null, Optional.empty());
     }
 
-    public boolean isValid(@NotNull Block block, Optional<Player> playerOpt, Event event, StringPlaceholder sp, @Nullable Material material, @Nullable Optional<String> statesStrOpt) {
+    public boolean isValid(@NotNull Block block, Optional<Player> playerOpt, Event event, StringPlaceholder sp, @Nullable Material material, @NotNull Optional<String> statesStrOpt) {
         if(blocks.getValues().isEmpty() && blocks.getBlacklistedValues().isEmpty()) return true;
 
         if(blocks.verifBlock(block, material, statesStrOpt)) {

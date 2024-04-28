@@ -57,7 +57,7 @@ public abstract class CommandsClassAbstract<T extends SPlugin> implements Comman
             if (commands.contains(commandName)) {
 
                 String[] args;
-                String typedCommand = "";
+                String typedCommand = command.getName()+" ";
                 if (fullArgs.length > 1) {
                     args = new String[fullArgs.length - 1];
                     for (int i = 0; i < fullArgs.length; i++) {

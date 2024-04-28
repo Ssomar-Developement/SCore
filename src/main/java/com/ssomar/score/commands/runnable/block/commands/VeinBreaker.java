@@ -59,39 +59,19 @@ public class VeinBreaker extends BlockCommand {
 
                 if (aInfo.isEventFromCustomBreakCommand()) return;
 
-                /* if (args.size() >= 2) {
-                    if (!args.get(1).contains(oldMaterial.toString()))
-                        return;
-                } else {
-                    if (!(oldMaterial.toString().contains("ORE")
-                            || oldMaterial.toString().contains("ANCIENT_DEBRIS")
-                            || oldMaterial.toString().contains("LOG")
-                            || oldMaterial.toString().contains("WOOD")
-
-                            || oldMaterial.toString().contains("HYPHAE")
-                            || oldMaterial.toString().contains("WARPED_STEM")
-                            || oldMaterial.toString().contains("CRIMSON_STEM")
-                            || oldMaterial.toString().contains("WOOL")
-                            || oldMaterial.toString().contains("LEAVES")))
-                        return;
-                }*/
-
                 DetailedBlocks whiteList;
                 if ((whiteList = aInfo.getDetailedBlocks()) != null) {
                     /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
-                    if (!whiteList.isValid(block, Optional.empty(), null, new StringPlaceholder(), oldMaterial, null)) {
+                    if (!whiteList.isValid(block, Optional.empty(), null, new StringPlaceholder(), oldMaterial, Optional.empty())) {
                         p.sendMessage(ChatColor.RED + "This block is not allowed to be broken ! : "+block.getType().name());
                         return;
                     }
                 }
 
-
-
                 int veinSize = 120;
                 try {
                     veinSize = Integer.parseInt(args.get(0));
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
 
                 boolean triggerevent = true;
                 if(args.size() >= 3) {

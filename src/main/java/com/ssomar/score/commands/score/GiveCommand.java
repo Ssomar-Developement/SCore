@@ -74,6 +74,7 @@ public class GiveCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z exten
     }
 
     public static void runOfflineCommand(String player, boolean giveOfflinePlayer, String commandToRunIfPlayerIsOffline) {
+        //System.out.println("runOfflineCommand >> "+player+" "+giveOfflinePlayer+" "+commandToRunIfPlayerIsOffline);
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (giveOfflinePlayer) {
             ActionInfo aInfo = new ActionInfo("", new StringPlaceholder());
@@ -81,8 +82,12 @@ public class GiveCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z exten
             PlayerRunCommand command = new PlayerRunCommand(commandToRunIfPlayerIsOffline, 0, aInfo);
             CommandsHandler handler = CommandsHandler.getInstance();
             if (handler.getDelayedCommandsSaved().containsKey(p.getUniqueId())) {
+                //System.out.println("runOfflineCommand >> pUUID"+p.getUniqueId()+" ADDDD "+command);
                 handler.getDelayedCommandsSaved().get(p.getUniqueId()).add(command);
-            } else handler.getDelayedCommandsSaved().put(p.getUniqueId(), new ArrayList<>(Arrays.asList(command)));
+            } else{
+                //System.out.println("runOfflineCommand >> pUUID"+p.getUniqueId()+" NEW "+command);
+                handler.getDelayedCommandsSaved().put(p.getUniqueId(), new ArrayList<>(Arrays.asList(command)));
+            }
         }
     }
 

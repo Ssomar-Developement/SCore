@@ -14,7 +14,7 @@ import java.util.*;
 
 public class LoopManager {
 
-    public static final int DELAY = 5;
+    public int DELAY;
     private static LoopManager instance;
     @Getter
     private final Map<SActivator, Integer> loopActivators;
@@ -22,6 +22,9 @@ public class LoopManager {
     private final List<SActivator> loopActivatorsToRemove;
 
     public LoopManager() {
+        DELAY = 5;
+        if(SCore.is1v20v5Plus()) DELAY = 1;
+
         loopActivators = new HashMap<>();
         loopActivatorsToAdd = new ArrayList<>();
         loopActivatorsToRemove = new ArrayList<>();

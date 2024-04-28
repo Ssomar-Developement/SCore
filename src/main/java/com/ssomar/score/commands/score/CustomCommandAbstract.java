@@ -99,7 +99,7 @@ public abstract class CustomCommandAbstract<T extends SPlugin> {
             Player p = Bukkit.getServer().getPlayerExact(player);
             if (p == null) {
                 if(giveOfflinePlayer) sm.sendMessage(sender, ChatColor.RED + sPlugin.getNameWithBrackets()+" Player &6"+player+" &cnot online &7(You enabled the feature giveOffline, so the item will be given when the player reconnects)");
-                    else sm.sendMessage(sender, ChatColor.RED + sPlugin.getNameWithBrackets()+" Player not found or not online: &6" + player );
+                else sm.sendMessage(sender, ChatColor.RED + sPlugin.getNameWithBrackets()+" Player not found or not online: &6" + player );
                 return Optional.empty();
             }
             return Optional.of(Optional.of(p));

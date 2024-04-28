@@ -81,13 +81,17 @@ public class CommandsHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void PlayerJoinEvent(PlayerJoinEvent e) {
 
-      if(!SCore.plugin.isEnabled()) return;
+        //System.out.println("JOIN EVENT");
+        if (!SCore.plugin.isEnabled()) return;
 
-       Player p = e.getPlayer();
+        //System.out.println("JOIN EVENT 2");
+        Player p = e.getPlayer();
         if (getInstance().getDelayedCommandsSaved().containsKey(p.getUniqueId())) {
+            //System.out.println("JOIN EVENT 3 >>"+getInstance().getDelayedCommandsSaved().get(p.getUniqueId()).size());
             for (PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(p.getUniqueId())) {
+                //System.out.println("JOIN EVENT 4");
                 command.run();
-                SCore.plugin.getLogger().info("SCore will execute the delayed command saved for " + p.getName() + " : " + command.getBrutCommand()+ " >> delay: "+command.getDelay());
+                SCore.plugin.getLogger().info("SCore will execute the delayed command saved for " + p.getName() + " : " + command.getBrutCommand() + " >> delay: " + command.getDelay());
             }
         }
         getInstance().getDelayedCommandsSaved().remove(p.getUniqueId());
@@ -96,7 +100,7 @@ public class CommandsHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void PlayerQuitEvent(PlayerQuitEvent e) {
 
-        if(!SCore.plugin.isEnabled()) return;
+        if (!SCore.plugin.isEnabled()) return;
 
         Player p = e.getPlayer();
 
@@ -106,7 +110,7 @@ public class CommandsHandler implements Listener {
         for (PlayerRunCommand command : commands) {
             if (!command.isRunOffline()) {
                 //System.out.println("QUTI >> "+command.getBrutCommand());
-                if(!command.isClearIfDisconnect()) commandsToSave.add(command);
+                if (!command.isClearIfDisconnect()) commandsToSave.add(command);
             }
         }
 
@@ -190,6 +194,7 @@ public class CommandsHandler implements Listener {
         }
 
     }
+
     public void removeDelayedCommand(UUID uuid, @Nullable UUID receiverUUID) {
         removeDelayedCommand(uuid, receiverUUID, true);
     }
@@ -198,7 +203,7 @@ public class CommandsHandler implements Listener {
         //SsomarDev.testMsg("removeDelayedCommand >> "+uuid, true);
         if (delayedCommandsByRcUuid.containsKey(uuid)) {
             ScheduledTask task;
-            if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null && canceltask){
+            if ((task = delayedCommandsByRcUuid.get(uuid).getTask()) != null && canceltask) {
                 //SsomarDev.testMsg("removeDelayedCommand CANCEL>> "+uuid, true);
                 task.cancel();
             }
@@ -231,9 +236,9 @@ public class CommandsHandler implements Listener {
 
 
         if (receiverUUID != null) {
-           // System.out.println("REMOVE DELEYED 1 >>"+uuid);
+            // System.out.println("REMOVE DELEYED 1 >>"+uuid);
             if (delayedCommandsByReceiverUuid.containsKey(receiverUUID)) {
-               // System.out.println("REMOVE DELEYED 2 >>"+uuid);
+                // System.out.println("REMOVE DELEYED 2 >>"+uuid);
                 List<RunCommand> runCommands = delayedCommandsByReceiverUuid.get(receiverUUID);
                 toDelete = null;
                 //System.out.println("REMOVE DELEYED 3 >>"+uuid);
@@ -246,9 +251,9 @@ public class CommandsHandler implements Listener {
                 }
                 if (toDelete != null) runCommands.remove(toDelete);
 
-                if (runCommands.isEmpty()){
+                if (runCommands.isEmpty()) {
                     delayedCommandsByReceiverUuid.remove(receiverUUID);
-                  //  System.out.println("REMOVE DELEYED 4 >>"+uuid);
+                    //  System.out.println("REMOVE DELEYED 4 >>"+uuid);
                 }
             }
         }
@@ -305,9 +310,9 @@ public class CommandsHandler implements Listener {
     }
 
     public void addStopPickup(Player p, Integer delay, Material material) {
-        if(stopPickupMaterial.containsKey(p)){
+        if (stopPickupMaterial.containsKey(p)) {
             stopPickupMaterial.get(p).add(material);
-        }else{
+        } else {
             List<Material> list = new ArrayList<>();
             list.add(material);
             stopPickupMaterial.put(p, list);

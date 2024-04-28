@@ -46,6 +46,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     /* If it checks blocks tags or not, if not it checks item tags */
     private boolean forBlocks;
 
+    private boolean specificationOfAtLeastOneState;
+
     public ListDetailedMaterialFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue, boolean forBlocks) {
         super(parent, name, "List of Materials", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
         this.listOfCustomBlocksPluginSupported = new ArrayList<>();
@@ -71,6 +73,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     @Override
     public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> values = new ArrayList<>();
+        specificationOfAtLeastOneState = false;
         for (String s : entries) {
             s = StringConverter.decoloredString(s.toUpperCase());
             String materialStr = s;
@@ -93,6 +96,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             if(isMaterialTag) continue;
 
             if (s.contains(symbolStart)) {
+                specificationOfAtLeastOneState = true;
                 materialStr = s.split("\\" + symbolStart)[0];
 
                 String datas = s.split("\\" + symbolStart)[1].replace(symbolEnd, "");
@@ -338,12 +342,13 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     }
 
     public boolean verifBlock(@NotNull Block block) {
-        return verifBlock(block, null, null);
+        return verifBlock(block, null, Optional.empty());
     }
 
-    public boolean verifBlock(@NotNull Block block, @Nullable Material material, @Nullable Optional<String> statesStrOpt) {
+    public boolean verifBlock(@NotNull Block block, @Nullable Material material, @NotNull Optional<String> statesStrOpt) {
         if (material == null) material = block.getType();
-        if (statesStrOpt == null) {
+        // To only run if there is a state to check
+        if (specificationOfAtLeastOneState && !statesStrOpt.isPresent()) {
             if (!SCore.is1v12Less()) statesStrOpt = Optional.of(block.getBlockData().getAsString(true));
             else statesStrOpt = Optional.empty();
         }

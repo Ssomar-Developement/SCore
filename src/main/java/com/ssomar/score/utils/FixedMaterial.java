@@ -30,6 +30,32 @@ public class FixedMaterial {
         }
     }
 
+    public static List<Material> getMaterials(List<String> materials) {
+        List<Material> list = new java.util.ArrayList<>();
+        addMaterial(materials, list);
+        return list;
+    }
+
+    public static List<Material> getMaterialsContains(String contains) {
+        List<Material> list = new java.util.ArrayList<>();
+        for (Material material1 : Material.values()) {
+            if (material1.name().contains(contains)) {
+                list.add(material1);
+            }
+        }
+        return list;
+    }
+
+    public static List<Material> getMaterialsContains(String contains, String notContains) {
+        List<Material> list = new java.util.ArrayList<>();
+        for (Material material1 : Material.values()) {
+            if (material1.name().contains(contains) && !material1.name().contains(notContains)) {
+                list.add(material1);
+            }
+        }
+        return list;
+    }
+
     public static Material getHead() {
         return FixedMaterial.getMaterial(Arrays.asList("PLAYER_HEAD", "SKULL_ITEM"));
     }

@@ -7,31 +7,39 @@ import org.bukkit.Material;
 import java.util.*;
 
 public enum MaterialWithGroups {
-    ALL_CHESTS,
-    ALL_FURNACES,
-    ALL_PLANKS,
-    ALL_LOGS,
-    ALL_WOODS,
-    ALL_ORES,
-    ALL_WOOLS,
-    ALL_SLABS,
-    ALL_STAIRS,
-    ALL_FENCES,
-    ALL_SAPLINGS,
-    ALL_CROPS,
-    ALL_DOORS,
-    ALL_TRAPDOORS,
-    ALL_BEDS,
-    ALL_TERRACOTTA,
-    ALL_NORMAL_TERRACOTTA,
-    ALL_GLAZED_TERRACOTTA,
-    ALL_CONCRETE,
-    ALL_CONCRETE_POWDERS,
-    ALL_GLASS,
-    ALL_STAINED_GLASS,
-    ALL_SHULKER_BOXES,
-    ALL_LEAVES,
-    ALL_CARPETS;
+    ALL_CHESTS(FixedMaterial.getMaterials(Arrays.asList("CHEST", "TRAPPED_CHEST", "ENDER_CHEST"))),
+    ALL_FURNACES(FixedMaterial.getMaterials(Arrays.asList("FURNACE", "FURNACE_MINECART", "BLAST_FURNACE"))),
+    ALL_PLANKS(FixedMaterial.getMaterials(Arrays.asList("MANGROVE_PLANKS", "WARPED_PLANKS", "OAK_PLANKS", "SPRUCE_PLANKS", "BIRCH_PLANKS", "JUNGLE_PLANKS", "ACACIA_PLANKS", "DARK_OAK_PLANKS", "CRIMSON_PLANKS", "CHERRY_PLANKS"))),
+    ALL_LOGS(FixedMaterial.getMaterials(Arrays.asList("MANGROVE_LOG", "WARPED_LOG", "OAK_LOG", "SPRUCE_LOG", "BIRCH_LOG", "JUNGLE_LOG", "ACACIA_LOG", "DARK_OAK_LOG", "CRIMSON_LOG", "CHERRY_LOG"))),
+    ALL_WOODS(FixedMaterial.getMaterials(Arrays.asList("MANGROVE_WOOD", "WARPED_WOOD", "OAK_WOOD", "SPRUCE_WOOD", "BIRCH_WOOD", "JUNGLE_WOOD", "ACACIA_WOOD", "DARK_OAK_WOOD", "CRIMSON_WOOD", "CHERY_WOOD"))),
+    ALL_ORES(FixedMaterial.getMaterials(Arrays.asList("COAL_ORE", "DEEPSLATE_COAL_ORE", "IRON_ORE", "DEEPSLATE_IRON_ORE", "COPPER_ORE", "DEEPSLATE_COPPER_ORE",
+            "GOLD_ORE", "DEEPSLATE_GOLD_ORE", "REDSTONE_ORE", "DEEPSLATE_REDSTONE_ORE", "EMERALD_ORE", "DEEPSLATE_EMERALD_ORE", "LAPIS_ORE", "DEEPSLATE_LAPIS_ORE"
+            , "DIAMOND_ORE", "DEEPSLATE_DIAMOND_ORE", "NETHER_GOLD_ORE", "NETHER_QUARTZ_ORE"))),
+    ALL_WOOLS(FixedMaterial.getMaterials(Arrays.asList("WHITE_WOOL", "ORANGE_WOOL", "MAGENTA_WOOL", "LIGHT_BLUE_WOOL", "YELLOW_WOOL", "LIME_WOOL", "PINK_WOOL", "GRAY_WOOL", "LIGHT_GRAY_WOOL", "CYAN_WOOL", "PURPLE_WOOL", "BLUE_WOOL", "BROWN_WOOL", "GREEN_WOOL", "RED_WOOL", "BLACK_WOOL"))),
+    ALL_SLABS(FixedMaterial.getMaterialsContains("SLAB")),
+    ALL_STAIRS(FixedMaterial.getMaterialsContains("STAIRS")),
+    ALL_FENCES(FixedMaterial.getMaterialsContains("FENCE")),
+    ALL_SAPLINGS(FixedMaterial.getMaterialsContains("SAPLING")),
+    ALL_CROPS(FixedMaterial.getMaterials(Arrays.asList("CROPS", "NETHER_WARTS", "POTATO", "CARROT", "BEETROOT_BLOCK", "WHEAT", "CARROTS", "BEETROOTS", "POTATOES", "NETHER_WART"))),
+    ALL_DOORS(FixedMaterial.getMaterialsContains("DOOR", "TRAPDOOR")),
+    ALL_TRAPDOORS(FixedMaterial.getMaterialsContains("TRAPDOOR")),
+    ALL_BEDS(FixedMaterial.getMaterialsContains("BED")),
+    ALL_TERRACOTTA(FixedMaterial.getMaterialsContains("TERRACOTTA")),
+    ALL_NORMAL_TERRACOTTA(FixedMaterial.getMaterialsContains("TERRACOTTA", "GLAZED")),
+    ALL_GLAZED_TERRACOTTA(FixedMaterial.getMaterialsContains("GLAZED_TERRACOTTA")),
+    ALL_CONCRETE(FixedMaterial.getMaterialsContains("CONCRETE")),
+    ALL_CONCRETE_POWDERS(FixedMaterial.getMaterialsContains("CONCRETE_POWDER")),
+    ALL_GLASS(FixedMaterial.getMaterialsContains("GLASS")),
+    ALL_STAINED_GLASS(FixedMaterial.getMaterialsContains("STAINED_GLASS")),
+    ALL_SHULKER_BOXES(FixedMaterial.getMaterialsContains("SHULKER_BOX")),
+    ALL_LEAVES(FixedMaterial.getMaterialsContains("LEAVES")),
+    ALL_CARPETS(FixedMaterial.getMaterialsContains("CARPET"));
+
+    private List<Material> materials;
+
+    MaterialWithGroups(List<Material> materials) {
+        this.materials = materials;
+    }
 
     public static boolean verif(Material material, String name) {
         name = name.toUpperCase();
@@ -48,180 +56,8 @@ public enum MaterialWithGroups {
                 return false;
             }
         } else {
-            switch (materialWithGroups) {
-                case ALL_CHESTS:
-                    List<Material> chests = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("CHEST", "TRAPPED_CHEST", "ENDER_CHEST"), chests);
-                    return chests.contains(material);
-                case ALL_FURNACES:
-                    List<Material> furnaces = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("FURNACE", "FURNACE_MINECART", "BLAST_FURNACE"), furnaces);
-                    return furnaces.contains(material);
-                case ALL_PLANKS:
-                    List<Material> planks = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_PLANKS", "WARPED_PLANKS", "OAK_PLANKS", "SPRUCE_PLANKS", "BIRCH_PLANKS", "JUNGLE_PLANKS", "ACACIA_PLANKS", "DARK_OAK_PLANKS", "CRIMSON_PLANKS", "CHERRY_PLANKS"), planks);
-                    return planks.contains(material);
-                case ALL_LOGS:
-                    List<Material> logs = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_LOG", "WARPED_LOG", "OAK_LOG", "SPRUCE_LOG", "BIRCH_LOG", "JUNGLE_LOG", "ACACIA_LOG", "DARK_OAK_LOG", "CRIMSON_LOG", "CHERRY_LOG"), logs);
-                    return logs.contains(material);
-                case ALL_WOODS:
-                    List<Material> woods = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("MANGROVE_WOOD", "WARPED_WOOD", "OAK_WOOD", "SPRUCE_WOOD", "BIRCH_WOOD", "JUNGLE_WOOD", "ACACIA_WOOD", "DARK_OAK_WOOD", "CRIMSON_WOOD", "CHERY_WOOD"), woods);
-                    return woods.contains(material);
-                case ALL_ORES:
-                    List<Material> ores = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("COAL_ORE", "DEEPSLATE_COAL_ORE", "IRON_ORE", "DEEPSLATE_IRON_ORE", "COPPER_ORE", "DEEPSLATE_COPPER_ORE",
-                            "GOLD_ORE", "DEEPSLATE_GOLD_ORE", "REDSTONE_ORE", "DEEPSLATE_REDSTONE_ORE", "EMERALD_ORE", "DEEPSLATE_EMERALD_ORE", "LAPIS_ORE", "DEEPSLATE_LAPIS_ORE"
-                            , "DIAMOND_ORE", "DEEPSLATE_DIAMOND_ORE", "NETHER_GOLD_ORE", "NETHER_QUARTZ_ORE"), ores);
-                    return ores.contains(material);
-                case ALL_WOOLS:
-                    List<Material> wools = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("WHITE_WOOL", "ORANGE_WOOL", "MAGENTA_WOOL", "LIGHT_BLUE_WOOL", "YELLOW_WOOL", "LIME_WOOL", "PINK_WOOL", "GRAY_WOOL", "LIGHT_GRAY_WOOL", "CYAN_WOOL", "PURPLE_WOOL", "BLUE_WOOL", "BROWN_WOOL", "GREEN_WOOL", "RED_WOOL", "BLACK_WOOL"), wools);
-                    return wools.contains(material);
-                case ALL_SLABS:
-                    List<Material> slabs = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("SLAB")) {
-                            slabs.add(material1);
-                        }
-                    }
-                    return slabs.contains(material);
-                case ALL_STAIRS:
-                    List<Material> stairs = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("STAIRS")) {
-                            stairs.add(material1);
-                        }
-                    }
-                    return stairs.contains(material);
-                case ALL_FENCES:
-                    List<Material> fences = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("FENCE")) {
-                            fences.add(material1);
-                        }
-                    }
-                    return fences.contains(material);
-                case ALL_SAPLINGS:
-                    List<Material> saplings = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("SAPLING")) {
-                            saplings.add(material1);
-                        }
-                    }
-                    return saplings.contains(material);
-                case ALL_CROPS:
-                    List<Material> crops = new ArrayList<>();
-                    FixedMaterial.addMaterial(Arrays.asList("CROPS", "NETHER_WARTS", "POTATO", "CARROT", "BEETROOT_BLOCK", "WHEAT", "CARROTS", "BEETROOTS", "POTATOES", "NETHER_WART"), crops);
-                    return crops.contains(material);
-                case ALL_DOORS:
-                    List<Material> doors = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("DOOR") && !material1.name().contains("TRAPDOOR")) {
-                            doors.add(material1);
-                        }
-                    }
-                    return doors.contains(material);
-                case ALL_TRAPDOORS:
-                    List<Material> trapdoors = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("TRAPDOOR")) {
-                            trapdoors.add(material1);
-                        }
-                    }
-                    return trapdoors.contains(material);
-                case ALL_BEDS:
-                    List<Material> beds = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("BED")) {
-                            beds.add(material1);
-                        }
-                    }
-                    return beds.contains(material);
-                case ALL_TERRACOTTA:
-                    List<Material> terracotta = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("TERRACOTTA")) {
-                            terracotta.add(material1);
-                        }
-                    }
-                    return terracotta.contains(material);
-                case ALL_NORMAL_TERRACOTTA:
-                    List<Material> normalTerracotta = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("TERRACOTTA") && !material1.name().contains("GLAZED")) {
-                            normalTerracotta.add(material1);
-                        }
-                    }
-                    return normalTerracotta.contains(material);
-                case ALL_GLAZED_TERRACOTTA:
-                    List<Material> glazedTerracotta = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("GLAZED_TERRACOTTA")) {
-                            glazedTerracotta.add(material1);
-                        }
-                    }
-                    return glazedTerracotta.contains(material);
-                case ALL_CONCRETE:
-                    List<Material> concrete = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("CONCRETE")) {
-                            concrete.add(material1);
-                        }
-                    }
-                    return concrete.contains(material);
-                case ALL_CONCRETE_POWDERS:
-                    List<Material> concretePowders = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("CONCRETE_POWDER")) {
-                            concretePowders.add(material1);
-                        }
-                    }
-                    return concretePowders.contains(material);
-                case ALL_GLASS:
-                    List<Material> glass = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("GLASS")) {
-                            glass.add(material1);
-                        }
-                    }
-                    return glass.contains(material);
-                case ALL_STAINED_GLASS:
-                    List<Material> stainedGlass = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("STAINED_GLASS")) {
-                            stainedGlass.add(material1);
-                        }
-                    }
-                    return stainedGlass.contains(material);
-                case ALL_SHULKER_BOXES:
-                    List<Material> shulkerBoxes = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("SHULKER_BOX")) {
-                            shulkerBoxes.add(material1);
-                        }
-                    }
-                    return shulkerBoxes.contains(material);
-                case ALL_LEAVES:
-                    List<Material> leaves = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("LEAVES")) {
-                            leaves.add(material1);
-                        }
-                    }
-                    return leaves.contains(material);
-                case ALL_CARPETS:
-                    List<Material> carpets = new ArrayList<>();
-                    for (Material material1 : Material.values()) {
-                        if (material1.name().contains("CARPET")) {
-                            carpets.add(material1);
-                        }
-                    }
-                    return carpets.contains(material);
-            }
+            return materialWithGroups.materials.contains(material);
         }
-        return false;
     }
 
     public static Optional<String> getMaterialWithGroups(String name) {
@@ -248,7 +84,7 @@ public enum MaterialWithGroups {
         for (Material material : Material.values()) {
             if (
                     (!SCore.is1v12Less() && material.isAir())
-                    || (SCore.is1v12Less() && material.equals(Material.AIR))
+                            || (SCore.is1v12Less() && material.equals(Material.AIR))
             ) {
                 if (acceptAir) {
                     map.put(material.name(), material.name());
@@ -273,7 +109,7 @@ public enum MaterialWithGroups {
         if (materialWithGroups == null) {
             for (Material material : Material.values()) {
                 if (material.name().equals(name)) {
-                    if (SCore.is1v12Less() && material.equals(Material.AIR))return Material.BARRIER;
+                    if (SCore.is1v12Less() && material.equals(Material.AIR)) return Material.BARRIER;
                     else if (!SCore.is1v12Less() && material.isAir()) return Material.BARRIER;
                     else if (!material.isItem()) return Material.BARRIER;
                     return material;

@@ -1,7 +1,6 @@
 package com.ssomar.score.utils.tags;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 
@@ -263,13 +262,13 @@ public class MinecraftTags {
     }
 
     public Tag<Material> getTag(String key) {
-        SsomarDev.testMsg("Key: "+key, true);
+        //SsomarDev.testMsg("Key: "+key, true);
         Tag tag = keyedTags.get(key);
         if (tag == null) {
             for (Tag t : tags) {
                 //SsomarDev.testMsg("Tag: "+t.getKey().toString(), true);
                 if (t != null && t.getKey().toString().equals(key)) {
-                    SsomarDev.testMsg("Tag: "+t.getKey().toString(), true);
+                    //SsomarDev.testMsg("Tag: "+t.getKey().toString(), true);
                     tag = t;
                     keyedTags.put(key, tag);
                     break;
