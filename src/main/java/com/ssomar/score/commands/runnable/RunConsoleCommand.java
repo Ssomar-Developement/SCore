@@ -21,7 +21,7 @@ public class RunConsoleCommand {
         FilterManager fM = FilterManager.getInstance();
 
         if (silenceOutput){
-            fM.setLogFilterPrior();
+            //fM.setLogFilterPrior();
             //fM.showDebug();
             fM.incCurrentlyInRun();
         }

@@ -154,7 +154,7 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
         //SsomarDev.testMsg("BREAK BLOCK", true);
 
         BlockData typeData = block.getType().createBlockData();
-        Particle particle = SCore.is1v20Plus() ? Particle.BLOCK : Particle.valueOf("BLOCK_CRACK");
+        Particle particle = SCore.is1v20v5Plus() ? Particle.BLOCK : Particle.valueOf("BLOCK_CRACK");
         block.getWorld().spawnParticle(particle, block.getLocation().add(0.5,0.5,0.5), 25, 0.5, 0.5, 0.5, 1, typeData);
         block.getWorld().playSound(block.getLocation(), block.getBlockData().getSoundGroup().getBreakSound(), 1, 1);
 

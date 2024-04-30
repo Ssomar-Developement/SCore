@@ -75,7 +75,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         List<String> values = new ArrayList<>();
         specificationOfAtLeastOneState = false;
         for (String s : entries) {
-            s = StringConverter.decoloredString(s.toUpperCase());
+            s = StringConverter.decoloredString(s);
             String materialStr = s;
 
             boolean isCustomBlock = false;
@@ -87,6 +87,9 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                 }
             }
             if (isCustomBlock) continue;
+
+            // Uppercase only for material
+            materialStr = materialStr.toUpperCase();
 
             boolean isMaterialTag = false;
             if (s.startsWith(symbolStartMaterialTag)) {

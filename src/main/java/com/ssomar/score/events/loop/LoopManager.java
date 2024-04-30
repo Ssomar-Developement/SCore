@@ -1,6 +1,7 @@
 package com.ssomar.score.events.loop;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.sobject.sactivator.EventInfo;
@@ -14,7 +15,7 @@ import java.util.*;
 
 public class LoopManager {
 
-    public int DELAY;
+    public int DELAY = 5;
     private static LoopManager instance;
     @Getter
     private final Map<SActivator, Integer> loopActivators;
@@ -23,7 +24,7 @@ public class LoopManager {
 
     public LoopManager() {
         DELAY = 5;
-        if(SCore.is1v20v5Plus()) DELAY = 1;
+        if(GeneralConfig.getInstance().isLoopKillMode()) DELAY = 1;
 
         loopActivators = new HashMap<>();
         loopActivatorsToAdd = new ArrayList<>();

@@ -68,33 +68,12 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     public void reloadPlayerPlcHldr() {
         if (this.playerUUID != null) {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
-            if (offlinePlayer.getName() != null) {
-                String  playerName = offlinePlayer.getName();
-
-                String team = "NO_TEAM";
-                for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
-                    if (t.hasEntry(playerName)) {
-                        team = t.getName();
-                        break;
-                    }
-                }
-
-                /* Pre save placeholders without calcul */
-                placeholders.put("%" + particle + "%", playerName);
-                placeholders.put("%" + particle + "_name%", playerName);
-                placeholders.put("%" + particle + "_team%", team);
-            }
-
             if (PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.containsKey(playerUUID)) {
                 this.lastDamageDealt = PlaceholderLastDamageDealtEvent.getInstance().lastDamageDealt.get(playerUUID);
             } else this.lastDamageDealt = 0;
 
-
             /* Pre save placeholders without calcul */
             placeholders.put("%" + particle + "_uuid%", playerUUID.toString());
-            placeholders.put("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
-
 
             Player player;
             if((player = Bukkit.getPlayer(playerUUID)) != null){
@@ -159,6 +138,30 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     public String replacePlaceholder(String s) {
         String toReplace = s;
         if (playerUUID != null) {
+
+            /* here for perf */
+            if(s.contains("%" + particle + "_uuid_array%")) toReplace = toReplace.replace("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
+
+            /* WARNING GET NAME OF OFFLINE REQUIRE MANY PERFORMANCE THAT WHY IT IS HERE AND ONLY GET IF IT IS REALLY NEEDED */
+            if(s.contains("%" + particle + "%") || s.contains("%" + particle + "_name%") || s.contains("%" + particle + "_team%")) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+                String playerName = offlinePlayer.getName();
+                if (playerName != null) {
+                    String team = "NO_TEAM";
+                    for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
+                        if (t.hasEntry(playerName)) {
+                            team = t.getName();
+                            break;
+                        }
+                    }
+
+                    /* Pre save placeholders without calcul */
+                    toReplace = toReplace.replace("%" + particle + "%", playerName);
+                    toReplace = toReplace.replace("%" + particle + "_name%", playerName);
+                    toReplace = toReplace.replace("%" + particle + "_team%", team);
+                }
+            }
+
 
             /* I need to let that because old versions doesnt have particle */
             if (acceptWithoutParticle) {

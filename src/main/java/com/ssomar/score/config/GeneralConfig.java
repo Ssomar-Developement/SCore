@@ -5,7 +5,6 @@ import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
 import java.util.List;
 
 public class GeneralConfig extends Config {
@@ -37,6 +36,9 @@ public class GeneralConfig extends Config {
 
     @Getter
     private boolean debugCheckDamages;
+
+    @Getter
+    private boolean loopKillMode;
 
     private boolean enableDetectionEntitiesFromSpawner;
 
@@ -81,6 +83,7 @@ public class GeneralConfig extends Config {
         silenceOutputs = config.getStringList("silenceOutputs");
         debugCheckDamages = config.getBoolean("debugCheckDamages", false);
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
+        loopKillMode = config.getBoolean("loopKillMode", false);
 
     }
 

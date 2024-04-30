@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class FilterManager {
 
@@ -18,6 +19,16 @@ public class FilterManager {
         logFilter = new LogFilter();
         Logger logger = ((Logger) LogManager.getRootLogger());
         logger.addFilter(logFilter);
+
+        BukkitRunnable r = new BukkitRunnable() {
+            @Override
+            public void run() {
+                setLogFilterPrior();
+            }
+        };
+        //r.runTaskLater(SCore.plugin, 100);
+        SCore.schedulerHook.runTask(r, 100);
+
     }
 
     public void reload(){
