@@ -194,7 +194,7 @@ public class SafeBreak {
             Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
                 //SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
-                eBPOpt.get().breakBlock(null, drop, ExecutableBlockPlaced.BreakMethod.CUSTOM);
+                eBPOpt.get().breakBlock(null, drop, null, ExecutableBlockPlaced.BreakMethod.CUSTOM);
                 return true;
             }
         }

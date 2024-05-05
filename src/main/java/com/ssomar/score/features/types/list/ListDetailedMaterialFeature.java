@@ -11,6 +11,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.EditorCreator;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.ItemsAdderAPI;
 import com.ssomar.score.utils.emums.MaterialWithGroups;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -64,7 +65,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         this.listOfCustomBlocksPluginSupported = new ArrayList<>();
         if (SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
         if (SCore.hasExecutableItems) listOfCustomBlocksPluginSupported.add("EXECUTABLEITEMS");
-        if (SCore.hasExecutableBlocks) listOfCustomBlocksPluginSupported.add("EXECUTABLEBLOCKS");
+        if (Dependency.EXECUTABLE_BLOCKS.isInstalled()) listOfCustomBlocksPluginSupported.add("EXECUTABLEBLOCKS");
         //if(SCore.hasOraxen) listOfCustomBlocksPluginSupported.add("ORAXEN");
         this.forBlocks = forBlocks;
         reset();
@@ -81,6 +82,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             boolean isCustomBlock = false;
             for (String customPlugin : listOfCustomBlocksPluginSupported) {
                 if (materialStr.startsWith(customPlugin)) {
+                    //SsomarDev.testMsg(">> loadValues: " + s, DEBUG);
                     values.add(s);
                     isCustomBlock = true;
                     break;
@@ -88,7 +90,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
             }
             if (isCustomBlock) continue;
 
-            // Uppercase only for material
+            // Uppercase only for material & tags
             materialStr = materialStr.toUpperCase();
 
             boolean isMaterialTag = false;
@@ -138,7 +140,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     public Map<String, List<Map<String, String>>> extractConditions(List<String> values) {
         Map<String, List<Map<String, String>>> conditions = new HashMap<>();
         for (String s : values) {
-            SsomarDev.testMsg(">> extractConditions: " + s, DEBUG);
+            //SsomarDev.testMsg(">> extractConditions: " + s, DEBUG);
             String materialStr = s;
 
             boolean isCustomBlock = false;

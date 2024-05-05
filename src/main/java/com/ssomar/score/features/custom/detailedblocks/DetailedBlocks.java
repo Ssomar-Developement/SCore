@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.detailedblocks;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
@@ -41,6 +42,8 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     private boolean disableMessageIfNotValid = false;
 
     private boolean notSaveIfEqualsToDefaultValue;
+
+    private final boolean DEBUG = false;
 
     public DetailedBlocks(FeatureParentInterface parent, String name, String editorName) {
         super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
@@ -96,12 +99,17 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     }
 
     public boolean isValid(@NotNull Block block, Optional<Player> playerOpt, Event event, StringPlaceholder sp, @Nullable Material material, @NotNull Optional<String> statesStrOpt) {
+
+        SsomarDev.testMsg("DetailedBlocks 1", DEBUG);
         if(blocks.getValues().isEmpty() && blocks.getBlacklistedValues().isEmpty()) return true;
 
+        SsomarDev.testMsg("DetailedBlocks 2", DEBUG);
         if(blocks.verifBlock(block, material, statesStrOpt)) {
+            SsomarDev.testMsg("DetailedBlocks 3 OK", DEBUG);
             return true;
         }
         else {
+            SsomarDev.testMsg("DetailedBlocks 3 K0", DEBUG);
             if (event != null && cancelEventIfNotValid.getValue() && event instanceof Cancellable) {
                 ((Cancellable) event).setCancelled(true);
             }
