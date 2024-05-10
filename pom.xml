@@ -147,14 +147,11 @@
                                 <goals>
                                     <goal>shade</goal>
                                 </goals>
-                                <!--_AUTO_UPDATE_START_COMMENT_-->
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
                                     <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
                                 </configuration>
-                                <!--_AUTO_UPDATE_END_COMMENT_-->
                             </execution>
-                            <!--_AUTO_UPDATE_START_COMMENT_-->
                             <execution>
                                 <id>build_1v8</id>
                                 <phase>package</phase>
@@ -376,12 +373,10 @@
                                 <goals>
                                     <goal>shade</goal>
                                 </goals>
-                                <!--_AUTO_UPDATE_START_COMMENT_-->
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
                                     <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
                                 </configuration>
-                                <!--_AUTO_UPDATE_END_COMMENT_-->
                             </execution>
                         </executions>
                     </plugin>
