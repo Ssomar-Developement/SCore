@@ -388,7 +388,6 @@
                 </plugins>
             </build>
         </profile>
-        <!--_AUTO_UPDATE_END_COMMENT_-->
     </profiles>
 
     <repositories>
