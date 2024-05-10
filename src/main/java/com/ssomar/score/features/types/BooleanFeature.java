@@ -131,8 +131,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if(value.isPresent())
-         gui.updateBoolean(getEditorName(), value.get());
+        if(value.isPresent()) gui.updateBoolean(getEditorName(), value.get());
         else gui.updateCurrently(getEditorName(), placeholder.get());
     }
 

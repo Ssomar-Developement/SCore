@@ -23,6 +23,10 @@ public class AllWorldManager {
             if(world != null) return Optional.of(world);
         }
 
+        /* for(World w : Bukkit.getWorlds()){
+            SsomarDev.testMsg("WORLD: "+w.getName()+" worldstr <"+worldStr, true);
+        }*/
+
         return Optional.ofNullable(Bukkit.getServer().getWorld(worldStr));
     }
 

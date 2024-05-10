@@ -64,10 +64,12 @@ public class RunConsoleCommand {
                 Optional<World> worldOptional = AllWorldManager.getWorld(worldName);
                 World world = null;
                 if(worldOptional.isPresent()) world = worldOptional.get();
+                //SsomarDev.testMsg("world: "+world, true);
                 if (world != null) {
                     List<Entity> entities = world.getEntities();
                     if(entities.size() > 0) {
                         Entity entity = entities.get(0);
+                        //SsomarDev.testMsg("entity: "+entity, true);
                         command = command.replaceAll("in <<" + worldName + ">>", "at " + entity.getUniqueId());
                     }
                     else return "";

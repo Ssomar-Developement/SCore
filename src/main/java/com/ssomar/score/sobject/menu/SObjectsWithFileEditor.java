@@ -112,6 +112,7 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
                                 descArray[j] = desc.get(j);
                             }
                         }
+
                         createItem(itemS, 1, i, CREATION_ID + " &e&o" + id, false, false, descArray);
                     } else {
                         if (getSPlugin().isLotOfWork())

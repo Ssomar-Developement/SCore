@@ -28,10 +28,12 @@ public abstract class Config {
     public void setup(Plugin plugin) {
         if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdir();
         this.pdfile = new File(plugin.getDataFolder(), this.fileName);
+        //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> File: " + this.pdfile.getAbsolutePath());
         if (!this.pdfile.exists()) {
             try {
                 this.pdfile.getParentFile().mkdir();
                 this.pdfile.createNewFile();
+                //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE File: " + this.pdfile.getAbsolutePath());
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(plugin.getResource(this.fileName)));
                 String line;
@@ -40,6 +42,7 @@ public abstract class Config {
 
                 try {
                     while ((line = br.readLine()) != null) {
+                        //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> WRITE File: " +line);
                         out.write(line);
                         out.write("\n");
                     }
@@ -112,6 +115,18 @@ public abstract class Config {
     public int getIntSetting(String setting, int defaultValue) {
         if (!loadedSettings.containsKey(setting)) return defaultValue;
         return (int) loadedSettings.get(setting);
+    }
+
+    public double loadDoubleSetting(String setting, double defaultValue) {
+        double value = config.getDouble(setting, defaultValue);
+        loadedSettings.put(setting, value);
+        //System.out.println("Setting: " + setting + " Value: " + value);
+        return value;
+    }
+
+    public double getDoubleSetting(String setting, double defaultValue) {
+        if (!loadedSettings.containsKey(setting)) return defaultValue;
+        return (double) loadedSettings.get(setting);
     }
 }
 

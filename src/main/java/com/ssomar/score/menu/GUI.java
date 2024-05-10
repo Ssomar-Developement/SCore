@@ -9,7 +9,6 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,7 +20,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public abstract class GUI implements IGUI {
 
@@ -227,7 +225,6 @@ public abstract class GUI implements IGUI {
         ItemMeta meta = itemS.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-
         if (glow || haveEnchant) {
             meta = MakeItemGlow.makeGlow(meta);
         }
@@ -236,11 +233,13 @@ public abstract class GUI implements IGUI {
         ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
         meta.addItemFlags(additionnalFlag);
         meta.setDisplayName(StringConverter.coloredString(displayName));
+        //SsomarDev.testMsg("meta>>>>>>>>>: "+meta.getDisplayName(), true);
 
         for (String s : loreString) lore.add(StringConverter.coloredString(s));
 
         meta.setLore(lore);
         itemS.setItemMeta(meta);
+        //SsomarDev.testMsg("meta>>>>>>>>>: "+itemS.getItemMeta().getDisplayName(), true);
         inv.setItem(invSlot, itemS);
 
     }
@@ -332,7 +331,7 @@ public abstract class GUI implements IGUI {
         return null;
     }
 
-    public void updateCurrently(ItemStack item, String update, boolean withColor) {
+    public void updateCurrently(ItemStack item, String update, boolean withColor, String editorName) {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         int cpt = 0;
@@ -344,10 +343,16 @@ public abstract class GUI implements IGUI {
         else lore.set(cpt, StringConverter.coloredString("&7Currently: &e" + update));
         meta.setLore(lore);
         item.setItemMeta(meta);
+
+        UpdateItemInGUI.updateItemInGUI(this, editorName, meta.getDisplayName(), lore, item.getType());
+    }
+
+    public void updateCurrently(ItemStack item, String update, String editorName) {
+        updateCurrently(item, update, false, editorName);
     }
 
     public void updateCurrently(ItemStack item, String update) {
-        updateCurrently(item, update, false);
+        updateCurrently(item, update, false, "");
     }
 
     public String getCurrently(String itemName) {
@@ -359,17 +364,17 @@ public abstract class GUI implements IGUI {
     }
 
     public void updateCurrently(String itemName, String update) {
-        this.updateCurrently(this.getByName(itemName), update);
+        this.updateCurrently(this.getByName(itemName), update, itemName);
     }
 
     public void updateCurrently(String itemName, String update, Boolean withColor) {
-        this.updateCurrently(this.getByName(itemName), update, withColor);
+        this.updateCurrently(this.getByName(itemName), update, withColor, itemName);
     }
 
     public void updateCondition(String name, String condition) {
         ItemStack item = this.getByName(name);
-        if (condition.equals("")) this.updateCurrently(item, "&cNO CONDITION");
-        else this.updateCurrently(item, condition);
+        if (condition.equals("")) this.updateCurrently(item, "&cNO CONDITION", name);
+        else this.updateCurrently(item, condition, name);
     }
 
     public String getCondition(String name) {
@@ -458,16 +463,10 @@ public abstract class GUI implements IGUI {
         ItemStack item = this.getByName(itemName);
         if (value) {
             MakeItemGlow.makeGlow(item);
-            updateCurrently(item, "&aTrue");
+            updateCurrently(item, "&aTrue", itemName);
         } else {
-            ItemMeta meta = item.getItemMeta();
-            if (meta.hasEnchants()) {
-                for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-                    meta.removeEnchant(entry.getKey());
-                }
-            }
-            item.setItemMeta(meta);
-            updateCurrently(item, "&cFalse");
+            MakeItemGlow.makeUnGlow(item);
+            updateCurrently(item, "&cFalse", itemName);
         }
     }
 
@@ -483,7 +482,7 @@ public abstract class GUI implements IGUI {
 
     public void updateInt(String itemName, int value) {
         ItemStack item = this.getByName(itemName);
-        updateCurrently(item, value + "");
+        updateCurrently(item, value + "", itemName);
     }
 
     public int getInt(String itemName) {
@@ -494,7 +493,7 @@ public abstract class GUI implements IGUI {
 
     public void updateDouble(String itemName, double value) {
         ItemStack item = this.getByName(itemName);
-        updateCurrently(item, value + "");
+        updateCurrently(item, value + "", itemName);
     }
 
     public double getDouble(String itemName) {

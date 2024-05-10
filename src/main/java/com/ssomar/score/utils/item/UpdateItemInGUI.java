@@ -13,6 +13,7 @@ public class UpdateItemInGUI {
         /* Bug item no update idk why */
         ItemStack clone = new ItemStack(material);
         int slot = gui.getSlotByName(editorName);
+        if(slot == -1) return;
         gui.getInv().setItem(slot, null);
         ItemMeta meta2 = clone.getItemMeta();
         meta2.setDisplayName(name);
