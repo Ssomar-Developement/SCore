@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
@@ -64,12 +65,12 @@ public class RunConsoleCommand {
                 Optional<World> worldOptional = AllWorldManager.getWorld(worldName);
                 World world = null;
                 if(worldOptional.isPresent()) world = worldOptional.get();
-                //SsomarDev.testMsg("world: "+world, true);
+                SsomarDev.testMsg("world: "+world, true);
                 if (world != null) {
                     List<Entity> entities = world.getEntities();
                     if(entities.size() > 0) {
                         Entity entity = entities.get(0);
-                        //SsomarDev.testMsg("entity: "+entity, true);
+                        SsomarDev.testMsg("entity: "+entity, true);
                         command = command.replaceAll("in <<" + worldName + ">>", "at " + entity.getUniqueId());
                     }
                     else return "";

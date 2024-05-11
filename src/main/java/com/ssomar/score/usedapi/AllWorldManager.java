@@ -1,6 +1,7 @@
 package com.ssomar.score.usedapi;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -23,9 +24,9 @@ public class AllWorldManager {
             if(world != null) return Optional.of(world);
         }
 
-        /* for(World w : Bukkit.getWorlds()){
-            SsomarDev.testMsg("WORLD: "+w.getName()+" worldstr <"+worldStr, true);
-        }*/
+        for(World w : Bukkit.getWorlds()){
+            SsomarDev.testMsg("WORLD: "+w.getName()+" worldstr >>>>>>>>>>>>>>>>>>"+worldStr+"<<<<<<<<<<<<<<<<<<", true);
+        }
 
         return Optional.ofNullable(Bukkit.getServer().getWorld(worldStr));
     }
