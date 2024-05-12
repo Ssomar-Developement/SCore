@@ -70,7 +70,8 @@ public class GiveCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z exten
 
         give(playerOpt.get(), objectOpt.get(), amountOpt.get(), settings, worldOpt.get());
 
-        getSm().sendMessage(sender, getSPlugin().getNameDesign() + " &a" + getSObjectManager().getObjectName() + " &e" + objectId + " &agiven to &e" + player + " &a(&7" + amount + "&a)");
+        if (!getSPlugin().getPluginConfig().getBooleanSetting("silentGive"))
+            getSm().sendMessage(sender, getSPlugin().getNameDesign() + " &a" + getSObjectManager().getObjectName() + " &e" + objectId + " &agiven to &e" + player + " &a(&7" + amount + "&a)");
     }
 
     public static void runOfflineCommand(String player, boolean giveOfflinePlayer, String commandToRunIfPlayerIsOffline) {
@@ -163,7 +164,8 @@ public class GiveCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z exten
                 AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, inventory.getItem(slotOpt.get()), slotOpt.get());
                 Bukkit.getPluginManager().callEvent(eventToCall);
             }
-            getSm().sendMessage(sender, getSPlugin().getNameDesign() + " &a" + getSObjectManager().getObjectName() + " &e" + executableItem + " &agiven to &e" + player + " &a(&7" + amount + "&a) &ain slot &e" + slot);
+            if (!getSPlugin().getPluginConfig().getBooleanSetting("silentGive"))
+                getSm().sendMessage(sender, getSPlugin().getNameDesign() + " &a" + getSObjectManager().getObjectName() + " &e" + executableItem + " &agiven to &e" + player + " &a(&7" + amount + "&a) &ain slot &e" + slot);
         }
     }
 

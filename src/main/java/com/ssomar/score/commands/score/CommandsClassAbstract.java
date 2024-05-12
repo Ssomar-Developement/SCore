@@ -56,6 +56,7 @@ public abstract class CommandsClassAbstract<T extends SPlugin> implements Comman
             String commandName = fullArgs[0].toLowerCase();
             if (commands.contains(commandName)) {
 
+                //SsomarDev.testMsg("Command: "+commandName+" perm:"+sPlugin.getShortName().toLowerCase() + ".cmd." + commandName, true);
                 String[] args;
                 String typedCommand = command.getName()+" ";
                 if (fullArgs.length > 1) {
@@ -69,20 +70,29 @@ public abstract class CommandsClassAbstract<T extends SPlugin> implements Comman
                 Player player = null;
                 if ((sender instanceof Player)) {
                     player = (Player) sender;
-                    if (!(player.hasPermission(sPlugin.getShortName().toLowerCase() + ".cmd." + command) || player.hasPermission(sPlugin.getShortName().toLowerCase() + ".cmds") || player.hasPermission(sPlugin.getShortName().toLowerCase() + ".*"))) {
-                        player.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameWithBrackets() + " &cYou don't have the permission to execute this command: &6" + sPlugin.getShortName().toLowerCase() + ".cmd." + command));
+                    if (!(player.hasPermission(sPlugin.getShortName().toLowerCase() + ".cmd." + commandName) || player.hasPermission(sPlugin.getShortName().toLowerCase() + ".cmds") || player.hasPermission(sPlugin.getShortName().toLowerCase() + ".*"))) {
+                        player.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameWithBrackets() + " &cYou don't have the permission to execute this command: &6" + sPlugin.getShortName().toLowerCase() + ".cmd." + commandName));
                         return true;
                     }
                 }
 
                 this.runCommand(sender, sender instanceof Player ? (Player) sender : null, commandName, args, typedCommand);
             } else {
-                sender.sendMessage(StringConverter.coloredString("&c" + sPlugin.getNameWithBrackets() + " &cInvalid argument! Usage: /" + sPlugin.getShortName().toLowerCase() + " &8[ &7" + StringJoiner.join(commands, " &c| &7") + " &8]"));
+                sender.sendMessage(StringConverter.coloredString("&c" + sPlugin.getNameWithBrackets() + " &cInvalid argument! Usage: /" + sPlugin.getShortName().toLowerCase() + " &8[ &7" + StringJoiner.join(getPermittedCommands(sender), " &c| &7") + " &8]"));
             }
         } else
-            sender.sendMessage(StringConverter.coloredString("&c" + sPlugin.getNameWithBrackets() + " &cInvalid argument! Usage: /" + sPlugin.getShortName().toLowerCase() + " &8[ &7" + StringJoiner.join(commands, " &c| &7") + " &8]"));
+            sender.sendMessage(StringConverter.coloredString("&c" + sPlugin.getNameWithBrackets() + " &cInvalid argument! Usage: /" + sPlugin.getShortName().toLowerCase() + " &8[ &7" + StringJoiner.join(getPermittedCommands(sender), " &c| &7") + " &8]"));
 
         return true;
+    }
+
+    public List<String> getPermittedCommands(CommandSender sender) {
+        List<String> permittedCommands = new ArrayList<>();
+        for (String cmd : commands) {
+            if (sender.hasPermission(sPlugin.getShortName().toLowerCase() + ".cmd." + cmd) || sender.hasPermission(sPlugin.getShortName().toLowerCase() + ".cmds") || sender.hasPermission(sPlugin.getShortName().toLowerCase() + ".*"))
+                permittedCommands.add(cmd);
+        }
+        return permittedCommands;
     }
 
     /**
@@ -100,16 +110,10 @@ public abstract class CommandsClassAbstract<T extends SPlugin> implements Comman
             List<String> arguments = new ArrayList<>();
 
             if (args.length == 1) {
-               arguments.addAll(commands);
+                arguments = getPermittedCommands(sender);
 
-                final List<String> argumentsPerm = new ArrayList<>();
-
-                for (final String str : arguments)
-                    if (sender.hasPermission(sPlugin.getShortName().toLowerCase()+".cmd." + command) || sender.hasPermission(sPlugin.getShortName().toLowerCase()+".cmds") || sender.hasPermission(sPlugin.getShortName().toLowerCase()+".*"))
-                        argumentsPerm.add(str);
-
-                Collections.sort(argumentsPerm);
-                return argumentsPerm.stream()
+                Collections.sort(arguments);
+                return arguments.stream()
                         .filter(element -> element.toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
                         .collect(Collectors.toList());
             }

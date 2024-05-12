@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
@@ -73,6 +75,10 @@ public class EventInfo {
     private Optional<DetailedInteraction> detailedInteraction;
 
     private Optional<EntityDamageEvent.DamageCause> damageCause;
+
+    private Optional<InventoryType> inventoryType;
+
+    private Optional<Inventory> inventory;
 
     /* Projectile velocity */
     private Optional<Vector> velocity;

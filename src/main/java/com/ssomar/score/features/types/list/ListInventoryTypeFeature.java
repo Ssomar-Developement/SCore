@@ -10,40 +10,40 @@ import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryType;
 
 import java.util.*;
 
 @Getter
 @Setter
-public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEvent.DamageCause, ListDamageCauseFeature> {
+public class ListInventoryTypeFeature extends ListFeatureAbstract<InventoryType, ListInventoryTypeFeature> {
 
-    public ListDamageCauseFeature(FeatureParentInterface parent, String name, List<EntityDamageEvent.DamageCause> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, "List of DamageCauses", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListInventoryTypeFeature(FeatureParentInterface parent, String name, List<InventoryType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, name, "List of InventoryType", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
     @Override
-    public List<EntityDamageEvent.DamageCause> loadValues(List<String> entries, List<String> errors) {
-        List<EntityDamageEvent.DamageCause> value = new ArrayList<>();
+    public List<InventoryType> loadValues(List<String> entries, List<String> errors) {
+        List<InventoryType> value = new ArrayList<>();
         for (String s : entries) {
             s = StringConverter.decoloredString(s.toUpperCase());
             try {
-                EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(s);
+                InventoryType mat = InventoryType.valueOf(s);
                 value.add(mat);
             } catch (Exception e) {
-                errors.add("&cERROR, Couldn't load the DamageCause value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> DamageCauses available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html");
+                errors.add("&cERROR, Couldn't load the InventoryType value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> InventoryType available: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryType.html");
             }
         }
         return value;
     }
 
     @Override
-    public String transfromToString(EntityDamageEvent.DamageCause value) {
+    public String transfromToString(InventoryType value) {
         return value.name();
     }
 
-    public boolean verifCause(EntityDamageEvent.DamageCause cause) {
+    public boolean verifInventoryType(InventoryType cause) {
         if (cause != null) {
             if (getValues().isEmpty()) return true;
             return getValues().contains(cause);
@@ -52,8 +52,8 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     }
 
     @Override
-    public ListDamageCauseFeature clone(FeatureParentInterface newParent) {
-        ListDamageCauseFeature clone = new ListDamageCauseFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+    public ListInventoryTypeFeature clone(FeatureParentInterface newParent) {
+        ListInventoryTypeFeature clone = new ListInventoryTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
@@ -63,11 +63,11 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     public Optional<String> verifyMessage(String message) {
         message = StringConverter.decoloredString(message);
         try {
-            EntityDamageEvent.DamageCause mat = EntityDamageEvent.DamageCause.valueOf(message);
+            InventoryType mat = InventoryType.valueOf(message);
             getValues().add(mat);
             return Optional.empty();
         } catch (Exception e) {
-            return Optional.of("&4&l[ERROR] &cThe message you entered is not a DamageCause &6>> DamageCause available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html");
+            return Optional.of("&4&l[ERROR] &cThe message you entered is not an InventoryType &6>> InventoryType available: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryType.html");
         }
     }
 
@@ -79,7 +79,7 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
     @Override
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
-        for (EntityDamageEvent.DamageCause mat : EntityDamageEvent.DamageCause.values()) {
+        for (InventoryType mat : InventoryType.values()) {
             map.put(mat.toString(), new Suggestion(mat + "", "&6[" + "&e" + mat + "&6]", "&7Add &e" + mat));
         }
         return new ArrayList<>(map.values());
