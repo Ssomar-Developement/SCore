@@ -50,7 +50,7 @@ public class Explode extends BlockCommand {
         }
 
         block.breakNaturally();
-        EntityType type = SCore.is1v20v5Plus() ? EntityType.TNT : EntityType.fromName("PRIMED_TNT");
+        EntityType type = SCore.is1v20v5Plus() ? EntityType.TNT : EntityType.valueOf("PRIMED_TNT");
         block.getWorld().spawnEntity(block.getLocation(), type);
     }
 
