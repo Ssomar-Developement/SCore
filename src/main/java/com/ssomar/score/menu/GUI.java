@@ -246,13 +246,15 @@ public abstract class GUI implements IGUI {
 
     public void createBackGroundItem(int slot) {
         if(test && (size < 54 || slot != 27)) return;
-        ItemStack item = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1);
-        if(SCore.is1v20v5Plus()){
-            ItemMeta meta = item.getItemMeta();
-            meta.setHideTooltip(true);
-            item.setItemMeta(meta);
+        if (!SCore.is1v13Less()){
+            ItemStack item = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1);
+            if(SCore.is1v20v5Plus()){
+                ItemMeta meta = item.getItemMeta();
+                meta.setHideTooltip(true);
+                item.setItemMeta(meta);
+            }
+            createItem(item, 1, slot, "&7", true, false);
         }
-        if (!SCore.is1v13Less()) createItem(item, 1, slot, "&7", true, false);
         else removeItem(slot);
     }
 

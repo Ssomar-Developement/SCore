@@ -13,6 +13,7 @@ import dev.rosewood.roseloot.loot.context.LootContextParams;
 import dev.rosewood.roseloot.loot.table.LootTableTypes;
 import dev.rosewood.roseloot.manager.LootTableManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -202,6 +203,10 @@ public class SafeBreak {
     }
 
     public static boolean verifSafeBreak(@NotNull final UUID playerUUID, @NotNull Block block) {
+        return verifSafeBreak(playerUUID, block.getLocation());
+    }
+
+    public static boolean verifSafeBreak(@NotNull final UUID playerUUID, @NotNull Location location) {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
@@ -210,41 +215,41 @@ public class SafeBreak {
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
 
         if (SCore.hasGriefPrevention)
-            if (!GriefPreventionAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
+            if (!GriefPreventionAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
 
         // SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2");
 
         if (SCore.hasIridiumSkyblock)
-            if (!IridiumSkyblockTool.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
+            if (!IridiumSkyblockTool.playerCanBreakIslandBlock(playerUUID, location)) return false;
 
         if (SCore.hasSuperiorSkyblock2)
-            if (!SuperiorSkyblockTool.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
+            if (!SuperiorSkyblockTool.playerCanBreakIslandBlock(playerUUID, location)) return false;
 
         if (SCore.hasBentoBox)
-            if (!BentoBoxAPI.playerCanBreakIslandBlock(playerUUID, block.getLocation())) return false;
+            if (!BentoBoxAPI.playerCanBreakIslandBlock(playerUUID, location)) return false;
 
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 3");
 
         if (SCore.hasLands)
-            if (!new LandsIntegrationAPI(SCore.plugin).playerCanBreakClaimBlock(playerUUID, block.getLocation()))
+            if (!new LandsIntegrationAPI(SCore.plugin).playerCanBreakClaimBlock(playerUUID, location))
                 return false;
 
         if(SCore.hasFactionsUUID)
-            if(!new FactionsUUIDAPI().playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
+            if(!new FactionsUUIDAPI().playerCanBreakClaimBlock(playerUUID, location)) return false;
 
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 4");
 
         if (SCore.hasWorldGuard)
-            if (!WorldGuardAPI.playerCanBreakInRegion(playerUUID, block.getLocation())) return false;
+            if (!WorldGuardAPI.playerCanBreakInRegion(playerUUID, location)) return false;
 
         if (SCore.hasResidence)
-            if (!ResidenceAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
+            if (!ResidenceAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
 
         if(SCore.hasTowny)
-            if(!TownyToolAPI.playerCanBreakBlock(playerUUID, block.getLocation())) return false;
+            if(!TownyToolAPI.playerCanBreakBlock(playerUUID, location)) return false;
 
         if(SCore.hasProtectionStones)
-            if(!ProtectionStonesAPI.playerCanBreakClaimBlock(playerUUID, block.getLocation())) return false;
+            if(!ProtectionStonesAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
 
         return true;
     }

@@ -68,9 +68,9 @@ public class ShapesManager {
 
     public Optional<Shape> getShape(String shapeName) {
        // SsomarDev.testMsg("Looking for shape: " + shapeName, true);
-        for(Shape shape : shapes.values()){
-            //SsomarDev.testMsg("Shape available: " + shape.getName(), true);
-        }
+        /*for(Shape shape : shapes.values()){
+            SsomarDev.testMsg("Shape available: " + shape.getName(), true);
+        }*/
         Shape shape = shapes.get(shapeName);
         return Optional.ofNullable(shape);
     }

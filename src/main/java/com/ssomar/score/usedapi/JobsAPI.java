@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class JobsAPI implements Listener {
 
-    private static final Boolean DEBUG = true;
+    private static final Boolean DEBUG = false;
 
     @EventHandler
     public void onJobsPayment(JobsPaymentEvent event) {

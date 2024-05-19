@@ -79,6 +79,7 @@ public class PlayerRunCommand extends RunCommand {
     public void runCommand(SCommand command, List<String> args) {
         PlayerSCommand pCommand = (PlayerSCommand) command;
 
+        //SsomarDev.testMsg("PRE RUN COMMAND BEFORE CHECK LAUNCHER", true);
         @Nullable Player launcher = null;
         if(launcherUUID != null) launcher = Bukkit.getPlayer(launcherUUID);
 

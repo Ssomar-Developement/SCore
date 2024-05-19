@@ -42,11 +42,11 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                     double distance = Double.parseDouble(args.get(0));
 
                     int startForCommand = 1;
-                    boolean mute = false;
+                    boolean mute = true;
                     if (!forceMute) {
                         if (args.get(1).equalsIgnoreCase("true")) {
                             startForCommand = 2;
-                            mute = true;
+                            mute = false;
                         } else if (args.get(1).equalsIgnoreCase("false")) {
                             startForCommand = 2;
                         }

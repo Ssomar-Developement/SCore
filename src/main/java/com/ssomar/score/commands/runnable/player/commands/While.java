@@ -22,6 +22,8 @@ import java.util.*;
 
 public class While extends PlayerCommand {
 
+    private static final boolean DEBUG = false;
+
     private static While instance;
 
     private final Map<UUID, List<BukkitRunnable>> whileTasks;
@@ -32,6 +34,7 @@ public class While extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+        SsomarDev.testMsg("WHILE STARTED", DEBUG);
 
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
         conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
@@ -61,12 +64,12 @@ public class While extends PlayerCommand {
             cmdsDef += cmd + " ";
         }
         cmdsDef = cmdsDef.trim();
-        SsomarDev.testMsg("WHILE CMD DEF: " + cmdsDef, true);
+        SsomarDev.testMsg("WHILE CMD DEF: " + cmdsDef, DEBUG);
         String[] cmdsArray = cmdsDef.split("<\\+>");
         List<String> cmds = new ArrayList<>();
         for (String cmd : cmdsArray) {
             cmds.add(cmd);
-            SsomarDev.testMsg("WHILE CMD: " + cmd, true);
+            SsomarDev.testMsg("WHILE CMD: " + cmd, DEBUG);
         }
 
         BukkitRunnable runnable3 = new BukkitRunnable() {
@@ -79,7 +82,7 @@ public class While extends PlayerCommand {
                     CommandsExecutor.runCommands(builder);
                 }
                 else{
-                    SsomarDev.testMsg("WHILE STOPPED", true);
+                    SsomarDev.testMsg("WHILE STOPPED", DEBUG);
                     this.cancel();
                 }
             }

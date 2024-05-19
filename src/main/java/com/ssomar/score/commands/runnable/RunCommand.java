@@ -68,6 +68,7 @@ public abstract class RunCommand implements Serializable {
     }
 
     public void run() {
+        //SsomarDev.testMsg("RUN COMMAND: >>>" + getBrutCommand()+" DELAY "+delay, true);
         if (delay == 0) {
             runTime = 0;
             this.runGetManager();
@@ -130,6 +131,7 @@ public abstract class RunCommand implements Serializable {
                     }
                 }
 
+                //SsomarDev.testMsg("Command: "+finalCommand, true);
 
                 Optional<SCommand> commandOpt = manager.getCommand(finalCommand);
                 if (commandOpt.isPresent()) {
@@ -139,6 +141,7 @@ public abstract class RunCommand implements Serializable {
 
                     Optional<String> error = command.verify(args, true);
                     if (!error.isPresent()) {
+                        //SsomarDev.testMsg("Command: run: "+finalCommand, true);
                         runCommand(command, args);
                     } else aInfo.getDebugers().sendDebug(error.get());
                 } else {
