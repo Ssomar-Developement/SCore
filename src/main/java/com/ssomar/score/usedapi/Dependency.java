@@ -66,6 +66,8 @@ public enum Dependency {
 
     CMI("CMI"),
 
+    AURA_SKILLS("AuraSkills"),
+
     AURELIUM_SKILLS("AureliumSkills"),
 
     ITEMS_ADDER("ItemsAdder"),

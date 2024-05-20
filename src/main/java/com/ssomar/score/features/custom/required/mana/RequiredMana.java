@@ -10,7 +10,9 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.AuraSkillsAPI;
 import com.ssomar.score.usedapi.AureliumSkillsAPI;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.MMOCoreAPI;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
@@ -84,6 +86,17 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
                     return false;
                 }
             }
+            else if(Dependency.AURA_SKILLS.isInstalled()) {
+                if (!AuraSkillsAPI.checkMana(player, mana.getValue().get())) {
+                    if (errorMessage.getValue().isPresent()) {
+                        SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    }
+                    if (cancelEventIfError.getValue() && event instanceof Cancellable) {
+                        ((Cancellable) event).setCancelled(true);
+                    }
+                    return false;
+                }
+            }
             else if(SCore.hasMMOCore) {
                 if (!MMOCoreAPI.checkMana(player, mana.getValue().get())) {
                     if (errorMessage.getValue().isPresent()) {
@@ -101,8 +114,9 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
 
     @Override
     public void take(Player player) {
-        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore)) {
+        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || Dependency.AURA_SKILLS.isInstalled() || SCore.hasMMOCore)) {
             if(SCore.hasAureliumSkills) AureliumSkillsAPI.takeMana(player, mana.getValue().get());
+            else if(Dependency.AURA_SKILLS.isInstalled()) AuraSkillsAPI.takeMana(player, mana.getValue().get());
             else if(SCore.hasMMOCore) MMOCoreAPI.takeMana(player, mana.getValue().get());
         }
     }
