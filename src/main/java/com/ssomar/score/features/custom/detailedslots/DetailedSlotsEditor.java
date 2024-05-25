@@ -153,6 +153,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void changeSlotBoots() {
         ItemStack item = this.getByName("Slot: boots");
+        //SsomarDev.testMsg("Item: " + item, true);
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(36));
         } else detailedSlots.getSlots().add(36);

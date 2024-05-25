@@ -505,7 +505,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.14.0</version>
+            <version>4.17.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -614,6 +614,14 @@
             <version>4.2.3</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/WorldGuardExtraFlags.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>MythicLib</artifactId>
+            <version>1.8.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/MythicLib-1.6.1.jar</systemPath>
         </dependency>
 
         <dependency>

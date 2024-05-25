@@ -346,7 +346,7 @@ public abstract class GUI implements IGUI {
         meta.setLore(lore);
         item.setItemMeta(meta);
 
-        UpdateItemInGUI.updateItemInGUI(this, editorName, meta.getDisplayName(), lore, item.getType());
+        //REQUIRED DUE TO A SPIGOT ISSUE THAT HAS BEEN FIXED UpdateItemInGUI.updateItemInGUI(this, editorName, meta.getDisplayName(), lore, item.getType());
     }
 
     public void updateCurrently(ItemStack item, String update, String editorName) {

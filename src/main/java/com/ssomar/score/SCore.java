@@ -141,6 +141,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean isMohist = false;
 
     private static boolean isPurpur = false;
+    private static boolean isPufferfish = false;
 
     private CommandsClass commandClass;
 
@@ -167,6 +168,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
     /* The server is purpur? */
     public static boolean isPurpur() {
         return isPurpur;
+    }
+
+    public static boolean isPufferfish() {
+        return isPufferfish;
     }
 
     /* The server is in 1.8 ? */
@@ -337,7 +342,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean isPaperOrFork(){
-        return isPaper() || isFolia() || isMohist() || isPurpur();
+        return isPaper() || isFolia() || isMohist() || isPurpur() || isPufferfish();
     }
 
     @Override
@@ -682,6 +687,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isFolia = Bukkit.getServer().getVersion().contains("Folia");
         isLuminol = Bukkit.getServer().getVersion().contains("Luminol");
         isPurpur = Bukkit.getServer().getVersion().contains("Purpur");
+        isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish");
     }
 
     public void displayVersion() {

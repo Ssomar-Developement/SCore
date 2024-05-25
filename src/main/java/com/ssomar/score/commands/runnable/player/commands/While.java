@@ -39,7 +39,7 @@ public class While extends PlayerCommand {
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
         conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
         String condition = args.get(0);
-        int delay = (int) Double.parseDouble(args.get(1));
+        int delay = (int) Double.parseDouble(aInfo.getSp().replacePlaceholder(args.get(1)));
 
         // "%"+c.getSymbol() because the placeholder can also contains comparator so to be sure the comparator is outside the placeholder we need to be sure there is a % before
         Comparator comparator = null;
@@ -101,7 +101,7 @@ public class While extends PlayerCommand {
 
         if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
 
-        ArgumentChecker ac = checkDouble(args.get(1), isFinalVerification, getTemplate());
+        ArgumentChecker ac = checkDouble(args.get(1), false, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
         return Optional.empty();
