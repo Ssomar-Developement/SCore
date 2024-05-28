@@ -76,7 +76,7 @@ public class While extends PlayerCommand {
             @Override
             public void run() {
                 sp.reloadAllPlaceholders();
-                if(conditionFeature.verify(receiver, null, sp)) {
+                if(conditionFeature.verify(receiver, null, sp) && receiver.isOnline()) {
 
                     PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(cmds, aInfo);
                     CommandsExecutor.runCommands(builder);

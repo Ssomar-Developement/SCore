@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types.list;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -13,6 +14,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -20,6 +22,7 @@ import java.util.*;
 @Setter
 public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeature> {
 
+    private static final boolean DEBUG = false;
 
     public ListWorldFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, name, "List of Worlds", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
@@ -80,8 +83,9 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
 
     @Override
     public String getTips() {
-        return "&8Example &7&oworld";
+        return "&8Example &7&oworld &7(&awhitelisted&7) &8- &7&o!world &7(&cblacklisted&7)";
     }
+
 
     @Override
     public void sendBeforeTextEditor(Player playerEditor, NewGUIManager manager) {
@@ -93,5 +97,30 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
         EditorCreator editor = new EditorCreator(beforeMenu, (List<String>) manager.currentWriting.get(playerEditor), getEditorName() + ":", true, true, true, true,
                 true, true, false, "", suggestions);
         editor.generateTheMenuAndSendIt(playerEditor);
+    }
+
+    public boolean isValidWorld(@NotNull World world) {
+        boolean forValuesBool = isValidWorld(true, getValues(), world);
+        SsomarDev.testMsg(">> verif forValuesBool: " + forValuesBool, DEBUG);
+        boolean forBlacklistValuesBool = isValidWorld(false, getBlacklistedValues(), world);
+        SsomarDev.testMsg(">> verif forBlacklistValuesBool: " + forBlacklistValuesBool, DEBUG);
+        return forValuesBool && !forBlacklistValuesBool;
+    }
+
+    public boolean isValidWorld(boolean ifEmpty, List<String> references, @NotNull World world) {
+
+        for (String s : references) SsomarDev.testMsg(">> verif references: " + s, DEBUG);
+
+        if(references.isEmpty()) return ifEmpty;
+
+        for(String ref : references) {
+            Optional<World> worldOptional = AllWorldManager.getWorld(ref);
+            if (worldOptional.isPresent()) {
+                World worldRed = worldOptional.get();
+                if (worldRed == world) return true;
+            }
+        }
+
+        return false;
     }
 }

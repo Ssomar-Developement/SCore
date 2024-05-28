@@ -363,6 +363,10 @@ public class TrimMaterialFeature extends FeatureAbstract<Optional<TrimMaterial>,
             fix = fix.toLowerCase();
         }
 
+        //SsomarDev.testMsg("fix: "+fix, true);
+        //SsomarDev.testMsg("nalmespac: "+NamespacedKey.fromString(fix), true);
+
+
         TrimMaterial material = Registry.TRIM_MATERIAL.get(NamespacedKey.fromString(fix));
         return material;
     }
