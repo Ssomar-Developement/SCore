@@ -13,6 +13,7 @@ public class AuraSkillsAPI {
             UserManager userManager = auraSkillsApi.getUserManager();
             SkillsUser skillsUser = userManager.getUser(player.getUniqueId());
             if (skillsUser == null) return false;
+
             if (skillsUser.getMana() >= value) {
                 return true;
             } else return false;

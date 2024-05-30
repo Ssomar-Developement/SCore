@@ -74,7 +74,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
 
     @Override
     public boolean verify(Player player, Event event) {
-        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore)) {
+        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore || Dependency.AURA_SKILLS.isInstalled())) {
             if(SCore.hasAureliumSkills) {
                 if (!AureliumSkillsAPI.checkMana(player, mana.getValue().get())) {
                     if (errorMessage.getValue().isPresent()) {
