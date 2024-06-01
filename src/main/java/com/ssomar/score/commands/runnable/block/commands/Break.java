@@ -22,7 +22,7 @@ public class Break extends BlockCommand {
         UUID pUUID = null;
         if (p != null) pUUID = p.getUniqueId();
 
-        SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, false);
+        SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, !aInfo.isNoPlayerTriggeredTheAction());
     }
 
 

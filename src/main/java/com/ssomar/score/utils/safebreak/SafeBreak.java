@@ -39,7 +39,7 @@ public class SafeBreak {
 
         SsomarDev.testMsg("DEBUG SAFE BREAK 1", DEBUG);
         if (playerUUID == null) {
-            if (breakEB(block, drop)) return true;
+            if (breakEB(null, block, drop)) return true;
             block.breakNaturally();
             return true;
         }
@@ -75,7 +75,7 @@ public class SafeBreak {
             }
 
             if (!canceled) {
-                if (breakEB(block, drop)) return true;
+                if (breakEB(player, block, drop)) return true;
 
                 breakRoseloot(player, block, drop);
 
@@ -90,7 +90,7 @@ public class SafeBreak {
             }
         } else {
             if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return true;
-            if (breakEB(block, drop)) return true;
+            if (breakEB(null, block, drop)) return true;
 
             breakRoseloot(null, block, drop);
 
@@ -187,7 +187,7 @@ public class SafeBreak {
         return false;
     }
 
-    public static boolean breakEB(Block block, boolean drop) {
+    public static boolean breakEB(@Nullable Player player, Block block, boolean drop) {
        //SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
 
         if (SCore.hasExecutableBlocks) {
@@ -195,7 +195,7 @@ public class SafeBreak {
             Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
                 //SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
-                eBPOpt.get().breakBlock(null, drop, null, ExecutableBlockPlaced.BreakMethod.CUSTOM);
+                eBPOpt.get().breakBlock(player, drop, null, ExecutableBlockPlaced.BreakMethod.CUSTOM);
                 return true;
             }
         }
