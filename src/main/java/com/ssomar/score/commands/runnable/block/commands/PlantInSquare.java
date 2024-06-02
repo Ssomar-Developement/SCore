@@ -54,11 +54,11 @@ public class PlantInSquare extends BlockCommand {
 
         if(takeFromInventory) {
             int slot = 0;
-            SsomarDev.testMsg("resourcesNeeded: "+resourcesNeeded ,true);
+            //SsomarDev.testMsg("resourcesNeeded: "+resourcesNeeded ,true);
             for (ItemStack item : p.getInventory().getContents()) {
-                SsomarDev.testMsg("item: "+item ,true);
+                //SsomarDev.testMsg("item: "+item ,true);
                 if (item != null && validMaterial.contains(item.getType()) && (accepteEI || !new ExecutableItemObject(item).isValid())) {
-                    SsomarDev.testMsg("item valis: "+item ,true);
+                    //SsomarDev.testMsg("item valis: "+item ,true);
                     resources.put(slot, item);
                     resourcesNeeded = resourcesNeeded - item.getAmount();
                 }

@@ -25,7 +25,7 @@ public interface CommmandThatRunsCommand {
 
     static String replaceStepParticlePlaceholder(String s, ActionInfo actionInfo) {
         int step = actionInfo.getStep();
-        SsomarDev.testMsg("replaceStepParticlePlaceholder it will replace ::step"+step+"% by %", true);
+        //SsomarDev.testMsg("replaceStepParticlePlaceholder it will replace ::step"+step+"% by %", true);
         if(step > 0) s = s.replace("::step"+step+"%", "%");
         return s;
     }
@@ -66,7 +66,7 @@ public interface CommmandThatRunsCommand {
 
             String buildCommands = prepareCommands.toString();
             String[] tab;
-            SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
+           // SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
             if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
             else {
                 tab = new String[1];

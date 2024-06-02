@@ -1,19 +1,22 @@
 package com.ssomar.score.features;
 
 import com.google.common.base.Charsets;
+import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.utils.scheduler.RunnableManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.util.Optional;
 
 @Getter
-public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y> , Serializable {
+public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y>, Serializable {
 
     private final String name;
     private final String editorName;
@@ -24,6 +27,8 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     private transient FeatureParentInterface parent;
     @Setter
     private boolean isPremium;
+
+    private boolean saveLaunched;
 
     public FeatureAbstract(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         this.parent = parent;
@@ -66,24 +71,50 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         initItemParentEditor(gui, slot).updateItemParentEditor(gui);
     }
 
-    public void save() {
-        ConfigurationSection config = parent.getConfigurationSection();
-        save(config);
-        while (config.getParent() != null) {
-            config = config.getParent();
+    /* Save will be make with a delay of 2 minutes minimum */
+    public void save(boolean saveInstantly) {
+        long delay = 20 * 120;
+        if (saveInstantly) delay = 0;
+
+        if (!saveLaunched || saveInstantly) {
+            saveLaunched = true;
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    ConfigurationSection config = parent.getConfigurationSection();
+                    save(config);
+                    while (config.getParent() != null) {
+                        config = config.getParent();
+                    }
+                    writeInFile(config);
+                    saveLaunched = false;
+                    RunnableManager.getInstance().removeTask(this);
+                }
+            };
+            if (delay == 0) runnable.run();
+            else {
+                RunnableManager.getInstance().addTask(runnable);
+                SCore.schedulerHook.runTask(runnable, delay);
+            }
         }
-        writeInFile(config);
     }
 
-    public void writeInFile(ConfigurationSection config) {
-        File file = parent.getFile();
-        try {
-            Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+    public void save() {
+        save(true);
+    }
 
-            try {
-                writer.write(((FileConfiguration) config).saveToString());
-            } finally {
-                writer.close();
+
+    public void writeInFile(ConfigurationSection config) {
+        try {
+            File file = parent.getFile();
+            if (file.exists()) {
+                Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+
+                try {
+                    writer.write(((FileConfiguration) config).saveToString());
+                } finally {
+                    writer.close();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,12 +136,11 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
 
     public <B> Optional<B> getParent(B clazz) {
         FeatureParentInterface parent = getParent();
-        while (parent != null &&  parent instanceof FeatureInterface && ((FeatureAbstract) parent).getParent() != parent) {
-            Class classs = ((Object)clazz).getClass();
-            if(parent.getClass() == classs) {
+        while (parent != null && parent instanceof FeatureInterface && ((FeatureAbstract) parent).getParent() != parent) {
+            Class classs = ((Object) clazz).getClass();
+            if (parent.getClass() == classs) {
                 return Optional.of((B) parent);
-            }
-            else {
+            } else {
                 parent = ((FeatureAbstract) parent).getParent();
                 parent.reload();
             }

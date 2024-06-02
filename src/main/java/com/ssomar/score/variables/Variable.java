@@ -295,7 +295,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             values.put("global", Arrays.asList(value));
         }
 
-        this.save();
+        this.save(false);
 
         return Optional.empty();
     }
@@ -322,7 +322,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             return Optional.of("§cTo add something your variable must be a list");
         }
 
-        this.save();
+        this.save(false);
 
         return Optional.empty();
     }
@@ -355,7 +355,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             return Optional.of("§cTo remove something your variable must be a list");
         }
 
-        this.save();
+        this.save(false);
 
         return Optional.empty();
     }
@@ -372,7 +372,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             values.remove("global");
         }
 
-        this.save();
+        this.save(false);
 
         return Optional.empty();
     }

@@ -117,6 +117,18 @@ public abstract class Config {
         return (int) loadedSettings.get(setting);
     }
 
+    public String loadStringSetting(String setting, String defaultValue) {
+        String value = config.getString(setting, defaultValue);
+        loadedSettings.put(setting, value);
+        //System.out.println("Setting: " + setting + " Value: " + value);
+        return value;
+    }
+
+    public String getStringSetting(String setting, String defaultValue) {
+        if (!loadedSettings.containsKey(setting)) return defaultValue;
+        return (String) loadedSettings.get(setting);
+    }
+
     public double loadDoubleSetting(String setting, double defaultValue) {
         double value = config.getDouble(setting, defaultValue);
         loadedSettings.put(setting, value);
