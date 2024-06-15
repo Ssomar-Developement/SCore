@@ -4,7 +4,6 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.custom.cooldowns.Cooldown;
 import com.ssomar.score.utils.logging.Utils;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.Reader;
@@ -151,7 +150,7 @@ public class CooldownsQuery {
                 boolean paused = rs.getBoolean(COL_PAUSED);
                 boolean pauseOffline = rs.getBoolean(COL_PAUSE_OFFLINE);
                 String pausePlaceholdersConditions = rs.getString(COL_PAUSE_PLACEHOLDERS_CONDITIONS);
-                PlaceholderConditionGroupFeature placeholderConditionGroupFeature = new PlaceholderConditionGroupFeature(null, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
+                PlaceholderConditionGroupFeature placeholderConditionGroupFeature = new PlaceholderConditionGroupFeature(null);
                 Reader reader = new java.io.StringReader(pausePlaceholdersConditions);
                 YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(reader);
                 placeholderConditionGroupFeature.load(SCore.plugin, yamlConfiguration, true);

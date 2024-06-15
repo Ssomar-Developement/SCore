@@ -3,11 +3,11 @@ package com.ssomar.score.features.types;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureNotEditable;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ public class ObjectFeature extends FeatureAbstract<Object, ObjectFeature> implem
 
     private Object value;
 
-    public ObjectFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ObjectFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.value = null;
     }
 
@@ -33,7 +33,7 @@ public class ObjectFeature extends FeatureAbstract<Object, ObjectFeature> implem
 
     @Override
     public ObjectFeature clone(FeatureParentInterface newParent) {
-        ObjectFeature clone = new ObjectFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        ObjectFeature clone = new ObjectFeature(newParent, getFeatureSettings());
         clone.setValue(value);
         return clone;
     }

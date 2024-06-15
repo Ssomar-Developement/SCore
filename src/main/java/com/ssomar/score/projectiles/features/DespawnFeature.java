@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.DoubleFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class DespawnFeature extends DoubleFeature implements SProjectileFeatureInterface {
 
     public DespawnFeature(FeatureParentInterface parent) {
-        super(parent, "despawnDelay", Optional.of(-1.0), "Despawn delay", new String[]{"&7&o-1 for vanilla despawn"}, Material.DEAD_BUSH, false);
+        super(parent, Optional.of(-1.0), FeatureSettingsSCore.despawnDelay);
     }
 
     @Override

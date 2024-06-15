@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.enchantments.enchantment;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.EnchantmentFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -10,7 +11,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -31,15 +31,15 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
     private String id;
 
     public EnchantmentWithLevelFeature(FeatureParentInterface parent, String id) {
-        super(parent, "Enchantment with level", "Enchantment", new String[]{"&7&oAn enchantment with level"}, Material.ENCHANTED_BOOK, false);
+        super(parent, FeatureSettingsSCore.enchantmentWithLevel);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.enchantment = new EnchantmentFeature(this, "enchantment", Optional.of(getDefaultEnchantment()), "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false);
-        this.level = new IntegerFeature(this, "level", Optional.of(1), "Level", new String[]{"&7&oThe level of the enchantment"}, Material.BEACON, false);
+        this.enchantment = new EnchantmentFeature(this, Optional.of(getDefaultEnchantment()), FeatureSettingsSCore.enchantment);
+        this.level = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.level);
     }
 
     public static Enchantment getDefaultEnchantment() {

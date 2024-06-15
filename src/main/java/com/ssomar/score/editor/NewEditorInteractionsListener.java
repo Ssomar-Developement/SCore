@@ -36,8 +36,8 @@ import com.ssomar.score.features.custom.conditions.player.parent.PlayerCondition
 import com.ssomar.score.features.custom.conditions.player.parent.PlayerConditionsFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.world.parent.WorldConditionsFeatureEditor;
 import com.ssomar.score.features.custom.conditions.world.parent.WorldConditionsFeatureEditorManager;
-import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditor;
-import com.ssomar.score.features.custom.cooldowns.NewCooldownFeatureEditorManager;
+import com.ssomar.score.features.custom.cooldowns.CooldownFeatureEditor;
+import com.ssomar.score.features.custom.cooldowns.CooldownFeatureEditorManager;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditor;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditorManager;
 import com.ssomar.score.features.custom.detailedeffects.DetailedEffectsEditor;
@@ -294,8 +294,8 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof ActivatorsFeatureEditor) {
             ActivatorsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
-        } else if (holder instanceof NewCooldownFeatureEditor) {
-            NewCooldownFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+        } else if (holder instanceof CooldownFeatureEditor) {
+            CooldownFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
             return;
         } else if (holder instanceof LoopFeaturesEditor) {
             LoopFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
@@ -544,9 +544,9 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (ActivatorsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             ActivatorsFeatureEditorManager.getInstance().receiveMessage(p, message);
-        } else if (NewCooldownFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        } else if (CooldownFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            NewCooldownFeatureEditorManager.getInstance().receiveMessage(p, message);
+            CooldownFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (LoopFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             LoopFeaturesEditorManager.getInstance().receiveMessage(p, message);

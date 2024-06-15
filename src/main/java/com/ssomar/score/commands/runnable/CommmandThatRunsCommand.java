@@ -212,14 +212,14 @@ public interface CommmandThatRunsCommand {
                     split = s.split("BLACKLIST\\(");
                     String blackListString = split[1].split("\\)")[0];
                     split = blackListString.split(",");
-                    blackList = new ListDetailedEntityFeature(new MobAround(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
+                    blackList = new ListDetailedEntityFeature(new MobAround(), new ArrayList<>(), null, false);
                     blackList.load(SCore.plugin, Arrays.asList(split), true);
                 } else if (s.contains("WHITELIST(")) {
                     argToRemove = cpt;
                     split = s.split("WHITELIST\\(");
                     String whiteListString = split[1].split("\\)")[0];
                     split = whiteListString.split(",");
-                    whiteList = new ListDetailedEntityFeature(new MobAround(), "", new ArrayList<>(), "", new String[]{}, null, false, false);
+                    whiteList = new ListDetailedEntityFeature(new MobAround(), new ArrayList<>(), null, false);
                     whiteList.load(SCore.plugin, Arrays.asList(split), true);
                 }
             } catch (Exception ignored) {

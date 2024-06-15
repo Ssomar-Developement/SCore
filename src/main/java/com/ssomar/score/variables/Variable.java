@@ -2,6 +2,7 @@ package com.ssomar.score.variables;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.MaterialFeature;
 import com.ssomar.score.features.types.VariableForFeature;
@@ -41,12 +42,12 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
     private MaterialFeature icon;
 
     public Variable(FeatureParentInterface parent, String id, String path) {
-        super(id, parent, "VAR", "VAR", new String[]{}, GUI.WRITABLE_BOOK, path, VariablesLoader.getInstance());
+        super(id, parent, FeatureSettingsSCore.VARIABLE, path, VariablesLoader.getInstance());
         reset();
     }
 
     public Variable(String id, String path) {
-        super(id, "VAR", "VAR", new String[]{}, GUI.WRITABLE_BOOK, path, VariablesLoader.getInstance());
+        super(id, FeatureSettingsSCore.VARIABLE, path, VariablesLoader.getInstance());
         reset();
     }
 
@@ -105,11 +106,11 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
 
     @Override
     public void reset() {
-        defaultValue = new ColoredStringFeature(this, "default", Optional.empty(), "Default", new String[]{}, GUI.WRITABLE_BOOK, false, true);
-        type = new VariableTypeFeature(this, "type", Optional.of(VariableType.NUMBER), "Type", new String[]{}, GUI.COMPARATOR, false, false);
-        forFeature = new VariableForFeature(this, "for", Optional.empty(), "For", new String[]{}, GUI.COMPARATOR, false);
+        defaultValue = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.default_string, true);
+        type = new VariableTypeFeature(this, Optional.of(VariableType.NUMBER), FeatureSettingsSCore.type, false);
+        forFeature = new VariableForFeature(this, Optional.empty(), FeatureSettingsSCore.for_);
         values = new HashMap<>();
-        icon = new MaterialFeature(this, "icon", Optional.of(Material.PAPER), "Icon", new String[]{}, Material.STONE, false);
+        icon = new MaterialFeature(this, Optional.of(Material.PAPER), FeatureSettingsSCore.icon);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.commands.console.ConsoleCommandsFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -12,7 +13,6 @@ import com.ssomar.score.features.types.ComparatorFeature;
 import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.logging.Utils;
@@ -21,7 +21,6 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -51,8 +50,9 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
     private ConsoleCommandsFeature consoleCommandsIfError;
     private String id;
 
+
     public PlaceholderConditionFeature(FeatureParentInterface parent, String id) {
-        super(parent, "placeholderCondition", "Placeholder Condition", new String[]{"&7&oA Placeholder condition with its options"}, GUI.WRITABLE_BOOK, false);
+        super(parent, FeatureSettingsSCore.placeholderCondition);
         this.id = id;
         reset();
     }
@@ -63,16 +63,16 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
 
     @Override
     public void reset() {
-        this.type = new PlaceholderConditionTypeFeature(this, "type", Optional.of(PlaceholdersCdtType.PLAYER_NUMBER), "Type", new String[]{"&7&oThe type of the condition"}, Material.COMPASS, false);
-        this.comparator = new ComparatorFeature(this, "comparator", Optional.of(Comparator.EQUALS), "Comparator", new String[]{"&7&oThe comparator of the condition"}, Material.COMPASS, false);
-        this.part1 = new ColoredStringFeature(this, "part1", Optional.of("%player_health%"), "Part 1", new String[]{"&7&oThe first part of the condition"}, GUI.WRITABLE_BOOK, false, false);
-        this.part2 = new ColoredStringFeature(this, "part2", Optional.of("10"), "Part 2", new String[]{"&7&oThe second part of the condition"}, GUI.WRITABLE_BOOK, false, false);
+        this.type = new PlaceholderConditionTypeFeature(this, Optional.of(PlaceholdersCdtType.PLAYER_NUMBER), FeatureSettingsSCore.type);
+        this.comparator = new ComparatorFeature(this, Optional.of(Comparator.EQUALS), FeatureSettingsSCore.comparator);
+        this.part1 = new ColoredStringFeature(this, Optional.of("%player_health%"), FeatureSettingsSCore.part1, false);
+        this.part2 = new ColoredStringFeature(this, Optional.of("10"),FeatureSettingsSCore.part2, false);
 
-        this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel Event If Not Valid", new String[]{"&7&oCancel the event if the condition is not valid"}, Material.COMPASS, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.of(""), "Message If Not Valid", new String[]{"&7&oThe message to display if", "&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);
-        this.messageIfNotValidForTarget = new ColoredStringFeature(this, "messageIfNotValidForTarget", Optional.of(""), "Message If Not Valid For Target", new String[]{"&7&oThe message to display if", "&7&othe condition is not valid"}, GUI.WRITABLE_BOOK, false, false);
-        this.stopCheckingOtherConditionsIfNotValid = new BooleanFeature(this, "stopCheckingOtherConditionsIfNotValid", true, "Stop Checking Other Conditions If Not Valid", new String[]{"&7&oStop checking other conditions", "&7&oif this condition is not valid"}, Material.COMPASS, false, false);
-        this.consoleCommandsIfError = new ConsoleCommandsFeature(this, getName() + "Cmds", "Console Commands If Error", new String[]{"&7&oConsole Commands If Error"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "WRITABLE_BOOK", "BOOK_AND_QUILL")), false, true);
+        this.cancelEventIfNotValid = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotValid, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.messageIfNotValid, false);
+        this.messageIfNotValidForTarget = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.messageIfNotValidForTarget, false);
+        this.stopCheckingOtherConditionsIfNotValid = new BooleanFeature(this,  true, FeatureSettingsSCore.stopCheckingOtherConditionsIfNotValid, false);
+        this.consoleCommandsIfError = new ConsoleCommandsFeature(this, FeatureSettingsSCore.placeholderConditionCmds, true);
     }
 
     public boolean verify(Player player, Player target) {
@@ -198,7 +198,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                 String verifNumber = part2.getValue().get();
                 if (!verifNumber.contains("%")) {
                     if (!NTools.isNumber(verifNumber)) {
-                        part2.setValue(Optional.of("0"));
+                        part2.setValue("0");
                         errors.add("&cERROR, Couldn't load the Part2 Number value of " + this.getName() + " from config, value: " + verifNumber + " &7&o" + getParent().getParentInfo() + " &6>> It must be a placeholder or a number !");
                     }
                 }

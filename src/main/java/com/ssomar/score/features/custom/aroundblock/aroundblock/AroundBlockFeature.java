@@ -2,18 +2,16 @@ package com.ssomar.score.features.custom.aroundblock.aroundblock;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -43,23 +41,23 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
     private String id;
 
     public AroundBlockFeature(FeatureParentInterface parent, String id) {
-        super(parent, "AroundBlock", TM.g(Text.FEATURES_AROUNDBLOCK_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_DESCRIPTION), Material.STONE, false);
+        super(parent, FeatureSettingsSCore.aroundBlock);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.southValue = new IntegerFeature(this, "southValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_DESCRIPTION), GUI.CLOCK, false);
-        this.northValue = new IntegerFeature(this, "northValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_NAME) , TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_DESCRIPTION), GUI.CLOCK, false);
-        this.westValue = new IntegerFeature(this, "westValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION), GUI.CLOCK, false);
-        this.eastValue = new IntegerFeature(this, "eastValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_DESCRIPTION), GUI.CLOCK, false);
-        this.aboveValue = new IntegerFeature(this, "aboveValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_DESCRIPTION), GUI.CLOCK, false);
-        this.underValue = new IntegerFeature(this, "underValue", Optional.of(0), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_DESCRIPTION), GUI.CLOCK, false);
+        this.southValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.southValue);
+        this.northValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.northValue);
+        this.westValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.westValue);
+        this.eastValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.eastValue);
+        this.aboveValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.aboveValue);
+        this.underValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.underValue);
 
-        this.errorMessage = new ColoredStringFeature(this, "errorMsg", Optional.of("&c&oA block is not placed correctly !"), TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_DESCRIPTION), GUI.WRITABLE_BOOK, false, false);
+        this.errorMessage = new ColoredStringFeature(this, Optional.of("&c&oA block is not placed correctly !"), FeatureSettingsSCore.errorMsg, false);
 
-        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, "blockTypeMustBe", new ArrayList<>(),  TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_BLOCKTYPEMUSTBE_DESCRIPTION), GUI.WRITABLE_BOOK, false, true, true);
+        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, new ArrayList<>(),  FeatureSettingsSCore.blockTypeMustBe, true, true);
     }
 
     @Override

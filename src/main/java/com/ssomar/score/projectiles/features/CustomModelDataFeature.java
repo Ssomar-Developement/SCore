@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.IntegerFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class CustomModelDataFeature extends IntegerFeature implements SProjectileFeatureInterface {
 
     public CustomModelDataFeature(FeatureParentInterface parent) {
-        super(parent, "customModelData", Optional.empty(), "Custom Model Data", new String[]{}, Material.ITEM_FRAME, false);
+        super(parent, Optional.empty(), FeatureSettingsSCore.customModelData);
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

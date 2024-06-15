@@ -1,19 +1,15 @@
 package com.ssomar.score.features.custom.detaileditems;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -36,22 +32,22 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
     private BooleanFeature cancelEventIfNotValid;
     private transient ColoredStringFeature messageIfNotValid;
 
-    public DetailedItems(FeatureParentInterface parent, String name, String editorName) {
-        super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain items", "&7&oempty = all items"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false);
+    public DetailedItems(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
     }
 
     public DetailedItems(FeatureParentInterface parent) {
-        super(parent, "detailedItems", "Detailed Items", new String[]{"&7&oMake the activator run", "&7&oonly for certain items", "&7&oempty = all items"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false);
+        super(parent, FeatureSettingsSCore.detailedItems);
         reset();
     }
 
 
     @Override
     public void reset() {
-        this.items = new ListDetailedMaterialFeature(this, "items", new ArrayList<>(), "Items", new String[]{"&7&oItems"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false, false, false);
-        this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the item is not valid?"}, Material.LEVER, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe item is not correct !") */, "Message if not valid", new String[]{"&7&oMessage if the item is not valid?"}, GUI.WRITABLE_BOOK, false, false);
+        this.items = new ListDetailedMaterialFeature(this,  new ArrayList<>(),FeatureSettingsSCore.items, false, false);
+        this.cancelEventIfNotValid = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfNotValid, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe item is not correct !") */, FeatureSettingsSCore.messageIfNotValid, false);
     }
 
     @Override
@@ -138,7 +134,7 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
 
     @Override
     public DetailedItems clone(FeatureParentInterface newParent) {
-        DetailedItems dropFeatures = new DetailedItems(newParent, getName(), getEditorName());
+        DetailedItems dropFeatures = new DetailedItems(newParent, getFeatureSettings());
         dropFeatures.setItems(items.clone(dropFeatures));
         dropFeatures.setCancelEventIfNotValid(cancelEventIfNotValid.clone(dropFeatures));
         dropFeatures.setMessageIfNotValid(messageIfNotValid.clone(dropFeatures));

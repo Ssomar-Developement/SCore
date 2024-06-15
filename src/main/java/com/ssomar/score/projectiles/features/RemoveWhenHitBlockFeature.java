@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -14,7 +15,7 @@ public class RemoveWhenHitBlockFeature extends BooleanFeature implements SProjec
 
 
     public RemoveWhenHitBlockFeature(FeatureParentInterface parent) {
-        super(parent, "removeWhenHitBlock", false, "Remove when hit block", new String[]{}, Material.LEVER, false, false);
+        super(parent,  false, FeatureSettingsSCore.removeWhenHitBlock, false);
     }
 
     @Override

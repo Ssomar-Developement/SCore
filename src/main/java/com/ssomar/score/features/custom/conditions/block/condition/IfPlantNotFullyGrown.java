@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -14,7 +14,7 @@ import org.bukkit.event.block.BlockGrowEvent;
 public class IfPlantNotFullyGrown extends BlockConditionFeature<BooleanFeature, IfPlantNotFullyGrown> {
 
     public IfPlantNotFullyGrown(FeatureParentInterface parent) {
-        super(parent, "ifPlantNotFullyGrown", "If plant not fully grown", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifPlantNotFullyGrown);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class IfPlantNotFullyGrown extends BlockConditionFeature<BooleanFeature, 
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifPlantNotFullyGrown", false, "If plant not fully grown", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifPlantNotFullyGrown, true));
     }
 
     @Override

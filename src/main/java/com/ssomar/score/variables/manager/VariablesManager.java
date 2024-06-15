@@ -131,6 +131,8 @@ public class VariablesManager extends SObjectWithFileManager<Variable> {
         if (variablesContains) {
             if (check.startsWith("_")) check = check.substring(1);
             String value = check;
+            // There still be placeholder value inside we will replace it later ex : %score_variables-contains_test%around_target_uuid%%
+            if(value.isEmpty()) return Optional.empty();
             return Optional.of(var.get().containsValue(Optional.ofNullable(player.getPlayer()), value) + "");
         } else if (variablesSize) {
 

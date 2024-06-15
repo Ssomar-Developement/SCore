@@ -5,19 +5,19 @@ import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlock
 import com.ssomar.executableblocks.executableblocks.placedblocks.LocationConverter;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.Location;
-import org.bukkit.Material;
 
 import java.util.Optional;
 
 public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsage> {
 
     public IfUsage(FeatureParentInterface parent) {
-        super(parent, "ifUsage", "If usage", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifUsage);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsa
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(getParent(), "ifUsage", "If usage", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(getParent(), FeatureSettingsSCore.ifUsage));
     }
 
     @Override

@@ -3,15 +3,13 @@ package com.ssomar.score.features.custom.hiders;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,21 +33,21 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
     private BooleanFeature hidePlacedOn;
 
     public Hiders(FeatureParentInterface parent) {
-        super(parent, "hiders", "Hiders", TM.gA(Text.FEATURES_HIDERS_DESCRIPTION), Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.hiders);
         reset();
     }
 
     @Override
     public void reset() {
-        this.hideEnchantments = new BooleanFeature(getParent(), "hideEnchantments", false, "Hide enchantments", new String[]{"&7&oHide enchantments"}, Material.LEVER, false, false);
-        this.hideUnbreakable = new BooleanFeature(getParent(), "hideUnbreakable", false, "Hide unbreakable", new String[]{"&7&oHide unbreakable"}, Material.LEVER, false, false);
-        this.hideAttributes = new BooleanFeature(getParent(), "hideAttributes", false, "Hide attributes", new String[]{"&7&oHide attributes"}, Material.LEVER, false, false);
-        this.hidePotionEffects = new BooleanFeature(getParent(), "hidePotionEffects", false, "Hide potion effects / banner tags", new String[]{"&7&oHide Potion effects", "&7&oand banner tags"}, Material.LEVER, false, false);
-        this.hideUsage = new BooleanFeature(getParent(), "hideUsage", false, "Hide usage", new String[]{"&7&oHide usage"}, Material.LEVER, false, false);
-        this.hideDye = new BooleanFeature(getParent(), "hideDye", false, "Hide dye", new String[]{"&7&oHide dye"}, Material.LEVER, false, false);
-        this.hideArmorTrim = new BooleanFeature(getParent(), "hideArmorTrim", false, "Hide armor trim", new String[]{"&7&oHide armor trim"}, Material.LEVER, false, false);
-        this.hideDestroys = new BooleanFeature(getParent(), "hideDestroys", false, "Hide destroys", new String[]{"&7&oHide destroys"}, Material.LEVER, false, false);
-        this.hidePlacedOn = new BooleanFeature(getParent(), "hidePlacedOn", false, "Hide placed on", new String[]{"&7&oHide placed on"}, Material.LEVER, false, false);
+        this.hideEnchantments = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideEnchantments, false);
+        this.hideUnbreakable = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideUnbreakable, false);
+        this.hideAttributes = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideAttributes, false);
+        this.hidePotionEffects = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePotionEffects, false);
+        this.hideUsage = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideUsage, false);
+        this.hideDye = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDye, false);
+        this.hideArmorTrim = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideArmorTrim, false);
+        this.hideDestroys = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDestroys, false);
+        this.hidePlacedOn = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePlacedOn, false);
     }
 
     @Override

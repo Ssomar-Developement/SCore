@@ -2,10 +2,7 @@ package com.ssomar.score.features.types.list;
 
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -13,7 +10,6 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -35,8 +31,8 @@ public class ListDetailedEffectFeature extends FeatureAbstract<List<String>, Lis
     private List<String> defaultValue;
     private boolean notSaveIfEqualsToDefaultValue;
 
-    public ListDetailedEffectFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ListDetailedEffectFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
@@ -145,7 +141,7 @@ public class ListDetailedEffectFeature extends FeatureAbstract<List<String>, Lis
 
     @Override
     public ListDetailedEffectFeature clone(FeatureParentInterface newParent) {
-        ListDetailedEffectFeature clone = new ListDetailedEffectFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListDetailedEffectFeature clone = new ListDetailedEffectFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValue(getValues());
         return clone;
     }

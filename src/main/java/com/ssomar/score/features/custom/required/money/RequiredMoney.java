@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.required.money;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -12,7 +13,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.VaultAPI;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -25,8 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
-
 @Getter
 @Setter
 public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, RequiredMoneyEditor, RequiredMoneyEditorManager> implements RequiredPlayerInterface {
@@ -36,7 +34,7 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     private BooleanFeature cancelEventIfError;
 
     public RequiredMoney(FeatureParentInterface parent) {
-        super(parent, "requiredMoney", "Required Money", new String[]{"&7&oRequired money", "&4&lRequire: &6Vault"}, Material.GOLD_BLOCK, true);
+        super(parent, FeatureSettingsSCore.requiredMoney);
         reset();
     }
 
@@ -102,7 +100,7 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     public RequiredMoney initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oRequired money: &e" + money.getValue().get();
@@ -126,16 +124,17 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
         return requiredLevel;
     }
 
+
     @Override
     public void reset() {
-        this.money = new DoubleFeature(getParent(), "requiredMoney", Optional.of(0.0), "Required Money", new String[]{"&7&oRequired money"}, Material.ANVIL, false);
-        this.errorMessage = new ColoredStringFeature(getParent(), "errorMessage", Optional.of("&4&l>> &cError you don't have the required money"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false, true);
-        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfError", false, "cancelEventIfInvalidRequiredMoney", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false, true);
+        this.money = new DoubleFeature(getParent(), Optional.of(0.0), FeatureSettingsSCore.requiredMoney);
+        this.errorMessage = new ColoredStringFeature(getParent(), Optional.of("&4&l>> &cError you don't have the required money"), FeatureSettingsSCore.errorMessage, true);
+        this.cancelEventIfError = new BooleanFeature(getParent(), false, FeatureSettingsSCore.cancelEventIfError, true);
     }
 
     @Override
     public void openEditor(Player player) {
-        if (!isPremium() && requirePremium()) return;
+        if (!isPremium() && this.isRequirePremium()) return;
         RequiredMoneyEditorManager.getInstance().startEditing(player, this);
     }
 

@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features.visualItemFeature;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.headfeatures.HeadFeatures;
 import com.ssomar.score.features.types.MaterialFeature;
@@ -31,14 +32,14 @@ public class VisualItemFeature extends FeatureWithHisOwnEditor<VisualItemFeature
     private HeadFeatures headFeatures;
 
     public VisualItemFeature(FeatureParentInterface parent) {
-        super(parent, "visualItem", "Visual Item", new String[]{}, Material.ITEM_FRAME, false);
+        super(parent, FeatureSettingsSCore.visualItem);
         reset();
     }
 
     @Override
     public void reset() {
         this.headFeatures = new HeadFeatures(this);
-        this.material = new MaterialFeature(this, "material", Optional.of(Material.BARRIER), "Material", new String[]{"&7&oThe material of the item"}, Material.ITEM_FRAME, false);
+        this.material = new MaterialFeature(this, Optional.of(Material.BARRIER), FeatureSettingsSCore.material);
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

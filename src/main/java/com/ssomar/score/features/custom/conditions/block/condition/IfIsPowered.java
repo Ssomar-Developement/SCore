@@ -1,17 +1,17 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Powerable;
 
 public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPowered> {
 
     public IfIsPowered(FeatureParentInterface parent) {
-        super(parent, "ifIsPowered", "If is powered", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifIsPowered);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class IfIsPowered extends BlockConditionFeature<BooleanFeature, IfIsPower
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifIsPowered", false, "If is powered", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifIsPowered, true));
     }
 
     @Override

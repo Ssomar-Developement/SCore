@@ -3,6 +3,7 @@ package com.ssomar.score.projectiles;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.SProjectileTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
@@ -44,12 +45,12 @@ public class SProjectile extends SObjectWithFileEditable<SProjectile, SProjectil
 
 
     public SProjectile(FeatureParentInterface parent, String id, String path) {
-        super(id, parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW, path, SProjectileLoader.getInstance());
+        super(id, parent, FeatureSettingsSCore.SPROJECTILE, path, SProjectileLoader.getInstance());
         reset();
     }
 
     public SProjectile(String id, String path) {
-        super(id, "SPROJ", "SPROJ", new String[]{}, Material.ARROW, path, SProjectileLoader.getInstance());
+        super(id, FeatureSettingsSCore.SPROJECTILE, path, SProjectileLoader.getInstance());
         reset();
     }
 
@@ -97,7 +98,7 @@ public class SProjectile extends SObjectWithFileEditable<SProjectile, SProjectil
     @Override
     public void reset() {
 
-        type = new SProjectileTypeFeature(this, "type", Optional.of(SProjectileType.ARROW), "Type", new String[]{}, Material.ARROW, false);
+        type = new SProjectileTypeFeature(this, Optional.of(SProjectileType.ARROW), FeatureSettingsSCore.type);
 
         subFeatures = type.getValue().get().getFeatures(this);
     }

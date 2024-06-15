@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.required.mana;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -17,7 +18,6 @@ import com.ssomar.score.usedapi.MMOCoreAPI;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -30,8 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
-
 @Getter
 @Setter
 public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, RequiredMana, RequiredManaEditor, RequiredManaEditorManager> implements RequiredPlayerInterface {
@@ -41,7 +39,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
     private BooleanFeature cancelEventIfError;
 
     public RequiredMana(FeatureParentInterface parent) {
-        super(parent, "requiredMana", "Required Mana", new String[]{"&7&oRequired mana", "&4&lRequire: &6AureliumSkills"}, Material.WATER_BUCKET, true);
+        super(parent, FeatureSettingsSCore.requiredMana);
         reset();
     }
 
@@ -130,7 +128,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
     public RequiredMana initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oRequired mana: &e" + mana.getValue().get();
@@ -156,14 +154,14 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
 
     @Override
     public void reset() {
-        this.mana = new IntegerFeature(getParent(), "requiredMana", Optional.of(0), "Required Mana", new String[]{"&7&oRequired mana"}, Material.ANVIL, false);
-        this.errorMessage = new ColoredStringFeature(getParent(), "errorMessage", Optional.of("&4&l>> &cError you don't have the required mana"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false, true);
-        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfError", false, "cancelEventIfInvalidRequiredMana", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false, true);
+        this.mana = new IntegerFeature(getParent(), Optional.of(0), FeatureSettingsSCore.requiredMana);
+        this.errorMessage = new ColoredStringFeature(getParent(), Optional.of("&4&l>> &cError you don't have the required mana"), FeatureSettingsSCore.errorMessage, true);
+        this.cancelEventIfError = new BooleanFeature(getParent(),false, FeatureSettingsSCore.cancelEventIfError, true);
     }
 
     @Override
     public void openEditor(Player player) {
-        if (!isPremium() && requirePremium()) return;
+        if (!isPremium() && this.isRequirePremium()) return;
         RequiredManaEditorManager.getInstance().startEditing(player, this);
     }
 

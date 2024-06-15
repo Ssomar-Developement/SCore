@@ -3,16 +3,14 @@ package com.ssomar.score.features.custom.activators.activator;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.SOption;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
-import org.bukkit.Material;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public abstract class SActivator<X extends FeatureInterface<X, X>, Y extends GUI
     private SPlugin sPlugin;
 
     public SActivator(SPlugin sPlugin, FeatureParentInterface parent, String id) {
-        super(parent, "activator", TM.g(Text.FEATURES_ACTIVATOR_NAME), TM.gA(Text.FEATURES_ACTIVATOR_DESCRIPTION), Material.BEACON, false);
+        super(parent, FeatureSettingsSCore.activator);
         this.id = id;
         this.sPlugin = sPlugin;
     }

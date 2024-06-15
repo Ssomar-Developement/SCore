@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.VariableUpdateType;
@@ -12,7 +9,6 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +23,8 @@ public class VariableUpdateTypeFeature extends FeatureAbstract<Optional<Variable
     private Optional<VariableUpdateType> value;
     private Optional<VariableUpdateType> defaultValue;
 
-    public VariableUpdateTypeFeature(FeatureParentInterface parent, String name, Optional<VariableUpdateType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public VariableUpdateTypeFeature(FeatureParentInterface parent, Optional<VariableUpdateType> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -85,7 +81,7 @@ public class VariableUpdateTypeFeature extends FeatureAbstract<Optional<Variable
 
     @Override
     public VariableUpdateTypeFeature clone(FeatureParentInterface newParent) {
-        VariableUpdateTypeFeature clone = new VariableUpdateTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        VariableUpdateTypeFeature clone = new VariableUpdateTypeFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

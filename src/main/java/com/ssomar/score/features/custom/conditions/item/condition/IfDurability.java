@@ -1,11 +1,11 @@
 package com.ssomar.score.features.custom.conditions.item.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +15,7 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
 
 
     public IfDurability(FeatureParentInterface parent) {
-        super(parent, "ifDurability", "If durability", new String[]{}, Material.ANVIL, false);
+        super(parent,  FeatureSettingsSCore.ifDurability);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(this, "ifDurability", "If durability", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(this, FeatureSettingsSCore.ifDurability));
     }
 
     @Override

@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.variables.update.variable;
 
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.variables.base.group.VariablesGroupFeature;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
@@ -41,24 +38,24 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
     private VariablesGroupFeature features;
 
     public VariableUpdateFeature(FeatureParentInterface parent, String id) {
-        super(parent, "variableUpdate", "Variable Update", new String[]{"&7&oA variable update with its options"}, GUI.WRITABLE_BOOK, false);
+        super(parent, FeatureSettingsSCore.variableUpdate);
         this.id = id;
         reset();
     }
 
     /* For manual variable update */
     public VariableUpdateFeature(String id, VariablesGroupFeature features) {
-        super(null, "variableUpdate", "Variable Update", new String[]{"&7&oA variable update with its options"}, GUI.WRITABLE_BOOK, false);
+        super(null, FeatureSettingsSCore.variableUpdate);
         this.id = id;
         this.features = features;
     }
 
     @Override
     public void reset() {
-        this.variableName = new UncoloredStringFeature(this, "variableName", Optional.of("var"), "Variable Name", new String[]{"&7&oThe name of the variable", "&7&othat you want modify"}, GUI.WRITABLE_BOOK, false, false);
-        this.type = new VariableUpdateTypeFeature(this, "type", Optional.of(VariableUpdateType.SET), "Type", new String[]{"&7&oThe type of update you want to do"}, GUI.CLOCK, false);
-        this.stringUpdate = new ColoredStringFeature(this, "modification", Optional.of(""), "String Update", new String[]{"&7&oThe string update"}, GUI.WRITABLE_BOOK, false, false);
-        this.doubleUpdate = new DoubleFeature(this, "modification", Optional.of(0.0), "Double Update", new String[]{"&7&oThe number update"}, GUI.WRITABLE_BOOK, false);
+        this.variableName = new UncoloredStringFeature(this, Optional.of("var"), FeatureSettingsSCore.variableName, false);
+        this.type = new VariableUpdateTypeFeature(this, Optional.of(VariableUpdateType.SET), FeatureSettingsSCore.type);
+        this.stringUpdate = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.modification_string, false);
+        this.doubleUpdate = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.modification_double);
     }
 
     public VariablesGroupFeature getVariables() {

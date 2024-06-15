@@ -3,18 +3,15 @@ package com.ssomar.score.features.custom.armortrim;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.TrimMaterialFeature;
 import com.ssomar.score.features.types.TrimPatternFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
@@ -23,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,16 +32,16 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Arm
     private TrimPatternFeature pattern;
 
     public ArmorTrim(FeatureParentInterface parent) {
-        super(parent, "armorTrim", "Armor Trim", TM.gA(Text.FEATURES_ARMORTRIM_DESCRIPTION), FixedMaterial.getMaterial(Arrays.asList("COAST_ARMOR_TRIM_SMITHING_TEMPLATE")), false);
+        super(parent, FeatureSettingsSCore.armorTrim);
         reset();
     }
 
     @Override
     public void reset() {
-        this.enableArmorTrim = new BooleanFeature(getParent(), "enableArmorTrim", false, "Enable Armor Trim", new String[]{"&7&oEnable armor trim"}, Material.LEVER, false, false);
+        this.enableArmorTrim = new BooleanFeature(getParent(), false, FeatureSettingsSCore.enableArmorTrim, false);
         if(SCore.is1v20Plus()){
-            this.trimMaterial = new TrimMaterialFeature(getParent(), "trimMaterial", Optional.of(TrimMaterial.DIAMOND), "Trim Material", new String[]{"&7&oThe material used to trim the armor"}, Material.DIAMOND, false);
-            this.pattern = new TrimPatternFeature(getParent(), "pattern", Optional.of(TrimPattern.EYE), "Pattern", new String[]{"&7&oThe pattern used to trim the armor"}, Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, false);
+            this.trimMaterial = new TrimMaterialFeature(getParent(), Optional.of(TrimMaterial.DIAMOND), FeatureSettingsSCore.trimMaterial);
+            this.pattern = new TrimPatternFeature(getParent(), Optional.of(TrimPattern.EYE), FeatureSettingsSCore.pattern);
         }
     }
 

@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
 public class IfInvulnerable extends EntityConditionFeature<BooleanFeature, IfInvulnerable> {
 
     public IfInvulnerable(FeatureParentInterface parent) {
-        super(parent, "ifInvulnerable", "If invulnerable", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifInvulnerable);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class IfInvulnerable extends EntityConditionFeature<BooleanFeature, IfInv
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifInvulnerable", false, "If invulnerable", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifInvulnerable, true));
     }
 
     @Override

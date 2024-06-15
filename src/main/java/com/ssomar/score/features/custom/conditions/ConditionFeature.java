@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.conditions;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.commands.console.ConsoleCommandsFeature;
 import com.ssomar.score.features.custom.hiders.HidersEditor;
 import com.ssomar.score.features.custom.hiders.HidersEditorManager;
@@ -12,7 +9,6 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.item.MakeItemGlow;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -41,16 +37,25 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
     private BooleanFeature cancelEventIfError;
     private ConsoleCommandsFeature consoleCommandsIfError;
 
-    public ConditionFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    private final static Boolean cancelDefaultValue = false;
+    private static Optional<String> DEFAULT_DEFAULT_ERROR = Optional.of("&4[ERROR] &cYou can't activate this item > invalid condition");
+
+    public ConditionFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
+    }
+
+
+    @Override
+    public Material getEditorMaterial() {
+       return super.getEditorMaterial() == null ? Material.ANVIL : super.getEditorMaterial();
     }
 
     @Override
     public void reset() {
-        this.errorMessage = new ColoredStringFeature(this, getName() + "Msg", Optional.ofNullable("&4[ERROR] &cYou can't activate this item > invalid condition: &6" + getEditorName()), "Error Message", new String[]{"&7&oError Message"}, GUI.WRITABLE_BOOK, false, true);
-        this.cancelEventIfError = new BooleanFeature(this, getName() + "Cancel", false, "Cancel Event If Error", new String[]{"&7&oCancel Event If Error"}, Material.LEVER, false, true);
-        this.consoleCommandsIfError = new ConsoleCommandsFeature(this, getName() + "Cmds", "Console Commands If Error", new String[]{"&7&oConsole Commands If Error"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "WRITABLE_BOOK", "BOOK_AND_QUILL")), false, true);
+        this.errorMessage = new ColoredStringFeature(this, DEFAULT_DEFAULT_ERROR, FeatureSettingConditions.getInstance().getErrorMessage(getFeatureSettings().getName()), true);
+        this.cancelEventIfError = new BooleanFeature(this, cancelDefaultValue, FeatureSettingConditions.getInstance().getCancelEventIfError(getFeatureSettings().getName()), true);
+        this.consoleCommandsIfError = new ConsoleCommandsFeature(this, FeatureSettingConditions.getInstance().getConsoleCommandsIfError(getFeatureSettings().getName()), true);
         subReset();
     }
 

@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player;
 public class IfIsNotInTheBlock extends PlayerConditionFeature<MaterialAndTagsGroupFeature, IfIsNotInTheBlock> {
 
     public IfIsNotInTheBlock(FeatureParentInterface parent) {
-        super(parent, "ifIsNotInTheBlock", "If not in the block", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifIsNotInTheBlock);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class IfIsNotInTheBlock extends PlayerConditionFeature<MaterialAndTagsGro
 
     @Override
     public void subReset() {
-        setCondition(new MaterialAndTagsGroupFeature(this, "ifIsNotInTheBlock", "If is not in the block", new String[]{}, true, false, true, true));
+        setCondition(new MaterialAndTagsGroupFeature(this, FeatureSettingsSCore.ifIsNotInTheBlock, true, false, true, true));
     }
 
     @Override

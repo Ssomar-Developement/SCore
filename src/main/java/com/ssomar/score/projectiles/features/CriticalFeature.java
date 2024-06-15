@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CriticalFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public CriticalFeature(FeatureParentInterface parent) {
-        super(parent, "critical", false, "Critical", new String[]{}, Material.DIAMOND_AXE, false, false);
+        super(parent, false, FeatureSettingsSCore.critical, false);
     }
 
     @Override

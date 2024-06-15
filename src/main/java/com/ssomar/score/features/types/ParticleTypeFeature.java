@@ -2,10 +2,7 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireClicksOrOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
@@ -16,7 +13,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -33,8 +29,8 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
     private Optional<Particle> value;
     private Optional<Particle> defaultValue;
 
-    public ParticleTypeFeature(FeatureParentInterface parent, String name, Optional<Particle> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ParticleTypeFeature(FeatureParentInterface parent, Optional<Particle> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -90,7 +86,7 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
 
     @Override
     public ParticleTypeFeature clone(FeatureParentInterface newParent) {
-        ParticleTypeFeature clone = new ParticleTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        ParticleTypeFeature clone = new ParticleTypeFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

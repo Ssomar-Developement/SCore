@@ -1,19 +1,17 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Explosive;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-
 public class IncendiaryFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public IncendiaryFeature(FeatureParentInterface parent) {
-        super(parent, "incendiary", false, "Incendiary", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("CAMPFIRE", "FLINT_AND_STEEL")), false, false);
+        super(parent,  false, FeatureSettingsSCore.incendiary, false);
     }
 
     @Override

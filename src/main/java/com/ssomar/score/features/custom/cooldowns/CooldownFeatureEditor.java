@@ -3,11 +3,11 @@ package com.ssomar.score.features.custom.cooldowns;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
-public class NewCooldownFeatureEditor extends FeatureEditorInterface<NewCooldownFeature> {
+public class CooldownFeatureEditor extends FeatureEditorInterface<CooldownFeature> {
 
-    public final NewCooldownFeature cooldownFeature;
+    public final CooldownFeature cooldownFeature;
 
-    public NewCooldownFeatureEditor(NewCooldownFeature cooldownFeature) {
+    public CooldownFeatureEditor(CooldownFeature cooldownFeature) {
         super("&lCooldown feature Editor", 3 * 9);
         this.cooldownFeature = cooldownFeature.clone(cooldownFeature.getParent());
         load();
@@ -34,7 +34,7 @@ public class NewCooldownFeatureEditor extends FeatureEditorInterface<NewCooldown
     }
 
     @Override
-    public NewCooldownFeature getParent() {
+    public CooldownFeature getParent() {
         return cooldownFeature;
     }
 }

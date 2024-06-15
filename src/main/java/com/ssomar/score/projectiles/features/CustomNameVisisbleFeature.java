@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Player;
 public class CustomNameVisisbleFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public CustomNameVisisbleFeature(FeatureParentInterface parent) {
-        super(parent, "customNameVisible", false, "Custom Name Visible", new String[]{}, Material.NAME_TAG, false, false);
+        super(parent, false, FeatureSettingsSCore.customNameVisible, false);
     }
 
     @Override

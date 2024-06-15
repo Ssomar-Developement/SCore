@@ -7,6 +7,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
@@ -18,7 +19,6 @@ import dev.lone.itemsadder.api.ItemsAdder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -37,8 +37,8 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
     private static final boolean DEBUG = false;
     private Optional<String> value;
 
-    public ItemsAdderFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ItemsAdderFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.value = Optional.empty();
     }
 
@@ -136,7 +136,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
 
     @Override
     public ItemsAdderFeature clone(FeatureParentInterface newParent) {
-        ItemsAdderFeature clone = new ItemsAdderFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        ItemsAdderFeature clone = new ItemsAdderFeature(newParent, getFeatureSettings());
         clone.value = value;
         return clone;
     }

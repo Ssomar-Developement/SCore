@@ -1,17 +1,17 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Tameable;
 
 public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTamed> {
 
     public IfNotTamed(FeatureParentInterface parent) {
-        super(parent, "ifNotTamed", "If not tamed", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotTamed);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTame
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNotTamed", false, "If not tamed", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotTamed, true));
     }
 
     @Override

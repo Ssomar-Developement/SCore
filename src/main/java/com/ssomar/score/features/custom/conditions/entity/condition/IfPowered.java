@@ -1,17 +1,17 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 
 public class IfPowered extends EntityConditionFeature<BooleanFeature, IfPowered> {
 
     public IfPowered(FeatureParentInterface parent) {
-        super(parent, "ifPowered", "If powered", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifPowered);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IfPowered extends EntityConditionFeature<BooleanFeature, IfPowered>
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifPowered", false, "If powered", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPowered, true));
     }
 
     @Override

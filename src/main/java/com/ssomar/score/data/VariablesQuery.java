@@ -281,7 +281,7 @@ public class VariablesQuery {
 
                 Optional<String> optional = Optional.ofNullable(defaultValue);
                 if(optional.isPresent() && !optional.get().equalsIgnoreCase("NULL")){
-                    v.getDefaultValue().setValue(optional);
+                    v.getDefaultValue().setValue(optional.orElse(null));
                 }
 
                 list.add(v);
@@ -339,7 +339,7 @@ public class VariablesQuery {
 
                 Optional<String> optional = Optional.ofNullable(defaultValue);
                 if(optional.isPresent() && !optional.get().equalsIgnoreCase("NULL")){
-                    v.getDefaultValue().setValue(optional);
+                    v.getDefaultValue().setValue(optional.orElse(null));
                 }
 
                 varOpt = Optional.of(v);

@@ -2,11 +2,11 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListRegionStringFeature;
 import com.ssomar.score.usedapi.WorldGuardAPI;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class IfInRegion extends PlayerConditionFeature<ListRegionStringFeature, IfInRegion> {
 
     public IfInRegion(FeatureParentInterface parent) {
-        super(parent, "ifInRegion", "If in region", new String[]{}, Material.ANVIL, false);
+        super(parent,  FeatureSettingsSCore.ifInRegion);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class IfInRegion extends PlayerConditionFeature<ListRegionStringFeature, 
 
     @Override
     public void subReset() {
-        setCondition(new ListRegionStringFeature(getParent(), "ifInRegion", new ArrayList<>(), "If in region", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new ListRegionStringFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifInRegion, true));
     }
 
     @Override

@@ -1,12 +1,7 @@
 package com.ssomar.score.features.custom.variables.base.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -28,7 +23,7 @@ public class VariablesGroupFeature extends FeatureWithHisOwnEditor<VariablesGrou
     private Map<String, VariableFeature> variables;
 
     public VariablesGroupFeature(FeatureParentInterface parent) {
-        super(parent, "variables", "Variables", TM.gA(Text.FEATURES_VARIABLES_DESCRIPTION), GUI.WRITABLE_BOOK, false);
+        super(parent, FeatureSettingsSCore.variables);
         reset();
     }
 

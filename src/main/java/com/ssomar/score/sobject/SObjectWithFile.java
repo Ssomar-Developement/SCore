@@ -4,10 +4,10 @@ package com.ssomar.score.sobject;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,8 +22,8 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     private String path;
     private SObjectWithFileLoader sObjectWithFileLoader;
 
-    public SObjectWithFile(String id, String name, String editorName, String[] editorDescription, Material editorMaterial, String path, SObjectWithFileLoader sObjectWithFileLoader) {
-        super(id, null, name, editorName, editorDescription, editorMaterial);
+    public SObjectWithFile(String id, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
+        super(id, null, featureSettings);
         this.path = path;
         this.sObjectWithFileLoader = sObjectWithFileLoader;
     }
@@ -31,8 +31,8 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     /**
      * Useful to have an option to set a parent for the clone option
      **/
-    public SObjectWithFile(String id,FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, String path, SObjectWithFileLoader sObjectWithFileLoader) {
-        super(id, parent, name, editorName, editorDescription, editorMaterial);
+    public SObjectWithFile(String id,FeatureParentInterface parent, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
+        super(id, parent, featureSettings);
         this.path = path;
         this.sObjectWithFileLoader = sObjectWithFileLoader;
     }

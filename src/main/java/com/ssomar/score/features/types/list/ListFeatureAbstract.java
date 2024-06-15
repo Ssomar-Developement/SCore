@@ -8,7 +8,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -26,8 +25,8 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     private String featureName;
 
 
-    public ListFeatureAbstract(FeatureParentInterface parent, String name, String featureName, String editorName, String[] editorDescription, Material editorMaterial, List<T> defaultValue, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ListFeatureAbstract(FeatureParentInterface parent, String featureName, List<T> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         this.featureName = featureName;
@@ -35,7 +34,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     }
 
     public ListFeatureAbstract() {
-        super(null, null, null, null, null, false);
+        super(null, null);
         defaultValue = new ArrayList<>();
         notSaveIfEqualsToDefaultValue = false;
         featureName = null;
@@ -139,7 +138,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     @Override
     public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
         List<String> values = StringConverter.coloredString((List<String>) manager.currentWriting.get(editor));
-        load(SCore.plugin, values, requirePremium());
+        load(SCore.plugin, values, this.isRequirePremium());
         manager.requestWriting.remove(editor);
         manager.activeTextEditor.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));

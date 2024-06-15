@@ -10,6 +10,7 @@ import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.ItemsAdderAPI;
@@ -49,8 +50,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     private boolean specificationOfAtLeastOneState;
 
-    public ListDetailedMaterialFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue, boolean forBlocks) {
-        super(parent, name, "List of Materials", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListDetailedMaterialFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, boolean forBlocks) {
+        super(parent,"List of Materials",  defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         this.listOfCustomBlocksPluginSupported = new ArrayList<>();
         if (SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
         if (SCore.hasExecutableItems) listOfCustomBlocksPluginSupported.add("EXECUTABLEITEMS");
@@ -450,7 +451,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     @Override
     public ListDetailedMaterialFeature clone(FeatureParentInterface newParent) {
-        ListDetailedMaterialFeature clone = new ListDetailedMaterialFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue(), isForBlocks());
+        ListDetailedMaterialFeature clone = new ListDetailedMaterialFeature(newParent, getDefaultValue(),getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), isForBlocks());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

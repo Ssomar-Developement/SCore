@@ -1,15 +1,11 @@
 package com.ssomar.score.features.custom.patterns.subgroup;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.patterns.subpattern.SubPatternFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -26,7 +22,7 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
     private String id;
 
     public PatternFeature(FeatureParentInterface parent, String id) {
-        super(parent, "subPatterns", "Sub Patterns", new String[]{"&7&oThe sub patterns"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.subPatterns);
         this.id = id;
         reset();
     }

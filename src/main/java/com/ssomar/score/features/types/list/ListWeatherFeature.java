@@ -3,12 +3,12 @@ package com.ssomar.score.features.types.list;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import java.util.Optional;
 @Setter
 public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherFeature> {
 
-    public ListWeatherFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, "List of Weather", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListWeatherFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, "List of Weather", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
@@ -55,7 +55,7 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
 
     @Override
     public ListWeatherFeature clone(FeatureParentInterface newParent) {
-        ListWeatherFeature clone = new ListWeatherFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListWeatherFeature clone = new ListWeatherFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

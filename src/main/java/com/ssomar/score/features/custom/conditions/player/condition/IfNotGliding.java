@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class IfNotGliding extends PlayerConditionFeature<BooleanFeature, IfNotGliding> {
 
     public IfNotGliding(FeatureParentInterface parent) {
-        super(parent, "ifNotGliding", "If not gliding", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotGliding);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class IfNotGliding extends PlayerConditionFeature<BooleanFeature, IfNotGl
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNotGliding", false, "If not gliding", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotGliding, true));
     }
 
     @Override

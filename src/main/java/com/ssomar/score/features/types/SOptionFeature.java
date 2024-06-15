@@ -5,6 +5,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.sactivator.SOption;
 import com.ssomar.score.splugin.SPlugin;
@@ -12,7 +13,6 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +31,8 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
     private SPlugin plugin;
     private SOption builderInstance;
 
-    public SOptionFeature(SPlugin sPlugin, SOption builderInstance, FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public SOptionFeature(SPlugin sPlugin, SOption builderInstance, FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.plugin = sPlugin;
         this.builderInstance = builderInstance;
         reset();
@@ -89,7 +89,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
 
     @Override
     public SOptionFeature clone(FeatureParentInterface newParent) {
-        SOptionFeature clone = new SOptionFeature(plugin, builderInstance, newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        SOptionFeature clone = new SOptionFeature(plugin, builderInstance, newParent, getFeatureSettings());
         clone.setValue(value);
         return clone;
     }

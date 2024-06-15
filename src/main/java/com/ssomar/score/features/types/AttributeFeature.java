@@ -3,17 +3,13 @@ package com.ssomar.score.features.types;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -29,8 +25,8 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
     private Optional<Attribute> value;
     private Optional<Attribute> defaultValue;
 
-    public AttributeFeature(FeatureParentInterface parent, String name, Optional<Attribute> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public AttributeFeature(FeatureParentInterface parent, Optional<Attribute> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         reset();
     }
@@ -91,7 +87,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
 
     @Override
     public AttributeFeature clone(FeatureParentInterface newParent) {
-        AttributeFeature clone = new AttributeFeature(newParent, this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        AttributeFeature clone = new AttributeFeature(newParent, defaultValue, getFeatureSettings());
         clone.value = value;
         return clone;
     }

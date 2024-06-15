@@ -1,13 +1,13 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
 
 
     public IfBlockAge(FeatureParentInterface parent) {
-        super(parent, "ifBlockAge", "If Block Age", new String[]{}, Material.ANVIL, false);
+        super(parent,  FeatureSettingsSCore.ifBlockAge);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(getParent(), "ifBlockAge", "If Block Age", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(getParent(), FeatureSettingsSCore.ifBlockAge));
     }
 
     @Override

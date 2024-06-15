@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.required.magic.magic;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -36,15 +37,15 @@ public class RequiredMagicFeature extends FeatureWithHisOwnEditor<RequiredMagicF
     private String id;
 
     public RequiredMagicFeature(FeatureParentInterface parent, String id) {
-        super(parent, "RequiredMagic", "Required Magic", new String[]{"&7&oA required Magic from EcoSkills"}, GUI.WRITABLE_BOOK, false);
+        super(parent, FeatureSettingsSCore.requiredMagic);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.magic = new UncoloredStringFeature(this, "magicID", Optional.empty(), "Magic ID", new String[]{"&7&oThe Magic ID"}, Material.STONE, false, false);
-        this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
+        this.magic = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.magicID, false);
+        this.amount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.amount);
     }
 
     @Override

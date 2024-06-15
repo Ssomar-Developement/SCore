@@ -3,12 +3,12 @@ package com.ssomar.score.features.types.list;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -18,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListEntityTypeFeature> {
 
-    public ListEntityTypeFeature(FeatureParentInterface parent, String name, List<EntityType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, "List of EntityTypes", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListEntityTypeFeature(FeatureParentInterface parent, List<EntityType> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent,"List of EntityTypes", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
@@ -45,7 +45,7 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
 
     @Override
     public ListEntityTypeFeature clone(FeatureParentInterface newParent) {
-        ListEntityTypeFeature clone = new ListEntityTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListEntityTypeFeature clone = new ListEntityTypeFeature(newParent, getDefaultValue(),getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

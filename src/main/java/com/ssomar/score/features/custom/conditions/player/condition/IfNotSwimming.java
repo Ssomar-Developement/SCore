@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class IfNotSwimming extends PlayerConditionFeature<BooleanFeature, IfNotSwimming> {
 
     public IfNotSwimming(FeatureParentInterface parent) {
-        super(parent, "ifNotSwimming", "If not swimming", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotSwimming);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class IfNotSwimming extends PlayerConditionFeature<BooleanFeature, IfNotS
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNotSwimming", false, "If not swimming", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotSwimming, true));
     }
 
     @Override

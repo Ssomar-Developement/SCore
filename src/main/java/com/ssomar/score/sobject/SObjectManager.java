@@ -81,6 +81,10 @@ public abstract class SObjectManager<T extends SObject> {
         defaultObjects.add(object);
         actionOnObjectWhenLoading(object);
         generateLoadEvent(object.getId(), object);
+
+        allObjects = new ArrayList<>();
+        allObjects.addAll(defaultObjects);
+        allObjects.addAll(loadedObjects);
     }
 
     public void generateLoadEvent(String id, T object) {

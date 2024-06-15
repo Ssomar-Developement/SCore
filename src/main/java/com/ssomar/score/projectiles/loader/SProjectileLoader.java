@@ -25,7 +25,7 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
         SProjectilesManager.getInstance().setDefaultObjects(new ArrayList<>());
         /* // TODO if (!GeneralConfig.getInstance().isDisableTestItems()) {*/
         //if (PlaceholderAPI.isLotOfWork()) {
-            this.loadDefaultPremiumObjects(this.getPremiumDefaultObjectsName());
+            this.loadDefaultPremiumObjects();
         //}
         //this.loadDefaultEncodedPremiumObjects(this.getPremiumPackObjectsName());
         //}
@@ -43,77 +43,9 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
             this.load();
         }
 
-        createNotEditableProjFiles();
         File notEditProjDirectory;
         notEditProjDirectory = new File(SCore.plugin.getDataFolder() + "/projectiles/projectiles_not_editable");
         this.loadObjectsInFolder(notEditProjDirectory, true);
-
-    }
-
-    public void createNotEditableProjFiles() {
-
-        Map<String, List<String>> defaultObjects = this.getNotEditableProjectilesName();
-
-
-        for (String folder : defaultObjects.keySet()) {
-
-            File fileFolder = new File(SCore.plugin.getPlugin().getDataFolder() + "/projectiles/projectiles_not_editable/" + folder);
-
-            fileFolder.mkdirs();
-
-            for (String id : defaultObjects.get(folder)) {
-                try {
-                    File pdfile = new File(SCore.plugin.getPlugin().getDataFolder() + "/projectiles/projectiles_not_editable/" + folder + "/" + id + ".yml");
-                    InputStream in = this.getClass().getResourceAsStream("/com/ssomar/score/configs/projectiles_not_editable/" + folder + "/" + id + ".yml");
-
-                    if (!pdfile.exists()) {
-                        SCore.plugin.getPlugin().getDataFolder().mkdirs();
-                        pdfile.getParentFile().mkdirs();
-                        pdfile.createNewFile();
-                    } else
-                        continue;
-
-                    OutputStream out = new FileOutputStream(pdfile);
-                    byte[] buffer = new byte[1024];
-                    int current = 0;
-
-                    while ((current = in.read(buffer)) > -1)
-                        out.write(buffer, 0, current);
-
-                    out.close();
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
-    public Map<String, List<String>> getPremiumPackObjectsName() {
-        Map<String, List<String>> defaultItems = new HashMap<>();
-
-        return defaultItems;
-    }
-
-    @Override
-    public Map<String, List<String>> getPremiumDefaultObjectsName() {
-        Map<String, List<String>> defaultBlocks = new HashMap<>();
-
-        List<String> defaultProj = new ArrayList<>();
-        defaultProj.add("arrow1");
-        defaultProj.add("egg1");
-        defaultProj.add("enderpearl1");
-        defaultProj.add("fireball1");
-        defaultProj.add("lingering1");
-        defaultProj.add("shulkerbullet1");
-        defaultProj.add("snowball1");
-        defaultProj.add("tridentCustom1");
-        defaultProj.add("witherskull1");
-
-        defaultBlocks.put(DEFAULT, defaultProj);
-
-        return defaultBlocks;
     }
 
 
@@ -172,25 +104,6 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
         return defaultBlocks;
     }
 
-    @Override
-    public Map<String, List<String>> getFreeDefaultObjectsName() {
-        Map<String, List<String>> defaultBlocks = new HashMap<>();
-
-        List<String> defaultProj = new ArrayList<>();
-        defaultProj.add("arrow1");
-        defaultProj.add("egg1");
-        defaultProj.add("enderpearl1");
-        defaultProj.add("fireball1");
-        defaultProj.add("lingering1");
-        defaultProj.add("shulkerbullet1");
-        defaultProj.add("snowball1");
-        defaultProj.add("tridentCustom1");
-        defaultProj.add("witherskull1");
-
-        defaultBlocks.put(DEFAULT, defaultProj);
-
-        return defaultBlocks;
-    }
 
     @Override
     public void configVersionsConverter(File file) {

@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.Nameable;
 import org.bukkit.entity.Entity;
 
@@ -12,7 +12,7 @@ public class IfNotNamed extends EntityConditionFeature<BooleanFeature, IfNotName
 
 
     public IfNotNamed(FeatureParentInterface parent) {
-        super(parent, "ifNotNamed", "If not named", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotNamed);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class IfNotNamed extends EntityConditionFeature<BooleanFeature, IfNotName
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNotNamed", false, "If not named", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotNamed, true));
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.ExecutableItemFeature;
@@ -41,16 +42,16 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
     private NumberConditionFeature usageCondition;
 
     public RequiredExecutableItemFeature(FeatureParentInterface parent, String id) {
-        super(parent, "RequiredExecutableItem", "Required ExecutableItem", new String[]{"&7&oA required ExecutableItem"}, Material.STONE, false);
+        super(parent, FeatureSettingsSCore.requiredExecutableItem);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.executableItem = new ExecutableItemFeature(this, "executableItem", "ExecutableItem", new String[]{"&7&oThe ExecutableItem"}, Material.STONE, false);
-        this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
-        this.usageCondition = new NumberConditionFeature(this, "usageCondition", "Usage Condition", new String[]{"&7&oThe usage condition"}, GUI.CLOCK, false);
+        this.executableItem = new ExecutableItemFeature(this, FeatureSettingsSCore.executableItem);
+        this.amount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.amount);
+        this.usageCondition = new NumberConditionFeature(this, FeatureSettingsSCore.usageConditions);
     }
 
     @Override

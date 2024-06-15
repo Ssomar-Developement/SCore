@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.conditions.custom.parent;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
 import com.ssomar.score.features.custom.conditions.custom.CustomConditionRequest;
@@ -13,7 +14,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -32,8 +32,8 @@ public class CustomConditionsFeature extends FeatureWithHisOwnEditor<CustomCondi
     private List<CustomConditionFeature> conditions;
     private SPlugin sPlugin;
 
-    public CustomConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, SPlugin sPlugin) {
-        super(parent, name, editorName, editorDescription, Material.ANVIL, false);
+    public CustomConditionsFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, SPlugin sPlugin) {
+        super(parent, featureSettings);
         this.sPlugin = sPlugin;
         reset();
     }
@@ -125,7 +125,7 @@ public class CustomConditionsFeature extends FeatureWithHisOwnEditor<CustomCondi
 
     @Override
     public CustomConditionsFeature clone(FeatureParentInterface newParent) {
-        CustomConditionsFeature clone = new CustomConditionsFeature(newParent, getName(), getEditorName(), getEditorDescription(), getSPlugin());
+        CustomConditionsFeature clone = new CustomConditionsFeature(newParent, getFeatureSettings(), getSPlugin());
         List<CustomConditionFeature> clones = new ArrayList<>();
         for (CustomConditionFeature condition : conditions) {
             clones.add((CustomConditionFeature) condition.clone(clone));

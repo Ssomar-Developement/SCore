@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.entities.entity;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.entities.group.EntityTypeGroupFeature;
 import com.ssomar.score.features.types.EntityTypeFeature;
@@ -9,7 +10,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -29,14 +29,14 @@ public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTyp
     private String id;
 
     public EntityTypeForGroupFeature(FeatureParentInterface parent, String id) {
-        super(parent, "EntityType", "EntityType", new String[]{"&7&oThe entityType"}, Material.ZOMBIE_HEAD, false);
+        super(parent, FeatureSettingsSCore.entityType);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.entityType = new EntityTypeFeature(this, "entityType", Optional.of(EntityType.ZOMBIE), "EntityType", new String[]{"&7&oThe entityType"}, Material.ZOMBIE_HEAD, false);
+        this.entityType = new EntityTypeFeature(this, Optional.of(EntityType.ZOMBIE), FeatureSettingsSCore.entityType);
     }
 
     @Override

@@ -335,8 +335,49 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.20.5 or + ? */
     public static boolean is1v20v5Plus() {
-        return is1v20v5() || is1v20v6() || is1v21();
+        return is1v20v5() || is1v20v6() || isIs1v21Plus();
     }
+
+    public static boolean isIs1v21Plus() {
+        return is1v21();
+    }
+
+    public static boolean isVersionBetween(String version1, String version2) {
+        version1 = version1.replace(".yml", "").replace("_",".");
+        version2 = version2.replace(".yml", "").replace("_",".");
+        int version1Int = 0;
+        int version2Int = 0;
+
+        String[] version1Split = version1.split("\\.");
+        for (int i = 0; i < version1Split.length; i++) {
+            version1Int += (int) (Integer.parseInt(version1Split[i].trim()) * Math.pow(100, 3 - i));
+        }
+        if(!version2.isEmpty()) {
+            String[] version2Split = version2.split("\\.");
+            for (int i = 0; i < version2Split.length; i++) {
+                version2Int += (int) (Integer.parseInt(version2Split[i].trim()) * Math.pow(100, 3 - i));
+            }
+        }
+        else version2Int = Integer.MAX_VALUE;
+
+        String serverVersion = Bukkit.getServer().getVersion().split(":")[1].replace(")","");
+        int serverVersionInt = 0;
+        String[] serverVersionSplit = serverVersion.split("\\.");
+        for (int i = 0; i < serverVersionSplit.length; i++) {
+            serverVersionInt += (int) (Integer.parseInt(serverVersionSplit[i].trim()) * Math.pow(100, 3 - i));
+        }
+
+
+        /* SsomarDev.testMsg("serverVersion: "+serverVersion+" >> "+serverVersionInt, true);
+        SsomarDev.testMsg("version1: "+version1+" >> "+version1Int, true);
+        SsomarDev.testMsg("version2: "+version2+" >> "+version2Int, true);*/
+
+        return serverVersionInt >= version1Int && serverVersionInt <= version2Int;
+
+    }
+
+
+
 
     public static boolean isSpigotOrFork(){
         return isSpigot() || isPaperOrFork();

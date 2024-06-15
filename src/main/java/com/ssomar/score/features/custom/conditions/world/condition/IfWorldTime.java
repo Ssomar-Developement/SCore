@@ -1,18 +1,18 @@
 package com.ssomar.score.features.custom.conditions.world.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
-import org.bukkit.Material;
 import org.bukkit.World;
 
 public class IfWorldTime extends WorldConditionFeature<NumberConditionFeature, IfWorldTime> {
 
 
     public IfWorldTime(FeatureParentInterface parent) {
-        super(parent, "ifWorldTime", "If world time", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifWorldTime);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IfWorldTime extends WorldConditionFeature<NumberConditionFeature, I
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(this, "ifWorldTime", "If world time", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(this, FeatureSettingsSCore.ifWorldTime));
     }
 
     @Override

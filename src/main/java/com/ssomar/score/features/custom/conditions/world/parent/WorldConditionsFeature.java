@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.conditions.world.parent;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionRequest;
@@ -13,7 +14,6 @@ import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -32,8 +32,8 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
 
     private List<WorldConditionFeature> conditions;
 
-    public WorldConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription) {
-        super(parent, name, editorName, editorDescription, Material.ANVIL, false);
+    public WorldConditionsFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
     }
 
@@ -132,7 +132,7 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
 
     @Override
     public WorldConditionsFeature clone(FeatureParentInterface newParent) {
-        WorldConditionsFeature clone = new WorldConditionsFeature(newParent, getName(), getEditorName(), getEditorDescription());
+        WorldConditionsFeature clone = new WorldConditionsFeature(newParent, getFeatureSettings());
         List<WorldConditionFeature> clones = new ArrayList<>();
         for (WorldConditionFeature condition : conditions) {
             clones.add((WorldConditionFeature) condition.clone(clone));

@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.particles.group;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.particles.particle.ParticleFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
@@ -31,7 +28,7 @@ public class ParticlesGroupFeature extends FeatureWithHisOwnEditor<ParticlesGrou
     private boolean notSaveIfNoValue;
 
     public ParticlesGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
-        super(parent, "particles", "Particles", new String[]{"&7&oThe particles"}, Material.BLAZE_POWDER, false);
+        super(parent, FeatureSettingsSCore.particles);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }

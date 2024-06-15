@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.menu.GUI;
@@ -40,14 +41,14 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
     private UncoloredStringFeature headDBID;
 
     public HeadFeatures(FeatureParentInterface parent) {
-        super(parent, "--", "Head Features", new String[]{"&7&oTextures for the head"}, FixedMaterial.getHead(), false);
+        super(parent, FeatureSettingsSCore.headFeatures);
         reset();
     }
 
     @Override
     public void reset() {
-        this.headValue = new UncoloredStringFeature(this, "headValue", Optional.empty(), "Head Value", new String[]{"&7&oThe value of the head", "&eminecraft-heads.com"}, FixedMaterial.getHead(), false, false);
-        this.headDBID = new UncoloredStringFeature(this, "headDBID", Optional.empty(), "HeadDB ID", new String[]{"&7&oThe HeadDB ID of the head", "&7&oWork with: ", "&7&o- &bHeadDB(Free)", "&7&o- &cHead Database(Prem)"}, FixedMaterial.getHead(), true, false);
+        this.headValue = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.headValue, false);
+        this.headDBID = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.headDBID, false);
     }
 
     @Override

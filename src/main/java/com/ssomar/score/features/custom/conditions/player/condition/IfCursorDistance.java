@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class IfCursorDistance extends PlayerConditionFeature<NumberConditionFeature, IfCursorDistance> {
 
     public IfCursorDistance(FeatureParentInterface parent) {
-        super(parent, "ifCursorDistance", "If cursor distance", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifCursorDistance);
     }
 
     @Override
@@ -39,9 +40,10 @@ public class IfCursorDistance extends PlayerConditionFeature<NumberConditionFeat
         return this;
     }
 
+
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(getParent(), "ifCursorDistance", "If cursor distance", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(getParent(), FeatureSettingsSCore.ifCursorDistance));
     }
 
     @Override

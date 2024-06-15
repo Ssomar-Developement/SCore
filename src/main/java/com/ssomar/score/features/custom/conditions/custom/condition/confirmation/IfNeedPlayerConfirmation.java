@@ -1,11 +1,11 @@
 package com.ssomar.score.features.custom.conditions.custom.condition.confirmation;
 
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.custom.conditions.custom.CustomConditionRequest;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
+import com.ssomar.score.features.custom.conditions.custom.CustomConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class IfNeedPlayerConfirmation extends CustomConditionFeature<BooleanFeature, IfNeedPlayerConfirmation> {
 
     public IfNeedPlayerConfirmation(FeatureParentInterface parent) {
-        super(parent, "ifNeedPlayerConfirmation", "If need player confirmation", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNeedPlayerConfirmation);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class IfNeedPlayerConfirmation extends CustomConditionFeature<BooleanFeat
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNeedPlayerConfirmation", false, "If need player confirmation", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNeedPlayerConfirmation, true));
         getCancelEventIfError().setDefaultValue(true);
     }
 

@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.conditions.item.parent;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
@@ -13,7 +14,6 @@ import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -32,8 +32,8 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
 
     private List<ItemConditionFeature> conditions;
 
-    public ItemConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription) {
-        super(parent, name, editorName, editorDescription, Material.ANVIL, false);
+    public ItemConditionsFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
     }
 
@@ -139,7 +139,7 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
 
     @Override
     public ItemConditionsFeature clone(FeatureParentInterface newParent) {
-        ItemConditionsFeature clone = new ItemConditionsFeature(newParent, getName(), getEditorName(), getEditorDescription());
+        ItemConditionsFeature clone = new ItemConditionsFeature(newParent, getFeatureSettings());
         List<ItemConditionFeature> clones = new ArrayList<>();
         for (ItemConditionFeature condition : conditions) {
             clones.add((ItemConditionFeature) condition.clone(clone));

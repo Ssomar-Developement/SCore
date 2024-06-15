@@ -6,6 +6,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
@@ -16,7 +17,6 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -35,8 +35,8 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
     private static final boolean DEBUG = false;
     private Optional<String> value;
 
-    public OraxenFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public OraxenFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.value = Optional.empty();
     }
 
@@ -144,7 +144,7 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
 
     @Override
     public OraxenFeature clone(FeatureParentInterface newParent) {
-        OraxenFeature clone = new OraxenFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        OraxenFeature clone = new OraxenFeature(newParent, getFeatureSettings());
         clone.value = value;
         return clone;
     }

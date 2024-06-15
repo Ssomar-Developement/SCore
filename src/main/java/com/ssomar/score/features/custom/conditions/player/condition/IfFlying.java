@@ -1,17 +1,17 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class IfFlying extends PlayerConditionFeature<BooleanFeature, IfFlying> {
 
 
     public IfFlying(FeatureParentInterface parent) {
-        super(parent, "ifFlying", "If flying", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifFlying);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IfFlying extends PlayerConditionFeature<BooleanFeature, IfFlying> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifFlying", false, "If flying", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFlying, true));
     }
 
     @Override

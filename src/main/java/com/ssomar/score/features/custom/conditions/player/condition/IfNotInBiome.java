@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListBiomeFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class IfNotInBiome extends PlayerConditionFeature<ListBiomeFeature, IfNotInBiome> {
 
     public IfNotInBiome(FeatureParentInterface parent) {
-        super(parent, "ifNotInBiome", "If not in biome", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotInBiome);
     }
 
     @Override
@@ -33,9 +33,10 @@ public class IfNotInBiome extends PlayerConditionFeature<ListBiomeFeature, IfNot
         return this;
     }
 
+
     @Override
     public void subReset() {
-        setCondition(new ListBiomeFeature(getParent(), "ifNotInBiome", new ArrayList<>(), "If not in biome", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new ListBiomeFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifNotInBiome, true));
     }
 
     @Override

@@ -2,10 +2,7 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireClicksOrOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
@@ -35,8 +32,8 @@ public class TrimMaterialFeature extends FeatureAbstract<Optional<TrimMaterial>,
     private Optional<TrimMaterial> value;
     private Optional<TrimMaterial> defaultValue;
 
-    public TrimMaterialFeature(FeatureParentInterface parent, String name, Optional<TrimMaterial> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public TrimMaterialFeature(FeatureParentInterface parent, Optional<TrimMaterial> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -99,7 +96,7 @@ public class TrimMaterialFeature extends FeatureAbstract<Optional<TrimMaterial>,
 
     @Override
     public TrimMaterialFeature clone(FeatureParentInterface newParent) {
-        TrimMaterialFeature clone = new TrimMaterialFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        TrimMaterialFeature clone = new TrimMaterialFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

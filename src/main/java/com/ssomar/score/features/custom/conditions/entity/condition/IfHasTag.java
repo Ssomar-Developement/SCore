@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class IfHasTag extends EntityConditionFeature<ListUncoloredStringFeature,
 
 
     public IfHasTag(FeatureParentInterface parent) {
-        super(parent, "ifHasTag", "If has tag", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifHasTag);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class IfHasTag extends EntityConditionFeature<ListUncoloredStringFeature,
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), "ifHasTag", new ArrayList<>(), "If has tag", new String[]{"&7&oThe whitelisted tags"}, Material.ANVIL, false, true, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifHasTag, true, Optional.empty()));
     }
 
     @Override

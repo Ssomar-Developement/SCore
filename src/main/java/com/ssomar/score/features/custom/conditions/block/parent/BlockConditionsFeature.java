@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.conditions.block.parent;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
@@ -12,7 +13,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -31,8 +31,8 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
 
     private List<BlockConditionFeature> conditions;
 
-    public BlockConditionsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription) {
-        super(parent, name, editorName, editorDescription, Material.ANVIL, false);
+    public BlockConditionsFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
     }
 
@@ -143,7 +143,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
 
     @Override
     public BlockConditionsFeature clone(FeatureParentInterface newParent) {
-        BlockConditionsFeature clone = new BlockConditionsFeature(newParent, getName(), getEditorName(), getEditorDescription());
+        BlockConditionsFeature clone = new BlockConditionsFeature(newParent, getFeatureSettings());
         List<BlockConditionFeature> clones = new ArrayList<>();
         for (BlockConditionFeature condition : conditions) {
             clones.add((BlockConditionFeature) condition.clone(clone));

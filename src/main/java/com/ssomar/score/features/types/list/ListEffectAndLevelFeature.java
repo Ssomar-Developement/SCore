@@ -5,6 +5,7 @@ import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -12,7 +13,6 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -27,8 +27,8 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
     private Map<PotionEffectType, Integer> defaultValue;
     private boolean notSaveIfEqualsToDefaultValue;
 
-    public ListEffectAndLevelFeature(FeatureParentInterface parent, String name, Map<PotionEffectType, Integer> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ListEffectAndLevelFeature(FeatureParentInterface parent, Map<PotionEffectType, Integer> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
@@ -99,7 +99,7 @@ public class ListEffectAndLevelFeature extends FeatureAbstract<Map<PotionEffectT
 
     @Override
     public ListEffectAndLevelFeature clone(FeatureParentInterface newParent) {
-        ListEffectAndLevelFeature clone = new ListEffectAndLevelFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListEffectAndLevelFeature clone = new ListEffectAndLevelFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValue(getValues());
         return clone;
     }

@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.AbstractHorseInventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -12,12 +12,12 @@ import org.bukkit.inventory.InventoryHolder;
 public class IfNotHasSaddle extends EntityConditionFeature<BooleanFeature, IfNotHasSaddle> {
 
     public IfNotHasSaddle(FeatureParentInterface parent) {
-        super(parent, "ifNotHasSaddle", "If not has  Saddle", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotHasSaddle);
     }
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifNotHasSaddle", false, "If not has Saddle", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotHasSaddle, true));
     }
 
     @Override

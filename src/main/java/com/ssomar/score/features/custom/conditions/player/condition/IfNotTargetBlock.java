@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListMaterialFeature;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class IfNotTargetBlock extends PlayerConditionFeature<ListMaterialFeature, IfNotTargetBlock> {
 
     public IfNotTargetBlock(FeatureParentInterface parent) {
-        super(parent, "ifNotTargetBlock", "If not target block", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotTargetBlock);
     }
 
     @Override
@@ -40,9 +41,10 @@ public class IfNotTargetBlock extends PlayerConditionFeature<ListMaterialFeature
         return this;
     }
 
+
     @Override
     public void subReset() {
-        setCondition(new ListMaterialFeature(getParent(), "ifNotTargetBlock", new ArrayList<>(), "If not target block", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new ListMaterialFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifNotTargetBlock, true));
     }
 
     @Override

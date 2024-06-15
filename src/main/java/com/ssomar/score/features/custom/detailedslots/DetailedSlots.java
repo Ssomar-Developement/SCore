@@ -2,12 +2,12 @@ package com.ssomar.score.features.custom.detailedslots;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
     private List<Integer> slots;
 
     public DetailedSlots(FeatureParentInterface parent) {
-        super(parent, "detailedSlots", "Detailed Slots", new String[]{"&7&oThe slots where the", "&7&oactivator will work"}, Material.ARMOR_STAND, false);
+        super(parent, FeatureSettingsSCore.detailedSlots);
         reset();
     }
 

@@ -2,9 +2,7 @@ package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.configs.messages.MessageMain;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -17,7 +15,6 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -33,7 +30,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeature, NewCooldownFeature, NewCooldownFeatureEditor, NewCooldownFeatureEditorManager> {
+public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, CooldownFeature, CooldownFeatureEditor, CooldownFeatureEditorManager> {
 
     /* Cooldowns / delay */
     private IntegerFeature cooldown;
@@ -50,8 +47,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
 
     private boolean isPremium;
 
-    public NewCooldownFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, SPlugin sPlugin, boolean enableCooldownForOp) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public CooldownFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, SPlugin sPlugin, boolean enableCooldownForOp) {
+        super(parent, featureSettings);
         this.sPlugin = sPlugin;
         this.isPremium = !sPlugin.isLotOfWork();
         if (getParent() instanceof SActivator) {
@@ -178,8 +175,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     }
 
     @Override
-    public NewCooldownFeature clone(FeatureParentInterface newParent) {
-        NewCooldownFeature clone = new NewCooldownFeature(newParent, getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), getSPlugin(), isEnableCooldownForOp());
+    public CooldownFeature clone(FeatureParentInterface newParent) {
+        CooldownFeature clone = new CooldownFeature(newParent, getFeatureSettings(), getSPlugin(), isEnableCooldownForOp());
         clone.setCooldown(cooldown.clone(clone));
         clone.setDisplayCooldownMessage(displayCooldownMessage.clone(clone));
         clone.setCancelEventIfInCooldown(cancelEventIfInCooldown.clone(clone));
@@ -205,12 +202,12 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     }
 
     @Override
-    public NewCooldownFeature getValue() {
+    public CooldownFeature getValue() {
         return this;
     }
 
     @Override
-    public NewCooldownFeature initItemParentEditor(GUI gui, int slot) {
+    public CooldownFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 6] = GUI.CLICK_HERE_TO_CHANGE;
@@ -245,13 +242,13 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
 
     @Override
     public void reset() {
-        this.cooldown = new IntegerFeature(this, "cooldown", Optional.of(0), "Cooldown", new String[]{"&7&oThe cooldown"}, GUI.CLOCK, false);
-        this.isCooldownInTicks = new BooleanFeature(this, "isCooldownInTicks", false, "Cooldown in ticks", new String[]{"&7&oIs the cooldown in ticks?"}, Material.LEVER, false, false);
-        this.cooldownMessage = new ColoredStringFeature(this, "cooldownMsg", Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), "Cooldown Message", new String[]{"&7&oThe cooldown message"}, GUI.WRITABLE_BOOK, false, false);
-        this.displayCooldownMessage = new BooleanFeature(this, "displayCooldownMessage", true, "Display Cooldown Message", new String[]{"&7&oDisplay the cooldown message"}, Material.LEVER, false, false);
-        this.cancelEventIfInCooldown = new BooleanFeature(this, "cancelEventIfInCooldown", false, "Cancel Event If In Cooldown", new String[]{"&7&oCancel the event if the player is in cooldown?"}, Material.LEVER, false, false);
-        this.pauseWhenOffline = new BooleanFeature(this, "pauseWhenOffline", false, "Pause When Offline", new String[]{"&7&oPause the cooldown when the player is offline?"}, Material.LEVER, false, false);
-        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
+        this.cooldown = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.cooldown);
+        this.isCooldownInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.isCooldownInTicks, false);
+        this.cooldownMessage = new ColoredStringFeature(this, Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), FeatureSettingsSCore.cooldownMsg, false);
+        this.displayCooldownMessage = new BooleanFeature(this,  true, FeatureSettingsSCore.displayCooldownMessage, false);
+        this.cancelEventIfInCooldown = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfInCooldown, false);
+        this.pauseWhenOffline = new BooleanFeature(this, false, FeatureSettingsSCore.pauseWhenOffline, false);
+        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, FeatureSettingsSCore.pausePlaceholdersConditions);
     }
 
     @Override
@@ -277,8 +274,8 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
     @Override
     public void reload() {
         for (FeatureInterface feature : getParent().getFeatures()) {
-            if (feature instanceof NewCooldownFeature && feature.getName().equals(getName())) {
-                NewCooldownFeature coolodwn = (NewCooldownFeature) feature;
+            if (feature instanceof CooldownFeature && feature.getName().equals(getName())) {
+                CooldownFeature coolodwn = (CooldownFeature) feature;
                 coolodwn.setCooldown(this.cooldown);
                 coolodwn.setIsCooldownInTicks(this.isCooldownInTicks);
                 coolodwn.setCooldownMessage(this.cooldownMessage);
@@ -298,6 +295,6 @@ public class NewCooldownFeature extends FeatureWithHisOwnEditor<NewCooldownFeatu
 
     @Override
     public void openEditor(@NotNull Player player) {
-        NewCooldownFeatureEditorManager.getInstance().startEditing(player, this);
+        CooldownFeatureEditorManager.getInstance().startEditing(player, this);
     }
 }

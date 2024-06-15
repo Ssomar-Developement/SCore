@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.ifhas.executableitems.group.HasExecutableItemGroupFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class IfHasNotExecutableItems extends PlayerConditionFeature<HasExecutableItemGroupFeature, IfHasNotExecutableItems> {
 
     public IfHasNotExecutableItems(FeatureParentInterface parent) {
-        super(parent, "ifHasNotExecutableItems", "If has not Executableitems", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifHasNotExecutableItems);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class IfHasNotExecutableItems extends PlayerConditionFeature<HasExecutabl
 
     @Override
     public void subReset() {
-        setCondition(new HasExecutableItemGroupFeature(getParent(), "ifHasNotExecutableItems", "If has not Executableitems", new String[]{}, Material.DIAMOND, false, true));
+        setCondition(new HasExecutableItemGroupFeature(getParent(), FeatureSettingsSCore.ifHasNotExecutableItems, true));
     }
 
     @Override

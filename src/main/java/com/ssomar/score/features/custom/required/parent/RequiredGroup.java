@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.required.parent;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeature;
@@ -16,7 +17,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -41,7 +41,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     private RequiredMagicGroupFeature requiredMagics;
 
     public RequiredGroup(FeatureParentInterface parent) {
-        super(parent, "requiredGroup", "Required Things", new String[]{"&7&oRequired things"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.requiredGroups);
         reset();
     }
 

@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.ifhas.items.group.HasItemGroupFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class IfHasItems extends PlayerConditionFeature<HasItemGroupFeature, IfHasItems> {
 
     public IfHasItems(FeatureParentInterface parent) {
-        super(parent, "ifHasItems", "If has items", new String[]{}, Material.ANVIL, false);
+        super(parent,  FeatureSettingsSCore.ifHasItems);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class IfHasItems extends PlayerConditionFeature<HasItemGroupFeature, IfHa
 
     @Override
     public void subReset() {
-        setCondition(new HasItemGroupFeature(getParent(), "ifHasItems", "If has items", new String[]{}, Material.STONE, false, true));
+        setCondition(new HasItemGroupFeature(getParent(), FeatureSettingsSCore.ifHasItems, true));
     }
 
     @Override

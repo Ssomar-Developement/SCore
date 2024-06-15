@@ -9,6 +9,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.custom.commands.CommandsAbstractFeature;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
@@ -20,7 +21,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -32,8 +32,8 @@ public class BlockCommandsFeature extends CommandsAbstractFeature<List<String>, 
 
     private List<String> value;
 
-    public BlockCommandsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public BlockCommandsFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
     }
 
@@ -89,7 +89,7 @@ public class BlockCommandsFeature extends CommandsAbstractFeature<List<String>, 
 
     @Override
     public BlockCommandsFeature clone(FeatureParentInterface newParent) {
-        BlockCommandsFeature clone = new BlockCommandsFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        BlockCommandsFeature clone = new BlockCommandsFeature(newParent, getFeatureSettings());
         clone.setValue(getValue());
         return clone;
     }

@@ -31,7 +31,7 @@ public interface FeatureInterface<T, Y extends FeatureInterface> {
 
     void reset();
 
-    boolean requirePremium();
+    boolean isRequirePremium();
 
     Y clone(FeatureParentInterface newParent);
 }

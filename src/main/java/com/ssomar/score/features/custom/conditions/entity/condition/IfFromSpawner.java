@@ -1,21 +1,21 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
 public class IfFromSpawner extends EntityConditionFeature<BooleanFeature, IfFromSpawner> {
 
     public IfFromSpawner(FeatureParentInterface parent) {
-        super(parent, "ifFromSpawner", "If from spawner", new String[]{}, Material.ANVIL, false);
+        super(parent,  FeatureSettingsSCore.ifFromSpawner);
     }
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifFromSpawner", false, "If from spawner", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFromSpawner, true));
     }
 
     @Override

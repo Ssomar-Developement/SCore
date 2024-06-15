@@ -3,12 +3,12 @@ package com.ssomar.score.features.types.list;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -18,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListInventoryTypeFeature extends ListFeatureAbstract<InventoryType, ListInventoryTypeFeature> {
 
-    public ListInventoryTypeFeature(FeatureParentInterface parent, String name, List<InventoryType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, "List of InventoryType", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListInventoryTypeFeature(FeatureParentInterface parent, List<InventoryType> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent,"List of InventoryType", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
@@ -53,7 +53,7 @@ public class ListInventoryTypeFeature extends ListFeatureAbstract<InventoryType,
 
     @Override
     public ListInventoryTypeFeature clone(FeatureParentInterface newParent) {
-        ListInventoryTypeFeature clone = new ListInventoryTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListInventoryTypeFeature clone = new ListInventoryTypeFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

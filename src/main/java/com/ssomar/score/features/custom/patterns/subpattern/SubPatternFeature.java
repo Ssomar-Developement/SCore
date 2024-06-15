@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.patterns.subpattern;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.ObjectFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -9,7 +10,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,15 +29,15 @@ public class SubPatternFeature extends FeatureWithHisOwnEditor<SubPatternFeature
     private String id;
 
     public SubPatternFeature(FeatureParentInterface parent, String id) {
-        super(parent, "subPattern", "Sub Pattern", new String[]{"&7&oA sub pattern with its options"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.subPattern);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.string = new UncoloredStringFeature(this, "string", Optional.empty(), "String", new String[]{"&7&oA string"}, Material.PAPER, false, false);
-        this.object = new ObjectFeature(this, "object", "Object", new String[]{"&7&oAn object"}, Material.PAPER, false);
+        this.string = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.string, false);
+        this.object = new ObjectFeature(this, FeatureSettingsSCore.object);
     }
 
     @Override

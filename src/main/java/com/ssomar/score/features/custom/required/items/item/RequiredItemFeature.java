@@ -6,6 +6,7 @@ import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -41,16 +42,16 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     private String id;
 
     public RequiredItemFeature(FeatureParentInterface parent, String id) {
-        super(parent, "RequiredItem", "Required Item", new String[]{"&7&oA required item"}, Material.STONE, false);
+        super(parent, FeatureSettingsSCore.requiredItem);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.material = new MaterialFeature(this, "material", Optional.of(Material.STONE), "Material", new String[]{"&7&oThe material"}, Material.STONE, false);
-        this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
-        this.notExecutableItem = new BooleanFeature(this, "notExecutableItem", false, "Not Executable Item", new String[]{"&7&oIs this item not an executable item?"}, Material.LEVER, false, false);
+        this.material = new MaterialFeature(this, Optional.of(Material.STONE), FeatureSettingsSCore.material);
+        this.amount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.amount);
+        this.notExecutableItem = new BooleanFeature(this,  false, FeatureSettingsSCore.notExecutableItem, false);
     }
 
     @Override

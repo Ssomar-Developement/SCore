@@ -1,15 +1,11 @@
 package com.ssomar.score.features.custom.ifhas.items.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.ifhas.items.attribute.HasItemFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,15 +25,15 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
     private boolean notSaveIfNoValue;
     private String multipleChoicesID;
 
-    public HasItemGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] description, Material material, Boolean requirePremium, boolean notSaveIfNoValue) {
-        super(parent, name, editorName, description, material, requirePremium);
+    public HasItemGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean notSaveIfNoValue) {
+        super(parent, featureSettings);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }
 
     /* Multiple choices construtor */
     public HasItemGroupFeature(FeatureParentInterface parent, String multipleChoicesID) {
-        super(parent, "multi-choices", "Multi-choices", new String[]{}, Material.DIAMOND, false);
+        super(parent, FeatureSettingsSCore.multiChoices);
         this.notSaveIfNoValue = true;
         this.multipleChoicesID = multipleChoicesID;
         reset();
@@ -186,7 +182,7 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
 
     @Override
     public HasItemGroupFeature clone(FeatureParentInterface newParent) {
-        HasItemGroupFeature eF = new HasItemGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfNoValue());
+        HasItemGroupFeature eF = new HasItemGroupFeature(newParent, getFeatureSettings(), isNotSaveIfNoValue());
         HashMap<String, FeatureInterface> newHasExecutableItems = new HashMap<>();
         for (String key : hasItems.keySet()) {
             newHasExecutableItems.put(key, hasItems.get(key).clone(eF));

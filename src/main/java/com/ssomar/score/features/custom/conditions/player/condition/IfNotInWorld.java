@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListWorldFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class IfNotInWorld extends PlayerConditionFeature<ListWorldFeature, IfNotInWorld> {
 
     public IfNotInWorld(FeatureParentInterface parent) {
-        super(parent, "ifNotInWorld", "If not in world", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotInWorld);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class IfNotInWorld extends PlayerConditionFeature<ListWorldFeature, IfNot
 
     @Override
     public void subReset() {
-        setCondition(new ListWorldFeature(getParent(), "ifNotInWorld", new ArrayList<>(), "If not in world", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new ListWorldFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifNotInWorld, true));
     }
 
     @Override

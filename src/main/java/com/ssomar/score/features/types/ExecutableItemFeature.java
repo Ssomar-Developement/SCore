@@ -7,13 +7,13 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +27,8 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
 
     private Optional<String> value;
 
-    public ExecutableItemFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ExecutableItemFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.value = Optional.empty();
     }
 
@@ -86,7 +86,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
 
     @Override
     public ExecutableItemFeature clone(FeatureParentInterface newParent) {
-        ExecutableItemFeature clone = new ExecutableItemFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        ExecutableItemFeature clone = new ExecutableItemFeature(newParent, this.getFeatureSettings());
         clone.value = value;
         return clone;
     }

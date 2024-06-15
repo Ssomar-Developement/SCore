@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.loop;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -9,7 +10,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,14 +28,14 @@ public class LoopFeatures extends FeatureWithHisOwnEditor<LoopFeatures, LoopFeat
     private BooleanFeature delayInTick;
 
     public LoopFeatures(FeatureParentInterface parent) {
-        super(parent, "loop", "Loop features", new String[]{"&7&oSpecific settings", "&7&ofor the loop activator"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.loop);
         reset();
     }
 
     @Override
     public void reset() {
-        this.delay = new IntegerFeature(this, "delay", Optional.of(1), "Delay", new String[]{"&7&oDelay between each activation", "&cMin: &65 ticks"}, GUI.CLOCK, false);
-        this.delayInTick = new BooleanFeature(this, "delayInTick", false, "Delay in tick", new String[]{"&7&oIs the delay in ticks ?"}, Material.LEVER, false, false);
+        this.delay = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.delay);
+        this.delayInTick = new BooleanFeature(this,  false, FeatureSettingsSCore.delayInTick, false);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListEntityTypeFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class IfPlayerMounts extends PlayerConditionFeature<ListEntityTypeFeature, IfPlayerMounts> {
 
     public IfPlayerMounts(FeatureParentInterface parent) {
-        super(parent, "ifPlayerMounts", "If player mounts", new String[]{}, Material.ANVIL, false);
+        super(parent,  FeatureSettingsSCore.ifPlayerMounts);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class IfPlayerMounts extends PlayerConditionFeature<ListEntityTypeFeature
 
     @Override
     public void subReset() {
-        setCondition(new ListEntityTypeFeature(this, "ifPlayerMounts", new ArrayList<>(), "If player mounts", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new ListEntityTypeFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifPlayerMounts, true));
     }
 
     @Override

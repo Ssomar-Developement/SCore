@@ -2,17 +2,17 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.usedapi.*;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeature, IfPlayerMustBeOnHisClaim> {
 
     public IfPlayerMustBeOnHisClaim(FeatureParentInterface parent) {
-        super(parent, "ifPlayerMustBeOnHisClaim", "If player must be on his claim", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifPlayerMustBeOnHisClaim);
     }
 
     @Override
@@ -69,9 +69,10 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
         return this;
     }
 
+
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifPlayerMustBeOnHisClaim", false, "If player must be on his claim", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisClaim, true));
     }
 
     @Override

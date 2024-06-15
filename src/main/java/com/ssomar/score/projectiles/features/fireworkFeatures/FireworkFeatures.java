@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features.fireworkFeatures;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.FireworkEffectTypeFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -9,7 +10,6 @@ import com.ssomar.score.features.types.list.ListBukkitColorFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.FireworkEffect;
@@ -22,7 +22,9 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -34,16 +36,16 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
     private FireworkEffectTypeFeature type;
 
     public FireworkFeatures(FeatureParentInterface parent) {
-        super(parent, "fireworkFeatures", "Firework Features", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")), false);
+        super(parent, FeatureSettingsSCore.fireworkFeatures);
         reset();
     }
 
     @Override
     public void reset() {
-        this.lifeTime = new IntegerFeature(this, "lifeTime", Optional.empty(), "Life time", new String[]{"&7&oThe life time of the firework in ticks"}, GUI.CLOCK, false);
-        this.colors = new ListBukkitColorFeature(this, "colors", new ArrayList<>(), "Colors", new String[]{"&7&oThe colors of the firework"}, GUI.CLOCK, false, false, Optional.empty());
-        this.fadeColors = new ListBukkitColorFeature(this, "fadeColors", new ArrayList<>(), "Fade Colors", new String[]{"&7&oThe fade colors of the firework"}, GUI.CLOCK, false, false, Optional.empty());
-        this.type = new FireworkEffectTypeFeature(this, "type", Optional.empty(), "Type", new String[]{"&7&oThe type of the firework"}, GUI.CLOCK, false);
+        this.lifeTime = new IntegerFeature(this, Optional.empty(), FeatureSettingsSCore.lifeTime);
+        this.colors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.colors, false, Optional.empty());
+        this.fadeColors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.fadeColors, false, Optional.empty());
+        this.type = new FireworkEffectTypeFeature(this, Optional.empty(), FeatureSettingsSCore.type);
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

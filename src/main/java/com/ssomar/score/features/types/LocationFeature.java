@@ -2,12 +2,12 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ public class LocationFeature extends FeatureAbstract<Optional<Location>, Locatio
     private Optional<Location> value;
     private Optional<Location> defaultValue;
 
-    public LocationFeature(FeatureParentInterface parent, String name, Optional<Location> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public LocationFeature(FeatureParentInterface parent, Optional<Location> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -68,7 +68,7 @@ public class LocationFeature extends FeatureAbstract<Optional<Location>, Locatio
 
     @Override
     public LocationFeature clone(FeatureParentInterface newParent) {
-        LocationFeature clone = new LocationFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        LocationFeature clone = new LocationFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

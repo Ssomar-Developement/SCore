@@ -18,11 +18,9 @@ import java.util.Optional;
 @Getter
 public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y>, Serializable {
 
-    private final String name;
-    private final String editorName;
-    private final String[] editorDescription;
-    private final Material editorMaterial;
-    private final boolean requirePremium;
+
+    private FeatureSettingsInterface featureSettings;
+
     @Setter
     private transient FeatureParentInterface parent;
     @Setter
@@ -30,27 +28,47 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
 
     private boolean saveLaunched;
 
-    public FeatureAbstract(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public FeatureAbstract(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
         this.parent = parent;
         if (parent == null && (this instanceof FeatureParentInterface)) {
             this.parent = (FeatureParentInterface) this;
         }
-        this.name = name;
-        this.editorName = editorName;
-        this.editorDescription = editorDescription;
-        this.editorMaterial = editorMaterial;
-        this.requirePremium = requirePremium;
+        this.featureSettings = featureSettings;
         if (parent != null) {
             this.isPremium = parent.isPremium();
         } else this.isPremium = true;
     }
+
+
+    @Override
+    public String getName() {
+        return featureSettings.getName();
+    }
+
+    @Override
+    public String getEditorName() {
+        return featureSettings.getEditorName();
+    }
+
+    public String[] getEditorDescription() {
+        return featureSettings.getEditorDescription();
+    }
+
+    public Material getEditorMaterial() {
+        return featureSettings.getEditorMaterial();
+    }
+
+    public boolean isRequirePremium() {
+        return featureSettings.isRequirePremium();
+    }
+
 
     public static void space(Player p) {
         p.sendMessage("");
     }
 
     public <M> FeatureReturnCheckPremium<M> checkPremium(String featureTypeName, M value, Optional<M> defaultValue, boolean isPremiumLoading) {
-        if (requirePremium() && !isPremiumLoading) {
+        if (this.isRequirePremium() && !isPremiumLoading) {
             if (defaultValue.isPresent()) {
                 if (!defaultValue.get().equals(value)) {
                     return new FeatureReturnCheckPremium<>("&cERROR, Couldn't load the " + featureTypeName + " value of " + this.getName() + " from config, value: " + value + " &7&o" + getParent().getParentInfo() + " &6>> Because it's a premium feature ! (reset to default: " + defaultValue.get() + ")", defaultValue.get());
@@ -64,7 +82,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
 
     @Override
     public boolean isTheFeatureClickedParentEditor(String featureClicked) {
-        return featureClicked.equals(editorName);
+        return featureClicked.equals(getEditorName());
     }
 
     public void initAndUpdateItemParentEditor(GUI gui, int slot) {
@@ -119,11 +137,6 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean requirePremium() {
-        return requirePremium;
     }
 
     public abstract Y clone(FeatureParentInterface newParent);

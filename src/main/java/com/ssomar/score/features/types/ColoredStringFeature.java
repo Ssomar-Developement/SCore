@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -14,7 +11,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -27,25 +23,25 @@ import java.util.Optional;
 @Setter
 public class ColoredStringFeature extends FeatureAbstract<Optional<String>, ColoredStringFeature> implements FeatureRequireOneMessageInEditor, Serializable {
 
-    private Optional<String> value;
+    private String value;
     private Optional<String> defaultValue;
     private boolean notSaveIfEqualsToDefaultValue;
 
-    public ColoredStringFeature(FeatureParentInterface parent, String name, Optional<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ColoredStringFeature(FeatureParentInterface parent, Optional<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
-        this.value = defaultValue;
+        this.value = defaultValue.orElse(null);
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
     }
 
     public static ColoredStringFeature buildNull(){
-        return new ColoredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
+        return new ColoredStringFeature(null, Optional.empty(), null, false);
     }
 
     public static ColoredStringFeature buildNull(String value){
-        ColoredStringFeature c = new ColoredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
-        c.setValue(Optional.of(value));
+        ColoredStringFeature c = new ColoredStringFeature(null, Optional.empty(), null, false);
+        c.setValue(value);
         return c;
     }
 
@@ -56,14 +52,14 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
         if (valueStr.equals("<<NULL>>")) {
             if (defaultValue.isPresent()) {
                 valueStr = defaultValue.get();
-                this.value = defaultValue;
+                this.value = valueStr;
             } else {
                 valueStr = "";
-                this.value = Optional.empty();
+                this.value = null;
             }
-        } else value = Optional.of(valueStr);
+        } else value = valueStr;
         FeatureReturnCheckPremium<String> checkPremium = checkPremium("Colored String", valueStr, defaultValue, isPremiumLoading);
-        if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+        if (checkPremium.isHasError()) value = checkPremium.getNewValue();
         return errors;
     }
 
@@ -85,8 +81,8 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public Optional<String> getValue() {
-        if (value.isPresent()) {
-            return value;
+        if (value != null) {
+            return Optional.of(value);
         } else {
             return defaultValue;
         }
@@ -128,14 +124,14 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public ColoredStringFeature clone(FeatureParentInterface newParent) {
-        ColoredStringFeature clone = new ColoredStringFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), notSaveIfEqualsToDefaultValue);
-        clone.setValue(getValue());
+        ColoredStringFeature clone = new ColoredStringFeature(newParent, getDefaultValue(), getFeatureSettings(), notSaveIfEqualsToDefaultValue);
+        clone.setValue(getValue().orElse(null));
         return clone;
     }
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        this.value = defaultValue.orElse(null);
     }
 
     @Override
@@ -178,16 +174,16 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
-        if (message.contains("EMPTY STRING")) value = Optional.of("");
-        else if (message.isEmpty()) value = Optional.empty();
-        else value = Optional.of(message);
+        if (message.contains("EMPTY STRING")) value = "";
+        else if (message.isEmpty()) value = null;
+        else value = message;
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
     @Override
     public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
-        this.value = Optional.of("");
+        this.value = "";
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }

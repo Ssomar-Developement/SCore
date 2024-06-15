@@ -1,17 +1,13 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -29,8 +25,8 @@ public class BlockFaceFeature extends FeatureAbstract<Optional<BlockFace>, Block
     private Optional<BlockFace> defaultValue;
     private Set<BlockFace> whitelist;
 
-    public BlockFaceFeature(FeatureParentInterface parent, String name, Optional<BlockFace> defaultValue, @Nullable Set<BlockFace> whitelist, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public BlockFaceFeature(FeatureParentInterface parent, Optional<BlockFace> defaultValue, @Nullable Set<BlockFace> whitelist, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
         this.whitelist = whitelist;
@@ -92,7 +88,7 @@ public class BlockFaceFeature extends FeatureAbstract<Optional<BlockFace>, Block
 
     @Override
     public BlockFaceFeature clone(FeatureParentInterface newParent) {
-        BlockFaceFeature clone = new BlockFaceFeature(newParent, this.getName(), getDefaultValue(), getWhitelist(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        BlockFaceFeature clone = new BlockFaceFeature(newParent, getDefaultValue(), getWhitelist(),getFeatureSettings());
         clone.value = value;
         return clone;
     }

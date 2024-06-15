@@ -1,9 +1,6 @@
 package com.ssomar.score.features.custom.required.items.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.custom.required.items.item.RequiredItemFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -13,7 +10,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -34,15 +30,15 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     private BooleanFeature cancelEventIfError;
 
     public RequiredItemGroupFeature(FeatureParentInterface parent) {
-        super(parent, "requiredItems", "Required Items", new String[]{"&7&oThe required items"}, Material.DIAMOND, true);
+        super(parent, FeatureSettingsSCore.requiredItems);
         reset();
     }
 
     @Override
     public void reset() {
         this.requiredItems = new HashMap<>();
-        this.errorMessage = new ColoredStringFeature(this, "errorMessage", Optional.of("&4&l>> &cError you don't have the required items"), "Error message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false, true);
-        this.cancelEventIfError = new BooleanFeature(this, "cancelEventIfError", false, "Cancel event if error", new String[]{"&7&oCancel the event if", "&7&othe player don't have", "&7&othe required items"}, Material.LEVER, false, true);
+        this.errorMessage = new ColoredStringFeature(this, Optional.of("&4&l>> &cError you don't have the required items"), FeatureSettingsSCore.errorMessage, true);
+        this.cancelEventIfError = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfError, true);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     public RequiredItemGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oRequiredItem(s) added: &e" + requiredItems.size();
@@ -174,7 +170,7 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
     @Override
     public void openEditor(@NotNull Player player) {
-        if (!isPremium() && requirePremium()) return;
+        if (!isPremium() && this.isRequirePremium()) return;
         RequiredItemGroupFeatureEditorManager.getInstance().startEditing(player, this);
     }
 

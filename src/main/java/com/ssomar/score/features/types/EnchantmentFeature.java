@@ -2,10 +2,7 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -13,7 +10,6 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -30,8 +26,8 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     private Optional<Enchantment> value;
     private Optional<Enchantment> defaultValue;
 
-    public EnchantmentFeature(FeatureParentInterface parent, String name, Optional<Enchantment> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public EnchantmentFeature(FeatureParentInterface parent, Optional<Enchantment> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         reset();
     }
@@ -108,7 +104,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
 
     @Override
     public EnchantmentFeature clone(FeatureParentInterface newParent) {
-        EnchantmentFeature clone = new EnchantmentFeature(newParent, this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        EnchantmentFeature clone = new EnchantmentFeature(newParent,defaultValue, getFeatureSettings());
         clone.value = value;
         return clone;
     }

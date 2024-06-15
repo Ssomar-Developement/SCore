@@ -2,11 +2,11 @@ package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.usedapi.ShopGUIPlusTool;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class IfContainerContainsSellableItem extends BlockConditionFeature<BooleanFeature, IfContainerContainsSellableItem> {
 
     public IfContainerContainsSellableItem(FeatureParentInterface parent) {
-        super(parent, "ifContainerContainsSellableItem", "If container contains sellable item", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifContainerContainsSellableItems);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class IfContainerContainsSellableItem extends BlockConditionFeature<Boole
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifContainerContainsSellableItem", false, "If container contains sellable item", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifContainerContainsSellableItems, true));
     }
 
     @Override

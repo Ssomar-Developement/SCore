@@ -2,10 +2,7 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireClicksOrOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
@@ -35,15 +32,15 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     private Optional<Material> defaultValue;
     private boolean onlyItemMaterial;
 
-    public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public MaterialFeature(FeatureParentInterface parent, Optional<Material> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
         this.onlyItemMaterial = false;
     }
 
-    public MaterialFeature(FeatureParentInterface parent, String name, Optional<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean onlyItemMaterial) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public MaterialFeature(FeatureParentInterface parent, Optional<Material> defaultValue, FeatureSettingsInterface featureSettings, boolean onlyItemMaterial) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
         this.onlyItemMaterial = onlyItemMaterial;
@@ -102,7 +99,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
 
     @Override
     public MaterialFeature clone(FeatureParentInterface newParent) {
-        MaterialFeature clone = new MaterialFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        MaterialFeature clone = new MaterialFeature(newParent, getDefaultValue(), getFeatureSettings(), isOnlyItemMaterial());
         clone.value = value;
         return clone;
     }

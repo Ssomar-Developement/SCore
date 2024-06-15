@@ -4,6 +4,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.MultiverseAPI;
@@ -11,7 +12,6 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -24,8 +24,8 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
 
     private static final boolean DEBUG = false;
 
-    public ListWorldFeature(FeatureParentInterface parent, String name, List<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, "List of Worlds", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListWorldFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, "List of Worlds", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
@@ -51,7 +51,7 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
 
     @Override
     public ListWorldFeature clone(FeatureParentInterface newParent) {
-        ListWorldFeature clone = new ListWorldFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListWorldFeature clone = new ListWorldFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

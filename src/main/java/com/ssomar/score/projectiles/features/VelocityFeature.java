@@ -2,21 +2,20 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.DoubleFeature;
-import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ShulkerBullet;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 public class VelocityFeature extends DoubleFeature implements SProjectileFeatureInterface {
 
     public VelocityFeature(FeatureParentInterface parent) {
-        super(parent, "velocity", Optional.empty(), "Velocity", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET", "ELYTRA")), false);
+        super(parent, Optional.empty(), FeatureSettingsSCore.velocity);
     }
 
     @Override

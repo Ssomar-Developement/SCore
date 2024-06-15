@@ -1,15 +1,11 @@
 package com.ssomar.score.features.custom.patterns.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.patterns.subgroup.PatternFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,7 +26,7 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
     private Map<String, PatternFeature> patterns;
 
     public PatternsGroupFeature(FeatureParentInterface parent) {
-        super(parent, "patterns", "Patterns", new String[]{"&7&oThe patterns"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.patterns);
         reset();
     }
 

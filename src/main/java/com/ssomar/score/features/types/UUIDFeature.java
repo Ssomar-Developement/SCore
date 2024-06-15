@@ -4,11 +4,11 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -22,8 +22,8 @@ public class UUIDFeature extends FeatureAbstract<UUID, UUIDFeature> implements F
 
     private UUID value;
 
-    public UUIDFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public UUIDFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.value = UUID.randomUUID();
     }
 
@@ -41,7 +41,7 @@ public class UUIDFeature extends FeatureAbstract<UUID, UUIDFeature> implements F
 
     @Override
     public UUIDFeature clone(FeatureParentInterface newParent) {
-        UUIDFeature clone = new UUIDFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        UUIDFeature clone = new UUIDFeature(newParent, this.getFeatureSettings());
         clone.setValue(value);
         return clone;
     }

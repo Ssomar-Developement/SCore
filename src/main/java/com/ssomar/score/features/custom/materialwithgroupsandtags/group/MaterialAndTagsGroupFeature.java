@@ -2,10 +2,7 @@ package com.ssomar.score.features.custom.materialwithgroupsandtags.group;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -36,8 +33,8 @@ public class MaterialAndTagsGroupFeature extends FeatureWithHisOwnEditor<Materia
     private boolean acceptBlocks;
     private boolean notSaveIfEmpty;
 
-    public MaterialAndTagsGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, boolean acceptAir, boolean acceptItems, boolean acceptBlocks, boolean notSaveIfEmpty) {
-        super(parent, name, editorName, editorDescription, Material.OBSIDIAN, false);
+    public MaterialAndTagsGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean acceptAir, boolean acceptItems, boolean acceptBlocks, boolean notSaveIfEmpty) {
+        super(parent, featureSettings);
         this.acceptAir = acceptAir;
         this.acceptItems = acceptItems;
         this.acceptBlocks = acceptBlocks;
@@ -111,7 +108,7 @@ public class MaterialAndTagsGroupFeature extends FeatureWithHisOwnEditor<Materia
 
     @Override
     public MaterialAndTagsGroupFeature clone(FeatureParentInterface newParent) {
-        MaterialAndTagsGroupFeature eF = new MaterialAndTagsGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), acceptAir, acceptItems, acceptBlocks, notSaveIfEmpty);
+        MaterialAndTagsGroupFeature eF = new MaterialAndTagsGroupFeature(newParent, getFeatureSettings(), acceptAir, acceptItems, acceptBlocks, notSaveIfEmpty);
         HashMap<String, MaterialAndTagsFeature> newMaterialAndTags = new HashMap<>();
         for (String key : materialAndTags.keySet()) {
             newMaterialAndTags.put(key, materialAndTags.get(key).clone(eF));

@@ -2,17 +2,15 @@ package com.ssomar.score.features.custom.givefirstjoin;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.SObjectBuildable;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -33,15 +31,15 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
     private IntegerFeature giveFirstJoinSlot;
 
     public GiveFirstJoinFeatures(FeatureParentInterface parent) {
-        super(parent, "giveFirstJoin", "Give first join features", TM.gA(Text.FEATURES_GIVEFIRSTJOIN_DESCRIPTION), Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.giveFirstJoinFeatures);
         reset();
     }
 
     @Override
     public void reset() {
-        this.giveFirstJoin = new BooleanFeature(getParent(), "giveFirstJoin", false, "Give first join", new String[]{"&7&oEnable the feature"}, Material.LEVER, false, false);
-        this.giveFirstJoinAmount = new IntegerFeature(getParent(), "giveFirstJoinAmount", Optional.of(1), "Amount", new String[]{"&7&oThe amount to give"}, GUI.CLOCK, false);
-        this.giveFirstJoinSlot = new IntegerFeature(getParent(), "giveFirstJoinSlot", Optional.of(0), "Slot", new String[]{"&7&oSlot between 0 and 8 includes"}, GUI.CLOCK, false);
+        this.giveFirstJoin = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.giveFirstJoin, false);
+        this.giveFirstJoinAmount = new IntegerFeature(getParent(), Optional.of(1), FeatureSettingsSCore.giveFirstJoinAmount);
+        this.giveFirstJoinSlot = new IntegerFeature(getParent(), Optional.of(0), FeatureSettingsSCore.giveFirstJoinSlot);
     }
 
     @Override

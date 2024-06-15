@@ -1,19 +1,18 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.utils.FixedMaterial;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 public class PickupFeature extends com.ssomar.score.features.types.PickupFeature implements SProjectileFeatureInterface {
 
     public PickupFeature(FeatureParentInterface parent) {
-        super(parent, "pickupStatus", Optional.of(AbstractArrow.PickupStatus.ALLOWED), "Pickup status", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("LEAD", "LEASH")), false);
+        super(parent, Optional.of(AbstractArrow.PickupStatus.ALLOWED), FeatureSettingsSCore.pickupStatus);
     }
 
     @Override

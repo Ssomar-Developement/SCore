@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.required.experience;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -9,11 +10,9 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -26,8 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ssomar.score.menu.GUI.WRITABLE_BOOK;
-
 @Getter
 @Setter
 public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperience, RequiredExperience, RequiredExperienceEditor, RequiredExperienceEditorManager> implements RequiredPlayerInterface {
@@ -37,7 +34,7 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
     private BooleanFeature cancelEventIfError;
 
     public RequiredExperience(FeatureParentInterface parent) {
-        super(parent, "requiredExperience", "Required Experience", new String[]{"&7&oRequired experience"}, FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), true);
+        super(parent, FeatureSettingsSCore.requiredExperience);
         reset();
     }
 
@@ -136,7 +133,7 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
     public RequiredExperience initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oRequired experience: &e" + experience.getValue().get();
@@ -162,14 +159,14 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
 
     @Override
     public void reset() {
-        this.experience = new IntegerFeature(getParent(), "requiredExperience", Optional.of(0), "Required Experience", new String[]{"&7&oRequired experience"}, FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), false);
-        this.errorMessage = new ColoredStringFeature(getParent(), "errorMessage", Optional.of("&4&l>> &cError you don't have the required experience"), "Error message", new String[]{"&7&oEdit the error message"}, WRITABLE_BOOK, false, true);
-        this.cancelEventIfError = new BooleanFeature(getParent(), "cancelEventIfError", false, "cancelEventIfInvalidRequiredExperience", new String[]{"&7&oCancel the vanilla event"}, Material.LEVER, false, true);
+        this.experience = new IntegerFeature(getParent(), Optional.of(0), FeatureSettingsSCore.requiredExperience);
+        this.errorMessage = new ColoredStringFeature(getParent(), Optional.of("&4&l>> &cError you don't have the required experience"), FeatureSettingsSCore.errorMessage, true);
+        this.cancelEventIfError = new BooleanFeature(getParent(), false, FeatureSettingsSCore.cancelEventIfNotValid, true);
     }
 
     @Override
     public void openEditor(Player player) {
-        if (!isPremium() && requirePremium()) return;
+        if (!isPremium() && this.isRequirePremium()) return;
         RequiredExperienceEditorManager.getInstance().startEditing(player, this);
     }
 

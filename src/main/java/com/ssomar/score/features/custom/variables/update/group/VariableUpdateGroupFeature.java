@@ -1,9 +1,6 @@
 package com.ssomar.score.features.custom.variables.update.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -26,7 +23,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
     private Map<String, VariableUpdateFeature> variablesUpdates;
 
     public VariableUpdateGroupFeature(FeatureParentInterface parent) {
-        super(parent, "variablesModification", "Variables", new String[]{"&7&oThe variables"}, GUI.WRITABLE_BOOK, false);
+        super(parent, FeatureSettingsSCore.variablesModification);
         reset();
     }
 

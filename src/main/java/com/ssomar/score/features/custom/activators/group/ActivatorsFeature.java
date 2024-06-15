@@ -1,18 +1,12 @@
 package com.ssomar.score.features.custom.activators.group;
 
 import com.ssomar.score.events.loop.LoopManager;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +25,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     private int premiumLimit = 1;
 
     public ActivatorsFeature(FeatureParentInterface parent, SActivator<?, ?, ?> builderInstance) {
-        super(parent, "activators", TM.g(Text.FEATURES_ACTIVATORS_NAME), TM.gA(Text.FEATURES_ACTIVATORS_DESCRIPTION), Material.BEACON, false);
+        super(parent, FeatureSettingsSCore.activators);
         this.builderInstance = builderInstance;
         reset();
     }
@@ -47,7 +41,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
         if (config.isConfigurationSection(this.getName())) {
             ConfigurationSection activatorsSection = config.getConfigurationSection(this.getName());
             for (String activatorID : activatorsSection.getKeys(false)) {
-                if (activators.size() >= premiumLimit && !isPremium()) {
+                if (activators.size() >= premiumLimit && !isPremiumLoading) {
                     error.add("&cERROR, Couldn't load the Activator of " + activatorID + " from config, &7&o" + getParent().getParentInfo() + " &6>> Because it requires the premium version to have more than 1 activator !");
                     return error;
                 }

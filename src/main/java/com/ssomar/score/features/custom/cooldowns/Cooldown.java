@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.sobject.SObject;
@@ -8,7 +9,6 @@ import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +48,7 @@ public class Cooldown {
         this.global = global;
         isNull = false;
         pauseWhenOffline = false;
-        pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(null, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
+        pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(null, FeatureSettingsSCore.pausePlaceholdersConditions);
         isPaused = false;
     }
 
@@ -62,7 +62,7 @@ public class Cooldown {
         this.global = global;
         isNull = false;
         pauseWhenOffline = false;
-        pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(null, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
+        pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(null, FeatureSettingsSCore.pausePlaceholdersConditions);
         isPaused = false;
     }
 
@@ -76,7 +76,7 @@ public class Cooldown {
         this.global = global;
         isNull = false;
         pauseWhenOffline = false;
-        pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(null, "pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false);
+        pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(null, FeatureSettingsSCore.pausePlaceholdersConditions);
         isPaused = false;
     }
 

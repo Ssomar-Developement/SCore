@@ -1,9 +1,6 @@
 package com.ssomar.score.features.custom.required.executableitems.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.custom.required.executableitems.item.RequiredExecutableItemFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -13,7 +10,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -34,15 +30,15 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
     private BooleanFeature cancelEventIfError;
 
     public RequiredExecutableItemGroupFeature(FeatureParentInterface parent) {
-        super(parent, "requiredExecutableItems", "Required ExecutableItems", new String[]{"&7&oThe required ExecutableItems"}, Material.DIAMOND_PICKAXE, true);
+        super(parent, FeatureSettingsSCore.requiredExecutableItems);
         reset();
     }
 
     @Override
     public void reset() {
         this.requiredExecutableItems = new HashMap<>();
-        this.errorMessage = new ColoredStringFeature(this, "errorMessage", Optional.of("&4&l>> &cError you don't have the required executableItems"), "Error message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK, false, true);
-        this.cancelEventIfError = new BooleanFeature(this, "cancelEventIfError", false, "Cancel event if error", new String[]{"&7&oCancel the event if", "&7&othe player don't have", "&7&othe required items"}, Material.LEVER, false, true);
+        this.errorMessage = new ColoredStringFeature(this, Optional.of("&4&l>> &cError you don't have the required executableItems"), FeatureSettingsSCore.errorMessage, true);
+        this.cancelEventIfError = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfError, true);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
     public RequiredExecutableItemGroupFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7&oRequiredExecutableItem(s) added: &e" + requiredExecutableItems.size();
@@ -166,7 +162,7 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
 
     @Override
     public void openEditor(@NotNull Player player) {
-        if (!isPremium() && requirePremium()) return;
+        if (!isPremium() && this.isRequirePremium()) return;
         RequiredExecutableItemGroupFeatureEditorManager.getInstance().startEditing(player, this);
     }
 

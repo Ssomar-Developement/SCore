@@ -3,11 +3,11 @@ package com.ssomar.score.features.types.list;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ public class ListIntegerFeature extends ListFeatureAbstract<Integer, ListInteger
 
     private Optional<List<Suggestion>> suggestions;
 
-    public ListIntegerFeature(FeatureParentInterface parent, String name, List<Integer> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, name, "List of Colored Strings", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListIntegerFeature(FeatureParentInterface parent, List<Integer> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
+        super(parent, "List of Colored Strings", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         this.suggestions = suggestions;
         reset();
     }
@@ -42,7 +42,7 @@ public class ListIntegerFeature extends ListFeatureAbstract<Integer, ListInteger
 
     @Override
     public ListIntegerFeature clone(FeatureParentInterface newParent) {
-        ListIntegerFeature clone = new ListIntegerFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue(), suggestions);
+        ListIntegerFeature clone = new ListIntegerFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), suggestions);
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

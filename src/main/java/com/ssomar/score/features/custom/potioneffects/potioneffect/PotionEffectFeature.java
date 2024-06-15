@@ -3,16 +3,15 @@ package com.ssomar.score.features.custom.potioneffects.potioneffect;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.PotionEffectTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -37,7 +36,7 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
     private String id;
 
     public PotionEffectFeature(FeatureParentInterface parent, String id) {
-        super(parent, "potionEffect", "Potion Effect", new String[]{"&7&oA potion effect with its options"}, FixedMaterial.getBrewingStand(), false);
+        super(parent, FeatureSettingsSCore.potionEffect);
         this.id = id;
         reset();
     }
@@ -45,12 +44,12 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
     @Override
     public void reset() {
         PotionEffectType type = SCore.is1v20v5Plus() ? PotionEffectType.HEALTH_BOOST : PotionEffectType.getByName("HEAL");
-        this.amplifier = new IntegerFeature(this, "amplifier", Optional.ofNullable(0), "Amplifier", new String[]{"&7&oThe amplifier of the potion effect"}, GUI.CLOCK, false);
-        this.duration = new IntegerFeature(this, "duration", Optional.ofNullable(30), "Duration", new String[]{"&7&oThe duration of the potion effect", "&4⚠ &cIn ticks !", "&7&o1 sec = 20 ticks"}, GUI.CLOCK, false);
-        this.type = new PotionEffectTypeFeature(this, "potionEffectType", Optional.ofNullable(type), "Type", new String[]{"&7&oThe type of the potion effect"}, Material.COMPASS, false);
-        this.ambient = new BooleanFeature(this, "isAmbient", false, "Ambient", new String[]{"&7&oIf the potion effect is ambient"}, Material.LEVER, false, false);
-        this.particles = new BooleanFeature(this, "hasParticles", false, "Particles", new String[]{"&7&oIf the potion effect has particles"}, Material.LEVER, false, false);
-        this.icon = new BooleanFeature(this, "hasIcon", false, "Icon", new String[]{"&7&oIf the potion effect has an icon"}, Material.LEVER, false, false);
+        this.amplifier = new IntegerFeature(this, Optional.ofNullable(0), FeatureSettingsSCore.amplifier);
+        this.duration = new IntegerFeature(this, Optional.ofNullable(30), FeatureSettingsSCore.duration);
+        this.type = new PotionEffectTypeFeature(this, Optional.ofNullable(type), FeatureSettingsSCore.potionEffectType);
+        this.ambient = new BooleanFeature(this, false, FeatureSettingsSCore.isAmbient, false);
+        this.particles = new BooleanFeature(this, false, FeatureSettingsSCore.hasParticles, false);
+        this.icon = new BooleanFeature(this, false, FeatureSettingsSCore.hasIcon, false);
     }
 
     @Override

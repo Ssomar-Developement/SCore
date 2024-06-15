@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
@@ -62,9 +63,9 @@ public class If extends EntityCommand {
         List<Entity> targets = new ArrayList<>();
         targets.add(entity);
 
-        /* for (String commandToRun: args.subList(1, args.size())){
+         for (String commandToRun: args.subList(1, args.size())){
             SsomarDev.testMsg("Command to run IF >> "+commandToRun, true);
-        } */
+        }
 
         if (conditionFeature.verify(null, null, sp)) {
             CommmandThatRunsCommand.runEntityCommands(targets, args.subList(1, args.size()), aInfo);

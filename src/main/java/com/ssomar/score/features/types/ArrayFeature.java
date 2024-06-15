@@ -2,11 +2,11 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -19,14 +19,14 @@ public class ArrayFeature<X> extends FeatureAbstract<X [], ArrayFeature<X>> {
     private X[] value;
     private int maxArraySize;
 
-    public ArrayFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, int maxArraySize) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ArrayFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, int maxArraySize) {
+        super(parent, featureSettings);
         this.maxArraySize = maxArraySize;
         reset();
     }
 
     public static ArrayFeature buildNull() {
-        return new ArrayFeature(null, null, null, null, null, false, 100);
+        return new ArrayFeature(null, null, 100);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ArrayFeature<X> extends FeatureAbstract<X [], ArrayFeature<X>> {
     public ArrayFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7Currently: ";
@@ -87,7 +87,7 @@ public class ArrayFeature<X> extends FeatureAbstract<X [], ArrayFeature<X>> {
 
     @Override
     public ArrayFeature clone(FeatureParentInterface newParent) {
-        ArrayFeature clone = new ArrayFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), getMaxArraySize());
+        ArrayFeature clone = new ArrayFeature(newParent, getFeatureSettings(), getMaxArraySize());
         clone.setValue(value);
         return clone;
     }

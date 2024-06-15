@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.ifhas.items.attribute;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlots;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -31,15 +32,15 @@ public class HasItemFeature extends FeatureWithHisOwnEditor<HasItemFeature, HasI
     private String id;
 
     public HasItemFeature(FeatureParentInterface parent, String id) {
-        super(parent, "hasItem", "Has Item", new String[]{"&7&oThe has Item feature"}, Material.STONE, false);
+        super(parent, FeatureSettingsSCore.hasItem);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.material = new MaterialFeature(this, "material", Optional.of(Material.STONE), "Material", new String[]{"&7&oThe material of the item"}, Material.STONE, false);
-        this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
+        this.material = new MaterialFeature(this, Optional.of(Material.STONE), FeatureSettingsSCore.material);
+        this.amount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.amount);
         this.detailedSlots = new DetailedSlots(this);
     }
 

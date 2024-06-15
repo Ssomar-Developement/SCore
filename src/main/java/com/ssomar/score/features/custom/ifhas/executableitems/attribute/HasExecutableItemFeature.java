@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.ifhas.executableitems.attribute;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlots;
 import com.ssomar.score.features.types.ExecutableItemFeature;
@@ -11,7 +12,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -33,17 +33,17 @@ public class HasExecutableItemFeature extends FeatureWithHisOwnEditor<HasExecuta
     private String id;
 
     public HasExecutableItemFeature(FeatureParentInterface parent, String id) {
-        super(parent, "hasExecutableItem", "Has ExecutableItem", new String[]{"&7&oThe has ExecutableItem feature"}, Material.DIAMOND, false);
+        super(parent, FeatureSettingsSCore.hasExecutableItem);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.executableItem = new ExecutableItemFeature(this, "executableItem", "Executable Item", new String[]{"&7&oThe executable item"}, Material.DIAMOND, false);
-        this.amount = new IntegerFeature(this, "amount", Optional.of(1), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
+        this.executableItem = new ExecutableItemFeature(this, FeatureSettingsSCore.executableItem);
+        this.amount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.amount);
         this.detailedSlots = new DetailedSlots(this);
-        this.usageCondition = new NumberConditionFeature(this, "usageCondition", "Usage Condition", new String[]{"&7&oThe usage condition"}, GUI.CLOCK, false);
+        this.usageCondition = new NumberConditionFeature(this, FeatureSettingsSCore.usageConditions);
     }
 
     @Override

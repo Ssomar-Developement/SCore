@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
@@ -14,7 +15,7 @@ public class IfIsNotOnTheBlock extends EntityConditionFeature<MaterialAndTagsGro
 
 
     public IfIsNotOnTheBlock(FeatureParentInterface parent) {
-        super(parent, "ifIsNotOnTheBlock", "If is not on the block", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifIsNotOnTheBlock);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class IfIsNotOnTheBlock extends EntityConditionFeature<MaterialAndTagsGro
 
     @Override
     public void subReset() {
-        setCondition(new MaterialAndTagsGroupFeature(this, "ifIsNotOnTheBlock", "If is not on the block", new String[]{}, true, false, true, true));
+        setCondition(new MaterialAndTagsGroupFeature(this, FeatureSettingsSCore.ifIsNotOnTheBlock, true, false, true, true));
     }
 
     @Override

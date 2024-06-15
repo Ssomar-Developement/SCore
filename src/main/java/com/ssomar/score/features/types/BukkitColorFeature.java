@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.CustomColor;
@@ -13,7 +10,6 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -30,8 +26,8 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     private Optional<Color> value;
     private Optional<Color> defaultValue;
 
-    public BukkitColorFeature(FeatureParentInterface parent, String name, Optional<Color> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public BukkitColorFeature(FeatureParentInterface parent, Optional<Color> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -71,7 +67,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     public BukkitColorFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 1];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 1] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 1] = GUI.CLICK_HERE_TO_CHANGE;
 
@@ -88,7 +84,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
 
     @Override
     public BukkitColorFeature clone(FeatureParentInterface newParent) {
-        BukkitColorFeature clone = new BukkitColorFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        BukkitColorFeature clone = new BukkitColorFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }
@@ -135,14 +131,14 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        if (!isPremium() && requirePremium()) return true;
+        if (!isPremium() && this.isRequirePremium()) return true;
         updateColor(nextColor(getColor((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        if (!isPremium() && requirePremium()) return true;
+        if (!isPremium() && this.isRequirePremium()) return true;
         updateColor(prevColor(getColor((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
     }

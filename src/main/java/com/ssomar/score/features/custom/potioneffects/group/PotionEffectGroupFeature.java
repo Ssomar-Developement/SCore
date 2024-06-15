@@ -1,13 +1,9 @@
 package com.ssomar.score.features.custom.potioneffects.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.potioneffects.potioneffect.PotionEffectFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,7 +24,7 @@ public class PotionEffectGroupFeature extends FeatureWithHisOwnEditor<PotionEffe
     private boolean notSaveIfNoValue;
 
     public PotionEffectGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
-        super(parent, "potionEffects", "Potion Effects", new String[]{"&7&oThe potion effects"}, FixedMaterial.getBrewingStand(), false);
+        super(parent, FeatureSettingsSCore.potionEffects);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }

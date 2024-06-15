@@ -1,17 +1,13 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +23,8 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
     private Optional<PotionType> value;
     private Optional<PotionType> defaultValue;
 
-    public PotionTypeFeature(FeatureParentInterface parent, String name, Optional<PotionType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public PotionTypeFeature(FeatureParentInterface parent, Optional<PotionType> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -85,7 +81,7 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
 
     @Override
     public PotionTypeFeature clone(FeatureParentInterface newParent) {
-        PotionTypeFeature clone = new PotionTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        PotionTypeFeature clone = new PotionTypeFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

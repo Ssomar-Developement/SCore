@@ -2,16 +2,16 @@ package com.ssomar.score.features.custom.conditions.entity.condition;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 
 public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
 
     public IfFrozen(FeatureParentInterface parent) {
-        super(parent, "ifFrozen", "If frozen", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifFrozen);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifFrozen", false, "If frozen", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFrozen, true));
     }
 
     @Override

@@ -2,20 +2,18 @@ package com.ssomar.score.features.custom.useperday;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -39,16 +37,16 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     private String id;
 
     public UsePerDayFeature(FeatureParentInterface parent, String id) {
-        super(parent, "usePerDay", "Use per day", TM.gA(Text.FEATURES_USEPERDAY_DESCRIPTION), Material.BUCKET, true);
+        super(parent, FeatureSettingsSCore.usePerDay);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.maxUsePerDay = new IntegerFeature(this, "maxUsePerDay", Optional.ofNullable(-1), "Max use per day", new String[]{"&7&oMax use per day", "&a-1 &7&o= infinite"}, Material.BUCKET, true);
-        this.messageIfMaxReached = new ColoredStringFeature(this, "messageIfMaxReached", Optional.ofNullable("&4&l[ERROR] &c&oYou have reached the max use per day"), "Message if max reached", new String[]{"&7&oMessage if max reached"}, GUI.WRITABLE_BOOK, false, false);
-        this.cancelEventIfMaxReached = new BooleanFeature(this, "cancelEventIfMaxReached", false, "Cancel event if max reached", new String[]{"&7&oCancel event if max reached"}, Material.LEVER, false, false);
+        this.maxUsePerDay = new IntegerFeature(this, Optional.ofNullable(-1), FeatureSettingsSCore.maxUsePerDay);
+        this.messageIfMaxReached = new ColoredStringFeature(this, Optional.ofNullable("&4&l[ERROR] &c&oYou have reached the max use per day"), FeatureSettingsSCore.messageIfMaxReached, false);
+        this.cancelEventIfMaxReached = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfMaxReached, false);
     }
 
     @Override
@@ -118,7 +116,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     public UsePerDayFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 4] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         if (maxUsePerDay.getValue().get() != -1)
@@ -197,7 +195,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
 
     @Override
     public void openEditor(@NotNull Player player) {
-        if (requirePremium() && !isPremium()) return;
+        if (this.isRequirePremium() && !isPremium()) return;
         UsePerDayFeatureEditorManager.getInstance().startEditing(player, this);
     }
 

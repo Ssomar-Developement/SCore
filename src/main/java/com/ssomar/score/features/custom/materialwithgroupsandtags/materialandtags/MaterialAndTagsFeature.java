@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.materialwithgroupsandtags.materialandta
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.MaterialWithGroupsFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -10,7 +11,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.MaterialWithGroups;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +37,7 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
     private boolean acceptBlocks;
 
     public MaterialAndTagsFeature(FeatureParentInterface parent, String id, boolean acceptAir, boolean acceptItems, boolean acceptBlocks) {
-        super(parent, "materialAndTags", "Material and Tags", new String[]{"&7&oA material with its options"}, Material.STONE, false);
+        super(parent, FeatureSettingsSCore.materialAndTags);
         this.id = id;
         this.acceptAir = acceptAir;
         this.acceptItems = acceptItems;
@@ -47,8 +47,8 @@ public class MaterialAndTagsFeature extends FeatureWithHisOwnEditor<MaterialAndT
 
     @Override
     public void reset() {
-        this.material = new MaterialWithGroupsFeature(this, "material", Optional.of(MaterialWithGroups.getMaterialWithGroupsList(acceptAir, acceptItems, acceptBlocks).get(0)), "Material And Groups", new String[]{"&7&oThe material"}, Material.STONE, false, acceptAir, acceptItems, acceptBlocks);
-        this.tags = new UncoloredStringFeature(this, "tags", Optional.empty(), "Tags", new String[]{"&7&oThe tags", "&8&oExamples", "&a{age:3}", "&a{lit:true}", "&7&ominecraft.fandom.com/wiki/Block_states"}, GUI.WRITABLE_BOOK, false, false);
+        this.material = new MaterialWithGroupsFeature(this, Optional.of(MaterialWithGroups.getMaterialWithGroupsList(acceptAir, acceptItems, acceptBlocks).get(0)), FeatureSettingsSCore.material, acceptAir, acceptItems, acceptBlocks);
+        this.tags = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.tags, false);
     }
 
     @Override

@@ -2,15 +2,14 @@ package com.ssomar.score.features.custom.bannersettings;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.patterns.group.PatternsGroupFeature;
 import com.ssomar.score.features.types.ColorIntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -33,13 +32,13 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
     private PatternsGroupFeature patterns;
 
     public BannerSettingsFeature(FeatureParentInterface parent) {
-        super(parent, "bannerSettings", "Banner Settings", new String[]{"&7&oBanner settings"}, FixedMaterial.getMaterial(Arrays.asList("CREEPER_BANNER_PATTERN", "BANNER")), false);
+        super(parent, FeatureSettingsSCore.bannerSettings);
         reset();
     }
 
     @Override
     public void reset() {
-        this.color = new ColorIntegerFeature(this, "color", Optional.empty(), "Color", new String[]{"&7&oThe color of the banner"}, Material.REDSTONE, false);
+        this.color = new ColorIntegerFeature(this, Optional.empty(), FeatureSettingsSCore.color);
         this.patterns = new PatternsGroupFeature(this);
     }
 

@@ -1,18 +1,14 @@
 package com.ssomar.score.features.custom.commands;
 
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
-import org.bukkit.Material;
+import com.ssomar.score.features.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CommandsAbstractFeature<T, Y extends FeatureInterface<T, Y>> extends FeatureAbstract<T, Y> implements FeatureRequireSubTextEditorInEditor {
 
-    public CommandsAbstractFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public CommandsAbstractFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
     }
 
     public List<String> prepareActionbarArgs(List<String> commands, String objectName) {

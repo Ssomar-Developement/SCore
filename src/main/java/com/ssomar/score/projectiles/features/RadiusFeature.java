@@ -1,20 +1,19 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.DoubleFeature;
-import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Explosive;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 public class RadiusFeature extends DoubleFeature implements SProjectileFeatureInterface {
 
     public RadiusFeature(FeatureParentInterface parent) {
-        super(parent, "radius", Optional.empty(), "Radius", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("HEART_OF_THE_SEA", "WEB")), false);
+        super(parent,  Optional.empty(), FeatureSettingsSCore.radius);
     }
 
     @Override

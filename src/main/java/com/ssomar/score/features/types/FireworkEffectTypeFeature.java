@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
@@ -12,7 +9,6 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +23,8 @@ public class FireworkEffectTypeFeature extends FeatureAbstract<Optional<Firework
     private Optional<FireworkEffect.Type> value;
     private Optional<FireworkEffect.Type> defaultValue;
 
-    public FireworkEffectTypeFeature(FeatureParentInterface parent, String name, Optional<FireworkEffect.Type> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public FireworkEffectTypeFeature(FeatureParentInterface parent, Optional<FireworkEffect.Type> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
@@ -85,7 +81,7 @@ public class FireworkEffectTypeFeature extends FeatureAbstract<Optional<Firework
 
     @Override
     public FireworkEffectTypeFeature clone(FeatureParentInterface newParent) {
-        FireworkEffectTypeFeature clone = new FireworkEffectTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        FireworkEffectTypeFeature clone = new FireworkEffectTypeFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

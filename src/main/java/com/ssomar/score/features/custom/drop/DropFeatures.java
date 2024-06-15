@@ -3,17 +3,15 @@ package com.ssomar.score.features.custom.drop;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ChatColorFeature;
-import com.ssomar.score.languages.messages.TM;
-import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -32,15 +30,15 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     private BooleanFeature displayNameDrop;
 
     public DropFeatures(FeatureParentInterface parent) {
-        super(parent, "dropOptions", "Drop features", TM.gA(Text.FEATURES_DROPS_DESCRIPTION), Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.dropOptions);
         reset();
     }
 
     @Override
     public void reset() {
-        this.glowDrop = new BooleanFeature(getParent(), "glowDrop", false, "Glow drop", new String[]{"&7&oGlow drop"}, Material.LEVER, false, false);
-        this.dropColor = new ChatColorFeature(getParent(), "glowDropColor", Optional.of(ChatColor.WHITE), "Glow color", new String[]{"&7&oGlow drop color"}, Material.REDSTONE, true);
-        this.displayNameDrop = new BooleanFeature(getParent(), "displayNameDrop", false, "Display custom name", new String[]{"&7&oDisplay custom name above the item"}, Material.LEVER, false, false);
+        this.glowDrop = new BooleanFeature(getParent(), false, FeatureSettingsSCore.glowDrop, false);
+        this.dropColor = new ChatColorFeature(getParent(), Optional.of(ChatColor.WHITE), FeatureSettingsSCore.glowDropColor);
+        this.displayNameDrop = new BooleanFeature(getParent(), false, FeatureSettingsSCore.displayNameDrop, false);
     }
 
     @Override

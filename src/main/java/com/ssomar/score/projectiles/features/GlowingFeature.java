@@ -2,6 +2,7 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BooleanFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player;
 public class GlowingFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public GlowingFeature(FeatureParentInterface parent) {
-        super(parent, "glowing", false, "Glowing", new String[]{}, Material.BEACON, false, false);
+        super(parent, false, FeatureSettingsSCore.glowing, false);
     }
 
     @Override

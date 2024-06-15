@@ -1,22 +1,18 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.numbers.NTools;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -34,14 +30,14 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     private Optional<Double> defaultValue;
     private Optional<String> placeholder;
 
-    public DoubleFeature(FeatureParentInterface parent, String name, Optional<Double> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public DoubleFeature(FeatureParentInterface parent, Optional<Double> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         reset();
     }
 
     public static DoubleFeature buildNull() {
-        return new DoubleFeature(null, null, Optional.empty(), null, null, null, false);
+        return new DoubleFeature(null,  Optional.empty(), null);
     }
 
     @Override
@@ -112,7 +108,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     public DoubleFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7Currently: ";
@@ -130,7 +126,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public DoubleFeature clone(FeatureParentInterface newParent) {
-        DoubleFeature clone = new DoubleFeature(newParent, this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        DoubleFeature clone = new DoubleFeature(newParent,defaultValue, getFeatureSettings());
         clone.setValue(value);
         clone.setPlaceholder(getPlaceholder());
         return clone;
@@ -144,7 +140,7 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
 
     @Override
     public void askInEditor(Player editor, NewGUIManager manager) {
-        if (requirePremium() && !isPremium()) return;
+        if (this.isRequirePremium() && !isPremium()) return;
         manager.requestWriting.put(editor, getEditorName());
         editor.closeInventory();
         space(editor);

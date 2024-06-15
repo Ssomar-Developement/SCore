@@ -10,6 +10,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireSubTextEditorInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.custom.commands.CommandsAbstractFeature;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
@@ -21,7 +22,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -34,8 +34,8 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
     private List<String> value;
     private boolean notSaveIfEqualsToDefaultValue;
 
-    public ConsoleCommandsFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public ConsoleCommandsFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
     }
@@ -44,10 +44,12 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         value = PlayerCommandManager.getInstance().getCommandsVerified(plugin, config.getStringList(getName()), errors, getParent().getParentInfo());
+        if(value.isEmpty()) value = null;
         return errors;
     }
 
     public void runCommands(ActionInfo actionInfo, String objectName) {
+        if(getValue() == null) return;
         List<String> commands = new ArrayList<>(getValue());
         ConsoleRunCommandsBuilder builder = new ConsoleRunCommandsBuilder(commands, actionInfo);
         CommandsExecutor.runCommands(builder);
@@ -55,7 +57,7 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
 
     @Override
     public void save(ConfigurationSection config) {
-        if(notSaveIfEqualsToDefaultValue && value.isEmpty()){
+        if(notSaveIfEqualsToDefaultValue && (value == null || value.isEmpty())){
             config.set(this.getName(), null);
             return;
         }
@@ -64,6 +66,7 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
 
     @Override
     public List<String> getValue() {
+        if (value == null) return new ArrayList<>();
         return value;
     }
 
@@ -81,28 +84,31 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
     @Override
     public void updateItemParentEditor(GUI gui) {
         List<String> update = new ArrayList<>();
-        if (value.size() > 10) {
-            for (int i = 0; i < 10; i++) update.add(value.get(i));
-            update.add("&6... &e" + value.size() + " &6commands");
-        } else update.addAll(value);
-        for (int i = 0; i < update.size(); i++) {
-            String command = update.get(i);
-            if (command.length() > 40) command = command.substring(0, 39) + "...";
-            update.set(i, command);
+
+        if(!(value == null || value.isEmpty())) {
+            if (value.size() > 10) {
+                for (int i = 0; i < 10; i++) update.add(value.get(i));
+                update.add("&6... &e" + value.size() + " &6commands");
+            } else update.addAll(value);
+            for (int i = 0; i < update.size(); i++) {
+                String command = update.get(i);
+                if (command.length() > 40) command = command.substring(0, 39) + "...";
+                update.set(i, command);
+            }
         }
         gui.updateConditionList(getEditorName(), update, "&cEMPTY");
     }
 
     @Override
     public ConsoleCommandsFeature clone(FeatureParentInterface newParent) {
-        ConsoleCommandsFeature clone = new ConsoleCommandsFeature(newParent, this.getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ConsoleCommandsFeature clone = new ConsoleCommandsFeature(newParent, getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValue(getValue());
         return clone;
     }
 
     @Override
     public void reset() {
-        this.value = new ArrayList<>();
+        this.value = null;
     }
 
     @Override
@@ -112,6 +118,7 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
 
     @Override
     public List<String> getCurrentValues() {
+        if (getValue() == null) return new ArrayList<>();
         return getValue();
     }
 
@@ -156,6 +163,7 @@ public class ConsoleCommandsFeature extends CommandsAbstractFeature<List<String>
     @Override
     public void finishEditInSubEditor(Player editor, NewGUIManager manager) {
         value = (List<String>) manager.currentWriting.get(editor);
+        if (value.isEmpty()) value = null;
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 }

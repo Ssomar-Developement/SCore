@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -14,7 +15,7 @@ public class IfIsInTheAir extends PlayerConditionFeature<BooleanFeature, IfIsInT
 
 
     public IfIsInTheAir(FeatureParentInterface parent) {
-        super(parent, "ifIsInTheAir", "If is in the air", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifIsInTheAir);
     }
 
     @Override
@@ -26,7 +27,11 @@ public class IfIsInTheAir extends PlayerConditionFeature<BooleanFeature, IfIsInT
 
             Block block = pLoc.getBlock();
             Material type = block.getType();
-            if (!(type.equals(Material.AIR) || SCore.is1v17Plus() && (type.equals(Material.LIGHT) || type.equals(Material.CAVE_AIR)))) {
+            if (!(type.equals(Material.AIR)
+                    || (SCore.is1v17Plus() && (type.equals(Material.LIGHT) || type.equals(Material.CAVE_AIR)))
+                    || (SCore.is1v18Plus() && type.equals(Material.VOID_AIR))
+
+            )) {
                 runInvalidCondition(request);
                 return false;
             }
@@ -41,7 +46,7 @@ public class IfIsInTheAir extends PlayerConditionFeature<BooleanFeature, IfIsInT
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(this, "ifIsInTheAir", false, "If is in the air", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(this, false, FeatureSettingsSCore.ifIsInTheAir, true));
     }
 
     @Override

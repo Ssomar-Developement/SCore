@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListEffectAndLevelFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 public class IfPlayerHasEffectEquals extends PlayerConditionFeature<ListEffectAndLevelFeature, IfPlayerHasEffectEquals> {
 
     public IfPlayerHasEffectEquals(FeatureParentInterface parent) {
-        super(parent, "ifPlayerHasEffectEquals", "If player has effect equals", new String[]{}, Material.ANVIL, false);
+        super(parent,FeatureSettingsSCore.ifPlayerHasEffectEquals);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class IfPlayerHasEffectEquals extends PlayerConditionFeature<ListEffectAn
 
     @Override
     public void subReset() {
-        setCondition(new ListEffectAndLevelFeature(this, "ifPlayerHasEffectEquals", new HashMap<>(), "If player has effect equals", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new ListEffectAndLevelFeature(this, new HashMap<>(), FeatureSettingsSCore.ifPlayerHasEffectEquals, true));
     }
 
     @Override

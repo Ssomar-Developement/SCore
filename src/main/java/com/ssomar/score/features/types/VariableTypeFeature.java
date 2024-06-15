@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.VariableType;
@@ -12,7 +9,6 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -28,8 +24,8 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
     private Optional<VariableType> defaultValue;
     private boolean noList;
 
-    public VariableTypeFeature(FeatureParentInterface parent, String name, Optional<VariableType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean noList) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public VariableTypeFeature(FeatureParentInterface parent, Optional<VariableType> defaultValue, FeatureSettingsInterface featureSettings, boolean noList) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
         this.noList = noList;
@@ -87,7 +83,7 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     @Override
     public VariableTypeFeature clone(FeatureParentInterface newParent) {
-        VariableTypeFeature clone = new VariableTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium(), isNoList());
+        VariableTypeFeature clone = new VariableTypeFeature(newParent, getDefaultValue(), getFeatureSettings(), isNoList());
         clone.value = value;
         return clone;
     }

@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class IfHasTag extends PlayerConditionFeature<ListUncoloredStringFeature, IfHasTag> {
 
     public IfHasTag(FeatureParentInterface parent) {
-        super(parent, "ifHasTag", "If has tag", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifHasTag);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class IfHasTag extends PlayerConditionFeature<ListUncoloredStringFeature,
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), "ifHasTag", new ArrayList<>(), "If has tag", new String[]{}, Material.ANVIL, false, true, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifHasTag, true, Optional.empty()));
     }
 
     @Override

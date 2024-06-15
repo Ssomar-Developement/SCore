@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.attributes.attribute;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
@@ -10,7 +11,6 @@ import com.ssomar.score.utils.emums.AttributeSlot;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,19 +37,19 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     private String id;
 
     public AttributeFullOptionsFeature(FeatureParentInterface parent, String id) {
-        super(parent, "Attribute", "Attribute", new String[]{"&7&oAn attribute with its options"}, Material.BREWING_STAND, false);
+        super(parent, FeatureSettingsSCore.attribute);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.attribute = new AttributeFeature(this, "attribute", Optional.of(Attribute.GENERIC_ARMOR), "Attribute", new String[]{"&7&oThe attribute"}, Material.BREWING_STAND, false);
-        this.operation = new OperationFeature(this, "operation", Optional.of(AttributeModifier.Operation.ADD_NUMBER), "Operation", new String[]{"&7&oThe operation"}, Material.DISPENSER, false);
-        this.amount = new DoubleFeature(this, "amount", Optional.of(1.0), "Amount", new String[]{"&7&oThe amount"}, GUI.CLOCK, false);
-        this.slot = new SlotFeature(this, "slot", Optional.of(AttributeSlot.HAND), "Slot", new String[]{"&7&oThe slot"}, Material.ARMOR_STAND, false);
-        this.attributeName = new ColoredStringFeature(this, "name", Optional.of("&eDefault name"), "Name", new String[]{"&7&oThe name"}, Material.NAME_TAG, false, true);
-        this.uuid = new UUIDFeature(this, "uuid", "UUID", new String[]{"&7&oThe UUID"}, Material.NAME_TAG, false);
+        this.attribute = new AttributeFeature(this, Optional.of(Attribute.GENERIC_ARMOR), FeatureSettingsSCore.attribute);
+        this.operation = new OperationFeature(this, Optional.of(AttributeModifier.Operation.ADD_NUMBER), FeatureSettingsSCore.operation);
+        this.amount = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.amount);
+        this.slot = new SlotFeature(this, Optional.of(AttributeSlot.HAND), FeatureSettingsSCore.slot);
+        this.attributeName = new ColoredStringFeature(this, Optional.of("&eDefault name"), FeatureSettingsSCore.name, true);
+        this.uuid = new UUIDFeature(this, FeatureSettingsSCore.uuid);
     }
 
     public AttributeModifier getAttributeModifier() {

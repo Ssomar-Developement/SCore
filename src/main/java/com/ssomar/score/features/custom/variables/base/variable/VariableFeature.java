@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.variables.base.variable;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.DoubleFeature;
@@ -14,7 +15,6 @@ import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -37,18 +37,18 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     private String id;
 
     public VariableFeature(FeatureParentInterface parent, String id) {
-        super(parent, "variable", "Variable", new String[]{"&7&oA variable with its options"}, GUI.WRITABLE_BOOK, false);
+        super(parent, FeatureSettingsSCore.variable);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.variableName = new UncoloredStringFeature(this, "variableName", Optional.of("var"), "Variable Name", new String[]{"&7&oThe variable name"}, GUI.WRITABLE_BOOK, false, false);
-        this.type = new VariableTypeFeature(this, "type", Optional.of(VariableType.STRING), "Type", new String[]{"&7&oThe variable type"}, Material.COMPASS, false, false);
-        this.stringValue = new ColoredStringFeature(this, "default", Optional.of(""), "String Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false, false);
-        this.doubleValue = new DoubleFeature(this, "default", Optional.of(0.0), "Number Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false);
-        this.listValue = new ListColoredStringFeature(this, "default", new ArrayList<>(), "List Value", new String[]{"&7&oThe variable default value"}, GUI.WRITABLE_BOOK, false, false, Optional.empty());
+        this.variableName = new UncoloredStringFeature(this, Optional.of("var"), FeatureSettingsSCore.variableName, false);
+        this.type = new VariableTypeFeature(this, Optional.of(VariableType.STRING), FeatureSettingsSCore.type, false);
+        this.stringValue = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.default_string, false);
+        this.doubleValue = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.default_double);
+        this.listValue = new ListColoredStringFeature(this,  new ArrayList<>(), FeatureSettingsSCore.default_list, false, Optional.empty());
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.DoubleFeature;
@@ -41,15 +42,15 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
     private BooleanFeature activeTitle;
 
     public BlockTitleFeatures(FeatureParentInterface parent) {
-        super(parent, "titleOptions", "Title features", new String[]{"&7&oThe title features"}, Material.ANVIL, true);
+        super(parent, FeatureSettingsSCore.titleOptions);
         reset();
     }
 
     @Override
     public void reset() {
-        this.activeTitle = new BooleanFeature(this, "activeTitle", false, "Active title", new String[]{"&7&oActive title"}, Material.LEVER, true, false);
-        this.title = new ListColoredStringFeature(this, "title", new ArrayList<>(), "Title", new String[]{"&7&oTitle"}, Material.NAME_TAG, true, false, Optional.empty());
-        this.titleAjustement = new DoubleFeature(this, "titleAdjustement", Optional.of(0.5), "Title adjustement", new String[]{"&7&oTitle adjustement"}, Material.PISTON, true);
+        this.activeTitle = new BooleanFeature(this,  false, FeatureSettingsSCore.activeTitle, false);
+        this.title = new ListColoredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.title, false, Optional.empty());
+        this.titleAjustement = new DoubleFeature(this, Optional.of(0.5), FeatureSettingsSCore.titleAdjustement);
     }
 
     @Override

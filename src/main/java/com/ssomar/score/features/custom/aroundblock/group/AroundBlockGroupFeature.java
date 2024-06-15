@@ -1,9 +1,6 @@
 package com.ssomar.score.features.custom.aroundblock.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeature;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
@@ -11,7 +8,6 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +26,7 @@ public class AroundBlockGroupFeature extends FeatureWithHisOwnEditor<AroundBlock
     private boolean notSaveIfNoValue;
 
     public AroundBlockGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
-        super(parent, "blockAroundCdts", TM.g(Text.FEATURES_AROUNDBLOCKS_NAME), TM.gA(Text.FEATURES_AROUNDBLOCKS_DESCRIPTION), Material.STONE, false);
+        super(parent, FeatureSettingsSCore.aroundBlockCdts);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }

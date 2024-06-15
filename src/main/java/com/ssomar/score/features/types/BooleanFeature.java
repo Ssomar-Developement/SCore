@@ -29,17 +29,26 @@ import java.util.UUID;
 @Setter
 public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> implements FeatureRequireClicksOrOneMessageInEditor, Serializable {
 
-    private Optional<Boolean> value;
-    private Boolean defaultValue;
-    private Optional<String> placeholder;
+    private boolean value;
+    private boolean noValueUsePlaceholder;
+    private boolean defaultValue;
+    private String placeholder;
     private boolean notSaveIfEqualsToDefaultValue;
 
-    public BooleanFeature(FeatureParentInterface parent, String name, boolean defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public BooleanFeature(FeatureParentInterface parent, Boolean defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
-        this.value = Optional.of(defaultValue);
+        this.value = defaultValue;
+        this.noValueUsePlaceholder = false;
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
+
+        //System.out.println(ClassLayout.parseClass(BooleanFeature.class).toPrintable());
+    }
+
+    @Override
+    public Material getEditorMaterial() {
+        return super.getEditorMaterial() == null ? Material.LEVER : super.getEditorMaterial();
     }
 
     @Override
@@ -47,37 +56,40 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "NULL");
         if (valueStr.contains("%")) {
-            placeholder = Optional.of(valueStr);
-            value = Optional.empty();
+            placeholder = valueStr;
+            value = false;
+            noValueUsePlaceholder = true;
         } else {
-            placeholder = Optional.empty();
-            this.value = Optional.of(config.getBoolean(this.getName(), this.defaultValue));
+            placeholder = null;
+            this.value = config.getBoolean(this.getName(), this.defaultValue);
+            noValueUsePlaceholder = false;
             setPremium(isPremiumLoading);
-            FeatureReturnCheckPremium<Boolean> checkPremium = checkPremium("Boolean", value.get(), Optional.of(defaultValue), isPremiumLoading);
-            if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+            FeatureReturnCheckPremium<Boolean> checkPremium = checkPremium("Boolean", value, Optional.of(defaultValue), isPremiumLoading);
+            if (checkPremium.isHasError()) value = checkPremium.getNewValue();
         }
         return errors;
     }
 
     @Override
     public BooleanFeature clone(FeatureParentInterface newParent) {
-        BooleanFeature clone = new BooleanFeature(newParent, this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), notSaveIfEqualsToDefaultValue);
+        BooleanFeature clone = new BooleanFeature(newParent, defaultValue, getFeatureSettings(), notSaveIfEqualsToDefaultValue);
         clone.setValue(value);
         clone.setPlaceholder(placeholder);
+        clone.setNoValueUsePlaceholder(noValueUsePlaceholder);
         return clone;
     }
 
     @Override
     public void save(ConfigurationSection config) {
         if (notSaveIfEqualsToDefaultValue) {
-            if (value.isPresent() && value.get() == defaultValue) {
+            if (!noValueUsePlaceholder && value == defaultValue) {
                 config.set(this.getName(), null);
                 return;
             }
         }
-        if (placeholder.isPresent()) {
-            config.set(this.getName(), placeholder.get());
-        } else value.ifPresent(aBoolean -> config.set(this.getName(), aBoolean));
+        if (placeholder != null) {
+            config.set(this.getName(), placeholder);
+        } else if(!noValueUsePlaceholder) config.set(this.getName(), value);
     }
 
     public Boolean getValue(@Nullable StringPlaceholder sp) {
@@ -85,25 +97,25 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     }
 
     public Boolean getValue(@Nullable UUID playerUUID, @Nullable StringPlaceholder sp) {
-        if (placeholder.isPresent()) {
-            String placeholderStr = placeholder.get();
+        if (placeholder != null) {
+            String placeholderStr = placeholder;
             if (sp != null) {
                 placeholderStr = sp.replacePlaceholder(placeholderStr);
             }
             placeholderStr = StringPlaceholder.replacePlaceholderOfPAPI(placeholderStr, playerUUID);
             return Boolean.valueOf(placeholderStr);
-        } else if (value.isPresent()) {
-            return value.get();
+        } else if (!noValueUsePlaceholder) {
+            return value;
         }
         return defaultValue;
     }
 
     @Override
     public Boolean getValue() {
-        if (value.isPresent()) {
-            return value.get();
-        } else if (placeholder.isPresent()) {
-            String placeholderStr = placeholder.get();
+        if (!noValueUsePlaceholder) {
+            return value;
+        } else if (placeholder != null) {
+            String placeholderStr = placeholder;
             //SsomarDev.testMsg("Placeholder: " + placeholderStr, true);
             placeholderStr = new StringPlaceholder().replacePlaceholderOfPAPI(placeholderStr);
             return Boolean.valueOf(placeholderStr);
@@ -111,14 +123,14 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         return defaultValue;
     }
     public boolean isConfigured() {
-        return (value.isPresent() && value.get()) || placeholder.isPresent();
+        return (!noValueUsePlaceholder && value) || placeholder != null;
     }
 
     @Override
     public BooleanFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 4] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 3] = "&8>> &6Enter placeholder: &eMIDDLE &a(Creative only)";
@@ -131,22 +143,24 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if(value.isPresent()) gui.updateBoolean(getEditorName(), value.get());
-        else gui.updateCurrently(getEditorName(), placeholder.get());
+        if(!noValueUsePlaceholder) gui.updateBoolean(getEditorName(), value);
+        else gui.updateCurrently(getEditorName(), placeholder);
     }
 
     @Override
     public void reset() {
-        this.value = Optional.of(defaultValue);
-        this.placeholder = Optional.empty();
+        this.value = defaultValue;
+        this.noValueUsePlaceholder = false;
+        this.placeholder = null;
     }
 
     @Override
     public void clickParentEditor(Player editor, NewGUIManager manager) {
-        if (requirePremium() && !isPremium()) return;
+        if (this.isRequirePremium() && !isPremium()) return;
         ((GUI) manager.getCache().get(editor)).changeBoolean(getEditorName());
-        value = Optional.of(!getValue());
-        this.placeholder = Optional.empty();
+        value = !getValue();
+        this.noValueUsePlaceholder = false;
+        this.placeholder = null;
     }
 
     @Override
@@ -190,10 +204,10 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     }
 
     public void setValue(boolean value) {
-        this.value = Optional.of(value);
+        this.value = value;
     }
     public void setValue(Optional<Boolean> value) {
-        this.value = value;
+        this.value = value.orElse(defaultValue);
     }
 
     @Override
@@ -242,16 +256,18 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
-        this.value = Optional.empty();
-        this.placeholder = Optional.of(message);
+        this.value = false;
+        this.noValueUsePlaceholder = true;
+        this.placeholder = message;
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }
 
     @Override
     public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
-        if(!value.isPresent()) this.value = Optional.of(defaultValue);
-        this.placeholder = Optional.empty();
+        if(noValueUsePlaceholder) this.value = defaultValue;
+        this.noValueUsePlaceholder = false;
+        this.placeholder = null;
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }

@@ -2,13 +2,13 @@ package com.ssomar.score.features.custom.cancelevents;
 
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -25,13 +25,13 @@ public class CancelEventFeatures extends FeatureWithHisOwnEditor<CancelEventFeat
     private BooleanFeature cancelEventIfNoperm;
 
     public CancelEventFeatures(FeatureParentInterface parent) {
-        super(parent, "cancelEvents", "CancelEvent features", new String[]{"&7&oThe cancel events features"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.cancelEvents);
         reset();
     }
 
     @Override
     public void reset() {
-        this.cancelEventIfNoperm = new BooleanFeature(this, "cancelEventIfNoPerm", false, "Cancel event if no perm", new String[]{"&7&oCancel event if no perm"}, Material.LEVER, false, false);
+        this.cancelEventIfNoperm = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNoPermission, false);
     }
 
     @Override

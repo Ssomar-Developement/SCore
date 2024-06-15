@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -14,7 +11,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -30,8 +26,8 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
     private Optional<String> defaultValue;
     private boolean notSaveIfEqualsToDefaultValue;
 
-    public UncoloredStringFeature(FeatureParentInterface parent, String name, Optional<String> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public UncoloredStringFeature(FeatureParentInterface parent, Optional<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
         this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
@@ -39,7 +35,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
     }
 
     public static UncoloredStringFeature buildNull(){
-        return new UncoloredStringFeature(null, null, Optional.empty(), null, null, null, false, false);
+        return new UncoloredStringFeature(null,  Optional.empty(), null,  false);
     }
 
     @Override
@@ -90,7 +86,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
     public UncoloredStringFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7Currently: ";
@@ -108,7 +104,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
 
     @Override
     public UncoloredStringFeature clone(FeatureParentInterface newParent) {
-        UncoloredStringFeature clone = new UncoloredStringFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), notSaveIfEqualsToDefaultValue);
+        UncoloredStringFeature clone = new UncoloredStringFeature(newParent, getDefaultValue(), getFeatureSettings(), notSaveIfEqualsToDefaultValue);
         clone.setValue(getValue());
         return clone;
     }
@@ -120,7 +116,7 @@ public class UncoloredStringFeature extends FeatureAbstract<Optional<String>, Un
 
     @Override
     public void askInEditor(Player editor, NewGUIManager manager) {
-        if (requirePremium() && !isPremium()) return;
+        if (this.isRequirePremium() && !isPremium()) return;
         manager.requestWriting.put(editor, getEditorName());
         editor.closeInventory();
         space(editor);

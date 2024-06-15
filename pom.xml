@@ -54,13 +54,14 @@
                     <include>*.yml</include>
                 </includes> -->
             </resource>
+
             <resource>
-                <targetPath>com/ssomar/score/configs/projectiles_not_editable</targetPath>
+                <targetPath>com/ssomar/score/configs/hardnesses</targetPath>
                 <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/projectiles_not_editable/</directory>
+                <directory>src/main/resources/hardnesses/</directory>
                 <!-- <includes>
-                   <include>*.yml</include>
-               </includes> -->
+                    <include>*.yml</include>
+                </includes> -->
             </resource>
             <resource>
                 <targetPath>com/ssomar/score/configs/variables</targetPath>
@@ -524,10 +525,17 @@
             <systemPath>${project.basedir}/src/main/resources/MMOCore.jar</systemPath>
         </dependency>
 
+        <!-- DEPENDENCIES
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <version>0.10</version>
+        </dependency>-->
+
         <dependency>
              <groupId>org.spigotmc</groupId>
              <artifactId>spigot-api</artifactId>
-             <version>1.20.5-R0.1-SNAPSHOT</version>
+             <version>1.21-R0.1-SNAPSHOT</version>
              <scope>provided</scope>
          </dependency>
 

@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.conditions.placeholders.group;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -12,7 +9,6 @@ import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -34,12 +30,12 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     private LinkedHashMap<String, PlaceholderConditionFeature> placeholdersConditions;
 
     public PlaceholderConditionGroupFeature(FeatureParentInterface parent) {
-        super(parent, "placeholdersConditions", "Placeholders Conditions", new String[]{"&7&oThe placeholders conditions"}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.placeholdersConditions);
         reset();
     }
 
-    public PlaceholderConditionGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] description, Material material, boolean requirePremium) {
-        super(parent, name, editorName, description, material, requirePremium);
+    public PlaceholderConditionGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface settings) {
+        super(parent, settings);
         reset();
     }
 
@@ -169,7 +165,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public PlaceholderConditionGroupFeature clone(FeatureParentInterface newParent) {
-        PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent, getFeatureSettings());
         LinkedHashMap<String, PlaceholderConditionFeature> newAttributes = new LinkedHashMap<>();
         for (String x : placeholdersConditions.keySet()) {
             newAttributes.put(x, placeholdersConditions.get(x).clone(eF));

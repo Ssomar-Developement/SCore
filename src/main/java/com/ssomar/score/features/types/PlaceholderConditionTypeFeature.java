@@ -1,10 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
@@ -12,7 +9,6 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,14 +23,14 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
     private Optional<PlaceholdersCdtType> value;
     private Optional<PlaceholdersCdtType> defaultValue;
 
-    public PlaceholderConditionTypeFeature(FeatureParentInterface parent, String name, Optional<PlaceholdersCdtType> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public PlaceholderConditionTypeFeature(FeatureParentInterface parent, Optional<PlaceholdersCdtType> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = Optional.empty();
     }
 
     public static PlaceholderConditionTypeFeature buildNull(PlaceholdersCdtType value) {
-        PlaceholderConditionTypeFeature p = new PlaceholderConditionTypeFeature(null, null, Optional.empty(), null, null, null, false);
+        PlaceholderConditionTypeFeature p = new PlaceholderConditionTypeFeature(null, Optional.empty(), null);
         p.setValue(Optional.of(value));
         return p;
     }
@@ -87,7 +83,7 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
 
     @Override
     public PlaceholderConditionTypeFeature clone(FeatureParentInterface newParent) {
-        PlaceholderConditionTypeFeature clone = new PlaceholderConditionTypeFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), requirePremium());
+        PlaceholderConditionTypeFeature clone = new PlaceholderConditionTypeFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.value = value;
         return clone;
     }

@@ -1,15 +1,12 @@
 package com.ssomar.score.features.custom.detailedblocks;
 
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
@@ -45,14 +42,14 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     private final boolean DEBUG = false;
 
-    public DetailedBlocks(FeatureParentInterface parent, String name, String editorName) {
-        super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
+    public DetailedBlocks(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
         this.notSaveIfEqualsToDefaultValue = false;
     }
 
-    public DetailedBlocks(FeatureParentInterface parent, String name, String editorName, boolean disableCancelEventIfNotValid, boolean disableMessageIfNotValid, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
+    public DetailedBlocks(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean disableCancelEventIfNotValid, boolean disableMessageIfNotValid, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, featureSettings);
         reset();
         this.disableCancelEventIfNotValid = disableCancelEventIfNotValid;
         this.disableMessageIfNotValid = disableMessageIfNotValid;
@@ -60,13 +57,13 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
     }
 
     public DetailedBlocks(FeatureParentInterface parent) {
-        super(parent, "detailedBlocks", "Detailed Blocks", new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
+        super(parent,  FeatureSettingsSCore.detailedBlocks);
         reset();
         this.notSaveIfEqualsToDefaultValue = false;
     }
 
     public DetailedBlocks(FeatureParentInterface parent, boolean disableCancelEventIfNotValid, boolean disableMessageIfNotValid) {
-        super(parent, "detailedBlocks", "Detailed Blocks", new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false);
+        super(parent,  FeatureSettingsSCore.detailedBlocks);
         reset();
         this.disableCancelEventIfNotValid = disableCancelEventIfNotValid;
         this.disableMessageIfNotValid = disableMessageIfNotValid;
@@ -76,9 +73,9 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public void reset() {
-        this.blocks = new ListDetailedMaterialFeature(this, "blocks", new ArrayList<>(), "Blocks", new String[]{"&7&oBlocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false, false, true);
-        this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the block is not valid?"}, Material.LEVER, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe block is not correct !") */, "Message if not valid", new String[]{"&7&oMessage if the block is not valid?"}, GUI.WRITABLE_BOOK, false, false);
+        this.blocks = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blocks, false, true);
+        this.cancelEventIfNotValid = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfNotValid, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.messageIfNotValid, false);
     }
 
     @Override
@@ -174,7 +171,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public DetailedBlocks clone(FeatureParentInterface newParent) {
-        DetailedBlocks dropFeatures = new DetailedBlocks(newParent, getName(), getEditorName());
+        DetailedBlocks dropFeatures = new DetailedBlocks(newParent, getFeatureSettings());
         dropFeatures.setBlocks(blocks.clone(dropFeatures));
         dropFeatures.setCancelEventIfNotValid(cancelEventIfNotValid.clone(dropFeatures));
         dropFeatures.setMessageIfNotValid(messageIfNotValid.clone(dropFeatures));

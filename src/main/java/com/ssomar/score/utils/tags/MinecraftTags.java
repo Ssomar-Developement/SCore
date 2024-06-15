@@ -22,7 +22,7 @@ public class MinecraftTags {
 
         /* add all the tags */
 
-        if(SCore.is1v20Plus()){
+        if (SCore.is1v20Plus()) {
             tags.add(Tag.ACACIA_LOGS);
             tags.add(Tag.ALL_HANGING_SIGNS);
             tags.add(Tag.ALL_SIGNS);
@@ -147,7 +147,6 @@ public class MinecraftTags {
             tags.add(Tag.ITEMS_HANGING_SIGNS);
             tags.add(Tag.ITEMS_HOES);
             tags.add(Tag.ITEMS_LECTERN_BOOKS);
-            tags.add(Tag.ITEMS_MUSIC_DISCS);
             tags.add(Tag.ITEMS_NON_FLAMMABLE_WOOD);
             tags.add(Tag.ITEMS_NOTE_BLOCK_TOP_INSTRUMENTS);
             tags.add(Tag.ITEMS_PICKAXES);
@@ -258,6 +257,19 @@ public class MinecraftTags {
             tags.add(Tag.WOODEN_TRAPDOORS);
             tags.add(Tag.WOOL);
             tags.add(Tag.WOOL_CARPETS);
+
+            if (!SCore.isIs1v21Plus()) {
+                // Add the tag ITEMS_MUSIC_DISCS that is not in 1.21 but in the spigot 1.20 wth reflection
+                try {
+                    tags.add((Tag) Tag.class.getDeclaredField("ITEMS_MUSIC_DISCS").get(null));
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (SCore.is1v20Plus()) {
+
+            }
         }
     }
 

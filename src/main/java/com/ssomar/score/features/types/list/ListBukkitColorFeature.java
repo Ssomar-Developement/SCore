@@ -3,6 +3,7 @@ package com.ssomar.score.features.types.list;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.utils.emums.CustomColor;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -10,7 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Color;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
 
     private Optional<List<Suggestion>> suggestions;
 
-    public ListBukkitColorFeature(FeatureParentInterface parent, String name, List<Color> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, name, "List of Bukkit colors", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListBukkitColorFeature(FeatureParentInterface parent, List<Color> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
+        super(parent, "List of Bukkit colors",defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         this.suggestions = suggestions;
         reset();
     }
@@ -45,7 +45,7 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
 
     @Override
     public ListBukkitColorFeature clone(FeatureParentInterface newParent) {
-        ListBukkitColorFeature clone = new ListBukkitColorFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue(), suggestions);
+        ListBukkitColorFeature clone = new ListBukkitColorFeature(newParent,  getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), suggestions);
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

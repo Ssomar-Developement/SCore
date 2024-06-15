@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.DoubleFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public class DamageFeature extends DoubleFeature implements SProjectileFeatureInterface {
 
     public DamageFeature(FeatureParentInterface parent) {
-        super(parent, "damage", Optional.of(-1.0), "Damage", new String[]{"&7&o-1 for vanilla damage"}, Material.DIAMOND_SWORD, false);
+        super(parent, Optional.of(-1.0), FeatureSettingsSCore.damage);
     }
 
     @Override

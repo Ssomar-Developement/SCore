@@ -2,17 +2,13 @@ package com.ssomar.score.features.custom.ifhas.executableitems.group;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.ifhas.executableitems.attribute.HasExecutableItemFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,15 +25,15 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
     private boolean notSaveIfNoValue;
     private String multipleChoicesID;
 
-    public HasExecutableItemGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] description, Material material, Boolean requirePremium, boolean notSaveIfNoValue) {
-        super(parent, name, editorName, description, material, requirePremium);
+    public HasExecutableItemGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettingsInterface, boolean notSaveIfNoValue) {
+        super(parent, featureSettingsInterface);
         this.notSaveIfNoValue = notSaveIfNoValue;
         reset();
     }
 
     /* Multiple choices construtor */
     public HasExecutableItemGroupFeature(FeatureParentInterface parent, String multipleChoicesID) {
-        super(parent, "multi-choices", "Multi-choices", new String[]{}, Material.DIAMOND, false);
+        super(parent, FeatureSettingsSCore.multiChoices);
         this.notSaveIfNoValue = true;
         this.multipleChoicesID = multipleChoicesID;
         reset();
@@ -194,7 +190,7 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
 
     @Override
     public HasExecutableItemGroupFeature clone(FeatureParentInterface newParent) {
-        HasExecutableItemGroupFeature eF = new HasExecutableItemGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfNoValue());
+        HasExecutableItemGroupFeature eF = new HasExecutableItemGroupFeature(newParent, getFeatureSettings(), isNotSaveIfNoValue());
         HashMap<String, FeatureInterface> newHasExecutableItems = new HashMap<>();
         for (String key : hasExecutableItems.keySet()) {
             newHasExecutableItems.put(key, hasExecutableItems.get(key).clone(eF));

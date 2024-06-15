@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringConverter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -48,16 +49,27 @@ public abstract class RunCommandsBuilder {
         } */
     }
 
-    public List<String> selectRandomCommands(List<String> commands, Integer amount) {
+    public List<String> selectRandomCommands(List<String> commands, Integer amount, @Nullable NothingObject nothingObject) {
         List<String> commandsList = new ArrayList<>(commands);
 
         List<String> result = new ArrayList<>();
 
+        int nothingTotal = 0;
+        if (nothingObject != null) {
+            nothingTotal = nothingObject.getNothingCount();
+        }
+
         for (int i = 0; i < amount; i++) {
-            if (commandsList.size() == 0) return result;
-            int rdn = (int) (Math.random() * commandsList.size());
-            result.add(commandsList.get(rdn));
-            commandsList.remove(rdn);
+            int commandsSize = commandsList.size();
+            if (commandsSize == 0) return result;
+            int rdn = (int) (Math.random() * (commandsSize+nothingTotal));
+            if(rdn >= commandsSize) {
+                nothingTotal--;
+                if(nothingObject.hasNothingString()) result.add(nothingObject.getNothingString());
+            } else {
+                result.add(commandsList.get(rdn));
+                commandsList.remove(rdn);
+            }
         }
         return result;
     }
@@ -237,42 +249,35 @@ public abstract class RunCommandsBuilder {
         }
     }
 
-    public List<String> replaceNothing(String command) {
-        List<String> result = new ArrayList<>();
+    public static Map<String, String> nothingMap = new HashMap<String, String>(){{
+        put("nothing*", "nothing\\*");
+        put("NOTHING*", "NOTHING\\*");
+    }};
 
-        if (command.contains("nothing*")) {
-            command = actionInfo.getSp().replacePlaceholder(command, true);
-            try {
-                int m = 0;
-                if (command.contains("//")) m = Integer.parseInt(command.split("nothing\\*")[1].split("//")[0].trim());
-                else m = Integer.parseInt(command.split("nothing\\*")[1]);
+    public Optional<NothingObject> replaceNothing(String command) {
 
-                for (int k = 0; k < m; k++) {
-                    if (command.contains("//")) result.add("SENDMESSAGE " + command.split("//")[1]);
-                    else result.add("");
+        for (Map.Entry<String, String> entry : nothingMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (command.contains(key)) {
+                command = actionInfo.getSp().replacePlaceholder(command, true);
+                try {
+                    int m;
+                    String nothingString = "";
+                    if (command.contains("//") && !command.contains("https://")){
+                        m = Integer.parseInt(command.split(value)[1].split("//")[0].trim());
+                        nothingString = "SENDMESSAGE " + command.split("//")[1];
+                    }
+                    else m = Integer.parseInt(command.split(value)[1]);
+
+                   NothingObject nothingObject = new NothingObject(m, nothingString);
+                   return Optional.of(nothingObject);
+                } catch (Exception err) {
+                    return Optional.empty();
                 }
-
-            } catch (Exception err) {
-                return Collections.singletonList(command);
             }
-        } else if (command.contains("NOTHING*")) {
-            command = actionInfo.getSp().replacePlaceholder(command, true);
-            try {
-                int m = 0;
-                if (command.contains("//") && !command.contains("https://"))
-                    m = Integer.parseInt(command.split("NOTHING\\*")[1].split("//")[0].trim());
-                else m = Integer.parseInt(command.split("NOTHING\\*")[1]);
-
-                for (int k = 0; k < m; k++) {
-                    if (command.contains("//") && !command.contains("https://"))
-                        result.add("SENDMESSAGE " + command.split("//")[1]);
-                    else result.add("");
-                }
-            } catch (Exception err) {
-                return Collections.singletonList(command);
-            }
-        } else return Collections.singletonList(command);
-        return result;
+        }
+        return Optional.empty();
     }
 
     /*
@@ -282,6 +287,7 @@ public abstract class RunCommandsBuilder {
 
         List<String> result = new ArrayList<>();
         List<String> commandsRandom = new ArrayList<>();
+        NothingObject nothingObject = null;
         boolean inRandom = false;
         int nbRandom = 0;
 
@@ -296,19 +302,23 @@ public abstract class RunCommandsBuilder {
                 inRandom = true;
                 continue;
             } else if (command.contains("RANDOM END") && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
-                result.addAll(this.selectRandomCommands(commandsRandom, nbRandom));
+                result.addAll(this.selectRandomCommands(commandsRandom, nbRandom, nothingObject));
                 inRandom = false;
                 commandsRandom.clear();
                 nbRandom = 0;
                 continue;
             } else if (inRandom) {
-                commandsRandom.addAll(this.replaceNothing(command));
+                Optional<NothingObject> nothingObjectOpt = this.replaceNothing(command);
+                if (nothingObjectOpt.isPresent()) {
+                    nothingObject = nothingObjectOpt.get();
+                }
+                else commandsRandom.add(command);
                 continue;
             } else result.add(command);
         }
 
         if (commandsRandom.size() > 0) {
-            result.addAll(this.selectRandomCommands(commandsRandom, nbRandom));
+            result.addAll(this.selectRandomCommands(commandsRandom, nbRandom, nothingObject));
         }
 
         return result;

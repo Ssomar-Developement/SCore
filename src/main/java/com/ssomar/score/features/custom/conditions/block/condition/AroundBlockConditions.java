@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.aroundblock.aroundblock.AroundBlockFeature;
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
-import org.bukkit.Material;
 
 public class AroundBlockConditions extends BlockConditionFeature<AroundBlockGroupFeature, AroundBlockConditions> {
 
     public AroundBlockConditions(FeatureParentInterface parent) {
-        super(parent, "blockAroundCdts", "Block Around Conditions", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.aroundBlockCdts);
     }
 
     @Override

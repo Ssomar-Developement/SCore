@@ -1,11 +1,11 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class IfPlayerHealth extends PlayerConditionFeature<NumberConditionFeature, IfPlayerHealth> {
 
     public IfPlayerHealth(FeatureParentInterface parent) {
-        super(parent, "ifPlayerHealth", "If player health", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifPlayerHealth);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class IfPlayerHealth extends PlayerConditionFeature<NumberConditionFeatur
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(this, "ifPlayerHealth", "If player health", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(this, FeatureSettingsSCore.ifPlayerHealth));
     }
 
     @Override

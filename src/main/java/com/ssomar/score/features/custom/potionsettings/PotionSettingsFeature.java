@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.potionsettings;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.potioneffects.group.PotionEffectGroupFeature;
 import com.ssomar.score.features.custom.potioneffects.potioneffect.PotionEffectFeature;
@@ -12,7 +13,6 @@ import com.ssomar.score.features.types.PotionTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;
@@ -45,16 +45,16 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     private PotionEffectGroupFeature potionEffects;
 
     public PotionSettingsFeature(FeatureParentInterface parent) {
-        super(parent, "potionSettings", "Potion Settings", new String[]{"&7&oPotion settings"}, FixedMaterial.getBrewingStand(), false);
+        super(parent, FeatureSettingsSCore.potionSettings);
         reset();
     }
 
     @Override
     public void reset() {
-        this.color = new ColorIntegerFeature(this, "potionColor", Optional.empty(), "Potion color", new String[]{"&7&oColor"}, Material.REDSTONE, false);
-        this.potiontype = new PotionTypeFeature(this, "potionType", Optional.ofNullable(PotionType.WATER), "Potion type", new String[]{"&7&oPotion type"}, Material.POTION, false);
-        this.potionExtended = new BooleanFeature(this, "potionExtended", false, "Potion extended", new String[]{"&7&oPotion extended"}, Material.LEVER, false, false);
-        this.potionUpgraded = new BooleanFeature(this, "potionUpgraded", false, "Potion upgraded", new String[]{"&7&oPotion upgraded"}, Material.LEVER, false, false);
+        this.color = new ColorIntegerFeature(this, Optional.empty(), FeatureSettingsSCore.potionColor);
+        this.potiontype = new PotionTypeFeature(this, Optional.ofNullable(PotionType.WATER), FeatureSettingsSCore.potionType);
+        this.potionExtended = new BooleanFeature(this, false, FeatureSettingsSCore.potionExtended, false);
+        this.potionUpgraded = new BooleanFeature(this, false, FeatureSettingsSCore.potionUpgraded, false);
         this.potionEffects = new PotionEffectGroupFeature(this, false);
     }
 

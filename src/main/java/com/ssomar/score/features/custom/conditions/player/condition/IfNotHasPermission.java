@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class IfNotHasPermission extends PlayerConditionFeature<ListUncoloredStringFeature, IfNotHasPermission> {
 
     public IfNotHasPermission(FeatureParentInterface parent) {
-        super(parent, "ifNotHasPermission", "If not has permission", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotHasPermission);
     }
 
     @Override
@@ -35,9 +35,10 @@ public class IfNotHasPermission extends PlayerConditionFeature<ListUncoloredStri
         return this;
     }
 
+
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), "ifNotHasPermission", new ArrayList<>(), "If has not permission", new String[]{}, Material.ANVIL, false, true, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifNotHasPermission, true, Optional.empty()));
     }
 
     @Override

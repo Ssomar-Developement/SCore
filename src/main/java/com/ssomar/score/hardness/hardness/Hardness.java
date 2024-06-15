@@ -3,6 +3,7 @@ package com.ssomar.score.hardness.hardness;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.features.custom.detaileditems.DetailedItems;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -16,7 +17,6 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -42,12 +42,12 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     private BooleanFeature periodInTicks;
 
     public Hardness(FeatureParentInterface parent, String id, String path) {
-        super(id, parent, "SPROJ", "SPROJ", new String[]{}, Material.ARROW, path, HardnessLoader.getInstance());
+        super(id, parent, FeatureSettingsSCore.HARDNESS, path, HardnessLoader.getInstance());
         reset();
     }
 
     public Hardness(String id, String path) {
-        super(id, "HARDNESS", "HARDNESS", new String[]{}, Material.ARROW, path, HardnessLoader.getInstance());
+        super(id, FeatureSettingsSCore.HARDNESS, path, HardnessLoader.getInstance());
         reset();
     }
 
@@ -89,12 +89,10 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
 
     @Override
     public void reset() {
-
         detailedBlocks = new DetailedBlocks(this);
         detailedItems = new DetailedItems(this);
-        period = new IntegerFeature(this, "period", Optional.of(3), "Period", new String[]{}, GUI.CLOCK, false);
-        periodInTicks = new BooleanFeature(this, "periodInTicks", false, "Period in ticks", new String[]{}, GUI.CLOCK, false, false);
-
+        period = new IntegerFeature(this, Optional.of(3), FeatureSettingsSCore.period);
+        periodInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.periodInTicks, false);
     }
 
     @Override

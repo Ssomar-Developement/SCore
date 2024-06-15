@@ -90,7 +90,7 @@ public class MessageMain {
             boolean isNotUpdate = true;
             while ((ligne = buff.readLine()) != null && isNotUpdate) {
                 if (ligne.contains(what + ":")) {
-                    Utils.sendConsoleMsg(SCore.NAME_COLOR_WITH_BRACKETS + " Update of " + what + " in your for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+                    Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Update of &6" + what + " &7in your for the plugin > &6" + plugin.getName() + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
                     insert = ligne.split("\"")[1];
                     config.set(what, insert);
                     config.save(pdFile);
@@ -99,10 +99,10 @@ public class MessageMain {
             }
             buff.close();
             if (isNotUpdate) {
-                SCore.plugin.getServer().getLogger().severe(SCore.plugin.getNameWithBrackets() + " ERROR LOAD MESSAGE " + what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
             }
         } catch (Exception e) {
-            SCore.plugin.getServer().getLogger().severe(SCore.plugin.getNameWithBrackets() + " ERROR LOAD MESSAGE "+ what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+            Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
 

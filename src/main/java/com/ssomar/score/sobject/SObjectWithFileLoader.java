@@ -1,20 +1,27 @@
 package com.ssomar.score.sobject;
 
 import com.google.common.io.ByteStreams;
+import com.ssomar.score.SCore;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.CodeSource;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     private final SPlugin sPlugin;
     private final String defaultObjectsPath;
+    private final String defaultObjectsPathWithoutSlash;
     private final SObjectManager<T> sObjectManager;
     private final int maxFreeObjects;
     private final Logger logger;
@@ -30,6 +37,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         this.sPlugin = sPlugin;
         this.logger = sPlugin.getPlugin().getServer().getLogger();
         this.defaultObjectsPath = defaultObjectsPath;
+        this.defaultObjectsPathWithoutSlash = defaultObjectsPath.substring(1);
         this.sObjectManager = sObjectManager;
         sObjectManager.setFileLoader(this);
         this.maxFreeObjects = maxFreeObjects;
@@ -37,7 +45,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
         objectName = sPlugin.getObjectName();
         /* For plugins that have multiple object splugin.getOjectName can't work */
-        if(objectName == null) objectName = sObjectManager.getObjectName();
+        if (objectName == null) objectName = sObjectManager.getObjectName();
         objectName = objectName.toLowerCase();
     }
 
@@ -56,7 +64,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             } else {
                 if (!fileEntry.getName().contains(".yml") || fileEntry.getName().contains(".txt"))
                     continue;
-                if(fileEntry.getName().equals(".yml")) continue;
+                if (fileEntry.getName().equals(".yml")) continue;
 
                 String currentId = fileEntry.getName().split(".yml")[0];
                 if (id.equals(currentId))
@@ -68,11 +76,11 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     public abstract void load();
 
-    public abstract Map<String, List<String>> getPremiumDefaultObjectsName();
+    /* public abstract Map<String, List<String>> getPremiumDefaultObjectsName();
 
-    public abstract Map<String, List<String>> getFreeDefaultObjectsName();
+    public abstract Map<String, List<String>> getFreeDefaultObjectsName(); */
 
-    public Map<String, List<String>> getAllDefaultObjectsName() {
+    /* public Map<String, List<String>> getAllDefaultObjectsName() {
         Map<String, List<String>> defaultObjects = getFreeDefaultObjectsName();
         Map<String, List<String>> premDefaultObjects = getPremiumDefaultObjectsName();
         for (String key : defaultObjects.keySet()) {
@@ -81,13 +89,13 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             defaultObjects.put(key, mergeList);
         }
         return defaultObjects;
-    }
+    }*/
 
     public void createDefaultObjectsFile(Boolean isPremiumLoading) {
         createDefaultObjectsFile(isPremiumLoading, false);
     }
 
-    public void createDefaultObjectsFile(Boolean isPremiumLoading, boolean exists) {
+    /* public void createDefaultObjectsFile(Boolean isPremiumLoading, boolean exists) {
 
         if (!exists)
             logger.severe(sPlugin.getNameDesign() + " CANT LOAD YOUR " + objectName.toUpperCase() + ", FOLDER '" + objectName + "' not found !");
@@ -100,13 +108,13 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
         for (String folder : defaultObjects.keySet()) {
 
-            File fileFolder = new File(getConfigsPath()+ "/" + folder);
+            File fileFolder = new File(getConfigsPath() + "/" + folder);
 
             fileFolder.mkdirs();
 
             for (String id : defaultObjects.get(folder)) {
                 try {
-                    File pdfile = new File(getConfigsPath()+ "/" + folder + "/" + id + ".yml");
+                    File pdfile = new File(getConfigsPath() + "/" + folder + "/" + id + ".yml");
                     InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + folder + "/" + id + ".yml");
 
                     if (!pdfile.exists()) {
@@ -130,31 +138,108 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
                 }
             }
         }
+    }*/
+
+    public List<String> getObjectsShortPath(){
+        CodeSource src = sPlugin.getClass().getProtectionDomain().getCodeSource();
+        List<String> list = new ArrayList<String>();
+
+        try {
+            if (src != null) {
+                URL jar = src.getLocation();
+                ZipInputStream zip = new ZipInputStream(jar.openStream());
+                ZipEntry ze = null;
+                while ((ze = zip.getNextEntry()) != null) {
+
+                    String entryName = ze.getName();
+                    if (entryName.endsWith(".yml") && entryName.contains(defaultObjectsPathWithoutSlash)) {
+                        //SsomarDev.testMsg("entryName: " + entryName, true);
+                        String value = entryName.replace(defaultObjectsPathWithoutSlash, "");
+                        list.add(value);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 
-    public void loadDefaultPremiumObjects(Map<String, List<String>> defaultObjectsName) {
+    public void createDefaultObjectsFile(Boolean isPremiumLoading, boolean exists) {
 
-        /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
-        randomIdsDefaultObjects = new HashMap<>();
-        for (String folder : defaultObjectsName.keySet()) {
-            for (String id : defaultObjectsName.get(folder)) {
-                randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
-            }
+        if (!exists)
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cCANT LOAD YOUR &6" + objectName.toUpperCase() + "&c, FOLDER '" + objectName + "' not found !");
+
+
+        for (String id : getObjectsShortPath()) {
+            copyDefaultFile(defaultObjectsPath + id, defaultObjectsPathWithoutSlash, isPremiumLoading);
         }
 
-        for (String folder : defaultObjectsName.keySet()) {
-            for (String id : defaultObjectsName.get(folder)) {
+        Utils.sendConsoleMsg(SCore.NAME_COLOR +" &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
 
-                InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + folder + "/" + id + ".yml");
-                BufferedReader reader = null;
-                reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-                Optional<T> oOpt;
-                if (!(oOpt = this.getObjectByReader(reader, id, false, randomIdsDefaultObjects)).isPresent()) continue;
+    }
 
-                T o = oOpt.get();
-                o.setId(randomIdsDefaultObjects.get(o.getId()));
-                sObjectManager.addDefaultLoadedObject(o);
-            }
+    public void copyDefaultFile(String pathFile, String defaultPath, Boolean isPremiumLoading) {
+
+        String value = pathFile.replace(defaultPath, "");
+        // get id after the last /
+        String id =  value.substring(value.lastIndexOf("/") + 1);
+        if(!isPremiumLoading && !id.startsWith("Free")) return;
+
+        // _v1_8__1_20_1  accepted between 1.8 and 1.20.1
+        if(id.contains("_v1_")){
+            String version = id.split("_v1_")[1];
+            String minVersion = "1_"+version.split("__")[0];
+            String maxVersion = "";
+            if(version.contains("__")) maxVersion = version.split("__")[1];
+
+            if(!SCore.isVersionBetween(minVersion, maxVersion)) return;
+        }
+
+        try {
+            File pdfile = new File(getConfigsPath() + "/" + value);
+            InputStream in = this.getClass().getResourceAsStream(pathFile);
+
+            if (!pdfile.exists()) {
+                sPlugin.getPlugin().getDataFolder().mkdirs();
+                pdfile.getParentFile().mkdirs();
+                pdfile.createNewFile();
+            } else return;
+            OutputStream out = new FileOutputStream(pdfile);
+            byte[] buffer = new byte[1024];
+            int current = 0;
+
+            while ((current = in.read(buffer)) > -1)
+                out.write(buffer, 0, current);
+
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &6" + value + " &7was created !");
+
+            out.close();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void loadDefaultPremiumObjects() {
+
+        /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
+         randomIdsDefaultObjects = new HashMap<>();
+        for (String value : getObjectsShortPath()) {
+            String id =  value.substring(value.lastIndexOf("/") + 1).replace(".yml", "");
+            if(id.startsWith("Free")) continue;
+            randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
+
+            InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + value);
+            BufferedReader reader = null;
+            reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            Optional<T> oOpt;
+            if (!(oOpt = this.getObjectByReader(reader, id, false, randomIdsDefaultObjects)).isPresent()) continue;
+
+            T o = oOpt.get();
+            o.setId(randomIdsDefaultObjects.get(o.getId()));
+            sObjectManager.addDefaultLoadedObject(o);
         }
     }
 
@@ -246,7 +331,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         }
     }
 
-    public List<String> getAllFoldersName(){
+    public List<String> getAllFoldersName() {
         List<String> listFiles = Arrays.asList(new File(getConfigsPath()).list());
         Collections.sort(listFiles);
         List<String> foldersName = new ArrayList<>();
@@ -280,7 +365,6 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     }
 
 
-
     public File searchFileOfObject(String id) {
 
         List<String> listFiles = Arrays.asList(new File(getConfigsPath()).list());
@@ -307,12 +391,12 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         return null;
     }
 
-    public File searchFolder(String folderName){
+    public File searchFolder(String folderName) {
         return searchFolder(new File(getConfigsPath()), folderName);
     }
 
-    public File searchFolder(File folder, String folderName){
-        if(folder == null || !folder.isDirectory()) return null;
+    public File searchFolder(File folder, String folderName) {
+        if (folder == null || !folder.isDirectory()) return null;
         List<String> listFiles = Arrays.asList(folder.list());
         Collections.sort(listFiles);
 
@@ -321,7 +405,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             if (fileEntry.isDirectory()) {
                 if (fileEntry.getName().equals(folderName))
                     return fileEntry;
-                else{
+                else {
                     File result = null;
                     if ((result = searchFolder(fileEntry, folderName)) == null)
                         continue;
@@ -476,9 +560,9 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
     public boolean reloadFolder(String folderName) {
         File folder = searchFolder(folderName);
-        if(folder == null) return false;
+        if (folder == null) return false;
         List<String> listFiles = getObjectsNameInFolder(folder);
-        for(String s : listFiles){
+        for (String s : listFiles) {
             sObjectManager.reloadObject(s);
         }
         return true;
@@ -487,9 +571,9 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     public List<T> getAllLoadedObjectsOfFolder(String folderName) {
         List<T> result = new ArrayList<>();
         File folder = searchFolder(folderName);
-        if(folder == null) return result;
+        if (folder == null) return result;
         List<String> listFiles = getObjectsNameInFolder(folder);
-        for(String s : listFiles){
+        for (String s : listFiles) {
             sObjectManager.getLoadedObjectWithID(s).ifPresent(result::add);
         }
         return result;

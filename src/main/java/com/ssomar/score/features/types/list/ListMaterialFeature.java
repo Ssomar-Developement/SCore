@@ -3,6 +3,7 @@ package com.ssomar.score.features.types.list;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -17,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMaterialFeature> {
 
-    public ListMaterialFeature(FeatureParentInterface parent, String name, List<Material> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, name, "List of Materials", editorName, editorDescription, editorMaterial, defaultValue, requirePremium, notSaveIfEqualsToDefaultValue);
+    public ListMaterialFeature(FeatureParentInterface parent, List<Material> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+        super(parent, "List of Materials", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
         reset();
     }
 
@@ -44,7 +45,7 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
 
     @Override
     public ListMaterialFeature clone(FeatureParentInterface newParent) {
-        ListMaterialFeature clone = new ListMaterialFeature(newParent, this.getName(), getDefaultValue(), getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium(), isNotSaveIfEqualsToDefaultValue());
+        ListMaterialFeature clone = new ListMaterialFeature(newParent,  getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

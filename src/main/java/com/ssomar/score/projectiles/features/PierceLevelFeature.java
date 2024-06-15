@@ -1,6 +1,7 @@
 package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.IntegerFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
@@ -13,7 +14,7 @@ public class PierceLevelFeature extends IntegerFeature implements SProjectileFea
 
 
     public PierceLevelFeature(FeatureParentInterface parent) {
-        super(parent, "pierceLevel", Optional.of(-1), "Pierce level", new String[]{}, Material.TIPPED_ARROW, false);
+        super(parent, Optional.of(-1), FeatureSettingsSCore.pierceLevel);
     }
 
     @Override

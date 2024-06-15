@@ -1,0 +1,8 @@
+
+ headValue(" headValue", " Head Value", new String[]{"&7&oThe value of the head",  "&eminecraft-heads.com"},  FixedMaterial.getHead()),
+ headDBID(" headDBID", " HeadDB ID", new String[]{"&7&oThe HeadDB ID of the head",  "&7&oWork with: ",  "&7&o- &bHeadDB(Free)"),
+ tags(" tags", " Tags", new String[]{"&7&oThe tags",  "&8&oExamples",  "&a{age:3}"),
+ string(" string", " String", new String[]{"&7&oA string"},  Material.PAPER,  false),
+ magicID(" magicID", " Magic ID", new String[]{"&7&oThe Magic ID"},  Material.STONE,  false),
+ variableName(" variableName", " Variable Name", new String[]{"&7&oThe variable name"},  GUI.WRITABLE_BOOK,  false),
+ variableName(" variableName", " Variable Name", new String[]{"&7&oThe name of the variable",  "&7&othat you want modify"},  GUI.WRITABLE_BOOK),

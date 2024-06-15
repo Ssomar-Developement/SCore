@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.item.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.types.list.ListEnchantAndLevelFeature;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class IfHasEnchant extends ItemConditionFeature<ListEnchantAndLevelFeature, IfHasEnchant> {
 
     public IfHasEnchant(FeatureParentInterface parent) {
-        super(parent, "ifHasEnchant", "If has enchant", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifHasEnchant);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class IfHasEnchant extends ItemConditionFeature<ListEnchantAndLevelFeatur
 
     @Override
     public void subReset() {
-        setCondition(new ListEnchantAndLevelFeature(this, "ifHasEnchant", new HashMap<>(), "If has enchant", new String[]{"&7If has enchant condition"}, Material.ANVIL, false, true));
+        setCondition(new ListEnchantAndLevelFeature(this,  new HashMap<>(), FeatureSettingsSCore.ifHasEnchant, true));
     }
 
     @Override

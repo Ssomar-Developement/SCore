@@ -1,17 +1,17 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.usedapi.MyCoreProtectAPI;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 public class IfMustBeNatural extends BlockConditionFeature<BooleanFeature, IfMustBeNatural> {
 
     public IfMustBeNatural(FeatureParentInterface parent) {
-        super(parent, "ifMustBeNatural", "If must be natural", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifMustBeNatural);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class IfMustBeNatural extends BlockConditionFeature<BooleanFeature, IfMus
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), "ifMustBeNatural", false, "If must be natural", new String[]{}, Material.ANVIL, false, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifMustBeNatural, true));
     }
 
     @Override

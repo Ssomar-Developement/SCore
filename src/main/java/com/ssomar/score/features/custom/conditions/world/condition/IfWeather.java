@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.conditions.world.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionFeature;
 import com.ssomar.score.features.custom.conditions.world.WorldConditionRequest;
 import com.ssomar.score.features.types.list.ListWeatherFeature;
-import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeather> {
 
     public IfWeather(FeatureParentInterface parent) {
-        super(parent, "ifWeather", "If weather", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifWeather);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeath
 
     @Override
     public void subReset() {
-        setCondition(new ListWeatherFeature(this, "ifWeather", new ArrayList<>(), "If weather", new String[]{"&7The whitelisted weathers"}, Material.ANVIL, false, true));
+        setCondition(new ListWeatherFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifWeather, true));
     }
 
     @Override

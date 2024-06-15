@@ -1,16 +1,16 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
-import org.bukkit.Material;
 
 public class IfBlockLocationY extends BlockConditionFeature<NumberConditionFeature, IfBlockLocationY> {
 
     public IfBlockLocationY(FeatureParentInterface parent) {
-        super(parent, "ifBlockLocationY", "If block location Y", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifBlockLocationY);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class IfBlockLocationY extends BlockConditionFeature<NumberConditionFeatu
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(getParent(), "ifBlockLocationY", "If block location Y", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(getParent(), FeatureSettingsSCore.ifBlockLocationY));
     }
 
     @Override

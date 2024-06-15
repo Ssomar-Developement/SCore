@@ -2,11 +2,11 @@ package com.ssomar.score.features.custom.conditions.item.condition;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionRequest;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,7 +16,7 @@ public class IfUsage extends ItemConditionFeature<NumberConditionFeature, IfUsag
 
 
     public IfUsage(FeatureParentInterface parent) {
-        super(parent, "ifUsage", "If usage", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifUsage);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class IfUsage extends ItemConditionFeature<NumberConditionFeature, IfUsag
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(this, "ifUsage", "If usage", new String[]{}, Material.ANVIL, false));
+        setCondition(new NumberConditionFeature(this, FeatureSettingsSCore.ifUsage));
     }
 
     @Override

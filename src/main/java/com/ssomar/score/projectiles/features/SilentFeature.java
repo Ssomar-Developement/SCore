@@ -2,19 +2,17 @@ package com.ssomar.score.projectiles.features;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
-import java.util.Arrays;
 
 public class SilentFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
 
     public SilentFeature(FeatureParentInterface parent) {
-        super(parent, "silent", false, "Silent", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW")), false, false);
+        super(parent,  false, FeatureSettingsSCore.silent, false);
     }
 
     @Override

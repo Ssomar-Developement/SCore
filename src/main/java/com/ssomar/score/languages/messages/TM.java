@@ -120,12 +120,12 @@ public class TM {
             }
 
             if(!isNotUpdate){
-                SCore.plugin.getServer().getLogger().info(SCore.NAME_COLOR_WITH_BRACKETS + " Update of " + what + " in your for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR+ " &7Update of &6" + what + " &7in your for the plugin > &6" + plugin.getName() + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
                 config.save(pdFile);
-            } else SCore.plugin.getServer().getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR LOAD MESSAGE " + what + " for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+            } else Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
             buff.close();
         } catch (Exception e) {
-            SCore.plugin.getServer().getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR LOAD MESSAGE "+what+" for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale());
+            Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+what+" &cfor the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
     }

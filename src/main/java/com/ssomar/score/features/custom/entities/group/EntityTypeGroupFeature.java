@@ -1,13 +1,9 @@
 package com.ssomar.score.features.custom.entities.group;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.FeaturesGroup;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.entities.entity.EntityTypeForGroupFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,8 +23,8 @@ public class EntityTypeGroupFeature extends FeatureWithHisOwnEditor<EntityTypeGr
     private boolean useTheParentSection;
     private boolean notSaveIfEmpty;
 
-    public EntityTypeGroupFeature(FeatureParentInterface parent, String name, String editorName, String[] editorDescription, boolean hasID, boolean useTheParentSection, boolean notSaveIfEmpty) {
-        super(parent, name, editorName, editorDescription, FixedMaterial.getMaterial(Arrays.asList("ZOMBIE_HEAD", "MONSTER_EGG")), false);
+    public EntityTypeGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean hasID, boolean useTheParentSection, boolean notSaveIfEmpty) {
+        super(parent, featureSettings);
         this.useTheParentSection = useTheParentSection;
         this.hasID = hasID;
         this.notSaveIfEmpty = notSaveIfEmpty;
@@ -129,7 +125,7 @@ public class EntityTypeGroupFeature extends FeatureWithHisOwnEditor<EntityTypeGr
 
     @Override
     public EntityTypeGroupFeature clone(FeatureParentInterface newParent) {
-        EntityTypeGroupFeature eF = new EntityTypeGroupFeature(newParent, getName(), getEditorName(), getEditorDescription(), hasID, useTheParentSection, notSaveIfEmpty);
+        EntityTypeGroupFeature eF = new EntityTypeGroupFeature(newParent, getFeatureSettings(), hasID, useTheParentSection, notSaveIfEmpty);
         HashMap<String, EntityTypeForGroupFeature> newEntityTypes = new HashMap<>();
         for (String key : entityTypes.keySet()) {
             newEntityTypes.put(key, entityTypes.get(key).clone(eF));

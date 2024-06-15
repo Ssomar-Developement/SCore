@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.particles.particle;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
@@ -41,21 +42,21 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
     private MaterialFeature blockType;
 
     public ParticleFeature(FeatureParentInterface parent, String id) {
-        super(parent, "Particle", "Particle", new String[]{"&7&oA custom particle"}, Material.BLAZE_POWDER, false);
+        super(parent, FeatureSettingsSCore.particle);
         this.id = id;
         reset();
     }
 
     @Override
     public void reset() {
-        this.particlesType = new ParticleTypeFeature(this, "particlesType", Optional.of(Particle.FLAME), "Particles type", new String[]{"&7&oThe type of the particle"}, Material.BLAZE_POWDER, false);
-        this.particlesAmount = new IntegerFeature(this, "particlesAmount", Optional.of(1), "Particles amount", new String[]{"&7&oThe amount of the particle"}, GUI.COMPARATOR, false);
-        this.particlesOffSet = new DoubleFeature(this, "particlesOffSet", Optional.of(1.0), "Particles offset", new String[]{"&7&oThe offset of the particle"}, GUI.COMPARATOR, false);
-        this.particlesSpeed = new DoubleFeature(this, "particlesSpeed", Optional.of(1.0), "Particles speed", new String[]{"&7&oThe speed of the particle"}, GUI.COMPARATOR, false);
-        this.particlesDelay = new IntegerFeature(this, "particlesDelay", Optional.of(1), "Particles delay", new String[]{"&7&oThe delay of the particle"}, GUI.COMPARATOR, false);
-        this.particlesDensity = new IntegerFeature(this, "particlesDensity", Optional.of(1), "Particles density", new String[]{"&7&oThe density of the particle"}, GUI.COMPARATOR, false);
-        this.blockType = new MaterialFeature(this, "blockType", Optional.of(Material.STONE), "Block type", new String[]{"&7&oThe type of the block"}, Material.STONE, false);
-        this.redstoneColor = new BukkitColorFeature(this, "redstoneColor", Optional.of(Color.RED), "Redstone color", new String[]{"&7&oThe color of the redstone"}, Material.REDSTONE, false);
+        this.particlesType = new ParticleTypeFeature(this, Optional.of(Particle.FLAME), FeatureSettingsSCore.particlesType);
+        this.particlesAmount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.particlesAmount);
+        this.particlesOffSet = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.particlesOffSet);
+        this.particlesSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.particlesSpeed);
+        this.particlesDelay = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.particlesDelay);
+        this.particlesDensity = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.particlesDensity);
+        this.blockType = new MaterialFeature(this, Optional.of(Material.STONE), FeatureSettingsSCore.blockType);
+        this.redstoneColor = new BukkitColorFeature(this, Optional.of(Color.RED), FeatureSettingsSCore.redstoneColor);
     }
 
     @Override

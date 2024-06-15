@@ -2,10 +2,10 @@ package com.ssomar.score.features.custom.conditions.custom.condition;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
 import com.ssomar.score.features.custom.conditions.custom.CustomConditionRequest;
 import com.ssomar.score.features.types.BooleanFeature;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +18,7 @@ public class IfNotOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, If
 
 
     public IfNotOwnerOfTheEI(FeatureParentInterface parent) {
-        super(parent, "ifNotOwnerOfTheEI", "If not owner of the EI", new String[]{}, Material.ANVIL, false);
+        super(parent, FeatureSettingsSCore.ifNotOwnerOfTheEI);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class IfNotOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, If
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(this, "ifNotOwnerOfTheEI", false, "If not owner of the EI", new String[]{}, Material.LEVER, false, true));
+        setCondition(new BooleanFeature(this,  false, FeatureSettingsSCore.ifNotOwnerOfTheEI, true));
     }
 
     @Override

@@ -1,19 +1,15 @@
 package com.ssomar.score.features.custom.detailedeffects;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedEffectFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -36,22 +32,22 @@ public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, De
     private BooleanFeature cancelEventIfNotValid;
     private transient ColoredStringFeature messageIfNotValid;
 
-    public DetailedEffects(FeatureParentInterface parent, String name, String editorName) {
-        super(parent, name, editorName, new String[]{"&7&oMake the activator run", "&7&oonly for certain effects", "&7&oempty = all effects"}, FixedMaterial.getMaterial(Arrays.asList("POTION", "REDSTONE")), false);
+    public DetailedEffects(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         reset();
     }
 
     public DetailedEffects(FeatureParentInterface parent) {
-        super(parent, "detailedEffects", "Detailed Effects", new String[]{"&7&oMake the activator run", "&7&oonly for certain effects", "&7&oempty = all effects"}, FixedMaterial.getMaterial(Arrays.asList("POTION", "REDSTONE")), false);
+        super(parent, FeatureSettingsSCore.detailedEffects);
         reset();
     }
 
 
     @Override
     public void reset() {
-        this.effects = new ListDetailedEffectFeature(this, "effects", new ArrayList<>(), "Effects", new String[]{"&7&oEffects"}, FixedMaterial.getMaterial(Arrays.asList("POTION", "REDSTONE")), false, false);
-        this.cancelEventIfNotValid = new BooleanFeature(this, "cancelEventIfNotValid", false, "Cancel event if not valid", new String[]{"&7&oCancel the event if the effect is not valid?"}, Material.LEVER, false, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, "messageIfNotValid", Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe block is not correct !") */, "Message if not valid", new String[]{"&7&oMessage if the effect is not valid?"}, GUI.WRITABLE_BOOK, false, false);
+        this.effects = new ListDetailedEffectFeature(this, new ArrayList<>(), FeatureSettingsSCore.effects, false);
+        this.cancelEventIfNotValid = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotValid, false);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe block is not correct !") */, FeatureSettingsSCore.messageIfNotValid, false);
     }
 
     @Override
@@ -136,7 +132,7 @@ public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, De
 
     @Override
     public DetailedEffects clone(FeatureParentInterface newParent) {
-        DetailedEffects dropFeatures = new DetailedEffects(newParent, getName(), getEditorName());
+        DetailedEffects dropFeatures = new DetailedEffects(newParent, getFeatureSettings());
         dropFeatures.setEffects(effects.clone(dropFeatures));
         dropFeatures.setCancelEventIfNotValid(cancelEventIfNotValid.clone(dropFeatures));
         dropFeatures.setMessageIfNotValid(messageIfNotValid.clone(dropFeatures));

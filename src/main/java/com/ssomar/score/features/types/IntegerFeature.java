@@ -1,22 +1,18 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOneMessageInEditor;
-import com.ssomar.score.features.FeatureReturnCheckPremium;
+import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.numbers.NTools;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -34,15 +30,15 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     private Optional<Integer> defaultValue;
     private Optional<String> placeholder;
 
-    public IntegerFeature(FeatureParentInterface parent, String name, Optional<Integer> defaultValue, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        super(parent, name, editorName, editorDescription, editorMaterial, requirePremium);
+    public IntegerFeature(FeatureParentInterface parent,Optional<Integer> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
         reset();
     }
 
     public static IntegerFeature buildNull() {
-        return new IntegerFeature(null, null, Optional.empty(), null, null, null, false);
+        return new IntegerFeature(null, Optional.empty(), null);
     }
 
     @Override
@@ -111,7 +107,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
     public IntegerFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (!isPremium() && requirePremium()) {
+        if (!isPremium() && this.isRequirePremium()) {
             finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
         } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 1] = "&7Currently: ";
@@ -129,7 +125,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public IntegerFeature clone(FeatureParentInterface newParent) {
-        IntegerFeature clone = new IntegerFeature(newParent, this.getName(), defaultValue, getEditorName(), getEditorDescription(), getEditorMaterial(), isRequirePremium());
+        IntegerFeature clone = new IntegerFeature(newParent, defaultValue, getFeatureSettings());
         clone.setValue(value);
         clone.setPlaceholder(getPlaceholder());
         return clone;
@@ -143,7 +139,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
 
     @Override
     public void askInEditor(Player editor, NewGUIManager manager) {
-        if (requirePremium() && !isPremium()) return;
+        if (this.isRequirePremium() && !isPremium()) return;
         manager.requestWriting.put(editor, getEditorName());
         editor.closeInventory();
         space(editor);
