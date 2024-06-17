@@ -1,0 +1,14 @@
+type: SNOWBALL
+customNameVisible: false
+customName: JERRY-CHIME_GUN_PROJECTILE_FILE
+invisible: true
+glowing: false
+bounce: false
+despawnDelay: -1
+silent: false
+removeWhenHitBlock: false
+visualFire: false
+gravity: false
+visualItem:
+  material: BARRIER
+particles: {}

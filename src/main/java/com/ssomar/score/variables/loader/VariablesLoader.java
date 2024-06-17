@@ -27,7 +27,7 @@ public class VariablesLoader extends SObjectWithFileLoader<Variable> {
         VariablesManager.getInstance().setDefaultObjects(new ArrayList<>());
         /* // TODO if (!GeneralConfig.getInstance().isDisableTestItems()) {*/
         //if (PlaceholderAPI.isLotOfWork()) {
-        this.loadDefaultPremiumObjects();
+        //this.loadDefaultPremiumObjects();
         //}
         //this.loadDefaultEncodedPremiumObjects(this.getPremiumPackObjectsName());
         //}

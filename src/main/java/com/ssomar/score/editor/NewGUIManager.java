@@ -74,13 +74,6 @@ public abstract class NewGUIManager<T extends GUI> {
         this.clicked(item, interact, click);
     }
 
-    public void clicked(Player p, ItemStack item, String title, ClickType click) {
-        NewInteractionClickedGUIManager<T> interact = new NewInteractionClickedGUIManager<>();
-        interact.player = p;
-        interact.title = title;
-        this.clicked(item, interact, click);
-    }
-
     public void clicked(ItemStack item, NewInteractionClickedGUIManager<T> interact, ClickType click) {
         if (item != null && item.hasItemMeta()) {
             interact.cache = this.getCache();

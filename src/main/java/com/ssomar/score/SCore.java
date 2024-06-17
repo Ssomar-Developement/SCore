@@ -520,7 +520,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
                         if(!Display.isSomethingToModify()) return;
                         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
                             //System.out.println(">>>"+player.getName());
-                            ItemStack itemStack = player.getOpenInventory().getCursor();
+                            ItemStack itemStack = player.getItemOnCursor();
                             if (player.getGameMode() != GameMode.CREATIVE && (itemStack == null || itemStack.getType() == Material.AIR)) {
                                 //System.out.println(">>>"+player.getName()+" update");
                                 player.updateInventory();
@@ -727,13 +727,13 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v20v6 = Bukkit.getServer().getVersion().contains("1.20.6");
         is1v21 = Bukkit.getServer().getVersion().contains("1.21");
 
-        isSpigot = Bukkit.getServer().getVersion().contains("Spigot");
-        isMohist = Bukkit.getServer().getName().contains("Mohist");
-        isPaper = Bukkit.getServer().getVersion().contains("Paper");
-        isFolia = Bukkit.getServer().getVersion().contains("Folia");
-        isLuminol = Bukkit.getServer().getVersion().contains("Luminol");
-        isPurpur = Bukkit.getServer().getVersion().contains("Purpur");
-        isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish");
+        isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
+        isMohist = Bukkit.getServer().getName().contains("Mohist") || Bukkit.getServer().getVersion().contains("Mohist");
+        isPaper = Bukkit.getServer().getVersion().contains("Paper") || Bukkit.getServer().getVersion().contains("paper");
+        isFolia = Bukkit.getServer().getVersion().contains("Folia") || Bukkit.getServer().getVersion().contains("folia");
+        isLuminol = Bukkit.getServer().getVersion().contains("Luminol") || Bukkit.getServer().getVersion().contains("luminol");
+        isPurpur = Bukkit.getServer().getVersion().contains("Purpur") || Bukkit.getServer().getVersion().contains("purpur");
+        isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish") || Bukkit.getServer().getVersion().contains("pufferfish");
     }
 
     public void displayVersion() {

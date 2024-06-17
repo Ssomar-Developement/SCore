@@ -117,6 +117,8 @@ public class StringCalculation {
 
     public static boolean isStringCalculation(String s) {
         try {
+            //ignore if there are more % than 2, ex : %math_0_(%target_max_health%)*0.2%
+            if (s.chars().filter(ch -> ch == '%').count() > 2) return true;
             if (s.contains("%")) {
                 boolean pass = false;
                 boolean passSecond = false;

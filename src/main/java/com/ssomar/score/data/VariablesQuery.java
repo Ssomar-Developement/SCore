@@ -63,17 +63,24 @@ public class VariablesQuery {
             pstmt = conn.prepareStatement(sql);
             for (Variable var : variables) {
                 pstmt.setString(1, var.getId());
+                //System.out.println("var.getId() ::: "+ var.getId());
                 pstmt.setString(2, var.getType().getValue().get().toString());
+                //System.out.println("var.getType().getValue().get() ::: "+ var.getType().getValue().get().toString());
                 pstmt.setString(3, var.getForFeature().getValue().get().toString());
+                //System.out.println("var.getForFeature().getValue().get() ::: "+ var.getForFeature().getValue().get().toString());
                 String data = transformValues(var.getValues());
+                //System.out.println("data ::: "+ data);
                 pstmt.setString(4, data);
                 pstmt.setString(5, var.getDefaultValue().getValue().orElse("NULL"));
+                //System.out.println("var.getDefaultValue().getValue().orElse(\"NULL\") ::: "+ var.getDefaultValue().getValue().orElse("NULL"));
                 pstmt.setString(6, var.getId());
+                //System.out.println("var.getId() ::: "+ var.getId());
                 //System.out.println("query ::: "+ pstmt.toString());
                 pstmt.addBatch();
-                if (i % 1000 == 0 || i == variables.size()) {
-                   pstmt.executeBatch(); // Execute every 1000 items.
+                if (i % 10 == 0 || i == variables.size()) {
+                   pstmt.executeBatch(); // Execute every 10 items.
                 }
+                i++;
             }
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while inserting variables in database "+e.getMessage());
@@ -174,16 +181,19 @@ public class VariablesQuery {
     }
 
     public static String transformValues(Map<String, List<String>> entries){
-        String data = "";
+        StringBuilder data = new StringBuilder();
         for (String key : entries.keySet()) {
-            String values = "::::";
+            //System.out.println("key ::: "+ key);
+            StringBuilder values = new StringBuilder("::::");
             for (String value : entries.get(key)) {
-                values += value + "::::";
+                values.append(value).append("::::");
             }
-            values = values.substring(0, values.length() - 4);
-            data += data + ">>>>" + key + values;
+            // Delete last 4 char
+            values.delete(values.length() - 4, values.length());
+            data.append(">>>>").append(key).append(values);
+            //System.out.println("data ::: "+ data.length());
         }
-        return data;
+        return data.toString();
     }
 
     public static HashMap<String, List<String>> deconvertValues(String data){

@@ -20,8 +20,6 @@ public class NewInteractionClickedGUIManager<T extends GUI> {
     public String localizedName;
     public Player player;
 
-    public String title;
-
     public void setName(String name) {
         this.name = name;
         this.decoloredName = StringConverter.decoloredString(name);

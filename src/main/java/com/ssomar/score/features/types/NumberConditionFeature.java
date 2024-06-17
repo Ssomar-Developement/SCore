@@ -169,7 +169,7 @@ public class NumberConditionFeature extends FeatureAbstract<Optional<String>, Nu
     @Override
     public Optional<String> verifyMessageReceived(String message) {
         if (!StringCalculation.isStringCalculation(StringConverter.decoloredString(message))) {
-            return Optional.of(StringConverter.coloredString("&c&l[ERROR] &7&oYou must define a correct condition ! 8&7&oExample: &eCONDITION>=10"));
+            return Optional.of(StringConverter.coloredString("&c&l[ERROR] &7&oYou must define a correct condition ! &7&oExample: &eCONDITION>=10"));
         } else return Optional.empty();
     }
 

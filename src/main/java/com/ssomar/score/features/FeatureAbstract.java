@@ -59,7 +59,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
     }
 
     public boolean isRequirePremium() {
-        return featureSettings.isRequirePremium();
+        return featureSettings == null || featureSettings.isRequirePremium();
     }
 
 

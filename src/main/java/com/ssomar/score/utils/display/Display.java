@@ -46,7 +46,7 @@ public final class Display {
 
         ItemStack original = itemStack.clone();
         /* player.getOpenInventory() can be null when it is a custom GUI https://discord.com/channels/701066025516531753/1157683507699650560 */
-        Inventory inventory = (player == null || player.getOpenInventory() == null) ? null : player.getOpenInventory().getTopInventory();
+        Inventory inventory = (player == null) ? null : player.getInventory();
         boolean inInventory = (inventory != null  && !inventory.isEmpty() && inventory.contains(original));
         /* TODO boolean inGui = (player != null && GUIDetectionManager.hasGUIOpen(player)); */
         boolean inGui = false;

@@ -12,12 +12,20 @@ import com.ssomar.score.features.custom.attributes.attribute.AttributeFullOption
 import com.ssomar.score.features.custom.attributes.attribute.AttributeFullOptionsFeatureEditorManager;
 import com.ssomar.score.features.custom.attributes.group.AttributesGroupFeatureEditor;
 import com.ssomar.score.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.autoupdate.AutoUpdateFeaturesEditor;
+import com.ssomar.score.features.custom.autoupdate.AutoUpdateFeaturesEditorManager;
 import com.ssomar.score.features.custom.bannersettings.BannerSettingsFeatureEditor;
 import com.ssomar.score.features.custom.bannersettings.BannerSettingsFeatureEditorManager;
 import com.ssomar.score.features.custom.blocktitle.BlockTitleFeaturesEditor;
 import com.ssomar.score.features.custom.blocktitle.BlockTitleFeaturesEditorManager;
+import com.ssomar.score.features.custom.brewingstand.BrewingStandFeaturesEditor;
+import com.ssomar.score.features.custom.brewingstand.BrewingStandFeaturesEditorManager;
+import com.ssomar.score.features.custom.canbeusedbyowner.CanBeUsedOnlyByOwnerFeaturesEditor;
+import com.ssomar.score.features.custom.canbeusedbyowner.CanBeUsedOnlyByOwnerFeaturesEditorManager;
 import com.ssomar.score.features.custom.cancelevents.CancelEventFeaturesEditor;
 import com.ssomar.score.features.custom.cancelevents.CancelEventFeaturesEditorManager;
+import com.ssomar.score.features.custom.chiseledbookshelf.ChiseledBookshelfFeaturesEditor;
+import com.ssomar.score.features.custom.chiseledbookshelf.ChiseledBookshelfFeaturesEditorManager;
 import com.ssomar.score.features.custom.conditions.ConditionFeatureEditor;
 import com.ssomar.score.features.custom.conditions.ConditionFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.block.parent.BlockConditionsFeatureEditor;
@@ -36,6 +44,8 @@ import com.ssomar.score.features.custom.conditions.player.parent.PlayerCondition
 import com.ssomar.score.features.custom.conditions.player.parent.PlayerConditionsFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.world.parent.WorldConditionsFeatureEditor;
 import com.ssomar.score.features.custom.conditions.world.parent.WorldConditionsFeatureEditorManager;
+import com.ssomar.score.features.custom.container.ContainerFeaturesEditor;
+import com.ssomar.score.features.custom.container.ContainerFeaturesEditorManager;
 import com.ssomar.score.features.custom.cooldowns.CooldownFeatureEditor;
 import com.ssomar.score.features.custom.cooldowns.CooldownFeatureEditorManager;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocksEditor;
@@ -46,8 +56,14 @@ import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditor;
 import com.ssomar.score.features.custom.detaileditems.DetailedItemsEditorManager;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditor;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlotsEditorManager;
+import com.ssomar.score.features.custom.directional.DirectionalFeaturesEditor;
+import com.ssomar.score.features.custom.directional.DirectionalFeaturesEditorManager;
+import com.ssomar.score.features.custom.displayConditions.DisplayConditionsFeaturesEditor;
+import com.ssomar.score.features.custom.displayConditions.DisplayConditionsFeaturesEditorManager;
 import com.ssomar.score.features.custom.drop.DropFeaturesEditor;
 import com.ssomar.score.features.custom.drop.DropFeaturesEditorManager;
+import com.ssomar.score.features.custom.durabilityFeatures.DurabilityFeaturesEditor;
+import com.ssomar.score.features.custom.durabilityFeatures.DurabilityFeaturesEditorManager;
 import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditor;
 import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeatureEditorManager;
 import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeatureEditor;
@@ -56,12 +72,18 @@ import com.ssomar.score.features.custom.entities.entity.EntityTypeForGroupFeatur
 import com.ssomar.score.features.custom.entities.entity.EntityTypeForGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.entities.group.EntityTypeGroupFeatureEditor;
 import com.ssomar.score.features.custom.entities.group.EntityTypeGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.foodFeatures.FoodFeaturesEditor;
+import com.ssomar.score.features.custom.foodFeatures.FoodFeaturesEditorManager;
+import com.ssomar.score.features.custom.furnace.FurnaceFeaturesEditor;
+import com.ssomar.score.features.custom.furnace.FurnaceFeaturesEditorManager;
 import com.ssomar.score.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditor;
 import com.ssomar.score.features.custom.givefirstjoin.GiveFirstJoinFeaturesEditorManager;
 import com.ssomar.score.features.custom.headfeatures.HeadFeaturesEditor;
 import com.ssomar.score.features.custom.headfeatures.HeadFeaturesEditorManager;
 import com.ssomar.score.features.custom.hiders.HidersEditor;
 import com.ssomar.score.features.custom.hiders.HidersEditorManager;
+import com.ssomar.score.features.custom.hopper.HopperFeaturesEditor;
+import com.ssomar.score.features.custom.hopper.HopperFeaturesEditorManager;
 import com.ssomar.score.features.custom.ifhas.executableitems.attribute.HasExecutableItemFeatureEditor;
 import com.ssomar.score.features.custom.ifhas.executableitems.attribute.HasExecutableItemFeatureEditorManager;
 import com.ssomar.score.features.custom.ifhas.executableitems.group.HasExecutableItemGroupFeatureEditor;
@@ -76,6 +98,10 @@ import com.ssomar.score.features.custom.materialwithgroupsandtags.group.Material
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditor;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.materialandtags.MaterialAndTagsFeatureEditorManager;
+import com.ssomar.score.features.custom.othereicooldowns.cooldown.OtherEICooldownEditor;
+import com.ssomar.score.features.custom.othereicooldowns.cooldown.OtherEICooldownEditorManager;
+import com.ssomar.score.features.custom.othereicooldowns.group.OtherEICooldownGroupFeatureEditor;
+import com.ssomar.score.features.custom.othereicooldowns.group.OtherEICooldownGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeatureEditor;
 import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.particles.particle.ParticleFeatureEditor;
@@ -161,8 +187,7 @@ public class NewEditorInteractionsListener implements Listener {
     public void onInvClick(InventoryCreativeEvent e) {
         //SsomarDev.testMsg(">> click1: "+e.getClick());
         if (!(e.getWhoClicked() instanceof Player) || e.getClick() != ClickType.MIDDLE) return;
-
-        String title = e.getView().getTitle();
+        
         Player player = (Player) e.getWhoClicked();
         try {
             if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) return;
@@ -176,7 +201,7 @@ public class NewEditorInteractionsListener implements Listener {
 
         try {
             if (e.getInventory().getHolder() instanceof GUI)
-                this.manage(player, itemS, title, "", e);
+                this.manage(player, itemS, "", e);
         } catch (NullPointerException error) {
             error.printStackTrace();
         }
@@ -188,7 +213,6 @@ public class NewEditorInteractionsListener implements Listener {
         //SsomarDev.testMsg(">> click2: "+e.getClick());
         if (!(e.getWhoClicked() instanceof Player)) return;
 
-        String title = e.getView().getTitle();
         Player player = (Player) e.getWhoClicked();
         try {
             if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) return;
@@ -197,18 +221,18 @@ public class NewEditorInteractionsListener implements Listener {
         }
 
         int slot = e.getSlot();
-        ItemStack itemS = e.getView().getItem(slot);
+        ItemStack itemS = e.getClickedInventory().getItem(slot);
         //boolean notNullItem = itemS!=null;
 
         try {
             if (e.getInventory().getHolder() instanceof GUI)
-                this.manage(player, itemS, title, "", e);
+                this.manage(player, itemS, "", e);
         } catch (NullPointerException error) {
             error.printStackTrace();
         }
     }
 
-    public void manage(Player player, ItemStack itemS, String title, String guiType, InventoryClickEvent e) {
+    public void manage(Player player, ItemStack itemS, String guiType, InventoryClickEvent e) {
 
         e.setCancelled(true);
 
@@ -221,224 +245,268 @@ public class NewEditorInteractionsListener implements Listener {
         InventoryHolder holder = e.getInventory().getHolder();
 
         if (holder instanceof SObjectsEditorAbstract) {
-            NewSObjectsManagerEditor.getInstance().clicked(player, itemS, title, e.getClick());
+            NewSObjectsManagerEditor.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof NewDefaultObjectsEditor) {
-            NewDefaultObjectsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            NewDefaultObjectsEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredLevelEditor) {
-            RequiredLevelEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredLevelEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredExperienceEditor) {
-            RequiredExperienceEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredExperienceEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredMoneyEditor) {
-            RequiredMoneyEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredMoneyEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredManaEditor) {
-            RequiredManaEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredManaEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredItemFeatureEditor) {
-            RequiredItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredItemFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredItemGroupFeatureEditor) {
-            RequiredItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredExecutableItemFeatureEditor) {
-            RequiredExecutableItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredExecutableItemFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredExecutableItemGroupFeatureEditor) {
-            RequiredExecutableItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredExecutableItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredMagicFeatureEditor) {
-            RequiredMagicFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredMagicFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RequiredMagicGroupFeatureEditor) {
-            RequiredMagicGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredMagicGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }else if (holder instanceof RequiredGroupEditor) {
-            RequiredGroupEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RequiredGroupEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof DropFeaturesEditor) {
-            DropFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            DropFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof HidersEditor) {
-            HidersEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HidersEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof ArmorTrimEditor) {
-            ArmorTrimEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            ArmorTrimEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof GiveFirstJoinFeaturesEditor) {
-            GiveFirstJoinFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            GiveFirstJoinFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof EnchantmentWithLevelFeatureEditor) {
-            EnchantmentWithLevelFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            EnchantmentWithLevelFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof EnchantmentsGroupFeatureEditor) {
-            EnchantmentsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            EnchantmentsGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof AttributeFullOptionsFeatureEditor) {
-            AttributeFullOptionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            AttributeFullOptionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof AttributesGroupFeatureEditor) {
-            AttributesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            AttributesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof RestrictionsEditor) {
-            RestrictionsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            RestrictionsEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof CancelEventFeaturesEditor) {
-            CancelEventFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            CancelEventFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof ActivatorsFeatureEditor) {
-            ActivatorsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            ActivatorsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof CooldownFeatureEditor) {
-            CooldownFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            CooldownFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof LoopFeaturesEditor) {
-            LoopFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            LoopFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof ConditionFeatureEditor) {
-            ConditionFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            ConditionFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof BlockConditionsFeatureEditor) {
-            BlockConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            BlockConditionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof EntityConditionsFeatureEditor) {
-            EntityConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            EntityConditionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof WorldConditionsFeatureEditor) {
-            WorldConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            WorldConditionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof ItemConditionsFeatureEditor) {
-            ItemConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            ItemConditionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PlayerConditionsFeatureEditor) {
-            PlayerConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PlayerConditionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof CustomConditionsFeatureEditor) {
-            CustomConditionsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            CustomConditionsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PlaceholderConditionFeatureEditor) {
-            PlaceholderConditionFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PlaceholderConditionFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PlaceholderConditionGroupFeatureEditor) {
-            PlaceholderConditionGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PlaceholderConditionGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof MaterialAndTagsFeatureEditor) {
-            MaterialAndTagsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            MaterialAndTagsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof MaterialAndTagsGroupFeatureEditor) {
-            MaterialAndTagsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            MaterialAndTagsGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof EntityTypeGroupFeatureEditor) {
-            EntityTypeGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            EntityTypeGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof EntityTypeForGroupFeatureEditor) {
-            EntityTypeForGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            EntityTypeForGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof DetailedSlotsEditor) {
-            DetailedSlotsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            DetailedSlotsEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof UsePerDayFeatureEditor) {
-            UsePerDayFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            UsePerDayFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof DetailedBlocksEditor) {
-            DetailedBlocksEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            DetailedBlocksEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof DetailedEffectsEditor) {
-            DetailedEffectsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            DetailedEffectsEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if(holder instanceof DetailedItemsEditor){
-            DetailedItemsEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            DetailedItemsEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof HeadFeaturesEditor) {
-            HeadFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HeadFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PotionEffectFeatureEditor) {
-            PotionEffectFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PotionEffectFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PotionEffectGroupFeatureEditor) {
-            PotionEffectGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PotionEffectGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PotionSettingsFeatureEditor) {
-            PotionSettingsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PotionSettingsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof SubPatternFeatureEditor) {
-            SubPatternFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            SubPatternFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PatternFeatureEditor) {
-            PatternFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PatternFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof PatternsGroupFeatureEditor) {
-            PatternsGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            PatternsGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof BannerSettingsFeatureEditor) {
-            BannerSettingsFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            BannerSettingsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof VariableFeatureEditor) {
-            VariableFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            VariableFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof VariablesGroupFeatureEditor) {
-            VariablesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            VariablesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof VariableUpdateFeatureEditor) {
-            VariableUpdateFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            VariableUpdateFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof VariableUpdateGroupFeatureEditor) {
-            VariableUpdateGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            VariableUpdateGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof HasExecutableItemFeatureEditor) {
-            HasExecutableItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HasExecutableItemFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof HasExecutableItemGroupFeatureEditor) {
-            HasExecutableItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HasExecutableItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof HasItemFeatureEditor) {
-            HasItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HasItemFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof HasItemGroupFeatureEditor) {
-            HasItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HasItemGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof BlockTitleFeaturesEditor) {
-            BlockTitleFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            BlockTitleFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof AroundBlockFeatureEditor) {
-            AroundBlockFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            AroundBlockFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof AroundBlockGroupFeatureEditor) {
-            AroundBlockGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            AroundBlockGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof SProjectileEditor) {
-            SProjectileEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            SProjectileEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof HardnessEditor) {
-            HardnessEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            HardnessEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof VariableEditor) {
-            VariableEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            VariableEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof VisualItemFeatureEditor) {
-            VisualItemFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            VisualItemFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof FireworkFeaturesEditor) {
-            FireworkFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            FireworkFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
         else if (holder instanceof ParticleFeatureEditor) {
-            ParticleFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            ParticleFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof ParticlesGroupFeatureEditor) {
-            ParticlesGroupFeatureEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+            ParticlesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
-        } else if(holder instanceof FireworkFeaturesEditor){
-            FireworkFeaturesEditorManager.getInstance().clicked(player, itemS, title, e.getClick());
+        }
+        else if (holder instanceof OtherEICooldownEditor) {
+            OtherEICooldownEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        } else if (holder instanceof OtherEICooldownGroupFeatureEditor) {
+            OtherEICooldownGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        } else if (holder instanceof AutoUpdateFeaturesEditor) {
+            AutoUpdateFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof CanBeUsedOnlyByOwnerFeaturesEditor) {
+            CanBeUsedOnlyByOwnerFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof DisplayConditionsFeaturesEditor) {
+            DisplayConditionsFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof FoodFeaturesEditor) {
+            FoodFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof DurabilityFeaturesEditor) {
+            DurabilityFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof ContainerFeaturesEditor) {
+            ContainerFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        } else if (holder instanceof HopperFeaturesEditor) {
+            HopperFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        } else if (holder instanceof FurnaceFeaturesEditor) {
+            FurnaceFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        } else if (holder instanceof ChiseledBookshelfFeaturesEditor) {
+            ChiseledBookshelfFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        } else if (holder instanceof DirectionalFeaturesEditor) {
+            DirectionalFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof BrewingStandFeaturesEditor) {
+            BrewingStandFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
         }
 
     }
@@ -692,6 +760,51 @@ public class NewEditorInteractionsListener implements Listener {
         } else if(FireworkFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
             e.setCancelled(true);
             FireworkFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }else if (OtherEICooldownEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            OtherEICooldownEditorManager.getInstance().receiveMessage(p, message);
+        } else if (OtherEICooldownGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            OtherEICooldownGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
+        } else if (AutoUpdateFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            AutoUpdateFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (CanBeUsedOnlyByOwnerFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            CanBeUsedOnlyByOwnerFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (DisplayConditionsFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DisplayConditionsFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (FoodFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            FoodFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (DurabilityFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DurabilityFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (ContainerFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ContainerFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        } else if (HopperFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            HopperFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        } else if (FurnaceFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            FurnaceFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (ChiseledBookshelfFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ChiseledBookshelfFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        } else if (DirectionalFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DirectionalFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        } else if (BrewingStandFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            BrewingStandFeaturesEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }
