@@ -5,6 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class RealHardnessModifier implements HardnessModifier{
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     @Override
     public boolean isTriggered(Player player, Block block, ItemStack tool) {
         return true;

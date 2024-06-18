@@ -19,6 +19,8 @@ public class HardnessEditor extends FeatureEditorInterface<Hardness> {
     public void load() {
         clearAndSetBackground();
         int i = 0;
+        hardness.getEnabled().initAndUpdateItemParentEditor(this, i);
+        i++;
         hardness.getDetailedBlocks().initAndUpdateItemParentEditor(this, i);
         i++;
         hardness.getDetailedItems().initAndUpdateItemParentEditor(this, i);

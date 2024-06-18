@@ -32,6 +32,10 @@ import java.util.Optional;
 @Getter
 @Setter
 public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, HardnessEditorManager> implements HardnessModifier {
+    /**
+     * Features
+     **/
+    private BooleanFeature enabled;
 
     private DetailedBlocks detailedBlocks;
 
@@ -55,6 +59,7 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
 
+        errors.addAll(enabled.load(plugin, config, isPremiumLoading));
         errors.addAll(detailedBlocks.load(plugin, config, isPremiumLoading));
         errors.addAll(detailedItems.load(plugin, config, isPremiumLoading));
         errors.addAll(period.load(plugin, config, isPremiumLoading));
@@ -89,6 +94,7 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
 
     @Override
     public void reset() {
+        enabled = new BooleanFeature(this, false, FeatureSettingsSCore.enabled, false);
         detailedBlocks = new DetailedBlocks(this);
         detailedItems = new DetailedItems(this);
         period = new IntegerFeature(this, Optional.of(3), FeatureSettingsSCore.period);
@@ -98,6 +104,7 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     @Override
     public Hardness clone(FeatureParentInterface newParent) {
         Hardness clone = new Hardness(this, getId(), getPath());
+        clone.setEnabled(enabled.clone(clone));
         clone.setDetailedBlocks(detailedBlocks.clone(clone));
         clone.setDetailedItems(detailedItems.clone(clone));
         clone.setPeriod(period.clone(clone));
@@ -108,6 +115,7 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<FeatureInterface>();
+        features.add(enabled);
         features.add(detailedBlocks);
         features.add(detailedItems);
         features.add(period);
@@ -124,6 +132,7 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     public void reload() {
         if (getParent() instanceof Hardness) {
             Hardness sProjectile = (Hardness) getParent();
+            sProjectile.setEnabled(enabled);
             sProjectile.setDetailedBlocks(detailedBlocks);
             sProjectile.setDetailedItems(detailedItems);
             sProjectile.setPeriod(period);
@@ -133,6 +142,16 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     }
 
     @Override
+    public List<String> getDescription() {
+        List<String> description = new ArrayList<>();
+        description.add("§7ID: §f" + getId());
+        description.add("§7Enabled: §f" + enabled.getValue());
+        description.add("§7Path: §f" + getPath());
+        return description;
+    }
+
+
+    @Override
     public void openBackEditor(@NotNull Player player) {
         NewSObjectsManagerEditor.getInstance().startEditing(player, new HardnessesEditor());
     }
@@ -140,6 +159,11 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     @Override
     public void openEditor(@NotNull Player player) {
         HardnessEditorManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled.getValue();
     }
 
     @Override

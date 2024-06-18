@@ -71,7 +71,7 @@ public class HardnessesHandler {
 
             HardnessModifier triggeredModifier = null;
             for (final HardnessModifier modifier : HardnessesManager.getInstance().getAllObjects())
-                if (modifier.isTriggered(player, block, item)) {
+                if (modifier.isEnabled() && modifier.isTriggered(player, block, item)) {
                     triggeredModifier = modifier;
                     break;
                 }
