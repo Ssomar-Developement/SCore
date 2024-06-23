@@ -1,7 +1,7 @@
 package com.ssomar.score.features.custom.nbttags;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -19,7 +19,7 @@ public abstract class NBTTag {
         loadValueFromConfig(configurationSection);
     }
 
-    public abstract void applyTo(NBTItem nbtItem);
+    public abstract void applyTo(ReadWriteNBT readWriteNbt);
 
     public abstract void applyTo(NBTCompound nbtCompound);
 

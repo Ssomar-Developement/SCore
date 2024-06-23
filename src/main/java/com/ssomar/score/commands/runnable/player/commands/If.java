@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -30,7 +31,7 @@ public class If extends PlayerCommand {
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
         conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
         String condition = args.get(0);
-        //SsomarDev.testMsg("IF condition: " + condition, true);
+        SsomarDev.testMsg("IF condition: " + condition, true);
 
         boolean conditionContainsPlaceholder = condition.contains("%");
         String split = conditionContainsPlaceholder ? "%" : "";
@@ -46,7 +47,7 @@ public class If extends PlayerCommand {
             }
         }
         if (comparator == null) {
-            //SsomarDev.testMsg("IF STOPPED because comparator null ", true);
+            SsomarDev.testMsg("IF STOPPED because comparator null ", true);
             return;
         }
         String[] parts = condition.split(split + comparator.getSymbol());

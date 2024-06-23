@@ -1,8 +1,9 @@
 package com.ssomar.score.features.custom.nbttags;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -23,8 +24,8 @@ public class ListStringNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(NBTItem nbtItem) {
-        NBTList<String> list = nbtItem.getStringList(getKey());
+    public void applyTo(ReadWriteNBT nbtItem) {
+        ReadWriteNBTList<String> list = nbtItem.getStringList(getKey());
         list.clear();
         for (String s : value) {
             list.add(s);

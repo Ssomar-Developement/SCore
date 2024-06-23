@@ -14,7 +14,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     HARDNESS("HARDNESS", "HARDNESS", new String[]{}, Material.BEDROCK, false),
     SPROJECTILE("SPROJECTILE", "SPROJECTILE", new String[]{}, Material.ARROW, false),
     VARIABLE("VARIABLE", "VARIABLE", new String[]{}, GUI.WRITABLE_BOOK, false),
-    aboveValue("aboveValue", "TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_NAME)", TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    aboveValue("aboveValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ABOVEVALUE_DESCRIPTION),  GUI.CLOCK,  false),
     activator("activator", TM.g(Text.FEATURES_ACTIVATOR_NAME), TM.gA(Text.FEATURES_ACTIVATOR_DESCRIPTION),  Material.BEACON,  false),
     activators("activators", TM.g(Text.FEATURES_ACTIVATORS_NAME), TM.gA(Text.FEATURES_ACTIVATORS_DESCRIPTION),  Material.BEACON,  false),
     activeTitle("activeTitle", "Active Title", new String[]{"&7&oActive the title"}, null, true),
@@ -94,7 +94,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     displayNameDrop("displayNameDrop", "Display custom name", new String[]{"&7&oDisplay custom name above the item"},  null,  false),
     dropOptions("dropOptions", "Drop Options", TM.gA(Text.FEATURES_DROPS_DESCRIPTION), Material.ANVIL, false),
     duration("duration", "Duration", new String[]{"&7&oThe duration of the potion effect",  "&4⚠ &cIn ticks !",  "&7&o1 sec = 20 ticks"}, GUI.CLOCK,false),
-    eastValue("eastValue", "TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_NAME)", TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    eastValue("eastValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_EASTVALUE_DESCRIPTION),  GUI.CLOCK,  false),
     effects("effects", "Effects", new String[]{"&7&oThe effects"}, FixedMaterial.getMaterial(Arrays.asList("POTION", "REDSTONE")), false),
     enableArmorTrim("enableArmorTrim", "Enable Armor Trim", new String[]{"&7&oEnable armor trim"}, null, false),
     enchantment("enchantment", "Enchantment", new String[]{"&7&oThe enchantment"}, Material.ENCHANTED_BOOK, false),
@@ -260,7 +260,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     modification_string("modification", "String Update", new String[]{"&7&oThe string update"},  GUI.WRITABLE_BOOK,  false),
     multiChoices("multi-choices", "Multi Choices",  new String[]{}, Material.DIAMOND, false),
     name("name", "Name", new String[]{"&7&oThe name or display name"},  Material.NAME_TAG,  false),
-    northValue("northValue", "TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_NAME) ", TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    northValue("northValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_NAME) , TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_NORTHVALUE_DESCRIPTION),  GUI.CLOCK,  false),
     notExecutableItem("notExecutableItem", "Not Executable Item", new String[]{"&7&oIs this item not an executable item?"},  null,  false),
     object("object", "Object", new String[]{"&7&oAn Object"},  Material.PAPER,  false),
     operation("operation", "Operation", new String[]{"&7&oThe operation"},  Material.DISPENSER,  false),
@@ -310,7 +310,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     restrictions("restrictions", "Restrictions", TM.gA(Text.FEATURES_RESTRICTIONS_DESCRIPTION), Material.ANVIL, false),
     silent("silent", "Silent", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW")), false),
     slot("slot", "Slot", new String[]{"&7&oThe slot"},  Material.ARMOR_STAND,  false),
-    southValue("southValue", "TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_NAME)", TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    southValue("southValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_SOUTHVALUE_DESCRIPTION),  GUI.CLOCK,  false),
     stopCheckingOtherConditionsIfNotValid("stopCheckingOtherConditionsIfNotValid", "Stop checking other conditions if not valid", new String[]{"&7&oStop checking other conditions", "&7&oif the condition is not valid"},  GUI.WRITABLE_BOOK,  false),
     string("string", "String", new String[]{"&7&oA string"},  Material.PAPER,  false),
     subPattern("subPattern", "Sub Pattern", new String[]{"&7&oA sub pattern with its options"}, Material.ANVIL, false),
@@ -321,7 +321,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     titleOptions("titleOptions", "Title Options", new String[]{"&7&oThe title features"},  Material.ANVIL,  true),
     trimMaterial("trimMaterial", "Trim Material", new String[]{"&7&oThe material used to trim the armor"}, Material.DIAMOND,  false),
     type("type", "Type", new String[]{"&7&oThe type"},  GUI.COMPARATOR,  false),
-    underValue("underValue", "TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_NAME)", TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    underValue("underValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_UNDERVALUE_DESCRIPTION),  GUI.CLOCK,  false),
     usageConditions("usageConditions", "Usage Conditions", new String[]{"&7&oThe usage condition"}, GUI.CLOCK, false),
     usePerDay("usePerDay", "Use per day",  TM.gA(Text.FEATURES_USEPERDAY_DESCRIPTION), Material.BUCKET, true),
     uuid("uuid", "UUID", new String[]{"&7&oThe UUID"},  Material.NAME_TAG,  false),
@@ -333,7 +333,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     velocity("velocity", "Velocity", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET", "ELYTRA")), false),
     visualFire("visualFire", "Visual Fire", new String[]{}, Material.FLINT_AND_STEEL, false),
     visualItem("visualItem", "Visual Item", new String[]{""},  Material.ITEM_FRAME, false),
-    westValue("westValue", "TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME)", TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    westValue("westValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION),  GUI.CLOCK,  false),
 
 
 
@@ -373,6 +373,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     targetPlayerCommands("targetPlayerCommands", "Target Player Commands", new String[]{"&7&oThe target player commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND")), false),
     targetEntityCommands("targetEntityCommands", "Target Entity Commands", new String[]{"&7&oThe target entity commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND")), false),
     targetBlockCommands("targetBlockCommands", "Target Block Commands", new String[]{"&7&oThe target block commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND")), false),
+    displayCommands("displayCommands", "Display Commands", new String[]{"&7&oThe display commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND")), false),
 
     playerConditions("playerConditions", "Player Conditions", new String[]{""}, Material.ANVIL, false),
     targetConditions("targetConditions", "Target Conditions", new String[]{""}, Material.ANVIL, false),
@@ -385,6 +386,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     targetBlockConditions("targetBlockConditions", "Target Block Conditions", new String[]{""}, Material.ANVIL, false),
     targetPlayerConditions("targetPlayerConditions", "Target Player Conditions", new String[]{""}, Material.ANVIL, false),
     targetEntityConditions("targetEntityConditions", "Target Entity Conditions", new String[]{""}, Material.ANVIL, false),
+    displayConditions_conditions("displayConditions", "Display Conditions", new String[]{""}, Material.ANVIL, false),
+
     containsMineInCube("containsMineInCube", "Contains Mine In Cube", new String[]{"&7&oCheck if the cube contains a mine"}, Material.TNT, false),
 
     playerCooldownOptions("playerCooldownOptions", "Player Cooldown Options", new String[]{"&7&oThe player cooldown"}, GUI.CLOCK, false),
@@ -490,8 +493,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     EXECUTABLEBLOCK("EXECUTABLEBLOCK", "Executable Block", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
     EXECUTABLEBLOCKPLACED("EXECUTABLEBLOCKPLACED", "Executable Block Placed", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
-
     EXECUTABLEEVENT("EXECUTABLEEVENT", "Executable Event", new String[]{}, Material.EMERALD, false),
+    FURNITURE("FURNITURE", "Furniture", new String[]{}, Material.CHEST, false),
+    FURNITUREPLACED("FURNITUREPLACED", "Furniture Placed", new String[]{}, Material.CHEST, false),
 
     creationType("creationType",  "CreationType", new String[]{"&7&oThe creation type"}, Material.COMPASS, false),
     spawnerType("spawnerType",  "Spawner type", new String[]{"&7&oThe type of the spawner"},FixedMaterial.getMaterial(Arrays.asList("SPAWNER")), false),

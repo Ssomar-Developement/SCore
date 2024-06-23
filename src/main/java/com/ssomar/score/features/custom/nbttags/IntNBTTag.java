@@ -1,7 +1,7 @@
 package com.ssomar.score.features.custom.nbttags;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -20,7 +20,7 @@ public class IntNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(NBTItem nbtItem) {
+    public void applyTo(ReadWriteNBT nbtItem) {
         nbtItem.setInteger(getKey(), getValueInt());
     }
 

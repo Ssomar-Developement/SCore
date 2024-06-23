@@ -1,10 +1,10 @@
 package com.ssomar.score.features.types;
 
-import com.ssomar.executableblocks.utils.DropType;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.DropType;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;

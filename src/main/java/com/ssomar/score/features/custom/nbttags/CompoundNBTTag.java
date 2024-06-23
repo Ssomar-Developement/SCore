@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.nbttags;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -69,8 +69,8 @@ public class CompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(NBTItem nbtItem) {
-        NBTCompound compound = nbtItem.addCompound(getKey());
+    public void applyTo(ReadWriteNBT nbtItem) {
+        ReadWriteNBT compound = nbtItem.getOrCreateCompound(getKey());
 
         for (NBTTag nbtTag : nbtTags) {
             nbtTag.applyTo(compound);

@@ -66,7 +66,7 @@ public interface CommmandThatRunsCommand {
 
             String buildCommands = prepareCommands.toString();
             String[] tab;
-           // SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
+            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
             if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
             else {
                 tab = new String[1];
@@ -259,7 +259,8 @@ public interface CommmandThatRunsCommand {
 
             String buildCommands = prepareCommands.toString();
             String[] tab;
-            if (buildCommands.contains("<+>")) tab = buildCommands.split("<\\+>");
+            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
+            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
             else {
                 tab = new String[1];
                 tab[0] = buildCommands;

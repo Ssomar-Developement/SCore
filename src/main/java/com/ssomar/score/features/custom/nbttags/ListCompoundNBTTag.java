@@ -2,8 +2,9 @@ package com.ssomar.score.features.custom.nbttags;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTListCompound;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -35,12 +36,12 @@ ListCompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(NBTItem nbtItem) {
-        NBTCompoundList list = nbtItem.getCompoundList(getKey());
+    public void applyTo(ReadWriteNBT nbtItem) {
+        ReadWriteNBTCompoundList list = nbtItem.getCompoundList(getKey());
         list.clear();
 
         for (CompoundNBTTag s : values) {
-            NBTListCompound nbtListCompound = list.addCompound();
+            ReadWriteNBT nbtListCompound = list.addCompound();
             for (NBTTag t : s.getNbtTags()) {
                 t.applyTo(nbtListCompound);
             }

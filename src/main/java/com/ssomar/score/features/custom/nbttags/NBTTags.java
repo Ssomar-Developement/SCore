@@ -12,8 +12,10 @@ import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
+import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -217,14 +219,17 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
 
     public ItemStack writeNBTTags(ItemStack item) {
         if (SCore.hasNBTAPI) {
-            NBTItem nbti = new NBTItem(item);
+            // Creating a new empty NBT tag
+            ReadWriteNBT nbt = NBT.itemStackToNBT(item);
             boolean hasNBT = false;
             for (NBTTag nbtTag : tags) {
                 //SsomarDev.testMsg(" >>>>>>> nbtTag: " + nbtTag.toString(), true);
                 hasNBT = true;
-                nbtTag.applyTo(nbti);
+                nbtTag.applyTo(nbt);
             }
-            if(hasNBT) nbti.applyNBT(item);
+            if(hasNBT) NBT.modify(item, nbtItem -> {
+                nbtItem.mergeCompound(nbt);
+            });
         }
         return item;
     }
