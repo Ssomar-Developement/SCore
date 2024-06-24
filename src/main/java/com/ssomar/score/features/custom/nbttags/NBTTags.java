@@ -220,15 +220,17 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
     public ItemStack writeNBTTags(ItemStack item) {
         if (SCore.hasNBTAPI) {
             // Creating a new empty NBT tag
-            ReadWriteNBT nbt = NBT.itemStackToNBT(item);
+            // Optional to remove Error occurred while enabling ExecutableItems v7.24.6.23 (Is it up to date?)
+            //java.lang.NoClassDefFoundError: de/tr7zw/nbtapi/iface/ReadableNBT
+            Optional<ReadWriteNBT> nbt = Optional.of(NBT.itemStackToNBT(item));
             boolean hasNBT = false;
             for (NBTTag nbtTag : tags) {
                 //SsomarDev.testMsg(" >>>>>>> nbtTag: " + nbtTag.toString(), true);
                 hasNBT = true;
-                nbtTag.applyTo(nbt);
+                nbtTag.applyTo(nbt.get());
             }
             if(hasNBT) NBT.modify(item, nbtItem -> {
-                nbtItem.mergeCompound(nbt);
+                nbtItem.mergeCompound(nbt.get());
             });
         }
         return item;
