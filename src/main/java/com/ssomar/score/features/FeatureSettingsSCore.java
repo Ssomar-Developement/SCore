@@ -514,6 +514,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     enabled("enabled", "Enabled", new String[]{"&7&oIf the event is enabled"}, null, false),
     editorIcon("editorIcon",  "Icon Editor", new String[]{}, Material.LEVER, false),
     disabledWorlds("disabledWorlds", "Disabled worlds", new String[]{"&7&oDisabled worlds"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
+
+    displayFeatures("displayFeatures", "Display Features", new String[]{"&7&oDisplay features"}, Material.ITEM_FRAME, false),
+    blockLight("blockLight", "Block Light", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT")), false),
+    skyLight("skyLight", "Sky Light", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT")), false),
+    glowColor("glowColor", "Glow Color", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("RED_DYE", "INK_SACK")), false),
+
     ;
 
 

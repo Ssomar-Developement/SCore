@@ -136,6 +136,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     private static boolean isSpigot = false;
     private static boolean isPaper = false;
+    private static boolean isPaperOrForkFor1v20lus = false;
     private static boolean isFolia = false;
 
     private static boolean isLuminol = false;
@@ -384,7 +385,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean isPaperOrFork(){
-        return isPaper() || isFolia() || isMohist() || isPurpur() || isPufferfish();
+        return isPaper() || isFolia() || isMohist() || isPurpur() || isPufferfish() || isPaperOrForkFor1v20lus;
     }
 
     @Override
@@ -404,6 +405,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
         if (isMohist()) {
             Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &eMohist");
+        }
+        if (isPaperOrFork()) {
+            Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &ePaper or fork");
         }
         this.displayVersion();
 
@@ -730,14 +734,24 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
         isMohist = Bukkit.getServer().getName().contains("Mohist") || Bukkit.getServer().getVersion().contains("Mohist");
         isPaper = Bukkit.getServer().getVersion().contains("Paper") || Bukkit.getServer().getVersion().contains("paper");
+        isPaperOrForkFor1v20lus = hasClass("com.destroystokyo.paper.PaperConfig") || hasClass("io.papermc.paper.configuration.Configuration");
         isFolia = Bukkit.getServer().getVersion().contains("Folia") || Bukkit.getServer().getVersion().contains("folia");
         isLuminol = Bukkit.getServer().getVersion().contains("Luminol") || Bukkit.getServer().getVersion().contains("luminol");
         isPurpur = Bukkit.getServer().getVersion().contains("Purpur") || Bukkit.getServer().getVersion().contains("purpur");
         isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish") || Bukkit.getServer().getVersion().contains("pufferfish");
     }
 
+    public boolean hasClass(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     public void displayVersion() {
-        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion() + " &7!");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer()+ " &7!");
     }
 
     @Override
