@@ -812,6 +812,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ssomar.myfurniture</groupId>
+            <artifactId>MyFurniture</artifactId>
+            <version>6.2.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/MyFurniture.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.ssomar1607</groupId>
             <artifactId>HeadDB</artifactId>
             <version>master-3d09035e36-1</version>

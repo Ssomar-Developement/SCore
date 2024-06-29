@@ -19,6 +19,7 @@ public class SuperiorSkyblockTool {
     public static boolean playerIsOnHisIsland(@NotNull UUID pUUID, @NotNull Location location) {
         Island island = SuperiorSkyblockAPI.getIslandAt(location);
         if (island != null) {
+            if(island.isCoop(SuperiorSkyblockAPI.getPlayer(pUUID))) return true;
             List<SuperiorPlayer> members = island.getIslandMembers(true);
             for (SuperiorPlayer user : members) {
                 if (pUUID.equals(user.getUniqueId())) return true;

@@ -40,7 +40,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     private static final String symbolEnd = "}";
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = "\\+";
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = true;
 
     private static final String symbolStartMaterialTag = "#"; // #minecraft:mineable/pickaxe
     private List<String> listOfCustomBlocksPluginSupported;
@@ -75,7 +75,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     @Override
     public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> values = new ArrayList<>();
-        specificationOfAtLeastOneState = false;
+        //DONT ADD BECAUSE IT RESET IT AT THE SECOND TIME WHEN THE LOADING OF BLACKLIST specificationOfAtLeastOneState = false;
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
             String materialStr = s;
@@ -231,7 +231,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                                 SsomarDev.testMsg(">> spliterState.length: " + spliterState.length, DEBUG);
                                 continue;
                             }
-                            //SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
+                            SsomarDev.testMsg(">> spliterState: " + spliterState[0] + "=" + spliterState[1], DEBUG);
                             states.put(spliterState[0].toUpperCase(), spliterState[1].toUpperCase());
                         }
                     }
@@ -354,6 +354,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     public boolean verifBlock(@NotNull Block block, @Nullable Material material, @NotNull Optional<String> statesStrOpt) {
         if (material == null) material = block.getType();
         // To only run if there is a state to check
+        SsomarDev.testMsg(">> verif specificationOfAtLeastOneState: " + specificationOfAtLeastOneState, DEBUG);
         if (specificationOfAtLeastOneState && !statesStrOpt.isPresent()) {
             if (!SCore.is1v12Less()) statesStrOpt = Optional.of(block.getBlockData().getAsString(true));
             else statesStrOpt = Optional.empty();

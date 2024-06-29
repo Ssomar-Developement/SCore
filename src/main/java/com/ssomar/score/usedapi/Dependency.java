@@ -94,11 +94,17 @@ public enum Dependency {
 
     WILD_STACKER("WildStacker"),
 
+    MY_FURNITURE("MyFurniture"),
+
     CUSTOM_CRAFTING("CustomCrafting"),
 
     WORLD_EDIT("WorldEdit");
 
     private final String name;
+
+    private boolean installed = false;
+
+    private boolean enabled = false;
 
     Dependency(String name) {
         this.name = name;
@@ -118,13 +124,17 @@ public enum Dependency {
     }
 
     public boolean isInstalled() {
-        return Bukkit.getPluginManager().getPlugin(name) != null;
+        if(installed) return true;
+        installed = Bukkit.getPluginManager().getPlugin(name) != null;
+        return installed;
     }
 
     public boolean isEnabled() {
+        if(enabled) return true;
         Plugin softDepend;
         if ((softDepend = Bukkit.getPluginManager().getPlugin(name)) != null) {
-            return softDepend.isEnabled();
+            enabled = softDepend.isEnabled();
+            return enabled;
         }
         return false;
     }

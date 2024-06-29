@@ -105,6 +105,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasCustomCrafting = false;
     public static boolean hasWildStacker = false;
 
+    public static boolean hasMyFurniture = false;
+
     public static boolean hasTAB = false;
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
@@ -605,6 +607,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasEcoSkills = Dependency.ECO_SKILLS.hookSoftDependency();
 
         hasWildStacker = Dependency.WILD_STACKER.hookSoftDependency();
+
+        hasMyFurniture = Dependency.MY_FURNITURE.hookSoftDependency();
 
         hasCustomCrafting = Dependency.CUSTOM_CRAFTING.hookSoftDependency();
 

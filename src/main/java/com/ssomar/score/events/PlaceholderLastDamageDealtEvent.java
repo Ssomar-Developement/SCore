@@ -1,6 +1,8 @@
 package com.ssomar.score.events;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,8 +29,13 @@ public class PlaceholderLastDamageDealtEvent implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player) {
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {Entity damager = e.getDamager();
+        if(damager instanceof Projectile){
+            Projectile projectile = (Projectile) damager;
+            damager = (Entity) projectile.getShooter();
+        }
+        if (damager instanceof Player) {
+            //SsomarDev.testMsg("onEntityDamageByEntityEvent >> " +damager + " >> " + e.getFinalDamage(), true);
             UUID uuid = e.getDamager().getUniqueId();
             lastDamageDealt.put(uuid, e.getFinalDamage());
         }

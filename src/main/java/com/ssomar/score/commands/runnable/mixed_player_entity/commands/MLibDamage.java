@@ -141,7 +141,7 @@ public class MLibDamage extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "MLIB_DAMAGE {number} {damageType} {knockback} [element]]";
+        return "MLIB_DAMAGE {number} {damageType} {knockback} [element]";
     }
 
     @Override

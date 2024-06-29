@@ -1066,10 +1066,11 @@ public class ParticleDisplay implements Cloneable {
             } else if (SUPPORTS_DUST_TRANSITION && particle.getDataType() == Particle.DustTransition.class) {
                 // Having the variable type as Particle.DustOptions causes NoClassDefFoundError for DustOptions
                 // because of some weird upcasting stuff.
-                Particle.DustTransition dust = new Particle.DustTransition(
-                        org.bukkit.Color.fromRGB((int) datas[0], (int) datas[1], (int) datas[2]),
-                        org.bukkit.Color.fromRGB((int) datas[4], (int) datas[5], (int) datas[6]),
-                        datas[3]);
+                //SsomarDev.testMsg("DustTransition >> "+ Arrays.toString(datas), true);
+                Particle.DustTransition dust = null;
+                if(SCore.is1v20v5Plus()) dust = new Particle.DustTransition(org.bukkit.Color.fromRGB((int) datas[0], (int) datas[1], (int) datas[2]), org.bukkit.Color.fromRGB((int) datas[0], (int) datas[1], (int) datas[2]), datas[3]);
+
+                else dust = new Particle.DustTransition(org.bukkit.Color.fromRGB((int) datas[0], (int) datas[1], (int) datas[2]), org.bukkit.Color.fromRGB((int) datas[4], (int) datas[5], (int) datas[6]), datas[3]);
                 if (players == null) world.spawnParticle(particle, loc, count, offsetx, offsety, offsetz, extra, dust, force);
                 else for (Player player : players) player.spawnParticle(particle, loc, count, offsetx, offsety, offsetz, extra, dust);
             } else if (isDirectional()) {

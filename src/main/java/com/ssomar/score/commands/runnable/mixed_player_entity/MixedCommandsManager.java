@@ -77,6 +77,28 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         setCommands(commands);
     }
 
+    public List<SCommand> getDisplayCommands(){
+        List<SCommand> commands = new ArrayList<>();
+        for (SCommand cmd : this.getCommands()) {
+            if (cmd instanceof AllMobs ||
+                    cmd instanceof AllPlayers ||
+                    cmd instanceof Burn ||
+                    cmd instanceof ConsoleMessage ||
+                    cmd instanceof Glowing ||
+                    cmd instanceof MobNearest ||
+                    cmd instanceof Nearest ||
+                    cmd instanceof OpMessage ||
+                    cmd instanceof RemoveBurn ||
+                    cmd instanceof RemoveGlow ||
+                    cmd instanceof SetGlow ||
+                    cmd instanceof Spin ||
+                    cmd instanceof StrikeLightning) {
+                commands.add(cmd);
+            }
+        }
+        return commands;
+    }
+
     public static MixedCommandsManager getInstance() {
         if (instance == null) instance = new MixedCommandsManager();
         return instance;
