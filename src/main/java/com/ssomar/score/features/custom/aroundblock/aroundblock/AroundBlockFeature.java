@@ -1,14 +1,18 @@
 package com.ssomar.score.features.custom.aroundblock.aroundblock;
 
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -38,6 +42,8 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
     private ListDetailedMaterialFeature blockTypeMustBe;
 
+    private PlaceholderConditionGroupFeature placeholderConditions;
+
     private String id;
 
     public AroundBlockFeature(FeatureParentInterface parent, String id) {
@@ -57,7 +63,9 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
         this.errorMessage = new ColoredStringFeature(this, Optional.of("&c&oA block is not placed correctly !"), FeatureSettingsSCore.errorMsg, false);
 
-        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, new ArrayList<>(),  FeatureSettingsSCore.blockTypeMustBe, true, true);
+        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blockTypeMustBe, true, true);
+
+        this.placeholderConditions = new PlaceholderConditionGroupFeature(this);
     }
 
     @Override
@@ -73,6 +81,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
             errors.addAll(this.underValue.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.errorMessage.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.blockTypeMustBe.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.placeholderConditions.load(plugin, enchantmentConfig, isPremiumLoading));
         } else {
             errors.add("&cERROR, Couldn't load the AroundBlockFeature with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
@@ -96,6 +105,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         this.underValue.save(attributeConfig);
         this.errorMessage.save(attributeConfig);
         this.blockTypeMustBe.save(attributeConfig);
+        this.placeholderConditions.save(attributeConfig);
     }
 
     public boolean verif(Block block, Optional<Player> playerOpt, List<String> errors) {
@@ -109,6 +119,19 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         targetBlock = targetLoc.getBlock();
 
         boolean valid = blockTypeMustBe.verifBlock(targetBlock);
+
+        /* For EB variables conditions*/
+        if (valid && !placeholderConditions.getPlaceholdersConditions().isEmpty()) {
+            Optional<ExecutableBlockPlaced> eBP = ExecutableBlocksPlacedManager.getInstance().getExecutableBlockPlaced(targetBlock);
+            if (eBP.isPresent()) {
+                StringPlaceholder sp = eBP.get().getPlaceholders();
+                if (!placeholderConditions.verify(playerOpt.orElse(null), null, sp, null)) {
+                    valid = false;
+                    if (playerOpt.isPresent() && errorMessage.getValue().isPresent())
+                        errors.add(errorMessage.getValue().get());
+                }
+            }
+        }
 
         if (playerOpt.isPresent() && !valid && errorMessage.getValue().isPresent())
             errors.add(errorMessage.getValue().get());
@@ -146,12 +169,13 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         eF.setUnderValue(this.underValue.clone(eF));
         eF.setErrorMessage(this.errorMessage.clone(eF));
         eF.setBlockTypeMustBe(this.blockTypeMustBe.clone(eF));
+        eF.setPlaceholderConditions(this.placeholderConditions.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(this.southValue, this.northValue, this.westValue, this.eastValue, this.aboveValue, this.underValue, this.errorMessage, this.blockTypeMustBe));
+        return new ArrayList<>(Arrays.asList(this.southValue, this.northValue, this.westValue, this.eastValue, this.aboveValue, this.underValue, this.errorMessage, this.blockTypeMustBe, this.placeholderConditions));
     }
 
     @Override
@@ -186,6 +210,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
                     aFOF.setUnderValue(this.underValue);
                     aFOF.setErrorMessage(this.errorMessage);
                     aFOF.setBlockTypeMustBe(this.blockTypeMustBe);
+                    aFOF.setPlaceholderConditions(this.placeholderConditions);
                     break;
                 }
             }
