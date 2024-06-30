@@ -2,7 +2,6 @@ package com.ssomar.score.utils.strings;
 
 import com.ssomar.score.SCore;
 import net.md_5.bungee.api.ChatColor;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

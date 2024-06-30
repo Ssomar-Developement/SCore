@@ -5,12 +5,12 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageBoost;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageResistance;
 import com.ssomar.score.features.custom.variables.real.VariableReal;
+import com.ssomar.score.utils.strings.StringUtils;
 import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.*;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -364,7 +365,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     public String replacePlaceholderOfSCore(String s) {
         String replace = s;
 
-        int maxReplace = StringUtils.countMatches(replace, "%score_");
+        Pattern SCORE_REGEX = Pattern.compile("%score_*");
+        Matcher countSCoreMatcher = SCORE_REGEX.matcher(replace);
+        int maxReplace = 0;
+        while (countSCoreMatcher.find()) {
+            maxReplace++;
+        }
+
         int cpt = 0;
         while (replace.contains("%score_") && cpt < maxReplace) {
             cpt++;
