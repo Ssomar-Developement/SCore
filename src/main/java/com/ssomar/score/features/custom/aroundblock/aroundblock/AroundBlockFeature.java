@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.aroundblock.aroundblock;
 
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -122,15 +123,13 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
         /* For EB variables conditions*/
         if (valid && !placeholderConditions.getPlaceholdersConditions().isEmpty()) {
-            Optional<ExecutableBlockPlaced> eBP = ExecutableBlocksPlacedManager.getInstance().getExecutableBlockPlaced(targetBlock);
-            if (eBP.isPresent()) {
-                StringPlaceholder sp = eBP.get().getPlaceholders();
-                if (!placeholderConditions.verify(playerOpt.orElse(null), null, sp, null)) {
-                    valid = false;
-                    if (playerOpt.isPresent() && errorMessage.getValue().isPresent())
-                        errors.add(errorMessage.getValue().get());
+            if(SCore.hasExecutableBlocks) {
+                Optional<ExecutableBlockPlaced> eBP = ExecutableBlocksPlacedManager.getInstance().getExecutableBlockPlaced(targetBlock);
+                if (eBP.isPresent()) {
+                    StringPlaceholder sp = eBP.get().getPlaceholders();
+                    if (!placeholderConditions.verify(playerOpt.orElse(null), null, sp, null)) valid = false;
                 }
-            }
+            } else valid = false;
         }
 
         if (playerOpt.isPresent() && !valid && errorMessage.getValue().isPresent())
