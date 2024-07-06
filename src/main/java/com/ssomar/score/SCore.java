@@ -755,7 +755,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public void displayVersion() {
-        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer()+ " &7!");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion()+ " &7!");
     }
 
     @Override

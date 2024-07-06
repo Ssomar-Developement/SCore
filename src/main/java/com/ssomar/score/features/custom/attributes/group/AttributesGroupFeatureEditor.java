@@ -24,6 +24,8 @@ public class AttributesGroupFeatureEditor extends FeatureEditorInterface<Attribu
             i++;
         }
 
+        attributesGroupFeature.getKeepDefaultAttributes().initAndUpdateItemParentEditor(this, 21);
+
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);
 

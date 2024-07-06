@@ -314,6 +314,19 @@
                                 </configuration>
                             </execution>
                             <execution>
+                                <id>build_dep_ss</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\ScreenShop\src\main\resources\SCore.jar
+                                    </outputFile>
+                                </configuration>
+                            </execution>
+                            <execution>
                                 <id>build_dep_ee</id>
                                 <phase>package</phase>
                                 <goals>

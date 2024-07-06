@@ -103,7 +103,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     entityType("entityType", "Entity Type", new String[]{"&7&oThe entity type"}, FixedMaterial.getMaterial(Arrays.asList("ZOMBIE_HEAD", "MONSTER_EGG")), false),
     errorMessage("errorMessage", "Error message", new String[]{"&7&oThe error message"},  GUI.WRITABLE_BOOK,  false),
     errorMsg("errorMsg", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_ERRORMESSAGE_DESCRIPTION),  GUI.WRITABLE_BOOK,  false),
-    executableItem("executableItem", "Executable Item", new String[]{"&7&oThe ExecutableItem"}, Material.DIAMOND, false),
+    executableItem("executableItem", "Executable Item", new String[]{"&7&oSpecify an ExecutableItem required"}, Material.DIAMOND, false),
+    itemsAdder("itemsAdder", "Items Adder", new String[]{"&7&oThe item required to", "&7&oexecute this trade"}, Material.DIAMOND, false),
     fadeColors("fadeColors", "Fade Colors", new String[]{"&7&oThe fade colors of the firework"}, GUI.CLOCK, false),
     fireworkFeatures("fireworkFeatures", "Firework Features", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")), false),
     for_( "for", "For", new String[]{"&7&oFor"},  GUI.COMPARATOR,  false),
@@ -520,6 +521,17 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     skyLight("skyLight", "Sky Light", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT")), false),
     glowColor("glowColor", "Glow Color", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("RED_DYE", "INK_SACK")), false),
 
+    TRADE("TRADE", "Trade", new String[]{""}, Material.GOLD_INGOT, false),
+
+    description("description","Description", new String[]{"&7&oThe description of this trade"}, GUI.WRITABLE_BOOK, false),
+    delayOfTrade("delayOfTrade", "Delay Of Trade", new String[]{"&7&oThe delay of this trade", "&7&oIn &aseconds"}, GUI.CLOCK, false),
+    glowWhenTrade("glowWhenTrade","Glow When Trade", new String[]{"&7&oPiglin glow during the trade"}, Material.GLOWSTONE, false),
+    requiredObject("requiredObject", "Required Object", new String[]{}, Material.COMPASS, false),
+
+    SCREEN("SCREEN", "Screen", new String[]{""}, Material.GRASS_BLOCK, false),
+    SCREENUNIT("SCREENUNIT", "Screen Unit", new String[]{""}, Material.GRASS_BLOCK, false),
+
+    keepDefaultAttributes("keepDefaultAttributes", "Keep Default Attributes", new String[]{"&7&oKeep the default attributes", "&7&oOnly for 1.19+"}, null, false),
     ;
 
 

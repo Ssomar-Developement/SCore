@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.attributes.group;
 
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.attributes.attribute.AttributeFullOptionsFeature;
+import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGroupFeature, AttributesGroupFeature, AttributesGroupFeatureEditor, AttributesGroupFeatureEditorManager> implements FeaturesGroup<AttributeFullOptionsFeature> {
 
     private Map<String, AttributeFullOptionsFeature> attributes;
+    private BooleanFeature keepDefaultAttributes;
     private boolean notSaveIfNoValue;
 
     private int premiumLimit = 5;
@@ -34,6 +36,8 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
     @Override
     public void reset() {
         this.attributes = new HashMap<>();
+
+        this.keepDefaultAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.keepDefaultAttributes, false);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
                 attributes.put(attributeID, attribute);
             }
         }
+        error.addAll(keepDefaultAttributes.load(plugin, config, isPremiumLoading));
         return error;
     }
 
@@ -66,6 +71,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
         for (String enchantmentID : attributes.keySet()) {
             attributes.get(enchantmentID).save(attributesSection);
         }
+        keepDefaultAttributes.save(config);
     }
 
     @Override
@@ -75,10 +81,11 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
 
     @Override
     public AttributesGroupFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 2];
+        String[] finalDescription = new String[getEditorDescription().length + 3];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7&oAttribute(s) added: &e" + attributes.size();
+        finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 2] = "&7&oAttribute(s) added: &e" + attributes.size();
+        finalDescription[finalDescription.length - 1] = "&7&oKeep default attributes: &e" + keepDefaultAttributes.getValue();
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -105,12 +112,15 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
             newAttributes.put(x, attributes.get(x).clone(eF));
         }
         eF.setAttributes(newAttributes);
+        eF.setKeepDefaultAttributes(keepDefaultAttributes.clone(eF));
         return eF;
     }
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(attributes.values());
+        List<FeatureInterface> features = new ArrayList<>(attributes.values());
+        features.add(keepDefaultAttributes);
+        return features;
     }
 
     @Override
@@ -137,6 +147,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
             if (feature instanceof AttributesGroupFeature) {
                 AttributesGroupFeature eF = (AttributesGroupFeature) feature;
                 eF.setAttributes(this.getAttributes());
+                eF.setKeepDefaultAttributes(this.getKeepDefaultAttributes());
                 break;
             }
         }

@@ -37,7 +37,8 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         this.sPlugin = sPlugin;
         this.logger = sPlugin.getPlugin().getServer().getLogger();
         this.defaultObjectsPath = defaultObjectsPath;
-        this.defaultObjectsPathWithoutSlash = defaultObjectsPath.substring(1);
+        if(defaultObjectsPath.startsWith("/")) this.defaultObjectsPathWithoutSlash = defaultObjectsPath.substring(1);
+        else this.defaultObjectsPathWithoutSlash = defaultObjectsPath;
         this.sObjectManager = sObjectManager;
         sObjectManager.setFileLoader(this);
         this.maxFreeObjects = maxFreeObjects;
@@ -144,6 +145,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         CodeSource src = sPlugin.getClass().getProtectionDomain().getCodeSource();
         List<String> list = new ArrayList<String>();
 
+        if(defaultObjectsPathWithoutSlash.isEmpty()) return list;
         try {
             if (src != null) {
                 URL jar = src.getLocation();
@@ -175,7 +177,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             copyDefaultFile(defaultObjectsPath + id, defaultObjectsPathWithoutSlash, isPremiumLoading);
         }
 
-        Utils.sendConsoleMsg(SCore.NAME_COLOR +" &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
+        Utils.sendConsoleMsg(sPlugin.getNameDesign()+" &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
 
     }
 

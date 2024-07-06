@@ -30,7 +30,8 @@ public enum SProjectileType {
     DRAGON_FIREBALL(FixedMaterial.getMaterial(Arrays.asList("DRAGON_HEAD")), "DRAGON_FIREBALL"),
     THROWNEXPBOTTLE(FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), "THROWNEXPBOTTLE"),
     FIREWORK(FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")), "FIREWORK"),
-    SPECTRAL_ARROW(FixedMaterial.getMaterial(Arrays.asList("SPECTRAL_ARROW")), "SPECTRAL_ARROW"),;
+    SPECTRAL_ARROW(FixedMaterial.getMaterial(Arrays.asList("SPECTRAL_ARROW")), "SPECTRAL_ARROW"),
+    WIND_CHARGE(FixedMaterial.getMaterial(Arrays.asList("WIND_CHARGE")), "WIND_CHARGE"),;
 
     private Material material;
     private final String[] validNames;
@@ -111,7 +112,7 @@ public enum SProjectileType {
                 } */
                 features.add(new PotionSettingsFeature(parent));
                 break;
-            case SHULKER_BULLET:
+            case SHULKER_BULLET: case WIND_CHARGE:
                 features.add(new GravityFeature(parent));
                 break;
             case TRIDENT:
@@ -264,6 +265,11 @@ public enum SProjectileType {
 
         try {
             projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
+        } catch (Exception | Error ignored) {
+        }
+
+        try {
+            projectiles.put("WIND_CHARGE", WindCharge.class);
         } catch (Exception | Error ignored) {
         }
 

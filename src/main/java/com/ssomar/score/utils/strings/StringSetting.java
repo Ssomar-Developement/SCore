@@ -18,7 +18,7 @@ public class StringSetting {
             else rebuildArgs.add(arg);
             index++;
         }
-        potentialInput.deleteCharAt(potentialInput.length() - 1);
+        if(potentialInput.length()> 0) potentialInput.deleteCharAt(potentialInput.length() - 1);
         Couple<Map<String, Object>,String> couple = extractSettings(potentialInput.toString(), startToIgnore);
         rebuildArgs.addAll(Arrays.asList(couple.getElem2().split(" ")));
         args.clear();
