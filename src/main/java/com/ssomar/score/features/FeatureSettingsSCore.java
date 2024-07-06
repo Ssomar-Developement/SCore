@@ -532,6 +532,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     SCREENUNIT("SCREENUNIT", "Screen Unit", new String[]{""}, Material.GRASS_BLOCK, false),
 
     keepDefaultAttributes("keepDefaultAttributes", "Keep Default Attributes", new String[]{"&7&oKeep the default attributes", "&7&oOnly for 1.19+"}, null, false),
+
+    leverUUID("leverUUID", "lever UUID", new String[]{"&7&oUUID of the lever"}, GUI.CLOCK, false),
+    interactionUUID("interactionUUID", "interaction UUID", new String[]{"&7&oUUID of the interaction"}, GUI.CLOCK, false),
+    rotation("rotation", "Rotation", new String[]{"&7&oRotation of the lever"}, GUI.CLOCK, false),
+    glowWhenPowered("glowWhenPowered", "Glow when powered", new String[]{"&7&oGlow when powered"}, GUI.CLOCK, false),
+
+    EXECUTABLELEVER("EXECUTABLELEVER", "Executable Lever", new String[]{}, Material.LEVER, false),
     ;
 
 
