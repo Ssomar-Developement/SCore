@@ -15,7 +15,6 @@ import com.ssomar.score.utils.strings.StringConverter;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -222,15 +221,10 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
             // Creating a new empty NBT tag
             // Optional to remove Error occurred while enabling ExecutableItems v7.24.6.23 (Is it up to date?)
             //java.lang.NoClassDefFoundError: de/tr7zw/nbtapi/iface/ReadableNBT
-            Optional<ReadWriteNBT> nbt = Optional.of(NBT.itemStackToNBT(item));
-            boolean hasNBT = false;
-            for (NBTTag nbtTag : tags) {
-                //SsomarDev.testMsg(" >>>>>>> nbtTag: " + nbtTag.toString(), true);
-                hasNBT = true;
-                nbtTag.applyTo(nbt.get());
-            }
-            if(hasNBT) NBT.modify(item, nbtItem -> {
-                nbtItem.mergeCompound(nbt.get());
+            NBT.modify(item, nbtItem -> {
+                for (NBTTag nbtTag : tags) {
+                    nbtTag.applyTo(nbtItem, true);
+                }
             });
         }
         return item;

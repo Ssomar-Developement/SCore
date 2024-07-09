@@ -36,29 +36,33 @@ ListCompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         ReadWriteNBTCompoundList list = nbtItem.getCompoundList(getKey());
-        list.clear();
+        //list.clear();
 
+        boolean different = false;
         for (CompoundNBTTag s : values) {
             ReadWriteNBT nbtListCompound = list.addCompound();
             for (NBTTag t : s.getNbtTags()) {
-                t.applyTo(nbtListCompound);
+                different = different || t.applyTo(nbtListCompound, onlyIfDifferent);
             }
         }
+        return different;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         NBTCompoundList list = nbtCompound.getCompoundList(getKey());
-        list.clear();
+        //list.clear();
 
+        boolean different = false;
         for (CompoundNBTTag s : values) {
             NBTListCompound nbtListCompound = list.addCompound();
             for (NBTTag t : s.getNbtTags()) {
-                t.applyTo(nbtListCompound);
+                different = different || t.applyTo(nbtListCompound, onlyIfDifferent);
             }
         }
+        return different;
     }
 
     @Override

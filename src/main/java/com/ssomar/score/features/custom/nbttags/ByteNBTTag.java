@@ -22,13 +22,21 @@ public class ByteNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
-        nbtItem.setByte(getKey(), getValueByte());
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtItem.getByte(getKey()) != getValueByte()) {
+            nbtItem.setByte(getKey(), getValueByte());
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
-        nbtCompound.setByte(getKey(), getValueByte());
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtCompound.getByte(getKey()) != getValueByte()) {
+            nbtCompound.setByte(getKey(), getValueByte());
+            return true;
+        }
+        return false;
     }
 
     @Override

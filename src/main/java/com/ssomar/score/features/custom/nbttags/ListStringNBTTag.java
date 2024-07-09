@@ -24,21 +24,29 @@ public class ListStringNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         ReadWriteNBTList<String> list = nbtItem.getStringList(getKey());
-        list.clear();
+        //list.clear();
+        boolean different = false;
         for (String s : value) {
+            if(onlyIfDifferent && list.contains(s)) continue;
             list.add(s);
+            different = true;
         }
+        return different;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         NBTList<String> list = nbtCompound.getStringList(getKey());
-        list.clear();
+        //list.clear();
+        boolean different = false;
         for (String s : value) {
+            if(onlyIfDifferent && list.contains(s)) continue;
             list.add(s);
+            different = true;
         }
+        return different;
     }
 
     @Override

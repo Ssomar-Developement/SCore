@@ -19,9 +19,9 @@ public abstract class NBTTag {
         loadValueFromConfig(configurationSection);
     }
 
-    public abstract void applyTo(ReadWriteNBT readWriteNbt);
+    public abstract boolean applyTo(ReadWriteNBT readWriteNbt, boolean onlyIfDifferent);
 
-    public abstract void applyTo(NBTCompound nbtCompound);
+    public abstract boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent);
 
     public void saveInConfig(ConfigurationSection configurationSection, Integer index) {
         configurationSection.set("nbt." + index + ".key", getKey());

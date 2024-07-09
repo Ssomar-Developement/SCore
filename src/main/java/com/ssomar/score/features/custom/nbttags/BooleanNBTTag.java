@@ -22,13 +22,22 @@ public class BooleanNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
-        nbtItem.setBoolean(getKey(), isValueBoolean());
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtItem.getBoolean(getKey()) != isValueBoolean()) {
+            nbtItem.setBoolean(getKey(), isValueBoolean());
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
-        nbtCompound.setBoolean(getKey(), isValueBoolean);
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtCompound.getBoolean(getKey()) != isValueBoolean()) {
+            nbtCompound.setBoolean(getKey(), isValueBoolean);
+            return true;
+        }
+        return false;
+
     }
 
     @Override

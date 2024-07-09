@@ -22,13 +22,21 @@ public class DoubleNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
-        nbtItem.setDouble(getKey(), getValueDouble());
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtItem.getDouble(getKey()) != getValueDouble()) {
+            nbtItem.setDouble(getKey(), getValueDouble());
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
-        nbtCompound.setDouble(getKey(), getValueDouble());
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtCompound.getDouble(getKey()) != getValueDouble()) {
+            nbtCompound.setDouble(getKey(), getValueDouble());
+            return true;
+        }
+        return false;
     }
 
     @Override

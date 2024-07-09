@@ -69,23 +69,27 @@ public class CompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         ReadWriteNBT compound = nbtItem.getOrCreateCompound(getKey());
 
+        boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
-            nbtTag.applyTo(compound);
+            different = different || nbtTag.applyTo(compound, onlyIfDifferent);
         }
+        return different;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         //SsomarDev.testMsg(">>> BULD CompoundNBTTag: " + getKey(), true);
         NBTCompound compound = nbtCompound.addCompound(getKey());
 
+        boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
             //SsomarDev.testMsg(">>> chldren CompoundNBTTag: " + nbtTag.getKey(), true);
-            nbtTag.applyTo(compound);
+            different = different || nbtTag.applyTo(compound, onlyIfDifferent);
         }
+        return different;
     }
 
     @Override

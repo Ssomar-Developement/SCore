@@ -20,13 +20,21 @@ public class IntNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
-        nbtItem.setInteger(getKey(), getValueInt());
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtItem.getInteger(getKey()) != getValueInt()) {
+            nbtItem.setInteger(getKey(), getValueInt());
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
-        nbtCompound.setInteger(getKey(), getValueInt());
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || nbtCompound.getInteger(getKey()) != getValueInt()) {
+            nbtCompound.setInteger(getKey(), getValueInt());
+            return true;
+        }
+        return false;
     }
 
     @Override

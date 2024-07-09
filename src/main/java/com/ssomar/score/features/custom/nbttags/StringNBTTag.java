@@ -22,14 +22,22 @@ public class StringNBTTag extends NBTTag {
     }
 
     @Override
-    public void applyTo(ReadWriteNBT nbtItem) {
-        nbtItem.setString(getKey(), getValueString());
+    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+        if (!onlyIfDifferent || !nbtItem.getString(getKey()).equals(getValueString())) {
+            nbtItem.setString(getKey(), getValueString());
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void applyTo(NBTCompound nbtCompound) {
+    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         //SsomarDev.testMsg("StringNBTTag: " + getKey() + " " + getValueString(), true);
-        nbtCompound.setString(getKey(), getValueString());
+        if (!onlyIfDifferent || !nbtCompound.getString(getKey()).equals(getValueString())) {
+            nbtCompound.setString(getKey(), getValueString());
+            return true;
+        }
+        return false;
     }
 
     @Override
