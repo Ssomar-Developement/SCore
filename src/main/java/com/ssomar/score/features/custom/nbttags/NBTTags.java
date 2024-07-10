@@ -15,6 +15,7 @@ import com.ssomar.score.utils.strings.StringConverter;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -222,8 +223,9 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
             // Optional to remove Error occurred while enabling ExecutableItems v7.24.6.23 (Is it up to date?)
             //java.lang.NoClassDefFoundError: de/tr7zw/nbtapi/iface/ReadableNBT
             NBT.modify(item, nbtItem -> {
+                Optional<ReadWriteNBT> nbtItemOptional = Optional.of(nbtItem);
                 for (NBTTag nbtTag : tags) {
-                    nbtTag.applyTo(nbtItem, true);
+                    nbtTag.applyTo(nbtItemOptional.get(), true);
                 }
             });
         }
