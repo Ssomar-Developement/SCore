@@ -130,12 +130,18 @@ public class StringConverter {
         }
 
         String convert = textToTranslate;
+        convert = convert.replaceAll("§#", "#");
         Matcher matcher = HEX_PATTERN.matcher(convert);
         StringBuffer buffer = new StringBuffer();
 
         while (matcher.find()) {
             String color = convert.substring(matcher.start(), matcher.end());
-            convert = convert.replace(color, ChatColor.of(color) + "");
+            //convert = convert.replace(color, ChatColor.of(color) + "");
+            StringBuilder newColor = new StringBuilder("§x");
+            for(char c : color.toCharArray()) {
+                newColor.append("§").append(c);
+            }
+            convert = convert.replace(color, newColor);
             matcher = HEX_PATTERN.matcher(convert);
         }
 

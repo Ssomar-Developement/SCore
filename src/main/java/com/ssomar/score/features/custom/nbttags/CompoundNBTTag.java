@@ -74,7 +74,7 @@ public class CompoundNBTTag extends NBTTag {
 
         boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
-            different = different || nbtTag.applyTo(compound, onlyIfDifferent);
+            different = nbtTag.applyTo(compound, onlyIfDifferent) || different;
         }
         return different;
     }
@@ -87,7 +87,7 @@ public class CompoundNBTTag extends NBTTag {
         boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
             //SsomarDev.testMsg(">>> chldren CompoundNBTTag: " + nbtTag.getKey(), true);
-            different = different || nbtTag.applyTo(compound, onlyIfDifferent);
+            different = nbtTag.applyTo(compound, onlyIfDifferent) || different;
         }
         return different;
     }

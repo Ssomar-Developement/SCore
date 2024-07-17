@@ -135,7 +135,8 @@ public interface CommmandThatRunsCommand {
                         if (condition.contains(comparator.getSymbol())) {
                             String[] conditionSplit = condition.split(comparator.getSymbol());
                             String placeholder = conditionSplit[0];
-                            String value = conditionSplit[1];
+                            String value = "";
+                            if (conditionSplit.length > 1) value = conditionSplit[1];
                             PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
                             conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
 

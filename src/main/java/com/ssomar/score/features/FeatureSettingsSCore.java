@@ -330,7 +330,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     variableName("variableName", "Variable Name", new String[]{"&7&oThe variable name", "&7&othat you want create/modify"},  GUI.WRITABLE_BOOK,  false),
     variableUpdate("variableUpdate", "Variable Update", new String[]{"&7&oA variable update with its options"}, GUI.WRITABLE_BOOK, false),
     variables("variables", "Variables", TM.gA(Text.FEATURES_VARIABLES_DESCRIPTION), GUI.WRITABLE_BOOK, false),
-    variablesModification("variablesModification", "Variables", new String[]{"&7&oThe variables"}, GUI.WRITABLE_BOOK, false),
+    variablesModification("variablesModification", "Variables modifications", new String[]{"&7&oPart to modifiy your variables"}, GUI.WRITABLE_BOOK, false),
     velocity("velocity", "Velocity", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET", "ELYTRA")), false),
     visualFire("visualFire", "Visual Fire", new String[]{}, Material.FLINT_AND_STEEL, false),
     visualItem("visualItem", "Visual Item", new String[]{""},  Material.ITEM_FRAME, false),
