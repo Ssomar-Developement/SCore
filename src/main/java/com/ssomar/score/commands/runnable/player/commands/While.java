@@ -129,14 +129,14 @@ public class While extends PlayerCommand {
         return null;
     }
 
-    public void removeWhile(Player p) {
-        List<BukkitRunnable> tasks = whileTasks.get(p.getUniqueId());
+    public void removeWhile(UUID uuid) {
+        List<BukkitRunnable> tasks = whileTasks.get(uuid);
         if(tasks != null) {
             for (BukkitRunnable task : tasks) {
                 task.cancel();
             }
         }
-        whileTasks.remove(p.getUniqueId());
+        whileTasks.remove(uuid);
     }
 
     public static While getInstance(){

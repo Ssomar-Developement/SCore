@@ -20,17 +20,33 @@ public class ClearCommand {
         /* Target of the clear */
         if (sender instanceof Player) {
             if (args.length >= 1) {
-                if (Bukkit.getPlayer(args[0]) == null) {
+                boolean isUUID = false;
+                try {
+                    pUUID = UUID.fromString(args[0]);
+                    isUUID = true;
+                } catch (Exception e) {
+                    isUUID = false;
+                }
+                if(isUUID){}
+                else if (Bukkit.getPlayer(args[0]) == null) {
                     sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cInvalid playername."));
                     return;
                 } else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
             } else pUUID = ((Player) sender).getUniqueId();
         } else {
             if (args.length < 1) {
-                sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cERROR &6/" + sPlugin.getShortName().toLowerCase() + " clear {playername}."));
+                sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cERROR &6/" + sPlugin.getShortName().toLowerCase() + " clear {UUID or playername}."));
                 return;
             }
-            if (Bukkit.getPlayer(args[0]) == null) {
+            boolean isUUID = false;
+            try {
+                pUUID = UUID.fromString(args[0]);
+                isUUID = true;
+            } catch (Exception e) {
+                isUUID = false;
+            }
+            if(isUUID){}
+            else if (Bukkit.getPlayer(args[0]) == null) {
                 sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cInvalid playername."));
                 return;
             } else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
@@ -45,7 +61,10 @@ public class ClearCommand {
             }
         }
 
+        String name = "";
         Player player = Bukkit.getPlayer(pUUID);
+        if (player != null) name = player.getName();
+        else name = pUUID.toString();
 
         switch (clearType){
 
@@ -53,23 +72,23 @@ public class ClearCommand {
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
                 ActionbarHandler.getInstance().removeActionbars(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(all)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(all)"));
                 break;
             case DELAYED_COMMANDS:
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(delayed commands)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(delayed commands)"));
                 break;
             case COOLDOWNS:
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(cooldowns)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(cooldowns)"));
                 break;
             case ACTIONBARS:
                 ActionbarHandler.getInstance().removeActionbars(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(actionbars)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(actionbars)"));
                 break;
             case WHILE:
-                While.getInstance().removeWhile(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user: &e" + player.getName()+" &7&o(while)"));
+                While.getInstance().removeWhile(pUUID);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" +name+" &7&o(while)"));
                 break;
         }
 

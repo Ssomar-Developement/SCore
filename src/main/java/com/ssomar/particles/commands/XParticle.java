@@ -51,6 +51,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <b>XParticle</b> - The most unique particle animation, text and image renderer.<br>
@@ -820,6 +821,8 @@ public final class XParticle {
         double rateDiv = Math.PI / rate;
         display.directional();
 
+       final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
         BukkitRunnable runnable =  new BukkitRunnable() {
             double theta = 0;
             long repeat = 0;
@@ -842,10 +845,15 @@ public final class XParticle {
                     display.offset(xDirection, 0, zDirection);
                     display.spawn(x, 0, z);
                 }
-                if (++repeat > time) cancel();
+                if (++repeat > time){
+                    task.get().cancel();
+                    return;
+                }
+                //System.out.println("Vortex: >> "+repeat);
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
