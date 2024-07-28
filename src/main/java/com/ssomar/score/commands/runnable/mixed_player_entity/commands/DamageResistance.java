@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.*;
 
@@ -41,7 +41,7 @@ public class DamageResistance extends MixedCommand {
             activeResistances.get(receiver.getUniqueId()).add(reduction);
         } else activeResistances.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(reduction)));
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
@@ -52,7 +52,7 @@ public class DamageResistance extends MixedCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, time);
+        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time);
     }
 
     public double getNewDamage(UUID uuid, double damage) {

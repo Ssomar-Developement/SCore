@@ -19,7 +19,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.io.Serializable;
@@ -132,7 +131,7 @@ public class ActionInfo implements Serializable {
         this.blockLocationZ = bLoc.getBlockZ();
         this.blockLocationWorld = bLoc.getWorld().getUID();
         // second condition is the whitelist to check only the blocks useful for the plugin
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 BlockData blockData = null;

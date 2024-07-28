@@ -18,7 +18,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -86,7 +86,7 @@ public class Launch extends BlockCommand {
             } else entity = launchProjectile(block, directional, Arrow.class, speed);
 
             final Entity e = entity;
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 public void run() {
                     if (e != null)
                         e.remove();

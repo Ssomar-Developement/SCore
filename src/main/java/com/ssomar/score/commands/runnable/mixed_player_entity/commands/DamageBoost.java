@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.*;
 
@@ -42,7 +42,7 @@ public class DamageBoost extends MixedCommand {
             activeBoosts.get(receiver.getUniqueId()).add(boost);
         } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(boost)));
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 SsomarDev.testMsg("REMOVE receiver: " + receiver.getUniqueId() + " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);

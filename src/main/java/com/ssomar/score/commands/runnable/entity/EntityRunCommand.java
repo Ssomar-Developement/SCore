@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -92,7 +92,7 @@ public class EntityRunCommand extends RunCommand {
     }
 
     @Override
-    public void executeRunnable(BukkitRunnable runnable) {
+    public void executeRunnable(Runnable runnable) {
         Entity receiver = null;
         if (SCore.is1v11Less()) {
             for (World world : Bukkit.getWorlds()) {

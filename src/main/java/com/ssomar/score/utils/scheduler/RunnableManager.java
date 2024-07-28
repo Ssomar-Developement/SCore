@@ -1,6 +1,6 @@
 package com.ssomar.score.utils.scheduler;
 
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 
@@ -9,17 +9,17 @@ public class RunnableManager {
     private static RunnableManager instance;
 
     // Register current runnable, they will be executed when the server goes off
-    private List<BukkitRunnable> tasks;
+    private List<Runnable> tasks;
 
     public RunnableManager() {
         tasks = new java.util.ArrayList<>();
     }
 
-    public void addTask(BukkitRunnable task) {
+    public void addTask(Runnable task) {
         tasks.add(task);
     }
 
-    public void removeTask(BukkitRunnable task) {
+    public void removeTask(Runnable task) {
         tasks.remove(task);
     }
 
@@ -29,7 +29,7 @@ public class RunnableManager {
     }
 
     public void forceRunTasks() {
-        for (BukkitRunnable task : tasks) {
+        for (Runnable task : tasks) {
             task.run();
         }
     }

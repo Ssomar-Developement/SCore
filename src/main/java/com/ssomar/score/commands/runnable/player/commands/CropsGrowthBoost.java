@@ -5,18 +5,20 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.safeplace.SafePlace;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 /* BURN {timeinsecs} */
 public class CropsGrowthBoost extends PlayerCommand {
@@ -44,18 +46,20 @@ public class CropsGrowthBoost extends PlayerCommand {
 
         final int[] i = {0};
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 if (i[0] >= duration) {
-                    cancel();
+                    task.get().cancel();
                 } else {
                     grownAgeableBlocks(receiver.getLocation(), radius, finalChance, receiver);
                     i[0] = i[0] + delay;
                 }
             }
         };
-        runnable3.runTaskTimer(SCore.plugin, 0, delay);
+        task.set(SCore.schedulerHook.runRepeatingTask(runnable3, 0L, delay));
     }
 
     public void grownAgeableBlocks(Location start, int radius, int finalChance, Player receiver) {

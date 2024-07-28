@@ -321,7 +321,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
                 loadObjectsInFolder(fileEntry, isPremiumLoading);
             } else {
                 /*
-                BukkitRunnable runnable3 = new BukkitRunnable() {
+                Runnable runnable3 = new Runnable() {
                     @Override
                     public void run() {
                         loadObjectByFile(folder.getPath() + "/" + s, isPremiumLoading);

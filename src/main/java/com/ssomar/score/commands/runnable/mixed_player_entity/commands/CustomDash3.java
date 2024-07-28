@@ -10,7 +10,6 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class CustomDash3 extends MixedCommand {
 
         //if(args.get(2).equalsIgnoreCase("y")) {
         if(true) {
-            new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     if (currentStep[0] >= steps) {
@@ -78,7 +77,9 @@ public class CustomDash3 extends MixedCommand {
 
                     currentStep[0]++;
                 }
-            }.runTaskTimer(SCore.plugin, 1L, 1L);
+            };
+
+            SCore.schedulerHook.runRepeatingTask(runnable, 1L, 1L);
         }
     }
 

@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands.settempblock;
 import com.ssomar.score.SCore;
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class SetTempBlockManager {
 
         final BlockData finalOldData = oldData;
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 loc.getBlock().setBlockData(finalOldData);

@@ -8,7 +8,7 @@ import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Glowing extends MixedCommand {
             GlowDropManager.getInstance().addGlow(receiver, color);
 
             final ChatColor finalColor = color;
-            BukkitRunnable runnable3 = new BukkitRunnable() {
+            Runnable runnable3 = new Runnable() {
                 @Override
                 public void run() {
                     if (!receiver.isDead()) {
@@ -36,7 +36,7 @@ public class Glowing extends MixedCommand {
                     }
                 }
             };
-            runnable3.runTaskLater(SCore.plugin, time);
+            SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time);
         }
     }
 

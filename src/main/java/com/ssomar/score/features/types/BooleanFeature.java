@@ -16,7 +16,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
@@ -214,7 +213,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     public void askInEditor(Player editor, NewGUIManager manager) {
         manager.requestWriting.put(editor, getEditorName());
         /* Close inventory sync */
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             public void run() {
                 editor.closeInventory();
             }

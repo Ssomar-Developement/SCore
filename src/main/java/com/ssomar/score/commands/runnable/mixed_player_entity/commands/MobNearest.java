@@ -12,7 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class MobNearest extends MixedCommand implements FeatureParentInterface {
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
         List<String> verifyArgs = new ArrayList<>(args);
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 double distance = Double.valueOf(verifyArgs.get(0));

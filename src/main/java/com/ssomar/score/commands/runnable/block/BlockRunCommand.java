@@ -12,7 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +90,7 @@ public class BlockRunCommand extends RunCommand {
     }
 
     @Override
-    public void executeRunnable(BukkitRunnable runnable) {
+    public void executeRunnable(Runnable runnable) {
         Optional<World> worldOptional = AllWorldManager.getWorld(blockWorld);
         if(!worldOptional.isPresent()) return;
         Location loc = new Location(worldOptional.get(), blockX, blockY, blockZ);

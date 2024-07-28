@@ -7,7 +7,7 @@ import com.ssomar.score.commands.runnable.player.PlayerRunCommand;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.io.IOException;
 import java.sql.*;
@@ -51,13 +51,14 @@ public class PlayerCommandsQuery {
 
     public static void insertCommand(Connection conn, List<PlayerRunCommand> commands, boolean async) {
         if (async) {
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     insertCommand(conn, commands);
                 }
             };
-            runnable.runTaskAsynchronously(SCore.plugin);
+            SCore.schedulerHook.runAsyncTask(runnable, 0L);
+
         } else insertCommand(conn, commands);
     }
 

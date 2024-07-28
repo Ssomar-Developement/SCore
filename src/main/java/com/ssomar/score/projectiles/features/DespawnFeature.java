@@ -7,7 +7,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.Optional;
 
@@ -20,13 +20,13 @@ public class DespawnFeature extends DoubleFeature implements SProjectileFeatureI
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
         if (getValue().isPresent() && getValue().get() != -1) {
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 public void run() {
                     if (e != null)
                         e.remove();
                 }
             };
-            runnable.runTaskLater(SCore.plugin, (int)(getValue().get() * 20));
+            SCore.schedulerHook.runEntityTask(runnable, null, e, (int)(getValue().get() * 20));
         }
     }
 

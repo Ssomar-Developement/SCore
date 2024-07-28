@@ -8,7 +8,7 @@ import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,7 +19,7 @@ public class Nearest extends MixedCommand {
 
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
 

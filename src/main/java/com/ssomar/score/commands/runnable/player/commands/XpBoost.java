@@ -7,7 +7,7 @@ import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.*;
 
@@ -35,7 +35,7 @@ public class XpBoost extends PlayerCommand {
             activeBoosts.get(receiver.getUniqueId()).add(multiplier);
         } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(multiplier)));
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
@@ -46,7 +46,7 @@ public class XpBoost extends PlayerCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, time * 20L);
+        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time * 20L);
     }
 
     @Override

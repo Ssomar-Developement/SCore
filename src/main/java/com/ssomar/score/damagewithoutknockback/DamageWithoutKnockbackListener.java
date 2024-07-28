@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.bukkit.util.Vector;
 
 public class DamageWithoutKnockbackListener implements Listener {
@@ -25,7 +25,7 @@ public class DamageWithoutKnockbackListener implements Listener {
         LivingEntity entity = (LivingEntity) event.getEntity();
         //SsomarDev.testMsg(DamageWithoutKnockbackManager.getInstance().getDamageWithoutKnockbackList().size()+"<<<<<2 <<<<", true);
         if (DamageWithoutKnockbackManager.getInstance().contains(e)) {
-            BukkitRunnable runnable3 = new BukkitRunnable() {
+            Runnable runnable3 = new Runnable() {
                 @Override
                 public void run() {
                     entity.setVelocity(new Vector(0, 0, 0));
@@ -35,7 +35,7 @@ public class DamageWithoutKnockbackListener implements Listener {
                     //SsomarDev.testMsg("DamageWithoutKnockbackListener 2222", true);
                 }
             };
-            runnable3.runTaskLater(SCore.plugin, 1);
+            SCore.schedulerHook.runEntityTask(runnable3, null, entity, 1);
 
             DamageWithoutKnockbackManager.getInstance().removeDamageWithoutKnockback(e);
         }

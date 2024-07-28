@@ -1,6 +1,5 @@
 package com.ssomar.score.features.types;
 
-import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
@@ -26,7 +25,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -90,14 +88,15 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
                 try {
                     SsomarDev.testMsg("placeItemsAdder is Furniture " + id, DEBUG);
                     CustomFurniture customFurniture = CustomFurniture.spawnPreciseNonSolid(id, location);
-                    EntityEquipment entityEquip = ((ArmorStand) customFurniture.getArmorstand()).getEquipment();
-                    BukkitRunnable runnable3 = new BukkitRunnable() {
+                    ArmorStand armorStand = (ArmorStand) customFurniture.getArmorstand();
+                    EntityEquipment entityEquip = armorStand.getEquipment();
+                    Runnable runnable3 = new Runnable() {
                         @Override
                         public void run() {
                             entityEquip.setItem(EquipmentSlot.HEAD, itemStack);
                         }
                     };
-                    runnable3.runTaskLater(ExecutableBlocks.plugin, 10);
+                    SCore.schedulerHook.runEntityTask(runnable3, null, armorStand, 10L);
                     return customFurniture;
                 } catch (Exception e1) {
                     e.printStackTrace();

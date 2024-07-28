@@ -41,7 +41,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 
@@ -518,7 +517,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
                 //Display.registerDisplayModule(new TryDisplayModule());
                 PacketManager.newDisplay();
 
-                BukkitRunnable runnable3 = new BukkitRunnable() {
+                Runnable runnable3 = new Runnable() {
                     @Override
                     public void run() {
                         //System.out.println(">>> RUNNABLE DISPLAY");

@@ -17,4 +17,8 @@ public class Utils {
             sPlugin.getPlugin().getServer().getConsoleSender().sendMessage(StringConverter.decoloredString(msg));
     }
 
+    public static void sendConsoleFlatMsg(SPlugin sPlugin, String msg) {
+        sPlugin.getPlugin().getServer().getConsoleSender().sendMessage(msg);
+    }
+
 }

@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands.absorption;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class AbsorptionManager {
         receiver.setAbsorptionAmount(currentabsorption + absorption.getAbsorption());
         SsomarDev.testMsg("newAbso: "+receiver.getAbsorptionAmount(), true);
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " ABSORPTION: " + absorption.getAbsorption(), true);

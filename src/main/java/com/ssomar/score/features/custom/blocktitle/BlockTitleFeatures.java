@@ -24,7 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -185,7 +185,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 // Idk why it doesnt update without, it's something in DecentHologram
                 if(DHAPI.getHologram(getSimpleLocString(loc)) != null) remove(loc);
                 DHAPI.createHologram(getSimpleLocString(loc), loc, lines);
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
                         if(DHAPI.getHologram(loc.toString()) != null) {
@@ -196,8 +196,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                         // if null it means that the hologram has been removed during the tick and we don't want to recreate/update it
                     }
                 };
-                runnable.runTaskLater(SCore.plugin, 1);
-
+                SCore.schedulerHook.runLocationTask(runnable, loc, 1);
                 return loc;
             }
             else if (SCore.hasHolographicDisplays) {

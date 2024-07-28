@@ -8,7 +8,7 @@ import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.OptionGlobal;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.*;
 
@@ -39,7 +39,7 @@ public class LoopManager {
 
     public void runLoop() {
         //SsomarDev.testMsg("LoopManager.runLoop() >> "+ loopActivators.size());
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
 
             @Override
             public void run() {

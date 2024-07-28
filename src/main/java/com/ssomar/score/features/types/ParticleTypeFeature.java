@@ -18,7 +18,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -256,12 +255,12 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
     public void askInEditor(Player editor, NewGUIManager manager) {
         manager.requestWriting.put(editor, getEditorName());
         /* Close inventory sync */
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             public void run() {
                 editor.closeInventory();
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runEntityTaskAsap(runnable, null, editor);
         space(editor);
 
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter the particle or &aedit &athe &aactual: "));

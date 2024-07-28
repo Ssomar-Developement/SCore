@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.util.Optional;
@@ -96,7 +95,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
 
         if (!saveLaunched || saveInstantly) {
             saveLaunched = true;
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     ConfigurationSection config = parent.getConfigurationSection();

@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,7 @@ public class RunConsoleCommand {
         }
 
         // By default Bukkit.dispatchCommand() is not sync , so one tick in addition is not a problem, its more to remind me that console commands are not sync
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
 
@@ -44,7 +44,7 @@ public class RunConsoleCommand {
         SCore.schedulerHook.runTask(runnable, 1);
 
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
 
             @Override
             public void run() {

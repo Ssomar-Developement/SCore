@@ -9,7 +9,6 @@ import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.types.list.ListIntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.block.Block;
@@ -17,12 +16,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.ChiseledBookshelf;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,13 +133,13 @@ public class ChiseledBookshelfFeatures extends FeatureWithHisOwnEditor<ChiseledB
                 chiseledBookshelf.setSlotOccupied(i, true);
                 SsomarDev.testMsg("Slot "+i+" is occupied", true);
             }
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     block.getWorld().getPlayers().forEach(p -> p.sendBlockChange(block.getLocation(), chiseledBookshelf));
                 }
             };
-            runnable.runTaskLater(SCore.plugin, 3);
+            SCore.schedulerHook.runLocationTask(runnable, block.getLocation(), 3);
         }
     }
 

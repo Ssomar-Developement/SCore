@@ -21,7 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -272,12 +271,12 @@ public class TrimMaterialFeature extends FeatureAbstract<Optional<TrimMaterial>,
     public void askInEditor(Player editor, NewGUIManager manager) {
         manager.requestWriting.put(editor, getEditorName());
         /* Close inventory sync */
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             public void run() {
                 editor.closeInventory();
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runEntityTaskAsap(runnable, null, editor);
         space(editor);
 
         TextComponent message = new TextComponent(StringConverter.coloredString("&a&l[Editor] &aEnter the material or &aedit &athe &aactual: "));

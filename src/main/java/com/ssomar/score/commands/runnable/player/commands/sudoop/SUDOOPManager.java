@@ -22,7 +22,7 @@ public class SUDOOPManager {
     }
 
     public static void performCommand(final Player player, final String command) {
-//	    BukkitRunnable runnable = new BukkitRunnable() {
+//	    Runnable runnable = new Runnable() {
 //			@Override
 //			public void run() {
         player.chat(command);

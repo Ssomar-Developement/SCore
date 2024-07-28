@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class StunEnable extends MixedCommand {
         }
         receiver.teleport(correctAnimation);
         StunEvent.stunPlayers.put(receiver.getUniqueId(), false);
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 if (StunEvent.stunPlayers.containsKey(receiver.getUniqueId()))

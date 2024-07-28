@@ -15,7 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +35,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
         if(launcher != null) aInfo.setLauncherUUID(launcher.getUniqueId());
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -70,7 +70,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                 }
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runTask(runnable, 0L);
     }
 
     @Override

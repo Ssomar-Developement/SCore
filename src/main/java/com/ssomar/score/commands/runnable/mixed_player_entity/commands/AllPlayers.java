@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class AllPlayers extends MixedCommand {
 
     @Override
     public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 CommmandThatRunsCommand.runPlayerCommands(Bukkit.getOnlinePlayers(), args, aInfo);

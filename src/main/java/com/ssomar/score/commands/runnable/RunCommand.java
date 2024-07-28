@@ -6,7 +6,6 @@ import com.ssomar.score.utils.scheduler.ScheduledTask;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -89,7 +88,7 @@ public abstract class RunCommand implements Serializable {
 
         //SsomarDev.testMsg("PRE PRE RUN step "+aInfo.getStep(), true);
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("Command run command: "+getBrutCommand(), true);
@@ -159,7 +158,7 @@ public abstract class RunCommand implements Serializable {
     }
 
     public void runDelayedCommand() {
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
 
             public void run() {
                 insideDelayedCommand();
@@ -172,7 +171,7 @@ public abstract class RunCommand implements Serializable {
 
     public abstract void insideDelayedCommand();
 
-    public abstract void executeRunnable(BukkitRunnable runnable);
+    public abstract void executeRunnable(Runnable runnable);
     public abstract void runCommand(SCommand command, List<String> args);
 
     public abstract void pickupInfo();

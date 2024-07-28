@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,7 +13,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")
@@ -41,7 +43,10 @@ public class Move extends BlockCommand {
             final Entity e = entity;
             for (int i = 0; i < 15; i++) {
                 final long delay = i;
-                BukkitRunnable runnable = new BukkitRunnable() {
+
+                AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+                Runnable runnable = new Runnable() {
                     public void run() {
 
                         boolean isItem = e instanceof Item;
@@ -82,17 +87,19 @@ public class Move extends BlockCommand {
                             //SsomarDev.testMsg("centerBlock >> " + centerBlock.toString(), true);
                             // e.setVelocity(centerBlock);
                             e.setVelocity(direction.add(centerBlock).multiply(0.1));
-                    /* BukkitRunnable runnable = new BukkitRunnable() {
+                    /* Runnable runnable = new Runnable() {
                         public void run() {
                             e.setVelocity(direction.multiply(0.2));
                         }
                     };
                     runnable.runTaskLaterAsynchronously(SCore.plugin, 1);*/
 
-                        } else cancel();
+                        } else {
+                            task.get().cancel();
+                        }
                     }
                 };
-                SCore.schedulerHook.runAsyncTask(runnable, delay);
+                task.set(SCore.schedulerHook.runAsyncTask(runnable, delay));
             }
 
 

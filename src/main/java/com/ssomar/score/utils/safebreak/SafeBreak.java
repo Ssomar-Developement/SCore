@@ -22,7 +22,7 @@ import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,7 +111,7 @@ public class SafeBreak {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
 
-                BukkitRunnable runnable3 = new BukkitRunnable() {
+                Runnable runnable3 = new Runnable() {
                     @Override
                     public void run() {
                         block.setType(Material.AIR);
@@ -122,7 +122,7 @@ public class SafeBreak {
             } else {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
-                BukkitRunnable runnable3 = new BukkitRunnable() {
+                Runnable runnable3 = new Runnable() {
                     @Override
                     public void run() {
                         block.getRelative(BlockFace.DOWN).setType(Material.AIR);
@@ -135,7 +135,7 @@ public class SafeBreak {
             if (block.getRelative(BlockFace.UP).getType().toString().toUpperCase().contains("DOOR")) {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
-                BukkitRunnable runnable3 = new BukkitRunnable() {
+                Runnable runnable3 = new Runnable() {
                     @Override
                     public void run() {
                         block.getRelative(BlockFace.UP).setType(Material.AIR);
@@ -146,7 +146,7 @@ public class SafeBreak {
             } else {
                 if (itemStack.isPresent() && drop) block.breakNaturally(itemStack.get());
                 else if (drop) block.breakNaturally();
-                BukkitRunnable runnable3 = new BukkitRunnable() {
+                Runnable runnable3 = new Runnable() {
                     @Override
                     public void run() {
                         block.getRelative(BlockFace.DOWN).setType(Material.AIR);

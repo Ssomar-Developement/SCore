@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -295,7 +294,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     public void askInEditor(Player editor, NewGUIManager manager) {
         manager.requestWriting.put(editor, getEditorName());
         /* Close inventory sync */
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             public void run() {
                 editor.closeInventory();
             }

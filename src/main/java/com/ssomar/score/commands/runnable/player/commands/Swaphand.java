@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class Swaphand extends PlayerCommand {
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
 
         /* Delay fix a double activation of the item, not so easy to esplain, it fixes this issue: https://discord.com/channels/701066025516531753/1014297458735595680/1014299784229683302*/
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 PlayerInventory inv = receiver.getInventory();
@@ -38,8 +38,7 @@ public class Swaphand extends PlayerCommand {
                 }
             }
         };
-        runnable3.runTaskLater(SCore.plugin, 1);
-
+        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, 1);
     }
 
     @Override

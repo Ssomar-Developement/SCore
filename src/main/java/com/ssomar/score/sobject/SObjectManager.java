@@ -7,7 +7,6 @@ import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -88,7 +87,7 @@ public abstract class SObjectManager<T extends SObject> {
     }
 
     public void generateLoadEvent(String id, T object) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 SObjectLoadEvent event = new SObjectLoadEvent(id, object);

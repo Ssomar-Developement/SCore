@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunCommand;
 import com.ssomar.score.commands.runnable.SCommand;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class ConsoleRunCommand extends RunCommand {
     }
 
     @Override
-    public void executeRunnable(BukkitRunnable runnable) {
+    public void executeRunnable(Runnable runnable) {
         SCore.schedulerHook.runTask(runnable, 0);
     }
     public boolean isSilenceOutput() {

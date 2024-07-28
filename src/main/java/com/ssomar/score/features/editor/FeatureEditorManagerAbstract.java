@@ -6,7 +6,6 @@ import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Optional;
 
@@ -332,7 +331,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                         interact.player.sendMessage(potentialError.get());
                         // AsyncChat -> Sync close inv / Message
                         NewGUIManager newGUIManager = this;
-                        BukkitRunnable runnable = new BukkitRunnable() {
+                        Runnable runnable = new Runnable() {
 
                             public void run() {
                                 ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, newGUIManager);
@@ -349,7 +348,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                         interact.player.sendMessage(potentialError.get());
                         // AsyncChat -> Sync close inv / Message
                         NewGUIManager newGUIManager = this;
-                        BukkitRunnable runnable = new BukkitRunnable() {
+                        Runnable runnable = new Runnable() {
 
                             public void run() {
                                 ((FeatureRequireOneMessageInEditor) feature).askInEditor(interact.player, newGUIManager);

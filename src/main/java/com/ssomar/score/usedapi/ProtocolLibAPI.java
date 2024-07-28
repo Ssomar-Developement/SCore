@@ -10,6 +10,7 @@ import com.comphenix.protocol.wrappers.Pair;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -18,8 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,18 +26,18 @@ import java.util.List;
 
 public class ProtocolLibAPI {
 
-    public static List<BukkitTask> sendEquipmentVisualReplace(Player player, EquipmentSlot slot, Material material, int amount, int time) {
+    public static List<ScheduledTask> sendEquipmentVisualReplace(Player player, EquipmentSlot slot, Material material, int amount, int time) {
         return sendEquipmentVisualReplace(player, slot, new ItemStack(material, amount), time);
     }
 
-    public static List<BukkitTask> sendEquipmentVisualReplace(LivingEntity entity, EquipmentSlot slot, ItemStack item, int time) {
-        List<BukkitTask> tasks = new ArrayList<>();
+    public static List<ScheduledTask> sendEquipmentVisualReplace(LivingEntity entity, EquipmentSlot slot, ItemStack item, int time) {
+        List<ScheduledTask> tasks = new ArrayList<>();
 
         if (!Dependency.PROTOCOL_LIB.isEnabled()) return tasks;
 
         /* Update for other */
         for (int i = 0; i < time ; i++) {
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     PacketContainer packet = SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
@@ -66,10 +65,10 @@ public class ProtocolLibAPI {
                     }
                 }
             };
-            tasks.add(runnable.runTaskLaterAsynchronously(SCore.plugin, i ));
+            tasks.add(SCore.schedulerHook.runAsyncTask(runnable, i));
         }
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 PacketContainer packet = SCore.protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
@@ -101,7 +100,7 @@ public class ProtocolLibAPI {
                 }
             }
         };
-        tasks.add(runnable.runTaskLater(SCore.plugin, time));
+        tasks.add(SCore.schedulerHook.runTask(runnable, time));
         return tasks;
     }
 

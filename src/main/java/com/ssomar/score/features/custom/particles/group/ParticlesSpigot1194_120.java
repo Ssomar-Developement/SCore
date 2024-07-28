@@ -2,25 +2,32 @@ package com.ssomar.score.features.custom.particles.group;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.particles.particle.ParticleFeature;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ParticlesSpigot1194_120 {
 
     public static void transformTheProjectile(Map<String, ParticleFeature> particles, Entity e, Player launcher, Material materialLaunched) {
         if (particles != null) {
             for (ParticleFeature particle : particles.values()) {
-                BukkitRunnable runnable = new BukkitRunnable() {
+                AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+                Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (e.isDead()) cancel();
+                        if (e.isDead()) {
+                            task.get().cancel();
+                            return;
+                        }
 
                         if (particle.canHaveRedstoneColor()) {
                             Particle.DustOptions dO = new Particle.DustOptions(Color.RED, 1);
@@ -37,7 +44,7 @@ public class ParticlesSpigot1194_120 {
                         }
                     }
                 };
-                runnable.runTaskTimerAsynchronously(SCore.plugin, 0L, particle.getParticlesDelay().getValue().get());
+                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, particle.getParticlesDelay().getValue().get()));
             }
         }
     }

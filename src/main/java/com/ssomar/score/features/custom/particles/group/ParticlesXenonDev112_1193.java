@@ -2,12 +2,13 @@ package com.ssomar.score.features.custom.particles.group;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.particles.particle.ParticleFeature;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.scheduler.BukkitRunnable;
+
 import org.bukkit.util.Vector;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
@@ -15,6 +16,7 @@ import xyz.xenondevs.particle.data.color.RegularColor;
 import xyz.xenondevs.particle.data.texture.BlockTexture;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ParticlesXenonDev112_1193 {
 
@@ -44,11 +46,15 @@ public class ParticlesXenonDev112_1193 {
                         builder.setParticleData(new BlockTexture(particle.getBlockType().getValue().get()));
                 }
 
+                AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (e.isDead() || projectile.isOnGround()) cancel();
+                        if (e.isDead() || projectile.isOnGround()) {
+                            task.get().cancel();
+                            return;
+                        }
 
                         float particlesAmountForVector = 200;
                         float divide = 100;
@@ -66,7 +72,7 @@ public class ParticlesXenonDev112_1193 {
                         }
                     }
                 };
-                runnable.runTaskTimerAsynchronously(SCore.plugin, 0L, particle.getParticlesDelay().getValue().get());
+                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0, particle.getParticlesDelay().getValue().get()));
             }
         }
     }

@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ public class NoFallDamageManager {
     public void addNoFallDamage(Entity e) {
         UUID uuid = UUID.randomUUID();
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 NoFallDamageManager.getInstance().removeNoFallDamage(e, uuid);

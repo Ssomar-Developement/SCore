@@ -22,6 +22,7 @@ public class StringConverter {
         String convert = StringUtils.replaceEach( s, keys, values );
         convert = convert.replaceAll("\\|<-_->\\|", "& ");
         if (SCore.is1v16Plus()) convert = translateHexCodes(convert);
+        //Utils.sendConsoleFlatMsg(SCore.plugin, convert);
         return convert;
     }
 
@@ -139,6 +140,7 @@ public class StringConverter {
             //convert = convert.replace(color, ChatColor.of(color) + "");
             StringBuilder newColor = new StringBuilder("§x");
             for(char c : color.toCharArray()) {
+                if(c == '#') continue;
                 newColor.append("§").append(c);
             }
             convert = convert.replace(color, newColor);

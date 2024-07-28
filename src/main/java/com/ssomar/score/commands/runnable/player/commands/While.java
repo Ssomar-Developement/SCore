@@ -14,11 +14,12 @@ import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class While extends PlayerCommand {
 
@@ -26,7 +27,7 @@ public class While extends PlayerCommand {
 
     private static While instance;
 
-    private final Map<UUID, List<BukkitRunnable>> whileTasks;
+    private final Map<UUID, List<ScheduledTask>> whileTasks;
 
     public While() {
         whileTasks = new HashMap<>();
@@ -72,7 +73,9 @@ public class While extends PlayerCommand {
             SsomarDev.testMsg("WHILE CMD: " + cmd, DEBUG);
         }
 
-        BukkitRunnable runnable3 = new BukkitRunnable() {
+        AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 sp.reloadAllPlaceholders();
@@ -83,15 +86,15 @@ public class While extends PlayerCommand {
                 }
                 else{
                     SsomarDev.testMsg("WHILE STOPPED", DEBUG);
-                    this.cancel();
+                    task.get().cancel();
                 }
             }
         };
-        runnable3.runTaskTimerAsynchronously(SCore.plugin, 0, delay);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, delay));
         // add the task to the list of tasks
-        List<BukkitRunnable> tasks = whileTasks.get(receiver.getUniqueId());
+        List<ScheduledTask> tasks = whileTasks.get(receiver.getUniqueId());
         if(tasks == null) tasks = new ArrayList<>();
-        tasks.add(runnable3);
+        tasks.add(task.get());
         whileTasks.put(receiver.getUniqueId(), tasks);
 
     }
@@ -130,9 +133,9 @@ public class While extends PlayerCommand {
     }
 
     public void removeWhile(UUID uuid) {
-        List<BukkitRunnable> tasks = whileTasks.get(uuid);
+        List<ScheduledTask> tasks = whileTasks.get(uuid);
         if(tasks != null) {
-            for (BukkitRunnable task : tasks) {
+            for (ScheduledTask task : tasks) {
                 task.cancel();
             }
         }

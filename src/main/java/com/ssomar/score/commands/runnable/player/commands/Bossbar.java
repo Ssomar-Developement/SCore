@@ -11,7 +11,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class Bossbar extends PlayerCommand {
         BossBar bossBar = Bukkit.createBossBar(text, color, BarStyle.SOLID);
         bossBar.addPlayer(receiver);
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 bossBar.removeAll();

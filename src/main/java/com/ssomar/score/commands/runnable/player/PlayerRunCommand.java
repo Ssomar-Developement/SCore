@@ -8,7 +8,6 @@ import com.ssomar.score.commands.runnable.SCommand;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -105,7 +104,7 @@ public class PlayerRunCommand extends RunCommand {
     }
 
     @Override
-    public void executeRunnable(BukkitRunnable runnable) {
+    public void executeRunnable(Runnable runnable) {
         /* Exceptional case for server loop */
         /* if(receiverUUID == null) {
             SCore.schedulerHook.runTask(runnable, 0);

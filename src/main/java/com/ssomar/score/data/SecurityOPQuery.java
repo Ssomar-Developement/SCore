@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class SecurityOPQuery {
     public static void deletePlayerOP(Connection conn, Player p, boolean async) {
 
         if (async) {
-            BukkitRunnable runnable = new BukkitRunnable() {
+            Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     deletePlayerOP(conn, p);

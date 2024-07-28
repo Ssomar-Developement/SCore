@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.particles.group;
 import com.destroystokyo.paper.ParticleBuilder;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.particles.particle.ParticleFeature;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -10,10 +11,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ParticlesPaper1194_120 {
 
@@ -43,11 +44,15 @@ public class ParticlesPaper1194_120 {
                         builder.data(typeData);
                 }
 
+                final AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (e.isDead() || projectile.isOnGround()) cancel();
+                        if (e.isDead() || projectile.isOnGround()) {
+                            task.get().cancel();
+                            return;
+                        }
 
                         float particlesAmountForVector = 200;
                         float divide = 100;
@@ -65,7 +70,7 @@ public class ParticlesPaper1194_120 {
                         }
                     }
                 };
-                runnable.runTaskTimerAsynchronously(SCore.plugin, 0L, particle.getParticlesDelay().getValue().get());
+                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, particle.getParticlesDelay().getValue().get()));
             }
         }
     }

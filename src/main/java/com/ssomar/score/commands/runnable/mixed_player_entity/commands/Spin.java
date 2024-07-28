@@ -5,14 +5,16 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /* SPIN {duration ticks} {velocity} */
 public class Spin extends MixedCommand {
@@ -23,13 +25,15 @@ public class Spin extends MixedCommand {
         Integer duration = NTools.getInteger(args.get(0)).get();
         Float velocity = NTools.getFloat(args.get(1)).get();
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             int ticks = 0;
 
             @Override
             public void run() {
                 if (ticks >= duration) {
-                    this.cancel();
+                    task.get().cancel();
                     return;
                 }
                 receiver.teleport(receiver.getLocation().setDirection(receiver.getLocation().getDirection()
@@ -37,7 +41,7 @@ public class Spin extends MixedCommand {
                 ticks++;
             }
         };
-        SCore.schedulerHook.runRepeatingTask(runnable, 0, 1);
+        task.set(SCore.schedulerHook.runRepeatingTask(runnable, 0, 1));
     }
 
     @Override

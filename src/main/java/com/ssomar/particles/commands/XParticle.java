@@ -31,7 +31,6 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -89,7 +88,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Most of the methods do not run asynchronous by default.
  * If you're doing a resource intensive operation it's recommended
  * to either use {@link CompletableFuture#runAsync(Runnable)} or
- * {@link BukkitRunnable#runTaskTimerAsynchronously(Plugin, long, long)} for
+ * {@link Runnable #runTaskTimerAsynchronously(Plugin, long, long)} for
  * smoothly animated shapes.
  * For huge animations you can use splittable tasks.
  * https://www.spigotmc.org/threads/409003/
@@ -354,7 +353,10 @@ public final class XParticle {
      * @since 3.0.0
      */
     public static ScheduledTask circularBeam(Plugin plugin, double maxRadius, double rate, double radiusRate, double extend, double time, ParticleDisplay display) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             final double rateDiv = Math.PI / rate;
             final double radiusDiv = Math.PI / radiusRate;
             final Vector dir = display.getLocation().getDirection().normalize().multiply(extend);
@@ -377,10 +379,16 @@ public final class XParticle {
                 if (dynamicRadius > Math.PI) dynamicRadius = 0;
                 // Next circle center location. (need to clone otherwise it'll change the original)
                 display.getLocation().clone().add(dir);
-                if (++repeat > time) cancel();
+                if (++repeat > time){
+                    task.get().cancel();
+                    return;
+                }
             }
         };
-        return  SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+
+        return task.get();
     }
 
     /**
@@ -457,8 +465,9 @@ public final class XParticle {
 
         if(speed <= 0) speed = 1;
         final int speedFinal = speed;
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
-        BukkitRunnable runnable =  new BukkitRunnable() {
+        Runnable runnable =  new Runnable() {
             final Vector rotation = new Vector(Math.PI / 33, Math.PI / 44, Math.PI / 55);
             double theta = Math.PI / 2;
             double theta2 = Math.PI / 2;
@@ -515,10 +524,11 @@ public final class XParticle {
 //                });
 //                locs.put(new Vector(x2, y2, 0), display.rotation.clone());
                 }
-                if(--timer == 0) cancel();
+                if(--timer == 0) task.get().cancel();
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -535,7 +545,10 @@ public final class XParticle {
      * @since 3.0.0
      */
     public static ScheduledTask magicCircles(Plugin plugin, double radius, double rate, double radiusRate, double distance, int time, ParticleDisplay display) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             final double radiusDiv = Math.PI / radiusRate;
             final Vector dir = display.getLocation().getDirection().normalize().multiply(distance);
             double dynamicRadius = radius;
@@ -555,10 +568,11 @@ public final class XParticle {
                 dynamicRadius += radiusDiv;
                 display.getLocation().add(dir);
 
-                if(timer-- <= 0) cancel();
+                if(timer-- <= 0) task.get().cancel();
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -641,7 +655,9 @@ public final class XParticle {
         display.directional();
         display.extra = 0.1;
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             final double rateDiv = Math.PI / rate;
             int timer = time;
             double theta = 0;
@@ -682,10 +698,11 @@ public final class XParticle {
                 }
 
                 theta += rateDiv;
-                if (--timer <= 0) cancel();
+                if (--timer <= 0) task.get().cancel();
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -823,7 +840,7 @@ public final class XParticle {
 
        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
-        BukkitRunnable runnable =  new BukkitRunnable() {
+        Runnable runnable =  new Runnable() {
             double theta = 0;
             long repeat = 0;
 
@@ -892,7 +909,7 @@ public final class XParticle {
      */
     public static ScheduledTask moveRotatingAround(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
                                                 Runnable runnable, ParticleDisplay... displays) {
-        BukkitRunnable runnable1 =  new BukkitRunnable() {
+        Runnable runnable1 =  new Runnable() {
             double rotation = 180;
 
             @Override
@@ -933,7 +950,7 @@ public final class XParticle {
      */
     public static ScheduledTask moveAround(Plugin plugin, long update, double rate, double endRate, double offsetx, double offsety, double offsetz,
                                         Runnable runnable, ParticleDisplay... displays) {
-        BukkitRunnable runnable1 = new BukkitRunnable() {
+        Runnable runnable1 = new Runnable() {
             double multiplier = 0;
             boolean opposite = false;
 
@@ -990,7 +1007,7 @@ public final class XParticle {
      */
     public static ScheduledTask rotateAround(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
                                           Runnable runnable, ParticleDisplay... displays) {
-        BukkitRunnable runnable1 = new BukkitRunnable() {
+        Runnable runnable1 = new Runnable() {
             double rotation = 180;
 
             @Override
@@ -1033,7 +1050,7 @@ public final class XParticle {
      */
     public static ScheduledTask guard(Plugin plugin, long update, double rate, double offsetx, double offsety, double offsetz,
                                    Runnable runnable, ParticleDisplay... displays) {
-        BukkitRunnable runnable1 = new BukkitRunnable() {
+        Runnable runnable1 = new Runnable() {
             double rotation = 180;
 
             @Override
@@ -1182,7 +1199,10 @@ public final class XParticle {
      */
     public static ScheduledTask spread(Plugin plugin, int amount, int rate, Location start, Location originEnd,
                                     double offsetx, double offsety, double offsetz, ParticleDisplay display) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             int count = amount;
 
             @Override
@@ -1198,10 +1218,11 @@ public final class XParticle {
                     line(start, end, 0.1, display);
                 }
 
-                if (count-- == 0) cancel();
+                if (count-- == 0) task.get().cancel();
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -1243,7 +1264,9 @@ public final class XParticle {
      */
     public static ScheduledTask atomic(Plugin plugin, int orbits, double radius, double rate, double time, ParticleDisplay display) {
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             final double rateDiv = Math.PI / rate;
             final double dist = Math.PI / orbits;
             double theta = 0;
@@ -1262,10 +1285,11 @@ public final class XParticle {
                     display.spawn(x, 0, z);
                     orbital--;
                 }
-                if (++repeat > time) cancel();
+                if (++repeat > time) task.get().cancel();
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -1287,7 +1311,10 @@ public final class XParticle {
      */
     public static ScheduledTask helix(Plugin plugin, int strings, double radius, double rate, double extension, int height, int speed,
                                    boolean fadeUp, boolean fadeDown, ParticleDisplay display) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             // If we look at a helix string from above, we'll see a circle tunnel.
             // To make this tunnel we're going to generate circles while moving
             // upwards to get a curvy tunnel.
@@ -1324,11 +1351,15 @@ public final class XParticle {
                         tempString--;
                     }
 
-                    if (y > height) cancel();
+                    if (y > height) {
+                        task.get().cancel();
+                        return;
+                    }
                 }
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -1460,7 +1491,9 @@ public final class XParticle {
         ParticleDisplay guanine = ParticleDisplay.colored(null, java.awt.Color.GREEN, 1); // Green
         ParticleDisplay cytosine = ParticleDisplay.colored(null, java.awt.Color.RED, 1); // Red
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             double y = 0;
             int nucleotideDist = 0;
 
@@ -1502,11 +1535,15 @@ public final class XParticle {
                         }
                     }
 
-                    if (y >= height) cancel();
+                    if (y >= height) {
+                        task.get().cancel();
+                        return;
+                    }
                 }
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -1528,14 +1565,14 @@ public final class XParticle {
      * A simple method to spawn animated clouds effect.
      *
      * @param plugin the timer handler.
-     * @param cloud  recommended particle is {@link Particle#CLOUD} or {@link Particle#SMOKE_LARGE} and the offset xyz should be higher than 2
-     * @param rain   recommended particle is {@link Particle#WATER_DROP} or {@link Particle#FALLING_LAVA} and the offset xyz should be the same as cloud.
+     * @param cloud  recommended particle is {@link Particle#CLOUD} or {@link Particle #SMOKE_LARGE} and the offset xyz should be higher than 2
+     * @param rain   recommended particle is {@link Particle #WATER_DROP} or {@link Particle#FALLING_LAVA} and the offset xyz should be the same as cloud.
      *
      * @return the timer task handling the animation.
      * @since 1.0.0
      */
     public static ScheduledTask cloud(Plugin plugin, ParticleDisplay cloud, ParticleDisplay rain) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 cloud.spawn();
@@ -1907,7 +1944,9 @@ public final class XParticle {
         }
         for (int i = 0; i < (level + 1) * 4; i++) connections.add(new int[]{i, i + 8});
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             double angle = 0;
             long repeat = 0;
 
@@ -1964,11 +2003,15 @@ public final class XParticle {
                     line(start, end, rate, display);
                 }
 
-                if (++repeat > time) cancel();
+                if (++repeat > time) {
+                    task.get().cancel();
+                    return;
+                }
                 else angle += speed;
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -2053,7 +2096,7 @@ public final class XParticle {
      * @param colorScheme the color scheme for the julia set.
      * @param moveX       the amount to move in the x axis.
      * @param moveY       the amount to move in the y axis.
-     * @param display     The particle should be {@link Particle#REDSTONE}
+     * @param display     The particle should be {@link Particle #REDSTONE}
      *
      * @see #mandelbrot(double, double, double, double, double, int, ParticleDisplay)
      * @since 4.0.0
@@ -2111,7 +2154,9 @@ public final class XParticle {
         for (int i = 0; i < spikes * 2; i++) {
             double spikeAngle = i * Math.PI / spikes;
 
-            BukkitRunnable runnable = new BukkitRunnable() {
+            final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+            Runnable runnable = new Runnable() {
                 double vein = 0;
                 double theta = 0;
 
@@ -2139,11 +2184,14 @@ public final class XParticle {
                             display.spawn(vector);
                         }
 
-                        if (theta >= PII) cancel();
+                        if (theta >= PII) {
+                            task.get().cancel();
+                            return;
+                        }
                     }
                 }
             };
-            SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+            task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
         }
     }
 
@@ -2291,7 +2339,10 @@ public final class XParticle {
      * @since 1.0.0
      */
     public static ScheduledTask explosionWave(Plugin plugin, double rate, ParticleDisplay display, ParticleDisplay secDisplay) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             final double addition = Math.PI * 0.1;
             final double rateDiv = Math.PI / rate;
             double times = Math.PI / 4;
@@ -2311,10 +2362,14 @@ public final class XParticle {
                     secDisplay.spawn(x, y, z);
                 }
 
-                if (times > 20) cancel();
+                if (times > 20) {
+                    task.get().cancel();
+                    return;
+                }
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+        return task.get();
     }
 
     /**
@@ -2451,7 +2506,10 @@ public final class XParticle {
      */
     public static ScheduledTask displayRenderedImage(Plugin plugin, Map<double[], Color> render, Callable<Location> location,
                                                   int repeat, long period, int quality, int speed, float size) {
-        BukkitRunnable runnable = new BukkitRunnable() {
+
+        final AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
             int times = repeat;
 
             @Override
@@ -2461,10 +2519,13 @@ public final class XParticle {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (times-- < 1) cancel();
+                if (times-- < 1) {
+                    task.get().cancel();
+                }
             }
         };
-        return SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, period);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, period));
+        return task.get();
     }
 
     /**

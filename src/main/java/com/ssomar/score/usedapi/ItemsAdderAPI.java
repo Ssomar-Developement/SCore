@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ public class ItemsAdderAPI {
                 customBlock.playBreakEffect();
                 customBlock.playBreakParticles();
                 customBlock.remove();
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Runnable runnable = new Runnable() {
                     public void run() {
                         block.setType(org.bukkit.Material.AIR);
                     }

@@ -9,7 +9,7 @@ import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public class Burn extends MixedCommand {
             else if (SCore.is1v17Plus()) {
                 receiver.setVisualFire(true);
 
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Runnable runnable = new Runnable() {
 
                     @Override
                     public void run() {
                         receiver.setVisualFire(false);
                     }
                 };
-                runnable.runTaskLater(SCore.plugin, time);
+                SCore.schedulerHook.runEntityTask(runnable, null, receiver, time);
             }
         } else receiver.setFireTicks(20 * time);
     }

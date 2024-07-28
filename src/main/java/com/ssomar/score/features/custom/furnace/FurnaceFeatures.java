@@ -11,13 +11,11 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Furnace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -185,13 +183,13 @@ public class FurnaceFeatures extends FeatureWithHisOwnEditor<FurnaceFeatures, Fu
             if (getInfiniteVisualLit().getValue()) {
                 Furnace furnaceData = (Furnace) block.getBlockData();
                 furnaceData.setLit(true);
-                BukkitRunnable runnable = new BukkitRunnable() {
+                Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
                         block.getWorld().getPlayers().forEach(p -> p.sendBlockChange(block.getLocation(), furnaceData));
                     }
                 };
-                runnable.runTaskLater(SCore.plugin, 3);
+                SCore.schedulerHook.runLocationTask(runnable, block.getLocation(), 0L);
             }
         }
     }

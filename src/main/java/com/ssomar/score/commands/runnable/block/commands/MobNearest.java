@@ -15,7 +15,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +35,7 @@ public class MobNearest extends BlockCommand implements FeatureParentInterface {
 
         List<String> verifyArgs = new ArrayList<>(args);
 
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 double distance = Double.valueOf(verifyArgs.get(0));
@@ -55,7 +54,7 @@ public class MobNearest extends BlockCommand implements FeatureParentInterface {
                 CommmandThatRunsCommand.runEntityCommands(targets, verifyArgs.subList(1, verifyArgs.size()), aInfo);
             }
         };
-        runnable.runTask(SCore.plugin);
+        SCore.schedulerHook.runLocationTask(runnable, location, 0);
     }
 
     @Override
