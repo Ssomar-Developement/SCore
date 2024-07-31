@@ -40,6 +40,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     private double entityHealth;
     private double entityMaxHealth;
 
+    private double lastDamageTaken;
+
     private String team;
 
 
@@ -77,6 +79,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
             this.z = eLoc.getZ();
             this.world = eLoc.getWorld().getName();
             this.pitch = eLoc.getPitch();
+            if(entity instanceof LivingEntity)
+                this.lastDamageTaken = ((LivingEntity) entity).getLastDamage();
             if (pitch < 0) pitchPositive = pitch * -1;
             else pitchPositive = pitch;
             this.yaw = eLoc.getYaw();
@@ -150,6 +154,9 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
                 toReplace = toReplace.replaceAll("%" + particle + "_item%", boat.getBoatType().toString()+"_"+entity.getType());
             }
             //SsomarDev.testMsg("toReplace2: "+toReplace, true);
+
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle +"_last_damage_taken%", lastDamageTaken + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle +"_last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
 
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", NTools.reduceDouble(x, 2) + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", NTools.reduceDouble(y, 2) + "", false);

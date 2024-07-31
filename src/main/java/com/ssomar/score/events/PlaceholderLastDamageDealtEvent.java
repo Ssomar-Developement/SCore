@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,9 @@ public class PlaceholderLastDamageDealtEvent implements Listener {
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {Entity damager = e.getDamager();
         if(damager instanceof Projectile){
             Projectile projectile = (Projectile) damager;
-            damager = (Entity) projectile.getShooter();
+            ProjectileSource shooter = projectile.getShooter();
+            if(shooter instanceof Player)
+                damager = (Player) shooter;
         }
         if (damager instanceof Player) {
             //SsomarDev.testMsg("onEntityDamageByEntityEvent >> " +damager + " >> " + e.getFinalDamage(), true);
