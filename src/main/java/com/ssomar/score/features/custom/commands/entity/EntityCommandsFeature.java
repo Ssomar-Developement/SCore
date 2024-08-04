@@ -45,7 +45,12 @@ public class EntityCommandsFeature extends CommandsAbstractFeature<List<String>,
     }
 
     public void runCommands(ActionInfo actionInfo, String objectName) {
+        runCommands(actionInfo, objectName, false);
+    }
+
+    public void runCommands(ActionInfo actionInfo, String objectName, boolean delay1TickTheCommands) {
         List<String> commands = new ArrayList<>(getValue());
+        if(delay1TickTheCommands) commands.add(0, "DELAYTICK 1");
         commands = prepareActionbarArgs(commands, objectName);
         EntityRunCommandsBuilder builder2 = new EntityRunCommandsBuilder(commands, actionInfo);
         CommandsExecutor.runCommands(builder2);

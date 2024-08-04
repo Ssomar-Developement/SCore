@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -45,7 +46,8 @@ public class DrainInCube extends BlockCommand {
                             Block toBreak = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
                             if (whiteList.contains(toBreak.getType())) {
-                                toBreak.setType(Material.AIR);
+                                if(p == null || SafeBreak.verifSafeBreak(p.getUniqueId(), toBreak))
+                                    toBreak.setType(Material.AIR);
                             }
                         }
                     }

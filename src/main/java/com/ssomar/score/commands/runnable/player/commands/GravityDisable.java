@@ -13,6 +13,8 @@ public class GravityDisable extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+        // Otherwise the player continue to fall if is falling
+        receiver.setVelocity(receiver.getVelocity().setY(0));
         receiver.setGravity(false);
     }
 

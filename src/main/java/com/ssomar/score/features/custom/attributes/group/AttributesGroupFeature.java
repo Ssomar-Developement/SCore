@@ -12,10 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -35,7 +32,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
 
     @Override
     public void reset() {
-        this.attributes = new HashMap<>();
+        this.attributes = new LinkedHashMap<>();
 
         this.keepDefaultAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.keepDefaultAttributes, false);
     }
@@ -107,7 +104,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
     @Override
     public AttributesGroupFeature clone(FeatureParentInterface newParent) {
         AttributesGroupFeature eF = new AttributesGroupFeature(newParent, isNotSaveIfNoValue());
-        HashMap<String, AttributeFullOptionsFeature> newAttributes = new HashMap<>();
+        HashMap<String, AttributeFullOptionsFeature> newAttributes = new LinkedHashMap<>();
         for (String x : attributes.keySet()) {
             newAttributes.put(x, attributes.get(x).clone(eF));
         }

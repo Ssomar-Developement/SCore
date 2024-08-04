@@ -1,11 +1,13 @@
 package com.ssomar.score.sobject;
 
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -60,9 +62,12 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
         File file = new File(path);
         if (!file.exists()) {
             try {
+                if(file.getParentFile() != null) file.getParentFile().mkdirs();
                 new File(path).createNewFile();
                 file = sObjectWithFileLoader.searchFileOfObject(getId());
             } catch (IOException ignored) {
+                Utils.sendConsoleMsg(SCore.plugin,"Error while creating a file: " + path);
+                ignored.printStackTrace();
                 return null;
             }
         }

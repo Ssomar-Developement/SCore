@@ -5,7 +5,6 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunCommand;
 import com.ssomar.score.commands.runnable.SCommand;
 
-
 import java.util.List;
 
 public class ConsoleRunCommand extends RunCommand {
@@ -45,7 +44,7 @@ public class ConsoleRunCommand extends RunCommand {
 
     @Override
     public void insideDelayedCommand() {
-       // NOTHING HERE
+        runCommand(ConsoleCommandManager.getInstance());
     }
 
     @Override

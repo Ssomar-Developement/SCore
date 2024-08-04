@@ -380,6 +380,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
                 }
+                else if(Bukkit.getOfflinePlayers().length > 0)
+                    uuid = Bukkit.getOfflinePlayers()[0].getUniqueId();
             }
             OfflinePlayer p;
             if (uuid != null && (p = Bukkit.getOfflinePlayer(uuid)) != null) {
