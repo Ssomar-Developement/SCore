@@ -24,6 +24,7 @@ public class AttributesGroupFeatureEditor extends FeatureEditorInterface<Attribu
             i++;
         }
 
+        attributesGroupFeature.getIgnoreKeepDefaultAttributesFeature().initAndUpdateItemParentEditor(this, 20);
         attributesGroupFeature.getKeepDefaultAttributes().initAndUpdateItemParentEditor(this, 21);
 
         // Back

@@ -19,6 +19,7 @@ import java.util.*;
 public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGroupFeature, AttributesGroupFeature, AttributesGroupFeatureEditor, AttributesGroupFeatureEditorManager> implements FeaturesGroup<AttributeFullOptionsFeature> {
 
     private Map<String, AttributeFullOptionsFeature> attributes;
+    private BooleanFeature ignoreKeepDefaultAttributesFeature;
     private BooleanFeature keepDefaultAttributes;
     private boolean notSaveIfNoValue;
 
@@ -35,6 +36,9 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
         this.attributes = new LinkedHashMap<>();
 
         this.keepDefaultAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.keepDefaultAttributes, false);
+
+        // to not impact old items
+        this.ignoreKeepDefaultAttributesFeature = new BooleanFeature(this, true, FeatureSettingsSCore.ignoreKeepDefaultAttributesFeature , false);
     }
 
     @Override
@@ -57,6 +61,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
             }
         }
         error.addAll(keepDefaultAttributes.load(plugin, config, isPremiumLoading));
+        error.addAll(ignoreKeepDefaultAttributesFeature.load(plugin, config, isPremiumLoading));
         return error;
     }
 
@@ -69,6 +74,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
             attributes.get(enchantmentID).save(attributesSection);
         }
         keepDefaultAttributes.save(config);
+        ignoreKeepDefaultAttributesFeature.save(config);
     }
 
     @Override
@@ -110,6 +116,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
         }
         eF.setAttributes(newAttributes);
         eF.setKeepDefaultAttributes(keepDefaultAttributes.clone(eF));
+        eF.setIgnoreKeepDefaultAttributesFeature(ignoreKeepDefaultAttributesFeature.clone(eF));
         return eF;
     }
 
@@ -117,6 +124,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>(attributes.values());
         features.add(keepDefaultAttributes);
+        features.add(ignoreKeepDefaultAttributesFeature);
         return features;
     }
 
@@ -145,6 +153,7 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
                 AttributesGroupFeature eF = (AttributesGroupFeature) feature;
                 eF.setAttributes(this.getAttributes());
                 eF.setKeepDefaultAttributes(this.getKeepDefaultAttributes());
+                eF.setIgnoreKeepDefaultAttributesFeature(this.getIgnoreKeepDefaultAttributesFeature());
                 break;
             }
         }
