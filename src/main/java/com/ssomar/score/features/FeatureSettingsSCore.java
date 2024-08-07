@@ -532,7 +532,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     SCREENUNIT("SCREENUNIT", "Screen Unit", new String[]{""}, Material.GRASS_BLOCK, false),
 
     keepDefaultAttributes("keepDefaultAttributes", "Keep Default Attributes", new String[]{"&7&oKeep the default attributes", "&7&oOnly for 1.19+"}, null, false),
-    ignoreKeepDefaultAttributesFeature("ignoreKeepDefaultAttributesFeature", "Ignore Keep Default Attributes Feature", new String[]{"&7&oFor new item LET IT FALSE PLS", "&7&oOtherwise turn it TRUE", "&7&oif you want to update your old items turn it TRUE", "&7&oBut be careful the item tags may change", "&7&oit can impact shopkeeper or custom craft recipe", "&7&oOnly for 1.19+"}, null, false),
+    ignoreKeepDefaultAttributesFeature("ignoreKeepDefaultAttributesFeature", "Ignore Keep Default Attributes Feature", new String[]{"&7&oFor new item LET IT FALSE PLS", "&7&oOtherwise you can let it true", "&7&oif you want to update your old items turn it FALSE", "&7&oBut be careful the item tags may change", "&7&oit can impact shopkeeper or custom craft recipe", "&7&oOnly for 1.19+"}, null, false),
 
     leverUUID("leverUUID", "lever UUID", new String[]{"&7&oUUID of the lever"}, GUI.CLOCK, false),
     interactionUUID("interactionUUID", "interaction UUID", new String[]{"&7&oUUID of the interaction"}, GUI.CLOCK, false),
