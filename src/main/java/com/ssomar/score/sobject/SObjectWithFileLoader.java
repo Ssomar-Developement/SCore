@@ -10,12 +10,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.security.CodeSource;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
@@ -37,7 +37,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         this.sPlugin = sPlugin;
         this.logger = sPlugin.getPlugin().getServer().getLogger();
         this.defaultObjectsPath = defaultObjectsPath;
-        if(defaultObjectsPath.startsWith("/")) this.defaultObjectsPathWithoutSlash = defaultObjectsPath.substring(1);
+        if (defaultObjectsPath.startsWith("/")) this.defaultObjectsPathWithoutSlash = defaultObjectsPath.substring(1);
         else this.defaultObjectsPathWithoutSlash = defaultObjectsPath;
         this.sObjectManager = sObjectManager;
         sObjectManager.setFileLoader(this);
@@ -141,12 +141,16 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
         }
     }*/
 
-    public List<String> getObjectsShortPath(){
-        CodeSource src = sPlugin.getClass().getProtectionDomain().getCodeSource();
+    public List<String> getObjectsShortPath() {
+        //CodeSource src = sPlugin.getClass().getProtectionDomain().getCodeSource();
         List<String> list = new ArrayList<String>();
 
-        if(defaultObjectsPathWithoutSlash.isEmpty()) return list;
-        try {
+        /*  OLD METHOD THAT DIESNT WORK SOMETIMES FOR SOME REASON , ISK WHY */
+        /* if (defaultObjectsPathWithoutSlash.isEmpty()) {
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cNo default &6" + objectName.toUpperCase() + "&c found in &6" + defaultObjectsPathWithoutSlash);
+            return list;
+        }
+         try {
             if (src != null) {
                 URL jar = src.getLocation();
                 ZipInputStream zip = new ZipInputStream(jar.openStream());
@@ -162,22 +166,55 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+            return list;
+        }*/
+        if (defaultObjectsPath.isEmpty()) {
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cNo default &6" + objectName.toUpperCase() + "&c found in &6" + defaultObjectsPath);
             return list;
         }
+        try {
+            String defaultObjectsPathWithoutFirstSlash = defaultObjectsPath.startsWith("/") ? defaultObjectsPath.substring(1) : defaultObjectsPath;
+            Enumeration<URL> resources = sPlugin.getClass().getClassLoader().getResources(defaultObjectsPathWithoutFirstSlash);
+            List<URL> urls = Collections.list(resources);
+            URL resource = urls.get(0);
+            if (resource.getProtocol().equals("jar")) {
+                String path = resource.getPath();
+                String jarPath = path.substring(5, path.indexOf("!"));
+                String decodedPath = URLDecoder.decode(jarPath, "UTF-8");
+                File file = new File(decodedPath);
+                try (JarFile jarFile = new JarFile(file)) {
+                    Enumeration<JarEntry> entries = jarFile.entries();
+                    while (entries.hasMoreElements()) {
+                        JarEntry entry = entries.nextElement();
+                        if (entry.getName().startsWith(defaultObjectsPathWithoutFirstSlash) && !entry.isDirectory()) {
+                            //System.out.println(entry.getName());
+                            list.add(entry.getName().replace(defaultObjectsPathWithoutFirstSlash, ""));
+                        }
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         return list;
     }
 
     public void createDefaultObjectsFile(Boolean isPremiumLoading, boolean exists) {
 
-        if (!exists)
+        if (!exists) {
             Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cCANT LOAD YOUR &6" + objectName.toUpperCase() + "&c, FOLDER '" + objectName + "' not found !");
-
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7It will generate &e" + getObjectsShortPath().size() + "&7 default "+objectName+" from jar :&e " + defaultObjectsPath);
+        }
 
         for (String id : getObjectsShortPath()) {
             copyDefaultFile(defaultObjectsPath + id, defaultObjectsPathWithoutSlash, isPremiumLoading);
         }
 
-        Utils.sendConsoleMsg(sPlugin.getNameDesign()+" &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
+        Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
 
     }
 
@@ -185,17 +222,17 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
         String value = pathFile.replace(defaultPath, "");
         // get id after the last /
-        String id =  value.substring(value.lastIndexOf("/") + 1);
-        if(!isPremiumLoading && !id.startsWith("Free")) return;
+        String id = value.substring(value.lastIndexOf("/") + 1);
+        if (!isPremiumLoading && !id.startsWith("Free")) return;
 
         // _v1_8__1_20_1  accepted between 1.8 and 1.20.1
-        if(id.contains("_v1_")){
+        if (id.contains("_v1_")) {
             String version = id.split("_v1_")[1];
-            String minVersion = "1_"+version.split("__")[0];
+            String minVersion = "1_" + version.split("__")[0];
             String maxVersion = "";
-            if(version.contains("__")) maxVersion = version.split("__")[1];
+            if (version.contains("__")) maxVersion = version.split("__")[1];
 
-            if(!SCore.isVersionBetween(minVersion, maxVersion)) return;
+            if (!SCore.isVersionBetween(minVersion, maxVersion)) return;
         }
 
         try {
@@ -227,10 +264,10 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     public void loadDefaultPremiumObjects() {
 
         /* SET RANDOM ID TO NOT INTERFER WITH OTHER EI and to make it, One time session (will not work after a restart) because only for test*/
-         randomIdsDefaultObjects = new HashMap<>();
+        randomIdsDefaultObjects = new HashMap<>();
         for (String value : getObjectsShortPath()) {
-            String id =  value.substring(value.lastIndexOf("/") + 1).replace(".yml", "");
-            if(id.startsWith("Free")) continue;
+            String id = value.substring(value.lastIndexOf("/") + 1).replace(".yml", "");
+            if (id.startsWith("Free")) continue;
             randomIdsDefaultObjects.put(id, UUID.randomUUID().toString());
 
             InputStream in = this.getClass().getResourceAsStream(defaultObjectsPath + value);
