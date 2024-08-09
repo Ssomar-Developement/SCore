@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.nbttags;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureAbstract;
@@ -61,9 +62,14 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
     public void load(ItemStack item) {
         if (SCore.hasNBTAPI) {
             NBTItem nbti = new NBTItem(item);
+            SsomarDev.testMsg(" >>>>>>> load nbt tags of item: " + item.getType(), true);
             for (String s : nbti.getKeys()) {
-                if (blackListedTags().contains(s)) continue;
+                if (blackListedTags().contains(s)) {
+                    SsomarDev.testMsg(" >>>>>>> blacklisted tag: " + s, true);
+                    continue;
+                }
                 NBTType type = nbti.getType(s);
+                SsomarDev.testMsg(" >>>>>>> load tag: " + s+" type: "+type, true);
                 switch (type) {
                     case NBTTagInt:
                         tags.add(new IntNBTTag(s, nbti.getInteger(s).intValue()));
