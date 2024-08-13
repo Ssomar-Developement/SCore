@@ -147,6 +147,7 @@ public class EventInfo {
         this.item = Optional.empty();
         this.world = Optional.empty();
         this.inventoryType = Optional.empty();
+        this.placeholders = new HashMap<>();
     }
 
     public EventInfo clone() {
@@ -180,6 +181,7 @@ public class EventInfo {
         eInfo.setItem(item);
         eInfo.setWorld(world);
         eInfo.setInventoryType(inventoryType);
+        eInfo.setPlaceholders(placeholders);
 
         return eInfo;
     }
