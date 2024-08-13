@@ -1,14 +1,13 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.features.custom.drop.glowdrop.GlowDropManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,8 @@ import java.util.Optional;
 public class Glowing extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         if (!receiver.isDead()) {
             int time = Double.valueOf(args.get(0)).intValue();
             ChatColor color = ChatColor.WHITE;

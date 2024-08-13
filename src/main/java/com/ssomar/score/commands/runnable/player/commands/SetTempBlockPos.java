@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.commands.settempblock.SetTempBlockManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
@@ -24,7 +25,9 @@ import java.util.*;
 public class SetTempBlockPos extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
         try {
             double x = Double.valueOf(args.get(0));
             double y = Double.valueOf(args.get(1));

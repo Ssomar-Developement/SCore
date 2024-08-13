@@ -48,6 +48,9 @@ public class ParticlesXenonDev112_1193 {
 
                 AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
+                int delay = particle.getParticlesDelay().getValue().get();
+                if(delay <= 0 ) delay = 1;
+
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -72,7 +75,7 @@ public class ParticlesXenonDev112_1193 {
                         }
                     }
                 };
-                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0, particle.getParticlesDelay().getValue().get()));
+                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0, delay));
             }
         }
     }

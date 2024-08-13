@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
@@ -12,13 +12,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /* ADDENCHANTMENT {slot} {enchantment} {level} */
 public class RemoveEnchantment extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+
+        List<String> args = sCommandToExec.getOtherArgs();
 
         ItemStack item;
         ItemMeta itemMeta;

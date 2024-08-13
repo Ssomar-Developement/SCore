@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import org.bukkit.ChatColor;
@@ -14,7 +14,8 @@ import java.util.Optional;
 public class SudoOp extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder command2 = new StringBuilder();
         for (String s : args) {
             command2.append(s).append(" ");

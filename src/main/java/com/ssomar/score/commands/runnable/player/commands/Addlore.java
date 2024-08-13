@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -19,7 +19,8 @@ import java.util.Optional;
 public class Addlore extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         ItemStack item;
         ItemMeta itemmeta;

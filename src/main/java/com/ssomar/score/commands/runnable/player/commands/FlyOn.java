@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.fly.FlyManager;
 import org.bukkit.ChatColor;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class FlyOn extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         receiver.setAllowFlight(true);
         FlyManager.getInstance().addPlayerWithFly(p);
     }

@@ -1,9 +1,8 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +16,7 @@ import java.util.Optional;
 public class StrikeLightning extends BlockCommand {
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
         block.getWorld().strikeLightningEffect(block.getLocation());
     }
 

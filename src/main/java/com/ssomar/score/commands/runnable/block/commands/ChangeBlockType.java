@@ -3,8 +3,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.ItemsAdderAPI;
 import com.ssomar.score.utils.safeplace.SafePlace;
@@ -25,8 +25,8 @@ public class ChangeBlockType extends BlockCommand {
     private static final Boolean DEBUG = false;
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         String mat = args.get(0);
         if (!mat.contains("ITEMSADDER:")) mat = mat.toUpperCase();
         UUID uuid = null;

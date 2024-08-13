@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
-import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.usedapi.AllWorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,8 +13,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -66,8 +64,8 @@ public class BlockRunCommand extends RunCommand {
     }
 
     @Override
-    public void runCommand(SCommand command, List<String> args) {
-        BlockSCommand bCommand = (BlockSCommand) command;
+    public void runCommand(SCommandToExec sCommandToExec) {
+        BlockSCommand bCommand = (BlockSCommand) sCommandToExec.getSCommand();
 
         Player launcher = null;
         if (launcherUUID != null) launcher =  Bukkit.getPlayer(launcherUUID);
@@ -77,7 +75,10 @@ public class BlockRunCommand extends RunCommand {
         Location loc = new Location(worldOptional.get(), blockX, blockY, blockZ);
         Block block = loc.getBlock();
 
-        bCommand.run(launcher, block, oldBlockMaterial, args, getaInfo());
+        ActionInfo aInfo = this.getaInfo();
+        aInfo.setOldBlockMaterial(oldBlockMaterial);
+        sCommandToExec.setActionInfo(aInfo);
+        bCommand.run(launcher, block, sCommandToExec);
 
     }
 

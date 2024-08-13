@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import com.ssomar.score.usedapi.MythicMobsAPI;
 import org.bukkit.ChatColor;
@@ -15,7 +16,9 @@ import java.util.Optional;
 public class ChangeToMythicMob extends EntityCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
 
         Entity nE = MythicMobsAPI.changeToMythicMob(entity, args.get(0));
         if (nE != null) {

@@ -1,10 +1,9 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,7 +16,8 @@ import java.util.Optional;
 public class ParticleCommand extends BlockCommand {
 
     @Override
-    public void run(Player p, Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         Location newLoc = block.getLocation().clone();
         newLoc.add(0.5, 0.5, 0.5);
 

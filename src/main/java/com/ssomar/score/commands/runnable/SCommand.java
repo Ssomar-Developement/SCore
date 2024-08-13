@@ -16,9 +16,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class SCommand {
 
@@ -44,11 +42,21 @@ public abstract class SCommand {
     protected static final String invalidBarColor = "&cA SCommand contains an &6invalid bar color &7&o( &8https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html &7&o) &c: &e";
     protected static String invalidExecutableItems = "&cA SCommand contains an &6invalid id of ExecutableItems&c: &e";
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private int priority;
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private boolean canExecuteCommands;
+
+    // I dont want to convert all the commands at the same time, so I kee the old settings and will update part by
+    @Getter
+    @Setter
+    private boolean newSettingsMode = false;
+    @Getter
+    @Setter
+    private List<CommandSetting> settings = new ArrayList<>();
 
     public SCommand() {
         this.priority = 1;
@@ -142,7 +150,7 @@ public abstract class SCommand {
         ArgumentChecker ac = new ArgumentChecker();
 
         if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
-            if(!BetterEquipmentSlot.isEquipmentSlot(arg)) {
+            if (!BetterEquipmentSlot.isEquipmentSlot(arg)) {
                 ac.setValid(false);
                 ac.setError(invalidEquipmentSlot + arg + " &cfor command: &e" + template);
             }
@@ -218,7 +226,7 @@ public abstract class SCommand {
             ac.setValid(false);
             ac.setError("&cA SCommand requires &6ExecutableBlocks&c to be executed:  &cfor command: &e" + template);
         } else {
-             if (isFinalVerification && !ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(arg)) {
+            if (isFinalVerification && !ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(arg)) {
                 ac.setValid(false);
                 ac.setError("&cA SCommand contains an &6invalid ExecutableBlock&c: &e" + arg + " &cfor command: &e" + template);
             }
@@ -248,7 +256,7 @@ public abstract class SCommand {
 
         if (isFinalVerification) {
             Optional<World> worldOptional = AllWorldManager.getWorld(arg);
-            if(!worldOptional.isPresent()){
+            if (!worldOptional.isPresent()) {
                 ac.setValid(false);
                 ac.setError(invalidWorld + arg + " &cfor command: &e" + template);
             }

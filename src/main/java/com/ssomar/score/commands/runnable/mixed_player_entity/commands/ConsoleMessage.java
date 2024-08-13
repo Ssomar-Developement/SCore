@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.ChatColor;
@@ -14,7 +14,8 @@ import java.util.Optional;
 public class ConsoleMessage extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {

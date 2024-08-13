@@ -46,6 +46,9 @@ public class ParticlesPaper1194_120 {
 
                 final AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
+                int delay = particle.getParticlesDelay().getValue().get();
+                if(delay <= 0 ) delay = 1;
+
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -70,7 +73,7 @@ public class ParticlesPaper1194_120 {
                         }
                     }
                 };
-                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, particle.getParticlesDelay().getValue().get()));
+                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, delay));
             }
         }
     }

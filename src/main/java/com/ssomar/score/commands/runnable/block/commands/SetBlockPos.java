@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
@@ -22,7 +23,9 @@ import java.util.UUID;
 public class SetBlockPos extends BlockCommand {
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
         try {
             double x = Double.valueOf(args.get(0));
             double y = Double.valueOf(args.get(1));

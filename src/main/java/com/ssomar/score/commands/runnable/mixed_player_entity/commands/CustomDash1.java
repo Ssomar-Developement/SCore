@@ -1,8 +1,8 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import com.ssomar.score.utils.Couple;
@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -38,7 +37,8 @@ public class CustomDash1 extends MixedCommand {
     }
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         boolean fallDamage = false;
         if (args.size() >= 4) {
             fallDamage = Boolean.parseBoolean(args.get(3));

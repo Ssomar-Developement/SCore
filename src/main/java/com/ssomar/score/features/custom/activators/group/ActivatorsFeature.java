@@ -1,9 +1,11 @@
 package com.ssomar.score.features.custom.activators.group;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.scheduler.CustomTriggerScheduler;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,6 +57,11 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                     //SsomarDev.testMsg("Activator " + activatorID + " is a loop activator", true);
                     LoopManager.getInstance().addLoopActivator(activator);
                     //SsomarDev.testMsg("loopmanager size: "+LoopManager.getInstance().getLoopActivators().size(), true);
+                }
+                if (activator.getOption().isCustomTriggerOption()) {
+                    SsomarDev.testMsg("Activator " + activatorID + " is a custom trigger activator", true);
+
+                    CustomTriggerScheduler.getInstance().addCustomTriggerScheduler(plugin.getShortName()+"_"+activatorID, activator.getRunnableForAll() , activator.getScheduleFeatures());
                 }
                 activators.put(activatorID, activator);
             }

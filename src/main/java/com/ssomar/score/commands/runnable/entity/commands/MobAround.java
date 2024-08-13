@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -20,7 +21,9 @@ public class MobAround extends EntityCommand {
     }
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
+        List<String> args = sCommandToExec.getOtherArgs();
         mobAroundExecution(receiver.getLocation(), p, receiver, true, args, aInfo);
     }
 

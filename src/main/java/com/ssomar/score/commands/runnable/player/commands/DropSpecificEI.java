@@ -2,7 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemsManagerInterface;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,9 +17,10 @@ import java.util.Optional;
 public class DropSpecificEI extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         if(receiver.isDead()) return;
 
+        List<String> args = sCommandToExec.getOtherArgs();
         String id = args.get(0);
 
         Location loc = receiver.getLocation();

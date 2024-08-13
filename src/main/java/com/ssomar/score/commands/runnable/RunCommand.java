@@ -136,13 +136,25 @@ public abstract class RunCommand implements Serializable {
                 if (commandOpt.isPresent()) {
                     SCommand command = commandOpt.get();
                     //SsomarDev.testMsg("Command: valid: "+finalCommand, true);
-                    List<String> args = manager.getArgs(command, finalCommand);
+                    SCommandToExec commandToExec = new SCommandToExec(command);
 
-                    Optional<String> error = command.verify(args, true);
-                    if (!error.isPresent()) {
-                        //SsomarDev.testMsg("Command: run: "+finalCommand, true);
-                        runCommand(command, args);
-                    } else aInfo.getDebugers().sendDebug(error.get());
+                    // OLD SYSTEM FOR COMMANDS SETTINGS , ALL BASED ON INDEX
+                    if(!command.isNewSettingsMode()) {
+                        List<String> args = manager.getArgs(command, finalCommand);
+
+                        Optional<String> error = command.verify(args, true);
+                        if (!error.isPresent()) {
+                            commandToExec.setOtherArgs(args);
+                        } else{
+                            aInfo.getDebugers().sendDebug(error.get());
+                            return;
+                        }
+                    }
+                    // NEW SYSTEM
+                    else {
+                        commandToExec.extractSettings(finalCommand);
+                    }
+                    runCommand(commandToExec);
                 } else {
                     if (finalCommand.trim().isEmpty()) return;
 
@@ -172,7 +184,7 @@ public abstract class RunCommand implements Serializable {
     public abstract void insideDelayedCommand();
 
     public abstract void executeRunnable(Runnable runnable);
-    public abstract void runCommand(SCommand command, List<String> args);
+    public abstract void runCommand(SCommandToExec infos);
 
     public abstract void pickupInfo();
 

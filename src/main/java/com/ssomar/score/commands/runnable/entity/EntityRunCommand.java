@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
-import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -12,8 +12,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -56,8 +54,8 @@ public class EntityRunCommand extends RunCommand {
     }
 
     @Override
-    public void runCommand(SCommand command, List<String> args) {
-        EntitySCommand pCommand = (EntitySCommand) command;
+    public void runCommand(SCommandToExec sCommandToExec) {
+        EntitySCommand pCommand = (EntitySCommand) sCommandToExec.getSCommand();
 
         this.pickupInfo();
 
@@ -79,7 +77,8 @@ public class EntityRunCommand extends RunCommand {
         //SsomarDev.testMsg("entity uuid: " + entityUUID, true);
         //SsomarDev.testMsg("entity: " + receiver.getType(), true);
         if (receiver != null) {
-            pCommand.run(launcher, receiver, args, getaInfo());
+            sCommandToExec.setActionInfo(getaInfo());
+            pCommand.run(launcher, receiver, sCommandToExec);
         }
         //else SsomarDev.testMsg("EntityRunCommand: receiver is null for the command: " + this.getBrutCommand(), true);
     }

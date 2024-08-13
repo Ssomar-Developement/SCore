@@ -1,15 +1,14 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Spin extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         Integer duration = NTools.getInteger(args.get(0)).get();
         Float velocity = NTools.getFloat(args.get(1)).get();

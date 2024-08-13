@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands.openchest;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import lombok.Getter;
@@ -29,7 +29,8 @@ public class OpenChest extends PlayerCommand {
     }
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         //OPENCHEST world x y z
         World world = Bukkit.getWorld(args.get(0));
         if (world == null) return;

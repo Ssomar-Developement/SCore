@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
@@ -74,8 +75,8 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     }
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
-        mobAroundExecution(receiver.getLocation(), p, receiver, false, args, aInfo);
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        mobAroundExecution(receiver.getLocation(), p, receiver, false, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
     }
 
     @Override

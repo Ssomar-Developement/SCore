@@ -4,11 +4,11 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +18,9 @@ import java.util.Optional;
 public class Nearest extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

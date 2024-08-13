@@ -3,10 +3,9 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +17,8 @@ import java.util.Optional;
 public class DropExecutableBlock extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         if (SCore.hasExecutableBlocks && ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(args.get(0))) {
             int amount = Double.valueOf(args.get(1)).intValue();

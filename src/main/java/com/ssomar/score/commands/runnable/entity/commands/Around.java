@@ -1,7 +1,8 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -17,17 +18,17 @@ public class Around extends EntityCommand {
 
     public Around() {
         setCanExecuteCommands(true);
+        CommandSetting distance = new CommandSetting("distance",0, Double.class, 3d);
+        CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(distance);
+        settings.add(throughBlocks);
+        setNewSettingsMode(true);
     }
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
-        List<String> newArgs = new ArrayList<>(args);
-        if(newArgs.size() >= 2){
-            if (!(newArgs.get(1).equalsIgnoreCase("false") || newArgs.get(1).equalsIgnoreCase("true"))) {
-                newArgs.add(1, "false");
-            }
-        }
-        aroundExecution(receiver, newArgs, aInfo, false);
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        aroundExecution(receiver, sCommandToExec, false);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class Around extends EntityCommand {
         ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
         if (!ac.isValid()) return Optional.of(ac.getError());
 
-       return Optional.empty();
+        return Optional.empty();
     }
 
     @Override
@@ -61,5 +62,4 @@ public class Around extends EntityCommand {
     public ChatColor getExtraColor() {
         return ChatColor.DARK_PURPLE;
     }
-
 }

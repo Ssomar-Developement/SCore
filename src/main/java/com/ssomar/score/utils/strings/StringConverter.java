@@ -3,7 +3,10 @@ package com.ssomar.score.utils.strings;
 import com.ssomar.score.SCore;
 import net.md_5.bungee.api.ChatColor;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -227,5 +230,15 @@ public class StringConverter {
         System.out.println(s);
     }
 
+    public static Date stringToDate(String stringDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        try {
+            date = formatter.parse(stringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 }
 

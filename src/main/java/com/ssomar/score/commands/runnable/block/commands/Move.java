@@ -1,19 +1,17 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,12 +21,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-/* LAUNCH {projectileType} */
+
 @SuppressWarnings("deprecation")
 public class Move extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
 
         BlockData data;
         Directional directional;

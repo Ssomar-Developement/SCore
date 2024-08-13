@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import org.bukkit.ChatColor;
@@ -17,7 +17,8 @@ import java.util.Optional;
 public class EquipmentVisualCancel extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         EquipmentSlot slot = BetterEquipmentSlot.getEquipmentSlot(args.get(0)).orElse(EquipmentSlot.HAND);
         EquipmentVisualManager.getInstance().cancelTasks(receiver.getUniqueId(), slot);
     }

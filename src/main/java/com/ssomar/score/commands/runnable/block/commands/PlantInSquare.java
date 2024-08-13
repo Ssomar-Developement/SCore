@@ -2,8 +2,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
 import org.bukkit.ChatColor;
@@ -20,7 +20,8 @@ import java.util.*;
 public class PlantInSquare extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         int radius = Integer.parseInt(args.get(0));
         boolean takeFromInventory = true;
         if(args.size() > 1) takeFromInventory = Boolean.parseBoolean(args.get(1));

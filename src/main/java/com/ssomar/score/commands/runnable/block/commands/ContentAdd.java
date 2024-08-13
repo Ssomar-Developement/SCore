@@ -2,8 +2,8 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableitems.executableitems.manager.ExecutableItemsManager;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.strings.StringSetting;
@@ -25,7 +25,8 @@ public class ContentAdd extends BlockCommand {
     private static final boolean DEBUG = true;
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         args = new ArrayList<>(args);
         Map<String, Object> settings = StringSetting.extractSettingsAndRebuildCorrectly(args, 0, Arrays.asList("EI:", "ei:"));
 

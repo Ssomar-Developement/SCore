@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.MyhticLibAPI;
 import com.ssomar.score.usedapi.WorldGuardAPI;
@@ -26,7 +27,9 @@ import java.util.Optional;
 
 public class MLibDamage extends MixedCommand {
 
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
 
         if(!(receiver instanceof LivingEntity)) return;
         LivingEntity livingReceiver = (LivingEntity) receiver;

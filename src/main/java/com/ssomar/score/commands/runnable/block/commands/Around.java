@@ -1,15 +1,18 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -23,6 +26,14 @@ public class Around extends BlockCommand {
     private final static Boolean DEBUG = false;
 
     public Around() {
+        CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
+        CommandSetting displayMsgIfNoPlayer = new CommandSetting("affectThePlayerThatActivesTheActivator", 1, Boolean.class, true, true);
+        CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(distance);
+        settings.add(displayMsgIfNoPlayer);
+        settings.add(throughBlocks);
+        setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
 
@@ -67,18 +78,43 @@ public class Around extends BlockCommand {
     }
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
-                    double distance = Double.parseDouble(args.get(0));
-                    boolean affectThePlayerThatActivesTheActivator = true;
-                    if (args.get(1).equalsIgnoreCase("false")) affectThePlayerThatActivesTheActivator = false;
+                    double distance = (double) sCommandToExec.getSettingValue("distance");
+                    boolean affectThePlayerThatActivesTheActivator = (boolean) sCommandToExec.getSettingValue("affectThePlayerThatActivesTheActivator");
+                    boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
 
                     List<Player> targets = new ArrayList<>();
                     for (Entity e : block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), distance, distance, distance)) {
                         if (e instanceof Player) {
+
+                            Location receiverLoc = e.getLocation();
+
+                            if(!throughBlocks){
+                                List<Location> centerLocationOfEachFaces = new ArrayList<>();
+                                centerLocationOfEachFaces.add(block.getLocation().add(0, 0.5, 0.5));
+                                centerLocationOfEachFaces.add(block.getLocation().add(1, 0.5, 0.5));
+                                centerLocationOfEachFaces.add(block.getLocation().add(0.5, 0, 0.5));
+                                centerLocationOfEachFaces.add(block.getLocation().add(0.5, 1, 0.5));
+                                centerLocationOfEachFaces.add(block.getLocation().add(0.5, 0.5, 0));
+                                centerLocationOfEachFaces.add(block.getLocation().add(0.5, 0.5, 1));
+
+                                boolean valid = false;
+                                for(Location loc : centerLocationOfEachFaces){
+                                    double distanceBetween = receiverLoc.distance(loc);
+                                    Vector direction = loc.toVector().subtract(receiverLoc.toVector()).normalize();
+                                    RayTraceResult rayTraceResult = receiverLoc.getWorld().rayTraceBlocks(receiverLoc, direction, distanceBetween, FluidCollisionMode.NEVER, true);
+                                    if(rayTraceResult == null) {
+                                        valid = true;
+                                        break;
+                                    }
+                                }
+                                if(!valid) continue;
+                            }
+
                             Player target = (Player) e;
                             if (target.hasMetadata("NPC") || (!affectThePlayerThatActivesTheActivator && (p != null && p.equals(target))))
                                 continue;
@@ -86,7 +122,7 @@ public class Around extends BlockCommand {
 
                         }
                     }
-                    CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
+                    CommmandThatRunsCommand.runPlayerCommands(targets, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
                 } catch (
                         Exception e) {
                     e.printStackTrace();

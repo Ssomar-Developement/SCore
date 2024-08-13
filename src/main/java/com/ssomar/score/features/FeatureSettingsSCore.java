@@ -540,6 +540,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     glowWhenPowered("glowWhenPowered", "Glow when powered", new String[]{"&7&oGlow when powered"}, GUI.CLOCK, false),
 
     EXECUTABLELEVER("EXECUTABLELEVER", "Executable Lever", new String[]{}, Material.LEVER, false),
+
+    startDate("startDate", "Start Date", new String[]{"&7&oThe start date"}, GUI.CLOCK, false),
+    endDate("endDate", "End Date", new String[]{"&7&oThe end date"}, GUI.CLOCK, false),
+    when("when", "When", new String[]{"&7&oWhen the feature is activated"}, GUI.CLOCK, false),
+    scheduleFeatures("scheduleFeatures", "Schedule Features", new String[]{"&7&oSchedule Features"}, GUI.CLOCK, false),
+
     ;
 
 

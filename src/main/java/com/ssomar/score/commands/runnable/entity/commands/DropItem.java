@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,7 +17,8 @@ import java.util.Optional;
 public class DropItem extends EntityCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         int amount = Double.valueOf(args.get(1)).intValue();
         Location eLoc = entity.getLocation();
         if (amount > 0) {

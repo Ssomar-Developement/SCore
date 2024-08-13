@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,7 +20,9 @@ import java.util.Optional;
 public class ChangeTo extends EntityCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
+        List<String> args = sCommandToExec.getOtherArgs();
         /* EXCEPTION */
         Location loc = entity.getLocation();
         Vector velocity = entity.getVelocity();

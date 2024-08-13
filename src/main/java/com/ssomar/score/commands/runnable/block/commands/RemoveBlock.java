@@ -5,6 +5,7 @@ import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlock
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
@@ -23,7 +24,8 @@ import java.util.UUID;
 public class RemoveBlock extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
         UUID uuid = null;
         if (p != null) {
             uuid = p.getUniqueId();

@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
@@ -17,7 +17,8 @@ import java.util.*;
 public class AddItemAttribute extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         ItemStack item;
         ItemMeta itemmeta;
@@ -25,7 +26,7 @@ public class AddItemAttribute extends PlayerCommand {
         int slot = Integer.parseInt(args.get(0));
 
         try {
-            if(slot == -1) item = receiver.getInventory().getItemInMainHand();
+            if (slot == -1) item = receiver.getInventory().getItemInMainHand();
             else item = receiver.getInventory().getItem(slot);
 
             itemmeta = item.getItemMeta();
@@ -34,8 +35,8 @@ public class AddItemAttribute extends PlayerCommand {
         }
 
         try {
-             attribute = Attribute.valueOf(args.get(1).toUpperCase());
-        }catch(IllegalArgumentException er){
+            attribute = Attribute.valueOf(args.get(1).toUpperCase());
+        } catch (IllegalArgumentException er) {
             return;
         }
 
@@ -60,10 +61,10 @@ public class AddItemAttribute extends PlayerCommand {
                     }
                 }
             }
-        }catch(NullPointerException err){
+        } catch (NullPointerException err) {
         }
 
-        if(existingModifier == null) {
+        if (existingModifier == null) {
             AttributeModifier newModifier = new AttributeModifier(
                     UUID.randomUUID(),
                     "ScoreAttribute",
@@ -72,7 +73,7 @@ public class AddItemAttribute extends PlayerCommand {
                     equipmentSlot
             );
             itemmeta.addAttributeModifier(attribute, newModifier);
-        }else {
+        } else {
             AttributeModifier copyExistingModifier = existingModifier;
             existingModifier = new AttributeModifier(
                     existingModifier.getUniqueId(),
@@ -82,7 +83,7 @@ public class AddItemAttribute extends PlayerCommand {
                     existingModifier.getSlot()
             );
             itemmeta.removeAttributeModifier(attribute, existingModifier);
-            if(copyExistingModifier.getAmount() + attributeValue != 0) {
+            if (copyExistingModifier.getAmount() + attributeValue != 0) {
                 itemmeta.addAttributeModifier(attribute, existingModifier);
             }
         }

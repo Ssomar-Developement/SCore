@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.AllWorldManager;
 import org.bukkit.ChatColor;
@@ -19,7 +19,8 @@ import java.util.Optional;
 public class Teleport extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         World world = AllWorldManager.getWorld(args.get(0)).get();
 
         double x = Double.parseDouble(args.get(1));

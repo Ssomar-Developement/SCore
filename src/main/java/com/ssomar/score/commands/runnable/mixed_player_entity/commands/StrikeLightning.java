@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creeper;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class StrikeLightning extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
         receiver.getWorld().strikeLightningEffect(receiver.getLocation());
 
         if (receiver instanceof Creeper) {

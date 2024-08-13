@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.entity.display.commands;
 import com.ssomar.myfurniture.api.MyFurnitureAPI;
 import com.ssomar.myfurniture.furniture.Furniture;
 import com.ssomar.myfurniture.furniture.placedfurniture.FurniturePlaced;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.display.DisplayCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -17,7 +17,8 @@ import java.util.Optional;
 public class SetFurniture extends DisplayCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         Optional<FurniturePlaced> furniturePlaced = MyFurnitureAPI.getFurniturePlacedManager().getFurniturePlaced(entity);
         if(furniturePlaced.isPresent()) {

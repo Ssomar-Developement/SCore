@@ -1,14 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
-import tsp.headdb.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +14,8 @@ import java.util.Optional;
 public class Chat extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         StringBuilder build = new StringBuilder();
 

@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
@@ -15,7 +15,8 @@ import java.util.Optional;
 public class SetName extends EntityCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         if (!entity.isDead()) {
             StringBuilder name = new StringBuilder();
             for (String s : args) {

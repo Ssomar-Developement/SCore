@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
 import org.bukkit.Bukkit;
@@ -26,7 +26,8 @@ public class LaunchEntity extends MixedCommand {
     }
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         if(!(receiver instanceof LivingEntity)) return;
         LivingEntity livingReceiver = (LivingEntity) receiver;

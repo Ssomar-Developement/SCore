@@ -4,14 +4,13 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Worth.WorthItem;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.ShopGUIPlusTool;
 import com.ssomar.score.usedapi.VaultAPI;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
@@ -30,7 +29,8 @@ public class SellContent extends BlockCommand {
     private static final boolean DEBUG = true;
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         SsomarDev.testMsg("block type : " + block.getType(), DEBUG);
         SsomarDev.testMsg("SellContent activated > container ? " + (block.getState() instanceof Container) + " player ? " + (p != null), DEBUG);
 

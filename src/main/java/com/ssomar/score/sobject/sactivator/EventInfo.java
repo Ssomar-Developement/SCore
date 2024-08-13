@@ -1,5 +1,6 @@
 package com.ssomar.score.sobject.sactivator;
 
+import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.utils.emums.DetailedClick;
 import com.ssomar.score.utils.emums.DetailedInteraction;
 import lombok.Getter;
@@ -11,22 +12,29 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
 public class EventInfo {
 
+    private SOption option;
+
     private Event eventSource;
+
+    /* Whitelist */
+    private List<SActivator> whitelistActivators;
+
+    private List<String> whitelistActivatorsId;
 
     /* PLAYER */
     private Optional<Player> player;
@@ -98,8 +106,21 @@ public class EventInfo {
 
     private Optional<Integer> slot;
 
+    private Map<String, String> placeholders;
+
     public EventInfo(Event eventSource) {
         super();
+        if(eventSource == null) {
+            eventSource = new Event() {
+                @NotNull
+                @Override
+                public HandlerList getHandlers() {
+                    return null;
+                }
+            };
+        }
+        this.whitelistActivatorsId = new ArrayList<>();
+        this.whitelistActivators = new ArrayList<>();
         this.eventSource = eventSource;
         this.player = Optional.empty();
         this.targetPlayer = Optional.empty();
@@ -125,6 +146,7 @@ public class EventInfo {
         this.slot = Optional.empty();
         this.item = Optional.empty();
         this.world = Optional.empty();
+        this.inventoryType = Optional.empty();
     }
 
     public EventInfo clone() {
@@ -157,6 +179,7 @@ public class EventInfo {
         eInfo.setSlot(slot);
         eInfo.setItem(item);
         eInfo.setWorld(world);
+        eInfo.setInventoryType(inventoryType);
 
         return eInfo;
     }

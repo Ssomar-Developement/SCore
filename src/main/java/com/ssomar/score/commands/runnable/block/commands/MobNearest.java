@@ -4,12 +4,12 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -58,8 +58,8 @@ public class MobNearest extends BlockCommand implements FeatureParentInterface {
     }
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-        mobAroundExecution(block.getLocation(), false, args, aInfo);
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        mobAroundExecution(block.getLocation(), false, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
     }
 
     @Override

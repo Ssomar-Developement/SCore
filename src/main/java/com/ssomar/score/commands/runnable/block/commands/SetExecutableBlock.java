@@ -7,6 +7,7 @@ import com.ssomar.executableblocks.executableblocks.internal.InternalData;
 import com.ssomar.executableblocks.utils.OverrideEBP;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.Dependency;
@@ -25,7 +26,9 @@ import java.util.UUID;
 public class SetExecutableBlock extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
 
 
         if (SCore.hasExecutableBlocks && Dependency.EXECUTABLE_BLOCKS.isEnabled()) {

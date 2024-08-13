@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
 import com.ssomar.score.utils.safebreak.SafeBreak;
@@ -82,7 +83,10 @@ public class FarmInCube extends BlockCommand {
     }
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
+        Material oldMaterial = aInfo.getOldBlockMaterial();
 
         if (aInfo.isEventFromCustomBreakCommand()) return;
 

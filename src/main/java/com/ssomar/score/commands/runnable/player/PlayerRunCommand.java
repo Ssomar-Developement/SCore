@@ -4,13 +4,12 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
-import com.ssomar.score.commands.runnable.SCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.UUID;
 
 public class PlayerRunCommand extends RunCommand {
@@ -75,8 +74,8 @@ public class PlayerRunCommand extends RunCommand {
     }
 
     @Override
-    public void runCommand(SCommand command, List<String> args) {
-        PlayerSCommand pCommand = (PlayerSCommand) command;
+    public void runCommand(SCommandToExec sCommandToExec) {
+        PlayerSCommand pCommand = (PlayerSCommand) sCommandToExec.getSCommand();
 
         //SsomarDev.testMsg("PRE RUN COMMAND BEFORE CHECK LAUNCHER", true);
         @Nullable Player launcher = null;
@@ -85,7 +84,8 @@ public class PlayerRunCommand extends RunCommand {
         Player receiver = Bukkit.getPlayer(receiverUUID);
 
         //SsomarDev.testMsg("PRE RUN COMMAND STEP: "+this.getaInfo().getStep(), true);
-        pCommand.run(launcher, receiver, args, getaInfo());
+        sCommandToExec.setActionInfo(getaInfo());
+        pCommand.run(launcher, receiver, sCommandToExec);
     }
 
 

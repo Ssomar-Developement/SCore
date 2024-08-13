@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.entity.commands;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +20,8 @@ import java.util.UUID;
 public class AngryAt extends EntityCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         if(entity instanceof Mob && !entity.isDead()){
             Mob mob = (Mob) entity;
             mob.setTarget((LivingEntity) Bukkit.getEntity(UUID.fromString(args.get(0))));

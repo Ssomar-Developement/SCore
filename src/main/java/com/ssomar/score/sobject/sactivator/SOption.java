@@ -52,6 +52,10 @@ public interface SOption {
         return OptionGlobal.isLoopOptionST(this);
     }
 
+    public default boolean isCustomTriggerOption(){
+        return OptionGlobal.isCustomTriggerOptionST(this);
+    }
+
     public default SOption getOption(String optionStr){
         return OptionGlobal.getOptionST(optionStr);
     }

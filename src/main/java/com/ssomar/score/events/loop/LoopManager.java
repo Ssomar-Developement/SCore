@@ -111,6 +111,7 @@ public class LoopManager {
 
                     LoopEvent e = new LoopEvent();
                     EventInfo eInfo = new EventInfo(e);
+                    eInfo.setOption(OptionGlobal.LOOP);
 
                     if (!loopActivators.isEmpty()) {
                         while (!loopActivators.isEmpty()) {
@@ -119,8 +120,8 @@ public class LoopManager {
                             /* for(NewSActivator sAct : extractToActivPerPlugin) {
                                 SsomarDev.testMsg("LOOP > "+sAct.getId(), true);
                             }*/
-
-                            extractToActivPerPlugin.get(0).activateOptionGlobal(OptionGlobal.LOOP, eInfo, extractToActivPerPlugin);
+                            eInfo.setWhitelistActivators(extractToActivPerPlugin);
+                            extractToActivPerPlugin.get(0).activateOptionGlobal(eInfo);
                         }
                     }
                 }

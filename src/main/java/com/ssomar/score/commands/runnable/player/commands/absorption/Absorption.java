@@ -1,8 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands.absorption;
 
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,7 +15,8 @@ import java.util.Optional;
 public class Absorption extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         double absorption = Double.parseDouble(args.get(0));
         double currentabsorption = receiver.getAbsorptionAmount();
         long time;

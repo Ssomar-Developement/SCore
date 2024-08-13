@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,7 +18,8 @@ import java.util.Optional;
 public class DropItem extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         int amount = Double.valueOf(args.get(1)).intValue();
         Location eLoc = block.getLocation();
         if (amount > 0) {

@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import org.bukkit.ChatColor;
@@ -14,7 +14,8 @@ import java.util.Optional;
 public class SendCenteredMessage extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder message = new StringBuilder();
         for (String s : args) {
             //SsomarDev.testMsg("cmdarg> "+s);

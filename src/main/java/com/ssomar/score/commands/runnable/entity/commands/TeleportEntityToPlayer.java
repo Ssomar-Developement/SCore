@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class TeleportEntityToPlayer extends EntityCommand {
 
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
         Location pLoc = p.getLocation();
 
         if (!entity.isDead() && p.isOnline() && !p.isDead())
@@ -24,7 +24,7 @@ public class TeleportEntityToPlayer extends EntityCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-       return Optional.empty();
+        return Optional.empty();
     }
 
     @Override

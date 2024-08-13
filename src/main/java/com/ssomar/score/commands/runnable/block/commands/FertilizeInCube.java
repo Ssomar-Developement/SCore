@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.ToolsListMaterial;
 import org.bukkit.Bukkit;
@@ -21,7 +21,8 @@ import java.util.Optional;
 public class FertilizeInCube extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
         try {

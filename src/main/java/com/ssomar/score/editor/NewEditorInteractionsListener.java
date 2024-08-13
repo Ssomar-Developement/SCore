@@ -161,6 +161,8 @@ import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEd
 import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEditorManager;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditor;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditorManager;
+import com.ssomar.score.scheduler.ScheduleFeaturesEditor;
+import com.ssomar.score.scheduler.ScheduleFeaturesEditorManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.sobject.menu.SObjectsEditorAbstract;
 import com.ssomar.score.sobject.menu.defaultobjects.NewDefaultObjectsEditor;
@@ -429,7 +431,11 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (holder instanceof BlockTitleFeaturesEditor) {
             BlockTitleFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
-        } else if (holder instanceof AroundBlockFeatureEditor) {
+        } else if(holder instanceof ScheduleFeaturesEditor){
+            ScheduleFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof AroundBlockFeatureEditor) {
             AroundBlockFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof AroundBlockGroupFeatureEditor) {
@@ -723,7 +729,11 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (BlockTitleFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             BlockTitleFeaturesEditorManager.getInstance().receiveMessage(p, message);
-        } else if (AroundBlockFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        } else if (ScheduleFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            ScheduleFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (AroundBlockFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             AroundBlockFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (AroundBlockGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {

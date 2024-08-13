@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;
@@ -17,7 +18,10 @@ import java.util.*;
 public class SetBlock extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
+
         Set<Material> set = new TreeSet<>();
         set.add(Material.WATER);
         set.add(Material.LAVA);

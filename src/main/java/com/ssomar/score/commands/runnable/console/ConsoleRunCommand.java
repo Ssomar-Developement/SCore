@@ -3,9 +3,7 @@ package com.ssomar.score.commands.runnable.console;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunCommand;
-import com.ssomar.score.commands.runnable.SCommand;
-
-import java.util.List;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 
 public class ConsoleRunCommand extends RunCommand {
 
@@ -37,7 +35,7 @@ public class ConsoleRunCommand extends RunCommand {
     }
 
     @Override
-    public void runCommand(SCommand command, List<String> args) {
+    public void runCommand(SCommandToExec sCommandToExec) {
         // NOTHING HERE
     }
 

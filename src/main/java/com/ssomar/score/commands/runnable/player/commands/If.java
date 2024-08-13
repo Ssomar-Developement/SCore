@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
@@ -25,7 +26,9 @@ public class If extends PlayerCommand {
     }
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
+        List<String> args = sCommandToExec.getOtherArgs();
 
         //SsomarDev.testMsg("IF CMD", true);
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();

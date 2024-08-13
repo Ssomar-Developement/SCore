@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,14 +16,15 @@ import java.util.Optional;
 public class SetItemMaterial extends PlayerCommand {
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         ItemStack item;
 
         int slot = Integer.valueOf(args.get(0));
 
         try {
-            if(slot == -1) item = receiver.getInventory().getItemInMainHand();
+            if (slot == -1) item = receiver.getInventory().getItemInMainHand();
             else item = receiver.getInventory().getItem(slot);
         } catch (NullPointerException e) {
             return;

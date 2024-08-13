@@ -1,8 +1,8 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
@@ -25,7 +25,8 @@ public class ContentRemove extends BlockCommand {
     private static final boolean DEBUG = true;
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         Optional<Double> intOptional = NTools.getDouble(args.get(1));
         int amount = intOptional.orElse(1.0).intValue();

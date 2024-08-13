@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.utils.strings.StringConverter;
 import dev.rosewood.rosestacker.api.RoseStackerAPI;
@@ -26,8 +26,8 @@ import java.util.Optional;
 public class SilkSpawner extends BlockCommand {
 
     @Override
-    public void run(@Nullable Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
-
+    public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         if(SCore.hasRoseStacker && args.size() == 1 && args.get(0).equalsIgnoreCase("RoseStacker")){
             StackedSpawner sp =  RoseStackerAPI.getInstance().getStackedSpawner(block);

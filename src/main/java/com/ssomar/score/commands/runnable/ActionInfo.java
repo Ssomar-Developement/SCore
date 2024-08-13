@@ -60,6 +60,8 @@ public class ActionInfo implements Serializable {
 
     private DetailedBlocks detailedBlocks;
 
+    private Material oldBlockMaterial;
+
     private String oldBlockMaterialName;
 
     /* ------------------ */
@@ -93,6 +95,8 @@ public class ActionInfo implements Serializable {
         this.blockLocationY = -1;
         this.blockLocationZ = -1;
         this.blockLocationWorld = null;
+        this.blockFace = null;
+        this.oldBlockMaterial = null;
         this.oldBlockMaterialName = null;
         this.entityUUID = null;
         this.silenceOutput = false;
@@ -108,6 +112,7 @@ public class ActionInfo implements Serializable {
         result.setEventFromCustomBreakCommand(isEventFromCustomBreakCommand);
         result.setLauncherUUID(launcherUUID);
         result.setReceiverUUID(receiverUUID);
+        result.setOldBlockMaterial(oldBlockMaterial);
         result.setOldBlockMaterialName(oldBlockMaterialName);
         result.setEntityUUID(entityUUID);
         result.setSilenceOutput(silenceOutput);

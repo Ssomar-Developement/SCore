@@ -1,8 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import com.ssomar.score.utils.Couple;
@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -39,7 +38,8 @@ public class ProjectileCustomDash1 extends PlayerCommand {
     }
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
 
         boolean fallDamage = false;
         if (args.size() >= 1) {

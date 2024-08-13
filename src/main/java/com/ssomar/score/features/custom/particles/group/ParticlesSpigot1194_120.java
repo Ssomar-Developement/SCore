@@ -21,6 +21,9 @@ public class ParticlesSpigot1194_120 {
             for (ParticleFeature particle : particles.values()) {
                 AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
+                int delay = particle.getParticlesDelay().getValue().get();
+                if(delay <= 0 ) delay = 1;
+
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -44,7 +47,7 @@ public class ParticlesSpigot1194_120 {
                         }
                     }
                 };
-                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, particle.getParticlesDelay().getValue().get()));
+                task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, delay));
             }
         }
     }

@@ -2,8 +2,8 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.Bukkit;
@@ -19,7 +19,8 @@ public class EBCooldown extends PlayerCommand {
 
 
     @Override
-    public void run(Player p, Player receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         //EBCOOLDOWN PLAYER ID SECONDS TICKS {optional activator id}
         OfflinePlayer player = Bukkit.getOfflinePlayer(args.get(0));
         String id = args.get(1);

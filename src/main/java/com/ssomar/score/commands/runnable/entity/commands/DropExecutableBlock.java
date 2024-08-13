@@ -3,8 +3,8 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -21,7 +21,9 @@ public class DropExecutableBlock extends EntityCommand {
 
     //
     @Override
-    public void run(Player p, Entity entity, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+
         //SsomarDev.testMsg("DropExecutableItem.run()", DEBUG);
         if (SCore.hasExecutableBlocks && ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(args.get(0))) {
             //SsomarDev.testMsg("DropExecutableItem.run() - hasExecutableItems", DEBUG);

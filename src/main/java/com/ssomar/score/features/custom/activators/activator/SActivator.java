@@ -7,6 +7,7 @@ import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.scheduler.ScheduleFeatures;
 import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.SOption;
 import com.ssomar.score.splugin.SPlugin;
@@ -36,6 +37,10 @@ public abstract class SActivator<X extends FeatureInterface<X, X>, Y extends GUI
 
     public abstract LoopFeatures getLoopFeatures();
 
+    public abstract ScheduleFeatures getScheduleFeatures();
+
+    public abstract Runnable getRunnableForAll();
+
     public abstract void run(Object parentObject, EventInfo eventInfo);
 
     public abstract List<String> getMenuDescription();
@@ -50,5 +55,6 @@ public abstract class SActivator<X extends FeatureInterface<X, X>, Y extends GUI
     }
 
     public abstract List<X> extractActivatorsSameClass(List<SActivator> toActiv);
-    public abstract void activateOptionGlobal(SOption sOption, EventInfo eventInfo, List<SActivator> toActiv);
+
+    public abstract void activateOptionGlobal(EventInfo eventInfo);
 }

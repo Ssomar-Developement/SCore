@@ -6,7 +6,8 @@ import java.util.List;
 
 public enum OptionGlobal implements SOption {
 
-    LOOP("LOOP");
+    LOOP("LOOP"),
+    CUSTOM_TRIGGER("CUSTOM_TRIGGER");
 
     private String[] names;
 
@@ -83,6 +84,10 @@ public enum OptionGlobal implements SOption {
 
     public static boolean isLoopOptionST(SOption option){
         return option.equals(LOOP);
+    }
+
+    public static boolean isCustomTriggerOptionST(SOption option){
+        return option.equals(CUSTOM_TRIGGER);
     }
 
     public static SOption getOptionST(String entry) {

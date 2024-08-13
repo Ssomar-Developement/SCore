@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -14,7 +14,8 @@ import java.util.Optional;
 public class GlacialFreeze extends MixedCommand {
 
     @Override
-    public void run(Player p, Entity receiver, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
         int time = Double.valueOf(args.get(0)).intValue();
         receiver.setFreezeTicks(time);
     }

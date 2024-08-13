@@ -4,6 +4,7 @@ import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.SProjectileType;
@@ -18,7 +19,6 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,9 @@ import java.util.Optional;
 public class Launch extends BlockCommand {
 
     @Override
-    public void run(Player p, @NotNull Block block, Material oldMaterial, List<String> args, ActionInfo aInfo) {
+    public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        List<String> args = sCommandToExec.getOtherArgs();
+        ActionInfo aInfo = sCommandToExec.getActionInfo();
 
         BlockData data;
         Directional directional;
