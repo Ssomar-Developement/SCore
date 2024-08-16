@@ -19,6 +19,10 @@ public class Break extends BlockCommand {
 
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+
+        /* Cancel a Loop of blockBreakEvent that MineInCbe can create */
+        if (sCommandToExec.getActionInfo().isEventFromCustomBreakCommand()) return;
+
         ActionInfo aInfo = sCommandToExec.getActionInfo();
         UUID pUUID = null;
         if (p != null) pUUID = p.getUniqueId();

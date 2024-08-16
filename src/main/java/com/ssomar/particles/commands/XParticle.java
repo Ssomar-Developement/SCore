@@ -701,7 +701,7 @@ public final class XParticle {
                 if (--timer <= 0) task.get().cancel();
             }
         };
-        SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
         return task.get();
     }
 
