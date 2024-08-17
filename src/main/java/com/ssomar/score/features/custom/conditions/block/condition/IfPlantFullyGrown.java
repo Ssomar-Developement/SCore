@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.block.condition;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
@@ -37,6 +38,8 @@ public class IfPlantFullyGrown extends BlockConditionFeature<BooleanFeature, IfP
         if (getCondition().getValue(request.getSp()) && blockData instanceof Ageable) {
             Ageable ageable = (Ageable) blockData;
             int age = ageable.getAge();
+            SsomarDev.testMsg("Age: " + age, true);
+            SsomarDev.testMsg("Max Age: " + ageable.getMaximumAge(), true);
             if (age != ageable.getMaximumAge()) {
                 runInvalidCondition(request);
                 return false;

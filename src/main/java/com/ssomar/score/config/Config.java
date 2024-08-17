@@ -101,6 +101,12 @@ public abstract class Config {
         return value;
     }
 
+    public void setBooleanSetting(String setting, boolean value) {
+        loadedSettings.put(setting, value);
+        config.set(setting, value);
+        save();
+    }
+
     public boolean getBooleanSetting(String setting) {
         return (boolean) loadedSettings.get(setting);
     }

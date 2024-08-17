@@ -74,6 +74,9 @@ public enum SProjectileType {
         if(SCore.is1v17Plus()){
             features.add(new FireFeature(parent));
         }
+        if(SCore.is1v20v5Plus()){
+            //features.add(new ScaleFeature(parent));
+        }
 
         switch (this) {
             case ARROW:

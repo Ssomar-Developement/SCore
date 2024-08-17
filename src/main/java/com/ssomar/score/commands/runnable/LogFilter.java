@@ -72,6 +72,7 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("has no modifier"); // related to attrbute command
         messageToHide.add("Replaced a slot at");
         messageToHide.add("Changed the block at");
+        messageToHide.add("Base value for attribute");
         for(String s : GeneralConfig.getInstance().getSilenceOutputs()){
             messageToHide.add(s);
         }

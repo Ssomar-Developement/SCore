@@ -30,6 +30,7 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
     private String defaultPath;
     private String path;
     private SObjectWithFileLoader loader;
+    private boolean dontShowDirectory = false;
 
     public SObjectsWithFileEditor(SPlugin sPlugin, String title, String path, SObjectManager manager, SObjectWithFileLoader loader) {
         super(sPlugin, title, manager);
@@ -39,6 +40,20 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
         this.load();
     }
 
+    public List<String> getFilesInFolder(String path){
+        List<String> listFiles = new ArrayList<>(Arrays.asList(new File(path).list()));
+        if(dontShowDirectory){
+            for (File fileEntry : new File(path).listFiles()) {
+                if (fileEntry.isDirectory()){
+                    listFiles.remove(fileEntry.getName());
+                    listFiles.addAll(getFilesInFolder(path + "/" + fileEntry.getName()));
+                }
+            }
+        }
+        Collections.sort(listFiles);
+        return listFiles;
+    }
+
 
     public void load() {
         clearAndSetBackground();
@@ -46,8 +61,7 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
         int total = 0;
         Plugin plugin = getSPlugin().getPlugin();
         SsomarDev.testMsg(">>>>>>>>>>>>"+plugin.getDataFolder() + path, true);
-        List<String> listFiles = Arrays.asList(new File(plugin.getDataFolder() + path).list());
-        Collections.sort(listFiles);
+        List<String> listFiles = getFilesInFolder(plugin.getDataFolder() + path);
 
         for (String str : listFiles) {
             if ((index - 1) * SOBJECT_PER_PAGE <= total && total < index * SOBJECT_PER_PAGE) {
