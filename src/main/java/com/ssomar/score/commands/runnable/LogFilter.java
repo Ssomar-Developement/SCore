@@ -73,6 +73,9 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Replaced a slot at");
         messageToHide.add("Changed the block at");
         messageToHide.add("Base value for attribute");
+        messageToHide.add("Nothing changed.");
+        messageToHide.add("is not holding any item");
+        messageToHide.add("cannot support that enchantment");
         for(String s : GeneralConfig.getInstance().getSilenceOutputs()){
             messageToHide.add(s);
         }

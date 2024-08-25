@@ -65,7 +65,7 @@ public class FormatEnchantments extends PlayerCommand {
 
                     for (int i = 0; i < LoreCURRENT.size(); i++) {
                         for (String enchantmentlore : LoreOfEnchantmentsArtifical) {
-                            if (LoreCURRENT.get(i).contains(enchantmentlore)) {
+                            if (LoreCURRENT.get(i).contains(enchantmentlore.split(" ")[0])) {
                                 LoreCURRENT.remove(i);
                             }
                         }

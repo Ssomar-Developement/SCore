@@ -109,6 +109,7 @@ public interface CommmandThatRunsCommand {
                 }
                 if (s.startsWith("/")) s = s.substring(1);
 
+                SsomarDev.testMsg("COMMANDS: " + s, true);
                 commands.add(s);
             }
             if(passToNextPlayer) continue;

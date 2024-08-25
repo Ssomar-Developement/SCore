@@ -45,6 +45,8 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new FrontDash());
         commands.add(new GlacialFreeze());
         commands.add(new Glowing());
+        commands.add(new HitscanPlayers());
+        commands.add(new HitscanEntities());
         commands.add(new Invulnerability());
         commands.add(new Jump());
         commands.add(new LaunchEntity());

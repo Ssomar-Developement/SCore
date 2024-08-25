@@ -40,6 +40,10 @@ public class SCommandToExec {
         if (entry.equals("")) {
             settingsValues = new HashMap<>();
             otherArgs = new ArrayList<>();
+
+            for (CommandSetting setting : sCommand.getSettings()) {
+               settingsValues.put(setting, setting.getValue(null));
+            }
         }
         else{
             List<String> arguments = new ArrayList<>();

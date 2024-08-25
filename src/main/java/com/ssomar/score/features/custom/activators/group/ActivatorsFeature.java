@@ -6,6 +6,7 @@ import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.scheduler.CustomTriggerScheduler;
+import com.ssomar.score.sobject.sactivator.SOption;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,6 +82,28 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     @Override
     public ActivatorsFeature getValue() {
         return this;
+    }
+
+    public List<SActivator> getActivators(SOption option, List<String> whitelistActivatorsId, List<SActivator> whitelistActivators) {
+        List<SActivator> result = new ArrayList<>();
+        for (SActivator activator : activators.values()) {
+            if (activator.getOption().equals(option)) {
+                if (!whitelistActivatorsId.isEmpty() && !whitelistActivatorsId.contains(activator.getId())) {
+                    continue;
+                }
+                if (activator.getOption().isLoopOption() && !whitelistActivators.isEmpty()) {
+                    boolean valid = false;
+                    for (SActivator activatorCheck : whitelistActivators) {
+                        if (activatorCheck.isEqualsOrAClone(activator)) {
+                            valid = true;
+                        }
+                    }
+                    if (!valid) continue;
+                }
+                result.add(activator);
+            }
+        }
+        return result;
     }
 
     @Override

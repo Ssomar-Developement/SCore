@@ -41,6 +41,18 @@ public abstract class SActivator<X extends FeatureInterface<X, X>, Y extends GUI
 
     public abstract Runnable getRunnableForAll();
 
+    public void runWithException(Object parentObject, EventInfo eventInfo) {
+        try {
+            try {
+                run(parentObject, eventInfo);
+            } catch (Exception e) {
+                throw new SActivatorException("Error while running the activator: " + this.id + " associated with the parent object " + getParentObjectId(), e);
+            }
+        }catch (SActivatorException e) {
+            e.printStackTrace();
+        }
+    }
+
     public abstract void run(Object parentObject, EventInfo eventInfo);
 
     public abstract List<String> getMenuDescription();
