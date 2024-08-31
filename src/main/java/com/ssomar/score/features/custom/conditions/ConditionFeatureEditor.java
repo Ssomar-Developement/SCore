@@ -19,6 +19,7 @@ public class ConditionFeatureEditor extends FeatureEditorInterface<ConditionFeat
         condition.getErrorMessage().initAndUpdateItemParentEditor(this, 1);
         condition.getCancelEventIfError().initAndUpdateItemParentEditor(this, 2);
         condition.getConsoleCommandsIfError().initAndUpdateItemParentEditor(this, 3);
+        condition.getSilenceOutput().initAndUpdateItemParentEditor(this, 4);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

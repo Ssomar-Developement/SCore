@@ -19,6 +19,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         List<SCommand> commands = new ArrayList<>();
         commands.add(new Around());
         commands.add(new Addlore());
+        commands.add(new Removelore());
         commands.add(new Setlore());
         commands.add(new SetItemColor());
         commands.add(new SetItemName());

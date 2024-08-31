@@ -84,6 +84,7 @@ public class LogFilter implements Filter, LifeCycle {
 
     public Filter.Result checkMessage(String message) {
         boolean hide = false;
+        //SsomarDev.testMsg("checkMessage "+message+ " silence: &e"+FilterManager.getInstance().isSilenceOuput(), true);
         if (FilterManager.getInstance().isSilenceOuput()) {
             if (message == null) {
                 return Result.NEUTRAL;

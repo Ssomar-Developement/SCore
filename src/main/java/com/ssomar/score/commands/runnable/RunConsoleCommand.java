@@ -8,7 +8,6 @@ import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +23,8 @@ public class RunConsoleCommand {
             //fM.setLogFilterPrior();
             //fM.showDebug();
             fM.incCurrentlyInRun();
+            //SsomarDev.testMsg("Currently in run: "+fM.getCurrentlyInRun(), true);
+
         }
 
         // By default Bukkit.dispatchCommand() is not sync , so one tick in addition is not a problem, its more to remind me that console commands are not sync

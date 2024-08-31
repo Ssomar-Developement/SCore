@@ -95,6 +95,9 @@ public abstract class Config {
     }
 
     public boolean loadBooleanSetting(String setting, boolean defaultValue) {
+        if(config.isConfigurationSection(setting)) {
+            setBooleanSetting(setting, defaultValue);
+        }
         boolean value = config.getBoolean(setting, defaultValue);
         loadedSettings.put(setting, value);
         //System.out.println("Setting: " + setting + " Value: " + value);
@@ -112,10 +115,19 @@ public abstract class Config {
     }
 
     public int loadIntSetting(String setting, int defaultValue) {
+        if(config.isConfigurationSection(setting)) {
+            setIntSetting(setting, defaultValue);
+        }
         int value = config.getInt(setting, defaultValue);
         loadedSettings.put(setting, value);
         //System.out.println("Setting: " + setting + " Value: " + value);
         return value;
+    }
+
+    public void setIntSetting(String setting, int value) {
+        loadedSettings.put(setting, value);
+        config.set(setting, value);
+        save();
     }
 
     public int getIntSetting(String setting, int defaultValue) {
@@ -123,11 +135,21 @@ public abstract class Config {
         return (int) loadedSettings.get(setting);
     }
 
+
     public String loadStringSetting(String setting, String defaultValue) {
+        if (config.isConfigurationSection(setting)) {
+            setStringSetting(setting, defaultValue);
+        }
         String value = config.getString(setting, defaultValue);
         loadedSettings.put(setting, value);
         //System.out.println("Setting: " + setting + " Value: " + value);
         return value;
+    }
+
+    public void setStringSetting(String setting, String value) {
+        loadedSettings.put(setting, value);
+        config.set(setting, value);
+        save();
     }
 
     public String getStringSetting(String setting, String defaultValue) {
@@ -136,10 +158,19 @@ public abstract class Config {
     }
 
     public double loadDoubleSetting(String setting, double defaultValue) {
+        if (config.isConfigurationSection(setting)) {
+            setDoubleSetting(setting, defaultValue);
+        }
         double value = config.getDouble(setting, defaultValue);
         loadedSettings.put(setting, value);
         //System.out.println("Setting: " + setting + " Value: " + value);
         return value;
+    }
+
+    public void setDoubleSetting(String setting, double value) {
+        loadedSettings.put(setting, value);
+        config.set(setting, value);
+        save();
     }
 
     public double getDoubleSetting(String setting, double defaultValue) {

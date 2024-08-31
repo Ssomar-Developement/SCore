@@ -265,10 +265,10 @@ public abstract class RunCommandsBuilder {
                     int m;
                     String nothingString = "";
                     if (command.contains("//") && !command.contains("https://")){
-                        m = Integer.parseInt(command.split(value)[1].split("//")[0].trim());
+                        m = Double.valueOf(command.split(value)[1].split("//")[0].trim()).intValue();
                         nothingString = "SENDMESSAGE " + command.split("//")[1];
                     }
-                    else m = Integer.parseInt(command.split(value)[1]);
+                    else m = Double.valueOf(command.split(value)[1]).intValue();
 
                    NothingObject nothingObject = new NothingObject(m, nothingString);
                    return Optional.of(nothingObject);

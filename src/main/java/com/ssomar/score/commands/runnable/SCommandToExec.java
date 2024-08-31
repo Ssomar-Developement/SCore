@@ -70,7 +70,7 @@ public class SCommandToExec {
                         if(setting.getType() == Boolean.class && !(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false"))) {
                             settingObjectMap.put(setting, setting.getValue(null));
                         }
-                        else if(setting.getType() == Double.class) {
+                        else if(setting.getType() == Double.class || setting.getType() == Integer.class) {
                             try {
                                 Double.parseDouble(value);
                                 settingObjectMap.put(setting, setting.getValue(value));

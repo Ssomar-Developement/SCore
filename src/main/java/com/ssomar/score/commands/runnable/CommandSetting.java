@@ -35,7 +35,8 @@ public class CommandSetting {
         SsomarDev.testMsg("CommandSetting getValue value: "+value+" >> type:"+type+" >> defaultValue: "+defaultValue, true);
         if(value == null) return defaultValue;
         if(type == Double.class) return Double.parseDouble(value);
-        else if(type == Integer.class) return Integer.parseInt(value);
+        else if(type == Integer.class) return Double.valueOf(value).intValue();
+        else if(type == Float.class) return Float.parseFloat(value);
         else if(type == Boolean.class) return Boolean.parseBoolean(value);
         return value;
     }

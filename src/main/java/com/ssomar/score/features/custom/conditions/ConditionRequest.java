@@ -19,10 +19,13 @@ public abstract class ConditionRequest {
 
     private @Nullable Event event;
 
+    private boolean silenceOutput;
+
     public ConditionRequest(@Nullable Event event, @NotNull StringPlaceholder sp) {
         this.errors = new ArrayList<>();
         this.event = event;
         this.sp = sp;
+        this.silenceOutput = false;
     }
 
     public List<String> getErrorsFinal() {

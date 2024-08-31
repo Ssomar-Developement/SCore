@@ -36,6 +36,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
     private ColoredStringFeature errorMessage;
     private BooleanFeature cancelEventIfError;
     private ConsoleCommandsFeature consoleCommandsIfError;
+    private BooleanFeature silenceOutput;
 
     private final static Boolean cancelDefaultValue = false;
     private static Optional<String> DEFAULT_DEFAULT_ERROR = Optional.of("&4[ERROR] &cYou can't activate this item > invalid condition");
@@ -56,6 +57,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
         this.errorMessage = new ColoredStringFeature(this, DEFAULT_DEFAULT_ERROR, FeatureSettingConditions.getInstance().getErrorMessage(getFeatureSettings().getName()), true);
         this.cancelEventIfError = new BooleanFeature(this, cancelDefaultValue, FeatureSettingConditions.getInstance().getCancelEventIfError(getFeatureSettings().getName()), true);
         this.consoleCommandsIfError = new ConsoleCommandsFeature(this, FeatureSettingConditions.getInstance().getConsoleCommandsIfError(getFeatureSettings().getName()), true);
+        this.silenceOutput = new BooleanFeature(this, false, FeatureSettingsSCore.silenceOutput, true);
         subReset();
     }
 
@@ -68,6 +70,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
         error.addAll(errorMessage.load(plugin, config, isPremiumLoading));
         error.addAll(cancelEventIfError.load(plugin, config, isPremiumLoading));
         error.addAll(consoleCommandsIfError.load(plugin, config, isPremiumLoading));
+        error.addAll(silenceOutput.load(plugin, config, isPremiumLoading));
 
         return error;
     }
@@ -78,6 +81,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
         errorMessage.save(config);
         cancelEventIfError.save(config);
         consoleCommandsIfError.save(config);
+        silenceOutput.save(config);
     }
 
     public abstract boolean hasCondition();
@@ -98,9 +102,11 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
     }
 
     public void runInvalidCondition(ConditionRequest request){
+
         addInErrorsInRequest(request);
         cancelEvent(request);
         ActionInfo actionInfo = new ActionInfo("", request.getSp());
+        actionInfo.setSilenceOutput(silenceOutput.getValue());
         consoleCommandsIfError.runCommands(actionInfo, "");
     }
 
@@ -158,6 +164,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
         clone.setErrorMessage(errorMessage.clone(clone));
         clone.setCancelEventIfError(cancelEventIfError.clone(clone));
         clone.setConsoleCommandsIfError(consoleCommandsIfError.clone(clone));
+        clone.setSilenceOutput(silenceOutput.clone(clone));
         return clone;
     }
 
@@ -165,7 +172,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(condition, errorMessage, cancelEventIfError, consoleCommandsIfError));
+        return new ArrayList<>(Arrays.asList(condition, errorMessage, cancelEventIfError, consoleCommandsIfError, silenceOutput));
     }
 
     @Override
@@ -192,6 +199,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
                 cdt.setErrorMessage(errorMessage);
                 cdt.setCancelEventIfError(cancelEventIfError);
                 cdt.setConsoleCommandsIfError(consoleCommandsIfError);
+                cdt.setSilenceOutput(silenceOutput);
                 break;
             }
         }
