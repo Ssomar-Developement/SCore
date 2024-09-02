@@ -1,7 +1,5 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.Bukkit;
@@ -24,7 +22,11 @@ public class AngryAt extends EntityCommand {
         List<String> args = sCommandToExec.getOtherArgs();
         if(entity instanceof Mob && !entity.isDead()){
             Mob mob = (Mob) entity;
-            mob.setTarget((LivingEntity) Bukkit.getEntity(UUID.fromString(args.get(0))));
+            try {
+                mob.setTarget((LivingEntity) Bukkit.getEntity(UUID.fromString(args.get(0))));
+            } catch (Exception e) {
+                mob.setTarget(null);
+            }
         }
     }
 
