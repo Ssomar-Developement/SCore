@@ -528,8 +528,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     glowWhenTrade("glowWhenTrade","Glow When Trade", new String[]{"&7&oPiglin glow during the trade"}, Material.GLOWSTONE, false),
     requiredObject("requiredObject", "Required Object", new String[]{}, Material.COMPASS, false),
 
-    SCREEN("SCREEN", "Screen", new String[]{""}, Material.GRASS_BLOCK, false),
-    SCREENUNIT("SCREENUNIT", "Screen Unit", new String[]{""}, Material.GRASS_BLOCK, false),
+    SCREEN("SCREEN", "Screen", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
+    SCREENUNIT("SCREENUNIT", "Screen Unit", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
 
     keepDefaultAttributes("keepDefaultAttributes", "Keep Default Attributes", new String[]{"&7&oKeep the default attributes", "&7&oOnly for 1.19+"}, null, false),
     ignoreKeepDefaultAttributesFeature("ignoreKeepDefaultAttributesFeature", "Ignore Keep Default Attributes Feature", new String[]{"&7&oFor new item LET IT FALSE PLS", "&7&oOtherwise you can let it true", "&7&oif you want to update your old items turn it FALSE", "&7&oBut be careful the item tags may change", "&7&oit can impact shopkeeper or custom craft recipe", "&7&oOnly for 1.19+"}, null, false),

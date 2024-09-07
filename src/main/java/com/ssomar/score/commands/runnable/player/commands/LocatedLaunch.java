@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
-import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
+import com.ssomar.executableitems.listeners.projectiles.ProjectileInfo;
+import com.ssomar.executableitems.listeners.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
@@ -16,7 +16,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /* LAUNCH {projectileType} */
 @SuppressWarnings("deprecation")

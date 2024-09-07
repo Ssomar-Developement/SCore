@@ -1,5 +1,6 @@
 package com.ssomar.score.usedapi;
 
+import com.ssomar.score.utils.ToolsListMaterial;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.DataStore;
@@ -7,6 +8,7 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +34,10 @@ public class GriefPreventionAPI {
         Player player = Bukkit.getPlayer(pUUID);
         if (player == null) return false;
 
-        return claim.allowBreak(player, location.getBlock().getType()) == null;
+        Block block = location.getBlock();
+        Material material = block.getType();
+
+        return claim.allowBreak(player, location.getBlock().getType()) == null || (material != null && ToolsListMaterial.getInstance().getPlantWithGrowth().contains(material) && null == claim.allowContainers(player));
     }
 
     public static boolean playerCanPlaceClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {

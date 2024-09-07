@@ -4,7 +4,6 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -45,7 +44,7 @@ public class HitscanPlayers extends MixedCommand {
         for (Entity entity : entities){
             if(entity instanceof Player) players.add((Player) entity);
         }
-        CommmandThatRunsCommand.runPlayerCommands(Bukkit.getOnlinePlayers(), sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+        CommmandThatRunsCommand.runPlayerCommands(players, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
 
     }
 

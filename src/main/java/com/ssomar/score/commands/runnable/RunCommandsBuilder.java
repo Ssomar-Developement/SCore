@@ -423,6 +423,7 @@ public abstract class RunCommandsBuilder {
                 }
                 delay = delay + (Integer.parseInt(secondPart) * 20);
             } else {
+                //SsomarDev.testMsg(" insert command step3 : "+command, true);
                 this.inserFinalCommands(delay, command);
             }
         }

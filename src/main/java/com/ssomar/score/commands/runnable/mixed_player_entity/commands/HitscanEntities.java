@@ -75,12 +75,13 @@ public class HitscanEntities extends MixedCommand {
             List<Entity> nearbyEntities = (List<Entity>) startLocation.getWorld().getNearbyEntities(startLocation, range, range, range);
 
             for (Entity entity : nearbyEntities) {
+                if(entity == receiver) continue;
                 if ((playerOnly && !(entity instanceof Player))
                         || (!playerOnly && (entity instanceof Player))
                         || entity.equals(fromEntity)
                         || !(entity instanceof LivingEntity))
                     continue; // Skip players and the shooter
-                SsomarDev.testMsg("CHECK ENTITY > " + entity.getType(), true);
+                //SsomarDev.testMsg("CHECK ENTITY > " + entity.getType(), true);
 
                 // 3. Verify That the Player Is in the Hitscan Cylinder
                 Location hitPosition = null;
@@ -88,6 +89,8 @@ public class HitscanEntities extends MixedCommand {
                     SsomarDev.testMsg("ENTITY > " + entity.getType() + " NOT IN CYLINDER", true);
                     continue;
                 }
+
+                SsomarDev.testMsg("CHECK ENTITY > " + entity.getName(), true);
 
                 // 4. Raytrace Blocks and Entities
                 boolean hitSuccess = performRaytraceChecks(fromEntity, startLocation, hitPosition, (LivingEntity) entity, range, radius, throughBlocks, throughEntities);

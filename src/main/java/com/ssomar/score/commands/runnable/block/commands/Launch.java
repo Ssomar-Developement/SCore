@@ -1,7 +1,8 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
-import com.ssomar.executableitems.events.projectiles.ProjectileInfo;
-import com.ssomar.executableitems.events.projectiles.ProjectilesHandler;
+
+import com.ssomar.executableitems.listeners.projectiles.ProjectileInfo;
+import com.ssomar.executableitems.listeners.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;

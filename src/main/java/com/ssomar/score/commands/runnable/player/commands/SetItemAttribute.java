@@ -77,13 +77,24 @@ public class SetItemAttribute extends PlayerCommand {
             itemmeta.addAttributeModifier(attribute, newModifier);
         }else {
             AttributeModifier copyExistingModifier = existingModifier;
-            existingModifier = new AttributeModifier(
-                    existingModifier.getUniqueId(),
-                    "ScoreAttribute",
-                    attributeValue,
-                    existingModifier.getOperation(),
-                    existingModifier.getSlot()
-            );
+            // idk why sometimes the existing uuid is tto large "Caused by: java.lang.IllegalArgumentException: UUID string too large"
+            try {
+                existingModifier = new AttributeModifier(
+                        existingModifier.getUniqueId(),
+                        "ScoreAttribute",
+                        attributeValue,
+                        existingModifier.getOperation(),
+                        existingModifier.getSlot()
+                );
+            }catch(IllegalArgumentException err){
+                existingModifier = new AttributeModifier(
+                        UUID.randomUUID(),
+                        "ScoreAttribute",
+                        attributeValue,
+                        existingModifier.getOperation(),
+                        existingModifier.getSlot()
+                );
+            }
             itemmeta.removeAttributeModifier(attribute, existingModifier);
             if(copyExistingModifier.getAmount() + attributeValue != 0) {
                 itemmeta.addAttributeModifier(attribute, existingModifier);

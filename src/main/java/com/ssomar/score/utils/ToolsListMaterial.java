@@ -33,6 +33,8 @@ public class ToolsListMaterial {
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("MELON_STEM")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_STEM")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CAVE_VINES")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CAVE_VINES_PLANT")));
+        addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("GLOW_BERRIES")));
 
 
         addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));

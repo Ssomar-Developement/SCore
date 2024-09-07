@@ -37,7 +37,7 @@ public class Teleport extends MixedCommand {
         if(args.size() >= 7) keepVelocity = Boolean.parseBoolean(args.get(6));
 
 
-        Location loc = new Location(receiver.getWorld(), x, y, z);
+        Location loc = new Location(world, x, y, z);
         loc.setPitch(pitch);
         loc.setYaw(yaw);
         receiver.teleport(loc);

@@ -32,7 +32,7 @@ import java.util.UUID;
 
 public class SafeBreak {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /* return false its verifSafeBreak is false */
     public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
@@ -215,7 +215,10 @@ public class SafeBreak {
         //SsomarDev.testMsg("DEBUG SAFE BREAK CDT 1");
 
         if (SCore.hasGriefPrevention)
-            if (!GriefPreventionAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
+            if (!GriefPreventionAPI.playerCanBreakClaimBlock(playerUUID, location)){
+                SsomarDev.testMsg("DEBUG SAFE BREAK BLOCKED BY GRIEF PREVENTION", DEBUG);
+                return false;
+            }
 
         // SsomarDev.testMsg("DEBUG SAFE BREAK CDT 2");
 
