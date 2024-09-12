@@ -27,7 +27,7 @@ public class VaultAPI {
             RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
                 p.sendMessage(StringConverter.coloredString("&4&l[SCore] &cPlease contact your administrator, Vault dont find an Economy plugin !"));
-                SCore.plugin.getServer().getLogger().severe("[SCore] Vault dont find and Economy plugin !");
+                SCore.plugin.getServer().getLogger().severe("[SCore] Vault dont find an Economy plugin !");
                 return false;
             }
             econ = rsp.getProvider();
