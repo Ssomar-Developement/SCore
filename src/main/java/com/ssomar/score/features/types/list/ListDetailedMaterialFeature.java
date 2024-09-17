@@ -40,7 +40,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     private static final String symbolEnd = "}";
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = "\\+";
-    private static final Boolean DEBUG = true;
+    private static final Boolean DEBUG = false;
 
     private static final String symbolStartMaterialTag = "#"; // #minecraft:mineable/pickaxe
     private List<String> listOfCustomBlocksPluginSupported;

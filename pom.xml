@@ -455,10 +455,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
+        <!--<repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
+        </repository>-->
         <repository>
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
@@ -628,8 +628,9 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
-            <scope>provided</scope>
+            <version>2.11.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/PlaceholderAPI-2.11.6.jar</systemPath>
         </dependency>
 
         <dependency>
