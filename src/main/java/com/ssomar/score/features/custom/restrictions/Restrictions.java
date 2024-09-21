@@ -30,6 +30,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
     private List<RestrictionEnum> notFor1_11_less;
     private List<RestrictionEnum> notFor1_13_less;
     private List<RestrictionEnum> notFor1_18_less;
+    private List<RestrictionEnum> notFor1_19_less;
 
     public Restrictions(FeatureParentInterface parent, Map<RestrictionEnum, Boolean> defaultValues) {
         super(parent, FeatureSettingsSCore.restrictions);
@@ -46,6 +47,8 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
         this.notFor1_13_less.add(RestrictionEnum.CANCEL_SMITHING_TABLE);
         this.notFor1_18_less = new ArrayList<>();
         this.notFor1_18_less.add(RestrictionEnum.CANCEL_HORN);
+        this.notFor1_19_less = new ArrayList<>();
+        this.notFor1_19_less.add(RestrictionEnum.CANCEL_DECORATED_POT);
         reset();
     }
 
@@ -56,6 +59,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
             if (SCore.is1v11Less() && notFor1_11_less.contains(restriction)) continue;
             if (SCore.is1v13Less() && notFor1_13_less.contains(restriction)) continue;
             if (!SCore.is1v19Plus() && notFor1_18_less.contains(restriction)) continue;
+            if (!SCore.is1v20Plus() && notFor1_19_less.contains(restriction)) continue;
             restrictions.put(restriction, new BooleanFeature(this, defaultValues.get(restriction), restriction.featureSetting, NOT_SAVE_RESTRICTIONS));
         }
     }

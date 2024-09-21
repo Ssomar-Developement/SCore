@@ -64,6 +64,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelItemPlace("cancel-item-place", "Cancel Item Placement", new String[]{"&7&oCancel the placement of the item"},  null,  false),
     cancelLectern("cancel-lectern", "Cancel Lectern", new String[]{"&7&oThe item can't be",  "&7&oplaced in a lectern"},  FixedMaterial.getMaterial(Collections.singletonList("LECTERN")),  false),
     cancelLoom("cancel-loom", "Cancel Loom", new String[]{"&7&oThe item can't be",  "&7&oplaced in a loom"},  FixedMaterial.getMaterial(Collections.singletonList("LOOM")),  false),
+    cancelDecoratedPot("cancel-decorated-pot", "Cancel Decorated Pot", new String[]{"&7&oThe item can't be",  "&7&oplaced in a decorated pot"},  FixedMaterial.getMaterial(Collections.singletonList("DECORATED_POT")),  false),
     cancelMerchant("cancel-merchant", "Cancel Merchant", new String[]{"&7&oThe item can't be",  "&7&oplaced in a merchant"},  FixedMaterial.getMaterial(Arrays.asList("VILLAGER_SPAWN_EGG", "EMERALD")),  false),
     cancelSmithingTable("cancel-smithing-table", "Cancel Smithing Table", new String[]{"&7&oThe item can't be",  "&7&oplaced in a smithing table"},  FixedMaterial.getMaterial(Collections.singletonList("SMITHING_TABLE")),  false),
     cancelStoneCutter("cancel-stone-cutter", "Cancel Stone Cutter", new String[]{"&7&oThe item can't be",  "&7&oplaced in stone cutter"},  FixedMaterial.getMaterial(Collections.singletonList("STONECUTTER")),  false),
