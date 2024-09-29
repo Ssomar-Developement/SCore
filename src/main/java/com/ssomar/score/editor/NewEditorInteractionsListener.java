@@ -118,6 +118,8 @@ import com.ssomar.score.features.custom.potioneffects.potioneffect.PotionEffectF
 import com.ssomar.score.features.custom.potioneffects.potioneffect.PotionEffectFeatureEditorManager;
 import com.ssomar.score.features.custom.potionsettings.PotionSettingsFeatureEditor;
 import com.ssomar.score.features.custom.potionsettings.PotionSettingsFeatureEditorManager;
+import com.ssomar.score.features.custom.rarity.RarityFeaturesEditor;
+import com.ssomar.score.features.custom.rarity.RarityFeaturesEditorManager;
 import com.ssomar.score.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditor;
 import com.ssomar.score.features.custom.required.executableitems.group.RequiredExecutableItemGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.required.executableitems.item.RequiredExecutableItemFeatureEditor;
@@ -514,7 +516,10 @@ public class NewEditorInteractionsListener implements Listener {
             BrewingStandFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
-
+        else if(holder instanceof RarityFeaturesEditor){
+            RarityFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
     }
 
     /*@EventHandler(priority = EventPriority.LOWEST)
@@ -815,6 +820,10 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (BrewingStandFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             BrewingStandFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if(RarityFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
+            e.setCancelled(true);
+            RarityFeaturesEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

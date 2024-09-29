@@ -8,5 +8,6 @@ public enum ResetSetting {
     ENCHANTS,
     CUSTOM_MODEL_DATA,
     ARMOR_SETTINGS,
-    USAGE;
+    USAGE,
+    ITEM_RARITY;
 }

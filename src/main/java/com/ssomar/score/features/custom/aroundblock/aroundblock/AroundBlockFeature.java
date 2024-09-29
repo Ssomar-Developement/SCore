@@ -129,6 +129,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
                     StringPlaceholder sp = eBP.get().getPlaceholders();
                     if (!placeholderConditions.verify(playerOpt.orElse(null), null, sp, null)) valid = false;
                 }
+                else valid = false;
             } else valid = false;
         }
 

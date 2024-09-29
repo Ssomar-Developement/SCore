@@ -19,7 +19,10 @@ public class HidersEditor extends FeatureEditorInterface<Hiders> {
         dropFeatures.getHideEnchantments().initAndUpdateItemParentEditor(this, 0);
         dropFeatures.getHideUnbreakable().initAndUpdateItemParentEditor(this, 1);
         dropFeatures.getHideAttributes().initAndUpdateItemParentEditor(this, 2);
-        dropFeatures.getHidePotionEffects().initAndUpdateItemParentEditor(this, 3);
+        if(SCore.is1v20v5Plus())
+            dropFeatures.getHideAdditionalTooltip().initAndUpdateItemParentEditor(this, 3);
+        else
+            dropFeatures.getHidePotionEffects().initAndUpdateItemParentEditor(this, 3);
         dropFeatures.getHideUsage().initAndUpdateItemParentEditor(this, 4);
         if(!SCore.is1v11Less()){
             dropFeatures.getHideDestroys().initAndUpdateItemParentEditor(this, 5);

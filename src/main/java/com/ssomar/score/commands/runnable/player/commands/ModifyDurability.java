@@ -51,6 +51,12 @@ public class ModifyDurability extends PlayerCommand {
             if (supportUnbreaking && enchants.containsKey(unbreaking)) {
                 unbreakingLevel = enchants.get(unbreaking);
             }
+
+            int maxDura = item.getType().getMaxDurability();
+            if(SCore.isIs1v21Plus()) maxDura = meta.getMaxDamage();
+
+            //SsomarDev.testMsg("Item " +item.getType()+" max dura "+ maxDura+" Modification: " + modification+ " Damge: " + meta.getDamage()+ " MaxDurability: " + item.getType().getMaxDurability()+ " UnbreakingLevel: " + unbreakingLevel, true);
+
             if (modification < 0) {
                 for (int i = modification; i < 0; i++) {
                     int random = (int) (Math.random() * 100);
@@ -59,7 +65,7 @@ public class ModifyDurability extends PlayerCommand {
                     }
                 }
                 meta.setDamage(meta.getDamage() - modification);
-                if (meta.getDamage() >= item.getType().getMaxDurability()) {
+                if (meta.getDamage() >= maxDura) {
                     item.setAmount(item.getAmount() - 1);
                     return;
                 }
@@ -67,7 +73,7 @@ public class ModifyDurability extends PlayerCommand {
 
             } else {
                 meta.setDamage(meta.getDamage() - modification);
-                if (meta.getDamage() >= item.getType().getMaxDurability()) {
+                if (meta.getDamage() >= maxDura) {
                     item.setAmount(item.getAmount() - 1);
                     return;
                 }

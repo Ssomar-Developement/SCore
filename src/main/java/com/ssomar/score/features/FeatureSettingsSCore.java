@@ -130,6 +130,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     hideDye("hideDye", "Hide dye", new String[]{"&7&oHide dye"},  null,  false),
     hideEnchantments("hideEnchantments", "Hide enchantments", new String[]{"&7&oHide enchantments"},  null,  false),
     hidePlacedOn("hidePlacedOn", "Hide placed on", new String[]{"&7&oHide placed on"},  null,  false),
+    hideAdditionalTooltip("hideAdditionalTooltip", "Hide additional tooltip", new String[]{"&7&oHide additional tooltip"},  null,  false),
     hidePotionEffects("hidePotionEffects", "Hide potion effects / banner tags", new String[]{"&7&oHide Potion effects",  "&7&oand banner tags"},  null, false),
     hideUnbreakable("hideUnbreakable", "Hide unbreakable", new String[]{"&7&oHide unbreakable"},  null,  false),
     hideUsage("hideUsage", "Hide usage", new String[]{"&7&oHide usage"},  null,  false),
@@ -427,6 +428,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canAlwaysEat("canAlwaysEat", "Can Always Eat", new String[]{"&7Can the player always eat this food?"}, null, false),
     eatSeconds("eatSeconds", "Eat Seconds", new String[]{"&7The time in seconds to eat the food"}, GUI.CLOCK, false),
 
+
+    itemRarity("itemRarity", "Item Rarity", new String[]{"&7&oThe rarity of the item"}, Material.EMERALD, false),
+    rarity("rarity", "Rarity", new String[]{"&7&oThe rarity of the item"}, Material.EMERALD, false),
+    enableRarity("enableRarity", "Enable Rarity", new String[]{"&7&oEnable or disable the rarity feature"}, null, false),
 
     durability_features("durability", "Durability Features", new String[]{"&7&oDurability features"}, Material.ANVIL, false),
     maxDurability("maxDurability", "Max Durability", new String[]{"&7&oMax durability feature"}, Material.ANVIL, false),

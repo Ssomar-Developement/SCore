@@ -38,7 +38,10 @@ public class PlantInSquare extends BlockCommand {
         else if(determineMode == Material.SOUL_SAND){
             acceptedBlocks = ToolsListMaterial.getInstance().getPlantWithGrowthOnlySoulSand();
         }
-        else return;
+        else {
+            SsomarDev.testMsg(ChatColor.RED + "The block is not a farmland or a soul sand, its a "+block.getType(), true);
+            return;
+        }
 
 
         int resourcesNeeded = (radius*2+1)* (radius*2+1);
