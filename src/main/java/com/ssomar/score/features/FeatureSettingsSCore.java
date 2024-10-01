@@ -339,7 +339,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     westValue("westValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION),  GUI.CLOCK,  false),
 
 
-
+    toolRules("toolRules", "Tool Rules", new String[]{"&7&oThe tool rules"}, Material.DIAMOND_PICKAXE, false),
+    miningSpeed("miningSpeed", "Mining speed", new String[]{"&7&oThe mining speed of the tool"}, GUI.CLOCK, false),
+    defaultMiningSpeed("defaultMiningSpeed", "Default Mining Speed", new String[]{"&7&oThe default mining speed of the tool"}, GUI.CLOCK, false),
+    correctForDrops("correctForDrops", "Correct For Drops", new String[]{"&7&oSet whether or not this rule is considered","&7&othe optimal tool for the blocks listed","&7&oby this rule and will drop items."}, Material.LEVER, false),
+    materials("blocks", "Block Materials", new String[]{"&7&oThe materials impacted by this rule"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
+    damagePerBlock("damagePerBlock", "Damage Per Block", new String[]{"&7&oSet the amount of durability to be removed","&7&ofrom the tool each time a block is broken."}, GUI.CLOCK, false),
 
     typeTarget("typeTarget", "Type Target", new String[]{"&7&oType target"},  Material.COMPASS, false),
     detailedClick("detailedClick", "Detailed Click", new String[]{"&7&oThe specific click"}, Material.COMPASS, false),

@@ -144,6 +144,10 @@ import com.ssomar.score.features.custom.required.parent.RequiredGroupEditor;
 import com.ssomar.score.features.custom.required.parent.RequiredGroupEditorManager;
 import com.ssomar.score.features.custom.restrictions.RestrictionsEditor;
 import com.ssomar.score.features.custom.restrictions.RestrictionsEditorManager;
+import com.ssomar.score.features.custom.toolrules.group.ToolRulesGroupFeatureEditor;
+import com.ssomar.score.features.custom.toolrules.group.ToolRulesGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.toolrules.toolrule.ToolRuleFeatureEditor;
+import com.ssomar.score.features.custom.toolrules.toolrule.ToolRuleFeatureEditorManager;
 import com.ssomar.score.features.custom.useperday.UsePerDayFeatureEditor;
 import com.ssomar.score.features.custom.useperday.UsePerDayFeatureEditorManager;
 import com.ssomar.score.features.custom.variables.base.group.VariablesGroupFeatureEditor;
@@ -520,6 +524,15 @@ public class NewEditorInteractionsListener implements Listener {
             RarityFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
+        else if(holder instanceof ToolRulesGroupFeatureEditor){
+            ToolRulesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if(holder instanceof ToolRuleFeatureEditor){
+            ToolRuleFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+
     }
 
     /*@EventHandler(priority = EventPriority.LOWEST)
@@ -824,6 +837,14 @@ public class NewEditorInteractionsListener implements Listener {
         else if(RarityFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
             e.setCancelled(true);
             RarityFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if(ToolRulesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)){
+            e.setCancelled(true);
+            ToolRulesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if(ToolRuleFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)){
+            e.setCancelled(true);
+            ToolRuleFeatureEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

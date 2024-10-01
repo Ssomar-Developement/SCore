@@ -1,0 +1,185 @@
+package com.ssomar.score.features.custom.toolrules.group;
+
+import com.ssomar.score.features.*;
+import com.ssomar.score.features.custom.toolrules.toolrule.ToolRuleFeature;
+import com.ssomar.score.features.types.DoubleFeature;
+import com.ssomar.score.features.types.IntegerFeature;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.util.*;
+
+@Getter
+@Setter
+public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGroupFeature, ToolRulesGroupFeature, ToolRulesGroupFeatureEditor, ToolRulesGroupFeatureEditorManager> implements FeaturesGroup<ToolRuleFeature> {
+
+    private Map<String, ToolRuleFeature> toolRules;
+    private DoubleFeature defaultMiningSpeed;
+    private IntegerFeature damagePerBlock;
+    private boolean notSaveIfNoValue;
+
+    private int premiumLimit = 5;
+
+    public ToolRulesGroupFeature(FeatureParentInterface parent, boolean notSaveIfNoValue) {
+        super(parent, FeatureSettingsSCore.toolRules);
+        this.notSaveIfNoValue = notSaveIfNoValue;
+        reset();
+    }
+
+    @Override
+    public void reset() {
+        this.toolRules = new LinkedHashMap<>();
+        this.defaultMiningSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.defaultMiningSpeed);
+        this.damagePerBlock = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.damagePerBlock);
+    }
+
+    @Override
+    public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
+        List<String> error = new ArrayList<>();
+        if (config.isConfigurationSection(this.getName())) {
+            ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
+            for (String attributeID : enchantmentsSection.getKeys(false)) {
+                if (toolRules.size() >= premiumLimit && !isPremium()) {
+                    error.add("&cERROR, Couldn't load the Tool rule of " + attributeID + " from config, &7&o" + getParent().getParentInfo() + " &6>> Because it requires the premium version to have more than 2 tool rule !");
+                    return error;
+                }
+                ToolRuleFeature attribute = new ToolRuleFeature(this, attributeID);
+                List<String> subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
+                if (subErrors.size() > 0) {
+                    error.addAll(subErrors);
+                    continue;
+                }
+                toolRules.put(attributeID, attribute);
+            }
+            error.addAll(defaultMiningSpeed.load(plugin, enchantmentsSection, isPremiumLoading));
+            error.addAll(damagePerBlock.load(plugin, enchantmentsSection, isPremiumLoading));
+        }
+        return error;
+    }
+
+    @Override
+    public void save(ConfigurationSection config) {
+        config.set(this.getName(), null);
+        if (notSaveIfNoValue && toolRules.size() == 0) return;
+        ConfigurationSection attributesSection = config.createSection(this.getName());
+        for (String enchantmentID : toolRules.keySet()) {
+            toolRules.get(enchantmentID).save(attributesSection);
+        }
+        defaultMiningSpeed.save(attributesSection);
+        damagePerBlock.save(attributesSection);
+    }
+
+    @Override
+    public ToolRulesGroupFeature getValue() {
+        return this;
+    }
+
+    @Override
+    public ToolRulesGroupFeature initItemParentEditor(GUI gui, int slot) {
+        String[] finalDescription = new String[getEditorDescription().length + 4];
+        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+        finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = "&7&oTool rule(s) added: &e" + toolRules.size();
+        finalDescription[finalDescription.length - 2] = "&7&oDefault Mining Speed: &e" + defaultMiningSpeed.getValue().get();
+        finalDescription[finalDescription.length - 1] = "&7&oDamage per block: &e" + damagePerBlock.getValue().get();
+
+        gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        return this;
+    }
+
+    @Override
+    public void updateItemParentEditor(GUI gui) {
+
+    }
+
+    @Override
+    public ToolRuleFeature getTheChildFeatureClickedParentEditor(String featureClicked) {
+        for (ToolRuleFeature x : toolRules.values()) {
+            if (x.isTheFeatureClickedParentEditor(featureClicked)) return x;
+        }
+        return null;
+    }
+
+    @Override
+    public ToolRulesGroupFeature clone(FeatureParentInterface newParent) {
+        ToolRulesGroupFeature eF = new ToolRulesGroupFeature(newParent, isNotSaveIfNoValue());
+        HashMap<String, ToolRuleFeature> newAttributes = new LinkedHashMap<>();
+        for (String x : toolRules.keySet()) {
+            newAttributes.put(x, toolRules.get(x).clone(eF));
+        }
+        eF.setToolRules(newAttributes);
+        return eF;
+    }
+
+    @Override
+    public List<FeatureInterface> getFeatures() {
+        List<FeatureInterface> features = new ArrayList<>(toolRules.values());
+        return features;
+    }
+
+    @Override
+    public String getParentInfo() {
+        return getParent().getParentInfo();
+    }
+
+    @Override
+    public ConfigurationSection getConfigurationSection() {
+        ConfigurationSection section = getParent().getConfigurationSection();
+        if (section.isConfigurationSection(this.getName())) {
+            return section.getConfigurationSection(this.getName());
+        } else return section.createSection(this.getName());
+    }
+
+    @Override
+    public File getFile() {
+        return getParent().getFile();
+    }
+
+    @Override
+    public void reload() {
+        for (FeatureInterface feature : getParent().getFeatures()) {
+            if (feature instanceof ToolRulesGroupFeature) {
+                ToolRulesGroupFeature eF = (ToolRulesGroupFeature) feature;
+                eF.setToolRules(this.getToolRules());
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void openBackEditor(@NotNull Player player) {
+        getParent().openEditor(player);
+    }
+
+    @Override
+    public void openEditor(@NotNull Player player) {
+        ToolRulesGroupFeatureEditorManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public void createNewFeature(@NotNull Player editor) {
+        if (!isPremium() && toolRules.size() >= premiumLimit) return;
+        String baseId = "toolRule";
+        for (int i = 0; i < 1000; i++) {
+            String id = baseId + i;
+            if (!toolRules.containsKey(id)) {
+                ToolRuleFeature eF = new ToolRuleFeature(this, id);
+                toolRules.put(id, eF);
+                eF.openEditor(editor);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void deleteFeature(@NotNull Player editor, ToolRuleFeature feature) {
+        toolRules.remove(feature.getId());
+    }
+
+}
