@@ -24,8 +24,9 @@ public class ToolRulesGroupFeatureEditor extends FeatureEditorInterface<ToolRule
             i++;
         }
 
-        attributesGroupFeature.getDefaultMiningSpeed().initAndUpdateItemParentEditor(this, 20);
-        attributesGroupFeature.getDamagePerBlock().initAndUpdateItemParentEditor(this, 21);
+        attributesGroupFeature.getEnable().initAndUpdateItemParentEditor(this, 20);
+        attributesGroupFeature.getDefaultMiningSpeed().initAndUpdateItemParentEditor(this, 24);
+        attributesGroupFeature.getDamagePerBlock().initAndUpdateItemParentEditor(this, 25);
 
         // Back
         createItem(RED, 1, 18, GUI.BACK, false, false);

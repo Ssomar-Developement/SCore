@@ -341,6 +341,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     toolRules("toolRules", "Tool Rules", new String[]{"&7&oThe tool rules"}, Material.DIAMOND_PICKAXE, false),
     miningSpeed("miningSpeed", "Mining speed", new String[]{"&7&oThe mining speed of the tool"}, GUI.CLOCK, false),
+    enable("enable", "Enable", new String[]{"&7&oEnable the tool features"}, Material.LEVER, false),
     defaultMiningSpeed("defaultMiningSpeed", "Default Mining Speed", new String[]{"&7&oThe default mining speed of the tool"}, GUI.CLOCK, false),
     correctForDrops("correctForDrops", "Correct For Drops", new String[]{"&7&oSet whether or not this rule is considered","&7&othe optimal tool for the blocks listed","&7&oby this rule and will drop items."}, Material.LEVER, false),
     materials("blocks", "Block Materials", new String[]{"&7&oThe materials impacted by this rule"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),

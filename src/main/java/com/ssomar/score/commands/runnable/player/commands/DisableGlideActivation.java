@@ -35,14 +35,16 @@ public class DisableGlideActivation extends PlayerCommand {
             activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiver.getUniqueId()) + 1);
         } else activeDisabled.put(receiver.getUniqueId(), 1);
 
+        final UUID receiverUUID = receiver.getUniqueId();
+
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
-                if (activeDisabled.containsKey(receiver.getUniqueId())) {
-                    if (activeDisabled.get(receiver.getUniqueId()) > 1) {
-                        activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiver.getUniqueId()) - 1);
-                    } else activeDisabled.remove(receiver.getUniqueId());
+                if (activeDisabled.containsKey(receiverUUID)) {
+                    if (activeDisabled.get(receiverUUID) > 1) {
+                        activeDisabled.put(receiverUUID, activeDisabled.get(receiverUUID) - 1);
+                    } else activeDisabled.remove(receiverUUID);
                 }
             }
         };

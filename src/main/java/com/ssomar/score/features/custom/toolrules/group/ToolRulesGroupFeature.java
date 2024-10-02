@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.toolrules.group;
 
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.toolrules.toolrule.ToolRuleFeature;
+import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
@@ -19,6 +20,7 @@ import java.util.*;
 @Setter
 public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGroupFeature, ToolRulesGroupFeature, ToolRulesGroupFeatureEditor, ToolRulesGroupFeatureEditorManager> implements FeaturesGroup<ToolRuleFeature> {
 
+    private BooleanFeature enable;
     private Map<String, ToolRuleFeature> toolRules;
     private DoubleFeature defaultMiningSpeed;
     private IntegerFeature damagePerBlock;
@@ -34,6 +36,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
 
     @Override
     public void reset() {
+        this.enable = new BooleanFeature(getParent(), false, FeatureSettingsSCore.enable, false);
         this.toolRules = new LinkedHashMap<>();
         this.defaultMiningSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.defaultMiningSpeed);
         this.damagePerBlock = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.damagePerBlock);
@@ -57,6 +60,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
                 }
                 toolRules.put(attributeID, attribute);
             }
+            error.addAll(enable.load(plugin, enchantmentsSection, isPremiumLoading));
             error.addAll(defaultMiningSpeed.load(plugin, enchantmentsSection, isPremiumLoading));
             error.addAll(damagePerBlock.load(plugin, enchantmentsSection, isPremiumLoading));
         }
@@ -71,6 +75,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
         for (String enchantmentID : toolRules.keySet()) {
             toolRules.get(enchantmentID).save(attributesSection);
         }
+        enable.save(attributesSection);
         defaultMiningSpeed.save(attributesSection);
         damagePerBlock.save(attributesSection);
     }
@@ -82,9 +87,10 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
 
     @Override
     public ToolRulesGroupFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 4];
+        String[] finalDescription = new String[getEditorDescription().length + 5];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 5] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = enable.getValue() ? "&7&oEnabled: &a&l✔" : "&7&oEnabled: &c&l✘";
         finalDescription[finalDescription.length - 3] = "&7&oTool rule(s) added: &e" + toolRules.size();
         finalDescription[finalDescription.length - 2] = "&7&oDefault Mining Speed: &e" + defaultMiningSpeed.getValue().get();
         finalDescription[finalDescription.length - 1] = "&7&oDamage per block: &e" + damagePerBlock.getValue().get();

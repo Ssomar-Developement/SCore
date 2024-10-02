@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.container;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -13,11 +14,13 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Container;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.*;
+import org.bukkit.block.data.type.BrewingStand;
+import org.bukkit.block.data.type.Chest;
+import org.bukkit.block.data.type.Dispenser;
+import org.bukkit.block.data.type.Furnace;
+import org.bukkit.block.data.type.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -157,7 +160,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     }
 
     public boolean canBeApplied(BlockData blockData) {
-        return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand;
+        return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData instanceof ShulkerBox || blockData instanceof org.bukkit.block.Barrel || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
     }
 
     public void applyContainerFeatures(Block block) {
