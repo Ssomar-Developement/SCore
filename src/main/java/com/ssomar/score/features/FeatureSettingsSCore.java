@@ -412,6 +412,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     lore("lore", "Lore", new String[]{"&7&oThe lore of the item"}, Material.PAPER, false),
     glow("glow", "Item Glow", SCore.is1v20v5Plus() ? new String[]{"&7&oItem Glowing effect"} : TM.gA(Text.EI_FEATURES_GLOW_DESCRIPTION), Material.BEACON, false),
+    disableEnchantGlide("disableEnchantGlide", "Disable Enchant Glide", new String[]{"&7&oDisable the enchant glide effect"}, Material.BEACON, false),
 
     disableStack("disableStack", "Disable stack", TM.gA(Text.EI_FEATURES_DISABLESTACK_DESCRIPTION), null, true),
     customStackSize("customStackSize", "Custom stack size", new String[]{"&7&oCustomize the stack size"}, Material.BUCKET, true),

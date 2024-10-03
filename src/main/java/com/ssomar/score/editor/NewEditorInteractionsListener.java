@@ -92,6 +92,8 @@ import com.ssomar.score.features.custom.ifhas.items.attribute.HasItemFeatureEdit
 import com.ssomar.score.features.custom.ifhas.items.attribute.HasItemFeatureEditorManager;
 import com.ssomar.score.features.custom.ifhas.items.group.HasItemGroupFeatureEditor;
 import com.ssomar.score.features.custom.ifhas.items.group.HasItemGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.itemglow.ItemGlowFeaturesEditor;
+import com.ssomar.score.features.custom.itemglow.ItemGlowFeaturesEditorManager;
 import com.ssomar.score.features.custom.loop.LoopFeaturesEditor;
 import com.ssomar.score.features.custom.loop.LoopFeaturesEditorManager;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeatureEditor;
@@ -532,6 +534,10 @@ public class NewEditorInteractionsListener implements Listener {
             ToolRuleFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
+        else if(holder instanceof ItemGlowFeaturesEditor){
+            ItemGlowFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
 
     }
 
@@ -845,6 +851,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if(ToolRuleFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)){
             e.setCancelled(true);
             ToolRuleFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if(ItemGlowFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
+            e.setCancelled(true);
+            ItemGlowFeaturesEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }
