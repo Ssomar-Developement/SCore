@@ -18,6 +18,8 @@ import com.ssomar.score.features.custom.bannersettings.BannerSettingsFeatureEdit
 import com.ssomar.score.features.custom.bannersettings.BannerSettingsFeatureEditorManager;
 import com.ssomar.score.features.custom.blocktitle.BlockTitleFeaturesEditor;
 import com.ssomar.score.features.custom.blocktitle.BlockTitleFeaturesEditorManager;
+import com.ssomar.score.features.custom.book.BookFeaturesEditor;
+import com.ssomar.score.features.custom.book.BookFeaturesEditorManager;
 import com.ssomar.score.features.custom.brewingstand.BrewingStandFeaturesEditor;
 import com.ssomar.score.features.custom.brewingstand.BrewingStandFeaturesEditorManager;
 import com.ssomar.score.features.custom.canbeusedbyowner.CanBeUsedOnlyByOwnerFeaturesEditor;
@@ -538,6 +540,10 @@ public class NewEditorInteractionsListener implements Listener {
             ItemGlowFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
+        else if(holder instanceof BookFeaturesEditor){
+            BookFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
 
     }
 
@@ -855,6 +861,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if(ItemGlowFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
             e.setCancelled(true);
             ItemGlowFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if(BookFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
+            e.setCancelled(true);
+            BookFeaturesEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

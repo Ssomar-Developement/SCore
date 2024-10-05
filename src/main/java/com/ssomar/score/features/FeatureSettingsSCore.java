@@ -337,6 +337,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     visualFire("visualFire", "Visual Fire", new String[]{}, Material.FLINT_AND_STEEL, false),
     visualItem("visualItem", "Visual Item", new String[]{""},  Material.ITEM_FRAME, false),
     westValue("westValue", TM.g(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_NAME), TM.gA(Text.FEATURES_AROUNDBLOCK_FEATURES_WESTVALUE_DESCRIPTION),  GUI.CLOCK,  false),
+    bookFeatures("bookFeatures", "Book Features", new String[]{"&7&oThe book features"}, GUI.WRITABLE_BOOK, false),
+    pages("pages", "Pages", new String[]{"&7&oThe pages"}, GUI.WRITABLE_BOOK, false),
+    author("author", "Author", new String[]{"&7&oThe author"}, Material.NAME_TAG, false),
 
 
     toolRules("toolRules", "Tool Rules", new String[]{"&7&oThe tool rules"}, Material.DIAMOND_PICKAXE, false),

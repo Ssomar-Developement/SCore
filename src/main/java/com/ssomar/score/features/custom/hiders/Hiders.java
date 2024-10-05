@@ -109,6 +109,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
             finalDescription[finalDescription.length - 9] = "&7Hide destroys: &a&l✔";
         else
             finalDescription[finalDescription.length - 9] = "&7Hide destroys: &c&l✘";
+
         if (hidePlacedOn.getValue())
             finalDescription[finalDescription.length - 8] = "&7Hide placedOn: &a&l✔";
         else
@@ -118,10 +119,12 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
             finalDescription[finalDescription.length - 7] = "&7Hide enchantments: &a&l✔";
         else
             finalDescription[finalDescription.length - 7] = "&7Hide enchantments: &c&l✘";
+
         if (hideUnbreakable.getValue())
             finalDescription[finalDescription.length - 6] = "&7Hide unbreakable: &a&l✔";
         else
             finalDescription[finalDescription.length - 6] = "&7Hide unbreakable: &c&l✘";
+
         if (hideAttributes.getValue())
             finalDescription[finalDescription.length - 5] = "&7Hide attributes: &a&l✔";
         else
@@ -131,8 +134,9 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, HidersEditor
             finalDescription[finalDescription.length - 4] = "&7Hide usage: &a&l✔";
         else
             finalDescription[finalDescription.length - 4] = "&7Hide usage: &c&l✘";
+
         if(!SCore.is1v17Plus()) {
-            finalDescription[finalDescription.length - 4] = "&7Hide dye: &6&lONLY 1.17 & +";
+            finalDescription[finalDescription.length - 3] = "&7Hide dye: &6&lONLY 1.17 & +";
         }
         else if (hideDye.getValue())
             finalDescription[finalDescription.length - 3] = "&7Hide dye: &a&l✔";
