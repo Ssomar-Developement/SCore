@@ -29,20 +29,63 @@ public class If extends PlayerCommand {
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         ActionInfo aInfo = sCommandToExec.getActionInfo();
         List<String> args = sCommandToExec.getOtherArgs();
-
-        //SsomarDev.testMsg("IF CMD", true);
-        PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
-        conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
+    
         String condition = args.get(0);
         SsomarDev.testMsg("IF condition: " + condition, true);
-
+    
+        StringPlaceholder sp = aInfo.getSp();
+        if (sp == null) sp = new StringPlaceholder();
+        sp.setPlayerPlcHldr(receiver.getUniqueId(), aInfo.getSlot());
+        sp.reloadAllPlaceholders();
+    
+        List<Player> targets = new ArrayList<>();
+        targets.add(receiver);
+    
+        boolean finalResult = evaluateCondition(condition, receiver, sp);
+        
+        if (finalResult) {
+            CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
+        } else {
+            SsomarDev.testMsg("IF STOPPED", true);
+        }
+    }
+    
+    private boolean evaluateCondition(String condition, Player receiver, StringPlaceholder sp) {
+        // Split by OR (||) first
+        String[] orConditions = condition.split("\\|\\|");
+        boolean orResult = false;
+    
+        for (String orCondition : orConditions) {
+            // Split by AND (&&) and evaluate all subconditions
+            String[] andConditions = orCondition.split("&&");
+            boolean andResult = true;
+    
+            for (String andCondition : andConditions) {
+                andCondition = andCondition.trim();
+                if (!evaluateSingleCondition(andCondition, receiver, sp)) {
+                    andResult = false;
+                    break;
+                }
+            }
+    
+            if (andResult) {
+                orResult = true;
+                break;
+            }
+        }
+    
+        return orResult;
+    }
+    
+    private boolean evaluateSingleCondition(String condition, Player receiver, StringPlaceholder sp) {
+        PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
+        conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
+    
         boolean conditionContainsPlaceholder = condition.contains("%");
         String split = conditionContainsPlaceholder ? "%" : "";
-
-        // "%"+c.getSymbol() because the placeholder can also contains comparator so to be sure the comparator is outside the placeholder we need to be sure there is a % before
+    
         Comparator comparator = null;
         for (Comparator c : Comparator.values()) {
-            /* Check if it contains placeholder or if its just a direct value */
             if (condition.contains(split + c.getSymbol())) {
                 conditionFeature.setComparator(ComparatorFeature.buildNull(c));
                 comparator = c;
@@ -50,30 +93,20 @@ public class If extends PlayerCommand {
             }
         }
         if (comparator == null) {
-            SsomarDev.testMsg("IF STOPPED because comparator null ", true);
-            return;
+            SsomarDev.testMsg("IF STOPPED because comparator null for condition: " + condition, true);
+            return false;
         }
+    
         String[] parts = condition.split(split + comparator.getSymbol());
-        conditionFeature.setPart1(ColoredStringFeature.buildNull(parts[0] + split));
-        conditionFeature.setPart2(ColoredStringFeature.buildNull(parts[1]));
-
-        StringPlaceholder sp = aInfo.getSp();
-        if (sp == null) sp = new StringPlaceholder();
-        sp.setPlayerPlcHldr(receiver.getUniqueId(), aInfo.getSlot());
-        sp.reloadAllPlaceholders();
-
-        List<Player> targets = new ArrayList<>();
-        targets.add(receiver);
-
-        /* for (String commandToRun: args.subList(1, args.size())){
-            SsomarDev.testMsg("Command to run IF >> "+commandToRun, true);
-        } */
-
-        if (conditionFeature.verify(receiver, null, sp)) {
-            CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
-        } else {
-            //SsomarDev.testMsg("IF STOPPED", true);
+        if (parts.length < 2) {
+            SsomarDev.testMsg("IF STOPPED because parts are invalid for condition: " + condition, true);
+            return false;
         }
+    
+        conditionFeature.setPart1(ColoredStringFeature.buildNull(parts[0].trim() + split));
+        conditionFeature.setPart2(ColoredStringFeature.buildNull(parts[1].trim()));
+    
+        return conditionFeature.verify(receiver, null, sp);
     }
 
     @Override
