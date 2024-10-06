@@ -53,7 +53,7 @@ public class ModifyDurability extends PlayerCommand {
             }
 
             int maxDura = item.getType().getMaxDurability();
-            if(SCore.isIs1v21Plus()) maxDura = meta.getMaxDamage();
+            if(SCore.isIs1v21Plus() && meta.hasMaxDamage()) maxDura = meta.getMaxDamage();
 
             //SsomarDev.testMsg("Item " +item.getType()+" max dura "+ maxDura+" Modification: " + modification+ " Damge: " + meta.getDamage()+ " MaxDurability: " + item.getType().getMaxDurability()+ " UnbreakingLevel: " + unbreakingLevel, true);
 

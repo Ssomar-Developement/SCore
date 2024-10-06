@@ -31,11 +31,11 @@ public class DisableGlideActivation extends PlayerCommand {
         List<String> args = sCommandToExec.getOtherArgs();
         int time = Double.valueOf(args.get(0)).intValue();
 
-        if (activeDisabled.containsKey(receiver.getUniqueId())) {
-            activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiver.getUniqueId()) + 1);
-        } else activeDisabled.put(receiver.getUniqueId(), 1);
-
         final UUID receiverUUID = receiver.getUniqueId();
+
+        if (activeDisabled.containsKey(receiverUUID)) {
+            activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiverUUID) + 1);
+        } else activeDisabled.put(receiverUUID, 1);
 
         Runnable runnable3 = new Runnable() {
             @Override

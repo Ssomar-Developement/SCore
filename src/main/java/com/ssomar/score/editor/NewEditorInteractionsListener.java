@@ -1,5 +1,7 @@
 package com.ssomar.score.editor;
 
+import com.ssomar.score.features.custom.Instrument.InstrumentFeaturesEditor;
+import com.ssomar.score.features.custom.Instrument.InstrumentFeaturesEditorManager;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditor;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditorManager;
 import com.ssomar.score.features.custom.armortrim.ArmorTrimEditor;
@@ -544,6 +546,10 @@ public class NewEditorInteractionsListener implements Listener {
             BookFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
+        else if (holder instanceof InstrumentFeaturesEditor){
+            InstrumentFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
 
     }
 
@@ -865,6 +871,10 @@ public class NewEditorInteractionsListener implements Listener {
         else if(BookFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
             e.setCancelled(true);
             BookFeaturesEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if(InstrumentFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
+            e.setCancelled(true);
+            InstrumentFeaturesEditorManager.getInstance().receiveMessage(p, message);
         }
     }
 }

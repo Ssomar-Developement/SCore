@@ -350,6 +350,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     materials("blocks", "Block Materials", new String[]{"&7&oThe materials impacted by this rule"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
     damagePerBlock("damagePerBlock", "Damage Per Block", new String[]{"&7&oSet the amount of durability to be removed","&7&ofrom the tool each time a block is broken."}, GUI.CLOCK, false),
 
+    instrumentFeatures("instrumentFeatures", "Instrument Features", new String[]{"&7&oThe instrument features"}, Material.NOTE_BLOCK, false),
+    instrument("instrument", "Instrument", new String[]{"&7&oThe instrument"}, Material.NOTE_BLOCK, false),
+
+
     typeTarget("typeTarget", "Type Target", new String[]{"&7&oType target"},  Material.COMPASS, false),
     detailedClick("detailedClick", "Detailed Click", new String[]{"&7&oThe specific click"}, Material.COMPASS, false),
     usageModification("usageModification", "Usage Modification", new String[]{"&7&oUsage modification"}, Material.BUCKET, true),

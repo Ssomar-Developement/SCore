@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 
 public class DisableGlideActivationEvent implements Listener {
 
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = true;
 
     @EventHandler(priority = EventPriority.HIGH)
     public void entityToggleGlideEvent(EntityToggleGlideEvent event) {
