@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
 
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
@@ -17,14 +17,20 @@ import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAr
 public class MobAround extends EntityCommand {
 
     public MobAround() {
+        CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
+        CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
+        CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
+        List<CommandSetting> settings = getSettings();
+        settings.add(distance);
+        settings.add(throughBlocks);
+        settings.add(safeDistance);
+        setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
 
     @Override
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
-        ActionInfo aInfo = sCommandToExec.getActionInfo();
-        List<String> args = sCommandToExec.getOtherArgs();
-        mobAroundExecution(receiver.getLocation(), p, receiver, true, args, aInfo);
+        mobAroundExecution(null, p, receiver, false, sCommandToExec);
     }
 
     @Override

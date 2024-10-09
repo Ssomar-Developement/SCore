@@ -45,6 +45,6 @@ public class MobAround extends BlockCommand {
 
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
-        mobAroundExecution(block.getLocation(), p, null, true, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+        mobAroundExecution(block.getLocation(), p, null, true, sCommandToExec);
     }
 }
