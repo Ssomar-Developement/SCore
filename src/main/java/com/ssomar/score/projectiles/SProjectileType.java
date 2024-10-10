@@ -31,7 +31,10 @@ public enum SProjectileType {
     THROWNEXPBOTTLE(FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE")), "THROWNEXPBOTTLE"),
     FIREWORK(FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")), "FIREWORK"),
     SPECTRAL_ARROW(FixedMaterial.getMaterial(Arrays.asList("SPECTRAL_ARROW")), "SPECTRAL_ARROW"),
-    WIND_CHARGE(FixedMaterial.getMaterial(Arrays.asList("WIND_CHARGE")), "WIND_CHARGE"),;
+    WIND_CHARGE(FixedMaterial.getMaterial(Arrays.asList("WIND_CHARGE")), "WIND_CHARGE"),
+    LLAMA_SPIT(FixedMaterial.getMaterial(Arrays.asList("GHAST_TEAR")), "LLAMASPIT", "LLAMA_SPIT", "LAMASPIT", "LAMA_SPIT"),
+    FISHHOOK(FixedMaterial.getMaterial(Arrays.asList("FISHING_ROD")), "FISHHOOK");
+
 
     private Material material;
     private final String[] validNames;
@@ -159,6 +162,12 @@ public enum SProjectileType {
             projectiles.put("SPECTRALARROW", SpectralArrow.class);
         } catch (Exception | Error ignored) {
         }
+
+        try {
+            projectiles.put("FISHHOOK", FishHook.class);
+        } catch (Exception | Error ignored) {
+        }
+
         try {
             projectiles.put("SPECTRAL_ARROW", SpectralArrow.class);
         } catch (Exception | Error ignored) {
