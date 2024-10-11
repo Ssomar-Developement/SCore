@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
 public class If extends PlayerCommand {
 
@@ -51,32 +52,72 @@ public class If extends PlayerCommand {
     }
     
     private boolean evaluateCondition(String condition, Player receiver, StringPlaceholder sp) {
-        // Split by OR (||) first
-        String[] orConditions = condition.split("\\|\\|");
-        boolean orResult = false;
+        // Remove any whitespace for easier processing
+        condition = condition.replaceAll("\\s+", "");
     
-        for (String orCondition : orConditions) {
-            // Split by AND (&&) and evaluate all subconditions
-            String[] andConditions = orCondition.split("&&");
-            boolean andResult = true;
+        // Use two stacks to manage conditions and operators
+        Stack<Boolean> values = new Stack<>();
+        Stack<Character> operators = new Stack<>();
     
-            for (String andCondition : andConditions) {
-                andCondition = andCondition.trim();
-                if (!evaluateSingleCondition(andCondition, receiver, sp)) {
-                    andResult = false;
-                    break;
+        for (int i = 0; i < condition.length(); i++) {
+            char ch = condition.charAt(i);
+    
+            // If current char is '(', push it to operators stack
+            if (ch == '(') {
+                operators.push(ch);
+            }
+            // If current char is ')', solve the entire expression till '('
+            else if (ch == ')') {
+                while (operators.peek() != '(') {
+                    values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+                }
+                operators.pop(); // Pop '('
+            }
+            // If current char is a logical operator (&& or ||)
+            else if (ch == '&' || ch == '|') {
+                // Detect double symbols (&& or ||)
+                if (i + 1 < condition.length() && condition.charAt(i + 1) == ch) {
+                    char operator = (ch == '&') ? '&' : '|';
+                    while (!operators.isEmpty() && hasPrecedence(operator, operators.peek())) {
+                        values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+                    }
+                    operators.push(operator);
+                    i++; // Skip next character (& or | again)
                 }
             }
-    
-            if (andResult) {
-                orResult = true;
-                break;
+            // If current char is part of a condition, extract and evaluate it
+            else {
+                StringBuilder cond = new StringBuilder();
+                while (i < condition.length() && condition.charAt(i) != '(' && condition.charAt(i) != ')' && condition.charAt(i) != '&' && condition.charAt(i) != '|') {
+                    cond.append(condition.charAt(i));
+                    i++;
+                }
+                i--; // Adjust index for next iteration
+                boolean result = evaluateSingleCondition(cond.toString(), receiver, sp);
+                values.push(result);
             }
         }
     
-        return orResult;
+        // Entire expression has been parsed, apply remaining operators
+        while (!operators.isEmpty()) {
+            values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+        }
+    
+        return values.pop();
     }
     
+    // Apply a logical operator to two boolean values
+    private boolean applyOperator(char operator, boolean b1, boolean b2) {
+        if (operator == '&') return b1 && b2;
+        if (operator == '|') return b1 || b2;
+        throw new IllegalArgumentException("Invalid operator: " + operator);
+    }
+    
+    // Return true if 'op2' has higher or same precedence as 'op1', false otherwise
+    private boolean hasPrecedence(char op1, char op2) {
+        if (op2 == '(' || op2 == ')') return false;
+        return (op1 != '&' || op2 != '|'); // AND has higher precedence than OR
+    }
     private boolean evaluateSingleCondition(String condition, Player receiver, StringPlaceholder sp) {
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
         conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
