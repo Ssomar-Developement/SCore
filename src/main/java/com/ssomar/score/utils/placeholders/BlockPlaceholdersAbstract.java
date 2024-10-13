@@ -1,5 +1,7 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
+import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.score.SCore;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.ToolsListMaterial;
@@ -34,6 +36,7 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
     private int blockZ;
     private UUID blockWorld;
     private String blockWorldName;
+    private String EB_ID;
 
     private Biome biome;
     private String blockDimension;
@@ -74,6 +77,13 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
                 break;
         }
         if (fixType != null) this.fixType = fixType;
+        if(SCore.hasExecutableBlocks){
+            Optional<ExecutableBlockPlaced> executableBlockPlaced = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+            if(executableBlockPlaced.isPresent()){
+                this.EB_ID = executableBlockPlaced.get().getEB_ID();
+            }
+            else this.EB_ID = "";
+        }
         this.reloadBlockPlcHldr();
     }
 
@@ -106,6 +116,8 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
             placeholders.put("%" + particle + "_biome%", biome.toString());
             placeholders.put("%" + particle + "_biome_lower%", biome.toString().toLowerCase());
             placeholders.put("%" + particle + "_dimension%", blockDimension);
+            placeholders.put("%" + particle + "_dimension_lower%", blockDimension.toLowerCase());
+            placeholders.put("%" + particle + "_eb_id%", EB_ID);
             if (!SCore.is1v12Less()) placeholders.put("%" + particle + "_data%", block.getBlockData().getAsString());
 
             try {

@@ -145,7 +145,7 @@ public class Launch extends PlayerCommand {
                             projectile.transformTheProjectile(entity, receiver, mat);
                         }
 
-                        if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
+                        if (SCore.hasExecutableItems) {
                             ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
                             ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
                         }
