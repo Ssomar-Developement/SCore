@@ -49,6 +49,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
         this.notFor1_18_less.add(RestrictionEnum.CANCEL_HORN);
         this.notFor1_19_less = new ArrayList<>();
         this.notFor1_19_less.add(RestrictionEnum.CANCEL_DECORATED_POT);
+        this.notFor1_19_less.add(RestrictionEnum.CANCEL_CRAFTER);
         reset();
     }
 

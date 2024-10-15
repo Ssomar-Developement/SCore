@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
@@ -15,6 +16,21 @@ import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAr
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends BlockCommand {
+
+    public MobAround() {
+
+        CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
+        CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoEntity", -1, Boolean.class, true);
+        CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
+        CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
+        List<CommandSetting> settings = getSettings();
+        settings.add(distance);
+        settings.add(displayMsgIfNoPlayer);
+        settings.add(throughBlocks);
+        settings.add(safeDistance);
+        setNewSettingsMode(true);
+        setCanExecuteCommands(true);
+    }
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
