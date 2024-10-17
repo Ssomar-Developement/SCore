@@ -8,9 +8,13 @@ import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -38,6 +42,20 @@ public class Damage extends MixedCommand {
 
         double damage = getDamage(p, livingReceiver, args, aInfo);
 
+        Object damageSource = null;
+        if(SCore.is1v20v5Plus()) {
+            DamageType damageType = DamageType.GENERIC;
+            try {
+                damageType = Registry.DAMAGE_TYPE.get(NamespacedKey.minecraft(args.get(3).toLowerCase()));
+            } catch (Exception e) {}
+
+            try {
+                if (p != null) damageSource = DamageSource.builder(damageType).withCausingEntity(p).build();
+                else damageSource = DamageSource.builder(damageType).build();
+            } catch (Exception e) {}
+        }
+
+
         if (damage > 0 && !receiver.isDead()) {
             int maximumNoDmg = livingReceiver.getNoDamageTicks();
             livingReceiver.setNoDamageTicks(0);
@@ -48,9 +66,11 @@ public class Damage extends MixedCommand {
                     /* To avoid looping damage */
                     if(aInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
                     p.setMetadata("damageFromCustomCommand", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7773)));
-                    livingReceiver.damage(damage, p);
+                    if(SCore.is1v20v5Plus()) livingReceiver.damage(damage, (DamageSource) damageSource);
+                    else livingReceiver.damage(damage, p);
                 } else {
-                    livingReceiver.damage(damage);
+                    if(SCore.is1v20v5Plus()) livingReceiver.damage(damage, (DamageSource) damageSource);
+                    else livingReceiver.damage(damage);
                 }
             }
 
@@ -151,7 +171,7 @@ public class Damage extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "DAMAGE {number} [amplified If Strength Effect, true or false] [amplified with attack attribute, true or false]";
+        return "DAMAGE {number} [amplified If Strength Effect, true or false] [amplified with attack attribute, true or false] [damageType]";
     }
 
     @Override
