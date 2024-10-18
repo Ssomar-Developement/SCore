@@ -52,7 +52,9 @@ public class Damage extends MixedCommand {
             try {
                 if (p != null) damageSource = DamageSource.builder(damageType).withCausingEntity(p).build();
                 else damageSource = DamageSource.builder(damageType).build();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -66,10 +68,10 @@ public class Damage extends MixedCommand {
                     /* To avoid looping damage */
                     if(aInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
                     p.setMetadata("damageFromCustomCommand", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7773)));
-                    if(SCore.is1v20v5Plus()) livingReceiver.damage(damage, (DamageSource) damageSource);
+                    if(SCore.is1v20v5Plus() && damageSource != null) livingReceiver.damage(damage, (DamageSource) damageSource);
                     else livingReceiver.damage(damage, p);
                 } else {
-                    if(SCore.is1v20v5Plus()) livingReceiver.damage(damage, (DamageSource) damageSource);
+                    if(SCore.is1v20v5Plus() && damageSource != null) livingReceiver.damage(damage, (DamageSource) damageSource);
                     else livingReceiver.damage(damage);
                 }
             }
