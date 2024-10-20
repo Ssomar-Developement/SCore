@@ -50,7 +50,7 @@ public class Damage extends MixedCommand {
             } catch (Exception e) {}
 
             try {
-                if (p != null) damageSource = DamageSource.builder(damageType).withCausingEntity(p).build();
+                if (p != null) damageSource = DamageSource.builder(damageType).withDirectEntity(p).withCausingEntity(p).build();
                 else damageSource = DamageSource.builder(damageType).build();
             } catch (Exception e) {
                 e.printStackTrace();

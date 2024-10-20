@@ -532,6 +532,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canBeMoved("canBeMoved", "Can be moved", new String[]{"&7&oIf the block can be moved"}, Material.LEVER, false),
     itemsAdderID("itemsAdderID", "ItemsAdder", new String[]{"&7&oThe itemsAdderBlock ID"}, Material.DIAMOND_BLOCK, false),
     oraxenID("oraxenID", "Oraxen", new String[]{"&7&oThe Oraxen ID"}, Material.DIAMOND_BLOCK, false),
+    interactionRange("interactionRange", "Interaction Range", new String[]{"&7&oThe interaction range"}, GUI.CLOCK, false),
 
     enabled("enabled", "Enabled", new String[]{"&7&oIf the event is enabled"}, null, false),
     editorIcon("editorIcon",  "Icon Editor", new String[]{}, Material.LEVER, false),
