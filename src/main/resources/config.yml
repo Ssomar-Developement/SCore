@@ -18,3 +18,4 @@ reduceDamageIndicatorWithProtolcolLib: false # if you have ProtocolLib installed
 jetMinionsGenerateBreakActivator : false
 silenceOutputs:
   - "blacklist the sentence here"
+disableCustomMetadataOnEntities: false # to disable the metadata fromSpawner and bowForce to be added to entities

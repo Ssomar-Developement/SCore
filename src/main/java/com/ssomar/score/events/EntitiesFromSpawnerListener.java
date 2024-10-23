@@ -1,6 +1,7 @@
 package com.ssomar.score.events;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,7 +22,7 @@ public class EntitiesFromSpawnerListener implements Listener {
         try {
             CreatureSpawnEvent.SpawnReason spawnReason = e.getSpawnReason();
 
-            if (spawnReason == CreatureSpawnEvent.SpawnReason.SPAWNER) {
+            if (spawnReason == CreatureSpawnEvent.SpawnReason.SPAWNER && !GeneralConfig.getInstance().isDisableCustomMetadataOnEntities()) {
                 entity.setMetadata("fromSpawner", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(1)));
             }
         }
