@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.foodFeatures;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -12,9 +13,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.FoodComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +58,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
             errors.addAll(saturation.load(plugin, section, isPremiumLoading));
             errors.addAll(isMeat.load(plugin, section, isPremiumLoading));
             errors.addAll(canAlwaysEat.load(plugin, section, isPremiumLoading));
-            errors.addAll(eatSeconds.load(plugin, section, isPremiumLoading));
+            if(!SCore.is1v21v2Plus()) errors.addAll(eatSeconds.load(plugin, section, isPremiumLoading));
 
         }
 
@@ -68,7 +73,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
         saturation.save(section);
         isMeat.save(section);
         canAlwaysEat.save(section);
-        eatSeconds.save(section);
+        if(!SCore.is1v21v2Plus()) eatSeconds.save(section);
     }
 
     @Override
@@ -78,25 +83,55 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
 
     @Override
     public FoodFeatures initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 6];
+        int len = 5;
+        if(!SCore.is1v21v2Plus()) len = 6;
+        String[] finalDescription = new String[getEditorDescription().length + len];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - len] = GUI.CLICK_HERE_TO_CHANGE;
+        len--;
 
         if (isMeat.getValue())
-            finalDescription[finalDescription.length - 5] = "&7IsMeat: &a&l✔";
+            finalDescription[finalDescription.length - len] = "&7IsMeat: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7IsMeat: &c&l✘";
-
-        finalDescription[finalDescription.length - 4] = "&7Nutrition: &e" + nutrition.getValue().get();
-        finalDescription[finalDescription.length - 3] = "&7Saturation: &e" + saturation.getValue().get();
-        finalDescription[finalDescription.length - 2] = "&7Can Always Eat: &e" + canAlwaysEat.getValue();
-        finalDescription[finalDescription.length - 1] = "&7Eat Seconds: &e" + eatSeconds.getValue().get();
-
-
+            finalDescription[finalDescription.length - len] = "&7IsMeat: &c&l✘";
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Nutrition: &e" + nutrition.getValue().get();
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Saturation: &e" + saturation.getValue().get();
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Can Always Eat: &e" + canAlwaysEat.getValue();
+        len--;
+        if(!SCore.is1v21v2Plus()) finalDescription[finalDescription.length - len] = "&7Eat Seconds: &e" + eatSeconds.getValue().get();
 
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
+    }
+
+    public void applyOnItemMeta(ItemMeta meta){
+        /* Added in 1.20.5 */
+        if (SCore.is1v20v5Plus()) {
+            if (getIsMeat().getValue()) {
+                FoodComponent food = meta.getFood();
+                int nutrition = getNutrition().getValue().get();
+                if (nutrition < 0) nutrition = 0;
+                food.setNutrition(nutrition);
+                int saturation = getSaturation().getValue().get();
+                if (saturation < 0) saturation = 0;
+                food.setSaturation(saturation);
+                food.setCanAlwaysEat(getCanAlwaysEat().getValue());
+                if(!SCore.is1v21v2Plus()) {
+                    int eatSeconds = getEatSeconds().getValue().get();
+                    if (eatSeconds <= 0) eatSeconds = 1;
+                    Class<?> clazz = food.getClass();
+                    try {
+                        Method method = clazz.getMethod("setEatSeconds", int.class);
+                        method.invoke(food, eatSeconds);
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+                }
+                meta.setFood(food);
+            }
+        }
     }
 
     @Override

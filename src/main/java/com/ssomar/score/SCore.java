@@ -360,22 +360,22 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.20.5 or + ? */
     public static boolean is1v20v5Plus() {
-        return is1v20v5() || is1v20v6() || isIs1v21Plus();
+        return is1v20v5() || is1v20v6() || is1v21Plus();
     }
 
-    public static boolean isIs1v21Plus() {
+    public static boolean is1v21Plus() {
         return is1v21();
     }
 
-    public static boolean isIs1v21v2Plus() {
-        return is1v21v2()  || is1v21v3() || isIs1v22Plus();
+    public static boolean is1v21v2Plus() {
+        return is1v21v2()  || is1v21v3() || is1v22Plus();
     }
 
-    public static boolean isIs1v22Plus() {
-        return is1v22() || isIs1v23Plus();
+    public static boolean is1v22Plus() {
+        return is1v22() || is1v23Plus();
     }
 
-    public static boolean isIs1v23Plus() {
+    public static boolean is1v23Plus() {
         return is1v23();
     }
 

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.foodFeatures;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
 
@@ -24,7 +25,7 @@ public class FoodFeaturesEditor extends FeatureEditorInterface<FoodFeatures> {
         i++;
         dropFeatures.getCanAlwaysEat().initAndUpdateItemParentEditor(this, i);
         i++;
-        dropFeatures.getEatSeconds().initAndUpdateItemParentEditor(this, i);
+        if(!SCore.is1v21v2Plus()) dropFeatures.getEatSeconds().initAndUpdateItemParentEditor(this, i);
         i++;
 
         // Back
