@@ -169,7 +169,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
         if (SCore.hasExecutableItems) {
             if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
                 NBTItem nbti = new NBTItem(item);
-                if (nbti.hasKey("EI-OWNER")) {
+                if (nbti.hasTag("EI-OWNER")) {
                     String ownerUUIDStr = nbti.getString("EI-OWNER");
                     try {
                         return Optional.ofNullable(UUID.fromString(ownerUUIDStr));

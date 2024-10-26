@@ -1,13 +1,19 @@
 package com.ssomar.score.features.custom.cooldowns;
 
+import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
 
 import de.tr7zw.nbtapi.NBTItem;
 
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -41,26 +47,35 @@ public class CooldownsManager {
 
                 // Find item slot to include below
                 if (params.contains("cooldown_slot")) {
+                    // if (!SCore.hasNBTAPI) {
+                    //     return Optional.of("You need NBT API!");
+                    // }
                     // Extract the slot number using regex
                     String slotNumber = params.replaceFirst(".*cooldown_slot(\\d+).*", "$1");
                     int slot = Integer.parseInt(slotNumber);
 
                     // Retrieve equipment for the slot
                     if (player.isOnline() && player.getPlayer() != null) {
-                        ItemStack item = player.getPlayer().getInventory().getItem(slot);
+                        ItemStack item = player.getPlayer().getInventory().getItem(slot);                   
                         if (item != null) {
-                            NBTItem nbti = new NBTItem(item);
-                            if (nbti.hasTag("EI-ID")) {
-                                cooldownId += "EI:";
-                                cooldownId += nbti.getString("EI-ID");
-                                cooldownId += ":";
-                                // Remove _slot{number} now
-                                params = params.replaceFirst("_slot\\d+:", "");
+                            if (item.hasItemMeta() && player != null) {
+                                ItemMeta iM = item.getItemMeta();
+            
+                                NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "ei-id");
+                                String eiid = iM.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            
+                                if (eiid != null) {
+                                    cooldownId += "EI:" + eiid + ":";
+                                    // get rid of the slot
+                                    params = params.replaceFirst("slot\\d+:", "");
+                                } else {
+                                    return Optional.of("Not an Executable Item: " + item.getItemMeta().getDisplayName());
+                                }
                             } else {
-                                return Optional.of("Not an Executable Item");
+                                return Optional.of("No ItemMeta found or player is null");
                             }
                         } else {
-                            return Optional.of("No Item");
+                            return Optional.of("No Item in specified slot");
                         }
                     } else {
                         return Optional.of("Player Offline");
@@ -80,7 +95,6 @@ public class CooldownsManager {
 
                 // Parse as normal, minor refactor so it's easier to read
                 cooldownId += params.split("cooldown_")[1];
-
                 for(Cooldown cd : cooldownsUUID.get(uuid)){
                     SsomarDev.testMsg("CD "+cd.toString(), DEBUG);
                     if(cd.getId().equalsIgnoreCase(cooldownId)){
