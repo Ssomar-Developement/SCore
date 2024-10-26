@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public abstract class FeatureWithHisOwnEditor<A, B extends FeatureInterface<A, B>, Y extends GUI, T extends NewGUIManager<Y>> extends FeatureAbstract<A, B> implements FeatureParentInterface, Serializable {
+public abstract class FeatureWithHisOwnEditor<FINAL_VALUE_CLASS, FEATURE_CLASS, Y extends GUI, T extends NewGUIManager<Y>> extends FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implements FeatureParentInterface<FINAL_VALUE_CLASS, FEATURE_CLASS>, Serializable {
 
     public FeatureWithHisOwnEditor(FeatureParentInterface parent, FeatureSettingsInterface featureSettingsSCore) {
         super(parent, featureSettingsSCore);

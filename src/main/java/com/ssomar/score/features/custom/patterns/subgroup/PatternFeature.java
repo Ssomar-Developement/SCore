@@ -145,7 +145,7 @@ public class PatternFeature extends FeatureWithHisOwnEditor<PatternFeature, Patt
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof PatternFeature) {
                 PatternFeature eF = (PatternFeature) feature;
                 eF.setSubPattern(this.getSubPattern());

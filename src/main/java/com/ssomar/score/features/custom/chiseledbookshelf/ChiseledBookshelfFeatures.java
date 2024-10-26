@@ -6,6 +6,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.list.ListIntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -25,7 +27,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ChiseledBookshelfFeatures extends FeatureWithHisOwnEditor<ChiseledBookshelfFeatures, ChiseledBookshelfFeatures, ChiseledBookshelfFeaturesEditor, ChiseledBookshelfFeaturesEditorManager> {
+public class ChiseledBookshelfFeatures extends FeatureWithHisOwnEditor<ChiseledBookshelfFeatures, ChiseledBookshelfFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private ListIntegerFeature occupiedSlots;
@@ -111,7 +113,7 @@ public class ChiseledBookshelfFeatures extends FeatureWithHisOwnEditor<ChiseledB
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ChiseledBookshelfFeatures) {
                 ChiseledBookshelfFeatures eF = (ChiseledBookshelfFeatures) feature;
                 eF.setOccupiedSlots(this.occupiedSlots);
@@ -150,6 +152,6 @@ public class ChiseledBookshelfFeatures extends FeatureWithHisOwnEditor<ChiseledB
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ChiseledBookshelfFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

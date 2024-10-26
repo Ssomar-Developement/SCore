@@ -13,6 +13,8 @@ import com.ssomar.score.features.custom.required.level.RequiredLevel;
 import com.ssomar.score.features.custom.required.magic.group.RequiredMagicGroupFeature;
 import com.ssomar.score.features.custom.required.mana.RequiredMana;
 import com.ssomar.score.features.custom.required.money.RequiredMoney;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -29,7 +31,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, RequiredGroup, RequiredGroupEditor, RequiredGroupEditorManager> implements RequiredPlayerInterface {
+public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, RequiredGroup, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements RequiredPlayerInterface {
 
     private static final Boolean DEBUG = false;
     private RequiredLevel requiredLevel;
@@ -196,7 +198,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public void openEditor(Player player) {
-        RequiredGroupEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
@@ -226,7 +228,7 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredGroup) {
                 RequiredGroup requiredgroup = (RequiredGroup) feature;
                 requiredgroup.setRequiredLevel(requiredLevel);

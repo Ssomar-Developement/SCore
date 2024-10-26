@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -27,7 +29,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperience, RequiredExperience, RequiredExperienceEditor, RequiredExperienceEditorManager> implements RequiredPlayerInterface {
+public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperience, RequiredExperience, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements RequiredPlayerInterface {
 
     private IntegerFeature experience;
     private ColoredStringFeature errorMessage;
@@ -167,7 +169,7 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
     @Override
     public void openEditor(Player player) {
         if (!isPremium() && this.isRequirePremium()) return;
-        RequiredExperienceEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
@@ -200,7 +202,7 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredExperience) {
                 RequiredExperience requiredLevel = (RequiredExperience) feature;
                 requiredLevel.setExperience(experience);

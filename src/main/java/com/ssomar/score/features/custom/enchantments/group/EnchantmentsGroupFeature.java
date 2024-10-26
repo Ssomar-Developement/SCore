@@ -136,7 +136,7 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof EnchantmentsGroupFeature) {
                 EnchantmentsGroupFeature eF = (EnchantmentsGroupFeature) feature;
                 eF.setEnchantments(getEnchantments());

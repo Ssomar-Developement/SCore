@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
 import com.ssomar.score.menu.GUI;
@@ -21,7 +23,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class CanBeUsedOnlyByOwnerFeatures extends FeatureWithHisOwnEditor<CanBeUsedOnlyByOwnerFeatures, CanBeUsedOnlyByOwnerFeatures, CanBeUsedOnlyByOwnerFeaturesEditor, CanBeUsedOnlyByOwnerFeaturesEditorManager> {
+public class CanBeUsedOnlyByOwnerFeatures extends FeatureWithHisOwnEditor<CanBeUsedOnlyByOwnerFeatures, CanBeUsedOnlyByOwnerFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature canBeUsedOnlyByTheOwner;
     private BooleanFeature cancelEventIfNotOwner;
@@ -122,7 +124,7 @@ public class CanBeUsedOnlyByOwnerFeatures extends FeatureWithHisOwnEditor<CanBeU
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof CanBeUsedOnlyByOwnerFeatures) {
                 CanBeUsedOnlyByOwnerFeatures hiders = (CanBeUsedOnlyByOwnerFeatures) feature;
                 hiders.setCanBeUsedOnlyByTheOwner(canBeUsedOnlyByTheOwner);
@@ -139,7 +141,7 @@ public class CanBeUsedOnlyByOwnerFeatures extends FeatureWithHisOwnEditor<CanBeU
 
     @Override
     public void openEditor(@NotNull Player player) {
-        CanBeUsedOnlyByOwnerFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

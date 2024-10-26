@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<AttributeFullOptionsFeature, AttributeFullOptionsFeature, AttributeFullOptionsFeatureEditor, AttributeFullOptionsFeatureEditorManager> {
+public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<AttributeFullOptionsFeature, AttributeFullOptionsFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private AttributeFeature attribute;
     private OperationFeature operation;
@@ -155,7 +157,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof AttributeFullOptionsFeature) {
                 AttributeFullOptionsFeature aFOF = (AttributeFullOptionsFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -178,7 +180,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     @Override
     public void openEditor(@NotNull Player player) {
-        AttributeFullOptionsFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

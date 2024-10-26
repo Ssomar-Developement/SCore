@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.entities.group.EntityTypeGroupFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.EntityTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -23,7 +25,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTypeForGroupFeature, EntityTypeForGroupFeature, EntityTypeForGroupFeatureEditor, EntityTypeForGroupFeatureEditorManager> {
+public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTypeForGroupFeature, EntityTypeForGroupFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private EntityTypeFeature entityType;
     private String id;
@@ -118,7 +120,7 @@ public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTyp
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof EntityTypeForGroupFeature) {
                 EntityTypeForGroupFeature aFOF = (EntityTypeForGroupFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -136,7 +138,7 @@ public class EntityTypeForGroupFeature extends FeatureWithHisOwnEditor<EntityTyp
 
     @Override
     public void openEditor(@NotNull Player player) {
-        EntityTypeForGroupFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

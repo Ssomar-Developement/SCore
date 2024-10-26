@@ -142,7 +142,7 @@ public class RequiredMagicGroupFeature extends FeatureWithHisOwnEditor<RequiredM
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredMagicGroupFeature) {
                 RequiredMagicGroupFeature eF = (RequiredMagicGroupFeature) feature;
                 eF.setRequiredMagics(this.getRequiredMagics());

@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -33,7 +35,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures, ContainerFeatures, ContainerFeaturesEditor, ContainerFeaturesEditorManager> {
+public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures, ContainerFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private ListDetailedMaterialFeature whitelistMaterials;
@@ -147,7 +149,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ContainerFeatures) {
                 ContainerFeatures eF = (ContainerFeatures) feature;
                 eF.setWhitelistMaterials(this.whitelistMaterials);
@@ -189,6 +191,6 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ContainerFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

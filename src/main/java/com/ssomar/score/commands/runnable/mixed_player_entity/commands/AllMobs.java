@@ -7,6 +7,9 @@ import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureSettingsInterface;
+import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.AllWorldManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -112,6 +115,11 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
     }
 
     @Override
+    public @Nullable FeatureParentInterface getParent() {
+        return null;
+    }
+
+    @Override
     public ConfigurationSection getConfigurationSection() {
         return null;
     }
@@ -144,5 +152,75 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
     @Override
     public boolean isPremium() {
         return false;
+    }
+
+    @Override
+    public FeatureSettingsInterface getFeatureSettings() {
+        return null;
+    }
+
+    @Override
+    public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
+        return List.of();
+    }
+
+    @Override
+    public void save(ConfigurationSection config) {
+
+    }
+
+    @Override
+    public void writeInFile(ConfigurationSection config) {
+
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public String getEditorName() {
+        return "";
+    }
+
+    @Override
+    public Object getValue() {
+        return null;
+    }
+
+    @Override
+    public FeatureInterface initItemParentEditor(GUI gui, int slot) {
+        return null;
+    }
+
+    @Override
+    public void updateItemParentEditor(GUI gui) {
+
+    }
+
+    @Override
+    public void initAndUpdateItemParentEditor(GUI gui, int slot) {
+
+    }
+
+    @Override
+    public boolean isTheFeatureClickedParentEditor(String featureClicked) {
+        return false;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public boolean isRequirePremium() {
+        return false;
+    }
+
+    @Override
+    public FeatureInterface clone(FeatureParentInterface newParent) {
+        return null;
     }
 }

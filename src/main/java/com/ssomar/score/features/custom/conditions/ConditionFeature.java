@@ -3,8 +3,8 @@ package com.ssomar.score.features.custom.conditions;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.commands.console.ConsoleCommandsFeature;
-import com.ssomar.score.features.custom.hiders.HidersEditor;
-import com.ssomar.score.features.custom.hiders.HidersEditorManager;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public abstract class ConditionFeature<Y extends FeatureAbstract, T extends ConditionFeature<Y, T>> extends FeatureWithHisOwnEditor<T, T, HidersEditor, HidersEditorManager> {
+public abstract class ConditionFeature<Y extends FeatureAbstract, T extends ConditionFeature<Y, T>> extends FeatureWithHisOwnEditor<T, T, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private Y condition;
     private ColoredStringFeature errorMessage;
@@ -192,7 +192,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature.getClass() == getNewInstance(getParent()).getClass() && feature.getName().equals(getName())) {
                 T cdt = (T) feature;
                 cdt.setCondition(condition);
@@ -212,7 +212,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ConditionFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

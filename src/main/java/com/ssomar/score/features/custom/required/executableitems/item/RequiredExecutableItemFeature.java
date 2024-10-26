@@ -9,6 +9,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ExecutableItemFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
@@ -34,7 +36,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<RequiredExecutableItemFeature, RequiredExecutableItemFeature, RequiredExecutableItemFeatureEditor, RequiredExecutableItemFeatureEditorManager> implements RequiredPlayerInterface {
+public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<RequiredExecutableItemFeature, RequiredExecutableItemFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements RequiredPlayerInterface {
 
     private ExecutableItemFeature executableItem;
     private IntegerFeature amount;
@@ -145,7 +147,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredExecutableItemFeature) {
                 RequiredExecutableItemFeature aFOF = (RequiredExecutableItemFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -165,7 +167,7 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
 
     @Override
     public void openEditor(@NotNull Player player) {
-        RequiredExecutableItemFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override

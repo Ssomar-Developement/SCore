@@ -13,10 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -33,7 +30,7 @@ public class AroundBlockGroupFeature extends FeatureWithHisOwnEditor<AroundBlock
 
     @Override
     public void reset() {
-        this.aroundBlockGroup = new HashMap<>();
+        this.aroundBlockGroup = new LinkedHashMap<>();
     }
 
     @Override
@@ -96,7 +93,7 @@ public class AroundBlockGroupFeature extends FeatureWithHisOwnEditor<AroundBlock
     @Override
     public AroundBlockGroupFeature clone(FeatureParentInterface newParent) {
         AroundBlockGroupFeature eF = new AroundBlockGroupFeature(newParent, isNotSaveIfNoValue());
-        HashMap<String, AroundBlockFeature> newAroundBlockGroup = new HashMap<>();
+        HashMap<String, AroundBlockFeature> newAroundBlockGroup = new LinkedHashMap<>();
         for (String x : aroundBlockGroup.keySet()) {
             newAroundBlockGroup.put(x, aroundBlockGroup.get(x).clone(eF));
         }
@@ -129,7 +126,7 @@ public class AroundBlockGroupFeature extends FeatureWithHisOwnEditor<AroundBlock
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof AroundBlockGroupFeature) {
                 AroundBlockGroupFeature eF = (AroundBlockGroupFeature) feature;
                 eF.setAroundBlockGroup(this.getAroundBlockGroup());

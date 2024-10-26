@@ -136,7 +136,7 @@ public class VariablesGroupFeature extends FeatureWithHisOwnEditor<VariablesGrou
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof VariablesGroupFeature) {
                 VariablesGroupFeature eF = (VariablesGroupFeature) feature;
                 eF.setVariables(this.getVariables());

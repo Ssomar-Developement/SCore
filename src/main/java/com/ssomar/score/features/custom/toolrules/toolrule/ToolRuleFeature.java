@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.list.ListMaterialFeature;
@@ -23,7 +25,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, ToolRuleFeature, ToolRuleFeatureEditor, ToolRuleFeatureEditorManager> {
+public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, ToolRuleFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private ListMaterialFeature materials;
     private DoubleFeature miningSpeed;
@@ -106,7 +108,7 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(miningSpeed, correctForDrops, materials));
+        return new ArrayList<>(Arrays.asList(materials, miningSpeed, correctForDrops));
     }
 
     @Override
@@ -129,7 +131,7 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ToolRuleFeature) {
                 ToolRuleFeature aFOF = (ToolRuleFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -148,7 +150,7 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ToolRuleFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

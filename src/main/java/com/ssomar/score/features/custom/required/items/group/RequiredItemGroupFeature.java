@@ -152,7 +152,7 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredItemGroupFeature) {
                 RequiredItemGroupFeature eF = (RequiredItemGroupFeature) feature;
                 eF.setRequiredItems(this.getRequiredItems());

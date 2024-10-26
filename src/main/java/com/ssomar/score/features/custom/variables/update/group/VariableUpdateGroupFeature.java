@@ -124,7 +124,7 @@ public class VariableUpdateGroupFeature extends FeatureWithHisOwnEditor<Variable
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof VariableUpdateGroupFeature) {
                 VariableUpdateGroupFeature eF = (VariableUpdateGroupFeature) feature;
                 eF.setVariablesUpdates(this.getVariablesUpdates());

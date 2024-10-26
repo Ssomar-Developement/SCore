@@ -251,7 +251,9 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar</outputFile>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar
+                                    </outputFile>
                                 </configuration>
                             </execution>
                             <execution>
@@ -262,7 +264,9 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableBlocksEvo\src\main\resources\SCore.jar</outputFile>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\ExecutableBlocksEvo\src\main\resources\SCore.jar
+                                    </outputFile>
                                 </configuration>
                             </execution>
                             <execution>
@@ -273,7 +277,9 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>C:\Users\octav\Documents\GitHub\TestPlugin\src\main\resources\SCore.jar</outputFile>
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\TestPlugin\src\main\resources\SCore.jar
+                                    </outputFile>
                                 </configuration>
                             </execution>
                             <execution>
@@ -284,7 +290,8 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
                                     </outputFile>
                                 </configuration>
                             </execution>
@@ -296,7 +303,8 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
+                                    <outputFile>
+                                        C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
                                     </outputFile>
                                 </configuration>
                             </execution>
@@ -513,13 +521,7 @@
             <scope>provided</scope>
         </dependency>-->
 
-        <dependency>
-            <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.15.3</version>
-        </dependency>
-
+        <!-- For MyFurniture -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -534,11 +536,11 @@
             <systemPath>${project.basedir}/src/main/resources/SaberFactions.jar</systemPath>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.thoughtworks.paranamer</groupId>
             <artifactId>paranamer</artifactId>
             <version>2.8</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>xyz.xenondevs</groupId>
@@ -547,10 +549,17 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--<dependency>
+           <groupId>net.kyori</groupId>
+           <artifactId>adventure-text-minimessage</artifactId>
+           <version>4.17.0</version>
+           <scope>compile</scope>
+       </dependency> -->
+
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.17.0</version>
+            <groupId>com.github.Ssomar-Developement</groupId>
+            <artifactId>SEvents</artifactId>
+            <version>main-c2ad46d989-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -569,19 +578,12 @@
             <systemPath>${project.basedir}/src/main/resources/MMOCore.jar</systemPath>
         </dependency>
 
-        <!-- DEPENDENCIES
         <dependency>
-            <groupId>org.openjdk.jol</groupId>
-            <artifactId>jol-core</artifactId>
-            <version>0.10</version>
-        </dependency>-->
-
-        <dependency>
-             <groupId>org.spigotmc</groupId>
-             <artifactId>spigot-api</artifactId>
-             <version>1.21-R0.1-SNAPSHOT</version>
-             <scope>provided</scope>
-         </dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.21-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>dev.folia</groupId>
@@ -740,14 +742,6 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/Residence5.0.1.6.jar</systemPath>
         </dependency>
-        <!--
-            <dependency>
-                <groupId>com.ssomar.test</groupId>
-                <artifactId>Test</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <scope>system</scope>
-                <systemPath>${project.basedir}/src/main/resources/TestNms.jar</systemPath>
-            </dependency> -->
 
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
@@ -756,6 +750,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/multiverse-core-4.3.13.jar</systemPath>
         </dependency>
+
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
@@ -811,13 +806,6 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.7.0</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.Ssomar-Developement</groupId>
-            <artifactId>SEvents</artifactId>
-            <version>main-5da63d0e02-1</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

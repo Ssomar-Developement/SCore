@@ -4,6 +4,8 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.variables.base.group.VariablesGroupFeature;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdateFeature, VariableUpdateFeature, VariableUpdateFeatureEditor, VariableUpdateFeatureEditorManager> {
+public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdateFeature, VariableUpdateFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private final static boolean DEBUG = false;
     private UncoloredStringFeature variableName;
@@ -62,7 +64,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
         FeatureParentInterface parent = this.getParent();
         while (parent instanceof FeatureAbstract) {
             if (parent instanceof FeatureParentInterface) {
-                for (FeatureInterface feature : parent.getFeatures()) {
+                for (FeatureInterface feature : (List<FeatureInterface>) parent.getFeatures()) {
                     if (feature instanceof VariablesGroupFeature) {
                         return (VariablesGroupFeature) feature;
                     }
@@ -192,7 +194,16 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(variableName, type, stringUpdate, doubleUpdate));
+       List<FeatureInterface> featureInterfaces =  new ArrayList<>(Arrays.asList(variableName, type));
+        if (getVariables().getVariablesName().contains(this.variableName.getValue().get())) {
+            VariableType variableType = getVariables().getVariable(this.variableName.getValue().get()).getType().getValue().get();
+            if (variableType.equals(VariableType.STRING) || variableType.equals(VariableType.LIST)) {
+                featureInterfaces.add(stringUpdate);
+            } else {
+                featureInterfaces.add(doubleUpdate);
+            }
+        }
+        return featureInterfaces;
     }
 
     @Override
@@ -212,7 +223,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof VariableUpdateFeature) {
                 VariableUpdateFeature aFOF = (VariableUpdateFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -233,7 +244,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
 
     @Override
     public void openEditor(@NotNull Player player) {
-        VariableUpdateFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

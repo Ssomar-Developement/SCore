@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -27,7 +29,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, RequiredLevelEditor, RequiredLevelEditorManager> implements RequiredPlayerInterface {
+public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, RequiredLevel, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements RequiredPlayerInterface {
 
     private IntegerFeature level;
     private ColoredStringFeature errorMessage;
@@ -130,7 +132,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     @Override
     public void openEditor(Player player) {
         if (!isPremium() && this.isRequirePremium()) return;
-        RequiredLevelEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
@@ -163,7 +165,7 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredLevel) {
                 RequiredLevel requiredLevel = (RequiredLevel) feature;
                 requiredLevel.setLevel(level);

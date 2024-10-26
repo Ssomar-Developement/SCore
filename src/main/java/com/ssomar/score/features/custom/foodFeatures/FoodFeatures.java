@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeatures, FoodFeaturesEditor, FoodFeaturesEditorManager> {
+public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private IntegerFeature nutrition;
@@ -154,11 +156,11 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
+        features.add(isMeat);
         features.add(nutrition);
         features.add(saturation);
-        features.add(isMeat);
         features.add(canAlwaysEat);
-        features.add(eatSeconds);
+        if(!SCore.is1v21v2Plus()) features.add(eatSeconds);
         return features;
     }
 
@@ -179,7 +181,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof FoodFeatures) {
                 FoodFeatures hiders = (FoodFeatures) feature;
                 hiders.setNutrition(nutrition);
@@ -198,7 +200,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
 
     @Override
     public void openEditor(@NotNull Player player) {
-        FoodFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

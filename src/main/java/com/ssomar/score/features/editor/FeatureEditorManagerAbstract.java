@@ -7,6 +7,7 @@ import com.ssomar.score.features.*;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Optional;
 
 public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
@@ -21,7 +22,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     @Override
     public boolean allClicked(NewInteractionClickedGUIManager<T> i) {
 
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
 
                 //SsomarDev.testMsg("Feature clicked: " + feature.getName());
@@ -57,11 +58,11 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     }
 
     @Override
-    public void reset(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+    public void reset(NewInteractionClickedGUIManager<T> i) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             feature.reset();
         }
-        interact.gui.load();
+        i.gui.load();
     }
 
     @Override
@@ -80,7 +81,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean noShiftclicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).noShiftclicked(i.player, this);
@@ -92,7 +93,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean noShiftLeftclicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).noShiftLeftclicked(i.player, this);
@@ -104,7 +105,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean noShiftRightclicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).noShiftRightclicked(i.player, this);
@@ -126,7 +127,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             i.gui.getParent().openEditor(i.player);
             return true;
         } else {
-            for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+            for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
                 if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                     if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                         return ((FeatureRequireOnlyClicksInEditor) feature).shiftClicked(i.player, this);
@@ -139,7 +140,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean shiftLeftClicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).shiftLeftClicked(i.player, this);
@@ -151,7 +152,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean shiftRightClicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).shiftRightClicked(i.player, this);
@@ -163,7 +164,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean leftClicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).leftClicked(i.player, this);
@@ -175,7 +176,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean rightClicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOnlyClicksInEditor) {
                     return ((FeatureRequireOnlyClicksInEditor) feature).rightClicked(i.player, this);
@@ -187,7 +188,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public boolean middleClicked(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
                 if (feature instanceof FeatureRequireOneMessageInEditor) {
                     ((FeatureRequireOneMessageInEditor) feature).askInEditor(i.player, this);
@@ -210,7 +211,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     public void receiveMessageDeleteline(NewInteractionClickedGUIManager<T> i) {
         super.receiveMessageDeleteline(i);
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
@@ -223,7 +224,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     public void receiveMessageUpLine(NewInteractionClickedGUIManager<T> i) {
         super.receiveMessageUpLine(i);
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
@@ -236,7 +237,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     public void receiveMessageDownLine(NewInteractionClickedGUIManager<T> i) {
         super.receiveMessageDownLine(i);
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
@@ -249,7 +250,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     public void receiveMessageEditLine(NewInteractionClickedGUIManager<T> i) {
         super.receiveMessageEditLine(i);
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
@@ -262,7 +263,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public void receiveMessagePreviousPage(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
@@ -277,7 +278,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public void receiveMessageNextPage(NewInteractionClickedGUIManager<T> i) {
-        for (FeatureInterface feature : i.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
             if (requestWriting.get(i.player).equals(feature.getEditorName())) {
                 if (feature instanceof FeatureRequireSubTextEditorInEditor) {
                     FeatureRequireSubTextEditorInEditor featureRequireSubTextEditorInEditor = (FeatureRequireSubTextEditorInEditor) feature;
@@ -290,7 +291,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     }
 
     public void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>)  interact.gui.getParent().getFeatures()) {
             if (feature instanceof FeatureRequireMultipleMessageInEditor) {
                 if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                     ((FeatureRequireMultipleMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
@@ -310,7 +311,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     }
 
     public void receiveMessageNoValue(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>)  interact.gui.getParent().getFeatures()) {
             if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                 if (feature instanceof FeatureRequireOneMessageInEditor) {
                     ((FeatureRequireOneMessageInEditor) feature).finishEditInEditorNoValue(interact.player, this);
@@ -323,7 +324,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public void receiveMessageValue(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : interact.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>)  interact.gui.getParent().getFeatures()) {
             if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                 if (feature instanceof FeatureRequireOneMessageInEditor) {
                     Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);

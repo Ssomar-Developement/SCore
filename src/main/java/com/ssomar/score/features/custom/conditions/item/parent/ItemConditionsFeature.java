@@ -173,7 +173,7 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ItemConditionsFeature && feature.getName().equals(getName())) {
                 ItemConditionsFeature bCF = (ItemConditionsFeature) feature;
                 List<ItemConditionFeature> clones = new ArrayList<>();

@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 
-public interface FeatureInterface<T, Y extends FeatureInterface> {
+public interface FeatureInterface<FINAL_VALUE_CLASS, FEATURE_CLASS> {
 
     /**
      * @return The potential errors during that appear during the loading
@@ -21,11 +21,13 @@ public interface FeatureInterface<T, Y extends FeatureInterface> {
 
     String getEditorName();
 
-    T getValue();
+    FINAL_VALUE_CLASS getValue();
 
-    Y initItemParentEditor(GUI gui, int slot);
+    FeatureInterface initItemParentEditor(GUI gui, int slot);
 
     void updateItemParentEditor(GUI gui);
+
+    void initAndUpdateItemParentEditor(GUI gui, int slot);
 
     boolean isTheFeatureClickedParentEditor(String featureClicked);
 
@@ -33,5 +35,5 @@ public interface FeatureInterface<T, Y extends FeatureInterface> {
 
     boolean isRequirePremium();
 
-    Y clone(FeatureParentInterface newParent);
+    FeatureInterface clone(FeatureParentInterface newParent);
 }

@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -27,7 +29,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature<T>, VariableFeatureEditor, VariableFeatureEditorManager> {
+public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature<T>, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private UncoloredStringFeature variableName;
     private VariableTypeFeature type;
@@ -143,7 +145,15 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(variableName, type, stringValue, doubleValue, listValue));
+        List<FeatureInterface> featureInterfaces =  new ArrayList<>(Arrays.asList(variableName, type));
+        if (type.getValue().get().equals(VariableType.STRING)) {
+            featureInterfaces.add(stringValue);
+        } else if (type.getValue().get().equals(VariableType.LIST)) {
+            featureInterfaces.add(listValue);
+        } else {
+            featureInterfaces.add(doubleValue);
+        }
+        return featureInterfaces;
     }
 
     @Override
@@ -163,7 +173,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof VariableFeature) {
                 VariableFeature aFOF = (VariableFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -185,7 +195,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
 
     @Override
     public void openEditor(@NotNull Player player) {
-        VariableFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

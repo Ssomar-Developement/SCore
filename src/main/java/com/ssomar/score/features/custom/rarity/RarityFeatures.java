@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ItemRarityFeature;
 import com.ssomar.score.menu.GUI;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RarityFeatures extends FeatureWithHisOwnEditor<RarityFeatures, RarityFeatures, RarityFeaturesEditor, RarityFeaturesEditorManager> {
+public class RarityFeatures extends FeatureWithHisOwnEditor<RarityFeatures, RarityFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature enableRarity;
     private ItemRarityFeature itemRarity;
@@ -118,7 +120,7 @@ public class RarityFeatures extends FeatureWithHisOwnEditor<RarityFeatures, Rari
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RarityFeatures) {
                 RarityFeatures dropFeatures = (RarityFeatures) feature;
                 dropFeatures.setEnableRarity(this.enableRarity);
@@ -135,7 +137,7 @@ public class RarityFeatures extends FeatureWithHisOwnEditor<RarityFeatures, Rari
 
     @Override
     public void openEditor(@NotNull Player player) {
-        RarityFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     public String getSimpleLocString(Location loc){

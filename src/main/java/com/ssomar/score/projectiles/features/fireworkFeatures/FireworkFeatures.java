@@ -149,7 +149,7 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof FireworkFeatures && feature.getName().equals(getName())) {
                 FireworkFeatures hiders = (FireworkFeatures) feature;
                 hiders.setLifeTime(lifeTime);

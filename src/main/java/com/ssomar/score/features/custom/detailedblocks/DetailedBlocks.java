@@ -2,6 +2,8 @@ package com.ssomar.score.features.custom.detailedblocks;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
@@ -29,7 +31,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, DetailedBlocks, DetailedBlocksEditor, DetailedBlocksEditorManager> implements Serializable {
+public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, DetailedBlocks, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements Serializable {
 
     private ListDetailedMaterialFeature blocks;
     private BooleanFeature cancelEventIfNotValid;
@@ -183,7 +185,10 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(blocks, cancelEventIfNotValid, messageIfNotValid));
+        List<FeatureInterface> features =  new ArrayList<>(Arrays.asList(blocks));
+        if(!disableCancelEventIfNotValid) features.add(cancelEventIfNotValid);
+        if(!disableMessageIfNotValid) features.add(messageIfNotValid);
+        return features;
     }
 
     @Override
@@ -203,7 +208,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof DetailedBlocks && feature.getEditorName().equals(getEditorName())) {
                 DetailedBlocks hiders = (DetailedBlocks) feature;
                 hiders.setBlocks(blocks);
@@ -223,7 +228,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DetailedBlocksEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

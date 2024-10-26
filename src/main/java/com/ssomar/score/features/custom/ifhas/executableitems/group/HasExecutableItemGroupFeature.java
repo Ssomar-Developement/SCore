@@ -232,7 +232,7 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof HasExecutableItemGroupFeature) {
                 HasExecutableItemGroupFeature eF = (HasExecutableItemGroupFeature) feature;
                 eF.setHasExecutableItems(this.getHasExecutableItems());

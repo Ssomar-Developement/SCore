@@ -7,6 +7,7 @@ import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.item.MakeItemGlow;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -82,6 +83,7 @@ public abstract class GUI implements IGUI {
 
     private Inventory inv;
 
+    @Getter
     private int size;
 
     private final static boolean test = false;

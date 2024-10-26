@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -15,14 +17,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
-public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrictions, RestrictionsEditor, RestrictionsEditorManager> {
+public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrictions, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private final static boolean NOT_SAVE_RESTRICTIONS = true;
     private Map<RestrictionEnum, BooleanFeature> restrictions;
@@ -55,7 +54,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
 
     @Override
     public void reset() {
-        restrictions = new HashMap<>();
+        restrictions = new LinkedHashMap<>();
         for (RestrictionEnum restriction : RestrictionEnum.values()) {
             if (SCore.is1v11Less() && notFor1_11_less.contains(restriction)) continue;
             if (SCore.is1v13Less() && notFor1_13_less.contains(restriction)) continue;
@@ -140,7 +139,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
     @Override
     public Restrictions clone(FeatureParentInterface newParent) {
         Restrictions restrictions = new Restrictions(getParent(), getDefaultValues());
-        Map<RestrictionEnum, BooleanFeature> clone = new HashMap<>();
+        Map<RestrictionEnum, BooleanFeature> clone = new LinkedHashMap<>();
         for (RestrictionEnum restriction : this.restrictions.keySet()) {
             clone.put(restriction, this.restrictions.get(restriction).clone(restrictions));
         }
@@ -174,10 +173,10 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof Restrictions) {
                 Restrictions restrictions = (Restrictions) feature;
-                Map<RestrictionEnum, BooleanFeature> reload = new HashMap<>();
+                Map<RestrictionEnum, BooleanFeature> reload = new LinkedHashMap<>();
                 for (RestrictionEnum restriction : this.restrictions.keySet()) {
                     reload.put(restriction, this.restrictions.get(restriction));
                 }
@@ -194,7 +193,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
 
     @Override
     public void openEditor(@NotNull Player player) {
-        RestrictionsEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

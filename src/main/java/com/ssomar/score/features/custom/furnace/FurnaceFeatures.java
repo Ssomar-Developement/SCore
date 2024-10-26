@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.menu.GUI;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class FurnaceFeatures extends FeatureWithHisOwnEditor<FurnaceFeatures, FurnaceFeatures, FurnaceFeaturesEditor, FurnaceFeaturesEditorManager> {
+public class FurnaceFeatures extends FeatureWithHisOwnEditor<FurnaceFeatures, FurnaceFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private DoubleFeature furnaceSpeed;
@@ -142,7 +144,7 @@ public class FurnaceFeatures extends FeatureWithHisOwnEditor<FurnaceFeatures, Fu
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof FurnaceFeatures) {
                 FurnaceFeatures eF = (FurnaceFeatures) feature;
                 eF.setFurnaceSpeed(this.furnaceSpeed);
@@ -201,6 +203,6 @@ public class FurnaceFeatures extends FeatureWithHisOwnEditor<FurnaceFeatures, Fu
 
     @Override
     public void openEditor(@NotNull Player player) {
-        FurnaceFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

@@ -166,7 +166,7 @@ public class WorldConditionsFeature extends FeatureWithHisOwnEditor<WorldConditi
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof WorldConditionsFeature && feature.getName().equals(getName())) {
                 WorldConditionsFeature bCF = (WorldConditionsFeature) feature;
                 List<WorldConditionFeature> clones = new ArrayList<>();

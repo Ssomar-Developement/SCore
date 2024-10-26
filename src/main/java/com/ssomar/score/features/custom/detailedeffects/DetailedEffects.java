@@ -1,6 +1,8 @@
 package com.ssomar.score.features.custom.detailedeffects;
 
 import com.ssomar.score.features.*;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedEffectFeature;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, DetailedEffects, DetailedEffectsEditor, DetailedEffectsEditorManager> implements Serializable {
+public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, DetailedEffects, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements Serializable {
 
     private ListDetailedEffectFeature effects;
     private BooleanFeature cancelEventIfNotValid;
@@ -141,7 +143,7 @@ public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, De
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(effects, cancelEventIfNotValid, messageIfNotValid));
+        return new ArrayList<>(Arrays.asList(effects, messageIfNotValid, cancelEventIfNotValid));
     }
 
     @Override
@@ -161,7 +163,7 @@ public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, De
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof DetailedEffects && feature.getEditorName().equals(getEditorName())) {
                 DetailedEffects hiders = (DetailedEffects) feature;
                 hiders.setEffects(effects);
@@ -179,7 +181,7 @@ public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, De
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DetailedEffectsEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

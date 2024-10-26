@@ -4,13 +4,14 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BlockFaceFeature;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class DirectionalFeatures extends FeatureWithHisOwnEditor<DirectionalFeatures, DirectionalFeatures, DirectionalFeaturesEditor, DirectionalFeaturesEditorManager> {
+public class DirectionalFeatures extends FeatureWithHisOwnEditor<DirectionalFeatures, DirectionalFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private BooleanFeature forceBlockFaceOnPlace;
@@ -118,7 +119,7 @@ public class DirectionalFeatures extends FeatureWithHisOwnEditor<DirectionalFeat
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof DirectionalFeatures) {
                 DirectionalFeatures eF = (DirectionalFeatures) feature;
                 eF.setForceBlockFaceOnPlace(this.forceBlockFaceOnPlace);
@@ -150,6 +151,6 @@ public class DirectionalFeatures extends FeatureWithHisOwnEditor<DirectionalFeat
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DirectionalFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

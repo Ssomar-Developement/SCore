@@ -172,7 +172,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ActivatorsFeature) {
                 ActivatorsFeature eF = (ActivatorsFeature) feature;
                 eF.setActivators(activators);

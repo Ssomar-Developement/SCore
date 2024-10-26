@@ -127,7 +127,7 @@ public class VisualItemFeature extends FeatureWithHisOwnEditor<VisualItemFeature
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof VisualItemFeature && feature.getName().equals(getName())) {
                 VisualItemFeature hiders = (VisualItemFeature) feature;
                 hiders.setHeadFeatures(headFeatures);
