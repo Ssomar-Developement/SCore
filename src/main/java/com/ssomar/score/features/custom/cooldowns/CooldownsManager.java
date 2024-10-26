@@ -2,7 +2,12 @@ package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
+
+import de.tr7zw.nbtapi.NBTItem;
+
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -27,16 +32,63 @@ public class CooldownsManager {
     public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
         if (params.startsWith("cooldown_")) {
             UUID uuid = player.getUniqueId();
+
+            // Player uuid is found in current available cooldowns.
             if(cooldownsUUID.containsKey(uuid)){
                 boolean castInt = false;
+                boolean castMax = false;
+                String cooldownId = "";
+
+                // Find item slot to include below
+                if (params.contains("cooldown_slot")) {
+                    // Extract the slot number using regex
+                    String slotNumber = params.replaceFirst(".*cooldown_slot(\\d+).*", "$1");
+                    int slot = Integer.parseInt(slotNumber);
+
+                    // Retrieve equipment for the slot
+                    if (player.isOnline() && player.getPlayer() != null) {
+                        ItemStack item = player.getPlayer().getInventory().getItem(slot);
+                        if (item != null) {
+                            NBTItem nbti = new NBTItem(item);
+                            if (nbti.hasTag("EI-ID")) {
+                                cooldownId += "EI:";
+                                cooldownId += nbti.getString("EI-ID");
+                                cooldownId += ":";
+                                // Remove _slot{number} now
+                                params = params.replaceFirst("_slot\\d+:", "");
+                            } else {
+                                return Optional.of("Not an Executable Item");
+                            }
+                        } else {
+                            return Optional.of("No Item");
+                        }
+                    } else {
+                        return Optional.of("Player Offline");
+                    }
+
+                }
+
+                // Player requested int, toggle and remove from query.
                 if(params.contains("_int")){
                     castInt = true;
                     params = params.replaceFirst("_int", "");
                 }
+                if(params.contains("_timemax")) {
+                    castMax = true;
+                    params = params.replaceFirst("_timemax", "");                    
+                }
+
+                // Parse as normal, minor refactor so it's easier to read
+                cooldownId += params.split("cooldown_")[1];
+
                 for(Cooldown cd : cooldownsUUID.get(uuid)){
                     SsomarDev.testMsg("CD "+cd.toString(), DEBUG);
-                    if(cd.getId().equalsIgnoreCase(params.split("cooldown_")[1])){
-                        if(castInt) return Optional.of((int)cd.getTimeLeft()+"");
+                    if(cd.getId().equalsIgnoreCase(cooldownId)){
+
+                        // Return result if found based on booleans above 
+                        if(castInt && castMax) return Optional.of((int)cd.getCooldown()+"");
+                        else if(castMax) return Optional.of(cd.getCooldown()+"");
+                        else if(castInt) return Optional.of((int)cd.getTimeLeft()+"");
                         else return Optional.of(cd.getTimeLeft()+"");
                     }
                 }
