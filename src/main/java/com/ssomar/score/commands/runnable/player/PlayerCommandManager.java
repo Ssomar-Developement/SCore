@@ -83,7 +83,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new EICooldown());
         commands.add(new EBCooldown());
         commands.add(new EECooldown());
-        commands.add(new AddItemAttribute());
+        commands.add(new AddAttribute());
         commands.add(new SetItemAttribute());
         commands.add(new SetArmorTrim());
         /* No EntityToggleGlideEvent in 1.11 -*/

@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
 
@@ -30,11 +29,6 @@ public class MobAround extends BlockCommand {
         settings.add(safeDistance);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-       return com.ssomar.score.commands.runnable.player.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
     }
 
     @Override

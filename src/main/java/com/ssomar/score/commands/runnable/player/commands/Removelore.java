@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -12,9 +11,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* ADDLORE {slot} {text} */
+
 public class Removelore extends PlayerCommand {
 
     public Removelore() {
@@ -24,13 +22,10 @@ public class Removelore extends PlayerCommand {
         settings.add(slot);
         settings.add(line);
         setNewSettingsMode(true);
-        setCanExecuteCommands(true);
     }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
         ItemStack item;
         ItemMeta itemmeta;
         ArrayList<String> list;
@@ -40,7 +35,7 @@ public class Removelore extends PlayerCommand {
 
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
-        if (item == null || item.getType() == Material.AIR) return;
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
 
         itemmeta = item.getItemMeta();
 
@@ -57,28 +52,16 @@ public class Removelore extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("REMOVE_LORE");
         names.add("REMOVELORE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "REMOVELORE {slot} {line}";
+        return "REMOVE_LORE slot:-1 line:0";
     }
 
     @Override

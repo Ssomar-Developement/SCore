@@ -1,12 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,69 +13,53 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/* ADDENCHANTMENT {slot} {enchantment} {level} */
 public class RemoveEnchantment extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-
-        List<String> args = sCommandToExec.getOtherArgs();
-
-        ItemStack item;
-        ItemMeta itemMeta;
-        int slot = NTools.getInteger(args.get(0)).get();
-
-        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-        else item = receiver.getInventory().getItem(slot);
-        if (item == null || item.getType() == Material.AIR) return;
-
-        try {
-            itemMeta = item.getItemMeta();
-        } catch (NullPointerException e) {
-            return;
-        }
-
-        try {
-            if(args.get(1).equalsIgnoreCase("all")){
-                Map<Enchantment,Integer> enchantmentsOfItem= itemMeta.getEnchants();
-                for(Enchantment enchants : enchantmentsOfItem.keySet()){
-                    itemMeta.removeEnchant(enchants);
-                }
-                item.setItemMeta(itemMeta);
-            }else {
-                org.bukkit.enchantments.Enchantment enchantment = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(args.get(1).toLowerCase()));
-                if (enchantment == null) return;
-
-                itemMeta.removeEnchant(enchantment);
-                item.setItemMeta(itemMeta);
-            }
-        }catch(IllegalArgumentException e){
-            return;
-        }
+    public RemoveEnchantment() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
+        slot.setSlot(true);
+        CommandSetting enchantment = new CommandSetting("enchantment", 1, Enchantment.class, null);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(enchantment);
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        ItemStack item;
+        ItemMeta itemMeta;
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        Enchantment enchantment = (Enchantment) sCommandToExec.getSettingValue("enchantment");
 
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
+        itemMeta = item.getItemMeta();
 
-        return Optional.empty();
+        if (enchantment == null) {
+            Map<Enchantment, Integer> enchantmentsOfItem = itemMeta.getEnchants();
+            for (Enchantment enchants : enchantmentsOfItem.keySet()) {
+                itemMeta.removeEnchant(enchants);
+            }
+        } else {
+            itemMeta.removeEnchant(enchantment);
+        }
+        item.setItemMeta(itemMeta);
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("REMOVE_ENCHANTMENT");
         names.add("REMOVEENCHANTMENT");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "REMOVEENCHANTMENT {slot} {enchantment}";
+        return "REMOVE_ENCHANTMENT slot:-1 enchantment:EFFICIENCY";
     }
 
     @Override

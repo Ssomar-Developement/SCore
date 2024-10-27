@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
@@ -28,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends PlayerCommand implements FeatureParentInterface {
@@ -123,20 +121,6 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return staticVerify(args, isFinalVerification, getTemplate());
-    }
-
-    public static Optional<String> staticVerify(List<String> args, boolean isFinalVerification, String template) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + template);
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, template, false);
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("MOB_AROUND");
@@ -145,7 +129,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
     @Override
     public String getTemplate() {
-        return "MOB_AROUND {distance} [DisplayMsgIfNoEntity true or false] [conditions] {Your commands here}";
+        return "MOB_AROUND distance:3 DisplayMsgIfNoEntity:true throughBlocks:true safeDistance:0 [conditions] {Your commands here}";
     }
 
     @Override

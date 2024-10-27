@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable;
 
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.GetItem;
@@ -11,8 +12,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,6 +76,23 @@ public abstract class SCommand {
         if ((!arg.contains("%") && !isFinalVerification) || (isFinalVerification && !acceptPercentage)) {
             try {
                 Double.valueOf(arg);
+            } catch (NumberFormatException e) {
+                ac.setValid(false);
+                ac.setError(invalidInteger + arg + " &cfor command: &e" + template);
+            }
+        }
+        return ac;
+    }
+
+    public static ArgumentChecker checkFloat(@NotNull String arg, boolean isFinalVerification, String template) {
+        return checkFloat(arg, isFinalVerification, template, false);
+    }
+
+    public static ArgumentChecker checkFloat(@NotNull String arg, boolean isFinalVerification, String template, boolean acceptPercentage) {
+        ArgumentChecker ac = new ArgumentChecker();
+        if ((!arg.contains("%") && !isFinalVerification) || (isFinalVerification && !acceptPercentage)) {
+            try {
+                Float.valueOf(arg);
             } catch (NumberFormatException e) {
                 ac.setValid(false);
                 ac.setError(invalidInteger + arg + " &cfor command: &e" + template);
@@ -140,6 +161,49 @@ public abstract class SCommand {
             } catch (Exception e) {
                 ac.setValid(false);
                 ac.setError(invalidMaterial + arg + " &cfor command: &e" + template);
+            }
+        }
+
+        return ac;
+    }
+
+    public static ArgumentChecker checkEnchantment(@NotNull String arg, boolean isFinalVerification, String template) {
+        ArgumentChecker ac = new ArgumentChecker();
+
+        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+            if (Enchantment.getByKey(NamespacedKey.minecraft(arg.toLowerCase())) == null) {
+                ac.setValid(false);
+                ac.setError("&cA SCommand contains an &6invalid enchantment&c: &e" + arg + " &cfor command: &e" + template);
+            }
+        }
+
+        return ac;
+    }
+
+    public static ArgumentChecker checkAttribute(@NotNull String arg, boolean isFinalVerification, String template) {
+        ArgumentChecker ac = new ArgumentChecker();
+
+        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+            try {
+                Attribute.valueOf(arg.toUpperCase());
+            } catch (Exception e) {
+                ac.setValid(false);
+                ac.setError("&cA SCommand contains an &6invalid attribute&c: &e" + arg + " &cfor command: &e" + template);
+            }
+        }
+
+        return ac;
+    }
+
+    public static ArgumentChecker checkBlockFace(@NotNull String arg, boolean isFinalVerification, String template) {
+        ArgumentChecker ac = new ArgumentChecker();
+
+        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+            try {
+                org.bukkit.block.BlockFace.valueOf(arg.toUpperCase());
+            } catch (Exception e) {
+                ac.setValid(false);
+                ac.setError("&cA SCommand contains an &6invalid block face&c: &e" + arg + " &cfor command: &e" + template);
             }
         }
 
@@ -283,6 +347,41 @@ public abstract class SCommand {
         return getColor();
     }
 
-    public abstract Optional<String> verify(List<String> args, boolean isFinalVerification);
+    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
 
+        if (isNewSettingsMode()) {
+            StringBuilder sb = new StringBuilder();
+            for (String arg : args) {
+                sb.append(arg).append(" ");
+            }
+            return verifySettings(sb.toString());
+        }
+        return Optional.empty();
+    }
+
+    public Optional<String> verifySettings(String entry) {
+
+        for (String name : getNames()) {
+            if (entry.startsWith(name)) {
+                entry = entry.substring(name.length());
+                break;
+            }
+        }
+        entry = entry.trim();
+        SsomarDev.testMsg("entry: " + entry, true);
+
+        List<String> arguments = new ArrayList<>();
+        arguments.addAll(Arrays.asList(entry.split(" ")));
+        // fully new system
+        for (CommandSetting setting : getSettings()) {
+            if (arguments.size() > 0) {
+                Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(setting.getName() + ":")).findFirst();
+                if (value.isPresent()) {
+                    ArgumentChecker ac = setting.checkValue(value.get().replace(setting.getName() + ":", ""), getTemplate());
+                    if (ac != null && !ac.isValid()) return Optional.of(ac.getError());
+                }
+            }
+        }
+        return Optional.empty();
+    }
 }

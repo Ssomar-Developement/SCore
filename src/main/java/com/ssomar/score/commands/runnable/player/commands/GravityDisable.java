@@ -7,20 +7,18 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class GravityDisable extends PlayerCommand {
+
+    public GravityDisable() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         // Otherwise the player continue to fall if is falling
         receiver.setVelocity(receiver.getVelocity().setY(0));
         receiver.setGravity(false);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override

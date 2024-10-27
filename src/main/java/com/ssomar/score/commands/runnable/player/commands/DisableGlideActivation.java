@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-/* BURN {timeinsecs} */
 public class DisableGlideActivation extends PlayerCommand {
 
     private static DisableGlideActivation instance;
@@ -19,6 +18,11 @@ public class DisableGlideActivation extends PlayerCommand {
 
     public DisableGlideActivation() {
         activeDisabled = new HashMap<>();
+
+        CommandSetting time = new CommandSetting("time", 0, Integer.class, 10);
+        List<CommandSetting> settings = getSettings();
+        settings.add(time);
+        setNewSettingsMode(true);
     }
 
     public static DisableGlideActivation getInstance() {
@@ -28,8 +32,7 @@ public class DisableGlideActivation extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        int time = Double.valueOf(args.get(0)).intValue();
+        int time = (int) sCommandToExec.getSettingValue("time");
 
         final UUID receiverUUID = receiver.getUniqueId();
 
@@ -48,17 +51,7 @@ public class DisableGlideActivation extends PlayerCommand {
                 }
             }
         };
-        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time *20L);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
+        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time * 20L);
     }
 
     @Override
@@ -70,7 +63,7 @@ public class DisableGlideActivation extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "DISABLE_GLIDE_ACTIVATION {timeinsecs}";
+        return "DISABLE_GLIDE_ACTIVATION time:10";
     }
 
     @Override

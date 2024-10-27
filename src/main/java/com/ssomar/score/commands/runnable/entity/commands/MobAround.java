@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
 
@@ -31,11 +30,6 @@ public class MobAround extends EntityCommand {
     @Override
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
         mobAroundExecution(null, p, receiver, false, sCommandToExec);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return com.ssomar.score.commands.runnable.player.commands.MobAround.staticVerify(args, isFinalVerification, getTemplate());
     }
 
     @Override

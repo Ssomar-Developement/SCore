@@ -1,77 +1,60 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* ADDENCHANTMENT {slot} {enchantment} {level} */
 public class AddEnchantment extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, SCommandToExec sCommandToExec){
-        List<String> args = sCommandToExec.getOtherArgs();
+    public AddEnchantment() {
 
-        ItemStack item;
-        ItemMeta itemMeta;
-        int slot = NTools.getInteger(args.get(0)).get();
-        int level = NTools.getInteger(args.get(2)).get();
-
-        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-        else item = receiver.getInventory().getItem(slot);
-        if (item == null || item.getType() == Material.AIR) return;
-
-        try {
-            itemMeta = item.getItemMeta();
-        } catch (NullPointerException e) {
-            return;
-        }
-
-        try {
-            org.bukkit.enchantments.Enchantment enchantment = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(args.get(1).toLowerCase()));
-            if (enchantment == null) return;
-            if (level <= 0) return;
-
-            itemMeta.addEnchant(enchantment,level, true);
-            item.setItemMeta(itemMeta);
-        }catch(IllegalArgumentException e){
-            return;
-        }
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
+        slot.setSlot(true);
+        CommandSetting enchantment = new CommandSetting("enchantment", 1, Enchantment.class, Enchantment.EFFICIENCY);
+        CommandSetting level = new CommandSetting("level", 2, Integer.class, 1);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(enchantment);
+        settings.add(level);
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec){
+        ItemStack item;
+        ItemMeta itemMeta;
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        Enchantment enchant = (Enchantment) sCommandToExec.getSettingValue("enchantment");
+        int level = (int) sCommandToExec.getSettingValue("level");
 
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac3 = checkInteger(args.get(2), isFinalVerification, getTemplate());
-        if (!ac3.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
+        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
+        if (level <= 0 || enchant == null || item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
+        itemMeta = item.getItemMeta();
+        itemMeta.addEnchant(enchant, level, true);
+        item.setItemMeta(itemMeta);
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("ADD_ENCHANTMENT");
         names.add("ADDENCHANTMENT");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ADDENCHANTMENT {slot} {enchantment} {level}";
+        return "ADD_ENCHANTMENT slot:-1 enchantment:EFFICIENCY level:1";
     }
 
     @Override

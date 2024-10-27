@@ -1,9 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
@@ -11,43 +12,42 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
-/* ADDITEMATTRIBUTE {slot} {Attribute} {value} {equipment slot}*/
-public class AddItemAttribute extends PlayerCommand {
+
+public class AddAttribute extends PlayerCommand {
+
+    public AddAttribute() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
+        slot.setSlot(true);
+        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, Attribute.GENERIC_MAX_HEALTH);
+        CommandSetting value = new CommandSetting("value", 2, Double.class, 1.0);
+        CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(attribute);
+        settings.add(value);
+        settings.add(equipmentSlot);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
         ItemStack item;
         ItemMeta itemmeta;
-        Attribute attribute;
-        int slot = Integer.parseInt(args.get(0));
+        Attribute attribute = (Attribute) sCommandToExec.getSettingValue("attribute");
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        double value = (double) sCommandToExec.getSettingValue("value");
+        EquipmentSlot equipmentSlot = (EquipmentSlot) sCommandToExec.getSettingValue("equipmentSlot");
 
-        try {
-            if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-            else item = receiver.getInventory().getItem(slot);
+        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
 
-            itemmeta = item.getItemMeta();
-        } catch (NullPointerException e) {
-            return;
-        }
-
-        try {
-            attribute = Attribute.valueOf(args.get(1).toUpperCase());
-        } catch (IllegalArgumentException er) {
-            return;
-        }
-
-        double attributeValue = Double.parseDouble(args.get(2));
-
-        EquipmentSlot equipmentSlot;
-        try {
-            equipmentSlot = EquipmentSlot.valueOf(args.get(3).toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-            return;
-        }
+        if (attribute == null || item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
+        itemmeta = item.getItemMeta();
 
         AttributeModifier existingModifier = null;
 
@@ -68,7 +68,7 @@ public class AddItemAttribute extends PlayerCommand {
             AttributeModifier newModifier = new AttributeModifier(
                     UUID.randomUUID(),
                     "ScoreAttribute",
-                    attributeValue,
+                    value,
                     AttributeModifier.Operation.ADD_NUMBER,
                     equipmentSlot
             );
@@ -78,12 +78,12 @@ public class AddItemAttribute extends PlayerCommand {
             existingModifier = new AttributeModifier(
                     existingModifier.getUniqueId(),
                     "ScoreAttribute",
-                    existingModifier.getAmount() + attributeValue,
+                    existingModifier.getAmount() + value,
                     existingModifier.getOperation(),
                     existingModifier.getSlot()
             );
             itemmeta.removeAttributeModifier(attribute, existingModifier);
-            if (copyExistingModifier.getAmount() + attributeValue != 0) {
+            if (copyExistingModifier.getAmount() + value != 0) {
                 itemmeta.addAttributeModifier(attribute, existingModifier);
             }
         }
@@ -91,25 +91,16 @@ public class AddItemAttribute extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 4) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("ADD_ATTRIBUTE");
         names.add("ADDITEMATTRIBUTE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ADDITEMATTRIBUTE {slot} {Attribute} {value} {equipment slot}";
+        return "ADD_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND";
     }
 
     @Override

@@ -521,19 +521,18 @@
             <scope>provided</scope>
         </dependency>-->
 
-        <!-- For MyFurniture -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20231013</version>
-        </dependency>
-
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
             <version>1.6.9.5-U0.6.33</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/SaberFactions.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
         </dependency>
 
         <!--<dependency>
@@ -566,7 +565,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-c2ad46d989-1</version>
+            <version>main-7d107017cc-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -588,7 +587,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.21-R0.1-SNAPSHOT</version>
+            <version>1.21.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

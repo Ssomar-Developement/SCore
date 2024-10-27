@@ -12,6 +12,10 @@ import java.util.*;
 /* MIX_HOTBAR */
 public class MixHotbar extends PlayerCommand {
 
+    public MixHotbar() {
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         PlayerInventory inv = receiver.getInventory();
@@ -31,11 +35,6 @@ public class MixHotbar extends PlayerCommand {
             j++;
         }
         receiver.updateInventory();
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override
