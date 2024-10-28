@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -19,7 +20,7 @@ public class AddEnchantment extends PlayerCommand {
 
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
         slot.setSlot(true);
-        CommandSetting enchantment = new CommandSetting("enchantment", 1, Enchantment.class, Enchantment.EFFICIENCY);
+        CommandSetting enchantment = new CommandSetting("enchantment", 1, Enchantment.class, SCore.is1v20v5Plus() ? Enchantment.EFFICIENCY : Enchantment.getByName("DIG_SPEED"));
         CommandSetting level = new CommandSetting("level", 2, Integer.class, 1);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);

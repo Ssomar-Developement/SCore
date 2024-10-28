@@ -44,6 +44,7 @@ public class ToolsListMaterial {
         addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("SWEET_BERRY_BUSH")));
         addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("MELON_STEM")));
         addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_STEM")));
+        addWithoutProblem(plantWithGrowthOnlyFarmland, FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_CROP")));
 
         addWithoutProblem(plantWithGrowthOnlySoulSand, FixedMaterial.getMaterial(Arrays.asList("NETHER_WART", "NETHER_WARTS")));
 
@@ -61,6 +62,12 @@ public class ToolsListMaterial {
             blockAndItemMaterial.put(Material.POTATOES, Material.POTATO);
             blockAndItemMaterial.put(Material.COCOA, Material.COCOA_BEANS);
         }
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("MELON_STEM")), FixedMaterial.getMaterial(Arrays.asList("MELON_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("MELON")), FixedMaterial.getMaterial(Arrays.asList("MELON_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_STEM")), FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("PUMPKIN")), FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_CROP")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
 

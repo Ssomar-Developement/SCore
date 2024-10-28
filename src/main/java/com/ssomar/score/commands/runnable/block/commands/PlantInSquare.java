@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-/* FARMINCUBE {radius} {ActiveDrop true or false} */
+
 public class PlantInSquare extends BlockCommand {
 
     @Override
