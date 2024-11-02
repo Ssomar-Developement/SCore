@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import com.ssomar.score.utils.emums.AttributeRework;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -63,6 +64,8 @@ public class Damage extends MixedCommand {
             livingReceiver.setNoDamageTicks(0);
             boolean doDamage = true;
             if (SCore.hasWorldGuard && receiver instanceof Player) doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
+            // to prevent double kill https://discord.com/channels/701066025516531753/1301172655616950294/1301172655616950294
+            if(livingReceiver.isDead()) return;
             if (doDamage) {
                 if (p != null) {
                     /* To avoid looping damage */
@@ -119,7 +122,10 @@ public class Damage extends MixedCommand {
 
             //SsomarDev.testMsg("boost attribute: "+ attributeAmplification);
             if (attributeAmplification) {
-                AttributeInstance aI = launcher.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+                Attribute att = null;
+                if(SCore.is1v21v2Plus()) att = Attribute.ATTACK_DAMAGE;
+                else att = AttributeRework.getAttribute("GENERIC_ATTACK_DAMAGE");
+                AttributeInstance aI = launcher.getAttribute(att);
                 double bonusAmount = 0;
                 if (aI != null) {
                     //SsomarDev.testMsg("damage value: "+aI.getValue());

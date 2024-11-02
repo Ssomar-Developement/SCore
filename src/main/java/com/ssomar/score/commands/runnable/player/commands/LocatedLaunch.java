@@ -4,6 +4,7 @@ import com.ssomar.executableitems.listeners.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.listeners.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
@@ -24,53 +25,44 @@ import java.util.Optional;
 @SuppressWarnings("deprecation")
 public class LocatedLaunch extends PlayerCommand {
 
+    //OCATED_LAUNCH {projectileType} {frontValue positive=front , negative=back} {rightValue right=positive, negative=left} {yValue} {velocity} [vertical rotation] [horizontal rotation]";
+    //    }
+
+    public LocatedLaunch() {
+        CommandSetting projectileType = new CommandSetting("projectile", 0, String.class, null);
+        CommandSetting frontValue = new CommandSetting("frontValue", 1, Double.class, 0);
+        CommandSetting rightValue = new CommandSetting("rightValue", 2, Double.class, 0);
+        CommandSetting yValue = new CommandSetting("yValue", 3, Double.class, 0);
+        CommandSetting velocity = new CommandSetting("velocity", 4, Double.class, 1);
+        CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 5, Double.class, 0);
+        CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 6, Double.class, 0);
+        List<CommandSetting> settings = getSettings();
+        settings.add(projectileType);
+        settings.add(frontValue);
+        settings.add(rightValue);
+        settings.add(yValue);
+        settings.add(velocity);
+        settings.add(angleRotationVertical);
+        settings.add(angleRotationHorizontal);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
         ActionInfo aInfo = sCommandToExec.getActionInfo();
 
         /* postivite value = front , negative = back */
-        double frontValue = 0;
+        double frontValue = (double) sCommandToExec.getSettingValue("frontValue");
 
         /* postivite value = right , negative = left */
-        double rightValue = 0;
+        double rightValue = (double) sCommandToExec.getSettingValue("rightValue");
 
-        double yValue = 0;
+        double yValue = (double) sCommandToExec.getSettingValue("yValue");
 
-        double velocity = 1;
+        double velocity = (double) sCommandToExec.getSettingValue("velocity");
 
-        double rotationVertical = 0;
-        double rotationHorizontal = 0;
-
-        try {
-            frontValue = Double.parseDouble(args.get(1));
-        } catch (Exception ignored) {
-        }
-
-        try {
-            rightValue = Double.parseDouble(args.get(2));
-        } catch (Exception ignored) {
-        }
-
-        try {
-            yValue = Double.parseDouble(args.get(3));
-        } catch (Exception ignored) {
-        }
-
-        try {
-            velocity = Double.parseDouble(args.get(4));
-        } catch (Exception ignored) {
-        }
-
-        try {
-            rotationVertical = Double.parseDouble(args.get(5));
-        } catch (Exception ignored) {
-        }
-
-        try {
-            rotationHorizontal = Double.parseDouble(args.get(6)) * -1;
-        } catch (Exception ignored) {
-        }
+        double rotationVertical = (double) sCommandToExec.getSettingValue("angleRotationVertical");
+        double rotationHorizontal = (double) sCommandToExec.getSettingValue("angleRotationHorizontal");
 
         Location eyeLoc = receiver.getEyeLocation();
         Vector front = eyeLoc.getDirection().clone().setY(0).multiply(frontValue);
@@ -87,7 +79,7 @@ public class LocatedLaunch extends PlayerCommand {
 
         try {
             Projectile entity = null;
-            String type = args.get(0);
+            String type = (String) sCommandToExec.getSettingValue("projectile");
             Optional<SProjectile> projectileOptional = null;
             SProjectile projectile = null;
             if (SProjectileType.getProjectilesClasses().containsKey(type)) {
@@ -129,7 +121,9 @@ public class LocatedLaunch extends PlayerCommand {
                 eyeLoc2.setYaw(newYaw);
 
 
+                /* idk why I coded this part
                 int multiply = 2;
+
                 while (searchBlockOrEntity && multiply < 100) {
                     v = eyeLoc2.getDirection().clone();
                     v = v.multiply(multiply);
@@ -146,7 +140,7 @@ public class LocatedLaunch extends PlayerCommand {
                         }
                     }
                     multiply++;
-                }
+                } */
 
                 Vector last = loc.toVector().subtract(toLaunchLoc.toVector());
                 last = last.normalize();
@@ -187,11 +181,6 @@ public class LocatedLaunch extends PlayerCommand {
 
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("LOCATED_LAUNCH");
@@ -200,7 +189,7 @@ public class LocatedLaunch extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "LOCATED_LAUNCH {projectileType} {frontValue positive=front , negative=back} {rightValue right=positive, negative=left} {yValue} {velocity} [vertical rotation] [horizontal rotation]";
+        return "LOCATED_LAUNCH projectileType:ARROW frontValue=0 rightValue=0 yValue=0 velocity=1 angleRotationVertical:0 angleRotationHorizontal:0";
     }
 
     @Override

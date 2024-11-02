@@ -21,8 +21,17 @@ public class Chat extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        String text = (String) sCommandToExec.getSettingValue("text");
-        receiver.chat(StringConverter.coloredString(text));
+        String baseMessage = (String) sCommandToExec.getSettingValue("text");
+        List<String> args = sCommandToExec.getOtherArgs();
+        StringBuilder message = new StringBuilder(baseMessage);
+        int remove = 0;
+        for (String s : args) {
+            //SsomarDev.testMsg("cmdarg> "+s);
+            message.append(s).append(" ");
+            remove = 1;
+        }
+        message = new StringBuilder(message.substring(0, message.length() - remove));
+        receiver.chat(StringConverter.coloredString(message.toString()));
     }
 
     @Override

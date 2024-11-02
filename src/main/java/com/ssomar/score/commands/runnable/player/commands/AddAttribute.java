@@ -1,8 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.emums.AttributeRework;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -23,7 +25,10 @@ public class AddAttribute extends PlayerCommand {
     public AddAttribute() {
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
         slot.setSlot(true);
-        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, Attribute.GENERIC_MAX_HEALTH);
+        Attribute att = null;
+        if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
+        else att = AttributeRework.getAttribute("GENERIC_MAX_HEALTH");
+        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, att);
         CommandSetting value = new CommandSetting("value", 2, Double.class, 1.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
         List<CommandSetting> settings = getSettings();

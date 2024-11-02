@@ -1,11 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
-import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -18,36 +16,31 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* SETITEMCOLOR {slot} {color in number} */
 public class SetItemColor extends PlayerCommand {
+
+    public SetItemColor() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
+        slot.setSlot(true);
+        CommandSetting color = new CommandSetting("color", 1, Integer.class, 13434623);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(color);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
         ItemStack item;
         ItemMeta itemmeta;
+        int color = (int) sCommandToExec.getSettingValue("color");
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
 
-        try {
-            int slot = Integer.parseInt(args.get(0));
-            if(slot == -1) item = receiver.getInventory().getItemInMainHand();
-            else item = receiver.getInventory().getItem(slot);
-            itemmeta = item.getItemMeta();
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
 
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        String colorStr = args.get(1);
-        colorStr = StringPlaceholder.replacePlaceholderOfPAPI(colorStr, null);
-        Optional<Integer> colorOpt = NTools.getInteger(colorStr);
-
-        if (!colorOpt.isPresent())  return;
-
-        int color = colorOpt.get();
+        itemmeta = item.getItemMeta();
 
         Material material = item.getType();
         if (material.equals(Material.LEATHER_BOOTS) ||
@@ -69,28 +62,16 @@ public class SetItemColor extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_ITEM_COLOR");
         names.add("SETITEMCOLOR");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETITEMCOLOR {slot} {color in number}";
+        return "SET_ITEM_COLOR slot:-1 color:13434623";
     }
 
     @Override

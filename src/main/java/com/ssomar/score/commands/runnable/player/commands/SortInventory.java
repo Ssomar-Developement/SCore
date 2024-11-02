@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -11,20 +12,23 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
-/* SORTINVENTORY {HOTBAR INCLUDED DEFAULT FALSE} {AMOUNT/TYPE} */
 public class SortInventory extends PlayerCommand {
+
+    public SortInventory() {
+        CommandSetting includeHotBar = new CommandSetting("includeHotBar", 0, Boolean.class, false);
+        CommandSetting sortType = new CommandSetting("sortType", 1, String.class, "TYPE");
+        List<CommandSetting> settings = getSettings();
+        settings.add(includeHotBar);
+        settings.add(sortType);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        //
-        boolean sortByType = args.get(1).equalsIgnoreCase("type");
-        boolean includeHotbar = args.get(0).equalsIgnoreCase("true");
-
-        //Bukkit.broadcastMessage("Sort by type:" + sortByType);
-        //Bukkit.broadcastMessage("Include hotbar:" + includeHotbar);
+        Boolean includeHotBar = (Boolean) sCommandToExec.getSettingValue("includeHotBar");
+        String sortType = (String) sCommandToExec.getSettingValue("sortType");
+        boolean sortByType = sortType.equalsIgnoreCase("type");
 
         if (receiver.isDead()) return;
         receiver.closeInventory();
@@ -37,7 +41,7 @@ public class SortInventory extends PlayerCommand {
         //guardar todos los items en una carpeta
         for(int i = 0 ; i <= 35 ; i++){
             if(i <= 8){
-                if(includeHotbar){
+                if(includeHotBar){
                     if(inventoryContents[i] == null){
                         items.add(air);
                         continue;
@@ -73,7 +77,7 @@ public class SortInventory extends PlayerCommand {
         for(int i = 9 ; i <= 35 ; i++){
             inventory.setItem(i,air);
         }
-        if(includeHotbar){
+        if(includeHotBar){
             for(int i = 0 ; i <= 8 ; i++){
                 inventory.setItem(i,air);
             }
@@ -96,7 +100,7 @@ public class SortInventory extends PlayerCommand {
             offset1 += 1;
         }
 
-        if(includeHotbar){
+        if(includeHotBar){
             if(offsetForAirContainersOn1 > 0){
                 offsetForAirContainersOn1COPY = offsetForAirContainersOn1;
                 for(int i = 0 ; i <= offsetForAirContainersOn1 ; i++){
@@ -118,23 +122,18 @@ public class SortInventory extends PlayerCommand {
         receiver.updateInventory();
     }
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
-
-        return Optional.empty();
-    }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SORT_INVENTORY");
         names.add("SORTINVENTORY");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SORTINVENTORY {HOTBAR INCLUDED DEFAULT FALSE} {AMOUNT/TYPE}";
+        return "SORT_INVENTORY includeHotBar:false sortType:TYPE or sortType:AMOUNT";
     }
 
     @Override

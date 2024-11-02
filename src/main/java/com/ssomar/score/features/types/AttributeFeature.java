@@ -6,6 +6,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.AttributeRework;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -16,7 +17,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -41,7 +45,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
             value = Optional.empty();
         } else {
             try {
-                attribute = Attribute.valueOf(attributeStr.toUpperCase());
+                attribute = AttributeRework.getAttribute(attributeStr);
                 value = Optional.of(attribute);
                 FeatureReturnCheckPremium<Attribute> checkPremium = checkPremium("Attribute", attribute, defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
@@ -57,7 +61,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
     public void save(ConfigurationSection config) {
         Optional<Attribute> optional = getValue();
         if (optional.isPresent()) {
-            config.set(this.getName(), optional.get().name());
+            config.set(this.getName(), AttributeRework.getAttributes().get(optional.get()));
         } else config.set(this.getName(), null);
     }
 
@@ -80,9 +84,12 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
 
     @Override
     public void updateItemParentEditor(GUI gui) {
+        Attribute att = null;
+        if (SCore.is1v21v2Plus()) att = Attribute.ARMOR;
+        else att = AttributeRework.getAttribute("GENERIC_ARMOR");
         Optional<Attribute> optional = getValue();
         if (optional.isPresent()) updateAttribute(optional.get(), gui);
-        else updateAttribute(Attribute.GENERIC_ARMOR, gui);
+        else updateAttribute(att, gui);
     }
 
     @Override
@@ -180,28 +187,30 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
 
     public Attribute nextAttribute(Attribute attribute) {
         boolean next = false;
-        for (Attribute check : getSortAttributes()) {
+        Map<Object, String> map = AttributeRework.getAttributes();
+        for (Object check : map.keySet()) {
             if (check.equals(attribute)) {
                 next = true;
                 continue;
             }
-            if (next) return check;
+            if (next) return (Attribute) check;
         }
-        return getSortAttributes().get(0);
+        return (Attribute) map.keySet().iterator().next();
     }
 
     public Attribute prevAttribute(Attribute attribute) {
         int i = -1;
         int cpt = 0;
-        for (Attribute check : getSortAttributes()) {
+        Map<Object, String> map = AttributeRework.getAttributes();
+        for (Object check : AttributeRework.getAttributes().keySet()) {
             if (check.equals(attribute)) {
                 i = cpt;
                 break;
             }
             cpt++;
         }
-        if (i == 0) return getSortAttributes().get(getSortAttributes().size() - 1);
-        else return getSortAttributes().get(cpt - 1);
+        if (i == 0) return (Attribute) map.keySet().toArray()[map.size() - 1];
+        else return (Attribute) map.keySet().toArray()[cpt - 1];
     }
 
     public void updateAttribute(Attribute attribute, GUI gui) {
@@ -214,25 +223,26 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
-        maxSize += getSortAttributes().size();
+        maxSize += AttributeRework.getAttributes().size();
         if (maxSize > 17) maxSize = 17;
         boolean find = false;
-        for (Attribute check : getSortAttributes()) {
+        Map<Object, String> map = AttributeRework.getAttributes();
+        for (Object check : map.keySet()) {
             if (attribute.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" + attribute.name()));
+                lore.add(StringConverter.coloredString("&2➤ &a" + map.get(attribute)));
                 find = true;
             } else if (find) {
                 if (lore.size() == maxSize) break;
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + map.get(check)));
             }
         }
-        for (Attribute check : getSortAttributes()) {
+        for (Object check : map.keySet()) {
             if (lore.size() == maxSize) break;
             else {
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + map.get(check)));
             }
         }
-        for(String str : lore) {
+        for (String str : lore) {
             SsomarDev.testMsg(str, true);
         }
         meta.setLore(lore);
@@ -249,18 +259,10 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return Attribute.valueOf(str.split("➤ ")[1]);
+                return AttributeRework.getAttribute(str.split("➤ ")[1]);
             }
         }
         return null;
-    }
-
-    public List<Attribute> getSortAttributes() {
-        SortedMap<String, Attribute> map = new TreeMap<String, Attribute>();
-        for (Attribute l : Attribute.values()) {
-            map.put(l.name(), l);
-        }
-        return new ArrayList<>(map.values());
     }
 
 }

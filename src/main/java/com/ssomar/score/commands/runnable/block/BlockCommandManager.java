@@ -53,9 +53,6 @@ public class BlockCommandManager extends CommandManager<BlockCommand> {
             references.add(new SellContent());
             references.add(new CropsGrowthBoost());
         }
-        if (!SCore.is1v11Less()) {
-            references.add(new ParticleCommand());
-        }
         references.add(new Nearest());
         references.add(new MobNearest());
 

@@ -8,6 +8,8 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -34,7 +36,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            Sound operation = Sound.valueOf(colorStr.toUpperCase());
+            Sound operation = Registry.SOUNDS.get(NamespacedKey.fromString(colorStr));
             value = Optional.ofNullable(operation);
             FeatureReturnCheckPremium<Sound> checkPremium = checkPremium("Sound", operation, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
@@ -48,7 +50,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
     @Override
     public void save(ConfigurationSection config) {
         Optional<Sound> value = getValue();
-        value.ifPresent(operation -> config.set(this.getName(), operation.name()));
+        value.ifPresent(operation -> config.set(this.getName(), operation.getKey().toString()));
     }
 
     @Override
@@ -205,17 +207,17 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
         boolean find = false;
         for (Sound check : getSortOperations()) {
             if (operation.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" + operation.name()));
+                lore.add(StringConverter.coloredString("&2➤ &a" + operation.getKey()));
                 find = true;
             } else if (find) {
                 if (lore.size() == maxSize) break;
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + check.getKey()));
             }
         }
         for (Sound check : getSortOperations()) {
             if (lore.size() == maxSize) break;
             else {
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + check.getKey()));
             }
         }
         meta.setLore(lore);
@@ -239,8 +241,8 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
 
     public List<Sound> getSortOperations() {
         SortedMap<String, Sound> map = new TreeMap<String, Sound>();
-        for (Sound l : Sound.values()) {
-            map.put(l.name(), l);
+        for (Sound l : Registry.SOUNDS) {
+            map.put(l.getKey().toString(), l);
         }
         return new ArrayList<>(map.values());
     }

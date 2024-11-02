@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.nofalldamage.NoFallDamageManager;
@@ -16,11 +16,16 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-/* CUSTOMDASH1 {x} {y} {z} */
 public class ProjectileCustomDash1 extends PlayerCommand {
+
+    public ProjectileCustomDash1() {
+        CommandSetting fallDamage = new CommandSetting("fallDamage", 0, Boolean.class, false);
+        List<CommandSetting> settings = getSettings();
+        settings.add(fallDamage);
+        setNewSettingsMode(true);
+    }
 
     private static void pullEntityToLocation(Entity e, Location loc) {
         Location entityLoc = e.getLocation();
@@ -82,16 +87,6 @@ public class ProjectileCustomDash1 extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() >= 1) {
-            ArgumentChecker ac = checkBoolean(args.get(0), isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("PROJECTILE_CUSTOMDASH1");
@@ -100,7 +95,7 @@ public class ProjectileCustomDash1 extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "PROJECTILE_CUSTOMDASH1 [fallDamage true or false]";
+        return "PROJECTILE_CUSTOMDASH1 fallDamage:false";
     }
 
     @Override

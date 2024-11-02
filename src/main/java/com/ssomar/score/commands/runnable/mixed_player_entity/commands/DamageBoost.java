@@ -37,19 +37,21 @@ public class DamageBoost extends MixedCommand {
         double boost = Double.valueOf(args.get(0));
         int time = Double.valueOf(args.get(1)).intValue();
 
+        UUID uuid = receiver.getUniqueId();
+
         SsomarDev.testMsg("ADD receiver: " + receiver.getUniqueId() + " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
-        if (activeBoosts.containsKey(receiver.getUniqueId())) {
-            activeBoosts.get(receiver.getUniqueId()).add(boost);
-        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(boost)));
+        if (activeBoosts.containsKey(uuid)) {
+            activeBoosts.get(uuid).add(boost);
+        } else activeBoosts.put(uuid, new ArrayList<>(Collections.singletonList(boost)));
 
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
-                SsomarDev.testMsg("REMOVE receiver: " + receiver.getUniqueId() + " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
-                if (activeBoosts.containsKey(receiver.getUniqueId())) {
-                    if (activeBoosts.get(receiver.getUniqueId()).size() > 1) {
-                        activeBoosts.get(receiver.getUniqueId()).remove(boost);
-                    } else activeBoosts.remove(receiver.getUniqueId());
+                SsomarDev.testMsg("REMOVE receiver: " + uuid + " Damage Boost: " + boost + " for " + time + " ticks", DEBUG);
+                if (activeBoosts.containsKey(uuid)) {
+                    if (activeBoosts.get(uuid).size() > 1) {
+                        activeBoosts.get(uuid).remove(boost);
+                    } else activeBoosts.remove(uuid);
                 }
             }
         };

@@ -2,8 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.RunConsoleCommand;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.commands.settempblock.SetTempBlockManager;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -17,125 +16,110 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.Slab;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class SetTempBlockPos extends PlayerCommand {
 
+    public SetTempBlockPos() {
+        CommandSetting x = new CommandSetting("x", 0, Double.class, 0.0);
+        CommandSetting y = new CommandSetting("y", 1, Double.class, 0.0);
+        CommandSetting z = new CommandSetting("z", 2, Double.class, 0.0);
+        CommandSetting world = new CommandSetting("world", -1, String.class, "");
+        CommandSetting material = new CommandSetting("material", 3, Material.class, Material.STONE);
+        CommandSetting time = new CommandSetting("time", 4, Integer.class, 10);
+        CommandSetting bypassProtection = new CommandSetting("bypassProtection", 5, Boolean.class, false);
+        CommandSetting whitelistCurrentBlock = new CommandSetting("whitelistCurrentBlock", 6, String.class, "");
+        List<CommandSetting> settings = getSettings();
+        settings.add(x);
+        settings.add(y);
+        settings.add(z);
+        settings.add(world);
+        settings.add(material);
+        settings.add(time);
+        settings.add(bypassProtection);
+        settings.add(whitelistCurrentBlock);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        ActionInfo aInfo = sCommandToExec.getActionInfo();
-        try {
-            double x = Double.valueOf(args.get(0));
-            double y = Double.valueOf(args.get(1));
-            double z = Double.valueOf(args.get(2));
 
-            Location loc = receiver.getLocation();
-            Location blockLoc = new Location(loc.getWorld(), x, y, z);
-            Block block = blockLoc.getBlock();
-            BlockData data = block.getBlockData().clone();
+        double x = (double) sCommandToExec.getSettingValue("x");
+        double y = (double) sCommandToExec.getSettingValue("y");
+        double z = (double) sCommandToExec.getSettingValue("z");
+        String world = (String) sCommandToExec.getSettingValue("world");
+        Material material = (Material) sCommandToExec.getSettingValue("material");
+        int time = (int) sCommandToExec.getSettingValue("time");
+        boolean bypassProtection = (boolean) sCommandToExec.getSettingValue("bypassProtection");
+        String whitelistCurrentBlock = (String) sCommandToExec.getSettingValue("whitelistCurrentBlock");
 
-            String mat = args.get(3).toUpperCase();
-
-            int time = 60;
-            if(args.size() >= 5) time = Integer.parseInt(args.get(4));
-
-            boolean bypassProtection = false;
-            if (args.size() >= 6) bypassProtection = Boolean.parseBoolean(args.get(5));
-
-            ListDetailedMaterialFeature listDetailedMaterialFeature = new ListDetailedMaterialFeature(true);
-            if(args.size() >= 7) {
-                List<String> list = new ArrayList<>();
-                String listStr = args.get(6);
-                if(listStr.contains(",")) list = Arrays.asList(listStr.split(","));
-                else list.add(listStr);
-                listDetailedMaterialFeature.load(SCore.plugin, list, true);
-            }
-
-            UUID uuid = receiver.getUniqueId();
-            boolean placed = false;
-            SsomarDev.testMsg("DEBUG place 0", true);
-
-            //levelled for lights OK
-            if(data instanceof Bisected || data instanceof Orientable || data instanceof Rotatable || data instanceof Slab || data instanceof Directional || verifDependentBlock(block)) return;
-
-            if(!listDetailedMaterialFeature.verifBlock(block)){
-                //SsomarDev.testMsg("DEBUG INVALID BLOCK >> "+data.getMaterial(), true);
-                return;
-            }
-
-            if (Material.matchMaterial(mat) != null) {
-                SsomarDev.testMsg("DEBUG PLACE 1", true);
-                SafePlace.placeBlockWithEvent(block, Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
-                placed = true;
-            } else {
-                World w = loc.getWorld();
-                List<Entity> entities = w.getEntities();
-
-                if (entities.size() > 0) {
-                    if (!bypassProtection && uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
-                    RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + x + " " + y + " " + z + " " + args.get(3).toLowerCase() + " replace", aInfo.isSilenceOutput());
-                    placed = true;
-                }
-            }
-
-            if(placed){
-                SetTempBlockManager.getInstance().runInitTempBlock(block.getLocation(), data, time);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        World w = receiver.getWorld();
+        if (!world.isEmpty()) {
+            w = SCore.plugin.getServer().getWorld(world);
         }
+        Location blockLoc = new Location(w, x, y, z);
+        Block block = blockLoc.getBlock();
+        BlockData data = block.getBlockData().clone();
+
+
+        ListDetailedMaterialFeature listDetailedMaterialFeature = new ListDetailedMaterialFeature(true);
+        if (!whitelistCurrentBlock.isEmpty()) {
+            List<String> list = new ArrayList<>();
+            if (whitelistCurrentBlock.contains(",")) list = Arrays.asList(whitelistCurrentBlock.split(","));
+            else list.add(whitelistCurrentBlock);
+            listDetailedMaterialFeature.load(SCore.plugin, list, true);
+        }
+
+        UUID uuid = receiver.getUniqueId();
+        boolean placed = false;
+        SsomarDev.testMsg("DEBUG place 0", true);
+
+        //levelled for lights OK
+        if (data instanceof Bisected || data instanceof Orientable || data instanceof Rotatable || data instanceof Slab || data instanceof Directional || verifDependentBlock(block))
+            return;
+
+        if (!listDetailedMaterialFeature.verifBlock(block)) {
+            //SsomarDev.testMsg("DEBUG INVALID BLOCK >> "+data.getMaterial(), true);
+            return;
+        }
+
+
+        SsomarDev.testMsg("DEBUG PLACE 1", true);
+        SafePlace.placeBlockWithEvent(block, material, Optional.empty(), uuid, false, !bypassProtection);
+        placed = true;
+
+
+        if (placed) {
+            SetTempBlockManager.getInstance().runInitTempBlock(block.getLocation(), data, time);
+        }
+
     }
 
     private static final BlockFace[] BLOCK_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
 
 
     public boolean verifDependentBlock(Block block) {
-        for(BlockFace blockFace: BLOCK_FACES){
+        for (BlockFace blockFace : BLOCK_FACES) {
             Block relative = block.getRelative(blockFace);
             Material mat = relative.getType();
-            if(mat == Material.TORCH || mat == Material.LADDER) return true; //Found torch, return true.
+            if (mat == Material.TORCH || mat == Material.LADDER) return true; //Found torch, return true.
         }
         return false; //No torch found, return false
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        /* Delete verification to not interfer with the vanilla setblock command */
-//		String setblock = "SETBLOCK {material}";
-//		if(args.size()<1) error = notEnoughArgs+setblock;
-//		else if(args.size()>1)error = tooManyArgs+setblock;
-
-        if(args.size() >= 4) {
-            List<String> list = new ArrayList<>();
-            String listStr = args.get(3);
-            if(listStr.contains(",")) list = Arrays.asList(listStr.split(","));
-            else list.add(listStr);
-
-            ListDetailedMaterialFeature listDetailedMaterialFeature = new ListDetailedMaterialFeature(true);
-            List<String> errors = listDetailedMaterialFeature.load(SCore.plugin, list, true);
-            if(errors.size() > 0) {
-                error = errors.get(0);
-            }
-        }
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_TEMP_BLOCK_POS");
         names.add("SETTEMPBLOCKPOS");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETTEMPBLOCKPOS {x} {y} {z} {material} {time} [bypassProtection true or false] [blocks list]";
+        return "SET_TEMP_BLOCK_POS x:0.0 y:0.0 z:0.0 material:STONE time:10 bypassProtection:true whitelistCurrentBlock:SAND,DIRT";
     }
 
     @Override

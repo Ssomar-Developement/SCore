@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -15,25 +15,25 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* SPAWNENTITYONCURSOR {entity} {amount} {maxRange} */
 public class SpawnEntityOnCursor extends PlayerCommand {
+
+    public SpawnEntityOnCursor() {
+        CommandSetting entity = new CommandSetting("entity", 0, EntityType.class, EntityType.ZOMBIE);
+        CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 1);
+        CommandSetting maxRange = new CommandSetting("maxRange", 2, Integer.class, 200);
+        List<CommandSetting> settings = getSettings();
+        settings.add(entity);
+        settings.add(amount);
+        settings.add(maxRange);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        int range = 200;
-        int amount = 1;
-        EntityType entityType = EntityType.valueOf(args.get(0).toUpperCase());
-
-        if (args.size() >= 2) {
-            amount = Double.valueOf(args.get(1)).intValue();
-        }
-
-        if (args.size() >= 3) {
-            range = Double.valueOf(args.get(2)).intValue();
-        }
+        int range = (int) sCommandToExec.getSettingValue("maxRange");
+        int amount = (int) sCommandToExec.getSettingValue("amount");
+        EntityType entityType = (EntityType) sCommandToExec.getSettingValue("entity");
 
         Block block = receiver.getTargetBlock(null, range);
 
@@ -57,35 +57,16 @@ public class SpawnEntityOnCursor extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkEntity(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        if (args.size() >= 2) {
-            ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
-            if (!ac2.isValid()) return Optional.of(ac2.getError());
-        }
-
-        if (args.size() >= 3) {
-            ArgumentChecker ac3 = checkInteger(args.get(2), isFinalVerification, getTemplate());
-            if (!ac3.isValid()) return Optional.of(ac3.getError());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SPAWN_ENTITY_ON_CURSOR");
         names.add("SPAWNENTITYONCURSOR");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SPAWNENTITYONCURSOR {entity} [amount] [maxRange]";
+        return "SPAWN_ENTITY_ON_CURSOR entity:ZOMBIE amount:1 maxRange:200";
     }
 
     @Override

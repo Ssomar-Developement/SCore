@@ -9,7 +9,10 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.UUID;
 
 @Getter
 public class CommandSetting {
@@ -83,6 +86,20 @@ public class CommandSetting {
                 return null;
             }
         }
+        else if(type == UUID.class) {
+            try {
+                return UUID.fromString(value);
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+        else if(type == EntityType.class){
+            try {
+                return EntityType.valueOf(value.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
         return value.replaceAll("_", " ");
     }
 
@@ -99,6 +116,8 @@ public class CommandSetting {
         else if(type == BarColor.class) return SCommand.checkBarColor(value, false, commandTemplate);
         else if(type == Material.class) return SCommand.checkMaterial(value, false, commandTemplate);
         else if(type == BlockFace.class) return SCommand.checkBlockFace(value, false, commandTemplate);
+        else if(type == UUID.class) return SCommand.checkUUID(value, false, commandTemplate);
+        else if(type == EntityType.class) return SCommand.checkEntity(value, false, commandTemplate);
         return null;
     }
 }

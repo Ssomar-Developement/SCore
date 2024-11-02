@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemsManagerInterface;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -12,16 +13,20 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class DropSpecificEI extends PlayerCommand {
+public class ForceDrop extends PlayerCommand {
+
+    public ForceDrop() {
+        CommandSetting ei_id = new CommandSetting("ei_id", 0, String.class, "MyExecutableItem");
+        List<CommandSetting> settings = getSettings();
+        settings.add(ei_id);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         if(receiver.isDead()) return;
-
-        List<String> args = sCommandToExec.getOtherArgs();
-        String id = args.get(0);
+        String id = (String) sCommandToExec.getSettingValue("ei_id");
 
         Location loc = receiver.getLocation();
         ExecutableItemsManagerInterface manager = ExecutableItemsAPI.getExecutableItemsManager();
@@ -39,22 +44,16 @@ public class DropSpecificEI extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("FORCE_DROP");
         names.add("DROPSPECIFICEI");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "DROPSPECIFICEI {id}";
+        return "FORCE_DROP ei_id:MyExecutableItem";
     }
 
     @Override

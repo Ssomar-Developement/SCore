@@ -112,7 +112,7 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
         len--;
         finalDescription[finalDescription.length - len] = "&7Enable Sound: &e" + (enableSound.getValue() ? "&a&l✔" : "&c&l✘");
         len--;
-        finalDescription[finalDescription.length - len] = "&7Sound: &e" + sound.getValue().get();
+        finalDescription[finalDescription.length - len] = "&7Sound: &e" + sound.getValue().get().getKey();
         len--;
         finalDescription[finalDescription.length - len] = "&7Model: &e" + model.getValue().orElse("");
         len--;

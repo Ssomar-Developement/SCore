@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -9,43 +9,38 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class SetMaterialCooldown extends PlayerCommand {
 
 
+    public SetMaterialCooldown() {
+        CommandSetting material = new CommandSetting("material", 0, Material.class, Material.STONE);
+        CommandSetting cooldown = new CommandSetting("cooldown", 1, Integer.class, 10);
+        List<CommandSetting> settings = getSettings();
+        settings.add(material);
+        settings.add(cooldown);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
-        int cooldown = Double.valueOf(args.get(1)).intValue();
-        Material mat = Material.valueOf(args.get(0).toUpperCase());
+        Material mat = (Material) sCommandToExec.getSettingValue("material");
+        int cooldown = (int) sCommandToExec.getSettingValue("cooldown");
         receiver.setCooldown(mat, 20 * cooldown);
     }
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkMaterial(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
-    }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_MATERIAL_COOLDOWN");
         names.add("SETMATERIALCOOLDOWN");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETMATERIALCOOLDOWN {Material} {cooldown in secs}";
+        return "SET_MATERIAL_COOLDOWN material:STONE cooldown:10";
     }
 
     @Override

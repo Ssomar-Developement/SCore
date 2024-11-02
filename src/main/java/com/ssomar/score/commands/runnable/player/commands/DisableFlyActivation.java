@@ -35,22 +35,25 @@ public class DisableFlyActivation extends PlayerCommand {
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         int time = (int) sCommandToExec.getSettingValue("time");
 
-        if (activeDisabled.containsKey(receiver.getUniqueId())) {
-            activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiver.getUniqueId()) + 1);
-        } else activeDisabled.put(receiver.getUniqueId(), 1);
+        UUID receiverUUID = receiver.getUniqueId();
+
+        if (activeDisabled.containsKey(receiverUUID)) {
+            activeDisabled.put(receiverUUID, activeDisabled.get(receiverUUID) + 1);
+        } else activeDisabled.put(receiverUUID, 1);
+
 
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
-                if (activeDisabled.containsKey(receiver.getUniqueId())) {
-                    if (activeDisabled.get(receiver.getUniqueId()) > 1) {
-                        activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiver.getUniqueId()) - 1);
-                    } else activeDisabled.remove(receiver.getUniqueId());
+                if (activeDisabled.containsKey(receiverUUID)) {
+                    if (activeDisabled.get(receiverUUID) > 1) {
+                        activeDisabled.put(receiverUUID, activeDisabled.get(receiver.getUniqueId()) - 1);
+                    } else activeDisabled.remove(receiverUUID);
                 }
             }
         };
-        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time * 20L);
+        SCore.schedulerHook.runTask(runnable3, time * 20L);
     }
 
     @Override

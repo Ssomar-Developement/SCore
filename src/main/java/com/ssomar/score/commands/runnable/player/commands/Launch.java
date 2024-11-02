@@ -3,7 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableitems.listeners.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.listeners.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.events.PlayerCustomLaunchEntityEvent;
@@ -27,6 +27,19 @@ import java.util.Optional;
 @SuppressWarnings("deprecation")
 public class Launch extends PlayerCommand {
 
+    public Launch() {
+        CommandSetting projectileType = new CommandSetting("projectile", 0, String.class, null);
+        CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 1, Double.class, 0);
+        CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 2, Double.class, 0);
+        CommandSetting velocity = new CommandSetting("velocity", -1, Double.class, 1);
+        List<CommandSetting> settings = getSettings();
+        settings.add(projectileType);
+        settings.add(angleRotationVertical);
+        settings.add(angleRotationHorizontal);
+        settings.add(velocity);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -35,36 +48,23 @@ public class Launch extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
 
-            List<String> args = sCommandToExec.getOtherArgs();
-            ActionInfo aInfo = sCommandToExec.getActionInfo();
+            String projectileType = (String) sCommandToExec.getSettingValue("projectile");
+            double rotationVertical = (double) sCommandToExec.getSettingValue("angleRotationVertical");
+            double rotationHorizontal = (double) sCommandToExec.getSettingValue("angleRotationHorizontal");
+            double velocity = (double) sCommandToExec.getSettingValue("velocity");
 
-            double rotationVertical = 0;
-            double rotationHorizontal = 0;
-
-            if (args.size() == 0) {
+            if (projectileType == null) {
                 receiver.launchProjectile(Arrow.class);
             } else {
                 try {
-                    rotationVertical = Double.parseDouble(args.get(1));
-                } catch (Exception ignored) {
-                }
-
-                try {
-                    rotationHorizontal = Double.parseDouble(args.get(2)) * -1;
-                } catch (Exception ignored) {
-                }
-                try {
                     Entity entity = null;
-
                     receiver.setMetadata("cancelProjectileEvent", new FixedMetadataValue(SCore.plugin, 7772));
 
-                    double velocity = 1;
-                    String type = args.get(0);
                     Optional<SProjectile> projectileOptional = null;
                     SProjectile projectile = null;
-                    if (SProjectileType.getProjectilesClasses().containsKey(type.toUpperCase())) {
-                        entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(type.toUpperCase()));
-                    } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
+                    if (SProjectileType.getProjectilesClasses().containsKey(projectileType.toUpperCase())) {
+                        entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(projectileType.toUpperCase()));
+                    } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(projectileType)).isPresent()) {
                         projectile = projectileOptional.get();
                         //SsomarDev.testMsg("LAUNCH : "+projectile.hashCode());
                         entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]));
@@ -105,9 +105,9 @@ public class Launch extends PlayerCommand {
                             Vector eyeVector;
                             /* Here I take the velocity. It is present only if the command LAUNCH is activated in a projectile launch event
                              * it's used to keep the bowforce and let the user customize the projectile launched */
-                            if (aInfo.getVelocity().isPresent()) {
+                            if (sCommandToExec.getActionInfo().getVelocity().isPresent()) {
                                 /* Take the real velocity */
-                                eyeVector = aInfo.getVelocity().get();
+                                eyeVector = sCommandToExec.getActionInfo().getVelocity().get();
                                 double oldVelocity = eyeVector.length();
                                 //SsomarDev.testMsg( "velocity: " + eyeVector.length(), true);
                                 /* add to the real velocity the custom rotation */
@@ -119,16 +119,19 @@ public class Launch extends PlayerCommand {
 
                             } else eyeVector = loc.getDirection();
 
+                            eyeVector = eyeVector.multiply(velocity);
 
-                            Vector v;
-                            if (entity instanceof Fireball) {
-                                Fireball fireball = (Fireball) entity;
-                                fireball.setDirection(eyeVector);
-                            } else if (entity instanceof DragonFireball) {
-                                DragonFireball fireball = (DragonFireball) entity;
-                                fireball.setDirection(eyeVector);
-                            } else {
-                                entity.setVelocity(eyeVector);
+                            if (!SCore.is1v13Less()) {
+                                Vector v;
+                                if (entity instanceof Fireball) {
+                                    Fireball fireball = (Fireball) entity;
+                                    fireball.setDirection(eyeVector);
+                                } else if (entity instanceof DragonFireball) {
+                                    DragonFireball fireball = (DragonFireball) entity;
+                                    fireball.setDirection(eyeVector);
+                                } else {
+                                    entity.setVelocity(eyeVector);
+                                }
                             }
                         }
                         if (projectile != null) {
@@ -146,7 +149,7 @@ public class Launch extends PlayerCommand {
                         }
 
                         if (SCore.hasExecutableItems) {
-                            ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
+                            ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(sCommandToExec.getActionInfo().getExecutableItem()), sCommandToExec.getActionInfo().getSlot(), System.currentTimeMillis());
                             ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
                         }
 
@@ -160,16 +163,6 @@ public class Launch extends PlayerCommand {
             }
     }
 
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        String launch = "LAUNCH {projectileType} [angle rotation vertical] [angle rotation horizontal]";
-        if (args.size() < 1) error = notEnoughArgs + launch;
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
-    }
-
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
@@ -179,8 +172,7 @@ public class Launch extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "LAUNCH {projectileType} [angle rotation y] [angle rotation z]";
-    }
+        return "LAUNCH projectile:ARROW angleRotationVertical:0 angleRotationHorizontal:0 velocity:1";  }
 
     @Override
     public ChatColor getColor() {

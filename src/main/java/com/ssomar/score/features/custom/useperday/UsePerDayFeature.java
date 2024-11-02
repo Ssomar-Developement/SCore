@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.useperday;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -72,7 +73,10 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
             return true;
         } else {
             /* Verification of usage per day */
-            if (UsagePerDayManager.getInstance().getCount(player.getName(), this.getId()) >= maxUsePerDay.getValue().get()) {
+            int count = UsagePerDayManager.getInstance().getCount(player.getName(), this.getId());
+            int max = maxUsePerDay.getValue().get();
+            SsomarDev.testMsg("count: " + count+" >> max "+max, true);
+            if (count >= maxUsePerDay.getValue().get()) {
                 sendMessageIfMaxReached(player, sp);
                 if (event != null && event instanceof Cancellable && cancelEventIfMaxReached.getValue()) {
                     ((Cancellable) event).setCancelled(true);

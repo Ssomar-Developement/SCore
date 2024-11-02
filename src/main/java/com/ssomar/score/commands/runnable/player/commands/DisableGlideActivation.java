@@ -37,7 +37,7 @@ public class DisableGlideActivation extends PlayerCommand {
         final UUID receiverUUID = receiver.getUniqueId();
 
         if (activeDisabled.containsKey(receiverUUID)) {
-            activeDisabled.put(receiver.getUniqueId(), activeDisabled.get(receiverUUID) + 1);
+            activeDisabled.put(receiverUUID, activeDisabled.get(receiverUUID) + 1);
         } else activeDisabled.put(receiverUUID, 1);
 
         Runnable runnable3 = new Runnable() {
@@ -51,7 +51,7 @@ public class DisableGlideActivation extends PlayerCommand {
                 }
             }
         };
-        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time * 20L);
+        SCore.schedulerHook.runTask(runnable3, time * 20L);
     }
 
     @Override

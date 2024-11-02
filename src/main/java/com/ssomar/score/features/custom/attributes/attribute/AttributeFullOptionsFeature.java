@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.attributes.attribute;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -9,6 +10,7 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.AttributeRework;
 import com.ssomar.score.utils.emums.AttributeSlot;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
@@ -46,7 +48,11 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     @Override
     public void reset() {
-        this.attribute = new AttributeFeature(this, Optional.of(Attribute.GENERIC_ARMOR), FeatureSettingsSCore.attribute);
+        Attribute att = null;
+        if(SCore.is1v21v2Plus()) att = Attribute.ARMOR;
+        else att = AttributeRework.getAttribute("GENERIC_ARMOR");
+
+        this.attribute = new AttributeFeature(this, Optional.of(att), FeatureSettingsSCore.attribute);
         this.operation = new OperationFeature(this, Optional.of(AttributeModifier.Operation.ADD_NUMBER), FeatureSettingsSCore.operation);
         this.amount = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.amount);
         this.slot = new SlotFeature(this, Optional.of(AttributeSlot.HAND), FeatureSettingsSCore.slot);
@@ -104,7 +110,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     public AttributeFullOptionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = "&7Attribute: &e" + attribute.getValue().get().name();
+        finalDescription[finalDescription.length - 6] = "&7Attribute: &e" + AttributeRework.getAttributes().get(attribute.getValue().get());
         finalDescription[finalDescription.length - 5] = "&7Operation: &e" + operation.getValue().get();
         finalDescription[finalDescription.length - 4] = "&7Amount: &e" + amount.getValue().get();
         finalDescription[finalDescription.length - 3] = "&7Slot: &e" + this.slot.getValue().get().name();

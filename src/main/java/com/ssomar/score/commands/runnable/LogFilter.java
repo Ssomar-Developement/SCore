@@ -97,7 +97,7 @@ public class LogFilter implements Filter, LifeCycle {
             }
         }
         // Remove dependency message
-        if(message.contains("[SCore] Loaded class")) {
+        if(message.contains("Loaded class")) {
             hide = true;
         }
 
@@ -111,6 +111,11 @@ public class LogFilter implements Filter, LifeCycle {
         if(message.contains("org.bukkit.Location for deserialization")) {
             hide = true;
         }
+        // Remove dependency message
+        if(message.contains("Loaded class")) {
+            hide = true;
+        }
+
         return hide ? Result.DENY : Result.NEUTRAL;
     }
 

@@ -1,10 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,84 +12,66 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* SETLORE {slot} {line} {text} */
 public class Setlore extends PlayerCommand {
+
+    public Setlore() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
+        slot.setSlot(true);
+        CommandSetting line = new CommandSetting("line", 1, Integer.class, 1);
+        CommandSetting text = new CommandSetting("text", 2, String.class, "&6New_lore_line");
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(line);
+        settings.add(text);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
         ItemStack item;
         ItemMeta itemmeta;
+        int line = (int) sCommandToExec.getSettingValue("line");
+        String text = (String) sCommandToExec.getSettingValue("text");
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
 
-        try {
-            int slot = NTools.getInteger(args.get(0)).get();
-            SsomarDev.testMsg("SLOT >> "+slot, true);
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
 
-            if (slot == -1) slot = receiver.getInventory().getHeldItemSlot();
-            item = receiver.getInventory().getItem(slot);
-            if (item == null || item.getType() == Material.AIR) return;
+        itemmeta = item.getItemMeta();
 
-            // Not compatible with EI + usageModification
-
-            //boolean isTheEIExecuted = false;
-            /* if(SCore.hasExecutableItems && aInfo.getExecutableItem() != null && item.isSimilar(aInfo.getExecutableItem().getItem())){
-                SsomarDev.testMsg("Setlore isTheEIExecuted", true);
-                item = aInfo.getExecutableItem().getItem();
-                isTheEIExecuted = true;
-            }*/
-            itemmeta = item.getItemMeta();
-
-            StringBuilder build = new StringBuilder();
-            for (int i = 2; i < args.size(); i++) {
-                build.append(args.get(i) + " ");
-            }
-
-            List<String> list = itemmeta.getLore();
-
-            if (list == null) return;
-            if (list.size() < Integer.valueOf(args.get(1))) return;
-
-            Integer index = Integer.valueOf(args.get(1));
-            if(index > 0) index += -1;
-            list.set(index, StringConverter.coloredString(build.toString()));
-
-            itemmeta.setLore(list);
-            item.setItemMeta(itemmeta);
-
-            receiver.getInventory().setItem(slot, item);
-
-        } catch (NullPointerException e) {
-            return;
+        StringBuilder build = new StringBuilder(text);
+        for (String s : sCommandToExec.getOtherArgs()) {
+            build.append(s + " ");
         }
 
+        List<String> list = itemmeta.getLore();
+
+        if (list == null) return;
+        if (list.size() < line) return;
+
+        if (line > 0) line += -1;
+        list.set(line, StringConverter.coloredString(build.toString()));
+
+        itemmeta.setLore(list);
+        item.setItemMeta(itemmeta);
+
+        receiver.getInventory().setItem(slot, item);
     }
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
-    }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_LORE");
         names.add("SETLORE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETLORE {slot} {line} {text dont need brackets}";
+        return "SET_LORE slot:-1 line:1 text:&6New_lore_line";
     }
 
     @Override
