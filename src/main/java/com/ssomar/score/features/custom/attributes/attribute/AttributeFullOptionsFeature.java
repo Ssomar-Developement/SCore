@@ -10,7 +10,7 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.emums.AttributeRework;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.emums.AttributeSlot;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
@@ -50,7 +50,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     public void reset() {
         Attribute att = null;
         if(SCore.is1v21v2Plus()) att = Attribute.ARMOR;
-        else att = AttributeRework.getAttribute("GENERIC_ARMOR");
+        else att = AttributeUtils.getAttribute("GENERIC_ARMOR");
 
         this.attribute = new AttributeFeature(this, Optional.of(att), FeatureSettingsSCore.attribute);
         this.operation = new OperationFeature(this, Optional.of(AttributeModifier.Operation.ADD_NUMBER), FeatureSettingsSCore.operation);
@@ -110,7 +110,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     public AttributeFullOptionsFeature initItemParentEditor(GUI gui, int slot) {
         String[] finalDescription = new String[getEditorDescription().length + 6];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 6] = "&7Attribute: &e" + AttributeRework.getAttributes().get(attribute.getValue().get());
+        finalDescription[finalDescription.length - 6] = "&7Attribute: &e" + AttributeUtils.getAttributes().get(attribute.getValue().get());
         finalDescription[finalDescription.length - 5] = "&7Operation: &e" + operation.getValue().get();
         finalDescription[finalDescription.length - 4] = "&7Amount: &e" + amount.getValue().get();
         finalDescription[finalDescription.length - 3] = "&7Slot: &e" + this.slot.getValue().get().name();

@@ -4,19 +4,22 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
+import com.ssomar.score.utils.backward_compatibility.SoundUtils;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -36,7 +39,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            Sound operation = Registry.SOUNDS.get(NamespacedKey.fromString(colorStr));
+            Sound operation = SoundUtils.getSound(colorStr);
             value = Optional.ofNullable(operation);
             FeatureReturnCheckPremium<Sound> checkPremium = checkPremium("Sound", operation, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
@@ -50,7 +53,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
     @Override
     public void save(ConfigurationSection config) {
         Optional<Sound> value = getValue();
-        value.ifPresent(operation -> config.set(this.getName(), operation.getKey().toString()));
+        value.ifPresent(operation -> config.set(this.getName(), SoundUtils.getSounds().get(operation)));
     }
 
     @Override
@@ -170,54 +173,57 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
         return true;
     }
 
-    public Sound nextOperation(Sound operation) {
+    public Sound nextOperation(Sound sound) {
         boolean next = false;
-        for (Sound check : getSortOperations()) {
-            if (check.equals(operation)) {
+        Map<Object, String> map = AttributeUtils.getAttributes();
+        for (Object check : map.keySet()) {
+            if (check.equals(sound)) {
                 next = true;
                 continue;
             }
-            if (next) return check;
+            if (next) return (Sound) check;
         }
-        return getSortOperations().get(0);
+        return (Sound) map.keySet().iterator().next();
     }
 
-    public Sound prevOperation(Sound operation) {
+    public Sound prevOperation(Sound sound) {
         int i = -1;
         int cpt = 0;
-        for (Sound check : getSortOperations()) {
-            if (check.equals(operation)) {
+        Map<Object, String> map = SoundUtils.getSounds();
+        for (Object check : map.keySet()) {
+            if (check.equals(sound)) {
                 i = cpt;
                 break;
             }
             cpt++;
         }
-        if (i == 0) return getSortOperations().get(getSortOperations().size() - 1);
-        else return getSortOperations().get(cpt - 1);
+        if (i == 0) return (Sound) map.keySet().toArray()[map.size() - 1];
+        else return (Sound) map.keySet().toArray()[cpt - 1];
     }
 
     public void updateOperation(Sound operation, GUI gui) {
         this.value = Optional.of(operation);
         ItemStack item = gui.getByName(getEditorName());
         ItemMeta meta = item.getItemMeta();
+        Map<Object, String> map = SoundUtils.getSounds();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
-        maxSize += getSortOperations().size();
+        maxSize += map.size();
         if (maxSize > 17) maxSize = 17;
         boolean find = false;
-        for (Sound check : getSortOperations()) {
+        for (Object check : map.keySet()) {
             if (operation.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" + operation.getKey()));
+                lore.add(StringConverter.coloredString("&2➤ &a" + map.get(operation)));
                 find = true;
             } else if (find) {
                 if (lore.size() == maxSize) break;
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.getKey()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + map.get(check)));
             }
         }
-        for (Sound check : getSortOperations()) {
+        for (Object check : map.keySet()) {
             if (lore.size() == maxSize) break;
             else {
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.getKey()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + map.get(check)));
             }
         }
         meta.setLore(lore);
@@ -233,18 +239,10 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return Sound.valueOf(str.split("➤ ")[1]);
+                return SoundUtils.getSound(str.split("➤ ")[1]);
             }
         }
         return null;
-    }
-
-    public List<Sound> getSortOperations() {
-        SortedMap<String, Sound> map = new TreeMap<String, Sound>();
-        for (Sound l : Registry.SOUNDS) {
-            map.put(l.getKey().toString(), l);
-        }
-        return new ArrayList<>(map.values());
     }
 
 }

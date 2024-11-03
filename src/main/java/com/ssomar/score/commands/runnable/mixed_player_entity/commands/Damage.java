@@ -6,7 +6,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
-import com.ssomar.score.utils.emums.AttributeRework;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -124,7 +124,7 @@ public class Damage extends MixedCommand {
             if (attributeAmplification) {
                 Attribute att = null;
                 if(SCore.is1v21v2Plus()) att = Attribute.ATTACK_DAMAGE;
-                else att = AttributeRework.getAttribute("GENERIC_ATTACK_DAMAGE");
+                else att = AttributeUtils.getAttribute("GENERIC_ATTACK_DAMAGE");
                 AttributeInstance aI = launcher.getAttribute(att);
                 double bonusAmount = 0;
                 if (aI != null) {

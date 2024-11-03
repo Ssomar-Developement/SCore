@@ -6,7 +6,7 @@ import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.emums.AttributeRework;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -45,7 +45,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
             value = Optional.empty();
         } else {
             try {
-                attribute = AttributeRework.getAttribute(attributeStr);
+                attribute = AttributeUtils.getAttribute(attributeStr);
                 value = Optional.of(attribute);
                 FeatureReturnCheckPremium<Attribute> checkPremium = checkPremium("Attribute", attribute, defaultValue, isPremiumLoading);
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
@@ -61,7 +61,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
     public void save(ConfigurationSection config) {
         Optional<Attribute> optional = getValue();
         if (optional.isPresent()) {
-            config.set(this.getName(), AttributeRework.getAttributes().get(optional.get()));
+            config.set(this.getName(), AttributeUtils.getAttributes().get(optional.get()));
         } else config.set(this.getName(), null);
     }
 
@@ -86,7 +86,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
     public void updateItemParentEditor(GUI gui) {
         Attribute att = null;
         if (SCore.is1v21v2Plus()) att = Attribute.ARMOR;
-        else att = AttributeRework.getAttribute("GENERIC_ARMOR");
+        else att = AttributeUtils.getAttribute("GENERIC_ARMOR");
         Optional<Attribute> optional = getValue();
         if (optional.isPresent()) updateAttribute(optional.get(), gui);
         else updateAttribute(att, gui);
@@ -187,7 +187,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
 
     public Attribute nextAttribute(Attribute attribute) {
         boolean next = false;
-        Map<Object, String> map = AttributeRework.getAttributes();
+        Map<Object, String> map = AttributeUtils.getAttributes();
         for (Object check : map.keySet()) {
             if (check.equals(attribute)) {
                 next = true;
@@ -201,8 +201,8 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
     public Attribute prevAttribute(Attribute attribute) {
         int i = -1;
         int cpt = 0;
-        Map<Object, String> map = AttributeRework.getAttributes();
-        for (Object check : AttributeRework.getAttributes().keySet()) {
+        Map<Object, String> map = AttributeUtils.getAttributes();
+        for (Object check : map.keySet()) {
             if (check.equals(attribute)) {
                 i = cpt;
                 break;
@@ -221,12 +221,12 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
          *
          * */
         ItemMeta meta = item.getItemMeta();
+        Map<Object, String> map = AttributeUtils.getAttributes();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
-        maxSize += AttributeRework.getAttributes().size();
+        maxSize += map.size();
         if (maxSize > 17) maxSize = 17;
         boolean find = false;
-        Map<Object, String> map = AttributeRework.getAttributes();
         for (Object check : map.keySet()) {
             if (attribute.equals(check)) {
                 lore.add(StringConverter.coloredString("&2➤ &a" + map.get(attribute)));
@@ -259,7 +259,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
-                return AttributeRework.getAttribute(str.split("➤ ")[1]);
+                return AttributeUtils.getAttribute(str.split("➤ ")[1]);
             }
         }
         return null;

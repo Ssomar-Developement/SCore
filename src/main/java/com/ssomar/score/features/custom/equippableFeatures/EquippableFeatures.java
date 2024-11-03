@@ -14,6 +14,7 @@ import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.features.types.list.ListEntityTypeFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.backward_compatibility.SoundUtils;
 import com.ssomar.score.utils.emums.AttributeSlot;
 import lombok.Getter;
 import lombok.Setter;
@@ -112,7 +113,7 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
         len--;
         finalDescription[finalDescription.length - len] = "&7Enable Sound: &e" + (enableSound.getValue() ? "&a&l✔" : "&c&l✘");
         len--;
-        finalDescription[finalDescription.length - len] = "&7Sound: &e" + sound.getValue().get().getKey();
+        finalDescription[finalDescription.length - len] = "&7Sound: &e" + SoundUtils.getSounds().get(sound.getValue().get());
         len--;
         finalDescription[finalDescription.length - len] = "&7Model: &e" + model.getValue().orElse("");
         len--;

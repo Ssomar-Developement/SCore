@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
-import com.ssomar.score.utils.emums.AttributeRework;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -27,7 +27,7 @@ public class RegainHealth extends MixedCommand {
         double maxHealth;
         Attribute att = null;
         if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
-        else att = AttributeRework.getAttribute("GENERIC_MAX_HEALTH");
+        else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
 
         if (SCore.is1v8()) {
             maxHealth = 20;

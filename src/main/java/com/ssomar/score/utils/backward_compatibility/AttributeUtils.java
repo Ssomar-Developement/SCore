@@ -1,4 +1,4 @@
-package com.ssomar.score.utils.emums;
+package com.ssomar.score.utils.backward_compatibility;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.MapUtil;
@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AttributeRework {
+public class AttributeUtils {
 
     public static Map<Object, String> getAttributes() {
         Map<Object, String> list = new HashMap<>();

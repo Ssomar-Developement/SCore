@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
-import com.ssomar.score.utils.emums.AttributeRework;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -25,7 +25,7 @@ public class Heal extends EntityCommand {
         List<String> args = sCommandToExec.getOtherArgs();
         Attribute att = null;
         if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
-        else att = AttributeRework.getAttribute("GENERIC_MAX_HEALTH");
+        else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
         if (args.size() >= 1) {
             int amount = Double.valueOf(args.get(0)).intValue();
             if (amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
