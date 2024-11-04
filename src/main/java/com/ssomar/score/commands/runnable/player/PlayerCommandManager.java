@@ -89,7 +89,6 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
-            commands.add(new Particle());
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());

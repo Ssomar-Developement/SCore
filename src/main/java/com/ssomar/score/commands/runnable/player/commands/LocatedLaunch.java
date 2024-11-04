@@ -30,12 +30,12 @@ public class LocatedLaunch extends PlayerCommand {
 
     public LocatedLaunch() {
         CommandSetting projectileType = new CommandSetting("projectile", 0, String.class, null);
-        CommandSetting frontValue = new CommandSetting("frontValue", 1, Double.class, 0);
-        CommandSetting rightValue = new CommandSetting("rightValue", 2, Double.class, 0);
-        CommandSetting yValue = new CommandSetting("yValue", 3, Double.class, 0);
-        CommandSetting velocity = new CommandSetting("velocity", 4, Double.class, 1);
-        CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 5, Double.class, 0);
-        CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 6, Double.class, 0);
+        CommandSetting frontValue = new CommandSetting("frontValue", 1, Double.class, 0.0);
+        CommandSetting rightValue = new CommandSetting("rightValue", 2, Double.class, 0.0);
+        CommandSetting yValue = new CommandSetting("yValue", 3, Double.class, 0.0);
+        CommandSetting velocity = new CommandSetting("velocity", 4, Double.class, 1.0);
+        CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 5, Double.class, 0.0);
+        CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 6, Double.class, 0.0);
         List<CommandSetting> settings = getSettings();
         settings.add(projectileType);
         settings.add(frontValue);

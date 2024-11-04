@@ -1,15 +1,16 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Particle extends PlayerCommand {
+public class Particle extends BlockCommand {
 
     public Particle() {
         CommandSetting particle = new CommandSetting("particle", 0, String.class, "FLAME");
@@ -25,14 +26,14 @@ public class Particle extends PlayerCommand {
     }
 
     @Override
-    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+    public void run(Player p, Block block, SCommandToExec sCommandToExec) {
         String particle = (String) sCommandToExec.getSettingValue("particle");
         int quantity = (int) sCommandToExec.getSettingValue("quantity");
         double offset = (double) sCommandToExec.getSettingValue("offset");
         double speed = (double) sCommandToExec.getSettingValue("speed");
         try {
-            receiver.getWorld().spawnParticle(org.bukkit.Particle.valueOf(particle.toUpperCase()),
-                    receiver.getLocation(),
+            block.getWorld().spawnParticle(org.bukkit.Particle.valueOf(particle.toUpperCase()),
+                    block.getLocation(),
                     quantity,
                     offset,
                     offset,

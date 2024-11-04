@@ -76,6 +76,10 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
             commands.add(new EquipmentVisualCancel());
         }
 
+        if (!SCore.is1v11Less()) {
+            commands.add(new Particle());
+        }
+
         setCommands(commands);
     }
 

@@ -29,9 +29,9 @@ public class Launch extends PlayerCommand {
 
     public Launch() {
         CommandSetting projectileType = new CommandSetting("projectile", 0, String.class, null);
-        CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 1, Double.class, 0);
-        CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 2, Double.class, 0);
-        CommandSetting velocity = new CommandSetting("velocity", -1, Double.class, 1);
+        CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 1, Double.class, 0.0);
+        CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 2, Double.class, 0.0);
+        CommandSetting velocity = new CommandSetting("velocity", -1, Double.class, 1.0);
         List<CommandSetting> settings = getSettings();
         settings.add(projectileType);
         settings.add(angleRotationVertical);
