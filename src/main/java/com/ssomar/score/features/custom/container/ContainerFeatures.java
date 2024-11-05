@@ -163,7 +163,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     }
 
     public boolean canBeApplied(BlockData blockData) {
-        return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData.getMaterial().toString().contains("SHULKER_BOX") || blockData instanceof Barrel || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
+        return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData.getMaterial().toString().contains("SHULKER_BOX") || (SCore.is1v18Plus() &&blockData instanceof Barrel) || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
     }
 
     public void applyContainerFeatures(Block block) {

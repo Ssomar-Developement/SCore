@@ -88,6 +88,7 @@ public class SCommandToExec {
                         indexToRemove.add(setting.getOldSystemIndex());
                     }
                 }
+                else settingObjectMap.put(setting, setting.getValue(null));
             }
             // Sort the index to remove
             Collections.sort(indexToRemove, Collections.reverseOrder());
