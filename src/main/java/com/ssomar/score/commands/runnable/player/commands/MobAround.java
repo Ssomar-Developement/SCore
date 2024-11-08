@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /* MOB_AROUND {distance} {Your commands here} */
@@ -34,7 +35,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     public MobAround() {
 
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
-        CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoEntity", -1, Boolean.class, true);
+        CommandSetting displayMsgIfNoPlayer = new CommandSetting(Arrays.asList("displayMsgIfNoEntity","DisplayMsgIfNoEntity"), -1, Boolean.class, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();
@@ -129,7 +130,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
     @Override
     public String getTemplate() {
-        return "MOB_AROUND distance:3 DisplayMsgIfNoEntity:true throughBlocks:true safeDistance:0 [conditions] COMMAND1 +++ COMMAND2 +++ ...";
+        return "MOB_AROUND distance:3 displayMsgIfNoEntity:true throughBlocks:true safeDistance:0 [conditions] COMMAND1 +++ COMMAND2 +++ ...";
     }
 
     @Override

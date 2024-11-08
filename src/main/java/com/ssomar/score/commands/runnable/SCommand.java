@@ -2,7 +2,6 @@ package com.ssomar.score.commands.runnable;
 
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.GetItem;
@@ -368,17 +367,20 @@ public abstract class SCommand {
             }
         }
         entry = entry.trim();
-        SsomarDev.testMsg("entry: " + entry, true);
+        //SsomarDev.testMsg("entry: " + entry, true);
 
         List<String> arguments = new ArrayList<>();
         arguments.addAll(Arrays.asList(entry.split(" ")));
         // fully new system
         for (CommandSetting setting : getSettings()) {
             if (arguments.size() > 0) {
-                Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(setting.getName() + ":")).findFirst();
-                if (value.isPresent()) {
-                    ArgumentChecker ac = setting.checkValue(value.get().replace(setting.getName() + ":", ""), getTemplate());
-                    if (ac != null && !ac.isValid()) return Optional.of(ac.getError());
+                for(String name : setting.getNames()) {
+                    Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(name + ":")).findFirst();
+                    if (value.isPresent()) {
+                        ArgumentChecker ac = setting.checkValue(value.get().replace(name + ":", ""), getTemplate());
+                        if (ac != null && !ac.isValid()) return Optional.of(ac.getError());
+                        break;
+                    }
                 }
             }
         }

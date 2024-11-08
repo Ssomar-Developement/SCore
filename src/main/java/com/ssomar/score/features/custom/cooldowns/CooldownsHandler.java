@@ -1,8 +1,10 @@
 package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.data.CooldownsQuery;
 import com.ssomar.score.data.Database;
+import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,15 +57,20 @@ public class CooldownsHandler implements Listener {
             if(cd != null) cd.updatePlayerDisconnect();
         }
 
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7"+cooldowns.size()+" cooldowns saved");
+
         CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
 
         CooldownsManager.getInstance().clearCooldowns();
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
-    public void PlayerJoinEvent(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+    public static void connectAllOnlinePlayers(){
+        for(Player p : Bukkit.getOnlinePlayers()){
+            connect(p);
+        }
+    }
 
+    public static void connect(Player p){
         if(!SCore.plugin.isEnabled()) return;
 
         if(isFolia()) return;
@@ -76,7 +83,7 @@ public class CooldownsHandler implements Listener {
             Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
                 @Override
                 public void run() {
-                    //SsomarDev.testMsg("COOLDOWNS SIZE: "+cooldowns.size(), true);
+                    SsomarDev.testMsg("COOLDOWNS SIZE: "+cooldowns.size(), true);
                     CooldownsManager.getInstance().addCooldowns(cooldowns);
 
                     Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, new Runnable() {
@@ -88,6 +95,12 @@ public class CooldownsHandler implements Listener {
                 }
             });
         });
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void PlayerJoinEvent(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        connect(p);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

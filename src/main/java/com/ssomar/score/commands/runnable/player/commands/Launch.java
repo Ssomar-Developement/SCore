@@ -52,6 +52,7 @@ public class Launch extends PlayerCommand {
             double rotationVertical = (double) sCommandToExec.getSettingValue("angleRotationVertical");
             double rotationHorizontal = (double) sCommandToExec.getSettingValue("angleRotationHorizontal");
             double velocity = (double) sCommandToExec.getSettingValue("velocity");
+       // SsomarDev.testMsg("LAUNCH : "+projectileType, true);
 
             if (projectileType == null) {
                 receiver.launchProjectile(Arrow.class);

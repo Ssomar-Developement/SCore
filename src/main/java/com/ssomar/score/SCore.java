@@ -488,6 +488,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         UsagePerDayManager.getInstance();
 
         CooldownsHandler.loadCooldowns();
+        CooldownsHandler.connectAllOnlinePlayers();
 
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();

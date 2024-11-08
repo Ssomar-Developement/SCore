@@ -121,7 +121,7 @@ public class LocatedLaunch extends PlayerCommand {
                 eyeLoc2.setYaw(newYaw);
 
 
-                /* idk why I coded this part
+                /* idk why I coded this part but it seems to work */
                 int multiply = 2;
 
                 while (searchBlockOrEntity && multiply < 100) {
@@ -140,7 +140,8 @@ public class LocatedLaunch extends PlayerCommand {
                         }
                     }
                     multiply++;
-                } */
+                }
+                /* end of idk */
 
                 Vector last = loc.toVector().subtract(toLaunchLoc.toVector());
                 last = last.normalize();

@@ -212,7 +212,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
         if (maxSize > 17) maxSize = 17;
         boolean find = false;
         for (Object check : map.keySet()) {
-            if (operation.equals(check)) {
+            if (operation == check) {
                 lore.add(StringConverter.coloredString("&2➤ &a" + map.get(operation)));
                 find = true;
             } else if (find) {

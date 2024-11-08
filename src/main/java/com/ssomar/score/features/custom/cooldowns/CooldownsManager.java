@@ -9,7 +9,7 @@ import java.util.*;
 
 public class CooldownsManager {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private static CooldownsManager instance;
 

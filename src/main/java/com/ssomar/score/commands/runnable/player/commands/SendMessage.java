@@ -15,6 +15,7 @@ public class SendMessage extends PlayerCommand {
 
     public SendMessage() {
         CommandSetting message = new CommandSetting("message", 0, String.class, "&6Hello_world");
+        message.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
         settings.add(message);
         setNewSettingsMode(true);
@@ -25,13 +26,12 @@ public class SendMessage extends PlayerCommand {
         String baseMessage = (String) sCommandToExec.getSettingValue("message");
         List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder message = new StringBuilder(baseMessage);
-        int remove = 0;
+        message.append(" ");
         for (String s : args) {
             //SsomarDev.testMsg("cmdarg> "+s);
             message.append(s).append(" ");
-            remove=1;
         }
-        message = new StringBuilder(message.substring(0, message.length() - remove));
+        message = new StringBuilder(message.substring(0, message.length() - 1));
         if(!message.toString().isEmpty())
             sm.sendMessage(receiver, message.toString(), false);
     }

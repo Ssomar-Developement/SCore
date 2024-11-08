@@ -52,10 +52,13 @@ public class SCommandToExec {
             // fully new system
             for(CommandSetting setting : sCommand.getSettings()){
                 if(arguments.size() > 0){
-                    Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(setting.getName()+":")).findFirst();
-                    if(value.isPresent()){
-                        settingObjectMap.put(setting, setting.getValue(value.get().replace(setting.getName()+":", "")));
-                        arguments.remove(value.get());
+                    for(String name : setting.getNames()) {
+                        Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(name + ":")).findFirst();
+                        if (value.isPresent()) {
+                            settingObjectMap.put(setting, setting.getValue(value.get().replace(name + ":", "")));
+                            arguments.remove(value.get());
+                            break;
+                        }
                     }
                 }
             }
@@ -90,6 +93,9 @@ public class SCommandToExec {
                 }
                 else settingObjectMap.put(setting, setting.getValue(null));
             }
+            for(CommandSetting i : settingObjectMap.keySet()) {
+                SsomarDev.testMsg("settingObjectMap "+i+" >> "+settingObjectMap.get(i), true);
+            }
             // Sort the index to remove
             Collections.sort(indexToRemove, Collections.reverseOrder());
             for(int index : indexToRemove) arguments.remove(index);
@@ -99,8 +105,11 @@ public class SCommandToExec {
     }
 
     public Object getSettingValue(String setting) {
-        CommandSetting commandSetting = sCommand.getSettings().stream().filter(s -> s.getName().equals(setting)).findFirst().orElse(null);
-        if(commandSetting != null) return settingsValues.get(commandSetting);
+        for(CommandSetting s : sCommand.getSettings()) {
+            for(String name : s.getNames()) {
+                if (name.equals(setting)) return settingsValues.get(s);
+            }
+        }
         return null;
     }
 }

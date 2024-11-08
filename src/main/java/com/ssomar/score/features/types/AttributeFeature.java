@@ -228,7 +228,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
         if (maxSize > 17) maxSize = 17;
         boolean find = false;
         for (Object check : map.keySet()) {
-            if (attribute.equals(check)) {
+            if (attribute == check) {
                 lore.add(StringConverter.coloredString("&2➤ &a" + map.get(attribute)));
                 find = true;
             } else if (find) {

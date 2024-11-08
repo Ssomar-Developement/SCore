@@ -12,12 +12,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 public class CommandSetting {
 
-    private String name;
+    private List<String> names;
 
     private int oldSystemIndex;
     private boolean oldSystemOptional = false;
@@ -30,17 +32,33 @@ public class CommandSetting {
     private boolean acceptPercentage = false;
     @Setter
     private boolean isSlot = false;
-
+    @Setter
+    private boolean acceptUnderScoreForLongText = false;
 
     public CommandSetting(String name, int oldSystemIndex, Object type, Object defaultValue) {
-        this.name = name;
+        this.names = Collections.singletonList(name);
         this.oldSystemIndex = oldSystemIndex;
         this.type = type;
         this.defaultValue = defaultValue;
     }
 
     public CommandSetting(String name, int oldSystemIndex, Object type, Object defaultValue, boolean oldSystemOptional) {
-        this.name = name;
+        this.names = Collections.singletonList(name);
+        this.oldSystemIndex = oldSystemIndex;
+        this.type = type;
+        this.defaultValue = defaultValue;
+        this.oldSystemOptional = oldSystemOptional;
+    }
+
+    public CommandSetting(List<String> names, int oldSystemIndex, Object type, Object defaultValue) {
+        this.names = names;
+        this.oldSystemIndex = oldSystemIndex;
+        this.type = type;
+        this.defaultValue = defaultValue;
+    }
+
+    public CommandSetting(List<String> names, int oldSystemIndex, Object type, Object defaultValue, boolean oldSystemOptional) {
+        this.names = names;
         this.oldSystemIndex = oldSystemIndex;
         this.type = type;
         this.defaultValue = defaultValue;
@@ -100,7 +118,8 @@ public class CommandSetting {
                 return null;
             }
         }
-        return value.replaceAll("_", " ");
+        if(acceptUnderScoreForLongText) return value.replaceAll("_", " ");
+        return value;
     }
 
     public ArgumentChecker checkValue(String value, String commandTemplate){

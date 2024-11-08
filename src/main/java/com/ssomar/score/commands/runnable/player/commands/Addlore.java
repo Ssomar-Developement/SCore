@@ -19,6 +19,7 @@ public class Addlore extends PlayerCommand {
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
         slot.setSlot(true);
         CommandSetting text = new CommandSetting("text", 1, String.class, "New lore");
+        text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(text);

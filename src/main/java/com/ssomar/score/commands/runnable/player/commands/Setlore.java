@@ -20,6 +20,7 @@ public class Setlore extends PlayerCommand {
         slot.setSlot(true);
         CommandSetting line = new CommandSetting("line", 1, Integer.class, 1);
         CommandSetting text = new CommandSetting("text", 2, String.class, "&6New_lore_line");
+        text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(line);
