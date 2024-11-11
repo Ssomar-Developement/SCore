@@ -20,6 +20,7 @@ public class Bossbar extends PlayerCommand {
         CommandSetting time = new CommandSetting("time", 0, Integer.class, 200);
         CommandSetting color = new CommandSetting("color", 1, BarColor.class, BarColor.BLUE);
         CommandSetting text = new CommandSetting("text", 2, String.class, "Hello_world");
+        text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
         settings.add(time);
         settings.add(color);
@@ -33,17 +34,26 @@ public class Bossbar extends PlayerCommand {
         BarColor color = (BarColor) sCommandToExec.getSettingValue("color");
         String text = (String) sCommandToExec.getSettingValue("text");
         Integer time = (Integer) sCommandToExec.getSettingValue("time");
+        List<String> args = sCommandToExec.getOtherArgs();
+        StringBuilder message = new StringBuilder(text);
+        message.append(" ");
+        for (String s : args) {
+            //SsomarDev.testMsg("cmdarg> "+s);
+            message.append(s).append(" ");
+        }
+        message = new StringBuilder(message.substring(0, message.length() - 1));
+        if(!message.toString().isEmpty()) {
+            BossBar bossBar = Bukkit.createBossBar(text, color, BarStyle.SOLID);
+            bossBar.addPlayer(receiver);
 
-        BossBar bossBar = Bukkit.createBossBar(text, color, BarStyle.SOLID);
-        bossBar.addPlayer(receiver);
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                bossBar.removeAll();
-            }
-        };
-        SCore.schedulerHook.runTask(runnable, time);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    bossBar.removeAll();
+                }
+            };
+            SCore.schedulerHook.runTask(runnable, time);
+        }
     }
 
     @Override

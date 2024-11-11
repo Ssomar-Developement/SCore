@@ -282,6 +282,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     patterns("patterns", "Patterns", new String[]{"&7&oThe patterns"}, Material.ANVIL, false),
     pausePlaceholdersConditions("pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false),
     pauseWhenOffline("pauseWhenOffline", "Pause When Offline", new String[]{"&7&oPause the cooldown when the player is offline?"},  null,  false),
+    enableVisualCooldown("enableVisualCooldown", "Enable Visual Cooldown", new String[]{"&7&oEnable the visual cooldown", "&7&oIt requires to have setup", "&e&ocooldownGroup &7&oin the item settings"},  null,  false),
     period("period", "Period", new String[]{},  GUI.CLOCK,  false),
     periodInTicks("periodInTicks", "Period in ticks", new String[]{},  GUI.CLOCK,  false),
     pickupStatus("pickupStatus", "Pickup Status", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LEAD", "LEASH")), false),
@@ -367,6 +368,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     instrumentFeatures("instrumentFeatures", "Instrument Features", new String[]{"&7&oThe instrument features"}, Material.NOTE_BLOCK, false),
     instrument("instrument", "Instrument", new String[]{"&7&oThe instrument"}, Material.NOTE_BLOCK, false),
 
+    useCooldownFeatures("useCooldownFeatures", "Use Cooldown Features", new String[]{"&7&oThe use cooldown features"}, GUI.CLOCK, false),
+    cooldownGroup("cooldownGroup", "Cooldown Group", new String[]{"&7&oThe cooldown group"}, GUI.WRITABLE_BOOK, false),
+    vanillaUseCooldown("vanillaUseCooldown", "Vanilla Use Cooldown", new String[]{"&7&oThe vanilla use cooldown"}, GUI.CLOCK, false),
 
     typeTarget("typeTarget", "Type Target", new String[]{"&7&oType target"},  Material.COMPASS, false),
     detailedClick("detailedClick", "Detailed Click", new String[]{"&7&oThe specific click"}, Material.COMPASS, false),

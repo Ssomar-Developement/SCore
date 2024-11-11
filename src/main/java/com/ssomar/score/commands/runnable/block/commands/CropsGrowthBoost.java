@@ -63,7 +63,7 @@ public class CropsGrowthBoost extends BlockCommand {
                     if (!(data instanceof Ageable)) continue;
 
                     int random = new Random().nextInt(100);
-                    //SsomarDev.testMsg(random +" " + finalChance);
+                   // SsomarDev.testMsg(random +" " + finalChance, true);
                     if (random <= finalChance) {
                         if (receiver != null && (receiver.isOp() || SafePlace.verifSafePlace(receiver.getUniqueId(), block))) {
                             Ageable ageable = (Ageable) data;

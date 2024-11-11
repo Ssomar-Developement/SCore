@@ -542,6 +542,14 @@
             <version>20231013</version>
         </dependency>
 
+        <!-- used in customdahs3 command -->
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>0.4.5</version>
+        </dependency>
+
+
         <!--<dependency>
             <groupId>com.thoughtworks.paranamer</groupId>
             <artifactId>paranamer</artifactId>
