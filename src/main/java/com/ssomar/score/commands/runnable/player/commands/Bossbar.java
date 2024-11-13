@@ -43,7 +43,7 @@ public class Bossbar extends PlayerCommand {
         }
         message = new StringBuilder(message.substring(0, message.length() - 1));
         if(!message.toString().isEmpty()) {
-            BossBar bossBar = Bukkit.createBossBar(text, color, BarStyle.SOLID);
+            BossBar bossBar = Bukkit.createBossBar(message.toString(), color, BarStyle.SOLID);
             bossBar.addPlayer(receiver);
 
             Runnable runnable = new Runnable() {

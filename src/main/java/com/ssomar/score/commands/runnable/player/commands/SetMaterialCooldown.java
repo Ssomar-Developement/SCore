@@ -49,7 +49,7 @@ public class SetMaterialCooldown extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        if(SCore.is1v21v2Plus()) names.add("SET_ITEM_COOLDOWN");
+        names.add("SET_ITEM_COOLDOWN");
         names.add("SET_MATERIAL_COOLDOWN");
         names.add("SETMATERIALCOOLDOWN");
         return names;

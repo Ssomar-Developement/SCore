@@ -1,6 +1,11 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.SsomarDev;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.StructureGrowEvent;
 
 public class TESTEVENT implements Listener {
 
@@ -22,15 +27,14 @@ public class TESTEVENT implements Listener {
         p.getInventory().addItem(item);
     } */
 
-    /* @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerToggleSneakEvent(PlayerJoinEvent e) {
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerToggleSneakEvent(StructureGrowEvent e) {
 
         Player p = e.getPlayer();
+        SsomarDev.testMsg("ATTEMPT GROW ", true);
+    }
 
-        ItemStack item = p.getItemInHand();
-        SsomarDev.testMsg("COOLDOWN ITEM "+item, true);
-        SsomarDev.testMsg("COOLDOWN ITEM ? "+p.hasCooldown(item), true);
-    } */
+
 
 
 }
