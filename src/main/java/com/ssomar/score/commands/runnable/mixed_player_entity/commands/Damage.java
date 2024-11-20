@@ -58,28 +58,32 @@ public class Damage extends MixedCommand {
             }
         }
 
+        damage(p, livingReceiver, damage, damageSource, aInfo);
+    }
+
+    public static void damage(Player p, LivingEntity receiver, double damage, Object damageSource, ActionInfo actionInfo) {
 
         if (damage > 0 && !receiver.isDead()) {
-            int maximumNoDmg = livingReceiver.getNoDamageTicks();
-            livingReceiver.setNoDamageTicks(0);
+            int maximumNoDmg = receiver.getNoDamageTicks();
+            receiver.setNoDamageTicks(0);
             boolean doDamage = true;
             if (SCore.hasWorldGuard && receiver instanceof Player) doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
             // to prevent double kill https://discord.com/channels/701066025516531753/1301172655616950294/1301172655616950294
-            if(livingReceiver.isDead()) return;
+            if(receiver.isDead()) return;
             if (doDamage) {
                 if (p != null) {
                     /* To avoid looping damage */
-                    if(aInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
+                    if(actionInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
                     p.setMetadata("damageFromCustomCommand", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7773)));
-                    if(SCore.is1v20v5Plus() && damageSource != null) livingReceiver.damage(damage, (DamageSource) damageSource);
-                    else livingReceiver.damage(damage, p);
+                    if(SCore.is1v20v5Plus() && damageSource != null) receiver.damage(damage, (DamageSource) damageSource);
+                    else receiver.damage(damage, p);
                 } else {
-                    if(SCore.is1v20v5Plus() && damageSource != null) livingReceiver.damage(damage, (DamageSource) damageSource);
-                    else livingReceiver.damage(damage);
+                    if(SCore.is1v20v5Plus() && damageSource != null) receiver.damage(damage, (DamageSource) damageSource);
+                    else receiver.damage(damage);
                 }
             }
 
-            livingReceiver.setNoDamageTicks(maximumNoDmg);
+            receiver.setNoDamageTicks(maximumNoDmg);
         }
     }
 

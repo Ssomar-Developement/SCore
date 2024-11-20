@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -21,16 +20,15 @@ public class Oxygen extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        double oxygen = Double.parseDouble(args.get(0));
-        double currentoxygen = receiver.getRemainingAir();
-        double finaloxygen = 0;
+        int oxygen = (int) sCommandToExec.getSettingValue("time");
+        int currentoxygen = receiver.getRemainingAir();
+        int finaloxygen = 0;
 
         if(currentoxygen + oxygen < 0) finaloxygen = 0;
         else finaloxygen = currentoxygen + oxygen;
 
-        SsomarDev.testMsg("OXYGEN: "+finaloxygen, true);
-        receiver.setRemainingAir((int) finaloxygen);
+        //SsomarDev.testMsg("OXYGEN: "+finaloxygen, true);
+        receiver.setRemainingAir(finaloxygen);
     }
 
     @Override

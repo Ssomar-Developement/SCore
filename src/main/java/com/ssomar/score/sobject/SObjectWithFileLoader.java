@@ -197,7 +197,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
 

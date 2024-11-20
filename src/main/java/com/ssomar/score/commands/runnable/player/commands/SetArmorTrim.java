@@ -42,7 +42,10 @@ public class SetArmorTrim extends PlayerCommand {
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
 
-        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
+        if (item == null || item.getType() == Material.AIR) return;
+        if(!item.hasItemMeta()){
+            item.setItemMeta(new ItemStack(item.getType()).getItemMeta());
+        }
 
         itemmeta = item.getItemMeta();
 

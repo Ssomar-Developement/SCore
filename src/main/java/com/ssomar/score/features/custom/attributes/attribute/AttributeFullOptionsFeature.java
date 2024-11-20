@@ -1,6 +1,5 @@
 package com.ssomar.score.features.custom.attributes.attribute;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -15,7 +14,6 @@ import com.ssomar.score.utils.emums.AttributeSlot;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -48,11 +46,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
 
     @Override
     public void reset() {
-        Attribute att = null;
-        if(SCore.is1v21v2Plus()) att = Attribute.ARMOR;
-        else att = AttributeUtils.getAttribute("GENERIC_ARMOR");
-
-        this.attribute = new AttributeFeature(this, Optional.of(att), FeatureSettingsSCore.attribute);
+        this.attribute = new AttributeFeature(this, Optional.of(AttributeUtils.getAttribute("GENERIC_ARMOR")), FeatureSettingsSCore.attribute);
         this.operation = new OperationFeature(this, Optional.of(AttributeModifier.Operation.ADD_NUMBER), FeatureSettingsSCore.operation);
         this.amount = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.amount);
         this.slot = new SlotFeature(this, Optional.of(AttributeSlot.HAND), FeatureSettingsSCore.slot);

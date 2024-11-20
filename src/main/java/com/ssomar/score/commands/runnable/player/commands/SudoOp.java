@@ -34,13 +34,14 @@ public class SudoOp extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SUDO_OP");
         names.add("SUDOOP");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SUDOOP {command}";
+        return "SUDO_OP {command}";
     }
 
     @Override

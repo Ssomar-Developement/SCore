@@ -53,4 +53,9 @@ public class SetFurniture extends DisplayCommand {
     public ChatColor getExtraColor() {
         return null;
     }
+
+    @Override
+    public String getWikiLink() {
+        return null;
+    }
 }

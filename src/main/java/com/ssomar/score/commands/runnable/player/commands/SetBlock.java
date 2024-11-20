@@ -16,7 +16,7 @@ public class SetBlock extends PlayerCommand {
 
     public SetBlock() {
         CommandSetting blockFace = new CommandSetting("blockface", 0, BlockFace.class, null);
-        CommandSetting material = new CommandSetting("material", 1, Material.class, Material.STONE);
+        CommandSetting material = new CommandSetting("material", 1, String.class, "STONE");
         CommandSetting bypassProtection = new CommandSetting("bypassProtection", -1, Boolean.class, true);
         List<CommandSetting> settings = getSettings();
         settings.add(material);
@@ -28,8 +28,14 @@ public class SetBlock extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
 
-        Material material = (Material) sCommandToExec.getSettingValue("material");
+        String materialStr = (String) sCommandToExec.getSettingValue("material");
         boolean bypassProtection = (boolean) sCommandToExec.getSettingValue("bypassProtection");
+
+        Material material = null;
+        try {
+            material = Material.valueOf(materialStr.toUpperCase());
+        } catch (Exception e) {
+        }
 
         Set<Material> set = new TreeSet<>();
         set.add(Material.WATER);
@@ -61,7 +67,7 @@ public class SetBlock extends PlayerCommand {
                 //SsomarDev.testMsg("block: "+block.getType().toString(), true);
             } else {
                 if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
-                RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + material.toString().toLowerCase(), sCommandToExec.getActionInfo().isSilenceOutput());
+                RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + materialStr.toLowerCase(), sCommandToExec.getActionInfo().isSilenceOutput());
             }
         }
     }

@@ -15,7 +15,8 @@ public enum Message implements MessageInterface {
     NO_PLAYER_HIT("noPlayerHit"),
     NO_ENTITY_HIT("noEntityHit"),
     DAMAGE_COMMAND_KILL("damageCommandKill"),
-    VARIABLE_VALUE_SET("variableValueSet");
+    VARIABLE_VALUE_SET("variableValueSet"),
+    VARIABLE_DEFAULT_VALUE_SET("variableDefaultValueSet");
 
     private String name;
 

@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -25,6 +26,8 @@ public class CommandSetting {
     private boolean oldSystemOptional = false;
     private Object type;
     private Object defaultValue;
+
+    private final boolean DEBUG = false;
 
 
     // Specifc for type
@@ -66,7 +69,7 @@ public class CommandSetting {
     }
 
     public Object getValue(String value) {
-        SsomarDev.testMsg("CommandSetting getValue value: "+value+" >> type:"+type+" >> defaultValue: "+defaultValue, true);
+        SsomarDev.testMsg("CommandSetting getValue value: "+value+" >> type:"+type+" >> defaultValue: "+defaultValue, DEBUG);
         if(value == null) return defaultValue;
         if(type == Double.class) return Double.parseDouble(value);
         else if(type == Integer.class) return Double.valueOf(value).intValue();
@@ -74,12 +77,7 @@ public class CommandSetting {
         else if(type == Boolean.class) return Boolean.parseBoolean(value);
         else if(type == Enchantment.class) return Enchantment.getByKey(NamespacedKey.minecraft(value.toLowerCase()));
         else if(type == Attribute.class) {
-            try {
-                return Attribute.valueOf(value.toUpperCase());
-            }
-            catch (IllegalArgumentException e) {
-                return null;
-            }
+            return AttributeUtils.getAttribute(value);
         }
         else if(type == EquipmentSlot.class) {
             try {

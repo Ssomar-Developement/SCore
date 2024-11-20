@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands.absorption;
 
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -9,24 +9,23 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* ABSORPTION {amount} [timeinticks] */
 public class Absorption extends PlayerCommand {
+
+    public Absorption() {
+        CommandSetting amount = new CommandSetting("amount", 0, Double.class, 5.0);
+        CommandSetting time = new CommandSetting("time", 1, Integer.class, 200);
+        List<CommandSetting> settings = getSettings();
+        settings.add(amount);
+        settings.add(time);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        double absorption = Double.parseDouble(args.get(0));
+        double absorption = (double) sCommandToExec.getSettingValue("amount");
+        int time = (int) sCommandToExec.getSettingValue("time");
         double currentabsorption = receiver.getAbsorptionAmount();
-        long time;
-
-        try {
-            time = Integer.valueOf(args.get(1));
-            SsomarDev.testMsg("time: "+time, true);
-        }catch(ArrayIndexOutOfBoundsException e){
-            time = 0;
-        }
 
         try {
             if(time <= 0) {
@@ -48,26 +47,6 @@ public class Absorption extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-
-        /* if(SCore.is1v20v4Plus()){
-            return Optional.of("This command is not available for 1.20.4+, you should now use the vanilla command /attribute ( https://discord.com/channels/701066025516531753/1184977479467794572/1188938447474409593 )");
-        } */
-
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        if(args.size() >= 2){
-            ArgumentChecker ac2 = checkDouble(args.get(1), isFinalVerification, getTemplate());
-            if (!ac2.isValid()) return Optional.of(ac2.getError());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("ABSORPTION");
@@ -76,7 +55,7 @@ public class Absorption extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ABSORPTION {amount} [time in ticks]";
+        return "ABSORPTION amount:5.0 time:200";
     }
 
     @Override

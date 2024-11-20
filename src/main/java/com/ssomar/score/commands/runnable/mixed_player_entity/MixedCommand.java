@@ -13,4 +13,9 @@ public abstract class MixedCommand extends SCommand implements PlayerSCommand, E
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec){
         this.run(p, (LivingEntity) receiver, sCommandToExec);
     }
+
+    @Override
+    public String getWikiLink() {
+        return null;
+    }
 }

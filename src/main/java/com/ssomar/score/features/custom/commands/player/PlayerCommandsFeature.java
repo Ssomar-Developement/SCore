@@ -129,7 +129,7 @@ public class PlayerCommandsFeature extends CommandsAbstractFeature<List<String>,
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
         for (SCommand command : PlayerCommandManager.getInstance().getCommands()) {
-            Suggestion suggestion = new Suggestion("" + command.getTemplate(), command.getExtraColorNotNull() + "[" + command.getColorNotNull() + command.getNames().get(0) + command.getExtraColorNotNull() + "]", "&7ADD command: &e" + command.getNames().get(0));
+            Suggestion suggestion = new Suggestion("" + command.getTemplate(), command.getExtraColorNotNull() + "[" + command.getColorNotNull() + command.getNames().get(0) + command.getExtraColorNotNull() + "]", "&7ADD command: &e" + command.getNames().get(0), command.getWikiLink());
             map.put(command.getNames().get(0), suggestion);
         }
         return new ArrayList<>(map.values());

@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -23,10 +22,7 @@ public class SetItemAttribute extends PlayerCommand {
     public SetItemAttribute() {
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
         slot.setSlot(true);
-        Attribute att = null;
-        if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
-        else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
-        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, att);
+        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, AttributeUtils.getAttribute("GENERIC_MAX_HEALTH"));
         CommandSetting value = new CommandSetting("value", 2, Double.class, 2.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
         List<CommandSetting> settings = getSettings();
@@ -50,7 +46,10 @@ public class SetItemAttribute extends PlayerCommand {
         if(slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
 
-        if(item == null || !item.hasItemMeta()) return;
+        if(item == null) return;
+        if(!item.hasItemMeta()){
+            item.setItemMeta(new ItemStack(item.getType()).getItemMeta());
+        }
         itemmeta = item.getItemMeta();
 
         AttributeModifier existingModifier = null;
@@ -109,6 +108,7 @@ public class SetItemAttribute extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_ITEM_ATTRIBUTE");
         names.add("SET_ATTRIBUTE");
         names.add("SETITEMATTRIBUTE");
         return names;
@@ -116,7 +116,7 @@ public class SetItemAttribute extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "SET_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:2.0 equipmentSlot:HAND";
+        return "SET_ITEM_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:2.0 equipmentSlot:HAND";
     }
 
     @Override

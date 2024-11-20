@@ -130,7 +130,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
 
     @Override
     public String getTemplate() {
-        return "MOB_AROUND distance:3 displayMsgIfNoEntity:true throughBlocks:true safeDistance:0 [conditions] COMMAND1 +++ COMMAND2 +++ ...";
+        return "MOB_AROUND distance:3 displayMsgIfNoEntity:true throughBlocks:true safeDistance:0 [conditions] COMMAND1 <+> COMMAND2 <+> ...";
     }
 
     @Override

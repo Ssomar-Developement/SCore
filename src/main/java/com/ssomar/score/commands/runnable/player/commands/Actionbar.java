@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.actionbar.Actionbar;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ActionbarCommand extends PlayerCommand {
+public class Actionbar extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
@@ -38,18 +37,7 @@ public class ActionbarCommand extends PlayerCommand {
             return;
         }
         int time = d.get().intValue();
-        ActionbarHandler.getInstance().addActionbar(receiver, new Actionbar(StringConverter.coloredString(name.toString()), time));
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-
-        /* if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(args.size() - 1), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());*/
-
-        return Optional.empty();
+        ActionbarHandler.getInstance().addActionbar(receiver, new com.ssomar.score.actionbar.Actionbar(StringConverter.coloredString(name.toString()), time));
     }
 
     @Override

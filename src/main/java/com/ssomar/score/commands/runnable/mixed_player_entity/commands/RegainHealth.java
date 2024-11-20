@@ -25,14 +25,15 @@ public class RegainHealth extends MixedCommand {
 
         double regain = Double.parseDouble(args.get(0));
         double maxHealth;
-        Attribute att = null;
-        if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
-        else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
+        Attribute att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
 
         if (SCore.is1v8()) {
             maxHealth = 20;
         } else maxHealth = livingReceiver.getAttribute(att).getValue();
-        if (livingReceiver.getHealth() + regain < 0) livingReceiver.setHealth(0);
+        if (livingReceiver.getHealth() + regain < 0){
+            livingReceiver.setHealth(1);
+            Damage.damage(p, livingReceiver, 100, null, sCommandToExec.getActionInfo());
+        }
         else if (maxHealth >= livingReceiver.getHealth() + regain)
             livingReceiver.setHealth(livingReceiver.getHealth() + regain);
         else{
@@ -53,6 +54,7 @@ public class RegainHealth extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("REGAIN_HEALTH");
         names.add("REGAIN HEALTH");
         return names;
     }

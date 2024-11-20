@@ -174,13 +174,15 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
 
         if (sPlugin.isLotOfWork()) return false;
 
+        boolean hasNoCDPerm = p.hasPermission(sPlugin.getName() + ".nocd." + id) ||
+                p.hasPermission(sPlugin.getShortName().toLowerCase() + ".nocd." + id) ||
+                p.hasPermission(sPlugin.getName() + ".nocd.*") ||
+                p.hasPermission(sPlugin.getShortName().toLowerCase() + ".nocd.*");
+
         if (p.isOp() || p.hasPermission("*")) {
-            return !enableCooldownForOp;
+            return !enableCooldownForOp || hasNoCDPerm;
         } else {
-            return p.hasPermission(sPlugin.getName() + ".nocd." + id) ||
-                    p.hasPermission(sPlugin.getShortName().toLowerCase() + ".nocd." + id) ||
-                    p.hasPermission(sPlugin.getName() + ".nocd.*") ||
-                    p.hasPermission(sPlugin.getShortName().toLowerCase() + ".nocd.*");
+            return hasNoCDPerm;
         }
     }
 

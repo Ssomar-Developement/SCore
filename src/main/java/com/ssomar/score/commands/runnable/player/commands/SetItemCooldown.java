@@ -15,10 +15,10 @@ import org.bukkit.inventory.meta.components.UseCooldownComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetMaterialCooldown extends PlayerCommand {
+public class SetItemCooldown extends PlayerCommand {
 
 
-    public SetMaterialCooldown() {
+    public SetItemCooldown() {
         CommandSetting material = new CommandSetting("material", 0, Material.class, Material.STONE);
         CommandSetting cooldown = new CommandSetting("cooldown", 1, Integer.class, 10);
         CommandSetting group = new CommandSetting("group", -1, String.class, null);

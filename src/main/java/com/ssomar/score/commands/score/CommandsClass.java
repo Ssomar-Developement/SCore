@@ -199,7 +199,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                         // No value is needed for remove.
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
-                            value = args[3];
+                            value = args[argIndex];
 
                             argIndex++;
                         }
@@ -273,6 +273,30 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                     sender.sendMessage(errorOpt.get());
                                 else
                                     SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                            }
+
+                            VariablesManager.getInstance().updateLoadedMySQL(variableOpt.get().getId(), VariablesManager.MODE.EXPORT);
+                        } else
+                            sender.sendMessage(StringConverter.coloredString("&4[SCore] &cVariable (&6" + args[1] + ") &cnot found!"));
+                    }
+                    else if (args[0].equalsIgnoreCase("set-default")) {
+                        int argIndex = 0;
+
+                        final String modifType = args[argIndex];
+                        argIndex++;
+
+                        final String varName = args[argIndex];
+                        argIndex++;
+
+                        String value = args[argIndex];
+
+                        final Optional<Variable> variableOpt = VariablesManager.getInstance().getVariable(varName);
+
+                        if (variableOpt.isPresent()) {
+                            if (modifType.equalsIgnoreCase("set-default")) {
+                                variableOpt.get().getDefaultValue().setValue(value);
+
+                                SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_DEFAULT_VALUE_SET));
                             }
 
                             VariablesManager.getInstance().updateLoadedMySQL(variableOpt.get().getId(), VariablesManager.MODE.EXPORT);
@@ -777,6 +801,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             arguments.add("list-add");
                             arguments.add("list-remove");
                             arguments.add("clear");
+                            arguments.add("set-default");
                         } else if (args.length == 3 && args[1].equalsIgnoreCase("info"))
                             arguments.addAll(VariablesManager.getInstance().getVariableIdsList());
                         else if (args.length == 3 && (args[1].equalsIgnoreCase("set")
@@ -786,7 +811,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 || args[1].equalsIgnoreCase("list-remove"))) {
                             arguments.add("global");
                             arguments.add("player");
-                        } else if (args.length == 4 && (args[1].equalsIgnoreCase("set")
+                        }
+                        else if (args.length == 3 && (args[1].equalsIgnoreCase("set-default"))) {
+                            arguments.addAll(VariablesManager.getInstance().getVariableIdsList());
+                        }
+                        else if (args.length == 4 && (args[1].equalsIgnoreCase("set")
                                 || args[1].equalsIgnoreCase("modification")
                                 || args[1].equalsIgnoreCase("clear")
                                 || args[1].equalsIgnoreCase("list-add")

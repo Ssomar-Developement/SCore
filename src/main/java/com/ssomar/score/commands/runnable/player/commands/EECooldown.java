@@ -81,4 +81,6 @@ public class EECooldown extends PlayerCommand {
     public ChatColor getExtraColor() {
         return null;
     }
+
+
 }

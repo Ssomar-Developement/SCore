@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
@@ -19,7 +18,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Around extends PlayerCommand{
 
@@ -106,20 +104,6 @@ public class Around extends PlayerCommand{
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkBoolean(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("AROUND");
@@ -128,7 +112,7 @@ public class Around extends PlayerCommand{
 
     @Override
     public String getTemplate() {
-        return "AROUND {distance} {DisplayMsgIfNoPlayer true or false} {Your commands here}";
+        return "AROUND distance:3.0 displayMsgIfNoPlayer:true throughBlocks:true safeDistance:0.0 {Your commands here}";
     }
 
     @Override
