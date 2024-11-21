@@ -180,7 +180,7 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
                 p.hasPermission(sPlugin.getShortName().toLowerCase() + ".nocd.*");
 
         if (p.isOp() || p.hasPermission("*")) {
-            return !enableCooldownForOp || hasNoCDPerm;
+            return !enableCooldownForOp;
         } else {
             return hasNoCDPerm;
         }
