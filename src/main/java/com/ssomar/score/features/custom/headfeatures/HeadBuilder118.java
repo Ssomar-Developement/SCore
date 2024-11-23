@@ -40,11 +40,29 @@ public class HeadBuilder118 {
         return head;
     }
 
+    public static void modifyMeta(SkullMeta meta, String url) {
+        PlayerProfile profile = getProfile(url);
+        meta.setOwnerProfile(profile); // Set the owning player of the head to the player profile
+    }
+
     public static URL getUrlFromBase64(String base64) throws MalformedURLException {
         String decoded = new String(Base64.getDecoder().decode(base64));
         JSONObject obj = new JSONObject(decoded);
         String url = obj.getJSONObject("textures").getJSONObject("SKIN").getString("url");
         return new URL(url);
+    }
+
+    public static String getBase64FromUrl(String url) {
+        PlayerProfile profile = getProfile(url);
+        //Create a JSON object with the skin URL
+        JSONObject textures = new JSONObject();
+        JSONObject skin = new JSONObject();
+        skin.put("url", profile.getTextures().getSkin().toString());
+        textures.put("SKIN", skin);
+        JSONObject profile2 = new JSONObject();
+        profile2.put("textures", textures);
+        //Encode the JSON object to Base64
+        return Base64.getEncoder().encodeToString(profile2.toString().getBytes());
     }
 
 }

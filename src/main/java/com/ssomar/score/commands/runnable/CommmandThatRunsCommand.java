@@ -26,27 +26,28 @@ public interface CommmandThatRunsCommand {
     static String replaceStepParticlePlaceholder(String s, ActionInfo actionInfo) {
         int step = actionInfo.getStep();
         //SsomarDev.testMsg("replaceStepParticlePlaceholder it will replace ::step"+step+"% by %", true);
-        if(step > 0) s = s.replace("::step"+step+"%", "%");
+        if (step > 0) s = s.replace("::step" + step + "%", "%");
         return s;
     }
 
     static String getOrCommandsParticle(ActionInfo actionInfo) {
         int step = actionInfo.getStep();
-        if(step > 0) return "<+::step"+step+">";
+        if (step > 0) return "<+::step" + step + ">";
         return "<+>";
     }
+
     static String getOrCommandsParticleRegex(ActionInfo actionInfo) {
         int step = actionInfo.getStep();
-        if(step > 0) return "<\\+::step"+step+">";
+        if (step > 0) return "<\\+::step" + step + ">";
         return "<\\+>";
     }
 
 
     /* True > a player has been hit
-    *  False > no player hit */
-    static boolean runPlayerCommands(Collection<? extends org.bukkit.entity.Player> players, List<String> argsCommands, ActionInfo aInfo){
+     *  False > no player hit */
+    static boolean runPlayerCommands(Collection<? extends org.bukkit.entity.Player> players, List<String> argsCommands, ActionInfo aInfo) {
         int cpt = 0;
-        for(Player target : players){
+        for (Player target : players) {
             ActionInfo aInfo2 = aInfo.clone();
             aInfo2.setReceiverUUID(target.getUniqueId());
             aInfo2.setStep(aInfo.getStep() + 1);
@@ -67,7 +68,8 @@ public interface CommmandThatRunsCommand {
             String buildCommands = prepareCommands.toString();
             String[] tab;
             //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
-            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
+            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo)))
+                tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
             else {
                 tab = new String[1];
                 tab[0] = buildCommands;
@@ -88,12 +90,12 @@ public interface CommmandThatRunsCommand {
 
                     List<PlaceholderConditionFeature> conditions = extractConditions(s);
                     s = getFirstCommandWithoutConditions(s);
-                    //SsomarDev.testMsg("s: " + s+" conditions size: "+conditions.size(), true);
+                    SsomarDev.testMsg("s: " + s + " conditions size: " + conditions.size(), true);
                     if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
                         for (PlaceholderConditionFeature condition : conditions) {
-                            //SsomarDev.testMsg("condition: " + condition, true);
+                            SsomarDev.testMsg("condition: " + condition, true);
                             if (!condition.verify(target, null)) {
-                                //SsomarDev.testMsg("condition not verified", DEBUG);
+                                SsomarDev.testMsg("condition not verified", true);
                                 passToNextPlayer = true;
                                 break;
                             }
@@ -112,7 +114,7 @@ public interface CommmandThatRunsCommand {
                 SsomarDev.testMsg("COMMANDS: " + s, true);
                 commands.add(s);
             }
-            if(passToNextPlayer) continue;
+            if (passToNextPlayer) continue;
 
             commands = sp.replacePlaceholders(commands);
             //SsomarDev.testMsg("NEXT STEP : " + aInfo2.getStep(), true);
@@ -132,23 +134,40 @@ public interface CommmandThatRunsCommand {
                 String conditionsStr = tab[1].substring(0, indexOfClose);
                 String[] tab3 = conditionsStr.split("&&");
                 for (String condition : tab3) {
+
+                    // If the condition contains multiple comparators, we need to split at the last one
+                    int indexOfComparator = -1;
+                    int lengthOfComparator = 0;
+                    Comparator lastComparator = null;
                     for (Comparator comparator : Comparator.values()) {
-                        if (condition.contains(comparator.getSymbol())) {
-                            String[] conditionSplit = condition.split(comparator.getSymbol());
-                            String placeholder = conditionSplit[0];
-                            String value = "";
-                            if (conditionSplit.length > 1) value = conditionSplit[1];
-                            PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
-                            conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
-
-                            conditionFeature.setPart1(ColoredStringFeature.buildNull(placeholder));
-                            conditionFeature.setPart2(ColoredStringFeature.buildNull(value));
-                            conditionFeature.setComparator(ComparatorFeature.buildNull(comparator));
-                            conditions.add(conditionFeature);
-
-                            break;
+                        int index = condition.lastIndexOf(comparator.getSymbol());
+                        if (index > indexOfComparator) {
+                            lastComparator = comparator;
+                            indexOfComparator = index;
+                            lengthOfComparator = comparator.getSymbol().length();
                         }
                     }
+                    if (indexOfComparator == -1) {
+                        SsomarDev.testMsg("No comparator found in condition: " + condition, true);
+                        continue;
+                    }
+
+
+                    // placeholder is the first part in the split
+                    String placeholder = condition.substring(0, indexOfComparator);
+                    // comparator is the part between the placeholder and the value
+                    // value is the last part in the split
+                    String value = condition.substring(indexOfComparator + lengthOfComparator);
+                    PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
+                    conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
+
+                    conditionFeature.setPart1(ColoredStringFeature.buildNull(placeholder));
+                    conditionFeature.setPart2(ColoredStringFeature.buildNull(value));
+                    conditionFeature.setComparator(ComparatorFeature.buildNull(lastComparator));
+                    conditions.add(conditionFeature);
+
+                    break;
+
                 }
             }
         }
@@ -169,7 +188,7 @@ public interface CommmandThatRunsCommand {
 
     /* True > an entity has been hit
      *  False > no entity hit */
-    static boolean runEntityCommands(Collection<? extends Entity> entities, List<String> argsCommands, ActionInfo aInfo){
+    static boolean runEntityCommands(Collection<? extends Entity> entities, List<String> argsCommands, ActionInfo aInfo) {
 
         ListDetailedEntityFeature whiteList = null;
         ListDetailedEntityFeature blackList = null;
@@ -235,7 +254,7 @@ public interface CommmandThatRunsCommand {
         final ListDetailedEntityFeature finalWhiteList = whiteList;
         final ListDetailedEntityFeature finalBlackList = blackList;
         cpt = 0;
-        for(Entity entity : entities){
+        for (Entity entity : entities) {
             if (finalWhiteList != null && finalWhiteList.getValue().size() > 0) {
                 if (!finalWhiteList.isValidEntity(entity)) continue;
             }
@@ -262,7 +281,8 @@ public interface CommmandThatRunsCommand {
             String buildCommands = prepareCommands.toString();
             String[] tab;
             //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
-            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo))) tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
+            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo)))
+                tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
             else {
                 tab = new String[1];
                 tab[0] = buildCommands;

@@ -73,6 +73,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelToolInteractions("cancel-tool-interactions", "Cancel Tool Interactions", new String[]{"&7&oCancel the interactions of the tool"},  null,  false),
     charged("charged", "Charged", new String[]{""},  Material.NETHER_STAR, false),
     color("color", "Color", new String[]{"&7&oThe color"},  FixedMaterial.getMaterial(Arrays.asList("RED_DYE", "INK_SACK")),  false),
+    containerContent("containerContent", "Container Content", new String[]{"&7&oThe container content"},  Material.CHEST,  false),
     colors("colors", "Colors", new String[]{"&7&oThe colors of the firework"}, GUI.CLOCK, false),
     comparator("comparator", "Comparator", new String[]{"&7&oThe comparator of the condition"}, Material.COMPASS, false),
     cooldown("cooldown", "Cooldown", new String[]{"&7&oThe cooldown"},  GUI.CLOCK,  false),
@@ -368,6 +369,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     instrumentFeatures("instrumentFeatures", "Instrument Features", new String[]{"&7&oThe instrument features"}, Material.NOTE_BLOCK, false),
     instrument("instrument", "Instrument", new String[]{"&7&oThe instrument"}, Material.NOTE_BLOCK, false),
 
+    chargedProjectiles("chargedProjectiles", "Charged Projectiles", new String[]{"&7&oThe charged projectiles"}, Material.ARROW, false),
+
+
     useCooldownFeatures("useCooldownFeatures", "Use Cooldown Features", new String[]{"&7&oThe use cooldown features"}, GUI.CLOCK, false),
     cooldownGroup("cooldownGroup", "Cooldown Group", new String[]{"&7&oThe cooldown group"}, GUI.WRITABLE_BOOK, false),
     vanillaUseCooldown("vanillaUseCooldown", "Vanilla Use Cooldown", new String[]{"&7&oThe vanilla use cooldown"}, GUI.CLOCK, false),
@@ -460,6 +464,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canAlwaysEat("canAlwaysEat", "Can Always Eat", new String[]{"&7Can the player always eat this food?"}, null, false),
     eatSeconds("eatSeconds", "Eat Seconds", new String[]{"&7The time in seconds to eat the food"}, GUI.CLOCK, false),
 
+    blockState("blockState", "Block State", new String[]{"&7&oThe block state"}, Material.BRICK, false),
+    blockStatePlus("blockStatePlus", "Block State Plus", new String[]{"&7&oThe block state plus"}, Material.BRICK, false),
+    bundleContent("bundleContent", "Bundle Content", new String[]{"&7&oThe bundle content"}, FixedMaterial.getMaterial(Arrays.asList("BUNDLE")), false),
 
     itemRarity("itemRarity", "Item Rarity", new String[]{"&7&oThe rarity of the item"}, Material.EMERALD, false),
     rarity("rarity", "Rarity", new String[]{"&7&oThe rarity of the item"}, Material.EMERALD, false),

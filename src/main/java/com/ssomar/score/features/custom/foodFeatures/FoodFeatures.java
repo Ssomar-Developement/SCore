@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.foodFeatures;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -28,7 +25,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
 
     private IntegerFeature nutrition;
@@ -110,10 +107,22 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
         return this;
     }
 
-    public void applyOnItemMeta(ItemMeta meta){
+    @Override
+    public boolean isAvailable() {
+        return SCore.is1v20v5Plus();
+    }
+
+    @Override
+    public boolean isApplicable(FeatureForItemArgs args) {
+        return true;
+    }
+
+    @Override
+    public void applyOnItemMeta(FeatureForItemArgs args) {
         /* Added in 1.20.5 */
-        if (SCore.is1v20v5Plus()) {
+        if (isAvailable()) {
             if (getIsMeat().getValue()) {
+                ItemMeta meta = args.getMeta();
                 FoodComponent food = meta.getFood();
                 int nutrition = getNutrition().getValue().get();
                 if (nutrition < 0) nutrition = 0;
@@ -132,6 +141,29 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
                     } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
                 }
                 meta.setFood(food);
+            }
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(FeatureForItemArgs args) {
+        /* Added in 1.20.5 */
+        if (isAvailable()) {
+            ItemMeta meta = args.getMeta();
+            if (meta.hasFood()) {
+                FoodComponent food = meta.getFood();
+                getNutrition().setValue(Optional.of(food.getNutrition()));
+                getSaturation().setValue(Optional.of(new Float(food.getSaturation()).intValue()));
+                getCanAlwaysEat().setValue(food.canAlwaysEat());
+                if(!SCore.is1v21v2Plus()) {
+                    Class<?> clazz = food.getClass();
+                    try {
+                        Method method = clazz.getMethod("getEatSeconds");
+                        int eatSeconds = (int) method.invoke(food);
+                        getEatSeconds().setValue(Optional.of(eatSeconds));
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+                }
+                getIsMeat().setValue(true);
             }
         }
     }
