@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.emums;
 
+import com.ssomar.score.SCore;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
@@ -47,13 +48,18 @@ public class CustomColor {
                 return Color.YELLOW;
             case "NO_COLOR":
                 return getNullColor();
-            default:
-                return null;
+        }
+        try {
+            return Color.fromRGB(Integer.parseInt(s));
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 
     public static Color getNullColor() {
-        return Color.fromARGB(0,0,0,0);
+        // ARGB exists only in 1.20+
+        if(SCore.is1v20Plus()) return Color.fromARGB(0,0,0,0);
+        else return Color.fromRGB(0,0,0);
     }
 
     public static String getName(Color color) {

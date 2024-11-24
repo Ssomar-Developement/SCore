@@ -39,7 +39,10 @@ public class ModifyDurability extends PlayerCommand {
         if (slot == -1) slot = pInv.getHeldItemSlot();
 
         ItemStack item = pInv.getItem(slot);
-        if(item == null || !item.hasItemMeta()) return;
+        if(item == null) return;
+        if(!item.hasItemMeta()){
+            item.setItemMeta(new ItemStack(item.getType()).getItemMeta());
+        }
 
         if (item.getItemMeta() instanceof Damageable) {
             Damageable meta = (Damageable) item.getItemMeta();
@@ -70,11 +73,9 @@ public class ModifyDurability extends PlayerCommand {
                 item.setItemMeta(meta);
 
             } else {
-                meta.setDamage(meta.getDamage() - modification);
-                if (meta.getDamage() >= maxDura) {
-                    item.setAmount(item.getAmount() - 1);
-                    return;
-                }
+                int newDamage = meta.getDamage() - modification;
+                if(newDamage < 0) newDamage = 0;
+                meta.setDamage(newDamage);
                 item.setItemMeta(meta);
             }
         }

@@ -117,10 +117,12 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
         }
 
         BlockStateMeta blockStateMeta = (BlockStateMeta) meta;
-        if (!blockStateMeta.hasBlockState()) {
+        // To not create a new blockState for nothing
+        if (getValues().isEmpty() &&  !blockStateMeta.hasBlockState()) {
             SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the meta has no blockData", DEBUG);
             return;
         }
+
         if (!(blockStateMeta.getBlockState() instanceof Container)) {
             SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the meta has no blockData", DEBUG);
             return;

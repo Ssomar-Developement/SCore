@@ -2,7 +2,6 @@ package com.ssomar.score.editor;
 
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditor;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeatureEditorManager;
-import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeatureEditor;
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.attributes.group.AttributesGroupFeatureEditor;
@@ -29,6 +28,8 @@ import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeat
 import com.ssomar.score.features.custom.enchantments.group.EnchantmentsGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.entities.group.EntityTypeGroupFeatureEditor;
 import com.ssomar.score.features.custom.entities.group.EntityTypeGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.firework.explosion.group.FireworkExplosionGroupFeatureEditor;
+import com.ssomar.score.features.custom.firework.explosion.group.FireworkExplosionGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.ifhas.executableitems.group.HasExecutableItemGroupFeatureEditor;
 import com.ssomar.score.features.custom.ifhas.executableitems.group.HasExecutableItemGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.ifhas.items.group.HasItemGroupFeatureEditor;
@@ -60,13 +61,14 @@ import com.ssomar.score.features.custom.variables.base.group.VariablesGroupFeatu
 import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGroupFeatureEditor;
 import com.ssomar.score.features.custom.variables.update.group.VariableUpdateGroupFeatureEditorManager;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorReloaded;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorReloadedManager;
 import com.ssomar.score.hardness.hardness.HardnessEditor;
 import com.ssomar.score.hardness.hardness.HardnessEditorManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
-import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEditor;
-import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeaturesEditorManager;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditor;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeatureEditorManager;
 import com.ssomar.score.scheduler.ScheduleFeaturesEditor;
@@ -175,13 +177,22 @@ public class NewEditorInteractionsListener implements Listener {
             genericFeatureParentEditor.click(player, itemS, e.getClick());
             return;
         }
+        else if (holder instanceof GenericFeatureParentEditorReloaded) {
+            GenericFeatureParentEditorReloaded genericFeatureParentEditorReloaded = (GenericFeatureParentEditorReloaded) holder;
+            genericFeatureParentEditorReloaded.click(player, itemS, e.getClick());
+            return;
+        }
         else if (holder instanceof EnchantmentsGroupFeatureEditor) {
             EnchantmentsGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }else if (holder instanceof AttributesGroupFeatureEditor) {
             AttributesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
-        } else if (holder instanceof ActivatorsFeatureEditor) {
+        }else if (holder instanceof FireworkExplosionGroupFeatureEditor) {
+            FireworkExplosionGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof ActivatorsFeatureEditor) {
             ActivatorsFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         } else if (holder instanceof BlockConditionsFeatureEditor) {
@@ -264,10 +275,6 @@ public class NewEditorInteractionsListener implements Listener {
             VisualItemFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
-        else if (holder instanceof FireworkFeaturesEditor) {
-            FireworkFeaturesEditorManager.getInstance().clicked(player, itemS, e.getClick());
-            return;
-        }
          else if (holder instanceof ParticlesGroupFeatureEditor) {
             ParticlesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
@@ -330,16 +337,21 @@ public class NewEditorInteractionsListener implements Listener {
             e.setCancelled(true);
             GenericFeatureParentEditorManager.getInstance().receiveMessage(p, message);
         }
+        else if (GenericFeatureParentEditorReloadedManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            GenericFeatureParentEditorReloadedManager.getInstance().receiveMessage(p, message);
+        }
         else if (EnchantmentsGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             EnchantmentsGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (AttributesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             AttributesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
-        } else if (GenericFeatureParentEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        }else if (FireworkExplosionGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
-            GenericFeatureParentEditorManager.getInstance().receiveMessage(p, message);
-        }  else if (ActivatorsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            FireworkExplosionGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (ActivatorsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             ActivatorsFeatureEditorManager.getInstance().receiveMessage(p, message);
         } else if (BlockConditionsFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
@@ -423,17 +435,11 @@ public class NewEditorInteractionsListener implements Listener {
             e.setCancelled(true);
             VisualItemFeatureEditorManager.getInstance().receiveMessage(p, message);
         }
-        else if (FireworkFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)) {
-            e.setCancelled(true);
-            FireworkFeaturesEditorManager.getInstance().receiveMessage(p, message);
-        }
+
         else if (ParticlesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             ParticlesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
-        } else if(FireworkFeaturesEditorManager.getInstance().getRequestWriting().containsKey(p)){
-            e.setCancelled(true);
-            FireworkFeaturesEditorManager.getInstance().receiveMessage(p, message);
-        } else if (OtherEICooldownGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        }else if (OtherEICooldownGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             OtherEICooldownGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         }

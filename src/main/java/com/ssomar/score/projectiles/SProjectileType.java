@@ -6,7 +6,7 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeature;
 import com.ssomar.score.features.custom.potionsettings.PotionSettingsFeature;
 import com.ssomar.score.projectiles.features.*;
-import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeatures;
+import com.ssomar.score.features.custom.firework.FireworkFeatures;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeature;
 import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;

@@ -4,8 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.editor.GenericFeatureParentEditor;
-import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorReloaded;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorReloadedManager;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -29,7 +29,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature<T>, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature<T>, GenericFeatureParentEditorReloaded, GenericFeatureParentEditorReloadedManager> {
 
     private UncoloredStringFeature variableName;
     private VariableTypeFeature type;
@@ -195,7 +195,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
 
     @Override
     public void openEditor(@NotNull Player player) {
-        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorReloadedManager.getInstance().startEditing(player, this);
     }
 
 }

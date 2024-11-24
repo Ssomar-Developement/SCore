@@ -13,6 +13,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlastFurnace;
 import org.bukkit.block.Container;
 import org.bukkit.block.Smoker;
@@ -20,6 +21,9 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -97,7 +101,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     @Override
     public ContainerFeatures initItemParentEditor(GUI gui, int slot) {
         int count = 7;
-        if (onlyItemOptions) count = 2;
+        if (onlyItemOptions) count = 4;
         String[] finalDescription = new String[getEditorDescription().length + count];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - count] = gui.CLICK_HERE_TO_CHANGE;
@@ -107,13 +111,16 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
             count--;
             finalDescription[finalDescription.length - count] = "&7Blacklist size: &e" + this.blacklistMaterials.getValue().size();
             count--;
+        }
             finalDescription[finalDescription.length - count] = "&7Is locked: &e" + this.isLocked.getValue();
             count--;
             finalDescription[finalDescription.length - count] = "&7Locked name: &e" + this.lockedName.getValue().orElse("none");
             count--;
+        if (!onlyItemOptions) {
             finalDescription[finalDescription.length - count] = "&7Inventory title: &e" + this.inventoryTitle.getValue().orElse("none");
             count--;
         }
+
         finalDescription[finalDescription.length - count] = "&7Container content: &e" + this.containerContent.getValue().size();
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -143,10 +150,10 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
         if (!onlyItemOptions) {
             features.add(this.whitelistMaterials);
             features.add(this.blacklistMaterials);
-            features.add(this.isLocked);
-            features.add(this.lockedName);
             features.add(this.inventoryTitle);
         }
+        features.add(this.isLocked);
+        features.add(this.lockedName);
         features.add(this.containerContent);
         return features;
     }
@@ -252,17 +259,47 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
 
     @Override
     public boolean isApplicable(@NotNull FeatureForItemArgs args) {
-        return true;
+
+        ItemMeta meta = args.getMeta();
+        if(!SCore.is1v20v4Plus() || !(meta instanceof BlockStateMeta)) return false;
+        BlockStateMeta blockStateMeta = (BlockStateMeta) meta;
+        return blockStateMeta.getBlockState() instanceof Container;
     }
 
     @Override
     public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
         containerContent.applyOnItemMeta(args);
 
+        if(isLocked.getValue() && lockedName.getValue().isPresent()) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta) args.getMeta();
+            Container container = (Container) blockStateMeta.getBlockState();
+            if(SCore.is1v21v2Plus()){
+                try {
+                    ItemStack item = Bukkit.getServer().getItemFactory().createItemStack(lockedName.getValue().get());
+                    container.setLockItem(item);
+                }catch (Exception e) {
+                    //e.printStackTrace();
+                    container.setLock(lockedName.getValue().get());
+                   // SsomarDev.testMsg("container lock name : "+container.getLock(), true);
+                }
+            }
+            else container.setLock(lockedName.getValue().get());
+
+            container.update();
+            blockStateMeta.setBlockState(container);
+        }
+
     }
 
     @Override
     public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
         containerContent.loadFromItemMeta(args);
+
+        BlockStateMeta blockStateMeta = (BlockStateMeta) args.getMeta();
+        Container container = (Container) blockStateMeta.getBlockState();
+        if(container.isLocked()) {
+            isLocked.setValue(true);
+            lockedName.setValue(Optional.of(container.getLock()));
+        }
     }
 }

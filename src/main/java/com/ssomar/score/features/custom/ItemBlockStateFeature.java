@@ -9,6 +9,7 @@ import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.types.UncoloredStringFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -69,7 +70,21 @@ public class ItemBlockStateFeature extends UncoloredStringFeature implements Fea
                 SsomarDev.testMsg("ItemBlockStateFeature loadFromItemMeta: the meta has no blockData", DEBUG);
                 return;
             }
+            // Fake Item to get the default blockData
+            ItemStack fakeItem = new ItemStack(args.getMaterial());
+            BlockDataMeta fakeBlockData = (BlockDataMeta) fakeItem.getItemMeta();
+            String fakeBlockDataStr = fakeBlockData.getBlockData(args.getMaterial()).getAsString(false);
+            String [] fakeBlockDataStrSplit = fakeBlockDataStr.split("\\[")[1].replace("]", "").split(",");
+
             String blockData = blockDataMeta.getBlockData(args.getMaterial()).getAsString(true);
+
+            // Remove the default values
+            for (String s : fakeBlockDataStrSplit) {
+                blockData = blockData.replace(","+s, "");
+                blockData = blockData.replace(s+",", "");
+                blockData = blockData.replace(s, "");
+            }
+
             if (blockData.isEmpty()){
                 SsomarDev.testMsg("ItemBlockStateFeature loadFromItemMeta: the blockData is empty", DEBUG);
                 return;
