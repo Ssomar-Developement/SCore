@@ -198,7 +198,7 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
 
     @Override
     public boolean isAvailable() {
-        return !SCore.is1v12Less();
+        return !SCore.is1v11Less();
     }
 
     @Override

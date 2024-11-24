@@ -79,13 +79,13 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
         String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
-        if (SCore.is1v12Less())
+        if (SCore.is1v11Less())
             finalDescription[finalDescription.length - 3] = "&7Glow drop: &c&lNot for 1.11 or lower";
         else if (glowDrop.getValue())
             finalDescription[finalDescription.length - 3] = "&7Glow drop: &a&l✔";
         else
             finalDescription[finalDescription.length - 3] = "&7Glow drop: &c&l✘";
-        if (SCore.is1v12Less())
+        if (SCore.is1v11Less())
             finalDescription[finalDescription.length - 2] = "&7Glow drop color: &c&lNot for 1.11 or lower";
         else if (dropColor.getValue().isPresent()) {
             finalDescription[finalDescription.length - 2] = "&7Glow drop color: &e" + dropColor.getValue().get().name();

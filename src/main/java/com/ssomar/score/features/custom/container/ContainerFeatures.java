@@ -85,11 +85,13 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection containerFeaturesSection = config.createSection(this.getName());
-        this.whitelistMaterials.save(containerFeaturesSection);
-        this.blacklistMaterials.save(containerFeaturesSection);
+        if (!onlyItemOptions) {
+            this.whitelistMaterials.save(containerFeaturesSection);
+            this.blacklistMaterials.save(containerFeaturesSection);
+            this.inventoryTitle.save(containerFeaturesSection);
+        }
         this.isLocked.save(containerFeaturesSection);
         this.lockedName.save(containerFeaturesSection);
-        this.inventoryTitle.save(containerFeaturesSection);
         this.containerContent.save(containerFeaturesSection);
     }
 
