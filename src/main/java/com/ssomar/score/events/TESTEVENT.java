@@ -1,9 +1,44 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.SsomarDev;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class TESTEVENT implements Listener {
 
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent e) {
+        if (!e.isSneaking()) return;
+
+        Player p = e.getPlayer();
+        // player named Ssomar only
+        if (!p.getName().equals("Ssomar")) return;
+
+        Block block = p.getTargetBlock(null, 5);
+        SsomarDev.testMsg("Block: " + block.getType(), true);
+
+    }
+
+    @EventHandler
+    public void onProjectileHitEvent(ProjectileHitEvent e) {
+        Entity projectile = e.getEntity();
+        Entity target;
+
+        SsomarDev.testMsg("Projectile: " + projectile.getType(), true);
+
+        /* PROJECTILE_HIT_BLOCK PART */
+        if ((target = e.getHitEntity()) != null && !(target instanceof Player)) {
+            SsomarDev.testMsg("Hit Entity: " + target.getType(), true);
+        }
+
+    }
 
     /* @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent e) {
@@ -66,8 +101,6 @@ public class TESTEVENT implements Listener {
         Player p = e.getPlayer();
         SsomarDev.testMsg("ATTEMPT GROW ", true);
     }*/
-
-
 
 
 }

@@ -1,21 +1,18 @@
 package com.ssomar.score.features.custom.repairableFeatures;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +23,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatures, RepairableFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatures, RepairableFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private BooleanFeature enable;
     private IntegerFeature repairCost;
@@ -87,15 +84,6 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         return this;
     }
 
-    public void applyOnItemMeta(ItemMeta meta){
-        /* Added in 1.21.2 */
-        if (SCore.is1v21v2Plus()) {
-            if (enable.getValue()) {
-                Repairable repairable = (Repairable) meta;
-                repairable.setRepairCost(repairCost.getValue().get());
-            }
-        }
-    }
 
     @Override
     public void updateItemParentEditor(GUI gui) {
@@ -155,4 +143,40 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public boolean isAvailable() {
+        return SCore.is1v21v2Plus();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof Repairable;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (!isAvailable() || !isApplicable(args)) return;
+        if (enable.getValue()) {
+            Repairable repairable = (Repairable) args.getMeta();
+            repairable.setRepairCost(repairCost.getValue().get());
+        }
+
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (!isAvailable() || !isApplicable(args)) return;
+        Repairable repairable = (Repairable) args.getMeta();
+        if(((Repairable) args.getMeta()).hasRepairCost()) {
+            enable.setValue(true);
+            repairCost.setValue(Optional.of(repairable.getRepairCost()));
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.REPAIRABLE;
+    }
 }

@@ -259,7 +259,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     knockbackStrength("knockbackStrength", "Knockback Strength", new String[]{}, Material.CHAINMAIL_CHESTPLATE, false),
     level("level", "Level", new String[]{"&7&oThe level of the enchantment"},  Material.BEACON,  false),
     lifeTime("lifeTime", "Life time", new String[]{"&7&oThe flight duration of this firework rocket","&7&oi.e. the number of gunpowders used to craft it,","&7&oMust be an integer between -128 and 127. Defaults to 1"},  GUI.CLOCK,  false),
-    lockedInventory("locked-in-inventory", "Locked Inventory", new String[]{"&7&oThe item can't be",  "&7&oplaced in the inventory"},  Material.BARRIER,  false),
+    lockedInventory("locked-in-inventory", "Locked Inventory", new String[]{"&7&oThe item can't be",  "&7&omoved of the inventory"},  Material.BARRIER,  false),
     loop("loop", "Loop features", new String[]{"&7&oSpecific settings", "&7&ofor the loop activator"}, Material.ANVIL, false),
     magicID("magicID", "Magic ID", new String[]{"&7&oThe Magic ID"},  Material.STONE,  false),
     material("material", "Material", new String[]{"&7&oThe material"},  Material.STONE,  false),
@@ -378,7 +378,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     chargedProjectiles("chargedProjectiles", "Charged Projectiles", new String[]{"&7&oThe charged projectiles"}, Material.ARROW, false),
 
-
+    hitSound("hitSound", "Hit Sound", new String[]{"&7&oThe hit sound"}, Material.NOTE_BLOCK, false),
     useCooldownFeatures("useCooldownFeatures", "Use Cooldown Features", new String[]{"&7&oThe use cooldown features"}, GUI.CLOCK, false),
     cooldownGroup("cooldownGroup", "Cooldown Group", new String[]{"&7&oThe cooldown group"}, GUI.WRITABLE_BOOK, false),
     vanillaUseCooldown("vanillaUseCooldown", "Vanilla Use Cooldown", new String[]{"&7&oThe vanilla use cooldown"}, GUI.CLOCK, false),
@@ -438,6 +438,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     playerCooldownOptions("playerCooldownOptions", "Player Cooldown Options", new String[]{"&7&oThe player cooldown"}, GUI.CLOCK, false),
     entityCooldownOptions("entityCooldownOptions", "Entity Cooldown Options", new String[]{"&7&oThe entity cooldown"}, GUI.CLOCK, false),
 
+    isRefreshableClean("isRefreshableClean", "Is Refreshable Clean", new String[]{"&7&oIs refreshable clean"}, null, false),
+    refreshTag("refreshTagDoNotEdit", "Refresh Tags", new String[]{"&7&oRefresh tags"}, null, false),
 
     otherEICooldowns("otherEICooldowns", "Other EI Cooldowns", new String[]{"&7&oTo add cooldown", "&7&oto another EI"}, Material.ANVIL, false),
     cooldown_activators("activators", "Activators list", new String[]{"&7&oActivators list", "&eALL &7&ofor all activators"}, GUI.WRITABLE_BOOK, false),
@@ -448,6 +450,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     lore("lore", "Lore", new String[]{"&7&oThe lore of the item"}, Material.PAPER, false),
     glow("glow", "Item Glow", SCore.is1v20v5Plus() ? new String[]{"&7&oItem Glowing effect"} : TM.gA(Text.EI_FEATURES_GLOW_DESCRIPTION), Material.BEACON, false),
+    glowDuration("glowDuration", "Glow Duration", new String[]{"&7&oThe duration of the glow effect"}, GUI.CLOCK, false),
+
     disableEnchantGlide("disableEnchantGlide", "Disable Enchant Glide", new String[]{"&7&oDisable the enchant glide effect"}, Material.BEACON, false),
 
     disableStack("disableStack", "Disable stack", TM.gA(Text.EI_FEATURES_DISABLESTACK_DESCRIPTION), null, true),
@@ -456,7 +460,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     storeItemInfo("storeItemInfo", "Store item info", TM.gA(Text.EI_FEATURES_STOREITEMINFO_DESCRIPTION), null, false),
     unbreakable("unbreakable", "Unbreakable", TM.gA(Text.EI_FEATURES_UNBREAKABLE_DESCRIPTION), Material.BEDROCK, false),
 
-    usage("usage",  "Usage", TM.gA(Text.EI_FEATURES_USAGE_DESCRIPTION), Material.BUCKET, false),
+    usage("usage",  "Usage", new String[]{"&7&oThe usage of the item","&a-1 &7&o= Infinite", "&aIncrease &7&oor &cDecrease &7&othis usage with","&eUsageModification &7&oin your activators"} , Material.BUCKET, false),
     usageLimit("usageLimit", "Usage limit", TM.gA(Text.EI_FEATURES_USAGELIMIT_DESCRIPTION), Material.BUCKET, true),
     customModelData_ei("customModelData", "Custom model data", TM.gA(Text.EI_FEATURES_CUSTOMMODELDATA_DESCRIPTION), FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
     whitelistedWorlds("whitelistedWorlds", "Whitelisted worlds", new String[]{"&7&oThe whitelisted worlds features"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),

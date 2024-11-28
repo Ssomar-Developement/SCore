@@ -7,6 +7,7 @@ import com.ssomar.score.features.FeatureForItemArgs;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.types.UncoloredStringFeature;
+import com.ssomar.score.utils.emums.ResetSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
@@ -93,6 +94,11 @@ public class ItemBlockStateFeature extends UncoloredStringFeature implements Fea
         }
         else SsomarDev.testMsg("ItemBlockStateFeature loadFromItemMeta: the meta is not a BlockDataMeta", DEBUG);
 
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.BLOCK_STATE;
     }
 
     @Override

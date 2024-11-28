@@ -42,6 +42,7 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     @Override
     public boolean delete() {
         File file = null;
+        //SsomarDev.testMsg("DELETE path: "+getPath(), true);
         if ((file = new File(getPath())) != null) {
             file.delete();
             return true;

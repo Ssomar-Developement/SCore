@@ -16,9 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class VariableRealList extends VariableReal<List<String>> implements Serializable {
 
@@ -118,13 +116,17 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     }
 
     @Override
-    public String replaceVariablePlaceholder(String s) {
+    public String replaceVariablePlaceholder(String s, boolean includeRefreshTag) {
+
+        boolean isRefreshable = includeRefreshTag && getConfig().getIsRefreshableClean().getValue();
+        String optTag = isRefreshable ? getConfig().getRefreshTag().getValue().get() : "";
+
         String toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "%";
         if (s.contains(toReplace)) {
             while (getValue().contains("")){
                 getValue().remove("");
             }
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, getValue() + "", false);
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + getValue() +  (isRefreshable ? getPlaceholderTag(toReplace) : "") +optTag, false);
         }
 
         toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "_contains_";
@@ -132,16 +134,49 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
            String contains = s.split(toReplace)[1];
            if (contains.length() > 0 && contains.charAt(0) != '%'){
                contains = contains.split("%")[0];
-                s = s.replace(toReplace+contains+"%", getValue().contains(contains) + "");
+                s = s.replace(toReplace+contains+"%", optTag + getValue().contains(contains) + optTag);
                 //SsomarDev.testMsg("VariableRealList.replaceVariablePlaceholder:" + s+":", true);
            }
         }
 
         toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "_size%";
         if (s.contains(toReplace)) {
-            s = s.replace(toReplace, getValue().size() + "");
+            s = s.replace(toReplace, optTag + getValue().size() +  (isRefreshable ? getPlaceholderTag(toReplace) : "") +optTag);
         }
 
         return s;
+    }
+
+    @Override
+    public String getPlaceholderWithTag(String s) {
+        Map<String, String> tags = getTranscoPlaceholders();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            if (s.contains(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return "";
+    }
+
+    public Map<String, String> getTranscoPlaceholders() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("§汉", "%var_" + getConfig().getVariableName().getValue().get() + "%");
+        tags.put("§六", "%var_" + getConfig().getVariableName().getValue().get() + "_size%");
+        return tags;
+    }
+
+    public String getPlaceholderTag(String placeholder) {
+        Map<String, String> tags = getTranscoPlaceholders();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            if (entry.getValue().equals(placeholder)) {
+                return entry.getKey();
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String replaceVariablePlaceholder(String s) {
+        return replaceVariablePlaceholder(s, false);
     }
 }

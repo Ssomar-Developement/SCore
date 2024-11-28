@@ -80,9 +80,12 @@ public enum SProjectileType {
         if(SCore.is1v20v5Plus()){
             //features.add(new ScaleFeature(parent));
         }
+        if(this == SProjectileType.SPECTRAL_ARROW && SCore.is1v20v5Plus()){
+            features.add(new GlowDurationFeature(parent));
+        }
 
         switch (this) {
-            case ARROW:
+            case ARROW: case SPECTRAL_ARROW:
                 features.add(new GravityFeature(parent));
                 if (!SCore.is1v13Less()) {
                     features.add(new ColorFeature(parent));
@@ -91,6 +94,9 @@ public enum SProjectileType {
                     features.add(new DamageFeature(parent));
                     features.add(new KnockbackStrengthFeature(parent));
                     features.add(new PickupFeature(parent));
+                    if(SCore.is1v20v5Plus() && SCore.isPaperOrFork()){
+                        features.add(new HitSoundFeature(parent));
+                    }
                 }
                 break;
             case EGG:

@@ -12,6 +12,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.HeadDB;
 import com.ssomar.score.usedapi.HeadDatabase;
 import com.ssomar.score.utils.FixedMaterial;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -349,5 +350,10 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                 }
             }
         }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.HEAD;
     }
 }

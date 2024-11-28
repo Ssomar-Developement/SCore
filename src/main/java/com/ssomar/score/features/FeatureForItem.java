@@ -1,5 +1,6 @@
 package com.ssomar.score.features;
 
+import com.ssomar.score.utils.emums.ResetSetting;
 import org.jetbrains.annotations.NotNull;
 
 public interface FeatureForItem {
@@ -11,5 +12,7 @@ public interface FeatureForItem {
     void applyOnItemMeta(@NotNull FeatureForItemArgs args);
 
     void loadFromItemMeta(@NotNull FeatureForItemArgs args);
+
+    ResetSetting getResetSetting();
 
 }

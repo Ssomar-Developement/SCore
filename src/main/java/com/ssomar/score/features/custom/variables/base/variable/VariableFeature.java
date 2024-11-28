@@ -6,10 +6,7 @@ import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloaded;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloadedManager;
-import com.ssomar.score.features.types.ColoredStringFeature;
-import com.ssomar.score.features.types.DoubleFeature;
-import com.ssomar.score.features.types.UncoloredStringFeature;
-import com.ssomar.score.features.types.VariableTypeFeature;
+import com.ssomar.score.features.types.*;
 import com.ssomar.score.features.types.list.ListColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -22,10 +19,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -37,6 +31,9 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     private DoubleFeature doubleValue;
     private ListColoredStringFeature listValue;
     private String id;
+
+    private BooleanFeature isRefreshableClean;
+    private ColoredStringFeature refreshTag;
 
     public VariableFeature(FeatureParentInterface parent, String id) {
         super(parent, FeatureSettingsSCore.variable);
@@ -51,6 +48,8 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         this.stringValue = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.default_string, false);
         this.doubleValue = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.default_double);
         this.listValue = new ListColoredStringFeature(this,  new ArrayList<>(), FeatureSettingsSCore.default_list, false, Optional.empty());
+        this.isRefreshableClean = new BooleanFeature(this, false, FeatureSettingsSCore.isRefreshableClean, false);
+        this.refreshTag = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.refreshTag, false);
     }
 
     @Override
@@ -67,10 +66,42 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
             } else {
                 errors.addAll(this.doubleValue.load(plugin, enchantmentConfig, isPremiumLoading));
             }
+            errors.addAll(this.isRefreshableClean.load(plugin, enchantmentConfig, isPremiumLoading));
+            errors.addAll(this.refreshTag.load(plugin, enchantmentConfig, isPremiumLoading));
+            if(isRefreshableClean.getValue() && refreshTag.getValue().get().isEmpty()) {
+               refreshTag.setValue(generateTag());
+            }
         } else {
             errors.add("&cERROR, Couldn't load the Variable with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
         return errors;
+    }
+
+    public String generateTag() {
+        int hashCode = variableName.hashCode();
+        String hashToString = Integer.toString(hashCode);
+
+        StringBuilder tag = new StringBuilder();
+        for (int i = 0; i < hashToString.length(); i++) {
+            tag.append("§"+encodeIntegers().get(Integer.parseInt(String.valueOf(hashToString.charAt(i)))));
+        }
+
+        return tag.toString();
+    }
+
+    public Map<Integer, String> encodeIntegers() {
+        Map<Integer, String> result = new HashMap<>();
+        result.put(0, "自");
+        result.put(1, "他");
+        result.put(2, "地");
+        result.put(3, "天");
+        result.put(4, "人");
+        result.put(5, "道");
+        result.put(6, "生");
+        result.put(7, "物");
+        result.put(8, "心");
+        result.put(9, "意");
+        return result;
     }
 
     public T getDefaultValue() {
@@ -103,6 +134,8 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         else {
             this.doubleValue.save(attributeConfig);
         }
+        this.isRefreshableClean.save(attributeConfig);
+        this.refreshTag.save(attributeConfig);
     }
 
     @Override
@@ -140,6 +173,8 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         eF.setStringValue(stringValue.clone(eF));
         eF.setDoubleValue(doubleValue.clone(eF));
         eF.setListValue(listValue.clone(eF));
+        eF.setIsRefreshableClean(isRefreshableClean.clone(eF));
+        eF.setRefreshTag(refreshTag.clone(eF));
         return eF;
     }
 
@@ -153,6 +188,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         } else {
             featureInterfaces.add(doubleValue);
         }
+        featureInterfaces.add(isRefreshableClean);
         return featureInterfaces;
     }
 
@@ -182,6 +218,11 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
                     aFOF.setStringValue(stringValue);
                     aFOF.setDoubleValue(doubleValue);
                     aFOF.setListValue(listValue);
+                    aFOF.setIsRefreshableClean(isRefreshableClean);
+                    aFOF.setRefreshTag(refreshTag);
+                    if(isRefreshableClean.getValue() && refreshTag.getValue().get().isEmpty()) {
+                        refreshTag.setValue(generateTag());
+                    }
                     break;
                 }
             }

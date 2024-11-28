@@ -5,6 +5,7 @@ import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.firework.explosion.FireworkExplosionFeatures;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Color;
@@ -259,5 +260,10 @@ public class FireworkExplosionGroupFeature extends FeatureWithHisOwnEditor<Firew
                 i++;
             }
         }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.FIREWORK;
     }
 }

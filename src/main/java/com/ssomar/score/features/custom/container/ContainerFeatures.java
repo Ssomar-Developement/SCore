@@ -10,6 +10,7 @@ import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -303,5 +304,10 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
             isLocked.setValue(true);
             lockedName.setValue(Optional.of(container.getLock()));
         }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.CONTAINER;
     }
 }

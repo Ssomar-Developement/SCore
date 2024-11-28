@@ -9,6 +9,7 @@ import com.ssomar.score.features.types.FireworkEffectTypeFeature;
 import com.ssomar.score.features.types.list.ListBukkitColorFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.FireworkEffect;
@@ -217,5 +218,10 @@ public class FireworkExplosionFeatures extends FeatureWithHisOwnEditor<FireworkE
             getHasTrail().setValue(effect.hasTrail());
             getHasTwinkle().setValue(effect.hasFlicker());
         }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.FIREWORK_EXPLOSION;
     }
 }

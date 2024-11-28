@@ -8,6 +8,7 @@ import com.ssomar.score.features.FeatureForItemArgs;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
+import com.ssomar.score.utils.emums.ResetSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BundleMeta;
@@ -73,6 +74,11 @@ public class ItemBundleContentFeature extends ListUncoloredStringFeature impleme
         else SsomarDev.testMsg("ItemBundleContentFeature loadFromItemMeta: the meta is not a BundleMeta", DEBUG);
 
         this.setValues(values);
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.BUNDLE;
     }
 
     public static byte[] toByteArray(String arrayString) {

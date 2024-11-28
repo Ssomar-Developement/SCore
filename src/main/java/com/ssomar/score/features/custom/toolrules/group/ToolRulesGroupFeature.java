@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.toolrules.group;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.toolrules.toolrule.ToolRuleFeature;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -7,10 +8,13 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.ToolComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -18,7 +22,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGroupFeature, ToolRulesGroupFeature, ToolRulesGroupFeatureEditor, ToolRulesGroupFeatureEditorManager> implements FeaturesGroup<ToolRuleFeature> {
+public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGroupFeature, ToolRulesGroupFeature, ToolRulesGroupFeatureEditor, ToolRulesGroupFeatureEditorManager> implements FeaturesGroup<ToolRuleFeature>, FeatureForItem {
 
     private BooleanFeature enable;
     private Map<String, ToolRuleFeature> toolRules;
@@ -191,4 +195,60 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
         toolRules.remove(feature.getId());
     }
 
+    @Override
+    public boolean isAvailable() {
+        // in reality it should be 1.20.6
+        return SCore.is1v20v5Plus();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return true;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if(!isAvailable() || !isApplicable(args)) return;
+
+        if (getEnable().getValue()) {
+            ItemMeta meta = args.getMeta();
+            ToolComponent tool = meta.getTool();
+            tool.setDamagePerBlock(getDamagePerBlock().getValue().get());
+            tool.setDefaultMiningSpeed(getDefaultMiningSpeed().getValue().get().floatValue());
+
+            for (ToolRuleFeature rule : getToolRules().values()) {
+                tool.addRule(rule.getMaterials().getValues(), rule.getMiningSpeed().getValue().get().floatValue(), rule.getCorrectForDrops().getValue());
+            }
+            meta.setTool(tool);
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if(!isAvailable() || !isApplicable(args)) return;
+
+        ItemMeta meta = args.getMeta();
+        ToolComponent tool = meta.getTool();
+        if (tool != null) {
+            getDamagePerBlock().setValue(Optional.of(tool.getDamagePerBlock()));
+            getDefaultMiningSpeed().setValue(Optional.of((double) tool.getDefaultMiningSpeed()));
+
+            int i = 0;
+            for (ToolComponent.ToolRule toolRule : tool.getRules()) {
+                ToolRuleFeature rule = new ToolRuleFeature(this, "toolRule" + i);
+                rule.getMaterials().setValues(new ArrayList<>(toolRule.getBlocks()));
+                if(toolRule.getSpeed() != null) rule.getMiningSpeed().setValue(Optional.of((double) toolRule.getSpeed()));
+                if(toolRule.isCorrectForDrops() != null) rule.getCorrectForDrops().setValue(toolRule.isCorrectForDrops());
+                toolRules.put(rule.getId(), rule);
+                i++;
+            }
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.TOOL_RULES;
+    }
 }

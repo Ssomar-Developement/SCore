@@ -1,9 +1,7 @@
 package com.ssomar.score.features.custom.book;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.SCore;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -11,11 +9,14 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class BookFeatures extends FeatureWithHisOwnEditor<BookFeatures, BookFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class BookFeatures extends FeatureWithHisOwnEditor<BookFeatures, BookFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private BooleanFeature enable;
     private ColoredStringFeature author;
@@ -161,5 +162,54 @@ public class BookFeatures extends FeatureWithHisOwnEditor<BookFeatures, BookFeat
 
     public String getSimpleLocString(Location loc) {
         return loc.getWorld().getName() + "-" + loc.getBlockX() + "-" + loc.getBlockY() + "-" + loc.getBlockZ();
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return !SCore.is1v11Less();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof BookMeta;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if(isAvailable() && isApplicable(args)){
+            BookMeta bookMeta = (BookMeta) args.getMeta();
+            if (getAuthor().getValue().isPresent())
+                bookMeta.setAuthor(StringConverter.coloredString(getAuthor().getValue().get()));
+            if (getTitle().getValue().isPresent())
+                bookMeta.setTitle(StringConverter.coloredString(getTitle().getValue().get()));
+            if (!getPages().getValue().isEmpty()) {
+                List<String> pages = new ArrayList<>();
+                for (String page : getPages().getValue()) pages.add(StringConverter.coloredString(page));
+                bookMeta.setPages(pages);
+            }
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if(isAvailable() && isApplicable(args)){
+            BookMeta bookMeta = (BookMeta) args.getMeta();
+            if (bookMeta.hasAuthor())
+                getAuthor().setValue(bookMeta.getAuthor());
+            if (bookMeta.hasTitle())
+                getTitle().setValue(bookMeta.getTitle());
+            if (!bookMeta.getPages().isEmpty()) {
+                List<String> pages = new ArrayList<>();
+                for (String page : bookMeta.getPages()) pages.add(page);
+                getPages().setValues(pages);
+            }
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.BOOK;
     }
 }

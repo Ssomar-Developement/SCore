@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.equippableFeatures;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -16,6 +13,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.backward_compatibility.SoundUtils;
 import com.ssomar.score.utils.emums.AttributeSlot;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.NamespacedKey;
@@ -35,7 +33,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatures, EquippableFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatures, EquippableFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private BooleanFeature enable;
     private SlotFeature slot;
@@ -132,32 +130,6 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
         return this;
     }
 
-    public void applyOnItemMeta(ItemMeta meta){
-        /* Added in 1.21.2 */
-        if (SCore.is1v21v2Plus()) {
-            if (enable.getValue()) {
-                EquippableComponent equippable = meta.getEquippable();
-                equippable.setSlot(slot.getEquipmentSlotValue().get());
-                if (enableSound.getValue()) {
-                    equippable.setEquipSound(sound.getValue().get());
-                }
-                if (!model.getValue().orElse("").isEmpty()) {
-                    equippable.setModel(NamespacedKey.fromString(model.getValue().get()));
-                }
-                if (!cameraOverlay.getValue().orElse("").isEmpty()) {
-                    equippable.setCameraOverlay(NamespacedKey.fromString(cameraOverlay.getValue().get()));
-                }
-                equippable.setDispensable(isDispensable.getValue());
-                equippable.setDamageOnHurt(isDamageableOnHurt.getValue());
-                equippable.setSwappable(isSwappable.getValue());
-
-                equippable.setAllowedEntities(allowedEntities.getValue());
-
-                meta.setEquippable(equippable);
-            }
-        }
-    }
-
     @Override
     public void updateItemParentEditor(GUI gui) {
 
@@ -240,4 +212,66 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public boolean isAvailable() {
+        return SCore.is1v21v2Plus();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return true;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+        if (isAvailable()) {
+            if (enable.getValue()) {
+                ItemMeta meta = args.getMeta();
+                EquippableComponent equippable = meta.getEquippable();
+                equippable.setSlot(slot.getEquipmentSlotValue().get());
+                if (enableSound.getValue()) {
+                    equippable.setEquipSound(sound.getValue().get());
+                }
+                if (!model.getValue().orElse("").isEmpty()) {
+                    equippable.setModel(NamespacedKey.fromString(model.getValue().get()));
+                }
+                if (!cameraOverlay.getValue().orElse("").isEmpty()) {
+                    equippable.setCameraOverlay(NamespacedKey.fromString(cameraOverlay.getValue().get()));
+                }
+                equippable.setDispensable(isDispensable.getValue());
+                equippable.setDamageOnHurt(isDamageableOnHurt.getValue());
+                equippable.setSwappable(isSwappable.getValue());
+
+                equippable.setAllowedEntities(allowedEntities.getValue());
+
+                meta.setEquippable(equippable);
+            }
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (isAvailable()){
+            ItemMeta meta = args.getMeta();
+            if(meta.hasEquippable()){
+                EquippableComponent equippable = meta.getEquippable();
+                enable.setValue(true);
+                slot.setValue(Optional.ofNullable(AttributeSlot.fromEquipmentSlot(equippable.getSlot())));
+                enableSound.setValue(equippable.getEquipSound() != null);
+                sound.setValue(Optional.ofNullable(equippable.getEquipSound()));
+                model.setValue(Optional.of(equippable.getModel().toString()));
+                cameraOverlay.setValue(Optional.of(equippable.getCameraOverlay().toString()));
+                isDamageableOnHurt.setValue(equippable.isDamageOnHurt());
+                isDispensable.setValue(equippable.isDispensable());
+                isSwappable.setValue(equippable.isSwappable());
+                allowedEntities.setValues(new ArrayList<>(equippable.getAllowedEntities()));
+            }
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.EQUIPPABLE;
+    }
 }

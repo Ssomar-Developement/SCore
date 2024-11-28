@@ -35,6 +35,15 @@ public class AddItemlore extends PlayerCommand {
         int slot = (int) sCommandToExec.getSettingValue("slot");
         String text = (String) sCommandToExec.getSettingValue("text");
 
+        List<String> args = sCommandToExec.getOtherArgs();
+        StringBuilder message = new StringBuilder(text);
+        message.append(" ");
+        for (String s : args) {
+            //SsomarDev.testMsg("cmdarg> "+s);
+            message.append(s).append(" ");
+        }
+        message = new StringBuilder(message.substring(0, message.length() - 1));
+
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
 
@@ -47,7 +56,9 @@ public class AddItemlore extends PlayerCommand {
 
         list = (ArrayList<String>) itemmeta.getLore();
         if(list == null) list = new ArrayList<>();
-        list.add(StringConverter.coloredString(text));
+        if(!message.toString().isEmpty()) {
+            list.add(StringConverter.coloredString(message.toString()));
+        }
         itemmeta.setLore(list);
         item.setItemMeta(itemmeta);
     }

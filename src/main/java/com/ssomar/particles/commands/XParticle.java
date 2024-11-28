@@ -1189,7 +1189,6 @@ public final class XParticle {
     /**
      * Spawns animated spikes randomly spreading at the end location.
      *
-     * @param plugin    the timer handler.
      * @param amount    the amount of spikes to spawn.
      * @param rate      rate of spike line points.
      * @param start     start location of spikes.
@@ -1197,7 +1196,7 @@ public final class XParticle {
      *
      * @since 1.0.0
      */
-    public static ScheduledTask spread(Plugin plugin, int amount, int rate, Location start, Location originEnd,
+    public static ScheduledTask spread(int amount, int rate, Location start, Location originEnd,
                                     double offsetx, double offsety, double offsetz, ParticleDisplay display) {
 
         final AtomicReference<ScheduledTask> task = new AtomicReference<>();
@@ -1222,6 +1221,7 @@ public final class XParticle {
             }
         };
         task.set(SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L));
+
         return task.get();
     }
 
@@ -2327,7 +2327,7 @@ public final class XParticle {
         polygon(10, 4, size, 0.02, 0.3, display);
         polygon(10, 3, size / (size - 1), 0.5, 0, display);
         circle(size, 40, display);
-        spread(plugin, 30, 2, display.getLocation(), display.getLocation().clone().add(0, 10, 0), 5, 5, 5, display);
+        spread(30, 2, display.getLocation(), display.getLocation().clone().add(0, 10, 0), 5, 5, 5, display);
     }
 
     /**

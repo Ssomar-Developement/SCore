@@ -11,6 +11,7 @@ import com.ssomar.score.features.types.list.ListBukkitColorFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.FireworkEffect;
@@ -235,5 +236,10 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
             if(fireworkMeta.hasPower()) lifeTime.setValue(Optional.of(fireworkMeta.getPower()));
             explosions.loadFromItemMeta(args);
         }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.FIREWORK;
     }
 }
