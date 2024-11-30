@@ -29,10 +29,12 @@ public class Around extends PlayerCommand{
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
         CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoPlayer", 1, Boolean.class, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
+        CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
+        settings.add(safeDistance);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -44,11 +46,18 @@ public class Around extends PlayerCommand{
 
                 double distance = (double) sCommandToExec.getSettingValue("distance");
                 boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
+                double safeDistance = (double) sCommandToExec.getSettingValue("safeDistance");
 
                 List<Player> targets = new ArrayList<>();
                 for (Entity e : receiver.getNearbyEntities(distance, distance, distance)) {
                     if (e instanceof Player) {
                         Player target = (Player) e;
+
+                        if(safeDistance > 0) {
+                            Location receiverLoc = receiver.getLocation();
+                            Location targetLoc = target.getLocation();
+                            if(receiverLoc.distance(targetLoc) <= safeDistance) continue;
+                        }
 
                         if(!throughBlocks){
                             Location receiverLoc = receiver.getLocation();

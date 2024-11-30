@@ -16,10 +16,12 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/* HEAD */
 public class Head extends PlayerCommand {
+
+    public Head() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
@@ -48,11 +50,6 @@ public class Head extends PlayerCommand {
         };
         SCore.schedulerHook.runEntityTask(runnable3, null, receiver, 1);
 
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override

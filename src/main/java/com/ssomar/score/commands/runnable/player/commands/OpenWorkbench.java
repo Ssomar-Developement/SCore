@@ -7,18 +7,16 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class OpenWorkbench extends PlayerCommand {
+
+    public OpenWorkbench() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         receiver.openWorkbench(null, true);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override

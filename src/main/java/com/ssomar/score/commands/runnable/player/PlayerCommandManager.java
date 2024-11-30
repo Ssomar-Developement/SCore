@@ -78,18 +78,17 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new Bossbar());
         commands.add(new RemoveEnchantment());
         commands.add(new Chat());
-        commands.add(new DropSpecificEI());
+        commands.add(new ForceDrop());
         commands.add(OpenChest.getInstance());
         commands.add(new EICooldown());
         commands.add(new EBCooldown());
         commands.add(new EECooldown());
-        commands.add(new AddItemAttribute());
+        commands.add(new AddAttribute());
         commands.add(new SetItemAttribute());
         commands.add(new SetArmorTrim());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
             commands.add(new ActionbarCommand());
-            commands.add(new ParticleCommand());
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());

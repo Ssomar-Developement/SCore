@@ -13,10 +13,12 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/* HEAD */
 public class Chestplate extends PlayerCommand {
+
+    public Chestplate() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
@@ -40,11 +42,6 @@ public class Chestplate extends PlayerCommand {
         };
         SCore.schedulerHook.runTask(runnable3, 1);
 
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override

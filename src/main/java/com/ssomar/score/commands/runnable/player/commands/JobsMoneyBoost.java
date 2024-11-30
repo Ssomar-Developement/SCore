@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import lombok.Getter;
@@ -18,6 +18,13 @@ public class JobsMoneyBoost extends PlayerCommand {
 
     public JobsMoneyBoost() {
         activeBoosts = new HashMap<>();
+
+        CommandSetting multiplier = new CommandSetting("multiplier", 0, Double.class, 2.0);
+        CommandSetting time = new CommandSetting("time", 1, Integer.class, 10);
+        List<CommandSetting> settings = getSettings();
+        settings.add(multiplier);
+        settings.add(time);
+        setNewSettingsMode(true);
     }
 
     public static JobsMoneyBoost getInstance() {
@@ -27,40 +34,28 @@ public class JobsMoneyBoost extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
 
-        double multiplier = Double.valueOf(args.get(0));
-        int time = Double.valueOf(args.get(1)).intValue();
+        double multiplier = (double) sCommandToExec.getSettingValue("multiplier");
+        int time = (int) sCommandToExec.getSettingValue("time");
 
-        if (activeBoosts.containsKey(receiver.getUniqueId())) {
-            activeBoosts.get(receiver.getUniqueId()).add(multiplier);
-        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(multiplier)));
+        UUID uuid = receiver.getUniqueId();
+
+        if (activeBoosts.containsKey(uuid)) {
+            activeBoosts.get(uuid).add(multiplier);
+        } else activeBoosts.put(uuid, new ArrayList<>(Collections.singletonList(multiplier)));
 
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
-                if (activeBoosts.containsKey(receiver.getUniqueId())) {
-                    if (activeBoosts.get(receiver.getUniqueId()).size() > 1) {
-                        activeBoosts.get(receiver.getUniqueId()).remove(multiplier);
-                    } else activeBoosts.remove(receiver.getUniqueId());
+                if (activeBoosts.containsKey(uuid)) {
+                    if (activeBoosts.get(uuid).size() > 1) {
+                        activeBoosts.get(uuid).remove(multiplier);
+                    } else activeBoosts.remove(uuid);
                 }
             }
         };
-        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time * 20L);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkInteger(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
+        SCore.schedulerHook.runTask(runnable3, time * 20L);
     }
 
     @Override
@@ -72,7 +67,7 @@ public class JobsMoneyBoost extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "JOBS_MONEY_BOOST {multiplier} {timeinsecs}";
+        return "JOBS_MONEY_BOOST multiplier:2.0 time:10";
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -12,16 +12,20 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* BURN {timeinsecs} */
 public class MinecartBoost extends PlayerCommand {
+
+    public MinecartBoost() {
+        CommandSetting boost = new CommandSetting("boost", 0, Double.class, 2.0);
+        List<CommandSetting> settings = getSettings();
+        settings.add(boost);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
         Entity entity;
-        double boost = Double.parseDouble(args.get(0));
+        double boost = (double) sCommandToExec.getSettingValue("boost");
 
         if ((entity = receiver.getVehicle()) != null && entity instanceof Minecart) {
             Minecart minecart = (Minecart) entity;
@@ -34,16 +38,6 @@ public class MinecartBoost extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("MINECART_BOOST");
@@ -52,7 +46,7 @@ public class MinecartBoost extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "MINECART_BOOST {boost (number)}";
+        return "MINECART_BOOST boost:2.0";
     }
 
     @Override

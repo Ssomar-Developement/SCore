@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -23,7 +25,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class BrewingStandFeatures extends FeatureWithHisOwnEditor<BrewingStandFeatures, BrewingStandFeatures, BrewingStandFeaturesEditor, BrewingStandFeaturesEditorManager> {
+public class BrewingStandFeatures extends FeatureWithHisOwnEditor<BrewingStandFeatures, BrewingStandFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private DoubleFeature brewingStandSpeed;
@@ -112,7 +114,7 @@ public class BrewingStandFeatures extends FeatureWithHisOwnEditor<BrewingStandFe
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof BrewingStandFeatures) {
                 BrewingStandFeatures eF = (BrewingStandFeatures) feature;
                 eF.setBrewingStandSpeed(this.brewingStandSpeed);
@@ -128,6 +130,6 @@ public class BrewingStandFeatures extends FeatureWithHisOwnEditor<BrewingStandFe
 
     @Override
     public void openEditor(@NotNull Player player) {
-        BrewingStandFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

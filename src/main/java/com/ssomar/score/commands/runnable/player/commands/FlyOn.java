@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* FLY ON */
 public class FlyOn extends PlayerCommand {
+
+    public FlyOn() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
@@ -27,13 +30,14 @@ public class FlyOn extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("FLY_ON");
         names.add("FLY ON");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "FLY ON";
+        return "FLY_ON";
     }
 
     @Override

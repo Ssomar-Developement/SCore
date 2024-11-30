@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public class PlayerPickup implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void PlayerPickupItemEvent(EntityPickupItemEvent e) {
 
         if (e.getEntity() instanceof Player) {

@@ -9,6 +9,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.MaterialFeature;
@@ -33,7 +35,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFeature, RequiredItemFeature, RequiredItemFeatureEditor, RequiredItemFeatureEditorManager> implements RequiredPlayerInterface {
+public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFeature, RequiredItemFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements RequiredPlayerInterface {
 
     private static final Boolean DEBUG = false;
     private MaterialFeature material;
@@ -135,7 +137,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredItemFeature) {
                 RequiredItemFeature aFOF = (RequiredItemFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -155,7 +157,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
 
     @Override
     public void openEditor(@NotNull Player player) {
-        RequiredItemFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override

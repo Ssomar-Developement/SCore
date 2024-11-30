@@ -6,11 +6,16 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -38,19 +43,39 @@ public class Damage extends MixedCommand {
 
         double damage = getDamage(p, livingReceiver, args, aInfo);
 
+        Object damageSource = null;
+        if(SCore.is1v20v5Plus()) {
+            DamageType damageType = DamageType.GENERIC;
+            try {
+                damageType = Registry.DAMAGE_TYPE.get(NamespacedKey.minecraft(args.get(3).toLowerCase()));
+            } catch (Exception e) {}
+
+            try {
+                if (p != null) damageSource = DamageSource.builder(damageType).withDirectEntity(p).withCausingEntity(p).build();
+                else damageSource = DamageSource.builder(damageType).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         if (damage > 0 && !receiver.isDead()) {
             int maximumNoDmg = livingReceiver.getNoDamageTicks();
             livingReceiver.setNoDamageTicks(0);
             boolean doDamage = true;
             if (SCore.hasWorldGuard && receiver instanceof Player) doDamage = WorldGuardAPI.isInPvpZone((Player) receiver, receiver.getLocation());
+            // to prevent double kill https://discord.com/channels/701066025516531753/1301172655616950294/1301172655616950294
+            if(livingReceiver.isDead()) return;
             if (doDamage) {
                 if (p != null) {
                     /* To avoid looping damage */
                     if(aInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
                     p.setMetadata("damageFromCustomCommand", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7773)));
-                    livingReceiver.damage(damage, p);
+                    if(SCore.is1v20v5Plus() && damageSource != null) livingReceiver.damage(damage, (DamageSource) damageSource);
+                    else livingReceiver.damage(damage, p);
                 } else {
-                    livingReceiver.damage(damage);
+                    if(SCore.is1v20v5Plus() && damageSource != null) livingReceiver.damage(damage, (DamageSource) damageSource);
+                    else livingReceiver.damage(damage);
                 }
             }
 
@@ -97,7 +122,10 @@ public class Damage extends MixedCommand {
 
             //SsomarDev.testMsg("boost attribute: "+ attributeAmplification);
             if (attributeAmplification) {
-                AttributeInstance aI = launcher.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+                Attribute att = null;
+                if(SCore.is1v21v2Plus()) att = Attribute.ATTACK_DAMAGE;
+                else att = AttributeUtils.getAttribute("GENERIC_ATTACK_DAMAGE");
+                AttributeInstance aI = launcher.getAttribute(att);
                 double bonusAmount = 0;
                 if (aI != null) {
                     //SsomarDev.testMsg("damage value: "+aI.getValue());
@@ -151,7 +179,7 @@ public class Damage extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "DAMAGE {number} [amplified If Strength Effect, true or false] [amplified with attack attribute, true or false]";
+        return "DAMAGE {number} [amplified If Strength Effect, true or false] [amplified with attack attribute, true or false] [damageType]";
     }
 
     @Override

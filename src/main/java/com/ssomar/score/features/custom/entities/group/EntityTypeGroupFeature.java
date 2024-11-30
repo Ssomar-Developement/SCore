@@ -162,7 +162,7 @@ public class EntityTypeGroupFeature extends FeatureWithHisOwnEditor<EntityTypeGr
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof EntityTypeGroupFeature) {
                 EntityTypeGroupFeature eF = (EntityTypeGroupFeature) feature;
                 eF.setEntityTypes(entityTypes);

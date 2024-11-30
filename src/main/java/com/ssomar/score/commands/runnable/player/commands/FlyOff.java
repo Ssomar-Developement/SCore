@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.fly.FlyManager;
@@ -10,20 +10,20 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* FLY OFF */
-@SuppressWarnings("deprecation")
+
 public class FlyOff extends PlayerCommand {
+
+    public FlyOff() {
+        CommandSetting teleportOnTheGround = new CommandSetting("teleportOnTheGround", 0, Boolean.class, true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(teleportOnTheGround);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
-        boolean teleport = true;
-        if (args.size() >= 1) {
-            teleport = Boolean.parseBoolean(args.get(0));
-        }
+        boolean teleport = (boolean) sCommandToExec.getSettingValue("teleportOnTheGround");
 
         if (teleport) {
             if (!receiver.isOnGround()) {
@@ -47,26 +47,18 @@ public class FlyOff extends PlayerCommand {
         FlyManager.getInstance().removePlayerWithFly(p);
     }
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() >= 1) {
-            ArgumentChecker ac = checkBoolean(args.get(0), isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
-        }
-
-        return Optional.empty();
-    }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("FLY_OFF");
         names.add("FLY OFF");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "FLY OFF [teleportOnTheGround true or false]";
+        return "FLY_OFF teleportOnTheGround:true";
     }
 
     @Override

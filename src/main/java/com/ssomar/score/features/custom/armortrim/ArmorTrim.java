@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.TrimMaterialFeature;
 import com.ssomar.score.features.types.TrimPatternFeature;
@@ -25,7 +27,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, ArmorTrimEditor, ArmorTrimEditorManager> {
+public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature enableArmorTrim;
     private TrimMaterialFeature trimMaterial;
@@ -138,7 +140,7 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Arm
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ArmorTrim) {
                 ArmorTrim hiders = (ArmorTrim) feature;
                 hiders.setEnableArmorTrim(enableArmorTrim);
@@ -156,7 +158,7 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Arm
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ArmorTrimEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

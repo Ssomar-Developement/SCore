@@ -31,22 +31,24 @@ public class XpBoost extends PlayerCommand {
         double multiplier = Double.valueOf(args.get(0));
         int time = Double.valueOf(args.get(1)).intValue();
 
-        if (activeBoosts.containsKey(receiver.getUniqueId())) {
-            activeBoosts.get(receiver.getUniqueId()).add(multiplier);
-        } else activeBoosts.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(multiplier)));
+        UUID uuid = receiver.getUniqueId();
+
+        if (activeBoosts.containsKey(uuid)) {
+            activeBoosts.get(uuid).add(multiplier);
+        } else activeBoosts.put(uuid, new ArrayList<>(Collections.singletonList(multiplier)));
 
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
-                if (activeBoosts.containsKey(receiver.getUniqueId())) {
-                    if (activeBoosts.get(receiver.getUniqueId()).size() > 1) {
-                        activeBoosts.get(receiver.getUniqueId()).remove(multiplier);
-                    } else activeBoosts.remove(receiver.getUniqueId());
+                if (activeBoosts.containsKey(uuid)) {
+                    if (activeBoosts.get(uuid).size() > 1) {
+                        activeBoosts.get(uuid).remove(multiplier);
+                    } else activeBoosts.remove(uuid);
                 }
             }
         };
-        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time * 20L);
+        SCore.schedulerHook.runTask(runnable3, time * 20L);
     }
 
     @Override

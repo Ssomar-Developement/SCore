@@ -13,10 +13,12 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/* HEAD */
 public class Leggings extends PlayerCommand {
+
+    public Leggings() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
@@ -39,11 +41,6 @@ public class Leggings extends PlayerCommand {
             }
         };
         SCore.schedulerHook.runEntityTask(runnable3, null, receiver, 1);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override

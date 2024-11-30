@@ -1,10 +1,13 @@
 package com.ssomar.score.features.custom.useperday;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -29,7 +32,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, UsePerDayFeature, UsePerDayFeatureEditor, UsePerDayFeatureEditorManager> {
+public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, UsePerDayFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private IntegerFeature maxUsePerDay;
     private ColoredStringFeature messageIfMaxReached;
@@ -70,7 +73,10 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
             return true;
         } else {
             /* Verification of usage per day */
-            if (UsagePerDayManager.getInstance().getCount(player.getName(), this.getId()) >= maxUsePerDay.getValue().get()) {
+            int count = UsagePerDayManager.getInstance().getCount(player.getName(), this.getId());
+            int max = maxUsePerDay.getValue().get();
+            SsomarDev.testMsg("count: " + count+" >> max "+max, true);
+            if (count >= maxUsePerDay.getValue().get()) {
                 sendMessageIfMaxReached(player, sp);
                 if (event != null && event instanceof Cancellable && cancelEventIfMaxReached.getValue()) {
                     ((Cancellable) event).setCancelled(true);
@@ -176,7 +182,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof UsePerDayFeature) {
                 UsePerDayFeature hiders = (UsePerDayFeature) feature;
                 if (maxUsePerDay.getValue().get() < -1) maxUsePerDay.setValue(Optional.ofNullable(-1));
@@ -196,7 +202,7 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     @Override
     public void openEditor(@NotNull Player player) {
         if (this.isRequirePremium() && !isPremium()) return;
-        UsePerDayFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

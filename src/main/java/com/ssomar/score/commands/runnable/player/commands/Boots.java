@@ -13,15 +13,17 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/* HEAD */
 public class Boots extends PlayerCommand {
+
+    public Boots() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
 
-        /* Delay fix a double activation of the item, not so easy to esplain, it fixes this issue: https://discord.com/channels/701066025516531753/1014297458735595680/1014299784229683302*/
+        /* Delay fix a double activation of the item, not so easy to explain, it fixes this issue: https://discord.com/channels/701066025516531753/1014297458735595680/1014299784229683302*/
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
@@ -40,11 +42,6 @@ public class Boots extends PlayerCommand {
         };
         SCore.schedulerHook.runTask(runnable3, 1);
 
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
     }
 
     @Override

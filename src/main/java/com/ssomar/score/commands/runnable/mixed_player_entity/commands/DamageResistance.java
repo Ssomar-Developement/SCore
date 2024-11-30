@@ -36,23 +36,25 @@ public class DamageResistance extends MixedCommand {
         double reduction = Double.valueOf(args.get(0));
         int time = Double.valueOf(args.get(1)).intValue();
 
+        UUID uuid = receiver.getUniqueId();
+
         //SsomarDev.testMsg("ADD receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
-        if (activeResistances.containsKey(receiver.getUniqueId())) {
-            activeResistances.get(receiver.getUniqueId()).add(reduction);
-        } else activeResistances.put(receiver.getUniqueId(), new ArrayList<>(Collections.singletonList(reduction)));
+        if (activeResistances.containsKey(uuid)) {
+            activeResistances.get(uuid).add(reduction);
+        } else activeResistances.put(uuid, new ArrayList<>(Collections.singletonList(reduction)));
 
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
                 //SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " Damage Resistance: " + reduction + " for " + time + " ticks");
-                if (activeResistances.containsKey(receiver.getUniqueId())) {
-                    if (activeResistances.get(receiver.getUniqueId()).size() > 1) {
-                        activeResistances.get(receiver.getUniqueId()).remove(reduction);
-                    } else activeResistances.remove(receiver.getUniqueId());
+                if (activeResistances.containsKey(uuid)) {
+                    if (activeResistances.get(uuid).size() > 1) {
+                        activeResistances.get(uuid).remove(reduction);
+                    } else activeResistances.remove(uuid);
                 }
             }
         };
-        SCore.schedulerHook.runEntityTask(runnable3, null, receiver, time);
+        SCore.schedulerHook.runTask(runnable3, time);
     }
 
     public double getNewDamage(UUID uuid, double damage) {

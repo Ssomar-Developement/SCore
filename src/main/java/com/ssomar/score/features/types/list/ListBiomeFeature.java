@@ -8,13 +8,13 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.usedapi.AllWorldManager;
+import com.ssomar.score.utils.backward_compatibility.BiomeUtils;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -50,7 +50,7 @@ public class ListBiomeFeature extends ListFeatureAbstract<String, ListBiomeFeatu
     }
 
     public boolean isValid(Location location) {
-        String biome = location.getBlock().getBiome().name();
+        String biome = BiomeUtils.getBiomes().get(location.getBlock().getBiome());
         if (SCore.hasTerra) {
             try {
                 BukkitServerWorld worldS = new BukkitServerWorld(location.getWorld());
@@ -126,9 +126,7 @@ public class ListBiomeFeature extends ListFeatureAbstract<String, ListBiomeFeatu
                 } // ignore if not terra world
             }
         }
-        for (Biome biome : Biome.values()) {
-            biomes.add(biome.name());
-        }
+        biomes.addAll(BiomeUtils.getBiomes().values());
         return biomes;
     }
 

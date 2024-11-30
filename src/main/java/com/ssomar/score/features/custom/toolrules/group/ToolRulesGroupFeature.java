@@ -126,6 +126,9 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>(toolRules.values());
+        features.add(enable);
+        features.add(defaultMiningSpeed);
+        features.add(damagePerBlock);
         return features;
     }
 
@@ -149,7 +152,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ToolRulesGroupFeature) {
                 ToolRulesGroupFeature eF = (ToolRulesGroupFeature) feature;
                 eF.setToolRules(this.getToolRules());

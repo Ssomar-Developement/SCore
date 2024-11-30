@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.willfp.ecoskills.api.EcoSkillsAPI;
@@ -12,15 +12,22 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class RegainMagic extends PlayerCommand {
 
+    public RegainMagic() {
+        CommandSetting ecoSkillsMagicID = new CommandSetting("ecoSkillsMagicID", 0, String.class, "");
+        CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 5);
+        List<CommandSetting> settings = getSettings();
+        settings.add(ecoSkillsMagicID);
+        settings.add(amount);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        String magicId = args.get(0);
-        int regain = Integer.valueOf(args.get(1));
+        String magicId = (String) sCommandToExec.getSettingValue("ecoSkillsMagicID");
+        int regain = (int) sCommandToExec.getSettingValue("amount");
 
         if (!SCore.hasEcoSkills) return;
 
@@ -31,25 +38,16 @@ public class RegainMagic extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(1), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("REGAIN_MAGIC");
         names.add("REGAIN MAGIC");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "REGAIN MAGIC {ecoskills magic OD} {amount}";
+        return "REGAIN_MAGIC ecoSkillsMagicID:MagicId amount:5";
     }
 
     @Override

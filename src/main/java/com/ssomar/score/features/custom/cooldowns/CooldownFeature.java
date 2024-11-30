@@ -5,6 +5,8 @@ import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -30,7 +32,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, CooldownFeature, CooldownFeatureEditor, CooldownFeatureEditorManager> {
+public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, CooldownFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     /* Cooldowns / delay */
     private IntegerFeature cooldown;
@@ -273,7 +275,7 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof CooldownFeature && feature.getName().equals(getName())) {
                 CooldownFeature coolodwn = (CooldownFeature) feature;
                 coolodwn.setCooldown(this.cooldown);
@@ -295,6 +297,6 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
 
     @Override
     public void openEditor(@NotNull Player player) {
-        CooldownFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -22,7 +24,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class HopperFeatures extends FeatureWithHisOwnEditor<HopperFeatures, HopperFeatures, HopperFeaturesEditor, HopperFeaturesEditorManager> {
+public class HopperFeatures extends FeatureWithHisOwnEditor<HopperFeatures, HopperFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private IntegerFeature amountItemsTransferred;
@@ -108,7 +110,7 @@ public class HopperFeatures extends FeatureWithHisOwnEditor<HopperFeatures, Hopp
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof HopperFeatures) {
                 HopperFeatures eF = (HopperFeatures) feature;
                 eF.setAmountItemsTransferred(this.amountItemsTransferred);
@@ -128,6 +130,6 @@ public class HopperFeatures extends FeatureWithHisOwnEditor<HopperFeatures, Hopp
 
     @Override
     public void openEditor(@NotNull Player player) {
-        HopperFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

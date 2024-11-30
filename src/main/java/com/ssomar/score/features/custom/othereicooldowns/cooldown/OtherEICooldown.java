@@ -9,6 +9,8 @@ import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.cooldowns.Cooldown;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ExecutableItemFeature;
 import com.ssomar.score.features.types.IntegerFeature;
@@ -32,7 +34,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class OtherEICooldown extends FeatureWithHisOwnEditor<OtherEICooldown, OtherEICooldown, OtherEICooldownEditor, OtherEICooldownEditorManager> {
+public class OtherEICooldown extends FeatureWithHisOwnEditor<OtherEICooldown, OtherEICooldown, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private ExecutableItemFeature executableItemFeature;
     private ListUncoloredStringFeature activatorsList;
@@ -112,7 +114,7 @@ public class OtherEICooldown extends FeatureWithHisOwnEditor<OtherEICooldown, Ot
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof OtherEICooldown) {
                 OtherEICooldown c = (OtherEICooldown) feature;
                 if (c.getId().equals(id)) {
@@ -129,7 +131,7 @@ public class OtherEICooldown extends FeatureWithHisOwnEditor<OtherEICooldown, Ot
 
     @Override
     public void openEditor(@NotNull Player player) {
-        OtherEICooldownEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override

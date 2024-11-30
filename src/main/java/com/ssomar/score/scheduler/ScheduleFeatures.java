@@ -145,7 +145,7 @@ public class ScheduleFeatures extends FeatureWithHisOwnEditor<ScheduleFeatures, 
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ScheduleFeatures) {
                 ScheduleFeatures dropFeatures = (ScheduleFeatures) feature;
                 dropFeatures.setStartDateFeature(this.startDateFeature);

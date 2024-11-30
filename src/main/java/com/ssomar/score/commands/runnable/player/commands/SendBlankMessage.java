@@ -11,6 +11,10 @@ import java.util.Optional;
 
 public class SendBlankMessage extends PlayerCommand {
 
+    public SendBlankMessage() {
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         String message = " ";
@@ -25,13 +29,14 @@ public class SendBlankMessage extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SEND_BLANK_MESSAGE");
         names.add("SENDBLANKMESSAGE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SENDBLANKMESSAGE";
+        return "SEND_BLANK_MESSAGE";
     }
 
     @Override

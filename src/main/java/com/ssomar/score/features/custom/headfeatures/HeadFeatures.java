@@ -7,6 +7,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -35,7 +37,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeatures, HeadFeaturesEditor, HeadFeaturesEditorManager> {
+public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private UncoloredStringFeature headValue;
     private UncoloredStringFeature headDBID;
@@ -215,7 +217,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof HeadFeatures) {
                 HeadFeatures hiders = (HeadFeatures) feature;
                 hiders.setHeadValue(headValue);
@@ -232,7 +234,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
 
     @Override
     public void openEditor(@NotNull Player player) {
-        HeadFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoinFeatures, GiveFirstJoinFeatures, GiveFirstJoinFeaturesEditor, GiveFirstJoinFeaturesEditorManager> {
+public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoinFeatures, GiveFirstJoinFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature giveFirstJoin;
     private IntegerFeature giveFirstJoinAmount;
@@ -137,7 +139,7 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof GiveFirstJoinFeatures) {
                 GiveFirstJoinFeatures giveFirstJoinFeatures = (GiveFirstJoinFeatures) feature;
                 giveFirstJoinFeatures.setGiveFirstJoin(giveFirstJoin);
@@ -155,7 +157,7 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     @Override
     public void openEditor(@NotNull Player player) {
-        GiveFirstJoinFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

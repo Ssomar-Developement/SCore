@@ -7,6 +7,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.list.ListColoredStringFeature;
@@ -35,7 +37,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatures, BlockTitleFeatures, BlockTitleFeaturesEditor, BlockTitleFeaturesEditorManager> {
+public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatures, BlockTitleFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private ListColoredStringFeature title;
     private DoubleFeature titleAjustement;
@@ -137,7 +139,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof BlockTitleFeatures) {
                 BlockTitleFeatures dropFeatures = (BlockTitleFeatures) feature;
                 dropFeatures.setActiveTitle(this.activeTitle);
@@ -155,7 +157,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
     @Override
     public void openEditor(@NotNull Player player) {
-        BlockTitleFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     public String getSimpleLocString(Location loc){

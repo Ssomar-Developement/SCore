@@ -1,6 +1,7 @@
 package com.ssomar.score.features.types.list;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import javax.security.sasl.SaslServer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +81,8 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     @Override
     public void save(ConfigurationSection config) {
         //SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
-        if (notSaveIfEqualsToDefaultValue && defaultValue.containsAll(values)) {
+        if (notSaveIfEqualsToDefaultValue && defaultValue.containsAll(getCurrentValues())) {
+            //SsomarDev.testMsg("notSaveIfEqualsToDefaultValue: " + this.getName(), true);
             config.set(this.getName(), null);
             return;
         }

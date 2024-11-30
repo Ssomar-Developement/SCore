@@ -8,6 +8,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
@@ -30,7 +32,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeature, AroundBlockFeature, AroundBlockFeatureEditor, AroundBlockFeatureEditorManager> {
+public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeature, AroundBlockFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private IntegerFeature southValue;
     private IntegerFeature northValue;
@@ -198,7 +200,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof AroundBlockFeature) {
                 AroundBlockFeature aFOF = (AroundBlockFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -224,7 +226,7 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
 
     @Override
     public void openEditor(@NotNull Player player) {
-        AroundBlockFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

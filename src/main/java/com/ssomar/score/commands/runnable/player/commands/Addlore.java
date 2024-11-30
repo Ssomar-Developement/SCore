@@ -1,9 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,64 +12,54 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* ADDLORE {slot} {text} */
 public class Addlore extends PlayerCommand {
+
+    public Addlore() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
+        slot.setSlot(true);
+        CommandSetting text = new CommandSetting("text", 1, String.class, "New lore");
+        text.setAcceptUnderScoreForLongText(true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(text);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
         ItemStack item;
         ItemMeta itemmeta;
         ArrayList<String> list;
 
-        int slot = NTools.getInteger(args.get(0)).get();
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        String text = (String) sCommandToExec.getSettingValue("text");
 
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
-        if (item == null || item.getType() == Material.AIR) return;
+
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
 
         itemmeta = item.getItemMeta();
 
-        StringBuilder build = new StringBuilder();
-
-        for (int i = 1; i < args.size(); i++) {
-            build.append(args.get(i) + " ");
-        }
-
         list = (ArrayList<String>) itemmeta.getLore();
-
-        if(list == null){
-            list = new ArrayList<>();
-        }
-        list.add(StringConverter.coloredString(build.toString()));
-
+        if(list == null) list = new ArrayList<>();
+        list.add(StringConverter.coloredString(text));
         itemmeta.setLore(list);
         item.setItemMeta(itemmeta);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("ADD_LORE");
         names.add("ADDLORE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ADDLORE {slot} {text dont need brackets}";
+        return "ADD_LORE slot:-1 text:My_new_lore_line";
     }
 
     @Override

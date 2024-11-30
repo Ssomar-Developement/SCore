@@ -2,6 +2,7 @@ package com.ssomar.score.api.executableitems.config;
 
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
+import com.ssomar.score.features.types.ColoredStringFeature;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -96,4 +97,6 @@ public interface ExecutableItemInterface {
     SActivator getActivator(String actID);
 
     List<String> getDescription();
+
+    ColoredStringFeature getDisplayName();
 }

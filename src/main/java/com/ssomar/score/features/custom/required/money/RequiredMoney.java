@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.DoubleFeature;
@@ -27,7 +29,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, RequiredMoneyEditor, RequiredMoneyEditorManager> implements RequiredPlayerInterface {
+public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, RequiredMoney, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements RequiredPlayerInterface {
 
     private DoubleFeature money;
     private ColoredStringFeature errorMessage;
@@ -135,7 +137,7 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     @Override
     public void openEditor(Player player) {
         if (!isPremium() && this.isRequirePremium()) return;
-        RequiredMoneyEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override
@@ -168,7 +170,7 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredMoney) {
                 RequiredMoney requiredLevel = (RequiredMoney) feature;
                 requiredLevel.setMoney(money);

@@ -177,7 +177,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof BlockConditionsFeature && feature.getName().equals(getName())) {
                 BlockConditionsFeature bCF = (BlockConditionsFeature) feature;
                 List<BlockConditionFeature> clones = new ArrayList<>();

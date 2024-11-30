@@ -65,6 +65,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelLectern("cancel-lectern", "Cancel Lectern", new String[]{"&7&oThe item can't be",  "&7&oplaced in a lectern"},  FixedMaterial.getMaterial(Collections.singletonList("LECTERN")),  false),
     cancelLoom("cancel-loom", "Cancel Loom", new String[]{"&7&oThe item can't be",  "&7&oplaced in a loom"},  FixedMaterial.getMaterial(Collections.singletonList("LOOM")),  false),
     cancelDecoratedPot("cancel-decorated-pot", "Cancel Decorated Pot", new String[]{"&7&oThe item can't be",  "&7&oplaced in a decorated pot"},  FixedMaterial.getMaterial(Collections.singletonList("DECORATED_POT")),  false),
+    cancelCrafter("cancel-crafter", "Cancel Crafter", new String[]{"&7&oThe item can't be",  "&7&oplaced in a crafter"},  FixedMaterial.getMaterial(Collections.singletonList("CRAFTER")),  false),
     cancelMerchant("cancel-merchant", "Cancel Merchant", new String[]{"&7&oThe item can't be",  "&7&oplaced in a merchant"},  FixedMaterial.getMaterial(Arrays.asList("VILLAGER_SPAWN_EGG", "EMERALD")),  false),
     cancelSmithingTable("cancel-smithing-table", "Cancel Smithing Table", new String[]{"&7&oThe item can't be",  "&7&oplaced in a smithing table"},  FixedMaterial.getMaterial(Collections.singletonList("SMITHING_TABLE")),  false),
     cancelStoneCutter("cancel-stone-cutter", "Cancel Stone Cutter", new String[]{"&7&oThe item can't be",  "&7&oplaced in stone cutter"},  FixedMaterial.getMaterial(Collections.singletonList("STONECUTTER")),  false),
@@ -340,7 +341,20 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     bookFeatures("bookFeatures", "Book Features", new String[]{"&7&oThe book features"}, GUI.WRITABLE_BOOK, false),
     pages("pages", "Pages", new String[]{"&7&oThe pages"}, GUI.WRITABLE_BOOK, false),
     author("author", "Author", new String[]{"&7&oThe author"}, Material.NAME_TAG, false),
-
+    equippableFeatures("equippableFeatures", "Equippable Features", new String[]{"&7&oThe equippable features"}, Material.DIAMOND_CHESTPLATE, false),
+    enableSound("enableSound", "Enable Sound", new String[]{"&7&oEnable the sound"}, null, false),
+    sound("sound", "Sound", new String[]{"&7&oThe sound"}, Material.NOTE_BLOCK, false),
+    equipModel("equipModel", "Equip Model", new String[]{"&7&oThe equip/armor model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/models/equipment/<id>"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
+    cameraOverlay("cameraOverlay", "Camera Overlay", new String[]{"&7&oThe camera overlay", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/textures/<id>"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
+    damageableOnHurt("damageableOnHurt", "Damageable On Hurt", new String[]{"&7&oThe item will take damage when the player is hurt"}, null, false),
+    dispensable("dispensable", "Dispensable", new String[]{"&7&oThe item can be dispensed"}, null, false),
+    swappable("swappable", "Swappable", new String[]{"&7&oThe item can be swapped"}, null, false),
+    allowedEntities("allowedEntities", "Allowed Entities", new String[]{"&7&oThe allowed entities"}, FixedMaterial.getMaterial(Arrays.asList("ZOMBIE_HEAD", "MONSTER_EGG")), false),
+    repairableFeatures("repairableFeatures", "Repairable Features", new String[]{"&7&oThe repairable features"}, Material.ANVIL, false),
+    repairCost("repairCost", "Repair Cost", new String[]{"&7&oThe repair cost"}, GUI.CLOCK, false),
+    glider("glider", "Glider", new String[]{"&7&oThe glider"}, FixedMaterial.getMaterial(Arrays.asList("ELYTRA")), false),
+    itemModel("itemModel", "Item Model", new String[]{"&7&oThe item model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/models/item/<id>"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
+    tooltipModel("tooltipModel", "Tooltip Model", new String[]{"&7&oThe tooltip model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/textures/gui/sprites/tooltip/<id>_background",  "&7&oWill reference model /assets/<namespace>/textures/gui/sprites/tooltip/<id>_frame"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
 
     toolRules("toolRules", "Tool Rules", new String[]{"&7&oThe tool rules"}, Material.DIAMOND_PICKAXE, false),
     miningSpeed("miningSpeed", "Mining speed", new String[]{"&7&oThe mining speed of the tool"}, GUI.CLOCK, false),
@@ -349,6 +363,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     correctForDrops("correctForDrops", "Correct For Drops", new String[]{"&7&oSet whether or not this rule is considered","&7&othe optimal tool for the blocks listed","&7&oby this rule and will drop items."}, Material.LEVER, false),
     materials("blocks", "Block Materials", new String[]{"&7&oThe materials impacted by this rule"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
     damagePerBlock("damagePerBlock", "Damage Per Block", new String[]{"&7&oSet the amount of durability to be removed","&7&ofrom the tool each time a block is broken."}, GUI.CLOCK, false),
+
+    instrumentFeatures("instrumentFeatures", "Instrument Features", new String[]{"&7&oThe instrument features"}, Material.NOTE_BLOCK, false),
+    instrument("instrument", "Instrument", new String[]{"&7&oThe instrument"}, Material.NOTE_BLOCK, false),
+
 
     typeTarget("typeTarget", "Type Target", new String[]{"&7&oType target"},  Material.COMPASS, false),
     detailedClick("detailedClick", "Detailed Click", new String[]{"&7&oThe specific click"}, Material.COMPASS, false),
@@ -527,6 +545,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canBeMoved("canBeMoved", "Can be moved", new String[]{"&7&oIf the block can be moved"}, Material.LEVER, false),
     itemsAdderID("itemsAdderID", "ItemsAdder", new String[]{"&7&oThe itemsAdderBlock ID"}, Material.DIAMOND_BLOCK, false),
     oraxenID("oraxenID", "Oraxen", new String[]{"&7&oThe Oraxen ID"}, Material.DIAMOND_BLOCK, false),
+    interactionRange("interactionRange", "Interaction Range", new String[]{"&7&oThe interaction range"}, GUI.CLOCK, false),
 
     enabled("enabled", "Enabled", new String[]{"&7&oIf the event is enabled"}, null, false),
     editorIcon("editorIcon",  "Icon Editor", new String[]{}, Material.LEVER, false),

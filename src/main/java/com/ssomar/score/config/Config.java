@@ -95,7 +95,7 @@ public abstract class Config {
     }
 
     public boolean loadBooleanSetting(String setting, boolean defaultValue) {
-        if(config.isConfigurationSection(setting)) {
+        if(!config.isBoolean(setting)) {
             setBooleanSetting(setting, defaultValue);
         }
         boolean value = config.getBoolean(setting, defaultValue);
@@ -115,7 +115,7 @@ public abstract class Config {
     }
 
     public int loadIntSetting(String setting, int defaultValue) {
-        if(config.isConfigurationSection(setting)) {
+        if(!config.isInt(setting)) {
             setIntSetting(setting, defaultValue);
         }
         int value = config.getInt(setting, defaultValue);
@@ -137,7 +137,7 @@ public abstract class Config {
 
 
     public String loadStringSetting(String setting, String defaultValue) {
-        if (config.isConfigurationSection(setting)) {
+        if (!config.isString(setting)) {
             setStringSetting(setting, defaultValue);
         }
         String value = config.getString(setting, defaultValue);
@@ -158,7 +158,7 @@ public abstract class Config {
     }
 
     public double loadDoubleSetting(String setting, double defaultValue) {
-        if (config.isConfigurationSection(setting)) {
+        if (!config.isDouble(setting)) {
             setDoubleSetting(setting, defaultValue);
         }
         double value = config.getDouble(setting, defaultValue);

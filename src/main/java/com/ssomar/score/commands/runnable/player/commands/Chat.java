@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -8,29 +9,29 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* ABSORPTION {amount} [timeinticks] */
 public class Chat extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
-        StringBuilder build = new StringBuilder();
-
-        for (String arg : args) {
-            build.append(arg + " ");
-        }
-
-        receiver.chat(StringConverter.coloredString(build.toString()));
+    public Chat() {
+        CommandSetting text = new CommandSetting("text", 0, String.class, "&eHello_world");
+        List<CommandSetting> settings = getSettings();
+        settings.add(text);
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        return Optional.empty();
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        String baseMessage = (String) sCommandToExec.getSettingValue("text");
+        List<String> args = sCommandToExec.getOtherArgs();
+        StringBuilder message = new StringBuilder(baseMessage);
+        int remove = 0;
+        for (String s : args) {
+            //SsomarDev.testMsg("cmdarg> "+s);
+            message.append(s).append(" ");
+            remove = 1;
+        }
+        message = new StringBuilder(message.substring(0, message.length() - remove));
+        receiver.chat(StringConverter.coloredString(message.toString()));
     }
 
     @Override
@@ -42,7 +43,7 @@ public class Chat extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "CHAT {text}";
+        return "CHAT text:&eHello_world";
     }
 
     @Override

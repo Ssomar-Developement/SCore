@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.EnchantmentFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<EnchantmentWithLevelFeature, EnchantmentWithLevelFeature, EnchantmentWithLevelFeatureEditor, EnchantmentWithLevelFeatureEditorManager> {
+public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<EnchantmentWithLevelFeature, EnchantmentWithLevelFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private EnchantmentFeature enchantment;
     private IntegerFeature level;
@@ -128,7 +130,7 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof EnchantmentWithLevelFeature) {
                 EnchantmentWithLevelFeature eF = (EnchantmentWithLevelFeature) feature;
                 if (eF.getId().equals(id)) {
@@ -147,7 +149,7 @@ public class EnchantmentWithLevelFeature extends FeatureWithHisOwnEditor<Enchant
 
     @Override
     public void openEditor(@NotNull Player player) {
-        EnchantmentWithLevelFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.ssomar.score.features.custom.detaileditems;
 
 import com.ssomar.score.features.*;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, DetailedItems, DetailedItemsEditor, DetailedItemsEditorManager> implements Serializable {
+public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, DetailedItems, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements Serializable {
 
     private ListDetailedMaterialFeature items;
     private BooleanFeature cancelEventIfNotValid;
@@ -143,7 +145,7 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(items, cancelEventIfNotValid, messageIfNotValid));
+        return new ArrayList<>(Arrays.asList(items, messageIfNotValid, cancelEventIfNotValid));
     }
 
     @Override
@@ -163,7 +165,7 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof DetailedItems && feature.getEditorName().equals(getEditorName())) {
                 DetailedItems hiders = (DetailedItems) feature;
                 hiders.setItems(items);
@@ -181,7 +183,7 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DetailedItemsEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

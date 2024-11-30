@@ -7,6 +7,8 @@ import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.potioneffects.group.PotionEffectGroupFeature;
 import com.ssomar.score.features.custom.potioneffects.potioneffect.PotionEffectFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColorIntegerFeature;
 import com.ssomar.score.features.types.PotionTypeFeature;
@@ -36,7 +38,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSettingsFeature, PotionSettingsFeature, PotionSettingsFeatureEditor, PotionSettingsFeatureEditorManager> implements SProjectileFeatureInterface {
+public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSettingsFeature, PotionSettingsFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements SProjectileFeatureInterface {
 
     private ColorIntegerFeature color;
     private PotionTypeFeature potiontype;
@@ -264,7 +266,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof PotionSettingsFeature) {
                 PotionSettingsFeature hiders = (PotionSettingsFeature) feature;
                 hiders.setColor(getColor());
@@ -284,7 +286,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
 
     @Override
     public void openEditor(@NotNull Player player) {
-        PotionSettingsFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.safeplace.SafePlace;
@@ -15,31 +15,30 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
-/* BURN {timeinsecs} */
 public class CropsGrowthBoost extends PlayerCommand {
 
-    private static CropsGrowthBoost instance;
-
-
     public CropsGrowthBoost() {
-    }
-
-    public static CropsGrowthBoost getInstance() {
-        if (instance == null) instance = new CropsGrowthBoost();
-        return instance;
+        CommandSetting radius = new CommandSetting("radius", 0, Integer.class, 5);
+        CommandSetting delay = new CommandSetting("delay", 1, Integer.class, 20);
+        CommandSetting duration = new CommandSetting("duration", 2, Integer.class, 200);
+        CommandSetting chance = new CommandSetting("chance", 3, Integer.class, 100);
+        List<CommandSetting> settings = getSettings();
+        settings.add(radius);
+        settings.add(delay);
+        settings.add(duration);
+        settings.add(chance);
+        setNewSettingsMode(true);
     }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        int radius = Double.valueOf(args.get(0)).intValue();
-        int delay = Double.valueOf(args.get(1)).intValue();
-        int duration = Double.valueOf(args.get(2)).intValue();
-        int chance = Double.valueOf(args.get(3)).intValue();
+        int radius = (int) sCommandToExec.getSettingValue("radius");
+        int delay = (int) sCommandToExec.getSettingValue("delay");
+        int duration = (int) sCommandToExec.getSettingValue("duration");
+        int chance = (int) sCommandToExec.getSettingValue("chance");
         if (chance > 100) chance = 100;
         if (chance < 0) chance = 0;
         final int finalChance = chance;
@@ -88,17 +87,6 @@ public class CropsGrowthBoost extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 4) return Optional.of(notEnoughArgs + getTemplate());
-        for (String arg : args) {
-            ArgumentChecker ac = checkInteger(arg, isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("CROPS_GROWTH_BOOST");
@@ -107,7 +95,7 @@ public class CropsGrowthBoost extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "CROPS_GROWTH_BOOST {radius} {delay between two growths in ticks} {total duration in ticks} {chance 0-100}";
+        return "CROPS_GROWTH_BOOST radius:5 delay:20 duration:200 chance:100";
     }
 
     @Override

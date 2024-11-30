@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.patterns.group.PatternsGroupFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ColorIntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSettingsFeature, BannerSettingsFeature, BannerSettingsFeatureEditor, BannerSettingsFeatureEditorManager> {
+public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSettingsFeature, BannerSettingsFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private ColorIntegerFeature color;
     private PatternsGroupFeature patterns;
@@ -128,7 +130,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof BannerSettingsFeature) {
                 BannerSettingsFeature hiders = (BannerSettingsFeature) feature;
                 hiders.setColor(color);
@@ -145,7 +147,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
 
     @Override
     public void openEditor(@NotNull Player player) {
-        BannerSettingsFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

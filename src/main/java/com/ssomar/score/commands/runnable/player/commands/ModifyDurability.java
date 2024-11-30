@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -14,34 +14,32 @@ import org.bukkit.inventory.meta.Damageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/* MODIFYDURABILITY {number} {slot} */
 public class ModifyDurability extends PlayerCommand {
+
+    public ModifyDurability() {
+        CommandSetting modification = new CommandSetting("modification", 0, Integer.class, 50);
+        CommandSetting slot = new CommandSetting("slot", 1, Integer.class, -1);
+        CommandSetting supportUnbreaking = new CommandSetting("supportUnbreaking", 2, Boolean.class, false);
+        List<CommandSetting> settings = getSettings();
+        settings.add(modification);
+        settings.add(slot);
+        settings.add(supportUnbreaking);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        int slot = -1;
-        int modification = Double.valueOf(args.get(0)).intValue();
-        boolean supportUnbreaking = false;
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        int modification = (int) sCommandToExec.getSettingValue("modification");
+        boolean supportUnbreaking = (boolean) sCommandToExec.getSettingValue("supportUnbreaking");
 
-        if (args.size() >= 2) {
-            slot = Double.valueOf(args.get(1)).intValue();
-        }
-        if (args.size() >= 3) {
-            supportUnbreaking = Boolean.valueOf(args.get(2));
-        }
         PlayerInventory pInv = receiver.getInventory();
 
         if (slot == -1) slot = pInv.getHeldItemSlot();
 
         ItemStack item = pInv.getItem(slot);
-        if(item == null) return;
-
-        if(!item.hasItemMeta()){
-            item.setItemMeta(new ItemStack(item).getItemMeta());
-        }
+        if(item == null || !item.hasItemMeta()) return;
 
         if (item.getItemMeta() instanceof Damageable) {
             Damageable meta = (Damageable) item.getItemMeta();
@@ -53,7 +51,7 @@ public class ModifyDurability extends PlayerCommand {
             }
 
             int maxDura = item.getType().getMaxDurability();
-            if(SCore.isIs1v21Plus()) maxDura = meta.getMaxDamage();
+            if(SCore.is1v21Plus() && meta.hasMaxDamage()) maxDura = meta.getMaxDamage();
 
             //SsomarDev.testMsg("Item " +item.getType()+" max dura "+ maxDura+" Modification: " + modification+ " Damge: " + meta.getDamage()+ " MaxDurability: " + item.getType().getMaxDurability()+ " UnbreakingLevel: " + unbreakingLevel, true);
 
@@ -84,35 +82,16 @@ public class ModifyDurability extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        if (args.size() >= 2) {
-            ArgumentChecker ac2 = checkSlot(args.get(1), isFinalVerification, getTemplate());
-            if (!ac2.isValid()) return Optional.of(ac2.getError());
-        }
-
-        if (args.size() >= 3) {
-            ArgumentChecker ac2 = checkBoolean(args.get(2), isFinalVerification, getTemplate());
-            if (!ac2.isValid()) return Optional.of(ac2.getError());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("MODIFY_DURABILITY");
         names.add("MODIFYDURABILITY");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "MODIFYDURABILITY {number} [slot] [supportUnbreaking true or false]";
+        return "MODIFY_DURABILITY modification:50 slot:-1 supportUnbreaking:false";
     }
 
     @Override

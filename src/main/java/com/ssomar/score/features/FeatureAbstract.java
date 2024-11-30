@@ -15,7 +15,7 @@ import java.io.*;
 import java.util.Optional;
 
 @Getter
-public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> implements FeatureInterface<T, Y>, Serializable {
+public abstract class FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implements FeatureInterface<FINAL_VALUE_CLASS, FEATURE_CLASS>, Serializable {
 
 
     private FeatureSettingsInterface featureSettings;
@@ -84,6 +84,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         return featureClicked.equals(getEditorName());
     }
 
+    @Override
     public void initAndUpdateItemParentEditor(GUI gui, int slot) {
         initItemParentEditor(gui, slot).updateItemParentEditor(gui);
     }
@@ -138,7 +139,7 @@ public abstract class FeatureAbstract<T, Y extends FeatureInterface<T, Y>> imple
         }
     }
 
-    public abstract Y clone(FeatureParentInterface newParent);
+    public abstract FeatureInterface clone(FeatureParentInterface newParent);
 
     public FeatureParentInterface getParent() {
         //System.out.println("passe getParent > "+(this instanceof FeatureParentInterface)+ " >> "+(parent == this));

@@ -127,7 +127,7 @@ public class OtherEICooldownGroupFeature extends FeatureWithHisOwnEditor<OtherEI
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof OtherEICooldownGroupFeature) {
                 OtherEICooldownGroupFeature eF = (OtherEICooldownGroupFeature) feature;
                 eF.setAttributes(this.getAttributes());

@@ -144,7 +144,7 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof RequiredExecutableItemGroupFeature) {
                 RequiredExecutableItemGroupFeature eF = (RequiredExecutableItemGroupFeature) feature;
                 eF.setRequiredExecutableItems(this.getRequiredExecutableItems());

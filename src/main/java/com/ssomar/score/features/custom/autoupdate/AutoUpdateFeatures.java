@@ -4,6 +4,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatures, AutoUpdateFeatures, AutoUpdateFeaturesEditor, AutoUpdateFeaturesEditorManager> {
+public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatures, AutoUpdateFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature autoUpdateItem;
     private BooleanFeature updateName;
@@ -191,7 +193,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof AutoUpdateFeatures) {
                 AutoUpdateFeatures hiders = (AutoUpdateFeatures) feature;
                 hiders.setAutoUpdateItem(autoUpdateItem);
@@ -213,7 +215,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public void openEditor(@NotNull Player player) {
-        AutoUpdateFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

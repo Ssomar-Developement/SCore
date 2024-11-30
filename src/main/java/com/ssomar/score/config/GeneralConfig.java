@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
+@Getter
 public class GeneralConfig extends Config {
 
     private static GeneralConfig instance;
@@ -25,22 +26,19 @@ public class GeneralConfig extends Config {
 
     private String dbPassword;
 
-    @Getter
     private List<String> silenceOutputs;
 
-    @Getter
     private boolean reduceDamageIndicatorWithProtolcolLib;
 
-    @Getter
     private boolean jetMinionsGenerateBreakActivator;
 
-    @Getter
     private boolean debugCheckDamages;
 
-    @Getter
     private boolean loopKillMode;
 
     private boolean enableDetectionEntitiesFromSpawner;
+
+    private boolean disableCustomMetadataOnEntities;
 
     public GeneralConfig() {
         super("config.yml");
@@ -84,67 +82,8 @@ public class GeneralConfig extends Config {
         debugCheckDamages = config.getBoolean("debugCheckDamages", false);
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
         loopKillMode = config.getBoolean("loopKillMode", false);
+        disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
 
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    public boolean isUseMySQL() {
-        return useMySQL;
-    }
-
-    public void setUseMySQL(boolean useMySQL) {
-        this.useMySQL = useMySQL;
-    }
-
-    public String getDbIP() {
-        return dbIP;
-    }
-
-    public void setDbIP(String dbIP) {
-        this.dbIP = dbIP;
-    }
-
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
-    }
-
-    public String getDbUser() {
-        return dbUser;
-    }
-
-    public void setDbUser(String dbUser) {
-        this.dbUser = dbUser;
-    }
-
-    public String getDbPassword() {
-        return dbPassword;
-    }
-
-    public void setDbPassword(String dbPassword) {
-        this.dbPassword = dbPassword;
-    }
-
-    public int getDbPort() {
-        return dbPort;
-    }
-
-    public void setDbPort(int dbPort) {
-        this.dbPort = dbPort;
-    }
-
-    public boolean isEnableDetectionEntitiesFromSpawner() {
-        return enableDetectionEntitiesFromSpawner;
     }
 
 }

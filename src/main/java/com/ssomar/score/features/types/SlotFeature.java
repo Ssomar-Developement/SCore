@@ -24,6 +24,8 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     private Optional<AttributeSlot> value;
     private Optional<AttributeSlot> defaultValue;
 
+    private boolean onlyArmorSlots = false;
+
     public SlotFeature(FeatureParentInterface parent, Optional<AttributeSlot> defaultValue, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
         this.defaultValue = defaultValue;
@@ -89,6 +91,7 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     @Override
     public SlotFeature clone(FeatureParentInterface newParent) {
         SlotFeature clone = new SlotFeature(newParent, getDefaultValue(), getFeatureSettings());
+        clone.setOnlyArmorSlots(onlyArmorSlots);
         clone.value = value;
         return clone;
     }
@@ -251,6 +254,7 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     public List<AttributeSlot> getSortAttributeSlots() {
         SortedMap<String, AttributeSlot> map = new TreeMap<String, AttributeSlot>();
         for (AttributeSlot l : AttributeSlot.values()) {
+            if(onlyArmorSlots && l != AttributeSlot.HEAD && l != AttributeSlot.CHEST && l != AttributeSlot.FEET && l != AttributeSlot.LEGS) continue;
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());

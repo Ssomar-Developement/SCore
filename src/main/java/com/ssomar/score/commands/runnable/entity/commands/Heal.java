@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -22,12 +23,15 @@ public class Heal extends EntityCommand {
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
         List<String> args = sCommandToExec.getOtherArgs();
+        Attribute att = null;
+        if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
+        else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
         if (args.size() >= 1) {
             int amount = Double.valueOf(args.get(0)).intValue();
             if (amount > 0 && !entity.isDead() && entity instanceof LivingEntity) {
                 LivingEntity e = (LivingEntity) entity;
                 if (!SCore.is1v12Less()) {
-                    e.setHealth(Math.min(e.getHealth() + amount, Objects.requireNonNull(e.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()));
+                    e.setHealth(Math.min(e.getHealth() + amount, Objects.requireNonNull(e.getAttribute(att)).getValue()));
                 } else {
                     e.setHealth(Math.min(e.getHealth() + amount, e.getMaxHealth()));
                 }
@@ -36,7 +40,7 @@ public class Heal extends EntityCommand {
             if (!entity.isDead()) {
                 LivingEntity e = (LivingEntity) entity;
                 if (!SCore.is1v12Less()) {
-                    e.setHealth(e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    e.setHealth(e.getAttribute(att).getValue());
                 } else {
                     e.setHealth(e.getMaxHealth());
                 }

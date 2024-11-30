@@ -134,6 +134,13 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     private static boolean is1v21 = false;
 
+    private static boolean is1v21v2 = false;
+    private static boolean is1v21v3 = false;
+
+    private static boolean is1v22 = false;
+    private static boolean is1v23 = false;
+
+
 
     private static boolean isSpigot = false;
     private static boolean isPaper = false;
@@ -281,6 +288,22 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v21;
     }
 
+    public static boolean is1v21v2() {
+        return is1v21v2;
+    }
+
+    public static boolean is1v21v3() {
+        return is1v21v3;
+    }
+
+    public static boolean is1v22() {
+        return is1v22;
+    }
+
+    public static boolean is1v23() {
+        return is1v23;
+    }
+
     /* The server is in 1.12 or - ? */
     public static boolean is1v11Less() {
         return is1v8() || is1v9() || is1v10() || is1v11();
@@ -337,11 +360,23 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.20.5 or + ? */
     public static boolean is1v20v5Plus() {
-        return is1v20v5() || is1v20v6() || isIs1v21Plus();
+        return is1v20v5() || is1v20v6() || is1v21Plus();
     }
 
-    public static boolean isIs1v21Plus() {
+    public static boolean is1v21Plus() {
         return is1v21();
+    }
+
+    public static boolean is1v21v2Plus() {
+        return is1v21v2()  || is1v21v3() || is1v22Plus();
+    }
+
+    public static boolean is1v22Plus() {
+        return is1v22() || is1v23Plus();
+    }
+
+    public static boolean is1v23Plus() {
+        return is1v23();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -453,6 +488,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         UsagePerDayManager.getInstance();
 
         CooldownsHandler.loadCooldowns();
+        CooldownsHandler.connectAllOnlinePlayers();
 
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();
@@ -733,6 +769,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v20v5 = Bukkit.getServer().getVersion().contains("1.20.5");
         is1v20v6 = Bukkit.getServer().getVersion().contains("1.20.6");
         is1v21 = Bukkit.getServer().getVersion().contains("1.21");
+        is1v21v2 = Bukkit.getServer().getVersion().contains("1.21.2");
+        is1v21v3 = Bukkit.getServer().getVersion().contains("1.21.3");
+        is1v22 = Bukkit.getServer().getVersion().contains("1.22");
+        is1v23 = Bukkit.getServer().getVersion().contains("1.23");
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
         isMohist = Bukkit.getServer().getName().contains("Mohist") || Bukkit.getServer().getVersion().contains("Mohist");

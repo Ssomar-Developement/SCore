@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.features.custom.detailedslots.DetailedSlots;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ExecutableItemFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class HasExecutableItemFeature extends FeatureWithHisOwnEditor<HasExecutableItemFeature, HasExecutableItemFeature, HasExecutableItemFeatureEditor, HasExecutableItemFeatureEditorManager> {
+public class HasExecutableItemFeature extends FeatureWithHisOwnEditor<HasExecutableItemFeature, HasExecutableItemFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private ExecutableItemFeature executableItem;
     private IntegerFeature amount;
@@ -141,7 +143,7 @@ public class HasExecutableItemFeature extends FeatureWithHisOwnEditor<HasExecuta
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof HasExecutableItemFeature) {
                 HasExecutableItemFeature aFOF = (HasExecutableItemFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -162,7 +164,7 @@ public class HasExecutableItemFeature extends FeatureWithHisOwnEditor<HasExecuta
 
     @Override
     public void openEditor(@NotNull Player player) {
-        HasExecutableItemFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

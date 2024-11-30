@@ -1,6 +1,5 @@
 package com.ssomar.score.commands.runnable.entity.display;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.entity.commands.*;
@@ -29,9 +28,6 @@ public class DisplayCommandManager extends CommandManager<SCommand> {
         commands.add(new MobAround());
         commands.add(new PlayerRideOnEntity());
         commands.add(new If());
-        if (!SCore.is1v11Less()) {
-            commands.add(new ParticleCommand());
-        }
 
         commands.addAll(MixedCommandsManager.getInstance().getDisplayCommands());
 

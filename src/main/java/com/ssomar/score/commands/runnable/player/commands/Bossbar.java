@@ -1,10 +1,9 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.utils.numbers.NTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
@@ -14,24 +13,26 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* BOSSBAR {ticks} {color} {text} */
 public class Bossbar extends PlayerCommand {
+
+    public Bossbar() {
+        CommandSetting time = new CommandSetting("time", 0, Integer.class, 200);
+        CommandSetting color = new CommandSetting("color", 1, BarColor.class, BarColor.BLUE);
+        CommandSetting text = new CommandSetting("text", 2, String.class, "Hello_world");
+        List<CommandSetting> settings = getSettings();
+        settings.add(time);
+        settings.add(color);
+        settings.add(text);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        BarColor color = null;
-        Integer duration = NTools.getInteger(args.get(0)).get();
-        color = BarColor.valueOf(args.get(1).toUpperCase());
 
-
-        StringBuilder build = new StringBuilder();
-        for (int i = 2; i < args.size(); i++) {
-            build.append(args.get(i) + " ");
-        }
-        String text = build.toString();
+        BarColor color = (BarColor) sCommandToExec.getSettingValue("color");
+        String text = (String) sCommandToExec.getSettingValue("text");
+        Integer time = (Integer) sCommandToExec.getSettingValue("time");
 
         BossBar bossBar = Bukkit.createBossBar(text, color, BarStyle.SOLID);
         bossBar.addPlayer(receiver);
@@ -42,20 +43,7 @@ public class Bossbar extends PlayerCommand {
                 bossBar.removeAll();
             }
         };
-        SCore.schedulerHook.runTask(runnable, duration);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 3) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        ArgumentChecker ac2 = checkBarColor(args.get(1), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        return Optional.empty();
+        SCore.schedulerHook.runTask(runnable, time);
     }
 
     @Override
@@ -67,7 +55,7 @@ public class Bossbar extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "BOSSBAR {ticks} {color} {text}";
+        return "BOSSBAR time:200 color:BLUE text:Hello_world";
     }
 
     @Override

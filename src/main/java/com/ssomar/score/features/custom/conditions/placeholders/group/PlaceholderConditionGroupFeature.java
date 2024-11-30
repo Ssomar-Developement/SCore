@@ -199,7 +199,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof PlaceholderConditionGroupFeature && feature.getName().equals(getName())) {
                 PlaceholderConditionGroupFeature eF = (PlaceholderConditionGroupFeature) feature;
                 eF.setPlaceholdersConditions(this.getPlaceholdersConditions());

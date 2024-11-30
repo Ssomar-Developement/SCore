@@ -188,7 +188,7 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof EntityConditionsFeature && feature.getName().equals(getName())) {
                 EntityConditionsFeature bCF = (EntityConditionsFeature) feature;
                 List<EntityConditionFeature> clones = new ArrayList<>();

@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -16,6 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Barrel;
 import org.bukkit.block.data.type.BrewingStand;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.block.data.type.Dispenser;
@@ -32,7 +35,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures, ContainerFeatures, ContainerFeaturesEditor, ContainerFeaturesEditorManager> {
+public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures, ContainerFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private ListDetailedMaterialFeature whitelistMaterials;
@@ -146,7 +149,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ContainerFeatures) {
                 ContainerFeatures eF = (ContainerFeatures) feature;
                 eF.setWhitelistMaterials(this.whitelistMaterials);
@@ -160,7 +163,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     }
 
     public boolean canBeApplied(BlockData blockData) {
-        return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData instanceof ShulkerBox || blockData instanceof org.bukkit.block.Barrel || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
+        return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData.getMaterial().toString().contains("SHULKER_BOX") || (SCore.is1v18Plus() &&blockData instanceof Barrel) || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
     }
 
     public void applyContainerFeatures(Block block) {
@@ -188,6 +191,6 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ContainerFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

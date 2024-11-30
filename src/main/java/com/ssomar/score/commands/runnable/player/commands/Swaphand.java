@@ -12,10 +12,12 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* SWAPHAND */
 public class Swaphand extends PlayerCommand {
+
+    public Swaphand() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
@@ -42,20 +44,16 @@ public class Swaphand extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SWAP_HAND");
         names.add("SWAPHAND");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SWAPHAND";
+        return "SWAP_HAND";
     }
 
     @Override

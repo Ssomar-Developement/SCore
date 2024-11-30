@@ -8,7 +8,7 @@ import com.ssomar.executableblocks.utils.OverrideEBP;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.usedapi.MultiverseAPI;
@@ -27,48 +27,39 @@ import java.util.UUID;
 
 public class SetExecutableBlock extends PlayerCommand {
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-
-        if (args.size() < 6) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac2 = checkExecutableBlockID(args.get(0), isFinalVerification, getTemplate());
-        if (!ac2.isValid()) return Optional.of(ac2.getError());
-
-        for (int i = 1; i < 4; i++) {
-            ArgumentChecker ac = checkDouble(args.get(i), isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
-        }
-
-        ArgumentChecker ac3 = checkWorld(args.get(4), isFinalVerification, getTemplate());
-        if (!ac3.isValid()) return Optional.of(ac3.getError());
-
-        ArgumentChecker ac4 = checkBoolean(args.get(5), isFinalVerification, getTemplate());
-        if (!ac4.isValid()) return Optional.of(ac4.getError());
-
-        if (args.size() > 6) {
-            ArgumentChecker ac5 = checkBoolean(args.get(6), isFinalVerification, getTemplate());
-            if (!ac5.isValid()) return Optional.of(ac5.getError());
-        }
-
-        if (args.size() > 7) {
-            ArgumentChecker ac5 = checkUUID(args.get(7), isFinalVerification, getTemplate());
-            if (!ac5.isValid()) return Optional.of(ac5.getError());
-        }
-
-        return Optional.empty();
+    public SetExecutableBlock() {
+        CommandSetting id = new CommandSetting("id", 0, String.class, "id");
+        CommandSetting x = new CommandSetting("x", 1, Double.class, 0.0);
+        CommandSetting y = new CommandSetting("y", 2, Double.class, 0.0);
+        CommandSetting z = new CommandSetting("z", 3, Double.class, 0.0);
+        CommandSetting world = new CommandSetting("world", 4, String.class, "world");
+        CommandSetting replace = new CommandSetting("replace", 5, Boolean.class, false);
+        CommandSetting bypassProtection = new CommandSetting("bypassProtection", 6, Boolean.class, false);
+        CommandSetting ownerUUID = new CommandSetting("ownerUUID", 7, UUID.class, null);
+        List<CommandSetting> settings = getSettings();
+        settings.add(id);
+        settings.add(x);
+        settings.add(y);
+        settings.add(z);
+        settings.add(world);
+        settings.add(replace);
+        settings.add(bypassProtection);
+        settings.add(ownerUUID);
+        setNewSettingsMode(true);
     }
+
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_EXECUTABLE_BLOCK");
         names.add("SETEXECUTABLEBLOCK");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} {replace true or false} [bypassProtection true or false] [ownerUUID]";
+        return "SET_EXECUTABLE_BLOCK id:MyEb x:0.0 y:0.0 z:0.0 world:world replace:false bypassProtection:false ownerUUID:%player_uuid%";
     }
 
     @Override
@@ -83,20 +74,24 @@ public class SetExecutableBlock extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
         ActionInfo aInfo = sCommandToExec.getActionInfo();
-        Optional<ExecutableBlock> oOpt = ExecutableBlocksManager.getInstance().getLoadedObjectWithID(args.get(0));
+
+        String id = (String) sCommandToExec.getSettingValue("id");
+        double x = (double) sCommandToExec.getSettingValue("x");
+        double y = (double) sCommandToExec.getSettingValue("y");
+        double z = (double) sCommandToExec.getSettingValue("z");
+        String worldStr = (String) sCommandToExec.getSettingValue("world");
+        boolean replace = (boolean) sCommandToExec.getSettingValue("replace");
+        boolean bypassProtection = (boolean) sCommandToExec.getSettingValue("bypassProtection");
+        UUID ownerUUID = (UUID) sCommandToExec.getSettingValue("ownerUUID");
+
+        Optional<ExecutableBlock> oOpt = ExecutableBlocksManager.getInstance().getLoadedObjectWithID(id);
         if (!oOpt.isPresent()) {
-            ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: " + args.get(0) + " for the command SETEXECUTABLEBLOCK (object: " + aInfo.getName() + ")");
+            ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: " + id + " for the command SET_EXECUTABLE_BLOCK (object: " + aInfo.getName() + ")");
             return;
         }
 
-        double x = Double.parseDouble(args.get(1));
-        double y = Double.parseDouble(args.get(2));
-        double z = Double.parseDouble(args.get(3));
-
         World world = null;
-        String worldStr = args.get(4);
         if (worldStr.isEmpty()) return;
         else {
             if (SCore.hasMultiverse) {
@@ -109,16 +104,9 @@ public class SetExecutableBlock extends PlayerCommand {
             }
         }
 
-        boolean replace = Boolean.valueOf(args.get(5));
-        boolean bypassProtection = false;
-        if (args.size() > 6) {
-            bypassProtection = Boolean.valueOf(args.get(6));
-        }
-        UUID ownerUUID = null;
         Optional<Player> owner = Optional.empty();
-        if (args.size() > 7) {
-            ownerUUID = UUID.fromString(args.get(7));
-            if(ownerUUID != null) owner = Optional.ofNullable(Bukkit.getPlayer(ownerUUID));
+        if (ownerUUID != null) {
+            owner = Optional.ofNullable(Bukkit.getPlayer(ownerUUID));
         }
 
         Location loc = new Location(world, x, y, z);
@@ -140,7 +128,7 @@ public class SetExecutableBlock extends PlayerCommand {
         ExecutableBlock eB = oOpt.get();
 
         if(eB.getCreationType().getValue().get() != CreationType.DISPLAY_CREATION) loc = loc.getBlock().getLocation();
-        eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));
+        eB.place(loc, true, overrideEBP, owner.orElse(null), null, new InternalData().setOwnerUUID(ownerUUID));
     }
 
 }

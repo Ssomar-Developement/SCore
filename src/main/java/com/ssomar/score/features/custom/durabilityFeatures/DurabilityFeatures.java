@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
@@ -22,7 +24,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class DurabilityFeatures extends FeatureWithHisOwnEditor<DurabilityFeatures, DurabilityFeatures, DurabilityFeaturesEditor, DurabilityFeaturesEditorManager> {
+public class DurabilityFeatures extends FeatureWithHisOwnEditor<DurabilityFeatures, DurabilityFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private IntegerFeature maxDurability;
@@ -114,9 +116,11 @@ public class DurabilityFeatures extends FeatureWithHisOwnEditor<DurabilityFeatur
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
-        features.add(maxDurability);
+        if(SCore.is1v20v5Plus()) {
+            features.add(isDurabilityBasedOnUsage);
+            features.add(maxDurability);
+        }
         features.add(durability);
-        features.add(isDurabilityBasedOnUsage);
         return features;
     }
 
@@ -137,7 +141,7 @@ public class DurabilityFeatures extends FeatureWithHisOwnEditor<DurabilityFeatur
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof DurabilityFeatures) {
                 DurabilityFeatures hiders = (DurabilityFeatures) feature;
                 hiders.setMaxDurability(maxDurability);
@@ -154,7 +158,7 @@ public class DurabilityFeatures extends FeatureWithHisOwnEditor<DurabilityFeatur
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DurabilityFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

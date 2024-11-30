@@ -41,9 +41,6 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         if(SCore.is1v16Plus()){
             commands.add(new Awareness());
         }
-        if (!SCore.is1v11Less()) {
-            commands.add(new ParticleCommand());
-        }
 
         commands.addAll(MixedCommandsManager.getInstance().getCommands());
 

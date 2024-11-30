@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import org.bukkit.ChatColor;
@@ -10,56 +10,44 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* SETITEMNAME {slot} {text} */
 public class SetItemMaterial extends PlayerCommand {
 
-    @Override
-    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
-        ItemStack item;
-
-        int slot = Integer.valueOf(args.get(0));
-
-        try {
-            if (slot == -1) item = receiver.getInventory().getItemInMainHand();
-            else item = receiver.getInventory().getItem(slot);
-        } catch (NullPointerException e) {
-            return;
-        }
-
-        Material material = Material.getMaterial(args.get(1).toUpperCase());
-
-        item.setType(material);
-
-
+    public SetItemMaterial() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
+        slot.setSlot(true);
+        CommandSetting material = new CommandSetting("material", 1, Material.class, Material.STONE);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(material);
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 2) return Optional.of(notEnoughArgs + getTemplate());
+    public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
+        ItemStack item;
+        Material material = (Material) sCommandToExec.getSettingValue("material");
+        int slot = (int) sCommandToExec.getSettingValue("slot");
+        if (slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
 
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
+        if (item == null || item.getType() == Material.AIR) return;
 
-        ArgumentChecker ac1 = checkMaterial(args.get(1), isFinalVerification, getTemplate());
-        if (!ac1.isValid()) return Optional.of(ac1.getError());
+        item.setType(material);
 
-        return Optional.empty();
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_ITEM_MATERIAL");
         names.add("SETITEMMATERIAL");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETITEMMATERIAL {slot} {material}";
+        return "SET_ITEM_MATERIAL slot:-1 material:STONE";
     }
 
     @Override

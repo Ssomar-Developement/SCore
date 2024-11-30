@@ -258,7 +258,7 @@ public class MinecraftTags {
             tags.add(Tag.WOOL);
             tags.add(Tag.WOOL_CARPETS);
 
-            if (!SCore.isIs1v21Plus()) {
+            if (!SCore.is1v21Plus()) {
                 // Add the tag ITEMS_MUSIC_DISCS that is not in 1.21 but in the spigot 1.20 wth reflection
                 try {
                     tags.add((Tag) Tag.class.getDeclaredField("ITEMS_MUSIC_DISCS").get(null));

@@ -1,8 +1,10 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -11,43 +13,45 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
-/* SETITEMATTRIBUTE {slot} {Attribute} {value} {equipment slot}*/
 public class SetItemAttribute extends PlayerCommand {
+
+    public SetItemAttribute() {
+        CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
+        slot.setSlot(true);
+        Attribute att = null;
+        if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
+        else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
+        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, att);
+        CommandSetting value = new CommandSetting("value", 2, Double.class, 2.0);
+        CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(attribute);
+        settings.add(value);
+        settings.add(equipmentSlot);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
 
         ItemStack item;
         ItemMeta itemmeta;
-        Attribute attribute;
-        int slot = Integer.valueOf(args.get(0));
+        Attribute attribute = (Attribute) sCommandToExec.getSettingValue("attribute");
+        EquipmentSlot equipmentSlot = (EquipmentSlot) sCommandToExec.getSettingValue("equipmentSlot");
+        double attributeValue = (double) sCommandToExec.getSettingValue("value");
+        int slot = (int) sCommandToExec.getSettingValue("slot");
 
-        try {
-            if(slot == -1) item = receiver.getInventory().getItemInMainHand();
-            else item = receiver.getInventory().getItem(slot);
+        if(slot == -1) item = receiver.getInventory().getItemInMainHand();
+        else item = receiver.getInventory().getItem(slot);
 
-            itemmeta = item.getItemMeta();
-        } catch (NullPointerException e) {
-            return;
-        }
-
-        try {
-             attribute = Attribute.valueOf(args.get(1).toUpperCase());
-        }catch(IllegalArgumentException er){
-            return;
-        }
-
-        double attributeValue = Double.parseDouble(args.get(2));
-
-        EquipmentSlot equipmentSlot;
-        try {
-            equipmentSlot = EquipmentSlot.valueOf(args.get(3).toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-            return;
-        }
+        if(item == null || !item.hasItemMeta()) return;
+        itemmeta = item.getItemMeta();
 
         AttributeModifier existingModifier = null;
 
@@ -61,8 +65,7 @@ public class SetItemAttribute extends PlayerCommand {
                     }
                 }
             }
-        }catch(NullPointerException err){
-        }
+        }catch(NullPointerException err){}
 
 
 
@@ -104,25 +107,16 @@ public class SetItemAttribute extends PlayerCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 4) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_ATTRIBUTE");
         names.add("SETITEMATTRIBUTE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETITEMATTRIBUTE {slot} {Attribute} {value} {equipment slot}";
+        return "SET_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:2.0 equipmentSlot:HAND";
     }
 
     @Override

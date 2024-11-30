@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -22,7 +24,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ItemGlowFeatures extends FeatureWithHisOwnEditor<ItemGlowFeatures, ItemGlowFeatures, ItemGlowFeaturesEditor, ItemGlowFeaturesEditorManager> {
+public class ItemGlowFeatures extends FeatureWithHisOwnEditor<ItemGlowFeatures, ItemGlowFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private BooleanFeature glow;
@@ -111,7 +113,7 @@ public class ItemGlowFeatures extends FeatureWithHisOwnEditor<ItemGlowFeatures, 
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ItemGlowFeatures) {
                 ItemGlowFeatures eF = (ItemGlowFeatures) feature;
                 eF.setGlow(glow);
@@ -132,6 +134,6 @@ public class ItemGlowFeatures extends FeatureWithHisOwnEditor<ItemGlowFeatures, 
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ItemGlowFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 }

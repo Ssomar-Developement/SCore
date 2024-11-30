@@ -159,7 +159,7 @@ public class CustomConditionsFeature extends FeatureWithHisOwnEditor<CustomCondi
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof CustomConditionsFeature && feature.getName().equals(getName())) {
                 CustomConditionsFeature bCF = (CustomConditionsFeature) feature;
                 List<CustomConditionFeature> clones = new ArrayList<>();

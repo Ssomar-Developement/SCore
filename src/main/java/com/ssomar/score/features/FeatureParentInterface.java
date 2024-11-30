@@ -3,15 +3,19 @@ package com.ssomar.score.features;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.List;
 
-public interface FeatureParentInterface  {
+public interface FeatureParentInterface<FINAL_VALUE_CLASS, FEATURE_CLASS> extends FeatureInterface<FINAL_VALUE_CLASS, FEATURE_CLASS> {
 
     List<FeatureInterface> getFeatures();
 
     String getParentInfo();
+
+    @Nullable
+    FeatureParentInterface getParent();
 
     ConfigurationSection getConfigurationSection();
 
@@ -26,5 +30,11 @@ public interface FeatureParentInterface  {
     void save();
 
     boolean isPremium();
+
+    FeatureSettingsInterface getFeatureSettings();
+
+    default FeatureParentInterface cloneParent(FeatureParentInterface parentOfTheParent){
+        return (FeatureParentInterface) clone(parentOfTheParent);
+    }
 
 }

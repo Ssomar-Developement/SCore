@@ -134,7 +134,7 @@ public class ParticlesGroupFeature extends FeatureWithHisOwnEditor<ParticlesGrou
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ParticlesGroupFeature) {
                 ParticlesGroupFeature eF = (ParticlesGroupFeature) feature;
                 eF.setParticles(this.getParticles());

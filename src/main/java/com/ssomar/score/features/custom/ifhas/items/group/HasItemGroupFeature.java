@@ -224,7 +224,7 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof HasItemGroupFeature) {
                 HasItemGroupFeature eF = (HasItemGroupFeature) feature;
                 eF.setHasItems(this.getHasItems());

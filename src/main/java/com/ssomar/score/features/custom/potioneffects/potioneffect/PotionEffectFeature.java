@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.PotionEffectTypeFeature;
@@ -25,7 +27,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFeature, PotionEffectFeature, PotionEffectFeatureEditor, PotionEffectFeatureEditorManager> {
+public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFeature, PotionEffectFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private IntegerFeature amplifier;
     private IntegerFeature duration;
@@ -145,9 +147,9 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
+        features.add(type);
         features.add(amplifier);
         features.add(duration);
-        features.add(type);
         features.add(ambient);
         features.add(particles);
         if (!SCore.is1v12Less()) features.add(icon);
@@ -171,7 +173,7 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof PotionEffectFeature) {
                 PotionEffectFeature aFOF = (PotionEffectFeature) feature;
                 if (aFOF.getId().equals(id)) {
@@ -194,7 +196,7 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
 
     @Override
     public void openEditor(@NotNull Player player) {
-        PotionEffectFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }

@@ -5,6 +5,8 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -25,7 +27,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, ParticleFeature, ParticleFeatureEditor, ParticleFeatureEditorManager> {
+public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, ParticleFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private String id;
     private ParticleTypeFeature particlesType;
@@ -142,7 +144,10 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
 
     @Override
     public List<FeatureInterface> getFeatures() {
-        return new ArrayList<>(Arrays.asList(particlesType, particlesAmount, particlesOffSet, particlesSpeed, particlesDelay, particlesDensity, redstoneColor, blockType));
+        List<FeatureInterface> features =  new ArrayList<>(Arrays.asList(particlesType, particlesAmount,particlesSpeed, particlesOffSet, particlesDelay, particlesDensity));
+        if(canHaveRedstoneColor()) features.add(redstoneColor);
+        else if(canHaveBlocktype()) features.add(blockType);
+        return features;
     }
 
     @Override
@@ -163,9 +168,9 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
         return getParent().getFile();
     }
 
-    @Override
+    @Override 
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof ParticleFeature) {
                 ParticleFeature eF = (ParticleFeature) feature;
                 if (eF.getId().equals(id)) {
@@ -190,7 +195,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
 
     @Override
     public void openEditor(@NotNull Player player) {
-        ParticleFeatureEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
     public static List<Particle> getHaveBlocktypeParticles() {

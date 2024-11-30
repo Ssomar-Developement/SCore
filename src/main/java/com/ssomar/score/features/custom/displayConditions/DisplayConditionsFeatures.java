@@ -9,6 +9,8 @@ import com.ssomar.score.features.custom.conditions.item.parent.ItemConditionsFea
 import com.ssomar.score.features.custom.conditions.placeholders.group.PlaceholderConditionGroupFeature;
 import com.ssomar.score.features.custom.conditions.player.parent.PlayerConditionsFeature;
 import com.ssomar.score.features.custom.conditions.world.parent.WorldConditionsFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
@@ -25,7 +27,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayConditionsFeatures, DisplayConditionsFeatures, DisplayConditionsFeaturesEditor, DisplayConditionsFeaturesEditorManager> {
+public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayConditionsFeatures, DisplayConditionsFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
 
     private BooleanFeature enableFeature;
@@ -138,11 +140,11 @@ public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayCo
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
+        features.add(enableFeature);
         features.add(playerConditions);
         features.add(worldConditions);
         features.add(itemConditions);
         features.add(placeholderConditions);
-        features.add(enableFeature);
         return features;
     }
 
@@ -163,7 +165,7 @@ public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayCo
 
     @Override
     public void reload() {
-        for (FeatureInterface feature : getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
             if (feature instanceof DisplayConditionsFeatures) {
                 DisplayConditionsFeatures hiders = (DisplayConditionsFeatures) feature;
                 hiders.setPlayerConditions(playerConditions);
@@ -182,7 +184,7 @@ public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayCo
 
     @Override
     public void openEditor(@NotNull Player player) {
-        DisplayConditionsFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
 }
