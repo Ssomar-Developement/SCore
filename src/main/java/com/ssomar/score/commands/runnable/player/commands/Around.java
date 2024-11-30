@@ -25,7 +25,7 @@ public class Around extends PlayerCommand{
 
     public Around() {
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
-        CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoPlayer", 1, Boolean.class, true);
+        CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoPlayer", 1, Boolean.class, true, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();

@@ -12,6 +12,7 @@ import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.features.types.list.ListDetailedEntityFeature;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -243,8 +244,10 @@ public interface CommmandThatRunsCommand {
                     whiteList = new ListDetailedEntityFeature(new MobAround(), new ArrayList<>(), null, false);
                     whiteList.load(SCore.plugin, Arrays.asList(split), true);
                 }
-            } catch (Exception ignored) {
-                System.out.println("Error in the command: " + s);
+            } catch (Exception e) {
+                Utils.sendConsoleMsg("&cError in the command: &6" + s);
+                Utils.sendConsoleMsg("&cExample of use: &6WHITELIST(HORSE{CustomName:Batimovil+NoAI:1b},PIG)");
+                Utils.sendConsoleMsg("&ce"+e.getMessage());
             }
             cpt++;
         }

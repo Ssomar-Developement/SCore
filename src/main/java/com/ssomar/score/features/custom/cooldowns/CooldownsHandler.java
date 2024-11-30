@@ -23,20 +23,15 @@ public class CooldownsHandler implements Listener {
             @Override
             public void run() {
                 List<Cooldown> cooldowns = CooldownsQuery.getGlobalCooldowns(Database.getInstance().connect());
-                Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
+                CooldownsManager.getInstance().addCooldowns(cooldowns);
+
+                Runnable r2 = new Runnable() {
                     @Override
                     public void run() {
-                        CooldownsManager.getInstance().addCooldowns(cooldowns);
-
-                        Runnable r2 = new Runnable() {
-                            @Override
-                            public void run() {
-                                CooldownsQuery.deleteGlobalCooldowns(Database.getInstance().connect());
-                            }
-                        };
-                        SCore.schedulerHook.runAsyncTask(r2, 0);
+                        CooldownsQuery.deleteGlobalCooldowns(Database.getInstance().connect());
                     }
-                });
+                };
+                SCore.schedulerHook.runAsyncTask(r2, 0);
             }
         };
         SCore.schedulerHook.runAsyncTask(r, 0);
@@ -47,7 +42,7 @@ public class CooldownsHandler implements Listener {
             public void run() {
                 List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
                 for (Cooldown cd : cooldowns) {
-                    if(cd != null) cd.updatePausePlaceholdersConditions();
+                    if (cd != null) cd.updatePausePlaceholdersConditions();
                 }
             }
         };
@@ -57,48 +52,44 @@ public class CooldownsHandler implements Listener {
     public static void closeServerSaveAll() {
         List<Cooldown> cooldowns = CooldownsManager.getInstance().getAllCooldowns();
         for (Cooldown cd : cooldowns) {
-            if(cd != null) cd.updatePlayerDisconnect();
+            if (cd != null) cd.updatePlayerDisconnect();
         }
 
-        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7"+cooldowns.size()+" cooldowns saved");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7" + cooldowns.size() + " cooldowns saved");
 
         CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
 
         CooldownsManager.getInstance().clearCooldowns();
     }
 
-    public static void connectAllOnlinePlayers(){
-        for(Player p : Bukkit.getOnlinePlayers()){
+    public static void connectAllOnlinePlayers() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             connect(p);
         }
     }
 
-    public static void connect(Player p){
-        if(!SCore.plugin.isEnabled()) return;
+    public static void connect(Player p) {
+        if (!SCore.plugin.isEnabled()) return;
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                if(!SCore.plugin.isEnabled()) return;
+                if (!SCore.plugin.isEnabled()) return;
                 List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
                 for (Cooldown cd : cooldowns) {
                     cd.updatePlayerReconnect();
                 }
-                Bukkit.getScheduler().runTask(SCore.plugin, new Runnable() {
+
+                SsomarDev.testMsg("COOLDOWNS SIZE: " + cooldowns.size(), true);
+                CooldownsManager.getInstance().addCooldowns(cooldowns);
+
+                Runnable r2 = new Runnable() {
                     @Override
                     public void run() {
-                        SsomarDev.testMsg("COOLDOWNS SIZE: "+cooldowns.size(), true);
-                        CooldownsManager.getInstance().addCooldowns(cooldowns);
-
-                        Runnable r2 = new Runnable() {
-                            @Override
-                            public void run() {
-                                CooldownsQuery.deleteCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
-                            }
-                        };
-                        SCore.schedulerHook.runAsyncTask(r2, 0);
+                        CooldownsQuery.deleteCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
                     }
-                });
+                };
+                SCore.schedulerHook.runAsyncTask(r2, 0);
             }
         };
         SCore.schedulerHook.runAsyncTask(r, 0);
@@ -121,13 +112,13 @@ public class CooldownsHandler implements Listener {
             cd.updatePlayerDisconnect();
         }
 
-        if(!SCore.plugin.isEnabled()) return;
+        if (!SCore.plugin.isEnabled()) return;
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
-                if(!SCore.plugin.isEnabled()) return;
+                if (!SCore.plugin.isEnabled()) return;
                 // go back to the tick loop
                 Runnable r2 = new Runnable() {
                     @Override

@@ -65,7 +65,9 @@ public class SCommandToExec {
             // Maintain old system
             List<Integer> indexToRemove = new ArrayList<>();
             for (CommandSetting setting : sCommand.getSettings()) {
+
                 if(settingObjectMap.containsKey(setting)) continue;
+
                 if(setting.getOldSystemIndex() == -1) settingObjectMap.put(setting, setting.getValue(null));
                 else if(arguments.size() > setting.getOldSystemIndex()) {
                     String value = arguments.get(setting.getOldSystemIndex());
@@ -98,7 +100,11 @@ public class SCommandToExec {
             }
             // Sort the index to remove
             Collections.sort(indexToRemove, Collections.reverseOrder());
-            for(int index : indexToRemove) arguments.remove(index);
+            for(int index : indexToRemove){
+                //String value = arguments.get(index);
+                //SsomarDev.testMsg("REMOVE value: "+value, true);
+                arguments.remove(index);
+            }
             this.settingsValues = settingObjectMap;
             this.otherArgs = arguments;
         }

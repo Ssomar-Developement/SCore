@@ -35,7 +35,7 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     public MobAround() {
 
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
-        CommandSetting displayMsgIfNoPlayer = new CommandSetting(Arrays.asList("displayMsgIfNoEntity","DisplayMsgIfNoEntity"), -1, Boolean.class, true);
+        CommandSetting displayMsgIfNoPlayer = new CommandSetting(Arrays.asList("displayMsgIfNoEntity","DisplayMsgIfNoEntity"), -1, Boolean.class, true, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();

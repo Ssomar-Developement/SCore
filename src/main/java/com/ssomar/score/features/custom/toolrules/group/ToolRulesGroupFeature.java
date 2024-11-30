@@ -52,6 +52,9 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
         if (config.isConfigurationSection(this.getName())) {
             ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
             for (String attributeID : enchantmentsSection.getKeys(false)) {
+
+                if(attributeID.equals(enable.getName()) || attributeID.equals(defaultMiningSpeed.getName()) || attributeID.equals(damagePerBlock.getName())) continue;
+
                 if (toolRules.size() >= premiumLimit && !isPremium()) {
                     error.add("&cERROR, Couldn't load the Tool rule of " + attributeID + " from config, &7&o" + getParent().getParentInfo() + " &6>> Because it requires the premium version to have more than 2 tool rule !");
                     return error;
@@ -124,6 +127,9 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
             newAttributes.put(x, toolRules.get(x).clone(eF));
         }
         eF.setToolRules(newAttributes);
+        eF.setEnable(enable.clone(newParent));
+        eF.setDefaultMiningSpeed(defaultMiningSpeed.clone(newParent));
+        eF.setDamagePerBlock(damagePerBlock.clone(newParent));
         return eF;
     }
 

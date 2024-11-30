@@ -366,6 +366,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     tooltipModel("tooltipModel", "Tooltip Model", new String[]{"&7&oThe tooltip model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/textures/gui/sprites/tooltip/<id>_background",  "&7&oWill reference model /assets/<namespace>/textures/gui/sprites/tooltip/<id>_frame"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
 
     toolRules("toolRules", "Tool Rules", new String[]{"&7&oThe tool rules"}, Material.DIAMOND_PICKAXE, false),
+    toolRule("toolRule", "Tool Rule", new String[]{"&7&oThe tool rule"}, Material.DIAMOND_PICKAXE, false),
     miningSpeed("miningSpeed", "Mining speed", new String[]{"&7&oThe mining speed of the tool"}, GUI.CLOCK, false),
     enable("enable", "Enable", new String[]{"&7&oEnable the tool features"}, Material.LEVER, false),
     defaultMiningSpeed("defaultMiningSpeed", "Default Mining Speed", new String[]{"&7&oThe default mining speed of the tool"}, GUI.CLOCK, false),
