@@ -63,4 +63,12 @@ public class BentoBoxAPI {
         }
         return worlds;
     }
+
+    public static List<World> getWorldsCB() {
+        List<World> worlds = new ArrayList<>();
+        for(World w : BentoBox.getInstance().getIWM().getWorlds()){
+            worlds.add(w);
+        }
+        return worlds;
+    }
 }
