@@ -18,9 +18,9 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
     public PlayerCommandManager() {
         List<SCommand> commands = new ArrayList<>();
         commands.add(new Around());
-        commands.add(new Addlore());
+        commands.add(new AddItemlore());
         commands.add(new Removelore());
-        commands.add(new Setlore());
+        commands.add(new SetItemlore());
         commands.add(new SetItemColor());
         commands.add(new SetItemName());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemMaterial());
@@ -54,7 +54,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         }
         commands.add(new MixHotbar());
         commands.add(new SetExecutableBlock());
-        commands.add(new SetMaterialCooldown());
+        commands.add(new SetItemCooldown());
         commands.add(new RegainFood());
         commands.add(new RegainMagic());
         commands.add(new RegainSaturation());
@@ -72,7 +72,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new MobAround());
         commands.add(new Steal());
         commands.add(new FormatEnchantments());
-        commands.add(new AddEnchantment());
+        commands.add(new AddItemEnchantment());
         commands.add(new SortInventory());
         commands.add(new Oxygen());
         commands.add(new Bossbar());
@@ -83,12 +83,12 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new EICooldown());
         commands.add(new EBCooldown());
         commands.add(new EECooldown());
-        commands.add(new AddAttribute());
+        commands.add(new AddItemAttribute());
         commands.add(new SetItemAttribute());
         commands.add(new SetArmorTrim());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
-            commands.add(new ActionbarCommand());
+            commands.add(new Actionbar());
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());

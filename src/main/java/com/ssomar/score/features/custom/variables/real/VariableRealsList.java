@@ -23,6 +23,15 @@ public class VariableRealsList extends ArrayList<VariableReal> {
         return flatValues;
     }
 
+    public VariableReal getVariableReal(String variableName){
+        for(VariableReal vR : this){
+            Optional<String> name = vR.getConfig().getVariableName().getValue();
+            if (!name.isPresent()) continue;
+            if(name.get().equalsIgnoreCase(variableName)) return vR;
+        }
+        return null;
+    }
+
     public void save(ConfigurationSection configurationSection) {
         for(VariableReal vR : this){
             vR.writeValue(configurationSection);

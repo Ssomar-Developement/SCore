@@ -190,7 +190,7 @@ public class LocatedLaunch extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "LOCATED_LAUNCH projectileType:ARROW frontValue=0 rightValue=0 yValue=0 velocity=1 angleRotationVertical:0 angleRotationHorizontal:0";
+        return "LOCATED_LAUNCH projectile:ARROW frontValue=0 rightValue=0 yValue=0 velocity=1 angleRotationVertical:0 angleRotationHorizontal:0";
     }
 
     @Override

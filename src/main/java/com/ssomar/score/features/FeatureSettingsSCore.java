@@ -73,6 +73,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelToolInteractions("cancel-tool-interactions", "Cancel Tool Interactions", new String[]{"&7&oCancel the interactions of the tool"},  null,  false),
     charged("charged", "Charged", new String[]{""},  Material.NETHER_STAR, false),
     color("color", "Color", new String[]{"&7&oThe color"},  FixedMaterial.getMaterial(Arrays.asList("RED_DYE", "INK_SACK")),  false),
+    containerContent("containerContent", "Container Content", new String[]{"&7&oThe container content"},  Material.CHEST,  false),
     colors("colors", "Colors", new String[]{"&7&oThe colors of the firework"}, GUI.CLOCK, false),
     comparator("comparator", "Comparator", new String[]{"&7&oThe comparator of the condition"}, Material.COMPASS, false),
     cooldown("cooldown", "Cooldown", new String[]{"&7&oThe cooldown"},  GUI.CLOCK,  false),
@@ -109,6 +110,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     itemsAdder("itemsAdder", "Items Adder", new String[]{"&7&oThe item required to", "&7&oexecute this trade"}, Material.DIAMOND, false),
     fadeColors("fadeColors", "Fade Colors", new String[]{"&7&oThe fade colors of the firework"}, GUI.CLOCK, false),
     fireworkFeatures("fireworkFeatures", "Firework Features", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")), false),
+
+    fireworkExplosion("fireworkExplosion", "Firework Explosion", new String[]{"&7&oThe explosion of the firework"}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_STAR")), false),
+    fireworkExplosions("fireworkExplosions", "Firework Explosions", new String[]{"&7&oThe explosions of the firework"}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_STAR")), false),
+    hasTrail("hasTrail", "Has Trail", new String[]{"&7&oWhether or not the explosion has a trail effect (diamond)."}, null, false),
+    hasTwinkle("hasTwinkle", "Has Twinkle", new String[]{"&7&oWhether or not the explosion has a twinkle effect (glowstone dust)."}, null, false),
+
     for_( "for", "For", new String[]{"&7&oFor"},  GUI.COMPARATOR,  false),
     giveFirstJoin("giveFirstJoin", "Give first join", new String[]{"&7&oEnable the feature"},  null,  false),
     giveFirstJoinAmount("giveFirstJoinAmount", "Amount", new String[]{"&7&oThe amount to give"},  GUI.CLOCK,  false),
@@ -132,6 +139,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     hideEnchantments("hideEnchantments", "Hide enchantments", new String[]{"&7&oHide enchantments"},  null,  false),
     hidePlacedOn("hidePlacedOn", "Hide placed on", new String[]{"&7&oHide placed on"},  null,  false),
     hideAdditionalTooltip("hideAdditionalTooltip", "Hide additional tooltip", new String[]{"&7&oHide additional tooltip"},  null,  false),
+    hideTooltip("hideToolTip", "Hide tool tip", new String[]{"&7&oHide tool tip"},  null,  false),
     hidePotionEffects("hidePotionEffects", "Hide potion effects / banner tags", new String[]{"&7&oHide Potion effects",  "&7&oand banner tags"},  null, false),
     hideUnbreakable("hideUnbreakable", "Hide unbreakable", new String[]{"&7&oHide unbreakable"},  null,  false),
     hideUsage("hideUsage", "Hide usage", new String[]{"&7&oHide usage"},  null,  false),
@@ -250,8 +258,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     items("items", "Items", new String[]{"&7&oItems"}, FixedMaterial.getMaterial(Arrays.asList("TORCH")), false),
     knockbackStrength("knockbackStrength", "Knockback Strength", new String[]{}, Material.CHAINMAIL_CHESTPLATE, false),
     level("level", "Level", new String[]{"&7&oThe level of the enchantment"},  Material.BEACON,  false),
-    lifeTime("lifeTime", "Life time", new String[]{"&7&oThe life time of the firework in ticks"},  GUI.CLOCK,  false),
-    lockedInventory("locked-in-inventory", "Locked Inventory", new String[]{"&7&oThe item can't be",  "&7&oplaced in the inventory"},  Material.BARRIER,  false),
+    lifeTime("lifeTime", "Life time", new String[]{"&7&oThe flight duration of this firework rocket","&7&oi.e. the number of gunpowders used to craft it,","&7&oMust be an integer between -128 and 127. Defaults to 1"},  GUI.CLOCK,  false),
+    lockedInventory("locked-in-inventory", "Locked Inventory", new String[]{"&7&oThe item can't be",  "&7&omoved of the inventory"},  Material.BARRIER,  false),
     loop("loop", "Loop features", new String[]{"&7&oSpecific settings", "&7&ofor the loop activator"}, Material.ANVIL, false),
     magicID("magicID", "Magic ID", new String[]{"&7&oThe Magic ID"},  Material.STONE,  false),
     material("material", "Material", new String[]{"&7&oThe material"},  Material.STONE,  false),
@@ -282,6 +290,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     patterns("patterns", "Patterns", new String[]{"&7&oThe patterns"}, Material.ANVIL, false),
     pausePlaceholdersConditions("pausePlaceholdersConditions", "Pause Placeholders Conditions", new String[]{"&7&oThe placeholders conditions to pause the cooldown"}, Material.ANVIL, false),
     pauseWhenOffline("pauseWhenOffline", "Pause When Offline", new String[]{"&7&oPause the cooldown when the player is offline?"},  null,  false),
+    enableVisualCooldown("enableVisualCooldown", "Enable Visual Cooldown", new String[]{"&7&oEnable the visual cooldown", "&7&oIt requires to have setup", "&e&ocooldownGroup &7&oin the item settings"},  null,  false),
     period("period", "Period", new String[]{},  GUI.CLOCK,  false),
     periodInTicks("periodInTicks", "Period in ticks", new String[]{},  GUI.CLOCK,  false),
     pickupStatus("pickupStatus", "Pickup Status", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LEAD", "LEASH")), false),
@@ -357,6 +366,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     tooltipModel("tooltipModel", "Tooltip Model", new String[]{"&7&oThe tooltip model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/textures/gui/sprites/tooltip/<id>_background",  "&7&oWill reference model /assets/<namespace>/textures/gui/sprites/tooltip/<id>_frame"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
 
     toolRules("toolRules", "Tool Rules", new String[]{"&7&oThe tool rules"}, Material.DIAMOND_PICKAXE, false),
+    toolRule("toolRule", "Tool Rule", new String[]{"&7&oThe tool rule"}, Material.DIAMOND_PICKAXE, false),
     miningSpeed("miningSpeed", "Mining speed", new String[]{"&7&oThe mining speed of the tool"}, GUI.CLOCK, false),
     enable("enable", "Enable", new String[]{"&7&oEnable the tool features"}, Material.LEVER, false),
     defaultMiningSpeed("defaultMiningSpeed", "Default Mining Speed", new String[]{"&7&oThe default mining speed of the tool"}, GUI.CLOCK, false),
@@ -367,6 +377,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     instrumentFeatures("instrumentFeatures", "Instrument Features", new String[]{"&7&oThe instrument features"}, Material.NOTE_BLOCK, false),
     instrument("instrument", "Instrument", new String[]{"&7&oThe instrument"}, Material.NOTE_BLOCK, false),
 
+    chargedProjectiles("chargedProjectiles", "Charged Projectiles", new String[]{"&7&oThe charged projectiles"}, Material.ARROW, false),
+
+    hitSound("hitSound", "Hit Sound", new String[]{"&7&oThe hit sound"}, Material.NOTE_BLOCK, false),
+    useCooldownFeatures("useCooldownFeatures", "Use Cooldown Features", new String[]{"&7&oThe use cooldown features"}, GUI.CLOCK, false),
+    cooldownGroup("cooldownGroup", "Cooldown Group", new String[]{"&7&oThe cooldown group"}, GUI.WRITABLE_BOOK, false),
+    vanillaUseCooldown("vanillaUseCooldown", "Vanilla Use Cooldown", new String[]{"&7&oThe vanilla use cooldown"}, GUI.CLOCK, false),
 
     typeTarget("typeTarget", "Type Target", new String[]{"&7&oType target"},  Material.COMPASS, false),
     detailedClick("detailedClick", "Detailed Click", new String[]{"&7&oThe specific click"}, Material.COMPASS, false),
@@ -423,6 +439,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     playerCooldownOptions("playerCooldownOptions", "Player Cooldown Options", new String[]{"&7&oThe player cooldown"}, GUI.CLOCK, false),
     entityCooldownOptions("entityCooldownOptions", "Entity Cooldown Options", new String[]{"&7&oThe entity cooldown"}, GUI.CLOCK, false),
 
+    isRefreshableClean("isRefreshableClean", "Is Refreshable Clean", new String[]{"&7&oIs refreshable clean"}, null, false),
+    refreshTag("refreshTagDoNotEdit", "Refresh Tags", new String[]{"&7&oRefresh tags"}, null, false),
 
     otherEICooldowns("otherEICooldowns", "Other EI Cooldowns", new String[]{"&7&oTo add cooldown", "&7&oto another EI"}, Material.ANVIL, false),
     cooldown_activators("activators", "Activators list", new String[]{"&7&oActivators list", "&eALL &7&ofor all activators"}, GUI.WRITABLE_BOOK, false),
@@ -433,6 +451,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     lore("lore", "Lore", new String[]{"&7&oThe lore of the item"}, Material.PAPER, false),
     glow("glow", "Item Glow", SCore.is1v20v5Plus() ? new String[]{"&7&oItem Glowing effect"} : TM.gA(Text.EI_FEATURES_GLOW_DESCRIPTION), Material.BEACON, false),
+    glowDuration("glowDuration", "Glow Duration", new String[]{"&7&oThe duration of the glow effect"}, GUI.CLOCK, false),
+
     disableEnchantGlide("disableEnchantGlide", "Disable Enchant Glide", new String[]{"&7&oDisable the enchant glide effect"}, Material.BEACON, false),
 
     disableStack("disableStack", "Disable stack", TM.gA(Text.EI_FEATURES_DISABLESTACK_DESCRIPTION), null, true),
@@ -441,7 +461,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     storeItemInfo("storeItemInfo", "Store item info", TM.gA(Text.EI_FEATURES_STOREITEMINFO_DESCRIPTION), null, false),
     unbreakable("unbreakable", "Unbreakable", TM.gA(Text.EI_FEATURES_UNBREAKABLE_DESCRIPTION), Material.BEDROCK, false),
 
-    usage("usage",  "Usage", TM.gA(Text.EI_FEATURES_USAGE_DESCRIPTION), Material.BUCKET, false),
+    usage("usage",  "Usage", new String[]{"&7&oThe usage of the item","&a-1 &7&o= Infinite", "&aIncrease &7&oor &cDecrease &7&othis usage with","&eUsageModification &7&oin your activators"} , Material.BUCKET, false),
     usageLimit("usageLimit", "Usage limit", TM.gA(Text.EI_FEATURES_USAGELIMIT_DESCRIPTION), Material.BUCKET, true),
     customModelData_ei("customModelData", "Custom model data", TM.gA(Text.EI_FEATURES_CUSTOMMODELDATA_DESCRIPTION), FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA")), true),
     whitelistedWorlds("whitelistedWorlds", "Whitelisted worlds", new String[]{"&7&oThe whitelisted worlds features"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS")), false),
@@ -456,6 +476,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canAlwaysEat("canAlwaysEat", "Can Always Eat", new String[]{"&7Can the player always eat this food?"}, null, false),
     eatSeconds("eatSeconds", "Eat Seconds", new String[]{"&7The time in seconds to eat the food"}, GUI.CLOCK, false),
 
+    blockState("blockState", "Block State", new String[]{"&7&oThe block state"}, Material.BRICK, false),
+    blockStatePlus("blockStatePlus", "Block State Plus", new String[]{"&7&oThe block state plus"}, Material.BRICK, false),
+    bundleContent("bundleContent", "Bundle Content", new String[]{"&7&oThe bundle content"}, FixedMaterial.getMaterial(Arrays.asList("BUNDLE")), false),
 
     itemRarity("itemRarity", "Item Rarity", new String[]{"&7&oThe rarity of the item"}, Material.EMERALD, false),
     rarity("rarity", "Rarity", new String[]{"&7&oThe rarity of the item"}, Material.EMERALD, false),

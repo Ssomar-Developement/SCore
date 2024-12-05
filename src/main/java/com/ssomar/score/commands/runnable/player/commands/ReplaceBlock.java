@@ -18,7 +18,7 @@ import java.util.List;
 public class ReplaceBlock extends PlayerCommand {
 
     public ReplaceBlock() {
-        CommandSetting material = new CommandSetting("material", 0, Material.class, Material.STONE);
+        CommandSetting material = new CommandSetting("material", 0, String.class, "STONE");
         List<CommandSetting> settings = getSettings();
         settings.add(material);
         setNewSettingsMode(true);
@@ -26,20 +26,23 @@ public class ReplaceBlock extends PlayerCommand {
 
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
-        Material material = (Material) sCommandToExec.getSettingValue("material");
+        String materialName = (String) sCommandToExec.getSettingValue("material");
+
+        Material material = null;
+        try {
+            material = Material.valueOf(materialName.toUpperCase());
+        } catch (Exception e) {
+        }
 
         Block block = receiver.getTargetBlock(null, 5);
+        if (SCore.hasWorldGuard && !new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
+            return;
+        }
         if (block.getType() != Material.AIR) {
             if (material != null) {
-                if (SCore.hasWorldGuard) {
-                    if (new WorldGuardAPI().canBuild(receiver, new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()))) {
-                        block.setType(material);
-                    }
-                } else {
-                    block.setType(material);
-                }
+                block.setType(material);
             } else {
-                RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + material.toString().toLowerCase(), sCommandToExec.getActionInfo().isSilenceOutput());
+                RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + materialName.toLowerCase(), sCommandToExec.getActionInfo().isSilenceOutput());
             }
         }
     }

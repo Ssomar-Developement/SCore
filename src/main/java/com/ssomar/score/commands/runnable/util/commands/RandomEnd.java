@@ -36,4 +36,9 @@ public class RandomEnd extends SCommand {
         String error = "";
         return error.isEmpty() ? Optional.empty() : Optional.of(error);
     }
+
+    @Override
+    public String getWikiLink() {
+        return null;
+    }
 }

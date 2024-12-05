@@ -25,7 +25,7 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
         SProjectilesManager.getInstance().setDefaultObjects(new ArrayList<>());
         /* // TODO if (!GeneralConfig.getInstance().isDisableTestItems()) {*/
         //if (PlaceholderAPI.isLotOfWork()) {
-            this.loadDefaultPremiumObjects();
+        this.loadDefaultPremiumObjects();
         //}
         //this.loadDefaultEncodedPremiumObjects(this.getPremiumPackObjectsName());
         //}
@@ -45,6 +45,9 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
 
         File notEditProjDirectory;
         notEditProjDirectory = new File(SCore.plugin.getDataFolder() + "/projectiles/projectiles_not_editable");
+        if (!notEditProjDirectory.exists()) {
+            notEditProjDirectory.mkdirs();
+        }
         this.loadObjectsInFolder(notEditProjDirectory, true);
     }
 

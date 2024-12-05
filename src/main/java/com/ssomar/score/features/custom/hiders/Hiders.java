@@ -1,19 +1,19 @@
 package com.ssomar.score.features.custom.hiders;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private BooleanFeature hideEnchantments;
     private BooleanFeature hideUnbreakable;
@@ -34,6 +34,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
     private BooleanFeature hideDestroys;
     private BooleanFeature hidePlacedOn;
     private BooleanFeature hideAdditionalTooltip;
+    private BooleanFeature hideTooltip;
 
     public Hiders(FeatureParentInterface parent) {
         super(parent, FeatureSettingsSCore.hiders);
@@ -52,6 +53,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
         this.hideDestroys = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDestroys, false);
         this.hidePlacedOn = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePlacedOn, false);
         this.hideAdditionalTooltip = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideAdditionalTooltip, false);
+        this.hideTooltip = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideTooltip, false);
     }
 
     @Override
@@ -71,7 +73,10 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
             if(SCore.is1v20Plus()) hideArmorTrim.load(plugin, section, isPremiumLoading);
             /* In 1.20.5+ New tag HIDE_ADDITIONAL_TOOLTIP  Setting to show/hide potion effects, book and firework information, map tooltips, patterns of banners, and enchantments of enchanted books.
             * It replaces the old hidePotionEffects */
-            if(SCore.is1v20v5Plus()) hideAdditionalTooltip.load(plugin, section, isPremiumLoading);
+            if(SCore.is1v20v5Plus()) {
+                hideAdditionalTooltip.load(plugin, section, isPremiumLoading);
+                hideTooltip.load(plugin, section, isPremiumLoading);
+            }
             else hidePotionEffects.load(plugin, section, isPremiumLoading);
         }
 
@@ -92,7 +97,9 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
         }
         if(SCore.is1v17Plus()) hideDye.save(section);
         if(SCore.is1v20Plus()) hideArmorTrim.save(section);
-        if(SCore.is1v20v5Plus()) hideAdditionalTooltip.save(section);
+        if(SCore.is1v20v5Plus()){
+            hideAdditionalTooltip.save(section);
+            hideTooltip.save(section);}
         else hidePotionEffects.save(section);
     }
 
@@ -103,9 +110,17 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
 
     @Override
     public Hiders initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 10];
+        String[] finalDescription = new String[getEditorDescription().length + 11];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 10] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 11] = GUI.CLICK_HERE_TO_CHANGE;
+
+        if(!SCore.is1v20v5Plus()) {
+            finalDescription[finalDescription.length - 10] = "&7Hide tooltip: &6&lONLY 1.20.5 & +";
+        }
+        else if (hideTooltip.getValue())
+            finalDescription[finalDescription.length - 10] = "&7Hide tooltip: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 10] = "&7Hide tooltip: &c&l✘";
 
         if (hideDestroys.getValue())
             finalDescription[finalDescription.length - 9] = "&7Hide destroys: &a&l✔";
@@ -188,6 +203,7 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
         dropFeatures.hideDestroys = hideDestroys.clone(dropFeatures);
         dropFeatures.hidePlacedOn = hidePlacedOn.clone(dropFeatures);
         dropFeatures.hideAdditionalTooltip = hideAdditionalTooltip.clone(dropFeatures);
+        dropFeatures.hideTooltip = hideTooltip.clone(dropFeatures);
         return dropFeatures;
     }
 
@@ -204,7 +220,10 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
         }
         if(SCore.is1v17Plus()) features.add(hideDye);
         if(SCore.is1v20Plus()) features.add(hideArmorTrim);
-        if(SCore.is1v20v5Plus()) features.add(hideAdditionalTooltip);
+        if(SCore.is1v20v5Plus()){
+            features.add(hideTooltip);
+            features.add(hideAdditionalTooltip);
+        }
         else features.add(hidePotionEffects);
         return features;
     }
@@ -239,7 +258,10 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
                 }
                 if(SCore.is1v17Plus()) hiders.setHideDye(hideDye);
                 if(SCore.is1v20Plus()) hiders.setHideArmorTrim(hideArmorTrim);
-                if(SCore.is1v20v5Plus()) hiders.setHideAdditionalTooltip(hideAdditionalTooltip);
+                if(SCore.is1v20v5Plus()) {
+                    hiders.setHideAdditionalTooltip(hideAdditionalTooltip);
+                    hiders.setHideTooltip(hideTooltip);
+                }
                 else hiders.setHidePotionEffects(hidePotionEffects);
                 break;
             }
@@ -256,4 +278,73 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public boolean isAvailable() {
+        return true;
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return true;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+        ItemMeta meta = args.getMeta();
+        ItemFlag additionalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+        meta.removeItemFlags(additionalFlag, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
+
+        if (SCore.is1v20v5Plus()) {
+            if (getHideAdditionalTooltip().getValue())
+                meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ADDITIONAL_TOOLTIP});
+            if (getHideTooltip().getValue())
+                meta.setHideTooltip(true);
+        } else {
+            if (getHidePotionEffects().getValue())
+                meta.addItemFlags(new ItemFlag[]{ItemFlag.valueOf("HIDE_POTION_EFFECTS")});
+        }
+
+        if (getHideAttributes().getValue())
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
+        if (getHideEnchantments().getValue())
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
+        if (getHideUnbreakable().getValue())
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
+        if (getHideDye().getValue() && SCore.is1v17Plus())
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE});
+        if (SCore.is1v20Plus() && getHideArmorTrim().getValue())
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ARMOR_TRIM});
+
+        /* if ((SCore.is1v16() && !SCore.is1v16v1()) || SCore.is1v17() || SCore.is1v18())
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE}); */
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        ItemMeta meta = args.getMeta();
+        ItemFlag additionalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+        if(meta.hasItemFlag(additionalFlag)) {
+            if (SCore.is1v20v5Plus()) getHideAdditionalTooltip().setValue(true);
+            else getHidePotionEffects().setValue(true);
+        }
+        if (meta.hasItemFlag(ItemFlag.HIDE_ATTRIBUTES))
+            getHideAttributes().setValue(true);
+        if (meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS))
+            getHideEnchantments().setValue(true);
+        if (meta.hasItemFlag(ItemFlag.HIDE_UNBREAKABLE))
+            getHideUnbreakable().setValue(true);
+        if (SCore.is1v17Plus() && meta.hasItemFlag(ItemFlag.HIDE_DYE))
+            getHideDye().setValue(true);
+        if (SCore.is1v20Plus() && meta.hasItemFlag(ItemFlag.HIDE_ARMOR_TRIM))
+            getHideArmorTrim().setValue(true);
+        if(SCore.is1v20v5Plus() && meta.isHideTooltip())
+            getHideTooltip().setValue(true);
+
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.HIDERS;
+    }
 }

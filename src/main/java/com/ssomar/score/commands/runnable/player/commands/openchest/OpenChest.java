@@ -16,7 +16,6 @@ import org.bukkit.inventory.InventoryHolder;
 
 import java.util.*;
 
-/* BURN {timeinsecs} */
 public class OpenChest extends PlayerCommand {
 
     private static OpenChest instance;
@@ -91,6 +90,7 @@ public class OpenChest extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("OPEN_CHEST");
         names.add("OPENCHEST");
         return names;
     }

@@ -3,10 +3,7 @@ package com.ssomar.score.features.custom.headfeatures;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.UncoloredStringFeature;
@@ -15,6 +12,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.HeadDB;
 import com.ssomar.score.usedapi.HeadDatabase;
 import com.ssomar.score.utils.FixedMaterial;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -37,7 +35,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private UncoloredStringFeature headValue;
     private UncoloredStringFeature headDBID;
@@ -89,14 +87,13 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
             ItemStack newHead = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta itemMeta = (SkullMeta) newHead.getItemMeta();
 
-            if(SCore.is1v18Plus()){
+            if (SCore.is1v18Plus()) {
                 try {
                     newHead = HeadBuilder118.getHead(HeadBuilder118.getUrlFromBase64(headValue.getValue().get()).toString());
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            else {
+            } else {
                 GameProfile profile = getGameProfile(this.headValue.getValue().get());
                 Field profileField = null;
                 try {
@@ -237,4 +234,126 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public boolean isAvailable() {
+        return true;
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof SkullMeta;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (!isAvailable() || !isApplicable(args)) return;
+
+        ItemMeta meta = args.getMeta();
+        SkullMeta skullMeta = (SkullMeta) meta;
+
+        if (headDBID.getValue().isPresent()) {
+            if (SCore.hasHeadDatabase) {
+                ItemStack item = HeadDatabase.getInstance().getHead(headDBID.getValue().get());
+                if (item != null) {
+                    SkullMeta headMeta = (SkullMeta) item.getItemMeta();
+                    if (headMeta != null && headMeta.getOwnerProfile() != null)
+                        skullMeta.setOwnerProfile(headMeta.getOwnerProfile());
+                } else {
+                    SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
+                    SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
+                }
+            }
+            if (SCore.hasHeadDB) {
+                try {
+                    ItemStack item = HeadDB.getHead(Integer.valueOf(headDBID.getValue().get()));
+                    if (item != null) {
+                        SkullMeta headMeta = (SkullMeta) item.getItemMeta();
+                        if (headMeta != null && headMeta.getOwnerProfile() != null)
+                            skullMeta.setOwnerProfile(headMeta.getOwnerProfile());
+                    } else {
+                        SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
+                        SCore.plugin.getLogger().severe(" If you use HeadDD, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
+                    }
+                } catch (Exception ignored) {
+                    SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
+                    SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
+                }
+            }
+        } else if (headValue.getValue().isPresent() && !SCore.is1v12Less()) {
+
+            if (SCore.is1v18Plus()) {
+                try {
+                    HeadBuilder118.modifyMeta(skullMeta, HeadBuilder118.getUrlFromBase64(headValue.getValue().get()).toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                GameProfile profile = getGameProfile(this.headValue.getValue().get());
+                Field profileField = null;
+                try {
+                    profileField = meta.getClass().getDeclaredField("profile");
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                } catch (SecurityException e1) {
+                    e1.printStackTrace();
+                }
+                profileField.setAccessible(true);
+                try {
+                    profileField.set(meta, profile);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (!SCore.is1v12Less()) {
+
+            SkullMeta meta = (SkullMeta) args.getMeta();
+            if (SCore.is1v18Plus()) {
+                if (meta.getOwnerProfile() != null) {
+                    //SsomarDev.testMsg("HeadFeatures loadFromItemMeta: the owner profile " + meta.getOwnerProfile(), true);
+                    String url = meta.getOwnerProfile().getTextures().getSkin().toString();
+                    //SsomarDev.testMsg("HeadFeatures loadFromItemMeta: the url " + url, true);
+                    headValue.setValue(Optional.of(HeadBuilder118.getBase64FromUrl(url)));
+                }
+            } else {
+                SkullMeta itemMeta = (SkullMeta) meta;
+
+                //GameProfile profile = getGameProfile(headValue);
+                Field profileField = null;
+                try {
+                    profileField = itemMeta.getClass().getDeclaredField("profile");
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                } catch (SecurityException e1) {
+                    e1.printStackTrace();
+                }
+                profileField.setAccessible(true);
+                try {
+                    GameProfile profile = (GameProfile) profileField.get(itemMeta);
+                    for (Property p : profile.getProperties().get("textures")) {
+                        getHeadValue().setValue(Optional.of(p.getValue()));
+                        break;
+                    }
+                } catch (IllegalArgumentException e) {
+                } catch (IllegalAccessException e) {
+                } catch (NoSuchMethodError e) {
+                    //p.getValue() seems to not exist anymore in 1.20.2
+                }
+            }
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.HEAD;
+    }
 }

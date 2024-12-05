@@ -79,4 +79,8 @@ public abstract class VariableReal<T> {
 
     public abstract String replaceVariablePlaceholder(String s);
 
+    public abstract String replaceVariablePlaceholder(String s, boolean includeRefreshTag);
+
+    public abstract String getPlaceholderWithTag(String s);
+
 }

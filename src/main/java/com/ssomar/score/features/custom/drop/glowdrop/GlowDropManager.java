@@ -86,8 +86,10 @@ public class GlowDropManager {
         }*/
         if (teams.containsKey(color)) {
             Team team = teams.get(color);
-            team.removeEntry(entity.getUniqueId().toString());
-            if (entity instanceof OfflinePlayer) team.removePlayer((OfflinePlayer) entity);
+            if(team.hasEntry(entity.getUniqueId().toString())) team.removeEntry(entity.getUniqueId().toString());
+            if (entity instanceof OfflinePlayer) {
+                if(team.hasPlayer((OfflinePlayer) entity)) team.removePlayer((OfflinePlayer) entity);
+            }
             entity.setGlowing(false);
         }
     }

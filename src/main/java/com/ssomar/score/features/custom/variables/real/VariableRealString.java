@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class VariableRealString extends VariableReal<String> implements Serializable {
@@ -115,11 +117,47 @@ public class VariableRealString extends VariableReal<String> implements Serializ
     }
 
     @Override
-    public String replaceVariablePlaceholder(String s) {
+    public String replaceVariablePlaceholder(String s, boolean includeRefreshTag) {
+
+        boolean isRefreshable = includeRefreshTag && getConfig().getIsRefreshableClean().getValue();
+        String optTag = isRefreshable ? getConfig().getRefreshTag().getValue().get() : "";
+
         String toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "%";
         if (s.contains(toReplace)) {
-            s = s.replaceAll(toReplace, StringConverter.coloredString(getValue()));
+            s = s.replaceAll(toReplace, optTag + StringConverter.coloredString(getValue()) + (isRefreshable ? getPlaceholderTag(toReplace) : "")+ optTag);
         }
         return s;
+    }
+
+    @Override
+    public String getPlaceholderWithTag(String s) {
+        Map<String, String> tags = getTranscoPlaceholders();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            if (s.contains(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return "";
+    }
+
+    public Map<String, String> getTranscoPlaceholders() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("§汉", "%var_" + getConfig().getVariableName().getValue().get() + "%");
+        return tags;
+    }
+
+    public String getPlaceholderTag(String placeholder) {
+        Map<String, String> tags = getTranscoPlaceholders();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            if (entry.getValue().equals(placeholder)) {
+                return entry.getKey();
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String replaceVariablePlaceholder(String s) {
+        return replaceVariablePlaceholder(s, false);
     }
 }

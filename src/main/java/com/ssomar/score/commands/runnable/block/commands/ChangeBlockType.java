@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class ChangeBlockType extends BlockCommand {
 
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = true;
 
     @Override
     public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {

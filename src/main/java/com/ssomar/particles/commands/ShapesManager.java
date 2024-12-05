@@ -36,7 +36,7 @@ public class ShapesManager {
         whitelistedShapes.add("sphere");
         whitelistedShapes.add("spikeSphere");
         whitelistedShapes.add("ring");
-        whitelistedShapes.add("spread");
+        //whitelistedShapes.add("spread");
         whitelistedShapes.add("heart");
         whitelistedShapes.add("atomic");
         whitelistedShapes.add("helix");

@@ -14,9 +14,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddEnchantment extends PlayerCommand {
+public class AddItemEnchantment extends PlayerCommand {
 
-    public AddEnchantment() {
+    public AddItemEnchantment() {
 
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
         slot.setSlot(true);
@@ -39,7 +39,10 @@ public class AddEnchantment extends PlayerCommand {
 
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
-        if (level <= 0 || enchant == null || item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
+        if (level <= 0 || enchant == null || item == null || item.getType() == Material.AIR) return;
+        if(!item.hasItemMeta()){
+            item.setItemMeta(new ItemStack(item.getType()).getItemMeta());
+        }
         itemMeta = item.getItemMeta();
         itemMeta.addEnchant(enchant, level, true);
         item.setItemMeta(itemMeta);
@@ -48,6 +51,7 @@ public class AddEnchantment extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("ADD_ITEM_ENCHANTMENT");
         names.add("ADD_ENCHANTMENT");
         names.add("ADDENCHANTMENT");
         return names;
@@ -55,7 +59,7 @@ public class AddEnchantment extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ADD_ENCHANTMENT slot:-1 enchantment:EFFICIENCY level:1";
+        return "ADD_ITEM_ENCHANTMENT slot:-1 enchantment:EFFICIENCY level:1";
     }
 
     @Override

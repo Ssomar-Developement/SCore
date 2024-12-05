@@ -6,7 +6,7 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.custom.particles.group.ParticlesGroupFeature;
 import com.ssomar.score.features.custom.potionsettings.PotionSettingsFeature;
 import com.ssomar.score.projectiles.features.*;
-import com.ssomar.score.projectiles.features.fireworkFeatures.FireworkFeatures;
+import com.ssomar.score.features.custom.firework.FireworkFeatures;
 import com.ssomar.score.projectiles.features.visualItemFeature.VisualItemFeature;
 import com.ssomar.score.utils.FixedMaterial;
 import lombok.Getter;
@@ -80,9 +80,12 @@ public enum SProjectileType {
         if(SCore.is1v20v5Plus()){
             //features.add(new ScaleFeature(parent));
         }
+        if(this == SProjectileType.SPECTRAL_ARROW && SCore.is1v20v5Plus()){
+            features.add(new GlowDurationFeature(parent));
+        }
 
         switch (this) {
-            case ARROW:
+            case ARROW: case SPECTRAL_ARROW:
                 features.add(new GravityFeature(parent));
                 if (!SCore.is1v13Less()) {
                     features.add(new ColorFeature(parent));
@@ -91,6 +94,9 @@ public enum SProjectileType {
                     features.add(new DamageFeature(parent));
                     features.add(new KnockbackStrengthFeature(parent));
                     features.add(new PickupFeature(parent));
+                    if(SCore.is1v20v5Plus() && SCore.isPaperOrFork()){
+                        features.add(new HitSoundFeature(parent));
+                    }
                 }
                 break;
             case EGG:

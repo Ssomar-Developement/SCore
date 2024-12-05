@@ -40,6 +40,6 @@ public class IfOnFire extends EntityConditionFeature<BooleanFeature, IfOnFire> {
 
     @Override
     public IfOnFire getNewInstance(FeatureParentInterface parent) {
-        return new IfOnFire(getParent());
+        return new IfOnFire(parent);
     }
 }

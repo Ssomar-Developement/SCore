@@ -33,7 +33,7 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
     private String id;
 
     public ToolRuleFeature(FeatureParentInterface parent, String id) {
-        super(parent, FeatureSettingsSCore.attribute);
+        super(parent, FeatureSettingsSCore.toolRule);
         this.id = id;
         reset();
     }
@@ -54,7 +54,7 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
             errors.addAll(this.correctForDrops.load(plugin, enchantmentConfig, isPremiumLoading));
             errors.addAll(this.materials.load(plugin, enchantmentConfig, isPremiumLoading));
         } else {
-            errors.add("&cERROR, Couldn't load the Attribute with its options because there is not section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
+            errors.add("&cERROR, Couldn't load the Tool rule with its options because there is not a section with the good ID: " + id + " &7&o" + getParent().getParentInfo());
         }
         return errors;
     }

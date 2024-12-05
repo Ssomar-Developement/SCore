@@ -36,7 +36,7 @@ import java.util.Optional;
 @Setter
 public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<PlaceholderConditionFeature, PlaceholderConditionFeature, PlaceholderConditionFeatureEditor, PlaceholderConditionFeatureEditorManager> {
 
-    private final static Boolean DEBUG = false;
+    private final static Boolean DEBUG = true;
 
     private PlaceholderConditionTypeFeature type;
     private ComparatorFeature comparator;
@@ -126,7 +126,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
         }
 
         aPart1 = StringConverter.deconvertColor(aPart1);
-        //SsomarDev.testMsg("aPart1: "+aPart1, true);
+        SsomarDev.testMsg("aPart1: "+aPart1, true);
         aPart2 = StringConverter.deconvertColor(aPart2);
 
         // verification

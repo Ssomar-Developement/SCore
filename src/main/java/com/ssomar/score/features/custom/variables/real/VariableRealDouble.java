@@ -18,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -127,19 +129,57 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     }
 
     @Override
-    public String replaceVariablePlaceholder(String s) {
+    public String replaceVariablePlaceholder(String s, boolean includeRefreshTag) {
+
+        boolean isRefreshable = includeRefreshTag && getConfig().getIsRefreshableClean().getValue();
+        String optTag = isRefreshable ? getConfig().getRefreshTag().getValue().get() : "";
+
         String toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "%";
         if (s.contains(toReplace)) {
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, getValue() + "", false);
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + getValue() + (isRefreshable ? getPlaceholderTag(toReplace) : "") + optTag, false);
         }
-        String toReplace2 = "%var_" + getConfig().getVariableName().getValue().get() + "_int%";
-        if (s.contains(toReplace2)) {
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace2, (getValue().intValue()) + "", true);
+        toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "_int%";
+        if (s.contains(toReplace)) {
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + (getValue().intValue()) + (isRefreshable ? getPlaceholderTag(toReplace) : "") +optTag, true);
         }
-        String toReplace3 = "%var_" + getConfig().getVariableName().getValue().get() + "_roman%";
-        if (s.contains(toReplace3)) {
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace3, (getValue().intValue()) + "", true, true);
+        toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "_roman%";
+        if (s.contains(toReplace)) {
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + (getValue().intValue()) + (isRefreshable ? getPlaceholderTag(toReplace) : "") + optTag, true, true);
         }
         return s;
+    }
+
+    @Override
+    public String getPlaceholderWithTag(String s) {
+        Map<String, String> tags = getTranscoPlaceholders();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            if (s.contains(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return "";
+    }
+
+    public Map<String, String> getTranscoPlaceholders() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("§汉", "%var_" + getConfig().getVariableName().getValue().get() + "%");
+        tags.put("§九", "%var_" + getConfig().getVariableName().getValue().get() + "_int%");
+        tags.put("§六", "%var_" + getConfig().getVariableName().getValue().get() + "_roman%");
+        return tags;
+    }
+
+    public String getPlaceholderTag(String placeholder) {
+        Map<String, String> tags = getTranscoPlaceholders();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            if (entry.getValue().equals(placeholder)) {
+                return entry.getKey();
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String replaceVariablePlaceholder(String s) {
+        return replaceVariablePlaceholder(s, false);
     }
 }

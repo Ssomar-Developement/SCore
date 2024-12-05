@@ -33,7 +33,7 @@ public class Particle extends BlockCommand {
         double speed = (double) sCommandToExec.getSettingValue("speed");
         try {
             block.getWorld().spawnParticle(org.bukkit.Particle.valueOf(particle.toUpperCase()),
-                    block.getLocation(),
+                    block.getLocation().add(0.5, 0.5, 0.5),
                     quantity,
                     offset,
                     offset,

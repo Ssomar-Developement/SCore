@@ -170,6 +170,7 @@ public class VariablesGroupFeature extends FeatureWithHisOwnEditor<VariablesGrou
             String id = baseId + i;
             if (!variables.containsKey(id)) {
                 VariableFeature eF = new VariableFeature(this, id);
+                eF.getIsRefreshableClean().setValue(true);
                 variables.put(id, eF);
                 eF.openEditor(editor);
                 break;

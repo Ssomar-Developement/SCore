@@ -386,4 +386,6 @@ public abstract class SCommand {
         }
         return Optional.empty();
     }
+
+    public abstract String getWikiLink();
 }

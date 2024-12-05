@@ -34,7 +34,10 @@ public class ContentAdd extends BlockCommand {
             System.out.println(s + " : " + settings.get(s));
         }*/
 
-        Optional<Double> intOptional = NTools.getDouble(args.get(1));
+        String amountStr = "1";
+        if (args.size() >= 2) amountStr = args.get(1);
+
+        Optional<Double> intOptional = NTools.getDouble(amountStr);
         int amount = intOptional.orElse(1.0).intValue();
 
         Optional<Integer> slotOptional = Optional.empty();
@@ -44,7 +47,7 @@ public class ContentAdd extends BlockCommand {
         if (args.size() >= 1) {
             ItemStack item;
             if(!(args.get(0).contains("EI:") || args.get(0).contains("ei:"))) {
-                item = new ItemStack(Material.valueOf(args.get(0)), amount);
+                item = new ItemStack(Material.valueOf(args.get(0).toUpperCase()), amount);
             }
             else{
                 String id = args.get(0).split(":")[1];

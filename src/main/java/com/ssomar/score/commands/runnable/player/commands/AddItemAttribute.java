@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -15,14 +16,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
 
-public class AddAttribute extends PlayerCommand {
+public class AddItemAttribute extends PlayerCommand {
 
-    public AddAttribute() {
+    public AddItemAttribute() {
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, 0);
         slot.setSlot(true);
         Attribute att = null;
@@ -51,53 +52,40 @@ public class AddAttribute extends PlayerCommand {
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
 
-        if (attribute == null || item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
+        if (attribute == null || item == null || item.getType() == Material.AIR){
+            SsomarDev.testMsg("Error in the command ADD_ATTRIBUTE please check the attribute or the item > att:"+attribute+" item:"+item, true);
+            return;
+        }
+        if(!item.hasItemMeta()){
+            item.setItemMeta(new ItemStack(item.getType()).getItemMeta());
+        }
         itemmeta = item.getItemMeta();
 
-        AttributeModifier existingModifier = null;
-
-        try {
-            Collection<AttributeModifier> existingModifiers = itemmeta.getAttributeModifiers(attribute);
-
-            if (existingModifiers != null && !existingModifiers.isEmpty()) {
-                for (AttributeModifier attributeModifier : existingModifiers) {
-                    if (attributeModifier.getSlot().equals(equipmentSlot)) {
-                        existingModifier = attributeModifier;
-                    }
-                }
-            }
-        } catch (NullPointerException err) {
-        }
-
-        if (existingModifier == null) {
-            AttributeModifier newModifier = new AttributeModifier(
+        AttributeModifier newModifier = new AttributeModifier(
                     UUID.randomUUID(),
                     "ScoreAttribute",
                     value,
                     AttributeModifier.Operation.ADD_NUMBER,
                     equipmentSlot
             );
-            itemmeta.addAttributeModifier(attribute, newModifier);
-        } else {
-            AttributeModifier copyExistingModifier = existingModifier;
-            existingModifier = new AttributeModifier(
-                    existingModifier.getUniqueId(),
-                    "ScoreAttribute",
-                    existingModifier.getAmount() + value,
-                    existingModifier.getOperation(),
-                    existingModifier.getSlot()
-            );
-            itemmeta.removeAttributeModifier(attribute, existingModifier);
-            if (copyExistingModifier.getAmount() + value != 0) {
-                itemmeta.addAttributeModifier(attribute, existingModifier);
-            }
-        }
+
+        /* AttributeModifier newModifier = new AttributeModifier(
+                NamespacedKey.minecraft("base_attack_speed"),
+                value,
+                AttributeModifier.Operation.ADD_NUMBER,
+                EquipmentSlotGroup.HAND
+        );*/
+
+        LinkedHashMap<Attribute, AttributeModifier> map = new LinkedHashMap<>();
+        map.put(attribute, newModifier);
+        AttributeUtils.addAttributeOnItemMeta(itemmeta, item.getType(), map, true, true, true);
         item.setItemMeta(itemmeta);
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("ADD_ITEM_ATTRIBUTE");
         names.add("ADD_ATTRIBUTE");
         names.add("ADDITEMATTRIBUTE");
         return names;
@@ -105,7 +93,7 @@ public class AddAttribute extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ADD_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND";
+        return "ADD_ITEM_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND";
     }
 
     @Override

@@ -402,7 +402,9 @@ public abstract class NewGUIManager<T extends GUI> {
 
             Suggestion suggestion = suggestions.get(p).get(y);
             TextComponent cmd1Cpnt = new TextComponent("");
+            TextComponent cmd1WikiCpnt = new TextComponent("");
             TextComponent cmd2Cpnt = new TextComponent("");
+            TextComponent cmd2WikiCpnt = new TextComponent("");
 
 
             String commandStr1 = StringConverter.coloredString(suggestion.getSuggestionDisplay());
@@ -411,28 +413,38 @@ public abstract class NewGUIManager<T extends GUI> {
             cmd1Cpnt.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestion.getSuggestion()));
             cmd1Cpnt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString(suggestion.getSuggestionHover())).create()));
 
+            if(suggestion.getWikiLink() != null){
+                cmd1WikiCpnt.setText(StringConverter.coloredString("&e&o[Wiki]"));
+                cmd1WikiCpnt.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, suggestion.getWikiLink()));
+                cmd1WikiCpnt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&7&oClick here to see the wiki")).create()));
+            }
+
+            String before = "";
+            String after = "";
 
             if (y + 1 != suggestions.get(p).size()) {
 
                 Suggestion suggestion2 = suggestions.get(p).get(y + 1);
 
+                if(suggestion2.getWikiLink() != null){
+                    cmd2WikiCpnt.setText(StringConverter.coloredString("&e&o[Wiki]"));
+                    cmd2WikiCpnt.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, suggestion2.getWikiLink()));
+                    cmd2WikiCpnt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&7&oClick here to see the wiki")).create()));
+                }
+
                 commandStr2 = StringConverter.coloredString(suggestion2.getSuggestionDisplay());
 
                 /* Try to improve a bit the display in clean column */
                 int charDiff = commandStr1.length() - commandStr2.length();
-                StringBuilder commandStr1Builder = new StringBuilder(commandStr1);
-                StringBuilder commandStr2Builder = new StringBuilder(commandStr2);
                 while (charDiff != 0) {
                     if (charDiff > 0) {
-                        commandStr2Builder.append(" ");
+                        after = after + " ";
                         charDiff--;
                     } else {
-                        commandStr1Builder.insert(0, " ");
+                        before = before + " ";
                         charDiff++;
                     }
                 }
-                commandStr2 = commandStr2Builder.toString();
-                commandStr1 = commandStr1Builder.toString();
 
                 cmd2Cpnt.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestion2.getSuggestion()));
                 cmd2Cpnt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString(suggestion2.getSuggestionHover())).create()));
@@ -441,13 +453,18 @@ public abstract class NewGUIManager<T extends GUI> {
             } else {
                 y++;
             }
-            String commandsStr = commandStr1 + "     |     " + commandStr2;
+            String commandsStr = before+cmd1WikiCpnt.getText()+" |"+commandStr1 + "     |     " + commandStr2+"| "+cmd2WikiCpnt.getText()+after;
             commandsStr = CenteredMessage.convertIntoCenteredMessage(commandsStr);
 
-            cmd1Cpnt.setText(commandsStr.split("\\|")[0]);
-            cmd2Cpnt.setText(commandsStr.split("\\|")[1]);
-            cmd1Cpnt.addExtra(cmd2Cpnt);
-            listCommands.add(cmd1Cpnt);
+            cmd1WikiCpnt.setText(commandsStr.split("\\|")[0]);
+            cmd1Cpnt.setText(commandsStr.split("\\|")[1]);
+            cmd2Cpnt.setText(commandsStr.split("\\|")[2]);
+            cmd2WikiCpnt.setText(commandsStr.split("\\|")[3]);
+            cmd1WikiCpnt.addExtra(cmd1Cpnt);
+            cmd1WikiCpnt.addExtra(cmd2Cpnt);
+            cmd1WikiCpnt.addExtra(cmd2WikiCpnt);
+            //cmd1Cpnt.addExtra(cmd2Cpnt);
+            listCommands.add(cmd1WikiCpnt);
         }
 
 

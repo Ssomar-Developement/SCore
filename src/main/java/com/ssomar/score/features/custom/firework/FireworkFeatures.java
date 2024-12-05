@@ -1,15 +1,17 @@
-package com.ssomar.score.projectiles.features.fireworkFeatures;
+package com.ssomar.score.features.custom.firework;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.SCore;
+import com.ssomar.score.features.*;
+import com.ssomar.score.features.custom.firework.explosion.group.FireworkExplosionGroupFeature;
+import com.ssomar.score.features.editor.GenericFeatureParentEditor;
+import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.FireworkEffectTypeFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.list.ListBukkitColorFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.FireworkEffect;
@@ -19,6 +21,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -28,9 +31,14 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, FireworkFeatures, FireworkFeaturesEditor, FireworkFeaturesEditorManager> implements SProjectileFeatureInterface {
+public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, FireworkFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements SProjectileFeatureInterface, FeatureForItem {
 
     private IntegerFeature lifeTime;
+
+    // NEW 24/11/2024
+    private FireworkExplosionGroupFeature explosions;
+
+    // OLD
     private ListBukkitColorFeature colors;
     private ListBukkitColorFeature fadeColors;
     private FireworkEffectTypeFeature type;
@@ -43,9 +51,11 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
     @Override
     public void reset() {
         this.lifeTime = new IntegerFeature(this, Optional.empty(), FeatureSettingsSCore.lifeTime);
-        this.colors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.colors, false, Optional.empty());
-        this.fadeColors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.fadeColors, false, Optional.empty());
+        this.explosions = new FireworkExplosionGroupFeature(this, true);
+
         this.type = new FireworkEffectTypeFeature(this, Optional.empty(), FeatureSettingsSCore.type);
+        this.colors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.colors, true, Optional.empty());
+        this.fadeColors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.fadeColors, true, Optional.empty());
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
@@ -61,9 +71,11 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
                 builder.with(type.getValue().get());
                 builder.withColor(colors.getValue());
                 meta.addEffect(builder.build());
-                meta.setPower(1);
+                //meta.setPower(1);
                 firework.setFireworkMeta(meta);
             }
+
+            explosions.transformTheProjectile(firework, launcher, materialLaunched);
         }
     }
 
@@ -73,6 +85,8 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
         if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
             errors.addAll(lifeTime.load(plugin, section, isPremiumLoading));
+            errors.addAll(explosions.load(plugin, section, isPremiumLoading));
+
             errors.addAll(colors.load(plugin, section, isPremiumLoading));
             errors.addAll(fadeColors.load(plugin, section, isPremiumLoading));
             errors.addAll(type.load(plugin, section, isPremiumLoading));
@@ -86,6 +100,8 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
         lifeTime.save(section);
+        explosions.save(section);
+
         colors.save(section);
         fadeColors.save(section);
         type.save(section);
@@ -116,6 +132,8 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
     public FireworkFeatures clone(FeatureParentInterface newParent) {
         FireworkFeatures clone = new FireworkFeatures(newParent);
         clone.setLifeTime(lifeTime.clone(clone));
+        clone.setExplosions(explosions.clone(clone));
+
         clone.setColors(colors.clone(clone));
         clone.setFadeColors(fadeColors.clone(clone));
         clone.setType(type.clone(clone));
@@ -126,9 +144,12 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
         features.add(lifeTime);
-        features.add(colors);
-        features.add(fadeColors);
-        features.add(type);
+        features.add(explosions);
+
+        // Not anymore editable
+        //features.add(type);
+        //features.add(colors);
+        //features.add(fadeColors);
         return features;
     }
 
@@ -139,7 +160,10 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
 
     @Override
     public ConfigurationSection getConfigurationSection() {
-        return getParent().getConfigurationSection();
+        ConfigurationSection section = getParent().getConfigurationSection();
+        if (section.isConfigurationSection(this.getName())) {
+            return section.getConfigurationSection(this.getName());
+        } else return section.createSection(this.getName());
     }
 
     @Override
@@ -153,6 +177,8 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
             if (feature instanceof FireworkFeatures && feature.getName().equals(getName())) {
                 FireworkFeatures hiders = (FireworkFeatures) feature;
                 hiders.setLifeTime(lifeTime);
+                hiders.setExplosions(explosions);
+
                 hiders.setColors(colors);
                 hiders.setFadeColors(fadeColors);
                 hiders.setType(type);
@@ -168,6 +194,52 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
 
     @Override
     public void openEditor(@NotNull Player player) {
-        FireworkFeaturesEditorManager.getInstance().startEditing(player, this);
+        GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return !SCore.is1v11Less();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof FireworkMeta;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+
+        ItemMeta itemMeta = args.getMeta();
+        if (itemMeta instanceof FireworkMeta) {
+            FireworkMeta fireworkMeta = (FireworkMeta) itemMeta;
+            if (lifeTime.getValue().isPresent()) fireworkMeta.setPower(lifeTime.getValue().get());
+            if (!colors.getValue().isEmpty() && type.getValue().isPresent()) {
+                FireworkEffect.Builder builder = FireworkEffect.builder();
+                builder.withTrail().withFlicker();
+                if (!fadeColors.getValue().isEmpty()) builder.withFade(fadeColors.getValue());
+                builder.with(type.getValue().get());
+                builder.withColor(colors.getValue());
+                fireworkMeta.addEffect(builder.build());
+            }
+            explosions.applyOnItemMeta(args);
+        }
+
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        ItemMeta itemMeta = args.getMeta();
+        if (itemMeta instanceof FireworkMeta) {
+            FireworkMeta fireworkMeta = (FireworkMeta) itemMeta;
+            if(fireworkMeta.hasPower()) lifeTime.setValue(Optional.of(fireworkMeta.getPower()));
+            explosions.loadFromItemMeta(args);
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.FIREWORK;
     }
 }

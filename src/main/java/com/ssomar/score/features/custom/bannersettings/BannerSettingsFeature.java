@@ -1,34 +1,35 @@
 package com.ssomar.score.features.custom.bannersettings;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.SsomarDev;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.patterns.group.PatternsGroupFeature;
+import com.ssomar.score.features.custom.patterns.subgroup.PatternFeature;
+import com.ssomar.score.features.custom.patterns.subpattern.SubPatternFeature;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ColorIntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.block.Banner;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
-public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSettingsFeature, BannerSettingsFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSettingsFeature, BannerSettingsFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private ColorIntegerFeature color;
     private PatternsGroupFeature patterns;
@@ -150,4 +151,82 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public boolean isAvailable() {
+        return true;
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof BannerMeta;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+        ItemMeta meta = args.getMeta();
+        try {
+            if (meta instanceof BannerMeta) {
+                BannerMeta bmeta = (BannerMeta) meta;
+                // The color is in DATA MATERIAL example >> BLACK_BANNER
+                /* DyeColor color;
+                 if (config.getBannerSettings().getColor().getValue().isPresent()) {
+                    if ((color = DyeColor.getByColor(Color.fromRGB(config.getBannerSettings().getColor().getValue().get()))) != null) {
+                        bmeta.setBaseColor(color);
+                    }
+                    bmeta.setBaseColor(DyeColor.getByColor(Color.fromRGB(config.getBannerSettings().getColor().getValue().get())));
+                } */
+                if (!getPatterns().getMCPatterns().isEmpty())
+                    bmeta.setPatterns(getPatterns().getMCPatterns());
+            }
+            if (meta instanceof BlockStateMeta && (getColor().getValue().isPresent() || !getPatterns().getMCPatterns().isEmpty())) {
+                BlockStateMeta bmeta = (BlockStateMeta) meta;
+                Banner banner = (Banner) bmeta.getBlockState();
+                if (getColor().getValue().isPresent()) {
+                    DyeColor color;
+                    if ((color = DyeColor.getByColor(Color.fromRGB(getColor().getValue().get()))) != null) {
+                        banner.setBaseColor(color);
+                    }
+                }
+                if (!getPatterns().getMCPatterns().isEmpty())
+                    banner.setPatterns(getPatterns().getMCPatterns());
+                banner.update();
+                bmeta.setBlockState(banner);
+            }
+        } catch (Exception ignored) {
+            SsomarDev.testMsg("Error while applying BannerSettingsFeature on item meta", true);
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        ItemMeta meta = args.getMeta();
+        if (meta instanceof BlockStateMeta) {
+            BlockStateMeta bmeta = (BlockStateMeta) meta;
+            if (bmeta.getBlockState() instanceof Banner) {
+                Banner banner = (Banner) bmeta.getBlockState();
+                color.setValue(Optional.of(banner.getBaseColor().getColor().asRGB()));
+                int i = 0;
+                for (org.bukkit.block.banner.Pattern pattern : banner.getPatterns()) {
+                    PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
+                    Map<String, Object> map = pattern.serialize();
+                    int j = 0;
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        String id = "subpattern" + j;
+                        SubPatternFeature subPatternFeature = new SubPatternFeature(patternFeature, id);
+                        subPatternFeature.getObject().setValue(Optional.ofNullable(entry.getValue()));
+                        subPatternFeature.getString().setValue(Optional.ofNullable(entry.getKey()));
+                        patternFeature.getSubPattern().put(id, subPatternFeature);
+                        j++;
+                    }
+                    i++;
+                }
+            }
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.BANNER;
+    }
 }

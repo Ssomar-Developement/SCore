@@ -1,19 +1,20 @@
 package com.ssomar.score.features.custom.Instrument;
 
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.SCore;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.MusicIntrusmentFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MusicInstrumentMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatures, InstrumentFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatures, InstrumentFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
 
     private BooleanFeature enable;
     private MusicIntrusmentFeature instrument;
@@ -74,7 +75,7 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
         else
             finalDescription[finalDescription.length - 2] = "&7Enabled: &c&l✘";
 
-        if(instrument.getValue().isPresent())
+        if (instrument.getValue().isPresent())
             finalDescription[finalDescription.length - 1] = "&7Instrument: &e" + instrument.getValue().get().getKey().getKey();
         else
             finalDescription[finalDescription.length - 1] = "&7Instrument: &cNONE";
@@ -140,5 +141,48 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
     @Override
     public void openEditor(@NotNull Player player) {
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return SCore.is1v20Plus();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof MusicInstrumentMeta;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (!isAvailable() || !isApplicable(args)) return;
+
+        ItemMeta meta = args.getMeta();
+        try {
+            if (meta instanceof MusicInstrumentMeta && getEnable().getValue()) {
+                MusicInstrumentMeta bmeta = (MusicInstrumentMeta) meta;
+                if (getInstrument().getValue().isPresent()) {
+                    bmeta.setInstrument(getInstrument().getValue().get());
+                }
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+
+        if (!isAvailable() || !isApplicable(args)) return;
+
+        MusicInstrumentMeta bmeta = (MusicInstrumentMeta) args.getMeta();
+        if (bmeta.getInstrument() != null) {
+            getInstrument().setValue(Optional.ofNullable(bmeta.getInstrument()));
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.INSTRUMENT;
     }
 }

@@ -1,27 +1,38 @@
 package com.ssomar.score.utils.backward_compatibility;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.MapUtil;
 import org.bukkit.Keyed;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AttributeUtils {
+
+    private final static boolean DEBUG = true;
 
     public static Map<Object, String> getAttributes() {
         Map<Object, String> list = new HashMap<>();
         if (SCore.is1v21v2Plus()) {
             for (Keyed l : Registry.ATTRIBUTE) {
                 NamespacedKey key = l.getKey();
-                if(key.getNamespace().equals("minecraft")) {
+                if (key.getNamespace().equals("minecraft")) {
                     list.put(l, l.getKey().getKey().toUpperCase());
-                }
-                else list.put(l, l.getKey().toString());
+                } else list.put(l, l.getKey().toString());
             }
         } else {
             for (Object o : Attribute.class.getEnumConstants()) {
@@ -44,12 +55,12 @@ public class AttributeUtils {
 
     public static Attribute getAttribute(String string) {
         string = string.replace("minecraft:", "");
-        for(Map.Entry<Object, String> entry : getAttributes().entrySet()) {
-            if(entry.getValue().equalsIgnoreCase(string)) {
+        for (Map.Entry<Object, String> entry : getAttributes().entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(string)) {
                 return (Attribute) entry.getKey();
             }
         }
-        switch (string.toUpperCase()){
+        switch (string.toUpperCase()) {
             case "GENERIC_MAX_HEALTH":
                 return Attribute.MAX_HEALTH;
             case "GENERIC_FOLLOW_RANGE":
@@ -74,7 +85,131 @@ public class AttributeUtils {
                 return Attribute.LUCK;
             case "GENERIC_JUMP_STRENGTH":
                 return Attribute.JUMP_STRENGTH;
+            case "GENERIC_FALL_DAMAGE_MULTIPLIER":
+                return Attribute.FALL_DAMAGE_MULTIPLIER;
+            case "GENERIC_MAX_ABSORPTION":
+                return Attribute.MAX_ABSORPTION;
+            case "GENERIC_SAFE_FALL_DISTANCE":
+                return Attribute.SAFE_FALL_DISTANCE;
+            case "GENERIC_SCALE":
+                return Attribute.SCALE;
+            case "GENERIC_STEP_HEIGHT":
+                return Attribute.STEP_HEIGHT;
+            case "GENERIC_GRAVITY":
+                return Attribute.GRAVITY;
+            case "GENERIC_BURNING_TIME":
+                return Attribute.BURNING_TIME;
+            case "GENERIC_EXPLOSION_KNOCKBACK_RESISTANCE":
+                return Attribute.EXPLOSION_KNOCKBACK_RESISTANCE;
+            case "GENERIC_MOVEMENT_EFFICIENCY":
+                return Attribute.MOVEMENT_EFFICIENCY;
+            case "GENERIC_OXYGEN_BONUS":
+                return Attribute.OXYGEN_BONUS;
+            case "GENERIC_WATER_MOVEMENT_EFFICIENCY":
+                return Attribute.WATER_MOVEMENT_EFFICIENCY;
+            case "PLAYER_BLOCK_INTERACTION_RANGE":
+                return Attribute.BLOCK_INTERACTION_RANGE;
+            case "PLAYER_ENTITY_INTERACTION_RANGE":
+                return Attribute.ENTITY_INTERACTION_RANGE;
+            case "PLAYER_BLOCK_BREAK_SPEED":
+                return Attribute.BLOCK_BREAK_SPEED;
+            case "PLAYER_MINING_EFFICIENCY":
+                return Attribute.MINING_EFFICIENCY;
+            case "PLAYER_SNEAKING_SPEED":
+                return Attribute.SNEAKING_SPEED;
+            case "PLAYER_SUBMERGED_MINING_SPEED":
+                return Attribute.SUBMERGED_MINING_SPEED;
+            case "PLAYER_SWEEPING_DAMAGE_RATIO":
+                return Attribute.SWEEPING_DAMAGE_RATIO;
+            case "ZOMBIE_SPAWN_REINFORCEMENTS":
+                return Attribute.SPAWN_REINFORCEMENTS;
         }
         return null;
+    }
+
+    public static void addAttributeOnItemMeta(@NotNull ItemMeta meta, Material itemType, LinkedHashMap<Attribute, AttributeModifier> attributes, boolean keepDefaultItemAttributes, boolean keepExistingAttributes, boolean overrideExistingAttributes) {
+
+        /* remove ExistingAttributes if needed */
+        if (!keepExistingAttributes) {
+            SsomarDev.testMsg("REMOVE ALL EXISTING ATTRIBUTES", DEBUG);
+            Multimap<Attribute, AttributeModifier> reset = LinkedHashMultimap.create();
+            meta.setAttributeModifiers(reset);
+        }
+
+        /* remove ExistingAttributes if needed */
+        if (!keepDefaultItemAttributes) {
+            SsomarDev.testMsg("REMOVE ALL DEFAULT ATTRIBUTES", DEBUG);
+            if (!meta.hasAttributeModifiers()) {
+                for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                    Multimap<Attribute, AttributeModifier> invert = itemType.getDefaultAttributeModifiers(equipmentSlot);
+                    if (invert.isEmpty()) continue;
+                    SsomarDev.testMsg("add blank attribute for EquipmentSlot: " + equipmentSlot, DEBUG);
+                    for (Attribute col : invert.keySet()) {
+                        for (AttributeModifier att : invert.get(col)) {
+                            meta.addAttributeModifier(col, new AttributeModifier(att.getUniqueId(), att.getName(), 0, att.getOperation(), att.getSlot()));
+                        }
+                    }
+                }
+            }
+            //Multimap<Attribute, AttributeModifier> reset = LinkedHashMultimap.create();
+            //meta.setAttributeModifiers(reset);
+        }
+
+        if (meta.hasAttributeModifiers())
+            SsomarDev.testMsg("GET DEFAULT DAMAGE: " + meta.getAttributeModifiers(AttributeUtils.getAttribute("GENERIC_ATTACK_DAMAGE")), DEBUG);
+
+        /* add new attributes */
+        for (Attribute att : attributes.keySet()) {
+            AttributeModifier attModifier = attributes.get(att);
+            EquipmentSlot slot = attModifier.getSlot();
+            AtomicReference<AttributeModifier> toRemove = new AtomicReference<>();
+            // On supprime l'existant si besoin
+            meta.getAttributeModifiers(slot).forEach((attribute, modifier) -> {
+                if (attribute.equals(att)) {
+                    if (overrideExistingAttributes) {
+                        toRemove.set(modifier);
+                    }
+                }
+            });
+            if (toRemove.get() != null) {
+                meta.removeAttributeModifier(att, toRemove.get());
+            }
+            meta.addAttributeModifier(att, attributes.get(att));
+        }
+
+        /* add default attributes if needed */
+        if (SCore.is1v19Plus() && keepDefaultItemAttributes) {
+            if (meta.hasAttributeModifiers()) {
+                for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                    SsomarDev.testMsg("add default attributes for EquipmentSlot: " + equipmentSlot, DEBUG);
+                    Multimap<Attribute, AttributeModifier> defaultAttributes = itemType.getDefaultAttributeModifiers(equipmentSlot);
+                    for (Attribute col : defaultAttributes.keySet()) {
+                        for (AttributeModifier att : defaultAttributes.get(col)) {
+                            try {
+                                meta.addAttributeModifier(col, att);
+                            } catch (IllegalArgumentException e) {
+                                SsomarDev.testMsg("No add default attribute because already exist: " + col + " " + att, true);
+                            }
+                        }
+                    }
+                }
+            }
+           /* else {
+                else if (SCore.is1v19Plus() && !config.getAttributes().getKeepDefaultAttributes().getValue() && item.getType().isItem() && !SCore.is1v21Plus()) {
+                    Material material = item.getType();
+                    for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+                        SsomarDev.testMsg("add attributes for EquipmentSlot: " + equipmentSlot, DEBUG);
+                        Multimap<Attribute, AttributeModifier> invert = material.getDefaultAttributeModifiers(equipmentSlot);
+                        // Invert the default attributes *-1
+                        for (Attribute col : invert.keySet()) {
+                            for (AttributeModifier att : invert.get(col)) {
+                                result.put(col, new AttributeModifier(att.getUniqueId(), att.getName(), 0, att.getOperation(), att.getSlot()));
+                            }
+                        }
+                    }
+                }
+            }*/
+        }
+
     }
 }

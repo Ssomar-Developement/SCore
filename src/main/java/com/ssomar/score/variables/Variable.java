@@ -183,6 +183,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
     }
 
     public String getValue(Optional<OfflinePlayer> optPlayer, Optional<Integer> indexOpt) {
+        if(!forFeature.getValue().isPresent()) return "Invalid variable configuration";
         if (forFeature.getValue().get().equals(VariableForEnum.PLAYER)) {
             if (optPlayer.isPresent()) {
                 List<String> playerValues;

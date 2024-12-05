@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.executableevents.api.ExecutableEventsAPI;
 import com.ssomar.executableevents.executableevents.ExecutableEvent;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -29,22 +30,13 @@ public class EECooldown extends PlayerCommand {
 
         Optional<ExecutableEvent> eeOpt = ExecutableEventsAPI.getExecutableEventsManager().getExecutableEvent(id);
 
-        if(args.size() < 5){
-            if(eeOpt.isPresent()) {
+        if (eeOpt.isPresent()) {
+            if (args.size() < 5)
                 eeOpt.get().addCooldown(player.getPlayer(), number, ticks);
-            }
-        }else{
-            if(eeOpt.isPresent()) {
-                try {
-                    eeOpt.get().addCooldown(player.getPlayer(), number, ticks, args.get(4));
-                }catch(NullPointerException e){
-                    return;
-                }
-            }
+            else
+                eeOpt.get().addCooldown(player.getPlayer(), number, ticks, args.get(4));
         }
-
-
-
+        else SsomarDev.testMsg("EECooldown: ExecutableEvent not found", true);
     }
 
     @Override
@@ -81,4 +73,6 @@ public class EECooldown extends PlayerCommand {
     public ChatColor getExtraColor() {
         return null;
     }
+
+
 }
