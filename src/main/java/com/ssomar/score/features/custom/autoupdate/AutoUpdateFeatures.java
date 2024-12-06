@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.autoupdate;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -25,6 +26,7 @@ import java.util.List;
 public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatures, AutoUpdateFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature autoUpdateItem;
+    private BooleanFeature updateMaterial;
     private BooleanFeature updateName;
     private BooleanFeature updateLore;
     private BooleanFeature updateDurability;
@@ -41,6 +43,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     @Override
     public void reset() {
         this.autoUpdateItem = new BooleanFeature(this,  false, FeatureSettingsSCore.autoUpdateItem, false);
+        this.updateMaterial = new BooleanFeature(this, false, FeatureSettingsSCore.updateMaterial, false);
         this.updateName = new BooleanFeature(this, true, FeatureSettingsSCore.updateName, false);
         this.updateLore = new BooleanFeature(this,  true, FeatureSettingsSCore.updateLore, false);
         this.updateDurability = new BooleanFeature(this, false, FeatureSettingsSCore.updateDurability, false);
@@ -54,6 +57,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         errors.addAll(autoUpdateItem.load(plugin, config, isPremiumLoading));
+        errors.addAll(updateMaterial.load(plugin, config, isPremiumLoading));
         errors.addAll(updateName.load(plugin, config, isPremiumLoading));
         errors.addAll(updateLore.load(plugin, config, isPremiumLoading));
         errors.addAll(updateDurability.load(plugin, config, isPremiumLoading));
@@ -67,6 +71,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     public List<ResetSetting> getResetSettings(){
         List<ResetSetting> resetSettings = new ArrayList<>();
+        if(updateMaterial.getValue()) resetSettings.add(ResetSetting.MATERIAL);
         if(updateName.getValue()) resetSettings.add(ResetSetting.NAME);
         if(updateLore.getValue()) resetSettings.add(ResetSetting.LORE);
         if(updateDurability.getValue()) resetSettings.add(ResetSetting.DURABILITY);
@@ -80,6 +85,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     @Override
     public void save(ConfigurationSection config) {
         autoUpdateItem.save(config);
+        updateMaterial.save(config);
         updateName.save(config);
         updateLore.save(config);
         updateDurability.save(config);
@@ -96,48 +102,68 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public AutoUpdateFeatures initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 9];
+        int length = 9;
+        if(SCore.is1v20v5Plus()) length++;
+        String[] finalDescription = new String[getEditorDescription().length + length];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 9] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - length] = GUI.CLICK_HERE_TO_CHANGE;
+        length--;
+
         if (autoUpdateItem.getValue())
-            finalDescription[finalDescription.length - 8] = "&7AutoUpdate: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7AutoUpdate: &a&l✔";
         else
-            finalDescription[finalDescription.length - 8] = "&7AutoUpdate: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7AutoUpdate: &c&l✘";
+        length--;
+
+        if(!SCore.is1v20v5Plus())
+            finalDescription[finalDescription.length - length] = "&7Update Material: &6Only for 1.20.5+";
+        else if (updateMaterial.getValue())
+            finalDescription[finalDescription.length - length] = "&7Update Material: &a&l✔";
+        else
+            finalDescription[finalDescription.length - length] = "&7Update Material: &c&l✘";
+        length--;
 
         if (updateName.getValue())
-            finalDescription[finalDescription.length - 7] = "&7Update Name: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Name: &a&l✔";
         else
-            finalDescription[finalDescription.length - 7] = "&7Update Name: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Name: &c&l✘";
+        length--;
 
         if (updateLore.getValue())
-            finalDescription[finalDescription.length - 6] = "&7Update Lore: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Lore: &a&l✔";
         else
-            finalDescription[finalDescription.length - 6] = "&7Update Lore: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Lore: &c&l✘";
+        length--;
 
         if (updateDurability.getValue())
-            finalDescription[finalDescription.length - 5] = "&7Update Durability: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Durability: &a&l✔";
         else
-            finalDescription[finalDescription.length - 5] = "&7Update Durability: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Durability: &c&l✘";
+        length--;
 
         if (updateAttributes.getValue())
-            finalDescription[finalDescription.length - 4] = "&7Update Attributes: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Attributes: &a&l✔";
         else
-            finalDescription[finalDescription.length - 4] = "&7Update Attributes: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Attributes: &c&l✘";
+        length--;
 
         if (updateEnchants.getValue())
-            finalDescription[finalDescription.length - 3] = "&7Update Enchants: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Enchants: &a&l✔";
         else
-            finalDescription[finalDescription.length - 3] = "&7Update Enchants: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Enchants: &c&l✘";
+        length--;
 
         if (updateCustomModelData.getValue())
-            finalDescription[finalDescription.length - 2] = "&7Update Custom Model Data: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Custom Model Data: &a&l✔";
         else
-            finalDescription[finalDescription.length - 2] = "&7Update Custom Model Data: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Custom Model Data: &c&l✘";
+        length--;
 
         if (updateArmorSettings.getValue())
-            finalDescription[finalDescription.length - 1] = "&7Update Armor Settings: &a&l✔";
+            finalDescription[finalDescription.length - length] = "&7Update Armor Settings: &a&l✔";
         else
-            finalDescription[finalDescription.length - 1] = "&7Update Armor Settings: &c&l✘";
+            finalDescription[finalDescription.length - length] = "&7Update Armor Settings: &c&l✘";
+        length--;
 
         gui.createItem(GUI.GRINDSTONE, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -152,6 +178,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     public AutoUpdateFeatures clone(FeatureParentInterface newParent) {
         AutoUpdateFeatures dropFeatures = new AutoUpdateFeatures(newParent);
         dropFeatures.autoUpdateItem = autoUpdateItem.clone(dropFeatures);
+        dropFeatures.updateMaterial = updateMaterial.clone(dropFeatures);
         dropFeatures.updateName = updateName.clone(dropFeatures);
         dropFeatures.updateLore = updateLore.clone(dropFeatures);
         dropFeatures.updateDurability = updateDurability.clone(dropFeatures);
@@ -166,6 +193,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
         features.add(autoUpdateItem);
+        if(SCore.is1v20v5Plus()) features.add(updateMaterial);
         features.add(updateName);
         features.add(updateLore);
         features.add(updateDurability);
@@ -197,6 +225,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
             if (feature instanceof AutoUpdateFeatures) {
                 AutoUpdateFeatures hiders = (AutoUpdateFeatures) feature;
                 hiders.setAutoUpdateItem(autoUpdateItem);
+                hiders.setUpdateMaterial(updateMaterial);
                 hiders.setUpdateName(updateName);
                 hiders.setUpdateLore(updateLore);
                 hiders.setUpdateDurability(updateDurability);

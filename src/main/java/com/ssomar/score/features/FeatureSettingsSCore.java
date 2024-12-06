@@ -496,6 +496,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     autoUpdateFeatures("autoUpdateFeatures", "Auto Update Features", new String[]{"&7&oAuto update your EI"}, GUI.GRINDSTONE, false),
     autoUpdateItem("autoUpdateItem", "Auto Update Item", new String[]{"&7&oAutomatically update the item"}, null, false),
+    updateMaterial("updateMaterial", "Update Material", new String[]{"&7&oUpdate the material of the item"}, null, false),
     updateName("updateName", "Update Name", new String[]{"&7&oUpdate the name of the item"}, null, false),
     updateLore("updateLore", "Update Lore", new String[]{"&7&oUpdate the lore of the item"}, null, false),
     updateDurability("updateDurability", "Update Durability", new String[]{"&7&oUpdate the durability of the item"}, null, false),

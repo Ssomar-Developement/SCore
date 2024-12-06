@@ -260,8 +260,8 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
                 slot.setValue(Optional.ofNullable(AttributeSlot.fromEquipmentSlot(equippable.getSlot())));
                 enableSound.setValue(equippable.getEquipSound() != null);
                 sound.setValue(Optional.ofNullable(equippable.getEquipSound()));
-                model.setValue(Optional.of(equippable.getModel().toString()));
-                cameraOverlay.setValue(Optional.of(equippable.getCameraOverlay().toString()));
+                if(equippable.getModel() != null) model.setValue(Optional.of(equippable.getModel().toString()));
+                if(equippable.getCameraOverlay() != null) cameraOverlay.setValue(Optional.of(equippable.getCameraOverlay().toString()));
                 isDamageableOnHurt.setValue(equippable.isDamageOnHurt());
                 isDispensable.setValue(equippable.isDispensable());
                 isSwappable.setValue(equippable.isSwappable());
