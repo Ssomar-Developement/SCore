@@ -47,7 +47,7 @@ public class SetItemTooltipStyle extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "SET_ITEM_TOOLTIPSTYLE slot:-1 namespace:id";
+        return "SET_ITEM_TOOLTIPSTYLE slot:-1 tooltipModel:namespace:id";
     }
 
     @Override
