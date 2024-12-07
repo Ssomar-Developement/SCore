@@ -29,7 +29,9 @@ public class SetItemTooltipStyle extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         ItemStack item;
-        NamespacedKey material = NamespacedKey.fromString((String) sCommandToExec.getSettingValue("tooltipModel"));
+        String namespace = (String) sCommandToExec.getSettingValue("tooltipModel");
+        String namespacesplit = namespace.replace("-",":");
+        NamespacedKey material = NamespacedKey.fromString(namespacesplit);
         int slot = (int) sCommandToExec.getSettingValue("slot");
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
@@ -55,7 +57,7 @@ public class SetItemTooltipStyle extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "SET_ITEM_TOOLTIPSTYLE slot:-1 tooltipModel:namespace:id";
+        return "SET_ITEM_TOOLTIPSTYLE slot:-1 tooltipModel:namespace-id";
     }
 
     @Override
