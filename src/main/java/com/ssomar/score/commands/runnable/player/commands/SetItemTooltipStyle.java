@@ -45,6 +45,8 @@ public class SetItemTooltipStyle extends PlayerCommand {
         ItemMeta itemmeta = item.getItemMeta();
         SCore.plugin.getLogger().info("NAMESPACE DETECTED: " + itemmeta.getTooltipStyle().toString());
         itemmeta.setTooltipStyle(material);
+        itemmeta.setHideTooltip(true);
+        itemmeta.setHideTooltip(false);
         SCore.plugin.getLogger().info("NAMESPACE DETECTED: " + itemmeta.getTooltipStyle().toString());
 
     }
