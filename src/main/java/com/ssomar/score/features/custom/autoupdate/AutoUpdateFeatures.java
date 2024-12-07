@@ -102,8 +102,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public AutoUpdateFeatures initItemParentEditor(GUI gui, int slot) {
-        int length = 9;
-        if(SCore.is1v20v5Plus()) length++;
+        int length = 10;
         String[] finalDescription = new String[getEditorDescription().length + length];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - length] = GUI.CLICK_HERE_TO_CHANGE;

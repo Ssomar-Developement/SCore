@@ -265,7 +265,7 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
                 isDamageableOnHurt.setValue(equippable.isDamageOnHurt());
                 isDispensable.setValue(equippable.isDispensable());
                 isSwappable.setValue(equippable.isSwappable());
-                allowedEntities.setValues(new ArrayList<>(equippable.getAllowedEntities()));
+                if(equippable.getAllowedEntities() != null) allowedEntities.setValues(new ArrayList<>(equippable.getAllowedEntities()));
             }
         }
     }
