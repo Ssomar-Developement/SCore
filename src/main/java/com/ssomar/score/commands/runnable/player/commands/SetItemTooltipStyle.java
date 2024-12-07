@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -30,8 +31,8 @@ public class SetItemTooltipStyle extends PlayerCommand {
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         ItemStack item;
         String namespace = (String) sCommandToExec.getSettingValue("tooltipModel");
-        String namespacesplit = namespace.replace("-",":");
-        NamespacedKey material = NamespacedKey.fromString(namespacesplit);
+        // String namespacesplit = namespace.replace("-",":");
+        NamespacedKey material = NamespacedKey.fromString(namespace);
         int slot = (int) sCommandToExec.getSettingValue("slot");
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
@@ -42,8 +43,9 @@ public class SetItemTooltipStyle extends PlayerCommand {
         }
 
         ItemMeta itemmeta = item.getItemMeta();
-
+        SCore.plugin.getLogger().info("NAMESPACE DETECTED: " + itemmeta.getTooltipStyle().toString());
         itemmeta.setTooltipStyle(material);
+        SCore.plugin.getLogger().info("NAMESPACE DETECTED: " + itemmeta.getTooltipStyle().toString());
 
     }
 
@@ -57,7 +59,7 @@ public class SetItemTooltipStyle extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "SET_ITEM_TOOLTIPSTYLE slot:-1 tooltipModel:namespace-id";
+        return "SET_ITEM_TOOLTIPSTYLE slot:-1 tooltipModel:namespace:id";
     }
 
     @Override
