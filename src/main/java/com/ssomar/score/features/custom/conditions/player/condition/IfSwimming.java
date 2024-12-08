@@ -1,6 +1,5 @@
 package com.ssomar.score.features.custom.conditions.player.condition;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
@@ -17,7 +16,6 @@ public class IfSwimming extends PlayerConditionFeature<BooleanFeature, IfSwimmin
     @Override
     public boolean verifCondition(PlayerConditionRequest request) {
         Player player = request.getPlayer();
-        if(SCore.is1v12Less()) return false;
         if (getCondition().getValue(request.getSp()) && !player.isSwimming()) {
             runInvalidCondition(request);
             return false;

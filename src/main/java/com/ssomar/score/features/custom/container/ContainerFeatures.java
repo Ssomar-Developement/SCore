@@ -211,7 +211,7 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
         BlockData blockData = args.getData();
         // Because before 1.21 it was not possible to create a blockstate from non existing block
         if (!SCore.is1v21Plus())
-            return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData.getMaterial().toString().contains("SHULKER_BOX") || (SCore.is1v18Plus() && blockData instanceof Barrel) || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20v4Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
+            return blockData instanceof Chest /*|| blockData instanceof EnderChest -> it isnt a containe*/ || blockData instanceof Hopper || blockData instanceof Furnace || blockData instanceof Dispenser || blockData instanceof BrewingStand || blockData.getMaterial().toString().contains("SHULKER_BOX") || (/* .type only available in 1.19 */ SCore.is1v19Plus() && blockData instanceof Barrel) || blockData instanceof Smoker || blockData instanceof BlastFurnace || (SCore.is1v20v4Plus() && blockData instanceof org.bukkit.block.data.type.Crafter);
         else return args.getBlockState() instanceof Container;
     }
 

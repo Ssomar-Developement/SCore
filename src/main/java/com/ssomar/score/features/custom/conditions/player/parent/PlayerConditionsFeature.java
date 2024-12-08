@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.player.parent;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
@@ -50,7 +51,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfNotBlocking(this));
         conditions.add(new IfGliding(this));
         conditions.add(new IfNotGliding(this));
-        if(!SCore.is1v11Less()) {
+        if(!SCore.is1v12Less()) {
             conditions.add(new IfSwimming(this));
             conditions.add(new IfNotSwimming(this));
         }
@@ -149,6 +150,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
                         messageSender.sendMessage(launcher.get(), error);
                     }
                 }
+                SsomarDev.testMsg("Error in condition: " + condition.getName(), true);
                 return false;
             }
         }

@@ -121,8 +121,8 @@ public class LocatedLaunch extends PlayerCommand {
                 eyeLoc2.setYaw(newYaw);
 
 
-                /* idk why I coded this part but it seems to work */
-                int multiply = 2;
+                /* idk why I coded this part */
+                /*int multiply = 2;
 
                 while (searchBlockOrEntity && multiply < 100) {
                     v = eyeLoc2.getDirection().clone();
@@ -141,7 +141,7 @@ public class LocatedLaunch extends PlayerCommand {
                     }
                     multiply++;
                 }
-                /* end of idk */
+                // end of idk*/
 
                 Vector last = loc.toVector().subtract(toLaunchLoc.toVector());
                 last = last.normalize();
@@ -161,8 +161,10 @@ public class LocatedLaunch extends PlayerCommand {
                 }
 
                 if (projectile != null) {
-                    projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
+                   projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
                 }
+
+
 
                 if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
                     ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
