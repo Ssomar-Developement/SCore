@@ -6,13 +6,13 @@ import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReaderManager;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import com.ssomar.score.utils.writerreader.WriterReaderPersistentDataContainer;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +37,7 @@ public abstract class VariableReal<T> {
         else value = config.getDefaultValue();
     }
 
-    public VariableReal(VariableFeature<T> config, WriterReaderPersistentDataContainer dataContainer) {
+    public VariableReal(VariableFeature<T> config, PersistentDataContainer dataContainer) {
         this.config = config;
         this.itemKeyWriterReader = ItemKeyWriterReaderManager.getInstance().getItemKeyWriterReader();
 
@@ -61,19 +61,19 @@ public abstract class VariableReal<T> {
 
     public abstract Optional<T> readValue(ItemStack item, DynamicMeta dMeta);
 
-    public abstract Optional<T> readValue(WriterReaderPersistentDataContainer dataContainer);
+    public abstract Optional<T> readValue(PersistentDataContainer dataContainer);
 
     public abstract Optional<T> readValue(ConfigurationSection configurationSection);
 
     public abstract void writeValue(ItemStack item, DynamicMeta dMeta);
 
-    public abstract void writeValue(WriterReaderPersistentDataContainer dataContainer);
+    public abstract void writeValue(PersistentDataContainer dataContainer);
 
     public abstract void writeValue(ConfigurationSection configurationSection);
 
     public abstract void modifVariable(ItemStack item, @NotNull DynamicMeta dMeta, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp);
 
-    public abstract void modifVariable(WriterReaderPersistentDataContainer dataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp);
+    public abstract void modifVariable(PersistentDataContainer dataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp);
 
     public abstract void modifVariable(@NotNull ConfigurationSection configurationSection, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp);
 

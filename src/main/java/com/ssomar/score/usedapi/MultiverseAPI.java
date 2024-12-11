@@ -52,4 +52,23 @@ public class MultiverseAPI {
         }
         return worlds;
     }
+
+    public static List<World> getWorldsCB() {
+        List<World> worlds = new ArrayList<>();
+        try {
+            Core core;
+            core = (Core) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+            MVWorldManager multiverseManager = core.getMVWorldManager();
+            for (MultiverseWorld mv : multiverseManager.getMVWorlds()) {
+                worlds.add(mv.getCBWorld());
+            }
+        } catch (NoClassDefFoundError e) {
+            SCore.hasMultiverse = false;
+            for (World w : Bukkit.getWorlds()) {
+                worlds.add(w);
+            }
+            return worlds;
+        }
+        return worlds;
+    }
 }

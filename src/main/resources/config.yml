@@ -15,7 +15,6 @@ dbName: myDB
 dbUser: root
 dbPassword: rootPassword
 reduceDamageIndicatorWithProtolcolLib: false # if you have ProtocolLib installed, you can reduce the damage indicator amount (The amount of hearts that are displayed when you take damage)
-jetMinionsGenerateBreakActivator : false
 silenceOutputs:
   - "blacklist the sentence here"
 disableCustomMetadataOnEntities: false # to disable the metadata fromSpawner and bowForce to be added to entities

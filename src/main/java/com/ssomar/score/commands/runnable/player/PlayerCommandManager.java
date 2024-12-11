@@ -76,7 +76,6 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new AddItemEnchantment());
         commands.add(new SortInventory());
         commands.add(new Oxygen());
-        commands.add(new Bossbar());
         commands.add(new RemoveEnchantment());
         commands.add(new Chat());
         commands.add(new ForceDrop());
@@ -89,6 +88,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new SetArmorTrim());
         /* No EntityToggleGlideEvent in 1.11 -*/
         if (!SCore.is1v11Less()) {
+            commands.add(new Bossbar());
             commands.add(new Actionbar());
             commands.add(new OpenEnderchest());
         }

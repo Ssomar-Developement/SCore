@@ -1,6 +1,7 @@
 package com.ssomar.score.utils.emums;
 
 public enum ResetSetting {
+    MATERIAL,
     NAME,
     LORE,
     DURABILITY,

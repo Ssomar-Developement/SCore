@@ -4,7 +4,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Worth.WorthItem;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.usedapi.Dependency;
@@ -21,24 +21,26 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /* STRIKELIGHTNING */
 public class SellContent extends BlockCommand {
+
+    public SellContent() {
+        CommandSetting priceBoost = new CommandSetting("priceBoost", 0, Double.class, 1.0);
+        CommandSetting deleteUnsellable = new CommandSetting("deleteUnsellable", 1, Boolean.class, false);
+        List<CommandSetting> settings = getSettings();
+        settings.add(priceBoost);
+        settings.add(deleteUnsellable);
+        setNewSettingsMode(true);
+    }
 
     private static final boolean DEBUG = true;
 
     @Override
     public void run(@Nullable Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        SsomarDev.testMsg("block type : " + block.getType(), DEBUG);
-        SsomarDev.testMsg("SellContent activated > container ? " + (block.getState() instanceof Container) + " player ? " + (p != null), DEBUG);
 
-
-        double priceBoost = 1;
-        if (args.size() >= 1) {
-            priceBoost = Double.valueOf(args.get(0));
-        }
+        double priceBoost = (double) sCommandToExec.getSettingValue("priceBoost");
+        boolean deleteUnsellable = (boolean) sCommandToExec.getSettingValue("deleteUnsellable");
 
         if (block.getState() instanceof Container && p != null) {
             Container container = (Container) block.getState();
@@ -57,6 +59,8 @@ public class SellContent extends BlockCommand {
                         }
                     }
                     else if(Dependency.CMI.isEnabled()){
+                        int quantity = item.getAmount();
+                        item.setAmount(1);
                         WorthItem worth = CMI.getInstance().getWorthManager().getWorth(item);
                         if (worth == null){
                             // Worthless item so we can return null or 0D, whatever is needed in your case
@@ -64,9 +68,10 @@ public class SellContent extends BlockCommand {
                         }
                         // Sell price defines actual worth of the file
                         Double sellPrice = worth.getSellPrice();
-                        amount += sellPrice;
+                        amount += sellPrice*quantity;
                         item.setAmount(0);
                     }
+                    if(deleteUnsellable) item.setAmount(0);
                 }
             }
             if (amount > 0) {
@@ -80,17 +85,6 @@ public class SellContent extends BlockCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-
-        if (args.size() >= 1) {
-            ArgumentChecker ac = checkDouble(args.get(0), isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("SELL_CONTENT");
@@ -99,7 +93,7 @@ public class SellContent extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SELL_CONTENT [price_boost]";
+        return "SELL_CONTENT priceBoost:1.0 deleteUnsellable:false";
     }
 
     @Override

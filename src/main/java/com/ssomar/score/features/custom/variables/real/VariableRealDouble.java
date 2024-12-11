@@ -9,10 +9,11 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import com.ssomar.score.utils.writerreader.WriterReaderPersistentDataContainer;
+import com.ssomar.score.utils.writer.NameSpaceKeyWriterReader;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,8 +32,8 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
         super(config, item, dMeta);
     }
 
-    public VariableRealDouble(VariableFeature<Double> config, WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
-        super(config, writerReaderPersistentDataContainer);
+    public VariableRealDouble(VariableFeature<Double> config, PersistentDataContainer dataContainer) {
+        super(config, dataContainer);
     }
 
     public VariableRealDouble(VariableFeature<Double> config, ConfigurationSection configurationSection) {
@@ -54,16 +55,16 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     }
 
     @Override
-    public Optional<Double> readValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
-        writerReaderPersistentDataContainer.writeDoubleIfNull((SPlugin) SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
+    public Optional<Double> readValue(PersistentDataContainer dataContainer) {
+        NameSpaceKeyWriterReader.writeDoubleIfNull((SPlugin) SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
         Optional<Double> value;
         Optional<Double> potentialOldEIValue;
-        if (SCore.hasExecutableItems && (potentialOldEIValue = writerReaderPersistentDataContainer.readDouble(ExecutableItems.plugin, "EI-" + getConfig().getVariableName().getValue().get().toUpperCase())).isPresent()) {
+        if (SCore.hasExecutableItems && (potentialOldEIValue = NameSpaceKeyWriterReader.readDouble(ExecutableItems.plugin, dataContainer, "EI-" + getConfig().getVariableName().getValue().get().toUpperCase())).isPresent()) {
             value = potentialOldEIValue;
             setValue(value.get());
-            writeValue(writerReaderPersistentDataContainer);
+            writeValue(dataContainer);
         } else
-            value = writerReaderPersistentDataContainer.readDouble(SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
+            value = NameSpaceKeyWriterReader.readDouble(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
         return value;
     }
 
@@ -80,8 +81,8 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     }
 
     @Override
-    public void writeValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
-        writerReaderPersistentDataContainer.writeDouble(SCore.plugin,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
+    public void writeValue(PersistentDataContainer dataContainer) {
+        NameSpaceKeyWriterReader.writeDouble(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
     }
 
     @Override
@@ -117,9 +118,9 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
     }
 
     @Override
-    public void modifVariable(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
+    public void modifVariable(PersistentDataContainer dataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
         modifVariable(update, p, sp);
-        writeValue(writerReaderPersistentDataContainer);
+        writeValue(dataContainer);
     }
 
     @Override

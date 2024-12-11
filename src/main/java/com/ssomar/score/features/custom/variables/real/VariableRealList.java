@@ -8,10 +8,11 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import com.ssomar.score.utils.writerreader.WriterReaderPersistentDataContainer;
+import com.ssomar.score.utils.writer.NameSpaceKeyWriterReader;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,8 +27,8 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
         super(config, item, dMeta);
     }
 
-    public VariableRealList(VariableFeature<List<String>> config, WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
-        super(config, writerReaderPersistentDataContainer);
+    public VariableRealList(VariableFeature<List<String>> config, PersistentDataContainer dataContainer) {
+        super(config, dataContainer);
     }
 
     public VariableRealList(VariableFeature<List<String>> config, ConfigurationSection configurationSection) {
@@ -43,10 +44,10 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     }
 
     @Override
-    public Optional<List<String>> readValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
-        writerReaderPersistentDataContainer.writeListIfNull((SPlugin) SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
+    public Optional<List<String>> readValue(PersistentDataContainer dataContainer) {
+        NameSpaceKeyWriterReader.writeListIfNull((SPlugin) SCore.plugin,dataContainer, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
         Optional<List<String>> value;
-        value = writerReaderPersistentDataContainer.readList(SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
+        value = NameSpaceKeyWriterReader.readList(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
         return value;
     }
 
@@ -63,8 +64,8 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     }
 
     @Override
-    public void writeValue(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
-        writerReaderPersistentDataContainer.writeList(SCore.plugin, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
+    public void writeValue(PersistentDataContainer dataContainer) {
+        NameSpaceKeyWriterReader.writeList(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), getValue());
     }
 
     @Override
@@ -104,9 +105,9 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
     }
 
     @Override
-    public void modifVariable(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
+    public void modifVariable(PersistentDataContainer dataContainer, VariableUpdateFeature update, @Nullable Player p, @Nullable StringPlaceholder sp) {
         modifVariable(update, p, sp);
-        writeValue(writerReaderPersistentDataContainer);
+        writeValue(dataContainer);
     }
 
     @Override

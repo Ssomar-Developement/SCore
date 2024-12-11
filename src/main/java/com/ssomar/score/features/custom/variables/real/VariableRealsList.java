@@ -3,9 +3,9 @@ package com.ssomar.score.features.custom.variables.real;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
-import com.ssomar.score.utils.writerreader.WriterReaderPersistentDataContainer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,9 +38,9 @@ public class VariableRealsList extends ArrayList<VariableReal> {
         }
     }
 
-    public void save(WriterReaderPersistentDataContainer writerReaderPersistentDataContainer) {
+    public void save(PersistentDataContainer dataContainer) {
         for(VariableReal vR : this){
-            vR.writeValue(writerReaderPersistentDataContainer);
+            vR.writeValue(dataContainer);
         }
     }
 
@@ -120,7 +120,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
         }
     }
 
-    public void buildWithCustomValues(Map<String, String> variables, WriterReaderPersistentDataContainer writerReaderPersistentDataContainer, @Nullable UUID owner){
+    public void buildWithCustomValues(Map<String, String> variables, PersistentDataContainer dataContainer, @Nullable UUID owner){
 
         if(!this.isEmpty()) {
             SsomarDev.testMsg("NOT EMPTY", DEBUG);
@@ -152,7 +152,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                             vRS.setValue(value);
                         }
                         SsomarDev.testMsg("WRITE VALUE for "+key +">>>>" + vR.toString(), DEBUG);
-                        vR.writeValue(writerReaderPersistentDataContainer);
+                        vR.writeValue(dataContainer);
                     }
                 }
             }

@@ -71,4 +71,26 @@ public class AllWorldManager {
 
         return worlds;
     }
+
+    public static List<World> getWorldsCB() {
+        List<World> worlds = new ArrayList<>();
+
+        if (SCore.hasMultiverse) {
+            worlds.addAll(MultiverseAPI.getWorldsCB());
+        }
+
+        if(SCore.hasBentoBox){
+            for(World s : BentoBoxAPI.getWorldsCB()){
+                if(!worlds.contains(s)) worlds.add(s);
+            }
+        }
+
+        for(World w : Bukkit.getWorlds()){
+            if(!worlds.contains(w)){
+                worlds.add(w);
+            }
+        }
+
+        return worlds;
+    }
 }

@@ -30,8 +30,6 @@ public class GeneralConfig extends Config {
 
     private boolean reduceDamageIndicatorWithProtolcolLib;
 
-    private boolean jetMinionsGenerateBreakActivator;
-
     private boolean debugCheckDamages;
 
     private boolean loopKillMode;
@@ -77,7 +75,7 @@ public class GeneralConfig extends Config {
         dbUser = config.getString("dbUser", "");
         dbPassword = config.getString("dbPassword", "");
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
-        jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
+       // jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
         silenceOutputs = config.getStringList("silenceOutputs");
         debugCheckDamages = config.getBoolean("debugCheckDamages", false);
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
