@@ -690,6 +690,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public void onReload() {
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks...");
+        RunnableManager.getInstance().forceRunTasks();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
         GeneralConfig.getInstance().reload();
 
         LoopManager.getInstance();

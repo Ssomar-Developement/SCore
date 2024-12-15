@@ -34,6 +34,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     private BooleanFeature updateEnchants;
     private BooleanFeature updateCustomModelData;
     private BooleanFeature updateArmorSettings;
+    private BooleanFeature updateHiders;
 
     public AutoUpdateFeatures(FeatureParentInterface parent) {
         super(parent, FeatureSettingsSCore.autoUpdateFeatures);
@@ -51,6 +52,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         this.updateEnchants = new BooleanFeature(this, false, FeatureSettingsSCore.updateEnchants, false);
         this.updateCustomModelData = new BooleanFeature(this, false, FeatureSettingsSCore.updateCustomModelData, false);
         this.updateArmorSettings = new BooleanFeature(this, false, FeatureSettingsSCore.updateArmorSettings, false);
+        this.updateHiders = new BooleanFeature(this, false, FeatureSettingsSCore.updateHiders, false);
     }
 
     @Override
@@ -65,6 +67,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         errors.addAll(updateEnchants.load(plugin, config, isPremiumLoading));
         errors.addAll(updateCustomModelData.load(plugin, config, isPremiumLoading));
         errors.addAll(updateArmorSettings.load(plugin, config, isPremiumLoading));
+        errors.addAll(updateHiders.load(plugin, config, isPremiumLoading));
 
         return errors;
     }
@@ -79,6 +82,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         if(updateEnchants.getValue()) resetSettings.add(ResetSetting.ENCHANTS);
         if(updateCustomModelData.getValue()) resetSettings.add(ResetSetting.CUSTOM_MODEL_DATA);
         if(updateArmorSettings.getValue()) resetSettings.add(ResetSetting.ARMOR_SETTINGS);
+        if(updateHiders.getValue()) resetSettings.add(ResetSetting.HIDERS);
         return resetSettings;
     }
 
@@ -93,6 +97,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         updateEnchants.save(config);
         updateCustomModelData.save(config);
         updateArmorSettings.save(config);
+        updateHiders.save(config);
     }
 
     @Override
@@ -102,7 +107,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public AutoUpdateFeatures initItemParentEditor(GUI gui, int slot) {
-        int length = 10;
+        int length = 11;
         String[] finalDescription = new String[getEditorDescription().length + length];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - length] = GUI.CLICK_HERE_TO_CHANGE;
@@ -164,6 +169,12 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
             finalDescription[finalDescription.length - length] = "&7Update Armor Settings: &c&l✘";
         length--;
 
+        if (updateHiders.getValue())
+            finalDescription[finalDescription.length - length] = "&7Update Hiders: &a&l✔";
+        else
+            finalDescription[finalDescription.length - length] = "&7Update Hiders: &c&l✘";
+        length--;
+
         gui.createItem(GUI.GRINDSTONE, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
@@ -185,6 +196,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         dropFeatures.updateEnchants = updateEnchants.clone(dropFeatures);
         dropFeatures.updateCustomModelData = updateCustomModelData.clone(dropFeatures);
         dropFeatures.updateArmorSettings = updateArmorSettings.clone(dropFeatures);
+        dropFeatures.updateHiders = updateHiders.clone(dropFeatures);
         return dropFeatures;
     }
 
@@ -200,6 +212,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         features.add(updateEnchants);
         features.add(updateCustomModelData);
         features.add(updateArmorSettings);
+        features.add(updateHiders);
         return features;
     }
 
@@ -232,6 +245,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
                 hiders.setUpdateEnchants(updateEnchants);
                 hiders.setUpdateCustomModelData(updateCustomModelData);
                 hiders.setUpdateArmorSettings(updateArmorSettings);
+                hiders.setUpdateHiders(updateHiders);
             }
         }
     }

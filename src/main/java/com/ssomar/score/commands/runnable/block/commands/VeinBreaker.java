@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
@@ -12,7 +13,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -51,9 +51,19 @@ public class VeinBreaker extends BlockCommand {
      * Y 6
      **/
 
+    public VeinBreaker() {
+        CommandSetting maxVeinSize = new CommandSetting("maxVeinSize", 0, Integer.class, 10, true);
+        CommandSetting triggerEvent = new CommandSetting("triggerEvent", 1, Boolean.class, true, true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(maxVeinSize);
+        settings.add(triggerEvent);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
+        int maxVeinSize = (int) sCommandToExec.getSettingValue("maxVeinSize");
+        boolean triggerEvent = (boolean) sCommandToExec.getSettingValue("triggerEvent");
         ActionInfo aInfo = sCommandToExec.getActionInfo();
         Material oldMaterial = aInfo.getOldBlockMaterial();
 
@@ -72,25 +82,15 @@ public class VeinBreaker extends BlockCommand {
                     }
                 }
 
-                int veinSize = 120;
-                try {
-                    veinSize = Integer.parseInt(args.get(0));
-                } catch (Exception ignored) {}
-
-                boolean triggerevent = true;
-                if(args.size() >= 3) {
-                    if (args.get(2).equalsIgnoreCase("false")) triggerevent = false;
-                }
-
                 List<Block> vein;
                 UUID pUUID = null;
                 if (p != null) pUUID = p.getUniqueId();
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerevent, true);
+                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerEvent, true);
 
-                vein = getVein(block, oldMaterial, veinSize);
+                vein = getVein(block, oldMaterial, maxVeinSize);
 
                 for (Block b : vein) {
-                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerevent, true);
+                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerEvent, true);
                 }
             }
         };
@@ -106,6 +106,29 @@ public class VeinBreaker extends BlockCommand {
     public void fillVein(List<Block> vein, Block block, Material oldMaterial, int veinSize) {
 
         Location loc = block.getLocation();
+        List<Location> toCheck = new ArrayList<>();
+        // this order is important (check direct connections first)
+        toCheck.add(loc.clone().add(0, 1, 0));
+        toCheck.add(loc.clone().add(0, -1, 0));
+        toCheck.add(loc.clone().add(0, 0, 1));
+        toCheck.add(loc.clone().add(0, 0, -1));
+        toCheck.add(loc.clone().add(1, 0, 0));
+        toCheck.add(loc.clone().add(-1, 0, 0));
+
+        for (Location l : toCheck) {
+
+            if (vein.size() >= veinSize) return;
+
+            Block newBlock;
+            if ((newBlock = l.getBlock()).getType().equals(oldMaterial)) {
+                if (!vein.contains(newBlock)) {
+                    vein.add(newBlock);
+                    this.fillVein(vein, newBlock, oldMaterial, veinSize);
+                }
+            }
+        }
+
+        // this order is important (check other connections last)
         int radius = 1;
         for (int y = -radius; y < radius + 1; y++) {
             for (int x = -radius; x < radius + 1; x++) {
@@ -113,10 +136,12 @@ public class VeinBreaker extends BlockCommand {
 
                     if (y == 0 && z == 0 && x == 0) continue;
 
-                    if (vein.size() > veinSize) return;
+                    if (vein.size() >= veinSize) return;
 
                     Location newLoc = loc.clone();
                     newLoc.add(x, y, z);
+
+                    if (toCheck.contains(newLoc)) continue;
                     Block newBlock;
 
                     if ((newBlock = newLoc.getBlock()).getType().equals(oldMaterial)) {
@@ -131,12 +156,6 @@ public class VeinBreaker extends BlockCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("VEIN_BREAKER");
@@ -145,7 +164,7 @@ public class VeinBreaker extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "VEIN_BREAKER [Max_vein_size] [trigger BREAK event, default true]";
+        return "VEIN_BREAKER maxVeinSize:10 triggerEvent:true";
     }
 
     @Override

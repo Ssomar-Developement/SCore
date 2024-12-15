@@ -504,6 +504,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     updateEnchants("updateEnchants", "Update Enchants", new String[]{"&7&oUpdate the enchants of the item"}, null, false),
     updateCustomModelData("updateCustomModelData", "Update Custom Model Data", new String[]{"&7&oUpdate the custom model data of the item"}, null, false),
     updateArmorSettings("updateArmorSettings", "Update Armor Settings", new String[]{"&7&oUpdate the armor settings of the item"}, null, false),
+    updateHiders("updateHiders", "Update Hiders", new String[]{"&7&oUpdate the hide flags of the item"}, null, false),
 
 
     brewingStandFeatures("brewingStandFeatures", "Brewing Stand Features", new String[]{"&7&oFeatures for", "&7&obrewing stand"}, Material.BREWING_STAND, true),
