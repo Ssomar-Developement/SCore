@@ -189,6 +189,11 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Material nextMaterial(Material material) {
         boolean next = false;
         for (Material check : getSortMaterials()) {

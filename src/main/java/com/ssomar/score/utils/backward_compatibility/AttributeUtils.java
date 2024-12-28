@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AttributeUtils {
 
-    private final static boolean DEBUG = true;
+    private final static boolean DEBUG = false;
 
     public static Map<Object, String> getAttributes() {
         Map<Object, String> list = new HashMap<>();
@@ -34,7 +34,7 @@ public class AttributeUtils {
                     list.put(l, l.getKey().getKey().toUpperCase());
                 } else list.put(l, l.getKey().toString());
             }
-        } else {
+        } else if (!SCore.is1v8()) {
             for (Object o : Attribute.class.getEnumConstants()) {
                 // Use reflection to get .name()
                 try {
@@ -188,7 +188,7 @@ public class AttributeUtils {
                             try {
                                 meta.addAttributeModifier(col, att);
                             } catch (IllegalArgumentException e) {
-                                SsomarDev.testMsg("No add default attribute because already exist: " + col + " " + att, true);
+                                SsomarDev.testMsg("No add default attribute because already exist: " + col + " " + att, DEBUG);
                             }
                         }
                     }

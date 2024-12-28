@@ -14,8 +14,8 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.list.ListColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import eu.decentsoftware.holograms.api.DHAPI;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +24,10 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.inventory.ItemStack;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -215,7 +216,24 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 }
                 return holo.getPosition().toLocation();
             } else {
-                return null;
+
+                if(SCore.is1v20v4Plus()){
+                    Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
+                    // Because Textdisplay doesnt have yaw, and it causes problem for remove if we let it.
+                    loc.setYaw(0);
+                    TextDisplay textDisplay = loc.getWorld().spawn(loc, TextDisplay.class);
+                    textDisplay.setSeeThrough(true);
+                    textDisplay.setBillboard(Display.Billboard.CENTER);
+                    textDisplay.setViewRange(25);
+                    StringBuilder sb = new StringBuilder();
+                    for (String s : lines) {
+                        sb.append(s).append("\n");
+                    }
+                    if(sb.length() > 0) sb.deleteCharAt(sb.length()-1);
+                    textDisplay.setText(sb.toString());
+                    return loc;
+                }
+                else return null;
             }
         } else {
             CMIHologram holo = new CMIHologram(UUID.randomUUID().toString(), location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
@@ -248,6 +266,13 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
                     if (holo.getPosition().toLocation().equals(location)) {
                         holo.delete();
+                    }
+                }
+            }
+            else if (SCore.is1v20v4Plus()) {
+                for (TextDisplay textDisplay : location.getWorld().getEntitiesByClass(TextDisplay.class)) {
+                    if (textDisplay.getLocation().equals(location)) {
+                        textDisplay.remove();
                     }
                 }
             }
@@ -290,6 +315,10 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             }
             /* not opti */
             else if (SCore.hasHolographicDisplays) {
+                if (location != null) remove(location);
+                spawn(objectLocation, sp);
+            }
+            else if (SCore.is1v20v4Plus()) {
                 if (location != null) remove(location);
                 spawn(objectLocation, sp);
             }

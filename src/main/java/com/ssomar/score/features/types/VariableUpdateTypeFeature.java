@@ -138,6 +138,11 @@ public class VariableUpdateTypeFeature extends FeatureAbstract<Optional<Variable
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public VariableUpdateType nextVariableUpdateType(VariableUpdateType material) {
         boolean next = false;
         for (VariableUpdateType check : getSortVariableUpdateTypes()) {

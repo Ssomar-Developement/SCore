@@ -11,6 +11,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.features.types.VariableUpdateTypeFeature;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObjectWithVariables;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.utils.emums.VariableUpdateType;
@@ -63,12 +64,8 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
     public VariablesGroupFeature getVariables() {
         FeatureParentInterface parent = this.getParent();
         while (parent instanceof FeatureAbstract) {
-            if (parent instanceof FeatureParentInterface) {
-                for (FeatureInterface feature : (List<FeatureInterface>) parent.getFeatures()) {
-                    if (feature instanceof VariablesGroupFeature) {
-                        return (VariablesGroupFeature) feature;
-                    }
-                }
+            if (parent instanceof SObjectWithVariables) {
+                return ((SObjectWithVariables) parent).getVariables();
             }
             if (((FeatureAbstract) parent).getParent() == parent) break;
             else parent = ((FeatureAbstract) parent).getParent();

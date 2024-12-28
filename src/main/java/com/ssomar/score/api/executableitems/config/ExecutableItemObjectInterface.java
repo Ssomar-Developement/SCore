@@ -4,14 +4,14 @@ import com.ssomar.score.utils.emums.ResetSetting;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface ExecutableItemObjectInterface {
 
     boolean isValid();
 
-    HashMap<String, String> getVariablesValues();
+    Map<String, String> getVariablesValues();
 
     String updateVariable(String variableName, String value, VariableUpdateType type);
 

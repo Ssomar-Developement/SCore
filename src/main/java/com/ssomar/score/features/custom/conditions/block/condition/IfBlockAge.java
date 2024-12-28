@@ -29,17 +29,6 @@ public class IfBlockAge extends BlockConditionFeature<NumberConditionFeature, If
     }
 
     @Override
-    public String[] getEditorDescription() {
-        String[] finalDescription = new String[super.getEditorDescription().length + 1];
-        if (getCondition().getValue().isPresent()) {
-            finalDescription[finalDescription.length - 1] = "&7Condition: &e" + getCondition().getValue().get();
-        } else {
-            finalDescription[finalDescription.length - 1] = "&7Condition: &cNO CONDITION";
-        }
-        return finalDescription;
-    }
-
-    @Override
     public void subReset() {
         setCondition(new NumberConditionFeature(getParent(), FeatureSettingsSCore.ifBlockAge));
     }

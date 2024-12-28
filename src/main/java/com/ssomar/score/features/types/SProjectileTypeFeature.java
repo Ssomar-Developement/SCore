@@ -138,6 +138,11 @@ public class SProjectileTypeFeature extends FeatureAbstract<Optional<SProjectile
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public SProjectileType nextSProjectileType(SProjectileType material) {
         boolean next = false;
         for (SProjectileType check : getSortSProjectileTypes()) {

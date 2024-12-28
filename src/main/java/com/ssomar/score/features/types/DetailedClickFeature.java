@@ -151,6 +151,11 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public DetailedClick nextDetailedClick(DetailedClick material) {
         boolean next = false;
         for (DetailedClick check : getSortDetailedClicks()) {

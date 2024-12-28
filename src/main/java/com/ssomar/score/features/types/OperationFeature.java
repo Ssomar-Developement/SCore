@@ -168,6 +168,11 @@ public class OperationFeature extends FeatureAbstract<Optional<AttributeModifier
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public AttributeModifier.Operation nextOperation(AttributeModifier.Operation operation) {
         boolean next = false;
         for (AttributeModifier.Operation check : getSortOperations()) {

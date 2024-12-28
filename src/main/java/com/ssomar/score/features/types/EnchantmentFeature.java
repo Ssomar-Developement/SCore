@@ -195,6 +195,11 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Enchantment nextEnchantment(Enchantment enchantment) {
         boolean next = false;
         for (Enchantment check : getSortEnchantments()) {

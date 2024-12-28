@@ -186,6 +186,11 @@ public class TrimMaterialFeature extends FeatureAbstract<Optional<TrimMaterial>,
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public TrimMaterial nextMaterial(TrimMaterial material) {
         boolean next = false;
         for (TrimMaterial check : getSortMaterials()) {

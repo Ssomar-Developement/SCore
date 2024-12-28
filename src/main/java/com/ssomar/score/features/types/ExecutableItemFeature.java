@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.executableitems.executableitems.ExecutableItem;
 import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
@@ -9,7 +10,9 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObjectBuildable;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -44,6 +47,13 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         return errors;
     }
 
+    public Optional<SObjectBuildable> getBuildable() {
+        if(value.isPresent() && Dependency.EXECUTABLE_ITEMS.isEnabled() && ExecutableItemsAPI.getExecutableItemsManager().isValidID(value.get())) {
+            return Optional.of(ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(value.get()).get());
+        }
+        return Optional.empty();
+    }
+
     @Override
     public void save(ConfigurationSection config) {
         value.ifPresent(s -> config.set(this.getName(), s));
@@ -56,13 +66,19 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         else return Optional.empty();
     }
 
+    public Optional<String> getValueID() {
+        return value;
+    }
+
     @Override
     public ExecutableItemFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 3];
+        String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 3] = "&8>> &6DOUBLE CLICK : &bOPEN EDITOR";
         finalDescription[finalDescription.length - 2] = "&8>> &6SHIFT : &eBOOST SCROLL";
         finalDescription[finalDescription.length - 1] = "&8>> &6UP: &eRIGHT | &6DOWN: &eLEFT";
+
 
         ItemStack item = new ItemStack(getEditorMaterial());
         if (value.isPresent() && SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(value.get())) {
@@ -183,6 +199,21 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        // to reverse the double click
+        rightClicked(editor, manager);
+        rightClicked(editor, manager);
+        if (SCore.hasExecutableItems) {
+            Optional<ExecutableItemInterface> id = getValue();
+            if (id.isPresent()) {
+                ExecutableItem exe = (ExecutableItem) id.get();
+                exe.openEditor(editor);
+            }
+        }
+        return true;
+    }
+
     public String nextExecutableItem(String id) {
         boolean next = false;
         for (String check : getSortExecutableItems()) {
@@ -218,7 +249,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         item = gui.getByName(getEditorName());
 
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
+        List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 4);
         int maxSize = lore.size();
         maxSize += getSortExecutableItems().size();
         if (maxSize > 17) maxSize = 17;
@@ -246,7 +277,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         meta.setLore(lore);
         item.setItemMeta(meta);
         /* Bug item no update idk why */
-        UpdateItemInGUI.updateItemInGUI(gui, getEditorName(), meta.getDisplayName(), lore, item.getType());
+        UpdateItemInGUI.updateItemInGUI(gui, getEditorName(), meta.getDisplayName(), lore, item);
     }
 
     public Optional<String> getExecutableItem(GUI gui) {

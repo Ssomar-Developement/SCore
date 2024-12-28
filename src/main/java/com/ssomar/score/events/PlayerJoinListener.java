@@ -30,6 +30,7 @@ public class PlayerJoinListener implements Listener {
         AbsorptionManager.getInstance().onConnect(p);
     }
 
+
    /*  @EventHandler
     public void playerPlayerInteractEvent(PlayerInteractEvent e) {
         Player p = e.getPlayer();

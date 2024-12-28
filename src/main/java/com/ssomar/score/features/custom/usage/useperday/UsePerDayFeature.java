@@ -1,11 +1,11 @@
-package com.ssomar.score.features.custom.useperday;
+package com.ssomar.score.features.custom.usage.useperday;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
-import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
+import com.ssomar.score.features.custom.usage.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;

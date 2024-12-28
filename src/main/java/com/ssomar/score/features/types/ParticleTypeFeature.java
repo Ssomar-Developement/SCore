@@ -176,6 +176,11 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Particle nextParticle(Particle particle) {
         boolean next = false;
         for (Particle check : getSortParticles()) {

@@ -603,7 +603,23 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     startDate("startDate", "Start Date", new String[]{"&7&oThe start date"}, GUI.CLOCK, false),
     endDate("endDate", "End Date", new String[]{"&7&oThe end date"}, GUI.CLOCK, false),
     when("when", "When", new String[]{"&7&oWhen the feature is activated"}, GUI.CLOCK, false),
-    scheduleFeatures("scheduleFeatures", "Schedule Features", new String[]{"&7&oSchedule Features"}, GUI.CLOCK, false),;
+    scheduleFeatures("scheduleFeatures", "Schedule Features", new String[]{"&7&oSchedule Features"}, GUI.CLOCK, false),
+
+
+
+    /* To translate in the other languages */
+    myfurnitureID("myfurnitureID", "MyFurniture ID", new String[]{"&7&oThe MyFurniture ID"}, FixedMaterial.getMaterial(Arrays.asList("BOOKSHELF")), false),
+    myFurnitureFeatures("myFurnitureFeatures", "MyFurniture Features", new String[]{"&7&oMyFurniture Features"}, FixedMaterial.getMaterial(Arrays.asList("BOOKSHELF")), false),
+
+    sitFeatures("sitFeatures", "Sit Features", new String[]{"&7&oSit Features"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS")), false),
+    playerCanSit("playerCanSit", "Player Can Sit", new String[]{"&7&oPlayer can sit"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS")), false),
+    storageFeatures("storageFeatures", "Storage Features", new String[]{"&7&oStorage Features"}, FixedMaterial.getMaterial(Arrays.asList("CHEST")), false),
+    usageFeatures("usageFeatures", "Usage Features", new String[]{"&7&oThe usage features", "&aIncrease &7&oor &cDecrease &7&othis usage with","&eUsageModification &7&oin your activators"}, Material.BUCKET, false),
+    animation("animation", "Animation", new String[]{"&7&oThe animation"}, Material.ANVIL, false),
+    hasConsumeParticles("hasConsumeParticles", "Has Consume Particles", new String[]{"&7&oHas consume particles"}, Material.ANVIL, false),
+    consumeSeconds("consumeSeconds", "Consume Seconds", new String[]{"&7&oThe consume seconds"}, GUI.CLOCK, false),
+    consumableFeatures("consumableFeatures", "Consumable Features", new String[]{"&7&oConsumable Features"}, FixedMaterial.getMaterial(Arrays.asList("POTION")), false),
+    ;
 
 
     private String configName;

@@ -28,17 +28,6 @@ public class IfBlockLocationX extends BlockConditionFeature<NumberConditionFeatu
     }
 
     @Override
-    public String[] getEditorDescription() {
-        String[] finalDescription = new String[super.getEditorDescription().length + 1];
-        if (getCondition().getValue().isPresent()) {
-            finalDescription[finalDescription.length - 1] = "&7Condition: &e" + getCondition().getValue().get();
-        } else {
-            finalDescription[finalDescription.length - 1] = "&7Condition: &cNO CONDITION";
-        }
-        return finalDescription;
-    }
-
-    @Override
     public IfBlockLocationX getValue() {
         return this;
     }

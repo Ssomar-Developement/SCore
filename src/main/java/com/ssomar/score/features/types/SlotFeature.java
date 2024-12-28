@@ -182,6 +182,11 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public AttributeSlot nextAttributeSlot(AttributeSlot slot) {
         boolean next = false;
         for (AttributeSlot check : getSortAttributeSlots()) {

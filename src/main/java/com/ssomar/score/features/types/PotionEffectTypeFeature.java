@@ -168,6 +168,11 @@ public class PotionEffectTypeFeature extends FeatureAbstract<Optional<PotionEffe
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public PotionEffectType nextPotionEffectType(PotionEffectType slot) {
         boolean next = false;
         for (PotionEffectType check : getSortPotionEffectTypes()) {

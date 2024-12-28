@@ -179,6 +179,11 @@ public class BlockFaceFeature extends FeatureAbstract<Optional<BlockFace>, Block
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public BlockFace nextBlockFace(BlockFace slot) {
         boolean next = false;
         for (BlockFace check : getSortBlockFace()) {

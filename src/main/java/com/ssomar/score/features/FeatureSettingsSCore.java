@@ -16,6 +16,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     activator(getFeatureSettings("activator")),
     activators(getFeatureSettings("activators")),
     activeTitle(getFeatureSettings("activeTitle")),
+    playerCanSit(getFeatureSettings("playerCanSit")),
     amount(getFeatureSettings("amount")),
     amplifier(getFeatureSettings("amplifier")),
     armorTrim(getFeatureSettings("armorTrim")),
@@ -328,6 +329,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     title(getFeatureSettings("title")),
     titleAdjustement(getFeatureSettings("titleAdjustement")),
     titleOptions(getFeatureSettings("titleOptions")),
+    sitFeatures(getFeatureSettings("sitFeatures")),
+    storageFeatures(getFeatureSettings("storageFeatures")),
     trimMaterial(getFeatureSettings("trimMaterial")),
     type(getFeatureSettings("type")),
     underValue(getFeatureSettings("underValue")),
@@ -344,6 +347,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     visualItem(getFeatureSettings("visualItem")),
     westValue(getFeatureSettings("westValue")),
     bookFeatures(getFeatureSettings("bookFeatures")),
+    usageFeatures(getFeatureSettings("usageFeatures")),
+    myFurnitureFeatures(getFeatureSettings("myFurnitureFeatures")),
     pages(getFeatureSettings("pages")),
     author(getFeatureSettings("author")),
     equippableFeatures(getFeatureSettings("equippableFeatures")),
@@ -532,6 +537,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canBeMoved(getFeatureSettings("canBeMoved")),
     itemsAdderID(getFeatureSettings("itemsAdderID")),
     oraxenID(getFeatureSettings("oraxenID")),
+    myfurnitureID(getFeatureSettings("myfurnitureID")),
     interactionRange(getFeatureSettings("interactionRange")),
     enabled(getFeatureSettings("enabled")),
     editorIcon(getFeatureSettings("editorIcon")),
@@ -555,6 +561,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     startDate(getFeatureSettings("startDate")),
     endDate(getFeatureSettings("endDate")),
     when(getFeatureSettings("when")),
+    animation(getFeatureSettings("animation")),
+    hasConsumeParticles(getFeatureSettings("hasConsumeParticles")),
+    consumeSeconds(getFeatureSettings("consumeSeconds")),
+    consumableFeatures(getFeatureSettings("consumableFeatures")),
     scheduleFeatures(getFeatureSettings("scheduleFeatures"));
 
     private final FeatureSettingsInterface settingsInterface;
@@ -591,6 +601,14 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     public static FeatureSettingsInterface getFeatureSettings(String configName) {
         FeatureSettingsInterface[] values = getValues();
+        for (FeatureSettingsInterface value : values) {
+            if (value.getName().equals(configName)) {
+                return value;
+            }
+        }
+
+        /* try in english */
+        values = FeatureSettingsSCoreEN.values();
         for (FeatureSettingsInterface value : values) {
             if (value.getName().equals(configName)) {
                 return value;

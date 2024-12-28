@@ -2,6 +2,7 @@ package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
+import com.ssomar.score.features.editor.SaveSessionPathManager;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
@@ -23,6 +24,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstra
     public void startEditing(Player editor, SObjectsEditorAbstract gui) {
         cache.put(editor, gui);
         gui.openGUISync(editor);
+        SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor));
     }
 
     @Override
@@ -98,6 +100,11 @@ public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstra
     }
 
     @Override
+    public boolean doubleClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
+        return false;
+    }
+
+    @Override
     public void receiveMessage(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
 
     }
@@ -139,7 +146,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstra
 
     @Override
     public void back(NewInteractionClickedGUIManager<SObjectsEditorAbstract> interact) {
-
+        interact.gui.goBack();
     }
 
     @Override

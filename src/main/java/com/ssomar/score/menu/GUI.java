@@ -157,6 +157,11 @@ public abstract class GUI implements IGUI {
 
     }
 
+    public void update() {
+        clearAndSetBackground();
+        load();
+    }
+
     public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
         if(test && size >= 54 & invSlot == 27) material = Material.DIAMOND_SWORD;

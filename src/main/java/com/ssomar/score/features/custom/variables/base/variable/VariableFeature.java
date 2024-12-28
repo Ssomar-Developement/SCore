@@ -78,6 +78,10 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     }
 
     public String generateTag() {
+        return generateTag(variableName.getValue().get());
+    }
+
+    public static String generateTag(String variableName) {
         int hashCode = variableName.hashCode();
         String hashToString = Integer.toString(hashCode);
 
@@ -89,7 +93,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
         return tag.toString();
     }
 
-    public Map<Integer, String> encodeIntegers() {
+    public static Map<Integer, String> encodeIntegers() {
         Map<Integer, String> result = new HashMap<>();
         result.put(0, "自");
         result.put(1, "他");
