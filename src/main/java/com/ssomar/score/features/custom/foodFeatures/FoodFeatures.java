@@ -9,14 +9,10 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
-import io.papermc.paper.datacomponent.DataComponentTypes;
-import io.papermc.paper.datacomponent.item.Consumable;
-import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.FoodComponent;
 import org.jetbrains.annotations.NotNull;
@@ -178,9 +174,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
 
     @Override
     public void applyOnItem(@NotNull FeatureForItemArgs args) {
-        ItemStack item = args.getItem();
-        if (!item.hasData(DataComponentTypes.CONSUMABLE) && getIsMeat().getValue())
-            item.setData(DataComponentTypes.CONSUMABLE, Consumable.consumable().animation(ItemUseAnimation.EAT));
+        new FoodFeaturesPaper().applyOnItem(args, isMeat.getValue());
     }
 
     @Override
