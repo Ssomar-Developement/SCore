@@ -138,6 +138,7 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
         for (int i = 0; i < finalDescription.length; i++) {
             String command = finalDescription[i];
+            if(command == null) command = "";
             if (command.length() > 40) command = command.substring(0, 39) + "...";
             finalDescription[i] = command;
         }

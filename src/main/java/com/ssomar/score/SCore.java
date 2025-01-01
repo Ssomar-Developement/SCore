@@ -16,7 +16,7 @@ import com.ssomar.score.data.Database;
 import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
-import com.ssomar.score.features.custom.useperday.manager.UsagePerDayManager;
+import com.ssomar.score.features.custom.usage.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.hardness.HardnessesHandler;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.languages.messages.TM;
@@ -389,6 +389,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v23();
     }
 
+    public static boolean is1v21v4Plus() {
+        return is1v21v4() || is1v21v5() || is1v22Plus();
+    }
+
     public static boolean isVersionBetween(String version1, String version2) {
         version1 = version1.replace(".yml", "").replace("_",".");
         version2 = version2.replace(".yml", "").replace("_",".");
@@ -690,6 +694,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public void onReload() {
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks...");
+        RunnableManager.getInstance().forceRunTasks();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
         GeneralConfig.getInstance().reload();
 
         LoopManager.getInstance();

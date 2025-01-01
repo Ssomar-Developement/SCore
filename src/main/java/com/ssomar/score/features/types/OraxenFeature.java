@@ -241,6 +241,11 @@ public class OraxenFeature extends FeatureAbstract<Optional<String>, OraxenFeatu
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public String nextOraxen(String id) {
         boolean next = false;
         for (String check : getSortOraxen()) {

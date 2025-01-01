@@ -232,6 +232,11 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public String nextItemAdder(String id) {
         boolean next = false;
         for (String check : getSortItemsAdder()) {

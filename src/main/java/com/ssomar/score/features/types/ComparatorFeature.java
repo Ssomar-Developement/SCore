@@ -140,6 +140,11 @@ public class ComparatorFeature extends FeatureAbstract<Optional<Comparator>, Com
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Comparator nextComparator(Comparator material) {
         boolean next = false;
         for (Comparator check : getSortComparators()) {

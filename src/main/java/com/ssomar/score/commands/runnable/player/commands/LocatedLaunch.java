@@ -14,7 +14,9 @@ import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 /* LAUNCH {projectileType} */
+
 @SuppressWarnings("deprecation")
 public class LocatedLaunch extends PlayerCommand {
 
@@ -65,8 +68,9 @@ public class LocatedLaunch extends PlayerCommand {
         double rotationHorizontal = (double) sCommandToExec.getSettingValue("angleRotationHorizontal");
 
         Location eyeLoc = receiver.getEyeLocation();
-        Vector front = eyeLoc.getDirection().clone().setY(0).multiply(frontValue);
-        Vector right = eyeLoc.getDirection().clone().setY(0).rotateAroundY(270 * Math.PI / 180).multiply(rightValue);
+        Vector eyeDir = eyeLoc.getDirection();
+        Vector front = eyeDir.clone().multiply(frontValue);
+        Vector right = new Vector(0, 1, 0).crossProduct(eyeDir).normalize().multiply(rightValue);
         Vector calcul = front.add(right);
 
         Location recLoc = receiver.getLocation();
@@ -77,109 +81,60 @@ public class LocatedLaunch extends PlayerCommand {
         toLaunchLoc.add(0, yValue, 0);
         //SsomarDev.testMsg("x: "+newX+" y: "+newY+" z: "+newZ);
 
-        try {
-            Projectile entity = null;
-            String type = (String) sCommandToExec.getSettingValue("projectile");
-            Optional<SProjectile> projectileOptional = null;
-            SProjectile projectile = null;
-            if (SProjectileType.getProjectilesClasses().containsKey(type)) {
-                entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, SProjectileType.getProjectilesClasses().get(type));
-            } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
-                projectile = projectileOptional.get();
-                entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]));
-                projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
-            } else entity = recLoc.getWorld().spawn(toLaunchLoc, Arrow.class);
 
-            //	SsomarDev.testMsg("null entity: " + (entity==null));
-
-            if (entity != null) {
-                entity.setShooter(receiver);
-                Vector v = null;
-                Location loc = null;
-                boolean searchBlockOrEntity = true;
-
-                /* rotation part */
-                Location eyeLoc2 = receiver.getEyeLocation();
-                float pitch = eyeLoc2.getPitch();
-                float yaw = eyeLoc2.getYaw();
-                //SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
-                float newPitch = (float) (pitch + rotationHorizontal);
-                float newYaw = (float) (yaw + rotationVertical);
-                if (newPitch > 90) newPitch = 90;
-                if (newPitch < -90) {
-                    newPitch = newPitch + 90;
-                    newPitch = newPitch * -1;
-                    newPitch = -90 + newPitch;
-                    if (newYaw > 0) {
-                        newYaw = -180 + newYaw;
-                    } else if (newYaw < 0) {
-                        newYaw = 180 + newYaw;
-                    } else newYaw = 0;
-                }
-                //SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw);
-                eyeLoc2.setPitch(newPitch);
-                eyeLoc2.setYaw(newYaw);
+        Projectile entity = null;
+        String type = (String) sCommandToExec.getSettingValue("projectile");
+        Optional<SProjectile> projectileOptional = null;
+        SProjectile projectile = null;
+        if (SProjectileType.getProjectilesClasses().containsKey(type)) {
+            entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, SProjectileType.getProjectilesClasses().get(type));
+            // Set projectile eye direction
+            entity.setVelocity(eyeLoc.getDirection());
+        } else if ((projectileOptional = SProjectilesManager.getInstance().getLoadedObjectWithID(type)).isPresent()) {
+            projectile = projectileOptional.get();
+            entity = (Projectile) recLoc.getWorld().spawn(toLaunchLoc, SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]));
+            projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
+        } else entity = recLoc.getWorld().spawn(toLaunchLoc, Arrow.class);
 
 
-                /* idk why I coded this part */
-                /*int multiply = 2;
-
-                while (searchBlockOrEntity && multiply < 100) {
-                    v = eyeLoc2.getDirection().clone();
-                    v = v.multiply(multiply);
-
-                    loc = new Location(receiver.getWorld(), eyeLoc2.getX() + v.getX(), eyeLoc2.getY() + v.getY(), eyeLoc2.getZ() + v.getZ());
-                    if (!loc.getBlock().isEmpty()) {
-                        searchBlockOrEntity = false;
-                    } else {
-                        for (Entity e : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
-                            if (e.isOnGround()) {
-                                searchBlockOrEntity = false;
-                                break;
-                            }
-                        }
-                    }
-                    multiply++;
-                }
-                // end of idk*/
-
-                Vector last = loc.toVector().subtract(toLaunchLoc.toVector());
-                last = last.normalize();
-                last = last.multiply(velocity);
+        // Set projectile shooter
+        entity.setShooter(receiver);
 
 
-                if (!SCore.is1v13Less()) {
-                    if (entity instanceof Fireball) {
-                        Fireball fireball = (Fireball) entity;
-                        fireball.setDirection(last);
-                    } else if (entity instanceof DragonFireball) {
-                        DragonFireball fireball = (DragonFireball) entity;
-                        fireball.setDirection(last);
-                    } else {
-                        entity.setVelocity(last);
-                    }
-                }
+        // Rotate the velocity of the projectile vertically
+        Vector vector = entity.getVelocity().rotateAroundAxis(entity.getVelocity().getCrossProduct(new Vector(0, 1, 0)), rotationVertical * Math.PI / 180);
 
-                if (projectile != null) {
-                   projectile.transformTheProjectile(entity, receiver, projectile.getType().getValue().get().getMaterial());
-                }
+        // Rotate the velocity of the projectile horizontally depending on the player's head rotation
+        vector = vector.rotateAroundAxis(getPlayerHeadVector(receiver), rotationHorizontal * Math.PI / 180);
+
+        entity.setVelocity(vector);
+
+        // Multiply the velocity
+        entity.setVelocity(entity.getVelocity().multiply(velocity));
 
 
-
-                if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
-                    ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
-                    ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
-                }
-
-                PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
-                Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (SCore.hasExecutableItems && aInfo.getExecutableItem() != null) {
+            ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(aInfo.getExecutableItem()), aInfo.getSlot(), System.currentTimeMillis());
+            ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
         }
 
+        PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
+        Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
 
+    }
+
+    public Vector getPlayerHeadVector(Player player) {
+        // Get player's eye direction for orientation reference
+        Vector lookDirection = player.getEyeLocation().getDirection();
+
+        // Get player's "up" vector in their local space
+        // We can get this by taking the cross product twice:
+        // First to get the "right" vector, then to get the "up" vector
+        Vector right = lookDirection.getCrossProduct(new Vector(0, 1, 0)).normalize();
+        Vector up = right.getCrossProduct(lookDirection).normalize();
+
+        // Scale it to head height (0.4 blocks)
+        return up.multiply(0.4);
     }
 
 
@@ -192,7 +147,7 @@ public class LocatedLaunch extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "LOCATED_LAUNCH projectile:ARROW frontValue=0 rightValue=0 yValue=0 velocity=1 angleRotationVertical:0 angleRotationHorizontal:0";
+        return "LOCATED_LAUNCH projectile:ARROW frontValue:0 rightValue:0 yValue:0 velocity:1 angleRotationVertical:0 angleRotationHorizontal:0";
     }
 
     @Override

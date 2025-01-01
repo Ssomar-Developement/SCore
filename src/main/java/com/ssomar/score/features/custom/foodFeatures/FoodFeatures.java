@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
+public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItemNewPaperComponents {
 
 
     private IntegerFeature nutrition;
@@ -43,10 +43,10 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
     @Override
     public void reset() {
         nutrition = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.nutrition);
-        saturation = new IntegerFeature(this,  Optional.of(1), FeatureSettingsSCore.saturation);
+        saturation = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.saturation);
         isMeat = new BooleanFeature(this, false, FeatureSettingsSCore.isMeat, false);
-        canAlwaysEat = new BooleanFeature(this,  false, FeatureSettingsSCore.canAlwaysEat, false);
-        eatSeconds = new IntegerFeature(this,  Optional.of(1), FeatureSettingsSCore.eatSeconds);
+        canAlwaysEat = new BooleanFeature(this, false, FeatureSettingsSCore.canAlwaysEat, false);
+        eatSeconds = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.eatSeconds);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
             errors.addAll(saturation.load(plugin, section, isPremiumLoading));
             errors.addAll(isMeat.load(plugin, section, isPremiumLoading));
             errors.addAll(canAlwaysEat.load(plugin, section, isPremiumLoading));
-            if(!SCore.is1v21v2Plus()) errors.addAll(eatSeconds.load(plugin, section, isPremiumLoading));
+            if (!SCore.is1v21v2Plus()) errors.addAll(eatSeconds.load(plugin, section, isPremiumLoading));
 
         }
 
@@ -73,7 +73,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
         saturation.save(section);
         isMeat.save(section);
         canAlwaysEat.save(section);
-        if(!SCore.is1v21v2Plus()) eatSeconds.save(section);
+        if (!SCore.is1v21v2Plus()) eatSeconds.save(section);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
     @Override
     public FoodFeatures initItemParentEditor(GUI gui, int slot) {
         int len = 5;
-        if(!SCore.is1v21v2Plus()) len = 6;
+        if (!SCore.is1v21v2Plus()) len = 6;
         String[] finalDescription = new String[getEditorDescription().length + len];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - len] = GUI.CLICK_HERE_TO_CHANGE;
@@ -101,7 +101,8 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
         len--;
         finalDescription[finalDescription.length - len] = "&7Can Always Eat: &e" + canAlwaysEat.getValue();
         len--;
-        if(!SCore.is1v21v2Plus()) finalDescription[finalDescription.length - len] = "&7Eat Seconds: &e" + eatSeconds.getValue().get();
+        if (!SCore.is1v21v2Plus())
+            finalDescription[finalDescription.length - len] = "&7Eat Seconds: &e" + eatSeconds.getValue().get();
 
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -132,14 +133,15 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
                 if (saturation < 0) saturation = 0;
                 food.setSaturation(saturation);
                 food.setCanAlwaysEat(getCanAlwaysEat().getValue());
-                if(!SCore.is1v21v2Plus()) {
+                if (!SCore.is1v21v2Plus()) {
                     int eatSeconds = getEatSeconds().getValue().get();
                     if (eatSeconds <= 0) eatSeconds = 1;
                     Class<?> clazz = food.getClass();
                     try {
                         Method method = clazz.getMethod("setEatSeconds", int.class);
                         method.invoke(food, eatSeconds);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    }
                 }
                 meta.setFood(food);
             }
@@ -156,17 +158,28 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
                 getNutrition().setValue(Optional.of(food.getNutrition()));
                 getSaturation().setValue(Optional.of(new Float(food.getSaturation()).intValue()));
                 getCanAlwaysEat().setValue(food.canAlwaysEat());
-                if(!SCore.is1v21v2Plus()) {
+                if (!SCore.is1v21v2Plus()) {
                     Class<?> clazz = food.getClass();
                     try {
                         Method method = clazz.getMethod("getEatSeconds");
                         int eatSeconds = (int) method.invoke(food);
                         getEatSeconds().setValue(Optional.of(eatSeconds));
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    }
                 }
                 getIsMeat().setValue(true);
             }
         }
+    }
+
+    @Override
+    public void applyOnItem(@NotNull FeatureForItemArgs args) {
+        new FoodFeaturesPaper().applyOnItem(args, isMeat.getValue());
+    }
+
+    @Override
+    public void loadFromItem(@NotNull FeatureForItemArgs args) {
+
     }
 
     @Override
@@ -198,7 +211,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
         features.add(nutrition);
         features.add(saturation);
         features.add(canAlwaysEat);
-        if(!SCore.is1v21v2Plus()) features.add(eatSeconds);
+        if (!SCore.is1v21v2Plus()) features.add(eatSeconds);
         return features;
     }
 

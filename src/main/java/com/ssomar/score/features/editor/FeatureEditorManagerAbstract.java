@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.features.*;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
@@ -15,6 +16,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public void startEditing(Player editor, Y feature) {
         cache.put(editor, buildEditor(feature));
         cache.get(editor).openGUISync(editor);
+        SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor));
     }
 
     public abstract T buildEditor(Y parent);
@@ -69,14 +71,28 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public void newObject(NewInteractionClickedGUIManager<T> i) {
         if (i.gui.getParent() instanceof FeaturesGroup) {
             ((FeaturesGroup) i.gui.getParent()).createNewFeature(i.player);
+            i.gui.update();
         }
 
     }
 
     @Override
     public void back(NewInteractionClickedGUIManager<T> interact) {
-        Y parent = interact.gui.getParent();
-        parent.openBackEditor(interact.player);
+        //Y parent = interact.gui.getParent();
+        //parent.openBackEditor(interact.player);
+
+        Player player = interact.player;
+        GUI gui = SaveSessionPathManager.getInstance().getLastBeforePlayerSessionPath(player);
+        if (gui != null){
+            gui.update();
+            gui.openGUISync(player);
+        }
+        else {
+            Y parent = interact.gui.getParent();
+            parent.openBackEditor(interact.player);
+        }
+
+        SaveSessionPathManager.getInstance().removeLastPlayerSessionPath(interact.player);
     }
 
     @Override
@@ -123,8 +139,8 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                 return false;
             }
             ((FeaturesGroup) i.gui.getParent()).deleteFeature(i.player, feature);
-            i.gui.getParent().save();
-            i.gui.getParent().openEditor(i.player);
+            save(i);
+            i.gui.update();
             return true;
         } else {
             for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
@@ -193,6 +209,18 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                 if (feature instanceof FeatureRequireOneMessageInEditor) {
                     ((FeatureRequireOneMessageInEditor) feature).askInEditor(i.player, this);
                     return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean doubleClicked(NewInteractionClickedGUIManager<T> i) {
+        for (FeatureInterface feature : (List<FeatureInterface>) i.gui.getParent().getFeatures()) {
+            if (feature.isTheFeatureClickedParentEditor(i.decoloredName)) {
+                if (feature instanceof FeatureRequireOnlyClicksInEditor) {
+                    return ((FeatureRequireOnlyClicksInEditor) feature).doubleClicked(i.player, this);
                 }
             }
         }
@@ -291,7 +319,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     }
 
     public void receiveMessageFinish(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : (List<FeatureInterface>)  interact.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) interact.gui.getParent().getFeatures()) {
             if (feature instanceof FeatureRequireMultipleMessageInEditor) {
                 if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                     ((FeatureRequireMultipleMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
@@ -311,7 +339,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     }
 
     public void receiveMessageNoValue(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : (List<FeatureInterface>)  interact.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) interact.gui.getParent().getFeatures()) {
             if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                 if (feature instanceof FeatureRequireOneMessageInEditor) {
                     ((FeatureRequireOneMessageInEditor) feature).finishEditInEditorNoValue(interact.player, this);
@@ -324,7 +352,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
 
     @Override
     public void receiveMessageValue(NewInteractionClickedGUIManager<T> interact) {
-        for (FeatureInterface feature : (List<FeatureInterface>)  interact.gui.getParent().getFeatures()) {
+        for (FeatureInterface feature : (List<FeatureInterface>) interact.gui.getParent().getFeatures()) {
             if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                 if (feature instanceof FeatureRequireOneMessageInEditor) {
                     Optional<String> potentialError = ((FeatureRequireOneMessageInEditor) feature).verifyMessageReceived(interact.message);
@@ -384,6 +412,5 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             parent = ((FeatureAbstract) parent).getParent();
             parent.reload();
         }
-        back(interact);
     }
 }

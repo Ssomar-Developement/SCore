@@ -1,4 +1,4 @@
-package com.ssomar.score.features.custom.useperday.manager;
+package com.ssomar.score.features.custom.usage.useperday.manager;
 
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.UsePerDayQuery;

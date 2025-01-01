@@ -85,6 +85,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
 
         PlaceholdersCdtType t = type.getValue().get();
 
+        SsomarDev.testMsg(" part1 base: "+part1.getValue().get()+ " sp != null "+sp, true);
         if (sp != null) {
             aPart1 = sp.replacePlaceholder(part1.getValue().get(), false);
             if(t == PlaceholdersCdtType.PLAYER_TARGET || t == PlaceholdersCdtType.PLAYER_PLAYER || t == PlaceholdersCdtType.TARGET_TARGET) aPart2 = sp.replacePlaceholder(part2.getValue().get(), false);

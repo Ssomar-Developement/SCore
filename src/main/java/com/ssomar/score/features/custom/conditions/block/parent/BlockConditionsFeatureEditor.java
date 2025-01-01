@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.conditions.block.parent;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.utils.logging.Utils;
 
 public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockConditionsFeature> {
 
@@ -18,8 +19,13 @@ public class BlockConditionsFeatureEditor extends FeatureEditorInterface<BlockCo
     public void load() {
         int i = 0;
         for (BlockConditionFeature condition : bCF.getConditions()) {
-            condition.initAndUpdateItemParentEditor(this, i);
-            i++;
+            try {
+                condition.initAndUpdateItemParentEditor(this, i);
+                i++;
+            } catch (Exception e) {
+                Utils.sendConsoleMsg("&cError while loading the condition: " + condition.getName());
+                e.printStackTrace();
+            }
         }
 
         // Back

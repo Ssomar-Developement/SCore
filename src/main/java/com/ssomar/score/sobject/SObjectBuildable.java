@@ -4,11 +4,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
 
 public interface SObjectBuildable {
+
+    ItemStack buildItem(int quantity, @Nullable InternalData internalData);
+
     ItemStack buildItem(int quantity, Optional<Player> creatorOpt);
 
     ItemStack buildItem(int quantity, Optional<Player> creatorOpt,  Map<String, Object> settings);

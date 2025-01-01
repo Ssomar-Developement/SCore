@@ -172,6 +172,11 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public PotionType nextPotionType(PotionType slot) {
         boolean next = false;
         for (PotionType check : getSortPotionTypes()) {

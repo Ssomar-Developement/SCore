@@ -2,7 +2,6 @@ package com.ssomar.score.events;
 
 import com.ssomar.score.SsomarDev;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,21 +23,36 @@ public class TESTEVENT implements Listener {
         Block block = p.getTargetBlock(null, 5);
         SsomarDev.testMsg("Block: " + block.getType(), true);
 
+       // ShulkerPacketUtil shulkerPacketUtils = new ShulkerPacketUtil();
+        //int text = shulkerPacketUtils.sendClientTextDisplay(p, block.getLocation().add(0,2,0));
+        //int shulker = shulkerPacketUtils.sendClientShulker(p, block.getLocation().add(0,2,0));
+        //shulkerPacketUtils.mountShulker(p, shulker, text);
+
+        //shulkerPacketUtils.removeClientShulker(p, shulker);
     }
 
-    @EventHandler
-    public void onProjectileHitEvent(ProjectileHitEvent e) {
-        Entity projectile = e.getEntity();
-        Entity target;
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerToggleSneakEvent(ProjectileHitEvent e) {
+       Block block = e.getHitBlock();
+        // SsomarDev.testMsg("Block: " + block.getType(), true);
 
-        SsomarDev.testMsg("Projectile: " + projectile.getType(), true);
-
-        /* PROJECTILE_HIT_BLOCK PART */
-        if ((target = e.getHitEntity()) != null && !(target instanceof Player)) {
-            SsomarDev.testMsg("Hit Entity: " + target.getType(), true);
-        }
 
     }
+
+    /*@EventHandler(priority = EventPriority.LOWEST)
+    public void playerReconnexion(PlayerLinksSendEvent e) {
+        Player p = e.getPlayer();
+        ResourcePackRequest request = ResourcePackRequest.resourcePackRequest().required(true).callback(new ResourcePackCallbackTest()).build();
+        p.sendResourcePacks(request);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void playerReconnexion(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        ResourcePackRequest request = ResourcePackRequest.resourcePackRequest().callback(new ResourcePackCallbackTest()).build();
+        p.sendResourcePacks(request);
+    }*/
+
 
     /* @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent e) {

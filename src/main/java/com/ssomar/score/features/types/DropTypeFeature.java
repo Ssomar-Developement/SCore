@@ -143,6 +143,11 @@ public class DropTypeFeature extends FeatureAbstract<Optional<DropType>, DropTyp
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public DropType nextCreationType(DropType slot) {
         boolean next = false;
         for (DropType check : getSortDropTypes()) {

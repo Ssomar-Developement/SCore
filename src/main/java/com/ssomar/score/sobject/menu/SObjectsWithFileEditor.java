@@ -147,7 +147,9 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
         if (index > 1) {
             createItem(PREVIOUS_PAGE_MAT, 1, 37, PREVIOUS_PAGE, false, false);
         }
-        createItem(RED, 1, 36, EXIT, false, false);
+
+        if (!this.path.equals(defaultPath)) createItem(RED, 1, 36, BACK, false, false);
+        else createItem(RED, 1, 36, EXIT, false, false);
 
         String[] desc = new String[2+TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
         desc[0] = "";

@@ -77,6 +77,11 @@ public class NewDefaultObjectsEditorManager extends NewGUIManager<NewDefaultObje
     }
 
     @Override
+    public boolean doubleClicked(NewInteractionClickedGUIManager<NewDefaultObjectsEditor> interact) {
+        return false;
+    }
+
+    @Override
     public void receiveMessage(NewInteractionClickedGUIManager<NewDefaultObjectsEditor> interact) {
 
     }

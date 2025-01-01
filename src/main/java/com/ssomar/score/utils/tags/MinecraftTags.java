@@ -23,7 +23,7 @@ public class MinecraftTags {
         /* add all the tags */
 
         if (SCore.is1v20Plus()) {
-            tags.add(Tag.ACACIA_LOGS);
+           /* tags.add(Tag.ACACIA_LOGS);
             tags.add(Tag.ALL_HANGING_SIGNS);
             tags.add(Tag.ALL_SIGNS);
             tags.add(Tag.ANCIENT_CITY_REPLACEABLE);
@@ -197,10 +197,10 @@ public class MinecraftTags {
             tags.add(Tag.RABBITS_SPAWNABLE_ON);
             tags.add(Tag.RAILS);
             tags.add(Tag.REDSTONE_ORES);
-            /* tags.add(Tag.REGISTRY_BLOCKS);
-            tags.add(Tag.REGISTRY_ENTITY_TYPES);
-            tags.add(Tag.REGISTRY_FLUIDS);
-            tags.add(Tag.REGISTRY_ITEMS); */
+            //tags.add(Tag.REGISTRY_BLOCKS);
+            //tags.add(Tag.REGISTRY_ENTITY_TYPES);
+            //tags.add(Tag.REGISTRY_FLUIDS);
+            //tags.add(Tag.REGISTRY_ITEMS);
             tags.add(Tag.REPLACEABLE);
             tags.add(Tag.REPLACEABLE_BY_TREES);
             tags.add(Tag.SAND);
@@ -256,7 +256,7 @@ public class MinecraftTags {
             tags.add(Tag.WOODEN_STAIRS);
             tags.add(Tag.WOODEN_TRAPDOORS);
             tags.add(Tag.WOOL);
-            tags.add(Tag.WOOL_CARPETS);
+            tags.add(Tag.WOOL_CARPETS);*/
 
             if (!SCore.is1v21Plus()) {
                 // Add the tag ITEMS_MUSIC_DISCS that is not in 1.21 but in the spigot 1.20 wth reflection

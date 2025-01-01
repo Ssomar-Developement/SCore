@@ -187,6 +187,11 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public TrimPattern nextPattern(TrimPattern material) {
         boolean next = false;
         for (TrimPattern check : getSortPatterns()) {

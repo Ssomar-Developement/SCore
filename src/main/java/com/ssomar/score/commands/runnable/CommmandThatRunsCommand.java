@@ -95,7 +95,8 @@ public interface CommmandThatRunsCommand {
                     if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
                         for (PlaceholderConditionFeature condition : conditions) {
                             SsomarDev.testMsg("condition: " + condition, true);
-                            if (!condition.verify(target, null)) {
+
+                            if (!condition.verify(target, null, sp)) {
                                 SsomarDev.testMsg("condition not verified", true);
                                 passToNextPlayer = true;
                                 break;
@@ -142,7 +143,7 @@ public interface CommmandThatRunsCommand {
                     Comparator lastComparator = null;
                     for (Comparator comparator : Comparator.values()) {
                         int index = condition.lastIndexOf(comparator.getSymbol());
-                        if (index > indexOfComparator) {
+                        if (index > indexOfComparator+lengthOfComparator) {
                             lastComparator = comparator;
                             indexOfComparator = index;
                             lengthOfComparator = comparator.getSymbol().length();

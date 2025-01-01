@@ -180,6 +180,11 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public SOption nextOption(SOption option) {
         boolean next = false;
         for (SOption check : getSortOptions()) {

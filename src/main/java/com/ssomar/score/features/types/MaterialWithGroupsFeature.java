@@ -179,6 +179,11 @@ public class MaterialWithGroupsFeature extends FeatureAbstract<Optional<String>,
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public String nextMaterialWithGroups(String material) {
         boolean next = false;
         for (String check : getSortMaterials()) {

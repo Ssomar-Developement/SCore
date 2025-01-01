@@ -13,7 +13,7 @@ public class AroundBlockGroupFeatureEditor extends FeatureEditorInterface<Around
     private int page;
 
     public AroundBlockGroupFeatureEditor(AroundBlockGroupFeature enchantsGroupFeature) {
-        super(TM.g(Text.FEATURES_AROUNDBLOCKS_EDITORTITLE), 5 * 9);
+        super("&lAroundBlocks feature Editor", 5 * 9);
         this.attributesGroupFeature = enchantsGroupFeature;
         this.page = 1;
         this.perPage = 27;

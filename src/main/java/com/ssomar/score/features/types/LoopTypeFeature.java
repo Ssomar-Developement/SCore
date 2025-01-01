@@ -143,6 +143,11 @@ public class LoopTypeFeature extends FeatureAbstract<Optional<LoopTypeFeature.Lo
         return true;
     }
 
+    @Override
+    public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public LoopType nextLoopType(LoopType particle) {
         boolean next = false;
         for (LoopType check : LoopType.values()) {

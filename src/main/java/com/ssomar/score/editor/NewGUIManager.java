@@ -6,9 +6,9 @@ import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.menu.commands.CommandsEditor;
 import com.ssomar.score.utils.DynamicMeta;
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
 import com.ssomar.score.utils.messages.CenteredMessage;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -99,6 +99,7 @@ public abstract class NewGUIManager<T extends GUI> {
                 interact.player.closeInventory();
             } else if (interact.coloredDeconvertName.equals(GUI.SAVE) || interact.coloredDeconvertName.equals(TM.g(Text.EDITOR_SAVE_NAME))) {
                 save(interact);
+                back(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.REMOVE)) {
                 remove(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.NEXT_PAGE)) {
@@ -128,6 +129,8 @@ public abstract class NewGUIManager<T extends GUI> {
                     if (this.leftClicked(interact)) return;
                 } else if (click.equals(ClickType.MIDDLE)) {
                     if (this.middleClicked(interact)) return;
+                } else if(click.equals(ClickType.DOUBLE_CLICK)){
+                    if (this.doubleClicked(interact)) return;
                 }
 
                 if (this.allClicked(interact)) return;
@@ -154,6 +157,8 @@ public abstract class NewGUIManager<T extends GUI> {
     public abstract boolean rightClicked(NewInteractionClickedGUIManager<T> interact);
 
     public abstract boolean middleClicked(NewInteractionClickedGUIManager<T> interact);
+
+    public abstract boolean doubleClicked(NewInteractionClickedGUIManager<T> interact);
 
     public void receiveMessage(Player p, String message) {
         NewInteractionClickedGUIManager<T> interact = new NewInteractionClickedGUIManager<>();

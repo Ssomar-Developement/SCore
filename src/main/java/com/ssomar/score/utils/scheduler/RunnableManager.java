@@ -32,5 +32,6 @@ public class RunnableManager {
         for (Runnable task : tasks) {
             task.run();
         }
+        tasks.clear();
     }
 }

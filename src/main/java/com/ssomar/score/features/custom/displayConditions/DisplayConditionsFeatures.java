@@ -117,7 +117,7 @@ public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayCo
 
         StringPlaceholder sp = new StringPlaceholder();
         sp.setPlayerPlcHldr(player.getUniqueId());
-        sp.setVariables(eiO.getVariables());
+        sp.setVariables(eiO.getInternalData().getVariableRealsList());
 
         result = playerConditions.verifConditions(player, errors, sp) && result;
         result = worldConditions.verifConditions(player.getWorld(), errors, sp) && result;
