@@ -619,6 +619,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     hasConsumeParticles("hasConsumeParticles", "Has Consume Particles", new String[]{"&7&oHas consume particles"}, Material.ANVIL, false),
     consumeSeconds("consumeSeconds", "Consume Seconds", new String[]{"&7&oThe consume seconds"}, GUI.CLOCK, false),
     consumableFeatures("consumableFeatures", "Consumable Features", new String[]{"&7&oConsumable Features"}, FixedMaterial.getMaterial(Arrays.asList("POTION")), false),
+    viewRange("viewRange", "View Range", new String[]{"&7&oThe view range"}, GUI.CLOCK, false),
     ;
 
 
@@ -629,16 +630,26 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     private boolean requirePremium;
 
     FeatureSettingsSCoreEN(String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        this.configName = name;
+        this.configName = "";
         this.editorName = editorName;
         this.editorDescription = editorDescription;
         this.editorMaterial = editorMaterial;
-        this.requirePremium = requirePremium;
+        this.requirePremium = false;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return this.name();
     }
 
     @Override
     public String getName() {
         return configName;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.configName = name;
     }
 
     @Override
@@ -659,5 +670,10 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     @Override
     public boolean isRequirePremium() {
         return requirePremium;
+    }
+
+    @Override
+    public void setRequirePremium(boolean requirePremium) {
+        this.requirePremium = requirePremium;
     }
 }

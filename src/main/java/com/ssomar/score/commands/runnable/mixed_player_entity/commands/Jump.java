@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
@@ -7,6 +8,7 @@ import com.ssomar.score.nofalldamage.NoFallDamageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -23,24 +25,32 @@ public class Jump extends MixedCommand {
 
         double jump = Double.parseDouble(args.get(0));
 
-        Vector v = receiver.getVelocity();
-        v.setX(0);
-        v.setY(jump);
-        v.setZ(0);
-        receiver.setVelocity(v);
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                Vector v = receiver.getVelocity();
+                v.setX(0);
+                v.setY(jump);
+                v.setZ(0);
+                receiver.setVelocity(v);
 
-        if(args.size() >= 2){
-            String falldamage = args.get(1);
+                if(args.size() >= 2){
+                    String falldamage = args.get(1);
 
-            if(falldamage.equalsIgnoreCase("true")){
+                    if(falldamage.equalsIgnoreCase("true")){
 
-            }else {
-                NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+                    }else {
+                        NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+                    }
+
+                }else{
+                    NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+                }
             }
+        };
+        /* Delayed of one tick Because when a player hit another player the velocity of the hit override the jump*/
+        SCore.schedulerHook.runTask(task, 1);
 
-        }else{
-            NoFallDamageManager.getInstance().addNoFallDamage(receiver);
-        }
     }
 
     @Override

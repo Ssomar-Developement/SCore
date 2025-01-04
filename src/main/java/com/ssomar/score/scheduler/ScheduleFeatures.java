@@ -69,7 +69,7 @@ public class ScheduleFeatures extends FeatureWithHisOwnEditor<ScheduleFeatures, 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (isPremiumLoading && config.isConfigurationSection(getName())) {
+        if (config.isConfigurationSection(getName())) {
             error.addAll(this.startDateFeature.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
             error.addAll(this.endDateFeature.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
             error.addAll(this.when.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));

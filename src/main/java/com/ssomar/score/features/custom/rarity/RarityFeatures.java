@@ -45,7 +45,7 @@ public class RarityFeatures extends FeatureWithHisOwnEditor<RarityFeatures, Rari
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (isPremiumLoading && config.isConfigurationSection(getName())) {
+        if (config.isConfigurationSection(getName())) {
             error.addAll(this.enableRarity.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
             error.addAll(this.itemRarity.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
         }

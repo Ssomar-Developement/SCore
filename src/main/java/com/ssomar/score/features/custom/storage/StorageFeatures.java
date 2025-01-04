@@ -43,7 +43,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (isPremiumLoading && config.isConfigurationSection(getName())) {
+        if (config.isConfigurationSection(getName())) {
             error.addAll(this.enable.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
             error.addAll(this.title.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
         }

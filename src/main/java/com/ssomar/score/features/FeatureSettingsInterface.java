@@ -4,8 +4,11 @@ import org.bukkit.Material;
 
 public interface FeatureSettingsInterface {
 
+    String getIdentifier();
 
     String getName();
+
+    void setName(String name);
 
     String getEditorName();
 
@@ -14,4 +17,6 @@ public interface FeatureSettingsInterface {
     Material getEditorMaterial();
 
     boolean isRequirePremium();
+
+    void setRequirePremium(boolean requirePremium);
 }

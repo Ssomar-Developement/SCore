@@ -50,7 +50,7 @@ public class UsageFeatures extends FeatureWithHisOwnEditor<UsageFeatures, UsageF
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (isPremiumLoading && config.isConfigurationSection(getName())) {
+        if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
             error.addAll(this.usage.load(plugin, section, isPremiumLoading));
             error.addAll(this.isRefreshableClean.load(plugin, section, isPremiumLoading));

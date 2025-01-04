@@ -25,6 +25,8 @@ import java.util.*;
 @Setter
 public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature, VariableFeature<T>, GenericFeatureParentEditorReloaded, GenericFeatureParentEditorReloadedManager> {
 
+    private static final boolean DEBUG = true;
+
     private UncoloredStringFeature variableName;
     private VariableTypeFeature type;
     private ColoredStringFeature stringValue;
@@ -82,8 +84,12 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     }
 
     public static String generateTag(String variableName) {
+        //SsomarDev.testMsg("VariableFeature generateTag variableName: "+variableName, DEBUG);
         int hashCode = variableName.hashCode();
+        // Because the hashcode can be negative
+        if(hashCode < 0) hashCode = -hashCode;
         String hashToString = Integer.toString(hashCode);
+        //SsomarDev.testMsg("VariableFeature generateTag hashToString: "+hashToString, DEBUG);
 
         StringBuilder tag = new StringBuilder();
         for (int i = 0; i < hashToString.length(); i++) {

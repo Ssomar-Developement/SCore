@@ -6,6 +6,7 @@ import com.ssomar.score.features.lang.FeatureSettingsSCoreFR;
 import com.ssomar.score.features.lang.FeatureSettingsSCoreRU;
 import com.ssomar.score.features.lang.FeatureSettingsSCoreZH;
 import org.bukkit.Material;
+import org.jetbrains.annotations.Nullable;
 
 public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
@@ -15,13 +16,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     aboveValue(getFeatureSettings("aboveValue")),
     activator(getFeatureSettings("activator")),
     activators(getFeatureSettings("activators")),
-    activeTitle(getFeatureSettings("activeTitle")),
+    activeTitle(getFeatureSettings("activeTitle", true)),
     playerCanSit(getFeatureSettings("playerCanSit")),
     amount(getFeatureSettings("amount")),
     amplifier(getFeatureSettings("amplifier")),
     armorTrim(getFeatureSettings("armorTrim")),
-    aroundBlock(getFeatureSettings("AroundBlock")),
-    aroundBlockCdts(getFeatureSettings("blockAroundCdts")),
+    aroundBlock(getFeatureSettings("aroundBlock","AroundBlock")),
+    aroundBlockCdts(getFeatureSettings("aroundBlockCdts","blockAroundCdts")),
     attribute(getFeatureSettings("attribute")),
     attributes(getFeatureSettings("attributes")),
     bannerSettings(getFeatureSettings("bannerSettings")),
@@ -29,47 +30,47 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     blockTypeMustBe(getFeatureSettings("blockTypeMustBe")),
     blocks(getFeatureSettings("blocks")),
     bounce(getFeatureSettings("bounce")),
-    cancelActionEnchantInAnvil(getFeatureSettings("cancel-enchant-anvil")),
-    cancelActionRenameInAnvil(getFeatureSettings("cancel-rename-anvil")),
-    cancelAllCraft(getFeatureSettings("cancel-item-craft")),
-    cancelAnvil(getFeatureSettings("cancel-anvil")),
-    cancelArmorStand(getFeatureSettings("cancel-armorstand")),
-    cancelBeacon(getFeatureSettings("cancel-beacon")),
-    cancelBrewing(getFeatureSettings("cancel-brewing")),
-    cancelCartography(getFeatureSettings("cancel-cartography")),
-    cancelComposter(getFeatureSettings("cancel-composter")),
-    cancelConsumption(getFeatureSettings("cancel-consumption")),
-    cancelCraft(getFeatureSettings("cancel-item-craft-no-custom")),
-    cancelDepositInChest(getFeatureSettings("cancel-deposit-in-chest")),
-    cancelDepositInFurnace(getFeatureSettings("cancel-deposit-in-furnace")),
-    cancelDispenser(getFeatureSettings("cancel-dispenser")),
-    cancelDropper(getFeatureSettings("cancel-dropper")),
-    cancelEnchant(getFeatureSettings("cancel-enchant")),
+    cancelActionEnchantInAnvil(getFeatureSettings("cancelActionEnchantInAnvil","cancel-enchant-anvil")),
+    cancelActionRenameInAnvil(getFeatureSettings("cancelActionRenameInAnvil","cancel-rename-anvil")),
+    cancelAllCraft(getFeatureSettings("cancelAllCraft", "cancel-item-craft")),
+    cancelAnvil(getFeatureSettings("cancelAnvil","cancel-anvil")),
+    cancelArmorStand(getFeatureSettings("cancelArmorStand","cancel-armorstand")),
+    cancelBeacon(getFeatureSettings("cancelBeacon","cancel-beacon")),
+    cancelBrewing(getFeatureSettings("cancelBrewing","cancel-brewing")),
+    cancelCartography(getFeatureSettings("cancelCartography","cancel-cartography")),
+    cancelComposter(getFeatureSettings("cancelComposter","cancel-composter")),
+    cancelConsumption(getFeatureSettings("cancelConsumption","cancel-consumption")),
+    cancelCraft(getFeatureSettings("cancelCraft","cancel-item-craft-no-custom")),
+    cancelDepositInChest(getFeatureSettings("cancelDepositInChest","cancel-deposit-in-chest")),
+    cancelDepositInFurnace(getFeatureSettings("cancelDepositInFurnace","cancel-deposit-in-furnace")),
+    cancelDispenser(getFeatureSettings("cancelDispenser","cancel-dispenser")),
+    cancelDropper(getFeatureSettings("cancelDropper","cancel-dropper")),
+    cancelEnchant(getFeatureSettings("cancelEnchant","cancel-enchant")),
     cancelEventIfError(getFeatureSettings("cancelEventIfError")),
     cancelEventIfInCooldown(getFeatureSettings("cancelEventIfInCooldown")),
     cancelEventIfMaxReached(getFeatureSettings("cancelEventIfMaxReached")),
     cancelEventIfNoPermission(getFeatureSettings("cancelEventIfNoPermission")),
     cancelEventIfNotValid(getFeatureSettings("cancelEventIfNotValid")),
     cancelEvents(getFeatureSettings("cancelEvents")),
-    cancelGrindStone(getFeatureSettings("cancel-grind-stone")),
-    cancelHopper(getFeatureSettings("cancel-hopper")),
-    cancelHorn(getFeatureSettings("cancel-horn")),
-    cancelHorse(getFeatureSettings("cancel-horse")),
-    cancelItemBurn(getFeatureSettings("cancel-item-burn")),
-    cancelItemDeleteByCactus(getFeatureSettings("cancel-item-delete-by-cactus")),
-    cancelItemDeleteByLightning(getFeatureSettings("cancel-item-delete-by-lightning")),
-    cancelItemDrop(getFeatureSettings("cancel-item-drop")),
-    cancelItemFrame(getFeatureSettings("cancel-item-frame")),
-    cancelItemPlace(getFeatureSettings("cancel-item-place")),
-    cancelLectern(getFeatureSettings("cancel-lectern")),
-    cancelLoom(getFeatureSettings("cancel-loom")),
-    cancelDecoratedPot(getFeatureSettings("cancel-decorated-pot")),
-    cancelCrafter(getFeatureSettings("cancel-crafter")),
-    cancelMerchant(getFeatureSettings("cancel-merchant")),
-    cancelSmithingTable(getFeatureSettings("cancel-smithing-table")),
-    cancelStoneCutter(getFeatureSettings("cancel-stone-cutter")),
-    cancelSwapHand(getFeatureSettings("cancel-swap-hand")),
-    cancelToolInteractions(getFeatureSettings("cancel-tool-interactions")),
+    cancelGrindStone(getFeatureSettings("cancelGrindStone","cancel-grind-stone")),
+    cancelHopper(getFeatureSettings("cancelHopper","cancel-hopper")),
+    cancelHorn(getFeatureSettings("cancelHorn","cancel-horn")),
+    cancelHorse(getFeatureSettings("cancelHorse","cancel-horse")),
+    cancelItemBurn(getFeatureSettings("cancelItemBurn","cancel-item-burn")),
+    cancelItemDeleteByCactus(getFeatureSettings("cancelItemDeleteByCactus","cancel-item-delete-by-cactus")),
+    cancelItemDeleteByLightning(getFeatureSettings("cancelItemDeleteByLightning","cancel-item-delete-by-lightning")),
+    cancelItemDrop(getFeatureSettings("cancelItemDrop","cancel-item-drop")),
+    cancelItemFrame(getFeatureSettings("cancelItemFrame","cancel-item-frame")),
+    cancelItemPlace(getFeatureSettings("cancelItemPlace","cancel-item-place")),
+    cancelLectern(getFeatureSettings("cancelLectern","cancel-lectern")),
+    cancelLoom(getFeatureSettings("cancelLoom","cancel-loom")),
+    cancelDecoratedPot(getFeatureSettings("cancelDecoratedPot","cancel-decorated-pot")),
+    cancelCrafter(getFeatureSettings("cancelCrafter","cancel-crafter")),
+    cancelMerchant(getFeatureSettings("cancelMerchant","cancel-merchant")),
+    cancelSmithingTable(getFeatureSettings("cancelSmithingTable","cancel-smithing-table")),
+    cancelStoneCutter(getFeatureSettings("cancelStoneCutter","cancel-stone-cutter")),
+    cancelSwapHand(getFeatureSettings("cancelSwapHand","cancel-swap-hand")),
+    cancelToolInteractions(getFeatureSettings("cancelToolInteractions","cancel-tool-interactions")),
     charged(getFeatureSettings("charged")),
     color(getFeatureSettings("color")),
     containerContent(getFeatureSettings("containerContent")),
@@ -82,9 +83,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     customName(getFeatureSettings("customName")),
     customNameVisible(getFeatureSettings("customNameVisible")),
     damage(getFeatureSettings("damage")),
-    default_double(getFeatureSettings("default")),
-    default_list(getFeatureSettings("default")),
-    default_string(getFeatureSettings("default")),
+    default_double(getFeatureSettings("default_double","default")),
+    default_list(getFeatureSettings("default_list","default")),
+    default_string(getFeatureSettings("default_string","default")),
     delay(getFeatureSettings("delay")),
     delayInTick(getFeatureSettings("delayInTick")),
     despawnDelay(getFeatureSettings("despawnDelay")),
@@ -113,13 +114,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     fireworkExplosions(getFeatureSettings("fireworkExplosions")),
     hasTrail(getFeatureSettings("hasTrail")),
     hasTwinkle(getFeatureSettings("hasTwinkle")),
-    for_(getFeatureSettings("for")),
+    for_(getFeatureSettings("for_","for")),
     giveFirstJoin(getFeatureSettings("giveFirstJoin")),
     giveFirstJoinAmount(getFeatureSettings("giveFirstJoinAmount")),
     giveFirstJoinFeatures(getFeatureSettings("giveFirstJoin")),
     giveFirstJoinSlot(getFeatureSettings("giveFirstJoinSlot")),
     glowDrop(getFeatureSettings("glowDrop")),
-    glowDropColor(getFeatureSettings("glowDropColor")),
+    glowDropColor(getFeatureSettings("glowDropColor", true)),
     glowing(getFeatureSettings("glowing")),
     gravity(getFeatureSettings("gravity")),
     hasExecutableItem(getFeatureSettings("hasExecutableItem")),
@@ -136,7 +137,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     hideEnchantments(getFeatureSettings("hideEnchantments")),
     hidePlacedOn(getFeatureSettings("hidePlacedOn")),
     hideAdditionalTooltip(getFeatureSettings("hideAdditionalTooltip")),
-    hideTooltip(getFeatureSettings("hideToolTip")),
+    //TODO find a way to fix this typo and accept both
+    hideTooltip(getFeatureSettings("hideTooltip","hideToolTip")),
     hidePotionEffects(getFeatureSettings("hidePotionEffects")),
     hideUnbreakable(getFeatureSettings("hideUnbreakable")),
     hideUsage(getFeatureSettings("hideUsage")),
@@ -256,18 +258,18 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     knockbackStrength(getFeatureSettings("knockbackStrength")),
     level(getFeatureSettings("level")),
     lifeTime(getFeatureSettings("lifeTime")),
-    lockedInventory(getFeatureSettings("locked-in-inventory")),
+    lockedInventory(getFeatureSettings("lockedInventory","locked-in-inventory")),
     loop(getFeatureSettings("loop")),
     magicID(getFeatureSettings("magicID")),
     material(getFeatureSettings("material")),
     materialAndTags(getFeatureSettings("materialAndTags")),
-    maxUsePerDay(getFeatureSettings("maxUsePerDay")),
+    maxUsePerDay(getFeatureSettings("maxUsePerDay", true)),
     messageIfMaxReached(getFeatureSettings("messageIfMaxReached")),
     messageIfNotValid(getFeatureSettings("messageIfNotValid")),
     messageIfNotValidForTarget(getFeatureSettings("messageIfNotValidForTarget")),
-    modification_double(getFeatureSettings("modification")),
-    modification_string(getFeatureSettings("modification")),
-    multiChoices(getFeatureSettings("multi-choices")),
+    modification_double(getFeatureSettings("modification_double","modification")),
+    modification_string(getFeatureSettings("modification_string","modification")),
+    multiChoices(getFeatureSettings("multiChoices","multi-choices")),
     name(getFeatureSettings("name")),
     northValue(getFeatureSettings("northValue")),
     notExecutableItem(getFeatureSettings("notExecutableItem")),
@@ -306,17 +308,17 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     radius(getFeatureSettings("radius")),
     redstoneColor(getFeatureSettings("redstoneColor")),
     removeWhenHitBlock(getFeatureSettings("removeWhenHitBlock")),
-    requiredExecutableItem(getFeatureSettings("requiredExecutableItem")),
-    requiredExecutableItems(getFeatureSettings("requiredExecutableItems")),
-    requiredExperience(getFeatureSettings("requiredExperience")),
+    requiredExecutableItem(getFeatureSettings("requiredExecutableItem", true)),
+    requiredExecutableItems(getFeatureSettings("requiredExecutableItems", true)),
+    requiredExperience(getFeatureSettings("requiredExperience", true)),
     requiredGroups(getFeatureSettings("requiredGroups")),
-    requiredItem(getFeatureSettings("requiredItem")),
-    requiredItems(getFeatureSettings("requiredItems")),
-    requiredLevel(getFeatureSettings("requiredLevel")),
-    requiredMagic(getFeatureSettings("requiredMagic")),
-    requiredMagics(getFeatureSettings("requiredMagics")),
-    requiredMana(getFeatureSettings("requiredMana")),
-    requiredMoney(getFeatureSettings("requiredMoney")),
+    requiredItem(getFeatureSettings("requiredItem", false)),
+    requiredItems(getFeatureSettings("requiredItems", true)),
+    requiredLevel(getFeatureSettings("requiredLevel",true)),
+    requiredMagic(getFeatureSettings("requiredMagic",true)),
+    requiredMagics(getFeatureSettings("requiredMagics", true)),
+    requiredMana(getFeatureSettings("requiredMana", true)),
+    requiredMoney(getFeatureSettings("requiredMoney", true)),
     restrictions(getFeatureSettings("restrictions")),
     silent(getFeatureSettings("silent")),
     slot(getFeatureSettings("slot")),
@@ -328,14 +330,14 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     tags(getFeatureSettings("tags")),
     title(getFeatureSettings("title")),
     titleAdjustement(getFeatureSettings("titleAdjustement")),
-    titleOptions(getFeatureSettings("titleOptions")),
+    titleOptions(getFeatureSettings("titleOptions", true)),
     sitFeatures(getFeatureSettings("sitFeatures")),
     storageFeatures(getFeatureSettings("storageFeatures")),
     trimMaterial(getFeatureSettings("trimMaterial")),
     type(getFeatureSettings("type")),
     underValue(getFeatureSettings("underValue")),
     usageConditions(getFeatureSettings("usageConditions")),
-    usePerDay(getFeatureSettings("usePerDay")),
+    usePerDay(getFeatureSettings("usePerDay", true)),
     uuid(getFeatureSettings("uuid")),
     variable(getFeatureSettings("variable")),
     variableName(getFeatureSettings("variableName")),
@@ -382,7 +384,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     vanillaUseCooldown(getFeatureSettings("vanillaUseCooldown")),
     typeTarget(getFeatureSettings("typeTarget")),
     detailedClick(getFeatureSettings("detailedClick")),
-    usageModification(getFeatureSettings("usageModification")),
+    usageModification(getFeatureSettings("usageModification", true)),
     cancelEvent(getFeatureSettings("cancelEvent")),
     noActivatorRunIfTheEventIsCancelled(getFeatureSettings("noActivatorRunIfTheEventIsCancelled")),
     silenceOutput(getFeatureSettings("silenceOutput")),
@@ -400,12 +402,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     detailedMessagesEquals(getFeatureSettings("detailedMessagesEquals")),
     detailedInventories(getFeatureSettings("detailedInventories")),
     mustBeItsOwnInventory(getFeatureSettings("mustBeItsOwnInventory")),
-    commands_player(getFeatureSettings("commands")),
-    commands_block(getFeatureSettings("commands")),
+    commands_player(getFeatureSettings("commands_player","commands")),
+    commands_block(getFeatureSettings("commands_block","commands")),
     targetCommands(getFeatureSettings("targetCommands")),
     entityCommands(getFeatureSettings("entityCommands")),
     blockCommands(getFeatureSettings("blockCommands")),
-    blockCommands_target_block(getFeatureSettings("blockCommands")),
+    blockCommands_target_block(getFeatureSettings("blockCommands_target_block","blockCommands")),
     playerCommands(getFeatureSettings("playerCommands")),
     ownerCommands(getFeatureSettings("ownerCommands")),
     consoleCommands(getFeatureSettings("consoleCommands")),
@@ -424,15 +426,15 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     targetBlockConditions(getFeatureSettings("targetBlockConditions")),
     targetPlayerConditions(getFeatureSettings("targetPlayerConditions")),
     targetEntityConditions(getFeatureSettings("targetEntityConditions")),
-    displayConditions_conditions(getFeatureSettings("displayConditions")),
+    displayConditions_conditions(getFeatureSettings("displayConditions_conditions","displayConditions")),
     containsMineInCube(getFeatureSettings("containsMineInCube")),
     playerCooldownOptions(getFeatureSettings("playerCooldownOptions")),
     entityCooldownOptions(getFeatureSettings("entityCooldownOptions")),
     isRefreshableClean(getFeatureSettings("isRefreshableClean")),
-    refreshTag(getFeatureSettings("refreshTagDoNotEdit")),
+    refreshTag(getFeatureSettings("refreshTag","refreshTagDoNotEdit")),
     otherEICooldowns(getFeatureSettings("otherEICooldowns")),
     cooldown_activators(getFeatureSettings("activators")),
-    canBeUsedOnlyByTheOwner(getFeatureSettings("canBeUsedOnlyByTheOwner")),
+    canBeUsedOnlyByTheOwner(getFeatureSettings("canBeUsedOnlyByTheOwner", true)),
     cancelEventIfNotOwner(getFeatureSettings("cancelEventIfNotOwner")),
     onlyOwnerBlackListedActivators(getFeatureSettings("onlyOwnerBlackListedActivators")),
     EXECUTABLEITEM(getFeatureSettings("EXECUTABLEITEM")),
@@ -440,20 +442,20 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     glow(getFeatureSettings("glow")),
     glowDuration(getFeatureSettings("glowDuration")),
     disableEnchantGlide(getFeatureSettings("disableEnchantGlide")),
-    disableStack(getFeatureSettings("disableStack")),
-    customStackSize(getFeatureSettings("customStackSize")),
+    disableStack(getFeatureSettings("disableStack", true)),
+    customStackSize(getFeatureSettings("customStackSize", true)),
     keepItemOnDeath(getFeatureSettings("keepItemOnDeath")),
     storeItemInfo(getFeatureSettings("storeItemInfo")),
     keepDefaultAttributes(getFeatureSettings("keepDefaultAttributes")),
     ignoreKeepDefaultAttributesFeature(getFeatureSettings("ignoreKeepDefaultAttributesFeature")),
     unbreakable(getFeatureSettings("unbreakable")),
     usage(getFeatureSettings("usage")),
-    usageLimit(getFeatureSettings("usageLimit")),
+    usageLimit(getFeatureSettings("usageLimit", true)),
     customModelData_ei(getFeatureSettings("customModelData")),
     whitelistedWorlds(getFeatureSettings("whitelistedWorlds")),
     armorColor(getFeatureSettings("armorColor")),
     fireworkColor(getFeatureSettings("fireworkColor")),
-    recognitions(getFeatureSettings("recognitions")),
+    recognitions(getFeatureSettings("recognitions", true)),
     food(getFeatureSettings("food")),
     nutrition(getFeatureSettings("nutrition")),
     saturation(getFeatureSettings("saturation")),
@@ -484,8 +486,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     updateCustomModelData(getFeatureSettings("updateCustomModelData")),
     updateArmorSettings(getFeatureSettings("updateArmorSettings")),
     updateHiders(getFeatureSettings("updateHiders")),
-    brewingStandFeatures(getFeatureSettings("brewingStandFeatures")),
-    brewingStandSpeed(getFeatureSettings("brewingStandSpeed")),
+    brewingStandFeatures(getFeatureSettings("brewingStandFeatures", true)),
+    brewingStandSpeed(getFeatureSettings("brewingStandSpeed", true)),
     boundingBoxZones(getFeatureSettings("boundingBoxZones")),
     boundingBoxZone(getFeatureSettings("boundingBoxZone")),
     from(getFeatureSettings("from")),
@@ -496,17 +498,17 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     isLocked(getFeatureSettings("isLocked")),
     lockedName(getFeatureSettings("lockedName")),
     inventoryTitle(getFeatureSettings("inventoryTitle")),
-    furnaceFeatures(getFeatureSettings("furnaceFeatures")),
-    furnaceSpeed(getFeatureSettings("furnaceSpeed")),
-    infiniteFuel(getFeatureSettings("infiniteFuel")),
-    infiniteVisualLit(getFeatureSettings("infiniteVisualLit")),
-    fortuneChance(getFeatureSettings("fortuneChance")),
-    fortuneMultiplier(getFeatureSettings("fortuneMultiplier")),
+    furnaceFeatures(getFeatureSettings("furnaceFeatures", true)),
+    furnaceSpeed(getFeatureSettings("furnaceSpeed", true)),
+    infiniteFuel(getFeatureSettings("infiniteFuel", true)),
+    infiniteVisualLit(getFeatureSettings("infiniteVisualLit", true)),
+    fortuneChance(getFeatureSettings("fortuneChance", true)),
+    fortuneMultiplier(getFeatureSettings("fortuneMultiplier", true)),
     directionalFeatures(getFeatureSettings("directionalFeatures")),
     forceBlockFaceOnPlace(getFeatureSettings("forceBlockFaceOnPlace")),
     blockFaceOnPlace(getFeatureSettings("blockFaceOnPlace")),
-    hopperFeatures(getFeatureSettings("hopperFeatures")),
-    amountItemsTransferred(getFeatureSettings("amountItemsTransferred")),
+    hopperFeatures(getFeatureSettings("hopperFeatures", true)),
+    amountItemsTransferred(getFeatureSettings("amountItemsTransferred", true)),
     chiseledBookshelfFeatures(getFeatureSettings("chiseledBookshelfFeatures")),
     occupiedSlots(getFeatureSettings("occupiedSlots")),
     InteractionZoneFeatures(getFeatureSettings("InteractionZoneFeatures")),
@@ -565,7 +567,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     hasConsumeParticles(getFeatureSettings("hasConsumeParticles")),
     consumeSeconds(getFeatureSettings("consumeSeconds")),
     consumableFeatures(getFeatureSettings("consumableFeatures")),
-    scheduleFeatures(getFeatureSettings("scheduleFeatures"));
+    scheduleFeatures(getFeatureSettings("scheduleFeatures")),
+    viewRange(getFeatureSettings("viewRange"));
 
     private final FeatureSettingsInterface settingsInterface;
 
@@ -599,10 +602,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         }
     }
 
-    public static FeatureSettingsInterface getFeatureSettings(String configName) {
+    public static FeatureSettingsInterface getFeatureSettings(String identifier, @Nullable String configName, boolean requirePremium) {
+        if(configName == null) configName = identifier;
         FeatureSettingsInterface[] values = getValues();
         for (FeatureSettingsInterface value : values) {
-            if (value.getName().equals(configName)) {
+            if (value.getIdentifier().equals(identifier)) {
+                value.setName(configName);
+                value.setRequirePremium(requirePremium);
                 return value;
             }
         }
@@ -610,16 +616,40 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         /* try in english */
         values = FeatureSettingsSCoreEN.values();
         for (FeatureSettingsInterface value : values) {
-            if (value.getName().equals(configName)) {
+            if (value.getName().equals(identifier)) {
+                value.setName(configName);
+                value.setRequirePremium(requirePremium);
                 return value;
             }
         }
-        throw new IllegalArgumentException("No feature settings found for config name: " + configName);
+        throw new IllegalArgumentException("No feature settings found for config name: " + identifier);
+    }
+
+    public static FeatureSettingsInterface getFeatureSettings(String identifier) {
+        return getFeatureSettings(identifier, null);
+    }
+
+    public static FeatureSettingsInterface getFeatureSettings(String identifier, @Nullable String configName) {
+        return getFeatureSettings(identifier, configName, false);
+    }
+
+    public static FeatureSettingsInterface getFeatureSettings(String identifier, boolean requirePremium) {
+        return getFeatureSettings(identifier, null, requirePremium);
+    }
+
+    @Override
+    public String getIdentifier() {
+        return this.name();
     }
 
     @Override
     public String getName() {
         return settingsInterface.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+       settingsInterface.setName(name);
     }
 
     @Override
@@ -648,5 +678,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     @Override
     public boolean isRequirePremium() {
         return settingsInterface.isRequirePremium();
+    }
+
+    @Override
+    public void setRequirePremium(boolean requirePremium) {
+        settingsInterface.setRequirePremium(requirePremium);
     }
 }

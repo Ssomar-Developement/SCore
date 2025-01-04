@@ -45,6 +45,10 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         this.onlyItemMaterial = onlyItemMaterial;
     }
 
+    public static MaterialFeature buildNull() {
+        return new MaterialFeature(null, Optional.of(Material.STONE), FeatureSettingsSCore.material);
+    }
+
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();

@@ -22,13 +22,6 @@ public class TESTEVENT implements Listener {
 
         Block block = p.getTargetBlock(null, 5);
         SsomarDev.testMsg("Block: " + block.getType(), true);
-
-       // ShulkerPacketUtil shulkerPacketUtils = new ShulkerPacketUtil();
-        //int text = shulkerPacketUtils.sendClientTextDisplay(p, block.getLocation().add(0,2,0));
-        //int shulker = shulkerPacketUtils.sendClientShulker(p, block.getLocation().add(0,2,0));
-        //shulkerPacketUtils.mountShulker(p, shulker, text);
-
-        //shulkerPacketUtils.removeClientShulker(p, shulker);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

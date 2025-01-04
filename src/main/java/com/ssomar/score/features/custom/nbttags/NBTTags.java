@@ -108,7 +108,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
         tags.clear();
         ArrayList<String> error = new ArrayList<>();
         if (configurationSection.contains("nbt"))
-            if (!isPremiumLoading) {
+            if (!isPremiumLoading && isRequirePremium()) {
                 error.add(StringConverter.coloredString("&cREQUIRE PREMIUM: to edit NBT you need the premium version"));
             } else {
                 ConfigurationSection nbtSection = configurationSection.getConfigurationSection("nbt");

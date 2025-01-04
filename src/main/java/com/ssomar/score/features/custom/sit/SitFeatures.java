@@ -39,7 +39,7 @@ public class SitFeatures extends FeatureWithHisOwnEditor<SitFeatures, SitFeature
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (isPremiumLoading && config.isConfigurationSection(getName())) {
+        if (config.isConfigurationSection(getName())) {
             error.addAll(this.playerCanSit.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
         }
 

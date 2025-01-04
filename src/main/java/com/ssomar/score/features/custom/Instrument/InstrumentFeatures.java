@@ -43,7 +43,7 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (isPremiumLoading && config.isConfigurationSection(getName())) {
+        if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
             error.addAll(this.enable.load(plugin, section, isPremiumLoading));
             error.addAll(this.instrument.load(plugin, section, isPremiumLoading));

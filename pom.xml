@@ -514,6 +514,7 @@
 
     <dependencies>
 
+
         <!-- Used by /score particles -->
         <dependency>
             <groupId>com.thoughtworks.paranamer</groupId>

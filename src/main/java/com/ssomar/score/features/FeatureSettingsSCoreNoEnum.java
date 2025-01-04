@@ -19,8 +19,18 @@ public class FeatureSettingsSCoreNoEnum implements FeatureSettingsInterface {
     }
 
     @Override
+    public String getIdentifier() {
+        return configName;
+    }
+
+    @Override
     public String getName() {
         return configName;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.configName = name;
     }
 
     @Override
@@ -41,5 +51,10 @@ public class FeatureSettingsSCoreNoEnum implements FeatureSettingsInterface {
     @Override
     public boolean isRequirePremium() {
         return requirePremium;
+    }
+
+    @Override
+    public void setRequirePremium(boolean requirePremium) {
+        this.requirePremium = requirePremium;
     }
 }

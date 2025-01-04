@@ -27,6 +27,10 @@ public class VariablesGroupFeature extends FeatureWithHisOwnEditor<VariablesGrou
         reset();
     }
 
+    public static VariablesGroupFeature buildNull(){
+        return new VariablesGroupFeature(null);
+    }
+
     @Override
     public void reset() {
         this.variables = new HashMap<>();

@@ -610,16 +610,26 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     private boolean requirePremium;
 
     FeatureSettingsSCoreFR(String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
-        this.configName = name;
+        this.configName = "";
         this.editorName = editorName;
         this.editorDescription = editorDescription;
         this.editorMaterial = editorMaterial;
-        this.requirePremium = requirePremium;
+        this.requirePremium = false;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return this.name();
     }
 
     @Override
     public String getName() {
         return configName;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.configName = name;
     }
 
     @Override
@@ -640,5 +650,10 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     @Override
     public boolean isRequirePremium() {
         return requirePremium;
+    }
+
+    @Override
+    public void setRequirePremium(boolean requirePremium) {
+        this.requirePremium = requirePremium;
     }
 }

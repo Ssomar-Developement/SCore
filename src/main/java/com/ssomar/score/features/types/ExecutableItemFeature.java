@@ -29,6 +29,7 @@ import java.util.*;
 public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableItemInterface>, ExecutableItemFeature> implements FeatureRequireOnlyClicksInEditor {
 
     private Optional<String> value;
+    private boolean returnErrorIfExecItemNotExists = false;
 
     public ExecutableItemFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
@@ -43,6 +44,12 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
             value = Optional.empty();
         } else {
             value = Optional.of(colorStr);
+            if (returnErrorIfExecItemNotExists){
+                if(!Dependency.EXECUTABLE_ITEMS.isEnabled())
+                    errors.add("&cERROR, Couldn't load the ExecutableItemID: " + value.get() + " because ExecutableItems is not enabled/installed &7&o" + getParent().getParentInfo());
+                else if(!ExecutableItemsAPI.getExecutableItemsManager().isValidID(value.get()))
+                    errors.add("&cERROR, Couldn't load the ExecutableItemID: " + value.get() + " because it doesn't exist or is not loaded correctly &7&o" + getParent().getParentInfo());
+            }
         }
         return errors;
     }
@@ -104,6 +111,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
     public ExecutableItemFeature clone(FeatureParentInterface newParent) {
         ExecutableItemFeature clone = new ExecutableItemFeature(newParent, this.getFeatureSettings());
         clone.value = value;
+        clone.returnErrorIfExecItemNotExists = returnErrorIfExecItemNotExists;
         return clone;
     }
 

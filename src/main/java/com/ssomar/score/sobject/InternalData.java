@@ -28,7 +28,7 @@ public class InternalData {
 
     public InternalData(){
         this.usage = -1;
-        this.variableRealsList = null;
+        this.variableRealsList = new VariableRealsList();
         this.variables = null;
         this.ownerUUID = null;
     }
