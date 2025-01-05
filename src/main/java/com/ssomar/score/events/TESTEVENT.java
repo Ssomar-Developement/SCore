@@ -22,6 +22,9 @@ public class TESTEVENT implements Listener {
 
         Block block = p.getTargetBlock(null, 5);
         SsomarDev.testMsg("Block: " + block.getType(), true);
+
+       // PlayerInventory inv = p.getInventory();
+       // inv.addItem(new ItemStack(Material.DIAMOND));
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -23,13 +23,12 @@ public class MinecraftTags {
         /* add all the tags */
 
         if (SCore.is1v20Plus()) {
-           /* tags.add(Tag.ACACIA_LOGS);
+            tags.add(Tag.ACACIA_LOGS);
             tags.add(Tag.ALL_HANGING_SIGNS);
             tags.add(Tag.ALL_SIGNS);
             tags.add(Tag.ANCIENT_CITY_REPLACEABLE);
             tags.add(Tag.ANIMALS_SPAWNABLE_ON);
             tags.add(Tag.ANVIL);
-            tags.add(Tag.AXOLOTL_TEMPT_ITEMS);
             tags.add(Tag.AXOLOTLS_SPAWNABLE_ON);
             tags.add(Tag.AZALEA_GROWS_ON);
             tags.add(Tag.AZALEA_ROOT_REPLACEABLE);
@@ -45,11 +44,9 @@ public class MinecraftTags {
             tags.add(Tag.BIG_DRIPLEAF_PLACEABLE);
             tags.add(Tag.BIRCH_LOGS);
             tags.add(Tag.BUTTONS);
-            //tags.add(Tag.CAMEL_SAND_STEP_SOUND_BLOCKS);
             tags.add(Tag.CAMPFIRES);
             tags.add(Tag.CANDLE_CAKES);
             tags.add(Tag.CANDLES);
-            tags.add(Tag.CARPETS);
             tags.add(Tag.WOOL_CARPETS);
             tags.add(Tag.CAULDRONS);
             tags.add(Tag.CAVE_VINES);
@@ -60,7 +57,6 @@ public class MinecraftTags {
             tags.add(Tag.COAL_ORES);
             tags.add(Tag.COMBINATION_STEP_SOUND_BLOCKS);
             tags.add(Tag.COMPLETES_FIND_TREE_TUTORIAL);
-            //tags.add(Tag.CONCRETE_POWDER);
             tags.add(Tag.CONVERTABLE_TO_MUD);
             tags.add(Tag.COPPER_ORES);
             tags.add(Tag.CORAL_BLOCKS);
@@ -87,16 +83,12 @@ public class MinecraftTags {
             tags.add(Tag.ENTITY_TYPES_AXOLOTL_ALWAYS_HOSTILES);
             tags.add(Tag.ENTITY_TYPES_AXOLOTL_HUNT_TARGETS);
             tags.add(Tag.ENTITY_TYPES_BEEHIVE_INHABITORS);
-            //tags.add(Tag.ENTITY_TYPES_CAN_TURN_IN_BOATS);
-            //tags.add(Tag.ENTITY_TYPES_DEFLECTS_ARROWS);
-            //tags.add(Tag.ENTITY_TYPES_DEFLECTS_TRIDENTS);
             tags.add(Tag.ENTITY_TYPES_DISMOUNTS_UNDERWATER);
             tags.add(Tag.ENTITY_TYPES_FALL_DAMAGE_IMMUNE);
             tags.add(Tag.ENTITY_TYPES_FREEZE_HURTS_EXTRA_TYPES);
             tags.add(Tag.ENTITY_TYPES_FREEZE_IMMUNE_ENTITY_TYPES);
             tags.add(Tag.ENTITY_TYPES_FROG_FOOD);
             tags.add(Tag.ENTITY_TYPES_IMPACT_PROJECTILES);
-            //tags.add(Tag.ENTITY_TYPES_NON_CONTROLLING_RIDER);
             tags.add(Tag.ENTITY_TYPES_POWDER_SNOW_WALKABLE_MOBS);
             tags.add(Tag.ENTITY_TYPES_RAIDERS);
             tags.add(Tag.ENTITY_TYPES_SKELETONS);
@@ -109,7 +101,6 @@ public class MinecraftTags {
             tags.add(Tag.FLOWERS);
             tags.add(Tag.FLUIDS_LAVA);
             tags.add(Tag.FLUIDS_WATER);
-            tags.add(Tag.FOX_FOOD);
             tags.add(Tag.FOXES_SPAWNABLE_ON);
             tags.add(Tag.FREEZE_IMMUNE_WEARABLES);
             tags.add(Tag.FROG_PREFER_JUMP_TO);
@@ -143,7 +134,6 @@ public class MinecraftTags {
             tags.add(Tag.ITEMS_DECORATED_POT_INGREDIENTS);
             tags.add(Tag.ITEMS_DECORATED_POT_SHERDS);
             tags.add(Tag.ITEMS_FISHES);
-            tags.add(Tag.ITEMS_FURNACE_MATERIALS);
             tags.add(Tag.ITEMS_HANGING_SIGNS);
             tags.add(Tag.ITEMS_HOES);
             tags.add(Tag.ITEMS_LECTERN_BOOKS);
@@ -155,9 +145,7 @@ public class MinecraftTags {
             tags.add(Tag.ITEMS_SNIFFER_FOOD);
             tags.add(Tag.ITEMS_STONE_TOOL_MATERIALS);
             tags.add(Tag.ITEMS_SWORDS);
-            tags.add(Tag.ITEMS_TOOLS);
             tags.add(Tag.ITEMS_TRIM_MATERIALS);
-            tags.add(Tag.ITEMS_TRIM_TEMPLATES);
             tags.add(Tag.ITEMS_TRIMMABLE_ARMOR);
             tags.add(Tag.ITEMS_VILLAGER_PLANTABLE_SEEDS);
             tags.add(Tag.JUNGLE_LOGS);
@@ -187,7 +175,6 @@ public class MinecraftTags {
             tags.add(Tag.OCCLUDES_VIBRATION_SIGNALS);
             tags.add(Tag.OVERWORLD_CARVER_REPLACEABLES);
             tags.add(Tag.PARROTS_SPAWNABLE_ON);
-            tags.add(Tag.PIGLIN_FOOD);
             tags.add(Tag.PIGLIN_REPELLENTS);
             tags.add(Tag.PLANKS);
             tags.add(Tag.POLAR_BEARS_SPAWNABLE_ON_ALTERNATE);
@@ -197,10 +184,6 @@ public class MinecraftTags {
             tags.add(Tag.RABBITS_SPAWNABLE_ON);
             tags.add(Tag.RAILS);
             tags.add(Tag.REDSTONE_ORES);
-            //tags.add(Tag.REGISTRY_BLOCKS);
-            //tags.add(Tag.REGISTRY_ENTITY_TYPES);
-            //tags.add(Tag.REGISTRY_FLUIDS);
-            //tags.add(Tag.REGISTRY_ITEMS);
             tags.add(Tag.REPLACEABLE);
             tags.add(Tag.REPLACEABLE_BY_TREES);
             tags.add(Tag.SAND);
@@ -230,7 +213,6 @@ public class MinecraftTags {
             tags.add(Tag.STONE_PRESSURE_PLATES);
             tags.add(Tag.STRIDER_WARM_BLOCKS);
             tags.add(Tag.SWORD_EFFICIENT);
-            tags.add(Tag.TALL_FLOWERS);
             tags.add(Tag.TERRACOTTA);
             tags.add(Tag.TRAIL_RUINS_REPLACEABLE);
             tags.add(Tag.TRAPDOORS);
@@ -256,21 +238,28 @@ public class MinecraftTags {
             tags.add(Tag.WOODEN_STAIRS);
             tags.add(Tag.WOODEN_TRAPDOORS);
             tags.add(Tag.WOOL);
-            tags.add(Tag.WOOL_CARPETS);*/
+            tags.add(Tag.WOOL_CARPETS);
 
-            if (!SCore.is1v21Plus()) {
-                // Add the tag ITEMS_MUSIC_DISCS that is not in 1.21 but in the spigot 1.20 wth reflection
-                try {
-                    tags.add((Tag) Tag.class.getDeclaredField("ITEMS_MUSIC_DISCS").get(null));
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            // Deprecated tags
+            tags.add(Tag.AXOLOTL_TEMPT_ITEMS);
+            tags.add(Tag.CARPETS);
+            tags.add(Tag.FOX_FOOD);
+            tags.add(Tag.ITEMS_FURNACE_MATERIALS);
+            tags.add(Tag.ITEMS_TOOLS);
+            tags.add(Tag.PIGLIN_FOOD);
 
-            if (SCore.is1v20Plus()) {
-
-            }
+            // Removed tags
+            addTag(tags,"ITEMS_MUSIC_DISCS");
+            addTag(tags,"TALL_FLOWERS");
+            addTag(tags,"ITEMS_TRIM_TEMPLATES");
+            addTag(tags,"CONCRETE_POWDER");
         }
+    }
+
+    public void addTag(List<Tag> tags, String tag){
+        try {
+            tags.add((Tag) Tag.class.getDeclaredField(tag).get(null));
+        } catch (NoSuchFieldException | IllegalAccessException ignore) {}
     }
 
     public Tag<Material> getTag(String key) {

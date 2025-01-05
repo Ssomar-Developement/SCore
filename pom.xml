@@ -825,6 +825,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.bgsoftware</groupId>
+            <artifactId>wildstacker</artifactId>
+            <version>114</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/WildStacker-2024.4-b114.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
             <version>21.0</version>

@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -37,6 +38,23 @@ public class SilkSpawner extends BlockCommand {
             RoseStackerAPI.getInstance().removeSpawnerStack(sp);
             block.setType(Material.AIR);
             if(p != null) p.getInventory().addItem(item);
+        }
+        else if(SCore.hasWildStacker && args.size() == 1 && args.get(0).equalsIgnoreCase("WildStacker")){
+
+            Material spawer;
+            if (SCore.is1v12Less()) {
+                spawer = Material.valueOf("MOB_SPAWNER");
+            } else spawer = Material.SPAWNER;
+
+            if (block.getType().equals(spawer)) {
+                CreatureSpawner cs = (CreatureSpawner) block.getState();
+                com.bgsoftware.wildstacker.api.objects.StackedSpawner sp = WildStackerAPI.getStackedSpawner(cs);
+                if (sp == null) return;
+                ItemStack item = sp.getDropItem(sp.getStackAmount());
+                sp.remove();
+                block.setType(Material.AIR);
+                if (p != null) p.getInventory().addItem(item);
+            }
         }
         else {
             Material spawer;
@@ -83,7 +101,7 @@ public class SilkSpawner extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SILK_SPAWNER [RoseStacker]";
+        return "SILK_SPAWNER [RoseStacker or WildStacker or ]";
     }
 
     @Override
