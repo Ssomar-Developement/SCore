@@ -56,35 +56,38 @@ public class PatternsGroupFeature extends FeatureWithHisOwnEditor<PatternsGroupF
     public void load(SPlugin plugin, ItemStack item, boolean isPremiumLoading) {
         if (item != null && item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            if (meta instanceof BannerMeta) {
-                BannerMeta bmeta = (BannerMeta) meta;
-                List<Pattern> patterns = bmeta.getPatterns();
-                if (patterns.size() > 0) {
-                    int i = 0;
-                    for (Pattern pattern : patterns) {
-                        PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
-                        patternFeature.load(plugin, pattern, isPremiumLoading);
-                        this.patterns.put("pattern" + i, patternFeature);
-                        i++;
-                    }
-                }
-            }
-            if (meta instanceof BlockStateMeta) {
-                BlockStateMeta bmeta = (BlockStateMeta) meta;
-                Banner banner = (Banner) bmeta.getBlockState();
-                List<Pattern> patterns = banner.getPatterns();
-                if (patterns.size() > 0) {
-                    int i = 0;
-                    for (Pattern pattern : patterns) {
-                        PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
-                        patternFeature.load(plugin, pattern, isPremiumLoading);
-                        this.patterns.put("pattern" + i, patternFeature);
-                        i++;
-                    }
+            load(plugin, meta, isPremiumLoading);
+        }
+    }
+
+    public void load(SPlugin plugin, ItemMeta meta, boolean isPremiumLoading) {
+        if (meta instanceof BannerMeta) {
+            BannerMeta bmeta = (BannerMeta) meta;
+            List<Pattern> patterns = bmeta.getPatterns();
+            if (patterns.size() > 0) {
+                int i = 0;
+                for (Pattern pattern : patterns) {
+                    PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
+                    patternFeature.load(plugin, pattern, isPremiumLoading);
+                    this.patterns.put("pattern" + i, patternFeature);
+                    i++;
                 }
             }
         }
-
+        if (meta instanceof BlockStateMeta) {
+            BlockStateMeta bmeta = (BlockStateMeta) meta;
+            Banner banner = (Banner) bmeta.getBlockState();
+            List<Pattern> patterns = banner.getPatterns();
+            if (patterns.size() > 0) {
+                int i = 0;
+                for (Pattern pattern : patterns) {
+                    PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
+                    patternFeature.load(plugin, pattern, isPremiumLoading);
+                    this.patterns.put("pattern" + i, patternFeature);
+                    i++;
+                }
+            }
+        }
     }
 
     public List<Pattern> getMCPatterns() {

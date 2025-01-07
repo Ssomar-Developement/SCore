@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.attributes.attribute;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -21,10 +22,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -55,10 +53,19 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     }
 
     public AttributeModifier getAttributeModifier() {
+        //SsomarDev.testMsg("AttributeFullOptionsFeature getAttributeModifier", true);
         if (slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)) {
             return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), (EquipmentSlot) null);
         } else
             return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
+    }
+
+    public AttributeModifier getAttributeModifier(UUID playerUUID) {
+        SsomarDev.testMsg("playerUUID: " + playerUUID, true);
+        if (slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)) {
+            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(playerUUID, new StringPlaceholder()).get(), operation.getValue().get(), (EquipmentSlot) null);
+        } else
+            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(playerUUID, new StringPlaceholder()).get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
     }
 
     @Override

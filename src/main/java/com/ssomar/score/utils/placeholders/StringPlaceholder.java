@@ -223,7 +223,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         targetBlockPlch.reloadBlockPlcHldr();
         aroundPlayerTargetPlch.reloadPlayerPlcHldr();
         aroundEntityTargetPlch.reloadEntityPlcHldr();
-        if(effectPlch != null) effectPlch.reloadEffectPlcHldr();
+        if (effectPlch != null) effectPlch.reloadEffectPlcHldr();
         /* delayed command with old version has this to null */
         if (projectilePlch != null) projectilePlch.reloadProjectilePlcHldr();
         return this;
@@ -252,6 +252,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI) {
         return replacePlaceholderWithoutReload(str, withPAPI, true);
     }
+
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI, boolean withVariables) {
         String s = str;
         if (!s.contains("%")) return str;
@@ -268,10 +269,10 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if (this.hasItem()) {
             placeholders.put("%item%", Matcher.quoteReplacement(this.getItem()));
         }
-        if(hasId()) placeholders.put("%id%", this.getId());
-        if(hasName()) placeholders.put("%name%", this.getName());
-        if(hasActivatorId()) placeholders.put("%activator_id%", this.getActivator_id());
-        if(hasActivatorName()) placeholders.put("%activator_name%", this.getActivator_name());
+        if (hasId()) placeholders.put("%id%", this.getId());
+        if (hasName()) placeholders.put("%name%", this.getName());
+        if (hasActivatorId()) placeholders.put("%activator_id%", this.getActivator_id());
+        if (hasActivatorName()) placeholders.put("%activator_name%", this.getActivator_name());
 
         if (this.hasQuantity()) {
             s = replaceCalculPlaceholder(s, "%quantity%", quantity, true);
@@ -327,7 +328,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = aroundEntityTargetPlch.replacePlaceholder(s);
 
-        if (effectPlch != null){
+        if (effectPlch != null) {
             placeholders.putAll(effectPlch.getPlaceholders());
             s = effectPlch.replacePlaceholder(s);
         }
@@ -349,8 +350,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = StringUtils.replaceEach(s, keys, values);
 
+        SsomarDev.testMsg("111111: " + s, true);
+
         if (withPAPI) s = replacePlaceholderOfPAPI(s);
+        SsomarDev.testMsg("222222: " + s, true);
         s = replacePlaceholderOfSCore(s);
+
+        SsomarDev.testMsg("333333: " + s, true);
 
         /* A second time because the variable contains can require a placeholder */
         if (withVariables && variables != null) {
@@ -377,34 +383,35 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             cpt++;
             UUID uuid;
             if ((uuid = playerPlch.getPlayerUUID()) == null) {
-                if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                /* POURQUOI ???? if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
-                }
-                else if(Bukkit.getOfflinePlayers().length > 0)
-                    uuid = Bukkit.getOfflinePlayers()[0].getUniqueId();
+                } else if (Bukkit.getOfflinePlayers().length > 0)
+                    uuid = Bukkit.getOfflinePlayers()[0].getUniqueId(); */
             }
-            OfflinePlayer p;
-            if (uuid != null && (p = Bukkit.getOfflinePlayer(uuid)) != null) {
+            OfflinePlayer p = null;
+            if (uuid != null) p = Bukkit.getOfflinePlayer(uuid);
+            try {
+                String[] split = replace.split("%score_");
+                String[] split2 = split[1].split("%");
+                String params = split2[0];
 
-                try {
-                    String[] split = replace.split("%score_");
-                    String[] split2 = split[1].split("%");
-                    String params = split2[0];
+                Optional<String> placeholder = VariablesManager.getInstance().onRequestPlaceholder(p, params);
+                if (placeholder.isPresent()) replace = replace.replace("%score_" + params + "%", placeholder.get());
 
-                    Optional<String> placeholder = VariablesManager.getInstance().onRequestPlaceholder(p, params);
-                    if(placeholder.isPresent()) replace = replace.replace("%score_" + params + "%", placeholder.get());
+                if (p != null) {
 
                     Optional<String> dmgBoosterPlaceHolder = DamageBoost.getInstance().onRequestPlaceholder(p, params);
-                    if (dmgBoosterPlaceHolder.isPresent()) replace = replace.replace("%score_" + params + "%", dmgBoosterPlaceHolder.get());
+                    if (dmgBoosterPlaceHolder.isPresent())
+                        replace = replace.replace("%score_" + params + "%", dmgBoosterPlaceHolder.get());
 
                     Optional<String> dmgResistancePlaceHolder = DamageResistance.getInstance().onRequestPlaceholder(p, params);
-                    if (dmgResistancePlaceHolder.isPresent()) replace = replace.replace("%score_" + params + "%", dmgResistancePlaceHolder.get());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    break;
+                    if (dmgResistancePlaceHolder.isPresent())
+                        replace = replace.replace("%score_" + params + "%", dmgResistancePlaceHolder.get());
                 }
-            } else break;
+            } catch (Exception e) {
+                e.printStackTrace();
+                break;
+            }
         }
         return replace;
     }
@@ -416,10 +423,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             if ((uuid = playerPlch.getPlayerUUID()) == null) {
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     uuid = Bukkit.getOnlinePlayers().iterator().next().getUniqueId();
-                }
-                else if(Bukkit.getOfflinePlayers().length > 0)
+                } else if (Bukkit.getOfflinePlayers().length > 0)
                     replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayers()[0], replace);
-                /* v If it pass here that means no player already joined the server v */
+                    /* v If it pass here that means no player already joined the server v */
                 else return replace;
             }
             Player p;
@@ -427,13 +433,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             if (uuid != null && (p = Bukkit.getPlayer(uuid)) != null) {
                 //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + p.getName(), true);
                 //SsomarDev.testMsg("replacePlaceholderOfPAPI: " + replace, true);
-                try{
+                try {
                     replace = PlaceholderAPI.setPlaceholders(p, replace);
                 } catch (Exception e) {
                     // NEED TO DO THAT BECAUSE SOME PAPI LIB CAN THROW EXCEPTION
                     SsomarDev.testMsg(e.getMessage(), true);
                 }
-                if(replace.contains("%")){
+                if (replace.contains("%")) {
                     replace = replace.replaceFirst("%", "fAzzAf");
                     //String cccc = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), "%checkitem_getinfo:mainhand_mat:%");
                     //SsomarDev.testMsg(">>> TEST "+cccc, true);
@@ -462,7 +468,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                 replace = PlaceholderAPI.setPlaceholders(p, replace);
             else replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
 
-            if(replace.contains("%")){
+            if (replace.contains("%")) {
                 replace = replace.replaceFirst("%", "fAzzAf");
                 replace = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(uuid), replace);
                 replace = replace.replaceFirst("fAzzAf", "%");
@@ -483,13 +489,15 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     public boolean hasName() {
         return name != null && name.length() != 0;
     }
+
     public boolean hasActivatorId() {
-        return  activator_id != null && activator_id.length() != 0;
+        return activator_id != null && activator_id.length() != 0;
     }
 
     public boolean hasActivatorName() {
-        return  activator_name != null && activator_name.length() != 0;
+        return activator_name != null && activator_name.length() != 0;
     }
+
     public boolean hasItem() {
         return item.length() != 0;
     }

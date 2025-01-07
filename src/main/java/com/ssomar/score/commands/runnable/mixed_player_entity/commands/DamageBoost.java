@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -76,7 +77,7 @@ public class DamageBoost extends MixedCommand {
         return damage;
     }
 
-    public Optional<String> onRequestPlaceholder(OfflinePlayer player, String params) {
+    public Optional<String> onRequestPlaceholder(@NotNull OfflinePlayer player, String params) {
         if (params.startsWith("cmd-damage-boost")) {
             return Optional.of(String.valueOf(getNewDamage(player.getUniqueId(), 1)));
         }
