@@ -357,6 +357,8 @@ public abstract class GUI implements IGUI {
     public String getCurrently(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
+            String deColored = StringConverter.decoloredString(s);
+            //SsomarDev.testMsg("deColored: "+deColored, true);
             if (StringConverter.decoloredString(s).contains(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME)))) {
                 try {
                     return StringConverter.decoloredString(s).split(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME))+ " ")[1];

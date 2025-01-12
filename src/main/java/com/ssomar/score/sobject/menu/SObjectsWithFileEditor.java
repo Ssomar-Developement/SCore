@@ -159,7 +159,7 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
 
         String[] desc = new String[2+TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
         desc[0] = "";
-        desc[1] = "&7Currently: &a" + path;
+        desc[1] = TM.g(Text.EDITOR_CURRENTLY_NAME)+" &a" + path;
         System.arraycopy(TM.gA(Text.EDITOR_PATH_DESCRIPTION), 0, desc, 2, TM.gA(Text.EDITOR_PATH_DESCRIPTION).length);
         if (isPathButton()) createItem(Material.ANVIL, 1, 38, TM.g(Text.EDITOR_PATH_NAME), false, false, desc);
 
