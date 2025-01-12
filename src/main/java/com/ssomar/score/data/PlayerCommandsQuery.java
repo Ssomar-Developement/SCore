@@ -8,7 +8,6 @@ import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;

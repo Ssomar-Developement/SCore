@@ -53,19 +53,26 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     }
 
     public AttributeModifier getAttributeModifier() {
-        //SsomarDev.testMsg("AttributeFullOptionsFeature getAttributeModifier", true);
-        if (slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)) {
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), (EquipmentSlot) null);
-        } else
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(null, new StringPlaceholder()).get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
+        String attributeName = this.attributeName.getValue().orElse("Default name");
+        double amount = this.amount.getValue(null, new StringPlaceholder()).orElse(1.0);
+        AttributeModifier.Operation operation = this.operation.getValue().orElse(AttributeModifier.Operation.ADD_NUMBER);
+        EquipmentSlot equipmentSlot = null;
+        if (!slot.getValue().orElse(AttributeSlot.HAND).equals(AttributeSlot.ALL_SLOTS)) {
+            equipmentSlot = this.slot.getEquipmentSlotValue().orElse(null);
+        }
+        return new AttributeModifier(uuid.getValue(), attributeName, amount, operation, equipmentSlot);
     }
 
     public AttributeModifier getAttributeModifier(UUID playerUUID) {
         SsomarDev.testMsg("playerUUID: " + playerUUID, true);
-        if (slot.getValue().get().equals(AttributeSlot.ALL_SLOTS)) {
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(playerUUID, new StringPlaceholder()).get(), operation.getValue().get(), (EquipmentSlot) null);
-        } else
-            return new AttributeModifier(uuid.getValue(), attributeName.getValue().get(), amount.getValue(playerUUID, new StringPlaceholder()).get(), operation.getValue().get(), slot.getEquipmentSlotValue().get());
+        String attributeName = this.attributeName.getValue().orElse("Default name");
+        double amount = this.amount.getValue(playerUUID, new StringPlaceholder()).orElse(1.0);
+        AttributeModifier.Operation operation = this.operation.getValue().orElse(AttributeModifier.Operation.ADD_NUMBER);
+        EquipmentSlot equipmentSlot = null;
+        if (!slot.getValue().orElse(AttributeSlot.HAND).equals(AttributeSlot.ALL_SLOTS)) {
+            equipmentSlot = this.slot.getEquipmentSlotValue().orElse(null);
+        }
+        return new AttributeModifier(uuid.getValue(), attributeName, amount, operation, equipmentSlot);
     }
 
     @Override

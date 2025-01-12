@@ -66,3 +66,5 @@ editor:
       - "&a&oвашу конфигурацию!"
   title:
     color: "&e&l"
+  currently:
+    name: "&7✦ В настоящее время:"

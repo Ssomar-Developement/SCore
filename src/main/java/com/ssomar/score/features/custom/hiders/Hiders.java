@@ -306,8 +306,9 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
 
         if (getHideAttributes().getValue())
             meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
-        if (getHideEnchantments().getValue())
+        if (getHideEnchantments().getValue()) {
             meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
+        }
         if (getHideUnbreakable().getValue())
             meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
         if (getHideDye().getValue() && SCore.is1v17Plus())

@@ -1,6 +1,8 @@
 package com.ssomar.score.utils.strings;
 
 import com.ssomar.score.SCore;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 
 import java.text.ParseException;
@@ -26,6 +28,12 @@ public class StringConverter {
         convert = convert.replaceAll("\\|<-_->\\|", "& ");
         if (SCore.is1v16Plus()) convert = translateHexCodes(convert);
         //Utils.sendConsoleFlatMsg(SCore.plugin, convert);
+
+        try {
+            convert = LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(convert));
+        }
+        catch (Exception | Error e){}
+
         return convert;
     }
 

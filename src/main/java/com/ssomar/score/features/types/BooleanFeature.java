@@ -3,6 +3,8 @@ package com.ssomar.score.features.types;
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -134,7 +136,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         } else finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         finalDescription[finalDescription.length - 3] = "&8>> &6Enter placeholder: &eMIDDLE &a(Creative only)";
         finalDescription[finalDescription.length - 2] = "&7(Be sure your placeholder return &atrue &7or &cfalse&7)";
-        finalDescription[finalDescription.length - 1] = "&7Currently: ";
+        finalDescription[finalDescription.length - 1] = TM.g(Text.EDITOR_CURRENTLY_NAME);
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

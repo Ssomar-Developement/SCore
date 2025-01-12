@@ -11,4 +11,13 @@ public interface TextInterface {
     }
 
     String getKey();
+
+    String getDefaultValueString();
+
+    String[] getDefaultValueArray();
+
+    TypeText getType();
+
+
+
 }

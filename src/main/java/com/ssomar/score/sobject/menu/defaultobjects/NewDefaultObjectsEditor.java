@@ -3,8 +3,6 @@ package com.ssomar.score.sobject.menu.defaultobjects;
 import com.ssomar.score.SCore;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.*;
-import com.ssomar.score.sobject.SObjectWithFileLoader;
-import com.ssomar.score.sobject.SObjectWithFileManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.sobject.menu.SObjectsEditorAbstract;
 import com.ssomar.score.splugin.SPlugin;

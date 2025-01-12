@@ -32,4 +32,30 @@ public class HeadDB {
         }
         return null;
     }
+
+    public static String getBase64(int id) {
+
+        Method getByID = null;
+        for (Method method : HeadAPI.class.getDeclaredMethods()) {
+            if (method.getName().equals("getHeadByID")) {
+                getByID = method;
+                break;
+            }
+        }
+
+        try {
+            tsp.headdb.api.Head head = (tsp.headdb.api.Head) getByID.invoke(null, id);
+            return head.getValue();
+        } catch (Exception ignored) {
+        } catch (Error ignored) {
+        }
+
+        try {
+            tsp.headdb.implementation.Head head = (tsp.headdb.implementation.Head) getByID.invoke(null, id);
+            return head.getValue();
+        } catch (Exception ignored) {
+        } catch (Error ignored) {
+        }
+        return "";
+    }
 }

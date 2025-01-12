@@ -1,0 +1,70 @@
+editor:
+  back:
+    name: "&4&l⬅ &cKembali"
+  creation:
+    id:
+      name: "&2&l✚ &a&lID Pembuatan:"
+  delete:
+    name: "&4&l✘ &cHapus"
+    normal:
+      description: "&4&lX &cKlik di sini untuk menghapus"
+    shift:
+      left:
+        description: "&4&lX &cShift + Klik Kiri untuk menghapus"
+      description: "&4&lX &cShift + Klik untuk menghapus"
+    message: "&cHei jika kamu ingin menghapus %object%"
+  edit:
+    description: "&a✎ Klik di sini untuk mengubah"
+  exit:
+    name: "&4&l✘ &cKeluar"
+  folder:
+    name: "&2&l✦ FOLDER: &a"
+    description: ["", "&7Klik di sini untuk membuka folder"]
+  give:
+    shift:
+      right:
+        description: "&2✔ &aShift + klik kanan untuk memberi ke diri sendiri"
+    receivedMessage: "&aAnda menerima &e"
+  invalid:
+    file:
+      name: "&4&l✦ FILE TIDAK VALID: &c&o"
+      description: "&7Plugin hanya dapat memuat file &e.yml"
+    configuration:
+      name: "&4&l✦ KONFIGURASI TIDAK VALID: &c&o"
+      description: "&7Anda harus mengedit file konfigurasi Anda"
+      freeLimit: "&7Pastikan juga Anda belum mencapai batas versi gratis"
+  new:
+    name: "&a&l➕ &aBaru"
+  page:
+    name: " - Halaman "
+    next:
+      name: "&dHalaman berikutnya &5&l▶"
+    previous:
+      name: "&5&l◀ &dHalaman sebelumnya"
+  path:
+    name: "&6&l✦ &eLOKASI:"
+    description: ["&8&oKlik di sini untuk kembali", "&8&oke folder sebelumnya"]
+  premade:
+    premium:
+      name: "&5&l✚ &d%object% Premium Default"
+    packs:
+      name: "&5&l✚ &d%object% dari Paket Kustom"
+  premium:
+    description: "&5&l❂ &d&lKhusus Premium &5&l❂"
+    requirePremiumToAddMore: "&cMEMBUTUHKAN PREMIUM: untuk menambah lebih dari %limit% %object% Anda memerlukan versi premium"
+  reset:
+    name: "&4&l✘ &cSetel Ulang"
+    description:
+      - ""
+      - "&c&oKlik di sini untuk mengatur ulang"
+      - "&c&osemua opsi pembuatan ini"
+  save:
+    name: "&a&l✔ &aSimpan"
+    description:
+      - ""
+      - "&a&oKlik di sini untuk menyimpan"
+      - "&a&okonfigurasi Anda!"
+  title:
+    color: "&e&l"
+  currently:
+    name: "&7✦ Saat ini:"

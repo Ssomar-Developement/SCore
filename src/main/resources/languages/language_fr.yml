@@ -70,3 +70,5 @@ editor:
       - "&a&ota configuration !"
   title:
     color: "&e&l"
+  currently:
+    name: "&7✦ Actuellement:"

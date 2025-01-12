@@ -4,7 +4,6 @@ import com.ssomar.score.SCore;
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 
-
 import java.util.HashMap;
 import java.util.Map;
 

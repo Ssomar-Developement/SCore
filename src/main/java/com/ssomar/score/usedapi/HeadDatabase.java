@@ -36,4 +36,9 @@ public class HeadDatabase {
             return item;
         }
     }
+
+    public String getBase64(String id) {
+        HeadDatabaseAPI api = new HeadDatabaseAPI();
+        return api.getBase64(id);
+    }
 }

@@ -1,7 +1,7 @@
 package com.ssomar.score.utils.messages;
 
-import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.audience.Audience;

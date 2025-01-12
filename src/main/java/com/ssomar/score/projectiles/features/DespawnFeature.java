@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-
 import java.util.Optional;
 
 public class DespawnFeature extends DoubleFeature implements SProjectileFeatureInterface {

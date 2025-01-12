@@ -15,6 +15,7 @@ import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.events.EventsHandler;
 import com.ssomar.score.events.loop.LoopManager;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.usage.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.hardness.HardnessesHandler;
@@ -698,6 +699,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         RunnableManager.getInstance().forceRunTasks();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
         GeneralConfig.getInstance().reload();
+
+        FeatureSettingsSCore.reload();
 
         LoopManager.getInstance();
 

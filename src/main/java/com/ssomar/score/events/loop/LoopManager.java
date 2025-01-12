@@ -9,7 +9,6 @@ import com.ssomar.score.sobject.sactivator.OptionGlobal;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 
-
 import java.util.*;
 
 

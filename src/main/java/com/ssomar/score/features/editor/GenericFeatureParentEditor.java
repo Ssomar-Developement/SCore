@@ -1,5 +1,6 @@
 package com.ssomar.score.features.editor;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.menu.GUI;
@@ -14,7 +15,7 @@ public class GenericFeatureParentEditor extends FeatureEditorInterface<FeaturePa
     private FeatureParentInterface featureParent;
 
     public GenericFeatureParentEditor(FeatureParentInterface featureParent) {
-        super("&l"+featureParent.getFeatureSettings().getEditorName()+" Editor", Math.max(3*9, (int) Math.ceil(((double) featureParent.getFeatures().size()+9.0) / 9.0) * 9));
+        super(featureParent.getFeatureSettings(), Math.max(3*9, (int) Math.ceil(((double) featureParent.getFeatures().size()+9.0) / 9.0) * 9));
         this.featureParent = featureParent;
         load();
     }
@@ -32,6 +33,9 @@ public class GenericFeatureParentEditor extends FeatureEditorInterface<FeaturePa
 
         // Reset menu
         createItem(ORANGE, 1, getSize()-8, GUI.RESET, false, false, "", "&c&oClick here to reset");
+
+        // change lang menu
+        createItem(YELLOW, 1, getSize()-7, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
 
         // Save menu
         createItem(GREEN, 1, getSize()-1, GUI.SAVE, false, false, "", "&a&oClick here to save");

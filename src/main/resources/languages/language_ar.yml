@@ -1,320 +1,70 @@
 editor:
   back:
-    name: "&4&l⬅ &cBack"
+    name: "&4&l⬅ &cرجوع"
   creation:
     id:
-      name: "&2&l✚ &a&lCreation ID:"
+      name: "&2&l✚ &a&lمعرف الإنشاء:"
   delete:
-    name: "&4&l✘ &cDelete"
+    name: "&4&l✘ &cحذف"
     normal:
-      description: "&4&lX &cClick here to delete"
+      description: "&4&lX &cانقر هنا للحذف"
     shift:
       left:
-        description: "&4&lX &cShift + Left Click to delete"
-      description: "&4&lX &cShift + Click to delete"
-    message: "&cHey if you want to delete the %object%"
+        description: "&4&lX &cShift + نقرة يسار للحذف"
+      description: "&4&lX &cShift + نقرة للحذف"
+    message: "&cمرحباً، إذا كنت تريد حذف %object%"
   edit:
-    description: "&a✎ Click here to change"
+    description: "&a✎ انقر هنا للتغيير"
   exit:
-    name: "&4&l✘ &cExit"
+    name: "&4&l✘ &cخروج"
   folder:
-    name: "&2&l✦ FOLDER: &a"
-    description:
-      - ""
-      - "&7Click here to open the folder"
+    name: "&2&l✦ مجلد: &a"
+    description: ["", "&7انقر هنا لفتح المجلد"]
   give:
     shift:
       right:
-        description: "&2✔ &aShift + right click to give to yourself"
-    receivedMessage: "&aYou received &e"
+        description: "&2✔ &aShift + نقرة يمين لإعطاء نفسك"
+    receivedMessage: "&aلقد استلمت &e"
   invalid:
     file:
-      name: "&4&l✦ INVALID FILE: &c&o"
-      description: "&7The plugin can only load &e.yml &7files"
+      name: "&4&l✦ ملف غير صالح: &c&o"
+      description: "&7البلجن يمكنه تحميل ملفات &e.yml &7فقط"
     configuration:
-      name: "&4&l✦ INVALID CONFIGURATION: &c&o"
-      description: "&7You should edit your configuration file"
-      freeLimit: "&7Also be sure that you haven't reached the limit of the free version"
+      name: "&4&l✦ تكوين غير صالح: &c&o"
+      description: "&7يجب عليك تعديل ملف التكوين الخاص بك"
+      freeLimit: "&7تأكد أيضاً من أنك لم تتجاوز حد النسخة المجانية"
   new:
-    name: "&a&l➕ &aNew"
+    name: "&a&l➕ &aجديد"
   page:
-    name: " - Page "
+    name: " - صفحة "
     next:
-      name: "&dNext page &5&l▶"
+      name: "&dالصفحة التالية &5&l▶"
     previous:
-      name: "&5&l◀ &dPrevious page"
+      name: "&5&l◀ &dالصفحة السابقة"
   path:
-    name: "&6&l✦ &ePATH:"
-    description:
-      - "&8&oClick here to come back"
-      - "&8&oin previous folder"
+    name: "&6&l✦ &eالمسار:"
+    description: ["&8&oانقر هنا للعودة", "&8&oإلى المجلد السابق"]
   premade:
     premium:
-      name: "&5&l✚ &dDefault Premium %object%"
+      name: "&5&l✚ &d%object% الأساسي المميز"
     packs:
-      name: "&5&l✚ &d%object% from Custom packs"
+      name: "&5&l✚ &d%object% من الحزم المخصصة"
   premium:
-    description: "&5&l❂ &d&lPremium only &5&l❂"
-    requirePremiumToAddMore: "&cREQUIRE PREMIUM: to add more than %limit% %object% you need the premium version"
+    description: "&5&l❂ &d&lللنسخة المميزة فقط &5&l❂"
+    requirePremiumToAddMore: "&cيتطلب النسخة المميزة: لإضافة أكثر من %limit% %object% تحتاج إلى النسخة المميزة"
   reset:
-    name: "&4&l✘ &cReset"
+    name: "&4&l✘ &cإعادة تعيين"
     description:
       - ""
-      - "&c&oClick here to reset"
-      - "&c&oall options of this creation"
+      - "&c&oانقر هنا لإعادة تعيين"
+      - "&c&oجميع خيارات هذا الإنشاء"
   save:
-    name: "&a&l✔ &aSave"
+    name: "&a&l✔ &aحفظ"
     description:
       - ""
-      - "&a&oClick here to save"
-      - "&a&oyour configuration !"
+      - "&a&oانقر هنا لحفظ"
+      - "&a&oالتكوين الخاص بك!"
   title:
     color: "&e&l"
-features:
-  enchantments:
-    description: "&7&oThe enchantments of the item"
-  drops:
-    description: "&7&oThe drop features"
-  restrictions:
-    description: "&7&oThe restrictions features"
-  hiders:
-    description:
-      - "&7&oThe hiders features"
-      - "&7&oHiders to hide:"
-      - "&7&oAttributes, Enchants, ..."
-  armorTrim:
-    description: "&7&oThe armor trim features"
-  variables:
-    description:
-      - "&7&oThe variables"
-      - "&7&oVariables are used to store data like kills / deaths ..."
-  giveFirstJoin:
-    description: "&7&oThe give first join features"
-  activators:
-    name: "Activators"
-    description: "&7&oThe activators / triggers"
-    editorTitle: "&lActivators feature Editor"
-  activator:
-    name: "Activator"
-    description: "&7&oAn activator"
-  aroundBlock:
-    name: "AroundBlock"
-    description: ""
-    editorTitle: "&lAroundBlock feature Editor"
-    features:
-      southValue:
-        name: "South Value"
-        description: "&7&oThe south value"
-      northValue:
-        name: "North Value"
-        description: "&7&oThe north value"
-      eastValue:
-        name: "East Value"
-        description: "&7&oThe east value"
-      westValue:
-        name: "West Value"
-        description: "&7&oThe west value"
-      aboveValue:
-        name: "Above Value"
-        description: "&7&oThe above value"
-      underValue:
-        name: "Under Value"
-        description: "&7&oThe under value"
-      errorMessage:
-        name: "Error Message"
-        description: "&7&oThe error message"
-      blockMustBeExecutableBlock:
-        name: "Block must be executable block"
-        description: "&7&oThe block must be executable block"
-      blockTypeMustBe:
-        name: "Block type must be"
-        description: "&7&oThe block type must be"
-      blockTypeMustNotBe:
-        name: "Block type must not be"
-        description: "&7&oThe block type must not be"
-  aroundBlocks:
-    name: "Around blocks cdt"
-    description: "&7&oThe around blocks cdt"
-    editorTitle: "&lAroundBlockGroup feature Editor"
-    parentDescription:
-      blockAroundAdded: "&7&oBlock around cdt(s) added: &e"
-  attribute:
-    name: "Attribute"
-    description: "&7&oAn attribute with its options"
-    editorTitle: "&lAttribute feature Editor"
-    features:
-      attribute:
-        name: "Attribute"
-        description: "&7&oThe attribute"
-      operation:
-        name: "Operation"
-        description: "&7&oThe operation"
-      amount:
-        name: "Amount"
-        description: "&7&oThe amount"
-      slot:
-        name: "Slot"
-        description: "&7&oThe slot"
-      name:
-        name: "Name"
-        description: "&7&oThe name"
-      uuid:
-        name: "UUID"
-        description: "&7&oThe UUID"
-  attributes:
-    name: "Attributes"
-    description: "&7&oThe attributes"
-    editorTitle: "&lAttributes feature Editor"
-    parentDescription:
-      attributeAdded: "&7&oAttribute(s) added: &e"
-  title:
-    name: "Title features"
-    description: "&7&oThe title features"
-    editorTitle: "&lTitle features Editor"
-    features:
-      activeTitle:
-        name: "Active title"
-        description: "&7&oActive title"
-      title:
-        name: "Title"
-        description: "&7&oThe title"
-      adjustement:
-        name: "Title adjustment"
-        description: "&7&oTitle adjustment"
-    parentDescription:
-      titleLines: "&7Title lines: &e&l"
-  cancelEvents:
-    name: "CancelEvent features"
-    description: "&7&oThe cancel events features"
-    editorTitle: "&lCancelEvent features Editor"
-    features:
-      cancelEventNoPerm:
-        name: "cancelEventIfNoPerm"
-        description: "Cancel event if no perm"
-      cancelEventNoOwner:
-        name: "cancelEventIfNoOwner"
-        description: "Cancel event if no owner"
-  commands:
-    your: "&7Your"
-    commands: "&6Commands"
-    empty: "&cEmpty"
-    consoleTips: "&c&oJust type your command if it's a console command"
-    subEditor:
-      explainLine: "&7➤ Your commands: (the '/' is useless)"
-      wikiLine: "&7➤ WIKI of Block commands: &8&l[CLICK HERE]"
-    blockCommands:
-      name: "Block Commands"
-    entityCommands:
-      name: "Entity Commands"
-    playerCommands:
-      name: "Player Commands"
-  conditions:
-    blockConditions:
-      parentDescription:
-        blockConditionEnabled: "&7Block condition(s) enabled: &e"
-      editorTitle: "&lBlock conditions Editor"
-      conditions:
-        blockAroundConditions:
-          name: "Block Around Conditions"
-          description: ""
-        ifBlockAge:
-          name: "If Block Age"
-          description: ""
-        IfBlockLocationX:
-          name: "If Block Location X"
-          description: ""
-        IfBlockLocationY:
-          name: "If Block Location Y"
-          description: ""
-        IfBlockLocationZ:
-          name: "If Block Location Z"
-          description: ""
-        ifContainerContainsSellableItem:
-          name: "If Container Contains Sellable Item"
-          description: ""
-        ifContainerEmpty:
-          name: "If Container Empty"
-          description: ""
-        ifContainerNotEmpty:
-          name: "If Container Not Empty"
-          description: ""
-        ifIsPowered:
-          name: "If Is Powered"
-          description: ""
-        ifMustBeNatural:
-          name: "If Must Be Natural"
-          description: ""
-        ifMustBeNotNatural:
-          name: "If Must Be Not Natural"
-          description: ""
-        ifMustBeNotPowered:
-          name: "If Must Be Not Powered"
-          description: ""
-        ifNoPlayerMustBeOnTheBlock:
-          name: "If No Player Must Be On The Block"
-          description: ""
-        ifPlantFullyGrown:
-          name: "If Plant Fully Grown"
-          description: ""
-        ifPlantNotFullyGrown:
-          name: "If Plant Not Fully Grown"
-          description: ""
-        ifPlayerMustBeOnTheBlock:
-          name: "If Player Must Be On The Block"
-          description: ""
-        ifUsage:
-          name: "If Usage"
-          description: ""
-ei:
-  features:
-    lore:
-      description: "&7&oThe lore of the item"
-    material:
-      description: "&7&oThe material of the item"
-    name:
-      description: "&7&oThe custom name of the item"
-    glow:
-      description:
-        - "&7&oItem glowing effect"
-        - "&4⚠ &cIt adds an useless enchant"
-        - "&c+ hide enchants"
-    usage:
-      description:
-        - "&7&oThe usage of the item"
-        - "&a-1 &7&o= Infinite"
-    usageLimit:
-      description:
-        - "&7&oThe usage limit of the item"
-        - "&7&oUsage can't be increased above this value"
-    usePerDay:
-      description:
-        - "&7&oThe use per day features"
-    durability:
-      description: "&7&oThe durability of the item"
-    customModelData:
-      description:
-        - "&7&oThe custom model data of the item"
-        - "&7&oTo customize the item texture"
-        - "&2✔ &a&oTutorial in the wiki !"
-    unbreakable:
-      description: "&7&oItem unbreakable ?"
-    attributes:
-      description: "&7&oThe attributes of the item"
-    keepItemOnDeath:
-      description: "&7&oKeep the item on death ?"
-    disableStack:
-      description: "&7&oDisable item stacking ?"
-    displayConditions:
-      description:
-        - "&7&oThe display conditions features"
-        - "&7&oThe lore will changed depending on the conditions"
-    canBeUsedOnlyByTheOwner:
-      description: "&7&oCan be used only by the owner ?"
-    storeItemInfo:
-      description:
-        - "&7&oStore item info ?"
-        - "&7&oStore the item info like the owner"
-    disabledWorlds:
-      description: "&7&oThe disabled worlds features"
-    nbtTags:
-      description: "&7&oThe NBT tags features"
+  currently:
+    name: "&7✦ حالياً:"

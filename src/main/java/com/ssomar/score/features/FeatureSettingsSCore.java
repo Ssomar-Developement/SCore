@@ -1,10 +1,10 @@
 package com.ssomar.score.features;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.features.lang.FeatureSettingsSCoreEN;
-import com.ssomar.score.features.lang.FeatureSettingsSCoreFR;
-import com.ssomar.score.features.lang.FeatureSettingsSCoreRU;
-import com.ssomar.score.features.lang.FeatureSettingsSCoreZH;
+import com.ssomar.score.config.Locale;
+import com.ssomar.score.features.lang.*;
+import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
 
@@ -570,33 +570,31 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     scheduleFeatures(getFeatureSettings("scheduleFeatures")),
     viewRange(getFeatureSettings("viewRange"));
 
-    private final FeatureSettingsInterface settingsInterface;
+    private FeatureSettingsInterface settingsInterface;
 
     FeatureSettingsSCore(FeatureSettingsInterface settingsInterface) {
         this.settingsInterface = settingsInterface;
     }
 
     public static FeatureSettingsInterface[] getValues() {
-        String locale = GeneralConfig.getInstance().getLocale();
+        Locale locale = GeneralConfig.getInstance().getLocale();
         switch (locale){
-            case "FR":
+            case FR:
                 return FeatureSettingsSCoreFR.values();
-            case "EN":
+            case EN:
                 return FeatureSettingsSCoreEN.values();
-            case "ES":
-                return FeatureSettingsSCoreEN.values();
-            case "HU":
-                return FeatureSettingsSCoreEN.values();
-            case "ptBR":
-                return FeatureSettingsSCoreEN.values();
-            case "DE":
-                return FeatureSettingsSCoreEN.values();
-            case "UK":
-                return FeatureSettingsSCoreEN.values();
-            case "RU":
+            case ES:
+                return FeatureSettingsSCoreES.values();
+            case DE:
+                return FeatureSettingsSCoreDE.values();
+            case RU:
                 return FeatureSettingsSCoreRU.values();
-            case "ZH":
+            case ZH:
                 return FeatureSettingsSCoreZH.values();
+            case ID:
+                return FeatureSettingsSCoreID.values();
+            case AR:
+                return FeatureSettingsSCoreAR.values();
             default:
                 return FeatureSettingsSCoreEN.values();
         }
@@ -612,17 +610,28 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return value;
             }
         }
+        Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cNo feature Translation found for setting: &6" + identifier +" &cin &6"+GeneralConfig.getInstance().getLocale().name());
 
         /* try in english */
         values = FeatureSettingsSCoreEN.values();
         for (FeatureSettingsInterface value : values) {
-            if (value.getName().equals(identifier)) {
+            if (value.getIdentifier().equals(identifier)) {
                 value.setName(configName);
                 value.setRequirePremium(requirePremium);
                 return value;
             }
         }
         throw new IllegalArgumentException("No feature settings found for config name: " + identifier);
+    }
+
+    public static void reload(){
+        for(FeatureSettingsSCore feature : FeatureSettingsSCore.values()){
+            feature.settingsInterface = getFeatureSettings(feature.getIdentifier());
+        }
+    }
+
+    public void setFeatureSettingsInterface(FeatureSettingsInterface featureSettingsInterface){
+        this.settingsInterface = featureSettingsInterface;
     }
 
     public static FeatureSettingsInterface getFeatureSettings(String identifier) {

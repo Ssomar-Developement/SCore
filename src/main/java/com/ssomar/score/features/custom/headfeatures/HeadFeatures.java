@@ -252,19 +252,20 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
         ItemMeta meta = args.getMeta();
         SkullMeta skullMeta = (SkullMeta) meta;
 
+        boolean headAlreadySet = false;
+
         if (headDBID.getValue().isPresent()) {
             if (SCore.hasHeadDatabase) {
                 ItemStack item = HeadDatabase.getInstance().getHead(headDBID.getValue().get());
                 if (item != null) {
                     SkullMeta headMeta = (SkullMeta) item.getItemMeta();
                     if(SCore.is1v19Plus()) {
-                        if (headMeta != null && headMeta.getOwnerProfile() != null)
+                        if (headMeta != null && headMeta.getOwnerProfile() != null) {
                             skullMeta.setOwnerProfile(headMeta.getOwnerProfile());
+                            headAlreadySet = true;
+                        }
                     }
-                    else {
-                        if (headMeta != null && headMeta.getOwningPlayer() != null)
-                            skullMeta.setOwningPlayer(headMeta.getOwningPlayer());
-                    }
+                    else headValue.setValue(Optional.of(HeadDatabase.getInstance().getBase64(headDBID.getValue().get())));
                 } else {
                     SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
                     SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
@@ -276,13 +277,12 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                     if (item != null) {
                         SkullMeta headMeta = (SkullMeta) item.getItemMeta();
                         if(SCore.is1v19Plus()) {
-                            if (headMeta != null && headMeta.getOwnerProfile() != null)
+                            if (headMeta != null && headMeta.getOwnerProfile() != null) {
                                 skullMeta.setOwnerProfile(headMeta.getOwnerProfile());
+                                headAlreadySet = true;
+                            }
                         }
-                        else {
-                            if (headMeta != null && headMeta.getOwningPlayer() != null)
-                                skullMeta.setOwningPlayer(headMeta.getOwningPlayer());
-                        }
+                        else headValue.setValue(Optional.of(HeadDB.getBase64(Integer.valueOf(headDBID.getValue().get()))));
                     } else {
                         SCore.plugin.getLogger().severe(" Error when creating the Head: " + headDBID.getValue().get() + " invalid head database id ! (" + headDBID.getValue().get() + ")");
                         SCore.plugin.getLogger().severe(" If you use HeadDD, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
@@ -292,7 +292,8 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                     SCore.plugin.getLogger().severe(" If you use HeadDB, be sure that the plugin has finish to fetch all the custom head (generally it takes 20-30 seconds after the start of the server) !");
                 }
             }
-        } else if (headValue.getValue().isPresent() && !SCore.is1v12Less()) {
+        }
+        if (!headAlreadySet && headValue.getValue().isPresent() && !SCore.is1v12Less()) {
 
             if (SCore.is1v18Plus()) {
                 try {

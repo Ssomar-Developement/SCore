@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,15 @@ public class MessageMain {
         messages = new HashMap<>();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language for in-game messages setup on &6"+ GeneralConfig.getInstance().getLocale());
         fileName = "/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml";
+    }
+
+    public void reload() {
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language for in-game messages setup on &6"+ GeneralConfig.getInstance().getLocale());
+        fileName = "/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml";
+        for(Plugin plugin : messages.keySet()) {
+            Map<MessageInterface, String> formMessages = messages.get(plugin);
+            loadMessagesOf(plugin, Arrays.asList(formMessages.keySet().toArray(new MessageInterface[0])));
+        }
     }
 
     public void loadMessagesOf(Plugin plugin, List<MessageInterface> messagesEnum) {

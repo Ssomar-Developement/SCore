@@ -1,6 +1,8 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.score.commands.runnable.*;
+import com.ssomar.score.commands.runnable.CommandSetting;
+import com.ssomar.score.commands.runnable.RunConsoleCommand;
+import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.ChatColor;

@@ -175,7 +175,7 @@ public class CooldownsManager {
                 Cooldown cd = cds.get(i);
                 if (cd != null && cd.getId().equalsIgnoreCase(cooldownId)) {
                     if(uuid != null && (cd.getEntityUUID() == null || !cd.getEntityUUID().equals(uuid))) continue;
-                    cooldownsUUID.get(cd.getEntityUUID()).remove(cd);
+                    if(cd.getEntityUUID() != null)  cooldownsUUID.get(cd.getEntityUUID()).remove(cd);
                     cds.set(i, null);
                     break;
                 }

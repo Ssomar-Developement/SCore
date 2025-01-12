@@ -4,7 +4,6 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import org.bukkit.entity.Player;
 
-
 import java.util.List;
 
 public class AbsorptionManager {

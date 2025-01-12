@@ -1,12 +1,11 @@
 package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.api.executableitems.events.AddItemInPlayerInventoryEvent;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.*;
-import com.ssomar.score.sobject.SObjectWithFileLoader;
-import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -52,6 +51,17 @@ public abstract class SObjectsEditorAbstract<T extends SObject & SObjectEditable
     };
 
     private SObjectManager<T> manager;
+
+    public SObjectsEditorAbstract(SPlugin sPlugin, FeatureSettingsInterface settings, SObjectManager<T> manager) {
+        super(settings, 5 * 9);
+        this.sPlugin = sPlugin;
+        index = 1;
+        this.deleteArg = "delete";
+        this.createArg = "create";
+        this.manager = manager;
+
+        this.initSettings();
+    }
 
     public SObjectsEditorAbstract(SPlugin sPlugin, String title, SObjectManager<T> manager) {
         super(title, 5 * 9);

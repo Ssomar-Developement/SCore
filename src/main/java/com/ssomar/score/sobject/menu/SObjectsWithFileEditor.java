@@ -2,12 +2,15 @@ package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.*;
-import com.ssomar.score.sobject.SObjectWithFileLoader;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.SObjectEditable;
 import com.ssomar.score.sobject.SObjectManager;
+import com.ssomar.score.sobject.SObjectWithFileLoader;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
@@ -32,8 +35,8 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
     private SObjectWithFileLoader loader;
     private boolean dontShowDirectory = false;
 
-    public SObjectsWithFileEditor(SPlugin sPlugin, String title, String path, SObjectManager manager, SObjectWithFileLoader loader) {
-        super(sPlugin, title, manager);
+    public SObjectsWithFileEditor(SPlugin sPlugin, FeatureSettingsInterface settings, String path, SObjectManager manager, SObjectWithFileLoader loader) {
+        super(sPlugin, settings, manager);
         this.defaultPath = path;
         this.path = path;
         this.loader = loader;
@@ -150,6 +153,9 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
 
         if (!this.path.equals(defaultPath)) createItem(RED, 1, 36, BACK, false, false);
         else createItem(RED, 1, 36, EXIT, false, false);
+
+        // change lang menu
+        createItem(YELLOW, 1, 37, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
 
         String[] desc = new String[2+TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
         desc[0] = "";

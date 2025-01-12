@@ -5,7 +5,6 @@ import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.entity.Entity;
 
-
 import java.util.*;
 
 

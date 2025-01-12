@@ -123,6 +123,68 @@ public class AttributeUtils {
                 return Attribute.SWEEPING_DAMAGE_RATIO;
             case "ZOMBIE_SPAWN_REINFORCEMENTS":
                 return Attribute.SPAWN_REINFORCEMENTS;
+            case "MAX_HEALTH":
+                return Attribute.MAX_HEALTH;
+            case "FOLLOW_RANGE":
+                return Attribute.FOLLOW_RANGE;
+            case "KNOCKBACK_RESISTANCE":
+                return Attribute.KNOCKBACK_RESISTANCE;
+            case "MOVEMENT_SPEED":
+                return Attribute.MOVEMENT_SPEED;
+            case "FLYING_SPEED":
+                return Attribute.FLYING_SPEED;
+            case "ATTACK_DAMAGE":
+                return Attribute.ATTACK_DAMAGE;
+            case "ATTACK_KNOCKBACK":
+                return Attribute.ATTACK_KNOCKBACK;
+            case "ATTACK_SPEED":
+                return Attribute.ATTACK_SPEED;
+            case "ARMOR":
+                return Attribute.ARMOR;
+            case "ARMOR_TOUGHNESS":
+                return Attribute.ARMOR_TOUGHNESS;
+            case "LUCK":
+                return Attribute.LUCK;
+            case "JUMP_STRENGTH":
+                return Attribute.JUMP_STRENGTH;
+            case "FALL_DAMAGE_MULTIPLIER":
+                return Attribute.FALL_DAMAGE_MULTIPLIER;
+            case "MAX_ABSORPTION":
+                return Attribute.MAX_ABSORPTION;
+            case "SAFE_FALL_DISTANCE":
+                return Attribute.SAFE_FALL_DISTANCE;
+            case "SCALE":
+                return Attribute.SCALE;
+            case "STEP_HEIGHT":
+                return Attribute.STEP_HEIGHT;
+            case "GRAVITY":
+                return Attribute.GRAVITY;
+            case "BURNING_TIME":
+                return Attribute.BURNING_TIME;
+            case "EXPLOSION_KNOCKBACK_RESISTANCE":
+                return Attribute.EXPLOSION_KNOCKBACK_RESISTANCE;
+            case "MOVEMENT_EFFICIENCY":
+                return Attribute.MOVEMENT_EFFICIENCY;
+            case "OXYGEN_BONUS":
+                return Attribute.OXYGEN_BONUS;
+            case "WATER_MOVEMENT_EFFICIENCY":
+                return Attribute.WATER_MOVEMENT_EFFICIENCY;
+            case "BLOCK_INTERACTION_RANGE":
+                return Attribute.BLOCK_INTERACTION_RANGE;
+            case "ENTITY_INTERACTION_RANGE":
+                return Attribute.ENTITY_INTERACTION_RANGE;
+            case "BLOCK_BREAK_SPEED":
+                return Attribute.BLOCK_BREAK_SPEED;
+            case "MINING_EFFICIENCY":
+                return Attribute.MINING_EFFICIENCY;
+            case "SNEAKING_SPEED":
+                return Attribute.SNEAKING_SPEED;
+            case "SUBMERGED_MINING_SPEED":
+                return Attribute.SUBMERGED_MINING_SPEED;
+            case "SWEEPING_DAMAGE_RATIO":
+                return Attribute.SWEEPING_DAMAGE_RATIO;
+            case "SPAWN_REINFORCEMENTS":
+                return Attribute.SPAWN_REINFORCEMENTS;
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package com.ssomar.score.editor;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
@@ -91,7 +92,14 @@ public abstract class NewGUIManager<T extends GUI> {
 
             if (interact.coloredDeconvertName.equals(GUI.RESET)) {
                 reset(interact);
-            } else if (interact.coloredDeconvertName.equals(GUI.BACK)) {
+            } else if (interact.coloredDeconvertName.equals(GUI.CHANGE_LANGUAGE)) {
+                if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.LEFT)) {
+                    nextLang(interact);
+                } else if (click.equals(ClickType.SHIFT_RIGHT) || click.equals(ClickType.RIGHT)) {
+                    previousLang(interact);
+                }
+            }
+            else if (interact.coloredDeconvertName.equals(GUI.BACK)) {
                 back(interact);
             } else if (interact.coloredDeconvertName.equals(GUI.NEW)) {
                 newObject(interact);
@@ -281,6 +289,16 @@ public abstract class NewGUIManager<T extends GUI> {
     public abstract void newObject(NewInteractionClickedGUIManager<T> interact);
 
     public abstract void reset(NewInteractionClickedGUIManager<T> interact);
+
+    public void nextLang(NewInteractionClickedGUIManager<T> interact){
+        GeneralConfig.getInstance().nextLocale();
+        interact.gui.fullReloadAndReopen(interact.player);
+    }
+
+    public void previousLang(NewInteractionClickedGUIManager<T> interact){
+        GeneralConfig.getInstance().previousLocale();
+        interact.gui.fullReloadAndReopen(interact.player);
+    }
 
     public abstract void back(NewInteractionClickedGUIManager<T> interact);
 

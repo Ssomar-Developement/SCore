@@ -1,10 +1,15 @@
 package com.ssomar.score.config;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.configs.messages.MessageMain;
+import com.ssomar.score.features.FeatureSettingsSCore;
+import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -12,7 +17,7 @@ public class GeneralConfig extends Config {
 
     private static GeneralConfig instance;
 
-    private String locale;
+    private Locale locale;
 
     private boolean useMySQL;
 
@@ -60,21 +65,13 @@ public class GeneralConfig extends Config {
     @Override
     public void load() {
         /* Locale config (language) */
-        locale = config.getString("locale", "EN");
-        if (locale.equals("FR")
-                || locale.equals("EN")
-                || locale.equals("ES")
-                || locale.equals("HU")
-                || locale.equals("ptBR")
-                || locale.equals("DE")
-                || locale.equals("UK")
-                || locale.equals("RU")
-                || locale.equals("ZH")) {
-            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Locale setup: &6" + locale);
-        } else {
-            SCore.plugin.getServer().getLogger().severe("[SCore] Invalid locale name: " + locale);
-            locale = "EN";
+        try {
+            locale = Locale.valueOf(config.getString("locale", "EN").toUpperCase());
+        } catch (IllegalArgumentException e) {
+            SCore.plugin.getServer().getLogger().severe("[SCore] Invalid locale name: " + config.getString("locale") + ", using default locale: EN");
+            locale = Locale.EN;
         }
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Locale setup: &6" + locale);
 
         useMySQL = config.getBoolean("useMySQL", false);
         dbIP = config.getString("dbIP", "");
@@ -92,4 +89,33 @@ public class GeneralConfig extends Config {
 
     }
 
+    public void nextLocale() {
+        int next = (locale.ordinal() + 1) % Locale.values().length;
+        locale = Locale.values()[next];
+        config.set("locale", locale.name());
+        save();
+        FeatureSettingsSCore.reload();
+        MessageMain.getInstance().reload();
+        TM.getInstance().reload();
+    }
+
+    public void previousLocale() {
+        int previous = (locale.ordinal() - 1 + Locale.values().length) % Locale.values().length;
+        locale = Locale.values()[previous];
+        config.set("locale", locale.name());
+        save();
+        FeatureSettingsSCore.reload();
+        MessageMain.getInstance().reload();
+        TM.getInstance().reload();
+    }
+
+    public String[] getAvailableLocales(String... strings) {
+        ArrayList<String> locales = new ArrayList<>();
+        locales.addAll(Arrays.asList(strings));
+        for (Locale locale : Locale.values()) {
+            if(this.locale != locale) locales.add("&6➤ &7"+locale.name()+ " &e- &7"+locale.getName());
+            else locales.add("&2➤ &7&o"+locale.name()+ " &a- &7&o"+locale.getName());
+        }
+        return locales.toArray(new String[0]);
+    }
 }

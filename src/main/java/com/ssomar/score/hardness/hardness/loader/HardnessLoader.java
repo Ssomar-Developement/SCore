@@ -6,7 +6,7 @@ import com.ssomar.score.hardness.hardness.manager.HardnessesManager;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
 public class HardnessLoader extends SObjectWithFileLoader<Hardness> {

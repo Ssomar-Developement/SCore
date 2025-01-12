@@ -5,7 +5,6 @@ import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

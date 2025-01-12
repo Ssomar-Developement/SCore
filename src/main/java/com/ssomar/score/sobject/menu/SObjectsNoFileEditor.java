@@ -1,10 +1,12 @@
 package com.ssomar.score.sobject.menu;
 
+import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.sobject.SObjectEditable;
 import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.SObjectEditable;
 import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
 import com.ssomar.score.splugin.SPlugin;
@@ -20,8 +22,8 @@ import java.util.List;
 @Setter
 public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> extends SObjectsEditorAbstract<T> {
 
-    public SObjectsNoFileEditor(SPlugin sPlugin, String title, SObjectManager manager) {
-        super(sPlugin, title, manager);
+    public SObjectsNoFileEditor(SPlugin sPlugin, FeatureSettingsInterface settings, SObjectManager manager) {
+        super(sPlugin, settings, manager);
         this.load();
     }
 
@@ -66,6 +68,9 @@ public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> 
             createItem(PREVIOUS_PAGE_MAT, 1, 37, PREVIOUS_PAGE, false, false);
         }
         createItem(RED, 1, 36, EXIT, false, false);
+
+        // change lang menu
+        createItem(YELLOW, 1, 37, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
 
         String[] desc = new String[1 + TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
         desc[0] = "&7";

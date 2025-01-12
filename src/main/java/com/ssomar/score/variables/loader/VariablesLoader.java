@@ -9,7 +9,9 @@ import com.ssomar.score.variables.manager.VariablesManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class VariablesLoader extends SObjectWithFileLoader<Variable> {
 

@@ -1,10 +1,10 @@
 package com.ssomar.score.features.custom.firework.explosion.group;
 
+import com.ssomar.score.features.custom.firework.explosion.FireworkExplosionFeatures;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
-import com.ssomar.score.features.custom.firework.explosion.FireworkExplosionFeatures;
 
 public class FireworkExplosionGroupFeatureEditor extends FeatureEditorInterface<FireworkExplosionGroupFeature> {
 

@@ -1,11 +1,13 @@
 package com.ssomar.score.menu;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.utils.FixedMaterial;
 import com.ssomar.score.utils.item.MakeItemGlow;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -49,6 +51,9 @@ public abstract class GUI implements IGUI {
 
     public static String RESET;
 
+    public static String CHANGE_LANGUAGE;
+
+
     public static String CREATION_ID;
 
     public static Material NEXT_PAGE_MAT = null;
@@ -88,14 +93,34 @@ public abstract class GUI implements IGUI {
 
     private final static boolean test = false;
 
+    private FeatureSettingsInterface settings;
+
+
+    public GUI(FeatureSettingsInterface settings, int size) {
+        this.settings = settings;
+        initInventory("&l"+settings.getEditorName()+" Editor", size);
+    }
 
     public GUI(String name, int size) {
+        initInventory(name, size);
+    }
+
+    public void initInventory(String name, int size) {
         inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
         this.size = size;
         for (int j = 0; j < size; j++) {
             createBackGroundItem(j);
         }
         if(WRITABLE_BOOK == null) init();
+    }
+
+    public void fullReloadAndReopen(Player player) {
+        // Not compatible reload
+        if(settings == null) return;
+        initInventory("&l"+settings.getEditorName()+" Editor", size);
+        update();
+        //player.closeInventory();
+        openGUISync(player);
     }
 
     public GUI(Inventory inv) {
@@ -151,6 +176,9 @@ public abstract class GUI implements IGUI {
         REMOVE = TM.g(Text.EDITOR_DELETE_NAME);
 
         RESET = TM.g(Text.EDITOR_RESET_NAME);
+
+        CHANGE_LANGUAGE = "&6&l\uD83D\uDD6E &e&lChange Language";
+
     }
 
     public void load() {
@@ -246,7 +274,22 @@ public abstract class GUI implements IGUI {
         meta.setLore(lore);
         itemS.setItemMeta(meta);
         //SsomarDev.testMsg("meta>>>>>>>>>: "+itemS.getItemMeta().getDisplayName(), true);
-        inv.setItem(invSlot, itemS);
+        // To fix an issue with banner in 1.16.5
+        try {
+            inv.setItem(invSlot, itemS);
+        } catch (Exception e) {
+            Utils.sendConsoleMsg(SCore.plugin, "&cError while creating item in GUI: " + Arrays.toString(e.getStackTrace()));
+            ItemStack item = new ItemStack(Material.BARRIER, 1);
+            ItemMeta meta2 = item.getItemMeta();
+            meta2.setDisplayName(StringConverter.coloredString(displayName));
+            lore.add(0, StringConverter.coloredString("&cError while creating this item in GUI"));
+            lore.add(1, StringConverter.coloredString( "&cPlease check the console"));
+            lore.add(2, StringConverter.coloredString("&cIf you think this is a bug"));
+            lore.add(3, StringConverter.coloredString("&cPlease report it on the discord"));
+            meta2.setLore(lore);
+            item.setItemMeta(meta2);
+            inv.setItem(invSlot, item);
+        }
 
     }
 
@@ -314,9 +357,9 @@ public abstract class GUI implements IGUI {
     public String getCurrently(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("Currently: ")) {
+            if (StringConverter.decoloredString(s).contains(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME)))) {
                 try {
-                    return StringConverter.decoloredString(s).split("Currently: ")[1];
+                    return StringConverter.decoloredString(s).split(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME))+ " ")[1];
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return "";
                 }
@@ -328,9 +371,9 @@ public abstract class GUI implements IGUI {
     public String getCurrentlyWithColor(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("Currently: ")) {
+            if (StringConverter.decoloredString(s).contains(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME)))) {
                 try {
-                    return StringConverter.deconvertColor(s).split("Currently: ")[1];
+                    return StringConverter.deconvertColor(s).split(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME))+" ")[1];
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return "";
                 }
@@ -344,11 +387,11 @@ public abstract class GUI implements IGUI {
         List<String> lore = meta.getLore();
         int cpt = 0;
         for (String s : lore) {
-            if (StringConverter.decoloredString(s).contains("Currently:")) break;
+            if (StringConverter.decoloredString(s).contains(StringConverter.decoloredString(TM.g(Text.EDITOR_CURRENTLY_NAME)))) break;
             cpt++;
         }
-        if (withColor) lore.set(cpt, StringConverter.coloredString("&7Currently: " + update));
-        else lore.set(cpt, StringConverter.coloredString("&7Currently: &e" + update));
+        if (withColor) lore.set(cpt, StringConverter.coloredString(TM.g(Text.EDITOR_CURRENTLY_NAME)+ " " + update));
+        else lore.set(cpt, StringConverter.coloredString(TM.g(Text.EDITOR_CURRENTLY_NAME)+" &e" + update));
         meta.setLore(lore);
         item.setItemMeta(meta);
 

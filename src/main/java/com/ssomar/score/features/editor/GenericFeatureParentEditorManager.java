@@ -1,7 +1,6 @@
 package com.ssomar.score.features.editor;
 
 
-import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.features.FeatureParentInterface;
 
 public class GenericFeatureParentEditorManager extends FeatureEditorManagerAbstract<GenericFeatureParentEditor, FeatureParentInterface> {

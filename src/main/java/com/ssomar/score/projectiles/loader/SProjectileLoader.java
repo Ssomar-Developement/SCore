@@ -6,7 +6,7 @@ import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
 public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {

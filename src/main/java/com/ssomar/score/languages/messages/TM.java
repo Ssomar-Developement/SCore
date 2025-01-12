@@ -3,6 +3,7 @@ package com.ssomar.score.languages.messages;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,7 +37,16 @@ public class TM {
     public void load() {
         messages = new HashMap<>();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language of the editor setup on &6"+ GeneralConfig.getInstance().getLocale());
-        fileName = "/languages/language_" + GeneralConfig.getInstance().getLocale() + ".yml";
+        fileName = "/languages/language_" + GeneralConfig.getInstance().getLocale().toString().toLowerCase() + ".yml";
+    }
+
+    public void reload() {
+        messages = new HashMap<>();
+        messagesArray = new HashMap<>();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language of the editor setup on &6"+ GeneralConfig.getInstance().getLocale());
+        fileName = "/languages/language_" + GeneralConfig.getInstance().getLocale().toString().toLowerCase() + ".yml";
+        loadTexts();
+        GUI.init();
     }
 
     public void loadTexts() {
@@ -95,7 +105,7 @@ public class TM {
 
         String insert = "Can't load the string (" + what + ") for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
         try {
-            String defaultLanguage = GeneralConfig.getInstance().getLocale();
+            String defaultLanguage = GeneralConfig.getInstance().getLocale().toString();
 
             InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/" + plugin.getName().toLowerCase() + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
@@ -122,7 +132,11 @@ public class TM {
             if(!isNotUpdate){
                 Utils.sendConsoleMsg(SCore.NAME_COLOR+ " &7Update of &6" + what + " &7in your for the plugin > &6" + plugin.getName() + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
                 config.save(pdFile);
-            } else Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
+            } else{
+                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
+                if(msgI.getType() == TypeText.STRING) messages.put(msgI, msgI.getDefaultValueString());
+                else messagesArray.put(msgI, msgI.getDefaultValueArray());
+            }
             buff.close();
         } catch (Exception e) {
             Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+what+" &cfor the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());

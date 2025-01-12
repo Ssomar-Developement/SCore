@@ -107,6 +107,16 @@ public class LocatedLaunch extends PlayerCommand {
         // Rotate the velocity of the projectile horizontally depending on the player's head rotation
         vector = vector.rotateAroundAxis(getPlayerHeadVector(receiver), rotationHorizontal * Math.PI / 180);
 
+        // Check that each coord of the vector is not NaN
+        if (Double.isNaN(vector.getX())) {
+            vector.setX(0);
+        }
+        if (Double.isNaN(vector.getY())) {
+            vector.setY(0);
+        }
+        if (Double.isNaN(vector.getZ())) {
+            vector.setZ(0);
+        }
         entity.setVelocity(vector);
 
         // Multiply the velocity

@@ -10,7 +10,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
