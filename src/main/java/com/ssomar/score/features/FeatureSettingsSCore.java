@@ -626,7 +626,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     public static void reload(){
         for(FeatureSettingsSCore feature : FeatureSettingsSCore.values()){
-            feature.settingsInterface = getFeatureSettings(feature.getIdentifier());
+            feature.settingsInterface = getFeatureSettings(feature.getIdentifier(), feature.getName());
         }
     }
 
