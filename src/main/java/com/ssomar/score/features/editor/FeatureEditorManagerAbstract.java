@@ -3,6 +3,7 @@ package com.ssomar.score.features.editor;
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
+import com.ssomar.score.editor.SaveSessionPathManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.strings.StringConverter;

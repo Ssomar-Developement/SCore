@@ -1,4 +1,4 @@
-package com.ssomar.score.features.editor;
+package com.ssomar.score.editor;
 
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.menu.GUI;
@@ -33,6 +33,12 @@ public class SaveSessionPathManager {
             this.playerSessionPath.put(p, newPaths);
         }
         SsomarDev.testMsg("ADD GUI > "+path.getInventory().getHolder(), true);
+    }
+
+    public void clearPlayerSessionPath(Player p) {
+        if(this.playerSessionPath.containsKey(p)) {
+            this.playerSessionPath.get(p).clear();
+        }
     }
 
     public GUI getLastPlayerSessionPath(Player p) {

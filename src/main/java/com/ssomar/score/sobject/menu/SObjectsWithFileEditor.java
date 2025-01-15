@@ -155,7 +155,7 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
         else createItem(RED, 1, 36, EXIT, false, false);
 
         // change lang menu
-        createItem(YELLOW, 1, 37, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
+        createItem(YELLOW, 1, 39, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
 
         String[] desc = new String[2+TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
         desc[0] = "";

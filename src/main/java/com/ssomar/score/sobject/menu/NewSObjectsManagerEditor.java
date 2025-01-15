@@ -2,7 +2,7 @@ package com.ssomar.score.sobject.menu;
 
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
-import com.ssomar.score.features.editor.SaveSessionPathManager;
+import com.ssomar.score.editor.SaveSessionPathManager;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
