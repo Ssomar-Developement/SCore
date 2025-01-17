@@ -1,6 +1,6 @@
 package com.ssomar.score.utils.messages;
 
-import net.md_5.bungee.api.ChatColor;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
 public enum CenteredMessage {
@@ -124,7 +124,7 @@ public enum CenteredMessage {
 
     public static String convertIntoCenteredMessage(String message) {
         if (message == null || message.equals("")) return "";
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = StringConverter.coloredString(message);
 
         int messagePxSize = 0;
         boolean previousCode = false;

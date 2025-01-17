@@ -2,6 +2,8 @@ package com.ssomar.score.features.custom.detailedslots;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.editor.FeatureEditorInterface;
+import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.item.MakeItemGlow;
 import org.bukkit.Material;
@@ -97,9 +99,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void updateSlotMainHand(int i, boolean enable) {
 
         if (enable) {
-            createItem(Material.STICK, 1, i, "&eSlot: mainHand", true, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+            createItem(Material.STICK, 1, i, "&eSlot: mainHand", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         } else {
-            createItem(Material.STICK, 1, i, "&eSlot: mainHand", false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+            createItem(Material.STICK, 1, i, "&eSlot: mainHand", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
         }
     }
 
@@ -115,9 +117,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
         if (SCore.is1v11Less()) offHandMat = Material.BARRIER;
         else offHandMat = Material.SHIELD;
         if (enable)
-            createItem(offHandMat, 1, i, "&eSlot: offHand", true, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+            createItem(offHandMat, 1, i, "&eSlot: offHand", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         else
-            createItem(offHandMat, 1, i, "&eSlot: offHand", false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+            createItem(offHandMat, 1, i, "&eSlot: offHand", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
     }
 
     public void changeSlotOffHand() {
@@ -132,12 +134,14 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
      **/
     public boolean addOrRemoveEnchant(ItemStack item) {
         if (this.getCurrently(item).contains("Enable")) {
+            //SsomarDev.testMsg("enable to disable Item: " + item, true);
             this.updateCurrently(item, "&cDisable");
             for (Enchantment e : item.getItemMeta().getEnchants().keySet()) {
                 item.removeEnchantment(e);
             }
             return true;
         } else {
+            //SsomarDev.testMsg("disable to enable Item: " + item, true);
             this.updateCurrently(item, "&aEnable");
             MakeItemGlow.makeGlow(item);
             return false;
@@ -146,9 +150,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void updateSlotBoots(int i, boolean enable) {
         if (enable)
-            createItem(Material.DIAMOND_BOOTS, 1, i, "&eSlot: boots", true, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+            createItem(Material.DIAMOND_BOOTS, 1, i, "&eSlot: boots", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         else
-            createItem(Material.DIAMOND_BOOTS, 1, i, "&eSlot: boots", false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+            createItem(Material.DIAMOND_BOOTS, 1, i, "&eSlot: boots", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
     }
 
     public void changeSlotBoots() {
@@ -162,9 +166,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void updateSlotLeggings(int i, boolean enable) {
         if (enable)
-            createItem(Material.DIAMOND_LEGGINGS, 1, i, "&eSlot: leggings", true, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+            createItem(Material.DIAMOND_LEGGINGS, 1, i, "&eSlot: leggings", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         else
-            createItem(Material.DIAMOND_LEGGINGS, 1, i, "&eSlot: leggings", false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+            createItem(Material.DIAMOND_LEGGINGS, 1, i, "&eSlot: leggings", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
     }
 
     public void changeSlotLeggings() {
@@ -177,9 +181,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void updateSlotChestplate(int i, boolean enable) {
         if (enable)
-            createItem(Material.DIAMOND_CHESTPLATE, 1, i, "&eSlot: chestplate", true, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+            createItem(Material.DIAMOND_CHESTPLATE, 1, i, "&eSlot: chestplate", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         else
-            createItem(Material.DIAMOND_CHESTPLATE, 1, i, "&eSlot: chestplate", false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+            createItem(Material.DIAMOND_CHESTPLATE, 1, i, "&eSlot: chestplate", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
     }
 
     public void changeSlotChestplate() {
@@ -192,9 +196,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void updateSlotHelmet(int i, boolean enable) {
         if (enable)
-            createItem(Material.DIAMOND_HELMET, 1, i, "&eSlot: helmet", true, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+            createItem(Material.DIAMOND_HELMET, 1, i, "&eSlot: helmet", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         else
-            createItem(Material.DIAMOND_HELMET, 1, i, "&eSlot: helmet", false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+            createItem(Material.DIAMOND_HELMET, 1, i, "&eSlot: helmet", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
     }
 
     public void changeSlotHelmet() {
@@ -208,14 +212,14 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     public void updateSlot(int i, int slot, boolean enable) {
         if (enable) {
             if (!SCore.is1v12Less())
-                createItem(Material.GREEN_WOOL, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+                createItem(Material.GREEN_WOOL, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
             else
-                createItem(Material.EMERALD, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", "&7Currently: &aEnable");
+                createItem(Material.EMERALD, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
         } else {
             if (!SCore.is1v12Less())
-                createItem(Material.RED_WOOL, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+                createItem(Material.RED_WOOL, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
             else
-                createItem(Material.REDSTONE, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", "&7Currently: &cDisable");
+                createItem(Material.REDSTONE, 1, i, "&eSlot: " + slot, false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
         }
     }
 
