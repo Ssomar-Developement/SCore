@@ -39,4 +39,8 @@ public class FactionsUUIDAPI {
     public boolean playerCanPlaceClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
         return playerIsInHisClaim(pUUID, location, true);
     }
+
+    public boolean playerCanOpenClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        return playerIsInHisClaim(pUUID, location, true);
+    }
 }

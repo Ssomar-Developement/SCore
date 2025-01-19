@@ -64,4 +64,13 @@ public class LandsIntegrationAPI {
 
         return area.getOwnerUID().equals(pUUID) || area.isTrusted(pUUID);
     }
+
+    public boolean playerCanOpenClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        // get a land area from a location
+        final Area area = landsIntegration.getArea(location);
+
+        if (area == null) return true;
+
+        return area.getOwnerUID().equals(pUUID) || area.isTrusted(pUUID);
+    }
 }

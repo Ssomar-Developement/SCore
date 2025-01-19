@@ -35,7 +35,7 @@ public class GenericFeatureParentEditor extends FeatureEditorInterface<FeaturePa
         createItem(ORANGE, 1, getSize()-8, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
         // change lang menu
-        createItem(YELLOW, 1, getSize()-7, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
+        if(!(featureParent instanceof FeatureNoLanguageChange)) createItem(YELLOW, 1, getSize()-7, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
 
         // Save menu
         createItem(GREEN, 1, getSize()-1, GUI.SAVE, false, false, "", "&a&oClick here to save");

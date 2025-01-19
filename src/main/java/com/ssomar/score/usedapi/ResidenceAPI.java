@@ -29,4 +29,9 @@ public class ResidenceAPI {
         ResidencePlayer rPlayer = Residence.getInstance().getPlayerManager().getResidencePlayer(pUUID);
         return rPlayer.canPlaceBlock(location.getBlock(), false);
     }
+
+    public static boolean playerCanOpenClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        ResidencePlayer rPlayer = Residence.getInstance().getPlayerManager().getResidencePlayer(pUUID);
+        return rPlayer.canPlaceBlock(location.getBlock(), false);
+    }
 }

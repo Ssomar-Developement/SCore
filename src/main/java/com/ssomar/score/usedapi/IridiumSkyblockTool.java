@@ -39,4 +39,8 @@ public class IridiumSkyblockTool {
     public static boolean playerCanPlaceIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
         return playerIsOnHisIsland(pUUID, location);
     }
+
+    public static boolean playerCanOpenIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        return playerIsOnHisIsland(pUUID, location);
+    }
 }

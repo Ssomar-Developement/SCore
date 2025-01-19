@@ -52,4 +52,16 @@ public class GriefPreventionAPI {
         return claim.allowBuild(player, Material.STONE) == null;
     }
 
+    public static boolean playerCanOpenClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        DataStore dataStore = GriefPrevention.instance.dataStore;
+        Claim claim = dataStore.getClaimAt(location, false, null);
+
+        if (claim == null) return true;
+
+        Player player = Bukkit.getPlayer(pUUID);
+        if (player == null) return false;
+
+        return claim.allowContainers(player) == null;
+    }
+
 }

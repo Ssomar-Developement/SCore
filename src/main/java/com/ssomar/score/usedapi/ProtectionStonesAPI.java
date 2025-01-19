@@ -42,4 +42,15 @@ public class ProtectionStonesAPI {
         return r1.getMembers().contains(player.getUniqueId()) || r1.isOwner(pUUID);
     }
 
+    public static boolean playerCanOpenClaimBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        PSRegion r1 = PSRegion.fromLocation(location);
+
+        if (r1 == null) return true;
+
+        Player player = Bukkit.getPlayer(pUUID);
+        if (player == null) return false;
+
+        return r1.getMembers().contains(player.getUniqueId()) || r1.isOwner(pUUID);
+    }
+
 }

@@ -46,6 +46,16 @@ public class BentoBoxAPI {
                 orElse(Flags.PLACE_BLOCKS.isSetForWorld(location.getWorld()));
     }
 
+    public static boolean playerCanOpenIslandBlock(@NotNull UUID pUUID, @NotNull Location location) {
+        // Checks if player is allowed to place blocks on island he is standing on,
+        // or if he is allowed to place blocks in the world outside protection area.
+
+        return !BentoBox.getInstance().getIWM().inWorld(location.getWorld()) ||
+                BentoBox.getInstance().getIslandsManager().getIslandAt(location).
+                        map(island -> island.isAllowed(User.getInstance(pUUID), Flags.CONTAINER)).
+                        orElse(Flags.CONTAINER.isSetForWorld(location.getWorld()));
+    }
+
     public static World getWorld(String worldStr) {
 
         for(World w : BentoBox.getInstance().getIWM().getWorlds()){

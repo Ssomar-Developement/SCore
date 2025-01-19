@@ -42,6 +42,9 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         String colorStr = config.getString(this.getName(), "");
         if (colorStr.isEmpty()) {
             value = Optional.empty();
+            if (this.returnErrorIfExecItemNotExists) {
+                errors.add("&cERROR, Couldn't load the ExecutableItemID, because it's empty &7&o" + getParent().getParentInfo());
+            }
         } else {
             value = Optional.of(colorStr);
             if (returnErrorIfExecItemNotExists){
