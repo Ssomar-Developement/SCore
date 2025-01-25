@@ -72,4 +72,6 @@ public interface SOption {
         return OptionGlobal.containsThisNameST(name);
     }
 
+    String getName();
+
 }

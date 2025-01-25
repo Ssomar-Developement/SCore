@@ -91,7 +91,7 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                 if (!whitelistActivatorsId.isEmpty() && !whitelistActivatorsId.contains(activator.getId())) {
                     continue;
                 }
-                if (activator.getOption().isLoopOption() && !whitelistActivators.isEmpty()) {
+                if ((activator.getOption().isLoopOption() || activator.getOption().isCustomTriggerOption()) && !whitelistActivators.isEmpty()) {
                     boolean valid = false;
                     for (SActivator activatorCheck : whitelistActivators) {
                         if (activatorCheck.isEqualsOrAClone(activator)) {

@@ -6,12 +6,10 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.FeatureWithHisOwnEditor;
 import com.ssomar.score.menu.GUI;
-import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public abstract class SObject<X extends FeatureInterface<X, X>, Y extends GUI, Z extends NewGUIManager<Y>> extends FeatureWithHisOwnEditor<X, X, Y, Z> {
+public abstract class SObject<X extends FeatureInterface<X, X>, Y extends GUI, Z extends NewGUIManager<Y>> extends FeatureWithHisOwnEditor<X, X, Y, Z> implements SObjectInterface{
 
     private String id;
 
@@ -29,5 +27,10 @@ public abstract class SObject<X extends FeatureInterface<X, X>, Y extends GUI, Z
     }
 
     public abstract boolean delete();
+
+    @Override
+    public String getId() {
+        return id;
+    }
 
 }

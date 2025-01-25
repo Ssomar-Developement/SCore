@@ -38,6 +38,10 @@ public abstract class FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implemen
         } else this.isPremium = true;
     }
 
+    @Override
+    public FeatureSettingsInterface getFeatureSettings() {
+        return featureSettings;
+    }
 
     @Override
     public String getName() {

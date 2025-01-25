@@ -7,6 +7,9 @@ import org.jetbrains.annotations.Nullable;
 
 public interface SObjectWithActivators{
 
+    /**
+     * @return the activators
+     */
     ActivatorsFeature getActivators();
 
     @Nullable

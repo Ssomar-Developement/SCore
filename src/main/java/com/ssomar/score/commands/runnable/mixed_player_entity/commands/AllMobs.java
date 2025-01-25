@@ -109,6 +109,16 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
     }
 
     @Override
+    public FeatureInterface getFeature(FeatureSettingsInterface featureSettings) {
+        return null;
+    }
+
+    @Override
+    public FeatureInterface getFeatureWithName(String featureName) {
+        return null;
+    }
+
+    @Override
     public String getParentInfo() {
         return "MOB_AROUND Command";
     }

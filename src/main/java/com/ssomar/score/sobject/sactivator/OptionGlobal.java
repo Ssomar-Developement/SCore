@@ -127,4 +127,9 @@ public enum OptionGlobal implements SOption {
         }
         return false;
     }
+
+    @Override
+    public String getName() {
+        return this.name();
+    }
 }

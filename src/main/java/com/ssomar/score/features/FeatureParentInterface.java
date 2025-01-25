@@ -12,6 +12,10 @@ public interface FeatureParentInterface<FINAL_VALUE_CLASS, FEATURE_CLASS> extend
 
     List<FeatureInterface> getFeatures();
 
+    FeatureInterface getFeature(FeatureSettingsInterface featureSettings);
+
+    FeatureInterface getFeatureWithName(String featureName);
+
     String getParentInfo();
 
     @Nullable

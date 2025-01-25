@@ -17,6 +17,8 @@ public interface FeatureInterface<FINAL_VALUE_CLASS, FEATURE_CLASS> {
 
     void writeInFile(ConfigurationSection config);
 
+    FeatureSettingsInterface getFeatureSettings();
+
     String getName();
 
     String getEditorName();

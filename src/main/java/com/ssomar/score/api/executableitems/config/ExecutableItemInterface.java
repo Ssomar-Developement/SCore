@@ -1,9 +1,8 @@
 package com.ssomar.score.api.executableitems.config;
 
-import com.ssomar.score.features.custom.activators.activator.SActivator;
-import com.ssomar.score.features.custom.activators.group.ActivatorsFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.sobject.SObjectBuildable;
+import com.ssomar.score.sobject.SObjectInterface;
 import com.ssomar.score.sobject.SObjectWithActivators;
 import com.ssomar.score.sobject.SObjectWithVariables;
 import org.bukkit.Location;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface ExecutableItemInterface extends SObjectWithActivators, SObjectBuildable, SObjectWithVariables {
+public interface ExecutableItemInterface extends SObjectInterface, SObjectWithActivators, SObjectBuildable, SObjectWithVariables {
 
     /**
      * To place at the end of your itemBuilder , it adds infos for item to be recognized as an ExecutableItem
@@ -91,13 +90,7 @@ public interface ExecutableItemInterface extends SObjectWithActivators, SObjectB
 
     void addGlobalCooldown(int cooldown, boolean isInTicks, String activatorID);
 
-    String getId();
-
-    ActivatorsFeature getActivators();
-
     Item dropItem(Location location, int amount);
-
-    SActivator getActivator(String actID);
 
     List<String> getDescription();
 
