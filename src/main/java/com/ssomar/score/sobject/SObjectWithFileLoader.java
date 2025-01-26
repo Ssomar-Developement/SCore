@@ -1,7 +1,6 @@
 package com.ssomar.score.sobject;
 
 import com.google.common.io.ByteStreams;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.logging.Utils;
@@ -331,13 +330,13 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             String id = fileEntry.getName().split(".yml")[0];
 
             if (!isPremiumLoading && cpt >= maxFreeObjects) {
-                Utils.sendConsoleMsg(ExecutableItems.NAME_COLOR + " &cERROR, REQUIRE PREMIUM: to add more than " + maxFreeObjects + " " + objectName + " you need the premium version");
+                Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cERROR, REQUIRE PREMIUM: to add more than " + maxFreeObjects + " " + objectName + " you need the premium version");
                 return;
             }
 
             Optional<T> oOpt;
             if (!(oOpt = this.getObjectByFile(fileEntry, id, true)).isPresent()) {
-                Utils.sendConsoleMsg(ExecutableItems.NAME_COLOR + " &cERROR, the file " + filePath + " can't be loaded !");
+                Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cERROR, the file " + filePath + " can't be loaded !");
                 return;
             }
             sObjectManager.addLoadedObject(oOpt.get());
