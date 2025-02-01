@@ -4,6 +4,8 @@ package com.ssomar.score.api.executableblocks;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlockObject;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlocksManager;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
+import com.ssomar.score.api.executableblocks.config.ExecutableBlockObjectInterface;
+import com.ssomar.score.api.executableblocks.config.ExecutableBlocksManagerInterface;
 import org.bukkit.inventory.ItemStack;
 
 public class ExecutableBlocksAPI {
@@ -12,7 +14,7 @@ public class ExecutableBlocksAPI {
      * Get the ExecutableBlocks Manager,
      * It allows you to get / retrieve the ExecutableBlocks Configurations
      **/
-    public static ExecutableBlocksManager getExecutableBlocksManager() {
+    public static ExecutableBlocksManagerInterface getExecutableBlocksManager() {
         return ExecutableBlocksManager.getInstance();
     }
 
@@ -29,7 +31,7 @@ public class ExecutableBlocksAPI {
      * Get the ExecutableBlockObject
      * It allows you to get / retrieve the ExecutableBlocks Configurations under its item form
      **/
-    public static ExecutableBlockObject getExecutableBlockObject(ItemStack itemStack) {
+    public static ExecutableBlockObjectInterface getExecutableBlockObject(ItemStack itemStack) {
         return new ExecutableBlockObject(itemStack);
     }
 }

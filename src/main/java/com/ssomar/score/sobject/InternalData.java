@@ -8,6 +8,7 @@ import com.ssomar.score.utils.writer.NameSpaceKeyWriterReader;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -122,6 +123,28 @@ public class InternalData {
         NameSpaceKeyWriterReader.writeString(SCore.plugin, persistentDataContainer, "ownerUUID", ownerUUID == null ? "" :ownerUUID.toString());
         if(variableRealsList != null){
             variableRealsList.save(persistentDataContainer);
+        }
+    }
+
+    public void save(ConfigurationSection config){
+        config.set("usage", usage);
+
+        Optional<Player> owner = getOwnerOptional();
+        if(owner.isPresent()) config.set("owner", owner.get().getName());
+        else config.set("owner", "OWNER NAME NOT FOUND");
+
+        if(ownerUUID != null) config.set("ownerUUID", ownerUUID.toString());
+        else{
+            config.set("ownerUUID", null);
+            config.set("owner", "unowned");
+        }
+
+        if(variableRealsList != null){
+            if(!config.isConfigurationSection("variables")){
+                config.createSection("variables");
+            }
+
+            variableRealsList.save(config.getConfigurationSection("variables"));
         }
     }
 }

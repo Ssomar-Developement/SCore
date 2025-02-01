@@ -4,6 +4,7 @@ import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.executableblocks.placedblocks.LocationConverter;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.config.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.block.BlockConditionFeature;
@@ -31,9 +32,9 @@ public class IfUsage extends BlockConditionFeature<NumberConditionFeature, IfUsa
         if (hasCondition() && SCore.hasExecutableBlocks) {
 
             Location bLoc = LocationConverter.convert(request.getBlock().getLocation(), false, false);
-            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
             if (eBPOpt.isPresent()) {
-                ExecutableBlockPlaced eBP = eBPOpt.get();
+                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
                 int usage = eBP.getUsage();
 
                 if (!StringCalculation.calculation(getCondition().getValue(request.getPlayerOpt(), request.getSp()).get(), usage)) {

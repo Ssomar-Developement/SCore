@@ -7,7 +7,7 @@ public class SsomarDev {
     public static void testMsg(String message, boolean isActiveDebug) {
         if (isActiveDebug /* replace */) {
             try {
-                Bukkit.getPlayer("Ssomarr").sendMessage(message);
+                Bukkit.getPlayer("Ssomar").sendMessage(message);
             } catch (Exception ignored) {}
         }
     }

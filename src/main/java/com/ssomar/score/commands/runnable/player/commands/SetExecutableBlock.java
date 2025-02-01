@@ -3,16 +3,16 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlocksManager;
-import com.ssomar.executableblocks.executableblocks.internal.InternalData;
-import com.ssomar.executableblocks.utils.OverrideEBP;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.sobject.InternalData;
 import com.ssomar.score.usedapi.MultiverseAPI;
 import com.ssomar.score.utils.CreationType;
+import com.ssomar.score.utils.place.OverrideMode;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -117,8 +117,8 @@ public class SetExecutableBlock extends PlayerCommand {
         }
         SsomarDev.testMsg("Command 2 ", true);
 
-        OverrideEBP overrideEBP = OverrideEBP.KEEP_EXISTING_EBP;
-        if (replace) overrideEBP = OverrideEBP.REMOVE_EXISTING_EBP;
+        OverrideMode overrideMode = OverrideMode.KEEP_EXISTING;
+        if (replace) overrideMode = OverrideMode.REMOVE_EXISTING;
 
         UUID uuid = null;
         if (p != null) uuid = p.getUniqueId();
@@ -128,7 +128,7 @@ public class SetExecutableBlock extends PlayerCommand {
         ExecutableBlock eB = oOpt.get();
 
         if(eB.getCreationType().getValue().get() != CreationType.DISPLAY_CREATION) loc = loc.getBlock().getLocation();
-        eB.place(loc, true, overrideEBP, owner.orElse(null), null, new InternalData().setOwnerUUID(ownerUUID));
+        eB.place(loc, true, overrideMode, owner.orElse(null), null, new InternalData().setOwnerUUID(ownerUUID));
     }
 
 }

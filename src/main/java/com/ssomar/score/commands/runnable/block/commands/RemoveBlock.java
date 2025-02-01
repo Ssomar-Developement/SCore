@@ -4,6 +4,7 @@ import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlocksPlacedManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.config.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -38,7 +39,7 @@ public class RemoveBlock extends BlockCommand {
         bLoc.add(0.5, 0.5, 0.5);
 
         if (SCore.hasExecutableBlocks) {
-            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
+            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(bLoc);
             if (eBPOpt.isPresent()) {
                 ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
                 ExecutableBlocksPlacedManager.getInstance().removeExecutableBlockPlaced(eBP);

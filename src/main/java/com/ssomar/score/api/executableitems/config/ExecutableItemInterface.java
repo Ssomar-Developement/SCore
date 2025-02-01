@@ -95,4 +95,6 @@ public interface ExecutableItemInterface extends SObjectInterface, SObjectWithAc
     List<String> getDescription();
 
     ColoredStringFeature getDisplayName();
+
+    void setUsage(int usage);
 }

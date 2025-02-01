@@ -1,7 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
-import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
+import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -27,7 +27,7 @@ public class EBCooldown extends PlayerCommand {
         Integer number = NTools.getInteger(args.get(2)).get();
         boolean ticks = Boolean.parseBoolean(args.get(3));
 
-        Optional<ExecutableBlock> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(id);
+        Optional<ExecutableBlockInterface> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(id);
 
         if(args.size() < 5){
             if(eiOpt.isPresent()) {

@@ -273,6 +273,7 @@ public interface CommmandThatRunsCommand {
             ActionInfo aInfo2 = aInfo.clone();
             aInfo2.setEntityUUID(entity.getUniqueId());
             aInfo2.setStep(aInfo.getStep() + 1);
+            SsomarDev.testMsg("aInfo2: " + aInfo2.getStep(), true);
 
             /* regroup the last args that correspond to the commands */
             StringBuilder prepareCommands = new StringBuilder();
@@ -294,6 +295,8 @@ public interface CommmandThatRunsCommand {
             List<String> commands = new ArrayList<>();
             for (int m = 0; m < tab.length; m++) {
                 String s = tab[m];
+                s = CommmandThatRunsCommand.replaceStepParticlePlaceholder(s, aInfo);
+
                 while (s.startsWith(" ")) {
                     s = s.substring(1);
                 }

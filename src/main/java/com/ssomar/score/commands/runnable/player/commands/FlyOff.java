@@ -44,7 +44,7 @@ public class FlyOff extends PlayerCommand {
         }
         receiver.setAllowFlight(false);
         receiver.setFlying(false);
-        FlyManager.getInstance().removePlayerWithFly(p);
+        FlyManager.getInstance().removePlayerWithFly(receiver);
     }
 
 

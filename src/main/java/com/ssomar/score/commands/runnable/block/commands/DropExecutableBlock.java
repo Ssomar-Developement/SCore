@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import org.bukkit.ChatColor;
@@ -23,9 +24,9 @@ public class DropExecutableBlock extends BlockCommand {
         if (SCore.hasExecutableBlocks && ExecutableBlocksAPI.getExecutableBlocksManager().isValidID(args.get(0))) {
             int amount = Double.valueOf(args.get(1)).intValue();
             if (amount > 0) {
-                Optional<ExecutableBlock> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
+                Optional<ExecutableBlockInterface> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
                 if (eiOpt.isPresent()) {
-                    ExecutableBlock ei = eiOpt.get();
+                    ExecutableBlock ei = (ExecutableBlock) eiOpt.get();
                     block.getWorld().dropItem(block.getLocation(), ei.buildItem(amount, Optional.ofNullable(p)));
                 }
             }

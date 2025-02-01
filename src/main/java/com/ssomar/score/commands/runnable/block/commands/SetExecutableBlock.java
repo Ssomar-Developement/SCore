@@ -3,15 +3,16 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.executableblocks.ExecutableBlocks;
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.ExecutableBlock;
-import com.ssomar.executableblocks.executableblocks.internal.InternalData;
-import com.ssomar.executableblocks.utils.OverrideEBP;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.sobject.InternalData;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.MultiverseAPI;
+import com.ssomar.score.utils.place.OverrideMode;
 import com.ssomar.score.utils.safeplace.SafePlace;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +36,7 @@ public class SetExecutableBlock extends BlockCommand {
 
 
         if (SCore.hasExecutableBlocks && Dependency.EXECUTABLE_BLOCKS.isEnabled()) {
-          Optional<ExecutableBlock> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
+          Optional<ExecutableBlockInterface> oOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(args.get(0));
             if (!oOpt.isPresent()) {
                 ExecutableBlocks.plugin.getLogger().severe("There is no ExecutableBlock associate with the ID: " + args.get(0) + " for the command SETEXECUTABLEBLOCK (object: " + aInfo.getName() + ")");
                 return;
@@ -107,15 +108,15 @@ public class SetExecutableBlock extends BlockCommand {
             if (!replace && !block.isEmpty()) {
                 return;
             }
-            OverrideEBP overrideEBP = OverrideEBP.KEEP_EXISTING_EBP;
-            if (replace) overrideEBP = OverrideEBP.REMOVE_EXISTING_EBP;
+            OverrideMode overrideEBP = OverrideMode.KEEP_EXISTING;
+            if (replace) overrideEBP = OverrideMode.REMOVE_EXISTING;
 
             UUID uuid = null;
             if (p != null) uuid = p.getUniqueId();
 
             if (uuid != null && !bypassProtection && !SafePlace.verifSafePlace(uuid, block)) return;
 
-            ExecutableBlock eB = oOpt.get();
+            ExecutableBlock eB = (ExecutableBlock) oOpt.get();
 
             eB.place(loc, true, overrideEBP, null, null, new InternalData().setOwnerUUID(ownerUUID));
         }

@@ -87,7 +87,7 @@ public class MyCoreProtectAPI {
         if (SCore.hasCoreProtect) {
             Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
 
-            if (!plugin.isEnabled()) return;
+            if (plugin != null && !plugin.isEnabled()) return;
 
             // Check that CoreProtect is loaded
             if (!(plugin instanceof CoreProtect)) {

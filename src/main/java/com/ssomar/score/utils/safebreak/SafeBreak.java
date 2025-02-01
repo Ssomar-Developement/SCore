@@ -4,6 +4,7 @@ import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
 import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.api.executableblocks.config.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.usedapi.*;
 import dev.rosewood.roseloot.RoseLoot;
@@ -191,10 +192,11 @@ public class SafeBreak {
 
         if (SCore.hasExecutableBlocks) {
            // SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
-            Optional<ExecutableBlockPlaced> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+            Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
+                ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
                 //SsomarDev.testMsg("DEBUG SAFE BREAK has EB 2", DEBUG);
-                eBPOpt.get().breakBlock(player, drop, null, ExecutableBlockPlaced.BreakMethod.CUSTOM);
+                eBP.breakBlock(player, drop, null, ExecutableBlockPlaced.BreakMethod.CUSTOM);
                 return true;
             }
         }

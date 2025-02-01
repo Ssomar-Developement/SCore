@@ -1,8 +1,8 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
-import com.ssomar.executableblocks.executableblocks.placedblocks.ExecutableBlockPlaced;
 import com.ssomar.score.SCore;
+import com.ssomar.score.api.executableblocks.config.placed.ExecutableBlockPlacedInterface;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.ToolsListMaterial;
 import com.ssomar.score.utils.backward_compatibility.BiomeUtils;
@@ -79,7 +79,7 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
         }
         if (fixType != null) this.fixType = fixType;
         if(SCore.hasExecutableBlocks){
-            Optional<ExecutableBlockPlaced> executableBlockPlaced = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
+            Optional<ExecutableBlockPlacedInterface> executableBlockPlaced = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if(executableBlockPlaced.isPresent()){
                 this.EB_ID = executableBlockPlaced.get().getEB_ID();
             }
