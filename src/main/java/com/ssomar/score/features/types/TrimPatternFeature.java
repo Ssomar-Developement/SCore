@@ -28,7 +28,7 @@ import java.util.*;
 @Setter
 public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, TrimPatternFeature> implements FeatureRequireClicksOrOneMessageInEditor {
 
-    private Optional<TrimPattern> value;
+    private Optional<String> value;
     private Optional<TrimPattern> defaultValue;
 
     public TrimPatternFeature(FeatureParentInterface parent,Optional<TrimPattern> defaultValue, FeatureSettingsInterface featureSettings) {
@@ -42,10 +42,9 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
         try {
-            TrimPattern material = getTrimPattern(colorStr);
-            value = Optional.ofNullable(material);
-            FeatureReturnCheckPremium<TrimPattern> checkPremium = checkPremium("TrimPattern", material, defaultValue, isPremiumLoading);
-            if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
+            value = Optional.ofNullable(colorStr);
+            //FeatureReturnCheckPremium<String> checkPremium = checkPremium("TrimPattern", material, defaultValue, isPremiumLoading);
+            //if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
             if(!colorStr.equals("NULL")) errors.add("&cERROR, Couldn't load the TrimPattern value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Patterns available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/meta/trim/TrimPattern.html");
             value = Optional.empty();
@@ -56,9 +55,8 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<TrimPattern> value = getValue();
         value.ifPresent(material ->{
-            String fix = material.getKey().toString();
+            String fix = value.get();
             if(fix.contains("minecraft:")){
                 fix = fix.replace("minecraft:", "");
                 fix = fix.toUpperCase();
@@ -69,8 +67,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     @Override
     public Optional<TrimPattern> getValue() {
-        if (value.isPresent()) return value;
-        else return defaultValue;
+        return value.map(s -> Optional.of(getTrimPattern(s))).orElseGet(() -> defaultValue);
     }
 
     @Override
@@ -102,7 +99,8 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     @Override
     public void reset() {
-        this.value = defaultValue;
+        if(defaultValue.isPresent()) this.value = Optional.of(defaultValue.get().getKey().toString());
+        else this.value = Optional.empty();
     }
 
     @Override
@@ -225,7 +223,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
     public void updatePattern(TrimPattern material, GUI gui) {
         Material mat = getConverter().get(material);
         ItemStack item = gui.getByName(getEditorName());
-        value = Optional.of(material);
+        value = Optional.of(material.getKey().toString());
         item.setType(mat);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 4);
@@ -322,7 +320,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     @Override
     public void finishEditInEditor(Player editor, NewGUIManager manager, String message) {
-        this.value = Optional.of(getTrimPattern(StringConverter.decoloredString(message).trim().toUpperCase()));
+        this.value = Optional.of(StringConverter.decoloredString(message).trim());
         manager.requestWriting.remove(editor);
         updateItemParentEditor((GUI) manager.getCache().get(editor));
     }

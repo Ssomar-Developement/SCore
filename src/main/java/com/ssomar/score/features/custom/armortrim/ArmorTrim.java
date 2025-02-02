@@ -1,10 +1,7 @@
 package com.ssomar.score.features.custom.armortrim;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -12,10 +9,12 @@ import com.ssomar.score.features.types.TrimMaterialFeature;
 import com.ssomar.score.features.types.TrimPatternFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, GenericFeatureParentEditor, GenericFeatureParentEditorManager>  implements FeatureForItem {
 
     private BooleanFeature enableArmorTrim;
     private TrimMaterialFeature trimMaterial;
@@ -161,4 +160,42 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Gen
         GenericFeatureParentEditorManager.getInstance().startEditing(player, this);
     }
 
+    @Override
+    public boolean isAvailable() {
+        return SCore.is1v20Plus();
+    }
+
+    @Override
+    public boolean isApplicable(@NotNull FeatureForItemArgs args) {
+        return args.getMeta() instanceof ArmorMeta;
+    }
+
+    @Override
+    public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
+        if(isAvailable() && isApplicable(args)){
+            ArmorMeta meta = (ArmorMeta) args.getMeta();
+            if(meta != null && enableArmorTrim.getValue()){
+                meta.setTrim(getArmorTrim());
+            }
+        }
+    }
+
+    @Override
+    public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
+        if(isAvailable() && isApplicable(args)){
+            ArmorMeta meta = (ArmorMeta) args.getMeta();
+            if(meta != null){
+                if(meta.hasTrim()){
+                    this.enableArmorTrim.setValue(true);
+                    this.trimMaterial.setValue(Optional.of(meta.getTrim().getMaterial()));
+                    this.pattern.setValue(Optional.of(meta.getTrim().getPattern().getKey().toString()));
+                }
+            }
+        }
+    }
+
+    @Override
+    public ResetSetting getResetSetting() {
+        return ResetSetting.ARMOR_SETTINGS;
+    }
 }
