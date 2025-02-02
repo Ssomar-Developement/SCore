@@ -623,10 +623,10 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         // Type Check
                         if( args[1] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
                         switch (args[1].toLowerCase()) {
-                            case "string" -> variable.getType().setValue(Optional.of(VariableType.STRING));
-                            case "list" -> variable.getType().setValue(Optional.of(VariableType.LIST));
-                            case "number" -> variable.getType().setValue(Optional.of(VariableType.NUMBER));
-                            default -> throw new IllegalArgumentException("You must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1] );
+                            case "string": variable.getType().setValue(Optional.of(VariableType.STRING)); break;
+                            case "list" : variable.getType().setValue(Optional.of(VariableType.LIST)); break;
+                            case "number" : variable.getType().setValue(Optional.of(VariableType.NUMBER)); break;
+                            default : throw new IllegalArgumentException("You must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1] );
                         }
 
                         // Scope Check
