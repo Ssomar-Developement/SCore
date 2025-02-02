@@ -32,6 +32,7 @@ import com.ssomar.score.projectiles.SProjectilesEditor;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.usedapi.AllWorldManager;
+import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import com.ssomar.score.utils.messages.SendMessage;
@@ -39,6 +40,7 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.strings.StringJoiner;
 import com.ssomar.score.variables.Variable;
+import com.ssomar.score.variables.VariableForEnum;
 import com.ssomar.score.variables.VariablesEditor;
 import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +56,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,7 +78,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear","cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-delete"};
+    private final String[] commands = new String[]{"clear","cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -151,7 +154,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                     uuid = UUID.fromString(args[2]);
                                 } catch (final Exception e) {
                                     try {
-										uuid = Bukkit.getPlayer(args[2]).getUniqueId();
+                                        uuid = Bukkit.getPlayer(args[2]).getUniqueId();
                                     } catch (final Exception e2) {
                                         sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid UUID or player name : &6" + args[2]));
                                     }
@@ -593,6 +596,88 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 }
 
                 break;
+            case "variables-define":
+                boolean isConsole = (player == null);
+
+                try {
+                    // Duplicate Check
+                    if (args.length >= 1) {
+
+                        // Get default value, if it exists. list will not have this.
+                        String variablePath;
+                        if (args[0].contains(".")) {
+                            throw new IllegalArgumentException("Please, no \".\" in variable name.");
+                        } else {
+                            // No path specified, do as usual.
+                            variablePath = "plugins/SCore/variables/" + args[0] + ".yml";
+                        }
+                        final Variable variable = new Variable(args[0], variablePath);
+
+
+                        List<String> argList = new ArrayList<>(); // Default Value
+                        if (args.length > 4) {
+                            argList = Arrays.asList(Arrays.copyOfRange(args, 4, args.length)); // Remaining arguments as a list
+                        }
+                        String formattedArgs = String.join(" ", argList);
+
+                        // Type Check
+                        if( args[1] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
+                        switch (args[1].toLowerCase()) {
+                            case "string" -> variable.getType().setValue(Optional.of(VariableType.STRING));
+                            case "list" -> variable.getType().setValue(Optional.of(VariableType.LIST));
+                            case "number" -> variable.getType().setValue(Optional.of(VariableType.NUMBER));
+                            default -> throw new IllegalArgumentException("You must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1] );
+                        }
+
+                        // Scope Check
+                        if( args[2] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
+                        if (args[2].equals("global")) variable.getForFeature().setValue(Optional.of(VariableForEnum.GLOBAL));
+                        else if (args[2].equals("player")) variable.getForFeature().setValue(Optional.of(VariableForEnum.PLAYER));
+                        else throw new IllegalArgumentException("You must pick between PLAYER or GLOBAL for the scope!");
+
+                        //Icon Check
+                        if( args[3] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
+                        try {
+                            variable.getIcon().setValue(Optional.of(Material.getMaterial(args[3])));
+                        } catch( Exception n ) {
+                            throw new IllegalArgumentException("Is your material \"" + args[3] + "\" a real material in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html?");
+                        }
+
+                        // For non-lists, check if default value is specified. If yes, then set. Otherwise, leave empty.
+                        if(!args[1].equalsIgnoreCase("list") && !formattedArgs.isEmpty()) variable.getDefaultValue().setValue(formattedArgs);
+
+
+                        File varFile = new File(variablePath);
+                        if (!varFile.getParentFile().exists()) {
+                            varFile.getParentFile().mkdirs();
+                        }
+                        if (!varFile.exists()) {
+                            varFile.createNewFile();
+                        }
+
+
+                        // Save to disk and load into the game
+                        variable.save();
+                        VariablesManager.getInstance().addLoadedObject(variable);
+
+
+                        // Success
+                        Utils.sendConsoleMsg("[SCore] Success defining variable: " + args[0]);
+                        if (!isConsole) {
+                            player.sendMessage(StringConverter.coloredString("&2[SCore] &aSuccess defining variable: " + args[0]));
+                        }
+
+                    }
+
+
+                } catch (Exception e) {
+                    Utils.sendConsoleMsg("[SCore] Error defining variable: " + e.getMessage());
+                    if (!isConsole) {
+                        player.sendMessage(StringConverter.coloredString("&2[SCore] &6Error defining variable: &e" + e.getMessage()));
+                    }
+                }
+                break;
+
             case "variables-delete":
                 if (args.length >= 2) {
                     if (!args[1].equalsIgnoreCase("confirm")) {
@@ -762,6 +847,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("particles-info");
                 arguments.add("variables");
                 arguments.add("variables-create");
+                arguments.add("variables-define NAME TYPE SCOPE ICON default arguments...");
                 arguments.add("variables-delete");
                 arguments.add("run-player-command");
                 arguments.add("run-entity-command");
