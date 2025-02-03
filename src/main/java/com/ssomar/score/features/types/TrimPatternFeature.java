@@ -2,10 +2,14 @@ package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.*;
+import com.ssomar.score.features.FeatureAbstract;
+import com.ssomar.score.features.FeatureParentInterface;
+import com.ssomar.score.features.FeatureRequireClicksOrOneMessageInEditor;
+import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -368,7 +372,14 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
             fix = fix.toLowerCase();
         }
 
-        TrimPattern material = Registry.TRIM_PATTERN.get(NamespacedKey.fromString(fix));
+        TrimPattern material = null;
+        try {
+            material = Registry.TRIM_PATTERN.get(NamespacedKey.fromString(fix));
+        } catch (Exception e) {
+            Utils.sendConsoleMsg("&c&l[ERROR] &cCouldn't get the TrimPattern with the key: " + fix);
+            e.printStackTrace();
+            material = TrimPattern.EYE;
+        }
         return material;
     }
 
