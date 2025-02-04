@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
@@ -43,7 +44,7 @@ public class Bossbar extends PlayerCommand {
         }
         message = new StringBuilder(message.substring(0, message.length() - 1));
         if(!message.toString().isEmpty()) {
-            BossBar bossBar = Bukkit.createBossBar(message.toString(), color, BarStyle.SOLID);
+            BossBar bossBar = Bukkit.createBossBar(StringConverter.coloredString(message.toString()), color, BarStyle.SOLID);
             bossBar.addPlayer(receiver);
 
             Runnable runnable = new Runnable() {
