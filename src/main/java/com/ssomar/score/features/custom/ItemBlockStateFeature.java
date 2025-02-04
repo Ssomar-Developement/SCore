@@ -20,7 +20,6 @@ public class ItemBlockStateFeature extends UncoloredStringFeature implements Fea
 
     private final static boolean DEBUG = false;
 
-
     public ItemBlockStateFeature(FeatureParentInterface parent, Optional<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
         super(parent, defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
     }
@@ -75,8 +74,11 @@ public class ItemBlockStateFeature extends UncoloredStringFeature implements Fea
             ItemStack fakeItem = new ItemStack(args.getMaterial());
             BlockDataMeta fakeBlockData = (BlockDataMeta) fakeItem.getItemMeta();
             String fakeBlockDataStr = fakeBlockData.getBlockData(args.getMaterial()).getAsString(false);
-            String [] fakeBlockDataStrSplit = fakeBlockDataStr.split("\\[")[1].replace("]", "").split(",");
-
+            String [] fakeBlockDataStrSplit = new String[0];
+            try {
+                fakeBlockDataStr.split("\\[")[1].replace("]", "").split(",");
+            }
+            catch (Exception e) {}
             String blockData = blockDataMeta.getBlockData(args.getMaterial()).getAsString(true);
 
             // Remove the default values
@@ -90,6 +92,7 @@ public class ItemBlockStateFeature extends UncoloredStringFeature implements Fea
                 SsomarDev.testMsg("ItemBlockStateFeature loadFromItemMeta: the blockData is empty", DEBUG);
                 return;
             }
+            else SsomarDev.testMsg("ItemBlockStateFeature loadFromItemMeta: the blockData is got "+blockData, DEBUG);
             setValue(Optional.of(blockData));
         }
         else SsomarDev.testMsg("ItemBlockStateFeature loadFromItemMeta: the meta is not a BlockDataMeta", DEBUG);

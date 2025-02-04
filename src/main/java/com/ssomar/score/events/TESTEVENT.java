@@ -23,6 +23,24 @@ public class TESTEVENT implements Listener {
         Block block = p.getTargetBlock(null, 5);
         SsomarDev.testMsg("Block: " + block.getType(), true);
 
+        /*ItemStack item = p.getInventory().getItemInMainHand();
+        ItemMeta meta = item.getItemMeta();
+        SsomarDev.testMsg("Meta: " + meta, true);
+        SsomarDev.testMsg("Meta blo: " + (meta instanceof BlockDataMeta), true);
+        SsomarDev.testMsg("Meta sta: " + (meta instanceof BlockStateMeta), true);
+
+        if (meta instanceof BlockDataMeta) {
+            BlockDataMeta blockStateMeta = (BlockDataMeta) meta;
+            SsomarDev.testMsg("BlockDataMeta: " + blockStateMeta.getAsString(), true);
+        }
+
+        if (meta instanceof BlockStateMeta) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta) meta;
+            SsomarDev.testMsg("BlockStateMeta: " + blockStateMeta.getBlockState(), true);
+            CreatureSpawner spawner = (CreatureSpawner) blockStateMeta.getBlockState();
+            SsomarDev.testMsg("Spawner: " + spawner.getSpawnedType(), true);
+            SsomarDev.testMsg("Spawner2: " + spawner.getSpawnedEntity().getAsString(), true);
+        } */
        // PlayerInventory inv = p.getInventory();
        // inv.addItem(new ItemStack(Material.DIAMOND));
     }

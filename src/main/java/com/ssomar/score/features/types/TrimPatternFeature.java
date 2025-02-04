@@ -44,7 +44,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
+        String colorStr = config.getString(this.getName(), "NULL");
         try {
             value = Optional.ofNullable(colorStr);
             //FeatureReturnCheckPremium<String> checkPremium = checkPremium("TrimPattern", material, defaultValue, isPremiumLoading);
@@ -63,7 +63,6 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
             String fix = value.get();
             if(fix.contains("minecraft:")){
                 fix = fix.replace("minecraft:", "");
-                fix = fix.toUpperCase();
             }
             config.set(this.getName(), fix);
         });
@@ -71,7 +70,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     @Override
     public Optional<TrimPattern> getValue() {
-        return value.map(s -> Optional.of(getTrimPattern(s))).orElseGet(() -> defaultValue);
+        return value.map(s -> Optional.ofNullable(getTrimPattern(s))).orElseGet(() -> defaultValue);
     }
 
     @Override
@@ -315,7 +314,11 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
     @Override
     public Optional<String> verifyMessageReceived(String message) {
         try {
-            Material.valueOf(StringConverter.decoloredString(message).trim().toUpperCase());
+            if(!message.contains(":")){
+                message = "minecraft:"+message;
+                message = message.toLowerCase();
+            }
+            Registry.TRIM_PATTERN.get(NamespacedKey.fromString(message));
         } catch (Exception e) {
             return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a material"));
         }
@@ -367,9 +370,9 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     public TrimPattern getTrimPattern(String str) {
         String fix = StringConverter.decoloredString(str);
+        fix = fix.toLowerCase();
         if(!fix.contains(":")){
             fix = "minecraft:"+fix;
-            fix = fix.toLowerCase();
         }
 
         TrimPattern material = null;
@@ -385,9 +388,9 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     public String getStringValue(TrimPattern material) {
         String fix = material.getKey().toString();
+        fix = fix.toLowerCase();
         if(fix.contains("minecraft:")){
             fix = fix.replace("minecraft:", "");
-            fix = fix.toUpperCase();
         }
         return fix;
     }
