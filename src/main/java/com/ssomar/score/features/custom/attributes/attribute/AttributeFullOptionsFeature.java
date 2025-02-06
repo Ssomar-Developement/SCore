@@ -20,6 +20,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -63,10 +64,11 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         return new AttributeModifier(uuid.getValue(), attributeName, amount, operation, equipmentSlot);
     }
 
-    public AttributeModifier getAttributeModifier(UUID playerUUID) {
+    public AttributeModifier getAttributeModifier(UUID playerUUID, @Nullable StringPlaceholder sp) {
         SsomarDev.testMsg("playerUUID: " + playerUUID, true);
         String attributeName = this.attributeName.getValue().orElse("Default name");
-        double amount = this.amount.getValue(playerUUID, new StringPlaceholder()).orElse(1.0);
+        if(sp == null) sp = new StringPlaceholder();
+        double amount = this.amount.getValue(playerUUID, sp).orElse(1.0);
         AttributeModifier.Operation operation = this.operation.getValue().orElse(AttributeModifier.Operation.ADD_NUMBER);
         EquipmentSlot equipmentSlot = null;
         if (!slot.getValue().orElse(AttributeSlot.HAND).equals(AttributeSlot.ALL_SLOTS)) {

@@ -92,7 +92,10 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
             SsomarDev.testMsg("placeholderStr3: "+placeholderStr, true);
 
             Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
-            if (valuePotential.isPresent()) return valuePotential;
+            if (valuePotential.isPresent()) {
+                SsomarDev.testMsg("valuePotential: "+valuePotential.get(), true);
+                return valuePotential;
+            }
 
         } else if (value.isPresent()) return value;
         return defaultValue;
