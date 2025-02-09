@@ -46,12 +46,12 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
     private BooleanFeature periodInTicks;
 
     public Hardness(FeatureParentInterface parent, String id, String path) {
-        super(id, parent, FeatureSettingsSCore.HARDNESS, path, HardnessLoader.getInstance());
+        super(SCore.plugin, id, parent, FeatureSettingsSCore.HARDNESS, path, HardnessLoader.getInstance());
         reset();
     }
 
     public Hardness(String id, String path) {
-        super(id, FeatureSettingsSCore.HARDNESS, path, HardnessLoader.getInstance());
+        super(SCore.plugin, id, FeatureSettingsSCore.HARDNESS, path, HardnessLoader.getInstance());
         reset();
     }
 

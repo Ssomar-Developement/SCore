@@ -1,7 +1,12 @@
 package com.ssomar.score.events;
 
+import com.ssomar.executableitems.executableitems.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.features.FeatureForBlockArgs;
+import com.ssomar.score.features.custom.ItemSpawnerFeature;
+import com.ssomar.score.usedapi.Dependency;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -29,6 +34,25 @@ public class FixSpawnerPlaceEvent implements Listener {
 
         /* No localized name in 1.8.9 */
         if(SCore.is1v11Less()) return;
+
+
+        if(Dependency.EXECUTABLE_ITEMS.isEnabled()){
+            ExecutableItemObject eio = new ExecutableItemObject(is);
+            if (eio.isValid()){
+                ExecutableItem ei = eio.getConfig();
+                ItemSpawnerFeature isf = ei.getSpawner();
+                if(!isf.getPotentialSpawns().getCurrentValues().isEmpty()){
+                    isf.applyOnBlockData(FeatureForBlockArgs.create(block.getBlockData(), block.getState(), block.getType()));
+                    SsomarDev.testMsg(">> Its a spawner ! add spawner info", true);
+                }
+            }
+        }
+
+
+
+
+
+        // Old
         ItemMeta im = is.getItemMeta();
         if (!im.hasLocalizedName() || !im.getLocalizedName().equals("FROM_EXECUTABLEITEM")) return;
 

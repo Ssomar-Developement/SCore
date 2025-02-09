@@ -1,21 +1,30 @@
 package com.ssomar.score.sobject;
 
 
+import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
+import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,8 +33,8 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     private String path;
     private SObjectWithFileLoader sObjectWithFileLoader;
 
-    public SObjectWithFile(String id, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
-        super(id, null, featureSettings);
+    public SObjectWithFile(SPlugin sPlugin, String id, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
+        super(sPlugin, id, null, featureSettings);
         this.path = path;
         this.sObjectWithFileLoader = sObjectWithFileLoader;
     }
@@ -33,8 +42,8 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     /**
      * Useful to have an option to set a parent for the clone option
      **/
-    public SObjectWithFile(String id,FeatureParentInterface parent, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
-        super(id, parent, featureSettings);
+    public SObjectWithFile(SPlugin sPlugin, String id,FeatureParentInterface parent, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
+        super(sPlugin, id, parent, featureSettings);
         this.path = path;
         this.sObjectWithFileLoader = sObjectWithFileLoader;
     }
@@ -73,5 +82,111 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
             }
         }
         return file;
+    }
+
+    public List<String> getParentFoldersNames(){
+        List<String> folders = new ArrayList<>();
+        File file = getFile();
+        File parent = file.getParentFile();
+        SPlugin sPlugin = this.getPlugin();
+        while(parent != null) {
+            if(parent.getName().equalsIgnoreCase(sPlugin.getName())) break;
+            folders.add(parent.getName());
+            parent = parent.getParentFile();
+        }
+        return folders;
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull Player player, boolean showError) {
+        if (player.isOp()) return true;
+
+        SPlugin sPlugin = this.getPlugin();
+
+        //SsomarDev.testMsg("CHECK PERM sPlugin: "+sPlugin.getName(), true);
+        
+        String particle = sPlugin.getObjectNameForPermission(this);
+
+        if (sPlugin.isLotOfWork()) {
+
+            List<String> permissionsToCheck = new ArrayList<>();
+            permissionsToCheck.add(sPlugin.getName()+"."+particle+"." + getId());
+            permissionsToCheck.add(sPlugin.getName()+"."+particle+".*");
+            permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+"." + getId());
+            permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+".*");
+            permissionsToCheck.add(sPlugin.getName()+"."+particle+".folder.*");
+            permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+".folder.*");
+            for (String folder : getParentFoldersNames()) {
+                permissionsToCheck.add(sPlugin.getName()+"."+particle+".folder." + folder);
+                permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+".folder." + folder);
+            }
+            permissionsToCheck.add("*");
+
+            boolean hasPermission = false;
+            for(String perm : permissionsToCheck) {
+                if(player.hasPermission(perm)) {
+                    hasPermission = true;
+                    break;
+                }
+            }
+
+            if (!hasPermission) {
+                if (showError)
+                    new SendMessage().sendMessage(player, StringConverter.replaceVariable(MessageMain.getInstance().getMessage(sPlugin.getPlugin(), Message.REQUIRE_PERMISSION), player.getName(), getId(), "", 0));
+                return false;
+            }
+        } else {
+            if (player.hasPermission("*")) return true;
+
+            //SsomarDev.testMsg("CHECK PERM 2 sPlugin: "+sPlugin.getName(), true);
+
+            List<String> permissionsToCheck = new ArrayList<>();
+            permissionsToCheck.add(sPlugin.getName()+"."+particle+"." + getId());
+            permissionsToCheck.add(sPlugin.getName()+"."+particle+".*");
+            permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+"." + getId());
+            permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+".*");
+            permissionsToCheck.add(sPlugin.getName()+"."+particle+".folder.*");
+            permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+".folder.*");
+            for (String folder : getParentFoldersNames()) {
+                //SsomarDev.testMsg("folder: "+folder, true);
+                permissionsToCheck.add(sPlugin.getName()+"."+particle+".folder." + folder);
+                permissionsToCheck.add(sPlugin.getShortName().toLowerCase()+"."+particle+".folder." + folder);
+            }
+
+            boolean hasPermission = false;
+            for(String perm : permissionsToCheck) {
+                if(player.hasPermission(perm)) {
+                    hasPermission = true;
+                    break;
+                }
+            }
+
+            List<String> invertedPermissionsToCheck = new ArrayList<>();
+            invertedPermissionsToCheck.add("-"+sPlugin.getName()+"."+particle+"." + getId());
+            invertedPermissionsToCheck.add("-"+sPlugin.getName()+"."+particle+".*");
+            invertedPermissionsToCheck.add("-"+sPlugin.getShortName().toLowerCase()+"."+particle+"." + getId());
+            invertedPermissionsToCheck.add("-"+sPlugin.getShortName().toLowerCase()+"."+particle+".*");
+            invertedPermissionsToCheck.add("-"+sPlugin.getName()+"."+particle+".folder.*");
+            invertedPermissionsToCheck.add("-"+sPlugin.getShortName().toLowerCase()+"."+particle+".folder.*");
+            for (String folder : getParentFoldersNames()) {
+                invertedPermissionsToCheck.add("-"+sPlugin.getName()+"."+particle+".folder." + folder);
+                invertedPermissionsToCheck.add("-"+sPlugin.getShortName().toLowerCase()+"."+particle+".folder." + folder);
+            }
+
+            for(String perm : invertedPermissionsToCheck) {
+                if(player.hasPermission(perm)) {
+                    hasPermission = false;
+                    break;
+                }
+            }
+
+            if (!hasPermission) {
+                if (showError)
+                    new SendMessage().sendMessage(player, StringConverter.replaceVariable(MessageMain.getInstance().getMessage(sPlugin.getPlugin(), Message.REQUIRE_PERMISSION), player.getName(), getId(), "", 0));
+                return false;
+            }
+        }
+
+        return true;
     }
 }

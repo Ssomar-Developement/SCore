@@ -19,10 +19,13 @@ import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.usage.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.hardness.HardnessesHandler;
+import com.ssomar.score.hardness.hardness.Hardness;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
+import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
@@ -34,6 +37,7 @@ import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
 import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
 import com.ssomar.score.utils.scheduler.RunnableManager;
 import com.ssomar.score.utils.scheduler.SchedulerHook;
+import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import com.ssomar.score.variables.manager.VariablesManager;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
@@ -746,6 +750,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
     @Override
     public String getObjectName() {
         return null;
+    }
+
+    @Override
+    public String getObjectNameForPermission(SObject sObject) {
+        if(sObject instanceof Variable) return "";
+        else if(sObject instanceof SProjectile) return "";
+        else if(sObject instanceof Hardness) return "";
+        return "";
     }
 
     @Override

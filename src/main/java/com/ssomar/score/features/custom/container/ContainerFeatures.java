@@ -44,9 +44,9 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     private ColoredStringFeature inventoryTitle;
     private ContainerContent containerContent;
 
-    private boolean onlyItemOptions = false;
+    private ContainerOptions onlyItemOptions = ContainerOptions.BOTH;
 
-    public ContainerFeatures(FeatureParentInterface parent, boolean onItemOptions) {
+    public ContainerFeatures(FeatureParentInterface parent, ContainerOptions onItemOptions) {
         super(parent, FeatureSettingsSCore.containerFeatures);
         this.onlyItemOptions = onItemOptions;
         reset();
@@ -86,14 +86,16 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
         ConfigurationSection containerFeaturesSection = config.createSection(this.getName());
-        if (!onlyItemOptions) {
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_BLOCK) {
             this.whitelistMaterials.save(containerFeaturesSection);
             this.blacklistMaterials.save(containerFeaturesSection);
             this.inventoryTitle.save(containerFeaturesSection);
         }
-        this.isLocked.save(containerFeaturesSection);
-        this.lockedName.save(containerFeaturesSection);
-        this.containerContent.save(containerFeaturesSection);
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_ITEM) {
+            this.isLocked.save(containerFeaturesSection);
+            this.lockedName.save(containerFeaturesSection);
+            this.containerContent.save(containerFeaturesSection);
+        }
     }
 
     @Override
@@ -104,27 +106,30 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     @Override
     public ContainerFeatures initItemParentEditor(GUI gui, int slot) {
         int count = 7;
-        if (onlyItemOptions) count = 4;
+        if (onlyItemOptions == ContainerOptions.ONLY_ITEM || onlyItemOptions == ContainerOptions.ONLY_BLOCK) count = 4;
         String[] finalDescription = new String[getEditorDescription().length + count];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - count] = gui.CLICK_HERE_TO_CHANGE;
         count--;
-        if (!onlyItemOptions) {
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_BLOCK) {
             finalDescription[finalDescription.length - count] = "&7Whitelist size: &e" + this.whitelistMaterials.getValue().size();
             count--;
             finalDescription[finalDescription.length - count] = "&7Blacklist size: &e" + this.blacklistMaterials.getValue().size();
             count--;
         }
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_ITEM) {
             finalDescription[finalDescription.length - count] = "&7Is locked: &e" + this.isLocked.getValue();
             count--;
             finalDescription[finalDescription.length - count] = "&7Locked name: &e" + this.lockedName.getValue().orElse("none");
             count--;
-        if (!onlyItemOptions) {
+        }
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_BLOCK) {
             finalDescription[finalDescription.length - count] = "&7Inventory title: &e" + this.inventoryTitle.getValue().orElse("none");
             count--;
         }
-
-        finalDescription[finalDescription.length - count] = "&7Container content: &e" + this.containerContent.getValue().size();
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_ITEM) {
+            finalDescription[finalDescription.length - count] = "&7Container content: &e" + this.containerContent.getValue().size();
+        }
 
         gui.createItem(getEditorMaterial(), 1, slot, gui.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -150,14 +155,16 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
-        if (!onlyItemOptions) {
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_BLOCK) {
             features.add(this.whitelistMaterials);
             features.add(this.blacklistMaterials);
             features.add(this.inventoryTitle);
         }
-        features.add(this.isLocked);
-        features.add(this.lockedName);
-        features.add(this.containerContent);
+        if (onlyItemOptions == ContainerOptions.BOTH || onlyItemOptions == ContainerOptions.ONLY_ITEM) {
+            features.add(this.isLocked);
+            features.add(this.lockedName);
+            features.add(this.containerContent);
+        }
         return features;
     }
 

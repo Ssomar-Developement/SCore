@@ -1,5 +1,6 @@
 package com.ssomar.score.projectiles;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureAbstract;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -45,12 +46,12 @@ public class SProjectile extends SObjectWithFileEditable<SProjectile, SProjectil
 
 
     public SProjectile(FeatureParentInterface parent, String id, String path) {
-        super(id, parent, FeatureSettingsSCore.SPROJECTILE, path, SProjectileLoader.getInstance());
+        super(SCore.plugin, id, parent, FeatureSettingsSCore.SPROJECTILE, path, SProjectileLoader.getInstance());
         reset();
     }
 
     public SProjectile(String id, String path) {
-        super(id, FeatureSettingsSCore.SPROJECTILE, path, SProjectileLoader.getInstance());
+        super(SCore.plugin, id, FeatureSettingsSCore.SPROJECTILE, path, SProjectileLoader.getInstance());
         reset();
     }
 
