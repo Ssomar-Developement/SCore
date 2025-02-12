@@ -45,10 +45,14 @@ public class SetItemlore extends PlayerCommand {
 
         itemmeta = item.getItemMeta();
 
-        StringBuilder build = new StringBuilder(text);
-        for (String s : sCommandToExec.getOtherArgs()) {
-            build.append(s + " ");
+        List<String> args = sCommandToExec.getOtherArgs();
+        StringBuilder message = new StringBuilder(text);
+        message.append(" ");
+        for (String s : args) {
+            //SsomarDev.testMsg("cmdarg> "+s);
+            message.append(s).append(" ");
         }
+        message = new StringBuilder(message.substring(0, message.length() - 1));
 
         List<String> list = itemmeta.getLore();
 
@@ -56,7 +60,7 @@ public class SetItemlore extends PlayerCommand {
         if (list.size() < line) return;
 
         if (line > 0) line += -1;
-        list.set(line, StringConverter.coloredString(build.toString()));
+        list.set(line, StringConverter.coloredString(message.toString()));
 
         itemmeta.setLore(list);
         item.setItemMeta(itemmeta);

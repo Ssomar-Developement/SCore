@@ -92,6 +92,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasAureliumSkills = false;
     public static boolean hasItemsAdder = false;
     public static boolean hasOraxen = false;
+    public static boolean hasNexo = false;
     public static boolean hasShopGUIPlus = false;
     public static boolean hasRoseLoot = false;
 
@@ -641,6 +642,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasItemsAdder = Dependency.ITEMS_ADDER.hookSoftDependency();
 
         hasOraxen = Dependency.ORAXEN.hookSoftDependency();
+
+        hasNexo = Dependency.NEXO.hookSoftDependency();
 
         hasShopGUIPlus = Dependency.SHOP_GUI_PLUS.hookSoftDependency();
 

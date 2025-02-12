@@ -89,9 +89,9 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Gen
         else
             finalDescription[finalDescription.length - 3] = "&7Enabled: &c&l✘";
 
-        finalDescription[finalDescription.length - 2] = "&7TrimMaterial: &e" + trimMaterial.getStringValue(trimMaterial.getValue().get());
+        finalDescription[finalDescription.length - 2] = "&7TrimMaterial: &e" + trimMaterial.getStringValue(trimMaterial.getValue().orElse(TrimMaterial.DIAMOND));
 
-        finalDescription[finalDescription.length - 1] = "&7TrimPattern: &e"+pattern.getStringValue(pattern.getValue().get());
+        finalDescription[finalDescription.length - 1] = "&7TrimPattern: &e"+pattern.getStringValue(pattern.getValue().orElse(TrimPattern.EYE));
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

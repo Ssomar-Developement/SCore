@@ -41,7 +41,7 @@ public class FixSpawnerPlaceEvent implements Listener {
             if (eio.isValid()){
                 ExecutableItem ei = eio.getConfig();
                 ItemSpawnerFeature isf = ei.getSpawner();
-                if(!isf.getPotentialSpawns().getCurrentValues().isEmpty()){
+                if(isf != null && !isf.getPotentialSpawns().getCurrentValues().isEmpty()){
                     isf.applyOnBlockData(FeatureForBlockArgs.create(block.getBlockData(), block.getState(), block.getType()));
                     SsomarDev.testMsg(">> Its a spawner ! add spawner info", true);
                 }

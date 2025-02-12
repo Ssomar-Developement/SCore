@@ -954,6 +954,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github</groupId>
+            <artifactId>Nexo</artifactId>
+            <version>2ddf3c68b7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/nexo-0.10.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>world.bentobox</groupId>
             <artifactId>bentobox</artifactId>
             <version>1.21.0-SNAPSHOT</version>

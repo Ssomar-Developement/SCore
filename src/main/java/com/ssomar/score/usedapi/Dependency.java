@@ -74,6 +74,8 @@ public enum Dependency {
 
     ORAXEN("Oraxen"),
 
+    NEXO("Nexo"),
+
     SHOP_GUI_PLUS("ShopGUIPlus"),
 
     ROSE_LOOT("RoseLoot"),

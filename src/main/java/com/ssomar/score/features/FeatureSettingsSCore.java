@@ -550,6 +550,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canBeMoved(getFeatureSettings("canBeMoved")),
     itemsAdderID(getFeatureSettings("itemsAdderID")),
     oraxenID(getFeatureSettings("oraxenID")),
+    nexoID(getFeatureSettings("nexoID")),
     myfurnitureID(getFeatureSettings("myfurnitureID")),
     interactionRange(getFeatureSettings("interactionRange")),
     enabled(getFeatureSettings("enabled")),
