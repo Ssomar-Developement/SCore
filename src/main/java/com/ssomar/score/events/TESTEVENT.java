@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class TESTEVENT implements Listener {
@@ -46,11 +45,15 @@ public class TESTEVENT implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerToggleSneakEvent(ProjectileHitEvent e) {
-       Block block = e.getHitBlock();
-        // SsomarDev.testMsg("Block: " + block.getType(), true);
-
-
+    public void onPlayerToggleSneakEventt(PlayerToggleSneakEvent e) {
+       /* Player p = e.getPlayer();
+        Location loc = p.getLocation();
+        // -1
+        loc = loc.add(0, -1, 0);
+        Block block = loc.getBlock();
+        List<Loot> loots = new ArrayList<>();
+        Drop drop = new Drop(loots, false, false, NexoBlocks.stringMechanic(block).getItemID());
+        NexoBlocks.remove(block.getLocation(), null, drop); */
     }
 
     /*@EventHandler(priority = EventPriority.LOWEST)

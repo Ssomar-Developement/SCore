@@ -2,6 +2,7 @@ package com.ssomar.score.features.types;
 
 import com.nexomc.nexo.api.NexoBlocks;
 import com.nexomc.nexo.api.NexoItems;
+import com.nexomc.nexo.utils.drops.Drop;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
@@ -88,7 +89,8 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
         if (SCore.hasNexo) {
             if (NexoBlocks.isCustomBlock(block)) {
                 SsomarDev.testMsg("isNexoBlock", true);
-                NexoBlocks.remove(block.getLocation(), null);
+                Drop drop = new Drop(new ArrayList<>(), false, false, NexoBlocks.stringMechanic(block).getItemID());
+                NexoBlocks.remove(block.getLocation(), null, drop);
             }
             else {
                 SsomarDev.testMsg("isNothing", true);

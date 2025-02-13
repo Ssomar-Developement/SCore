@@ -163,7 +163,7 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
     public void reset() {
         this.experience = new IntegerFeature(getParent(), Optional.of(0), FeatureSettingsSCore.requiredExperience);
         this.errorMessage = new ColoredStringFeature(getParent(), Optional.of("&4&l>> &cError you don't have the required experience"), FeatureSettingsSCore.errorMessage, true);
-        this.cancelEventIfError = new BooleanFeature(getParent(), false, FeatureSettingsSCore.cancelEventIfNotValid, true);
+        this.cancelEventIfError = new BooleanFeature(getParent(), false, FeatureSettingsSCore.cancelEventIfError, true);
     }
 
     @Override

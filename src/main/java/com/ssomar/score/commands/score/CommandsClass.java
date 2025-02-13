@@ -143,7 +143,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 if (args.length >= 1) {
                     switch (args[0]) {
                         case "clear":
-                            if (args.length <= 2) {
+                            if (args.length < 2) {
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid argument! Usage: /score cooldowns clear &7cooldownId"));
                                 return;
                             }
