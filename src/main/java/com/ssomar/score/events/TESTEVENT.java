@@ -54,6 +54,9 @@ public class TESTEVENT implements Listener {
         List<Loot> loots = new ArrayList<>();
         Drop drop = new Drop(loots, false, false, NexoBlocks.stringMechanic(block).getItemID());
         NexoBlocks.remove(block.getLocation(), null, drop); */
+
+        /* Player p = e.getPlayer();
+        p.setPose(Pose.SLEEPING, true);*/
     }
 
     /*@EventHandler(priority = EventPriority.LOWEST)

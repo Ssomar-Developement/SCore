@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.bgsoftware.wildstacker.api.WildStackerAPI;
+import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -10,6 +11,7 @@ import dev.rosewood.rosestacker.stack.StackedSpawner;
 import dev.rosewood.rosestacker.utils.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
@@ -17,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,14 +79,21 @@ public class SilkSpawner extends BlockCommand {
                     name = "&e" + name;
                     name = StringConverter.coloredString(name);
                     meta.setDisplayName(name);
-                    meta.setLocalizedName("FROM_EXECUTABLEITEM");
+                    if(!SCore.is1v20v5Plus()) meta.setLocalizedName("FROM_EXECUTABLEITEM");
+                    else {
+                        PersistentDataContainer container = meta.getPersistentDataContainer();
+                        NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "SPAWNER_SILK_SCORE");
+                        container.set(key, PersistentDataType.STRING, "OK");
+                    }
+
                 }
                 meta.setBlockState((BlockState) csm);
                 meta.addItemFlags(new org.bukkit.inventory.ItemFlag[0]);
                 spawner_to_give.setItemMeta((ItemMeta) meta);
 
                 block.setType(Material.AIR);
-                p.getInventory().addItem(spawner_to_give);
+                if(p == null) block.getWorld().dropItemNaturally(block.getLocation(), spawner_to_give);
+                else p.getInventory().addItem(spawner_to_give);
             }
         }
     }

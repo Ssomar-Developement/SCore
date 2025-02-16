@@ -78,7 +78,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear","cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete"};
+    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -281,8 +281,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             VariablesManager.getInstance().updateLoadedMySQL(variableOpt.get().getId(), VariablesManager.MODE.EXPORT);
                         } else
                             sender.sendMessage(StringConverter.coloredString("&4[SCore] &cVariable (&6" + args[1] + ") &cnot found!"));
-                    }
-                    else if (args[0].equalsIgnoreCase("set-default")) {
+                    } else if (args[0].equalsIgnoreCase("set-default")) {
                         int argIndex = 0;
 
                         final String modifType = args[argIndex];
@@ -621,30 +620,44 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         String formattedArgs = String.join(" ", argList);
 
                         // Type Check
-                        if( args[1] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
+                        if (args[1] == null)
+                            throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
                         switch (args[1].toLowerCase()) {
-                            case "string": variable.getType().setValue(Optional.of(VariableType.STRING)); break;
-                            case "list" : variable.getType().setValue(Optional.of(VariableType.LIST)); break;
-                            case "number" : variable.getType().setValue(Optional.of(VariableType.NUMBER)); break;
-                            default : throw new IllegalArgumentException("You must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1] );
+                            case "string":
+                                variable.getType().setValue(Optional.of(VariableType.STRING));
+                                break;
+                            case "list":
+                                variable.getType().setValue(Optional.of(VariableType.LIST));
+                                break;
+                            case "number":
+                                variable.getType().setValue(Optional.of(VariableType.NUMBER));
+                                break;
+                            default:
+                                throw new IllegalArgumentException("You must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1]);
                         }
 
                         // Scope Check
-                        if( args[2] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
-                        if (args[2].equals("global")) variable.getForFeature().setValue(Optional.of(VariableForEnum.GLOBAL));
-                        else if (args[2].equals("player")) variable.getForFeature().setValue(Optional.of(VariableForEnum.PLAYER));
-                        else throw new IllegalArgumentException("You must pick between PLAYER or GLOBAL for the scope!");
+                        if (args[2] == null)
+                            throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
+                        if (args[2].equals("global"))
+                            variable.getForFeature().setValue(Optional.of(VariableForEnum.GLOBAL));
+                        else if (args[2].equals("player"))
+                            variable.getForFeature().setValue(Optional.of(VariableForEnum.PLAYER));
+                        else
+                            throw new IllegalArgumentException("You must pick between PLAYER or GLOBAL for the scope!");
 
                         //Icon Check
-                        if( args[3] == null) throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
+                        if (args[3] == null)
+                            throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
                         try {
                             variable.getIcon().setValue(Optional.of(Material.getMaterial(args[3])));
-                        } catch( Exception n ) {
+                        } catch (Exception n) {
                             throw new IllegalArgumentException("Is your material \"" + args[3] + "\" a real material in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html?");
                         }
 
                         // For non-lists, check if default value is specified. If yes, then set. Otherwise, leave empty.
-                        if(!args[1].equalsIgnoreCase("list") && !formattedArgs.isEmpty()) variable.getDefaultValue().setValue(formattedArgs);
+                        if (!args[1].equalsIgnoreCase("list") && !formattedArgs.isEmpty())
+                            variable.getDefaultValue().setValue(formattedArgs);
 
 
                         File varFile = new File(variablePath);
@@ -705,7 +718,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                 for (final String arg : args)
                     if (arg.startsWith("player:")) {
-                        final String playerName = arg.replace("player:", "");
+                        String playerName = arg.replace("player:", "");
+                        playerName = StringPlaceholder.replacePlaceholderOfPAPI(playerName, null);
 
                         try {
                             playerOpt = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(playerName)));
@@ -897,11 +911,9 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 || args[1].equalsIgnoreCase("list-remove"))) {
                             arguments.add("global");
                             arguments.add("player");
-                        }
-                        else if (args.length == 3 && (args[1].equalsIgnoreCase("set-default"))) {
+                        } else if (args.length == 3 && (args[1].equalsIgnoreCase("set-default"))) {
                             arguments.addAll(VariablesManager.getInstance().getVariableIdsList());
-                        }
-                        else if (args.length == 4 && (args[1].equalsIgnoreCase("set")
+                        } else if (args.length == 4 && (args[1].equalsIgnoreCase("set")
                                 || args[1].equalsIgnoreCase("modification")
                                 || args[1].equalsIgnoreCase("clear")
                                 || args[1].equalsIgnoreCase("list-add")

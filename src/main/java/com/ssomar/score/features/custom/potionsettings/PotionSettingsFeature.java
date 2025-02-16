@@ -239,8 +239,10 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
         if (!SCore.is1v11Less()) {
             features.add(color);
             features.add(potiontype);
-            features.add(potionExtended);
-            features.add(potionUpgraded);
+            if (!SCore.is1v20v5Plus()) {
+                features.add(potionExtended);
+                features.add(potionUpgraded);
+            }
         }
         features.add(potionEffects);
         return features;
