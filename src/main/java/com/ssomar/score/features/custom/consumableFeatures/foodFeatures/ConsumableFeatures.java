@@ -11,6 +11,7 @@ import com.ssomar.score.features.types.SoundFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.logging.Utils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
@@ -183,13 +184,18 @@ public class ConsumableFeatures extends FeatureWithHisOwnEditor<ConsumableFeatur
     @Override
     public void applyOnItem(@NotNull FeatureForItemArgs args) {
         ItemStack item = args.getItem();
-        if(!enable.getValue()) return;
-        Consumable.Builder consumable = Consumable.consumable().animation(animation.getValue().orElse(ItemUseAnimation.EAT));
-        if(sound.getValue().isPresent()) consumable.sound(sound.getValue().get().key());
-        //else consumable.sound();
-        consumable.hasConsumeParticles(consumeParticles.getValue());
-        consumable.consumeSeconds(consumeSeconds.getValue().get());
-        item.setData(DataComponentTypes.CONSUMABLE, consumable);
+        try {
+            if (!enable.getValue()) return;
+            Consumable.Builder consumable = Consumable.consumable().animation(animation.getValue().orElse(ItemUseAnimation.EAT));
+            if (sound.getValue().isPresent()) consumable.sound(sound.getValue().get().key());
+            //else consumable.sound();
+            consumable.hasConsumeParticles(consumeParticles.getValue());
+            consumable.consumeSeconds(consumeSeconds.getValue().get());
+            item.setData(DataComponentTypes.CONSUMABLE, consumable);
+        } catch (Exception e) {
+            Utils.sendConsoleMsg("&4Error while applying ConsumableFeatures , it's probably due to Paper");
+            e.printStackTrace();
+        }
     }
 
     @Override
