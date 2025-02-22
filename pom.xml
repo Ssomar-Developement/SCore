@@ -510,9 +510,21 @@
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
 
+        <repository>
+            <id>inject repo</id>
+            <url>https://maven.andante.dev/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.118.Final</version>
+            <scope>provided</scope>
+        </dependency>
 
 
         <!-- Used by /score particles -->

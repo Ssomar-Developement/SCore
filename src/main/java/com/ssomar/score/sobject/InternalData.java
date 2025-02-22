@@ -4,6 +4,9 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.custom.variables.real.VariableRealBuilder;
 import com.ssomar.score.features.custom.variables.real.VariableRealsList;
+import com.ssomar.score.utils.DynamicMeta;
+import com.ssomar.score.utils.itemwriter.ItemKeyWriterReader;
+import com.ssomar.score.utils.itemwriter.NBTWriterReader;
 import com.ssomar.score.utils.writer.NameSpaceKeyWriterReader;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -12,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.HashMap;
@@ -94,7 +98,25 @@ public class InternalData {
     }
 
     public void loadFromItem(ItemStack item, SObjectWithVariables config){
-        loadFromPersistentDataContainer(item.getItemMeta().getPersistentDataContainer(), config);
+        ItemKeyWriterReader reader = ItemKeyWriterReader.init();
+        if(reader instanceof NBTWriterReader){
+            NBTWriterReader nbtReader = (NBTWriterReader) reader;
+            ItemMeta itemMeta = item.getItemMeta();
+            DynamicMeta dynamicMeta = new DynamicMeta(itemMeta);
+            nbtReader.readInteger(SCore.plugin, item, dynamicMeta, "usage").ifPresent(value -> usage = value);
+            nbtReader.readString(SCore.plugin, item, dynamicMeta, "ownerUUID").ifPresent(value -> {
+                try{
+                    ownerUUID = UUID.fromString(value);
+                }catch (Exception e){
+                    ownerUUID = null;
+                }
+            });
+            variableRealsList = new VariableRealsList();
+            for (VariableFeature vC : config.getVariables().getVariables().values()) {
+                variableRealsList.add(VariableRealBuilder.build(vC, item, dynamicMeta).get());
+            }
+        }
+        else loadFromPersistentDataContainer(item.getItemMeta().getPersistentDataContainer(), config);
     }
 
 

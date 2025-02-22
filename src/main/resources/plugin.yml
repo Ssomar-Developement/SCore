@@ -26,3 +26,5 @@ permissions:
   score.cmd.inspect-loop:
     description: Allows the command /score inspect-loop
 folia-supported: true
+libraries:
+  - io.netty:netty-all:4.1.118.Final

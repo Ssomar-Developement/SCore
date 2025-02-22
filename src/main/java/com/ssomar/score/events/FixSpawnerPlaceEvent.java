@@ -1,6 +1,5 @@
 package com.ssomar.score.events;
 
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.executableitems.executableitems.ExecutableItem;
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SCore;
@@ -59,7 +58,7 @@ public class FixSpawnerPlaceEvent implements Listener {
         ItemMeta im = is.getItemMeta();
         if (!SCore.is1v20v5Plus() && (!im.hasLocalizedName() || !im.getLocalizedName().equals("FROM_EXECUTABLEITEM"))) return;
         else {
-            NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "SPAWNER_SILK_SCORE");
+            NamespacedKey key = new NamespacedKey(SCore.plugin, "SPAWNER_SILK_SCORE");
             if (!im.getPersistentDataContainer().has(key, PersistentDataType.STRING)) return;
         }
 

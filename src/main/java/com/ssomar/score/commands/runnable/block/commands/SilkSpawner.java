@@ -1,7 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.bgsoftware.wildstacker.api.WildStackerAPI;
-import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -82,7 +81,7 @@ public class SilkSpawner extends BlockCommand {
                     if(!SCore.is1v20v5Plus()) meta.setLocalizedName("FROM_EXECUTABLEITEM");
                     else {
                         PersistentDataContainer container = meta.getPersistentDataContainer();
-                        NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "SPAWNER_SILK_SCORE");
+                        NamespacedKey key = new NamespacedKey(SCore.plugin, "SPAWNER_SILK_SCORE");
                         container.set(key, PersistentDataType.STRING, "OK");
                     }
 

@@ -1,12 +1,15 @@
 package com.ssomar.score.events;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.pack.MyEpicHttpInjector;
+import com.ssomar.score.pack.api.Injector;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 
 public class TESTEVENT implements Listener {
 
@@ -44,6 +47,7 @@ public class TESTEVENT implements Listener {
        // inv.addItem(new ItemStack(Material.DIAMOND));
     }
 
+    public static Injector injector = new MyEpicHttpInjector();
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerToggleSneakEventt(PlayerToggleSneakEvent e) {
        /* Player p = e.getPlayer();
@@ -57,6 +61,15 @@ public class TESTEVENT implements Listener {
 
         /* Player p = e.getPlayer();
         p.setPose(Pose.SLEEPING, true);*/
+        //InjectSpigot.INSTANCE.registerInjector(injector);
+
+        //Player p = e.getPlayer();
+        //p.addResourcePack(UUID.randomUUID(), "http://localhost:"+Bukkit.getServer().getPort()+"/score/last_pack", null, null, true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerToggleSprintEvent(PlayerToggleSprintEvent e) {
+        //InjectSpigot.INSTANCE.unregisterInjector(injector);
     }
 
     /*@EventHandler(priority = EventPriority.LOWEST)

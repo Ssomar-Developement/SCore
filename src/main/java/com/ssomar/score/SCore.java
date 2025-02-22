@@ -23,6 +23,7 @@ import com.ssomar.score.hardness.hardness.Hardness;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.pack.spigot.InjectSpigot;
 import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.sobject.SObject;
@@ -57,6 +58,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR = "&eSCore";
     public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
+
+    private InjectSpigot injectSpigot;
 
     public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
@@ -448,6 +451,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public void onEnable() {
         plugin = this;
 
+        injectSpigot = InjectSpigot.INSTANCE;
+
         this.initVersion();
 
         if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
@@ -674,6 +679,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onDisable() {
+
+        injectSpigot.unregisterAllInjectors();
+
         if (GeneralConfig.getInstance().isUseMySQL()) {
             VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6" + VariablesManager.getInstance().getLoadedObjects().size() + " &7variables from your MySQL Database !");
@@ -702,6 +710,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public void onReload() {
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
+
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks...");
         RunnableManager.getInstance().forceRunTasks();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
