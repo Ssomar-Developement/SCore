@@ -46,9 +46,11 @@ public class VariableRealsList extends ArrayList<VariableReal> {
 
     public void buildWithCustomValues(Map<String, String> variables, ConfigurationSection configurationSection, @Nullable UUID owner){
         if(!this.isEmpty()) {
+            //SsomarDev.testMsg("NOT EMPTY", true);
             for(String key : variables.keySet()){
 
                 for(VariableReal vR : this){
+                    //SsomarDev.testMsg("key: "+key + " vR: "+vR.getConfig().getVariableName().getValue().get(), true);
                     if(vR.getConfig().getVariableName().getValue().get().equalsIgnoreCase(key)){
                         if(vR instanceof VariableRealDouble){
                             VariableRealDouble vRD = (VariableRealDouble) vR;
@@ -86,9 +88,12 @@ public class VariableRealsList extends ArrayList<VariableReal> {
             DynamicMeta dynamicMeta = new DynamicMeta(item.getItemMeta());
 
             for(String key : variables.keySet()){
+                SsomarDev.testMsg("KEY: "+key, DEBUG);
 
                 for(VariableReal vR : this){
+                    SsomarDev.testMsg("vR: "+vR.getConfig().getVariableName().getValue().get(), DEBUG);
                     if(vR.getConfig().getVariableName().getValue().get().equalsIgnoreCase(key)){
+                        SsomarDev.testMsg("FOUND", DEBUG);
                         if(vR instanceof VariableRealDouble){
                             VariableRealDouble vRD = (VariableRealDouble) vR;
                             try {
@@ -118,6 +123,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
             }
             item.setItemMeta(dynamicMeta.getMeta());
         }
+        else SsomarDev.testMsg("EMPTY", DEBUG);
     }
 
     public void buildWithCustomValues(Map<String, String> variables, PersistentDataContainer dataContainer, @Nullable UUID owner){

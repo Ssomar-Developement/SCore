@@ -202,7 +202,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                         // No value is needed for remove.
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
-                            value = args[argIndex];
+                            if(args.length > argIndex) value = args[argIndex];
+                            else {
+                                sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
+                                return;
+                            }
 
                             argIndex++;
                         }

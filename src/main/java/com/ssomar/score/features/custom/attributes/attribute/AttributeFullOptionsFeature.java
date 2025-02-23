@@ -1,6 +1,5 @@
 package com.ssomar.score.features.custom.attributes.attribute;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -65,7 +64,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
     }
 
     public AttributeModifier getAttributeModifier(UUID playerUUID, @Nullable StringPlaceholder sp) {
-        SsomarDev.testMsg("playerUUID: " + playerUUID, true);
+       // SsomarDev.testMsg("playerUUID: " + playerUUID, true);
         String attributeName = this.attributeName.getValue().orElse("Default name");
         if(sp == null) sp = new StringPlaceholder();
         double amount = this.amount.getValue(playerUUID, sp).orElse(1.0);

@@ -33,7 +33,8 @@ public class InternalData {
 
     public InternalData(){
         this.usage = -1;
-        this.variableRealsList = new VariableRealsList();
+        // Dont initialize the variableRealsList here, otherwise its cause problem in getVariables
+        this.variableRealsList = null;
         this.variables = null;
         this.ownerUUID = null;
     }
