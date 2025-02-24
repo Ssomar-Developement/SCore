@@ -246,9 +246,7 @@ public class CooldownsManager {
 
     public List<String> getAllCooldownIds() {
         List<String> result = new ArrayList<>();
-        for (String id : cooldowns.keySet()) {
-            result.add(id);
-        }
+        result.addAll(cooldowns.keySet());
         return result;
     }
 

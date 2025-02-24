@@ -130,7 +130,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkSlot(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             boolean err = false;
             int check = 0;
             try {
@@ -150,7 +150,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkMaterial(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if (((!arg.contains("%") && !isFinalVerification) || isFinalVerification) && !GetItem.containsCustomPluginWord(arg)) {
+        if ((!arg.contains("%") || isFinalVerification) && !GetItem.containsCustomPluginWord(arg)) {
             /* Some commands accept FURNCANE[LIT=TRUE] for example */
             if (arg.contains("[")) {
                 arg = arg.split("\\[")[0];
@@ -169,7 +169,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkEnchantment(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             if (Enchantment.getByKey(NamespacedKey.minecraft(arg.toLowerCase())) == null) {
                 ac.setValid(false);
                 ac.setError("&cA SCommand contains an &6invalid enchantment&c: &e" + arg + " &cfor command: &e" + template);
@@ -182,7 +182,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkAttribute(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             try {
                 Attribute.valueOf(arg.toUpperCase());
             } catch (Exception e) {
@@ -197,7 +197,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkBlockFace(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             try {
                 org.bukkit.block.BlockFace.valueOf(arg.toUpperCase());
             } catch (Exception e) {
@@ -212,7 +212,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkEquipmentSlot(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             if (!BetterEquipmentSlot.isEquipmentSlot(arg)) {
                 ac.setValid(false);
                 ac.setError(invalidEquipmentSlot + arg + " &cfor command: &e" + template);
@@ -225,7 +225,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkUUID(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             try {
                 UUID.fromString(arg.toUpperCase());
             } catch (Exception e) {
@@ -240,7 +240,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkEntity(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             try {
                 EntityType.valueOf(arg.toUpperCase());
             } catch (Exception e) {
@@ -255,7 +255,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkChatColor(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             try {
                 ChatColor.valueOf(arg.toUpperCase());
             } catch (Exception e) {
@@ -270,7 +270,7 @@ public abstract class SCommand {
     public static ArgumentChecker checkBarColor(@NotNull String arg, boolean isFinalVerification, String template) {
         ArgumentChecker ac = new ArgumentChecker();
 
-        if ((!arg.contains("%") && !isFinalVerification) || isFinalVerification) {
+        if (!arg.contains("%") || isFinalVerification) {
             try {
                 BarColor.valueOf(arg.toUpperCase());
             } catch (Exception e) {
@@ -369,11 +369,10 @@ public abstract class SCommand {
         entry = entry.trim();
         //SsomarDev.testMsg("entry: " + entry, true);
 
-        List<String> arguments = new ArrayList<>();
-        arguments.addAll(Arrays.asList(entry.split(" ")));
+        List<String> arguments = new ArrayList<>(Arrays.asList(entry.split(" ")));
         // fully new system
         for (CommandSetting setting : getSettings()) {
-            if (arguments.size() > 0) {
+            if (!arguments.isEmpty()) {
                 for(String name : setting.getNames()) {
                     Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(name + ":")).findFirst();
                     if (value.isPresent()) {

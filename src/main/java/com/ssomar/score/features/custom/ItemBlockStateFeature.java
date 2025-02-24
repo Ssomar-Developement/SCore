@@ -78,7 +78,7 @@ public class ItemBlockStateFeature extends UncoloredStringFeature implements Fea
             try {
                 fakeBlockDataStr.split("\\[")[1].replace("]", "").split(",");
             }
-            catch (Exception e) {}
+            catch (Exception ignored) {}
             String blockData = blockDataMeta.getBlockData(args.getMaterial()).getAsString(true);
 
             // Remove the default values

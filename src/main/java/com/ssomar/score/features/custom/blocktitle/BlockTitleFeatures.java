@@ -281,10 +281,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      **/
     public Location update(@NotNull Location location, @NotNull Location objectLocation, StringPlaceholder sp) {
         if (!activeTitle.getValue()) {
-            if (location != null) remove(location);
+            remove(location);
             return null;
-        } else if (location == null) {
-            return spawn(objectLocation, sp);
         }
 
         List<String> lines = new ArrayList<>();
@@ -313,10 +311,10 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             }
             /* not opti */
             else if (SCore.hasHolographicDisplays) {
-                if (location != null) remove(location);
+                remove(location);
                 spawn(objectLocation, sp);
             } else if (SCore.is1v20v4Plus()) {
-                if (location != null) remove(location);
+                remove(location);
                 spawn(objectLocation, sp);
             }
         return null;

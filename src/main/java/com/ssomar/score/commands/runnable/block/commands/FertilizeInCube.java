@@ -75,8 +75,8 @@ public class FertilizeInCube extends BlockCommand {
 
         String fertilize = "FERTILIZEINCUBE {range}";
         if (args.size() > 1) error = tooManyArgs + fertilize;
-        else if (args.size() < 1) error = notEnoughArgs + fertilize;
-        else if (args.size() == 1) {
+        else if (args.isEmpty()) error = notEnoughArgs + fertilize;
+        else {
             try {
                 Integer.valueOf(args.get(0));
             } catch (NumberFormatException e) {

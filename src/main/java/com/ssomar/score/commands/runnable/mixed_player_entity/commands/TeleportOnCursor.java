@@ -43,7 +43,7 @@ public class TeleportOnCursor extends MixedCommand {
             Location checkLoc = eyeLoc.clone().add(checkVec);
 
             Block faceBlock = checkLoc.add(eyeVec.multiply(0.5)).getBlock();
-            if(faceBlock != null && !isAirBlock(faceBlock)) return;
+            if(!isAirBlock(faceBlock)) return;
 
             int cpt = 2;
             /* Invalid if its a cheat movement */

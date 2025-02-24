@@ -118,9 +118,7 @@ public class VariablesQuery {
                 pstmt.setString(4, data);
                 pstmt.setString(5, command.getDefaultValue().getValue().orElse("NULL"));
                 pstmt.addBatch();
-                if (i % 1000 == 0 || i == variables.size()) {
-                    pstmt.executeBatch(); // Execute every 1000 items.
-                }
+                pstmt.executeBatch(); // Execute every 1000 items.
             }
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while inserting variables in database "+e.getMessage());
@@ -202,10 +200,7 @@ public class VariablesQuery {
         for(String d : datas){
             String[] values = d.split("::::");
             String key = values[0];
-            List<String> list = new ArrayList<>();
-            for(int i = 1; i < values.length; i++){
-                list.add(values[i]);
-            }
+            List<String> list = new ArrayList<>(Arrays.asList(values).subList(1, values.length));
             entries.put(key, list);
         }
         return entries;
@@ -328,7 +323,7 @@ public class VariablesQuery {
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
 
                 String type = rs.getString(COL_TYPE);
                 String forFeature = rs.getString(COL_FOR);
@@ -353,7 +348,6 @@ public class VariablesQuery {
                 }
 
                 varOpt = Optional.of(v);
-                break;
             }
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while selecting variable in database "+e.getMessage());

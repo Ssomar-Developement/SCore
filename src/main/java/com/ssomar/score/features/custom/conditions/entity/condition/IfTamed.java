@@ -18,7 +18,7 @@ public class IfTamed extends EntityConditionFeature<BooleanFeature, IfTamed> {
     public boolean verifCondition(EntityConditionRequest request) {
         Entity entity = request.getEntity();
         if (getCondition().getValue(request.getSp())) {
-            if(!(entity instanceof Tameable) || (entity instanceof Tameable && !((Tameable) entity).isTamed())) {
+            if(!(entity instanceof Tameable) || !((Tameable) entity).isTamed()) {
                 runInvalidCondition(request);
                 return false;
             }

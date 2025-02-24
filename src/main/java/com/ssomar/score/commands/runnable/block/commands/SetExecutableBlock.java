@@ -130,7 +130,7 @@ public class SetExecutableBlock extends BlockCommand {
 
         if (args.size() > 8) {
             error = tooManyArgs + setEB;
-            return error.isEmpty() ? Optional.empty() : Optional.of(error);
+            return Optional.of(error);
         } else if (args.size() < 6) {
             error = notEnoughArgs + setEB;
         } else {
@@ -143,7 +143,7 @@ public class SetExecutableBlock extends BlockCommand {
 //				}
             } else {
                 error = "You must have ExecutableBlock for the command" + setEB;
-                return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                return Optional.of(error);
             }
 
             if (!args.get(1).contains("%")) {
@@ -151,7 +151,7 @@ public class SetExecutableBlock extends BlockCommand {
                     Double.valueOf(args.get(1));
                 } catch (Exception e) {
                     error = invalidCoordinate + args.get(1) + " for command: " + setEB;
-                    return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                    return Optional.of(error);
                 }
             }
             if (!args.get(2).contains("%")) {
@@ -159,7 +159,7 @@ public class SetExecutableBlock extends BlockCommand {
                     Double.valueOf(args.get(2));
                 } catch (Exception e) {
                     error = invalidCoordinate + args.get(2) + " for command: " + setEB;
-                    return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                    return Optional.of(error);
                 }
             }
             if (!args.get(3).contains("%")) {
@@ -167,7 +167,7 @@ public class SetExecutableBlock extends BlockCommand {
                     Double.valueOf(args.get(3));
                 } catch (Exception e) {
                     error = invalidCoordinate + args.get(3) + " for command: " + setEB;
-                    return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                    return Optional.of(error);
                 }
             }
 
@@ -175,12 +175,12 @@ public class SetExecutableBlock extends BlockCommand {
             if (!args.get(4).contains("%")) {
                 if (worldStr.isEmpty()) {
                     error = invalidWorld + args.get(4) + " for the command: " + setEB;
-                    return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                    return Optional.of(error);
                 } else {
                     Optional<World> worldOptional = AllWorldManager.getWorld(worldStr);
                     if (!worldOptional.isPresent()) {
                         error = invalidWorld + args.get(4) + " for the command: " + setEB;
-                        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                        return Optional.of(error);
                     }
                 }
             }
@@ -189,7 +189,7 @@ public class SetExecutableBlock extends BlockCommand {
                 Boolean.valueOf(args.get(5));
             } catch (Exception e) {
                 error = invalidBoolean + args.get(5) + " for the command: " + setEB;
-                return error.isEmpty() ? Optional.empty() : Optional.of(error);
+                return Optional.of(error);
             }
         }
 

@@ -356,11 +356,7 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
                         getHeadValue().setValue(Optional.of(p.getValue()));
                         break;
                     }
-                } catch (IllegalArgumentException e) {
-                } catch (IllegalAccessException e) {
-                } catch (NoSuchMethodError e) {
-                    //p.getValue() seems to not exist anymore in 1.20.2
-                }
+                } catch (IllegalArgumentException | IllegalAccessException | NoSuchMethodError ignored) {}
             }
         }
     }

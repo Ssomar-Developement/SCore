@@ -11,11 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Sharable
 public abstract class HttpInjector extends Injector {
-    private static final List<String> REQUEST_METHODS = List.of("GET ", "POST ", "PUT ", "DELETE ", "PATCH ");
+    private static final List<String> REQUEST_METHODS = Arrays.asList("GET ", "POST ", "PUT ", "DELETE ", "PATCH ");
 
     private final Logger logger = LoggerFactory.getLogger("HttpInjector " + hashCode());
 

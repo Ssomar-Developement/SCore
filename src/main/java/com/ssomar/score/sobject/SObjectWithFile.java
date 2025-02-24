@@ -75,9 +75,9 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
                 if(file.getParentFile() != null) file.getParentFile().mkdirs();
                 new File(path).createNewFile();
                 file = sObjectWithFileLoader.searchFileOfObject(getId());
-            } catch (IOException ignored) {
+            } catch (IOException e) {
                 Utils.sendConsoleMsg(SCore.plugin,"Error while creating a file: " + path);
-                ignored.printStackTrace();
+                e.printStackTrace();
                 return null;
             }
         }

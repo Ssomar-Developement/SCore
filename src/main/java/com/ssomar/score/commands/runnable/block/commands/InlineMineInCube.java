@@ -184,9 +184,7 @@ public class InlineMineInCube extends BlockCommand {
                                     }
 
                                     if (!blackList.contains(toBreak.getType())) {
-
-                                        UUID pUUID = null;
-                                        if (p != null) pUUID = p.getUniqueId();
+                                        UUID pUUID = p.getUniqueId();
                                         SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true);
                                     }
                                 }
@@ -203,8 +201,7 @@ public class InlineMineInCube extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

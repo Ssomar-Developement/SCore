@@ -100,6 +100,8 @@ public enum Dependency {
 
     CUSTOM_CRAFTING("CustomCrafting"),
 
+    PACKET_EVENTS("packetevents"),
+
     WORLD_EDIT("WorldEdit");
 
     private final String name;

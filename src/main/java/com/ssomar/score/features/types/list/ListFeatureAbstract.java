@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,7 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     @Override
     public void save(ConfigurationSection config) {
         //SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
-        if (notSaveIfEqualsToDefaultValue && defaultValue.containsAll(getCurrentValues())) {
+        if (notSaveIfEqualsToDefaultValue && new HashSet<>(defaultValue).containsAll(getCurrentValues())) {
             //SsomarDev.testMsg("notSaveIfEqualsToDefaultValue: " + this.getName(), true);
             config.set(this.getName(), null);
             return;

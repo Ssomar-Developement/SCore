@@ -87,7 +87,7 @@ public class SortInventory extends PlayerCommand {
         int offset2 = 0;
 
         int offsetForAirContainersOn1 = 0;
-        Integer offsetForAirContainersOn1COPY = 0;
+        int offsetForAirContainersOn1COPY = 0;
         //ordenar
         for(int i = 9 ; i <= 35 ; i++){
             //System.out.println("ORDENAR 1 -> "+i);

@@ -328,25 +328,21 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     if (arg.contains("shape:"))
                         try {
                             shapeName = arg.split(":")[1];
-                        } catch (final Exception e) {
-                        }
+                        } catch (final Exception ignored) {}
                     else if (arg.contains("target:"))
                         try {
                             targetStr = arg.split(":")[1];
-                        } catch (final Exception e) {
-                        }
+                        } catch (final Exception ignored) {}
                     else if (arg.contains("location:"))
                         try {
                             locationStr = arg.split(":")[1];
-                        } catch (final Exception e) {
-                        }
+                        } catch (final Exception ignored) {}
 
                 if (!targetStr.isEmpty())
                     try {
                         targetEntity = Bukkit.getEntity(UUID.fromString(targetStr));
                     } catch (final Exception e) {
                         SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid target (" + targetStr + ") for the command &6/score particles&c.");
-
                         return;
                     }
 
@@ -388,8 +384,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     if (arg.contains("shape:"))
                         try {
                             shapeName2 = arg.split(":")[1];
-                        } catch (final Exception e) {
-                        }
+                        } catch (final Exception ignored) {}
 
                 final Optional<Shape> shapeOpt2 = ShapesManager.getInstance().getShape(shapeName2);
 
@@ -765,8 +760,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                         try {
                             entityOptional = Optional.ofNullable(Bukkit.getEntity(UUID.fromString(entityName)));
-                        } catch (final Exception e) {
-                        }
+                        } catch (final Exception ignored) {}
                     } else
                         entityCmd.append(arg).append(" ");
 
@@ -812,8 +806,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             final double z = Double.parseDouble(loc[3]);
 
                             blockOpt = Optional.of(world.get().getBlockAt(new Location(world.get(), x, y, z)));
-                        } catch (final Exception e) {
-                        }
+                        } catch (final Exception ignored) {}
                     } else
                         blockCmd.append(arg).append(" ");
 

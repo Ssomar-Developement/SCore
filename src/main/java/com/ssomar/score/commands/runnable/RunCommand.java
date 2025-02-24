@@ -132,8 +132,8 @@ public abstract class RunCommand implements Serializable {
                         String playeName = finalCommand.split("ei giveslot ")[1].split(" ")[0];
                         Player pgive = Bukkit.getServer().getPlayer(playeName);
                         CommandsHandler.getInstance().addStopPickup(pgive, 20);
-                    } catch (Exception ignored) {
-                        ignored.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 

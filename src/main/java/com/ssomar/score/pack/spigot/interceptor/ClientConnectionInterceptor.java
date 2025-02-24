@@ -76,7 +76,7 @@ public class ClientConnectionInterceptor {
             try{
                 getCraftServerClass = Class.forName(className);
             }
-            catch (ClassNotFoundException e){}
+            catch (ClassNotFoundException ignored){}
             className = "org.bukkit.craftbukkit." + serverVersion + ".CraftServer";
             if(getCraftServerClass == null) getCraftServerClass = Class.forName(className);
             //Utils.sendConsoleMsg("className: "+className);

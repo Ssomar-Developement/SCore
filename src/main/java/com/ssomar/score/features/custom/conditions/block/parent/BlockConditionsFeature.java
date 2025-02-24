@@ -75,7 +75,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         BlockConditionRequest request = new BlockConditionRequest(block, playerOpt, messageSender.getSp(), event);
         for (BlockConditionFeature condition : conditions) {
             if (!condition.verifCondition(request)) {
-                if (messageSender != null && playerOpt.isPresent()) {
+                if (playerOpt.isPresent()) {
                     for (String error : request.getErrorsFinal()) {
                         messageSender.sendMessage(playerOpt.get(), error);
                     }

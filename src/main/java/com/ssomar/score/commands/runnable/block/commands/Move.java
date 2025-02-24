@@ -30,6 +30,7 @@ public class Move extends BlockCommand {
 
         BlockData data;
         Directional directional;
+        // Sometimes the method getBlockData() can return null
         if ((data = block.getBlockData()) == null || !(data instanceof Directional)) return;
 
         directional = (Directional) data;
@@ -108,11 +109,7 @@ public class Move extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        String launch = "MOVE";
-        if (args.size() < 0) error = notEnoughArgs + launch;
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+       return Optional.empty();
     }
 
     @Override

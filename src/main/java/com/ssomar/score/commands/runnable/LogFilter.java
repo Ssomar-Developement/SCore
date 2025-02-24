@@ -76,9 +76,7 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Nothing changed.");
         messageToHide.add("is not holding any item");
         messageToHide.add("cannot support that enchantment");
-        for(String s : GeneralConfig.getInstance().getSilenceOutputs()){
-            messageToHide.add(s);
-        }
+        messageToHide.addAll(GeneralConfig.getInstance().getSilenceOutputs());
     }
 
 

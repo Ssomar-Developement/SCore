@@ -90,7 +90,7 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
                 boolean has = false;
                 for(FeatureInterface feature1 : f.getHasExecutableItems().values()){
                     if(feature1 instanceof HasExecutableItemFeature) {
-                        if(verifHasExecutableItem(items, heldSlot, (HasExecutableItemFeature) feature1)) has = has ||true;
+                        if(verifHasExecutableItem(items, heldSlot, (HasExecutableItemFeature) feature1)) has = true;
                     }
                     else if(feature1 instanceof HasExecutableItemGroupFeature){
                         if(!verifHas(items, heldSlot)) return false;

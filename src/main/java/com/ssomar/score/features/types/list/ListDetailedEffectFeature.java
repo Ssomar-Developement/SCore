@@ -17,10 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -112,7 +109,7 @@ public class ListDetailedEffectFeature extends FeatureAbstract<List<String>, Lis
     @Override
     public void save(ConfigurationSection config) {
         if (notSaveIfEqualsToDefaultValue) {
-            if (defaultValue.containsAll(value)) {
+            if (new HashSet<>(defaultValue).containsAll(value)) {
                 config.set(this.getName(), null);
                 return;
             }

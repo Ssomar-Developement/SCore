@@ -57,9 +57,8 @@ public class SProjectile extends SObjectWithFileEditable<SProjectile, SProjectil
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        List<String> errors = new ArrayList<>();
 
-        errors.addAll(type.load(plugin, config, isPremiumLoading));
+        List<String> errors = new ArrayList<>(type.load(plugin, config, isPremiumLoading));
 
         //SsomarDev.testMsg("type: "+type.getValue().get().name()+ " for "+id, true);
 

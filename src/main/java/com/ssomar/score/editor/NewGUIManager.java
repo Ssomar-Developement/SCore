@@ -442,8 +442,8 @@ public abstract class NewGUIManager<T extends GUI> {
                 cmd1WikiCpnt.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringConverter.coloredString("&7&oClick here to see the wiki")).create()));
             }
 
-            String before = "";
-            String after = "";
+            StringBuilder before = new StringBuilder();
+            StringBuilder after = new StringBuilder();
 
             if (y + 1 != suggestions.get(p).size()) {
 
@@ -461,10 +461,10 @@ public abstract class NewGUIManager<T extends GUI> {
                 int charDiff = commandStr1.length() - commandStr2.length();
                 while (charDiff != 0) {
                     if (charDiff > 0) {
-                        after = after + " ";
+                        after.append(" ");
                         charDiff--;
                     } else {
-                        before = before + " ";
+                        before.append(" ");
                         charDiff++;
                     }
                 }

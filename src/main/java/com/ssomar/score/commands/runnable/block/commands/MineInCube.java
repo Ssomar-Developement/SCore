@@ -78,9 +78,9 @@ public class MineInCube extends BlockCommand {
                     blackList.add(Material.BEDROCK);
                     blackList.add(Material.AIR);
 
-                    Integer offsetx = 0;
-                    Integer offsety = 0;
-                    Integer offsetz = 0;
+                    int offsetx = 0;
+                    int offsety = 0;
+                    int offsetz = 0;
 
                     if(offset) {
                         Set<Material> transparent = new HashSet<>();
@@ -103,13 +103,13 @@ public class MineInCube extends BlockCommand {
                         if (face == NORTH) {
                             offsetz = (-1 * radius);
                         } else if (face == SOUTH) {
-                            offsetz = (1 * radius);
+                            offsetz = (radius);
                         } else if (face == WEST) {
                             offsetx = (-1 * radius);
                         } else if (face == EAST) {
-                            offsetx = (1 * radius);
+                            offsetx = (radius);
                         } else if (face == UP) {
-                            offsety = (1 * radius);
+                            offsety = (radius);
                         } else if (face == DOWN) {
                             offsety = (-1 * radius);
                         }
@@ -157,8 +157,7 @@ public class MineInCube extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

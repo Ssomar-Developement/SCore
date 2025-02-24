@@ -683,9 +683,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         String [] lines = settingsInterface.getEditorDescription();
         // Add into the last line the config name
         String [] newLines = new String[lines.length+1];
-        for(int i = 0; i < lines.length; i++) {
-            newLines[i] = lines[i];
-        }
+        System.arraycopy(lines, 0, newLines, 0, lines.length);
         newLines[lines.length] = "&8&o(" + settingsInterface.getName()+")";
         return newLines;
     }

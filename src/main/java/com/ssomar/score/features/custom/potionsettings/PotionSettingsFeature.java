@@ -137,8 +137,8 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
                         try {
                             PotionData data = new PotionData(potiontype.getValue().get(), potionExtended.getValue() && potiontype.getValue().get().isExtendable(), potionUpgraded.getValue() && potiontype.getValue().get().isUpgradeable());
                             PotionMeta.class.getMethod("setBasePotionData", PotionData.class).invoke(pMeta, data);
-                        } catch (Exception ignored) {
-                            ignored.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }

@@ -110,8 +110,7 @@ public class GeneralConfig extends Config {
     }
 
     public String[] getAvailableLocales(String... strings) {
-        ArrayList<String> locales = new ArrayList<>();
-        locales.addAll(Arrays.asList(strings));
+        ArrayList<String> locales = new ArrayList<>(Arrays.asList(strings));
         for (Locale locale : Locale.values()) {
             if(this.locale != locale) locales.add("&6➤ &7"+locale.name()+ " &e- &7"+locale.getName());
             else locales.add("&2➤ &7&o"+locale.name()+ " &a- &7&o"+locale.getName());

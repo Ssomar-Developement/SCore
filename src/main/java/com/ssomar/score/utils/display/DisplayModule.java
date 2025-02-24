@@ -56,13 +56,13 @@ public abstract class DisplayModule {
     }
 
     public String getLoadedIDsString() {
-    	String result = "";
+    	StringBuilder result = new StringBuilder();
     	for(String id : loadedIDs) {
-    		result += id+", ";
+    		result.append(id).append(", ");
     	}
         /* remove the last ,*/
-        if(result.length() > 2) result = result.substring(0, result.length()-2);
-    	return result;
+        if(result.length() > 2) result = new StringBuilder(result.substring(0, result.length() - 2));
+    	return result.toString();
     }
 }
 

@@ -56,7 +56,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                             VariableRealDouble vRD = (VariableRealDouble) vR;
                             try {
                                 vRD.setValue(Double.parseDouble(variables.get(key)));
-                            }catch (NumberFormatException e){}
+                            }catch (NumberFormatException ignored){}
                         }
                         else if(vR instanceof VariableRealList){
                             VariableRealList vRD = (VariableRealList) vR;
@@ -65,7 +65,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                                 if (s != null) {
                                     vRD.setValue(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
                                 }
-                            }catch (NumberFormatException e){}
+                            }catch (NumberFormatException ignored){}
                         }
                         else if(vR instanceof VariableRealString){
                             VariableRealString vRS = (VariableRealString) vR;
@@ -98,7 +98,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                             VariableRealDouble vRD = (VariableRealDouble) vR;
                             try {
                                 vRD.setValue(Double.parseDouble(variables.get(key)));
-                            }catch (NumberFormatException e){}
+                            }catch (NumberFormatException ignored){}
                         }
                         else if(vR instanceof VariableRealList){
                             VariableRealList vRD = (VariableRealList) vR;
@@ -107,7 +107,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                                 if (s != null) {
                                     vRD.setValue(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
                                 }
-                            }catch (NumberFormatException e){}
+                            }catch (NumberFormatException ignored){}
                         }
                         else if(vR instanceof VariableRealString){
                             VariableRealString vRS = (VariableRealString) vR;
@@ -139,7 +139,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                             VariableRealDouble vRD = (VariableRealDouble) vR;
                             try {
                                 vRD.setValue(Double.parseDouble(variables.get(key)));
-                            }catch (NumberFormatException e){}
+                            }catch (NumberFormatException ignored){}
                         }
                         else if(vR instanceof VariableRealList){
                             VariableRealList vRD = (VariableRealList) vR;
@@ -148,7 +148,7 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                                 if (s != null) {
                                     vRD.setValue(new ArrayList<>(Arrays.asList(s.substring(1, s.length() - 1).split(", "))));
                                 }
-                            }catch (NumberFormatException e){}
+                            }catch (NumberFormatException ignored){}
                         }
                         else if(vR instanceof VariableRealString){
                             VariableRealString vRS = (VariableRealString) vR;

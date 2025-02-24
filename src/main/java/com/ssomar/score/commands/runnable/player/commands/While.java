@@ -62,14 +62,14 @@ public class While extends PlayerCommand {
         StringPlaceholder sp = new StringPlaceholder();
         sp.setPlayerPlcHldr(receiver.getUniqueId());
 
-        String cmdsDef = "";
+        StringBuilder cmdsDef = new StringBuilder();
         for (int i = 2; i < args.size(); i++) {
             String cmd = args.get(i);
-            cmdsDef += cmd + " ";
+            cmdsDef.append(cmd).append(" ");
         }
-        cmdsDef = cmdsDef.trim();
+        cmdsDef = new StringBuilder(cmdsDef.toString().trim());
         SsomarDev.testMsg("WHILE CMD DEF: " + cmdsDef, DEBUG);
-        String[] cmdsArray = cmdsDef.split("<\\+>");
+        String[] cmdsArray = cmdsDef.toString().split("<\\+>");
         List<String> cmds = new ArrayList<>();
         for (String cmd : cmdsArray) {
             cmds.add(cmd);

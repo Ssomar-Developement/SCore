@@ -68,7 +68,7 @@ public class SetBlock extends PlayerCommand {
                 SafePlace.placeBlockWithEvent(block, material, Optional.empty(), uuid, false, true);
                 //SsomarDev.testMsg("block: "+block.getType().toString(), true);
             } else {
-                if (uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
+                if (!SafePlace.verifSafePlace(uuid, block)) return;
                 RunConsoleCommand.runConsoleCommand("execute at " + receiver.getName() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + materialStr.toLowerCase(), sCommandToExec.getActionInfo().isSilenceOutput());
             }
         }

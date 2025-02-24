@@ -237,8 +237,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
                     }
                 }
             }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         for (String mat : conditions.keySet()) {

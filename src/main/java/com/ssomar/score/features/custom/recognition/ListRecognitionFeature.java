@@ -147,8 +147,7 @@ public class ListRecognitionFeature extends FeatureAbstract<List<Recognition>, L
             try {
                 Recognition mat = Recognition.valueOf(s);
                 value.add(mat);
-            } catch (Exception e) {
-            }
+            } catch (Exception ignored) {}
         }
 
         manager.requestWriting.remove(editor);

@@ -112,9 +112,7 @@ public enum OptionGlobal implements SOption {
     public static List<String> getNamesST() {
         List<String> names = new ArrayList<>();
         for (OptionGlobal option : values()) {
-            for (String name : option.getNames()) {
-                names.add(name);
-            }
+            names.addAll(Arrays.asList(option.getNames()));
         }
         return names;
     }
