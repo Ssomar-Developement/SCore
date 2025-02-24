@@ -72,8 +72,15 @@ public class ClientConnectionInterceptor {
 
             //Utils.sendConsoleMsg("setverVersion: "+serverVersion);
             String className = "org.bukkit.craftbukkit.CraftServer";
+            Class<?> getCraftServerClass = null;
+            try{
+                getCraftServerClass = Class.forName(className);
+            }
+            catch (ClassNotFoundException e){}
+            className = "org.bukkit.craftbukkit." + serverVersion + ".CraftServer";
+            if(getCraftServerClass == null) getCraftServerClass = Class.forName(className);
             //Utils.sendConsoleMsg("className: "+className);
-            final Class<?> craftServerClass = Class.forName(className);
+            final Class<?> craftServerClass = getCraftServerClass;
             //Utils.sendConsoleMsg("craftServerClass: "+craftServerClass);
             final Object craftServerObject = craftServerClass.cast(Bukkit.getServer());
             final Method craftServerGetServerMethod = craftServerClass.getDeclaredMethod("getServer");

@@ -3,24 +3,21 @@ package com.ssomar.score.commands.runnable.entity.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /* HIDE {ENTITYUUID} */
 public class Hide extends EntityCommand {
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        if(entity instanceof Mob && !entity.isDead()){
+        if(p != null && entity instanceof Mob && !entity.isDead()){
             Mob mob = (Mob) entity;
             try {
                 p.hideEntity(SCore.plugin, mob);
@@ -43,7 +40,7 @@ public class Hide extends EntityCommand {
 
     @Override
     public String getTemplate() {
-        return "HIDE {ENTITYUUID}";
+        return "HIDE";
     }
 
     @Override

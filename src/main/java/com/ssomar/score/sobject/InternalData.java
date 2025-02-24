@@ -170,4 +170,9 @@ public class InternalData {
             variableRealsList.save(config.getConfigurationSection("variables"));
         }
     }
+
+    public VariableRealsList getVariableRealsList() {
+        if(variableRealsList == null) variableRealsList = new VariableRealsList();
+        return variableRealsList;
+    }
 }

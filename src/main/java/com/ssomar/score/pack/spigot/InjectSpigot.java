@@ -33,16 +33,20 @@ public class InjectSpigot implements InjectPlatform {
         if (injectors.contains(injector)) {
             return;
         }
+        try {
+            connectionInterceptor.install((channel) -> {
+                var pipeline = channel.pipeline();
+                injectors.forEach(pipeline::addFirst);
+            });
 
-        injectors.add(injector);
+            injectors.add(injector);
 
-        connectionInterceptor.install((channel) -> {
-            var pipeline = channel.pipeline();
-            injectors.forEach(pipeline::addFirst);
-        });
-        // }
-
-        Utils.sendConsoleMsg("Injector &e" + injector.getClass().getName() + " &7registered (TPack selfhosting)");
+            Utils.sendConsoleMsg("Injector &e" + injector.getClass().getName() + " &7registered (TPack selfhosting)");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Utils.sendConsoleMsg("&cFailed to register injector &e" + injector.getClass().getName());
+        }
 
     }
 
@@ -57,7 +61,7 @@ public class InjectSpigot implements InjectPlatform {
      * @return true if successfully unregistered, false otherwise
      */
     public boolean unregisterInjector(Injector injector) {
-        if (injector == null) {
+        if (injector == null || !injectors.contains(injector)) {
             return false;
         }
 
