@@ -34,10 +34,7 @@ import com.ssomar.score.usedapi.ProtocolLibAPI;
 import com.ssomar.score.utils.display.Display;
 import com.ssomar.score.utils.display.PacketManager;
 import com.ssomar.score.utils.logging.Utils;
-import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
-import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
-import com.ssomar.score.utils.scheduler.RunnableManager;
-import com.ssomar.score.utils.scheduler.SchedulerHook;
+import com.ssomar.score.utils.scheduler.*;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import com.ssomar.score.variables.manager.VariablesManager;
@@ -700,6 +697,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks...");
         RunnableManager.getInstance().forceRunTasks();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
+
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks...");
+        ScheduledTaskManager.getInstance().cancelScheduledTask();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks done !");
 
         try {
             Database.getInstance().connect().close();

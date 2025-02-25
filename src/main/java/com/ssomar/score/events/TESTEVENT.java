@@ -67,6 +67,12 @@ public class TESTEVENT implements Listener {
         //p.addResourcePack(UUID.randomUUID(), "http://localhost:"+Bukkit.getServer().getPort()+"/score/last_pack", null, null, true);
     }
 
+
+    /* @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerToggleSneakEventt(PlayerInputEvent e) {
+        SsomarDev.testMsg("INPUT EVENT >" + e.getInput()+ " IS JUMO >> "+e.getInput().isJump(), true);
+    } */
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerToggleSprintEvent(PlayerToggleSprintEvent e) {
         //InjectSpigot.INSTANCE.unregisterInjector(injector);

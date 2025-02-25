@@ -51,7 +51,9 @@ public class InjectSpigot implements InjectPlatform {
     }
 
     public void unregisterAllInjectors() {
-        injectors.forEach(this::unregisterInjector);
+        // Copy to avoid ConcurrentModificationException
+        List<Injector> injectorsCopy = new ArrayList<>(this.injectors);
+        injectorsCopy.forEach(this::unregisterInjector);
     }
 
     /**

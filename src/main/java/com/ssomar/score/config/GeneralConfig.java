@@ -33,6 +33,8 @@ public class GeneralConfig extends Config {
 
     private List<String> silenceOutputs;
 
+    private List<String> globalSilenceOutputs;
+
     private boolean reduceDamageIndicatorWithProtolcolLib;
 
     private boolean debugCheckDamages;
@@ -82,6 +84,7 @@ public class GeneralConfig extends Config {
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
        // jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
         silenceOutputs = config.getStringList("silenceOutputs");
+        globalSilenceOutputs = config.getStringList("globalSilenceOutputs");
         debugCheckDamages = config.getBoolean("debugCheckDamages", false);
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
         loopKillMode = config.getBoolean("loopKillMode", false);

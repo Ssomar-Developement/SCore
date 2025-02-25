@@ -82,8 +82,7 @@ public class Damage extends MixedCommand {
                     else receiver.damage(damage);
                 }
             }
-
-            receiver.setNoDamageTicks(maximumNoDmg);
+            if(!receiver.isDead()) receiver.setNoDamageTicks(maximumNoDmg);
         }
     }
 

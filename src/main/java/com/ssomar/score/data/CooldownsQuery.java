@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class CooldownsQuery {
 
-    private final static String TABLE_COOLDOWNS = "cooldows";
+    private final static String TABLE_COOLDOWNS = "cooldowns";
     private final static String TABLE_COOLDOWNS_NAME = "Cooldowns";
 
     private final static String COL_ID = "id";
@@ -37,6 +37,9 @@ public class CooldownsQuery {
             + COL_PAUSE_OFFLINE + " BOOLEAN NOT NULL,"
             + COL_PAUSE_PLACEHOLDERS_CONDITIONS + " TEXT NOT NULL);";
 
+    /* Fix a typo 25/02/2025 */
+    public final static String RENAME_TABLE_IF_EXIST = "ALTER TABLE cooldows RENAME TO "+TABLE_COOLDOWNS+";";
+
     public final static String CHECK_BEFORE_UPDATE_4_24_1_4 = "SELECT `COLUMN_NAME` " +
             "FROM `INFORMATION_SCHEMA`.`COLUMNS`" +
             "WHERE `TABLE_SCHEMA`= DATABASE()" +
@@ -58,6 +61,11 @@ public class CooldownsQuery {
 
             String checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4_SQLITE;
             if (Database.useMySQL) checkBeforeUpdate = CHECK_BEFORE_UPDATE_4_24_1_4;
+
+            // Fix a typo 25/02/2025
+            try {
+                stmt.execute(RENAME_TABLE_IF_EXIST);
+            }catch (SQLException ignored) {}
 
             stmt.execute(CREATE_TABLE);
 

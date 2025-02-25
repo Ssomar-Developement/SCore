@@ -19,6 +19,8 @@ public class LogFilter implements Filter, LifeCycle {
 
     private List<String> messageToHide = new ArrayList<>();
 
+    private List<String> globalMessageToHide = new ArrayList<>();
+
     public LogFilter() {
         reload();
     }
@@ -77,16 +79,21 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("is not holding any item");
         messageToHide.add("cannot support that enchantment");
         messageToHide.addAll(GeneralConfig.getInstance().getSilenceOutputs());
+
+        globalMessageToHide = new ArrayList<>();
+        globalMessageToHide.add("Loaded class");
+        globalMessageToHide.addAll(GeneralConfig.getInstance().getGlobalSilenceOutputs());
     }
 
 
     public Filter.Result checkMessage(String message) {
         boolean hide = false;
+
+        if (message == null) {
+            return Result.NEUTRAL;
+        }
         //SsomarDev.testMsg("checkMessage "+message+ " silence: &e"+FilterManager.getInstance().isSilenceOuput(), true);
         if (FilterManager.getInstance().isSilenceOuput()) {
-            if (message == null) {
-                return Result.NEUTRAL;
-            }
             for (String s : this.messageToHide) {
                 if (message.contains(s)) {
                     hide = true;
@@ -94,9 +101,11 @@ public class LogFilter implements Filter, LifeCycle {
                 }
             }
         }
-        // Remove dependency message
-        if(message.contains("Loaded class")) {
-            hide = true;
+        for (String s : this.globalMessageToHide) {
+            if (message.contains(s)) {
+                hide = true;
+                break;
+            }
         }
 
 
