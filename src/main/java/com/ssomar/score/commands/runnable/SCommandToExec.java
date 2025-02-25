@@ -46,12 +46,11 @@ public class SCommandToExec {
             }
         }
         else{
-            List<String> arguments = new ArrayList<>();
-            arguments.addAll(Arrays.asList(entry.split(" ")));
+            List<String> arguments = new ArrayList<>(Arrays.asList(entry.split(" ")));
             Map<CommandSetting, Object> settingObjectMap = new HashMap<>();
             // fully new system
             for(CommandSetting setting : sCommand.getSettings()){
-                if(arguments.size() > 0){
+                if(!arguments.isEmpty()){
                     for(String name : setting.getNames()) {
                         Optional<String> value = arguments.stream().filter(arg -> arg.startsWith(name + ":")).findFirst();
                         if (value.isPresent()) {

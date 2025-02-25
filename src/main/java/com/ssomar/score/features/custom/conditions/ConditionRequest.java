@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter @Setter
@@ -32,9 +33,7 @@ public abstract class ConditionRequest {
         List<String> errorsFinal = new ArrayList<>();
         for (String s : errors) {
             String[] split = s.split("\\\\n");
-            for (String s2 : split) {
-                errorsFinal.add(s2);
-            }
+            errorsFinal.addAll(Arrays.asList(split));
         }
         errors = errorsFinal;
         return errorsFinal;

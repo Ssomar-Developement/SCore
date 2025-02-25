@@ -1,6 +1,6 @@
 package com.ssomar.score.features.custom.conditions.custom.condition;
 
-import com.ssomar.executableitems.ExecutableItems;
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.custom.CustomConditionFeature;
@@ -29,7 +29,7 @@ public class IfNotOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, If
             if (itemStack.hasItemMeta() && player != null) {
                 ItemMeta iM = itemStack.getItemMeta();
 
-                NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "EI-OWNER");
+                NamespacedKey key = new NamespacedKey(SCore.plugin, "ownerUUID");
                 String uuidStr = iM.getPersistentDataContainer().get(key, PersistentDataType.STRING);
                 boolean invalid = false;
                 UUID uuid = null;

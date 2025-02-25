@@ -19,10 +19,14 @@ import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.features.custom.usage.useperday.manager.UsagePerDayManager;
 import com.ssomar.score.hardness.HardnessesHandler;
+import com.ssomar.score.hardness.hardness.Hardness;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.pack.spigot.InjectSpigot;
+import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
+import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
@@ -34,6 +38,7 @@ import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
 import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
 import com.ssomar.score.utils.scheduler.RunnableManager;
 import com.ssomar.score.utils.scheduler.SchedulerHook;
+import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import com.ssomar.score.variables.manager.VariablesManager;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
@@ -53,6 +58,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR = "&eSCore";
     public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
+
+    private InjectSpigot injectSpigot;
 
     public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
@@ -88,6 +95,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasAureliumSkills = false;
     public static boolean hasItemsAdder = false;
     public static boolean hasOraxen = false;
+    public static boolean hasNexo = false;
     public static boolean hasShopGUIPlus = false;
     public static boolean hasRoseLoot = false;
 
@@ -443,6 +451,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public void onEnable() {
         plugin = this;
 
+        injectSpigot = InjectSpigot.INSTANCE;
+
         this.initVersion();
 
         if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
@@ -638,6 +648,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         hasOraxen = Dependency.ORAXEN.hookSoftDependency();
 
+        hasNexo = Dependency.NEXO.hookSoftDependency();
+
         hasShopGUIPlus = Dependency.SHOP_GUI_PLUS.hookSoftDependency();
 
         hasRoseLoot = Dependency.ROSE_LOOT.hookSoftDependency();
@@ -667,6 +679,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onDisable() {
+
+        injectSpigot.unregisterAllInjectors();
+
         if (GeneralConfig.getInstance().isUseMySQL()) {
             VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6" + VariablesManager.getInstance().getLoadedObjects().size() + " &7variables from your MySQL Database !");
@@ -695,6 +710,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public void onReload() {
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
+
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks...");
         RunnableManager.getInstance().forceRunTasks();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
@@ -746,6 +762,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
     @Override
     public String getObjectName() {
         return null;
+    }
+
+    @Override
+    public String getObjectNameForPermission(SObject sObject) {
+        if(sObject instanceof Variable) return "";
+        else if(sObject instanceof SProjectile) return "";
+        else if(sObject instanceof Hardness) return "";
+        return "";
     }
 
     @Override

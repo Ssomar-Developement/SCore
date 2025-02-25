@@ -85,10 +85,20 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
     }
 
     public List<SActivator> getActivators(SOption option, List<String> whitelistActivatorsId, List<SActivator> whitelistActivators) {
+
+        /* for(String whitelistActivatorId : whitelistActivatorsId) {
+            SsomarDev.testMsg("whitelistActivatorId: "+whitelistActivatorId, true);
+        }
+        for (SActivator whitelistActivator : whitelistActivators) {
+            SsomarDev.testMsg("whitelistActivator: "+whitelistActivator.getId(), true);
+        }*/
+
         List<SActivator> result = new ArrayList<>();
         for (SActivator activator : activators.values()) {
+            //SsomarDev.testMsg("check activator >> "+activator.getId(), true);
             if (activator.getOption().equals(option)) {
                 if (!whitelistActivatorsId.isEmpty() && !whitelistActivatorsId.contains(activator.getId())) {
+                    //SsomarDev.testMsg("activator not valid", true);
                     continue;
                 }
                 if ((activator.getOption().isLoopOption() || activator.getOption().isCustomTriggerOption()) && !whitelistActivators.isEmpty()) {
@@ -96,11 +106,18 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
                     for (SActivator activatorCheck : whitelistActivators) {
                         if (activatorCheck.isEqualsOrAClone(activator)) {
                             valid = true;
+                            //SsomarDev.testMsg("activator valid", true);
                         }
                     }
-                    if (!valid) continue;
+                    if (!valid){
+                        //SsomarDev.testMsg("activator not valid", true);
+                        continue;
+                    }
                 }
                 result.add(activator);
+            }
+            else {
+               // SsomarDev.testMsg("activator not valid >> "+activator.getOption() +" different than "+option, true);
             }
         }
         return result;

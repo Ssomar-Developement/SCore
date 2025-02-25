@@ -22,7 +22,7 @@ public class ConsoleMessageBlock extends BlockCommand {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
-            build.append(StringConverter.coloredString(arg) + " ");
+            build.append(StringConverter.coloredString(arg)).append(" ");
         }
 
         Utils.sendConsoleMsg(build.toString());

@@ -30,6 +30,7 @@ public class DetailedSlotsEditorManager extends FeatureEditorManagerAbstract<Det
                     int slot = Integer.valueOf(split[1]);
                     cache.get(i.player).changeSlot(slot);
                 } catch (Exception e) {
+                    //e.printStackTrace();
                     switch (split[1]) {
                         case "mainHand":
                             i.gui.changeSlotMainHand();

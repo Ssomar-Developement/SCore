@@ -19,7 +19,7 @@ public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTame
         Entity entity = request.getEntity();
         if (getCondition().getValue(request.getSp())) {
             if(!(entity instanceof Tameable)) return true;
-            else if((entity instanceof Tameable && ((Tameable) entity).isTamed())) {
+            else if(((Tameable) entity).isTamed()) {
                 runInvalidCondition(request);
                 return false;
             }

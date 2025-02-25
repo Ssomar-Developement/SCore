@@ -70,9 +70,7 @@ public class BlockCommandsQuery {
                 pstmt.setLong(7, command.getRunTime());
                 pstmt.setString(8, ActionInfoSerializer.toString(command.getaInfo()));
                 pstmt.addBatch();
-                if (i % 1000 == 0 || i == commands.size()) {
-                    pstmt.executeBatch(); // Execute every 1000 items.
-                }
+                pstmt.executeBatch(); // Execute every 1000 items.
             }
         } catch (SQLException | IOException e) {
             System.out.println(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());

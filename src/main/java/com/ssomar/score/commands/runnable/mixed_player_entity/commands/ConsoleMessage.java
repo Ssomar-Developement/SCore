@@ -19,7 +19,7 @@ public class ConsoleMessage extends MixedCommand {
         StringBuilder build = new StringBuilder();
 
         for (String arg : args) {
-            build.append(arg + " ");
+            build.append(arg).append(" ");
         }
 
         Utils.sendConsoleMsg(build.toString());

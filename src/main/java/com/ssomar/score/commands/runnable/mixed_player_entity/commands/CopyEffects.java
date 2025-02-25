@@ -19,10 +19,10 @@ public class CopyEffects extends MixedCommand {
         if(!(receiver instanceof LivingEntity)) return;
         LivingEntity livingReceiver = (LivingEntity) receiver;
 
-        if(receiver == null || p == null || p.isDead() ||  receiver.isDead()) return;
+        if(p == null || p.isDead() || receiver.isDead()) return;
 
         int limitDuration = Integer.MAX_VALUE;
-        if(args.size() > 0) limitDuration = Integer.parseInt(args.get(0));
+        if(!args.isEmpty()) limitDuration = Integer.parseInt(args.get(0));
 
         Set<PotionEffect> potionEffects = new HashSet<>(livingReceiver.getActivePotionEffects());
         for(PotionEffect pe : potionEffects){

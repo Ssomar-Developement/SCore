@@ -508,7 +508,6 @@ public class ParticleDisplay implements Cloneable {
      */
     @Nonnull
     public Location rotate(@Nonnull Location location, double x, double y, double z) {
-        if (location == null) return null;
         if (rotation == null) return cloneLocation(location).add(x, y, z);
 
         Vector rotate = new Vector(x, y, z);
@@ -526,7 +525,6 @@ public class ParticleDisplay implements Cloneable {
      * @return the data object.
      * @since 5.1.0
      */
-    @SuppressWarnings("deprecation")
     @Nullable
     public Object getData() {
         return data;
@@ -686,7 +684,6 @@ public class ParticleDisplay implements Cloneable {
      * @see #withBlock(BlockData)
      * @since 5.1.0
      */
-    @SuppressWarnings("deprecation")
     @Nonnull
     public ParticleDisplay withBlock(@Nonnull MaterialData materialData) {
         this.data = materialData;

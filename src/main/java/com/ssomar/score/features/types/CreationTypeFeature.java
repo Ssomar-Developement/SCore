@@ -271,6 +271,7 @@ public class CreationTypeFeature extends FeatureAbstract<Optional<CreationType>,
         SortedMap<String, CreationType> map = new TreeMap<String, CreationType>();
         for (CreationType l : CreationType.values()) {
             if(!SCore.is1v19v4Plus() && l == CreationType.DISPLAY_CREATION) continue;   // 1.19.4+ only
+            if(l == CreationType.IMPORT_FROM_NEXO) continue;   // Not implemented yet
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());

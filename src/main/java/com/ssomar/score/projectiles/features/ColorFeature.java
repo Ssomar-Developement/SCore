@@ -1,6 +1,5 @@
 package com.ssomar.score.projectiles.features;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.types.BukkitColorFeature;
@@ -41,9 +40,7 @@ public class ColorFeature extends BukkitColorFeature implements SProjectileFeatu
                     pMeta.setColor(getValue().get());
                 item.setItemMeta(pMeta);
                 lp.setItem(item);
-            } catch (NoSuchMethodError ignored) {
-                SsomarDev.testMsg(ignored.getMessage(), true);
-            }
+            } catch (NoSuchMethodError ignored) {}
         }
     }
 

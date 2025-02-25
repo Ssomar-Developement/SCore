@@ -177,6 +177,13 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             String defaultObjectsPathWithoutFirstSlash = defaultObjectsPath.startsWith("/") ? defaultObjectsPath.substring(1) : defaultObjectsPath;
             Enumeration<URL> resources = sPlugin.getClass().getClassLoader().getResources(defaultObjectsPathWithoutFirstSlash);
             List<URL> urls = Collections.list(resources);
+
+            // Add check for empty urls list
+            if (urls.isEmpty()) {
+                Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cNo resources found at path: &6" + defaultObjectsPathWithoutFirstSlash);
+                return list;
+            }
+
             URL resource = urls.get(0);
             if (resource.getProtocol().equals("jar")) {
                 String path = resource.getPath();

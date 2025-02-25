@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -89,9 +90,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
             if (!attribute.verify(player, null, new StringPlaceholder())) {
                 String message = attribute.getMessageIfNotValid().getValue().get();
                 String[] split = message.split("\n");
-                for (String s : split) {
-                    errors.add(s);
-                }
+                errors.addAll(Arrays.asList(split));
                 return false;
             }
         }

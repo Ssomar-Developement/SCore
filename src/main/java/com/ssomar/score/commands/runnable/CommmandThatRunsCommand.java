@@ -205,7 +205,9 @@ public interface CommmandThatRunsCommand {
                     verifyArgs.add(s);
                     toConcat = new StringBuilder();
                     concatNext = false;
-                } else toConcat.append(" ").append(s.replaceAll("\"", ""));
+                }
+                // don't remove the quotes https://discord.com/channels/701066025516531753/1338763143492665426
+                else toConcat.append(" ").append(s/* .replaceAll("\"", "")*/);
             } else {
                 int count = 0;
                 for (char c : s.toCharArray()) {
@@ -214,10 +216,10 @@ public interface CommmandThatRunsCommand {
                     }
                 }
                 if (count % 2 == 0) {
-                    verifyArgs.add(s.replaceAll("\"", ""));
+                    verifyArgs.add(s/*.replaceAll("\"", "")*/);
                 } else {
                     concatNext = true;
-                    toConcat.append(s.replaceAll("\"", ""));
+                    toConcat.append(s/*.replaceAll("\"", "")*/);
                 }
             }
         }

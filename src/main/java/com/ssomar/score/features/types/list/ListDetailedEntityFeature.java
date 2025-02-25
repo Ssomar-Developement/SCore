@@ -314,7 +314,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
     @Override
     public void save(ConfigurationSection config) {
         if (notSaveIfEqualsToDefaultValue) {
-            if (defaultValue.containsAll(value)) {
+            if (new HashSet<>(defaultValue).containsAll(value)) {
                 config.set(this.getName(), null);
                 return;
             }

@@ -1,5 +1,6 @@
 package com.ssomar.score.variables;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -42,12 +43,12 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
     private MaterialFeature icon;
 
     public Variable(FeatureParentInterface parent, String id, String path) {
-        super(id, parent, FeatureSettingsSCore.VARIABLE, path, VariablesLoader.getInstance());
+        super(SCore.plugin, id, parent, FeatureSettingsSCore.VARIABLE, path, VariablesLoader.getInstance());
         reset();
     }
 
     public Variable(String id, String path) {
-        super(id, FeatureSettingsSCore.VARIABLE, path, VariablesLoader.getInstance());
+        super(SCore.plugin, id, FeatureSettingsSCore.VARIABLE, path, VariablesLoader.getInstance());
         reset();
     }
 

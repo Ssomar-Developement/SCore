@@ -532,6 +532,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     FURNITUREPLACED(getFeatureSettings("FURNITUREPLACED")),
     creationType(getFeatureSettings("creationType")),
     spawnerType(getFeatureSettings("spawnerType")),
+    spawnerFeatures(getFeatureSettings("spawnerFeatures")),
+    spawnDelay(getFeatureSettings("spawnDelay")),
+    spawnRange(getFeatureSettings("spawnRange")),
+    requiredPlayerRange(getFeatureSettings("requiredPlayerRange")),
+    maxNearbyEntities(getFeatureSettings("maxNearbyEntities")),
+    potentialSpawns(getFeatureSettings("potentialSpawns")),
+    addSpawnerNbtToItem(getFeatureSettings("addSpawnerNbtToItem")),
     dropType(getFeatureSettings("dropType")),
     cancelGravity(getFeatureSettings("cancelGravity")),
     cancelLiquidDestroy(getFeatureSettings("cancelLiquidDestroy")),
@@ -543,6 +550,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canBeMoved(getFeatureSettings("canBeMoved")),
     itemsAdderID(getFeatureSettings("itemsAdderID")),
     oraxenID(getFeatureSettings("oraxenID")),
+    nexoID(getFeatureSettings("nexoID")),
     myfurnitureID(getFeatureSettings("myfurnitureID")),
     interactionRange(getFeatureSettings("interactionRange")),
     enabled(getFeatureSettings("enabled")),
@@ -675,9 +683,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         String [] lines = settingsInterface.getEditorDescription();
         // Add into the last line the config name
         String [] newLines = new String[lines.length+1];
-        for(int i = 0; i < lines.length; i++) {
-            newLines[i] = lines[i];
-        }
+        System.arraycopy(lines, 0, newLines, 0, lines.length);
         newLines[lines.length] = "&8&o(" + settingsInterface.getName()+")";
         return newLines;
     }

@@ -96,9 +96,7 @@ public class Parameters extends ArrayList<Parameter>{
             // By default its flame particle
             if(display == null || !found) display = ParticleDisplay.display(loc, Particle.FLAME);
 
-            if(display != null) {
-                if(entity != null) display.withEntity(entity);
-            }
+            if (entity != null) display.withEntity(entity);
         }
     }
 

@@ -10,6 +10,7 @@ import com.ssomar.score.damagewithoutknockback.DamageWithoutKnockbackListener;
 import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.nofalldamage.NoFallDamageListener;
+import com.ssomar.score.pack.listener.JoinQuitListener;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.JobsAPI;
 
@@ -87,5 +88,7 @@ public class EventsHandler {
         if(Dependency.JOBS.isInstalled())  main.getServer().getPluginManager().registerEvents(new JobsAPI(), main);
 
         main.getServer().getPluginManager().registerEvents(new OpenChestListener(), main);
+
+        main.getServer().getPluginManager().registerEvents(new JoinQuitListener(), main);
     }
 }

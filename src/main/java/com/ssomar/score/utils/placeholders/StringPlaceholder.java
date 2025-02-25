@@ -350,13 +350,13 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = StringUtils.replaceEach(s, keys, values);
 
-        SsomarDev.testMsg("111111: " + s, true);
+        //SsomarDev.testMsg("111111: " + s, true);
 
         if (withPAPI) s = replacePlaceholderOfPAPI(s);
-        SsomarDev.testMsg("222222: " + s, true);
+        //SsomarDev.testMsg("222222: " + s, true);
         s = replacePlaceholderOfSCore(s);
 
-        SsomarDev.testMsg("333333: " + s, true);
+        //SsomarDev.testMsg("333333: " + s, true);
 
         /* A second time because the variable contains can require a placeholder */
         if (withVariables && variables != null) {

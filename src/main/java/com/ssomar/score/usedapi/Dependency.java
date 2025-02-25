@@ -74,6 +74,8 @@ public enum Dependency {
 
     ORAXEN("Oraxen"),
 
+    NEXO("Nexo"),
+
     SHOP_GUI_PLUS("ShopGUIPlus"),
 
     ROSE_LOOT("RoseLoot"),
@@ -97,6 +99,8 @@ public enum Dependency {
     MY_FURNITURE("MyFurniture"),
 
     CUSTOM_CRAFTING("CustomCrafting"),
+
+    PACKET_EVENTS("packetevents"),
 
     WORLD_EDIT("WorldEdit");
 

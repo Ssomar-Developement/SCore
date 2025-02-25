@@ -28,7 +28,7 @@ public class NameSpaceKeyWriterReader {
                     try {
                         sb.append(dataContainer.get(key, PersistentDataType.DOUBLE)).append("\n");
                     }
-                    catch (IllegalArgumentException  e3){}
+                    catch (IllegalArgumentException ignored){}
                 }
             }
         }

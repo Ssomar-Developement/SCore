@@ -148,11 +148,11 @@ public class TM {
         if(messages.containsKey(message)) return messages.get(message);
         else if(messagesArray.containsKey(message)) {
             String[] array = messagesArray.get(message);
-            String combine = "";
+            StringBuilder combine = new StringBuilder();
             for(String s : array) {
-                combine += s + "\n";
+                combine.append(s).append("\n");
             }
-            return combine;
+            return combine.toString();
         }
         else return "Can't load the string (" + message.getKey() + ") for the plugin > " + SCore.plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
     }

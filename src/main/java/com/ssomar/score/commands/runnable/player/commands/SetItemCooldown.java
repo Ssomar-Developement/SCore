@@ -25,6 +25,7 @@ public class SetItemCooldown extends PlayerCommand {
         List<CommandSetting> settings = getSettings();
         settings.add(material);
         settings.add(cooldown);
+        settings.add(group);
         setNewSettingsMode(true);
     }
 

@@ -94,7 +94,7 @@ public class HasItemGroupFeature extends FeatureWithHisOwnEditor<HasItemGroupFea
                 boolean has = false;
                 for(FeatureInterface feature1 : f.getHasItems().values()){
                     if(feature1 instanceof HasItemFeature) {
-                        if(verifHasItem(items, heldSlot, (HasItemFeature) feature1)) has = has ||true;
+                        if(verifHasItem(items, heldSlot, (HasItemFeature) feature1)) has = true;
                     }
                     else if(feature1 instanceof HasItemGroupFeature){
                         if(!verifHas(items, heldSlot)) return false;

@@ -16,10 +16,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -50,7 +47,7 @@ public class ListRegionStringFeature extends FeatureAbstract<List<String>, ListR
     @Override
     public void save(ConfigurationSection config) {
         if (notSaveIfEqualsToDefaultValue) {
-            if (defaultValue.containsAll(value)) {
+            if (new HashSet<>(defaultValue).containsAll(value)) {
                 config.set(this.getName(), null);
                 return;
             }

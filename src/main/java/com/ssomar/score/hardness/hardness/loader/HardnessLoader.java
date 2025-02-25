@@ -65,9 +65,8 @@ public class HardnessLoader extends SObjectWithFileLoader<Hardness> {
     @Override
     public Optional<Hardness> getObject(FileConfiguration itemConfig, String id, boolean showError, boolean isPremiumLoading, String path) {
 
-        List<String> errors = new ArrayList<>();
         Hardness item = new Hardness(id, path);
-        errors.addAll(item.load(SCore.plugin, itemConfig, isPremiumLoading));
+        List<String> errors = new ArrayList<>(item.load(SCore.plugin, itemConfig, isPremiumLoading));
 
         if (showError) {
             for (String s : errors) {

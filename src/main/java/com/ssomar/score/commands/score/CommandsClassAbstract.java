@@ -58,11 +58,11 @@ public abstract class CommandsClassAbstract<T extends SPlugin> implements Comman
 
                 //SsomarDev.testMsg("Command: "+commandName+" perm:"+sPlugin.getShortName().toLowerCase() + ".cmd." + commandName, true);
                 String[] args;
-                String typedCommand = command.getName()+" ";
+                StringBuilder typedCommand = new StringBuilder(command.getName() + " ");
                 if (fullArgs.length > 1) {
                     args = new String[fullArgs.length - 1];
                     for (int i = 0; i < fullArgs.length; i++) {
-                        typedCommand += fullArgs[i] + " ";
+                        typedCommand.append(fullArgs[i]).append(" ");
                         if (i == 0) continue;
                         else args[i - 1] = fullArgs[i];
                     }
@@ -76,7 +76,7 @@ public abstract class CommandsClassAbstract<T extends SPlugin> implements Comman
                     }
                 }
 
-                this.runCommand(sender, sender instanceof Player ? (Player) sender : null, commandName, args, typedCommand);
+                this.runCommand(sender, sender instanceof Player ? (Player) sender : null, commandName, args, typedCommand.toString());
             } else {
                 sender.sendMessage(StringConverter.coloredString("&c" + sPlugin.getNameWithBrackets() + " &cInvalid argument! Usage: /" + sPlugin.getShortName().toLowerCase() + " &8[ &7" + StringJoiner.join(getPermittedCommands(sender), " &c| &7") + " &8]"));
             }

@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.RunConsoleCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
@@ -44,16 +45,24 @@ public class SetBlockPos extends BlockCommand {
 
             block = block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z));
 
-            if(!block.isEmpty() && !replace) return;
+            if(!block.isEmpty() && !replace){
+                SsomarDev.testMsg("SETBLOCKPOS The block is not empty and replace is false", true);
+                return;
+            }
+            SsomarDev.testMsg("SETBLOCKPOS The block is empty or replace is true >> mat : "+mat, true);
 
             if (Material.matchMaterial(mat) != null) {
+                SsomarDev.testMsg("SETBLOCKPOS The block will be replaced", true);
                 SafePlace.placeBlockWithEvent(block.getWorld().getBlockAt(new Location(block.getWorld(), x, y, z)), Material.matchMaterial(mat), Optional.empty(), uuid, false, !bypassProtection);
             } else {
                 World w = block.getWorld();
                 List<Entity> entities = w.getEntities();
 
                 if (entities.size() > 0) {
-                    if (!bypassProtection && uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
+                    if (!bypassProtection && uuid != null && !SafePlace.verifSafePlace(uuid, block)){
+                        SsomarDev.testMsg("SETBLOCKPOS The block is not safe", true);
+                        return;
+                    }
                     RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + args.get(3) + " replace", aInfo.isSilenceOutput());
                 }
             }
@@ -67,12 +76,12 @@ public class SetBlockPos extends BlockCommand {
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
         String error = "";
-        /* Delete verification to not interfer with the vanilla setblock command */
-//		String setblock = "SETBLOCK {material}";
-//		if(args.size()<1) error = notEnoughArgs+setblock;
-//		else if(args.size()>1)error = tooManyArgs+setblock;
+        /* Delete verification to not interfer with the vanilla setblock command
+	    String setblock = "SETBLOCK {material}";
+		if(args.isEmpty()) error = notEnoughArgs+setblock;
+		else if(args.size()>1)error = tooManyArgs+setblock; */
 
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
+        return Optional.empty();
     }
 
     @Override

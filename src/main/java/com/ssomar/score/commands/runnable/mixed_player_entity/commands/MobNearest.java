@@ -161,7 +161,7 @@ public class MobNearest extends MixedCommand implements FeatureParentInterface {
 
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
-        return List.of();
+        return new ArrayList<>();
     }
 
     @Override

@@ -45,43 +45,41 @@ public class CustomDash3 extends MixedCommand {
         Integer finalFront = front;
 
         //if(args.get(2).equalsIgnoreCase("y")) {
-        if(true) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (currentStep[0] >= steps) {
-                        Thread.currentThread().interrupt();
-                        return;
-                    }
-
-                    //crear la función con la variable x, ojo con esto porque puede ser posible tener más variables, interesante
-                    Expression expression = new ExpressionBuilder(function)
-                            .variables("x")
-                            .build();
-
-                    double x = currentStep[0] * stepSize;
-                    double y = expression.setVariable("x", x).evaluate();
-
-                    double nextX = (currentStep[0] + 1) * stepSize;
-                    double nextY = expression.setVariable("x", nextX).evaluate();
-                    double yVelocity = (nextY - y) * 2;
-
-                    double yaw = receiver.getLocation().getYaw();
-                    if (yaw < 0) yaw += 360;
-                    yaw = Math.toRadians(yaw);
-
-                    Vector velocity;
-
-                    velocity = new Vector(finalFront *(-stepSize * Math.sin(yaw)), yVelocity, finalFront*(stepSize * Math.cos(yaw)));
-
-                    receiver.setVelocity(velocity);
-
-                    currentStep[0]++;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (currentStep[0] >= steps) {
+                    Thread.currentThread().interrupt();
+                    return;
                 }
-            };
 
-            SCore.schedulerHook.runRepeatingTask(runnable, 1L, 1L);
-        }
+                //crear la función con la variable x, ojo con esto porque puede ser posible tener más variables, interesante
+                Expression expression = new ExpressionBuilder(function)
+                        .variables("x")
+                        .build();
+
+                double x = currentStep[0] * stepSize;
+                double y = expression.setVariable("x", x).evaluate();
+
+                double nextX = (currentStep[0] + 1) * stepSize;
+                double nextY = expression.setVariable("x", nextX).evaluate();
+                double yVelocity = (nextY - y) * 2;
+
+                double yaw = receiver.getLocation().getYaw();
+                if (yaw < 0) yaw += 360;
+                yaw = Math.toRadians(yaw);
+
+                Vector velocity;
+
+                velocity = new Vector(finalFront * (-stepSize * Math.sin(yaw)), yVelocity, finalFront * (stepSize * Math.cos(yaw)));
+
+                receiver.setVelocity(velocity);
+
+                currentStep[0]++;
+            }
+        };
+
+        SCore.schedulerHook.runRepeatingTask(runnable, 1L, 1L);
     }
 
     @Override

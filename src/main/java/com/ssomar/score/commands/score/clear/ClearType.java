@@ -5,6 +5,6 @@ public enum ClearType {
     DELAYED_COMMANDS,
     COOLDOWNS,
     ACTIONBARS,
-
+    BOSSBARS,
     WHILE;
 }

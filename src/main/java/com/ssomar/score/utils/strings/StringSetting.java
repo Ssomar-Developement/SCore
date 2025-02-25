@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.strings;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.Couple;
 
 import java.util.*;
@@ -73,8 +74,8 @@ public class StringSetting {
 
         }
         if(sbSettings.length() >= 1) sbSettings.deleteCharAt(sbSettings.length()-1); // remove the last character (}
-        //System.out.println("sb: "+sb);
-        //System.out.println("sbSettings: "+sbSettings);
+        SsomarDev.testMsg("sb: "+sb, true);
+        SsomarDev.testMsg("sbSettings: "+sbSettings, true);
         Couple<Map<String, Object>,String> result = new Couple<>(getSettings(sbSettings.toString()), sb.toString());
         return result;
     }
@@ -155,9 +156,9 @@ public class StringSetting {
             result.put(savedKey, sb.toString());
         }
 
-        /*for(Map.Entry<String, Object> entry : result.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }*/
+        for(Map.Entry<String, Object> entry : result.entrySet()) {
+           SsomarDev.testMsg("Variableeeeeeeeee > "+entry.getKey() + " -> " + entry.getValue(), true);
+        }
         return result;
     }
 

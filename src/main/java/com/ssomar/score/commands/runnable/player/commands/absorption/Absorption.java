@@ -25,11 +25,11 @@ public class Absorption extends PlayerCommand {
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         double absorption = (double) sCommandToExec.getSettingValue("amount");
         int time = (int) sCommandToExec.getSettingValue("time");
-        double currentabsorption = receiver.getAbsorptionAmount();
+        double currentAbsorption = receiver.getAbsorptionAmount();
 
         try {
             if(time <= 0) {
-                receiver.setAbsorptionAmount(currentabsorption + absorption);
+                receiver.setAbsorptionAmount(currentAbsorption + absorption);
             }else{
                 long timestamp = System.currentTimeMillis();
                 /* convert time ticks to time secs */

@@ -28,7 +28,7 @@ public interface ManagerWithBuildable<T extends SObject> {
                     for(String s : slotsStr){
                         try{
                             checkSlots.add(Integer.parseInt(s));
-                        }catch (NumberFormatException e){}
+                        }catch (NumberFormatException ignored){}
                     }
                 }
             }

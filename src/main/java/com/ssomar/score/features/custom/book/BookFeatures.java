@@ -201,8 +201,7 @@ public class BookFeatures extends FeatureWithHisOwnEditor<BookFeatures, BookFeat
             if (bookMeta.hasTitle())
                 getTitle().setValue(bookMeta.getTitle());
             if (!bookMeta.getPages().isEmpty()) {
-                List<String> pages = new ArrayList<>();
-                for (String page : bookMeta.getPages()) pages.add(page);
+                List<String> pages = new ArrayList<>(bookMeta.getPages());
                 getPages().setValues(pages);
             }
         }

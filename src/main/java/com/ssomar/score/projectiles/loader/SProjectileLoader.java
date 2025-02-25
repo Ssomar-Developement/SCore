@@ -116,9 +116,8 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
     @Override
     public Optional<SProjectile> getObject(FileConfiguration itemConfig, String id, boolean showError, boolean isPremiumLoading, String path) {
 
-        List<String> errors = new ArrayList<>();
         SProjectile item = new SProjectile(id, path);
-        errors.addAll(item.load(SCore.plugin, itemConfig, isPremiumLoading));
+        List<String> errors = new ArrayList<>(item.load(SCore.plugin, itemConfig, isPremiumLoading));
 
         if (showError) {
             for (String s : errors) {

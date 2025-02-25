@@ -32,7 +32,7 @@ public class StringConverter {
         try {
             convert = LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(convert));
         }
-        catch (Exception | Error e){}
+        catch (Exception | Error ignored){}
 
         return convert;
     }

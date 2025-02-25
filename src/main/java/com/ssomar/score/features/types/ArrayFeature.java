@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -53,9 +54,7 @@ public class ArrayFeature<X> extends FeatureAbstract<X [], ArrayFeature<X>> {
     @Override
     public void save(ConfigurationSection config) {
         List<X> valueStr = new ArrayList<>();
-        for (X x : value) {
-            valueStr.add(x);
-        }
+        valueStr.addAll(Arrays.asList(value));
         config.set(this.getName(), valueStr);
     }
 

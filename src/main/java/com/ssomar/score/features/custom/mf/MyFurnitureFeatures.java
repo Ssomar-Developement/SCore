@@ -150,7 +150,7 @@ public class MyFurnitureFeatures extends FeatureWithHisOwnEditor<MyFurnitureFeat
     @Override
     public boolean isAvailable() {
         //SsomarDev.testMsg("is1v21v4Plus: "+SCore.is1v21v4Plus()+ " Dependency.MY_FURNITURE.isInstalled(): "+Dependency.MY_FURNITURE.isInstalled(), true);
-        return SCore.is1v21v4Plus() && Dependency.MY_FURNITURE.isInstalled();
+        return SCore.is1v21v2Plus() && Dependency.MY_FURNITURE.isInstalled();
     }
 
     @Override

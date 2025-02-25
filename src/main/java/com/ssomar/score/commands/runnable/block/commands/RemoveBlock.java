@@ -31,7 +31,7 @@ public class RemoveBlock extends BlockCommand {
         if (p != null) {
             uuid = p.getUniqueId();
         }
-        SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, true && !aInfo.isNoPlayerTriggeredTheAction());
+        SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, !aInfo.isNoPlayerTriggeredTheAction());
     }
 
     public void validBreak(Block block) {

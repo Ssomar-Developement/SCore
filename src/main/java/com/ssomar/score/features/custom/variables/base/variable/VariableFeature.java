@@ -93,7 +93,7 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
 
         StringBuilder tag = new StringBuilder();
         for (int i = 0; i < hashToString.length(); i++) {
-            tag.append("§"+encodeIntegers().get(Integer.parseInt(String.valueOf(hashToString.charAt(i)))));
+            tag.append("§").append(encodeIntegers().get(Integer.parseInt(String.valueOf(hashToString.charAt(i)))));
         }
 
         return tag.toString();

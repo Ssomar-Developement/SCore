@@ -140,8 +140,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
                     try {
                         Method method = clazz.getMethod("setEatSeconds", int.class);
                         method.invoke(food, eatSeconds);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    }
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
                 }
                 meta.setFood(food);
             }
@@ -164,8 +163,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
                         Method method = clazz.getMethod("getEatSeconds");
                         int eatSeconds = (int) method.invoke(food);
                         getEatSeconds().setValue(Optional.of(eatSeconds));
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    }
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
                 }
                 getIsMeat().setValue(true);
             }

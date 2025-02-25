@@ -64,9 +64,7 @@ public class MultiverseAPI {
             }
         } catch (NoClassDefFoundError e) {
             SCore.hasMultiverse = false;
-            for (World w : Bukkit.getWorlds()) {
-                worlds.add(w);
-            }
+            worlds.addAll(Bukkit.getWorlds());
             return worlds;
         }
         return worlds;

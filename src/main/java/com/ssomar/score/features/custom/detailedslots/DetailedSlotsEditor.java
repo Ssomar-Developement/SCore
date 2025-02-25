@@ -225,16 +225,24 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void changeSlot(int i) {
         ItemStack item = this.getByName("Slot: " + i);
-        if (this.getCurrently(item).contains("Enable")) {
+        //SsomarDev.testMsg("Change slot: " + i, true);
+        String currently = this.getCurrently(item);
+        //SsomarDev.testMsg("Currently: " + currently, true);
+        if (currently.contains("Enable")) {
+           // SsomarDev.testMsg("Disable slot: " + i, true);
             this.updateCurrently(item, "&cDisable");
             if (!SCore.is1v12Less()) item.setType(Material.RED_WOOL);
             else item.setType(Material.REDSTONE);
-            detailedSlots.getSlots().remove(i);
+            // need to cas in object to remove the object and not the object at the index i
+            detailedSlots.getSlots().remove((Object) i);
+           // SsomarDev.testMsg("Remove slot: " + i, true);
         } else {
+            //SsomarDev.testMsg("Enable slot: " + i, true);
             this.updateCurrently(item, "&aEnable");
             if (!SCore.is1v12Less()) item.setType(Material.GREEN_WOOL);
             else item.setType(Material.EMERALD);
             detailedSlots.getSlots().add(i);
+            //SsomarDev.testMsg("Add slot: " + i, true);
         }
     }
 

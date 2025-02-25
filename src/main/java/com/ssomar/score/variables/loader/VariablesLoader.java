@@ -65,9 +65,8 @@ public class VariablesLoader extends SObjectWithFileLoader<Variable> {
     @Override
     public Optional<Variable> getObject(FileConfiguration itemConfig, String id, boolean showError, boolean isPremiumLoading, String path) {
 
-        List<String> errors = new ArrayList<>();
         Variable item = new Variable(id, path);
-        errors.addAll(item.load(SCore.plugin, itemConfig, isPremiumLoading));
+        List<String> errors = new ArrayList<>(item.load(SCore.plugin, itemConfig, isPremiumLoading));
 
         if (showError) {
             for (String s : errors) {

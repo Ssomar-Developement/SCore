@@ -40,7 +40,7 @@ public class Parameter<T> {
                         value = (T) Float.valueOf(valueStr);
                     }
                     else if(value instanceof Boolean){
-                        value = (T) new Boolean(Boolean.parseBoolean(valueStr));
+                        value = (T) Boolean.valueOf(Boolean.parseBoolean(valueStr));
                     }
                     else if(value instanceof String){
                         value = (T) valueStr;

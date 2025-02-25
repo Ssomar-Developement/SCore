@@ -2,6 +2,7 @@ package com.ssomar.score.commands.score.clear;
 
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
+import com.ssomar.score.commands.runnable.player.commands.Bossbar;
 import com.ssomar.score.commands.runnable.player.commands.While;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import com.ssomar.score.splugin.SPlugin;
@@ -72,6 +73,7 @@ public class ClearCommand {
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
                 ActionbarHandler.getInstance().removeActionbars(player);
+                Bossbar.getInstance().clearTasks(player);
                 sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(all)"));
                 break;
             case DELAYED_COMMANDS:
@@ -90,6 +92,9 @@ public class ClearCommand {
                 While.getInstance().removeWhile(pUUID);
                 sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" +name+" &7&o(while)"));
                 break;
+            case BOSSBARS:
+                Bossbar.getInstance().clearTasks(player);
+
         }
 
 

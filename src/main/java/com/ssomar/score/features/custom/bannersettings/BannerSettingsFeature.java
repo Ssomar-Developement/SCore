@@ -4,6 +4,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.patterns.group.PatternsGroupFeature;
+import com.ssomar.score.features.custom.patterns.subgroup.PatternFeature;
+import com.ssomar.score.features.custom.patterns.subpattern.SubPatternFeature;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.ColorIntegerFeature;
@@ -12,6 +14,8 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.block.Banner;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -22,10 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -178,7 +179,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
                 if (!getPatterns().getMCPatterns().isEmpty())
                     bmeta.setPatterns(getPatterns().getMCPatterns());
             }
-            /* if (meta instanceof BlockStateMeta && (getColor().getValue().isPresent() || !getPatterns().getMCPatterns().isEmpty())) {
+            if (!SCore.is1v21Plus() && meta instanceof BlockStateMeta && (getColor().getValue().isPresent() || !getPatterns().getMCPatterns().isEmpty())) {
                 BlockStateMeta bmeta = (BlockStateMeta) meta;
                 Banner banner = (Banner) bmeta.getBlockState();
                 if (getColor().getValue().isPresent()) {
@@ -191,7 +192,7 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
                     banner.setPatterns(getPatterns().getMCPatterns());
                 banner.update();
                 bmeta.setBlockState(banner);
-            }*/
+            }
         } catch (Exception ignored) {
             SsomarDev.testMsg("Error while applying BannerSettingsFeature on item meta", true);
         }
@@ -201,35 +202,41 @@ public class BannerSettingsFeature extends FeatureWithHisOwnEditor<BannerSetting
     public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
 
         ItemMeta meta = args.getMeta();
-        SsomarDev.testMsg("banner 1", true);
+        //SsomarDev.testMsg("banner 1", true);
         if (meta instanceof BannerMeta) {
+            //SsomarDev.testMsg("banner 2 1.21", true);
             BannerMeta bannerMeta = (BannerMeta) meta;
             patterns.load(SCore.plugin,bannerMeta, true);
-
-
-
-            /*SsomarDev.testMsg("banner 2", true);
+        }
+        else if(!SCore.is1v21Plus() && meta instanceof BlockStateMeta) {
+            //SsomarDev.testMsg("banner 2", true);
             BlockStateMeta bmeta = (BlockStateMeta) meta;
             if (bmeta.getBlockState() instanceof Banner) {
-                SsomarDev.testMsg("banner 3", true);
+                //SsomarDev.testMsg("banner 3", true);
                 Banner banner = (Banner) bmeta.getBlockState();
                 color.setValue(Optional.of(banner.getBaseColor().getColor().asRGB()));
                 int i = 0;
                 for (org.bukkit.block.banner.Pattern pattern : banner.getPatterns()) {
+                   // SsomarDev.testMsg("banner 4 >> "+pattern, true);
                     PatternFeature patternFeature = new PatternFeature(this, "pattern" + i);
                     Map<String, Object> map = pattern.serialize();
                     int j = 0;
                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                         String id = "subpattern" + j;
+                        Object value = entry.getValue();
                         SubPatternFeature subPatternFeature = new SubPatternFeature(patternFeature, id);
-                        subPatternFeature.getObject().setValue(Optional.ofNullable(entry.getValue()));
+                        subPatternFeature.getObject().setValue(value);
                         subPatternFeature.getString().setValue(Optional.ofNullable(entry.getKey()));
                         patternFeature.getSubPattern().put(id, subPatternFeature);
                         j++;
                     }
                     i++;
+                    patterns.getPatterns().put("pattern" + i, patternFeature);
                 }
-            }*/
+            }
+        }
+        else {
+            //SsomarDev.testMsg("banner 10 >> "+meta, true);
         }
     }
 

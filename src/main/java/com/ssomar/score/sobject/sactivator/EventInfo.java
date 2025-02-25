@@ -191,15 +191,15 @@ public class EventInfo {
         if(command.isPresent()){
             placeholders.put("%all_args%", command.get().replaceAll("%[^ ]*%", ""));
             String[] split = command.get().split(" ");
-            String allArgsWithoutFirst = "";
+            StringBuilder allArgsWithoutFirst = new StringBuilder();
             int i = 0;
             for (String arg : split) {
-                if(i != 0) allArgsWithoutFirst += arg + " ";
+                if(i != 0) allArgsWithoutFirst.append(arg).append(" ");
                 placeholders.put("%arg" + i + "%", arg.replaceAll("%[^ ]*%", ""));
                 i++;
             }
-            allArgsWithoutFirst = allArgsWithoutFirst.trim();
-            placeholders.put("%all_args_without_first%", allArgsWithoutFirst.replaceAll("%[^ ]*%", ""));
+            allArgsWithoutFirst = new StringBuilder(allArgsWithoutFirst.toString().trim());
+            placeholders.put("%all_args_without_first%", allArgsWithoutFirst.toString().replaceAll("%[^ ]*%", ""));
         }
         return placeholders;
     }

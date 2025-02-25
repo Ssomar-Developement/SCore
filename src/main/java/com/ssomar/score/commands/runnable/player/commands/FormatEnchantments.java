@@ -76,9 +76,7 @@ public class FormatEnchantments extends PlayerCommand {
 
                     SsomarDev.testMsg(String.valueOf(LoreCURRENT), true);
 
-                    for (String enchantmentlore : LoreCURRENT) {
-                        LoreOfEnchantmentsArtifical.add(enchantmentlore);
-                    }
+                    LoreOfEnchantmentsArtifical.addAll(LoreCURRENT);
 
                     SsomarDev.testMsg(String.valueOf(LoreOfEnchantmentsArtifical), true);
 

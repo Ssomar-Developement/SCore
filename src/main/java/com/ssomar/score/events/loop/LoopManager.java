@@ -78,7 +78,6 @@ public class LoopManager {
                     int delay;
                     if ((delay = loopActivators.get(activator)) > DELAY) {
                         int toRemove = DELAY;
-                        if (delay <= toRemove) toRemove = delay;
                         int newDelay = delay - toRemove;
                         //SsomarDev.testMsg("LOOP > " + newDelay+ " for "+activator.getId()+ " TIME "+System.currentTimeMillis(), true);
                         loopActivators.put(activator, newDelay);

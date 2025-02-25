@@ -73,7 +73,6 @@ public class SetTempBlockPos extends BlockCommand {
         }
 
         UUID uuid = p.getUniqueId();
-        boolean placed = false;
         SsomarDev.testMsg("DEBUG place 0", true);
 
         //levelled for lights OK
@@ -88,12 +87,7 @@ public class SetTempBlockPos extends BlockCommand {
 
         SsomarDev.testMsg("DEBUG PLACE 1", true);
         SafePlace.placeBlockWithEvent(block, material, Optional.empty(), uuid, false, !bypassProtection);
-        placed = true;
-
-
-        if (placed) {
-            SetTempBlockManager.getInstance().runInitTempBlock(block.getLocation(), data, time);
-        }
+        SetTempBlockManager.getInstance().runInitTempBlock(block.getLocation(), data, time);
 
     }
 

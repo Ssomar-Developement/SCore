@@ -1,13 +1,15 @@
 package com.ssomar.score.events;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.pack.MyEpicHttpInjector;
+import com.ssomar.score.pack.api.Injector;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 
 public class TESTEVENT implements Listener {
 
@@ -23,16 +25,51 @@ public class TESTEVENT implements Listener {
         Block block = p.getTargetBlock(null, 5);
         SsomarDev.testMsg("Block: " + block.getType(), true);
 
+        /*ItemStack item = p.getInventory().getItemInMainHand();
+        ItemMeta meta = item.getItemMeta();
+        SsomarDev.testMsg("Meta: " + meta, true);
+        SsomarDev.testMsg("Meta blo: " + (meta instanceof BlockDataMeta), true);
+        SsomarDev.testMsg("Meta sta: " + (meta instanceof BlockStateMeta), true);
+
+        if (meta instanceof BlockDataMeta) {
+            BlockDataMeta blockStateMeta = (BlockDataMeta) meta;
+            SsomarDev.testMsg("BlockDataMeta: " + blockStateMeta.getAsString(), true);
+        }
+
+        if (meta instanceof BlockStateMeta) {
+            BlockStateMeta blockStateMeta = (BlockStateMeta) meta;
+            SsomarDev.testMsg("BlockStateMeta: " + blockStateMeta.getBlockState(), true);
+            CreatureSpawner spawner = (CreatureSpawner) blockStateMeta.getBlockState();
+            SsomarDev.testMsg("Spawner: " + spawner.getSpawnedType(), true);
+            SsomarDev.testMsg("Spawner2: " + spawner.getSpawnedEntity().getAsString(), true);
+        } */
        // PlayerInventory inv = p.getInventory();
        // inv.addItem(new ItemStack(Material.DIAMOND));
     }
 
+    public static Injector injector = new MyEpicHttpInjector();
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerToggleSneakEvent(ProjectileHitEvent e) {
-       Block block = e.getHitBlock();
-        // SsomarDev.testMsg("Block: " + block.getType(), true);
+    public void onPlayerToggleSneakEventt(PlayerToggleSneakEvent e) {
+       /* Player p = e.getPlayer();
+        Location loc = p.getLocation();
+        // -1
+        loc = loc.add(0, -1, 0);
+        Block block = loc.getBlock();
+        List<Loot> loots = new ArrayList<>();
+        Drop drop = new Drop(loots, false, false, NexoBlocks.stringMechanic(block).getItemID());
+        NexoBlocks.remove(block.getLocation(), null, drop); */
 
+        /* Player p = e.getPlayer();
+        p.setPose(Pose.SLEEPING, true);*/
+        //InjectSpigot.INSTANCE.registerInjector(injector);
 
+        //Player p = e.getPlayer();
+        //p.addResourcePack(UUID.randomUUID(), "http://localhost:"+Bukkit.getServer().getPort()+"/score/last_pack", null, null, true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerToggleSprintEvent(PlayerToggleSprintEvent e) {
+        //InjectSpigot.INSTANCE.unregisterInjector(injector);
     }
 
     /*@EventHandler(priority = EventPriority.LOWEST)

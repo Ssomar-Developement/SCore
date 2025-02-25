@@ -56,8 +56,8 @@ public class SetBlockPos extends PlayerCommand {
             World w = loc.getWorld();
             List<Entity> entities = w.getEntities();
 
-            if (entities.size() > 0) {
-                if (!bypassProtection && uuid != null && !SafePlace.verifSafePlace(uuid, block)) return;
+            if (!entities.isEmpty()) {
+                if (!bypassProtection && !SafePlace.verifSafePlace(uuid, block)) return;
                 RunConsoleCommand.runConsoleCommand("execute at " + entities.get(0).getUniqueId() + " run setblock " + block.getX() + " " + block.getY() + " " + block.getZ() + " " + material.toString().toLowerCase() + " replace", sCommandToExec.getActionInfo().isSilenceOutput());
             }
         }

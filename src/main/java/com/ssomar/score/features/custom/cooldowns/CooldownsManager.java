@@ -4,13 +4,8 @@ import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.splugin.SPlugin;
-
-import de.tr7zw.nbtapi.NBTItem;
-
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -39,75 +34,70 @@ public class CooldownsManager {
         if (params.startsWith("cooldown_")) {
             UUID uuid = player.getUniqueId();
 
-            // Player uuid is found in current available cooldowns.
-            if(cooldownsUUID.containsKey(uuid)){
-                boolean castInt = false;
-                boolean castMax = false;
-                String cooldownId = "";
+            boolean castInt = false;
+            boolean castMax = false;
+            String cooldownId = "";
 
-                // Find item slot to include below
-                if (params.contains("cooldown_slot")) {
-                    // if (!SCore.hasNBTAPI) {
-                    //     return Optional.of("You need NBT API!");
-                    // }
-                    // Extract the slot number using regex
-                    String slotNumber = params.replaceFirst(".*cooldown_slot(\\d+).*", "$1");
-                    int slot = Integer.parseInt(slotNumber);
+            // Find item slot to include below
+            if (params.contains("cooldown_slot")) {
+                // if (!SCore.hasNBTAPI) {
+                //     return Optional.of("You need NBT API!");
+                // }
+                // Extract the slot number using regex
+                String slotNumber = params.replaceFirst(".*cooldown_slot(\\d+).*", "$1");
+                int slot = Integer.parseInt(slotNumber);
 
-                    // Retrieve equipment for the slot
-                    if (player.isOnline() && player.getPlayer() != null) {
-                        ItemStack item = player.getPlayer().getInventory().getItem(slot);                   
-                        if (item != null) {
-                            if (item.hasItemMeta() && player != null) {
-                                ItemMeta iM = item.getItemMeta();
-            
-                                NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "ei-id");
-                                String eiid = iM.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-            
-                                if (eiid != null) {
-                                    cooldownId += "EI:" + eiid + ":";
-                                    // get rid of the slot
-                                    params = params.replaceFirst("slot\\d+:", "");
-                                } else {
-                                    return Optional.of("Not an Executable Item: " + item.getItemMeta().getDisplayName());
-                                }
+                // Retrieve equipment for the slot
+                if (player.isOnline() && player.getPlayer() != null) {
+                    ItemStack item = player.getPlayer().getInventory().getItem(slot);
+                    if (item != null) {
+                        if (item.hasItemMeta() && player != null) {
+                            ItemMeta iM = item.getItemMeta();
+
+                            NamespacedKey key = new NamespacedKey(ExecutableItems.getPluginSt(), "ei-id");
+                            String eiid = iM.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+
+                            if (eiid != null) {
+                                cooldownId += "EI:" + eiid + ":";
+                                // get rid of the slot
+                                params = params.replaceFirst("slot\\d+:", "");
                             } else {
-                                return Optional.of("No ItemMeta found or player is null");
+                                return Optional.of("Not an Executable Item: " + item.getItemMeta().getDisplayName());
                             }
                         } else {
-                            return Optional.of("No Item in specified slot");
+                            return Optional.of("No ItemMeta found or player is null");
                         }
                     } else {
-                        return Optional.of("Player Offline");
+                        return Optional.of("No Item in specified slot");
                     }
-
+                } else {
+                    return Optional.of("Player Offline");
                 }
 
-                // Player requested int, toggle and remove from query.
-                if(params.contains("_int")){
-                    castInt = true;
-                    params = params.replaceFirst("_int", "");
-                }
-                if(params.contains("_timemax")) {
-                    castMax = true;
-                    params = params.replaceFirst("_timemax", "");                    
-                }
-
-                // Parse as normal, minor refactor so it's easier to read
-                cooldownId += params.split("cooldown_")[1];
-                for(Cooldown cd : cooldownsUUID.get(uuid)){
-                    SsomarDev.testMsg("CD "+cd.toString(), DEBUG);
-                    if(cd.getId().equalsIgnoreCase(cooldownId)){
-
-                        // Return result if found based on booleans above 
-                        if(castInt && castMax) return Optional.of((int)cd.getCooldown()+"");
-                        else if(castMax) return Optional.of(cd.getCooldown()+"");
-                        else if(castInt) return Optional.of((int)cd.getTimeLeft()+"");
-                        else return Optional.of(cd.getTimeLeft()+"");
-                    }
-                }
             }
-            return Optional.of("0");
+
+            // Player requested int, toggle and remove from query.
+            if (params.contains("_int")) {
+                castInt = true;
+                params = params.replaceFirst("_int", "");
+            }
+            if (params.contains("_timemax")) {
+                castMax = true;
+                params = params.replaceFirst("_timemax", "");
+            }
+
+            // Parse as normal, minor refactor so it's easier to read
+            cooldownId += params.split("cooldown_")[1];
+            SsomarDev.testMsg("CD ID " + cooldownId, DEBUG);
+            Optional<Cooldown> cooldownOpt = getCooldown(cooldownId, uuid, false);
+            if (cooldownOpt.isPresent()) {
+                SsomarDev.testMsg("CD " + cooldownOpt.get().toString(), DEBUG);
+                Cooldown cd = cooldownOpt.get();
+                if (castInt && castMax) return Optional.of((int) cd.getCooldown() + "");
+                else if (castMax) return Optional.of(cd.getCooldown() + "");
+                else if (castInt) return Optional.of((int) cd.getTimeLeft() + "");
+                else return Optional.of(cd.getTimeLeft() + "");
+            }
         }
         return Optional.empty();
     }
@@ -117,7 +107,7 @@ public class CooldownsManager {
         if (cd.getCooldown() == 0) return;
 
         String id = cd.getId();
-        SsomarDev.testMsg("ADDDD "+cd.toString(), DEBUG);
+        SsomarDev.testMsg("ADDDD " + cd.toString(), DEBUG);
         if (cooldowns.containsKey(id)) {
             List<Cooldown> cds = cooldowns.get(id);
             cds.add(cd);
@@ -148,9 +138,13 @@ public class CooldownsManager {
         }
     }
 
+    public Optional<Cooldown> getCooldown(String id, UUID uuid, boolean onlyGlobal) {
+        return getCooldown(SCore.plugin, id, uuid, onlyGlobal);
+    }
+
     public Optional<Cooldown> getCooldown(SPlugin sPlugin, String id, UUID uuid, boolean onlyGlobal) {
 
-        SsomarDev.testMsg("GET COOLDOWN "+id+" "+uuid, DEBUG);
+        //SsomarDev.testMsg("GET COOLDOWN "+id+" "+uuid, DEBUG);
         if (cooldowns.containsKey(id)) {
             double maxTimeLeft = -1;
             List<Cooldown> cds = cooldowns.get(id);
@@ -160,16 +154,16 @@ public class CooldownsManager {
                 int size = cds.size();
                 //SsomarDev.testMsg("CD size >> "+size, true);
                 for (int i = 0; i < size; i++) {
-                    Cooldown cd = cds.get(i-cptRemoved);
-                    if (cd == null){
+                    Cooldown cd = cds.get(i - cptRemoved);
+                    if (cd == null) {
                         //SsomarDev.testMsg("CD NULL", true);
                         continue;
                     }
-                    if (onlyGlobal && !cd.isGlobal()){
+                    if (onlyGlobal && !cd.isGlobal()) {
                         //SsomarDev.testMsg("CD NOT GLOBAL", true);
                         continue;
                     }
-                    if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)){
+                    if (!cd.isGlobal() && !cd.getEntityUUID().equals(uuid)) {
                         //SsomarDev.testMsg("CD NOT GLOBAL AND NOT EQUAL UUID", true);
                         continue;
                     }
@@ -182,15 +176,16 @@ public class CooldownsManager {
                         cdMax = cd;
                     } else {
                         cd.setNull(true);
-                        cds.remove(i-cptRemoved);
+                        cds.remove(i - cptRemoved);
                         cptRemoved++;
                         try {
                             cooldownsUUID.get(uuid).remove(cd);
-                        }catch (Exception ignored){}
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
-                if(cdMax != null) SsomarDev.testMsg("COOLDOWN "+cdMax.toString(), DEBUG);
-                else SsomarDev.testMsg("NO COOLDOWN ", DEBUG);
+                //if(cdMax != null) SsomarDev.testMsg("COOLDOWN "+cdMax.toString(), DEBUG);
+                //else SsomarDev.testMsg("NO COOLDOWN ", DEBUG);
                 return Optional.ofNullable(cdMax);
             }
         }
@@ -220,7 +215,7 @@ public class CooldownsManager {
     }
 
     public void removeCooldownsOf(UUID uuid) {
-        SsomarDev.testMsg("REMOVE COOLDOWNS OF "+uuid, DEBUG);
+        //SsomarDev.testMsg("REMOVE COOLDOWNS OF "+uuid, DEBUG);
         cooldownsUUID.remove(uuid);
         for (String s : cooldowns.keySet()) {
             List<Cooldown> cds = cooldowns.get(s);
@@ -240,8 +235,8 @@ public class CooldownsManager {
             for (int i = 0; i < cds.size(); i++) {
                 Cooldown cd = cds.get(i);
                 if (cd != null && cd.getId().equalsIgnoreCase(cooldownId)) {
-                    if(uuid != null && (cd.getEntityUUID() == null || !cd.getEntityUUID().equals(uuid))) continue;
-                    if(cd.getEntityUUID() != null)  cooldownsUUID.get(cd.getEntityUUID()).remove(cd);
+                    if (uuid != null && (cd.getEntityUUID() == null || !cd.getEntityUUID().equals(uuid))) continue;
+                    if (cd.getEntityUUID() != null) cooldownsUUID.get(cd.getEntityUUID()).remove(cd);
                     cds.set(i, null);
                     break;
                 }
@@ -251,9 +246,7 @@ public class CooldownsManager {
 
     public List<String> getAllCooldownIds() {
         List<String> result = new ArrayList<>();
-        for (String id : cooldowns.keySet()) {
-            result.add(id);
-        }
+        result.addAll(cooldowns.keySet());
         return result;
     }
 
@@ -267,19 +260,19 @@ public class CooldownsManager {
             List<Cooldown> cds = cooldowns.get(s);
             total += cds.size();
         }
-        System.out.println(" total : "+total);
+        System.out.println(" total : " + total);
 
         total = 0;
         for (UUID s : cooldownsUUID.keySet()) {
             List<Cooldown> cds = cooldownsUUID.get(s);
             total += cds.size();
         }
-        System.out.println(" total : "+total);
+        System.out.println(" total : " + total);
 
 
         for (String s : cooldowns.keySet()) {
             for (Cooldown cd2 : cooldowns.get(s)) {
-                if(cd2 != null) System.out.println(cd2.toString());
+                if (cd2 != null) System.out.println(cd2.toString());
                 else System.out.println("null");
             }
         }
@@ -288,7 +281,7 @@ public class CooldownsManager {
 
         for (UUID uuid2 : cooldownsUUID.keySet()) {
             for (Cooldown cd2 : cooldownsUUID.get(uuid2)) {
-                if(cd2 != null) System.out.println(cd2.toString());
+                if (cd2 != null) System.out.println(cd2.toString());
                 else System.out.println("null");
             }
         }

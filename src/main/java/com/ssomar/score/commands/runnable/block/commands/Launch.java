@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Optional;
 
 /* LAUNCH {projectileType} */
-@SuppressWarnings("deprecation")
 public class Launch extends BlockCommand {
 
     @Override
@@ -40,25 +39,22 @@ public class Launch extends BlockCommand {
         Directional directional;
         double speed = 2;
         int despawnDelay = 10;
+        // Sometimes the method getBlockData() can return null
         if ((data = block.getBlockData()) == null || !(data instanceof Directional)) return;
 
         directional = (Directional) data;
 
-
-        if (args.size() == 0) {
+        if (args.isEmpty()) {
             launchProjectile(block, directional, Arrow.class, speed);
             return;
         } else {
             try {
                 speed = Double.parseDouble(args.get(1));
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             try {
                 despawnDelay = Integer.parseInt(args.get(2));
-            } catch (Exception ignored) {
-            }
-
+            } catch (Exception ignored) {}
         }
 
         try {

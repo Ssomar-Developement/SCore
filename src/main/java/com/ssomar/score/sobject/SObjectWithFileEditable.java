@@ -6,6 +6,7 @@ import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,12 +18,12 @@ import java.util.List;
 public abstract class SObjectWithFileEditable<X extends FeatureInterface<X, X>, Y extends GUI, Z extends NewGUIManager<Y>>extends SObjectWithFile<X,Y,Z> implements SObjectEditable {
 
 
-    public SObjectWithFileEditable(String id, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
-        super(id, featureSettings, path, sObjectWithFileLoader);
+    public SObjectWithFileEditable(SPlugin sPlugin, String id, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
+        super(sPlugin, id, featureSettings, path, sObjectWithFileLoader);
     }
 
-    public SObjectWithFileEditable(String id, FeatureParentInterface parent, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
-        super(id, parent, featureSettings, path, sObjectWithFileLoader);
+    public SObjectWithFileEditable(SPlugin sPlugin, String id, FeatureParentInterface parent, FeatureSettingsInterface featureSettings, String path, SObjectWithFileLoader sObjectWithFileLoader) {
+        super(sPlugin, id, parent, featureSettings, path, sObjectWithFileLoader);
     }
 
     @Override

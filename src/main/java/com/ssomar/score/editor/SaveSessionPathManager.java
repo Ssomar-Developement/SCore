@@ -32,7 +32,7 @@ public class SaveSessionPathManager {
             }
             this.playerSessionPath.put(p, newPaths);
         }
-        SsomarDev.testMsg("ADD GUI > "+path.getInventory().getHolder(), true);
+        //SsomarDev.testMsg("ADD GUI > "+path.getInventory().getHolder(), true);
     }
 
     public void clearPlayerSessionPath(Player p) {
@@ -66,7 +66,7 @@ public class SaveSessionPathManager {
         if(this.playerSessionPath.containsKey(p)) {
             List<GUI> paths = this.playerSessionPath.get(p);
             if(paths.size() > 1) {
-                SsomarDev.testMsg("REMOVE GUI > "+paths.get(paths.size()-1).getInventory().getHolder(), true);
+                //SsomarDev.testMsg("REMOVE GUI > "+paths.get(paths.size()-1).getInventory().getHolder(), true);
                 paths.remove(paths.size()-1);
             }
         }

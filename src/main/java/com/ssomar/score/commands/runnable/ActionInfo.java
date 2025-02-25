@@ -140,7 +140,7 @@ public class ActionInfo implements Serializable {
             @Override
             public void run() {
                 BlockData blockData = null;
-                if(block != null && block.getType().equals(Material.COCOA) && (blockData = block.getBlockData()) != null) {
+                if(block.getType().equals(Material.COCOA) && (blockData = block.getBlockData()) != null) {
                     if(blockData instanceof Directional){
                         blockFace = ((Directional) blockData).getFacing();
                     }

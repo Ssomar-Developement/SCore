@@ -1,8 +1,14 @@
 package com.ssomar.score.events;
 
+import com.ssomar.executableitems.executableitems.ExecutableItem;
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.features.FeatureForBlockArgs;
+import com.ssomar.score.features.custom.ItemSpawnerFeature;
+import com.ssomar.score.usedapi.Dependency;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.event.EventHandler;
@@ -12,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class FixSpawnerPlaceEvent implements Listener {
 
@@ -29,8 +36,31 @@ public class FixSpawnerPlaceEvent implements Listener {
 
         /* No localized name in 1.8.9 */
         if(SCore.is1v11Less()) return;
+
+
+        if(Dependency.EXECUTABLE_ITEMS.isEnabled()){
+            ExecutableItemObject eio = new ExecutableItemObject(is);
+            if (eio.isValid()){
+                ExecutableItem ei = eio.getConfig();
+                ItemSpawnerFeature isf = ei.getSpawner();
+                if(isf != null && !isf.getPotentialSpawns().getCurrentValues().isEmpty()){
+                    isf.applyOnBlockData(FeatureForBlockArgs.create(block.getBlockData(), block.getState(), block.getType()));
+                    SsomarDev.testMsg(">> Its a spawner ! add spawner info", true);
+                }
+            }
+        }
+
+
+
+
+
+        // Old
         ItemMeta im = is.getItemMeta();
-        if (!im.hasLocalizedName() || !im.getLocalizedName().equals("FROM_EXECUTABLEITEM")) return;
+        if (!SCore.is1v20v5Plus() && (!im.hasLocalizedName() || !im.getLocalizedName().equals("FROM_EXECUTABLEITEM"))) return;
+        else {
+            NamespacedKey key = new NamespacedKey(SCore.plugin, "SPAWNER_SILK_SCORE");
+            if (!im.getPersistentDataContainer().has(key, PersistentDataType.STRING)) return;
+        }
 
         Material spawer;
         if (SCore.is1v12Less()) {

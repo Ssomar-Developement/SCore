@@ -425,7 +425,6 @@ public final class XParticle {
     public static void filledCircle(double radius, double rate, double radiusRate, ParticleDisplay display) {
         double dynamicRate = 0;
         for (double i = 0.1; i < radius; i += radiusRate) {
-            if (i > radius) i = radius;
             dynamicRate += rate / (radius / radiusRate);
             circle(i, dynamicRate, display);
         }
@@ -1610,7 +1609,6 @@ public final class XParticle {
         for (double i = 0; i < length; i += rate) {
             // Since the rate can be any number it's possible to get a higher number than
             // the length in the last loop.
-            if (i > length) i = length;
             clone.spawn(x * i, y * i, z * i);
         }
     }

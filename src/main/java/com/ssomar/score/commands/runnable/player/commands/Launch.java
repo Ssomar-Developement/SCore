@@ -79,84 +79,82 @@ public class Launch extends PlayerCommand {
                         firework.setShotAtAngle(true);
                     }
 
-                    if (entity != null) {
+                    if (!SCore.is1v13Less()) {
+
+                        Location loc = receiver.getEyeLocation();
+                        float pitch = loc.getPitch();
+                        float yaw = loc.getYaw();
+                        //SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
+                        float newPitch = (float) (pitch + rotationHorizontal);
+                        float newYaw = (float) (yaw + rotationVertical);
+                        if (newPitch > 90) newPitch = 90;
+                        if (newPitch < -90 && rotationVertical != 0) {
+                            newPitch = newPitch + 90;
+                            newPitch = newPitch * -1;
+                            newPitch = -90 + newPitch;
+                            if (newYaw > 0) {
+                                newYaw = -180 + newYaw;
+                            } else if (newYaw < 0) {
+                                newYaw = 180 + newYaw;
+                            } else newYaw = 0;
+                        }
+                        //SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw, true);
+                        loc.setPitch(newPitch);
+                        loc.setYaw(newYaw);
+
+                        Vector eyeVector;
+                        /* Here I take the velocity. It is present only if the command LAUNCH is activated in a projectile launch event
+                         * it's used to keep the bowforce and let the user customize the projectile launched */
+                        if (sCommandToExec.getActionInfo().getVelocity().isPresent()) {
+                            /* Take the real velocity */
+                            eyeVector = sCommandToExec.getActionInfo().getVelocity().get();
+                            double oldVelocity = eyeVector.length();
+                            //SsomarDev.testMsg( "velocity: " + eyeVector.length(), true);
+                            /* add to the real velocity the custom rotation */
+                            Location customLoc = eyeVector.toLocation(receiver.getWorld());
+                            customLoc.setPitch(newPitch);
+                            customLoc.setYaw(newYaw);
+                            eyeVector = customLoc.getDirection();
+                            eyeVector = eyeVector.multiply(oldVelocity);
+
+                        } else eyeVector = loc.getDirection();
+
+                        eyeVector = eyeVector.multiply(velocity);
+
                         if (!SCore.is1v13Less()) {
-
-                            Location loc = receiver.getEyeLocation();
-                            float pitch = loc.getPitch();
-                            float yaw = loc.getYaw();
-                            //SsomarDev.testMsg( "pitch: " + pitch + " yaw: " + yaw);
-                            float newPitch = (float) (pitch + rotationHorizontal);
-                            float newYaw = (float) (yaw + rotationVertical);
-                            if (newPitch > 90) newPitch = 90;
-                            if (newPitch < -90 && rotationVertical != 0) {
-                                newPitch = newPitch + 90;
-                                newPitch = newPitch * -1;
-                                newPitch = -90 + newPitch;
-                                if (newYaw > 0) {
-                                    newYaw = -180 + newYaw;
-                                } else if (newYaw < 0) {
-                                    newYaw = 180 + newYaw;
-                                } else newYaw = 0;
-                            }
-                            //SsomarDev.testMsg( "NEW pitch: " + newPitch + " yaw: " + newYaw, true);
-                            loc.setPitch(newPitch);
-                            loc.setYaw(newYaw);
-
-                            Vector eyeVector;
-                            /* Here I take the velocity. It is present only if the command LAUNCH is activated in a projectile launch event
-                             * it's used to keep the bowforce and let the user customize the projectile launched */
-                            if (sCommandToExec.getActionInfo().getVelocity().isPresent()) {
-                                /* Take the real velocity */
-                                eyeVector = sCommandToExec.getActionInfo().getVelocity().get();
-                                double oldVelocity = eyeVector.length();
-                                //SsomarDev.testMsg( "velocity: " + eyeVector.length(), true);
-                                /* add to the real velocity the custom rotation */
-                                Location customLoc = eyeVector.toLocation(receiver.getWorld());
-                                customLoc.setPitch(newPitch);
-                                customLoc.setYaw(newYaw);
-                                eyeVector = customLoc.getDirection();
-                                eyeVector = eyeVector.multiply(oldVelocity);
-
-                            } else eyeVector = loc.getDirection();
-
-                            eyeVector = eyeVector.multiply(velocity);
-
-                            if (!SCore.is1v13Less()) {
-                                Vector v;
-                                if (entity instanceof Fireball) {
-                                    Fireball fireball = (Fireball) entity;
-                                    fireball.setDirection(eyeVector);
-                                } else if (entity instanceof DragonFireball) {
-                                    DragonFireball fireball = (DragonFireball) entity;
-                                    fireball.setDirection(eyeVector);
-                                } else {
-                                    entity.setVelocity(eyeVector);
-                                }
+                            Vector v;
+                            if (entity instanceof Fireball) {
+                                Fireball fireball = (Fireball) entity;
+                                fireball.setDirection(eyeVector);
+                            } else if (entity instanceof DragonFireball) {
+                                DragonFireball fireball = (DragonFireball) entity;
+                                fireball.setDirection(eyeVector);
+                            } else {
+                                entity.setVelocity(eyeVector);
                             }
                         }
-                        if (projectile != null) {
-                            Material mat = projectile.getType().getValue().get().getMaterial();
-                            /* Fix for potion otherwise the method to getItem is null idk why, (set an item + potionmeta) (it works only on 1.12 plus because setcolor doesnt exists in 1.11)*/
-                            if (entity instanceof ThrownPotion) {
-                                ThrownPotion lp = (ThrownPotion) entity;
-                                ItemStack item = new ItemStack(mat, 1);
-                                PotionMeta pMeta = (PotionMeta) item.getItemMeta();
-                                pMeta.setColor(Color.AQUA);
-                                item.setItemMeta(pMeta);
-                                lp.setItem(item);
-                            }
-                            projectile.transformTheProjectile(entity, receiver, mat);
-                        }
-
-                        if (SCore.hasExecutableItems) {
-                            ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(sCommandToExec.getActionInfo().getExecutableItem()), sCommandToExec.getActionInfo().getSlot(), System.currentTimeMillis());
-                            ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
-                        }
-
-                        PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
-                        Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
                     }
+                    if (projectile != null) {
+                        Material mat = projectile.getType().getValue().get().getMaterial();
+                        /* Fix for potion otherwise the method to getItem is null idk why, (set an item + potionmeta) (it works only on 1.12 plus because setcolor doesnt exists in 1.11)*/
+                        if (entity instanceof ThrownPotion) {
+                            ThrownPotion lp = (ThrownPotion) entity;
+                            ItemStack item = new ItemStack(mat, 1);
+                            PotionMeta pMeta = (PotionMeta) item.getItemMeta();
+                            pMeta.setColor(Color.AQUA);
+                            item.setItemMeta(pMeta);
+                            lp.setItem(item);
+                        }
+                        projectile.transformTheProjectile(entity, receiver, mat);
+                    }
+
+                    if (SCore.hasExecutableItems) {
+                        ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(sCommandToExec.getActionInfo().getExecutableItem()), sCommandToExec.getActionInfo().getSlot(), System.currentTimeMillis());
+                        ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
+                    }
+
+                    PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
+                    Bukkit.getServer().getPluginManager().callEvent(playerCustomLaunchProjectileEvent);
 
                 } catch (Exception e) {
                     e.printStackTrace();

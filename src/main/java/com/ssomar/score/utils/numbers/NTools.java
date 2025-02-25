@@ -81,11 +81,11 @@ public class NTools implements Serializable {
             return Double.parseDouble(numberFormat_3.format(number).replaceAll("\\?", "").replace(",", "."));
         }
         else{
-            String format = "#.";
+            StringBuilder format = new StringBuilder("#.");
             for(int i = 0; i < numbersAfterComma; i++){
-                format = format + "0";
+                format.append("0");
             }
-            DecimalFormat numberFormat_other = new DecimalFormat(format , DecimalFormatSymbols.getInstance(Locale.US));
+            DecimalFormat numberFormat_other = new DecimalFormat(format.toString(), DecimalFormatSymbols.getInstance(Locale.US));
             return Double.valueOf(numberFormat_other.format(number).replace(",", "."));
         }
     }

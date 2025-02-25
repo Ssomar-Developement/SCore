@@ -32,7 +32,7 @@ public class ShopGUIPlusTool {
 
             amount = amount * priceModifier.getModifier();
         }
-        catch (Exception e) {}
+        catch (Exception ignored) {}
 
 
         return amount;

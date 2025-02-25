@@ -1,6 +1,5 @@
 package com.ssomar.score.features.types;
 
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -82,17 +81,20 @@ public class DoubleFeature extends FeatureAbstract<Optional<Double>, DoubleFeatu
     public Optional<Double> getValue(@Nullable UUID playerUUID, @Nullable StringPlaceholder sp) {
         if (placeholder.isPresent()) {
             String placeholderStr = placeholder.get();
-            SsomarDev.testMsg("placeholderStr1: "+placeholderStr, true);
+            //SsomarDev.testMsg("placeholderStr1: "+placeholderStr, true);
             if (sp != null) {
                 if(playerUUID != null) sp.setPlayerPlcHldr(playerUUID);
                 placeholderStr = sp.replacePlaceholder(placeholderStr, false);
-                SsomarDev.testMsg("placeholderStr2: "+placeholderStr, true);
+                //SsomarDev.testMsg("placeholderStr2: "+placeholderStr, true);
             }
             placeholderStr = StringPlaceholder.replacePlaceholderOfPAPI(placeholderStr, playerUUID);
-            SsomarDev.testMsg("placeholderStr3: "+placeholderStr, true);
+            //SsomarDev.testMsg("placeholderStr3: "+placeholderStr, true);
 
             Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
-            if (valuePotential.isPresent()) return valuePotential;
+            if (valuePotential.isPresent()) {
+                //SsomarDev.testMsg("valuePotential: "+valuePotential.get(), true);
+                return valuePotential;
+            }
 
         } else if (value.isPresent()) return value;
         return defaultValue;

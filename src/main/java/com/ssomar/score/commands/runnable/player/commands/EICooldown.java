@@ -23,15 +23,13 @@ public class EICooldown extends PlayerCommand {
         //EICOOLDOWN PLAYER ID SECONDS TICKS {optional activator id}
         OfflinePlayer player = Bukkit.getOfflinePlayer(args.get(0));
         String id = args.get(1);
-        Integer number = NTools.getInteger(args.get(2)).get();
+        int number = NTools.getInteger(args.get(2)).get();
         boolean ticks = Boolean.parseBoolean(args.get(3));
 
         Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
 
         if(args.size() < 5){
-            if(eiOpt.isPresent()) {
-                eiOpt.get().addCooldown(player.getPlayer(), number, ticks);
-            }
+            eiOpt.ifPresent(executableItemInterface -> executableItemInterface.addCooldown(player.getPlayer(), number, ticks));
         }else{
             if(eiOpt.isPresent()) {
                 try {
