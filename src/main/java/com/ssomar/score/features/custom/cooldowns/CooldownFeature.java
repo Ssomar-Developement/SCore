@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
@@ -135,11 +136,14 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
      */
     public void addCooldown(Entity entity, @NotNull SObject sObject, @Nullable StringPlaceholder sp) {
         int cooldownInt;
+        double cooldownDouble;
         try {
-            cooldownInt = Integer.parseInt(sp.replacePlaceholder(this.cooldown.getValue().get()));
+            cooldownDouble = Double.parseDouble(sp.replacePlaceholder(cooldown.getValue().get()));
         } catch (NumberFormatException e) {
-            cooldownInt = 0;
+            cooldownDouble = 0;
         }
+        cooldownInt = (int) cooldownDouble; // Cast to int
+        
         if (!hasNoCDPerm(entity, sObject) && cooldownInt != 0) {
             Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
             cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
@@ -163,6 +167,8 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
      * @param isInTicks Define if the cooldown is in ticks or in secs
      */
     public void addCooldown(Entity entity, @NotNull SObject sObject, int time, boolean isInTicks) {
+        // StringPlaceholder sp = new StringPlaceholder();
+        // System.out.println("DEBUG TEST CD 2: " + sp.replacePlaceholder(cooldown.getValue().get()));
         if (!hasNoCDPerm(entity, sObject) && time != 0) {
             Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), time, isInTicks, System.currentTimeMillis(), false);
             cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
@@ -189,13 +195,15 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
     }
 
     public void addGlobalCooldown(@NotNull SObject sObject) {
+        StringPlaceholder sp = new StringPlaceholder();
         int cooldownInt;
+        double cooldownDouble;
         try {
-            StringPlaceholder sp = new StringPlaceholder();
-            cooldownInt = Integer.parseInt(sp.replacePlaceholder(this.cooldown.getValue().get()));
+            cooldownDouble = Double.parseDouble(sp.replacePlaceholder(cooldown.getValue().get()));
         } catch (NumberFormatException e) {
-            cooldownInt = 0;
-        }        
+            cooldownDouble = 0;
+        }
+        cooldownInt = (int) cooldownDouble; // Cast to int
         Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
