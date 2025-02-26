@@ -24,8 +24,8 @@ import java.util.*;
 @Setter
 public class ListBiomeFeature extends ListFeatureAbstract<String, ListBiomeFeature> {
 
-    public ListBiomeFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, "List of Biomes", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListBiomeFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, "List of Biomes", defaultValue, featureSettings);
         reset();
     }
 
@@ -74,7 +74,7 @@ public class ListBiomeFeature extends ListFeatureAbstract<String, ListBiomeFeatu
 
     @Override
     public ListBiomeFeature clone(FeatureParentInterface newParent) {
-        ListBiomeFeature clone = new ListBiomeFeature(newParent, getDefaultValue(),getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListBiomeFeature clone = new ListBiomeFeature(newParent, getDefaultValue(),getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

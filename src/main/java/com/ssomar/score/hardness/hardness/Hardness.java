@@ -94,11 +94,11 @@ public class Hardness extends SObjectWithFileEditable<Hardness, HardnessEditor, 
 
     @Override
     public void reset() {
-        enabled = new BooleanFeature(this, false, FeatureSettingsSCore.enabled, false);
+        enabled = new BooleanFeature(this, false, FeatureSettingsSCore.enabled);
         detailedBlocks = new DetailedBlocks(this);
         detailedItems = new DetailedItems(this);
         period = new IntegerFeature(this, Optional.of(3), FeatureSettingsSCore.period);
-        periodInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.periodInTicks, false);
+        periodInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.periodInTicks);
     }
 
     @Override

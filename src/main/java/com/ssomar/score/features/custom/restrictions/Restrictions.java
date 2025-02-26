@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.restrictions;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -10,6 +11,7 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,16 +19,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
 public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrictions, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
-    private final static boolean NOT_SAVE_RESTRICTIONS = true;
     private Map<RestrictionEnum, BooleanFeature> restrictions;
     private Map<RestrictionEnum, Boolean> defaultValues;
     private List<RestrictionEnum> notFor1_11_less;
@@ -63,7 +61,7 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
             if (SCore.is1v13Less() && notFor1_13_less.contains(restriction)) continue;
             if (!SCore.is1v19Plus() && notFor1_18_less.contains(restriction)) continue;
             if (!SCore.is1v20Plus() && notFor1_19_less.contains(restriction)) continue;
-            restrictions.put(restriction, new BooleanFeature(this, defaultValues.get(restriction), restriction.featureSetting, NOT_SAVE_RESTRICTIONS));
+            restrictions.put(restriction, new BooleanFeature(this, defaultValues.get(restriction), restriction.featureSetting));
         }
     }
 
@@ -88,6 +86,14 @@ public class Restrictions extends FeatureWithHisOwnEditor<Restrictions, Restrict
         for (RestrictionEnum restriction : restrictions.keySet()) {
             restrictions.get(restriction).save(section);
         }
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

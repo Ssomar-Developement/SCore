@@ -24,8 +24,8 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
     private final static boolean DEBUG = true;
 
 
-    public ContainerContent(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, defaultValue, featureSettings, notSaveIfEqualsToDefaultValue, Optional.empty());
+    public ContainerContent(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, defaultValue, featureSettings, Optional.empty());
     }
 
     @Override
@@ -193,7 +193,7 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
 
     @Override
     public ContainerContent clone(FeatureParentInterface newParent) {
-        ContainerContent clone = new ContainerContent(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ContainerContent clone = new ContainerContent(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         return clone;
     }

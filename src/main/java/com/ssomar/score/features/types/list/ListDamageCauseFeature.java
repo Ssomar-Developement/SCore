@@ -18,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEvent.DamageCause, ListDamageCauseFeature> {
 
-    public ListDamageCauseFeature(FeatureParentInterface parent, List<EntityDamageEvent.DamageCause> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, "List of DamageCauses", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListDamageCauseFeature(FeatureParentInterface parent, List<EntityDamageEvent.DamageCause> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, "List of DamageCauses", defaultValue, featureSettings);
         reset();
     }
 
@@ -53,7 +53,7 @@ public class ListDamageCauseFeature extends ListFeatureAbstract<EntityDamageEven
 
     @Override
     public ListDamageCauseFeature clone(FeatureParentInterface newParent) {
-        ListDamageCauseFeature clone = new ListDamageCauseFeature(newParent,  getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListDamageCauseFeature clone = new ListDamageCauseFeature(newParent,  getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

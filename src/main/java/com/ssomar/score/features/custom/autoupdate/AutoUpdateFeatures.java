@@ -43,16 +43,16 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public void reset() {
-        this.autoUpdateItem = new BooleanFeature(this,  false, FeatureSettingsSCore.autoUpdateItem, false);
-        this.updateMaterial = new BooleanFeature(this, false, FeatureSettingsSCore.updateMaterial, false);
-        this.updateName = new BooleanFeature(this, true, FeatureSettingsSCore.updateName, false);
-        this.updateLore = new BooleanFeature(this,  true, FeatureSettingsSCore.updateLore, false);
-        this.updateDurability = new BooleanFeature(this, false, FeatureSettingsSCore.updateDurability, false);
-        this.updateAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.updateAttributes, false);
-        this.updateEnchants = new BooleanFeature(this, false, FeatureSettingsSCore.updateEnchants, false);
-        this.updateCustomModelData = new BooleanFeature(this, false, FeatureSettingsSCore.updateCustomModelData, false);
-        this.updateArmorSettings = new BooleanFeature(this, false, FeatureSettingsSCore.updateArmorSettings, false);
-        this.updateHiders = new BooleanFeature(this, false, FeatureSettingsSCore.updateHiders, false);
+        this.autoUpdateItem = new BooleanFeature(this,  false, FeatureSettingsSCore.autoUpdateItem);
+        this.updateMaterial = new BooleanFeature(this, false, FeatureSettingsSCore.updateMaterial);
+        this.updateName = new BooleanFeature(this, true, FeatureSettingsSCore.updateName);
+        this.updateLore = new BooleanFeature(this,  true, FeatureSettingsSCore.updateLore);
+        this.updateDurability = new BooleanFeature(this, false, FeatureSettingsSCore.updateDurability);
+        this.updateAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.updateAttributes);
+        this.updateEnchants = new BooleanFeature(this, false, FeatureSettingsSCore.updateEnchants);
+        this.updateCustomModelData = new BooleanFeature(this, false, FeatureSettingsSCore.updateCustomModelData);
+        this.updateArmorSettings = new BooleanFeature(this, false, FeatureSettingsSCore.updateArmorSettings);
+        this.updateHiders = new BooleanFeature(this, false, FeatureSettingsSCore.updateHiders);
     }
 
     @Override

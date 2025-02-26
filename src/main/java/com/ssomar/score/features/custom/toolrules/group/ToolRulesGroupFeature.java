@@ -40,7 +40,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
 
     @Override
     public void reset() {
-        this.enable = new BooleanFeature(getParent(), false, FeatureSettingsSCore.enable, false);
+        this.enable = new BooleanFeature(getParent(), false, FeatureSettingsSCore.enable);
         this.toolRules = new LinkedHashMap<>();
         this.defaultMiningSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.defaultMiningSpeed);
         this.damagePerBlock = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.damagePerBlock);

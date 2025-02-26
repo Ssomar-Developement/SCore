@@ -15,7 +15,7 @@ public class IfNotFromSpawner extends EntityConditionFeature<BooleanFeature, IfN
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotFromSpawner, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotFromSpawner));
     }
 
     @Override

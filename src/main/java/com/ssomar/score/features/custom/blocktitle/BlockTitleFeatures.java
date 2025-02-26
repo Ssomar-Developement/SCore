@@ -51,8 +51,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
     @Override
     public void reset() {
-        this.activeTitle = new BooleanFeature(this, false, FeatureSettingsSCore.activeTitle, false);
-        this.title = new ListColoredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.title, false, Optional.empty());
+        this.activeTitle = new BooleanFeature(this, false, FeatureSettingsSCore.activeTitle);
+        this.title = new ListColoredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.title, Optional.empty());
         this.titleAjustement = new DoubleFeature(this, Optional.of(0.5), FeatureSettingsSCore.titleAdjustement);
     }
 

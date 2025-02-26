@@ -59,12 +59,12 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
 
     @Override
     public void reset() {
-        this.whitelistMaterials = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.whitelistMaterials, false, false);
-        this.blacklistMaterials = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blacklistMaterials, false, false);
-        this.isLocked = new BooleanFeature(this, false, FeatureSettingsSCore.isLocked, false);
+        this.whitelistMaterials = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.whitelistMaterials, false);
+        this.blacklistMaterials = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blacklistMaterials, false);
+        this.isLocked = new BooleanFeature(this, false, FeatureSettingsSCore.isLocked);
         this.lockedName = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.lockedName, false);
-        this.inventoryTitle = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.inventoryTitle, false);
-        this.containerContent = new ContainerContent(this, new ArrayList<>(), FeatureSettingsSCore.containerContent, false);
+        this.inventoryTitle = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.inventoryTitle);
+        this.containerContent = new ContainerContent(this, new ArrayList<>(), FeatureSettingsSCore.containerContent);
     }
 
     @Override

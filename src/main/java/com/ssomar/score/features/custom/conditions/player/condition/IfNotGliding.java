@@ -30,7 +30,7 @@ public class IfNotGliding extends PlayerConditionFeature<BooleanFeature, IfNotGl
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotGliding, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotGliding));
     }
 
     @Override

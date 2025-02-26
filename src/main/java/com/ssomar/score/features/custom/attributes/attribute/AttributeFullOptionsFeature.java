@@ -48,7 +48,7 @@ public class AttributeFullOptionsFeature extends FeatureWithHisOwnEditor<Attribu
         this.operation = new OperationFeature(this, Optional.of(AttributeModifier.Operation.ADD_NUMBER), FeatureSettingsSCore.operation);
         this.amount = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.amount);
         this.slot = new SlotFeature(this, Optional.of(AttributeSlot.HAND), FeatureSettingsSCore.slot);
-        this.attributeName = new ColoredStringFeature(this, Optional.of("&eDefault name"), FeatureSettingsSCore.name, true);
+        this.attributeName = new ColoredStringFeature(this, Optional.of("&eDefault name"), FeatureSettingsSCore.name);
         this.uuid = new UUIDFeature(this, FeatureSettingsSCore.uuid);
     }
 

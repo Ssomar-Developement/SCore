@@ -40,7 +40,7 @@ public class IfWeather extends WorldConditionFeature<ListWeatherFeature, IfWeath
 
     @Override
     public void subReset() {
-        setCondition(new ListWeatherFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifWeather, true));
+        setCondition(new ListWeatherFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifWeather));
     }
 
     @Override

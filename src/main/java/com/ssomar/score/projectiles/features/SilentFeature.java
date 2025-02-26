@@ -12,7 +12,7 @@ public class SilentFeature extends BooleanFeature implements SProjectileFeatureI
 
 
     public SilentFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.silent, false);
+        super(parent,  false, FeatureSettingsSCore.silent);
     }
 
     @Override

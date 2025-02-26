@@ -27,8 +27,8 @@ import java.util.Optional;
 @Setter
 public class ListExecutableItemsFeature extends ListFeatureAbstract<String, ListExecutableItemsFeature> {
 
-    public ListExecutableItemsFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, "List of ExecutableItems", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListExecutableItemsFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, "List of ExecutableItems", defaultValue, featureSettings);
         reset();
     }
 
@@ -67,7 +67,7 @@ public class ListExecutableItemsFeature extends ListFeatureAbstract<String, List
 
     @Override
     public ListExecutableItemsFeature clone(FeatureParentInterface newParent) {
-        ListExecutableItemsFeature clone = new ListExecutableItemsFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListExecutableItemsFeature clone = new ListExecutableItemsFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

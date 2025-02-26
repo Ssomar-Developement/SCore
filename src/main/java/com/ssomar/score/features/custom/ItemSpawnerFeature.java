@@ -52,8 +52,8 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
         this.spawnRange = new IntegerFeature(this, Optional.of(4), FeatureSettingsSCore.spawnRange);
         this.requiredPlayerRange = new IntegerFeature(this, Optional.of(16), FeatureSettingsSCore.requiredPlayerRange);
         this.maxNearbyEntities = new IntegerFeature(this, Optional.of(6), FeatureSettingsSCore.maxNearbyEntities);
-        this.potentialSpawns = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.potentialSpawns, false, Optional.empty());
-        this.addSpawnerNbtToItem = new BooleanFeature(this, false, FeatureSettingsSCore.addSpawnerNbtToItem, false);
+        this.potentialSpawns = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.potentialSpawns, Optional.empty());
+        this.addSpawnerNbtToItem = new BooleanFeature(this, false, FeatureSettingsSCore.addSpawnerNbtToItem);
     }
 
     @Override

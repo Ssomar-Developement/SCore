@@ -61,7 +61,7 @@ public class IfContainerContainsSellableItem extends BlockConditionFeature<Boole
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifContainerContainsSellableItems, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifContainerContainsSellableItems));
     }
 
     @Override

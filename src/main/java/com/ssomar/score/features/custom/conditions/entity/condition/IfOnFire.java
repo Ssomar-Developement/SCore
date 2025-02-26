@@ -30,7 +30,7 @@ public class IfOnFire extends EntityConditionFeature<BooleanFeature, IfOnFire> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifOnFire, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifOnFire));
     }
 
     @Override

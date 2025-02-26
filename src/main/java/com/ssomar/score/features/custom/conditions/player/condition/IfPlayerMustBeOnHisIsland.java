@@ -53,7 +53,7 @@ public class IfPlayerMustBeOnHisIsland extends PlayerConditionFeature<BooleanFea
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisIsland, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisIsland));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,22 +29,20 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     private String value;
     private Optional<String> defaultValue;
-    private boolean notSaveIfEqualsToDefaultValue;
 
-    public ColoredStringFeature(FeatureParentInterface parent, Optional<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+    public ColoredStringFeature(FeatureParentInterface parent, Optional<String> defaultValue, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = defaultValue.orElse(null);
-        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
     }
 
     public static ColoredStringFeature buildNull(){
-        return new ColoredStringFeature(null, Optional.empty(), null, false);
+        return new ColoredStringFeature(null, Optional.empty(), null);
     }
 
     public static ColoredStringFeature buildNull(String value){
-        ColoredStringFeature c = new ColoredStringFeature(null, Optional.empty(), null, false);
+        ColoredStringFeature c = new ColoredStringFeature(null, Optional.empty(), null);
         c.setValue(value);
         return c;
     }
@@ -69,7 +69,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     public void save(ConfigurationSection config) {
         Optional<String> value = getValue();
         if (value.isPresent()) {
-            if (notSaveIfEqualsToDefaultValue && defaultValue.isPresent()) {
+            if (isSavingOnlyIfDiffDefault() && defaultValue.isPresent()) {
                 if (value.get().equals(defaultValue.get())) {
                     config.set(this.getName(), null);
                     return;
@@ -78,7 +78,10 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
             config.set(this.getName(), value.get());
         } else {
             config.set(this.getName(), null);
+            return;
         }
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
     }
 
     @Override
@@ -126,7 +129,7 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
 
     @Override
     public ColoredStringFeature clone(FeatureParentInterface newParent) {
-        ColoredStringFeature clone = new ColoredStringFeature(newParent, getDefaultValue(), getFeatureSettings(), notSaveIfEqualsToDefaultValue);
+        ColoredStringFeature clone = new ColoredStringFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValue(getValue().orElse(null));
         return clone;
     }

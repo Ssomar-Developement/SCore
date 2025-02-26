@@ -33,7 +33,7 @@ public class CancelEventFeatures extends FeatureWithHisOwnEditor<CancelEventFeat
 
     @Override
     public void reset() {
-        this.cancelEventIfNoperm = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNoPermission, false);
+        this.cancelEventIfNoperm = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNoPermission);
     }
 
     @Override

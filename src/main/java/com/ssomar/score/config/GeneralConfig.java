@@ -31,6 +31,8 @@ public class GeneralConfig extends Config {
 
     private String dbPassword;
 
+    private String configVerbosity;
+
     private List<String> silenceOutputs;
 
     private List<String> globalSilenceOutputs;
@@ -44,6 +46,8 @@ public class GeneralConfig extends Config {
     private boolean enableDetectionEntitiesFromSpawner;
 
     private boolean disableCustomMetadataOnEntities;
+
+    private boolean enableCommentsInConfig;
 
     public GeneralConfig() {
         super("config.yml");
@@ -81,6 +85,7 @@ public class GeneralConfig extends Config {
         dbName = config.getString("dbName", "");
         dbUser = config.getString("dbUser", "");
         dbPassword = config.getString("dbPassword", "");
+        configVerbosity = config.getString("configVerbosity", "NORMAL");
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
        // jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
         silenceOutputs = config.getStringList("silenceOutputs");
@@ -89,7 +94,19 @@ public class GeneralConfig extends Config {
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
         loopKillMode = config.getBoolean("loopKillMode", false);
         disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
+        enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true);
+    }
 
+    public boolean isVerbosityNormal() {
+        return configVerbosity.equalsIgnoreCase("NORMAL");
+    }
+
+    public boolean isVerbosityMinimal() {
+        return configVerbosity.toUpperCase().startsWith("MIN");
+    }
+
+    public boolean isVerbosityMaximal() {
+        return configVerbosity.toUpperCase().startsWith("MAX");
     }
 
     public void nextLocale() {

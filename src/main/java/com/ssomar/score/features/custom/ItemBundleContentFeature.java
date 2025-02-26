@@ -23,8 +23,8 @@ public class ItemBundleContentFeature extends ListUncoloredStringFeature impleme
     private final static boolean DEBUG = false;
 
 
-    public ItemBundleContentFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, defaultValue, featureSettings, notSaveIfEqualsToDefaultValue, suggestions);
+    public ItemBundleContentFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, Optional<List<Suggestion>> suggestions) {
+        super(parent, defaultValue, featureSettings, suggestions);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ItemBundleContentFeature extends ListUncoloredStringFeature impleme
 
     @Override
     public ItemBundleContentFeature clone(FeatureParentInterface newParent) {
-        ItemBundleContentFeature clone = new ItemBundleContentFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), Optional.empty());
+        ItemBundleContentFeature clone = new ItemBundleContentFeature(newParent, getDefaultValue(), getFeatureSettings(), Optional.empty());
         clone.setValues(this.getValues());
         return clone;
     }

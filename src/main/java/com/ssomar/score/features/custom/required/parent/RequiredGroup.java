@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.required.parent;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -17,6 +18,7 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -69,6 +71,15 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
         requiredExecutableItems.save(config);
         requiredMana.save(config);
         requiredMagics.save(config);
+
+        if(isSavingOnlyIfDiffDefault() && config.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

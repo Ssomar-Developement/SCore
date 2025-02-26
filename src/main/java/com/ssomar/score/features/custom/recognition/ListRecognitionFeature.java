@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.recognition;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.*;
@@ -63,7 +64,15 @@ public class ListRecognitionFeature extends FeatureAbstract<List<Recognition>, L
 
     @Override
     public void save(ConfigurationSection config) {
+        if (isSavingOnlyIfDiffDefault() && new HashSet<>(defaultValue).containsAll(getCurrentValues())) {
+            //SsomarDev.testMsg("notSaveIfEqualsToDefaultValue: " + this.getName(), true);
+            config.set(this.getName(), null);
+            return;
+        }
         config.set(this.getName(), getCurrentValues());
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

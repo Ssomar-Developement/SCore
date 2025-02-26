@@ -43,7 +43,7 @@ public class IfHasPermission extends PlayerConditionFeature<ListUncoloredStringF
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifHasPermission, true, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifHasPermission, Optional.empty()));
     }
 
     @Override

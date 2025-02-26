@@ -18,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMaterialFeature> {
 
-    public ListMaterialFeature(FeatureParentInterface parent, List<Material> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, "List of Materials", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListMaterialFeature(FeatureParentInterface parent, List<Material> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, "List of Materials", defaultValue, featureSettings);
         reset();
     }
 
@@ -45,7 +45,7 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
 
     @Override
     public ListMaterialFeature clone(FeatureParentInterface newParent) {
-        ListMaterialFeature clone = new ListMaterialFeature(newParent,  getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListMaterialFeature clone = new ListMaterialFeature(newParent,  getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

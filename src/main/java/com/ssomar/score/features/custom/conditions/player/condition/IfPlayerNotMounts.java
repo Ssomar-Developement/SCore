@@ -41,7 +41,7 @@ public class IfPlayerNotMounts extends PlayerConditionFeature<ListEntityTypeFeat
 
     @Override
     public void subReset() {
-        setCondition(new ListEntityTypeFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifPlayerNotMounts, true));
+        setCondition(new ListEntityTypeFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifPlayerNotMounts));
     }
 
     @Override

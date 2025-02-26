@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.required.money;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -13,6 +14,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.VaultAPI;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -64,6 +66,15 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
             money.save(requiredMoneySection);
             errorMessage.save(requiredMoneySection);
             cancelEventIfError.save(requiredMoneySection);
+
+            if(isSavingOnlyIfDiffDefault() && requiredMoneySection.getKeys(false).isEmpty()){
+                config.set(getName(), null);
+                return;
+            }
+
+            if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+                config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
         }
     }
 
@@ -130,8 +141,8 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     @Override
     public void reset() {
         this.money = new DoubleFeature(getParent(), Optional.of(0.0), FeatureSettingsSCore.requiredMoney);
-        this.errorMessage = new ColoredStringFeature(getParent(), Optional.of("&4&l>> &cError you don't have the required money"), FeatureSettingsSCore.errorMessage, true);
-        this.cancelEventIfError = new BooleanFeature(getParent(), false, FeatureSettingsSCore.cancelEventIfError, true);
+        this.errorMessage = new ColoredStringFeature(getParent(), Optional.of("&4&l>> &cError you don't have the required money"), FeatureSettingsSCore.errorMessage);
+        this.cancelEventIfError = new BooleanFeature(getParent(), false, FeatureSettingsSCore.cancelEventIfError);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.usage;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -11,6 +12,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +44,8 @@ public class UsageFeatures extends FeatureWithHisOwnEditor<UsageFeatures, UsageF
 
     @Override
     public void reset() {
-        this.usage = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.usage);
-        this.isRefreshableClean = new BooleanFeature(this, false, FeatureSettingsSCore.isRefreshableClean, false);
+        this.usage = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.usage);
+        this.isRefreshableClean = new BooleanFeature(this, true, FeatureSettingsSCore.isRefreshableClean);
         this.usageLimit = new IntegerFeature(this, Optional.of(-1), FeatureSettingsSCore.usageLimit);
         this.usePerDay = new UsePerDayFeature(this, getObjectId());
     }
@@ -76,6 +79,15 @@ public class UsageFeatures extends FeatureWithHisOwnEditor<UsageFeatures, UsageF
         this.isRefreshableClean.save(section);
         this.usageLimit.save(section);
         this.usePerDay.save(section);
+
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     public UsageFeatures getValue() {

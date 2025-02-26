@@ -24,8 +24,8 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
 
     private Optional<List<Suggestion>> suggestions;
 
-    public ListBukkitColorFeature(FeatureParentInterface parent, List<Color> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, "List of Bukkit colors",defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListBukkitColorFeature(FeatureParentInterface parent, List<Color> defaultValue, FeatureSettingsInterface featureSettings, Optional<List<Suggestion>> suggestions) {
+        super(parent, "List of Bukkit colors",defaultValue, featureSettings);
         this.suggestions = suggestions;
         reset();
     }
@@ -45,7 +45,7 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
 
     @Override
     public ListBukkitColorFeature clone(FeatureParentInterface newParent) {
-        ListBukkitColorFeature clone = new ListBukkitColorFeature(newParent,  getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), suggestions);
+        ListBukkitColorFeature clone = new ListBukkitColorFeature(newParent,  getDefaultValue(), getFeatureSettings(), suggestions);
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

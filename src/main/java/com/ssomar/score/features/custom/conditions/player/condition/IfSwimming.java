@@ -30,7 +30,7 @@ public class IfSwimming extends PlayerConditionFeature<BooleanFeature, IfSwimmin
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifSwimming, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifSwimming));
     }
 
     @Override

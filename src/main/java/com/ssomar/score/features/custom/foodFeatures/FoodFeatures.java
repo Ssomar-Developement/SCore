@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.foodFeatures;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
@@ -9,6 +10,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +47,8 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
     public void reset() {
         nutrition = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.nutrition);
         saturation = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.saturation);
-        isMeat = new BooleanFeature(this, false, FeatureSettingsSCore.isMeat, false);
-        canAlwaysEat = new BooleanFeature(this, false, FeatureSettingsSCore.canAlwaysEat, false);
+        isMeat = new BooleanFeature(this, false, FeatureSettingsSCore.isMeat);
+        canAlwaysEat = new BooleanFeature(this, false, FeatureSettingsSCore.canAlwaysEat);
         eatSeconds = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.eatSeconds);
     }
 
@@ -74,6 +77,14 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
         isMeat.save(section);
         canAlwaysEat.save(section);
         if (!SCore.is1v21v2Plus()) eatSeconds.save(section);
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

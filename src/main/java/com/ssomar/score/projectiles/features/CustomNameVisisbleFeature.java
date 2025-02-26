@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class CustomNameVisisbleFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public CustomNameVisisbleFeature(FeatureParentInterface parent) {
-        super(parent, false, FeatureSettingsSCore.customNameVisible, false);
+        super(parent, false, FeatureSettingsSCore.customNameVisible);
     }
 
     @Override

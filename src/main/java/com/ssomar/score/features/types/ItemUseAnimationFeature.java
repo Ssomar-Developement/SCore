@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -58,8 +59,16 @@ public class ItemUseAnimationFeature extends FeatureAbstract<Optional<ItemUseAni
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<ItemUseAnimation> value = getValue();
-        if (value.isPresent()) config.set(this.getName(), value.get().name());
+        if (getValue().isPresent()) {
+            if(defaultValue.isPresent() && isSavingOnlyIfDiffDefault() && getValue().get().equals(defaultValue.get())){
+                config.set(this.getName(), null);
+                return;
+            }
+            else config.set(this.getName(), getValue().get().name());
+        }
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

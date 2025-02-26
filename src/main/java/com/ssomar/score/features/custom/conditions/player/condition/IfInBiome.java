@@ -35,7 +35,7 @@ public class IfInBiome extends PlayerConditionFeature<ListBiomeFeature, IfInBiom
 
     @Override
     public void subReset() {
-        setCondition(new ListBiomeFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifInBiome, true));
+        setCondition(new ListBiomeFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifInBiome));
     }
 
     @Override

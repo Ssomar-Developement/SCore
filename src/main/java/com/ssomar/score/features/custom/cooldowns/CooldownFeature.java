@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
@@ -256,6 +257,15 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
             section.set(FeatureSettingsSCore.pausePlaceholdersConditions.getName(), null);
         }
         this.enableVisualCooldown.save(section);
+
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override
@@ -300,13 +310,13 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
     @Override
     public void reset() {
         this.cooldown = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.cooldown);
-        this.isCooldownInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.isCooldownInTicks, false);
-        this.cooldownMessage = new ColoredStringFeature(this, Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), FeatureSettingsSCore.cooldownMsg, false);
-        this.displayCooldownMessage = new BooleanFeature(this,  true, FeatureSettingsSCore.displayCooldownMessage, false);
-        this.cancelEventIfInCooldown = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfInCooldown, false);
-        this.pauseWhenOffline = new BooleanFeature(this, false, FeatureSettingsSCore.pauseWhenOffline, false);
-        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, FeatureSettingsSCore.pausePlaceholdersConditions);
-        this.enableVisualCooldown = new BooleanFeature(this, false, FeatureSettingsSCore.enableVisualCooldown, false);
+        this.isCooldownInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.isCooldownInTicks);
+        this.cooldownMessage = new ColoredStringFeature(this, Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), FeatureSettingsSCore.cooldownMsg);
+        this.displayCooldownMessage = new BooleanFeature(this,  true, FeatureSettingsSCore.displayCooldownMessage);
+        this.cancelEventIfInCooldown = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfInCooldown);
+        this.pauseWhenOffline = new BooleanFeature(this, false, FeatureSettingsSCore.pauseWhenOffline);
+        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, FeatureSettingsSCore.pausePlaceholdersConditions, true);
+        this.enableVisualCooldown = new BooleanFeature(this, false, FeatureSettingsSCore.enableVisualCooldown);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class RemoveWhenHitBlockFeature extends BooleanFeature implements SProjec
 
 
     public RemoveWhenHitBlockFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.removeWhenHitBlock, false);
+        super(parent,  false, FeatureSettingsSCore.removeWhenHitBlock);
     }
 
     @Override

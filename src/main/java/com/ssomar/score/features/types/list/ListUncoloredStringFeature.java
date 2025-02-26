@@ -23,8 +23,8 @@ public class ListUncoloredStringFeature extends ListFeatureAbstract<String, List
 
     private Optional<List<Suggestion>> suggestions;
 
-    public ListUncoloredStringFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent,"List of Colored Strings", defaultValue,featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListUncoloredStringFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, Optional<List<Suggestion>> suggestions) {
+        super(parent,"List of Colored Strings", defaultValue,featureSettings);
         this.suggestions = suggestions;
         reset();
     }
@@ -44,7 +44,7 @@ public class ListUncoloredStringFeature extends ListFeatureAbstract<String, List
 
     @Override
     public ListUncoloredStringFeature clone(FeatureParentInterface newParent) {
-        ListUncoloredStringFeature clone = new ListUncoloredStringFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), suggestions);
+        ListUncoloredStringFeature clone = new ListUncoloredStringFeature(newParent, getDefaultValue(), getFeatureSettings(), suggestions);
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

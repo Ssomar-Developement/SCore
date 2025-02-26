@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.required.items.group;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.required.RequiredPlayerInterface;
 import com.ssomar.score.features.custom.required.items.item.RequiredItemFeature;
@@ -8,6 +9,7 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,8 +39,8 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     @Override
     public void reset() {
         this.requiredItems = new HashMap<>();
-        this.errorMessage = new ColoredStringFeature(this, Optional.of("&4&l>> &cError you don't have the required items"), FeatureSettingsSCore.errorMessage, true);
-        this.cancelEventIfError = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfError, true);
+        this.errorMessage = new ColoredStringFeature(this, Optional.of("&4&l>> &cError you don't have the required items"), FeatureSettingsSCore.errorMessage);
+        this.cancelEventIfError = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfError);
     }
 
     @Override
@@ -77,6 +79,15 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
         }
         errorMessage.save(attributesSection);
         cancelEventIfError.save(attributesSection);
+
+        if(isSavingOnlyIfDiffDefault() && attributesSection.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

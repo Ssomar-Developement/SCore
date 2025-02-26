@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.displayConditions;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -15,6 +16,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -43,7 +46,7 @@ public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayCo
 
     @Override
     public void reset() {
-        this.enableFeature = new BooleanFeature(this, false, FeatureSettingsSCore.enableFeature, false);
+        this.enableFeature = new BooleanFeature(this, false, FeatureSettingsSCore.enableFeature);
 
         this.playerConditions = new PlayerConditionsFeature(this, FeatureSettingsSCore.playerConditions);
 
@@ -78,6 +81,14 @@ public class DisplayConditionsFeatures extends FeatureWithHisOwnEditor<DisplayCo
         itemConditions.save(section);
         placeholderConditions.save(section);
         enableFeature.save(section);
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

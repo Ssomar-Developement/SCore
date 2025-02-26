@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.drop;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -11,6 +12,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ChatColorFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -20,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +41,9 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
 
     @Override
     public void reset() {
-        this.glowDrop = new BooleanFeature(getParent(), false, FeatureSettingsSCore.glowDrop, false);
+        this.glowDrop = new BooleanFeature(getParent(), false, FeatureSettingsSCore.glowDrop);
         this.dropColor = new ChatColorFeature(getParent(), Optional.of(ChatColor.WHITE), FeatureSettingsSCore.glowDropColor);
-        this.displayNameDrop = new BooleanFeature(getParent(), false, FeatureSettingsSCore.displayNameDrop, false);
+        this.displayNameDrop = new BooleanFeature(getParent(), false, FeatureSettingsSCore.displayNameDrop);
     }
 
     @Override
@@ -67,6 +70,15 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
         glowDrop.save(section);
         dropColor.save(section);
         displayNameDrop.save(section);
+
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

@@ -12,6 +12,10 @@ public abstract class CustomConditionFeature<Y extends FeatureAbstract, T extend
         super(parent, featureSetting);
     }
 
+    public CustomConditionFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean cancelDefaultValue) {
+        super(parent, featureSettings, cancelDefaultValue);
+    }
+
     public abstract boolean verifCondition(CustomConditionRequest request);
 
 }

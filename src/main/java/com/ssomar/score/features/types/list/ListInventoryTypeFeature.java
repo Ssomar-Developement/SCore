@@ -18,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListInventoryTypeFeature extends ListFeatureAbstract<InventoryType, ListInventoryTypeFeature> {
 
-    public ListInventoryTypeFeature(FeatureParentInterface parent, List<InventoryType> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent,"List of InventoryType", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListInventoryTypeFeature(FeatureParentInterface parent, List<InventoryType> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent,"List of InventoryType", defaultValue, featureSettings);
         reset();
     }
 
@@ -53,7 +53,7 @@ public class ListInventoryTypeFeature extends ListFeatureAbstract<InventoryType,
 
     @Override
     public ListInventoryTypeFeature clone(FeatureParentInterface newParent) {
-        ListInventoryTypeFeature clone = new ListInventoryTypeFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListInventoryTypeFeature clone = new ListInventoryTypeFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

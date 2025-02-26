@@ -41,7 +41,7 @@ public class IfPlayerMounts extends PlayerConditionFeature<ListEntityTypeFeature
 
     @Override
     public void subReset() {
-        setCondition(new ListEntityTypeFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifPlayerMounts, true));
+        setCondition(new ListEntityTypeFeature(this,  new ArrayList<>(), FeatureSettingsSCore.ifPlayerMounts));
     }
 
     @Override

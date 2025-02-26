@@ -40,10 +40,10 @@ public class BookFeatures extends FeatureWithHisOwnEditor<BookFeatures, BookFeat
 
     @Override
     public void reset() {
-        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable, false);
-        this.author = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.author, false);
-        this.title = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.title, false);
-        this.pages = new ListColoredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.pages, false, Optional.empty());
+        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
+        this.author = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.author);
+        this.title = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.title);
+        this.pages = new ListColoredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.pages, Optional.empty());
 
     }
 

@@ -17,7 +17,7 @@ public class IfHasSaddle extends EntityConditionFeature<BooleanFeature, IfHasSad
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifHasSaddle, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifHasSaddle));
     }
 
     @Override

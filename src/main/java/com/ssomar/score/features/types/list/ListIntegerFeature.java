@@ -21,8 +21,8 @@ public class ListIntegerFeature extends ListFeatureAbstract<Integer, ListInteger
 
     private Optional<List<Suggestion>> suggestions;
 
-    public ListIntegerFeature(FeatureParentInterface parent, List<Integer> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, "List of Colored Strings", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListIntegerFeature(FeatureParentInterface parent, List<Integer> defaultValue, FeatureSettingsInterface featureSettings, Optional<List<Suggestion>> suggestions) {
+        super(parent, "List of Colored Strings", defaultValue, featureSettings);
         this.suggestions = suggestions;
         reset();
     }
@@ -42,7 +42,7 @@ public class ListIntegerFeature extends ListFeatureAbstract<Integer, ListInteger
 
     @Override
     public ListIntegerFeature clone(FeatureParentInterface newParent) {
-        ListIntegerFeature clone = new ListIntegerFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), suggestions);
+        ListIntegerFeature clone = new ListIntegerFeature(newParent, getDefaultValue(), getFeatureSettings(), suggestions);
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

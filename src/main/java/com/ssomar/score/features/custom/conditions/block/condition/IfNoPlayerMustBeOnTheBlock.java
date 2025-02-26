@@ -52,7 +52,7 @@ public class IfNoPlayerMustBeOnTheBlock extends BlockConditionFeature<BooleanFea
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNoPlayerMustBeOnTheBlock, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNoPlayerMustBeOnTheBlock));
     }
 
     @Override

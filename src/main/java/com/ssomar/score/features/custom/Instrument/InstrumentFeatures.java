@@ -36,7 +36,7 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
 
     @Override
     public void reset() {
-        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable, false);
+        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         this.instrument = new MusicIntrusmentFeature(this, Optional.empty(), FeatureSettingsSCore.instrument);
     }
 

@@ -41,7 +41,7 @@ public class IfInWorld extends PlayerConditionFeature<ListWorldFeature, IfInWorl
 
     @Override
     public void subReset() {
-        setCondition(new ListWorldFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifInWorld, true));
+        setCondition(new ListWorldFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifInWorld));
     }
 
     @Override

@@ -18,8 +18,8 @@ import java.util.*;
 @Setter
 public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListEntityTypeFeature> {
 
-    public ListEntityTypeFeature(FeatureParentInterface parent, List<EntityType> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent,"List of EntityTypes", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListEntityTypeFeature(FeatureParentInterface parent, List<EntityType> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent,"List of EntityTypes", defaultValue, featureSettings);
         reset();
     }
 
@@ -45,7 +45,7 @@ public class ListEntityTypeFeature extends ListFeatureAbstract<EntityType, ListE
 
     @Override
     public ListEntityTypeFeature clone(FeatureParentInterface newParent) {
-        ListEntityTypeFeature clone = new ListEntityTypeFeature(newParent, getDefaultValue(),getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListEntityTypeFeature clone = new ListEntityTypeFeature(newParent, getDefaultValue(),getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

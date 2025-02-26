@@ -1,6 +1,7 @@
 package com.ssomar.score.features.types.list;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -13,10 +14,7 @@ import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -24,14 +22,12 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     private List<T> values;
     private List<T> blacklistedValues;
     private List<T> defaultValue;
-    private boolean notSaveIfEqualsToDefaultValue;
     private String featureName;
 
 
-    public ListFeatureAbstract(FeatureParentInterface parent, String featureName, List<T> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+    public ListFeatureAbstract(FeatureParentInterface parent, String featureName, List<T> defaultValue, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
         this.defaultValue = defaultValue;
-        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         this.featureName = featureName;
         reset();
     }
@@ -39,7 +35,6 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
     public ListFeatureAbstract() {
         super(null, null);
         defaultValue = new ArrayList<>();
-        notSaveIfEqualsToDefaultValue = false;
         featureName = null;
         reset();
     }
@@ -81,13 +76,17 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
 
     @Override
     public void save(ConfigurationSection config) {
+        List<T> valuesTyped = new ArrayList<>(values);
+        valuesTyped.addAll(blacklistedValues);
         //SsomarDev.testMsg("save deVal s: " + defaultValue.size() + " val s: " + value.size() + " >> " + (defaultValue.containsAll(value)));
-        if (notSaveIfEqualsToDefaultValue && new HashSet<>(defaultValue).containsAll(getCurrentValues())) {
+        if (isSavingOnlyIfDiffDefault() && new HashSet<>(defaultValue).containsAll(valuesTyped)) {
             //SsomarDev.testMsg("notSaveIfEqualsToDefaultValue: " + this.getName(), true);
             config.set(this.getName(), null);
             return;
         }
         config.set(this.getName(), getCurrentValues());
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
     }
 
     @Override

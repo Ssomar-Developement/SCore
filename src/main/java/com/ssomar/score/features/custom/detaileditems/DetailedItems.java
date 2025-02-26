@@ -47,9 +47,9 @@ public class DetailedItems extends FeatureWithHisOwnEditor<DetailedItems, Detail
 
     @Override
     public void reset() {
-        this.items = new ListDetailedMaterialFeature(this,  new ArrayList<>(),FeatureSettingsSCore.items, false, false);
-        this.cancelEventIfNotValid = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfNotValid, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe item is not correct !") */, FeatureSettingsSCore.messageIfNotValid, false);
+        this.items = new ListDetailedMaterialFeature(this,  new ArrayList<>(),FeatureSettingsSCore.items, false);
+        this.cancelEventIfNotValid = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfNotValid);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe item is not correct !") */, FeatureSettingsSCore.messageIfNotValid);
     }
 
     @Override

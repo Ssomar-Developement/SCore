@@ -1,10 +1,12 @@
 package com.ssomar.score.features.custom.attributes.group;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.attributes.attribute.AttributeFullOptionsFeature;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,10 +37,10 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
     public void reset() {
         this.attributes = new LinkedHashMap<>();
 
-        this.keepDefaultAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.keepDefaultAttributes, false);
+        this.keepDefaultAttributes = new BooleanFeature(this, false, FeatureSettingsSCore.keepDefaultAttributes);
 
         // to not impact old items
-        this.ignoreKeepDefaultAttributesFeature = new BooleanFeature(this, true, FeatureSettingsSCore.ignoreKeepDefaultAttributesFeature , false);
+        this.ignoreKeepDefaultAttributesFeature = new BooleanFeature(this, true, FeatureSettingsSCore.ignoreKeepDefaultAttributesFeature);
     }
 
     @Override
@@ -75,6 +77,14 @@ public class AttributesGroupFeature extends FeatureWithHisOwnEditor<AttributesGr
         }
         keepDefaultAttributes.save(config);
         ignoreKeepDefaultAttributesFeature.save(config);
+        if(isSavingOnlyIfDiffDefault() && attributesSection.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

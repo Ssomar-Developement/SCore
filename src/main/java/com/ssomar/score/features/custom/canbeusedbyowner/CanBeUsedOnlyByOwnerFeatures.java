@@ -36,9 +36,9 @@ public class CanBeUsedOnlyByOwnerFeatures extends FeatureWithHisOwnEditor<CanBeU
 
     @Override
     public void reset() {
-        this.canBeUsedOnlyByTheOwner = new BooleanFeature(this, false, FeatureSettingsSCore.canBeUsedOnlyByTheOwner, false);
-        this.cancelEventIfNotOwner = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotOwner, false);
-        this.blackListedActivators = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.onlyOwnerBlackListedActivators, false, Optional.empty());
+        this.canBeUsedOnlyByTheOwner = new BooleanFeature(this, false, FeatureSettingsSCore.canBeUsedOnlyByTheOwner);
+        this.cancelEventIfNotOwner = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotOwner);
+        this.blackListedActivators = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.onlyOwnerBlackListedActivators, Optional.empty());
     }
 
     @Override

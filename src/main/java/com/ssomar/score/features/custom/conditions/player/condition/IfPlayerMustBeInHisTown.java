@@ -36,7 +36,7 @@ public class IfPlayerMustBeInHisTown extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifPlayerMustBeInHisTown, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifPlayerMustBeInHisTown));
     }
 
     @Override

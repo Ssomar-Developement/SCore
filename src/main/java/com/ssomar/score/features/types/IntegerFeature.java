@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -19,10 +20,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -71,8 +69,14 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
         if (placeholder.isPresent()) {
             config.set(this.getName(), placeholder.get());
         } else if (getValue().isPresent()) {
-            config.set(this.getName(), getValue().get());
+            if(defaultValue.isPresent() && isSavingOnlyIfDiffDefault() && value.get().equals(defaultValue.get())){
+                config.set(this.getName(), null);
+                return;
+            }
+            else config.set(this.getName(), getValue().get());
         }
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
     }
 
     public Optional<Integer> getValue(@Nullable UUID playerUUID, @Nullable StringPlaceholder sp) {

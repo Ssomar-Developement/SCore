@@ -560,6 +560,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         hasFactionsUUID = Dependency.FACTIONS_UUID.hookSoftDependency();
 
+        Dependency.PACKET_EVENTS.hookSoftDependency();
+
         /* Test for verzante and qvazzar */
         //hasProtocolLib = false;
 

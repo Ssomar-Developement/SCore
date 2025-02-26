@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class GlowingFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public GlowingFeature(FeatureParentInterface parent) {
-        super(parent, false, FeatureSettingsSCore.glowing, false);
+        super(parent, false, FeatureSettingsSCore.glowing);
     }
 
     @Override

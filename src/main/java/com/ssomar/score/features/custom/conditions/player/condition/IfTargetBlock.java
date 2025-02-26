@@ -44,7 +44,7 @@ public class IfTargetBlock extends PlayerConditionFeature<ListDetailedMaterialFe
 
     @Override
     public void subReset() {
-        setCondition(new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.ifTargetBlock, true, true));
+        setCondition(new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.ifTargetBlock, true));
     }
 
     @Override

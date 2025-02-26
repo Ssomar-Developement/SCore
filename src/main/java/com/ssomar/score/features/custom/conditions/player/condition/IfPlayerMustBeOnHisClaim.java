@@ -72,7 +72,7 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisClaim, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisClaim));
     }
 
     @Override

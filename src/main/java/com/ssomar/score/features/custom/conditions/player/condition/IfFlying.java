@@ -32,7 +32,7 @@ public class IfFlying extends PlayerConditionFeature<BooleanFeature, IfFlying> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFlying, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFlying));
     }
 
     @Override

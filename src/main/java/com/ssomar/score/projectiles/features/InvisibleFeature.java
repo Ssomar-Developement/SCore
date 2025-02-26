@@ -20,7 +20,7 @@ public class InvisibleFeature extends BooleanFeature implements SProjectileFeatu
 
 
     public InvisibleFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.invisible, false);
+        super(parent,  false, FeatureSettingsSCore.invisible);
     }
 
     @Override

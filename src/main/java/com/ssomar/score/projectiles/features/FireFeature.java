@@ -11,7 +11,7 @@ import org.bukkit.entity.Projectile;
 public class FireFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public FireFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.visualFire, false);
+        super(parent,  false, FeatureSettingsSCore.visualFire);
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

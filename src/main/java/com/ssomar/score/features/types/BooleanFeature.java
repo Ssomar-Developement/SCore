@@ -1,6 +1,7 @@
 package com.ssomar.score.features.types;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -21,10 +22,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -34,14 +32,12 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     private boolean noValueUsePlaceholder;
     private boolean defaultValue;
     private String placeholder;
-    private boolean notSaveIfEqualsToDefaultValue;
 
-    public BooleanFeature(FeatureParentInterface parent, Boolean defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
+    public BooleanFeature(FeatureParentInterface parent, Boolean defaultValue, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
         this.defaultValue = defaultValue;
         this.value = defaultValue;
         this.noValueUsePlaceholder = false;
-        this.notSaveIfEqualsToDefaultValue = notSaveIfEqualsToDefaultValue;
         reset();
 
         //System.out.println(ClassLayout.parseClass(BooleanFeature.class).toPrintable());
@@ -73,7 +69,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public BooleanFeature clone(FeatureParentInterface newParent) {
-        BooleanFeature clone = new BooleanFeature(newParent, defaultValue, getFeatureSettings(), notSaveIfEqualsToDefaultValue);
+        BooleanFeature clone = new BooleanFeature(newParent, defaultValue, getFeatureSettings());
         clone.setValue(value);
         clone.setPlaceholder(placeholder);
         clone.setNoValueUsePlaceholder(noValueUsePlaceholder);
@@ -82,15 +78,16 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void save(ConfigurationSection config) {
-        if (notSaveIfEqualsToDefaultValue) {
-            if (!noValueUsePlaceholder && value == defaultValue) {
-                config.set(this.getName(), null);
-                return;
-            }
+        if (isSavingOnlyIfDiffDefault() && !noValueUsePlaceholder && value == defaultValue) {
+            config.set(this.getName(), null);
+            return;
         }
+
         if (placeholder != null) {
             config.set(this.getName(), placeholder);
-        } else if(!noValueUsePlaceholder) config.set(this.getName(), value);
+        } else if (!noValueUsePlaceholder) config.set(this.getName(), value);
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
     }
 
     public Boolean getValue(@Nullable StringPlaceholder sp) {
@@ -123,6 +120,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         }
         return defaultValue;
     }
+
     public boolean isConfigured() {
         return (!noValueUsePlaceholder && value) || placeholder != null;
     }
@@ -144,7 +142,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void updateItemParentEditor(GUI gui) {
-        if(!noValueUsePlaceholder) gui.updateBoolean(getEditorName(), value);
+        if (!noValueUsePlaceholder) gui.updateBoolean(getEditorName(), value);
         else gui.updateCurrently(getEditorName(), placeholder);
     }
 
@@ -212,6 +210,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
     public void setValue(boolean value) {
         this.value = value;
     }
+
     public void setValue(Optional<Boolean> value) {
         this.value = value.orElse(defaultValue);
     }
@@ -256,8 +255,9 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public Optional<String> verifyMessageReceived(String message) {
-        if(message.contains("%")) return Optional.empty();
-        else return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a placeholder"));
+        if (message.contains("%")) return Optional.empty();
+        else
+            return Optional.of(StringConverter.coloredString("&4&l[ERROR] &cThe message you entered is not a placeholder"));
     }
 
     @Override
@@ -271,7 +271,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
 
     @Override
     public void finishEditInEditorNoValue(Player editor, NewGUIManager manager) {
-        if(noValueUsePlaceholder) this.value = defaultValue;
+        if (noValueUsePlaceholder) this.value = defaultValue;
         this.noValueUsePlaceholder = false;
         this.placeholder = null;
         manager.requestWriting.remove(editor);

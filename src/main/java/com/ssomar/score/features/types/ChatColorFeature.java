@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,8 +51,16 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<ChatColor> value = getValue();
-        value.ifPresent(chatColor -> config.set(this.getName(), chatColor.name()));
+        if (getValue().isPresent()) {
+            if(defaultValue.isPresent() && isSavingOnlyIfDiffDefault() && getValue().get().equals(defaultValue.get())){
+                config.set(this.getName(), null);
+                return;
+            }
+            else config.set(this.getName(), getValue().get().name());
+        }
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

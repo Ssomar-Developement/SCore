@@ -33,7 +33,7 @@ public class SitFeatures extends FeatureWithHisOwnEditor<SitFeatures, SitFeature
 
     @Override
     public void reset() {
-        this.playerCanSit = new BooleanFeature(this,  false, FeatureSettingsSCore.playerCanSit, false);
+        this.playerCanSit = new BooleanFeature(this,  false, FeatureSettingsSCore.playerCanSit);
     }
 
     @Override

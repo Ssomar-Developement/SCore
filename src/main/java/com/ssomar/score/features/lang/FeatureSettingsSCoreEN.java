@@ -2,6 +2,7 @@ package com.ssomar.score.features.lang;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureSettingsInterface;
+import com.ssomar.score.features.SavingVerbosityLevel;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.FixedMaterial;
 import org.bukkit.Material;
@@ -588,6 +589,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     private String[] editorDescription;
     private Material editorMaterial;
     private boolean requirePremium;
+    private SavingVerbosityLevel savingVerbosityLevel;
 
     FeatureSettingsSCoreEN(String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
         this.configName = "";
@@ -595,6 +597,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
         this.editorDescription = editorDescription;
         this.editorMaterial = editorMaterial;
         this.requirePremium = false;
+        this.savingVerbosityLevel = SavingVerbosityLevel.SAVE_ALWAYS;
     }
 
     @Override
@@ -623,6 +626,11 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     }
 
     @Override
+    public String[] getEditorDescriptionBrut() {
+        return editorDescription;
+    }
+
+    @Override
     public Material getEditorMaterial() {
         return editorMaterial;
     }
@@ -635,5 +643,15 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     @Override
     public void setRequirePremium(boolean requirePremium) {
         this.requirePremium = requirePremium;
+    }
+
+    @Override
+    public SavingVerbosityLevel getSavingVerbosityLevel() {
+        return savingVerbosityLevel;
+    }
+
+    @Override
+    public void setSavingVerbosityLevel(SavingVerbosityLevel savingVerbosityLevel) {
+        this.savingVerbosityLevel = savingVerbosityLevel;
     }
 }

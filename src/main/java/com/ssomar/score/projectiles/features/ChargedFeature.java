@@ -11,7 +11,7 @@ import org.bukkit.entity.WitherSkull;
 public class ChargedFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public ChargedFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.charged, false);
+        super(parent,  false, FeatureSettingsSCore.charged);
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

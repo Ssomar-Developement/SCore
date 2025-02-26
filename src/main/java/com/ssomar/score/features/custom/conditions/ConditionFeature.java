@@ -38,11 +38,17 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
     private ConsoleCommandsFeature consoleCommandsIfError;
     private BooleanFeature silenceOutput;
 
-    private final static Boolean cancelDefaultValue = false;
+    private boolean cancelDefaultValue = false;
     private static Optional<String> DEFAULT_DEFAULT_ERROR = Optional.of("&4[ERROR] &cYou can't activate this item > invalid condition");
 
     public ConditionFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
+        reset();
+    }
+
+    public ConditionFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings, boolean cancelDefaultValue) {
+        super(parent, featureSettings);
+        this.cancelDefaultValue = cancelDefaultValue;
         reset();
     }
 
@@ -54,10 +60,10 @@ public abstract class ConditionFeature<Y extends FeatureAbstract, T extends Cond
 
     @Override
     public void reset() {
-        this.errorMessage = new ColoredStringFeature(this, DEFAULT_DEFAULT_ERROR, FeatureSettingConditions.getInstance().getErrorMessage(getFeatureSettings().getName()), true);
-        this.cancelEventIfError = new BooleanFeature(this, cancelDefaultValue, FeatureSettingConditions.getInstance().getCancelEventIfError(getFeatureSettings().getName()), true);
+        this.errorMessage = new ColoredStringFeature(this, DEFAULT_DEFAULT_ERROR, FeatureSettingConditions.getInstance().getErrorMessage(getFeatureSettings().getName()));
+        this.cancelEventIfError = new BooleanFeature(this, cancelDefaultValue, FeatureSettingConditions.getInstance().getCancelEventIfError(getFeatureSettings().getName()));
         this.consoleCommandsIfError = new ConsoleCommandsFeature(this, FeatureSettingConditions.getInstance().getConsoleCommandsIfError(getFeatureSettings().getName()), true);
-        this.silenceOutput = new BooleanFeature(this, false, FeatureSettingsSCore.silenceOutput, true);
+        this.silenceOutput = new BooleanFeature(this, false, FeatureSettingsSCore.silenceOutput);
         subReset();
     }
 

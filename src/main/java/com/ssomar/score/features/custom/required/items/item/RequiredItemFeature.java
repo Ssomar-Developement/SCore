@@ -53,7 +53,7 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     public void reset() {
         this.material = new MaterialFeature(this, Optional.of(Material.STONE), FeatureSettingsSCore.material);
         this.amount = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.amount);
-        this.notExecutableItem = new BooleanFeature(this,  false, FeatureSettingsSCore.notExecutableItem, false);
+        this.notExecutableItem = new BooleanFeature(this,  false, FeatureSettingsSCore.notExecutableItem);
     }
 
     @Override

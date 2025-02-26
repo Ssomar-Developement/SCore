@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class IncendiaryFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public IncendiaryFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.incendiary, false);
+        super(parent,  false, FeatureSettingsSCore.incendiary);
     }
 
     @Override

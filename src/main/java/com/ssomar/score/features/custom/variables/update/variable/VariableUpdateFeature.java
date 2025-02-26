@@ -57,7 +57,7 @@ public class VariableUpdateFeature extends FeatureWithHisOwnEditor<VariableUpdat
     public void reset() {
         this.variableName = new UncoloredStringFeature(this, Optional.of("var"), FeatureSettingsSCore.variableName, false);
         this.type = new VariableUpdateTypeFeature(this, Optional.of(VariableUpdateType.SET), FeatureSettingsSCore.type);
-        this.stringUpdate = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.modification_string, false);
+        this.stringUpdate = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.modification_string);
         this.doubleUpdate = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.modification_double);
     }
 

@@ -38,7 +38,7 @@ public class IfMustBeNotNatural extends BlockConditionFeature<BooleanFeature, If
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifMustBeNotNatural, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifMustBeNotNatural));
     }
 
     @Override

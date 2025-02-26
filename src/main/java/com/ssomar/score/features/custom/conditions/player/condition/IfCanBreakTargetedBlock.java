@@ -35,7 +35,7 @@ public class IfCanBreakTargetedBlock extends PlayerConditionFeature<BooleanFeatu
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifCanBreakTargetedBlock, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifCanBreakTargetedBlock));
     }
 
     @Override
