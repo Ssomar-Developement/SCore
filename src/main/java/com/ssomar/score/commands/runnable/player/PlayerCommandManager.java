@@ -25,6 +25,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new SetItemName()); 
         if(SCore.is1v20v5Plus()) commands.add(new SetItemMaterial());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemTooltipStyle());
+        if(SCore.is1v20v5Plus()) commands.add(new SetItemPotionColor());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemModel());
         commands.add(new SetItemCustomModelData());
         commands.add(new SendBlankMessage());
