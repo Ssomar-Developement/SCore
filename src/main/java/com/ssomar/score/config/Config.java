@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Config {
+    @Getter
     protected final String fileName;
     protected File pdfile;
+    @Getter
     protected FileConfiguration config;
 
     @Getter
@@ -85,14 +87,6 @@ public abstract class Config {
         }
     }
 
-
-    public FileConfiguration getConfig() {
-        return this.config;
-    }
-
-    public String getFileName() {
-        return this.fileName;
-    }
 
     public boolean loadBooleanSetting(String setting, boolean defaultValue) {
         if(!config.isBoolean(setting)) {

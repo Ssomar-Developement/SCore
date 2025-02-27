@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.languages.messages.TM;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -54,7 +55,27 @@ public class GeneralConfig extends Config {
         super.setup(SCore.plugin);
     }
 
+    public GeneralConfig(boolean blindMode) {
+        super("");
+        useMySQL = false;
+        dbIP = "";
+        dbPort = 3306;
+        dbName = "";
+        dbUser = "";
+        dbPassword = "";
+        configVerbosity = "NORMAL";
+        reduceDamageIndicatorWithProtolcolLib = false;
+        silenceOutputs = new ArrayList<>();
+        globalSilenceOutputs = new ArrayList<>();
+        debugCheckDamages = false;
+        enableDetectionEntitiesFromSpawner = true;
+        loopKillMode = false;
+        disableCustomMetadataOnEntities =  false;
+        enableCommentsInConfig = true;
+    }
+
     public static GeneralConfig getInstance() {
+        if(!Dependency.SCORE.isInstalled()) instance = new GeneralConfig(true);
         if (instance == null) instance = new GeneralConfig();
         return instance;
     }
