@@ -34,17 +34,26 @@ public class LaunchEntity extends MixedCommand {
 
         Location loc = livingReceiver.getEyeLocation();
         //loc.setY(loc.getY()-1);
-        EntityType entityType = EntityType.PIG;
         double speed = 1;
         double rotation = 0;
-
-        if (args.size() >= 1) {
+        Entity entity = null;
+        //SsomarDev.testMsg("args: "+args.get(0), true);
+        if (!args.isEmpty()) {
+            String entityName = args.get(0);
             try {
-                entityType = EntityType.valueOf(args.get(0).toUpperCase());
+                EntityType entityType = EntityType.valueOf(entityName.toUpperCase());
+                entity = receiver.getWorld().spawnEntity(loc, entityType);
             } catch (Exception ignored) {
-
+                try{
+                    //SsomarDev.testMsg("PASSE 2 LAUNCHENTITY: ", true);
+                    entity = Bukkit.getEntityFactory().createEntitySnapshot(entityName).createEntity(loc);
+                }catch (Exception ignored2){
+                    entity = receiver.getWorld().spawnEntity(loc, EntityType.PIG);
+                }
             }
         }
+        if (entity == null) return;
+
         if (args.size() >= 2) {
             try {
                 speed = Double.parseDouble(args.get(1));
@@ -59,8 +68,6 @@ public class LaunchEntity extends MixedCommand {
             } catch (Exception ignored) {
             }
         }
-
-        Entity entity = receiver.getWorld().spawnEntity(loc, entityType);
         Vector v = livingReceiver.getEyeLocation().getDirection();
         v.multiply(speed);
         if (!SCore.is1v13Less()) v.rotateAroundY(rotation);

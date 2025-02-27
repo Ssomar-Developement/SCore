@@ -78,6 +78,8 @@ public class LogFilter implements Filter, LifeCycle {
         messageToHide.add("Nothing changed.");
         messageToHide.add("is not holding any item");
         messageToHide.add("cannot support that enchantment");
+        messageToHide.add("The sound is too far away to be heard");
+        messageToHide.add("No player was found");
         messageToHide.addAll(GeneralConfig.getInstance().getSilenceOutputs());
 
         globalMessageToHide = new ArrayList<>();

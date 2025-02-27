@@ -31,7 +31,7 @@ public class PackSettings {
         this.customPromptMessage = customPromptMessage;
         this.force = force;
         this.injector = new PackHttpInjector(this);
-        this.hostedPath = "http://localhost:"+ Bukkit.getServer().getPort() +"/score/" + getFileName();
+        this.hostedPath = "http://"+Bukkit.getServer().getIp()+":"+ Bukkit.getServer().getPort() +"/score/" + getFileName();
     }
 
     public String getFileName() {

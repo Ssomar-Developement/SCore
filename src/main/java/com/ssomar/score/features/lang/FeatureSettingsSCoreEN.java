@@ -467,7 +467,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     playerCanSit("playerCanSit", "Player Can Sit", new String[]{"&7&oPlayer can sit"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"))),
     playerCommands("playerCommands", "Player Commands", new String[]{"&7&oThe player commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND"))),
     playerSettings("playerSettings", "Player Settings", new String[]{"&7&oThe player settings"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND"))),
-    playerConditions("playerConditions", "Player Conditions", new String[]{""}, Material.ANVIL),
+    playerConditions("playerConditions", "Player Conditions", new String[]{"&7&oAdd player conditions to determine", "&7&owhen the "}, Material.ANVIL),
     playerCooldownOptions("playerCooldownOptions", "Player Cooldown Options", new String[]{"&7&oThe player cooldown"}, GUI.CLOCK),
     potionColor("potionColor", "Potion Color", new String[]{"&7&oThe potion color"}, Material.REDSTONE),
     potionEffect("potionEffect", "Potion Effect", new String[]{"&7&oA potion effect with its options"}, FixedMaterial.getBrewingStand()),

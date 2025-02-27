@@ -14,6 +14,7 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,16 @@ public abstract class SObject<X extends FeatureInterface<X, X>, Y extends GUI, Z
         }
 
         return true;
+    }
+
+    public abstract List<FeatureInterface> getFeatures();
+
+    @Nullable
+    public FeatureInterface getFeature(FeatureSettingsInterface featureSettings){
+        for(FeatureInterface feature : getFeatures()){
+            if(feature.getFeatureSettings().equals(featureSettings)) return feature;
+        }
+        return null;
     }
 
 }

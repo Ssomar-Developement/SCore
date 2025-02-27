@@ -214,12 +214,15 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
         if (!exists) {
             Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cCANT LOAD YOUR &6" + objectName.toUpperCase() + "&c, FOLDER '" + objectName + "' not found !");
-            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7It will generate &e" + getObjectsShortPath().size() + "&7 default "+objectName+" from jar :&e " + defaultObjectsPath);
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7It will generate &e" + getObjectsShortPath().size() + "&7 default " + objectName + " from jar :&e " + defaultObjectsPath);
+            File fileFolder = new File(getConfigsPath());
+            fileFolder.mkdirs();
         }
 
         for (String id : getObjectsShortPath()) {
             copyDefaultFile(defaultObjectsPath + id, defaultObjectsPathWithoutSlash, isPremiumLoading);
         }
+
 
         Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
 

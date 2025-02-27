@@ -238,9 +238,11 @@ public class ContainerFeatures extends FeatureWithHisOwnEditor<ContainerFeatures
             //SsomarDev.testMsg("Passe locked", true);
             container.setLock(getLockedName().getValue().get());
         }
+
         container.update();
 
         containerContent.applyOnBlockData(args);
+
     }
 
 

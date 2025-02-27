@@ -43,7 +43,7 @@ public class EventsHandler {
         if (!SCore.is1v11Less()) {
             main.getServer().getPluginManager().registerEvents(new StunEvent(), main);
 
-            main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
+            main.getServer().getPluginManager().registerEvents(new PlayerPickupListener(), main);
         }
 
         main.getServer().getPluginManager().registerEvents(CommandsHandler.getInstance(), main);
@@ -66,7 +66,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 
-        main.getServer().getPluginManager().registerEvents(new FixSpawnerPlaceEvent(), main);
+        main.getServer().getPluginManager().registerEvents(new FixSpawnerPlaceListener(), main);
 
         main.getServer().getPluginManager().registerEvents(new RemoveProjectileHitBlockEvent(), main);
 
