@@ -1,4 +1,4 @@
-locale: EN
+locale: EN # Lang available:  AR, DE, EN, ES, FR, ID, RU, ZH
 useMySQL: false
 dbIP: 127.0.0.1
 dbPort: 3306
@@ -16,5 +16,4 @@ disableCustomMetadataOnEntities: false # to disable the metadata fromSpawner and
 #NORMAL : it will save modified settings + frequently used settings
 #MAX : it will save all settings (its very verbose)
 configVerbosity: "NORMAL" # "NORMAL" or "MIN" or "MAX"
-
 enableCommentsInConfig: true # It will add a description of each setting in comment in the yaml config file.
