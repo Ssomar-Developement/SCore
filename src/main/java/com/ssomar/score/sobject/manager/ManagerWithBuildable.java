@@ -13,7 +13,6 @@ public interface ManagerWithBuildable<T extends SObject> {
 
     Optional<SObject> getObject(ItemStack item);
 
-
     // %ei_checkamount% count all
     // %ei_checkamount_slot:0,2,3,4%
     // %ei_checkamount_id:item1,item2_slot:0,2,3,4%

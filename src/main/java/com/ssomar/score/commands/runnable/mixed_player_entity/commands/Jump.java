@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
-import com.ssomar.score.nofalldamage.NoFallDamageManager;
+import com.ssomar.score.events.NoFallDamageListener;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,11 +40,11 @@ public class Jump extends MixedCommand {
                     if(falldamage.equalsIgnoreCase("true")){
 
                     }else {
-                        NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+                        NoFallDamageListener.getInstance().addNoFallDamage(receiver);
                     }
 
                 }else{
-                    NoFallDamageManager.getInstance().addNoFallDamage(receiver);
+                    NoFallDamageListener.getInstance().addNoFallDamage(receiver);
                 }
             }
         };

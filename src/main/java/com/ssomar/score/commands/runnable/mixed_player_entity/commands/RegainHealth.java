@@ -22,6 +22,8 @@ public class RegainHealth extends MixedCommand {
         List<String> args = sCommandToExec.getOtherArgs();
         if(!(receiver instanceof LivingEntity)) return;
         LivingEntity livingReceiver = (LivingEntity) receiver;
+        // The entity is already dead by another damage, so dont try to heal it otherwise it creates a ghost entity
+        if(livingReceiver.isDead()) return;
 
         double regain = Double.parseDouble(args.get(0));
         double maxHealth;

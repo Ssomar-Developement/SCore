@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
-import com.ssomar.score.nofalldamage.NoFallDamageManager;
+import com.ssomar.score.events.NoFallDamageListener;
 import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
@@ -76,12 +76,12 @@ public class ProjectileCustomDash1 extends PlayerCommand {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
+                    NoFallDamageListener.getInstance().removeNoFallDamage(receiver, uuid);
                 }
             };
             ScheduledTask scheduledTask = SCore.schedulerHook.runTask(runnable, 300);
 
-            NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, scheduledTask));
+            NoFallDamageListener.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, scheduledTask));
         }
 
     }

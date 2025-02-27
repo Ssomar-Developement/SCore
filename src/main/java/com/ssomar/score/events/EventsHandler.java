@@ -6,10 +6,8 @@ import com.ssomar.score.commands.runnable.player.commands.openchest.OpenChestLis
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
 import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.damagewithoutknockback.DamageWithoutKnockbackListener;
 import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
-import com.ssomar.score.nofalldamage.NoFallDamageListener;
 import com.ssomar.score.pack.listener.JoinQuitListener;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.JobsAPI;
@@ -35,7 +33,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new NoFallDamageListener(), main);
 
-        main.getServer().getPluginManager().registerEvents(new DamageWithoutKnockbackListener(), main);
+        main.getServer().getPluginManager().registerEvents(DamageWithoutKnockbackListener.getInstance(), main);
 
         main.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), main);
 
