@@ -57,6 +57,7 @@ public class GeneralConfig extends Config {
 
     public GeneralConfig(boolean blindMode) {
         super("");
+        locale = Locale.EN;
         useMySQL = false;
         dbIP = "";
         dbPort = 3306;
