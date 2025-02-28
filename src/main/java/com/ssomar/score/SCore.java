@@ -43,6 +43,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
@@ -849,5 +850,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     @Override
     public Config getPluginConfig() {
         return GeneralConfig.getInstance();
+    }
+
+    public static SchedulerHook getSchedulerHook(Plugin plugin) {
+        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(plugin);
+        else schedulerHook = new BukkitSchedulerHook(plugin);
+        return schedulerHook;
     }
 }
