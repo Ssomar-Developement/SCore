@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 @Getter
@@ -31,7 +33,11 @@ public class PackSettings {
         this.customPromptMessage = customPromptMessage;
         this.force = force;
         this.injector = new PackHttpInjector(this);
-        this.hostedPath = "http://"+Bukkit.getServer().getIp()+":"+ Bukkit.getServer().getPort() +"/score/" + getFileName();
+        try {
+            this.hostedPath = "http://"+ InetAddress.getLocalHost()+":"+ Bukkit.getServer().getPort() +"/score/" + getFileName();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getFileName() {

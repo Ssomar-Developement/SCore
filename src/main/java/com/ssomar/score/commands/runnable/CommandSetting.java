@@ -116,7 +116,7 @@ public class CommandSetting {
                 return null;
             }
         }
-        if(acceptUnderScoreForLongText) return value.replaceAll("_", " ");
+        if(acceptUnderScoreForLongText && !value.contains("http")) return value.replaceAll("_", " ");
         return value;
     }
 

@@ -7,6 +7,7 @@ import com.ssomar.score.features.custom.loop.LoopFeatures;
 import com.ssomar.score.sobject.sactivator.EventInfo;
 import com.ssomar.score.sobject.sactivator.OptionGlobal;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.usedapi.Dependency;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
@@ -24,7 +25,9 @@ public class LoopManager {
     private final List<SActivator> loopActivatorsToRemove;
 
     public LoopManager(Plugin plugin) {
-        this.plugin = plugin;
+        // If SCore is installed, use it as the plugin otherwise use the provided plugin (probably a plugin that shades SCore)
+        if(Dependency.SCORE.isInstalled()) this.plugin = SCore.plugin;
+        else this.plugin = plugin;
         DELAY = 5;
         if(GeneralConfig.getInstance().isLoopKillMode()) DELAY = 1;
 

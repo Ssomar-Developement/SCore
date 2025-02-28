@@ -20,6 +20,11 @@ public class StringConverter {
     public static final Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public static String coloredString(String s) {
+
+        if(s.contains("NO_COLOR")) {
+            return s.replaceAll("NO_COLOR", "").trim();
+        }
+
         final String[] keys = new String[]{"& ", "&"};
         final String[] values = new String[]{"|<-_->|", "§"};
 
