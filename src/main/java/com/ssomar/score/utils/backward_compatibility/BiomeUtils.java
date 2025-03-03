@@ -13,7 +13,12 @@ import java.util.Map;
 
 public class BiomeUtils {
 
+    private static Map<Object, String> biomes;
+
     public static Map<Object, String> getBiomes() {
+        if (biomes != null) {
+            return biomes;
+        }
         Map<Object, String> list = new HashMap<>();
         if (SCore.is1v21v2Plus()) {
             for (Keyed l : Registry.BIOME) {
@@ -39,7 +44,8 @@ public class BiomeUtils {
             }
         }
         // Sort the list
-        return MapUtil.sortByValue(list);
+        biomes = MapUtil.sortByValue(list);
+        return biomes;
     }
 
     public static Biome getBiome(String string) {
