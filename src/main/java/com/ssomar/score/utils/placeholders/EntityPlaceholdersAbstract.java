@@ -147,10 +147,11 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
 
             // remove this try chat and find the good version to start
             try{
-                toReplace = toReplace.replaceAll("%" + particle + "_serialized%", entity.createSnapshot().getAsString());
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+                EntitySnapshot entitySnapshot = entity.createSnapshot();
+                if (entitySnapshot != null) {
+                    toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_serialized"+StringPlaceholder.end, entitySnapshot.getAsString());
+                }
+            } catch (Exception ignore){}
 
             if(entity != null && entity instanceof Item){
                 Item item = (Item) entity;
