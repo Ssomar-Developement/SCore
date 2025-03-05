@@ -23,6 +23,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     private final String defaultObjectsPath;
     private final String defaultObjectsPathWithoutSlash;
     private final SObjectManager<T> sObjectManager;
+    @Getter
     private final int maxFreeObjects;
     private final Logger logger;
     @Getter

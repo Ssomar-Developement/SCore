@@ -137,15 +137,15 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
 
         String toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "%";
         if (s.contains(toReplace)) {
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + getValue() + (isRefreshable ? getPlaceholderTag(toReplace) : "") + optTag, false);
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace,  getValue()+"", optTag, (isRefreshable ? getPlaceholderTag(toReplace) : ""), false);
         }
         toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "_int%";
         if (s.contains(toReplace)) {
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + (getValue().intValue()) + (isRefreshable ? getPlaceholderTag(toReplace) : "") +optTag, true);
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace,  (getValue().intValue())+"", optTag, (isRefreshable ? getPlaceholderTag(toReplace) : ""), true);
         }
         toReplace = "%var_" + getConfig().getVariableName().getValue().get() + "_roman%";
         if (s.contains(toReplace)) {
-            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, optTag + (getValue().intValue()) + (isRefreshable ? getPlaceholderTag(toReplace) : "") + optTag, true, true);
+            s = StringPlaceholder.replaceCalculPlaceholder(s, toReplace, (getValue().intValue())+"", optTag,  (isRefreshable ? getPlaceholderTag(toReplace) : ""), true, true);
         }
         return s;
     }

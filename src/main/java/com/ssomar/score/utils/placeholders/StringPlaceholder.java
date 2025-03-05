@@ -275,8 +275,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if (hasActivatorName()) placeholders.put("%activator_name%", this.getActivator_name());
 
         if (this.hasQuantity()) {
-            s = replaceCalculPlaceholder(s, "%quantity%", quantity, true);
-            s = replaceCalculPlaceholder(s, "%amount%", quantity, true);
+            s = replaceCalculPlaceholder(s, "%quantity%", quantity,  true);
+            s = replaceCalculPlaceholder(s, "%amount%", quantity,  true);
         }
         if (this.hasCoolodwn()) {
             placeholders.put("%cooldown%", this.getCooldown());
@@ -285,7 +285,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             placeholders.put("%blockface%", this.getBlockface());
         }
         if (this.hasUsage()) {
-            s = replaceCalculPlaceholder(s, "%usage%", usage, true);
+            s = replaceCalculPlaceholder(s, "%usage%", usage,true);
         }
         if (this.hasUsageLimit()) {
             s = replaceCalculPlaceholder(s, "%usage_limit%", usageLimit, true);
