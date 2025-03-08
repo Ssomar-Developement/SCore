@@ -2,12 +2,12 @@ package com.ssomar.score.languages.messages;
 
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.Config;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -51,14 +51,14 @@ public class TM {
 
     public void loadTexts() {
 
-        if (!SCore.plugin.getDataFolder().exists()) SCore.plugin.getDataFolder().mkdir();
-        File pdfile = new File(SCore.plugin.getDataFolder(), fileName);
+        if (!SCore.dataFolder.exists()) SCore.dataFolder.mkdir();
+        File pdfile = new File(SCore.dataFolder, fileName);
         if (!pdfile.exists()) {
             try {
                 pdfile.getParentFile().mkdir();
                 pdfile.createNewFile();
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(SCore.plugin.getResource(fileName)));
+                BufferedReader br = new BufferedReader(new InputStreamReader(Config.getResource(SCore.class, fileName)));
                 String line;
 
                 Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pdfile), StandardCharsets.UTF_8));
@@ -74,13 +74,13 @@ public class TM {
                 }
 
             } catch (IOException e) {
-                throw new RuntimeException("Unable to create the file: " + this.fileName + " for the plugin: " + SCore.plugin.getName(), e);
+                throw new RuntimeException("Unable to create the file: " + this.fileName + " for the plugin: " + SCore.NAME, e);
             } catch (NullPointerException e) {/* locale */}
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(pdfile);
 
         for (TextInterface msgI : Text.values()) {
-            this.loadMessage(msgI, SCore.plugin, pdfile, config, msgI.getKey());
+            this.loadMessage(msgI, SCore.class, SCore.NAME, pdfile, config, msgI.getKey());
         }
         /* print all keys values */
         /* for(TextInterface msgI : Text.values()) {
@@ -88,7 +88,7 @@ public class TM {
         } */
     }
 
-    public void loadMessage(TextInterface msgI, Plugin plugin, File pdFile, FileConfiguration config, String message) {
+    public void loadMessage(TextInterface msgI, Class clazz, String pluginName, File pdFile, FileConfiguration config, String message) {
 
         if(config.isList(message)){
             List<String> object = config.getStringList(message);
@@ -98,16 +98,16 @@ public class TM {
             String object = config.getString(message);
             messages.put(msgI, object);
         }
-        else write(msgI, plugin, pdFile, config, message);
+        else write(msgI, clazz, pluginName, pdFile, config, message);
     }
 
-    public void write(TextInterface msgI, Plugin plugin, File pdFile, FileConfiguration config, String what) {
+    public void write(TextInterface msgI, Class clazz, String pluginName, File pdFile, FileConfiguration config, String what) {
 
-        String insert = "Can't load the string (" + what + ") for the plugin > " + plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
+        String insert = "Can't load the string (" + what + ") for the plugin > " + pluginName + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
         try {
             String defaultLanguage = GeneralConfig.getInstance().getLocale().toString();
 
-            InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/" + plugin.getName().toLowerCase() + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
+            InputStream flux = clazz.getResourceAsStream("/com/ssomar/" + pluginName + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
             BufferedReader buff = new BufferedReader(lecture);
 
@@ -130,16 +130,16 @@ public class TM {
             }
 
             if(!isNotUpdate){
-                Utils.sendConsoleMsg(SCore.NAME_COLOR+ " &7Update of &6" + what + " &7in your for the plugin > &6" + plugin.getName() + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR+ " &7Update of &6" + what + " &7in your for the plugin > &6" + pluginName + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
                 config.save(pdFile);
             } else{
-                Utils.sendConsoleMsg(SCore.NAME_COLOR + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + pluginName + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
                 if(msgI.getType() == TypeText.STRING) messages.put(msgI, msgI.getDefaultValueString());
                 else messagesArray.put(msgI, msgI.getDefaultValueArray());
             }
             buff.close();
         } catch (Exception e) {
-            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+what+" &cfor the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+what+" &cfor the plugin > &6" + pluginName + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
     }

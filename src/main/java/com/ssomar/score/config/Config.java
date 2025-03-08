@@ -92,7 +92,7 @@ public abstract class Config {
      * @return File if found, otherwise null
      */
     @Nullable
-    public InputStream getResource(Class clazz, @NotNull String filename) {
+    public static InputStream getResource(Class clazz, @NotNull String filename) {
         if (filename == null || filename.isEmpty()) {
             throw new IllegalArgumentException("Filename cannot be null or empty");
         }
