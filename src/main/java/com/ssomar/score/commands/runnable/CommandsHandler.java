@@ -43,6 +43,8 @@ public class CommandsHandler implements Listener {
     List<BlockRunCommand> delayedCommandsByBlockUuid;
 
     /* for "morph item" timing between delete item and regive item (2 ticks)  player */
+    @Setter
+    @Getter
     private Map<Player, Long> stopPickup;
 
     private Map<Player, List<Material>> stopPickupMaterial;
@@ -78,7 +80,7 @@ public class CommandsHandler implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent e) {
 
         //System.out.println("JOIN EVENT");
-        if (!SCore.plugin.isEnabled()) return;
+        if (!SCore.pluginHolder.isEnabled()) return;
 
         //System.out.println("JOIN EVENT 2");
         Player p = e.getPlayer();
@@ -87,7 +89,7 @@ public class CommandsHandler implements Listener {
             for (PlayerRunCommand command : getInstance().getDelayedCommandsSaved().get(p.getUniqueId())) {
                 //System.out.println("JOIN EVENT 4");
                 command.run();
-                SCore.plugin.getLogger().info("SCore will execute the delayed command saved for " + p.getName() + " : " + command.getBrutCommand() + " >> delay: " + command.getDelay());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7SCore will execute the delayed command saved for &a" + p.getName() + " &7: &6" + command.getBrutCommand() + " &7>> delay: &b" + command.getDelay());
             }
         }
         getInstance().getDelayedCommandsSaved().remove(p.getUniqueId());
@@ -96,7 +98,7 @@ public class CommandsHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void PlayerQuitEvent(PlayerQuitEvent e) {
 
-        if (!SCore.plugin.isEnabled()) return;
+        if (!SCore.pluginHolder.isEnabled()) return;
 
         Player p = e.getPlayer();
 
@@ -154,7 +156,7 @@ public class CommandsHandler implements Listener {
         }
         for (PlayerRunCommand command : savedCommands) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(command.getReceiverUUID());
-            SCore.plugin.getLogger().info("SCore saved the delayed command for " + player.getName() + " : " + command.getBrutCommand());
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7SCore saved the delayed command for &a" + player.getName() + " &7: &6" + command.getBrutCommand() + " &7>> delay: &b" + command.getDelay());
         }
         PlayerCommandsQuery.deleteCommands(Database.getInstance().connect());
         PlayerCommandsQuery.insertCommand(Database.getInstance().connect(), savedCommands, false);
@@ -341,14 +343,6 @@ public class CommandsHandler implements Listener {
 
     public boolean hasStopPickup(@NotNull Player p, Material material) {
         return stopPickupMaterial.containsKey(p) && stopPickupMaterial.get(p).contains(material);
-    }
-
-    public Map<Player, Long> getStopPickup() {
-        return stopPickup;
-    }
-
-    public void setStopPickup(Map<Player, Long> stopPickup) {
-        this.stopPickup = stopPickup;
     }
 
 }
