@@ -114,6 +114,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasMyFurniture = false;
 
     public static boolean hasTAB = false;
+
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
     private static boolean is1v10 = false;
@@ -445,16 +446,25 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return isPaper() || isFolia() || isMohist() || isPurpur() || isPufferfish() || isPaperOrForkFor1v20lus;
     }
 
-    @Override
-    public void onEnable() {
-        plugin = this;
 
+    public void initLibPartOfSCore(){
         injectSpigot = InjectSpigot.INSTANCE;
 
         this.initVersion();
 
         if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
         else schedulerHook = new BukkitSchedulerHook(this);
+
+        this.loadDependency();
+    }
+
+
+    @Override
+    public void onEnable() {
+        plugin = this;
+
+        this.initLibPartOfSCore();
+
         commandClass = new CommandsClass(this);
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
@@ -469,8 +479,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
             Utils.sendConsoleMsg(NAME_COLOR + " &7is running on &ePaper or fork");
         }
         this.displayVersion();
-
-        this.loadDependency();
 
         GeneralConfig.getInstance();
 
@@ -500,7 +508,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Projectiles instance part */
         SProjectileLoader.getInstance().load();
-        /* Hardnesses instance part */
+        /* Hardness's instance part */
         HardnessLoader.getInstance().load();
 
         /* Variables instance part */

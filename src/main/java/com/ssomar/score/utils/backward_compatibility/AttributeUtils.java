@@ -190,6 +190,10 @@ public class AttributeUtils {
     }
 
     public static void addAttributeOnItemMeta(@NotNull ItemMeta meta, Material itemType, LinkedHashMap<Attribute, AttributeModifier> attributes, boolean keepDefaultItemAttributes, boolean keepExistingAttributes, boolean overrideExistingAttributes) {
+        addAttributeOnItemMeta(meta, itemType, attributes, keepDefaultItemAttributes, keepExistingAttributes, overrideExistingAttributes, false);
+    }
+
+    public static void addAttributeOnItemMeta(@NotNull ItemMeta meta, Material itemType, LinkedHashMap<Attribute, AttributeModifier> attributes, boolean keepDefaultItemAttributes, boolean keepExistingAttributes, boolean overrideExistingAttributes,boolean stackOnExistingAttributes) {
 
         /* remove ExistingAttributes if needed */
         if (!keepExistingAttributes) {
@@ -217,26 +221,35 @@ public class AttributeUtils {
             //meta.setAttributeModifiers(reset);
         }
 
-        if (meta.hasAttributeModifiers())
-            SsomarDev.testMsg("GET DEFAULT DAMAGE: " + meta.getAttributeModifiers(AttributeUtils.getAttribute("GENERIC_ATTACK_DAMAGE")), DEBUG);
+        //if (meta.hasAttributeModifiers()) SsomarDev.testMsg("GET DEFAULT DAMAGE: " + meta.getAttributeModifiers(AttributeUtils.getAttribute("GENERIC_ATTACK_DAMAGE")), DEBUG);
 
         /* add new attributes */
         for (Attribute att : attributes.keySet()) {
             AttributeModifier attModifier = attributes.get(att);
             EquipmentSlot slot = attModifier.getSlot();
             AtomicReference<AttributeModifier> toRemove = new AtomicReference<>();
+            // stack value if needed
+            AtomicReference<Double> stackValue = new AtomicReference<>((double) 0);
             // On supprime l'existant si besoin
             meta.getAttributeModifiers(slot).forEach((attribute, modifier) -> {
                 if (attribute.equals(att)) {
                     if (overrideExistingAttributes) {
                         toRemove.set(modifier);
                     }
+                    if(stackOnExistingAttributes && modifier.getOperation() == attModifier.getOperation() && modifier.getSlotGroup() == attModifier.getSlotGroup()) {
+                        toRemove.set(modifier);
+                        stackValue.set(modifier.getAmount());
+                    }
                 }
             });
             if (toRemove.get() != null) {
                 meta.removeAttributeModifier(att, toRemove.get());
             }
-            meta.addAttributeModifier(att, attributes.get(att));
+            // New value with stack
+            if(stackOnExistingAttributes){
+                meta.addAttributeModifier(att,new AttributeModifier(attModifier.getKey(), attModifier.getAmount()+stackValue.get(), attModifier.getOperation(), attModifier.getSlotGroup()));
+            }
+            else meta.addAttributeModifier(att, attModifier);
         }
 
         /* add default attributes if needed */

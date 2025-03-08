@@ -143,22 +143,25 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             if(s.contains("%" + particle + "_uuid_array%")) toReplace = toReplace.replace("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
 
             /* WARNING GET NAME OF OFFLINE REQUIRE MANY PERFORMANCE THAT WHY IT IS HERE AND ONLY GET IF IT IS REALLY NEEDED */
-            if(s.contains("%" + particle + "%") || s.contains("%" + particle + "_name%") || s.contains("%" + particle + "_team%")) {
+            boolean teamPlaceholder = false;
+            if(s.contains("%" + particle + "%") || s.contains("%" + particle + "_name%") || (teamPlaceholder = s.contains("%" + particle + "_team%"))) {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
                 String playerName = offlinePlayer.getName();
                 if (playerName != null) {
-                    String team = "NO_TEAM";
-                    for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
-                        if (t.hasEntry(playerName)) {
-                            team = t.getName();
-                            break;
+                    if(teamPlaceholder) {
+                        String team = "NO_TEAM";
+                        for (Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) {
+                            if (t.hasEntry(playerName)) {
+                                team = t.getName();
+                                break;
+                            }
                         }
+                        toReplace = toReplace.replace("%" + particle + "_team%", team);
                     }
 
                     /* Pre save placeholders without calcul */
                     toReplace = toReplace.replace("%" + particle + "%", playerName);
                     toReplace = toReplace.replace("%" + particle + "_name%", playerName);
-                    toReplace = toReplace.replace("%" + particle + "_team%", team);
                 }
             }
 

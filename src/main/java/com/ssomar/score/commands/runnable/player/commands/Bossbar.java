@@ -103,7 +103,7 @@ public class Bossbar extends PlayerCommand {
                         if (!countTicks) {
                             countText += "s";
                         }
-
+                        bossBar.setProgress((double) counter / count);
                         bossBar.setTitle(StringConverter.coloredString(finalMessage + " " + countText));
                     }
                 };

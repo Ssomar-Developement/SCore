@@ -257,7 +257,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         String s = str;
         if (!s.contains("%")) return str;
 
-        if (str.trim().length() == 0) return "";
+        if (str.trim().isEmpty()) return "";
 
         s = replaceRandomPlaceholders(s);
 

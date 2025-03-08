@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class NTools implements Serializable {
 
@@ -65,28 +66,50 @@ public class NTools implements Serializable {
     }
 
     public static double reduceDouble(@NotNull double number, int numbersAfterComma) {
-        /* Limit numbers after , */
-        /* Static freqeuntly used formats for optimization */
-        if(numbersAfterComma == 1){
-            numberFormat_1.setRoundingMode(RoundingMode.HALF_UP);
-            return Double.parseDouble(numberFormat_1.format(number).replaceAll("\\?", "").replace(",", "."));
+        // Use direct multiplication and division instead of string formatting
+        if (numbersAfterComma >= 0) {
+            double factor = Math.pow(10, numbersAfterComma);
+            return Math.round(number * factor) / factor;
         }
-        else if(numbersAfterComma == 2){
-            numberFormat_2.setRoundingMode(RoundingMode.HALF_UP);
-            //SsomarDev.testMsg(numberFormat_2.format(number).replaceAll("\\?", "").replaceAll(",", "."), true);
-            return Double.parseDouble(numberFormat_2.format(number).replaceAll("\\?", "").replaceAll(",", "."));
+
+        // Handle negative numbersAfterComma or other special cases by falling back to formatter
+        // Create a reusable thread-local formatter map for rare cases
+        else {
+            return formatWithDecimalFormat(number, numbersAfterComma);
         }
-        else if(numbersAfterComma == 3){
-            numberFormat_3.setRoundingMode(RoundingMode.HALF_UP);
-            return Double.parseDouble(numberFormat_3.format(number).replaceAll("\\?", "").replace(",", "."));
-        }
-        else{
-            StringBuilder format = new StringBuilder("#.");
-            for(int i = 0; i < numbersAfterComma; i++){
-                format.append("0");
+    }
+
+    // Extract formatter logic to a separate method for the rare cases
+    private static double formatWithDecimalFormat(double number, int numbersAfterComma) {
+        // Use a ConcurrentHashMap to cache formatters by precision
+        DecimalFormat formatter = FORMATTER_CACHE.computeIfAbsent(numbersAfterComma, precision -> {
+            StringBuilder pattern = new StringBuilder("#.");
+            for (int i = 0; i < precision; i++) {
+                pattern.append("0");
             }
-            DecimalFormat numberFormat_other = new DecimalFormat(format.toString(), DecimalFormatSymbols.getInstance(Locale.US));
-            return Double.valueOf(numberFormat_other.format(number).replace(",", "."));
+            DecimalFormat df = new DecimalFormat(pattern.toString(), DecimalFormatSymbols.getInstance(Locale.US));
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            return df;
+        });
+
+        return Double.parseDouble(formatter.format(number));
+    }
+
+    // Static cache of formatters
+    private static final ConcurrentHashMap<Integer, DecimalFormat> FORMATTER_CACHE = new ConcurrentHashMap<>();
+
+    // Initialize the three most common formatters
+    static {
+        for (int i = 1; i <= 3; i++) {
+            FORMATTER_CACHE.computeIfAbsent(i, precision -> {
+                StringBuilder pattern = new StringBuilder("#.");
+                for (int j = 0; j < precision; j++) {
+                    pattern.append("0");
+                }
+                DecimalFormat df = new DecimalFormat(pattern.toString(), DecimalFormatSymbols.getInstance(Locale.US));
+                df.setRoundingMode(RoundingMode.HALF_UP);
+                return df;
+            });
         }
     }
 

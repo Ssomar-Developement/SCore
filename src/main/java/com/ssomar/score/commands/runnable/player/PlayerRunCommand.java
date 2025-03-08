@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -19,10 +20,11 @@ public class PlayerRunCommand extends RunCommand {
      */
     private static final long serialVersionUID = 1L;
 
+    @Getter @Setter
     private UUID launcherUUID;
-
+    @Getter @Setter
     private UUID receiverUUID;
-
+    @Getter @Setter
     private boolean silenceOutput;
 
     @Getter
@@ -112,29 +114,5 @@ public class PlayerRunCommand extends RunCommand {
         } */
         Player receiver = Bukkit.getPlayer(receiverUUID);
         SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
-    }
-
-    public UUID getLauncherUUID() {
-        return launcherUUID;
-    }
-
-    public void setLauncherUUID(UUID launcherUUID) {
-        this.launcherUUID = launcherUUID;
-    }
-
-    public UUID getReceiverUUID() {
-        return receiverUUID;
-    }
-
-    public void setReceiverUUID(UUID receiverUUID) {
-        this.receiverUUID = receiverUUID;
-    }
-
-    public boolean isSilenceOutput() {
-        return silenceOutput;
-    }
-
-    public void setSilenceOutput(boolean silenceOutput) {
-        this.silenceOutput = silenceOutput;
     }
 }
