@@ -46,6 +46,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import static com.ssomar.score.usedapi.Dependency.PROTOCOL_LIB;
@@ -56,6 +57,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR = "&eSCore";
     public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
+
+    public static File dataFolder;
 
     private static InjectSpigot injectSpigot;
 
@@ -448,6 +451,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
 
     public static void initLibPartOfSCore(Plugin plugin){
+
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7The library part of SCore is initializing ... (by &e"+plugin.getName()+"&7)");
+
+        if(plugin instanceof SCore) dataFolder = plugin.getDataFolder();
+        else dataFolder = new File(plugin.getDataFolder().getParentFile(), "SCore");
+
         injectSpigot = InjectSpigot.INSTANCE;
 
         initVersion();

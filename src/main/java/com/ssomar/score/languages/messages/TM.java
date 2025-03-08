@@ -133,13 +133,13 @@ public class TM {
                 Utils.sendConsoleMsg(SCore.NAME_COLOR+ " &7Update of &6" + what + " &7in your for the plugin > &6" + plugin.getName() + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
                 config.save(pdFile);
             } else{
-                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + "&c ERROR LOAD MESSAGE &6" + what + "&c for the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
                 if(msgI.getType() == TypeText.STRING) messages.put(msgI, msgI.getDefaultValueString());
                 else messagesArray.put(msgI, msgI.getDefaultValueArray());
             }
             buff.close();
         } catch (Exception e) {
-            Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+what+" &cfor the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+what+" &cfor the plugin > &6" + plugin.getName() + "&c in language: &6" + GeneralConfig.getInstance().getLocale());
             e.printStackTrace();
         }
     }
@@ -154,13 +154,13 @@ public class TM {
             }
             return combine.toString();
         }
-        else return "Can't load the string (" + message.getKey() + ") for the plugin > " + SCore.plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
+        else return "Can't load the string (" + message.getKey() + ") for the plugin > " + SCore.NAME + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developer";
     }
 
     public String [] getArray(TextInterface message) {
         if(messagesArray.containsKey(message)) return messagesArray.get(message);
         else if(messages.containsKey(message)) return new String[]{messages.get(message)};
-        else return new String[]{"Can't load the string (" + message.getKey() + ") for the plugin > " + SCore.plugin.getName() + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper"};
+        else return new String[]{"Can't load the string (" + message.getKey() + ") for the plugin > " + SCore.NAME + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developer"};
     }
 
     public static String g(TextInterface message) {

@@ -6,8 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +32,12 @@ public abstract class Config {
     }
 
     public void setup(Plugin plugin) {
-        if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdir();
-        this.pdfile = new File(plugin.getDataFolder(), this.fileName);
+        setup(plugin.getDataFolder(), plugin.getClass(), plugin);
+    }
+
+    public void setup(File dataFolder, Class clazz, @Nullable Plugin plugin) {
+        if (!dataFolder.exists()) dataFolder.mkdir();
+        this.pdfile = new File(dataFolder, this.fileName);
         //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> File: " + this.pdfile.getAbsolutePath());
         if (!this.pdfile.exists()) {
             try {
@@ -37,7 +45,7 @@ public abstract class Config {
                 this.pdfile.createNewFile();
                 //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE File: " + this.pdfile.getAbsolutePath());
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(plugin.getResource(this.fileName)));
+                BufferedReader br = new BufferedReader(new InputStreamReader(getResource(clazz, this.fileName)));
                 String line;
 
                 Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.pdfile), StandardCharsets.UTF_8));
@@ -71,8 +79,34 @@ public abstract class Config {
                 e.printStackTrace();
             }
         }
-        plugin.reloadConfig();
+        if(plugin != null) plugin.reloadConfig();
         load();
+    }
+
+    /**
+     * Gets an embedded resource in this plugin
+     *
+     * @param filename Filename of the resource
+     * @return File if found, otherwise null
+     */
+    @Nullable
+    public InputStream getResource(Class clazz, @NotNull String filename) {
+        if (filename == null || filename.isEmpty()) {
+            throw new IllegalArgumentException("Filename cannot be null or empty");
+        }
+
+        try {
+            URL url = clazz.getClassLoader().getResource(filename);
+            if (url == null) {
+                return null;
+            }
+
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(false);
+            return connection.getInputStream();
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
     public abstract boolean converter(FileConfiguration config);
