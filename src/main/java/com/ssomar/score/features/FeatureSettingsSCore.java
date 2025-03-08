@@ -623,7 +623,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return value;
             }
         }
-        Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cNo feature Translation found for setting: &6" + identifier +" &cin &6"+GeneralConfig.getInstance().getLocale().name());
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cNo feature Translation found for setting: &6" + identifier +" &cin &6"+GeneralConfig.getInstance().getLocale().name());
 
         /* try in english */
         values = FeatureSettingsSCoreEN.values();
