@@ -11,19 +11,20 @@ import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
 import com.ssomar.score.pack.listener.JoinQuitListener;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.JobsAPI;
+import org.bukkit.plugin.Plugin;
 
 public class EventsHandler {
 
     private static EventsHandler instance;
 
-    private SCore main;
+    private Plugin main;
 
     public static EventsHandler getInstance() {
         if (instance == null) instance = new EventsHandler();
         return instance;
     }
 
-    public void setup(SCore main) {
+    public void setup(Plugin main) {
         this.main = main;
         setupEvents();
     }
