@@ -57,7 +57,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
 
-    private InjectSpigot injectSpigot;
+    private static InjectSpigot injectSpigot;
 
     public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
@@ -447,15 +447,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
 
-    public void initLibPartOfSCore(){
+    public static void initLibPartOfSCore(Plugin plugin){
         injectSpigot = InjectSpigot.INSTANCE;
 
-        this.initVersion();
+        initVersion();
 
-        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
-        else schedulerHook = new BukkitSchedulerHook(this);
+        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(plugin);
+        else schedulerHook = new BukkitSchedulerHook(plugin);
 
-        this.loadDependency();
+        loadDependency();
     }
 
 
@@ -463,7 +463,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public void onEnable() {
         plugin = this;
 
-        this.initLibPartOfSCore();
+        initLibPartOfSCore(this);
 
         commandClass = new CommandsClass(this);
 
@@ -531,7 +531,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     }
 
-    public void loadDependency() {
+    public static void loadDependency() {
         /* Soft-Dependency part */
         hasExecutableItems = Dependency.EXECUTABLE_ITEMS.hookSoftDependency();
 
@@ -803,7 +803,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return commandClass;
     }
 
-    public void initVersion() {
+    public static void initVersion() {
         is1v8 = Bukkit.getServer().getVersion().contains("1.8");
         is1v9 = Bukkit.getServer().getVersion().contains("1.9");
         is1v10 = Bukkit.getServer().getVersion().contains("1.10");
@@ -842,7 +842,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish") || Bukkit.getServer().getVersion().contains("pufferfish");
     }
 
-    public boolean hasClass(String className) {
+    public static boolean hasClass(String className) {
         try {
             Class.forName(className);
             return true;
