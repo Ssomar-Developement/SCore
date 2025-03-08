@@ -452,14 +452,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static void initLibPartOfSCore(Plugin plugin){
 
+        initVersion();
+
         Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7The library part of SCore is initializing ... (by &e"+plugin.getName()+"&7)");
 
         if(plugin instanceof SCore) dataFolder = plugin.getDataFolder();
         else dataFolder = new File(plugin.getDataFolder().getParentFile(), "SCore");
 
         injectSpigot = InjectSpigot.INSTANCE;
-
-        initVersion();
 
         if (isFolia()) schedulerHook = new RegionisedSchedulerHook(plugin);
         else schedulerHook = new BukkitSchedulerHook(plugin);

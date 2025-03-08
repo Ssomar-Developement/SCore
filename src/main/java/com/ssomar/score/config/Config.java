@@ -1,6 +1,8 @@
 package com.ssomar.score.config;
 
 import com.google.common.base.Charsets;
+import com.ssomar.score.SCore;
+import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -100,6 +102,7 @@ public abstract class Config {
             if (url == null) {
                 return null;
             }
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Creating the file: &e" + filename+" &7from the plugin jar (url: &e"+url+"&7)");
 
             URLConnection connection = url.openConnection();
             connection.setUseCaches(false);
