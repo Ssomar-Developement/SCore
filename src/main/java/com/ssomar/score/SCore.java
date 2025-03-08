@@ -58,6 +58,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
 
+    public static Plugin pluginHolder;
     public static File dataFolder;
 
     private static InjectSpigot injectSpigot;
@@ -456,6 +457,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7The library part of SCore is initializing ... (by &e"+plugin.getName()+"&7)");
 
+        pluginHolder = plugin;
+
         if(plugin instanceof SCore) dataFolder = plugin.getDataFolder();
         else dataFolder = new File(plugin.getDataFolder().getParentFile(), "SCore");
 
@@ -470,8 +473,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onEnable() {
-        plugin = this;
-
         initLibPartOfSCore(this);
 
         commandClass = new CommandsClass(this);

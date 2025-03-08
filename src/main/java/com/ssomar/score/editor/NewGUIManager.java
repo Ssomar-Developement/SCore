@@ -81,7 +81,7 @@ public abstract class NewGUIManager<T extends GUI> {
             interact.setName(item.getItemMeta().getDisplayName());
             //SsomarDev.testMsg("LOCALISZED NAME: " + item.getItemMeta().getLocalizedName());
             DynamicMeta meta = new DynamicMeta(item.getItemMeta());
-            Optional<String> folderInfoOpt = ItemKeyWriterReader.init().readString(SCore.plugin, item, meta, "folderInfo");
+            Optional<String> folderInfoOpt = ItemKeyWriterReader.init().readString(SCore.pluginHolder, item, meta, "folderInfo");
             if(folderInfoOpt.isPresent()) {
                 interact.localizedName = folderInfoOpt.get();
             }

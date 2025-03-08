@@ -5,7 +5,6 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -42,7 +41,7 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
 
     @Override
     public Optional<Double> readValue(ItemStack item, DynamicMeta dMeta) {
-        getItemKeyWriterReader().writeDoubleIfNull((SPlugin) SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
+        getItemKeyWriterReader().writeDoubleIfNull(SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
         Optional<Double> value;
         Optional<Double> potentialOldEIValue;
         if (SCore.hasExecutableItems && (potentialOldEIValue = getItemKeyWriterReader().readDouble(ExecutableItems.plugin, item, dMeta, "EI-" + getConfig().getVariableName().getValue().get().toUpperCase())).isPresent()) {
@@ -56,7 +55,7 @@ public class VariableRealDouble extends VariableReal<Double> implements Serializ
 
     @Override
     public Optional<Double> readValue(PersistentDataContainer dataContainer) {
-        NameSpaceKeyWriterReader.writeDoubleIfNull((SPlugin) SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
+        NameSpaceKeyWriterReader.writeDoubleIfNull(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (Double) getConfig().getDefaultValue());
         Optional<Double> value;
         Optional<Double> potentialOldEIValue;
         if (SCore.hasExecutableItems && (potentialOldEIValue = NameSpaceKeyWriterReader.readDouble(ExecutableItems.plugin, dataContainer, "EI-" + getConfig().getVariableName().getValue().get().toUpperCase())).isPresent()) {
