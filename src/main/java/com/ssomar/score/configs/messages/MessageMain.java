@@ -95,7 +95,7 @@ public class MessageMain {
 
             InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/" + plugin.getName().toLowerCase() + "/configs/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml");
             if(flux == null) {
-                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" &c(Message in jar not found");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" &c(Message in jar not found");
                 return insert;
             }
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
@@ -113,10 +113,10 @@ public class MessageMain {
             }
             buff.close();
             if (isNotUpdate) {
-                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
             }
         } catch (Exception e) {
-            Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
             //e.printStackTrace();
         }
 
