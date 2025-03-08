@@ -34,10 +34,10 @@ public abstract class Config {
     }
 
     public void setup(Plugin plugin) {
-        setup(plugin.getDataFolder(), plugin.getClass(), plugin);
+        setup(plugin.getDataFolder(), plugin.getClass().getClassLoader(), plugin);
     }
 
-    public void setup(File dataFolder, Class clazz, @Nullable Plugin plugin) {
+    public void setup(File dataFolder, ClassLoader classLoader, @Nullable Plugin plugin) {
         if (!dataFolder.exists()) dataFolder.mkdir();
         this.pdfile = new File(dataFolder, this.fileName);
         //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> File: " + this.pdfile.getAbsolutePath());
@@ -47,7 +47,7 @@ public abstract class Config {
                 this.pdfile.createNewFile();
                 //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE File: " + this.pdfile.getAbsolutePath());
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(getResource(clazz, this.fileName)));
+                BufferedReader br = new BufferedReader(new InputStreamReader(getResource(classLoader, this.fileName)));
                 String line;
 
                 Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.pdfile), StandardCharsets.UTF_8));
@@ -92,13 +92,13 @@ public abstract class Config {
      * @return File if found, otherwise null
      */
     @Nullable
-    public static InputStream getResource(Class clazz, @NotNull String filename) {
+    public static InputStream getResource(ClassLoader classLoader, @NotNull String filename) {
         if (filename == null || filename.isEmpty()) {
             throw new IllegalArgumentException("Filename cannot be null or empty");
         }
 
         try {
-            URL url = clazz.getClassLoader().getResource(filename);
+            URL url = classLoader.getResource(filename);
             if (url == null) {
                 return null;
             }

@@ -51,7 +51,7 @@ public class GeneralConfig extends Config {
 
     public GeneralConfig() {
         super("config.yml");
-        super.setup(SCore.dataFolder, SCore.class, null);
+        super.setup(SCore.dataFolder, SCore.classLoader, null);
     }
 
     public static GeneralConfig getInstance() {

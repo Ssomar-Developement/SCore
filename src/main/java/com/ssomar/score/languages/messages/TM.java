@@ -58,7 +58,7 @@ public class TM {
                 pdfile.getParentFile().mkdir();
                 pdfile.createNewFile();
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(Config.getResource(SCore.class, fileName)));
+                BufferedReader br = new BufferedReader(new InputStreamReader(Config.getResource(SCore.classLoader, fileName)));
                 String line;
 
                 Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pdfile), StandardCharsets.UTF_8));
@@ -80,7 +80,7 @@ public class TM {
         FileConfiguration config = YamlConfiguration.loadConfiguration(pdfile);
 
         for (TextInterface msgI : Text.values()) {
-            this.loadMessage(msgI, SCore.class, SCore.NAME, pdfile, config, msgI.getKey());
+            this.loadMessage(msgI, SCore.classLoader, SCore.NAME, pdfile, config, msgI.getKey());
         }
         /* print all keys values */
         /* for(TextInterface msgI : Text.values()) {
@@ -88,7 +88,7 @@ public class TM {
         } */
     }
 
-    public void loadMessage(TextInterface msgI, Class clazz, String pluginName, File pdFile, FileConfiguration config, String message) {
+    public void loadMessage(TextInterface msgI, ClassLoader classLoader, String pluginName, File pdFile, FileConfiguration config, String message) {
 
         if(config.isList(message)){
             List<String> object = config.getStringList(message);
@@ -98,16 +98,16 @@ public class TM {
             String object = config.getString(message);
             messages.put(msgI, object);
         }
-        else write(msgI, clazz, pluginName, pdFile, config, message);
+        else write(msgI, classLoader, pluginName, pdFile, config, message);
     }
 
-    public void write(TextInterface msgI, Class clazz, String pluginName, File pdFile, FileConfiguration config, String what) {
+    public void write(TextInterface msgI, ClassLoader classLoader, String pluginName, File pdFile, FileConfiguration config, String what) {
 
         String insert = "Can't load the string (" + what + ") for the plugin > " + pluginName + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
         try {
             String defaultLanguage = GeneralConfig.getInstance().getLocale().toString();
 
-            InputStream flux = clazz.getResourceAsStream("/com/ssomar/" + pluginName + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
+            InputStream flux = classLoader.getResourceAsStream("/com/ssomar/" + pluginName + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
             BufferedReader buff = new BufferedReader(lecture);
 

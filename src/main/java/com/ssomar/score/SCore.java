@@ -59,6 +59,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static SCore plugin;
 
     public static Plugin pluginHolder;
+    public static ClassLoader classLoader;
     public static File dataFolder;
 
     private static InjectSpigot injectSpigot;
@@ -451,13 +452,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
 
-    public static void initLibPartOfSCore(Plugin plugin){
+    public static void initLibPartOfSCore(Plugin plugin, ClassLoader scoreClassLoader) {
 
         initVersion();
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7The library part of SCore is initializing ... (by &e"+plugin.getName()+"&7)");
 
         pluginHolder = plugin;
+        classLoader = scoreClassLoader;
 
         if(plugin instanceof SCore) dataFolder = plugin.getDataFolder();
         else dataFolder = new File(plugin.getDataFolder().getParentFile(), "SCore");
@@ -486,7 +488,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onEnable() {
-        initLibPartOfSCore(this);
+        initLibPartOfSCore(this, this.getClassLoader());
 
         commandClass = new CommandsClass(this);
 
