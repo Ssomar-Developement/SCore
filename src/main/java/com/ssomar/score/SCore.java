@@ -471,6 +471,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         loadDependency();
 
+        GeneralConfig.getInstance();
+
+        TM.getInstance().load();
+
+        TM.getInstance().loadTexts();
+
+        GUI.init();
+
         /* Database */
         Database.getInstance().load();
 
@@ -505,17 +513,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
         this.displayVersion();
 
-        GeneralConfig.getInstance();
-
-        TM.getInstance().load();
-
-        TM.getInstance().loadTexts();
-
         MessageMain.getInstance().load();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
-
-        GUI.init();
 
         /* Loop instance part */
         LoopManager.getInstance();

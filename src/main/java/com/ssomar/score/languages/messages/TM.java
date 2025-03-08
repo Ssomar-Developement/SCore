@@ -52,7 +52,7 @@ public class TM {
     public void loadTexts() {
 
         if (!SCore.dataFolder.exists()) SCore.dataFolder.mkdir();
-        File pdfile = new File(SCore.dataFolder, fileName);
+        File pdfile = new File(SCore.dataFolder, "languages"+File.separator+fileName);
         if (!pdfile.exists()) {
             try {
                 pdfile.getParentFile().mkdir();
