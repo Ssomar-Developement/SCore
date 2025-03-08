@@ -474,6 +474,13 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Events instance part */
         EventsHandler.getInstance().setup(pluginHolder);
+
+        CommandsHandler.getInstance().onEnable();
+
+        UsagePerDayManager.getInstance();
+
+        CooldownsHandler.loadCooldowns();
+        CooldownsHandler.connectAllOnlinePlayers();
     }
 
 
@@ -523,13 +530,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Variables instance part */
         VariablesLoader.getInstance().load();
-
-        CommandsHandler.getInstance().onEnable();
-
-        UsagePerDayManager.getInstance();
-
-        CooldownsHandler.loadCooldowns();
-        CooldownsHandler.connectAllOnlinePlayers();
 
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();
