@@ -469,6 +469,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         loadDependency();
 
+        /* Database */
+        Database.getInstance().load();
+
         /* Events instance part */
         EventsHandler.getInstance().setup(pluginHolder);
     }
@@ -509,9 +512,6 @@ public final class SCore extends JavaPlugin implements SPlugin {
         LoopManager.getInstance();
 
         ActionbarHandler.getInstance().load();
-
-        /* Database */
-        Database.getInstance().load();
 
         /* Commands part */
         this.getCommand("score").setExecutor(commandClass);
