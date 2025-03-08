@@ -37,14 +37,14 @@ public class TM {
     public void load() {
         messages = new HashMap<>();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language of the editor setup on &6"+ GeneralConfig.getInstance().getLocale());
-        fileName = "/languages/language_" + GeneralConfig.getInstance().getLocale().toString().toLowerCase() + ".yml";
+        fileName = "language_" + GeneralConfig.getInstance().getLocale().toString().toLowerCase() + ".yml";
     }
 
     public void reload() {
         messages = new HashMap<>();
         messagesArray = new HashMap<>();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Language of the editor setup on &6"+ GeneralConfig.getInstance().getLocale());
-        fileName = "/languages/language_" + GeneralConfig.getInstance().getLocale().toString().toLowerCase() + ".yml";
+        fileName = "language_" + GeneralConfig.getInstance().getLocale().toString().toLowerCase() + ".yml";
         loadTexts();
         GUI.init();
     }
@@ -106,9 +106,9 @@ public class TM {
         String insert = "Can't load the string (" + what + ") for the plugin > " + pluginName + " in language: " + GeneralConfig.getInstance().getLocale() + ", contact the developper";
         try {
             String defaultLanguage = GeneralConfig.getInstance().getLocale().toString();
+            String defaultFileName = "language_" + defaultLanguage.toLowerCase() + ".yml";
 
-            InputStream flux = classLoader.getResourceAsStream("/com/ssomar/" + pluginName + "/configs/languages/language_" + defaultLanguage.toLowerCase() + ".yml");
-            InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
+            InputStreamReader lecture = new InputStreamReader(Config.getResource(classLoader, defaultFileName), StandardCharsets.UTF_8);
             BufferedReader buff = new BufferedReader(lecture);
 
             FileConfiguration real = YamlConfiguration.loadConfiguration(buff);

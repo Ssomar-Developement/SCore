@@ -100,6 +100,7 @@ public abstract class Config {
         try {
             URL url = classLoader.getResource(filename);
             if (url == null) {
+                Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Error while creating the file: &e" + filename+" &7from the plugin jar");
                 return null;
             }
             Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Creating the file: &e" + filename+" &7from the plugin jar (url: &e"+url+"&7)");

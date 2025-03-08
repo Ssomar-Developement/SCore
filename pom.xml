@@ -39,7 +39,7 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>com/ssomar/score/configs/languages</targetPath>
+                <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/languages/</directory>
                 <includes>
