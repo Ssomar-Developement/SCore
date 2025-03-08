@@ -108,6 +108,8 @@ public abstract class Config {
             connection.setUseCaches(false);
             return connection.getInputStream();
         } catch (IOException ex) {
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Error while creating the file: &e" + filename+" &7from the plugin jar");
+            ex.printStackTrace();
             return null;
         }
     }
