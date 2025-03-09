@@ -12,6 +12,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
+
 public class EntitiesFromSpawnerListener implements Listener {
 
 
@@ -23,7 +25,7 @@ public class EntitiesFromSpawnerListener implements Listener {
             CreatureSpawnEvent.SpawnReason spawnReason = e.getSpawnReason();
 
             if (spawnReason == CreatureSpawnEvent.SpawnReason.SPAWNER && !GeneralConfig.getInstance().isDisableCustomMetadataOnEntities()) {
-                entity.setMetadata("fromSpawner", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(1)));
+                entity.setMetadata("fromSpawner", (MetadataValue) new FixedMetadataValue((Plugin) SCore.pluginHolder, Integer.valueOf(1)));
             }
         }
         // Unregister automatically if the method is not found
@@ -37,6 +39,11 @@ public class EntitiesFromSpawnerListener implements Listener {
         Entity entity = e.getEntity();
 
         /* * Because it's not removed automatically when the entity is removed  https://hub.spigotmc.org/jira/browse/SPIGOT-262 */
-        entity.removeMetadata("fromSpawner", SCore.plugin);
+        // Because SCore can have multiple holders
+        List<MetadataValue> values = entity.getMetadata("fromSpawner");
+        for (MetadataValue value : values) {
+            Plugin owningPlugin = value.getOwningPlugin();
+            if (owningPlugin != null) entity.removeMetadata("fromSpawner", owningPlugin);
+        }
     }
 }

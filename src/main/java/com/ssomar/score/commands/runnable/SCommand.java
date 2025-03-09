@@ -5,6 +5,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.usedapi.AllWorldManager;
 import com.ssomar.score.utils.GetItem;
+import com.ssomar.score.utils.backward_compatibility.AttributeAdditionMode;
 import com.ssomar.score.utils.emums.BetterEquipmentSlot;
 import com.ssomar.score.utils.messages.SendMessage;
 import lombok.Getter;
@@ -188,6 +189,21 @@ public abstract class SCommand {
             } catch (Exception e) {
                 ac.setValid(false);
                 ac.setError("&cA SCommand contains an &6invalid attribute&c: &e" + arg + " &cfor command: &e" + template);
+            }
+        }
+
+        return ac;
+    }
+
+    public static ArgumentChecker checkAttributeAdditionMode(@NotNull String arg, boolean isFinalVerification, String template) {
+        ArgumentChecker ac = new ArgumentChecker();
+
+        if (!arg.contains("%") || isFinalVerification) {
+            try {
+                AttributeAdditionMode.valueOf(arg.toUpperCase());
+            } catch (Exception e) {
+                ac.setValid(false);
+                ac.setError("&cA SCommand contains an &6invalid AttributeAdditionMode&c: &e" + arg + " &cfor command: &e" + template);
             }
         }
 

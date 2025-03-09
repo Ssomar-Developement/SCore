@@ -94,7 +94,7 @@ public class GeneralConfig extends Config {
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
         loopKillMode = config.getBoolean("loopKillMode", false);
         disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
-        enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true);
+        enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true) && SCore.is1v19Plus();
     }
 
     public boolean isVerbosityNormal() {

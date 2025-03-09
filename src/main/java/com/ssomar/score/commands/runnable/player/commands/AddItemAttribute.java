@@ -5,6 +5,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.utils.backward_compatibility.AttributeAdditionMode;
 import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,13 +33,15 @@ public class AddItemAttribute extends PlayerCommand {
         CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, att);
         CommandSetting value = new CommandSetting("value", 2, Double.class, 1.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
-        CommandSetting stack = new CommandSetting("stack", 4, Boolean.class, false);
+        CommandSetting mode = new CommandSetting("mode", -1, AttributeAdditionMode.class, AttributeAdditionMode.ADD);
+        CommandSetting affectDefaultAttributes = new CommandSetting("affectDefaultAttributes", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(attribute);
         settings.add(value);
         settings.add(equipmentSlot);
-        settings.add(stack);
+        settings.add(mode);
+        settings.add(affectDefaultAttributes);
         setNewSettingsMode(true);
     }
 
@@ -50,7 +53,8 @@ public class AddItemAttribute extends PlayerCommand {
         int slot = (int) sCommandToExec.getSettingValue("slot");
         double value = (double) sCommandToExec.getSettingValue("value");
         EquipmentSlot equipmentSlot = (EquipmentSlot) sCommandToExec.getSettingValue("equipmentSlot");
-        boolean stack = (boolean) sCommandToExec.getSettingValue("stack");
+        AttributeAdditionMode mode = (AttributeAdditionMode) sCommandToExec.getSettingValue("mode");
+        boolean affectDefaultAttributes = (boolean) sCommandToExec.getSettingValue("affectDefaultAttributes");
 
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
@@ -74,7 +78,7 @@ public class AddItemAttribute extends PlayerCommand {
 
         LinkedHashMap<Attribute, AttributeModifier> map = new LinkedHashMap<>();
         map.put(attribute, newModifier);
-        AttributeUtils.addAttributeOnItemMeta(itemmeta, item.getType(), map, true, true, true, stack);
+        AttributeUtils.addAttributeOnItemMeta(itemmeta, item.getType(), map, true, true, mode, affectDefaultAttributes);
         item.setItemMeta(itemmeta);
     }
 
@@ -89,7 +93,7 @@ public class AddItemAttribute extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ADD_ITEM_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND stack:false";
+        return "ADD_ITEM_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND mode:ADD affectDefaultAttributes:false";
     }
 
     @Override

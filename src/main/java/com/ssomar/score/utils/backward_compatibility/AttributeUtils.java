@@ -16,14 +16,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 
 public class AttributeUtils {
 
-    private final static boolean DEBUG = false;
+    private final static boolean DEBUG = true;
 
     public static Map<Object, String> getAttributes() {
         Map<Object, String> list = new HashMap<>();
@@ -189,11 +186,8 @@ public class AttributeUtils {
         return null;
     }
 
-    public static void addAttributeOnItemMeta(@NotNull ItemMeta meta, Material itemType, LinkedHashMap<Attribute, AttributeModifier> attributes, boolean keepDefaultItemAttributes, boolean keepExistingAttributes, boolean overrideExistingAttributes) {
-        addAttributeOnItemMeta(meta, itemType, attributes, keepDefaultItemAttributes, keepExistingAttributes, overrideExistingAttributes, false);
-    }
 
-    public static void addAttributeOnItemMeta(@NotNull ItemMeta meta, Material itemType, LinkedHashMap<Attribute, AttributeModifier> attributes, boolean keepDefaultItemAttributes, boolean keepExistingAttributes, boolean overrideExistingAttributes,boolean stackOnExistingAttributes) {
+    public static void addAttributeOnItemMeta(@NotNull ItemMeta meta, Material itemType, LinkedHashMap<Attribute, AttributeModifier> attributes, boolean keepDefaultItemAttributes, boolean keepExistingAttributes, AttributeAdditionMode mode, boolean affectDefaultAttributes) {
 
         /* remove ExistingAttributes if needed */
         if (!keepExistingAttributes) {
@@ -223,38 +217,11 @@ public class AttributeUtils {
 
         //if (meta.hasAttributeModifiers()) SsomarDev.testMsg("GET DEFAULT DAMAGE: " + meta.getAttributeModifiers(AttributeUtils.getAttribute("GENERIC_ATTACK_DAMAGE")), DEBUG);
 
-        /* add new attributes */
-        for (Attribute att : attributes.keySet()) {
-            AttributeModifier attModifier = attributes.get(att);
-            EquipmentSlot slot = attModifier.getSlot();
-            AtomicReference<AttributeModifier> toRemove = new AtomicReference<>();
-            // stack value if needed
-            AtomicReference<Double> stackValue = new AtomicReference<>((double) 0);
-            // On supprime l'existant si besoin
-            meta.getAttributeModifiers(slot).forEach((attribute, modifier) -> {
-                if (attribute.equals(att)) {
-                    if (overrideExistingAttributes) {
-                        toRemove.set(modifier);
-                    }
-                    if(stackOnExistingAttributes && modifier.getOperation() == attModifier.getOperation() && modifier.getSlotGroup() == attModifier.getSlotGroup()) {
-                        toRemove.set(modifier);
-                        stackValue.set(modifier.getAmount());
-                    }
-                }
-            });
-            if (toRemove.get() != null) {
-                meta.removeAttributeModifier(att, toRemove.get());
-            }
-            // New value with stack
-            if(stackOnExistingAttributes){
-                meta.addAttributeModifier(att,new AttributeModifier(attModifier.getKey(), attModifier.getAmount()+stackValue.get(), attModifier.getOperation(), attModifier.getSlotGroup()));
-            }
-            else meta.addAttributeModifier(att, attModifier);
-        }
+
 
         /* add default attributes if needed */
         if (SCore.is1v19Plus() && keepDefaultItemAttributes) {
-            if (meta.hasAttributeModifiers()) {
+            if (meta.hasAttributeModifiers() || !attributes.isEmpty()) {
                 for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
                     SsomarDev.testMsg("add default attributes for EquipmentSlot: " + equipmentSlot, DEBUG);
                     Multimap<Attribute, AttributeModifier> defaultAttributes = itemType.getDefaultAttributeModifiers(equipmentSlot);
@@ -269,21 +236,57 @@ public class AttributeUtils {
                     }
                 }
             }
-           /* else {
-                else if (SCore.is1v19Plus() && !config.getAttributes().getKeepDefaultAttributes().getValue() && item.getType().isItem() && !SCore.is1v21Plus()) {
-                    Material material = item.getType();
-                    for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                        SsomarDev.testMsg("add attributes for EquipmentSlot: " + equipmentSlot, DEBUG);
-                        Multimap<Attribute, AttributeModifier> invert = material.getDefaultAttributeModifiers(equipmentSlot);
-                        // Invert the default attributes *-1
-                        for (Attribute col : invert.keySet()) {
-                            for (AttributeModifier att : invert.get(col)) {
-                                result.put(col, new AttributeModifier(att.getUniqueId(), att.getName(), 0, att.getOperation(), att.getSlot()));
-                            }
+        }
+
+        /* override or stack  new attributes */
+        for (Attribute att : attributes.keySet()) {
+
+            AttributeModifier attModifier = attributes.get(att);
+
+            if(mode == AttributeAdditionMode.OVERRIDE || mode == AttributeAdditionMode.STACK) {
+
+                EquipmentSlot slot = attModifier.getSlot();
+                List<AttributeModifier> toRemove = new ArrayList<>();
+                // stack value if needed
+                double stackValue = 0;
+                NamespacedKey stackKey = null;
+                // On supprime l'existant si besoin
+                Multimap<Attribute, AttributeModifier> existing = meta.getAttributeModifiers(slot);
+                if (existing.containsKey(att)) {
+                    for (AttributeModifier modifier : existing.get(att)) {
+
+                        if(!affectDefaultAttributes && modifier.getKey().getKey().contains("base_")) continue;
+
+                        if (mode == AttributeAdditionMode.OVERRIDE) {
+                            SsomarDev.testMsg("OVERRIDE ATTRIBUTE: " + modifier, DEBUG);
+                            toRemove.add(modifier);
+                        }
+                        if (mode == AttributeAdditionMode.STACK && modifier.getOperation() == attModifier.getOperation() && modifier.getSlotGroup() == attModifier.getSlotGroup()) {
+                            toRemove.add(modifier);
+                            stackValue = modifier.getAmount();
+                            stackKey = modifier.getKey();
+                            SsomarDev.testMsg("STACK ATTRIBUTE found value: " + modifier.getAmount(), DEBUG);
+                            break;
                         }
                     }
                 }
-            }*/
+
+                for (AttributeModifier remove : toRemove) {
+                    meta.removeAttributeModifier(att, remove);
+                    SsomarDev.testMsg("REMOVE ATTRIBUTE: " + remove, DEBUG);
+                }
+
+                // New value with stack
+                if (mode == AttributeAdditionMode.STACK) {
+                    if (stackKey == null)
+                        stackKey = new NamespacedKey(SCore.pluginHolder, UUID.randomUUID().toString());
+                    double newValue = attModifier.getAmount() + stackValue;
+                    SsomarDev.testMsg("STACK ATTRIBUTE new value: " + newValue, DEBUG);
+                    attModifier = new AttributeModifier(stackKey, newValue, attModifier.getOperation(), attModifier.getSlotGroup());
+                }
+            }
+
+            meta.addAttributeModifier(att, attModifier);
         }
 
     }

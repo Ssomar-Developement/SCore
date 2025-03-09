@@ -32,9 +32,9 @@ public class Bossbar extends PlayerCommand {
         CommandSetting time = new CommandSetting("time", 0, Integer.class, 200);
         CommandSetting color = new CommandSetting("color", 1, BarColor.class, BarColor.BLUE);
         CommandSetting text = new CommandSetting("text", 2, String.class, "Hello_world");
-        CommandSetting count = new CommandSetting("count", 3, Integer.class, 0);
-        CommandSetting countTicks = new CommandSetting("countTicks", 4, Boolean.class, false);
-        CommandSetting countOrder = new CommandSetting("countOrder", 5, String.class, "descending");
+        CommandSetting count = new CommandSetting("count", -1, Integer.class, 0);
+        CommandSetting countTicks = new CommandSetting("countTicks", -1, Boolean.class, false);
+        CommandSetting countOrder = new CommandSetting("countOrder", -1, String.class, "descending");
 
         text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();

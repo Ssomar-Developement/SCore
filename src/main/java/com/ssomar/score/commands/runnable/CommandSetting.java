@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.utils.backward_compatibility.AttributeAdditionMode;
 import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,6 +80,14 @@ public class CommandSetting {
         else if(type == Attribute.class) {
             return AttributeUtils.getAttribute(value);
         }
+        else if(type == AttributeAdditionMode.class) {
+            try {
+                return AttributeAdditionMode.valueOf(value.toUpperCase());
+            }
+            catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
         else if(type == EquipmentSlot.class) {
             try {
                 return EquipmentSlot.valueOf(value.toUpperCase());
@@ -129,6 +138,7 @@ public class CommandSetting {
         else if(type == Boolean.class) return SCommand.checkBoolean(value, false, commandTemplate);
         else if(type == Enchantment.class) return SCommand.checkEnchantment(value, false, commandTemplate);
         else if(type == Attribute.class) return SCommand.checkAttribute(value, false, commandTemplate);
+        else if(type == AttributeAdditionMode.class) return SCommand.checkAttributeAdditionMode(value, false, commandTemplate);
         else if(type == EquipmentSlot.class) return SCommand.checkEquipmentSlot(value, false, commandTemplate);
         else if(type == BarColor.class) return SCommand.checkBarColor(value, false, commandTemplate);
         else if(type == Material.class) return SCommand.checkMaterial(value, false, commandTemplate);

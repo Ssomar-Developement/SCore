@@ -496,6 +496,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
+
         initLibPartOfSCore(this, this.getClassLoader());
 
         commandClass = new CommandsClass(this);
