@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class GravityFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public GravityFeature(FeatureParentInterface parent) {
-        super(parent,  true, FeatureSettingsSCore.gravity, false);
+        super(parent,  true, FeatureSettingsSCore.gravity);
     }
 
     @Override

@@ -69,12 +69,12 @@ public class CooldownsHandler implements Listener {
     }
 
     public static void connect(Player p) {
-        if (!SCore.plugin.isEnabled()) return;
+        if (!SCore.pluginHolder.isEnabled()) return;
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                if (!SCore.plugin.isEnabled()) return;
+                if (!SCore.pluginHolder.isEnabled()) return;
                 List<Cooldown> cooldowns = CooldownsQuery.getCooldownsOf(Database.getInstance().connect(), p.getUniqueId());
                 for (Cooldown cd : cooldowns) {
                     cd.updatePlayerReconnect();
@@ -112,13 +112,13 @@ public class CooldownsHandler implements Listener {
             cd.updatePlayerDisconnect();
         }
 
-        if (!SCore.plugin.isEnabled()) return;
+        if (!SCore.pluginHolder.isEnabled()) return;
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 CooldownsQuery.insertCooldowns(Database.getInstance().connect(), cooldowns);
-                if (!SCore.plugin.isEnabled()) return;
+                if (!SCore.pluginHolder.isEnabled()) return;
                 // go back to the tick loop
                 Runnable r2 = new Runnable() {
                     @Override

@@ -53,7 +53,7 @@ public class IfOwnerOfTheEI extends CustomConditionFeature<BooleanFeature, IfOwn
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(this, false, FeatureSettingsSCore.ifOwnerOfTheEI, true));
+        setCondition(new BooleanFeature(this, false, FeatureSettingsSCore.ifOwnerOfTheEI));
     }
 
     @Override

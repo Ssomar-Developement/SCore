@@ -16,7 +16,7 @@ public class IfNotHasAI extends EntityConditionFeature<BooleanFeature, IfNotHasA
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifNotHasAI, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifNotHasAI));
     }
 
     @Override

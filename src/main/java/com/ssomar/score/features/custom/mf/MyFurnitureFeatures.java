@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.mf;
 
 import com.ssomar.myfurniture.MyFurniture;
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
@@ -11,6 +12,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.writer.NameSpaceKeyWriterReader;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +42,7 @@ public class MyFurnitureFeatures extends FeatureWithHisOwnEditor<MyFurnitureFeat
 
     @Override
     public void reset() {
-        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable, false);
+        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         this.myFurnitureID = new MyFurnitureFeature(this, FeatureSettingsSCore.myfurnitureID);
     }
 
@@ -61,6 +64,15 @@ public class MyFurnitureFeatures extends FeatureWithHisOwnEditor<MyFurnitureFeat
         ConfigurationSection section = config.createSection(getName());
         this.enable.save(section);
         this.myFurnitureID.save(section);
+
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     public MyFurnitureFeatures getValue() {

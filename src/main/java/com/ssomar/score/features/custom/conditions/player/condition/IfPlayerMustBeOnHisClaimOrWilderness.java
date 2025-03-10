@@ -71,7 +71,7 @@ public class IfPlayerMustBeOnHisClaimOrWilderness extends PlayerConditionFeature
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisClaimOrWilderness, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifPlayerMustBeOnHisClaimOrWilderness));
     }
 
     @Override

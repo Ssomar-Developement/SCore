@@ -48,10 +48,10 @@ public class FireworkExplosionFeatures extends FeatureWithHisOwnEditor<FireworkE
     @Override
     public void reset() {
         this.type = new FireworkEffectTypeFeature(this, Optional.empty(), FeatureSettingsSCore.type);
-        this.colors = new ListBukkitColorFeature(this, new ArrayList<>(), FeatureSettingsSCore.colors, false, Optional.empty());
-        this.fadeColors = new ListBukkitColorFeature(this, new ArrayList<>(), FeatureSettingsSCore.fadeColors, false, Optional.empty());
-        this.hasTrail = new BooleanFeature(this, true, FeatureSettingsSCore.hasTrail, false);
-        this.hasTwinkle = new BooleanFeature(this, true, FeatureSettingsSCore.hasTwinkle, false);
+        this.colors = new ListBukkitColorFeature(this, new ArrayList<>(), FeatureSettingsSCore.colors, Optional.empty());
+        this.fadeColors = new ListBukkitColorFeature(this, new ArrayList<>(), FeatureSettingsSCore.fadeColors, Optional.empty());
+        this.hasTrail = new BooleanFeature(this, true, FeatureSettingsSCore.hasTrail);
+        this.hasTwinkle = new BooleanFeature(this, true, FeatureSettingsSCore.hasTwinkle);
     }
 
 

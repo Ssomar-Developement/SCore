@@ -4,7 +4,6 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -37,7 +36,7 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
 
     @Override
     public Optional<List<String>> readValue(ItemStack item, DynamicMeta dMeta) {
-        getItemKeyWriterReader().writeListIfNull((SPlugin) SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
+        getItemKeyWriterReader().writeListIfNull(SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
         Optional<List<String>> value;
         value = getItemKeyWriterReader().readList(SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
         return value;
@@ -45,7 +44,7 @@ public class VariableRealList extends VariableReal<List<String>> implements Seri
 
     @Override
     public Optional<List<String>> readValue(PersistentDataContainer dataContainer) {
-        NameSpaceKeyWriterReader.writeListIfNull((SPlugin) SCore.plugin,dataContainer, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
+        NameSpaceKeyWriterReader.writeListIfNull(SCore.plugin,dataContainer, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (List<String>) getConfig().getDefaultValue());
         Optional<List<String>> value;
         value = NameSpaceKeyWriterReader.readList(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase());
         return value;

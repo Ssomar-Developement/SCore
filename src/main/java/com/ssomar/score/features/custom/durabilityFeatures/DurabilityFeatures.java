@@ -41,7 +41,7 @@ public class DurabilityFeatures extends FeatureWithHisOwnEditor<DurabilityFeatur
     public void reset() {
         this.maxDurability = new IntegerFeature(this, Optional.empty(), FeatureSettingsSCore.maxDurability);
         this.durability = new IntegerFeature(this, Optional.empty(), FeatureSettingsSCore.durability);
-        this.isDurabilityBasedOnUsage = new BooleanFeature(this, false, FeatureSettingsSCore.isDurabilityBasedOnUsage, false);
+        this.isDurabilityBasedOnUsage = new BooleanFeature(this, false, FeatureSettingsSCore.isDurabilityBasedOnUsage);
     }
 
     @Override

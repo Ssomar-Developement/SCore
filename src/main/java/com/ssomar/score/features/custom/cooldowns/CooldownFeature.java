@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.cooldowns;
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
@@ -278,6 +279,15 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
             section.set(FeatureSettingsSCore.pausePlaceholdersConditions.getName(), null);
         }
         this.enableVisualCooldown.save(section);
+
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

@@ -1,16 +1,16 @@
 package com.ssomar.score.utils.scheduler;
 
-import com.ssomar.score.SCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class BukkitSchedulerHook implements SchedulerHook {
-    private final SCore SCore;
+    private final Plugin plugin;
 
-    public BukkitSchedulerHook(SCore SCore) {
-        this.SCore = SCore;
+    public BukkitSchedulerHook(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     public BukkitRunnable toBukkitRunnable(Runnable runnable) {
@@ -25,7 +25,7 @@ public class BukkitSchedulerHook implements SchedulerHook {
     @Override
     public ScheduledTask runTask(Runnable runnable, long delay) {
 
-        if (delay > 0) return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskLater(SCore, delay).getTaskId());
+        if (delay > 0) return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskLater(plugin, delay).getTaskId());
         else {
             if (Bukkit.isPrimaryThread()) {
                 runnable.run();
@@ -39,26 +39,26 @@ public class BukkitSchedulerHook implements SchedulerHook {
                     }
                 };
             }
-            return new BukkitScheduledTask(toBukkitRunnable(runnable).runTask(SCore).getTaskId());
+            return new BukkitScheduledTask(toBukkitRunnable(runnable).runTask(plugin).getTaskId());
         }
     }
 
     @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
-        return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskTimer(SCore, initDelay, period).getTaskId());
+        return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskTimer(plugin, initDelay, period).getTaskId());
     }
 
     @Override
     public ScheduledTask runAsyncTask(Runnable runnable, long delay) {
         if(delay > 0){
-            return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskLaterAsynchronously(SCore, delay).getTaskId());
+            return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskLaterAsynchronously(plugin, delay).getTaskId());
         }
-        else return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskAsynchronously(SCore).getTaskId());
+        else return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskAsynchronously(plugin).getTaskId());
     }
 
     @Override
     public ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period) {
-        return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskTimerAsynchronously(SCore, initDelay, period).getTaskId());
+        return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskTimerAsynchronously(plugin, initDelay, period).getTaskId());
     }
 
     @Override

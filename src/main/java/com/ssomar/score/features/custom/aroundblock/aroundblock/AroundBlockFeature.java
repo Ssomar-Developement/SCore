@@ -65,9 +65,9 @@ public class AroundBlockFeature extends FeatureWithHisOwnEditor<AroundBlockFeatu
         this.aboveValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.aboveValue);
         this.underValue = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.underValue);
 
-        this.errorMessage = new ColoredStringFeature(this, Optional.of("&c&oA block is not placed correctly !"), FeatureSettingsSCore.errorMsg, false);
+        this.errorMessage = new ColoredStringFeature(this, Optional.of("&c&oA block is not placed correctly !"), FeatureSettingsSCore.errorMsg);
 
-        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blockTypeMustBe, true, true);
+        this.blockTypeMustBe = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blockTypeMustBe, true);
 
         this.placeholderConditions = new PlaceholderConditionGroupFeature(this);
     }

@@ -19,7 +19,7 @@ public interface ExecutableItemInterface extends SObjectInterface, SObjectWithAc
 
     /**
      * To place at the end of your itemBuilder , it adds infos for item to be recognized as an ExecutableItem
-     * It will take the lore / name of the ExecutableItems and Override yours (But it doesn't override the customModeldata tag)
+     * It will take the lore / name of the ExecutableItems and Override yours (But it doesn't override the customModelData tag)
      *
      * @param item    The item to add the ExecutableItem infos to
      * @param creator The optional creator of the ExecutableItem
@@ -71,8 +71,8 @@ public interface ExecutableItemInterface extends SObjectInterface, SObjectWithAc
      * @param creator The optional creator of the ExecutableItem
      * @param settings The settings of the ExecutableItem :
      *                 The variables of the ExecutableItem
-     *                 - key "Variables" | Value Map<String -> variableId, String ->  variableValue>
-     *                 - key "Usage" | Value Integer -> usage
+     *                 - key "Variables" | Value Map{@literal <}String -{@literal >} variableId, String -{@literal >}  variableValue>
+     *                 - key "Usage" | Value Integer -{@literal >} usage
      * @return The ExecutableItem with default usage.
      */
     ItemStack buildItem(int amount, Optional<Player> creator, Map<String, Object> settings);

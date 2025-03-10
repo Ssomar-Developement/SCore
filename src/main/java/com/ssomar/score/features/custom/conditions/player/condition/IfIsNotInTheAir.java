@@ -45,7 +45,7 @@ public class IfIsNotInTheAir extends PlayerConditionFeature<BooleanFeature, IfIs
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(this,  false, FeatureSettingsSCore.ifIsNotInTheAir, true));
+        setCondition(new BooleanFeature(this,  false, FeatureSettingsSCore.ifIsNotInTheAir));
     }
 
     @Override

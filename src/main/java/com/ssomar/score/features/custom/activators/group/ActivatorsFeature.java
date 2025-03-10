@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.activators.group;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.events.loop.LoopManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
@@ -8,6 +9,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.scheduler.CustomTriggerScheduler;
 import com.ssomar.score.sobject.sactivator.SOption;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -77,6 +80,15 @@ public class ActivatorsFeature extends FeatureWithHisOwnEditor<ActivatorsFeature
         for (String actId : activators.keySet()) {
             activators.get(actId).save(attributesSection);
         }
+
+        if(isSavingOnlyIfDiffDefault() && attributesSection.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

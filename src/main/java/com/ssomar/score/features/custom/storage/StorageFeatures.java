@@ -36,8 +36,8 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
 
     @Override
     public void reset() {
-        this.enable = new BooleanFeature(this,  false, FeatureSettingsSCore.enable, false);
-        this.title = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.title, false);
+        this.enable = new BooleanFeature(this,  false, FeatureSettingsSCore.enable);
+        this.title = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.title);
     }
 
     @Override

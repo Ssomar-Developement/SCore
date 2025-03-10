@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public class FixSpawnerPlaceEvent implements Listener {
+public class FixSpawnerPlaceListener implements Listener {
 
     private static final Boolean DEBUG = false;
 

@@ -28,7 +28,7 @@ public class IfBlocking extends PlayerConditionFeature<BooleanFeature, IfBlockin
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifBlocking, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifBlocking));
     }
 
     @Override

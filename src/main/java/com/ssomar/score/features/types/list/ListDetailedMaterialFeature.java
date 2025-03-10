@@ -50,8 +50,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     private boolean specificationOfAtLeastOneState;
 
-    public ListDetailedMaterialFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, boolean forBlocks) {
-        super(parent,"List of Materials",  defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListDetailedMaterialFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean forBlocks) {
+        super(parent,"List of Materials",  defaultValue, featureSettings);
         this.listOfCustomBlocksPluginSupported = new ArrayList<>();
         if (SCore.hasItemsAdder) listOfCustomBlocksPluginSupported.add("ITEMSADDER");
         if (SCore.hasExecutableItems) listOfCustomBlocksPluginSupported.add("EXECUTABLEITEMS");
@@ -452,7 +452,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     @Override
     public ListDetailedMaterialFeature clone(FeatureParentInterface newParent) {
-        ListDetailedMaterialFeature clone = new ListDetailedMaterialFeature(newParent, getDefaultValue(),getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), isForBlocks());
+        ListDetailedMaterialFeature clone = new ListDetailedMaterialFeature(newParent, getDefaultValue(),getFeatureSettings(), isForBlocks());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

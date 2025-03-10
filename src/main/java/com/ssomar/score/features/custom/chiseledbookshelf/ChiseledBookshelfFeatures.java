@@ -39,7 +39,7 @@ public class ChiseledBookshelfFeatures extends FeatureWithHisOwnEditor<ChiseledB
 
     @Override
     public void reset() {
-        this.occupiedSlots = new ListIntegerFeature(this, new ArrayList<>(), FeatureSettingsSCore.occupiedSlots, false, Optional.empty());
+        this.occupiedSlots = new ListIntegerFeature(this, new ArrayList<>(), FeatureSettingsSCore.occupiedSlots, Optional.empty());
     }
 
     @Override

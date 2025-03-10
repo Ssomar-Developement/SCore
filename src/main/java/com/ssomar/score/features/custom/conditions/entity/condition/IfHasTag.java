@@ -43,7 +43,7 @@ public class IfHasTag extends EntityConditionFeature<ListUncoloredStringFeature,
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifHasTag, true, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifHasTag, Optional.empty()));
     }
 
     @Override

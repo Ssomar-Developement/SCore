@@ -1,7 +1,7 @@
 package com.ssomar.score.utils.scheduler;
 
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class RunnableManager {
@@ -29,9 +29,13 @@ public class RunnableManager {
     }
 
     public void forceRunTasks() {
-        for (Runnable task : tasks) {
+        // Create a copy of the tasks list to iterate over
+        List<Runnable> tasksCopy = new ArrayList<>(tasks);
+
+        for (Runnable task : tasksCopy) {
             task.run();
         }
+
         tasks.clear();
     }
 }

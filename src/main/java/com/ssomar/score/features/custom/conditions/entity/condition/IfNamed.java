@@ -33,7 +33,7 @@ public class IfNamed extends EntityConditionFeature<BooleanFeature, IfNamed> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNamed, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNamed));
     }
 
     @Override

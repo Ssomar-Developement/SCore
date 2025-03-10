@@ -4,7 +4,7 @@ import com.ssomar.score.pack.api.InjectPlatform;
 import com.ssomar.score.pack.api.Injector;
 import com.ssomar.score.pack.spigot.interceptor.ClientConnectionInterceptor;
 import com.ssomar.score.utils.logging.Utils;
-import lombok.var;
+import io.netty.channel.ChannelPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class InjectSpigot implements InjectPlatform {
         }
         try {
             connectionInterceptor.install((channel) -> {
-                var pipeline = channel.pipeline();
+                ChannelPipeline pipeline = channel.pipeline();
                 injectors.forEach(pipeline::addFirst);
             });
 
@@ -51,7 +51,9 @@ public class InjectSpigot implements InjectPlatform {
     }
 
     public void unregisterAllInjectors() {
-        injectors.forEach(this::unregisterInjector);
+        // Copy to avoid ConcurrentModificationException
+        List<Injector> injectorsCopy = new ArrayList<>(this.injectors);
+        injectorsCopy.forEach(this::unregisterInjector);
     }
 
     /**

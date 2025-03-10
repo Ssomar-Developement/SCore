@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.equippableFeatures;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
@@ -14,6 +15,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.backward_compatibility.SoundUtils;
 import com.ssomar.score.utils.emums.AttributeSlot;
 import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.NamespacedKey;
@@ -26,10 +28,7 @@ import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -56,17 +55,17 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
 
     @Override
     public void reset() {
-        enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable, false);
+        enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         slot = new SlotFeature(this,  Optional.of(AttributeSlot.BODY), FeatureSettingsSCore.slot);
         slot.setOnlyArmorSlots(true);
-        enableSound = new BooleanFeature(this, false, FeatureSettingsSCore.enableSound, false);
+        enableSound = new BooleanFeature(this, false, FeatureSettingsSCore.enableSound);
         sound = new SoundFeature(this, Optional.of(Sound.ITEM_ARMOR_EQUIP_DIAMOND), FeatureSettingsSCore.sound);
         model = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.equipModel, false);
         cameraOverlay = new UncoloredStringFeature(this, Optional.empty(), FeatureSettingsSCore.cameraOverlay, false);
-        isDamageableOnHurt = new BooleanFeature(this, false, FeatureSettingsSCore.damageableOnHurt, false);
-        isDispensable = new BooleanFeature(this, true, FeatureSettingsSCore.dispensable, false);
-        isSwappable = new BooleanFeature(this, true, FeatureSettingsSCore.swappable, false);
-        allowedEntities = new ListEntityTypeFeature(this, new ArrayList<>(Collections.singleton(EntityType.PLAYER)), FeatureSettingsSCore.allowedEntities, false);
+        isDamageableOnHurt = new BooleanFeature(this, false, FeatureSettingsSCore.damageableOnHurt);
+        isDispensable = new BooleanFeature(this, true, FeatureSettingsSCore.dispensable);
+        isSwappable = new BooleanFeature(this, true, FeatureSettingsSCore.swappable);
+        allowedEntities = new ListEntityTypeFeature(this, new ArrayList<>(Collections.singleton(EntityType.PLAYER)), FeatureSettingsSCore.allowedEntities);
     }
 
     @Override
@@ -90,6 +89,14 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
         for (FeatureInterface feature : getFeatures()) {
             feature.save(section);
         }
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

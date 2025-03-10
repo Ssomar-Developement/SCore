@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CriticalFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public CriticalFeature(FeatureParentInterface parent) {
-        super(parent, false, FeatureSettingsSCore.critical, false);
+        super(parent, false, FeatureSettingsSCore.critical);
     }
 
     @Override

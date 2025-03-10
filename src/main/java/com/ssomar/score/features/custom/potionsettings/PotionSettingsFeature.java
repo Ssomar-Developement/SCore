@@ -55,8 +55,8 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     public void reset() {
         this.color = new ColorIntegerFeature(this, Optional.empty(), FeatureSettingsSCore.potionColor);
         this.potiontype = new PotionTypeFeature(this, Optional.ofNullable(PotionType.WATER), FeatureSettingsSCore.potionType);
-        this.potionExtended = new BooleanFeature(this, false, FeatureSettingsSCore.potionExtended, false);
-        this.potionUpgraded = new BooleanFeature(this, false, FeatureSettingsSCore.potionUpgraded, false);
+        this.potionExtended = new BooleanFeature(this, false, FeatureSettingsSCore.potionExtended);
+        this.potionUpgraded = new BooleanFeature(this, false, FeatureSettingsSCore.potionUpgraded);
         this.potionEffects = new PotionEffectGroupFeature(this, false);
     }
 

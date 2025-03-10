@@ -32,7 +32,7 @@ public class IfFrozen extends EntityConditionFeature<BooleanFeature, IfFrozen> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFrozen, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifFrozen));
     }
 
     @Override

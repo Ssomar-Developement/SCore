@@ -41,8 +41,8 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
     @Override
     public void reset() {
         this.miningSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.miningSpeed);
-        this.correctForDrops = new BooleanFeature(this, false, FeatureSettingsSCore.correctForDrops, false);
-        this.materials = new ListMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.materials, true);
+        this.correctForDrops = new BooleanFeature(this, false, FeatureSettingsSCore.correctForDrops);
+        this.materials = new ListMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.materials);
     }
 
     @Override

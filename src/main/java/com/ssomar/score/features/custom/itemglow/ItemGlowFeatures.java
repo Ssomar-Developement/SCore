@@ -37,8 +37,8 @@ public class ItemGlowFeatures extends FeatureWithHisOwnEditor<ItemGlowFeatures, 
 
     @Override
     public void reset() {
-        this.glow = new BooleanFeature(this, false, FeatureSettingsSCore.glow, false);
-        this.disableEnchantGlide = new BooleanFeature(this, false, FeatureSettingsSCore.disableEnchantGlide, false);
+        this.glow = new BooleanFeature(this, false, FeatureSettingsSCore.glow);
+        this.disableEnchantGlide = new BooleanFeature(this, false, FeatureSettingsSCore.disableEnchantGlide);
     }
 
     @Override

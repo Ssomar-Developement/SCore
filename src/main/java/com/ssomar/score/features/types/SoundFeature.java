@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -18,10 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -54,8 +52,16 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
 
     @Override
     public void save(ConfigurationSection config) {
-        Optional<Sound> value = getValue();
-        value.ifPresent(operation -> config.set(this.getName(), SoundUtils.getSounds().get(operation)));
+        if (getValue().isPresent()) {
+            if(defaultValue.isPresent() && isSavingOnlyIfDiffDefault() && getValue().get().equals(defaultValue.get())){
+                config.set(this.getName(), null);
+                return;
+            }
+            else config.set(this.getName(), SoundUtils.getSounds().get(getValue().get()));
+        }
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

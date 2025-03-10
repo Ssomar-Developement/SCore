@@ -34,10 +34,7 @@ import com.ssomar.score.usedapi.ProtocolLibAPI;
 import com.ssomar.score.utils.display.Display;
 import com.ssomar.score.utils.display.PacketManager;
 import com.ssomar.score.utils.logging.Utils;
-import com.ssomar.score.utils.scheduler.BukkitSchedulerHook;
-import com.ssomar.score.utils.scheduler.RegionisedSchedulerHook;
-import com.ssomar.score.utils.scheduler.RunnableManager;
-import com.ssomar.score.utils.scheduler.SchedulerHook;
+import com.ssomar.score.utils.scheduler.*;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.loader.VariablesLoader;
 import com.ssomar.score.variables.manager.VariablesManager;
@@ -46,8 +43,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import static com.ssomar.score.usedapi.Dependency.PROTOCOL_LIB;
@@ -59,7 +58,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static final String NAME_COLOR_WITH_BRACKETS = "&e[SCore]";
     public static SCore plugin;
 
-    private InjectSpigot injectSpigot;
+    public static Plugin pluginHolder;
+    public static ClassLoader classLoader;
+    public static File dataFolder;
+
+    private static InjectSpigot injectSpigot;
 
     public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
@@ -116,6 +119,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasMyFurniture = false;
 
     public static boolean hasTAB = false;
+
     private static boolean is1v8 = false;
     private static boolean is1v9 = false;
     private static boolean is1v10 = false;
@@ -447,16 +451,53 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return isPaper() || isFolia() || isMohist() || isPurpur() || isPufferfish() || isPaperOrForkFor1v20lus;
     }
 
-    @Override
-    public void onEnable() {
-        plugin = this;
+
+    public static void initLibPartOfSCore(Plugin plugin, ClassLoader scoreClassLoader) {
+
+        initVersion();
+
+        Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7The library part of SCore is initializing ... (by &e"+plugin.getName()+"&7)");
+
+        pluginHolder = plugin;
+        classLoader = scoreClassLoader;
+
+        if(plugin instanceof SCore) dataFolder = plugin.getDataFolder();
+        else dataFolder = new File(plugin.getDataFolder().getParentFile(), "SCore");
 
         injectSpigot = InjectSpigot.INSTANCE;
 
-        this.initVersion();
+        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(plugin);
+        else schedulerHook = new BukkitSchedulerHook(plugin);
 
-        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(this);
-        else schedulerHook = new BukkitSchedulerHook(this);
+        loadDependency();
+
+        GeneralConfig.getInstance();
+
+        TM.getInstance().load();
+
+        TM.getInstance().loadTexts();
+
+        GUI.init();
+
+        /* Database */
+        Database.getInstance().load();
+
+        /* Events instance part */
+        EventsHandler.getInstance().setup(pluginHolder);
+
+        CommandsHandler.getInstance().onEnable();
+
+        UsagePerDayManager.getInstance();
+
+        CooldownsHandler.loadCooldowns();
+        CooldownsHandler.connectAllOnlinePlayers();
+    }
+
+
+    @Override
+    public void onEnable() {
+        initLibPartOfSCore(this, this.getClassLoader());
+
         commandClass = new CommandsClass(this);
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
@@ -472,48 +513,25 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
         this.displayVersion();
 
-        this.loadDependency();
-
-        GeneralConfig.getInstance();
-
-        TM.getInstance().load();
-
-        TM.getInstance().loadTexts();
-
         MessageMain.getInstance().load();
 
         MessageMain.getInstance().loadMessagesOf(plugin, MessageInterface.getMessagesEnum(Message.values()));
-
-        GUI.init();
 
         /* Loop instance part */
         LoopManager.getInstance();
 
         ActionbarHandler.getInstance().load();
 
-        /* Database */
-        Database.getInstance().load();
-
-        /* Events instance part */
-        EventsHandler.getInstance().setup(this);
-
         /* Commands part */
         this.getCommand("score").setExecutor(commandClass);
 
         /* Projectiles instance part */
         SProjectileLoader.getInstance().load();
-        /* Hardnesses instance part */
+        /* Hardness's instance part */
         HardnessLoader.getInstance().load();
 
         /* Variables instance part */
         VariablesLoader.getInstance().load();
-
-        CommandsHandler.getInstance().onEnable();
-
-        UsagePerDayManager.getInstance();
-
-        CooldownsHandler.loadCooldowns();
-        CooldownsHandler.connectAllOnlinePlayers();
 
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();
@@ -525,7 +543,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     }
 
-    public void loadDependency() {
+    public static void loadDependency() {
         /* Soft-Dependency part */
         hasExecutableItems = Dependency.EXECUTABLE_ITEMS.hookSoftDependency();
 
@@ -562,6 +580,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasCoreProtect = Dependency.CORE_PROTECT.hookSoftDependency();
 
         hasFactionsUUID = Dependency.FACTIONS_UUID.hookSoftDependency();
+
+        Dependency.PACKET_EVENTS.hookSoftDependency();
 
         /* Test for verzante and qvazzar */
         //hasProtocolLib = false;
@@ -701,6 +721,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         RunnableManager.getInstance().forceRunTasks();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Run delayed saving tasks done !");
 
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks...");
+        ScheduledTaskManager.getInstance().cancelScheduledTask();
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks done !");
+
         try {
             Database.getInstance().connect().close();
         } catch (SQLException e) {
@@ -791,7 +815,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return commandClass;
     }
 
-    public void initVersion() {
+    public static void initVersion() {
         is1v8 = Bukkit.getServer().getVersion().contains("1.8");
         is1v9 = Bukkit.getServer().getVersion().contains("1.9");
         is1v10 = Bukkit.getServer().getVersion().contains("1.10");
@@ -830,7 +854,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish") || Bukkit.getServer().getVersion().contains("pufferfish");
     }
 
-    public boolean hasClass(String className) {
+    public static boolean hasClass(String className) {
         try {
             Class.forName(className);
             return true;
@@ -846,5 +870,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     @Override
     public Config getPluginConfig() {
         return GeneralConfig.getInstance();
+    }
+
+    public static SchedulerHook getSchedulerHook(Plugin plugin) {
+        if (isFolia()) schedulerHook = new RegionisedSchedulerHook(plugin);
+        else schedulerHook = new BukkitSchedulerHook(plugin);
+        return schedulerHook;
     }
 }

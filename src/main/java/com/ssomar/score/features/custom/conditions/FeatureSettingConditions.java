@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.conditions;
 
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.features.FeatureSettingsSCoreNoEnum;
+import com.ssomar.score.features.SavingVerbosityLevel;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.FixedMaterial;
 
@@ -24,7 +25,7 @@ public class FeatureSettingConditions {
 
     public FeatureSettingsInterface getErrorMessage(String condition) {
         if(!errorMessages.containsKey(condition)) {
-            FeatureSettingsInterface featureSettings = new FeatureSettingsSCoreNoEnum(condition+"Msg", "Invalid condition message", new String[] {"&7&oThe message displayed", "&7&owhen the condition is not met"}, GUI.WRITABLE_BOOK, false);
+            FeatureSettingsInterface featureSettings = new FeatureSettingsSCoreNoEnum(condition+"Msg", "Invalid condition message", new String[] {"&7&oThe message displayed", "&7&owhen the condition is not met"}, GUI.WRITABLE_BOOK, false, SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT);
             errorMessages.put(condition, featureSettings);
         }
         return errorMessages.get(condition);
@@ -32,7 +33,7 @@ public class FeatureSettingConditions {
 
     public FeatureSettingsInterface getCancelEventIfError(String condition) {
         if(!cancel.containsKey(condition)) {
-            FeatureSettingsInterface featureSettings = new FeatureSettingsSCoreNoEnum(condition+"Cancel", "Cancel Event If Invalid", new String[] {"&7&oThe event will be cancelled", "&7&owhen the condition is not met"}, null, false);
+            FeatureSettingsInterface featureSettings = new FeatureSettingsSCoreNoEnum(condition+"Cancel", "Cancel Event If Invalid", new String[] {"&7&oThe event will be cancelled", "&7&owhen the condition is not met"}, null, false, SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT);
             cancel.put(condition, featureSettings);
         }
         return cancel.get(condition);
@@ -40,7 +41,7 @@ public class FeatureSettingConditions {
 
     public FeatureSettingsInterface getConsoleCommandsIfError(String condition) {
         if(!commands.containsKey(condition)) {
-            FeatureSettingsInterface featureSettings = new FeatureSettingsSCoreNoEnum(condition+"Cmds", "Console Commands If Invalid", new String[]{"&7&oConsole Commands If Error"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "WRITABLE_BOOK", "BOOK_AND_QUILL")), false);
+            FeatureSettingsInterface featureSettings = new FeatureSettingsSCoreNoEnum(condition+"Cmds", "Console Commands If Invalid", new String[]{"&7&oConsole Commands If Error"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "WRITABLE_BOOK", "BOOK_AND_QUILL")), false, SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT);
             commands.put(condition, featureSettings);
         }
         return commands.get(condition);

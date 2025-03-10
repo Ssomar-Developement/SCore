@@ -2,6 +2,7 @@ package com.ssomar.score.features;
 
 import com.google.common.base.Charsets;
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.scheduler.RunnableManager;
 import lombok.Getter;
@@ -163,5 +164,9 @@ public abstract class FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implemen
             }
         }
         return Optional.empty();
+    }
+
+    public boolean isSavingOnlyIfDiffDefault() {
+        return (GeneralConfig.getInstance().isVerbosityMinimal() || getFeatureSettings().getSavingVerbosityLevel() == SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT) && !GeneralConfig.getInstance().isVerbosityMaximal();
     }
 }

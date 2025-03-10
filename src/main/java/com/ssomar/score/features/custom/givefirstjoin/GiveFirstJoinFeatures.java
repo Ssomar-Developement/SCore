@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.givefirstjoin;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -11,6 +12,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.SObjectBuildable;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,7 +41,7 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
 
     @Override
     public void reset() {
-        this.giveFirstJoin = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.giveFirstJoin, false);
+        this.giveFirstJoin = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.giveFirstJoin);
         this.giveFirstJoinAmount = new IntegerFeature(getParent(), Optional.of(1), FeatureSettingsSCore.giveFirstJoinAmount);
         this.giveFirstJoinSlot = new IntegerFeature(getParent(), Optional.of(0), FeatureSettingsSCore.giveFirstJoinSlot);
     }
@@ -74,6 +76,14 @@ public class GiveFirstJoinFeatures extends FeatureWithHisOwnEditor<GiveFirstJoin
         giveFirstJoin.save(section);
         giveFirstJoinAmount.save(section);
         giveFirstJoinSlot.save(section);
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

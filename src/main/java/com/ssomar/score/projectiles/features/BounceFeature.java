@@ -11,7 +11,7 @@ import org.bukkit.entity.Projectile;
 public class BounceFeature extends BooleanFeature implements SProjectileFeatureInterface {
 
     public BounceFeature(FeatureParentInterface parent) {
-        super(parent,  false, FeatureSettingsSCore.bounce, false);
+        super(parent,  false, FeatureSettingsSCore.bounce);
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

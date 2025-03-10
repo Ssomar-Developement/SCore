@@ -1,20 +1,28 @@
 package com.ssomar.score.config;
 
 import com.google.common.base.Charsets;
+import com.ssomar.score.SCore;
+import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Config {
+    @Getter
     protected final String fileName;
     protected File pdfile;
+    @Getter
     protected FileConfiguration config;
 
     @Getter
@@ -26,8 +34,12 @@ public abstract class Config {
     }
 
     public void setup(Plugin plugin) {
-        if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdir();
-        this.pdfile = new File(plugin.getDataFolder(), this.fileName);
+        setup(plugin.getDataFolder(), plugin.getClass().getClassLoader(), plugin);
+    }
+
+    public void setup(File dataFolder, ClassLoader classLoader, @Nullable Plugin plugin) {
+        if (!dataFolder.exists()) dataFolder.mkdir();
+        this.pdfile = new File(dataFolder, this.fileName);
         //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> File: " + this.pdfile.getAbsolutePath());
         if (!this.pdfile.exists()) {
             try {
@@ -35,7 +47,7 @@ public abstract class Config {
                 this.pdfile.createNewFile();
                 //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE File: " + this.pdfile.getAbsolutePath());
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(plugin.getResource(this.fileName)));
+                BufferedReader br = new BufferedReader(new InputStreamReader(getResource(classLoader, this.fileName)));
                 String line;
 
                 Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.pdfile), StandardCharsets.UTF_8));
@@ -69,8 +81,38 @@ public abstract class Config {
                 e.printStackTrace();
             }
         }
-        plugin.reloadConfig();
+        if(plugin != null) plugin.reloadConfig();
         load();
+    }
+
+    /**
+     * Gets an embedded resource in this plugin
+     *
+     * @param filename Filename of the resource
+     * @return File if found, otherwise null
+     */
+    @Nullable
+    public static InputStream getResource(ClassLoader classLoader, @NotNull String filename) {
+        if (filename == null || filename.isEmpty()) {
+            throw new IllegalArgumentException("Filename cannot be null or empty");
+        }
+
+        try {
+            URL url = classLoader.getResource(filename);
+            if (url == null) {
+                Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Error while creating the file: &e" + filename+" &7from the plugin jar");
+                return null;
+            }
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Creating the file: &e" + filename+" &7from the plugin jar (url: &e"+url+"&7)");
+
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(false);
+            return connection.getInputStream();
+        } catch (IOException ex) {
+            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &7Error while creating the file: &e" + filename+" &7from the plugin jar");
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public abstract boolean converter(FileConfiguration config);
@@ -85,14 +127,6 @@ public abstract class Config {
         }
     }
 
-
-    public FileConfiguration getConfig() {
-        return this.config;
-    }
-
-    public String getFileName() {
-        return this.fileName;
-    }
 
     public boolean loadBooleanSetting(String setting, boolean defaultValue) {
         if(!config.isBoolean(setting)) {

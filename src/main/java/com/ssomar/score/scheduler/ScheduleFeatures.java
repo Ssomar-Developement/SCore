@@ -63,7 +63,7 @@ public class ScheduleFeatures extends FeatureWithHisOwnEditor<ScheduleFeatures, 
     public void reset() {
         this.startDateFeature = new UncoloredStringFeature(this, Optional.of("1700-01-01 00:00:00"), FeatureSettingsSCore.startDate, false);
         this.endDateFeature = new UncoloredStringFeature(this, Optional.of("3000-01-01 00:00:00"), FeatureSettingsSCore.endDate, false);
-        this.when = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.when, false, Optional.empty());
+        this.when = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.when, Optional.empty());
     }
 
     @Override

@@ -39,7 +39,7 @@ public class DirectionalFeatures extends FeatureWithHisOwnEditor<DirectionalFeat
 
     @Override
     public void reset() {
-         this.forceBlockFaceOnPlace = new BooleanFeature(this,  false, FeatureSettingsSCore.forceBlockFaceOnPlace, false);
+         this.forceBlockFaceOnPlace = new BooleanFeature(this,  false, FeatureSettingsSCore.forceBlockFaceOnPlace);
          this.blockFaceOnPlace = new BlockFaceFeature(this, Optional.empty(), null, FeatureSettingsSCore.blockFaceOnPlace);
     }
 

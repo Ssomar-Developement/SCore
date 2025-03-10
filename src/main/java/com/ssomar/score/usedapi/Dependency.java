@@ -102,6 +102,8 @@ public enum Dependency {
 
     PACKET_EVENTS("packetevents"),
 
+    SCORE("SCore"),
+
     WORLD_EDIT("WorldEdit");
 
     private final String name;

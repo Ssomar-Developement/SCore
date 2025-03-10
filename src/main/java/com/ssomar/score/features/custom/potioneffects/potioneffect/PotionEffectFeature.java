@@ -49,9 +49,9 @@ public class PotionEffectFeature extends FeatureWithHisOwnEditor<PotionEffectFea
         this.amplifier = new IntegerFeature(this, Optional.ofNullable(0), FeatureSettingsSCore.amplifier);
         this.duration = new IntegerFeature(this, Optional.ofNullable(30), FeatureSettingsSCore.duration);
         this.type = new PotionEffectTypeFeature(this, Optional.ofNullable(type), FeatureSettingsSCore.potionEffectType);
-        this.ambient = new BooleanFeature(this, false, FeatureSettingsSCore.isAmbient, false);
-        this.particles = new BooleanFeature(this, false, FeatureSettingsSCore.hasParticles, false);
-        this.icon = new BooleanFeature(this, false, FeatureSettingsSCore.hasIcon, false);
+        this.ambient = new BooleanFeature(this, false, FeatureSettingsSCore.isAmbient);
+        this.particles = new BooleanFeature(this, false, FeatureSettingsSCore.hasParticles);
+        this.icon = new BooleanFeature(this, false, FeatureSettingsSCore.hasIcon);
     }
 
     @Override

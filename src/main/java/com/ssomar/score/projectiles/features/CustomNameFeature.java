@@ -12,7 +12,7 @@ import java.util.Optional;
 public class CustomNameFeature extends ColoredStringFeature implements SProjectileFeatureInterface {
 
     public CustomNameFeature(FeatureParentInterface parent) {
-        super(parent,  Optional.of("Default name"), FeatureSettingsSCore.customName, false);
+        super(parent,  Optional.of("Default name"), FeatureSettingsSCore.customName);
     }
 
     @Override

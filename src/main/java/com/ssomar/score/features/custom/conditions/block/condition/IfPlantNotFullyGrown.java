@@ -52,7 +52,7 @@ public class IfPlantNotFullyGrown extends BlockConditionFeature<BooleanFeature, 
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifPlantNotFullyGrown, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifPlantNotFullyGrown));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Gen
 
     @Override
     public void reset() {
-        this.enableArmorTrim = new BooleanFeature(getParent(), false, FeatureSettingsSCore.enableArmorTrim, false);
+        this.enableArmorTrim = new BooleanFeature(getParent(), false, FeatureSettingsSCore.enableArmorTrim);
         if(SCore.is1v20Plus()){
             this.trimMaterial = new TrimMaterialFeature(getParent(), Optional.of(TrimMaterial.DIAMOND), FeatureSettingsSCore.trimMaterial);
             this.pattern = new TrimPatternFeature(getParent(), Optional.of(TrimPattern.EYE), FeatureSettingsSCore.pattern);

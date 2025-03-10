@@ -37,7 +37,7 @@ public class LoopFeatures extends FeatureWithHisOwnEditor<LoopFeatures, LoopFeat
     @Override
     public void reset() {
         this.delay = new IntegerFeature(this, Optional.of(1), FeatureSettingsSCore.delay);
-        this.delayInTick = new BooleanFeature(this,  false, FeatureSettingsSCore.delayInTick, false);
+        this.delayInTick = new BooleanFeature(this,  false, FeatureSettingsSCore.delayInTick);
     }
 
     @Override

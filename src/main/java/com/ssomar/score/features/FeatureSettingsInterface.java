@@ -14,9 +14,15 @@ public interface FeatureSettingsInterface {
 
     String[] getEditorDescription();
 
+    String[] getEditorDescriptionBrut();
+
     Material getEditorMaterial();
 
     boolean isRequirePremium();
 
     void setRequirePremium(boolean requirePremium);
+
+    SavingVerbosityLevel getSavingVerbosityLevel();
+
+    void setSavingVerbosityLevel(SavingVerbosityLevel savingVerbosityLevel);
 }

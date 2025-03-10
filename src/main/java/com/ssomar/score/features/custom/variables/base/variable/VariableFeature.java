@@ -47,11 +47,11 @@ public class VariableFeature<T> extends FeatureWithHisOwnEditor<VariableFeature,
     public void reset() {
         this.variableName = new UncoloredStringFeature(this, Optional.of("var"), FeatureSettingsSCore.variableName, false);
         this.type = new VariableTypeFeature(this, Optional.of(VariableType.STRING), FeatureSettingsSCore.type, false);
-        this.stringValue = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.default_string, false);
+        this.stringValue = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.default_string);
         this.doubleValue = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.default_double);
-        this.listValue = new ListColoredStringFeature(this,  new ArrayList<>(), FeatureSettingsSCore.default_list, false, Optional.empty());
-        this.isRefreshableClean = new BooleanFeature(this, false, FeatureSettingsSCore.isRefreshableClean, false);
-        this.refreshTag = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.refreshTag, false);
+        this.listValue = new ListColoredStringFeature(this,  new ArrayList<>(), FeatureSettingsSCore.default_list, Optional.empty());
+        this.isRefreshableClean = new BooleanFeature(this, false, FeatureSettingsSCore.isRefreshableClean);
+        this.refreshTag = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.refreshTag);
     }
 
     @Override

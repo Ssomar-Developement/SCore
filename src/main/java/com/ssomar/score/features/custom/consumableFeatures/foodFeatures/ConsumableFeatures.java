@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.consumableFeatures.foodFeatures;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
@@ -12,6 +13,7 @@ import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
 import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.strings.StringConverter;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,10 +49,10 @@ public class ConsumableFeatures extends FeatureWithHisOwnEditor<ConsumableFeatur
 
     @Override
     public void reset() {
-        enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable, false);
+        enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         animation = new ItemUseAnimationFeature(this, Optional.of(ItemUseAnimation.EAT), FeatureSettingsSCore.animation);
         sound = new SoundFeature(this, Optional.empty(), FeatureSettingsSCore.sound);
-        consumeParticles = new BooleanFeature(this, false, FeatureSettingsSCore.hasConsumeParticles, false);
+        consumeParticles = new BooleanFeature(this, false, FeatureSettingsSCore.hasConsumeParticles);
         consumeSeconds = new IntegerFeature(this, Optional.of(3), FeatureSettingsSCore.consumeSeconds);
     }
 
@@ -78,6 +81,13 @@ public class ConsumableFeatures extends FeatureWithHisOwnEditor<ConsumableFeatur
         this.sound.save(section);
         this.consumeParticles.save(section);
         this.consumeSeconds.save(section);
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
     }
 
     @Override

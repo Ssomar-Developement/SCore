@@ -6,26 +6,25 @@ import com.ssomar.score.commands.runnable.player.commands.openchest.OpenChestLis
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
 import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.damagewithoutknockback.DamageWithoutKnockbackListener;
 import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
-import com.ssomar.score.nofalldamage.NoFallDamageListener;
 import com.ssomar.score.pack.listener.JoinQuitListener;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.JobsAPI;
+import org.bukkit.plugin.Plugin;
 
 public class EventsHandler {
 
     private static EventsHandler instance;
 
-    private SCore main;
+    private Plugin main;
 
     public static EventsHandler getInstance() {
         if (instance == null) instance = new EventsHandler();
         return instance;
     }
 
-    public void setup(SCore main) {
+    public void setup(Plugin main) {
         this.main = main;
         setupEvents();
     }
@@ -35,7 +34,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new NoFallDamageListener(), main);
 
-        main.getServer().getPluginManager().registerEvents(new DamageWithoutKnockbackListener(), main);
+        main.getServer().getPluginManager().registerEvents(DamageWithoutKnockbackListener.getInstance(), main);
 
         main.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), main);
 
@@ -45,7 +44,7 @@ public class EventsHandler {
         if (!SCore.is1v11Less()) {
             main.getServer().getPluginManager().registerEvents(new StunEvent(), main);
 
-            main.getServer().getPluginManager().registerEvents(new PlayerPickup(), main);
+            main.getServer().getPluginManager().registerEvents(new PlayerPickupListener(), main);
         }
 
         main.getServer().getPluginManager().registerEvents(CommandsHandler.getInstance(), main);
@@ -68,7 +67,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new CooldownsHandler(), main);
 
-        main.getServer().getPluginManager().registerEvents(new FixSpawnerPlaceEvent(), main);
+        main.getServer().getPluginManager().registerEvents(new FixSpawnerPlaceListener(), main);
 
         main.getServer().getPluginManager().registerEvents(new RemoveProjectileHitBlockEvent(), main);
 

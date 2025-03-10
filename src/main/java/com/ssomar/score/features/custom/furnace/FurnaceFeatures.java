@@ -46,8 +46,8 @@ public class FurnaceFeatures extends FeatureWithHisOwnEditor<FurnaceFeatures, Fu
     @Override
     public void reset() {
         this.furnaceSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.furnaceSpeed);
-        this.infiniteFuel = new BooleanFeature(this,  false, FeatureSettingsSCore.infiniteFuel, false);
-        this.infiniteVisualLit = new BooleanFeature(this,  false, FeatureSettingsSCore.infiniteVisualLit, false);
+        this.infiniteFuel = new BooleanFeature(this,  false, FeatureSettingsSCore.infiniteFuel);
+        this.infiniteVisualLit = new BooleanFeature(this,  false, FeatureSettingsSCore.infiniteVisualLit);
 
         this.fortuneChance = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.fortuneChance);
         this.fortuneMultiplier = new DoubleFeature(this,  Optional.of(1.0), FeatureSettingsSCore.fortuneMultiplier);

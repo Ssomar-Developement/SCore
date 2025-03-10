@@ -236,6 +236,7 @@ public interface CommmandThatRunsCommand {
                     argToRemove = cpt;
                     split = s.split("BLACKLIST\\(");
                     String blackListString = split[1].split("\\)")[0];
+                    blackListString = blackListString.replaceAll("\"", "");
                     split = blackListString.split(",");
                     blackList = new ListDetailedEntityFeature(new MobAround(), new ArrayList<>(), null, false);
                     blackList.load(SCore.plugin, Arrays.asList(split), true);
@@ -243,6 +244,7 @@ public interface CommmandThatRunsCommand {
                     argToRemove = cpt;
                     split = s.split("WHITELIST\\(");
                     String whiteListString = split[1].split("\\)")[0];
+                    whiteListString = whiteListString.replaceAll("\"", "");
                     split = whiteListString.split(",");
                     whiteList = new ListDetailedEntityFeature(new MobAround(), new ArrayList<>(), null, false);
                     whiteList.load(SCore.plugin, Arrays.asList(split), true);

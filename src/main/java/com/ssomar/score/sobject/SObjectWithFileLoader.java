@@ -23,6 +23,7 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     private final String defaultObjectsPath;
     private final String defaultObjectsPathWithoutSlash;
     private final SObjectManager<T> sObjectManager;
+    @Getter
     private final int maxFreeObjects;
     private final Logger logger;
     @Getter
@@ -214,12 +215,15 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
 
         if (!exists) {
             Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cCANT LOAD YOUR &6" + objectName.toUpperCase() + "&c, FOLDER '" + objectName + "' not found !");
-            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7It will generate &e" + getObjectsShortPath().size() + "&7 default "+objectName+" from jar :&e " + defaultObjectsPath);
+            Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7It will generate &e" + getObjectsShortPath().size() + "&7 default " + objectName + " from jar :&e " + defaultObjectsPath);
+            File fileFolder = new File(getConfigsPath());
+            fileFolder.mkdirs();
         }
 
         for (String id : getObjectsShortPath()) {
             copyDefaultFile(defaultObjectsPath + id, defaultObjectsPathWithoutSlash, isPremiumLoading);
         }
+
 
         Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7DEFAULT &6" + objectName.toUpperCase() + "&7 CREATED !");
 
@@ -333,8 +337,9 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
     public void loadObjectByFile(String filePath, boolean isPremiumLoading) {
         try {
             File fileEntry = new File(filePath);
-            if (!fileEntry.getName().contains(".yml") || fileEntry.getName().contains(".txt")) return;
-            String id = fileEntry.getName().split(".yml")[0];
+            String fileName = fileEntry.getName();
+            if (!fileName.contains(".yml") || fileName.contains(".txt") || fileName.equals(".yml")) return;
+            String id = fileName.split(".yml")[0];
 
             if (!isPremiumLoading && cpt >= maxFreeObjects) {
                 Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &cERROR, REQUIRE PREMIUM: to add more than " + maxFreeObjects + " " + objectName + " you need the premium version");

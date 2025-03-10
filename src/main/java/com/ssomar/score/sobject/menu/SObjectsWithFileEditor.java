@@ -86,11 +86,11 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
                     ItemStack itemStack = new ItemStack(material);
                     ItemMeta itemMeta = itemStack.getItemMeta();
                     DynamicMeta dynamicMeta = new DynamicMeta(itemMeta);
-                    ItemKeyWriterReader.init().writeString(SCore.plugin, itemStack, dynamicMeta, "folderInfo", str);
+                    ItemKeyWriterReader.init().writeString(SCore.pluginHolder, itemStack, dynamicMeta, "folderInfo", str);
                     itemStack.setItemMeta(dynamicMeta.getMeta());
                     createItem(itemStack, 1, i, TM.g(Text.EDITOR_FOLDER_NAME) + name, false, false, TM.gA(Text.EDITOR_FOLDER_DESCRIPTION));
                 } else {
-                    if (!fileName.contains(".yml"))
+                    if (!fileName.contains(".yml") || fileName.equals(".yml"))
                         if(isDeleteButton()) createItem(Material.BARRIER, 1, i, TM.g(Text.EDITOR_INVALID_FILE_NAME) + str, false, false, "", GUI.SHIFT_LEFT_CLICK_TO_REMOVE, TM.g(Text.EDITOR_INVALID_FILE_DESCRIPTION));
                     String id = fileName.split(".yml")[0];
 

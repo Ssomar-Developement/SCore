@@ -1,10 +1,12 @@
 package com.ssomar.score.features.custom.enchantments.group;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.enchantments.enchantment.EnchantmentWithLevelFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.projectiles.features.SProjectileFeatureInterface;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -17,10 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -66,6 +65,14 @@ public class EnchantmentsGroupFeature extends FeatureWithHisOwnEditor<Enchantmen
         for (String enchantmentID : enchantments.keySet()) {
             enchantments.get(enchantmentID).save(enchantmentsSection);
         }
+        if(isSavingOnlyIfDiffDefault() && enchantmentsSection.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
 
     }
 

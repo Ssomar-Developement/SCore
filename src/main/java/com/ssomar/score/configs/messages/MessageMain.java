@@ -83,7 +83,6 @@ public class MessageMain {
     }
 
     public String loadMessage(Plugin plugin, File pdFile, FileConfiguration config, String message) {
-        //this.loadDefaultMessages();
         if (config.getString(message) != null) return StringConverter.coloredString(config.getString(message));
         else return StringConverter.coloredString(write(plugin, pdFile, config, message));
     }
@@ -95,7 +94,7 @@ public class MessageMain {
 
             InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/" + plugin.getName().toLowerCase() + "/configs/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml");
             if(flux == null) {
-                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" &c(Message in jar not found");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" &c(Message in jar not found");
                 return insert;
             }
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
@@ -113,31 +112,15 @@ public class MessageMain {
             }
             buff.close();
             if (isNotUpdate) {
-                Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
             }
         } catch (Exception e) {
-            Utils.sendConsoleMsg("&c"+SCore.plugin.getNameWithBrackets() + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
             //e.printStackTrace();
         }
 
         return insert;
     }
-
-    /* To bait directleaks */
-    /* public void loadDefaultMessages() {
-        System.out.println(SCore.NAME_2 + " DEFAUKT MESSAGE INCR SILENCE OUTPUT: ");
-        FilterManager.getInstance().incCurrentlyInRun();
-        if (SCore.hasExecutableItems) {
-            try {
-                Class clazz = ExecutableItems.class;
-                clazz.getDeclaredField("uid");
-                SCore.plugin.getServer().getPluginManager().disablePlugin(SCore.plugin);
-
-            } catch (Exception ignored) {
-            }
-        }
-        FilterManager.getInstance().decrCurrentlyInRun();
-    } */
 
     public String getMessage(Plugin plugin, MessageInterface message) {
         if (messages.containsKey(plugin) && messages.get(plugin).containsKey(message)) {

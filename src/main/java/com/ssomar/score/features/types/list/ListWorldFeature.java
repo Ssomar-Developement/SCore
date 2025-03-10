@@ -24,8 +24,8 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
 
     private static final boolean DEBUG = false;
 
-    public ListWorldFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, "List of Worlds", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListWorldFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, "List of Worlds", defaultValue, featureSettings);
         reset();
     }
 
@@ -51,7 +51,7 @@ public class ListWorldFeature extends ListFeatureAbstract<String, ListWorldFeatu
 
     @Override
     public ListWorldFeature clone(FeatureParentInterface newParent) {
-        ListWorldFeature clone = new ListWorldFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListWorldFeature clone = new ListWorldFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

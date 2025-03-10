@@ -18,7 +18,7 @@ public abstract class CommandManager<T extends SCommand> {
     public Optional<T> getCommand(String entry) {
         for (T command : this.commands) {
             for (String name : command.getNames()) {
-                if (entry.toUpperCase().startsWith(name.toUpperCase())) {
+                if (entry.regionMatches(true, 0, name, 0, name.length())) {
                     return Optional.of(command);
                 }
             }

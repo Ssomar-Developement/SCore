@@ -13,19 +13,24 @@ public class ExecutableItemsAPI {
 
     /**
      * Get the ExecutableItems Manager,
-     * It allows you to get / retrieve the ExecutableBlocks Placed
      **/
 
     public static ExecutableItemsManagerInterface getExecutableItemsManager() {
        return (ExecutableItemsManagerInterface) ExecutableItemsManager.getInstance();
     }
 
+    /**
+     * Get ExecutableItem with ItemStack
+     * @param itemStack the itemStack to register
+     * @return the ExecutableItemInterface object
+     * Be sure to check if the object is valid with {@link ExecutableItemObjectInterface#isValid()} method
+     */
     public static ExecutableItemObjectInterface getExecutableItemObject(ItemStack itemStack) {
         return new ExecutableItemObject(itemStack);
     }
 
     /**
-     * Register a new ExecutableItemObject
+     * Register a new ExecutableItem with ItemStack
      * @param itemStack the itemStack to register
      * @param id the id of the ExecutableItem
      * @param folder the folder where the ExecutableItem will be saved (ex: "custom/")

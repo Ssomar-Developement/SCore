@@ -1,21 +1,40 @@
-package com.ssomar.score.nofalldamage;
+package com.ssomar.score.events;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import java.util.*;
 
+public class NoFallDamageListener implements Listener {
 
-public class NoFallDamageManager {
-
-    private static NoFallDamageManager instance;
+    private static NoFallDamageListener instance;
 
     private final Map<UUID, List<Couple<UUID, ScheduledTask>>> noFallDamageMap = new HashMap<>();
 
-    public static NoFallDamageManager getInstance() {
-        if (instance == null) instance = new NoFallDamageManager();
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent e) {
+
+        if (!e.getCause().equals(DamageCause.FALL) || !(e.getEntity() instanceof Player)) return;
+
+        Player p = (Player) e.getEntity();
+
+        NoFallDamageListener nFD = NoFallDamageListener.getInstance();
+
+        if (nFD.contains(p)) {
+            e.setCancelled(true);
+            nFD.removeAllNoFallDamage(p);
+        }
+    }
+
+    public static NoFallDamageListener getInstance() {
+        if (instance == null) instance = new NoFallDamageListener();
         return instance;
     }
 
@@ -25,12 +44,12 @@ public class NoFallDamageManager {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                NoFallDamageManager.getInstance().removeNoFallDamage(e, uuid);
+                NoFallDamageListener.getInstance().removeNoFallDamage(e, uuid);
             }
         };
         ScheduledTask task = SCore.schedulerHook.runTask(runnable, 300); // 300 ticks = 15 seconds (1 tick = 0.05 seconds
 
-        NoFallDamageManager.getInstance().addNoFallDamage(e, new Couple<>(uuid, task));
+        NoFallDamageListener.getInstance().addNoFallDamage(e, new Couple<>(uuid, task));
     }
 
     public void addNoFallDamage(Entity e, Couple<UUID, ScheduledTask> c) {
@@ -80,5 +99,4 @@ public class NoFallDamageManager {
         }
         return false;
     }
-
 }

@@ -41,7 +41,7 @@ public class IfMustBeNotPowered extends BlockConditionFeature<BooleanFeature, If
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifMustBeNotPowered, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifMustBeNotPowered));
     }
 
     @Override

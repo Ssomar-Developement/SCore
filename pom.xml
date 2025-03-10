@@ -39,7 +39,7 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>com/ssomar/score/configs/languages</targetPath>
+                <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/languages/</directory>
                 <includes>
@@ -115,30 +115,11 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--<plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals><goal>proguard</goal></goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includeDependency>true</includeDependency>
-                    <proguardVersion>4.5</proguardVersion>
-                    <proguardInclude>${basedir}/Obfu_MF.conf</proguardInclude>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sf.proguard</groupId>
-                        <artifactId>proguard-base</artifactId>
-                        <version>4.5</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
-            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -593,7 +574,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>22ad289</version>
+            <version>2b3def7706</version>
             <scope>compile</scope>
         </dependency>
 

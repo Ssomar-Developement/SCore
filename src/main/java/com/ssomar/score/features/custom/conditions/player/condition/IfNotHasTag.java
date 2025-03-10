@@ -42,7 +42,7 @@ public class IfNotHasTag extends PlayerConditionFeature<ListUncoloredStringFeatu
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifNotHasTag, true, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(),  new ArrayList<>(), FeatureSettingsSCore.ifNotHasTag, Optional.empty()));
     }
 
     @Override

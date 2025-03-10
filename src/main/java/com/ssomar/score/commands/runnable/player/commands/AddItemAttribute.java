@@ -32,11 +32,13 @@ public class AddItemAttribute extends PlayerCommand {
         CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, att);
         CommandSetting value = new CommandSetting("value", 2, Double.class, 1.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
+        CommandSetting stack = new CommandSetting("stack", 4, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(attribute);
         settings.add(value);
         settings.add(equipmentSlot);
+        settings.add(stack);
         setNewSettingsMode(true);
     }
 
@@ -48,6 +50,7 @@ public class AddItemAttribute extends PlayerCommand {
         int slot = (int) sCommandToExec.getSettingValue("slot");
         double value = (double) sCommandToExec.getSettingValue("value");
         EquipmentSlot equipmentSlot = (EquipmentSlot) sCommandToExec.getSettingValue("equipmentSlot");
+        boolean stack = (boolean) sCommandToExec.getSettingValue("stack");
 
         if (slot == -1) item = receiver.getInventory().getItemInMainHand();
         else item = receiver.getInventory().getItem(slot);
@@ -69,16 +72,9 @@ public class AddItemAttribute extends PlayerCommand {
                     equipmentSlot
             );
 
-        /* AttributeModifier newModifier = new AttributeModifier(
-                NamespacedKey.minecraft("base_attack_speed"),
-                value,
-                AttributeModifier.Operation.ADD_NUMBER,
-                EquipmentSlotGroup.HAND
-        );*/
-
         LinkedHashMap<Attribute, AttributeModifier> map = new LinkedHashMap<>();
         map.put(attribute, newModifier);
-        AttributeUtils.addAttributeOnItemMeta(itemmeta, item.getType(), map, true, true, true);
+        AttributeUtils.addAttributeOnItemMeta(itemmeta, item.getType(), map, true, true, true, stack);
         item.setItemMeta(itemmeta);
     }
 
@@ -93,7 +89,7 @@ public class AddItemAttribute extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ADD_ITEM_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND";
+        return "ADD_ITEM_ATTRIBUTE slot:-1 attribute:GENERIC_MAX_HEALTH value:1.0 equipmentSlot:HAND stack:false";
     }
 
     @Override

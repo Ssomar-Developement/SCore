@@ -30,7 +30,7 @@ public class IfNotSneaking extends PlayerConditionFeature<BooleanFeature, IfNotS
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotSneaking, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotSneaking));
     }
 
     @Override

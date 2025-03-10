@@ -6,7 +6,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
-import com.ssomar.score.damagewithoutknockback.DamageWithoutKnockbackManager;
+import com.ssomar.score.events.DamageWithoutKnockbackListener;
 import com.ssomar.score.usedapi.WorldGuardAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -49,13 +49,13 @@ public class DamageNoKnockback extends MixedCommand {
                     /* To avoid looping damage */
                     if(aInfo.isActionRelatedToDamageEvent()) p.setMetadata("cancelDamageEvent", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7772)));
                     p.setMetadata("damageFromCustomCommand", (MetadataValue) new FixedMetadataValue((Plugin) SCore.plugin, Integer.valueOf(7773)));
-                    DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
-                    SsomarDev.testMsg(DamageWithoutKnockbackManager.getInstance().getDamageWithoutKnockbackList().size() + "<<<<<<<<<", true);
+                    DamageWithoutKnockbackListener.getInstance().addDamageWithoutKnockback(receiver);
+                    SsomarDev.testMsg(DamageWithoutKnockbackListener.getInstance().getDamageWithoutKnockbackList().size() + "<<<<<<<<<", true);
                     //SsomarDev.testMsg("Damage ?" + damage, true);
                     livingReceiver.damage(damage, p);
                 } else {
                     //SsomarDev.testMsg("DamageNoKnockback.java -> run() 4", true);
-                    DamageWithoutKnockbackManager.getInstance().addDamageWithoutKnockback(receiver);
+                    DamageWithoutKnockbackListener.getInstance().addDamageWithoutKnockback(receiver);
                     livingReceiver.damage(damage);
                 }
             }

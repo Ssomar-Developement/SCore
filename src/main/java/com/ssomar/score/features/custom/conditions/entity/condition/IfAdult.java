@@ -16,7 +16,7 @@ public class IfAdult extends EntityConditionFeature<BooleanFeature, IfAdult> {
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifAdult, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifAdult));
     }
 
     @Override

@@ -32,7 +32,7 @@ public class IfStunned extends PlayerConditionFeature<BooleanFeature, IfStunned>
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifStunned, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifStunned));
     }
 
     @Override

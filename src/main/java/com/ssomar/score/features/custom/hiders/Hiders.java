@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.hiders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
@@ -8,6 +9,7 @@ import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -43,17 +46,17 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
 
     @Override
     public void reset() {
-        this.hideEnchantments = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideEnchantments, false);
-        this.hideUnbreakable = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideUnbreakable, false);
-        this.hideAttributes = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideAttributes, false);
-        this.hidePotionEffects = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePotionEffects, false);
-        this.hideUsage = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideUsage, false);
-        this.hideDye = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDye, false);
-        this.hideArmorTrim = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideArmorTrim, false);
-        this.hideDestroys = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDestroys, false);
-        this.hidePlacedOn = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePlacedOn, false);
-        this.hideAdditionalTooltip = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideAdditionalTooltip, false);
-        this.hideTooltip = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideTooltip, false);
+        this.hideEnchantments = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideEnchantments);
+        this.hideUnbreakable = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideUnbreakable);
+        this.hideAttributes = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideAttributes);
+        this.hidePotionEffects = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePotionEffects);
+        this.hideUsage = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideUsage);
+        this.hideDye = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDye);
+        this.hideArmorTrim = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideArmorTrim);
+        this.hideDestroys = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideDestroys);
+        this.hidePlacedOn = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hidePlacedOn);
+        this.hideAdditionalTooltip = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideAdditionalTooltip);
+        this.hideTooltip = new BooleanFeature(getParent(),  false, FeatureSettingsSCore.hideTooltip);
     }
 
     @Override
@@ -101,6 +104,14 @@ public class Hiders extends FeatureWithHisOwnEditor<Hiders, Hiders, GenericFeatu
             hideAdditionalTooltip.save(section);
             hideTooltip.save(section);}
         else hidePotionEffects.save(section);
+        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     @Override

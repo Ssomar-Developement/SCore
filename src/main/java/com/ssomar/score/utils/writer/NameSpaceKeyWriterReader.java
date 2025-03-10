@@ -2,10 +2,10 @@ package com.ssomar.score.utils.writer;
 
 import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
-import com.ssomar.score.splugin.SPlugin;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
@@ -35,13 +35,13 @@ public class NameSpaceKeyWriterReader {
         return sb.toString();
     }
 
-    public static void writeString(SPlugin splugin, PersistentDataContainer dataContainer, String key, String value) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeString(Plugin splugin, PersistentDataContainer dataContainer, String key, String value) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         dataContainer.set(key3, PersistentDataType.STRING, value);
     }
 
-    public static void writeStringIfNull(SPlugin splugin, PersistentDataContainer dataContainer, String key, String value) {
-        NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeStringIfNull(Plugin splugin, PersistentDataContainer dataContainer, String key, String value) {
+        NamespacedKey key4 = new NamespacedKey(splugin, key);
         try {
             if (dataContainer.get(key4, PersistentDataType.STRING) == null) {
                 dataContainer.set(key4, PersistentDataType.STRING, value);
@@ -53,19 +53,19 @@ public class NameSpaceKeyWriterReader {
         }
     }
 
-    public static Optional<String> readString(SPlugin splugin, PersistentDataContainer dataContainer, String key) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static Optional<String> readString(Plugin splugin, PersistentDataContainer dataContainer, String key) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         //SsomarDev.testMsg("readString key: " + key+ "> " + meta.getPersistentDataContainer().get(key3, PersistentDataType.STRING));
         return Optional.ofNullable(dataContainer.get(key3, PersistentDataType.STRING));
     }
 
-    public static void writeInteger(SPlugin splugin, PersistentDataContainer dataContainer, String key, int value) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeInteger(Plugin splugin, PersistentDataContainer dataContainer, String key, int value) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         dataContainer.set(key3, PersistentDataType.INTEGER, value);
     }
 
-    public static void writeIntegerIfNull(SPlugin splugin, PersistentDataContainer dataContainer, String key, int value) {
-        NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeIntegerIfNull(Plugin splugin, PersistentDataContainer dataContainer, String key, int value) {
+        NamespacedKey key4 = new NamespacedKey(splugin, key);
         try {
             if (dataContainer.get(key4, PersistentDataType.INTEGER) == null) {
                 dataContainer.set(key4, PersistentDataType.INTEGER, value);
@@ -77,19 +77,19 @@ public class NameSpaceKeyWriterReader {
         }
     }
 
-    public static Optional<Integer> readInteger(SPlugin splugin, PersistentDataContainer dataContainer, String key) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static Optional<Integer> readInteger(Plugin splugin, PersistentDataContainer dataContainer, String key) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         return Optional.ofNullable(dataContainer.get(key3, PersistentDataType.INTEGER));
     }
 
 
-    public static void writeDouble(SPlugin splugin, PersistentDataContainer dataContainer, String key, double value) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeDouble(Plugin splugin, PersistentDataContainer dataContainer, String key, double value) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         dataContainer.set(key3, PersistentDataType.DOUBLE, value);
     }
 
-    public static void writeDoubleIfNull(SPlugin splugin, PersistentDataContainer dataContainer, String key, double value) {
-        NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeDoubleIfNull(Plugin splugin, PersistentDataContainer dataContainer, String key, double value) {
+        NamespacedKey key4 = new NamespacedKey(splugin, key);
         try {
             if (dataContainer.get(key4, PersistentDataType.DOUBLE) == null) {
                 dataContainer.set(key4, PersistentDataType.DOUBLE, value);
@@ -101,18 +101,18 @@ public class NameSpaceKeyWriterReader {
         }
     }
 
-    public static Optional<Double> readDouble(SPlugin splugin, PersistentDataContainer dataContainer, String key) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static Optional<Double> readDouble(Plugin splugin, PersistentDataContainer dataContainer, String key) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         return Optional.ofNullable(dataContainer.get(key3, PersistentDataType.DOUBLE));
     }
 
-    public static void writeList(SPlugin splugin, PersistentDataContainer dataContainer, String key, List<String> value) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeList(Plugin splugin, PersistentDataContainer dataContainer, String key, List<String> value) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         dataContainer.set(key3, PersistentDataType.STRING, value.toString());
     }
 
-    public static void writeListIfNull(SPlugin splugin, PersistentDataContainer dataContainer, String key, List<String> value) {
-        NamespacedKey key4 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void writeListIfNull(Plugin splugin, PersistentDataContainer dataContainer, String key, List<String> value) {
+        NamespacedKey key4 = new NamespacedKey(splugin, key);
         try {
             if (dataContainer.get(key4, PersistentDataType.STRING) == null) {
                 dataContainer.set(key4, PersistentDataType.STRING, value.toString());
@@ -124,8 +124,8 @@ public class NameSpaceKeyWriterReader {
         }
     }
 
-    public static Optional<List<String>> readList(SPlugin splugin, PersistentDataContainer dataContainer, String key) {
-        NamespacedKey key3 = new NamespacedKey(splugin.getPlugin(), key);
+    public static Optional<List<String>> readList(Plugin splugin, PersistentDataContainer dataContainer, String key) {
+        NamespacedKey key3 = new NamespacedKey(splugin, key);
         //SsomarDev.testMsg("readString key: " + key+ "> " + meta.getPersistentDataContainer().get(key3, PersistentDataType.STRING));
         String s = dataContainer.get(key3, PersistentDataType.STRING);
         if (s != null) {
@@ -134,8 +134,8 @@ public class NameSpaceKeyWriterReader {
         return Optional.empty();
     }
 
-    public static void removeKey(SPlugin splugin, PersistentDataContainer dataContainer, String key) {
-        NamespacedKey key1 = new NamespacedKey(splugin.getPlugin(), key);
+    public static void removeKey(Plugin splugin, PersistentDataContainer dataContainer, String key) {
+        NamespacedKey key1 = new NamespacedKey(splugin, key);
         dataContainer.remove(key1);
     }
 

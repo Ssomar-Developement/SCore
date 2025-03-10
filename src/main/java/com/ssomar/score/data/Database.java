@@ -50,7 +50,7 @@ public class Database {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        String url = "jdbc:sqlite:" + SCore.plugin.getDataFolder() + "/" + fileName;
+        String url = "jdbc:sqlite:" + SCore.dataFolder + "/" + fileName;
 
         try (Connection conn = connect()) {
             if (conn != null) {
@@ -73,7 +73,7 @@ public class Database {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        String urlLocal = "jdbc:sqlite:" + SCore.plugin.getDataFolder() + "/" + fileName;
+        String urlLocal = "jdbc:sqlite:" + SCore.dataFolder + "/" + fileName;
 
         boolean needOpenConnection;
         try {
@@ -103,11 +103,11 @@ public class Database {
                         else conn = new DatabaseOld().getOldConnection();
                         useMySQL = true;
                     } catch (SQLException e) {
-                        SCore.plugin.getLogger().severe("Error when trying to connect to your mysql database (local db used instead) "+e.getMessage());
+                        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cError when trying to connect to the database "+e.getMessage());
                         conn = DriverManager.getConnection(urlLocal);
                     }
                     catch (NoClassDefFoundError e) {
-                        SCore.plugin.getLogger().severe("Error the library to connect to mysql is not present on your server (local db used instead) "+e.getMessage());
+                        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cError the library to connect to mysql is not present on your server (local db used instead) "+e.getMessage());
                         conn = DriverManager.getConnection(urlLocal);
                     }
                 } else conn = DriverManager.getConnection(urlLocal);
@@ -115,7 +115,7 @@ public class Database {
                 //System.out.println("[ExecutableItems] "+"Connexion OKAY");
             } catch (SQLException e) {
                 //e.printStackTrace();
-                SCore.plugin.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " " + e.getMessage());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cError when trying to connect to the database "+e.getMessage());
             }
         }
 

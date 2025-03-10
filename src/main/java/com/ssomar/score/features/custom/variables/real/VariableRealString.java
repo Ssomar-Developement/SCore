@@ -4,7 +4,6 @@ import com.ssomar.executableitems.ExecutableItems;
 import com.ssomar.score.SCore;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
 import com.ssomar.score.features.custom.variables.update.variable.VariableUpdateFeature;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import com.ssomar.score.utils.emums.VariableUpdateType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -67,7 +66,7 @@ public class VariableRealString extends VariableReal<String> implements Serializ
 
     @Override
     public Optional<String> readValue(ItemStack item, DynamicMeta dMeta) {
-        getItemKeyWriterReader().writeStringIfNull((SPlugin) SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (String) getConfig().getDefaultValue());
+        getItemKeyWriterReader().writeStringIfNull(SCore.plugin, item, dMeta, "SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (String) getConfig().getDefaultValue());
 
         Optional<String> value;
         Optional<String> potentialOldEIValue;
@@ -82,7 +81,7 @@ public class VariableRealString extends VariableReal<String> implements Serializ
 
     @Override
     public Optional<String> readValue(PersistentDataContainer dataContainer) {
-        NameSpaceKeyWriterReader.writeStringIfNull((SPlugin) SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (String) getConfig().getDefaultValue());
+        NameSpaceKeyWriterReader.writeStringIfNull(SCore.plugin, dataContainer,"SCORE-" + getConfig().getVariableName().getValue().get().toUpperCase(), (String) getConfig().getDefaultValue());
 
         Optional<String> value;
         Optional<String> potentialOldEIValue;

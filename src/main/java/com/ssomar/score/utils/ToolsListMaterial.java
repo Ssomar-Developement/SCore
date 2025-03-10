@@ -80,7 +80,7 @@ public class ToolsListMaterial {
     }
 
     public static ToolsListMaterial getInstance() {
-        if (instance == null) return new ToolsListMaterial();
+        if (instance == null) return instance = new ToolsListMaterial();
         return instance;
     }
 

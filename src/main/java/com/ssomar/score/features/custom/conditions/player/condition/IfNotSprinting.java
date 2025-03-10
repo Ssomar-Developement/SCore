@@ -30,7 +30,7 @@ public class IfNotSprinting extends PlayerConditionFeature<BooleanFeature, IfNot
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotSprinting, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotSprinting));
     }
 
     @Override

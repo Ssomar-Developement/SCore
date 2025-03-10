@@ -1,12 +1,14 @@
 package com.ssomar.score.features.custom.conditions.placeholders.group;
 
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,6 +32,8 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     private LinkedHashMap<String, PlaceholderConditionFeature> placeholdersConditions;
 
+    private boolean notSaveIfItIsEmpty = false;
+
     public PlaceholderConditionGroupFeature(FeatureParentInterface parent) {
         super(parent, FeatureSettingsSCore.placeholdersConditions);
         reset();
@@ -37,6 +41,12 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
 
     public PlaceholderConditionGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface settings) {
         super(parent, settings);
+        reset();
+    }
+
+    public PlaceholderConditionGroupFeature(FeatureParentInterface parent, FeatureSettingsInterface settings, boolean notSaveIfItIsEmpty) {
+        super(parent, settings);
+        this.notSaveIfItIsEmpty = notSaveIfItIsEmpty;
         reset();
     }
 
@@ -118,10 +128,19 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     @Override
     public void save(ConfigurationSection config) {
         config.set(this.getName(), null);
+        if(notSaveIfItIsEmpty && placeholdersConditions.isEmpty()) return;
         ConfigurationSection attributesSection = config.createSection(this.getName());
         for (String enchantmentID : placeholdersConditions.keySet()) {
             placeholdersConditions.get(enchantmentID).save(attributesSection);
         }
+        if(isSavingOnlyIfDiffDefault() && attributesSection.getKeys(false).isEmpty()){
+            config.set(getName(), null);
+            return;
+        }
+
+        if (GeneralConfig.getInstance().isEnableCommentsInConfig())
+            config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+
     }
 
     public String getConfigAsString() {
@@ -165,6 +184,7 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     @Override
     public PlaceholderConditionGroupFeature clone(FeatureParentInterface newParent) {
         PlaceholderConditionGroupFeature eF = new PlaceholderConditionGroupFeature(newParent, getFeatureSettings());
+        eF.setNotSaveIfItIsEmpty(this.notSaveIfItIsEmpty);
         LinkedHashMap<String, PlaceholderConditionFeature> newAttributes = new LinkedHashMap<>();
         for (String x : placeholdersConditions.keySet()) {
             newAttributes.put(x, placeholdersConditions.get(x).clone(eF));

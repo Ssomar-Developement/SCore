@@ -3,22 +3,23 @@ package com.ssomar.score.utils.logging;
 import com.ssomar.score.SCore;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
+import org.bukkit.Bukkit;
 
 public class Utils {
 
     public static void sendConsoleMsg(String msg) {
-       sendConsoleMsg(SCore.plugin, msg);
+        if (SCore.is1v16Plus())
+            Bukkit.getConsoleSender().sendMessage(StringConverter.coloredString(msg));
+        else
+            Bukkit.getConsoleSender().sendMessage(StringConverter.decoloredString(msg));
     }
 
     public static void sendConsoleMsg(SPlugin sPlugin, String msg) {
-        if (SCore.is1v16Plus())
-            sPlugin.getPlugin().getServer().getConsoleSender().sendMessage(StringConverter.coloredString(msg));
-        else
-            sPlugin.getPlugin().getServer().getConsoleSender().sendMessage(StringConverter.decoloredString(msg));
+        sendConsoleMsg(msg);
     }
 
     public static void sendConsoleFlatMsg(SPlugin sPlugin, String msg) {
-        sPlugin.getPlugin().getServer().getConsoleSender().sendMessage(msg);
+        Bukkit.getConsoleSender().sendMessage(msg);
     }
 
 }

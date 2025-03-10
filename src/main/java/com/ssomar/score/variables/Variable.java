@@ -107,7 +107,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
 
     @Override
     public void reset() {
-        defaultValue = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.default_string, true);
+        defaultValue = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.default_string);
         type = new VariableTypeFeature(this, Optional.of(VariableType.NUMBER), FeatureSettingsSCore.type, false);
         forFeature = new VariableForFeature(this, Optional.empty(), FeatureSettingsSCore.for_);
         values = new HashMap<>();

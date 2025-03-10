@@ -601,7 +601,7 @@ public class ParticleDisplay implements Cloneable {
 
     /**
      * Adds color properties to the particle settings.
-     * The particle must be {@link Particle#REDSTONE}
+     * The particle must be Particle redstone
      * to get custom colors.
      *
      * @param color the RGB color of the particle.
@@ -653,7 +653,7 @@ public class ParticleDisplay implements Cloneable {
     }
 
     /**
-     * Adds data for {@link Particle#BLOCK_CRACK}, {@link Particle#BLOCK_DUST},
+     * Adds data for Particle#BLOCK_CRACK, Particle#BLOCK_DUST,
      * {@link Particle#FALLING_DUST} and {@link Particle#BLOCK_MARKER} particles.
      * The displayed particle will depend on the given block data for its color.
      * <p>
@@ -672,11 +672,11 @@ public class ParticleDisplay implements Cloneable {
     }
 
     /**
-     * Adds data for {@link Particle#LEGACY_BLOCK_CRACK}, {@link Particle#LEGACY_BLOCK_DUST}
-     * and {@link Particle#LEGACY_FALLING_DUST} particles if the minecraft version is 1.13 or more.
+     * Adds data forParticle#LEGACY_BLOCK_CRACK,Particle#LEGACY_BLOCK_DUST
+     * and Particle#LEGACY_FALLING_DUST particles if the minecraft version is 1.13 or more.
      * <p>
-     * If version is at most 1.12, old particles {@link Particle#BLOCK_CRACK},
-     * {@link Particle#BLOCK_DUST} and {@link Particle#FALLING_DUST} will support this data.
+     * If version is at most 1.12, old particles Particle#BLOCK_CRACK,
+     *Particle#BLOCK_DUST and {@link Particle#FALLING_DUST} will support this data.
      *
      * @param materialData the material data that will change the particle data.
      *
@@ -691,7 +691,7 @@ public class ParticleDisplay implements Cloneable {
     }
 
     /**
-     * Adds extra data for {@link Particle#ITEM_CRACK}
+     * Adds extra data for Particle#ITEM_CRACK
      * particle, depending on the given item stack.
      *
      * @param item the item stack that will change the particle data.

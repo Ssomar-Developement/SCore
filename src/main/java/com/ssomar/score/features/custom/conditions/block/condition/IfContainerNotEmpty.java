@@ -36,7 +36,7 @@ public class IfContainerNotEmpty extends BlockConditionFeature<BooleanFeature, I
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifContainerNotEmpty, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifContainerNotEmpty));
     }
 
     @Override

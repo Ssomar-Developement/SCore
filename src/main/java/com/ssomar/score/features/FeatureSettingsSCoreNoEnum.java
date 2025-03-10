@@ -9,13 +9,15 @@ public class FeatureSettingsSCoreNoEnum implements FeatureSettingsInterface {
     private String[] editorDescription;
     private Material editorMaterial;
     private boolean requirePremium;
+    private SavingVerbosityLevel savingVerbosityLevel;
 
-    public FeatureSettingsSCoreNoEnum(String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium) {
+    public FeatureSettingsSCoreNoEnum(String name, String editorName, String[] editorDescription, Material editorMaterial, boolean requirePremium, SavingVerbosityLevel savingVerbosityLevel) {
         this.configName = name;
         this.editorName = editorName;
         this.editorDescription = editorDescription;
         this.editorMaterial = editorMaterial;
         this.requirePremium = requirePremium;
+        this.savingVerbosityLevel = savingVerbosityLevel;
     }
 
     @Override
@@ -44,6 +46,11 @@ public class FeatureSettingsSCoreNoEnum implements FeatureSettingsInterface {
     }
 
     @Override
+    public String[] getEditorDescriptionBrut() {
+        return editorDescription;
+    }
+
+    @Override
     public Material getEditorMaterial() {
         return editorMaterial;
     }
@@ -56,5 +63,15 @@ public class FeatureSettingsSCoreNoEnum implements FeatureSettingsInterface {
     @Override
     public void setRequirePremium(boolean requirePremium) {
         this.requirePremium = requirePremium;
+    }
+
+    @Override
+    public SavingVerbosityLevel getSavingVerbosityLevel() {
+        return savingVerbosityLevel;
+    }
+
+    @Override
+    public void setSavingVerbosityLevel(SavingVerbosityLevel savingVerbosityLevel) {
+        this.savingVerbosityLevel = savingVerbosityLevel;
     }
 }

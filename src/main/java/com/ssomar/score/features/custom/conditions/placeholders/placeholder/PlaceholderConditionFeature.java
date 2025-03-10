@@ -65,13 +65,13 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
     public void reset() {
         this.type = new PlaceholderConditionTypeFeature(this, Optional.of(PlaceholdersCdtType.PLAYER_NUMBER), FeatureSettingsSCore.type);
         this.comparator = new ComparatorFeature(this, Optional.of(Comparator.EQUALS), FeatureSettingsSCore.comparator);
-        this.part1 = new ColoredStringFeature(this, Optional.of("%player_health%"), FeatureSettingsSCore.part1, false);
-        this.part2 = new ColoredStringFeature(this, Optional.of("10"),FeatureSettingsSCore.part2, false);
+        this.part1 = new ColoredStringFeature(this, Optional.of("%player_health%"), FeatureSettingsSCore.part1);
+        this.part2 = new ColoredStringFeature(this, Optional.of("10"),FeatureSettingsSCore.part2);
 
-        this.cancelEventIfNotValid = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotValid, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.messageIfNotValid, false);
-        this.messageIfNotValidForTarget = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.messageIfNotValidForTarget, false);
-        this.stopCheckingOtherConditionsIfNotValid = new BooleanFeature(this,  true, FeatureSettingsSCore.stopCheckingOtherConditionsIfNotValid, false);
+        this.cancelEventIfNotValid = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotValid);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.messageIfNotValid);
+        this.messageIfNotValidForTarget = new ColoredStringFeature(this, Optional.of(""), FeatureSettingsSCore.messageIfNotValidForTarget);
+        this.stopCheckingOtherConditionsIfNotValid = new BooleanFeature(this,  true, FeatureSettingsSCore.stopCheckingOtherConditionsIfNotValid);
         this.consoleCommandsIfError = new ConsoleCommandsFeature(this, FeatureSettingsSCore.placeholderConditionCmds, true);
     }
 

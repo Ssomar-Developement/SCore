@@ -1,6 +1,5 @@
 package com.ssomar.score.utils.scheduler;
 
-import com.ssomar.score.SCore;
 import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import io.papermc.paper.threadedregions.scheduler.EntityScheduler;
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
@@ -8,30 +7,31 @@ import io.papermc.paper.threadedregions.scheduler.RegionScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 public class RegionisedSchedulerHook implements SchedulerHook {
-    private final SCore SCore;
+    private final Plugin plugin;
 
-    public RegionisedSchedulerHook(SCore SCore) {
-        this.SCore = SCore;
+    public RegionisedSchedulerHook(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public ScheduledTask runTask(Runnable runnable, long delay) {
         if(delay > 0)
-            return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runDelayed(SCore, task -> runnable.run(), delay));
+            return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runDelayed(plugin, task -> runnable.run(), delay));
         else
-            return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).run(SCore, task -> runnable.run()));
+            return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).run(plugin, task -> runnable.run()));
     }
 
 
     @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
         if(initDelay <= 0) initDelay = 1;
-        return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runAtFixedRate(SCore, task -> runnable.run(), initDelay, period));
+        return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runAtFixedRate(plugin, task -> runnable.run(), initDelay, period));
     }
 
     @Override
@@ -39,9 +39,9 @@ public class RegionisedSchedulerHook implements SchedulerHook {
         // convert tick to ms
         delay *= 50;
         if(delay > 0)
-            return new RegionisedScheduledTask(((AsyncScheduler)getReflectedObjectOfBukkit("getAsyncScheduler")).runDelayed(SCore, task -> runnable.run(), delay, TimeUnit.MILLISECONDS));
+            return new RegionisedScheduledTask(((AsyncScheduler)getReflectedObjectOfBukkit("getAsyncScheduler")).runDelayed(plugin, task -> runnable.run(), delay, TimeUnit.MILLISECONDS));
         else
-            return new RegionisedScheduledTask(((AsyncScheduler)getReflectedObjectOfBukkit("getAsyncScheduler")).runNow(SCore, task -> runnable.run()));
+            return new RegionisedScheduledTask(((AsyncScheduler)getReflectedObjectOfBukkit("getAsyncScheduler")).runNow(plugin, task -> runnable.run()));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
         initDelay *= 50;
         period *= 50;
         if(initDelay <= 0) initDelay = 1;
-        return new RegionisedScheduledTask(((AsyncScheduler)getReflectedObjectOfBukkit("getAsyncScheduler")).runAtFixedRate(SCore, task -> runnable.run(), initDelay, period, TimeUnit.MILLISECONDS));
+        return new RegionisedScheduledTask(((AsyncScheduler)getReflectedObjectOfBukkit("getAsyncScheduler")).runAtFixedRate(plugin, task -> runnable.run(), initDelay, period, TimeUnit.MILLISECONDS));
     }
 
     @Override
@@ -68,8 +68,8 @@ public class RegionisedSchedulerHook implements SchedulerHook {
         }
 
         if(delay > 0)
-            scheduledTask = scheduler.runDelayed(SCore, task -> runnable.run(), retired, delay);
-        else scheduledTask = scheduler.run(SCore, task -> runnable.run(), retired);
+            scheduledTask = scheduler.runDelayed(plugin, task -> runnable.run(), retired, delay);
+        else scheduledTask = scheduler.run(plugin, task -> runnable.run(), retired);
         return scheduledTask == null ? null : new RegionisedScheduledTask(scheduledTask);
     }
 
@@ -106,8 +106,8 @@ public class RegionisedSchedulerHook implements SchedulerHook {
     public ScheduledTask runLocationTask(Runnable runnable,Location location, long delay) {
         io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
         if(delay > 0)
-            scheduledTask = ((RegionScheduler)getReflectedObjectOfBukkit("getRegionScheduler")).runDelayed(SCore, location, task -> runnable.run(), delay);
-        else scheduledTask = ((RegionScheduler)getReflectedObjectOfBukkit("getRegionScheduler")).run(SCore, location, task -> runnable.run());
+            scheduledTask = ((RegionScheduler)getReflectedObjectOfBukkit("getRegionScheduler")).runDelayed(plugin, location, task -> runnable.run(), delay);
+        else scheduledTask = ((RegionScheduler)getReflectedObjectOfBukkit("getRegionScheduler")).run(plugin, location, task -> runnable.run());
         return scheduledTask == null ? null : new RegionisedScheduledTask(scheduledTask);
     }
 

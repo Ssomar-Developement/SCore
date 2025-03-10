@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
     private final static boolean DEBUG = true;
 
 
-    public ContainerContent(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, defaultValue, featureSettings, notSaveIfEqualsToDefaultValue, Optional.empty());
+    public ContainerContent(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, defaultValue, featureSettings, Optional.empty());
     }
 
     @Override
@@ -41,37 +42,50 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
     @Override
     public void applyOnBlockData(@NotNull FeatureForBlockArgs args) {
 
-        if (this.getValues().isEmpty() || !isAvailable() || !isApplicable(args)) {
-            SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the value is not present or the meta is not a BlockStateMeta", DEBUG);
-            return;
-        }
-
-        BlockState blockState = args.getBlockState();
-        if (!(blockState instanceof Container)) {
-            SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the meta is not a BlockStateMeta", DEBUG);
-            return;
-        }
-        Container container = (Container) blockState;
-
-        try {
-            Inventory inv = container.getInventory();
-            for (String value : this.getValues()) {
-                String[] split = value.split(";");
-                int slot = Integer.parseInt(split[0].split(":")[1]);
-                String itemString = value.substring(value.indexOf(";") + 1);
-                ItemStack item = Bukkit.getServer().getItemFactory().createItemStack(itemString);
-                SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the item " + item, DEBUG);
-                if(slot >= inv.getSize()) {
-                    SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the slot is too big", DEBUG);
-                    continue;
+        // Need to delay because getInventory only works when the block is placed
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (getValues().isEmpty() || !isAvailable() || !isApplicable(args)) {
+                    SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the value is not present or the meta is not a BlockStateMeta", DEBUG);
+                    return;
                 }
-                inv.setItem(slot, item);
+                // Need to get block and then blockstate again to be sure to have the right blockstate
+                BlockState blockState = args.getBlockState().getBlock().getState();
+                if (!(blockState instanceof Container)) {
+                    SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the meta is not a BlockStateMeta", DEBUG);
+                    return;
+                }
+                Container container = (Container) blockState;
+
+                try {
+                    Inventory inv = container.getInventory();
+                    for (String value : getValues()) {
+                        String[] split = value.split(";");
+                        int slot = Integer.parseInt(split[0].split(":")[1]);
+                        String itemString = value.substring(value.indexOf(";") + 1);
+                        int amount = 1;
+                        if(itemString.contains(";amount:")) {
+                            amount = Integer.parseInt(itemString.split(";amount:")[1]);
+                            itemString = itemString.split(";amount:")[0];
+                        }
+                        ItemStack item = Bukkit.getServer().getItemFactory().createItemStack(itemString);
+                        item.setAmount(amount);
+                        SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the item " + item, DEBUG);
+                        if(slot >= inv.getSize()) {
+                            SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the slot is too big", DEBUG);
+                            continue;
+                        }
+                        inv.setItem(slot, item);
+                    }
+                    SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the blockState is updated", DEBUG);
+                    //container.update();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
             }
-            SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the blockState is updated", DEBUG);
-            container.update();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+        };
+        SCore.schedulerHook.runLocationTask(runnable, args.getBlockState().getLocation(), 1);
     }
 
     @Override
@@ -89,9 +103,7 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
                 slot++;
                 if (item == null) continue;
                 String value = "";
-                if (item.hasItemMeta())
-                    value = "slot:" + slot + ";minecraft:" + item.getType().toString().toLowerCase() + item.getItemMeta().getAsString();
-                else value = "slot:" + slot + ";minecraft:" + item.getType().toString().toLowerCase();
+                value = "slot:" + slot + ";minecraft:" + item.getType().toString().toLowerCase() + item.getItemMeta().getAsComponentString()+";amount:"+item.getAmount();
                 SsomarDev.testMsg("ItemContainerFeature loadFromBlockData: the item meta " + value, DEBUG);
                 values.add(value);
             }
@@ -136,7 +148,14 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
                 String[] split = value.split(";");
                 int slot = Integer.parseInt(split[0].split(":")[1]);
                 String itemString = value.substring(value.indexOf(";") + 1);
+                int amount = 1;
+                if(itemString.contains(";amount:")) {
+                    amount = Integer.parseInt(itemString.split(";amount:")[1]);
+                    itemString = itemString.split(";amount:")[0];
+                }
+                SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the itemString " + itemString, DEBUG);
                 ItemStack item = Bukkit.getServer().getItemFactory().createItemStack(itemString);
+                item.setAmount(amount);
                 SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the item " + item, DEBUG);
                 if (slot >= inv.getSize()) {
                     SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the slot is too big", DEBUG);
@@ -174,9 +193,7 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
                 slot++;
                 if (item == null) continue;
                 String value = "";
-                if (item.hasItemMeta())
-                    value = "slot:" + slot + ";minecraft:" + item.getType().toString().toLowerCase() + item.getItemMeta().getAsString();
-                else value = "slot:" + slot + ";minecraft:" + item.getType().toString().toLowerCase();
+                value = "slot:" + slot + ";minecraft:" + item.getType().toString().toLowerCase() + item.getItemMeta().getAsComponentString()+";amount:"+item.getAmount();
                 SsomarDev.testMsg("ItemContainerFeature loadFromItemMeta: the item meta " + value, DEBUG);
                 values.add(value);
             }
@@ -193,7 +210,7 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
 
     @Override
     public ContainerContent clone(FeatureParentInterface newParent) {
-        ContainerContent clone = new ContainerContent(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ContainerContent clone = new ContainerContent(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         return clone;
     }

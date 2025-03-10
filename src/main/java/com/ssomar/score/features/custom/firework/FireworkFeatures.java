@@ -54,8 +54,8 @@ public class FireworkFeatures extends FeatureWithHisOwnEditor<FireworkFeatures, 
         this.explosions = new FireworkExplosionGroupFeature(this, true);
 
         this.type = new FireworkEffectTypeFeature(this, Optional.empty(), FeatureSettingsSCore.type);
-        this.colors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.colors, true, Optional.empty());
-        this.fadeColors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.fadeColors, true, Optional.empty());
+        this.colors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.colors, Optional.empty());
+        this.fadeColors = new ListBukkitColorFeature(this,  new ArrayList<>(), FeatureSettingsSCore.fadeColors, Optional.empty());
     }
 
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {

@@ -1,17 +1,17 @@
 package com.ssomar.score.utils.itemwriter;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.DynamicMeta;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
 public class NBTWriterReader implements ItemKeyWriterReader {
 
-    public void writeString(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value) {
+    public void writeString(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -22,7 +22,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeStringIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value) {
+    public void writeStringIfNull(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, String value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -35,7 +35,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public Optional<String> readString(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+    public Optional<String> readString(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
             if (nbti.hasKey(key)) {
@@ -46,7 +46,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeInteger(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, int value) {
+    public void writeInteger(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, int value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -57,7 +57,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeIntegerIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, int value) {
+    public void writeIntegerIfNull(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, int value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -70,7 +70,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public Optional<Integer> readInteger(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+    public Optional<Integer> readInteger(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
             if (nbti.hasKey(key)) {
@@ -81,7 +81,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeDouble(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, double value) {
+    public void writeDouble(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, double value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -92,7 +92,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeDoubleIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, double value) {
+    public void writeDoubleIfNull(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, double value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -105,7 +105,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public Optional<Double> readDouble(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+    public Optional<Double> readDouble(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
             if (nbti.hasKey(key)) {
@@ -116,7 +116,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
+    public void writeList(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -127,7 +127,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void writeListIfNull(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
+    public void writeListIfNull(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key, List<String> value) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
@@ -140,7 +140,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public Optional<List<String>> readList(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+    public Optional<List<String>> readList(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);
             if (nbti.hasKey(key)) {
@@ -154,7 +154,7 @@ public class NBTWriterReader implements ItemKeyWriterReader {
     }
 
     @Override
-    public void removeKey(SPlugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
+    public void removeKey(Plugin splugin, ItemStack item, DynamicMeta dMeta, String key) {
         item.setItemMeta(dMeta.getMeta());
         if (SCore.hasNBTAPI && !item.getType().equals(Material.AIR)) {
             NBTItem nbti = new NBTItem(item);

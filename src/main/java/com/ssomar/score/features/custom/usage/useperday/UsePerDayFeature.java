@@ -48,8 +48,8 @@ public class UsePerDayFeature extends FeatureWithHisOwnEditor<UsePerDayFeature, 
     @Override
     public void reset() {
         this.maxUsePerDay = new IntegerFeature(this, Optional.ofNullable(-1), FeatureSettingsSCore.maxUsePerDay);
-        this.messageIfMaxReached = new ColoredStringFeature(this, Optional.ofNullable("&4&l[ERROR] &c&oYou have reached the max use per day"), FeatureSettingsSCore.messageIfMaxReached, false);
-        this.cancelEventIfMaxReached = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfMaxReached, false);
+        this.messageIfMaxReached = new ColoredStringFeature(this, Optional.ofNullable("&4&l[ERROR] &c&oYou have reached the max use per day"), FeatureSettingsSCore.messageIfMaxReached);
+        this.cancelEventIfMaxReached = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfMaxReached);
     }
 
     @Override

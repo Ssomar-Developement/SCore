@@ -48,8 +48,8 @@ public class DetailedEffects extends FeatureWithHisOwnEditor<DetailedEffects, De
     @Override
     public void reset() {
         this.effects = new ListDetailedEffectFeature(this, new ArrayList<>(), FeatureSettingsSCore.effects, false);
-        this.cancelEventIfNotValid = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotValid, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe block is not correct !") */, FeatureSettingsSCore.messageIfNotValid, false);
+        this.cancelEventIfNotValid = new BooleanFeature(this, false, FeatureSettingsSCore.cancelEventIfNotValid);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty() /* Optional.ofNullable("&4&l[Error] &cthe block is not correct !") */, FeatureSettingsSCore.messageIfNotValid);
     }
 
     @Override

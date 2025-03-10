@@ -30,7 +30,7 @@ public class IfIsOnFire extends PlayerConditionFeature<BooleanFeature, IfIsOnFir
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifIsOnFire, true));
+        setCondition(new BooleanFeature(getParent(), false, FeatureSettingsSCore.ifIsOnFire));
     }
 
     @Override

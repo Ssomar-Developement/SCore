@@ -13,7 +13,7 @@ import java.util.Map;
 public class IfNeedPlayerConfirmation extends CustomConditionFeature<BooleanFeature, IfNeedPlayerConfirmation> {
 
     public IfNeedPlayerConfirmation(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.ifNeedPlayerConfirmation);
+        super(parent, FeatureSettingsSCore.ifNeedPlayerConfirmation, true);
     }
 
     @Override
@@ -45,8 +45,7 @@ public class IfNeedPlayerConfirmation extends CustomConditionFeature<BooleanFeat
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNeedPlayerConfirmation, true));
-        getCancelEventIfError().setDefaultValue(true);
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNeedPlayerConfirmation));
     }
 
     @Override

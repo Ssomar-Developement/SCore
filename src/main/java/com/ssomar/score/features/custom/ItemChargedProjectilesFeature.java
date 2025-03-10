@@ -22,8 +22,8 @@ public class ItemChargedProjectilesFeature extends ListUncoloredStringFeature im
 
     private final static boolean DEBUG = true;
 
-    public ItemChargedProjectilesFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue, Optional<List<Suggestion>> suggestions) {
-        super(parent, defaultValue, featureSettings, notSaveIfEqualsToDefaultValue, suggestions);
+    public ItemChargedProjectilesFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, Optional<List<Suggestion>> suggestions) {
+        super(parent, defaultValue, featureSettings, suggestions);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ItemChargedProjectilesFeature extends ListUncoloredStringFeature im
 
     @Override
     public ItemChargedProjectilesFeature clone(FeatureParentInterface newParent) {
-        ItemChargedProjectilesFeature clone = new ItemChargedProjectilesFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue(), Optional.empty());
+        ItemChargedProjectilesFeature clone = new ItemChargedProjectilesFeature(newParent, getDefaultValue(), getFeatureSettings(), Optional.empty());
         clone.setValues(this.getValues());
         return clone;
     }

@@ -86,25 +86,22 @@ public class SetExecutableBlock extends BlockCommand {
             boolean replace = false;
             try {
                 replace = Boolean.parseBoolean(args.get(5));
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             boolean bypassProtection = false;
             try {
                 bypassProtection = Boolean.parseBoolean(args.get(6));
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             UUID ownerUUID = null;
             try {
                 ownerUUID = UUID.fromString(args.get(args.size() - 1));
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
 
             block = new Location(world, x, y, z).getBlock();
             Location loc = block.getLocation();
 
-            //SsomarDev.testMsg("replace:::: "+(!replace)+" >>>>>> "+(!block.isEmpty()));
+            //SsomarDev.testMsg("replace:::: "+(replace)+" >>>>>> "+(block.isEmpty()), true);
             if (!replace && !block.isEmpty()) {
                 return;
             }
@@ -131,7 +128,7 @@ public class SetExecutableBlock extends BlockCommand {
         if (args.size() > 8) {
             error = tooManyArgs + setEB;
             return Optional.of(error);
-        } else if (args.size() < 6) {
+        } else if (args.size() < 5) {
             error = notEnoughArgs + setEB;
         } else {
 
@@ -185,11 +182,13 @@ public class SetExecutableBlock extends BlockCommand {
                 }
             }
 
-            try {
-                Boolean.valueOf(args.get(5));
-            } catch (Exception e) {
-                error = invalidBoolean + args.get(5) + " for the command: " + setEB;
-                return Optional.of(error);
+            if (args.size() > 5) {
+                try {
+                    Boolean.valueOf(args.get(5));
+                } catch (Exception e) {
+                    error = invalidBoolean + args.get(5) + " for the command: " + setEB;
+                    return Optional.of(error);
+                }
             }
         }
 
@@ -205,7 +204,7 @@ public class SetExecutableBlock extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} {replace true or false} [bypassProtection true or false] [ownerUUID]";
+        return "SETEXECUTABLEBLOCK {id} {x} {y} {z} {world} [replace true or false] [bypassProtection true or false] [ownerUUID]";
     }
 
     @Override

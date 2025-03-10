@@ -35,7 +35,7 @@ public class IfNotTamed extends EntityConditionFeature<BooleanFeature, IfNotTame
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotTamed, true));
+        setCondition(new BooleanFeature(getParent(),  false, FeatureSettingsSCore.ifNotTamed));
     }
 
     @Override

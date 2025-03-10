@@ -46,7 +46,7 @@ public class IfCrossbowMustNotBeCharged extends ItemConditionFeature<BooleanFeat
 
     @Override
     public void subReset() {
-        setCondition(new BooleanFeature(this, false, FeatureSettingsSCore.ifCrossbowMustNotBeCharged, true));
+        setCondition(new BooleanFeature(this, false, FeatureSettingsSCore.ifCrossbowMustNotBeCharged));
     }
 
     @Override

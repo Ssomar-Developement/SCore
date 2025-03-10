@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
-import com.ssomar.score.nofalldamage.NoFallDamageManager;
+import com.ssomar.score.events.NoFallDamageListener;
 import com.ssomar.score.utils.Couple;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
@@ -59,11 +59,11 @@ public class CustomDash1 extends MixedCommand {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    NoFallDamageManager.getInstance().removeNoFallDamage(receiver, uuid);
+                    NoFallDamageListener.getInstance().removeNoFallDamage(receiver, uuid);
                 }
             };
             ScheduledTask task = SCore.schedulerHook.runTask(runnable, 300);
-            NoFallDamageManager.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
+            NoFallDamageListener.getInstance().addNoFallDamage(receiver, new Couple<>(uuid, task));
         }
     }
 

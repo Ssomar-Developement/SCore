@@ -93,29 +93,31 @@ public abstract class RunCommand implements Serializable {
             public void run() {
                 //SsomarDev.testMsg("Command run command: "+getBrutCommand(), true);
                 String finalCommand = getBrutCommand();
-                String [] split = finalCommand.split(" ");
                 int later = 0;
                 Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
                 //System.out.println("Command1: "+finalCommand);
-                for (String s : split) {
-                    /* Exception 1  for example %parseother_{%around_target%}_{player_name}
-                    * He we dont want to replace PAIPI placeholders now, we want to replace them later when the %around_target% will be parsed
-                    *
-                    * The good condition is contains %????_ and %around to make sure it works with all papi libs*/
+                if(finalCommand.contains("%around_")) {
+                    String[] split = finalCommand.split(" ");
+                    for (String s : split) {
+                        /* Exception 1  for example %parseother_{%around_target%}_{player_name}
+                         * He we dont want to replace PAPI placeholders now, we want to replace them later when the %around_target% will be parsed
+                         *
+                         * The good condition is contains %????_ and %around to make sure it works with all papi libs*/
 
-                    // Check if the string contains %?????_ and %around
-                    String regex = "\\S*%[a-zA-Z0-9_]*\\S*[{(]*%around_\\S*%[})]*";
+                        // Check if the string contains %?????_ and %around
+                        String regex = "\\S*%[a-zA-Z0-9_]*\\S*[{(]*%around_\\S*%[})]*";
 
-                    if(s.matches(regex)){
-                        //System.out.println("Match: "+s);
-                        finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_"+later);
-                        // If there is a placeholder like %projectile_x% between %_math and %_around we want to replace it
-                        // Only plugin placeholder
-                        s = getSp().replacePlaceholder(s, false);
-                        placeholdersToReplaceLatter.put(later, s);
-                        later++;
+                        if (s.matches(regex)) {
+                            //System.out.println("Match: "+s);
+                            finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_" + later);
+                            // If there is a placeholder like %projectile_x% between %_math and %_around we want to replace it
+                            // Only plugin placeholder
+                            s = getSp().replacePlaceholder(s, false);
+                            placeholdersToReplaceLatter.put(later, s);
+                            later++;
+                        }
+                        //else System.out.println("No Match: "+s);
                     }
-                    //else System.out.println("No Match: "+s);
                 }
                 //Exception 2 for WHILE we don't want to replace the placeholders
                 if(!(finalCommand.startsWith("WHILE") || finalCommand.startsWith("IF"))) {

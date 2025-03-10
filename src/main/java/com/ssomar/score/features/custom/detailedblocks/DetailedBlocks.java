@@ -75,9 +75,9 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     @Override
     public void reset() {
-        this.blocks = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blocks, false, true);
-        this.cancelEventIfNotValid = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfNotValid, false);
-        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.messageIfNotValid, false);
+        this.blocks = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.blocks, true);
+        this.cancelEventIfNotValid = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfNotValid);
+        this.messageIfNotValid = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.messageIfNotValid);
     }
 
     @Override

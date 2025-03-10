@@ -349,7 +349,7 @@ public final class XParticle {
      * @param time       the duration of the beam in ticks
      *
      * @return the animation handler.
-     * @see #magicCircles(Plugin, double, double, double, double, ParticleDisplay)
+     * @see #magicCircles(Plugin, double, double, double, double, int, ParticleDisplay)
      * @since 3.0.0
      */
     public static ScheduledTask circularBeam(Plugin plugin, double maxRadius, double rate, double radiusRate, double extend, double time, ParticleDisplay display) {
@@ -540,7 +540,7 @@ public final class XParticle {
      * @param distance   the distance between each circle.
      *
      * @return the animation handler.
-     * @see #circularBeam(Plugin, double, double, double, double, ParticleDisplay)
+     * @see #circularBeam(Plugin, double, double, double, double, double, ParticleDisplay)
      * @since 3.0.0
      */
     public static ScheduledTask magicCircles(Plugin plugin, double radius, double rate, double radiusRate, double distance, int time, ParticleDisplay display) {
@@ -1812,7 +1812,7 @@ public final class XParticle {
      * @param cubes       the dimension of the hypercube starting from 3D. E.g. {@code dimension 1 -> 4D tersseract}
      *
      * @see #structuredCube(Location, Location, double, ParticleDisplay)
-     * @see #tesseract(Plugin, double, double, double, long, ParticleDisplay)
+     * @see #tesseract(Plugin, double, double, double, double, ParticleDisplay) 
      * @since 1.0.0
      */
     public static void hypercube(Location startOrigin, Location endOrigin, double rate, double sizeRate, int cubes, ParticleDisplay display) {
@@ -2296,7 +2296,7 @@ public final class XParticle {
      * @param radius the radius of orbits.
      * @param rate   the rate of orbit and nucleus points.
      *
-     * @see #atomic(Plugin, int, double, double, ParticleDisplay)
+     * @see #atomic(Plugin, int, double, double, double, ParticleDisplay) 
      * @since 1.0.0
      */
     public static void atom(int orbits, double radius, double rate, ParticleDisplay orbit, ParticleDisplay nucleus) {

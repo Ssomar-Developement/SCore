@@ -20,8 +20,8 @@ import java.util.Optional;
 @Setter
 public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherFeature> {
 
-    public ListWeatherFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings, boolean notSaveIfEqualsToDefaultValue) {
-        super(parent, "List of Weather", defaultValue, featureSettings, notSaveIfEqualsToDefaultValue);
+    public ListWeatherFeature(FeatureParentInterface parent, List<String> defaultValue, FeatureSettingsInterface featureSettings) {
+        super(parent, "List of Weather", defaultValue, featureSettings);
         reset();
     }
 
@@ -55,7 +55,7 @@ public class ListWeatherFeature extends ListFeatureAbstract<String, ListWeatherF
 
     @Override
     public ListWeatherFeature clone(FeatureParentInterface newParent) {
-        ListWeatherFeature clone = new ListWeatherFeature(newParent, getDefaultValue(), getFeatureSettings(), isNotSaveIfEqualsToDefaultValue());
+        ListWeatherFeature clone = new ListWeatherFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;
