@@ -64,8 +64,6 @@ public class SetItemlore extends PlayerCommand {
 
         itemmeta.setLore(list);
         item.setItemMeta(itemmeta);
-
-        receiver.getInventory().setItem(slot, item);
     }
 
 
