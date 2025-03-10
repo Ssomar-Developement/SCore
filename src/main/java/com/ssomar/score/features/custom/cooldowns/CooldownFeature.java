@@ -2,6 +2,7 @@ package com.ssomar.score.features.custom.cooldowns;
 
 import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
@@ -40,7 +41,8 @@ import java.util.*;
 public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, CooldownFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     /* Cooldowns / delay */
-    private IntegerFeature cooldown;
+    // private IntegerFeature cooldown;
+    private ColoredStringFeature cooldown; // Change to support placeholder
     private ColoredStringFeature cooldownMessage;
     private BooleanFeature displayCooldownMessage;
     private BooleanFeature isCooldownInTicks;
@@ -134,8 +136,17 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
      * @param sp      The saved placeholder
      */
     public void addCooldown(Entity entity, @NotNull SObject sObject, @Nullable StringPlaceholder sp) {
-        if (!hasNoCDPerm(entity, sObject) && this.cooldown.getValue(entity.getUniqueId(), sp).get() != 0) {
-            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), this.cooldown.getValue(entity.getUniqueId(), sp).get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
+        int cooldownInt;
+        double cooldownDouble;
+        try {
+            cooldownDouble = Double.parseDouble(sp.replacePlaceholder(cooldown.getValue().get()));
+        } catch (NumberFormatException e) {
+            cooldownDouble = 0;
+        }
+        cooldownInt = (int) cooldownDouble; // Cast to int
+        
+        if (!hasNoCDPerm(entity, sObject) && cooldownInt != 0) {
+            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
             cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
             CooldownsManager.getInstance().addCooldown(cooldown);
 
@@ -157,6 +168,8 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
      * @param isInTicks Define if the cooldown is in ticks or in secs
      */
     public void addCooldown(Entity entity, @NotNull SObject sObject, int time, boolean isInTicks) {
+        // StringPlaceholder sp = new StringPlaceholder();
+        // System.out.println("DEBUG TEST CD 2: " + sp.replacePlaceholder(cooldown.getValue().get()));
         if (!hasNoCDPerm(entity, sObject) && time != 0) {
             Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), time, isInTicks, System.currentTimeMillis(), false);
             cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
@@ -183,7 +196,16 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
     }
 
     public void addGlobalCooldown(@NotNull SObject sObject) {
-        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, this.cooldown.getValue().get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
+        StringPlaceholder sp = new StringPlaceholder();
+        int cooldownInt;
+        double cooldownDouble;
+        try {
+            cooldownDouble = Double.parseDouble(sp.replacePlaceholder(cooldown.getValue().get()));
+        } catch (NumberFormatException e) {
+            cooldownDouble = 0;
+        }
+        cooldownInt = (int) cooldownDouble; // Cast to int
+        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
 
@@ -309,14 +331,15 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
 
     @Override
     public void reset() {
-        this.cooldown = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.cooldown);
-        this.isCooldownInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.isCooldownInTicks);
-        this.cooldownMessage = new ColoredStringFeature(this, Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), FeatureSettingsSCore.cooldownMsg);
-        this.displayCooldownMessage = new BooleanFeature(this,  true, FeatureSettingsSCore.displayCooldownMessage);
-        this.cancelEventIfInCooldown = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfInCooldown);
-        this.pauseWhenOffline = new BooleanFeature(this, false, FeatureSettingsSCore.pauseWhenOffline);
-        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, FeatureSettingsSCore.pausePlaceholdersConditions, true);
-        this.enableVisualCooldown = new BooleanFeature(this, false, FeatureSettingsSCore.enableVisualCooldown);
+        // this.cooldown = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.cooldown);
+        this.cooldown = new ColoredStringFeature(this, Optional.of("0"), FeatureSettingsSCore.cooldown, false);
+        this.isCooldownInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.isCooldownInTicks, false);
+        this.cooldownMessage = new ColoredStringFeature(this, Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), FeatureSettingsSCore.cooldownMsg, false);
+        this.displayCooldownMessage = new BooleanFeature(this,  true, FeatureSettingsSCore.displayCooldownMessage, false);
+        this.cancelEventIfInCooldown = new BooleanFeature(this,  false, FeatureSettingsSCore.cancelEventIfInCooldown, false);
+        this.pauseWhenOffline = new BooleanFeature(this, false, FeatureSettingsSCore.pauseWhenOffline, false);
+        this.pausePlaceholdersConditions = new PlaceholderConditionGroupFeature(this, FeatureSettingsSCore.pausePlaceholdersConditions);
+        this.enableVisualCooldown = new BooleanFeature(this, false, FeatureSettingsSCore.enableVisualCooldown, false);
     }
 
     @Override
