@@ -35,6 +35,7 @@ public class Bossbar extends PlayerCommand {
         CommandSetting count = new CommandSetting("count", -1, Integer.class, 0);
         CommandSetting countTicks = new CommandSetting("countTicks", -1, Boolean.class, false);
         CommandSetting countOrder = new CommandSetting("countOrder", -1, String.class, "descending");
+        CommandSetting hideCount = new CommandSetting("hideCount", -1, Boolean.class, false);
 
         text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
@@ -44,6 +45,7 @@ public class Bossbar extends PlayerCommand {
         settings.add(count);
         settings.add(countTicks);
         settings.add(countOrder);
+        settings.add(hideCount);
         setNewSettingsMode(true);
     }
 
@@ -56,6 +58,7 @@ public class Bossbar extends PlayerCommand {
         Boolean countTicks = (Boolean) sCommandToExec.getSettingValue("countTicks");
         String countOrder = ((String) sCommandToExec.getSettingValue("countOrder")).toLowerCase();
         boolean isAscending = countOrder.equalsIgnoreCase("ascending");
+        boolean hideCount = (Boolean) sCommandToExec.getSettingValue("hideCount");
 
         List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder message = new StringBuilder(text);
@@ -104,7 +107,9 @@ public class Bossbar extends PlayerCommand {
                             countText += "s";
                         }
                         bossBar.setProgress((double) counter / count);
-                        bossBar.setTitle(StringConverter.coloredString(finalMessage + " " + countText));
+                        if (hideCount) {
+                            bossBar.setTitle(StringConverter.coloredString(finalMessage));
+                        } else bossBar.setTitle(StringConverter.coloredString(finalMessage + " " + countText));
                     }
                 };
                 task.set(SCore.schedulerHook.runRepeatingTask(runnable, 1, countTicks ? 1 : 20));
