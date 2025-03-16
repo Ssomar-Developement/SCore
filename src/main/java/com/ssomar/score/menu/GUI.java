@@ -256,7 +256,12 @@ public abstract class GUI implements IGUI {
 
     public void createItem(ItemStack itemS, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
+        if(itemS == null) itemS = new ItemStack(Material.BARRIER, 1);
+
         ItemMeta meta = itemS.getItemMeta();
+
+        if (meta == null) meta = new ItemStack(Material.BARRIER, 1).getItemMeta();
+
         List<String> lore = new ArrayList<>();
 
         if (glow || haveEnchant) {

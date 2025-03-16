@@ -45,7 +45,9 @@ public class Damage extends MixedCommand {
 
         Object damageSource = null;
         if(SCore.is1v20v5Plus()) {
-            DamageType damageType = DamageType.GENERIC;
+            DamageType damageType = DamageType.INDIRECT_MAGIC;
+            // To display the good death message
+            if(p != null) damageType = DamageType.PLAYER_ATTACK;
             try {
                 damageType = Registry.DAMAGE_TYPE.get(NamespacedKey.minecraft(args.get(3).toLowerCase()));
             } catch (Exception e) {}

@@ -21,6 +21,7 @@ public class GenericFeatureParentEditorReloaded extends FeatureEditorInterface<F
 
     @Override
     public void load() {
+        clearAndSetBackground();
         int i = 0;
         for(FeatureInterface feature : (List<FeatureInterface>) featureParent.getFeatures()) {
             feature.initAndUpdateItemParentEditor(this, i);

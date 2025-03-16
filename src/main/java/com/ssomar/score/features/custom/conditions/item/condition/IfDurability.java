@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.item.condition;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
@@ -8,6 +9,8 @@ import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.utils.strings.StringCalculation;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
@@ -24,7 +27,16 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
         if (hasCondition()) {
             Optional<Player> playerOpt = request.getPlayerOpt();
             ItemStack itemStack = request.getItemStack();
-            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), itemStack.getType().getMaxDurability() - itemStack.getDurability())) {
+            int maxDurability = itemStack.getType().getMaxDurability();
+            if (itemStack.hasItemMeta()){
+                ItemMeta meta = itemStack.getItemMeta();
+                if(meta instanceof Damageable){
+                    Damageable damageable = (Damageable) meta;
+                    if (SCore.is1v20v5Plus() && damageable.hasMaxDamage()) maxDurability = damageable.getMaxDamage();
+                }
+            }
+
+            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), maxDurability - itemStack.getDurability())) {
                 runInvalidCondition(request);
                 return false;
             }
