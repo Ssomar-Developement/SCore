@@ -22,19 +22,20 @@ public class HeadDatabase {
 
     public @Nullable
     ItemStack getHead(String id) {
+        ItemStack item = null;
         if (loadedHeads.containsKey(id)) {
             //System.out.println("loadedHead: yes "+id);
-            return loadedHeads.get(id);
+            item =  loadedHeads.get(id);
         } else {
             HeadDatabaseAPI api = new HeadDatabaseAPI();
-            ItemStack item = api.getItemHead(id);
+            item = api.getItemHead(id);
             // System.out.println("loadedHead: no "+ id);
             if (item != null) {
                 //  System.out.println("loadedHead: added: "+id);
                 loadedHeads.put(id, item);
             }
-            return item.clone();
         }
+        return item.clone();
     }
 
     public String getBase64(String id) {
