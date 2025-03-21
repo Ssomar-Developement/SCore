@@ -592,6 +592,13 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     whitelistedWorlds("whitelistedWorlds", "Whitelisted worlds", new String[]{"&7&oThe whitelisted worlds features"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS"))),
     width("width", "Width", new String[]{"&7&oMaintain F3 + b to see the zone"}, GUI.CLOCK),
     worldConditions("worldConditions", "World Conditions", new String[]{""}, Material.ANVIL),
+
+    recipesList("recipesList", "Recipes List", new String[]{"&7&oThe recipes list"}, Material.ANVIL),
+    typeOfCraftingTableRecipe("typeOfCraftingTableRecipe", "Type Of Crafting Table Recipe", new String[]{"&7&oThe type of crafting table recipe"}, Material.CRAFTING_TABLE),
+    cookingTime("cookingTime", "Cooking Time", new String[]{"&7&oThe cooking time"}, GUI.CLOCK),
+    experience("experience", "Experience", new String[]{"&7&oThe experience"}, GUI.CLOCK),
+    result("result", "Result", new String[]{"&7&oThe result"}, Material.ANVIL),
+    recipeType("recipeType", "Recipe Type", new String[]{"&7&oThe recipe type"}, Material.ANVIL),
     ;
 
 

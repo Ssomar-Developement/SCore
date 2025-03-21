@@ -33,7 +33,7 @@ public class HeadDatabase {
                 //  System.out.println("loadedHead: added: "+id);
                 loadedHeads.put(id, item);
             }
-            return item;
+            return item.clone();
         }
     }
 

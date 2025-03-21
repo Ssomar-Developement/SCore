@@ -211,6 +211,19 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
     public boolean isSimilar(ItemStack item1, ItemStack item2) {
         if(item1 == null || item2 == null) return false;
 
+        if(itemCheckerType.getValue().get() == ItemCheckerType.ITEM_MUST_BE_EXACTLY_THE_SAME) {
+            return item1.isSimilar(item2);
+        }
+        else {
+            for (ItemCheckerEnum checker : checkers.keySet()) {
+                if (checkers.get(checker).getValue()) {
+                    if (!checker.check(item1, item2)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
         // TODO: Check if the item is similar with checker settings
         return true;
     }

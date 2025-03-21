@@ -83,6 +83,7 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
     public String itemStackToString(ItemStack item){
         String valStr = "";
+        //System.out.println("item: " + item);
         if(item.hasItemMeta()) valStr = "minecraft:"+item.getType().toString().toLowerCase()+item.getItemMeta().getAsString();
         else valStr = "minecraft:"+item.getType().toString().toLowerCase();
         return valStr;
@@ -110,7 +111,7 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     @Override
     public Optional<ItemStack> getValue() {
         if (value.isPresent()) {
-            return value;
+            return Optional.of(value.get().clone());
         } else if (placeholder.isPresent()) {
             String placeholderStr = placeholder.get();
             //SsomarDev.testMsg("Placeholder: " + placeholderStr, true);
@@ -143,7 +144,9 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     @Override
     public void updateItemParentEditor(GUI gui) {
         if (placeholder.isPresent()) gui.updateCurrently(getEditorName(), placeholder.get());
-        else if (value.isPresent()) gui.updateCurrently(getEditorName(), itemStackToString(value.get()));
+        else if (value.isPresent()){
+            gui.updateCurrently(getEditorName(), itemStackToString(value.get()));
+        }
         else gui.updateCurrently(getEditorName(), "&8&oNo item");
     }
 
@@ -199,12 +202,14 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
         ItemStack stack = editor.getItemOnCursor().clone();
+        //SsomarDev.testMsg("stack: " + stack, true);
         if(stack.getType().isAir()) {
            editor.sendMessage("&cYou must have an item in your hand to set it as the value");
         }
         else {
             value = Optional.of(stack);
             placeholder = Optional.empty();
+            //SsomarDev.testMsg("stack2: " + stack, true);
             ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
         }
         return true;

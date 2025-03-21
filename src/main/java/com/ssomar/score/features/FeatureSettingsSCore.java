@@ -591,7 +591,14 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     consumeSeconds(getFeatureSettings("consumeSeconds")),
     consumableFeatures(getFeatureSettings("consumableFeatures")),
     scheduleFeatures(getFeatureSettings("scheduleFeatures")),
-    viewRange(getFeatureSettings("viewRange"));
+    viewRange(getFeatureSettings("viewRange")),
+    recipesList(getFeatureSettings("recipesList")),
+    typeOfCraftingTableRecipe(getFeatureSettings("typeOfCraftingTableRecipe")),
+    cookingTime(getFeatureSettings("cookingTime")),
+    experience(getFeatureSettings("experience")),
+    result(getFeatureSettings("result")),
+    recipeType(getFeatureSettings("recipeType")),
+    ;
 
     private FeatureSettingsInterface settingsInterface;
 

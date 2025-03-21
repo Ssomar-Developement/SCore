@@ -122,7 +122,8 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
     public ItemStack getHeadOr(Material or) {
         ItemStack item = getHeadOrSub(or);
 
-        if(item.getType() == or) return item;
+        if(item.getType() == or || headDBID.getValue().isPresent()) return item;
+
         /*DONT DELETE THIS
          *  the method help to serialize the item if the material is player_head
          *  if you delete this method, player_head with custom headValue won't be give for isDisabledStack true
