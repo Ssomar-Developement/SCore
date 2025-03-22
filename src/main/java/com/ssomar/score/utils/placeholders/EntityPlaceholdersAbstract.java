@@ -151,7 +151,7 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
                 if (entitySnapshot != null) {
                     toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_serialized"+StringPlaceholder.end, entitySnapshot.getAsString());
                 }
-            } catch (Exception ignore){}
+            } catch (Exception | Error ignore){}
 
             if(entity != null && entity instanceof Item){
                 Item item = (Item) entity;

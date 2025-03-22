@@ -207,7 +207,7 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
 
     public void updatePotionType(PotionType slot, GUI gui) {
         value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -236,7 +236,7 @@ public class PotionTypeFeature extends FeatureAbstract<Optional<PotionType>, Pot
     }
 
     public PotionType getPotionType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

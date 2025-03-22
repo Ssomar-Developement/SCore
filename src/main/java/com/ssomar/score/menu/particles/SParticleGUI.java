@@ -123,7 +123,7 @@ public class SParticleGUI extends GUIAbstract {
     }
 
     public void updateColor(Color color) {
-        ItemStack item = this.getByName(REDSTONE_COLOR);
+        ItemStack item = this.getByIdentifier(REDSTONE_COLOR);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
         boolean find = false;
@@ -149,7 +149,7 @@ public class SParticleGUI extends GUIAbstract {
     }
 
     public Color getColor() {
-        ItemStack item = this.getByName(REDSTONE_COLOR);
+        ItemStack item = this.getByIdentifier(REDSTONE_COLOR);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
@@ -209,7 +209,7 @@ public class SParticleGUI extends GUIAbstract {
             this.updateColor(Color.RED);
         } else createBackGroundItem(5);
 
-        ItemStack item = this.getByName(TYPE);
+        ItemStack item = this.getByIdentifier(TYPE);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
         boolean find = false;
@@ -235,7 +235,7 @@ public class SParticleGUI extends GUIAbstract {
     }
 
     public Particle getType() {
-        ItemStack item = this.getByName(TYPE);
+        ItemStack item = this.getByIdentifier(TYPE);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
@@ -248,12 +248,12 @@ public class SParticleGUI extends GUIAbstract {
     }
 
     public void updateMaterial(Material material) {
-        ItemStack item = this.getByName(BLOCK_TYPE);
+        ItemStack item = this.getByIdentifier(BLOCK_TYPE);
         updateCurrently(item, "&e" + material);
     }
 
     public Material getMaterial() {
-        ItemStack item = this.getByName(BLOCK_TYPE);
+        ItemStack item = this.getByIdentifier(BLOCK_TYPE);
         return Material.valueOf(this.getCurrently(item));
 
     }

@@ -225,7 +225,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
 
     public void updatePattern(TrimPattern material, GUI gui) {
         Material mat = getConverter().get(material);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(material.getKey().toString());
         item.setType(mat);
         ItemMeta meta = item.getItemMeta();
@@ -253,7 +253,7 @@ public class TrimPatternFeature extends FeatureAbstract<Optional<TrimPattern>, T
     }
 
     public TrimPattern getPattern(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

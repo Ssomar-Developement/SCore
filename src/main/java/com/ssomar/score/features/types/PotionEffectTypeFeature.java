@@ -203,7 +203,7 @@ public class PotionEffectTypeFeature extends FeatureAbstract<Optional<PotionEffe
 
     public void updatePotionEffectType(PotionEffectType slot, GUI gui) {
         value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -232,7 +232,7 @@ public class PotionEffectTypeFeature extends FeatureAbstract<Optional<PotionEffe
     }
 
     public PotionEffectType getPotionEffectType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

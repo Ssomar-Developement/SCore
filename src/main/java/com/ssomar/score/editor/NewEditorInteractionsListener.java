@@ -152,7 +152,7 @@ public class NewEditorInteractionsListener implements Listener {
 
         if (!itemS.hasItemMeta()) return;
 
-        if (itemS.getItemMeta().getDisplayName().isEmpty()) return;
+        if (!GUI.hasIdentifier(itemS)) return;
 
         InventoryHolder holder = e.getInventory().getHolder();
 

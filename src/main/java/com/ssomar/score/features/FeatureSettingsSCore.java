@@ -21,8 +21,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     amount(getFeatureSettings("amount")),
     amplifier(getFeatureSettings("amplifier")),
     armorTrim(getFeatureSettings("armorTrim")),
-    aroundBlock(getFeatureSettings("aroundBlock","AroundBlock")),
-    aroundBlockCdts(getFeatureSettings("aroundBlockCdts","blockAroundCdts")),
+    aroundBlock(getFeatureSettings("aroundBlock", "AroundBlock")),
+    aroundBlockCdts(getFeatureSettings("aroundBlockCdts", "blockAroundCdts")),
     attribute(getFeatureSettings("attribute")),
     attributes(getFeatureSettings("attributes")),
     bannerSettings(getFeatureSettings("bannerSettings")),
@@ -30,47 +30,47 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     blockTypeMustBe(getFeatureSettings("blockTypeMustBe")),
     blocks(getFeatureSettings("blocks")),
     bounce(getFeatureSettings("bounce")),
-    cancelActionEnchantInAnvil(getFeatureSettings("cancelActionEnchantInAnvil","cancel-enchant-anvil", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelActionRenameInAnvil(getFeatureSettings("cancelActionRenameInAnvil","cancel-rename-anvil", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelActionEnchantInAnvil(getFeatureSettings("cancelActionEnchantInAnvil", "cancel-enchant-anvil", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelActionRenameInAnvil(getFeatureSettings("cancelActionRenameInAnvil", "cancel-rename-anvil", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelAllCraft(getFeatureSettings("cancelAllCraft", "cancel-item-craft", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelAnvil(getFeatureSettings("cancelAnvil","cancel-anvil", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelArmorStand(getFeatureSettings("cancelArmorStand","cancel-armorstand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelBeacon(getFeatureSettings("cancelBeacon","cancel-beacon", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelBrewing(getFeatureSettings("cancelBrewing","cancel-brewing", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelCartography(getFeatureSettings("cancelCartography","cancel-cartography", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelComposter(getFeatureSettings("cancelComposter","cancel-composter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelConsumption(getFeatureSettings("cancelConsumption","cancel-consumption", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelCraft(getFeatureSettings("cancelCraft","cancel-item-craft-no-custom", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelDepositInChest(getFeatureSettings("cancelDepositInChest","cancel-deposit-in-chest", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelDepositInFurnace(getFeatureSettings("cancelDepositInFurnace","cancel-deposit-in-furnace", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelDispenser(getFeatureSettings("cancelDispenser","cancel-dispenser", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelDropper(getFeatureSettings("cancelDropper","cancel-dropper", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelEnchant(getFeatureSettings("cancelEnchant","cancel-enchant", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelAnvil(getFeatureSettings("cancelAnvil", "cancel-anvil", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelArmorStand(getFeatureSettings("cancelArmorStand", "cancel-armorstand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelBeacon(getFeatureSettings("cancelBeacon", "cancel-beacon", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelBrewing(getFeatureSettings("cancelBrewing", "cancel-brewing", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelCartography(getFeatureSettings("cancelCartography", "cancel-cartography", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelComposter(getFeatureSettings("cancelComposter", "cancel-composter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelConsumption(getFeatureSettings("cancelConsumption", "cancel-consumption", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelCraft(getFeatureSettings("cancelCraft", "cancel-item-craft-no-custom", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelDepositInChest(getFeatureSettings("cancelDepositInChest", "cancel-deposit-in-chest", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelDepositInFurnace(getFeatureSettings("cancelDepositInFurnace", "cancel-deposit-in-furnace", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelDispenser(getFeatureSettings("cancelDispenser", "cancel-dispenser", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelDropper(getFeatureSettings("cancelDropper", "cancel-dropper", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelEnchant(getFeatureSettings("cancelEnchant", "cancel-enchant", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelEventIfError(getFeatureSettings("cancelEventIfError", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelEventIfInCooldown(getFeatureSettings("cancelEventIfInCooldown", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelEventIfMaxReached(getFeatureSettings("cancelEventIfMaxReached")),
     cancelEventIfNoPermission(getFeatureSettings("cancelEventIfNoPermission")),
     cancelEventIfNotValid(getFeatureSettings("cancelEventIfNotValid")),
     cancelEvents(getFeatureSettings("cancelEvents")),
-    cancelGrindStone(getFeatureSettings("cancelGrindStone","cancel-grind-stone", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelHopper(getFeatureSettings("cancelHopper","cancel-hopper", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelHorn(getFeatureSettings("cancelHorn","cancel-horn", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelHorse(getFeatureSettings("cancelHorse","cancel-horse", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelItemBurn(getFeatureSettings("cancelItemBurn","cancel-item-burn", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelItemDeleteByCactus(getFeatureSettings("cancelItemDeleteByCactus","cancel-item-delete-by-cactus", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelItemDeleteByLightning(getFeatureSettings("cancelItemDeleteByLightning","cancel-item-delete-by-lightning", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelItemDrop(getFeatureSettings("cancelItemDrop","cancel-item-drop", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelItemFrame(getFeatureSettings("cancelItemFrame","cancel-item-frame", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelItemPlace(getFeatureSettings("cancelItemPlace","cancel-item-place", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelLectern(getFeatureSettings("cancelLectern","cancel-lectern", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelLoom(getFeatureSettings("cancelLoom","cancel-loom", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelDecoratedPot(getFeatureSettings("cancelDecoratedPot","cancel-decorated-pot", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelCrafter(getFeatureSettings("cancelCrafter","cancel-crafter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelMerchant(getFeatureSettings("cancelMerchant","cancel-merchant", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelSmithingTable(getFeatureSettings("cancelSmithingTable","cancel-smithing-table", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelStoneCutter(getFeatureSettings("cancelStoneCutter","cancel-stone-cutter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelSwapHand(getFeatureSettings("cancelSwapHand","cancel-swap-hand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    cancelToolInteractions(getFeatureSettings("cancelToolInteractions","cancel-tool-interactions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelGrindStone(getFeatureSettings("cancelGrindStone", "cancel-grind-stone", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelHopper(getFeatureSettings("cancelHopper", "cancel-hopper", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelHorn(getFeatureSettings("cancelHorn", "cancel-horn", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelHorse(getFeatureSettings("cancelHorse", "cancel-horse", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelItemBurn(getFeatureSettings("cancelItemBurn", "cancel-item-burn", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelItemDeleteByCactus(getFeatureSettings("cancelItemDeleteByCactus", "cancel-item-delete-by-cactus", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelItemDeleteByLightning(getFeatureSettings("cancelItemDeleteByLightning", "cancel-item-delete-by-lightning", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelItemDrop(getFeatureSettings("cancelItemDrop", "cancel-item-drop", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelItemFrame(getFeatureSettings("cancelItemFrame", "cancel-item-frame", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelItemPlace(getFeatureSettings("cancelItemPlace", "cancel-item-place", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelLectern(getFeatureSettings("cancelLectern", "cancel-lectern", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelLoom(getFeatureSettings("cancelLoom", "cancel-loom", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelDecoratedPot(getFeatureSettings("cancelDecoratedPot", "cancel-decorated-pot", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelCrafter(getFeatureSettings("cancelCrafter", "cancel-crafter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelMerchant(getFeatureSettings("cancelMerchant", "cancel-merchant", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelSmithingTable(getFeatureSettings("cancelSmithingTable", "cancel-smithing-table", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelStoneCutter(getFeatureSettings("cancelStoneCutter", "cancel-stone-cutter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelSwapHand(getFeatureSettings("cancelSwapHand", "cancel-swap-hand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelToolInteractions(getFeatureSettings("cancelToolInteractions", "cancel-tool-interactions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     charged(getFeatureSettings("charged")),
     color(getFeatureSettings("color")),
     containerContent(getFeatureSettings("containerContent")),
@@ -83,9 +83,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     customName(getFeatureSettings("customName")),
     customNameVisible(getFeatureSettings("customNameVisible")),
     damage(getFeatureSettings("damage")),
-    default_double(getFeatureSettings("default_double","default")),
-    default_list(getFeatureSettings("default_list","default")),
-    default_string(getFeatureSettings("default_string","default", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    default_double(getFeatureSettings("default_double", "default")),
+    default_list(getFeatureSettings("default_list", "default")),
+    default_string(getFeatureSettings("default_string", "default", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     delay(getFeatureSettings("delay")),
     delayInTick(getFeatureSettings("delayInTick")),
     despawnDelay(getFeatureSettings("despawnDelay")),
@@ -114,7 +114,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     fireworkExplosions(getFeatureSettings("fireworkExplosions")),
     hasTrail(getFeatureSettings("hasTrail")),
     hasTwinkle(getFeatureSettings("hasTwinkle")),
-    for_(getFeatureSettings("for_","for")),
+    for_(getFeatureSettings("for_", "for")),
     giveFirstJoin(getFeatureSettings("giveFirstJoin")),
     giveFirstJoinAmount(getFeatureSettings("giveFirstJoinAmount")),
     giveFirstJoinFeatures(getFeatureSettings("giveFirstJoin")),
@@ -138,7 +138,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     hidePlacedOn(getFeatureSettings("hidePlacedOn")),
     hideAdditionalTooltip(getFeatureSettings("hideAdditionalTooltip")),
     //TODO find a way to fix this typo and accept both
-    hideTooltip(getFeatureSettings("hideTooltip","hideToolTip")),
+    hideTooltip(getFeatureSettings("hideTooltip", "hideToolTip")),
     hidePotionEffects(getFeatureSettings("hidePotionEffects")),
     hideUnbreakable(getFeatureSettings("hideUnbreakable")),
     hideUsage(getFeatureSettings("hideUsage")),
@@ -269,7 +269,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     knockbackStrength(getFeatureSettings("knockbackStrength")),
     level(getFeatureSettings("level")),
     lifeTime(getFeatureSettings("lifeTime")),
-    lockedInventory(getFeatureSettings("lockedInventory","locked-in-inventory")),
+    lockedInventory(getFeatureSettings("lockedInventory", "locked-in-inventory")),
     loop(getFeatureSettings("loop")),
     magicID(getFeatureSettings("magicID")),
     material(getFeatureSettings("material")),
@@ -278,9 +278,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     messageIfMaxReached(getFeatureSettings("messageIfMaxReached")),
     messageIfNotValid(getFeatureSettings("messageIfNotValid")),
     messageIfNotValidForTarget(getFeatureSettings("messageIfNotValidForTarget")),
-    modification_double(getFeatureSettings("modification_double","modification")),
-    modification_string(getFeatureSettings("modification_string","modification")),
-    multiChoices(getFeatureSettings("multiChoices","multi-choices")),
+    modification_double(getFeatureSettings("modification_double", "modification")),
+    modification_string(getFeatureSettings("modification_string", "modification")),
+    multiChoices(getFeatureSettings("multiChoices", "multi-choices")),
     name(getFeatureSettings("name")),
     northValue(getFeatureSettings("northValue")),
     notExecutableItem(getFeatureSettings("notExecutableItem")),
@@ -325,8 +325,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     requiredGroups(getFeatureSettings("requiredGroups")),
     requiredItem(getFeatureSettings("requiredItem", false)),
     requiredItems(getFeatureSettings("requiredItems", true)),
-    requiredLevel(getFeatureSettings("requiredLevel",true)),
-    requiredMagic(getFeatureSettings("requiredMagic",true)),
+    requiredLevel(getFeatureSettings("requiredLevel", true)),
+    requiredMagic(getFeatureSettings("requiredMagic", true)),
     requiredMagics(getFeatureSettings("requiredMagics", true)),
     requiredMana(getFeatureSettings("requiredMana", true)),
     requiredMoney(getFeatureSettings("requiredMoney", true)),
@@ -369,6 +369,15 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     sound(getFeatureSettings("sound")),
     equipModel(getFeatureSettings("equipModel")),
     cameraOverlay(getFeatureSettings("cameraOverlay")),
+    checkAmount(getFeatureSettings("checkAmount")),
+    checkDisplayName(getFeatureSettings("checkDisplayName")),
+    checkMaterial(getFeatureSettings("checkMaterial")),
+    checkCustomModelData(getFeatureSettings("checkCustomModelData")),
+    checkLore(getFeatureSettings("checkLore")),
+    checkDurability(getFeatureSettings("checkDurability")),
+    checkExecutableItemID(getFeatureSettings("checkExecutableItemID")),
+    checkExecutableItemUsage(getFeatureSettings("checkExecutableItemUsage")),
+    checkExecutableItemVariables(getFeatureSettings("checkExecutableItemVariables")),
     damageableOnHurt(getFeatureSettings("damageableOnHurt")),
     dispensable(getFeatureSettings("dispensable")),
     swappable(getFeatureSettings("swappable")),
@@ -413,12 +422,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     detailedMessagesEquals(getFeatureSettings("detailedMessagesEquals")),
     detailedInventories(getFeatureSettings("detailedInventories")),
     mustBeItsOwnInventory(getFeatureSettings("mustBeItsOwnInventory")),
-    commands_player(getFeatureSettings("commands_player","commands")),
-    commands_block(getFeatureSettings("commands_block","commands")),
+    commands_player(getFeatureSettings("commands_player", "commands")),
+    commands_block(getFeatureSettings("commands_block", "commands")),
     targetCommands(getFeatureSettings("targetCommands")),
     entityCommands(getFeatureSettings("entityCommands")),
     blockCommands(getFeatureSettings("blockCommands")),
-    blockCommands_target_block(getFeatureSettings("blockCommands_target_block","blockCommands")),
+    blockCommands_target_block(getFeatureSettings("blockCommands_target_block", "blockCommands")),
     playerCommands(getFeatureSettings("playerCommands")),
     playerSettings(getFeatureSettings("playerSettings")),
     ownerCommands(getFeatureSettings("ownerCommands")),
@@ -438,12 +447,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     targetBlockConditions(getFeatureSettings("targetBlockConditions")),
     targetPlayerConditions(getFeatureSettings("targetPlayerConditions")),
     targetEntityConditions(getFeatureSettings("targetEntityConditions")),
-    displayConditions_conditions(getFeatureSettings("displayConditions_conditions","displayConditions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    displayConditions_conditions(getFeatureSettings("displayConditions_conditions", "displayConditions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     containsMineInCube(getFeatureSettings("containsMineInCube")),
     playerCooldownOptions(getFeatureSettings("playerCooldownOptions")),
     entityCooldownOptions(getFeatureSettings("entityCooldownOptions")),
     isRefreshableClean(getFeatureSettings("isRefreshableClean")),
-    refreshTag(getFeatureSettings("refreshTag","refreshTagDoNotEdit")),
+    refreshTag(getFeatureSettings("refreshTag", "refreshTagDoNotEdit")),
     otherEICooldowns(getFeatureSettings("otherEICooldowns")),
     cooldown_activators(getFeatureSettings("activators")),
     canBeUsedOnlyByTheOwner(getFeatureSettings("canBeUsedOnlyByTheOwner", true)),
@@ -541,6 +550,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     EXECUTABLEEVENT(getFeatureSettings("EXECUTABLEEVENT")),
     FURNITURE(getFeatureSettings("FURNITURE")),
     FURNITUREPLACED(getFeatureSettings("FURNITUREPLACED")),
+    RECIPE(getFeatureSettings("RECIPE")),
+    RECIPEGROUP(getFeatureSettings("RECIPEGROUP")),
     creationType(getFeatureSettings("creationType")),
     spawnerType(getFeatureSettings("spawnerType")),
     spawnerFeatures(getFeatureSettings("spawnerFeatures")),
@@ -608,7 +619,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     public static FeatureSettingsInterface[] getValues() {
         Locale locale = GeneralConfig.getInstance().getLocale();
-        switch (locale){
+        switch (locale) {
             case FR:
                 return FeatureSettingsSCoreFR.values();
             case EN:
@@ -631,7 +642,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     }
 
     public static FeatureSettingsInterface getFeatureSettings(String identifier, @Nullable String configName, boolean requirePremium, SavingVerbosityLevel savingVerbosityLevel) {
-        if(configName == null) configName = identifier;
+        if (configName == null) configName = identifier;
         FeatureSettingsInterface[] values = getValues();
         for (FeatureSettingsInterface value : values) {
             if (value.getIdentifier().equals(identifier)) {
@@ -641,7 +652,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return value;
             }
         }
-        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cNo feature Translation found for setting: &6" + identifier +" &cin &6"+GeneralConfig.getInstance().getLocale().name());
+        Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cNo feature Translation found for setting: &6" + identifier + " &cin &6" + GeneralConfig.getInstance().getLocale().name());
 
         /* try in english */
         values = FeatureSettingsSCoreEN.values();
@@ -656,13 +667,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         throw new IllegalArgumentException("No feature settings found for config name: " + identifier);
     }
 
-    public static void reload(){
-        for(FeatureSettingsSCore feature : FeatureSettingsSCore.values()){
+    public static void reload() {
+        for (FeatureSettingsSCore feature : FeatureSettingsSCore.values()) {
             feature.settingsInterface = getFeatureSettings(feature.getIdentifier(), feature.getName());
         }
     }
 
-    public void setFeatureSettingsInterface(FeatureSettingsInterface featureSettingsInterface){
+    public void setFeatureSettingsInterface(FeatureSettingsInterface featureSettingsInterface) {
         this.settingsInterface = featureSettingsInterface;
     }
 
@@ -702,7 +713,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     @Override
     public void setName(String name) {
-       settingsInterface.setName(name);
+        settingsInterface.setName(name);
     }
 
     @Override
@@ -712,23 +723,23 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     @Override
     public String[] getEditorDescription() {
-        String [] lines = settingsInterface.getEditorDescription();
+        String[] lines = settingsInterface.getEditorDescription();
         // Add into the last line the config name
-        String [] newLines = new String[lines.length+1];
+        String[] newLines = new String[lines.length + 1];
         System.arraycopy(lines, 0, newLines, 0, lines.length);
-        newLines[lines.length] = "&8&o(" + settingsInterface.getName()+")";
+        newLines[lines.length] = "&8&o(" + settingsInterface.getName() + ")";
         return newLines;
     }
 
     @Override
     public String[] getEditorDescriptionBrut() {
-        String [] lines = settingsInterface.getEditorDescription();
+        String[] lines = settingsInterface.getEditorDescription();
         return lines;
     }
 
     @Override
     public Material getEditorMaterial() {
-        if(settingsInterface.getEditorMaterial() == null) return Material.LEVER;
+        if (settingsInterface.getEditorMaterial() == null) return Material.LEVER;
         return settingsInterface.getEditorMaterial();
     }
 

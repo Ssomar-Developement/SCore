@@ -106,7 +106,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlotMainHand() {
-        ItemStack item = this.getByName("Slot: mainHand");
+        ItemStack item = this.getByIdentifier("Slot: mainHand");
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(-1));
         } else detailedSlots.getSlots().add(-1);
@@ -123,7 +123,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlotOffHand() {
-        ItemStack item = this.getByName("Slot: offHand");
+        ItemStack item = this.getByIdentifier("Slot: offHand");
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(40));
         } else detailedSlots.getSlots().add(40);
@@ -156,7 +156,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlotBoots() {
-        ItemStack item = this.getByName("Slot: boots");
+        ItemStack item = this.getByIdentifier("Slot: boots");
         //SsomarDev.testMsg("Item: " + item, true);
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(36));
@@ -172,7 +172,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlotLeggings() {
-        ItemStack item = this.getByName("Slot: leggings");
+        ItemStack item = this.getByIdentifier("Slot: leggings");
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(37));
         } else detailedSlots.getSlots().add(37);
@@ -187,7 +187,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlotChestplate() {
-        ItemStack item = this.getByName("Slot: chestplate");
+        ItemStack item = this.getByIdentifier("Slot: chestplate");
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(38));
         } else detailedSlots.getSlots().add(38);
@@ -202,7 +202,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlotHelmet() {
-        ItemStack item = this.getByName("Slot: helmet");
+        ItemStack item = this.getByIdentifier("Slot: helmet");
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(39));
         } else detailedSlots.getSlots().add(39);
@@ -224,7 +224,7 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
     }
 
     public void changeSlot(int i) {
-        ItemStack item = this.getByName("Slot: " + i);
+        ItemStack item = this.getByIdentifier("Slot: " + i);
         //SsomarDev.testMsg("Change slot: " + i, true);
         String currently = this.getCurrently(item);
         //SsomarDev.testMsg("Currently: " + currently, true);

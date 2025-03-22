@@ -230,7 +230,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
 
     public void updateEnchantment(Enchantment enchantment, GUI gui) {
         this.value = Optional.of(enchantment);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         /*
          * Design set Type ENCHANTED_BOOK AND ADD THE GOOD ENCHANTMENT
          *
@@ -260,7 +260,7 @@ public class EnchantmentFeature extends FeatureAbstract<Optional<Enchantment>, E
     }
 
     public Enchantment getEnchantment(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

@@ -21,6 +21,7 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -78,8 +79,11 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
     public boolean verify(Player player, Player target) {
         return verify(player, target, null);
     }
-
     public boolean verify(Player player, Player target, @Nullable StringPlaceholder sp) {
+        return verify((OfflinePlayer) player, target, sp);
+    }
+
+    public boolean verify(OfflinePlayer player, Player target, @Nullable StringPlaceholder sp) {
         String aPart1 = "";
         String aPart2 = "";
 

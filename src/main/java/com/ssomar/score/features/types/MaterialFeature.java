@@ -241,7 +241,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     }
 
     public void updateMaterial(Material material, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(material);
         item.setType(material);
         ItemMeta meta = item.getItemMeta();
@@ -275,7 +275,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
     }
 
     public Material getMaterial(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

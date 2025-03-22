@@ -264,10 +264,10 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
     }
 
     public void updateItemAdder(String id, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         int slot = gui.getInv().first(item);
         initItemParentEditor(gui, slot);
-        item = gui.getByName(getEditorName());
+        item = gui.getByIdentifier(getEditorName());
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
@@ -304,7 +304,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
     }
 
     public Optional<String> getItemAdder(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

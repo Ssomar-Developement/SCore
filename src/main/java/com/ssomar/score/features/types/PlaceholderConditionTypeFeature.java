@@ -173,7 +173,7 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
 
     public void updatePlaceholdersCdtType(PlaceholdersCdtType typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -203,7 +203,7 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
     }
 
     public PlaceholdersCdtType getPlaceholdersCdtType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

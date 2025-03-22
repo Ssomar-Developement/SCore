@@ -175,7 +175,7 @@ public class LoopTypeFeature extends FeatureAbstract<Optional<LoopTypeFeature.Lo
     }
 
     public void updateLoopType(LoopType color, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(color);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
@@ -207,7 +207,7 @@ public class LoopTypeFeature extends FeatureAbstract<Optional<LoopTypeFeature.Lo
     }
 
     public LoopType getLoopType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

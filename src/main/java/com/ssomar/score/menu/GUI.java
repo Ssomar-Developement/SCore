@@ -10,14 +10,19 @@ import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,6 +91,8 @@ public abstract class GUI implements IGUI {
 
     public static Material LIGHTNING_ROD = null;
 
+    @Getter
+    @Setter
     private Inventory inv;
 
     @Getter
@@ -190,11 +197,48 @@ public abstract class GUI implements IGUI {
         load();
     }
 
+    public static void setIdentifier(@NotNull ItemStack item, String identifier) {
+        ItemMeta meta = item.getItemMeta();
+        identifier = StringConverter.coloredString(identifier);
+        if(SCore.is1v12Less()){
+            meta.setDisplayName(identifier);
+        }
+        else {
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            container.set(NamespacedKey.fromString("gui-identifier"), PersistentDataType.STRING, identifier);
+        }
+        item.setItemMeta(meta);
+    }
+
+    public static String getIdentifier(@NotNull ItemStack item) {
+
+        if(SCore.is1v12Less()){
+            return item.getItemMeta().getDisplayName();
+        }
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        return container.get(NamespacedKey.fromString("gui-identifier"), PersistentDataType.STRING);
+    }
+
+    public static boolean isIdentifier(@NotNull ItemStack item, String identifier) {
+        return StringConverter.decoloredString(getIdentifier(item)).equals(StringConverter.decoloredString(identifier));
+    }
+
+    public static boolean hasIdentifier(@NotNull ItemStack item) {
+        if(SCore.is1v12Less()){
+            return item.getItemMeta().hasDisplayName();
+        }
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        return container.has(NamespacedKey.fromString("gui-identifier"), PersistentDataType.STRING);
+    }
+
+
     public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
         if(test && size >= 54 & invSlot == 27) material = Material.DIAMOND_SWORD;
 
         ItemStack item = new ItemStack(material, amount);
+        GUI.setIdentifier(item, displayName);
+
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
@@ -232,6 +276,8 @@ public abstract class GUI implements IGUI {
     public void createItem(Material material, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, int customTextureTag, String... loreString) {
 
         ItemStack item = new ItemStack(material, amount);
+        GUI.setIdentifier(item, displayName);
+
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
@@ -257,6 +303,8 @@ public abstract class GUI implements IGUI {
     public void createItem(ItemStack itemS, int amount, int invSlot, String displayName, boolean glow, boolean haveEnchant, String... loreString) {
 
         if(itemS == null) itemS = new ItemStack(Material.BARRIER, 1);
+
+        GUI.setIdentifier(itemS, displayName);
 
         ItemMeta meta = itemS.getItemMeta();
 
@@ -313,7 +361,6 @@ public abstract class GUI implements IGUI {
     }
 
     public void removeItem(int invSlot) {
-
         inv.clear(invSlot);
     }
 
@@ -328,20 +375,20 @@ public abstract class GUI implements IGUI {
         }
     }
 
-    public ItemStack getByName(String name) {
+    public ItemStack getByIdentifier(String name) {
         for (ItemStack item : inv.getContents()) {
-            if (item != null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))) {
+            if (item != null && item.hasItemMeta() && GUI.isIdentifier(item, name)) {
                 return item;
             }
         }
         return null;
     }
 
-    public int getSlotByName(String name) {
+    public int getSlotByIdentifier(String name) {
         int i = -1;
         for (ItemStack item : inv.getContents()) {
             i++;
-            if (item != null && item.hasItemMeta() && StringConverter.decoloredString(item.getItemMeta().getDisplayName()).equals(StringConverter.decoloredString(name))) {
+            if (item != null && item.hasItemMeta() && isIdentifier(item, name)) {
                 return i;
             }
         }
@@ -405,6 +452,11 @@ public abstract class GUI implements IGUI {
         //REQUIRED DUE TO A SPIGOT ISSUE THAT HAS BEEN FIXED UpdateItemInGUI.updateItemInGUI(this, editorName, meta.getDisplayName(), lore, item.getType());
     }
 
+    public void updateItem(int slot, ItemStack item, String identifier) {
+        GUI.setIdentifier(item, identifier);
+        inv.setItem(slot, item);
+    }
+
     public void updateCurrently(ItemStack item, String update, String editorName) {
         updateCurrently(item, update, false, editorName);
     }
@@ -414,34 +466,34 @@ public abstract class GUI implements IGUI {
     }
 
     public String getCurrently(String itemName) {
-        return this.getCurrently(this.getByName(itemName));
+        return this.getCurrently(this.getByIdentifier(itemName));
     }
 
     public String getCurrentlyWithColor(String itemName) {
-        return this.getCurrentlyWithColor(this.getByName(itemName));
+        return this.getCurrentlyWithColor(this.getByIdentifier(itemName));
     }
 
     public void updateCurrently(String itemName, String update) {
-        this.updateCurrently(this.getByName(itemName), update, itemName);
+        this.updateCurrently(this.getByIdentifier(itemName), update, itemName);
     }
 
     public void updateCurrently(String itemName, String update, Boolean withColor) {
-        this.updateCurrently(this.getByName(itemName), update, withColor, itemName);
+        this.updateCurrently(this.getByIdentifier(itemName), update, withColor, itemName);
     }
 
     public void updateCondition(String name, String condition) {
-        ItemStack item = this.getByName(name);
+        ItemStack item = this.getByIdentifier(name);
         if (condition.equals("")) this.updateCurrently(item, "&cNO CONDITION", name);
         else this.updateCurrently(item, condition, name);
     }
 
     public String getCondition(String name) {
-        if (this.getCurrently(this.getByName(name)).contains("NO CONDITION")) return "";
-        else return this.getCurrently(this.getByName(name));
+        if (this.getCurrently(this.getByIdentifier(name)).contains("NO CONDITION")) return "";
+        else return this.getCurrently(this.getByIdentifier(name));
     }
 
     public void updateConditionList(String name, List<String> list, String emptyStr) {
-        ItemStack item = this.getByName(name);
+        ItemStack item = this.getByIdentifier(name);
         ItemMeta toChange = item.getItemMeta();
 
         List<String> loreUpdate = new ArrayList<>();
@@ -465,7 +517,7 @@ public abstract class GUI implements IGUI {
     }
 
     public List<String> getConditionList(String name, String emptyStr) {
-        ItemStack item = this.getByName(name);
+        ItemStack item = this.getByIdentifier(name);
         ItemMeta iM = item.getItemMeta();
         List<String> loreUpdate = new ArrayList<>();
         for (String s : iM.getLore()) {
@@ -484,7 +536,7 @@ public abstract class GUI implements IGUI {
     }
 
     public List<String> getConditionListWithColor(String name, String emptyStr) {
-        ItemStack item = this.getByName(name);
+        ItemStack item = this.getByIdentifier(name);
         ItemMeta iM = item.getItemMeta();
         List<String> loreUpdate = new ArrayList<>();
         for (String s : iM.getLore()) {
@@ -509,16 +561,8 @@ public abstract class GUI implements IGUI {
         return inv;
     }
 
-    public Inventory getInv() {
-        return inv;
-    }
-
-    public void setInv(Inventory inv) {
-        this.inv = inv;
-    }
-
     public void updateBoolean(String itemName, boolean value) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         if (value) {
             MakeItemGlow.makeGlow(item);
             updateCurrently(item, "&aTrue", itemName);
@@ -529,33 +573,33 @@ public abstract class GUI implements IGUI {
     }
 
     public void changeBoolean(String itemName) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         updateBoolean(itemName, !getCurrently(item).contains("True"));
     }
 
     public boolean getBoolean(String itemName) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         return getCurrently(item).contains("True");
     }
 
     public void updateInt(String itemName, int value) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         updateCurrently(item, value + "", itemName);
     }
 
     public int getInt(String itemName) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         if (item == null) throw new NullPointerException("Item with the name: " + itemName + " is null");
         return Integer.parseInt(getCurrently(item));
     }
 
     public void updateDouble(String itemName, double value) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         updateCurrently(item, value + "", itemName);
     }
 
     public double getDouble(String itemName) {
-        ItemStack item = this.getByName(itemName);
+        ItemStack item = this.getByIdentifier(itemName);
         return Double.parseDouble(getCurrently(item));
     }
 

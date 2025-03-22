@@ -179,7 +179,7 @@ public class FireworkEffectTypeFeature extends FeatureAbstract<Optional<Firework
 
     public void updateFireworkEffectType(FireworkEffect.Type slot, GUI gui) {
         value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -209,7 +209,7 @@ public class FireworkEffectTypeFeature extends FeatureAbstract<Optional<Firework
     }
 
     public FireworkEffect.Type getFireworkEffectType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

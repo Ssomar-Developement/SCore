@@ -86,6 +86,7 @@ public abstract class FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implemen
 
     @Override
     public boolean isTheFeatureClickedParentEditor(String featureClicked) {
+        //SsomarDev.testMsg("featureClicked: "+featureClicked + " | getEditorName(): "+getEditorName(), true);
         return featureClicked.equals(getEditorName());
     }
 

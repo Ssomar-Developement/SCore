@@ -203,7 +203,7 @@ public class OperationFeature extends FeatureAbstract<Optional<AttributeModifier
 
     public void updateOperation(AttributeModifier.Operation operation, GUI gui) {
         this.value = Optional.of(operation);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -232,7 +232,7 @@ public class OperationFeature extends FeatureAbstract<Optional<AttributeModifier
     }
 
     public AttributeModifier.Operation getOperation(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

@@ -222,7 +222,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
 
     public void updateAttribute(Attribute attribute, GUI gui) {
         this.value = Optional.of(attribute);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         /*
          * Design set Type ENCHANTED_BOOK AND ADD THE GOOD ENCHANTMENT
          *
@@ -260,7 +260,7 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
     }
 
     public Attribute getAttribute(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

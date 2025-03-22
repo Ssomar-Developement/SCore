@@ -173,7 +173,7 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
 
     public void updateVariableType(VariableType typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -202,7 +202,7 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
     }
 
     public VariableType getVariableType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

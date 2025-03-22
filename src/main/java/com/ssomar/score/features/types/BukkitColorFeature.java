@@ -175,7 +175,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     }
 
     public void updateColor(Color color, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(color);
         if(CustomColor.getNullColor().equals(color)) value = Optional.empty();
         ItemMeta meta = item.getItemMeta();
@@ -203,7 +203,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     }
 
     public Color getColor(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

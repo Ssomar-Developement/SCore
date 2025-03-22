@@ -30,14 +30,16 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
     private EnumFeature<ItemCheckerType> itemCheckerType;
     private Map<ItemCheckerEnum, BooleanFeature> checkers;
     private Map<ItemCheckerEnum, Boolean> defaultValues;
+    private ItemCheckerType defaultTypeValue;
     private List<ItemCheckerEnum> notFor1_11_less;
     private List<ItemCheckerEnum> notFor1_13_less;
     private List<ItemCheckerEnum> notFor1_18_less;
     private List<ItemCheckerEnum> notFor1_19_less;
 
-    public ItemCheckers(FeatureParentInterface parent, Map<ItemCheckerEnum, Boolean> defaultValues) {
+    public ItemCheckers(FeatureParentInterface parent, ItemCheckerType defaultTypeValue, Map<ItemCheckerEnum, Boolean> defaultValues) {
         super(parent, FeatureSettingsSCore.itemCheckers);
         this.defaultValues = defaultValues;
+        this.defaultTypeValue = defaultTypeValue;
         this.notFor1_11_less = new ArrayList<>();
         //this.notFor1_11_less.add(ItemCheckerEnum.CANCEL_SWAPHAND);
         this.notFor1_13_less = new ArrayList<>();
@@ -48,7 +50,7 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
 
     @Override
     public void reset() {
-        itemCheckerType = new EnumFeature<ItemCheckerType>(this, Optional.of(ItemCheckerType.CUSTOM_CHECKS), FeatureSettingsSCore.itemCheckerType, ItemCheckerType.class, ItemCheckerType.CUSTOM_CHECKS, "ItemCheckerType", Arrays.asList(ItemCheckerType.values()));
+        itemCheckerType = new EnumFeature<ItemCheckerType>(this, Optional.of(defaultTypeValue), FeatureSettingsSCore.itemCheckerType, ItemCheckerType.class, ItemCheckerType.CUSTOM_CHECKS, "ItemCheckerType", Arrays.asList(ItemCheckerType.values()));
 
         checkers = new LinkedHashMap<>();
         for (ItemCheckerEnum restriction : ItemCheckerEnum.values()) {
@@ -145,7 +147,7 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
 
     @Override
     public ItemCheckers clone(FeatureParentInterface newParent) {
-        ItemCheckers restrictions = new ItemCheckers(getParent(), getDefaultValues());
+        ItemCheckers restrictions = new ItemCheckers(getParent(), getDefaultTypeValue(), getDefaultValues());
         restrictions.setItemCheckerType(itemCheckerType.clone(restrictions));
         Map<ItemCheckerEnum, BooleanFeature> clone = new LinkedHashMap<>();
         for (ItemCheckerEnum restriction : this.checkers.keySet()) {

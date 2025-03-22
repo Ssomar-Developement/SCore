@@ -181,7 +181,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
     }
 
     public void updateChatColor(ChatColor color, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(color);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
@@ -208,7 +208,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
     }
 
     public ChatColor getChatColor(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

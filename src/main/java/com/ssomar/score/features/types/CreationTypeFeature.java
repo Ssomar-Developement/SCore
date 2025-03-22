@@ -221,7 +221,7 @@ public class CreationTypeFeature extends FeatureAbstract<Optional<CreationType>,
         }
 
         this.value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -255,7 +255,7 @@ public class CreationTypeFeature extends FeatureAbstract<Optional<CreationType>,
     }
 
     public CreationType getCreationType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
@@ -271,7 +271,7 @@ public class CreationTypeFeature extends FeatureAbstract<Optional<CreationType>,
         SortedMap<String, CreationType> map = new TreeMap<String, CreationType>();
         for (CreationType l : CreationType.values()) {
             if(!SCore.is1v19v4Plus() && l == CreationType.DISPLAY_CREATION) continue;   // 1.19.4+ only
-            if(l == CreationType.IMPORT_FROM_NEXO) continue;   // Not implemented yet
+            //if(l == CreationType.IMPORT_FROM_NEXO) continue;   // Not implemented yet
             map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());

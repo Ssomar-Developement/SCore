@@ -188,7 +188,7 @@ public class ItemRarityFeature extends FeatureAbstract<Optional<ItemRarity>, Ite
     public void updateDropType(ItemRarity slot, GUI gui) {
 
         this.value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -222,7 +222,7 @@ public class ItemRarityFeature extends FeatureAbstract<Optional<ItemRarity>, Ite
     }
 
     public ItemRarity getDropType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

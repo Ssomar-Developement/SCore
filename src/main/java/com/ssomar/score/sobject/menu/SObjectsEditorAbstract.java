@@ -106,7 +106,7 @@ public abstract class SObjectsEditorAbstract<T extends SObject & SObjectEditable
     }
 
     public String getCurrentPath() {
-        ItemStack item = this.getByName(StringConverter.decoloredString(TM.g(Text.EDITOR_PATH_NAME)));
+        ItemStack item = this.getByIdentifier(StringConverter.decoloredString(TM.g(Text.EDITOR_PATH_NAME)));
         return this.getCurrently(item);
     }
 

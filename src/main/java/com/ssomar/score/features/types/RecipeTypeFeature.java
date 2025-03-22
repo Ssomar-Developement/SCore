@@ -179,7 +179,7 @@ public class RecipeTypeFeature extends FeatureAbstract<Optional<RecipeType>, Rec
     public void updateRecipeType(RecipeType slot, GUI gui) {
 
         this.value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -213,7 +213,7 @@ public class RecipeTypeFeature extends FeatureAbstract<Optional<RecipeType>, Rec
     }
 
     public RecipeType getRecipeType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

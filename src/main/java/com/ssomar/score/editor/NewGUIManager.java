@@ -76,9 +76,11 @@ public abstract class NewGUIManager<T extends GUI> {
     }
 
     public void clicked(ItemStack item, NewInteractionClickedGUIManager<T> interact, ClickType click) {
+        //SsomarDev.testMsg("ITEM CLICKED: " + item, true);
         if (item != null && item.hasItemMeta()) {
             interact.cache = this.getCache();
-            interact.setName(item.getItemMeta().getDisplayName());
+            interact.setName(GUI.getIdentifier(item));
+            //SsomarDev.testMsg("NAME: " + interact.decoloredName, true);
             //SsomarDev.testMsg("LOCALISZED NAME: " + item.getItemMeta().getLocalizedName());
             DynamicMeta meta = new DynamicMeta(item.getItemMeta());
             Optional<String> folderInfoOpt = ItemKeyWriterReader.init().readString(SCore.pluginHolder, item, meta, "folderInfo");

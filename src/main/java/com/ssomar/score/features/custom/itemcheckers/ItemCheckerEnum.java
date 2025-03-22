@@ -8,19 +8,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public enum ItemCheckerEnum {
 
-    AMOUNT(FeatureSettingsSCore.cameraOverlay),
-    NAME(FeatureSettingsSCore.cancelItemDrop),
-    MATERIAL(FeatureSettingsSCore.cancelItemPlace),
+    AMOUNT(FeatureSettingsSCore.checkAmount),
+    DISPLAY_NAME(FeatureSettingsSCore.checkDisplayName),
+    MATERIAL(FeatureSettingsSCore.checkMaterial),
 
-    CUSTOM_MODEL_DATA(FeatureSettingsSCore.cancelToolInteractions),
-    LORE(FeatureSettingsSCore.cancelConsumption),
+    CUSTOM_MODEL_DATA(FeatureSettingsSCore.checkCustomModelData),
+    LORE(FeatureSettingsSCore.checkLore),
 
-    DURABILITY(FeatureSettingsSCore.cancelHorn),
+    DURABILITY(FeatureSettingsSCore.checkDurability),
 
-    EXECUTABLEITEM_ID(FeatureSettingsSCore.cancelCraft),
-    EXECUTABLEITEM_USAGE(FeatureSettingsSCore.cancelAllCraft),
+    EXECUTABLEITEM_ID(FeatureSettingsSCore.checkExecutableItemID),
+    EXECUTABLEITEM_USAGE(FeatureSettingsSCore.checkExecutableItemUsage),
 
-    EXECUTABLEITEM_VARIABLES(FeatureSettingsSCore.cancelDepositInChest);
+    EXECUTABLEITEM_VARIABLES(FeatureSettingsSCore.checkExecutableItemVariables);
 
     @Getter
     public final FeatureSettingsInterface featureSetting;
@@ -48,7 +48,7 @@ public enum ItemCheckerEnum {
         switch (this) {
             case AMOUNT:
                 return item1.getAmount() == item2.getAmount();
-            case NAME:
+            case DISPLAY_NAME:
                 if(oneOfThemNaNoMeta) return bothNaNoMeta;
 
                 boolean item1HasDisplayName = item1Meta.hasDisplayName();

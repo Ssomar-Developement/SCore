@@ -243,10 +243,10 @@ public class MyFurnitureFeature extends FeatureAbstract<Optional<Furniture>, MyF
             else id = prevMyFurniture(id);
         }
         value = Optional.of(id);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         int slot = gui.getInv().first(item);
         initItemParentEditor(gui, slot);
-        item = gui.getByName(getEditorName());
+        item = gui.getByIdentifier(getEditorName());
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 4);
@@ -287,7 +287,7 @@ public class MyFurnitureFeature extends FeatureAbstract<Optional<Furniture>, MyF
     }
 
     public Optional<String> getMyFurniture(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

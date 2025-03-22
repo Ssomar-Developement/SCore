@@ -218,7 +218,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
             else option = prevOption(option);
         }
         value = option;
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
         boolean find = false;
@@ -250,7 +250,7 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
     }
 
     public SOption getOption(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

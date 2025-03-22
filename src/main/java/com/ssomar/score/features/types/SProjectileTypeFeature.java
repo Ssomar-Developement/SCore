@@ -171,7 +171,7 @@ public class SProjectileTypeFeature extends FeatureAbstract<Optional<SProjectile
 
     public void updateSprojectileType(SProjectileType typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -200,7 +200,7 @@ public class SProjectileTypeFeature extends FeatureAbstract<Optional<SProjectile
     }
 
     public SProjectileType getSProjectileType(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

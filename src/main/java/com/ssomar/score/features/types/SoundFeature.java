@@ -216,7 +216,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
 
     public void updateOperation(Sound operation, GUI gui) {
         this.value = Optional.of(operation);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         Map<Object, String> map = SoundUtils.getSounds();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
@@ -246,7 +246,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
     }
 
     public Sound getOperation(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

@@ -131,206 +131,57 @@
             <build>
                 <finalName>${project.artifactId}-${project.version}</finalName>
                 <plugins>
+                    <!-- Maven AntRun Plugin to copy the JAR to a specific location -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/maven/**</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version> <!-- Add the version for clarity -->
                         <executions>
                             <execution>
-                                <id>build_server</id>
-                                <phase>package</phase>
+                                <phase>install</phase>
                                 <goals>
-                                    <goal>shade</goal>
+                                    <goal>run</goal>
                                 </goals>
                                 <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>C:\serveur local 1.19\plugins\SCore.jar</outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_eb</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_ec</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableCrafting\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_eb_evo</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableBlocksEvo\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_test</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\TestPlugin\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_ei</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_eg</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_cpt</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_ss</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ScreenShop\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_ee</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_textures</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\TexturesPackReader\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>build_dep_lagassist</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\LagAssist\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
+                                    <target>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\serveur local 1.19\plugins\SCore.jar"/>
 
-                            <execution>
-                                <id>build_dep_minilevers</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\ExecutableLevers\src\main\resources\SCore.jar
-                                    </outputFile>
-                                </configuration>
-                            </execution>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar"/>
 
-                            <execution>
-                                <id>build_dep_myfurniture</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>
-                                        C:\Users\octav\Documents\GitHub\MyFurniture\src\main\resources\SCore.jar
-                                    </outputFile>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ExecutableCrafting\src\main\resources\SCore.jar"/>
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar"/>
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ExecutableGems\src\main\resources\SCore.jar"/>
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar"/>
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ScreenShop\src\main\resources\SCore.jar"/>
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar"/>
+
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\ExecutableLevers\src\main\resources\SCore.jar"/>
+
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="C:\Users\octav\Documents\GitHub\MyFurniture\src\main\resources\SCore.jar"/>
+
+
+                                    </target>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
@@ -898,7 +749,7 @@
             <artifactId>Nexo</artifactId>
             <version>2ddf3c68b7</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/nexo-0.10.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/nexo-1.2.jar</systemPath>
         </dependency>
 
         <dependency>

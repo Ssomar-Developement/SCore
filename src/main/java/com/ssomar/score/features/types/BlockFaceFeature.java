@@ -214,7 +214,7 @@ public class BlockFaceFeature extends FeatureAbstract<Optional<BlockFace>, Block
 
     public void updateBlockFace(BlockFace slot, GUI gui) {
         value = Optional.of(slot);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -244,7 +244,7 @@ public class BlockFaceFeature extends FeatureAbstract<Optional<BlockFace>, Block
     }
 
     public BlockFace getBlockFace(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

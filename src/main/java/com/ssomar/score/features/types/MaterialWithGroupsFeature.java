@@ -212,7 +212,7 @@ public class MaterialWithGroupsFeature extends FeatureAbstract<Optional<String>,
 
     public void updateMaterialWithGroups(String material, GUI gui) {
         value = Optional.of(material);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         item.setType(MaterialWithGroups.getMaterial(material));
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
@@ -239,7 +239,7 @@ public class MaterialWithGroupsFeature extends FeatureAbstract<Optional<String>,
     }
 
     public String getMaterialWithGroups(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

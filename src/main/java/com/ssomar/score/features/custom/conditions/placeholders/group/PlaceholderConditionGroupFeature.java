@@ -11,6 +11,7 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -96,6 +97,10 @@ public class PlaceholderConditionGroupFeature extends FeatureWithHisOwnEditor<Pl
     }
 
     public boolean verifConditions(Player player, List<String> errors) {
+        return verifConditions((OfflinePlayer) player, errors);
+    }
+
+    public boolean verifConditions(OfflinePlayer player, List<String> errors) {
         for (PlaceholderConditionFeature attribute : placeholdersConditions.values()) {
             if (!attribute.verify(player, null, new StringPlaceholder())) {
                 String message = attribute.getMessageIfNotValid().getValue().get();

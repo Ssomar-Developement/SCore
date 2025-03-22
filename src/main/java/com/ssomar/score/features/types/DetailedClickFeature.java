@@ -184,7 +184,7 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
 
     public void updateDetailedClick(DetailedClick typeTarget, GUI gui) {
         value = Optional.of(typeTarget);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 2);
         int maxSize = lore.size();
@@ -213,7 +213,7 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
     }
 
     public DetailedClick getDetailedClick(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

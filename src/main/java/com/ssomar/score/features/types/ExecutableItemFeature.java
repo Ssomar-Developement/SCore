@@ -254,10 +254,10 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
     public void updateExecutableItem(String id, GUI gui) {
         if (id == null) id = "NULLLLL";
         value = Optional.of(id);
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         int slot = gui.getInv().first(item);
         initItemParentEditor(gui, slot);
-        item = gui.getByName(getEditorName());
+        item = gui.getByIdentifier(getEditorName());
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 4);
@@ -292,7 +292,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
     }
 
     public Optional<String> getExecutableItem(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

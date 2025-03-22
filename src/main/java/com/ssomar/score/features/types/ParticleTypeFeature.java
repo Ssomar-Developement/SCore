@@ -208,7 +208,7 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
     }
 
     public void updateParticle(Particle particle, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(particle);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 4);
@@ -236,7 +236,7 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
     }
 
     public Particle getParticle(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {

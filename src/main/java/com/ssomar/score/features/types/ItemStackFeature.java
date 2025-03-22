@@ -15,12 +15,16 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+/*** IT MUST BE PLACED IN A RELOADED EDITOR TO WORK CORRECTLY ***/
 
 @Getter
 @Setter
@@ -108,6 +112,20 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
         return defaultValue;
     }
 
+    @Nullable
+    public ItemStack getItemsStack(@Nullable UUID playerUUID, @Nullable StringPlaceholder sp) {
+        ItemStack item = getValue(playerUUID, sp).orElse(null);
+        if (item != null) return item.clone();
+        return null;
+    }
+
+    @Nullable
+    public ItemStack getItemsStack() {
+        ItemStack item = getValue().orElse(null);
+        if (item != null) return item.clone();
+        return null;
+    }
+
     @Override
     public Optional<ItemStack> getValue() {
         if (value.isPresent()) {
@@ -125,19 +143,41 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
         return defaultValue;
     }
 
+
     @Override
     public ItemStackFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 2];
-        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+
+        List<String> customDescription = new ArrayList<>();
+        customDescription.add("&7&o======== EC EDITOR ========");
+        customDescription.addAll(Arrays.asList(getEditorDescription()));
+
         if (!isPremium() && this.isRequirePremium()) {
-            finalDescription[finalDescription.length - 2] = GUI.PREMIUM;
-        } else finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = TM.g(Text.EDITOR_CURRENTLY_NAME);
+            customDescription.add(GUI.PREMIUM);
+        } else {
+            customDescription.add("&8>> &6LEFT CLICK: &eSET ITEM");
+            customDescription.add("&8>> &6RIGHT CLICK: &eREMOVE ITEM");
+            customDescription.add("&8>> &6SHIFT + LEFT CLICK: &eIncrement (+1)");
+            customDescription.add("&8>> &6SHIFT + RIGHT CLICK: &eDecrement (-1)");
+        }
+        customDescription.add(TM.g(Text.EDITOR_CURRENTLY_NAME));
+        customDescription.add("&7&o======== EC EDITOR ========");
+
+        customDescription.replaceAll(StringConverter::coloredString);
 
         Optional<ItemStack> value = getValue();
-        if (value.isPresent()) {
-            gui.createItem(value.get(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
-        } else gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
+        ItemStack item;
+        item = value.orElseGet(() -> new ItemStack(Material.BARRIER));
+
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.hasLore()? meta.getLore() : new ArrayList<>();
+        lore.addAll(0, customDescription);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        //gui.createItem(item, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, "sdfdsf", "sdfdsf", "sdfdsf", TM.g(Text.EDITOR_CURRENTLY_NAME));
+        gui.updateItem(slot, item, getEditorName());
+        //UpdateItemInGUI.updateItemInGUI(gui, getEditorName(), null, null , item);
+
         return this;
     }
 
@@ -145,9 +185,9 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     public void updateItemParentEditor(GUI gui) {
         if (placeholder.isPresent()) gui.updateCurrently(getEditorName(), placeholder.get());
         else if (value.isPresent()){
-            gui.updateCurrently(getEditorName(), itemStackToString(value.get()));
+            gui.updateCurrently(getEditorName(), "&6&oItem set");
         }
-        else gui.updateCurrently(getEditorName(), "&8&oNo item");
+        else gui.updateCurrently(getEditorName(), "&c&oNo item set");
     }
 
     @Override
@@ -176,13 +216,24 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
     @Override
     public boolean noShiftLeftclicked(Player editor, NewGUIManager manager) {
-        return false;
+        ItemStack stack = editor.getItemOnCursor().clone();
+        if(stack.getType().isAir()) editor.sendMessage(StringConverter.coloredString("&cYou must have an item in your hand to set it as the value"));
+        else {
+            ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
+            value = Optional.of(stack);
+            placeholder = Optional.empty();
+        }
+        return true;
     }
 
     @Override
     public boolean noShiftRightclicked(Player editor, NewGUIManager manager) {
-        return false;
+        ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), "&c&oNo item set");
+        value = Optional.empty();
+        placeholder = Optional.empty();
+        return true;
     }
+
 
     @Override
     public boolean shiftClicked(Player editor, NewGUIManager manager) {
@@ -191,36 +242,38 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
     @Override
     public boolean shiftLeftClicked(Player editor, NewGUIManager manager) {
-        return false;
+        if(value.isPresent()) {
+            ItemStack stack = value.get().clone();
+            stack.setAmount(stack.getAmount() + 1);
+            ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
+            value = Optional.of(stack);
+            placeholder = Optional.empty();
+        }
+        return true;
     }
 
     @Override
     public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
-        return false;
+        if(value.isPresent()) {
+            ItemStack stack = value.get().clone();
+            stack.setAmount(stack.getAmount() - 1);
+            if(stack.getAmount() != 1) {
+                ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
+                value = Optional.of(stack);
+                placeholder = Optional.empty();
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
-        ItemStack stack = editor.getItemOnCursor().clone();
-        //SsomarDev.testMsg("stack: " + stack, true);
-        if(stack.getType().isAir()) {
-           editor.sendMessage("&cYou must have an item in your hand to set it as the value");
-        }
-        else {
-            value = Optional.of(stack);
-            placeholder = Optional.empty();
-            //SsomarDev.testMsg("stack2: " + stack, true);
-            ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
-        }
-        return true;
+        return false;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
-        ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), "&8&oNo item");
-        value = Optional.empty();
-        placeholder = Optional.empty();
-        return true;
+        return false;
     }
 
     @Override

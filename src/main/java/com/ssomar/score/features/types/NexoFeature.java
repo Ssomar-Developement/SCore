@@ -89,8 +89,9 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
         if (SCore.hasNexo) {
             if (NexoBlocks.isCustomBlock(block)) {
                 SsomarDev.testMsg("isNexoBlock", true);
-                Drop drop = new Drop(new ArrayList<>(), false, false, NexoBlocks.stringMechanic(block).getItemID());
-                NexoBlocks.remove(block.getLocation(), null, drop);
+                //Drop drop = new Drop(new ArrayList<>(), false, false, NexoBlocks.stringMechanic(block).getItemID());
+                //NexoBlocks.remove(block.getLocation(), null, null);
+                NexoBlocks.remove(block.getLocation(), null, Drop.emptyDrop());
             }
             else {
                 SsomarDev.testMsg("isNothing", true);
@@ -259,10 +260,10 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
     }
 
     public void updateNexo(String id, GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         int slot = gui.getInv().first(item);
         initItemParentEditor(gui, slot);
-        item = gui.getByName(getEditorName());
+        item = gui.getByIdentifier(getEditorName());
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
@@ -300,7 +301,7 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
     }
 
     public Optional<String> getNexo(GUI gui) {
-        ItemStack item = gui.getByName(getEditorName());
+        ItemStack item = gui.getByIdentifier(getEditorName());
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         for (String str : lore) {
