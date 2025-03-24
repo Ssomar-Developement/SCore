@@ -4,5 +4,5 @@ public enum RecipeType {
     ANVIL,
     CRAFTING,
     FURNACE,
-    BREWINGSTAND,
+    // TODO not functional BREWINGSTAND,
 }

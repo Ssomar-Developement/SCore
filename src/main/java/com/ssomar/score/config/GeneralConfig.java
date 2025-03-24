@@ -86,6 +86,7 @@ public class GeneralConfig extends Config {
         dbUser = config.getString("dbUser", "");
         dbPassword = config.getString("dbPassword", "");
         configVerbosity = config.getString("configVerbosity", "NORMAL");
+        //SsomarDev.testMsg("configVerbosity: " + configVerbosity, true);
         reduceDamageIndicatorWithProtolcolLib = config.getBoolean("reduceDamageIndicatorWithProtolcolLib", false);
        // jetMinionsGenerateBreakActivator = config.getBoolean("jetMinionsGenerateBreakActivator", false);
         silenceOutputs = config.getStringList("silenceOutputs");

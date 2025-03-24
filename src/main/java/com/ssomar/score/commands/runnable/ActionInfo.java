@@ -19,6 +19,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.io.Serializable;
@@ -69,6 +70,10 @@ public class ActionInfo implements Serializable {
 
     /* ------------------ */
 
+    private ItemStack itemStack;
+
+    /* ------------------ */
+
     private transient Optional<Vector> velocity;
 
     private boolean silenceOutput;
@@ -91,6 +96,7 @@ public class ActionInfo implements Serializable {
         this.isEventFromCustomBreakCommand = false;
         this.launcherUUID = null;
         this.receiverUUID = null;
+        this.itemStack = null;
         this.blockLocationX = -1;
         this.blockLocationY = -1;
         this.blockLocationZ = -1;
@@ -115,6 +121,7 @@ public class ActionInfo implements Serializable {
         result.setOldBlockMaterial(oldBlockMaterial);
         result.setOldBlockMaterialName(oldBlockMaterialName);
         result.setEntityUUID(entityUUID);
+        result.setItemStack(itemStack);
         result.setSilenceOutput(silenceOutput);
         result.setNoPlayerTriggeredTheAction(noPlayerTriggeredTheAction);
         result.setBlockLocationX(blockLocationX);

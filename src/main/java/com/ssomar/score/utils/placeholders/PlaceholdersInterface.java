@@ -34,6 +34,10 @@ public abstract class PlaceholdersInterface {
 
         if(!isNumeric(value)){
             Utils.sendConsoleMsg(SCore.NAME_COLOR+" &cInvalid value &6"+value+" &c used in placeholder calculation. String : &6"+s);
+
+            while (result.contains(placeholder)) {
+                result = result.replaceAll(placeholder, optionalTagSurroundValue+value+optionalTagEndBeforeSurround+optionalTagSurroundValue);
+            }
             return result;
         }
 

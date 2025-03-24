@@ -378,6 +378,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     checkExecutableItemID(getFeatureSettings("checkExecutableItemID")),
     checkExecutableItemUsage(getFeatureSettings("checkExecutableItemUsage")),
     checkExecutableItemVariables(getFeatureSettings("checkExecutableItemVariables")),
+    anvilMergeType(getFeatureSettings("anvilMergeType")),
+    itemCommands(getFeatureSettings("itemCommands")),
     damageableOnHurt(getFeatureSettings("damageableOnHurt")),
     dispensable(getFeatureSettings("dispensable")),
     swappable(getFeatureSettings("swappable")),
@@ -669,7 +671,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     public static void reload() {
         for (FeatureSettingsSCore feature : FeatureSettingsSCore.values()) {
-            feature.settingsInterface = getFeatureSettings(feature.getIdentifier(), feature.getName());
+            feature.settingsInterface = getFeatureSettings(feature.getIdentifier(), feature.getName(), feature.getSavingVerbosityLevel());
         }
     }
 
