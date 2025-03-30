@@ -9,10 +9,12 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* TELEPORT ENTITY TO PLAYER */
 public class TeleportEntityToPlayer extends EntityCommand {
+
+    public TeleportEntityToPlayer() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
@@ -23,20 +25,16 @@ public class TeleportEntityToPlayer extends EntityCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("TELEPORT_ENTITY_TO_PLAYER");
         names.add("TELEPORT ENTITY TO PLAYER");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "TELEPORT ENTITY TO PLAYER";
+        return "TELEPORT_ENTITY_TO_PLAYER";
     }
 
     @Override

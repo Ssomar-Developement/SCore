@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.utils.EntityBuilder;
 import com.ssomar.score.utils.backward_compatibility.AttributeAdditionMode;
 import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import lombok.Getter;
@@ -124,6 +125,9 @@ public class CommandSetting {
             } catch (IllegalArgumentException e) {
                 return null;
             }
+        }
+        else if(type == EntityBuilder.class){
+            return new EntityBuilder(value);
         }
         if(acceptUnderScoreForLongText && !value.contains("http")) return value.replaceAll("_", " ");
         return value;

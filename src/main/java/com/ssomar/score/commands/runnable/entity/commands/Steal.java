@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.Bukkit;
@@ -14,31 +14,30 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/*  */
 public class Steal extends EntityCommand {
+
+    public Steal() {
+        CommandSetting slot = new CommandSetting("slot", 0, EquipmentSlot.class, EquipmentSlot.HAND);
+        CommandSetting remove = new CommandSetting("remove", 1, Boolean.class, false);
+        List<CommandSetting> settings = getSettings();
+        settings.add(slot);
+        settings.add(remove);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
+        EquipmentSlot slot = (EquipmentSlot) sCommandToExec.getSettingValue("slot");
+        boolean remove = (boolean) sCommandToExec.getSettingValue("remove");
 
         if(entity.isDead() | p.isDead()) return;
-
-        boolean remove = true;
-        if(args.size() == 2){
-            if (args.get(1).equalsIgnoreCase("false")) remove = false;
-        }
-
-        EquipmentSlot slot = getSlot(args.get(0));
-        if(slot == null) return;
 
         LivingEntity livingEntity;
         if (entity instanceof LivingEntity) {
             livingEntity = (LivingEntity) entity;
-        }else{
-            return;
         }
+        else return;
 
         try {
 
@@ -56,39 +55,6 @@ public class Steal extends EntityCommand {
         }
     }
 
-    public EquipmentSlot getSlot(String slotS){
-        String slotS2 = slotS.toLowerCase();
-        switch (slotS2){
-            case "head":
-                return EquipmentSlot.HEAD;
-            case "chest":
-                return EquipmentSlot.CHEST;
-            case "legs":
-                return EquipmentSlot.LEGS;
-            case "feet":
-                return EquipmentSlot.FEET;
-            case "hand":
-                return EquipmentSlot.HAND;
-            case "offhand":
-                return EquipmentSlot.OFF_HAND;
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        if(args.size() >= 2){
-            ArgumentChecker ac2 = checkBoolean(args.get(1), isFinalVerification, getTemplate());
-            if (!ac2.isValid()) return Optional.of(ac2.getError());
-        }
-
-        return Optional.empty();
-    }
-
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
@@ -98,7 +64,7 @@ public class Steal extends EntityCommand {
 
     @Override
     public String getTemplate() {
-        return "STEAL [slot name] {remove item default true}";
+        return "STEAL slot:HAND remove:false";
     }
 
     @Override

@@ -211,7 +211,9 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
     }
 
     public boolean isSimilar(ItemStack item1, ItemStack item2) {
-        if(item1 == null || item2 == null) return false;
+        if(item1 == null || item2 == null) {
+            return item1 == item2;
+        }
 
         if(itemCheckerType.getValue().get() == ItemCheckerType.ITEM_MUST_BE_EXACTLY_THE_SAME) {
             return item1.isSimilar(item2);

@@ -267,8 +267,11 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 }
             }
         } else if (SCore.is1v20v4Plus()) {
+            //System.out.println(">>>>>>>>>>>>>>>>>> REMOVED title at location: " + location);
             for (TextDisplay textDisplay : location.getWorld().getEntitiesByClass(TextDisplay.class)) {
+                //System.out.println(">>>>>>>>>>>>>>>>>> TextDisplay location: " + textDisplay.getLocation());
                 if (textDisplay.getLocation().equals(location)) {
+                    //System.out.println(">>>>>>>>>>>>>>>>>> TextDisplay removed");
                     textDisplay.remove();
                 }
             }
@@ -280,12 +283,15 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      * @param objectLocation is the location of the object (block / player) that has the hologram
      **/
     public Location update(@Nullable Location location, @NotNull Location objectLocation, StringPlaceholder sp) {
+        //System.out.println(">>>>>>>>>>>>>>>>>>>> Update title at location: " + location);
         if (!activeTitle.getValue()) {
             if (location != null) remove(location);
+            //System.out.println(">>>>>>>>>>>>>>>>>> Title is not active");
             return null;
         }
 
         if(location == null){
+            //System.out.println(">>>>>>>>>>>>>> Location is null");
             return spawn(objectLocation, sp);
         }
 
@@ -296,7 +302,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
         lines = sp.replacePlaceholders(lines);
 
-        if (!SCore.hasCMI && !SCore.is1v20v4Plus()) {
+        if (SCore.hasCMI && !SCore.is1v20v4Plus()) {
             CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
             if (holo != null) {
                 holo.setLines(lines);
@@ -315,6 +321,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             remove(location);
             return spawn(objectLocation, sp);
         } else if (SCore.is1v20v4Plus()) {
+            //System.out.println(">>>>>>>>>>>>>>>>>> UPDATED title at location: " + location);
+            // To be sure that the hologram is removed even if the activeTitle is false
             remove(location);
             return spawn(objectLocation, sp);
         }

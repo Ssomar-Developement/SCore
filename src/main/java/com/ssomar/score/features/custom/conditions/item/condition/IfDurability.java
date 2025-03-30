@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.conditions.item.condition;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.item.ItemConditionFeature;
@@ -25,6 +26,7 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
     public boolean verifCondition(ItemConditionRequest request) {
 
         if (hasCondition()) {
+            SsomarDev.testMsg("IfDurability has condition", true);
             Optional<Player> playerOpt = request.getPlayerOpt();
             ItemStack itemStack = request.getItemStack();
             int maxDurability = itemStack.getType().getMaxDurability();
@@ -35,8 +37,11 @@ public class IfDurability extends ItemConditionFeature<NumberConditionFeature, I
                     if (SCore.is1v20v5Plus() && damageable.hasMaxDamage()) maxDurability = damageable.getMaxDamage();
                 }
             }
+            SsomarDev.testMsg("maxDurability: "+maxDurability, true);
 
-            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), maxDurability - itemStack.getDurability())) {
+            int currentDurability = maxDurability - itemStack.getDurability();
+            SsomarDev.testMsg("currentDurability: "+currentDurability, true);
+            if (!StringCalculation.calculation(getCondition().getValue(playerOpt, request.getSp()).get(), currentDurability)) {
                 runInvalidCondition(request);
                 return false;
             }

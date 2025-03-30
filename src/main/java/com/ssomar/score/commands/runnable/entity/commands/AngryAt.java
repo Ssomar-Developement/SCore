@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.Bukkit;
@@ -11,19 +12,27 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /* ANGRYAT {ENTITYUUID} */
 public class AngryAt extends EntityCommand {
 
+    public AngryAt() {
+        CommandSetting entityUUID = new CommandSetting("entityUUID", 0, UUID.class, null);
+        List<CommandSetting> settings = getSettings();
+        settings.add(entityUUID);
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
+
+        UUID uuid = (UUID) sCommandToExec.getSettingValue("entityUUID");
+
         if(entity instanceof Mob && !entity.isDead()){
             Mob mob = (Mob) entity;
             try {
-                mob.setTarget((LivingEntity) Bukkit.getEntity(UUID.fromString(args.get(0))));
+                mob.setTarget((LivingEntity) Bukkit.getEntity(uuid));
             } catch (Exception e) {
                 mob.setTarget(null);
             }
@@ -31,21 +40,16 @@ public class AngryAt extends EntityCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("ANGRY_AT");
         names.add("ANGRYAT");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "ANGRYAT {ENTITYUUID}";
+        return "ANGRY_AT entityUUID:THE_UUID";
     }
 
     @Override

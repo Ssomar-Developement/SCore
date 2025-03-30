@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
-import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
@@ -10,39 +10,45 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* TELEPORT POSITION {x} {y} {z} */
 public class TeleportPosition extends EntityCommand {
 
-    @Override
-    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-        if (args.size() == 3) {
-            if (!entity.isDead())
-                entity.teleport(new Location(entity.getWorld(), Double.valueOf(args.get(0)), Double.valueOf(args.get(1)), Double.valueOf(args.get(2))));
-        }
+    public TeleportPosition() {
+        CommandSetting x = new CommandSetting("x", 0, Double.class, 0.0);
+        CommandSetting y = new CommandSetting("y", 1, Double.class, 0.0);
+        CommandSetting z = new CommandSetting("z", 2, Double.class, 0.0);
+        List<CommandSetting> settings = getSettings();
+        settings.add(x);
+        settings.add(y);
+        settings.add(z);
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        for (String arg : args) {
-            ArgumentChecker ac = checkDouble(arg, isFinalVerification, getTemplate());
-            if (!ac.isValid()) return Optional.of(ac.getError());
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+
+        double x = (double) sCommandToExec.getSettingValue("x");
+        double y = (double) sCommandToExec.getSettingValue("y");
+        double z = (double) sCommandToExec.getSettingValue("z");
+
+        List<String> args = sCommandToExec.getOtherArgs();
+        if (args.size() == 3) {
+            if (!entity.isDead())
+                entity.teleport(new Location(entity.getWorld(), x, y, z));
         }
-        return Optional.empty();
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("TELEPORT_POSITION");
         names.add("TELEPORT POSITION");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "TELEPORT POSITION {x} {y} {z}";
+        return "TELEPORT_POSITION x:5.0 y:64.0 z:98.0";
     }
 
     @Override

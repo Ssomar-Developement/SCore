@@ -8,19 +8,17 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /* KILL */
 public class Kill extends EntityCommand {
 
-    @Override
-    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        if (!entity.isDead()) entity.remove();
+    public Kill() {
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-       return Optional.empty();
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        if (!entity.isDead()) entity.remove();
     }
 
     @Override

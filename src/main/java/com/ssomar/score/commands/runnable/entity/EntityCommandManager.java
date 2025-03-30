@@ -20,9 +20,7 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         commands.add(new TeleportPosition());
         commands.add(new TeleportEntityToPlayer());
         commands.add(new TeleportPlayerToEntity());
-        commands.add(new SendMessage());
         commands.add(new Kill());
-        commands.add(new ChangeToMythicMob());
         commands.add(new ChangeTo());
         commands.add(new DropItem());
         commands.add(new DropExecutableItem());
@@ -32,7 +30,7 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         commands.add(new SetBaby());
         commands.add(new SetAdult());
         commands.add(new SetAI());
-        commands.add(new SetName());
+        commands.add(new SetEntityName());
         commands.add(new PlayerRideOnEntity());
         commands.add(new Shear());
         commands.add(new AngryAt());

@@ -11,10 +11,13 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /* SHEAR} */
 public class Shear extends EntityCommand {
+
+    public Shear() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
@@ -47,9 +50,6 @@ public class Shear extends EntityCommand {
         }
 
     }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) { return Optional.empty(); }
 
     @Override
     public List<String> getNames() {

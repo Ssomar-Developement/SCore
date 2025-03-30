@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -9,22 +10,31 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* SETNAME {name} */
-public class SetName extends EntityCommand {
+public class SetEntityName extends EntityCommand {
+
+    public SetEntityName() {
+        CommandSetting message = new CommandSetting("name", 0, String.class, "&6Hello world");
+        message.setAcceptUnderScoreForLongText(true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(message);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        String baseName = (String) sCommandToExec.getSettingValue("name");
         List<String> args = sCommandToExec.getOtherArgs();
-        if (!entity.isDead()) {
-            StringBuilder name = new StringBuilder();
-            for (String s : args) {
-                name.append(s).append(" ");
-            }
-            name = new StringBuilder(name.substring(0, name.length() - 1));
+        StringBuilder name = new StringBuilder(baseName);
+        name.append(" ");
+        for (String s : args) {
+            //SsomarDev.testMsg("cmdarg> "+s);
+            name.append(s).append(" ");
+        }
+        name = new StringBuilder(name.substring(0, name.length() - 1));
 
-            if(StringConverter.decoloredString(name.toString()).trim().isEmpty()) {
+        if (!entity.isDead()) {
+            if (StringConverter.decoloredString(name.toString()).trim().isEmpty()) {
                 entity.setCustomNameVisible(false);
                 entity.setCustomName(null);
                 return;
@@ -36,22 +46,16 @@ public class SetName extends EntityCommand {
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_ENTITY_NAME");
         names.add("SETNAME");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETNAME {name}";
+        return "SET_ENTITY_NAME name:&6Final &cBoss";
     }
 
     @Override

@@ -10,10 +10,12 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* HIDE {ENTITYUUID} */
 public class Hide extends EntityCommand {
+
+    public Hide() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
@@ -25,11 +27,6 @@ public class Hide extends EntityCommand {
         }
     }
 
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.isEmpty()) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
-    }
 
     @Override
     public List<String> getNames() {

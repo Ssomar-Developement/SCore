@@ -1,4 +1,4 @@
-package com.ssomar.score.features.custom.consumableFeatures.foodFeatures;
+package com.ssomar.score.features.custom.consumableFeatures;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;

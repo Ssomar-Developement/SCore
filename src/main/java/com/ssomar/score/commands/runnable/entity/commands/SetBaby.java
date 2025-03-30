@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/* SETBABY */
 public class SetBaby extends EntityCommand {
+
+    public SetBaby() {
+        setNewSettingsMode(true);
+    }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
@@ -27,13 +30,14 @@ public class SetBaby extends EntityCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_BABY");
         names.add("SETBABY");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETBABY";
+        return "SET_BABY";
     }
 
     @Override

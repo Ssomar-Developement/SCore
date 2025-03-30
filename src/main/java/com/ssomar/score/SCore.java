@@ -403,7 +403,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v4Plus() {
-        return is1v21v4() || is1v21v5() || is1v22Plus();
+        return is1v21v4() || is1v21v5Plus();
+    }
+
+    public static boolean is1v21v5Plus() {
+        return is1v21v5() || is1v22Plus();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -849,7 +853,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
         isMohist = Bukkit.getServer().getName().contains("Mohist") || Bukkit.getServer().getVersion().contains("Mohist");
         isPaper = Bukkit.getServer().getVersion().contains("Paper") || Bukkit.getServer().getVersion().contains("paper");
-        isPaperOrForkFor1v20lus = is1v20Plus() && (hasClass("com.destroystokyo.paper.PaperConfig") || hasClass("io.papermc.paper.configuration.Configuration"));
+        isPaperOrForkFor1v20lus = is1v20v1Plus() && (hasClass("com.destroystokyo.paper.PaperConfig") || hasClass("io.papermc.paper.configuration.Configuration"));
         isFolia = Bukkit.getServer().getVersion().contains("Folia") || Bukkit.getServer().getVersion().contains("folia");
         isLuminol = Bukkit.getServer().getVersion().contains("Luminol") || Bukkit.getServer().getVersion().contains("luminol");
         isPurpur = Bukkit.getServer().getVersion().contains("Purpur") || Bukkit.getServer().getVersion().contains("purpur");

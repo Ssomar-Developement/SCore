@@ -8,23 +8,18 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/* TELEPORT PLAYER TO ENTITY */
 public class PlayerRideOnEntity extends EntityCommand {
 
-    @Override
-    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
-        if (p != null && !entity.isDead() && p.isOnline() && !p.isDead()) {
-            entity.addPassenger(p);
-        }
+    public PlayerRideOnEntity() {
+        setNewSettingsMode(true);
     }
 
     @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return Optional.empty();
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        if (p != null && !entity.isDead() && p.isOnline() && !p.isDead()) {
+            entity.addPassenger(p);
+        }
     }
 
     @Override

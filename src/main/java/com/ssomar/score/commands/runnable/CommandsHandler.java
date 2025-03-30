@@ -334,11 +334,14 @@ public class CommandsHandler implements Listener {
     public boolean hasStopPickup(@NotNull Player p) {
         long time = System.currentTimeMillis();
         //System.out.println("pickup "+CommandsHandler.getInstance().getStopPickup().get(p)+" actual "+time);
-        boolean stop = stopPickup.containsKey(p) && CommandsHandler.getInstance().getStopPickup().get(p) > time;
-        if (!stop) {
-            stopPickup.remove(p);
+        if(stopPickup.containsKey(p)) {
+            boolean stop = stopPickup.get(p) > time;
+            if (!stop) {
+                stopPickup.remove(p);
+            }
+            return stop;
         }
-        return stop;
+        return false;
     }
 
     public boolean hasStopPickup(@NotNull Player p, Material material) {

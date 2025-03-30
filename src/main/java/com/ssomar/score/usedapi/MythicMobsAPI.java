@@ -7,7 +7,6 @@ import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -38,23 +37,13 @@ public class MythicMobsAPI {
         return false;
     }
 
-    public static Entity changeToMythicMob(Entity entity, String id) {
-        //SsomarDev.testMsg("Changing to MythicMob: " + id);
+    public static Entity buildMythicMob(String id, Location loc) {
         if (SCore.hasMythicMobs) {
             BukkitAPIHelper api = MythicBukkit.inst().getAPIHelper();
-            /* EXCEPTION */
-            Location loc = entity.getLocation();
-            Vector velocity = entity.getVelocity();
-            entity.remove();
             try {
                 //SsomarDev.testMsg("Changing to MythicMob SPAWN: " + id);
-                Entity newEntity = api.spawnMythicMob(id, loc);
-                //SsomarDev.testMsg("Changing to MythicMob SPAWN VALID: " + id);
-                newEntity.setVelocity(velocity);
-                return newEntity;
-            } catch (InvalidMobTypeException e) {
-                e.printStackTrace();
-            }
+                return api.spawnMythicMob(id, loc);
+            } catch (InvalidMobTypeException e) {}
         }
         return null;
     }

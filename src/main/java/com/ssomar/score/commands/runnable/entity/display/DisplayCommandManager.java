@@ -21,7 +21,6 @@ public class DisplayCommandManager extends CommandManager<SCommand> {
 
         commands.add(new Around());
         commands.add(new TeleportPlayerToEntity());
-        commands.add(new SendMessage());
         commands.add(new DropItem());
         commands.add(new DropExecutableItem());
         commands.add(new DropExecutableBlock());

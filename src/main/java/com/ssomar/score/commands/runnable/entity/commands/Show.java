@@ -10,26 +10,22 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /* SHOW  */
 public class Show extends EntityCommand {
 
+    public Show() {
+        setNewSettingsMode(true);
+    }
+
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
         if(p != null && entity instanceof Mob && !entity.isDead()){
             Mob mob = (Mob) entity;
             try {
                 p.showEntity(SCore.plugin, mob);
             } catch (Exception ignore) {}
         }
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.isEmpty()) return Optional.of(notEnoughArgs + getTemplate());
-        return Optional.empty();
     }
 
     @Override

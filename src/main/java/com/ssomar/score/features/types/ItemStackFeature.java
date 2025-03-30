@@ -54,8 +54,22 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
             value = Optional.empty();
         } else {
             placeholder = Optional.empty();
+            int amount = 1;
             try {
-                value = Optional.of(Bukkit.getServer().getItemFactory().createItemStack(valueStr));
+                if(valueStr.contains(">>amount:")){
+                    String[] split = valueStr.split(">>amount:");
+                    valueStr = split[0];
+                    if(split.length > 1) {
+                        try {
+                            amount = Integer.parseInt(split[1]);
+                        } catch (Exception e) {
+                            errors.add("&cERROR, Couldn't load the ItemStack value of " + this.getName() + " from config, value: " + valueStr + " (Invalid amount) &7&o" + getParent().getParentInfo());
+                        }
+                    }
+                }
+                ItemStack item = Bukkit.getServer().getItemFactory().createItemStack(valueStr);
+                item.setAmount(amount);
+                this.value = Optional.of(item);
             } catch (Exception e) {
                 if (!valueStr.equals("NULL"))
                     errors.add("&cERROR, Couldn't load the ItemStack value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
@@ -77,6 +91,7 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
             else {
                 ItemStack item = getValue().get();
                 String valStr = itemStackToString(item);
+                if(item.getAmount() != 1) valStr += ">>amount:"+item.getAmount();
                 config.set(this.getName(), valStr);
             }
         }

@@ -7,6 +7,6 @@ public abstract class EntityCommand extends SCommand implements EntitySCommand, 
 
     @Override
     public String getWikiLink() {
-        return null;
+        return "https://docs.ssomar.com/tools-for-all-plugins-score/custom-commands/entity-commands#" + getNames().get(0).toLowerCase();
     }
 }
