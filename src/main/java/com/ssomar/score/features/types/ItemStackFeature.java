@@ -186,6 +186,14 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.hasLore()? meta.getLore() : new ArrayList<>();
+
+        assert lore != null;
+        // if lore has EC EDITOR on one of the lines, return
+        if (lore.stream().anyMatch(line -> line.contains("EC EDITOR"))) {
+            gui.updateItem(slot, item, getEditorName());
+            return this;
+        }
+
         lore.addAll(0, customDescription);
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -272,8 +280,10 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
         if(value.isPresent()) {
             ItemStack stack = value.get().clone();
+            int amount = stack.getAmount();
             stack.setAmount(stack.getAmount() - 1);
-            if(stack.getAmount() != 1) {
+
+            if(amount != 1) {
                 ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
                 value = Optional.of(stack);
                 placeholder = Optional.empty();
