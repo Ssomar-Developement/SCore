@@ -283,6 +283,9 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      * @param objectLocation is the location of the object (block / player) that has the hologram
      **/
     public Location update(@Nullable Location location, @NotNull Location objectLocation, StringPlaceholder sp) {
+
+        if(!objectLocation.isChunkLoaded()) return location;
+
         //System.out.println(">>>>>>>>>>>>>>>>>>>> Update title at location: " + location);
         if (!activeTitle.getValue()) {
             if (location != null) remove(location);

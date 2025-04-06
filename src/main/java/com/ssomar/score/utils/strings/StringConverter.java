@@ -31,13 +31,14 @@ public class StringConverter {
 
         String convert = StringUtils.replaceEach( s, keys, values );
         convert = convert.replaceAll("\\|<-_->\\|", "& ");
-        if (SCore.is1v16Plus()) convert = translateHexCodes(convert);
-        //Utils.sendConsoleFlatMsg(SCore.plugin, convert);
 
         try {
             convert = LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(convert));
         }
         catch (Exception | Error ignored){}
+
+        if (SCore.is1v16Plus()) convert = translateHexCodes(convert);
+        //Utils.sendConsoleFlatMsg(SCore.plugin, convert);
 
         return convert;
     }

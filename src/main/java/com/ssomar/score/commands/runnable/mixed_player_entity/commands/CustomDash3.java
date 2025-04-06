@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.numbers.NTools;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /* CUSTOMDASH3 {function} {max x value} {y or x} {front z default TRUE}*/
 public class CustomDash3 extends MixedCommand {
@@ -44,12 +46,13 @@ public class CustomDash3 extends MixedCommand {
 
         Integer finalFront = front;
 
+        AtomicReference<ScheduledTask> task = new AtomicReference<>(null);
         //if(args.get(2).equalsIgnoreCase("y")) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if (currentStep[0] >= steps) {
-                    Thread.currentThread().interrupt();
+                    task.get().cancel();
                     return;
                 }
 
@@ -78,8 +81,7 @@ public class CustomDash3 extends MixedCommand {
                 currentStep[0]++;
             }
         };
-
-        SCore.schedulerHook.runRepeatingTask(runnable, 1L, 1L);
+        task.set(SCore.schedulerHook.runRepeatingTask(runnable, 1L, 1L));
     }
 
     @Override
