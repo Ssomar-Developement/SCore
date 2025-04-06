@@ -141,6 +141,11 @@ public class PickupFeature extends FeatureAbstract<Optional<Arrow.PickupStatus>,
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Arrow.PickupStatus nextPickupStatus(Arrow.PickupStatus material) {
         boolean next = false;
         for (Arrow.PickupStatus check : getSortPickupStatus()) {

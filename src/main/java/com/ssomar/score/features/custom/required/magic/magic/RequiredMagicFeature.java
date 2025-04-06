@@ -12,6 +12,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.UncoloredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.willfp.ecoskills.api.EcoSkillsAPI;
 import com.willfp.ecoskills.magic.MagicType;
 import com.willfp.ecoskills.magic.MagicTypes;
@@ -156,8 +157,8 @@ public class RequiredMagicFeature extends FeatureWithHisOwnEditor<RequiredMagicF
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
-        int needed = amount.getValue().get();
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
+        int needed = amount.getValue(player.getUniqueId(), sp).get();
         if (!SCore.hasEcoSkills) return true;
 
         if(!magic.getValue().isPresent()) return true;
@@ -171,8 +172,8 @@ public class RequiredMagicFeature extends FeatureWithHisOwnEditor<RequiredMagicF
     }
 
     @Override
-    public void take(Player player) {
-        int needed = amount.getValue().get();
+    public void take(Player player, StringPlaceholder sp) {
+        int needed = amount.getValue(player.getUniqueId(), sp).get();
         if (!SCore.hasEcoSkills) return;
 
         if(!magic.getValue().isPresent()) return;

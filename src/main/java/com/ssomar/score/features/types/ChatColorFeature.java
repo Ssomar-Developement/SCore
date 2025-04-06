@@ -154,6 +154,11 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public ChatColor nextChatColor(ChatColor particle) {
         boolean next = false;
         for (ChatColor check : ChatColor.values()) {

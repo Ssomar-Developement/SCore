@@ -145,6 +145,11 @@ public class PlaceholderConditionTypeFeature extends FeatureAbstract<Optional<Pl
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public PlaceholdersCdtType nextPlaceholdersCdtType(PlaceholdersCdtType material) {
         boolean next = false;
         for (PlaceholdersCdtType check : getSortPlaceholdersCdtTypes()) {

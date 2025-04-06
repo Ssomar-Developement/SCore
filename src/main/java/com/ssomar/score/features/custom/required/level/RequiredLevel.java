@@ -14,6 +14,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,9 +80,9 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
-        if (level.getValue().isPresent() && level.getValue().get() > 0) {
-            if (player.getLevel() < level.getValue().get()) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
+        if (level.getValue(player.getUniqueId(), sp).isPresent() && level.getValue(player.getUniqueId(), sp).get() > 0) {
+            if (player.getLevel() < level.getValue(player.getUniqueId(), sp).get()) {
                 if (errorMessage.getValue().isPresent()) {
                     SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }
@@ -95,8 +96,8 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
     }
 
     @Override
-    public void take(Player player) {
-        if (level.getValue().isPresent() && level.getValue().get() > 0)
+    public void take(Player player, StringPlaceholder sp) {
+        if (level.getValue(player.getUniqueId(), sp).isPresent() && level.getValue(player.getUniqueId(), sp).get() > 0)
             player.setLevel(player.getLevel() - level.getValue().get());
     }
 

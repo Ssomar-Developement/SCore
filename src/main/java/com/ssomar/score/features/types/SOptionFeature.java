@@ -185,6 +185,11 @@ public class SOptionFeature extends FeatureAbstract<SOption, SOptionFeature> imp
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public SOption nextOption(SOption option) {
         boolean next = false;
         for (SOption check : getSortOptions()) {

@@ -23,7 +23,7 @@ public class IfContainerContains extends BlockConditionFeature<RequiredItemGroup
                 Container container = (Container) b.getState();
                 Inventory inv = container.getInventory();
                 if (hasCondition()) {
-                    if (getCondition().verify(inv, null)) {
+                    if (getCondition().verify(inv, null, request.getSp())) {
                         return true;
                     }
 

@@ -156,6 +156,11 @@ public class DetailedClickFeature extends FeatureAbstract<Optional<DetailedClick
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public DetailedClick nextDetailedClick(DetailedClick material) {
         boolean next = false;
         for (DetailedClick check : getSortDetailedClicks()) {

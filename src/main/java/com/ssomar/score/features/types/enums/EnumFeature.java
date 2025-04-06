@@ -157,6 +157,11 @@ public class EnumFeature<T extends Enum> extends FeatureAbstract<Optional<T>, En
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public T nextEnum(T slot) {
         boolean next = false;
         for (T check : getSortEnum()) {

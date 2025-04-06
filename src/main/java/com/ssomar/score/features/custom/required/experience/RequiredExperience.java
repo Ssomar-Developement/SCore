@@ -14,6 +14,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,8 +80,8 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
-        if (experience.getValue().isPresent() && experience.getValue().get() > 0) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
+        if (experience.getValue(player.getUniqueId(), sp).isPresent() && experience.getValue(player.getUniqueId(), sp).get() > 0) {
             int actualExperience = getExpAtLevel(player.getLevel()) + (int) (player.getExpToLevel()*player.getExp());
             //SsomarDev.testMsg("actualExperience: "+actualExperience+ " exptolevel>> "+player.getExpToLevel()+" exp>> "+player.getExp(), true);
             if (actualExperience < experience.getValue().get()) {
@@ -118,10 +119,10 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
     }
 
     @Override
-    public void take(Player player) {
-        if (experience.getValue().isPresent() && experience.getValue().get() > 0) {
+    public void take(Player player, StringPlaceholder sp) {
+        if (experience.getValue(player.getUniqueId(), sp).isPresent() && experience.getValue(player.getUniqueId(), sp).get() > 0) {
             int newAmount = getExpAtLevel(player.getLevel()) + (int)(player.getExpToLevel()*player.getExp());
-            newAmount = newAmount - experience.getValue().get();
+            newAmount = newAmount - experience.getValue(player.getUniqueId(), sp).get();
 
             int level = 0;
             for (int i = 0; i < 10000; i++) {

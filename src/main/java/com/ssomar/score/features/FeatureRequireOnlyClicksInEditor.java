@@ -24,4 +24,6 @@ public interface FeatureRequireOnlyClicksInEditor {
     boolean rightClicked(Player editor, NewGUIManager manager);
 
     boolean doubleClicked(Player editor, NewGUIManager manager);
+
+    boolean middleClicked(Player editor, NewGUIManager manager);
 }

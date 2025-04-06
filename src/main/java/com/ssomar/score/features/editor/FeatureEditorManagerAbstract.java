@@ -211,6 +211,9 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     ((FeatureRequireOneMessageInEditor) feature).askInEditor(i.player, this);
                     return true;
                 }
+                else if (feature instanceof FeatureRequireOnlyClicksInEditor) {
+                    return ((FeatureRequireOnlyClicksInEditor) feature).middleClicked(i.player, this);
+                }
             }
         }
         return false;

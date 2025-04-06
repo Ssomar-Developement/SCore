@@ -143,6 +143,11 @@ public class TypeTargetFeature extends FeatureAbstract<Optional<TypeTarget>, Typ
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public TypeTarget nextTypeTarget(TypeTarget material) {
         boolean next = false;
         for (TypeTarget check : getSortTypeTargets()) {

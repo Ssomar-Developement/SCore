@@ -150,6 +150,11 @@ public class ShapeTypeFeature extends FeatureAbstract<Optional<ShapeType>, Shape
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public ShapeType nextCreationType(ShapeType slot) {
         boolean next = false;
         for (ShapeType check : getSortShapeTypes()) {

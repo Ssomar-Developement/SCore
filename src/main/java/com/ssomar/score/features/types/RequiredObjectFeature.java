@@ -185,6 +185,11 @@ public class RequiredObjectFeature extends FeatureAbstract<Optional<RequiredObje
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public RequiredObject nextRequiredObject(RequiredObject slot) {
         boolean next = false;
         for (RequiredObject check : getSortRequiredObjects()) {

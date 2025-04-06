@@ -152,6 +152,11 @@ public class MusicIntrusmentFeature extends FeatureAbstract<Optional<MusicInstru
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public MusicInstrument nextCreationType(MusicInstrument slot) {
         boolean next = false;
         for (MusicInstrument check : getSortDropTypes()) {

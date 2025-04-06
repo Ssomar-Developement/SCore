@@ -181,6 +181,11 @@ public class ParticleTypeFeature extends FeatureAbstract<Optional<Particle>, Par
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Particle nextParticle(Particle particle) {
         boolean next = false;
         for (Particle check : getSortParticles()) {

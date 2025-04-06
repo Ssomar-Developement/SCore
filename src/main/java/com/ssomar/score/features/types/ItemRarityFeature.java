@@ -159,6 +159,11 @@ public class ItemRarityFeature extends FeatureAbstract<Optional<ItemRarity>, Ite
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public ItemRarity nextCreationType(ItemRarity slot) {
         boolean next = false;
         for (ItemRarity check : getSortDropTypes()) {

@@ -16,6 +16,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.NumberConditionFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringCalculation;
 import lombok.Getter;
 import lombok.Setter;
@@ -171,13 +172,13 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
         PlayerInventory inventory = player.getInventory();
-        return verify(inventory, event);
+        return verify(inventory, event, sp);
     }
 
-    public boolean verify(Inventory inventory, Event event) {
-        int needed = amount.getValue().get();
+    public boolean verify(Inventory inventory, Event event, StringPlaceholder sp) {
+        int needed = amount.getValue(null, sp).get();
         if (!SCore.hasExecutableItems || !getExecutableItem().getValue().isPresent()) return true;
 
         for (ItemStack it : inventory.getContents()) {
@@ -204,9 +205,9 @@ public class RequiredExecutableItemFeature extends FeatureWithHisOwnEditor<Requi
     }
 
     @Override
-    public void take(Player player) {
+    public void take(Player player, StringPlaceholder sp) {
         PlayerInventory inventory = player.getInventory();
-        int needed = amount.getValue().get();
+        int needed = amount.getValue(player.getUniqueId(), sp).get();
         if (!SCore.hasExecutableItems || !getExecutableItem().getValue().isPresent()) return;
 
         for (ItemStack it : inventory.getContents()) {

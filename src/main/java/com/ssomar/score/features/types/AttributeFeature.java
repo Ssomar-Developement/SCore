@@ -192,6 +192,11 @@ public class AttributeFeature extends FeatureAbstract<Optional<Attribute>, Attri
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Attribute nextAttribute(Attribute attribute) {
         boolean next = false;
         Map<Object, String> map = AttributeUtils.getAttributes();

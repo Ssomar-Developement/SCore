@@ -207,6 +207,11 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public void setValue(boolean value) {
         this.value = value;
     }

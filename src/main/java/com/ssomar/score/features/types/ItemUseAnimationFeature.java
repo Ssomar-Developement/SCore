@@ -159,6 +159,11 @@ public class ItemUseAnimationFeature extends FeatureAbstract<Optional<ItemUseAni
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public ItemUseAnimation nextCreationType(ItemUseAnimation slot) {
         boolean next = false;
         for (ItemUseAnimation check : getSortDropTypes()) {

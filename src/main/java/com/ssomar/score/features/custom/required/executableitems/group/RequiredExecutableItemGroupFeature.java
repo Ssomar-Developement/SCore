@@ -9,6 +9,7 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -205,9 +206,9 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
         for (RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
-            if (!eF.verify(player, event)) {
+            if (!eF.verify(player, event, sp)) {
                 if (errorMessage.getValue().isPresent()) {
                     SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }
@@ -220,9 +221,9 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
         return true;
     }
 
-    public boolean verify(Inventory inventory, @Nullable  Event event) {
+    public boolean verify(Inventory inventory, @Nullable  Event event, StringPlaceholder sp) {
         for (RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
-            if (!eF.verify(inventory, event)) {
+            if (!eF.verify(inventory, event, sp)) {
                 if (event != null && cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);
                 }
@@ -233,9 +234,9 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
     }
 
     @Override
-    public void take(Player player) {
+    public void take(Player player, StringPlaceholder sp) {
         for (RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
-            eF.take(player);
+            eF.take(player, sp);
         }
     }
 }

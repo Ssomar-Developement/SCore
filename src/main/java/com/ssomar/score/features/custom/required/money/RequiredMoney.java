@@ -14,6 +14,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.VaultAPI;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,14 +80,14 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
         VaultAPI v = new VaultAPI();
-        if (money.getValue().isPresent() && money.getValue().get() > 0 && v.verifEconomy(player)) {
+        if (money.getValue(player.getUniqueId(), sp).isPresent() && money.getValue(player.getUniqueId(), sp).get() > 0 && v.verifEconomy(player)) {
             String errMessage = "";
             if (errorMessage.getValue().isPresent()) {
                 errMessage = errorMessage.getValue().get();
             }
-            if (!v.hasMoney(player, money.getValue().get(), errMessage)) {
+            if (!v.hasMoney(player, money.getValue(player.getUniqueId(), sp).get(), errMessage)) {
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);
                 }
@@ -97,10 +98,10 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
     }
 
     @Override
-    public void take(Player player) {
-        if (money.getValue().isPresent() && money.getValue().get() > 0) {
+    public void take(Player player, StringPlaceholder sp) {
+        if (money.getValue(player.getUniqueId(), sp).isPresent() && money.getValue(player.getUniqueId(), sp).get() > 0) {
             VaultAPI v = new VaultAPI();
-            v.takeMoney(player, money.getValue().get());
+            v.takeMoney(player, money.getValue(player.getUniqueId(), sp).get());
         }
     }
 

@@ -207,6 +207,11 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Material nextMaterial(Material material) {
         boolean next = false;
         for (Material check : getSortMaterials()) {

@@ -145,6 +145,11 @@ public class VariableTypeFeature extends FeatureAbstract<Optional<VariableType>,
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public VariableType nextVariableType(VariableType material) {
         boolean next = false;
         for (VariableType check : getSortVariableTypes()) {

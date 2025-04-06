@@ -237,6 +237,11 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public String nextItemAdder(String id) {
         boolean next = false;
         for (String check : getSortItemsAdder()) {

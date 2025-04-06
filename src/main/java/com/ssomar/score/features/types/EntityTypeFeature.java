@@ -189,6 +189,11 @@ public class EntityTypeFeature extends FeatureAbstract<Optional<EntityType>, Ent
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public EntityType nextEntityType(EntityType material) {
         boolean next = false;
         for (EntityType check : getSortEntityTypes()) {

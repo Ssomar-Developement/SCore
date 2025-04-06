@@ -151,6 +151,11 @@ public class FireworkEffectTypeFeature extends FeatureAbstract<Optional<Firework
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public FireworkEffect.Type nextFireworkEffectType(FireworkEffect.Type slot) {
         boolean next = false;
         for (FireworkEffect.Type check : getSortFireworkEffectTypes()) {

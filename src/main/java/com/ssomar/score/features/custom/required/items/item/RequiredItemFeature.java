@@ -16,6 +16,7 @@ import com.ssomar.score.features.types.IntegerFeature;
 import com.ssomar.score.features.types.MaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -161,13 +162,13 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
         PlayerInventory inventory = player.getInventory();
-        return verify(inventory, event);
+        return verify(inventory, event, sp);
     }
 
-    public boolean verify(Inventory inventory, Event event) {
-        int needed = amount.getValue().get();
+    public boolean verify(Inventory inventory, Event event, StringPlaceholder sp) {
+        int needed = amount.getValue(null, sp).get();
         for (ItemStack it : inventory.getContents()) {
             if (it == null || !it.getType().equals(material.getValue().get())) continue;
 
@@ -190,10 +191,10 @@ public class RequiredItemFeature extends FeatureWithHisOwnEditor<RequiredItemFea
     }
 
     @Override
-    public void take(Player player) {
+    public void take(Player player, StringPlaceholder sp) {
         PlayerInventory inventory = player.getInventory();
-        int needed = amount.getValue().get();
-        SsomarDev.testMsg("required item: " + material.getValue().get().name() + " " + amount.getValue().get(), DEBUG);
+        int needed = amount.getValue(player.getUniqueId(), sp).get();
+        SsomarDev.testMsg("required item: " + material.getValue().get().name() + " " + amount.getValue(player.getUniqueId(), sp).get(), DEBUG);
         ItemStack itemStack =player.getItemOnCursor();
         SsomarDev.testMsg("item on cursor: " + itemStack.getType().name() + " " + itemStack.getAmount(), true);
         for (ItemStack it : inventory.getContents()) {

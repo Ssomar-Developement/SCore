@@ -9,6 +9,7 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -203,9 +204,9 @@ public class RequiredMagicGroupFeature extends FeatureWithHisOwnEditor<RequiredM
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
         for (RequiredMagicFeature eF : requiredMagics.values()) {
-            if (!eF.verify(player, event)) {
+            if (!eF.verify(player, event, sp)) {
                 if (errorMessage.getValue().isPresent()) {
                     SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }
@@ -219,9 +220,9 @@ public class RequiredMagicGroupFeature extends FeatureWithHisOwnEditor<RequiredM
     }
 
     @Override
-    public void take(Player player) {
+    public void take(Player player, StringPlaceholder sp) {
         for (RequiredMagicFeature eF : requiredMagics.values()) {
-            eF.take(player);
+            eF.take(player, sp);
         }
     }
 }

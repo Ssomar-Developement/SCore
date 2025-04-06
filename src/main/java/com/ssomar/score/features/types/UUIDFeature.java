@@ -129,4 +129,9 @@ public class UUIDFeature extends FeatureAbstract<UUID, UUIDFeature> implements F
     public boolean doubleClicked(Player editor, NewGUIManager manager) {
         return false;
     }
+
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
 }

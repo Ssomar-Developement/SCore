@@ -9,6 +9,7 @@ import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -205,9 +206,9 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
         for (RequiredItemFeature feature : requiredItems.values()) {
-            if (!feature.verify(player, event)) {
+            if (!feature.verify(player, event, sp)) {
                 if (errorMessage.getValue().isPresent()) {
                     SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }
@@ -220,9 +221,9 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
         return true;
     }
 
-    public boolean verify(Inventory inventory, @Nullable Event event) {
+    public boolean verify(Inventory inventory, @Nullable Event event, StringPlaceholder sp) {
         for (RequiredItemFeature feature : requiredItems.values()) {
-            if (!feature.verify(inventory, event)) {
+            if (!feature.verify(inventory, event, sp)) {
                 if (event != null && cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);
                 }
@@ -235,9 +236,9 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
 
 
     @Override
-    public void take(Player player) {
+    public void take(Player player, StringPlaceholder sp) {
         for (RequiredItemFeature feature : requiredItems.values()) {
-            feature.take(player);
+            feature.take(player, sp);
         }
     }
 }

@@ -225,6 +225,11 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         return true;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public String nextExecutableItem(String id) {
         boolean next = false;
         for (String check : getSortExecutableItems()) {

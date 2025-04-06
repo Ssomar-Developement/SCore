@@ -233,6 +233,11 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public String nextNexo(String id) {
         boolean next = false;
         for (String check : getSortNexo()) {

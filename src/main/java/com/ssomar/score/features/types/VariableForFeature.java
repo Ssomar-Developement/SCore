@@ -143,6 +143,11 @@ public class VariableForFeature extends FeatureAbstract<Optional<VariableForEnum
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public VariableForEnum nextVariableType(VariableForEnum material) {
         boolean next = false;
         for (VariableForEnum check : getSortVariableFor()) {

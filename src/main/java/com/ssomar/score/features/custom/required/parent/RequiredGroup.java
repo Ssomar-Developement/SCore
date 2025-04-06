@@ -18,6 +18,7 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,32 +84,32 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
-        if (!requiredLevel.verify(player, event)) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
+        if (!requiredLevel.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid level", DEBUG);
             return false;
         }
-        if (!requiredExperience.verify(player, event)) {
+        if (!requiredExperience.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid experience", DEBUG);
             return false;
         }
-        if (!requiredMoney.verify(player, event)) {
+        if (!requiredMoney.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid money", DEBUG);
             return false;
         }
-        if (!requiredItems.verify(player, event)) {
+        if (!requiredItems.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid items", DEBUG);
             return false;
         }
-        if (!requiredExecutableItems.verify(player, event)) {
+        if (!requiredExecutableItems.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid executable items", DEBUG);
             return false;
         }
-        if (!requiredMana.verify(player, event)) {
+        if (!requiredMana.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid mana", DEBUG);
             return false;
         }
-        if (!requiredMagics.verify(player, event)) {
+        if (!requiredMagics.verify(player, event, sp)) {
             SsomarDev.testMsg("Invalid magics", DEBUG);
             return false;
         }
@@ -117,15 +118,15 @@ public class RequiredGroup extends FeatureWithHisOwnEditor<RequiredGroup, Requir
     }
 
     @Override
-    public void take(Player player) {
+    public void take(Player player, StringPlaceholder sp) {
         SsomarDev.testMsg("Taking required things", DEBUG);
-        requiredLevel.take(player);
-        requiredExperience.take(player);
-        requiredMoney.take(player);
-        requiredItems.take(player);
-        requiredExecutableItems.take(player);
-        requiredMana.take(player);
-        requiredMagics.take(player);
+        requiredLevel.take(player, sp);
+        requiredExperience.take(player, sp);
+        requiredMoney.take(player, sp);
+        requiredItems.take(player, sp);
+        requiredExecutableItems.take(player, sp);
+        requiredMana.take(player, sp);
+        requiredMagics.take(player, sp);
     }
 
     @Override

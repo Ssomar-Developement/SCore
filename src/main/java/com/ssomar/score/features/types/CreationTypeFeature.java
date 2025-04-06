@@ -185,6 +185,11 @@ public class CreationTypeFeature extends FeatureAbstract<Optional<CreationType>,
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public CreationType nextCreationType(CreationType slot) {
         boolean next = false;
         for (CreationType check : getSortCreationTypes()) {

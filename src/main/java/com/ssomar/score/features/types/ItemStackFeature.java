@@ -295,4 +295,9 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     public boolean doubleClicked(Player editor, NewGUIManager manager) {
         return false;
     }
+
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
 }

@@ -148,6 +148,11 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
         return false;
     }
 
+    @Override
+    public boolean middleClicked(Player editor, NewGUIManager manager) {
+        return false;
+    }
+
     public Color nextColor(Color particle) {
         boolean next = false;
         for (Color check : CustomColor.values()) {

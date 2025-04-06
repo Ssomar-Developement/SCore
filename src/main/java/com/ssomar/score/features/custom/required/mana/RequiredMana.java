@@ -19,6 +19,7 @@ import com.ssomar.score.usedapi.AureliumSkillsAPI;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.MMOCoreAPI;
 import com.ssomar.score.utils.messages.SendMessage;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,10 +85,10 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
     }
 
     @Override
-    public boolean verify(Player player, Event event) {
-        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore || Dependency.AURA_SKILLS.isInstalled())) {
+    public boolean verify(Player player, Event event, StringPlaceholder sp) {
+        if (mana.getValue(player.getUniqueId(), sp).isPresent() && mana.getValue(player.getUniqueId(), sp).get() > 0 && (SCore.hasAureliumSkills || SCore.hasMMOCore || Dependency.AURA_SKILLS.isInstalled())) {
             if(SCore.hasAureliumSkills) {
-                if (!AureliumSkillsAPI.checkMana(player, mana.getValue().get())) {
+                if (!AureliumSkillsAPI.checkMana(player, mana.getValue(player.getUniqueId(), sp).get())) {
                     if (errorMessage.getValue().isPresent()) {
                         SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                     }
@@ -98,7 +99,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
                 }
             }
             else if(Dependency.AURA_SKILLS.isInstalled()) {
-                if (!AuraSkillsAPI.checkMana(player, mana.getValue().get())) {
+                if (!AuraSkillsAPI.checkMana(player, mana.getValue(player.getUniqueId(), sp).get())) {
                     if (errorMessage.getValue().isPresent()) {
                         SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                     }
@@ -109,7 +110,7 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
                 }
             }
             else if(SCore.hasMMOCore) {
-                if (!MMOCoreAPI.checkMana(player, mana.getValue().get())) {
+                if (!MMOCoreAPI.checkMana(player, mana.getValue(player.getUniqueId(), sp).get())) {
                     if (errorMessage.getValue().isPresent()) {
                         SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                     }
@@ -124,11 +125,11 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
     }
 
     @Override
-    public void take(Player player) {
-        if (mana.getValue().isPresent() && mana.getValue().get() > 0 && (SCore.hasAureliumSkills || Dependency.AURA_SKILLS.isInstalled() || SCore.hasMMOCore)) {
-            if(SCore.hasAureliumSkills) AureliumSkillsAPI.takeMana(player, mana.getValue().get());
-            else if(Dependency.AURA_SKILLS.isInstalled()) AuraSkillsAPI.takeMana(player, mana.getValue().get());
-            else if(SCore.hasMMOCore) MMOCoreAPI.takeMana(player, mana.getValue().get());
+    public void take(Player player, StringPlaceholder sp) {
+        if (mana.getValue(player.getUniqueId(), sp).isPresent() && mana.getValue(player.getUniqueId(), sp).get() > 0 && (SCore.hasAureliumSkills || Dependency.AURA_SKILLS.isInstalled() || SCore.hasMMOCore)) {
+            if(SCore.hasAureliumSkills) AureliumSkillsAPI.takeMana(player, mana.getValue(player.getUniqueId(), sp).get());
+            else if(Dependency.AURA_SKILLS.isInstalled()) AuraSkillsAPI.takeMana(player, mana.getValue(player.getUniqueId(), sp).get());
+            else if(SCore.hasMMOCore) MMOCoreAPI.takeMana(player, mana.getValue(player.getUniqueId(), sp).get());
         }
     }
 
