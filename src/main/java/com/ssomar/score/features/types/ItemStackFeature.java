@@ -15,6 +15,7 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -298,6 +299,34 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
     @Override
     public boolean middleClicked(Player editor, NewGUIManager manager) {
+        // When the player on creative middle clicks an item, he will get the duplicate in their cursor
+
+        if (editor.getGameMode() != GameMode.CREATIVE && editor.getItemOnCursor().getType() != Material.AIR) {
+            // Feature only active for creative players
+            return false;
+        }
+
+        Optional<ItemStack> configuredItemOptional = this.getValue();
+
+        if (configuredItemOptional.isPresent()) {
+            ItemStack configuredItem = configuredItemOptional.get();
+
+            // Ensure it's not an empty/air stack
+            if (configuredItem.getType() != Material.AIR) {
+
+                // 4. Clone the item to give a copy, not the original reference
+                ItemStack itemToPlaceOnCursor = configuredItem.clone();
+
+                // 5. Set the cloned item onto the player's cursor, replacing anything there
+                editor.setItemOnCursor(itemToPlaceOnCursor);
+
+                // 6. Return true to indicate the middle-click was successfully handled
+                return true;
+            }
+        }
+
+
+
         return false;
     }
 }
