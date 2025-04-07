@@ -511,7 +511,7 @@
         <dependency>
             <groupId>com.ssomar</groupId>
             <artifactId>ExecutableBlocks</artifactId>
-            <version>4.23.11.26</version>
+            <version>5.25.2.23</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/ExecutableBlocks.jar</systemPath>
         </dependency>

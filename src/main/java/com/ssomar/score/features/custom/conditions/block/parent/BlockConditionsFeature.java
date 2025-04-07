@@ -47,6 +47,7 @@ public class BlockConditionsFeature extends FeatureWithHisOwnEditor<BlockConditi
         conditions.add(new IfMustBeNotPowered(this));
         conditions.add(new IfMustBeNatural(this));
         conditions.add(new IfMustBeNotNatural(this));
+        conditions.add(new IfMustBeEB(this));
         conditions.add(new IfPlayerMustBeOnTheBlock(this));
         conditions.add(new IfNoPlayerMustBeOnTheBlock(this));
         if (!SCore.is1v12Less()) {

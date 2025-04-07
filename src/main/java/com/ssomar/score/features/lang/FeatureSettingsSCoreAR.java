@@ -279,6 +279,7 @@ public enum FeatureSettingsSCoreAR implements FeatureSettingsInterface {
     ifMustBeNatural("ifMustBeNatural", "إذا_يجب_أن_يكون_طبيعياً", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "إذا_يجب_ألا_يكون_طبيعياً", new String[]{}, Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "إذا_يجب_ألا_يكون_مشحوناً", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "إذا كان يجب أن يكون EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "إذا_كان_الاسم", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "إذا_كان_مسمى", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "إذا_كان_يحتاج_تأكيد_اللاعب", new String[]{}, null),

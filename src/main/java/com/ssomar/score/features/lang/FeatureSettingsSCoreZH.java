@@ -184,6 +184,7 @@ public enum FeatureSettingsSCoreZH implements FeatureSettingsInterface {
     ifMustBeNatural("ifMustBeNatural", "若必须是自然生成", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "若必须为非自然生成", new String[]{}, Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "若必须无电力", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "如果必须是EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "若名称符合条件", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "若有自定义名称", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "若需要玩家确认", new String[]{}, null),

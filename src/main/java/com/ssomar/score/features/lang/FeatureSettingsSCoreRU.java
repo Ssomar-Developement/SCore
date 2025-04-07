@@ -194,6 +194,7 @@ public enum FeatureSettingsSCoreRU implements FeatureSettingsInterface {
     ifMustBeNatural("ifMustBeNatural", "Если Должен Быть Натуральным", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "Если Не Должен Быть Натуральным", new String[]{}, Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "Если Не Должен Быть Под Напряжением", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "Если это должен быть EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "Если Имя", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "Если Именован", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "Если Нужно Подтверждение Игрока", new String[]{}, null),
