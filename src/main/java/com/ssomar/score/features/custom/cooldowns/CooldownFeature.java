@@ -40,7 +40,7 @@ import java.util.*;
 public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, CooldownFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     /* Cooldowns / delay */
-    private IntegerFeature cooldown;
+    private ColoredStringFeature cooldown;
     private ColoredStringFeature cooldownMessage;
     private BooleanFeature displayCooldownMessage;
     private BooleanFeature isCooldownInTicks;
@@ -135,9 +135,16 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
      */
     public void addCooldown(Entity entity, @NotNull SObject sObject, @Nullable StringPlaceholder sp) {
         if(sp == null) sp = new StringPlaceholder();
+        int cooldownInt;
+        try {
+            cooldownInt = Integer.parseInt(sp.replacePlaceholder(this.cooldown.getValue().get()));
+        } catch (NumberFormatException e) {
+            cooldownInt = 0;
+        }
+ 
 
-        if (!hasNoCDPerm(entity, sObject) && this.cooldown.getValue(entity.getUniqueId(), sp).get() != 0) {
-            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), this.cooldown.getValue(entity.getUniqueId(), sp).get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
+        if (!hasNoCDPerm(entity, sObject) && cooldownInt != 0) {
+            Cooldown cooldown = new Cooldown(sPlugin, cooldownId, entity.getUniqueId(), cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), false);
             cooldown.setPauseFeatures(pauseWhenOffline.getValue(), pausePlaceholdersConditions);
             CooldownsManager.getInstance().addCooldown(cooldown);
 
@@ -182,13 +189,26 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
      * @param isInTicks Define if the cooldown is in ticks or in secs
      */
     public void addGlobalCooldown(int time, boolean isInTicks) {
-        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, time, isInTicks, System.currentTimeMillis(), true);
+        int cooldownInt;
+        try {
+            StringPlaceholder sp = new StringPlaceholder();
+            cooldownInt = Integer.parseInt(sp.replacePlaceholder(this.cooldown.getValue().get()));
+        } catch (NumberFormatException e) {
+            cooldownInt = 0;
+        }        
+        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
 
     public void addGlobalCooldown(@NotNull SObject sObject) {
-        StringPlaceholder sp = new StringPlaceholder();
-        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, this.cooldown.getValue(null, sp).get(), isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
+        int cooldownInt;
+        try {
+            StringPlaceholder sp = new StringPlaceholder();
+            cooldownInt = Integer.parseInt(sp.replacePlaceholder(this.cooldown.getValue().get()));
+        } catch (NumberFormatException e) {
+            cooldownInt = 0;
+        }        
+        Cooldown cooldown = new Cooldown(sPlugin, cooldownId, null, cooldownInt, isCooldownInTicks.getValue(), System.currentTimeMillis(), true);
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
 
@@ -314,7 +334,7 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
 
     @Override
     public void reset() {
-        this.cooldown = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.cooldown);
+        this.cooldown = new ColoredStringFeature(this, Optional.of("0"), FeatureSettingsSCore.cooldown);
         this.isCooldownInTicks = new BooleanFeature(this,  false, FeatureSettingsSCore.isCooldownInTicks);
         this.cooldownMessage = new ColoredStringFeature(this, Optional.of("&cYou are in cooldown ! &7(&e%time_H%&6H &e%time_M%&6M &e%time_S%&6S&7)"), FeatureSettingsSCore.cooldownMsg);
         this.displayCooldownMessage = new BooleanFeature(this,  true, FeatureSettingsSCore.displayCooldownMessage);
