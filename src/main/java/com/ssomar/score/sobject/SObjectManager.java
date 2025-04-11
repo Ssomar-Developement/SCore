@@ -7,6 +7,7 @@ import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -139,6 +140,21 @@ public abstract class SObjectManager<T extends SObject> {
             this.addLoadedObject(oOpt.get());
         } else
             sPlugin.getPlugin().getServer().getLogger().severe(sPlugin.getNameDesign() + " Error when trying to reload the item " + id);
+    }
+
+    public void reloadObject(@NotNull T replacement) {
+
+        Optional<T> loadedObject = this.getLoadedObjectWithID(replacement.getId());
+        if (loadedObject.isPresent()) {
+            T o = loadedObject.get();
+            actionOnObjectWhenReloading(o);
+            this.allObjects.remove(o);
+            this.loadedObjects.remove(o);
+        }
+
+        Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7reloading of &e" + replacement.getId());
+
+        this.addLoadedObject(replacement);
     }
 
     public void deleteObject(String id) {
