@@ -315,6 +315,7 @@ public enum FeatureSettingsSCoreDE implements FeatureSettingsInterface {
     ifIsPowered("ifIsPowered", "Wenn mit Strom versorgt", new String[]{}, Material.ANVIL),
     ifLightLevel("ifLightLevel", "Wenn Lichtstärke", new String[]{},  Material.ANVIL),
     ifMustBeNatural("ifMustBeNatural", "Wenn natürlich sein muss", new String[]{},  Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "Wenn es EB sein muss", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "Wenn nicht natürlich sein muss", new String[]{},  Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "Wenn nicht mit Strom versorgt sein muss", new String[]{},  Material.ANVIL),
     ifName("ifName", "Wenn Name", new String[]{},  Material.ANVIL),

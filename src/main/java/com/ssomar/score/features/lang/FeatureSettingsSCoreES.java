@@ -305,6 +305,7 @@ public enum FeatureSettingsSCoreES implements FeatureSettingsInterface {
     ifMustBeNatural("ifMustBeNatural", "Si debe ser Natural", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "Si no debe ser Natural", new String[]{}, Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "Si no debe estar Energizado", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "Si debe ser EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "Si Nombre", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "Si tiene Nombre", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "Si necesita Confirmación del Jugador", new String[]{}, null),

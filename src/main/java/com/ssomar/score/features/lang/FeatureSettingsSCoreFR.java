@@ -200,8 +200,8 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     ifLightLevel("ifLightLevel", "Si niveau de lumière", new String[]{}, Material.ANVIL),
     ifMustBeNatural("ifMustBeNatural", "Si doit être naturel", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "Si ne doit pas être naturel", new String[]{}, Material.ANVIL),
-
     ifMustBeNotPowered("ifMustBeNotPowered", "Si ne doit pas être alimenté", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "S'il doit être EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "Si nom", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "Si nommé", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "Si nécessite confirmation joueur", new String[]{}, null),

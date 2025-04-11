@@ -197,6 +197,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     ifMustBeNatural(getFeatureSettings("ifMustBeNatural", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifMustBeNotNatural(getFeatureSettings("ifMustBeNotNatural", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifMustBeNotPowered(getFeatureSettings("ifMustBeNotPowered", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifMustBeEB(getFeatureSettings("ifMustBeEB", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifName(getFeatureSettings("ifName", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifNamed(getFeatureSettings("ifNamed", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifNeedPlayerConfirmation(getFeatureSettings("ifNeedPlayerConfirmation", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),

@@ -318,6 +318,7 @@ public enum FeatureSettingsSCoreID implements FeatureSettingsInterface {
     ifMustBeNatural("ifMustBeNatural", "Jika Harus Alami", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "Jika Tidak Boleh Alami", new String[]{}, Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "Jika Tidak Boleh Dialiri Daya", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "Jika harus EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "Jika Nama", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "Jika Diberi Nama", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "Jika Membutuhkan Konfirmasi Pemain", new String[]{}, null),

@@ -333,6 +333,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     ifMustBeNatural("ifMustBeNatural", "If must be natural", new String[]{}, Material.ANVIL),
     ifMustBeNotNatural("ifMustBeNotNatural", "If must be not natural", new String[]{}, Material.ANVIL),
     ifMustBeNotPowered("ifMustBeNotPowered", "If must be not powered", new String[]{}, Material.ANVIL),
+    ifMustBeEB("ifMustBeEB", "If must be EB", new String[]{}, Material.ANVIL),
     ifName("ifName", "If name", new String[]{}, Material.ANVIL),
     ifNamed("ifNamed", "If named", new String[]{}, Material.ANVIL),
     ifNeedPlayerConfirmation("ifNeedPlayerConfirmation", "If need player confirmation", new String[]{}, null),

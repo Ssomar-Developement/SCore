@@ -15,6 +15,7 @@ import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -185,6 +186,14 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.hasLore()? meta.getLore() : new ArrayList<>();
+
+        assert lore != null;
+        // if lore has EC EDITOR on one of the lines, return
+        if (lore.stream().anyMatch(line -> line.contains("EC EDITOR"))) {
+            gui.updateItem(slot, item, getEditorName());
+            return this;
+        }
+
         lore.addAll(0, customDescription);
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -271,8 +280,10 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     public boolean shiftRightClicked(Player editor, NewGUIManager manager) {
         if(value.isPresent()) {
             ItemStack stack = value.get().clone();
+            int amount = stack.getAmount();
             stack.setAmount(stack.getAmount() - 1);
-            if(stack.getAmount() != 1) {
+
+            if(amount != 1) {
                 ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
                 value = Optional.of(stack);
                 placeholder = Optional.empty();
@@ -298,6 +309,34 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
     @Override
     public boolean middleClicked(Player editor, NewGUIManager manager) {
+        // When the player on creative middle clicks an item, he will get the duplicate in their cursor
+
+        if (editor.getGameMode() != GameMode.CREATIVE && editor.getItemOnCursor().getType() != Material.AIR) {
+            // Feature only active for creative players
+            return false;
+        }
+
+        Optional<ItemStack> configuredItemOptional = this.getValue();
+
+        if (configuredItemOptional.isPresent()) {
+            ItemStack configuredItem = configuredItemOptional.get();
+
+            // Ensure it's not an empty/air stack
+            if (configuredItem.getType() != Material.AIR) {
+
+                // 4. Clone the item to give a copy, not the original reference
+                ItemStack itemToPlaceOnCursor = configuredItem.clone();
+
+                // 5. Set the cloned item onto the player's cursor, replacing anything there
+                editor.setItemOnCursor(itemToPlaceOnCursor);
+
+                // 6. Return true to indicate the middle-click was successfully handled
+                return true;
+            }
+        }
+
+
+
         return false;
     }
 }
