@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ssomar.score.commands.runnable.player.commands.MobAround.mobAroundExecution;
+import static com.ssomar.score.commands.runnable.mixed_player_entity.commands.MobAround.mobAroundExecution;
 
 /* MOB_AROUND {distance} {Your commands here} */
 public class MobAround extends BlockCommand {

@@ -4,7 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
-import com.ssomar.score.commands.runnable.player.commands.MobAround;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.MobAround;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;

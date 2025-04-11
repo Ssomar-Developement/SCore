@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.entity.EntityCommandManager;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
+import com.ssomar.score.commands.runnable.util.commands.DelayTick;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -50,7 +51,7 @@ public class EntityCommandsFeature extends CommandsAbstractFeature<List<String>,
 
     public void runCommands(ActionInfo actionInfo, String objectName, boolean delay1TickTheCommands) {
         List<String> commands = new ArrayList<>(getValue());
-        if(delay1TickTheCommands) commands.add(0, "DELAYTICK 1");
+        if(delay1TickTheCommands) commands.add(0, DelayTick.DELAY_TICK_NAMES.get(0)+" 1");
         commands = prepareActionbarArgs(commands, objectName);
         EntityRunCommandsBuilder builder2 = new EntityRunCommandsBuilder(commands, actionInfo);
         CommandsExecutor.runCommands(builder2);

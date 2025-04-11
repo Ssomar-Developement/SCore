@@ -108,6 +108,9 @@ public enum SProjectileType {
                     features.add(new VisualItemFeature(parent));
                     features.add(new CustomModelDataFeature(parent));
                 }
+                if (SCore.is1v21v2Plus()) {
+                    features.add(new ItemModelFeature(parent));
+                }
                 break;
             case FIREBALL:
             case DRAGON_FIREBALL:
@@ -135,6 +138,9 @@ public enum SProjectileType {
                     features.add(new KnockbackStrengthFeature(parent));
                     features.add(new PickupFeature(parent));
                     features.add(new CustomModelDataFeature(parent));
+                }
+                if (SCore.is1v21v2Plus()) {
+                    features.add(new ItemModelFeature(parent));
                 }
                 if (!SCore.is1v12Less()) {
                     features.add(new EnchantmentsFeature(parent, false));

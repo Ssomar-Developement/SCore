@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.commands;
 
+import com.ssomar.score.commands.runnable.util.commands.DelayTick;
 import com.ssomar.score.features.*;
 
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public abstract class CommandsAbstractFeature<T, Y extends FeatureInterface<T, Y
             } else {
                 /* Try because for some case users will use placeholders, but for the actionbar, I dont accept it*/
                 try {
-                    if (s.contains("DELAYTICK ") && !s.contains("AROUND") && !s.contains("+++")) {
-                        delay = delay + (Integer.valueOf(s.replaceAll("DELAYTICK ", "")));
+                    if (DelayTick.checkContains(s) && !s.contains("AROUND") && !s.contains("+++")) {
+                        delay = delay + (Integer.valueOf(DelayTick.replaceCommand(s)));
                     } else if (s.contains("DELAY ") && !s.contains("AROUND") && !s.contains("+++")) {
                         delay = delay + (Integer.valueOf(s.replaceAll("DELAY ", "")) * 20);
                     }

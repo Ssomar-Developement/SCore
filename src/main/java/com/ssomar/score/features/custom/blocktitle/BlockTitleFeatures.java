@@ -46,7 +46,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
     private BooleanFeature activeTitle;
 
     public BlockTitleFeatures(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.titleOptions);
+        super(parent, FeatureSettingsSCore.titleFeatures);
         reset();
     }
 
@@ -54,7 +54,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
     public void reset() {
         this.activeTitle = new BooleanFeature(this, false, FeatureSettingsSCore.activeTitle);
         this.title = new ListColoredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.title, Optional.empty());
-        this.titleAjustement = new DoubleFeature(this, Optional.of(0.5), FeatureSettingsSCore.titleAdjustement);
+        this.titleAjustement = new DoubleFeature(this, Optional.of(0.5), FeatureSettingsSCore.titleAdjustment);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class DropFeatures extends FeatureWithHisOwnEditor<DropFeatures, DropFeat
     private BooleanFeature displayNameDrop;
 
     public DropFeatures(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.dropOptions);
+        super(parent, FeatureSettingsSCore.dropFeatures);
         reset();
     }
 

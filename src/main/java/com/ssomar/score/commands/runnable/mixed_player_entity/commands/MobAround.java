@@ -1,10 +1,10 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.FeatureInterface;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /* MOB_AROUND {distance} {Your commands here} */
-public class MobAround extends PlayerCommand implements FeatureParentInterface {
+public class MobAround extends MixedCommand implements FeatureParentInterface {
 
     public MobAround() {
 
@@ -271,5 +271,10 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
     @Override
     public FeatureInterface clone(FeatureParentInterface newParent) {
         return null;
+    }
+
+    @Override
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        mobAroundExecution(null, p, entity, false, sCommandToExec);
     }
 }

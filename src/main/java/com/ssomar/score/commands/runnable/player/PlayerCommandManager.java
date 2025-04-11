@@ -17,7 +17,6 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
 
     public PlayerCommandManager() {
         List<SCommand> commands = new ArrayList<>();
-        commands.add(new Around());
         commands.add(new AddItemlore());
         commands.add(new Removelore());
         commands.add(new SetItemlore());
@@ -72,7 +71,6 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new GravityDisable());
         commands.add(new OpenWorkbench());
         commands.add(new MinecartBoost());
-        commands.add(new MobAround());
         commands.add(new Steal());
         commands.add(new FormatEnchantments());
         commands.add(new AddItemEnchantment());

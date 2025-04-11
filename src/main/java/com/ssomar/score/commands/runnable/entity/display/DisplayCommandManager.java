@@ -18,13 +18,10 @@ public class DisplayCommandManager extends CommandManager<SCommand> {
         List<SCommand> commands = new ArrayList<>();
         commands.add(new SetFurniture());
 
-
-        commands.add(new Around());
         commands.add(new TeleportPlayerToEntity());
         commands.add(new DropItem());
         commands.add(new DropExecutableItem());
         commands.add(new DropExecutableBlock());
-        commands.add(new MobAround());
         commands.add(new PlayerRideOnEntity());
         commands.add(new If());
 

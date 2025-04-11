@@ -16,6 +16,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
 
     public MixedCommandsManager() {
         List<SCommand> commands = new ArrayList<>();
+        commands.add(new Around());
         commands.add(new AllMobs());
         commands.add(new AllPlayers());
         commands.add(new AnimationBreakBoots());
@@ -52,6 +53,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new LaunchEntity());
         commands.add(new MLibDamage());
         commands.add(new MobNearest());
+        commands.add(new MobAround());
         commands.add(new Nearest());
         commands.add(new OpMessage());
         commands.add(new RegainHealth());

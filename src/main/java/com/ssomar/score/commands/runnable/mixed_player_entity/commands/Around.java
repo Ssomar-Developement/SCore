@@ -1,10 +1,10 @@
-package com.ssomar.score.commands.runnable.player.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
-import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Around extends PlayerCommand{
+public class Around extends MixedCommand {
 
     private final static Boolean DEBUG = false;
 
@@ -123,5 +123,10 @@ public class Around extends PlayerCommand{
     @Override
     public ChatColor getExtraColor() {
         return ChatColor.DARK_PURPLE;
+    }
+
+    @Override
+    public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        aroundExecution(entity, sCommandToExec, false);
     }
 }

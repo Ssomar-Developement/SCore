@@ -16,7 +16,6 @@ public class EntityCommandManager extends CommandManager<SCommand> {
 
     private EntityCommandManager() {
         List<SCommand> commands = new ArrayList<>();
-        commands.add(new Around());
         commands.add(new TeleportPosition());
         commands.add(new TeleportEntityToPlayer());
         commands.add(new TeleportPlayerToEntity());
@@ -26,7 +25,6 @@ public class EntityCommandManager extends CommandManager<SCommand> {
         commands.add(new DropExecutableItem());
         commands.add(new DropExecutableBlock());
         commands.add(new Heal());
-        commands.add(new MobAround());
         commands.add(new SetBaby());
         commands.add(new SetAdult());
         commands.add(new SetAI());

@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
+import com.ssomar.score.commands.runnable.util.commands.*;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.jetbrains.annotations.Nullable;
@@ -86,9 +87,10 @@ public abstract class RunCommandsBuilder {
             String command = s;
 
             if (!command.contains("+++")) {
-                if (command.contains("LOOP START: ")) {
+                if (LoopStart.checkContains(command)) {
                     try {
-                        String secondPart = command.split("LOOP START: ")[1].replaceAll(" ", "");
+                        String secondPart = LoopStart.extractIterations(command);
+                        if(secondPart == null) continue;
                         if (secondPart.contains("%")) {
                             secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
                         }
@@ -100,7 +102,7 @@ public abstract class RunCommandsBuilder {
                         isInLoop = false;
                         continue;
                     }
-                } else if (command.contains("LOOP END")) {
+                } else if (LoopEnd.checkContains(command)) {
                     for (int k = 0; k < loopAmount; k++) {
                         result.addAll(commandsInLoop);
                     }
@@ -147,7 +149,8 @@ public abstract class RunCommandsBuilder {
                         isInFor = true;
                         commandsInFor.add(command);
                         indexToRemove.add(index);
-                    } else if (command.contains("ENDFOR")) {
+                        // ENDFOR is the old syntax
+                    } else if (command.contains("END_FOR") || command.contains("ENDFOR")) {
                         if(!forId.equals("") && (command.split(" ").length < 2 || !command.split(" ")[1].equals(forId))){
                             commandsInFor.add(command);
                             indexToRemove.add(index);
@@ -266,7 +269,7 @@ public abstract class RunCommandsBuilder {
                     String nothingString = "";
                     if (command.contains("//") && !command.contains("https://")){
                         m = Double.valueOf(command.split(value)[1].split("//")[0].trim()).intValue();
-                        nothingString = "SENDMESSAGE " + command.split("//")[1];
+                        nothingString = "SEND_MESSAGE " + command.split("//")[1];
                     }
                     else m = Double.valueOf(command.split(value)[1]).intValue();
 
@@ -293,15 +296,16 @@ public abstract class RunCommandsBuilder {
 
         for (String command : commands) {
 
-            if (command.contains("RANDOM RUN:") && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
-                String secondPart = command.split("RANDOM RUN:")[1].replaceAll(" ", "");
+            if (RandomRun.checkContains(command) && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
+                String secondPart = RandomRun.extractSelectionCount(command);
+                if (secondPart == null) continue;
                 if (secondPart.contains("%")) {
                     secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
                 }
                 nbRandom = Integer.parseInt(secondPart);
                 inRandom = true;
                 continue;
-            } else if (command.contains("RANDOM END") && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
+            } else if (RandomEnd.checkContains(command) && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
                 result.addAll(this.selectRandomCommands(commandsRandom, nbRandom, nothingObject));
                 inRandom = false;
                 commandsRandom.clear();
@@ -317,7 +321,7 @@ public abstract class RunCommandsBuilder {
             } else result.add(command);
         }
 
-        if (commandsRandom.size() > 0) {
+        if (!commandsRandom.isEmpty()) {
             result.addAll(this.selectRandomCommands(commandsRandom, nbRandom, nothingObject));
         }
 
@@ -359,8 +363,8 @@ public abstract class RunCommandsBuilder {
                 String message = "";
                 if (spliter.length >= 2) {
                     if (spliter[1].charAt(0) != ' ') {
-                        message = "SENDMESSAGE " + spliter[1];
-                    } else message = "SENDMESSAGE" + spliter[1];
+                        message = "SEND_MESSAGE " + spliter[1];
+                    } else message = "SEND_MESSAGE" + spliter[1];
                     result.add(message);
                 }
 
@@ -392,17 +396,17 @@ public abstract class RunCommandsBuilder {
             }
 
             /* The delay for AROUND and MOB_AROUND is catch after */
-            if (command.contains("DELAYTICK ")  && !command.startsWith("IF") && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
+            if (DelayTick.checkContains(command) && !command.startsWith("IF") && !AllCommandsManager.getInstance().startsWithCommandThatRunCommands(command)) {
                 /* Verify that there is no multiple commands after DELAYTICK */
                 String delayStr = command;
                 if (command.contains("+++")) {
                     String[] tab = command.split("\\+\\+\\+");
                     for (String s : tab) {
-                        if (s.contains("DELAYTICK ")) delayStr = s;
+                        if (DelayTick.checkContains(s)) delayStr = s;
                     }
                 }
                 /* ---------------------- */
-                String secondPart = delayStr.replaceAll("DELAYTICK ", "").replaceAll(" ", "");
+                String secondPart = DelayTick.replaceCommand(delayStr).replaceAll(" ", "");
                 if (secondPart.contains("%")) {
                     secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
                 }
