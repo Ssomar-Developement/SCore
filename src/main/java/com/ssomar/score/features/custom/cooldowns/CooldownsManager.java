@@ -110,6 +110,9 @@ public class CooldownsManager {
         SsomarDev.testMsg("ADDDD " + cd.toString(), DEBUG);
         if (cooldowns.containsKey(id)) {
             List<Cooldown> cds = cooldowns.get(id);
+            if (cds == null) {
+                cds = new ArrayList<>();
+            }
             cds.add(cd);
             cooldowns.put(id, cds);
         } else {
@@ -122,6 +125,9 @@ public class CooldownsManager {
         if (id2 == null) return;
         if (cooldownsUUID.containsKey(id2)) {
             List<Cooldown> cds = cooldownsUUID.get(id2);
+            if (cds == null) {
+                cds = new ArrayList<>();
+            }
             cds.add(cd);
         } else {
             List<Cooldown> cds = new ArrayList<>();
@@ -148,7 +154,7 @@ public class CooldownsManager {
         if (cooldowns.containsKey(id)) {
             double maxTimeLeft = -1;
             List<Cooldown> cds = cooldowns.get(id);
-            if (cds.size() != 0) {
+            if (cds != null && !cds.isEmpty()) {
                 Cooldown cdMax = null;
                 int cptRemoved = 0;
                 int size = cds.size();
@@ -180,8 +186,7 @@ public class CooldownsManager {
                         cptRemoved++;
                         try {
                             cooldownsUUID.get(uuid).remove(cd);
-                        } catch (Exception ignored) {
-                        }
+                        } catch (Exception ignored) {}
                     }
                 }
                 //if(cdMax != null) SsomarDev.testMsg("COOLDOWN "+cdMax.toString(), DEBUG);
@@ -195,7 +200,8 @@ public class CooldownsManager {
 
     public List<Cooldown> getCooldownsOf(UUID uuid) {
         if (cooldownsUUID.containsKey(uuid)) {
-            return cooldownsUUID.get(uuid);
+            List<Cooldown> cds = cooldownsUUID.get(uuid);
+            return  cds == null ? new ArrayList<>() : cds;
         } else return new ArrayList<>();
     }
 
@@ -203,7 +209,9 @@ public class CooldownsManager {
         List<Cooldown> result = new ArrayList<>();
 
         for (String id : cooldowns.keySet()) {
-            result.addAll(cooldowns.get(id));
+            List<Cooldown> cds = cooldowns.get(id);
+            if (cds == null) continue;
+            result.addAll(cds);
         }
 
         return result;

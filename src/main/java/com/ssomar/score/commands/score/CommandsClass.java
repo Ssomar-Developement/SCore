@@ -840,6 +840,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
     @Override
     public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
+
         if (command.getName().equalsIgnoreCase("score")) {
             final List<String> arguments = new ArrayList<>();
 

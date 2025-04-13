@@ -39,30 +39,31 @@ public class EntityTypeGroupFeature extends FeatureWithHisOwnEditor<EntityTypeGr
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
-        if (config.isConfigurationSection(this.getName())) {
-            if (hasID) {
+
+        if (hasID) {
+            if (config.isConfigurationSection(this.getName())) {
                 ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
                 for (String attributeID : enchantmentsSection.getKeys(false)) {
                     EntityTypeForGroupFeature attribute = new EntityTypeForGroupFeature(this, attributeID);
                     List<String> subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
-                    if (subErrors.size() > 0) {
+                    if (!subErrors.isEmpty()) {
                         error.addAll(subErrors);
                         continue;
                     }
                     entityTypes.put(attributeID, attribute);
                 }
-            } else {
-                List<String> configs = config.getStringList(this.getName());
-                for (String strConfig : configs) {
-                    UUID uuid = UUID.randomUUID();
-                    EntityTypeForGroupFeature entityType = new EntityTypeForGroupFeature(this, uuid.toString());
-                    List<String> subErrors = entityType.load(plugin, strConfig, isPremiumLoading);
-                    if (subErrors.size() > 0) {
-                        error.addAll(subErrors);
-                        continue;
-                    }
-                    entityTypes.put(uuid.toString(), entityType);
+            }
+        } else {
+            List<String> configs = config.getStringList(this.getName());
+            for (String strConfig : configs) {
+                UUID uuid = UUID.randomUUID();
+                EntityTypeForGroupFeature entityType = new EntityTypeForGroupFeature(this, uuid.toString());
+                List<String> subErrors = entityType.load(plugin, strConfig, isPremiumLoading);
+                if (!subErrors.isEmpty()) {
+                    error.addAll(subErrors);
+                    continue;
                 }
+                entityTypes.put(uuid.toString(), entityType);
             }
         }
         return error;

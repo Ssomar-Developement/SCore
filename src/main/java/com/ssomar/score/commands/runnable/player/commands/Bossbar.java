@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -22,13 +23,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Bossbar extends PlayerCommand {
 
     private static Bossbar instance;
-    Map<Player, List<ScheduledTask>> tasks;
-    Map<Player, List<org.bukkit.boss.BossBar>> bossbars;
+    Map<Player, Map<org.bukkit.boss.BossBar, ScheduledTask>> cache;
 
     public Bossbar() {
         instance = this;
-        tasks = new HashMap<>();
-        bossbars = new HashMap<>();
+        cache = new HashMap<>();
         CommandSetting time = new CommandSetting("time", 0, Integer.class, 200);
         CommandSetting color = new CommandSetting("color", 1, BarColor.class, BarColor.BLUE);
         CommandSetting text = new CommandSetting("text", 2, String.class, "Hello_world");
@@ -36,6 +35,8 @@ public class Bossbar extends PlayerCommand {
         CommandSetting countTicks = new CommandSetting("countTicks", -1, Boolean.class, false);
         CommandSetting countOrder = new CommandSetting("countOrder", -1, String.class, "descending");
         CommandSetting hideCount = new CommandSetting("hideCount", -1, Boolean.class, false);
+        // NO_OVERRIDE , OVERRIDE_ALL, OVERRIDE_SAME_TEXT
+        CommandSetting overrideMode = new CommandSetting("overrideMode", -1, String.class, "NO_OVERRIDE");
 
         text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
@@ -46,6 +47,7 @@ public class Bossbar extends PlayerCommand {
         settings.add(countTicks);
         settings.add(countOrder);
         settings.add(hideCount);
+        settings.add(overrideMode);
         setNewSettingsMode(true);
     }
 
@@ -59,6 +61,7 @@ public class Bossbar extends PlayerCommand {
         String countOrder = ((String) sCommandToExec.getSettingValue("countOrder")).toLowerCase();
         boolean isAscending = countOrder.equalsIgnoreCase("ascending");
         boolean hideCount = (Boolean) sCommandToExec.getSettingValue("hideCount");
+        String overrideMode = (String) sCommandToExec.getSettingValue("overrideMode");
 
         List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder message = new StringBuilder(text);
@@ -67,11 +70,44 @@ public class Bossbar extends PlayerCommand {
             message.append(s).append(" ");
         }
         message = new StringBuilder(message.substring(0, message.length() - 1));
+        String coloredMessage = StringConverter.coloredString(message.toString());
 
-        if(!message.toString().isEmpty()) {
-            BossBar bossBar = Bukkit.createBossBar(StringConverter.coloredString(message.toString()), color, BarStyle.SOLID);
+        if (overrideMode.equalsIgnoreCase("OVERRIDE_ALL")) {
+            Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(receiver);
+            if (tasks != null) {
+                for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
+                    removeBoosBar(entry.getKey(), receiver);
+                }
+            }
+        } else if (overrideMode.equalsIgnoreCase("OVERRIDE_SAME_TEXT")) {
+            SsomarDev.testMsg("Override mode: " + overrideMode, true);
+            Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(receiver);
+            if (tasks != null) {
+                for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
+                    SsomarDev.testMsg("Checking boss bar with same text: " + entry.getKey().getTitle(), true);
+                    SsomarDev.testMsg("Boss bar with same text: " + entry.getKey().getTitle() + " vs " + coloredMessage, true);
+                    if (entry.getKey().getTitle().contains(coloredMessage)) {
+                        SsomarDev.testMsg("Removing boss bar with same text: " + entry.getKey().getTitle(), true);
+                        removeBoosBar(entry.getKey(), receiver);
+                    }
+                }
+            }
+        }
+
+
+        if(!coloredMessage.isEmpty()) {
+
+            BossBar bossBar = Bukkit.createBossBar(coloredMessage, color, BarStyle.SOLID);
             bossBar.addPlayer(receiver);
-            bossbars.computeIfAbsent(receiver, k -> new ArrayList<>()).add(bossBar);
+
+            // Register bossbar without task
+            if(cache.containsKey(receiver)) {
+                cache.get(receiver).put(bossBar, null);
+            } else {
+                Map<org.bukkit.boss.BossBar, ScheduledTask> map = new HashMap<>();
+                map.put(bossBar, null);
+                cache.put(receiver, map);
+            }
 
             final String finalMessage = message.toString();
 
@@ -84,19 +120,13 @@ public class Bossbar extends PlayerCommand {
                     public void run() {
                         if (isAscending) {
                             if (counter >= count) {
-                                bossBar.removeAll();
-                                task.get().cancel();
-                                tasks.computeIfAbsent(receiver, k -> new ArrayList<>()).remove(task.get());
-                                bossbars.computeIfAbsent(receiver, k -> new ArrayList<>()).remove(bossBar);
+                                removeBoosBar(bossBar, receiver);
                                 return;
                             }
                             counter++;
                         } else {
                             if (counter <= 0) {
-                                bossBar.removeAll();
-                                task.get().cancel();
-                                tasks.computeIfAbsent(receiver, k -> new ArrayList<>()).remove(task.get());
-                                bossbars.computeIfAbsent(receiver, k -> new ArrayList<>()).remove(bossBar);
+                                removeBoosBar(bossBar, receiver);
                                 return;
                             }
                             counter--;
@@ -113,17 +143,35 @@ public class Bossbar extends PlayerCommand {
                     }
                 };
                 task.set(SCore.schedulerHook.runRepeatingTask(runnable, 1, countTicks ? 1 : 20));
-                tasks.computeIfAbsent(receiver, k -> new ArrayList<>()).add(task.get());
+
+                // Register bossbar with task
+                if(cache.containsKey(receiver)) {
+                    cache.get(receiver).put(bossBar, task.get());
+                } else {
+                    Map<org.bukkit.boss.BossBar, ScheduledTask> map = new HashMap<>();
+                    map.put(bossBar, task.get());
+                    cache.put(receiver, map);
+                }
             } else {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        bossBar.removeAll();
+                        removeBoosBar(bossBar, receiver);
                     }
                 };
                 SCore.schedulerHook.runTask(runnable, time);
             }
         }
+    }
+
+    public  void removeBoosBar(org.bukkit.boss.BossBar bossBar, Player p) {
+        bossBar.removeAll();
+        Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(p);
+        if (tasks == null) return;
+        ScheduledTask task = tasks.get(bossBar);
+        if (task == null) return;
+        task.cancel();
+        tasks.remove(bossBar);
     }
 
     @Override
@@ -156,17 +204,12 @@ public class Bossbar extends PlayerCommand {
     }
 
     public void clearTasks(Player p) {
-        if (tasks.containsKey(p)) {
-            for (ScheduledTask task : tasks.get(p)) {
-                task.cancel();
+        Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(p);
+        if (tasks != null) {
+            for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
+                removeBoosBar(entry.getKey(), p);
             }
-            tasks.remove(p);
-        }
-        if (bossbars.containsKey(p)) {
-            for (org.bukkit.boss.BossBar bossBar : bossbars.get(p)) {
-                bossBar.removeAll();
-            }
-            bossbars.remove(p);
+            tasks.clear();
         }
     }
 }

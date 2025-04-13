@@ -34,9 +34,12 @@ import java.util.Optional;
 @Setter
 public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeature, ItemSpawnerFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem, FeatureForBlock {
 
+    private IntegerFeature spawnCount;
     private IntegerFeature spawnDelay;
     private IntegerFeature spawnRange;
     private IntegerFeature requiredPlayerRange;
+    private IntegerFeature minSpawnDelay;
+    private IntegerFeature maxSpawnDelay;
     private IntegerFeature maxNearbyEntities;
     private ListUncoloredStringFeature potentialSpawns;
     private BooleanFeature addSpawnerNbtToItem;
@@ -48,9 +51,12 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
 
     @Override
     public void reset() {
-        this.spawnDelay = new IntegerFeature(this, Optional.of(20), FeatureSettingsSCore.spawnDelay);
+        this.spawnDelay = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.spawnDelay);
         this.spawnRange = new IntegerFeature(this, Optional.of(4), FeatureSettingsSCore.spawnRange);
         this.requiredPlayerRange = new IntegerFeature(this, Optional.of(16), FeatureSettingsSCore.requiredPlayerRange);
+        this.minSpawnDelay = new IntegerFeature(this, Optional.of(200), FeatureSettingsSCore.minSpawnDelay);
+        this.maxSpawnDelay = new IntegerFeature(this, Optional.of(800), FeatureSettingsSCore.maxSpawnDelay);
+        this.spawnCount = new IntegerFeature(this, Optional.of(4), FeatureSettingsSCore.spawnCount);
         this.maxNearbyEntities = new IntegerFeature(this, Optional.of(6), FeatureSettingsSCore.maxNearbyEntities);
         this.potentialSpawns = new ListUncoloredStringFeature(this, new ArrayList<>(), FeatureSettingsSCore.potentialSpawns, Optional.empty());
         this.addSpawnerNbtToItem = new BooleanFeature(this, false, FeatureSettingsSCore.addSpawnerNbtToItem);
@@ -61,6 +67,9 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
         List<String> errors = new ArrayList<>();
         if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
+            errors.addAll(this.spawnCount.load(plugin, section, isPremiumLoading));
+            errors.addAll(this.minSpawnDelay.load(plugin, section, isPremiumLoading));
+            errors.addAll(this.maxSpawnDelay.load(plugin, section, isPremiumLoading));
             errors.addAll(this.spawnDelay.load(plugin, section, isPremiumLoading));
             errors.addAll(this.spawnRange.load(plugin, section, isPremiumLoading));
             errors.addAll(this.requiredPlayerRange.load(plugin, section, isPremiumLoading));
@@ -75,9 +84,12 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
+        this.spawnCount.save(section);
         this.spawnDelay.save(section);
         this.spawnRange.save(section);
         this.requiredPlayerRange.save(section);
+        this.minSpawnDelay.save(section);
+        this.maxSpawnDelay.save(section);
         this.maxNearbyEntities.save(section);
         this.potentialSpawns.save(section);
         this.addSpawnerNbtToItem.save(section);
@@ -90,10 +102,11 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
 
     @Override
     public ItemSpawnerFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 7];
+        String[] finalDescription = new String[getEditorDescription().length + 8];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 7] = GUI.CLICK_HERE_TO_CHANGE;
+        finalDescription[finalDescription.length - 8] = GUI.CLICK_HERE_TO_CHANGE;
 
+        finalDescription[finalDescription.length - 7] = "&7Spawn Count: &e" + spawnCount.getValue().orElse(0);
         finalDescription[finalDescription.length - 6] = "&7Spawn Delay: &e" + spawnDelay.getValue().orElse(0);
         finalDescription[finalDescription.length - 5] = "&7Spawn Range: &e" + spawnRange.getValue().orElse(0);
         finalDescription[finalDescription.length - 4] = "&7Required Player Range: &e" + requiredPlayerRange.getValue().orElse(0);
@@ -112,6 +125,9 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
     @Override
     public ItemSpawnerFeature clone(FeatureParentInterface newParent) {
         ItemSpawnerFeature clone = new ItemSpawnerFeature(newParent);
+        clone.setSpawnCount(this.spawnCount.clone(clone));
+        clone.setMinSpawnDelay(this.minSpawnDelay.clone(clone));
+        clone.setMaxSpawnDelay(this.maxSpawnDelay.clone(clone));
         clone.setSpawnDelay(this.spawnDelay.clone(clone));
         clone.setSpawnRange(this.spawnRange.clone(clone));
         clone.setRequiredPlayerRange(this.requiredPlayerRange.clone(clone));
@@ -124,9 +140,12 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
     @Override
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
+        features.add(this.spawnCount);
         features.add(this.spawnDelay);
         features.add(this.spawnRange);
         features.add(this.requiredPlayerRange);
+        features.add(this.minSpawnDelay);
+        features.add(this.maxSpawnDelay);
         features.add(this.maxNearbyEntities);
         features.add(this.potentialSpawns);
         features.add(this.addSpawnerNbtToItem);
@@ -159,6 +178,9 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
             if (feature instanceof ItemSpawnerFeature) {
                 ItemSpawnerFeature spawnerFeature = (ItemSpawnerFeature) feature;
                 spawnerFeature.setSpawnDelay(this.spawnDelay);
+                spawnerFeature.setMinSpawnDelay(this.minSpawnDelay);
+                spawnerFeature.setMaxSpawnDelay(this.maxSpawnDelay);
+                spawnerFeature.setSpawnCount(this.spawnCount);
                 spawnerFeature.setSpawnRange(this.spawnRange);
                 spawnerFeature.setRequiredPlayerRange(this.requiredPlayerRange);
                 spawnerFeature.setMaxNearbyEntities(this.maxNearbyEntities);
@@ -189,6 +211,18 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
         if (!isAvailable() || !isApplicable(args)) return;
 
         CreatureSpawner spawner = (CreatureSpawner) args.getBlockState();
+
+        if(spawnCount.getValue().isPresent()) {
+            spawner.setSpawnCount(spawnCount.getValue().get());
+        }
+
+        if (minSpawnDelay.getValue().isPresent()) {
+            spawner.setMinSpawnDelay(minSpawnDelay.getValue().get());
+        }
+
+        if (maxSpawnDelay.getValue().isPresent()) {
+            spawner.setMaxSpawnDelay(maxSpawnDelay.getValue().get());
+        }
 
         if (spawnDelay.getValue().isPresent()) {
             spawner.setDelay(spawnDelay.getValue().get());
@@ -237,6 +271,9 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
         this.spawnRange.setValue(Optional.of(spawner.getSpawnRange()));
         this.requiredPlayerRange.setValue(Optional.of(spawner.getRequiredPlayerRange()));
         this.maxNearbyEntities.setValue(Optional.of(spawner.getMaxNearbyEntities()));
+        this.spawnCount.setValue(Optional.of(spawner.getSpawnCount()));
+        this.minSpawnDelay.setValue(Optional.of(spawner.getMinSpawnDelay()));
+        this.maxSpawnDelay.setValue(Optional.of(spawner.getMaxSpawnDelay()));
 
         List<SpawnerEntry> entries = spawner.getPotentialSpawns();
         List<String> types = new ArrayList<>();
@@ -268,6 +305,9 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
         this.spawnRange.setValue(Optional.of(spawner.getSpawnRange()));
         this.requiredPlayerRange.setValue(Optional.of(spawner.getRequiredPlayerRange()));
         this.maxNearbyEntities.setValue(Optional.of(spawner.getMaxNearbyEntities()));
+        this.spawnCount.setValue(Optional.of(spawner.getSpawnCount()));
+        this.minSpawnDelay.setValue(Optional.of(spawner.getMinSpawnDelay()));
+        this.maxSpawnDelay.setValue(Optional.of(spawner.getMaxSpawnDelay()));
 
         List<SpawnerEntry> entries = spawner.getPotentialSpawns();
         List<String> types = new ArrayList<>();
@@ -293,6 +333,18 @@ public class ItemSpawnerFeature extends FeatureWithHisOwnEditor<ItemSpawnerFeatu
 
         BlockStateMeta meta = (BlockStateMeta) args.getMeta();
         CreatureSpawner spawner = (CreatureSpawner) meta.getBlockState();
+
+        if (spawnCount.getValue().isPresent()) {
+            spawner.setSpawnCount(spawnCount.getValue().get());
+        }
+
+        if (minSpawnDelay.getValue().isPresent()) {
+            spawner.setMinSpawnDelay(minSpawnDelay.getValue().get());
+        }
+
+        if (maxSpawnDelay.getValue().isPresent()) {
+            spawner.setMaxSpawnDelay(maxSpawnDelay.getValue().get());
+        }
 
         if (spawnDelay.getValue().isPresent()) {
             spawner.setDelay(spawnDelay.getValue().get());

@@ -531,6 +531,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Commands part */
         this.getCommand("score").setExecutor(commandClass);
 
+
+        //this.getCommand("/").setExecutor(new TestCmdClass());
+
         /* Projectiles instance part */
         SProjectileLoader.getInstance().load();
         /* Hardness's instance part */
