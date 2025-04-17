@@ -30,7 +30,7 @@ public class AddItemAttribute extends PlayerCommand {
         Attribute att = null;
         if(SCore.is1v21v2Plus()) att = Attribute.MAX_HEALTH;
         else att = AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
-        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, att);
+        CommandSetting attribute = new CommandSetting("attribute", 1, AttributeUtils.class, att);
         CommandSetting value = new CommandSetting("value", 2, Double.class, 1.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
         CommandSetting mode = new CommandSetting("mode", -1, AttributeAdditionMode.class, AttributeAdditionMode.ADD);

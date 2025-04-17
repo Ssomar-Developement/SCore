@@ -22,7 +22,7 @@ public class SetItemAttribute extends PlayerCommand {
     public SetItemAttribute() {
         CommandSetting slot = new CommandSetting("slot", 0, Integer.class, -1);
         slot.setSlot(true);
-        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, AttributeUtils.getAttribute("GENERIC_MAX_HEALTH"));
+        CommandSetting attribute = new CommandSetting("attribute", 1, AttributeUtils.class, AttributeUtils.getAttribute("GENERIC_MAX_HEALTH"));
         CommandSetting value = new CommandSetting("value", 2, Double.class, 2.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
         List<CommandSetting> settings = getSettings();

@@ -48,11 +48,10 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> error = new ArrayList<>();
         String section;
-        if(multipleChoicesID == null || multipleChoicesID.isEmpty()){
+        if (multipleChoicesID == null || multipleChoicesID.isEmpty()) {
             section = this.getName();
-        }
-        else{
-            section = multipleChoicesID+".multi-choices";
+        } else {
+            section = multipleChoicesID + ".multi-choices";
         }
 
         if (config.isConfigurationSection(section)) {
@@ -61,11 +60,11 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
 
                 ConfigurationSection cdtSection = enchantmentsSection.getConfigurationSection(attributeID);
                 List<String> subErrors = new ArrayList<>();
-                if(cdtSection.isConfigurationSection("multi-choices")){
+                if (cdtSection.isConfigurationSection("multi-choices")) {
                     HasExecutableItemGroupFeature multiChoices = new HasExecutableItemGroupFeature(this, attributeID);
                     multiChoices.load(plugin, enchantmentsSection, isPremiumLoading);
                     hasExecutableItems.put(attributeID, multiChoices);
-                }else {
+                } else {
                     HasExecutableItemFeature attribute = new HasExecutableItemFeature(this, attributeID);
                     subErrors = attribute.load(plugin, enchantmentsSection, isPremiumLoading);
                     hasExecutableItems.put(attributeID, attribute);
@@ -82,40 +81,46 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
     public boolean verifHas(ItemStack[] items, int heldSlot) {
 
         for (FeatureInterface feature : hasExecutableItems.values()) {
-            if(feature instanceof HasExecutableItemFeature) {
-                if(!verifHasExecutableItem(items, heldSlot, (HasExecutableItemFeature) feature)) return false;
-            }
-            else if(feature instanceof HasExecutableItemGroupFeature){
+            if (feature instanceof HasExecutableItemFeature) {
+                //SsomarDev.testMsg("HasExecutableItemFeature >> " + ((HasExecutableItemFeature) feature).getId(), true);
+                if (!verifHasExecutableItem(items, heldSlot, (HasExecutableItemFeature) feature)) return false;
+            } else if (feature instanceof HasExecutableItemGroupFeature) {
                 HasExecutableItemGroupFeature f = (HasExecutableItemGroupFeature) feature;
                 boolean has = false;
-                for(FeatureInterface feature1 : f.getHasExecutableItems().values()){
-                    if(feature1 instanceof HasExecutableItemFeature) {
-                        if(verifHasExecutableItem(items, heldSlot, (HasExecutableItemFeature) feature1)) has = true;
-                    }
-                    else if(feature1 instanceof HasExecutableItemGroupFeature){
-                        if(!verifHas(items, heldSlot)) return false;
+                for (FeatureInterface feature1 : f.getHasExecutableItems().values()) {
+                    if (feature1 instanceof HasExecutableItemFeature) {
+                        if (verifHasExecutableItem(items, heldSlot, (HasExecutableItemFeature) feature1)) has = true;
+                    } else if (feature1 instanceof HasExecutableItemGroupFeature) {
+                        if (!verifHas(items, heldSlot)) return false;
                     }
                 }
-                if(!has) return false;
+                if (!has) return false;
             }
         }
         return true;
     }
 
-    public boolean verifHasExecutableItem(ItemStack[] items, int heldSlot, HasExecutableItemFeature f){
+    public boolean verifHasExecutableItem(ItemStack[] items, int heldSlot, HasExecutableItemFeature f) {
         boolean valid = false;
 
+        //SsomarDev.testMsg("verifHasExecutableItem 1 >> " + f.getId(), true);
         Optional<ExecutableItemInterface> ei = f.getExecutableItem().getValue();
         if (!ei.isPresent()) return true;
         ExecutableItemInterface executableItem = ei.get();
 
+        //SsomarDev.testMsg("verifHasExecutableItem 2 >> " + executableItem.getId(), true);
+
+
         int needed = f.getAmount().getValue().get();
         int slot = 0;
         for (ItemStack item : items) {
+            //SsomarDev.testMsg("verifHasExecutableItem 3 >> " + slot+" item!"+item, true);
             if (f.getDetailedSlots().verifSlot(slot, slot == heldSlot)) {
+                //SsomarDev.testMsg("verifHasExecutableItem 3 >> " + slot, true);
                 if (item != null) {
+                    //SsomarDev.testMsg("verifHasExecutableItem 4 >> " + item.getType().name(), true);
                     ExecutableItemObject eiObject = new ExecutableItemObject(item);
-                   if (eiObject.isValid()) {
+                    if (eiObject.isValid()) {
                         if (eiObject.getConfig().getId().equals(executableItem.getId())) {
                             if (f.getUsageCondition().getValue().isPresent()) {
                                 eiObject.loadExecutableItemInfos();
@@ -144,15 +149,14 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
     @Override
     public void save(ConfigurationSection config) {
         ConfigurationSection attributesSection;
-       //SsomarDev.testMsg("SAVE : "+multipleChoicesID);
-        if(multipleChoicesID == null || multipleChoicesID.isEmpty()) {
+        //SsomarDev.testMsg("SAVE : "+multipleChoicesID);
+        if (multipleChoicesID == null || multipleChoicesID.isEmpty()) {
             config.set(this.getName(), null);
             if (notSaveIfNoValue && hasExecutableItems.size() == 0) return;
             attributesSection = config.createSection(this.getName());
-        }
-        else{
+        } else {
             config.set(this.getMultipleChoicesID(), null);
-            attributesSection = config.createSection(this.getMultipleChoicesID()+".multi-choices");
+            attributesSection = config.createSection(this.getMultipleChoicesID() + ".multi-choices");
         }
         for (String enchantmentID : hasExecutableItems.keySet()) {
             hasExecutableItems.get(enchantmentID).save(attributesSection);
@@ -213,15 +217,14 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
     @Override
     public ConfigurationSection getConfigurationSection() {
         ConfigurationSection section = getParent().getConfigurationSection();
-        if(multipleChoicesID == null || multipleChoicesID.isEmpty()) {
+        if (multipleChoicesID == null || multipleChoicesID.isEmpty()) {
             if (section.isConfigurationSection(this.getName())) {
                 return section.getConfigurationSection(this.getName());
             } else return section.createSection(this.getName());
-        }
-        else{
-            if (section.isConfigurationSection(this.getMultipleChoicesID()+".multi-choices")) {
-                return section.getConfigurationSection(this.getMultipleChoicesID()+".multi-choices");
-            } else return section.createSection(this.getMultipleChoicesID()+".multi-choices");
+        } else {
+            if (section.isConfigurationSection(this.getMultipleChoicesID() + ".multi-choices")) {
+                return section.getConfigurationSection(this.getMultipleChoicesID() + ".multi-choices");
+            } else return section.createSection(this.getMultipleChoicesID() + ".multi-choices");
         }
     }
 
@@ -267,11 +270,10 @@ public class HasExecutableItemGroupFeature extends FeatureWithHisOwnEditor<HasEx
 
     @Override
     public void deleteFeature(@NotNull Player editor, FeatureInterface feature) {
-        if(feature instanceof HasExecutableItemFeature){
+        if (feature instanceof HasExecutableItemFeature) {
             HasExecutableItemFeature eF = (HasExecutableItemFeature) feature;
             hasExecutableItems.remove(eF.getId());
-        }
-        else if (feature instanceof HasExecutableItemGroupFeature) {
+        } else if (feature instanceof HasExecutableItemGroupFeature) {
             HasExecutableItemGroupFeature eF = (HasExecutableItemGroupFeature) feature;
             hasExecutableItems.remove(eF.getMultipleChoicesID());
         }

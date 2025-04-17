@@ -209,6 +209,7 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
     public boolean verify(Player player, Event event, StringPlaceholder sp) {
         for (RequiredExecutableItemFeature eF : requiredExecutableItems.values()) {
             if (!eF.verify(player, event, sp)) {
+                //SsomarDev.testMsg("Error in RequiredExecutableItemGroupFeature > " + getParentInfo() + " > " + eF.getId(), true);
                 if (errorMessage.getValue().isPresent()) {
                     SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
                 }

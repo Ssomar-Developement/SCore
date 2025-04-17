@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.EntityBuilder;
 import com.ssomar.score.utils.backward_compatibility.AttributeAdditionMode;
@@ -8,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
 import org.bukkit.enchantments.Enchantment;
@@ -78,7 +78,7 @@ public class CommandSetting {
         else if(type == Float.class) return Float.parseFloat(value);
         else if(type == Boolean.class) return Boolean.parseBoolean(value);
         else if(type == Enchantment.class) return Enchantment.getByKey(NamespacedKey.minecraft(value.toLowerCase()));
-        else if(type == Attribute.class) {
+        else if(type == AttributeUtils.class) {
             return AttributeUtils.getAttribute(value);
         }
         else if(type == AttributeAdditionMode.class) {
@@ -97,7 +97,7 @@ public class CommandSetting {
                 return null;
             }
         }
-        else if(type == BarColor.class) return BarColor.valueOf(value.toUpperCase());
+        else if(!SCore.is1v11Less() && type == BarColor.class) return BarColor.valueOf(value.toUpperCase());
         else if(type == Material.class) {
             try {
                 return Material.valueOf(value.toUpperCase());
@@ -141,10 +141,10 @@ public class CommandSetting {
         else if(type == Float.class) return SCommand.checkFloat(value, false, commandTemplate, acceptPercentage);
         else if(type == Boolean.class) return SCommand.checkBoolean(value, false, commandTemplate);
         else if(type == Enchantment.class) return SCommand.checkEnchantment(value, false, commandTemplate);
-        else if(type == Attribute.class) return SCommand.checkAttribute(value, false, commandTemplate);
+        else if(type == AttributeUtils.class) return SCommand.checkAttribute(value, false, commandTemplate);
         else if(type == AttributeAdditionMode.class) return SCommand.checkAttributeAdditionMode(value, false, commandTemplate);
         else if(type == EquipmentSlot.class) return SCommand.checkEquipmentSlot(value, false, commandTemplate);
-        else if(type == BarColor.class) return SCommand.checkBarColor(value, false, commandTemplate);
+        else if(!SCore.is1v11Less() && type == BarColor.class) return SCommand.checkBarColor(value, false, commandTemplate);
         else if(type == Material.class) return SCommand.checkMaterial(value, false, commandTemplate);
         else if(type == BlockFace.class) return SCommand.checkBlockFace(value, false, commandTemplate);
         else if(type == UUID.class) return SCommand.checkUUID(value, false, commandTemplate);

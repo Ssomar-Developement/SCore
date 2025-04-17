@@ -86,7 +86,7 @@ public class Bossbar extends PlayerCommand {
                 for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
                     SsomarDev.testMsg("Checking boss bar with same text: " + entry.getKey().getTitle(), true);
                     SsomarDev.testMsg("Boss bar with same text: " + entry.getKey().getTitle() + " vs " + coloredMessage, true);
-                    if (entry.getKey().getTitle().contains(coloredMessage)) {
+                    if (StringConverter.decoloredString(entry.getKey().getTitle()).contains(StringConverter.decoloredString(coloredMessage))) {
                         SsomarDev.testMsg("Removing boss bar with same text: " + entry.getKey().getTitle(), true);
                         removeBoosBar(entry.getKey(), receiver);
                     }

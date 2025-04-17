@@ -20,7 +20,7 @@ import java.util.UUID;
 public class SetItemAttribute extends ItemMetaCommand {
 
     public SetItemAttribute() {
-        CommandSetting attribute = new CommandSetting("attribute", 1, Attribute.class, AttributeUtils.getAttribute("GENERIC_MAX_HEALTH"));
+        CommandSetting attribute = new CommandSetting("attribute", 1, AttributeUtils.class, AttributeUtils.getAttribute("GENERIC_MAX_HEALTH"));
         CommandSetting value = new CommandSetting("value", 2, Double.class, 2.0);
         CommandSetting equipmentSlot = new CommandSetting("equipmentSlot", 3, EquipmentSlot.class, null);
         List<CommandSetting> settings = getSettings();
