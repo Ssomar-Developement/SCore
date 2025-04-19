@@ -3,6 +3,9 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+
+import io.lumine.mythic.bukkit.utils.commands.Command;
+
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -22,11 +25,19 @@ public class MobAround extends BlockCommand {
         CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoEntity", -1, Boolean.class, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
+        CommandSetting x = new CommandSetting("x", -1, Double.class, 0d);
+        CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
+        CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
+        CommandSetting world = new CommandSetting("world", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
         settings.add(safeDistance);
+        settings.add(x);
+        settings.add(y);
+        settings.add(z);
+        settings.add(world);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }

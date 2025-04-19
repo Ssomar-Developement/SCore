@@ -12,9 +12,12 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsInterface;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -38,11 +41,19 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
         CommandSetting displayMsgIfNoPlayer = new CommandSetting(Arrays.asList("displayMsgIfNoEntity","DisplayMsgIfNoEntity"), -1, Boolean.class, true, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
+        CommandSetting x = new CommandSetting("x", -1, Double.class, 0d);
+        CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
+        CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
+        CommandSetting world = new CommandSetting("world", -1, String.class, "");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
         settings.add(safeDistance);
+        settings.add(x);
+        settings.add(y);
+        settings.add(z);
+        settings.add(world);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -59,11 +70,29 @@ public class MobAround extends PlayerCommand implements FeatureParentInterface {
                     boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
                     double safeDistance = (double) sCommandToExec.getSettingValue("safeDistance");
 
+                    double x = (double) sCommandToExec.getSettingValue("x");
+                    double y = (double) sCommandToExec.getSettingValue("y");
+                    double z = (double) sCommandToExec.getSettingValue("z");
+                    String world = (String) sCommandToExec.getSettingValue("world");
+
                     int startForCommand = 1;
 
                     List<Entity> entities = new ArrayList<>();
 
-                    Location receiverLoc = receiver != null ? receiver.getLocation() : location;
+                    Location originalLoc = receiver != null ? receiver.getLocation() : location;
+                    Location receiverLoc;
+                    if (x != -1 && y != -1 && z != -1) {
+                        // Use explicit coordinates
+                        World targetWorld = originalLoc.getWorld();
+                        if (world != null && !world.isEmpty()) {
+                            World w = Bukkit.getWorld(world);
+                            if (w != null) targetWorld = w;
+                        }
+                        receiverLoc = new Location(targetWorld, x, y, z);
+                    } else {
+                        // Fall back to original
+                        receiverLoc = originalLoc;
+                    }
 
                     for (Entity e : receiverLoc.getWorld().getNearbyEntities(receiverLoc, distance, distance, distance)) {
                         if (e instanceof LivingEntity && !(e instanceof Player)) {
