@@ -29,10 +29,10 @@ public class Around extends BlockCommand {
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
         CommandSetting displayMsgIfNoPlayer = new CommandSetting("affectThePlayerThatActivesTheActivator", 1, Boolean.class, true, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
-        CommandSetting x = new CommandSetting("x", -1, Double.class, 0d);
-        CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
-        CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
-        CommandSetting world = new CommandSetting("world", -1, Double.class, 0d);
+        CommandSetting x = new CommandSetting("x", -1, Double.class, -1d);
+        CommandSetting y = new CommandSetting("y", -1, Double.class, -1d);
+        CommandSetting z = new CommandSetting("z", -1, Double.class, -1d);
+        CommandSetting world = new CommandSetting("world", -1, String.class, "");
         CommandSetting targetMobs = new CommandSetting("targetMobs", -1, Boolean.class, false, false);    
         CommandSetting targetSelf = new CommandSetting("targetSelf", -1, Boolean.class, true, true);      
         CommandSetting targetNPC = new CommandSetting("targetNPC", -1, Boolean.class, false, false);           

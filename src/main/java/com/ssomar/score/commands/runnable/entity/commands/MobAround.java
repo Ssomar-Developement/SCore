@@ -19,9 +19,9 @@ public class MobAround extends EntityCommand {
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
-        CommandSetting x = new CommandSetting("x", -1, Double.class, 0d);
-        CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
-        CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
+        CommandSetting x = new CommandSetting("x", -1, Double.class, -1d);
+        CommandSetting y = new CommandSetting("y", -1, Double.class, -1d);
+        CommandSetting z = new CommandSetting("z", -1, Double.class, -1d);
         CommandSetting world = new CommandSetting("world", -1, String.class, "");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
