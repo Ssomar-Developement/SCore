@@ -124,14 +124,15 @@ public class Around extends PlayerCommand{
                         // don't target NPCs: 
                         if (!targetNPC && target.hasMetadata("NPC")) continue;
 
-                        // don't target self:
-                        if(!self && target.equals(receiver)) continue;
+                        // don't target self, we do this later
+                        if(target.equals(receiver)) continue;
 
                         // Split targets so both get targeted if we choose to do so
                         if ((e instanceof Player) == false && targetMobs) targets.add(target);
                         if (e instanceof Player) playerTargets.add((Player)target);
                     }
                 }
+                if(self) playerTargets.add((Player) receiver); // add receiver
                 // Check if players are hit
                 boolean hit = CommmandThatRunsCommand.runPlayerCommands(playerTargets, sCommandToExec.getOtherArgs(),sCommandToExec.getActionInfo());
                 boolean phit = CommmandThatRunsCommand.runEntityCommands(targets, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
