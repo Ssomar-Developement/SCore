@@ -35,9 +35,9 @@ public class Around extends PlayerCommand{
         CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
         CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
         CommandSetting world = new CommandSetting("world", -1, String.class, "");   
-        CommandSetting targetMobs = new CommandSetting("targetMobs", -1, Boolean.class, "false");    
-        CommandSetting targetSelf = new CommandSetting("targetSelf", -1, Boolean.class, "true");      
-        CommandSetting targetNPC = new CommandSetting("targetNPC", -1, Boolean.class, "false");        
+        CommandSetting targetMobs = new CommandSetting("targetMobs", 0, Boolean.class, false, false);    
+        CommandSetting targetSelf = new CommandSetting("targetSelf", 1, Boolean.class, true, true);      
+        CommandSetting targetNPC = new CommandSetting("targetNPC", 0, Boolean.class, false, false);        
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -128,8 +128,8 @@ public class Around extends PlayerCommand{
                         if(!self && target.equals(receiver)) continue;
 
                         // Split targets so both get targeted if we choose to do so
-                        if (e instanceof LivingEntity && targetMobs) targets.add(target);
-                        else if (e instanceof Player) playerTargets.add((Player)target);
+                        if ((e instanceof Player) == false && targetMobs) targets.add(target);
+                        if (e instanceof Player) playerTargets.add((Player)target);
                     }
                 }
                 // Check if players are hit
