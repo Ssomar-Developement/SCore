@@ -24,7 +24,10 @@ public class Around extends EntityCommand {
         CommandSetting x = new CommandSetting("x", -1, Double.class, 0d);
         CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
         CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
-        CommandSetting world = new CommandSetting("world", -1, String.class, "");        
+        CommandSetting world = new CommandSetting("world", -1, String.class, "");     
+        CommandSetting targetMobs = new CommandSetting("targetMobs", -1, Boolean.class, "false");    
+        CommandSetting targetSelf = new CommandSetting("targetSelf", -1, Boolean.class, "true");      
+        CommandSetting targetNPC = new CommandSetting("targetNPC", -1, Boolean.class, "false");              
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(throughBlocks);
@@ -32,7 +35,10 @@ public class Around extends EntityCommand {
         settings.add(x);
         settings.add(y);
         settings.add(z);
-        settings.add(world);        
+        settings.add(world);    
+        settings.add(targetMobs);
+        settings.add(targetSelf);
+        settings.add(targetNPC);               
         setNewSettingsMode(true);
     }
 

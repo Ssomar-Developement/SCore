@@ -34,7 +34,10 @@ public class Around extends PlayerCommand{
         CommandSetting x = new CommandSetting("x", -1, Double.class, 0d);
         CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
         CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
-        CommandSetting world = new CommandSetting("world", -1, String.class, "");        
+        CommandSetting world = new CommandSetting("world", -1, String.class, "");   
+        CommandSetting targetMobs = new CommandSetting("targetMobs", -1, Boolean.class, "false");    
+        CommandSetting targetSelf = new CommandSetting("targetSelf", -1, Boolean.class, "true");      
+        CommandSetting targetNPC = new CommandSetting("targetNPC", -1, Boolean.class, "false");        
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -43,7 +46,10 @@ public class Around extends PlayerCommand{
         settings.add(x);
         settings.add(y);
         settings.add(z);
-        settings.add(world);        
+        settings.add(world);     
+        settings.add(targetMobs);
+        settings.add(targetSelf);
+        settings.add(targetNPC);   
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -61,12 +67,17 @@ public class Around extends PlayerCommand{
                 double y = (double) sCommandToExec.getSettingValue("y");
                 double z = (double) sCommandToExec.getSettingValue("z");
                 String world = (String) sCommandToExec.getSettingValue("world");
+                boolean targetMobs = (boolean) sCommandToExec.getSettingValue("targetMobs");
+                boolean self = (boolean) sCommandToExec.getSettingValue("targetSelf");
+                boolean targetNPC = (boolean) sCommandToExec.getSettingValue("targetNPC");
 
-                List<Player> targets = new ArrayList<>();
+                List<LivingEntity> targets = new ArrayList<>();
+
+                List<Player> playerTargets = new ArrayList<>();
 
                 for (Entity e : receiver.getNearbyEntities(distance, distance, distance)) {
-                    if (e instanceof Player) {
-                        Player target = (Player) e;
+                    if (e instanceof LivingEntity) {
+                        LivingEntity target = (LivingEntity) e;
 
                         Location originalLoc = receiver.getLocation();
                         Location receiverLoc;
@@ -110,12 +121,24 @@ public class Around extends PlayerCommand{
                             if(!valid) continue;
                         }
 
-                        if (target.hasMetadata("NPC") || target.equals(receiver)) continue;
-                        targets.add(target);
+                        // don't target NPCs: 
+                        if (!targetNPC && target.hasMetadata("NPC")) continue;
+
+                        // don't target self:
+                        if(!self && target.equals(receiver)) continue;
+
+                        // Split targets so both get targeted if we choose to do so
+                        if (e instanceof LivingEntity && targetMobs) targets.add(target);
+                        else if (e instanceof Player) playerTargets.add((Player)target);
                     }
                 }
+                // Check if players are hit
+                boolean hit = CommmandThatRunsCommand.runPlayerCommands(playerTargets, sCommandToExec.getOtherArgs(),sCommandToExec.getActionInfo());
 
-                boolean hit = CommmandThatRunsCommand.runPlayerCommands(targets, sCommandToExec.getOtherArgs(),sCommandToExec.getActionInfo());
+                // If no players hit, check if entity is hit
+                if(!hit){
+                    hit = CommmandThatRunsCommand.runEntityCommands(targets, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+                }
 
                 if (!hit && displayMsgIfNoTargetHit && receiver instanceof Player)
                     sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));

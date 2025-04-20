@@ -33,6 +33,9 @@ public class Around extends BlockCommand {
         CommandSetting y = new CommandSetting("y", -1, Double.class, 0d);
         CommandSetting z = new CommandSetting("z", -1, Double.class, 0d);
         CommandSetting world = new CommandSetting("world", -1, Double.class, 0d);
+        CommandSetting targetMobs = new CommandSetting("targetMobs", -1, Boolean.class, "false");    
+        CommandSetting targetSelf = new CommandSetting("targetSelf", -1, Boolean.class, "true");      
+        CommandSetting targetNPC = new CommandSetting("targetNPC", -1, Boolean.class, "false");          
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -40,7 +43,10 @@ public class Around extends BlockCommand {
         settings.add(x);
         settings.add(y);
         settings.add(z);
-        settings.add(world);        
+        settings.add(world);    
+        settings.add(targetMobs);
+        settings.add(targetSelf);
+        settings.add(targetNPC);               
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
