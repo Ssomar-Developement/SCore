@@ -134,10 +134,10 @@ public class Around extends PlayerCommand{
                 }
                 // Check if players are hit
                 boolean hit = CommmandThatRunsCommand.runPlayerCommands(playerTargets, sCommandToExec.getOtherArgs(),sCommandToExec.getActionInfo());
-
+                boolean phit = CommmandThatRunsCommand.runEntityCommands(targets, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
                 // If no players hit, check if entity is hit
                 if(!hit){
-                    hit = CommmandThatRunsCommand.runEntityCommands(targets, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+                    hit = phit;
                 }
 
                 if (!hit && displayMsgIfNoTargetHit && receiver instanceof Player)
