@@ -77,7 +77,7 @@ public class Around extends PlayerCommand{
 
                 for (Entity e : receiver.getNearbyEntities(distance, distance, distance)) {
                     if (e instanceof LivingEntity) {
-                        LivingEntity target = (Player) e;
+                        LivingEntity target = (LivingEntity) e;
 
                         Location originalLoc = receiver.getLocation();
                         Location receiverLoc;
