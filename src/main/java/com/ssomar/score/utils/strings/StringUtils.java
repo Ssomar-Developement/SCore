@@ -208,7 +208,7 @@ public class StringUtils {
      *             and/or size 0)
      * @since 2.4
      */
-    public static String replaceEach(final String text, final String[] searchList, final String[] replacementList) {
+    public static String replaceEach(String text, final String[] searchList, final String[] replacementList) {
         return replaceEach(text, searchList, replacementList, false, 0);
     }
 

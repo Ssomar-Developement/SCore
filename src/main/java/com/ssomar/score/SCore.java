@@ -172,7 +172,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is folia? */
     public static boolean isFolia() {
-        return isFolia || isLuminol || isPaperOrForkFor1v20lus /* Paper include threaded region of Folia in 1.20 +*/;
+        return isFolia || isLuminol || isPaperOrForkFor1v20lus /* Paper include threaded region of Folia in 1.20 +*/ || hasClass("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
     }
 
     /* The server is spigot? */

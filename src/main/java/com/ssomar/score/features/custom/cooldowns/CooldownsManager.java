@@ -104,6 +104,7 @@ public class CooldownsManager {
 
     public void addCooldown(Cooldown cd) {
 
+        //SsomarDev.testMsg("ADD COOLDOWN " + cd.toString(), true);
         if (cd.getCooldown() == 0) return;
 
         String id = cd.getId();

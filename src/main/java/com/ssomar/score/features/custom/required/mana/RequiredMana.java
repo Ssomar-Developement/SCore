@@ -90,7 +90,9 @@ public class RequiredMana extends FeatureWithHisOwnEditor<RequiredMana, Required
             if(SCore.hasAureliumSkills) {
                 if (!AureliumSkillsAPI.checkMana(player, mana.getValue(player.getUniqueId(), sp).get())) {
                     if (errorMessage.getValue().isPresent()) {
-                        SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                        String message = errorMessage.getValue().get();
+                        message = sp.replacePlaceholder(message);
+                        SendMessage.sendMessageNoPlch(player, message);
                     }
                     if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                         ((Cancellable) event).setCancelled(true);

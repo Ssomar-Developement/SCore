@@ -210,7 +210,9 @@ public class RequiredItemGroupFeature extends FeatureWithHisOwnEditor<RequiredIt
         for (RequiredItemFeature feature : requiredItems.values()) {
             if (!feature.verify(player, event, sp)) {
                 if (errorMessage.getValue().isPresent()) {
-                    SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    String message = errorMessage.getValue().get();
+                    message = sp.replacePlaceholder(message);
+                    SendMessage.sendMessageNoPlch(player, message);
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);

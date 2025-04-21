@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,9 +36,13 @@ public class SafePlace {
         if (verifSafePlace && !verifSafePlace(playerUUID, block)) return;
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
-        SsomarDev.testMsg("DEBUG SAFE BREAK 2", DEBUG);
-        if (player != null) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
+        Location location = block.getLocation();
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                SsomarDev.testMsg("DEBUG SAFE BREAK 2", DEBUG);
+                if (player != null) {
+                    SsomarDev.testMsg("DEBUG SAFE BREAK 3 >> "+material, DEBUG);
             /*boolean canceled = false;
             if(generateBreakEvent) {
                 SsomarDev.testMsg("DEBUG SAFE BREAK 4");
@@ -49,12 +54,31 @@ public class SafePlace {
             }
 
             if (!canceled) {*/
-            block.setType(material);
-            // }
-        } else {
-            block.setType(material);
-        }
+                    setBlockType(block, material);
+                    // }
+                } else {
+                    setBlockType(block, material);
+                }
+            }
+        };
+        // delay for playerblockbreak event if not the block is nto placed
+        SCore.schedulerHook.runLocationTask(runnable, location, 0);
 
+    }
+
+    public static void setBlockType(Block block, Material material){
+        /*if(SCore.isFolia()){
+            Location location = block.getLocation();
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    block.setType(material);
+                }
+            };
+            SCore.schedulerHook.runLocationTaskAsap(runnable, location);
+        } else {*/
+            block.setType(material);
+        //}
     }
 
     public static boolean verifSafePlace(@NotNull final UUID playerUUID, @NotNull Block block) {

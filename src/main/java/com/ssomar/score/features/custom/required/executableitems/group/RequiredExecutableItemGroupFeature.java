@@ -211,7 +211,9 @@ public class RequiredExecutableItemGroupFeature extends FeatureWithHisOwnEditor<
             if (!eF.verify(player, event, sp)) {
                 //SsomarDev.testMsg("Error in RequiredExecutableItemGroupFeature > " + getParentInfo() + " > " + eF.getId(), true);
                 if (errorMessage.getValue().isPresent()) {
-                    SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    String message = errorMessage.getValue().get();
+                    message = sp.replacePlaceholder(message);
+                    SendMessage.sendMessageNoPlch(player, message);
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);

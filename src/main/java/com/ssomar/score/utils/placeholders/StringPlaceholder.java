@@ -255,6 +255,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI, boolean withVariables) {
         String s = str;
+        //SsomarDev.testMsg("replacePlaceholderWithoutReload: " + s, true);
         if (!s.contains("%")) return str;
 
         if (str.trim().isEmpty()) return "";
@@ -266,9 +267,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         if (this.hasActivator()) {
             placeholders.put("%activator%", this.getActivator());
         }
-        if (this.hasItem()) {
-            placeholders.put("%item%", Matcher.quoteReplacement(this.getItem()));
-        }
+        if (this.hasItem()) placeholders.put("%item%", this.getItem());
+
         if (hasId()) placeholders.put("%id%", this.getId());
         if (hasName()) placeholders.put("%name%", this.getName());
         if (hasActivatorId()) placeholders.put("%activator_id%", this.getActivator_id());
@@ -332,24 +332,27 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
             placeholders.putAll(effectPlch.getPlaceholders());
             s = effectPlch.replacePlaceholder(s);
         }
-
+        //SsomarDev.testMsg("replacePlaceholderWithoutReload2: " + s, true);
         if (timePlch != null) s = timePlch.replacePlaceholder(s);
 
         if (projectilePlch != null) s = projectilePlch.replacePlaceholder(s);
 
         if (targetEntityPlch != null) s = targetEntityPlch.replacePlaceholder(s);
+        //SsomarDev.testMsg("replacePlaceholderWithoutReload2.3: " + s, true);
 
         if (extraPlaceholders != null && !extraPlaceholders.isEmpty()) {
             for (String key : extraPlaceholders.keySet()) {
                 placeholders.put(key, extraPlaceholders.get(key));
             }
         }
+        //SsomarDev.testMsg("replacePlaceholderWithoutReload2.5: " + s, true);
 
         final String[] keys = placeholders.keySet().toArray(new String[0]);
         final String[] values = placeholders.values().toArray(new String[0]);
 
         s = StringUtils.replaceEach(s, keys, values);
 
+        //SsomarDev.testMsg("replacePlaceholderWithoutReload3: " + s, true);
         //SsomarDev.testMsg("111111: " + s, true);
 
         if (withPAPI) s = replacePlaceholderOfPAPI(s);
@@ -364,6 +367,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
                 s = var.replaceVariablePlaceholder(s);
             }
         }
+        //SsomarDev.testMsg("replacePlaceholderWithoutReload4: " + s, true);
 
         return s;
     }

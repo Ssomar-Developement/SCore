@@ -87,8 +87,8 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
             }
             placeholderStr = StringPlaceholder.replacePlaceholderOfPAPI(placeholderStr, playerUUID);
 
-            Optional<Integer> valuePotential = NTools.getInteger(placeholderStr);
-            if (valuePotential.isPresent()) return valuePotential;
+            Optional<Double> valuePotential = NTools.getDouble(placeholderStr);
+            if (valuePotential.isPresent()) return Optional.of(valuePotential.get().intValue());
         } else if (value.isPresent()) {
             return value;
         }

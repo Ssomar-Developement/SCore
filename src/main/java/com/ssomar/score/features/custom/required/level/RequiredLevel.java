@@ -84,7 +84,9 @@ public class RequiredLevel extends FeatureWithHisOwnEditor<RequiredLevel, Requir
         if (level.getValue(player.getUniqueId(), sp).isPresent() && level.getValue(player.getUniqueId(), sp).get() > 0) {
             if (player.getLevel() < level.getValue(player.getUniqueId(), sp).get()) {
                 if (errorMessage.getValue().isPresent()) {
-                    SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    String message = errorMessage.getValue().get();
+                    message = sp.replacePlaceholder(message);
+                    SendMessage.sendMessageNoPlch(player, message);
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);

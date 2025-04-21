@@ -37,7 +37,7 @@ public class SetItemCooldown extends PlayerCommand {
         if(group != null && !group.isEmpty() && SCore.is1v21v2Plus()) {
             ItemStack item = new ItemStack(Material.STONE);
             ItemMeta meta = item.getItemMeta();
-            UseCooldownComponent component = (UseCooldownComponent) meta;
+            UseCooldownComponent component = meta.getUseCooldown();
             component.setCooldownGroup(NamespacedKey.fromString(group));
             meta.setUseCooldown(component);
             item.setItemMeta(meta);

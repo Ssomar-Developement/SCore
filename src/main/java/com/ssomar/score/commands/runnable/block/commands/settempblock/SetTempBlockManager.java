@@ -33,7 +33,7 @@ public class SetTempBlockManager {
                 savedModifiedBlocks.remove(loc);
             }
         };
-        SCore.schedulerHook.runTask(runnable3, time);
+        SCore.schedulerHook.runLocationTask(runnable3, loc, time);
     }
 
     public static SetTempBlockManager getInstance() {

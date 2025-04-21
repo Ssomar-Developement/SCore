@@ -14,6 +14,7 @@ import com.ssomar.score.features.types.DoubleFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.usedapi.VaultAPI;
+import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
@@ -86,6 +87,8 @@ public class RequiredMoney extends FeatureWithHisOwnEditor<RequiredMoney, Requir
             String errMessage = "";
             if (errorMessage.getValue().isPresent()) {
                 errMessage = errorMessage.getValue().get();
+                errMessage = sp.replacePlaceholder(errMessage);
+                SendMessage.sendMessageNoPlch(player, errMessage);
             }
             if (!v.hasMoney(player, money.getValue(player.getUniqueId(), sp).get(), errMessage)) {
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {

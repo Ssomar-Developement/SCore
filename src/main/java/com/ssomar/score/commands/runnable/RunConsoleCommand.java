@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,12 +15,12 @@ import java.util.Optional;
 
 public class RunConsoleCommand {
 
-    public static void runConsoleCommand(String command, boolean silenceOutput) {
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+    static ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
+    public static void runConsoleCommand(String command, boolean silenceOutput) {
         FilterManager fM = FilterManager.getInstance();
 
-        if (silenceOutput){
+        if (silenceOutput) {
             //fM.setLogFilterPrior();
             //fM.showDebug();
             fM.incCurrentlyInRun();
@@ -34,10 +35,10 @@ public class RunConsoleCommand {
 
                 try {
                     String newCommand = addWorldCompatibilityForExecute(command);
-                    Bukkit.dispatchCommand(console, StringConverter.coloredString(newCommand));
+                    if(!newCommand.isEmpty()) Bukkit.dispatchCommand(console, StringConverter.coloredString(newCommand));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    SCore.plugin.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR WHEN THE CONSOLE COMMAND ("+command+") IS RUN !");
+                    SCore.plugin.getLogger().severe(SCore.NAME_COLOR_WITH_BRACKETS + " ERROR WHEN THE CONSOLE COMMAND (" + command + ") IS RUN !");
                 }
 
             }
@@ -64,16 +65,36 @@ public class RunConsoleCommand {
                 String worldName = spliter2[0];
                 Optional<World> worldOptional = AllWorldManager.getWorld(worldName);
                 World world = null;
-                if(worldOptional.isPresent()) world = worldOptional.get();
+                if (worldOptional.isPresent()) world = worldOptional.get();
                 //SsomarDev.testMsg("world: "+world, true);
                 if (world != null) {
-                    List<Entity> entities = world.getEntities();
-                    if(entities.size() > 0) {
-                        Entity entity = entities.get(0);
-                        //SsomarDev.testMsg("entity: "+entity, true);
-                        command = command.replaceAll("in <<" + worldName + ">>", "at " + entity.getUniqueId());
+                    // Need that because getEntities() need to be run in RegionScheduler
+                    if(SCore.isFolia()){
+                        final World worldFinal = world;
+                        final String finalCommand = command;
+                        BukkitRunnable runnable = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                List<Entity> entities = worldFinal.getEntities();
+                                if (!entities.isEmpty()) {
+                                    Entity entity = entities.get(0);
+                                    //SsomarDev.testMsg("entity: "+entity, true);
+                                    final String newCommand = finalCommand.replaceAll("in <<" + worldName + ">>", "at " + entity.getUniqueId());
+                                    Bukkit.dispatchCommand(console, StringConverter.coloredString(newCommand));
+                                }
+                            }
+                        };
+                        SCore.schedulerHook.runLocationTask(runnable, world.getSpawnLocation(), 1);
+                        return "";
                     }
-                    else return "";
+                    else {
+                        List<Entity> entities = world.getEntities();
+                        if (!entities.isEmpty()) {
+                            Entity entity = entities.get(0);
+                            //SsomarDev.testMsg("entity: "+entity, true);
+                            command = command.replaceAll("in <<" + worldName + ">>", "at " + entity.getUniqueId());
+                        } else return "";
+                    }
                 }
             }
         }

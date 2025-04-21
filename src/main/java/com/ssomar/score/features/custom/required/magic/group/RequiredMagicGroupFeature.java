@@ -208,7 +208,9 @@ public class RequiredMagicGroupFeature extends FeatureWithHisOwnEditor<RequiredM
         for (RequiredMagicFeature eF : requiredMagics.values()) {
             if (!eF.verify(player, event, sp)) {
                 if (errorMessage.getValue().isPresent()) {
-                    SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    String message = errorMessage.getValue().get();
+                    message = sp.replacePlaceholder(message);
+                    SendMessage.sendMessageNoPlch(player, message);
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);

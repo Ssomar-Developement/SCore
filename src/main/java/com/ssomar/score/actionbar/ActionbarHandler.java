@@ -4,6 +4,8 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -13,10 +15,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class ActionbarHandler {
 
     private static ActionbarHandler instance;
     private final HashMap<Player, List<Actionbar>> actionbarHandler = new HashMap<>();
+    @Getter @Setter
     private List<Player> hideActionbar = new ArrayList<>();
 
     public static ActionbarHandler getInstance() {
@@ -158,14 +162,6 @@ public class ActionbarHandler {
         sp.setPlayerPlcHldr(p.getUniqueId());
         String message = sp.replacePlaceholder(MessageMain.getInstance().getMessage(SCore.plugin, Message.ACTIONBAR_MESSAGE));
         Bukkit.getServer().getPlayer(p.getName()).spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
-    }
-
-    public List<Player> getHideActionbar() {
-        return hideActionbar;
-    }
-
-    public void setHideActionbar(List<Player> hideActionbar) {
-        this.hideActionbar = hideActionbar;
     }
 
 }

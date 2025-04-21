@@ -86,7 +86,9 @@ public class RequiredExperience extends FeatureWithHisOwnEditor<RequiredExperien
             //SsomarDev.testMsg("actualExperience: "+actualExperience+ " exptolevel>> "+player.getExpToLevel()+" exp>> "+player.getExp(), true);
             if (actualExperience < experience.getValue().get()) {
                 if (errorMessage.getValue().isPresent()) {
-                    SendMessage.sendMessageNoPlch(player, errorMessage.getValue().get());
+                    String message = errorMessage.getValue().get();
+                    message = sp.replacePlaceholder(message);
+                    SendMessage.sendMessageNoPlch(player, message);
                 }
                 if (cancelEventIfError.getValue() && event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);

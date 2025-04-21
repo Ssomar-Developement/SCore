@@ -94,9 +94,9 @@ public class SCommandToExec {
                 }
                 else settingObjectMap.put(setting, setting.getValue(null));
             }
-            for(CommandSetting i : settingObjectMap.keySet()) {
-                SsomarDev.testMsg("settingObjectMap "+i+" >> "+settingObjectMap.get(i), true);
-            }
+            //for(CommandSetting i : settingObjectMap.keySet()) {
+            //    SsomarDev.testMsg("settingObjectMap "+i+" >> "+settingObjectMap.get(i), true);
+            //}
             // Sort the index to remove
             Collections.sort(indexToRemove, Collections.reverseOrder());
             for(int index : indexToRemove){
