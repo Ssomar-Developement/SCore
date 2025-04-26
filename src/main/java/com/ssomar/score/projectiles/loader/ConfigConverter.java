@@ -1,34 +1,48 @@
 package com.ssomar.score.projectiles.loader;
 
 import com.google.common.base.Charsets;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.util.Map;
 
 public class ConfigConverter {
 
 
-    public static void update(File file) {
+    public static Map<String, String> getWordsToReplace() {
 
-        FileConfiguration config;
-        try {
-            config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
-        } catch (Exception e) {
+        Map<String, String> replace = new java.util.HashMap<>();
+        replace.put("potionSettings", "potionFeatures");
+        return replace;
+    }
+
+    public static void updateTo(File file) {
+
+        String fileContent = "";
+        // Read the file content
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            StringBuilder contentBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                contentBuilder.append(line).append(System.lineSeparator());
+            }
+            // Remove the last line separator
+            if (contentBuilder.length() > 0) {
+                contentBuilder.setLength(contentBuilder.length() - System.lineSeparator().length());
+            }
+            fileContent = contentBuilder.toString();
+        } catch (IOException e) {
             e.printStackTrace();
             return;
-        }
-
-
-        if(config.contains("visualItem") && !config.isConfigurationSection("visualItem")) {
-            config.set("visualItem.material", config.getString("visualItem"));
         }
 
         try {
             Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
 
             try {
-                writer.write(config.saveToString());
+                for (Map.Entry<String, String> entry : getWordsToReplace().entrySet()) {
+                    fileContent = fileContent.replace(entry.getKey(), entry.getValue());
+                }
+                writer.write(fileContent);
             } finally {
                 writer.close();
             }

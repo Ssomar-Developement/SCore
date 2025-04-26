@@ -49,6 +49,10 @@ public class ItemConditionsFeature extends FeatureWithHisOwnEditor<ItemCondition
             conditions.add(new IfCrossbowMustNotBeCharged(this));
         }
 
+        if(SCore.is1v21v2Plus()){
+            conditions.add(new IfUseCooldown(this));
+        }
+
         /* Number condition */
         conditions.add(new IfDurability(this));
         conditions.add(new IfUsage(this));

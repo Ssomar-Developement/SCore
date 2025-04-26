@@ -110,7 +110,7 @@ public class SProjectileLoader extends SObjectWithFileLoader<SProjectile> {
 
     @Override
     public void configVersionsConverter(File file) {
-        ConfigConverter.update(file);
+        ConfigConverter.updateTo(file);
     }
 
     @Override

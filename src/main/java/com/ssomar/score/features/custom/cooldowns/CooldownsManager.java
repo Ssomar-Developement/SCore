@@ -98,6 +98,7 @@ public class CooldownsManager {
                 else if (castInt) return Optional.of((int) cd.getTimeLeft() + "");
                 else return Optional.of(cd.getTimeLeft() + "");
             }
+            return Optional.of("0");
         }
         return Optional.empty();
     }

@@ -122,7 +122,7 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     for_("for", "Pour", new String[]{"&7&oPour"}, GUI.COMPARATOR),
     giveFirstJoin("giveFirstJoin", "Donner première connexion", new String[]{"&7&oActiver la fonctionnalité"}, null),
     giveFirstJoinAmount("giveFirstJoinAmount", "Quantité", new String[]{"&7&oLa quantité à donner"}, GUI.CLOCK),
-    giveFirstJoinFeatures("giveFirstJoin", "Fonctionnalités première connexion", new String[]{"&7&oLes fonctionnalités de don à la première connexion"}, Material.ANVIL),
+    giveFirstJoinFeatures("giveFirstJoinFeatures", "Fonctionnalités première connexion", new String[]{"&7&oLes fonctionnalités de don à la première connexion"}, Material.ANVIL),
 
     giveFirstJoinSlot("giveFirstJoinSlot", "Emplacement", new String[]{"&7&oEmplacement entre 0 et 8 inclus"}, GUI.CLOCK),
     glowDrop("glowDrop", "Lueur du Drop", new String[]{"&7&oLueur du drop"}, null),
@@ -315,7 +315,7 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     potionEffectType("potionEffectType", "Type d'Effet de Potion", new String[]{"&7&oLe type de l'effet de potion"}, Material.COMPASS),
     potionEffects("potionEffects", "Effets de Potion", new String[]{"&7&oLes effets de potion"}, FixedMaterial.getBrewingStand()),
     potionExtended("potionExtended", "Potion prolongée", new String[]{"&7&oPotion prolongée"}, null),
-    potionSettings("potionSettings", "Paramètres de Potion", new String[]{"&7&oLes paramètres de la potion"}, FixedMaterial.getBrewingStand()),
+    potionFeatures("potionFeatures", "Paramètres de Potion", new String[]{"&7&oLes paramètres de la potion"}, FixedMaterial.getBrewingStand()),
     potionType("potionType", "Type de Potion", new String[]{"&7&oLe type de potion"}, Material.POTION),
     potionUpgraded("potionUpgraded", "Potion améliorée", new String[]{"&7&oPotion améliorée"}, null),
     radius("radius", "Rayon", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("HEART_OF_THE_SEA", "WEB"))),
@@ -477,7 +477,7 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     fireworkColor("fireworkColor", "Couleur de Feu d'Artifice", new String[]{"&7&oLa couleur du feu d'artifice"}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_STAR", "FIREWORK_CHARGE"))),
     recognitions("recognitions", "Reconnaissances", new String[]{"&7&oReconnaissances de l'item"}, Material.PAPER),
 
-    food("food", "Fonctionnalités de Nourriture", new String[]{"&7&oFonctionnalités de nourriture"}, Material.COOKED_BEEF),
+    food("foodFeatures", "Fonctionnalités de Nourriture", new String[]{"&7&oFonctionnalités de nourriture"}, Material.COOKED_BEEF),
     nutrition("nutrition", "Nutrition", new String[]{"&7La nutrition de la nourriture"}, GUI.CLOCK),
     saturation("saturation", "Saturation", new String[]{"&7La saturation de la nourriture"}, GUI.CLOCK),
     isMeat("isMeat", "Est de la Viande", new String[]{"&7La nourriture est-elle de la viande?"}, null),

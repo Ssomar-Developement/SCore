@@ -2166,7 +2166,7 @@ public final class XParticle {
 
                         // We're going to spawn little circles to create our spikes.
                         // Spawning them with a random radius.
-                        double height = (prototype ? vein : random.nextDouble(0, neuron)) * spikeLength;
+                        double height = (prototype ? vein : random.nextDouble(0, Math.min(0.1,neuron))) * spikeLength;
                         if (prototype) vein += neuron;
                         Vector vector = new Vector(Math.cos(theta), 0, Math.sin(theta));
 

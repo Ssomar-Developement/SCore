@@ -7,7 +7,6 @@ import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
-import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.backward_compatibility.SoundUtils;
 import com.ssomar.score.utils.item.UpdateItemInGUI;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -193,7 +192,7 @@ public class SoundFeature extends FeatureAbstract<Optional<Sound>, SoundFeature>
 
     public Sound nextOperation(Sound sound) {
         boolean next = false;
-        Map<Object, String> map = AttributeUtils.getAttributes();
+        Map<Object, String> map = SoundUtils.getSounds();
         for (Object check : map.keySet()) {
             if (check.equals(sound)) {
                 next = true;
