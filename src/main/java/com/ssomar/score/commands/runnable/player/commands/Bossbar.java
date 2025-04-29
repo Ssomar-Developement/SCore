@@ -9,9 +9,11 @@ import com.ssomar.score.utils.scheduler.ScheduledTask;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Bossbar extends PlayerCommand {
 
     private static Bossbar instance;
-    Map<Player, Map<org.bukkit.boss.BossBar, ScheduledTask>> cache;
+    Map<Player, Map<BossBar, ScheduledTask>> cache;
 
     public Bossbar() {
         instance = this;
@@ -76,7 +78,7 @@ public class Bossbar extends PlayerCommand {
             Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(receiver);
             if (tasks != null) {
                 for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
-                    removeBoosBar(entry.getKey(), receiver);
+                    removeBossBar(entry.getKey(), receiver);
                 }
             }
         } else if (overrideMode.equalsIgnoreCase("OVERRIDE_SAME_TEXT")) {
@@ -84,11 +86,12 @@ public class Bossbar extends PlayerCommand {
             Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(receiver);
             if (tasks != null) {
                 for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
-                    SsomarDev.testMsg("Checking boss bar with same text: " + entry.getKey().getTitle(), true);
-                    SsomarDev.testMsg("Boss bar with same text: " + entry.getKey().getTitle() + " vs " + coloredMessage, true);
-                    if (StringConverter.decoloredString(entry.getKey().getTitle()).contains(StringConverter.decoloredString(coloredMessage))) {
-                        SsomarDev.testMsg("Removing boss bar with same text: " + entry.getKey().getTitle(), true);
-                        removeBoosBar(entry.getKey(), receiver);
+                    org.bukkit.boss.BossBar bossBar = entry.getKey();
+                    SsomarDev.testMsg("Checking boss bar with same text: " + bossBar.getTitle(), true);
+                    SsomarDev.testMsg("Boss bar with same text: " + bossBar.getTitle() + " vs " + coloredMessage, true);
+                    if (StringConverter.decoloredString(bossBar.getTitle()).contains(StringConverter.decoloredString(coloredMessage))) {
+                        SsomarDev.testMsg("Removing boss bar with same text: " + bossBar.getTitle(), true);
+                        removeBossBar(entry.getKey(), receiver);
                     }
                 }
             }
@@ -97,7 +100,7 @@ public class Bossbar extends PlayerCommand {
 
         if(!coloredMessage.isEmpty()) {
 
-            BossBar bossBar = Bukkit.createBossBar(coloredMessage, color, BarStyle.SOLID);
+            BossBar bossBar = Bukkit.createBossBar(NamespacedKey.randomKey(), coloredMessage, color, BarStyle.SOLID);
             bossBar.addPlayer(receiver);
 
             // Register bossbar without task
@@ -118,15 +121,16 @@ public class Bossbar extends PlayerCommand {
 
                     @Override
                     public void run() {
+
                         if (isAscending) {
                             if (counter >= count) {
-                                removeBoosBar(bossBar, receiver);
+                                removeBossBar(bossBar, receiver);
                                 return;
                             }
                             counter++;
                         } else {
                             if (counter <= 0) {
-                                removeBoosBar(bossBar, receiver);
+                                removeBossBar(bossBar, receiver);
                                 return;
                             }
                             counter--;
@@ -142,7 +146,7 @@ public class Bossbar extends PlayerCommand {
                         } else bossBar.setTitle(StringConverter.coloredString(finalMessage + " " + countText));
                     }
                 };
-                task.set(SCore.schedulerHook.runRepeatingTask(runnable, 1, countTicks ? 1 : 20));
+                task.set(SCore.schedulerHook.runRepeatingTask(runnable, 0, countTicks ? 1 : 20));
 
                 // Register bossbar with task
                 if(cache.containsKey(receiver)) {
@@ -156,7 +160,7 @@ public class Bossbar extends PlayerCommand {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        removeBoosBar(bossBar, receiver);
+                        removeBossBar(bossBar, receiver);
                     }
                 };
                 SCore.schedulerHook.runTask(runnable, time);
@@ -164,8 +168,12 @@ public class Bossbar extends PlayerCommand {
         }
     }
 
-    public  void removeBoosBar(org.bukkit.boss.BossBar bossBar, Player p) {
+    public void removeBossBar(org.bukkit.boss.BossBar bossBar, Player p) {
         bossBar.removeAll();
+        if(bossBar instanceof KeyedBossBar){
+            NamespacedKey key = ((KeyedBossBar) bossBar).getKey();
+            Bukkit.getServer().removeBossBar(key);
+        }
         Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(p);
         if (tasks == null) return;
         ScheduledTask task = tasks.get(bossBar);
@@ -207,9 +215,15 @@ public class Bossbar extends PlayerCommand {
         Map<org.bukkit.boss.BossBar, ScheduledTask> tasks = this.cache.get(p);
         if (tasks != null) {
             for (Map.Entry<org.bukkit.boss.BossBar, ScheduledTask> entry : tasks.entrySet()) {
-                removeBoosBar(entry.getKey(), p);
+                removeBossBar(entry.getKey(), p);
             }
             tasks.clear();
+        }
+    }
+
+    public void clearTasks() {
+        for (Player p : cache.keySet()) {
+            clearTasks(p);
         }
     }
 }

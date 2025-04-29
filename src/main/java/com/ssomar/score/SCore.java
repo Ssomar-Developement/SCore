@@ -6,6 +6,7 @@ import com.plotsquared.core.PlotAPI;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.FilterManager;
+import com.ssomar.score.commands.runnable.player.commands.Bossbar;
 import com.ssomar.score.commands.score.CommandsClass;
 import com.ssomar.score.config.Config;
 import com.ssomar.score.config.GeneralConfig;
@@ -715,6 +716,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
             VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6" + VariablesManager.getInstance().getLoadedObjects().size() + " &7variables from your MySQL Database !");
         }
+
+        Bossbar.getInstance().clearTasks();
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay....");
         UsagePerDayManager.getInstance().save();
