@@ -91,7 +91,7 @@ public class Around extends MixedCommand {
                     sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_PLAYER_HIT));
             }
         };
-        SCore.schedulerHook.runTask(runnable, 0);
+        SCore.schedulerHook.runLocationTask(runnable, receiver.getLocation(), 0);
     }
 
 

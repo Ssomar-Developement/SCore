@@ -57,7 +57,7 @@ public class CheckIfDamageIsPosssibleListener implements Listener {
                     throw new RuntimeException(ex);
                 }
                 if(e.isCancelled()){
-                    System.out.println("[[[DEBUG PROJECTILE]]] PLUGIN >> "+rl.getPlugin().getName()+" >> "+rl.getListener().getClass()+" >>> "+rl.getPriority()+" >>"+e.isCancelled());
+                    //System.out.println("[[[DEBUG PROJECTILE]]] PLUGIN >> "+rl.getPlugin().getName()+" >> "+rl.getListener().getClass()+" >>> "+rl.getPriority()+" >>"+e.isCancelled());
                     break;
                 }
             }

@@ -21,8 +21,9 @@ public class PackHttpInjector extends HttpInjector {
 
         String requestURI = request.getRequestURI();
 
-        //SsomarDev.testMsg("REQUEST URI : " + requestURI, true);
-        //SsomarDev.testMsg("FILE NAME : " + packSettings.getFileName(), true);
+        //System.out.println("REQUEST URI : " + requestURI);
+        //System.out.println("FILE NAME : " + packSettings.getFileName());
+        //System.out.println("FILE PATH : " + packSettings.getFile().getAbsolutePath());
 
         if (requestURI.equals("/score/" + packSettings.getFileName())) {
             try {

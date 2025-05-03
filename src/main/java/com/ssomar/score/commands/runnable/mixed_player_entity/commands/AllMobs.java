@@ -41,21 +41,28 @@ public class AllMobs extends MixedCommand implements FeatureParentInterface {
             public void run() {
                 try {
 
-                    List<Entity> entities = new ArrayList<>();
                     for (String world : AllWorldManager.getWorlds()) {
                         Optional<World> wOpt = AllWorldManager.getWorld(world);
                         if (!wOpt.isPresent()) continue;
+                        final World wo = wOpt.get();
 
-                        for (Entity e : wOpt.get().getEntities()) {
-                            if (e instanceof LivingEntity && !(e instanceof Player) && e instanceof Mob) {
+                        // For folia
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                List<Entity> entities = new ArrayList<>();
+                                for (Entity e : wo.getEntities()) {
+                                    if (e instanceof LivingEntity && !(e instanceof Player) && e instanceof Mob) {
 
-                                if (e.hasMetadata("NPC") || e.equals(receiver)) continue;
-                                entities.add(e);
+                                        if (e.hasMetadata("NPC") || e.equals(receiver)) continue;
+                                        entities.add(e);
+                                    }
+                                }
+                                CommmandThatRunsCommand.runEntityCommands(entities, args, aInfo);
                             }
-                        }
+                        };
+                        SCore.schedulerHook.runLocationTask(runnable, wo.getSpawnLocation(),  0);
                     }
-
-                    CommmandThatRunsCommand.runEntityCommands(entities, args, aInfo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

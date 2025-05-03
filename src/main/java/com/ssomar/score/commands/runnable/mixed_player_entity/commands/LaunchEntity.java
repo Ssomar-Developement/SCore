@@ -81,7 +81,7 @@ public class LaunchEntity extends MixedCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String launch = "LAUNCHENTITY {entityType} {speed} [angle rotation y]";
+        String launch = "LAUNCH_ENTITY {entityType} {speed} [angle rotation y]";
         if (args.size() < 1) return Optional.of(notEnoughArgs + launch);
 
         return Optional.empty();
@@ -90,13 +90,14 @@ public class LaunchEntity extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("LAUNCH_ENTITY");
         names.add("LAUNCHENTITY");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "LAUNCHENTITY {entityType} {speed} [angle rotation y]";
+        return "LAUNCH_ENTITY {entityType} {speed} [angle rotation y]";
     }
 
     @Override

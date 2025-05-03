@@ -49,6 +49,8 @@ public class GeneralConfig extends Config {
 
     private boolean enableCommentsInConfig;
 
+    private boolean selfHostPackDebug;
+
     public GeneralConfig() {
         super("config.yml");
         super.setup(SCore.dataFolder, SCore.classLoader, null);
@@ -96,6 +98,7 @@ public class GeneralConfig extends Config {
         loopKillMode = config.getBoolean("loopKillMode", false);
         disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
         enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true) && SCore.is1v19Plus();
+        selfHostPackDebug = config.getBoolean("selfHostPackDebug", false);
     }
 
     public boolean isVerbosityNormal() {

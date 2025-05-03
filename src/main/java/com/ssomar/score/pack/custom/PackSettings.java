@@ -1,8 +1,10 @@
 package com.ssomar.score.pack.custom;
 
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.logging.Utils;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.io.BufferedReader;
@@ -22,6 +24,7 @@ public class PackSettings {
 
     private SPlugin sPlugin;
 
+    @Setter
     private String filePath;
 
     private String customPromptMessage;
@@ -34,7 +37,9 @@ public class PackSettings {
 
     private String hostedPath;
 
-    public PackSettings(SPlugin sPlugin, UUID uuid, String filePath, String customPromptMessage, boolean force) {
+    private boolean deleteInitialFile = false;
+
+    public PackSettings(SPlugin sPlugin, UUID uuid, String filePath, String customPromptMessage, boolean force, boolean deleteInitialFile) {
         this.sPlugin = sPlugin;
         this.uuid = uuid;
         this.filePath = filePath;
@@ -44,7 +49,7 @@ public class PackSettings {
         //netAddress.getLocalHost().getHostAddress()
         hostedPathType = null;
         hostedPath = null;
-
+        this.deleteInitialFile = deleteInitialFile;
     }
 
     public enum HostedPathType {
@@ -56,32 +61,32 @@ public class PackSettings {
     public String getHostedPath() {
         if (hostedPath != null) return hostedPath;
         String url = "http://" + getExternalIP() + ":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
-        if((hostedPathType == null || hostedPathType == HostedPathType.EXTERNAL) && isHttpURLReachable(url, 3000)) {
+        if((hostedPathType == null || hostedPathType == HostedPathType.EXTERNAL) && isHttpURLReachable(url, 10000)) {
             hostedPathType = HostedPathType.EXTERNAL;
             hostedPath = url;
             Utils.sendConsoleMsg("&7Pack hosted at: &e" + url);
             return url;
         }
-        Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+        if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
         try {
             url = "http://"+InetAddress.getLocalHost().getHostAddress()+":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
-            if((hostedPathType == null || hostedPathType == HostedPathType.LOCAL_IP) && isHttpURLReachable(url, 3000)) {
+            if((hostedPathType == null || hostedPathType == HostedPathType.LOCAL_IP) && isHttpURLReachable(url, 10000)) {
                 hostedPathType = HostedPathType.LOCAL_IP;
                 hostedPath = url;
                 Utils.sendConsoleMsg("&7Pack hosted at: &e" + url);
                 return url;
             }
         } catch (UnknownHostException e) {}
-        Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+        if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
 
         url = "http://localhost:" + Bukkit.getServer().getPort() + "/score/" + getFileName();
-        if((hostedPathType == null || hostedPathType == HostedPathType.LOCALHOST) && isHttpURLReachable(url, 3000)) {
+        if((hostedPathType == null || hostedPathType == HostedPathType.LOCALHOST) && isHttpURLReachable(url, 10000)) {
             hostedPathType = HostedPathType.LOCALHOST;
             hostedPath = url;
             Utils.sendConsoleMsg("&7Pack hosted at: &e" + url);
             return url;
         }
-        Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+        if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
 
         return null;
     }
@@ -102,12 +107,15 @@ public class PackSettings {
             connection.setRequestMethod("HEAD"); // Use HEAD instead of GET for efficiency
 
             int responseCode = connection.getResponseCode();
-            Utils.sendConsoleMsg("&7Debug response output: &7" + responseCode);
+            if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&7Debug response output: &7" + responseCode);
             return (200 <= responseCode && responseCode <= 399); // Success codes
 
         } catch (IOException e) {
-            Utils.sendConsoleMsg("&7Debug &e" + urlString + " &7- &e" + e.getMessage());
-            return e.getMessage().contains("Unexpected end of file from server");
+            if(e.getMessage().contains("Unexpected end of file from server")){
+                return true;
+            }
+            if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&7Debug &e" + urlString + " &7- &e" + e.getMessage());
+            return false;
         }
     }
 
