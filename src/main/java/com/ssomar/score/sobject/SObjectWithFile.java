@@ -38,7 +38,7 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
         super(sPlugin, id, null, featureSettings);
         this.path = path;
         this.sObjectWithFileLoader = sObjectWithFileLoader;
-        this.parentFoldersNames = new ArrayList<>();
+        this.parentFoldersNames = null;
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
         super(sPlugin, id, parent, featureSettings);
         this.path = path;
         this.sObjectWithFileLoader = sObjectWithFileLoader;
-        this.parentFoldersNames = new ArrayList<>();
+        this.parentFoldersNames = null;
     }
 
     @Override
@@ -88,7 +88,7 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
     }
 
     public List<String> getParentFoldersNames(){
-        if(!parentFoldersNames.isEmpty()) return parentFoldersNames;
+        if(parentFoldersNames != null) return parentFoldersNames;
         List<String> folders = new ArrayList<>();
         File file = getFile();
         File parent = file.getParentFile();
@@ -98,6 +98,8 @@ public abstract class SObjectWithFile<X extends FeatureInterface<X, X>, Y extend
             folders.add(parent.getName());
             parent = parent.getParentFile();
         }
+        // copy the list to avoid modification
+        parentFoldersNames = new ArrayList<>(folders);
         return folders;
     }
 
