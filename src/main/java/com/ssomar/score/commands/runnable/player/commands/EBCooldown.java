@@ -1,6 +1,6 @@
 package com.ssomar.score.commands.runnable.player.commands;
 
-import com.ssomar.executableblocks.api.ExecutableBlocksAPI;
+import com.ssomar.score.api.executableblocks.ExecutableBlocksAPI;
 import com.ssomar.score.api.executableblocks.config.ExecutableBlockInterface;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
@@ -27,22 +27,24 @@ public class EBCooldown extends PlayerCommand {
         int number = NTools.getInteger(args.get(2)).get();
         boolean ticks = Boolean.parseBoolean(args.get(3));
 
-        Optional<ExecutableBlockInterface> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(id);
 
-        if(args.size() < 5){
-            eiOpt.ifPresent(executableBlockInterface -> executableBlockInterface.addCooldown(player.getPlayer(), number, ticks));
-        }else{
-            if(eiOpt.isPresent()) {
-                try {
-                    eiOpt.get().addCooldown(player.getPlayer(), number, ticks, args.get(4));
-                }catch(NullPointerException e){
-                    return;
-                }
+        List<ExecutableBlockInterface> eiAffected = new ArrayList<>();
+        if (id.equalsIgnoreCase("all")) {
+            eiAffected.addAll(ExecutableBlocksAPI.getExecutableBlocksManager().getAllExecutableBlocks());
+        } else {
+            Optional<ExecutableBlockInterface> eiOpt = ExecutableBlocksAPI.getExecutableBlocksManager().getExecutableBlock(id);
+            if (eiOpt.isPresent()) {
+                eiAffected.add(eiOpt.get());
             }
         }
 
-
-
+        for (ExecutableBlockInterface ei : eiAffected) {
+            if (args.size() < 5) {
+                ei.addCooldown(player.getPlayer(), number, ticks);
+            } else {
+                ei.addCooldown(player.getPlayer(), number, ticks, args.get(4));
+            }
+        }
     }
 
     @Override

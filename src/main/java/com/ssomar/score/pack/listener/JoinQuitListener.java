@@ -1,5 +1,6 @@
 package com.ssomar.score.pack.listener;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.pack.custom.PackManager;
 import com.ssomar.score.pack.custom.PackSettings;
 import org.bukkit.entity.Player;
@@ -21,7 +22,10 @@ public class JoinQuitListener implements Listener {
 
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
         for(PackSettings pack : packs.values()) {
-            p.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+            Runnable runnable = () -> {
+                p.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+            };
+            SCore.schedulerHook.runAsyncTask(runnable, 0);
         }
     }
 

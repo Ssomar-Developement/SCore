@@ -2,7 +2,6 @@ package com.ssomar.score.commands.runnable.player.commands;
 
 import com.ssomar.executableevents.api.ExecutableEventsAPI;
 import com.ssomar.executableevents.executableevents.ExecutableEvent;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -28,15 +27,23 @@ public class EECooldown extends PlayerCommand {
         int number = NTools.getInteger(args.get(2)).get();
         boolean ticks = Boolean.parseBoolean(args.get(3));
 
-        Optional<ExecutableEvent> eeOpt = ExecutableEventsAPI.getExecutableEventsManager().getExecutableEvent(id);
-
-        if (eeOpt.isPresent()) {
-            if (args.size() < 5)
-                eeOpt.get().addCooldown(player.getPlayer(), number, ticks);
-            else
-                eeOpt.get().addCooldown(player.getPlayer(), number, ticks, args.get(4));
+        List<ExecutableEvent> eiAffected = new ArrayList<>();
+        if (id.equalsIgnoreCase("all")) {
+            eiAffected.addAll(ExecutableEventsAPI.getExecutableEventsManager().getLoadedObjects());
+        } else {
+            Optional<ExecutableEvent> eiOpt = ExecutableEventsAPI.getExecutableEventsManager().getExecutableEvent(id);
+            if (eiOpt.isPresent()) {
+                eiAffected.add(eiOpt.get());
+            }
         }
-        else SsomarDev.testMsg("EECooldown: ExecutableEvent not found", true);
+
+        for (ExecutableEvent ei : eiAffected) {
+            if (args.size() < 5) {
+                ei.addCooldown(player.getPlayer(), number, ticks);
+            } else {
+                ei.addCooldown(player.getPlayer(), number, ticks, args.get(4));
+            }
+        }
     }
 
     @Override

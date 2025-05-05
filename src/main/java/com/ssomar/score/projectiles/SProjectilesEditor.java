@@ -15,6 +15,8 @@ public class SProjectilesEditor extends SObjectsWithFileEditor {
     @Override
     public void initSettings() {
         this.setDeleteArg("projectiles-delete");
+        this.setCreateArg("projectiles-create");
         setGiveButton(false);
+        setDefaultObjectsButton(false);
     }
 }

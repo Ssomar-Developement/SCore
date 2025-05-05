@@ -503,7 +503,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     potionEffectType("potionEffectType", "Potion Effect Type", new String[]{"&7&oThe type of the potion effect"}, Material.COMPASS),
     potionEffects("potionEffects", "Potion Effects", new String[]{"&7&oThe potion effects"}, FixedMaterial.getBrewingStand()),
     potionExtended("potionExtended", "Potion extended", new String[]{"&7&oPotion extended"}, null),
-    potionFeatures("potionFeatures", "Potion Settings", new String[]{"&7&oThe potion settings"}, FixedMaterial.getBrewingStand()),
+    potionSettings("potionFeatures", "Potion Settings", new String[]{"&7&oThe potion settings"}, FixedMaterial.getBrewingStand()),
     potionType("potionType", "Potion Type", new String[]{"&7&oThe potion type"}, Material.POTION),
     potionUpgraded("potionUpgraded", "Potion upgraded", new String[]{"&7&oPotion upgraded"}, null),
     radius("radius", "Radius", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("HEART_OF_THE_SEA", "WEB"))),

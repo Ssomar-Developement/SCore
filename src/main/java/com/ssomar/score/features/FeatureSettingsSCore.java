@@ -318,7 +318,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     potionEffectType(getFeatureSettings("potionEffectType")),
     potionEffects(getFeatureSettings("potionEffects")),
     potionExtended(getFeatureSettings("potionExtended")),
-    potionSettings(getFeatureSettings("potionFeatures")),
+    potionSettings(getFeatureSettings("potionSettings")),
     potionType(getFeatureSettings("potionType")),
     potionUpgraded(getFeatureSettings("potionUpgraded")),
     radius(getFeatureSettings("radius")),

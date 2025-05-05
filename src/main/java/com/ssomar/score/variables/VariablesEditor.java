@@ -15,6 +15,8 @@ public class VariablesEditor extends SObjectsWithFileEditor {
     @Override
     public void initSettings() {
         this.setDeleteArg("variables-delete");
+        this.setCreateArg("variables-create");
         setGiveButton(false);
+        setDefaultObjectsButton(false);
     }
 }

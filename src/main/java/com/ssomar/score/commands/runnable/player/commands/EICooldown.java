@@ -26,20 +26,23 @@ public class EICooldown extends PlayerCommand {
         int number = NTools.getInteger(args.get(2)).get();
         boolean ticks = Boolean.parseBoolean(args.get(3));
 
-        Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
-
-        if(args.size() < 5){
-            eiOpt.ifPresent(executableItemInterface -> executableItemInterface.addCooldown(player.getPlayer(), number, ticks));
-        }else{
-            if(eiOpt.isPresent()) {
-                try {
-                    eiOpt.get().addCooldown(player.getPlayer(), number, ticks, args.get(4));
-                }catch(NullPointerException e){
-                    return;
-                }
+        List<ExecutableItemInterface> eiAffected = new ArrayList<>();
+        if (id.equalsIgnoreCase("all")) {
+            eiAffected.addAll(ExecutableItemsAPI.getExecutableItemsManager().getAllExecutableItems());
+        } else {
+            Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+            if (eiOpt.isPresent()) {
+                eiAffected.add(eiOpt.get());
             }
         }
 
+        for (ExecutableItemInterface ei : eiAffected) {
+            if (args.size() < 5) {
+                ei.addCooldown(player.getPlayer(), number, ticks);
+            } else {
+                ei.addCooldown(player.getPlayer(), number, ticks, args.get(4));
+            }
+        }
 
 
     }

@@ -18,16 +18,16 @@ public interface ExecutableBlocksManagerInterface {
     /**
      * Get an ExecutableBlock from its ID
      *
-     * @param id The ID of the ExecutableItem
+     * @param id The ID of the ExecutableBlock
      * @return The ExecutableBlock or an empty optional
      **/
     Optional<ExecutableBlockInterface> getExecutableBlock(String id);
 
     /**
-     * Get an ExecutableItem from its itemStack form
+     * Get an ExecutableBlock from its itemStack form
      *
      * @param itemStack The itemStack to get the ExecutableItem from
-     * @return The ExecutableItem or an empty optional
+     * @return The ExecutableBlock or an empty optional
      **/
     Optional<ExecutableBlockInterface> getExecutableBlock(ItemStack itemStack);
 
@@ -37,4 +37,11 @@ public interface ExecutableBlocksManagerInterface {
      * @return All ExecutableItems ids
      **/
     List<String> getExecutableBlockIdsList();
+
+    /**
+     * Get all ExecutableBlocks
+     *
+     * @return All ExecutableBlocks
+     **/
+    List<ExecutableBlockInterface> getAllExecutableBlocks();
 }

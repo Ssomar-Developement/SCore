@@ -37,4 +37,11 @@ public interface ExecutableItemsManagerInterface {
      * @return All ExecutableItems ids
      **/
     List<String> getExecutableItemIdsList();
+
+    /**
+     * Get all ExecutableItems
+     *
+     * @return All ExecutableItems
+     **/
+    List<ExecutableItemInterface> getAllExecutableItems();
 }
