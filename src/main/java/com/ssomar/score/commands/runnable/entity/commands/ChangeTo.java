@@ -41,8 +41,8 @@ public class ChangeTo extends EntityCommand {
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add("CHANGE_TO");
-        names.add("CHANGETO");
         names.add("CHANGETOMYTHICMOB");
+        names.add("CHANGETO");
         return names;
     }
 

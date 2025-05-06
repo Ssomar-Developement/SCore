@@ -749,7 +749,7 @@
             <artifactId>Nexo</artifactId>
             <version>2ddf3c68b7</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/nexo-1.2.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/nexo-1.5.jar</systemPath>
         </dependency>
 
         <dependency>

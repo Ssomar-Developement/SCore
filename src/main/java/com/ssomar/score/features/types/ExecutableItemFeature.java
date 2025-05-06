@@ -30,6 +30,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
 
     private Optional<String> value;
     private boolean returnErrorIfExecItemNotExists = false;
+    private boolean disableDoubleClick = false;
 
     public ExecutableItemFeature(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
@@ -115,6 +116,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
         ExecutableItemFeature clone = new ExecutableItemFeature(newParent, this.getFeatureSettings());
         clone.value = value;
         clone.returnErrorIfExecItemNotExists = returnErrorIfExecItemNotExists;
+        clone.disableDoubleClick = disableDoubleClick;
         return clone;
     }
 
@@ -212,6 +214,7 @@ public class ExecutableItemFeature extends FeatureAbstract<Optional<ExecutableIt
 
     @Override
     public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        if(disableDoubleClick) return false;
         // to reverse the double click
         rightClicked(editor, manager);
         rightClicked(editor, manager);

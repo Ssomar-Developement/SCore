@@ -1,6 +1,7 @@
 package com.ssomar.score.usedapi;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.MythicBukkit;
@@ -41,7 +42,7 @@ public class MythicMobsAPI {
         if (SCore.hasMythicMobs) {
             BukkitAPIHelper api = MythicBukkit.inst().getAPIHelper();
             try {
-                //SsomarDev.testMsg("Changing to MythicMob SPAWN: " + id);
+                SsomarDev.testMsg("Changing to MythicMob SPAWN: " + id, true);
                 return api.spawnMythicMob(id, loc);
             } catch (InvalidMobTypeException e) {}
         }

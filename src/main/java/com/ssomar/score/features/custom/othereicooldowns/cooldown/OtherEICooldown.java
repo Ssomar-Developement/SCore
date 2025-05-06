@@ -51,6 +51,7 @@ public class OtherEICooldown extends FeatureWithHisOwnEditor<OtherEICooldown, Ot
     @Override
     public void reset() {
         this.executableItemFeature = new ExecutableItemFeature(this, FeatureSettingsSCore.executableItem);
+        this.executableItemFeature.setDisableDoubleClick(true);
         this.activatorsList = new ListUncoloredStringFeature(this,  new ArrayList<>(), FeatureSettingsSCore.cooldown_activators, Optional.empty());
         this.cooldown = new IntegerFeature(this,  Optional.of(0), FeatureSettingsSCore.cooldown);
         this.isCooldownInTicks = new BooleanFeature(this, false, FeatureSettingsSCore.isCooldownInTicks);

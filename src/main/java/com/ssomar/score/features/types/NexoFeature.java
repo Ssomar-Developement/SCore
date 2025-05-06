@@ -217,14 +217,14 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
         if (SCore.hasNexo)
-            updateNexo(nextNexo(getNexo((GUI) manager.getCache().get(editor)).get()), (GUI) manager.getCache().get(editor));
+            updateNexo(nextNexo(getNexo((GUI) manager.getCache().get(editor)).orElse(null)), (GUI) manager.getCache().get(editor));
         return true;
     }
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
         if (SCore.hasNexo)
-            updateNexo(prevNexo(getNexo((GUI) manager.getCache().get(editor)).get()), (GUI) manager.getCache().get(editor));
+            updateNexo(prevNexo(getNexo((GUI) manager.getCache().get(editor)).orElse(null)), (GUI) manager.getCache().get(editor));
         return true;
     }
 
@@ -239,6 +239,11 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
     }
 
     public String nextNexo(String id) {
+        if (id == null) {
+            if(getSortNexo().isEmpty()) return "No Nexo found";
+            else return getSortNexo().get(0);
+        }
+
         boolean next = false;
         for (String check : getSortNexo()) {
             if (check.equals(id)) {
@@ -251,6 +256,10 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
     }
 
     public String prevNexo(String id) {
+        if (id == null) {
+            if(getSortNexo().isEmpty()) return "No Nexo found";
+            else return getSortNexo().get(0);
+        }
         int i = -1;
         int cpt = 0;
         for (String check : getSortNexo()) {
@@ -265,6 +274,7 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
     }
 
     public void updateNexo(String id, GUI gui) {
+
         ItemStack item = gui.getByIdentifier(getEditorName());
         int slot = gui.getInv().first(item);
         initItemParentEditor(gui, slot);
@@ -274,9 +284,10 @@ public class NexoFeature extends FeatureAbstract<Optional<String>, NexoFeature> 
         List<String> lore = meta.getLore().subList(0, getEditorDescription().length + 3);
 
         if (id == null) {
-            id = "NULLLLL";
+            if(getSortNexo().isEmpty()) lore.add(StringConverter.coloredString("&4➤ &cNo Nexo found"));
+            value = Optional.empty();
         }
-        value = Optional.of(id);
+        else value = Optional.of(id);
 
         if (SCore.hasNexo) {
             boolean find = false;
