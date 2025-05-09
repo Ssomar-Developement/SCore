@@ -380,6 +380,19 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         return Optional.empty();
     }
 
+    public Optional<String> clearAllValues() {
+
+        if (forFeature.getValue().get().equals(VariableForEnum.PLAYER)) {
+                values.clear();
+        } else {
+            values.remove("global");
+        }
+
+        this.save(false);
+
+        return Optional.empty();
+    }
+
     @Override
     public ItemStack getIconItem() {
         return new ItemStack(icon.getValue().get());

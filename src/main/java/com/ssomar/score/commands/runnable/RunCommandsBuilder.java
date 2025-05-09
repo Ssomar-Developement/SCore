@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.util.commands.*;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -300,6 +301,7 @@ public abstract class RunCommandsBuilder {
                 String secondPart = RandomRun.extractSelectionCount(command);
                 if (secondPart == null) continue;
                 if (secondPart.contains("%")) {
+                    SsomarDev.testMsg("secondPart: "+secondPart, true);
                     secondPart = actionInfo.getSp().replacePlaceholder(secondPart, true);
                 }
                 nbRandom = Integer.parseInt(secondPart);

@@ -56,7 +56,7 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
     @Override
     public void reset() {
         enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
-        slot = new SlotFeature(this,  Optional.of(AttributeSlot.BODY), FeatureSettingsSCore.slot);
+        slot = new SlotFeature(this, Optional.of(AttributeSlot.BODY), FeatureSettingsSCore.slot);
         slot.setOnlyArmorSlots(true);
         enableSound = new BooleanFeature(this, false, FeatureSettingsSCore.enableSound);
         sound = new SoundFeature(this, Optional.of(Sound.ITEM_ARMOR_EQUIP_DIAMOND), FeatureSettingsSCore.sound);
@@ -89,7 +89,7 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
         for (FeatureInterface feature : getFeatures()) {
             feature.save(section);
         }
-        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+        if (isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()) {
             config.set(getName(), null);
             return;
         }
@@ -249,7 +249,8 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
                 equippable.setDamageOnHurt(isDamageableOnHurt.getValue());
                 equippable.setSwappable(isSwappable.getValue());
 
-                equippable.setAllowedEntities(allowedEntities.getValue());
+                if (allowedEntities.getValue().isEmpty()) equippable.setAllowedEntities(EntityType.PLAYER);
+                else equippable.setAllowedEntities(allowedEntities.getValue());
 
                 meta.setEquippable(equippable);
             }
@@ -259,20 +260,22 @@ public class EquippableFeatures extends FeatureWithHisOwnEditor<EquippableFeatur
     @Override
     public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
 
-        if (isAvailable()){
+        if (isAvailable()) {
             ItemMeta meta = args.getMeta();
-            if(meta.hasEquippable()){
+            if (meta.hasEquippable()) {
                 EquippableComponent equippable = meta.getEquippable();
                 enable.setValue(true);
                 slot.setValue(Optional.ofNullable(AttributeSlot.fromEquipmentSlot(equippable.getSlot())));
                 enableSound.setValue(equippable.getEquipSound() != null);
                 sound.setValue(Optional.ofNullable(equippable.getEquipSound()));
-                if(equippable.getModel() != null) model.setValue(Optional.of(equippable.getModel().toString()));
-                if(equippable.getCameraOverlay() != null) cameraOverlay.setValue(Optional.of(equippable.getCameraOverlay().toString()));
+                if (equippable.getModel() != null) model.setValue(Optional.of(equippable.getModel().toString()));
+                if (equippable.getCameraOverlay() != null)
+                    cameraOverlay.setValue(Optional.of(equippable.getCameraOverlay().toString()));
                 isDamageableOnHurt.setValue(equippable.isDamageOnHurt());
                 isDispensable.setValue(equippable.isDispensable());
                 isSwappable.setValue(equippable.isSwappable());
-                if(equippable.getAllowedEntities() != null) allowedEntities.setValues(new ArrayList<>(equippable.getAllowedEntities()));
+                if (equippable.getAllowedEntities() != null)
+                    allowedEntities.setValues(new ArrayList<>(equippable.getAllowedEntities()));
             }
         }
     }

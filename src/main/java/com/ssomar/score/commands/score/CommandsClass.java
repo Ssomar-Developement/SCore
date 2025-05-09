@@ -212,9 +212,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         }
 
                         Optional<OfflinePlayer> optPlayer = Optional.empty();
+                        String playerStr = "";
 
                         if (args.length >= argIndex + 1 && forType.equalsIgnoreCase("player"))
                             try {
+                                playerStr = args[argIndex];
                                 optPlayer = Optional.of(Bukkit.getOfflinePlayer(args[argIndex]));
                             } catch (final Exception e) {
                                 e.printStackTrace();
@@ -274,7 +276,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 else
                                     SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
                             } else if (modifType.equalsIgnoreCase("clear")) {
-                                final Optional<String> errorOpt = variableOpt.get().clearValue(optPlayer);
+                                final Optional<String> errorOpt;
+
+                                if(playerStr.equalsIgnoreCase("all"))
+                                    errorOpt =  variableOpt.get().clearAllValues();
+                                else  errorOpt = variableOpt.get().clearValue(optPlayer);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());

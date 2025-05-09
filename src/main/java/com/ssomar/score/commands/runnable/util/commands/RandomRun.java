@@ -58,8 +58,10 @@ public class RandomRun extends SCommand {
                 String [] parts = command.split(name + " ");
                 if (parts.length > 1) {
                     String selectionPart = parts[1].trim();
-                    if (selectionPart.contains(":")) {
-                        return selectionPart.split(":")[1].trim();
+                    // Get the valeu after selectionCount: , need to split on the first : because the valeu of selectionCount can contain : example %rand:5|10%
+                    int firstDoublePoint = selectionPart.indexOf(":");
+                    if (firstDoublePoint != -1 && selectionPart.contains("selectionCount:")) {
+                        selectionPart = selectionPart.substring(firstDoublePoint + 1).trim();
                     }
                     // Old syntax without :
                     return selectionPart.trim();
