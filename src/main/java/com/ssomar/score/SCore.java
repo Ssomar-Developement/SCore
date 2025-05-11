@@ -384,7 +384,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     /* The server is in 1.20.5 or + ? */
     public static boolean is1v20v5Plus() {
-        return is1v20v5() || is1v20v6() || is1v21Plus();
+        return is1v20v5() || is1v20v6Plus();
+    }
+    /* The server is in 1.20.6 or + ? */
+    public static boolean is1v20v6Plus() {
+        return  is1v20v6() || is1v21Plus();
     }
 
     public static boolean is1v21Plus() {

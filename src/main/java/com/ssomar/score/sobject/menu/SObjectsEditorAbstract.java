@@ -97,7 +97,7 @@ public abstract class SObjectsEditorAbstract<T extends SObject & SObjectEditable
     abstract void goBack();
 
     public void sendMessageCreate(Player p) {
-        if (sPlugin.isLotOfWork() && manager.getLoadedObjects().size() >= sPlugin.getMaxSObjectsLimit()) {
+        if (sPlugin.isLotOfWork() && manager.getLoadedObjects().size() >= getLoader().getMaxFreeObjects()) {
             p.sendMessage(StringConverter.coloredString("&4&l" + sPlugin.getNameDesign() + " "+ TM.g(Text.EDITOR_PREMIUM_REQUIREPREMIUMTOADDMORE)));
         } else {
             p.closeInventory();

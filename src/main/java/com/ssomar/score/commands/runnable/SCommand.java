@@ -186,7 +186,7 @@ public abstract class SCommand {
         if (!arg.contains("%") || isFinalVerification) {
             try {
                 Attribute.valueOf(arg.toUpperCase());
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 ac.setValid(false);
                 ac.setError("&cA SCommand contains an &6invalid attribute&c: &e" + arg + " &cfor command: &e" + template);
             }

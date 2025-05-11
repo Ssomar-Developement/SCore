@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.FeatureAbstract;
@@ -50,6 +51,10 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "NULL");
+        if (valueStr.equals("NULL")){
+            this.value = defaultValue;
+            return errors;
+        }
         if (valueStr.contains("%")) {
             placeholder = Optional.of(valueStr);
             value = Optional.empty();
@@ -72,8 +77,8 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
                 item.setAmount(amount);
                 this.value = Optional.of(item);
             } catch (Exception e) {
-                if (!valueStr.equals("NULL"))
-                    errors.add("&cERROR, Couldn't load the ItemStack value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
+                e.printStackTrace();
+                errors.add("&cERROR, Couldn't load the ItemStack value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
                 this.value = defaultValue;
             }
         }
@@ -104,8 +109,17 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     public String itemStackToString(ItemStack item){
         String valStr = "";
         //System.out.println("item: " + item);
-        if(item.hasItemMeta()) valStr = "minecraft:"+item.getType().toString().toLowerCase()+item.getItemMeta().getAsString();
-        else valStr = "minecraft:"+item.getType().toString().toLowerCase();
+        if(SCore.is1v20v6Plus()){
+            String itemTypeKey = item.getType().getKey().toString();
+            String components = item.getItemMeta().getAsComponentString();
+            String itemAsString = itemTypeKey + components;
+            valStr = itemAsString;
+        }
+        else {
+            if (item.hasItemMeta())
+                valStr = "minecraft:" + item.getType().toString().toLowerCase() + item.getItemMeta().getAsString();
+            else valStr = "minecraft:" + item.getType().toString().toLowerCase();
+        }
         return valStr;
     }
 

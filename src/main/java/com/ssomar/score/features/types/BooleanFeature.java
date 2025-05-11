@@ -73,6 +73,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         clone.setValue(value);
         clone.setPlaceholder(placeholder);
         clone.setNoValueUsePlaceholder(noValueUsePlaceholder);
+        clone.setPremium(isPremium());
         return clone;
     }
 

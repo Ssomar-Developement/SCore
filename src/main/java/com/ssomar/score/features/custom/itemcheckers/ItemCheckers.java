@@ -58,6 +58,7 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
             if (SCore.is1v13Less() && notFor1_13_less.contains(restriction)) continue;
             if (!SCore.is1v19Plus() && notFor1_18_less.contains(restriction)) continue;
             if (!SCore.is1v20Plus() && notFor1_19_less.contains(restriction)) continue;
+            //System.out.println("Adding restriction " + restriction.name()+ restriction.featureSetting.isRequirePremium());
             checkers.put(restriction, new BooleanFeature(this, defaultValues.get(restriction), restriction.featureSetting));
         }
     }
@@ -69,6 +70,7 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
             ConfigurationSection section = config.getConfigurationSection(getName());
             error.addAll(itemCheckerType.load(plugin, section, isPremiumLoading));
             for (ItemCheckerEnum restriction : checkers.keySet()) {
+                //System.out.println("Loading restriction " + restriction.name()+" IS PREMIUM LOADING: " + isPremiumLoading);
                 checkers.get(restriction).load(plugin, section, isPremiumLoading);
             }
         }
@@ -163,8 +165,8 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
         features.add(itemCheckerType);
         if(itemCheckerType.getValue().get() == ItemCheckerType.ITEM_MUST_BE_EXACTLY_THE_SAME) return features;
 
-        for (ItemCheckerEnum restriction : checkers.keySet()) {
-            features.add(checkers.get(restriction));
+        for (ItemCheckerEnum checker : checkers.keySet()) {
+            features.add(checkers.get(checker));
         }
         return features;
     }
