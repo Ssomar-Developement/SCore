@@ -442,6 +442,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     targetPlayerCommands(getFeatureSettings("targetPlayerCommands")),
     targetEntityCommands(getFeatureSettings("targetEntityCommands")),
     targetBlockCommands(getFeatureSettings("targetBlockCommands")),
+    targetItemCommands(getFeatureSettings("targetItemCommands")),
     displayCommands(getFeatureSettings("displayCommands")),
     playerConditions(getFeatureSettings("playerConditions")),
     targetConditions(getFeatureSettings("targetConditions")),

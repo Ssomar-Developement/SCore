@@ -69,6 +69,8 @@ public class EventInfo {
     /* ITEM */
     private Optional<ItemStack> item;
 
+    private Optional<ItemStack> targetItem;
+
     /* WORLD */
     private Optional<World> world;
 
@@ -145,6 +147,7 @@ public class EventInfo {
         this.command = Optional.empty();
         this.slot = Optional.empty();
         this.item = Optional.empty();
+        this.targetItem = Optional.empty();
         this.world = Optional.empty();
         this.inventoryType = Optional.empty();
         this.placeholders = new HashMap<>();
@@ -179,6 +182,7 @@ public class EventInfo {
         eInfo.setMustDoNothing(mustDoNothing);
         eInfo.setSlot(slot);
         eInfo.setItem(item);
+        eInfo.setTargetItem(targetItem);
         eInfo.setWorld(world);
         eInfo.setInventoryType(inventoryType);
         eInfo.setPlaceholders(placeholders);

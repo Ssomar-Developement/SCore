@@ -561,6 +561,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     tags("tags", "Tags", new String[]{"&7&oThe tags", "&8&oExamples", "&a{age:3}", "&a{lit:true}", "&7&ominecraft.fandom.com/wiki/Block_states"}, GUI.WRITABLE_BOOK),
     targetBlockCommands("targetBlockCommands", "Target Block Commands", new String[]{"&7&oThe target block commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND"))),
     targetBlockConditions("targetBlockConditions", "Target Block Conditions", new String[]{""}, Material.ANVIL),
+    targetItemCommands("targetItemCommands", "Target Item Commands", new String[]{"&7&oThe target item commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND"))),
     targetCommands("targetCommands", "Target Commands", new String[]{"&7&oThe target commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND"))),
     targetConditions("targetConditions", "Target Conditions", new String[]{""}, Material.ANVIL),
     targetEntityCommands("targetEntityCommands", "Target Entity Commands", new String[]{"&7&oThe target entity commands to execute"}, FixedMaterial.getMaterial(Arrays.asList("COMMAND_BLOCK", "COMMAND"))),

@@ -38,4 +38,19 @@ public class EntityBuilder {
         return entity;
     }
 
+    public EntityType getEntityType() {
+        EntityType entityType = null;
+        try {
+            entityType = EntityType.valueOf(entityDefinitionToBuild.toUpperCase());
+        } catch (Exception ignored) {
+            // Try to create entity from snapshot
+            try {
+                entityType = Bukkit.getEntityFactory().createEntitySnapshot(entityDefinitionToBuild).getEntityType();
+            } catch (Exception ignored2) {
+                entityType = EntityType.PIG;
+            }
+        }
+        return entityType;
+    }
+
 }

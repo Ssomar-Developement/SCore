@@ -32,6 +32,10 @@ public interface SOption {
         return OptionGlobal.getOptionWithTargetBlockST();
     }
 
+    default List<SOption> getOptionWithTargetItem(){
+        return OptionGlobal.getOptionWithTargetItemST();
+    }
+
     default List<SOption> getOptionWithTargetEntity(){
         return OptionGlobal.getOptionWithTargetEntityST();
     }

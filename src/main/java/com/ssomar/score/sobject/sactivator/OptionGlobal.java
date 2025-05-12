@@ -54,6 +54,11 @@ public enum OptionGlobal implements SOption {
         return result;
     }
 
+    public static List<SOption> getOptionWithTargetItemST() {
+        List<SOption> result = new ArrayList<>();
+        return result;
+    }
+
     public static List<SOption> getOptionWithTargetEntityST() {
         List<SOption> result = new ArrayList<>();
         return result;

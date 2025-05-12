@@ -72,6 +72,8 @@ public class ActionInfo implements Serializable {
 
     private ItemStack itemStack;
 
+    private ItemStack targetItemStack;
+
     /* ------------------ */
 
     private transient Optional<Vector> velocity;
@@ -97,6 +99,7 @@ public class ActionInfo implements Serializable {
         this.launcherUUID = null;
         this.receiverUUID = null;
         this.itemStack = null;
+        this.targetItemStack = null;
         this.blockLocationX = -1;
         this.blockLocationY = -1;
         this.blockLocationZ = -1;
@@ -122,6 +125,7 @@ public class ActionInfo implements Serializable {
         result.setOldBlockMaterialName(oldBlockMaterialName);
         result.setEntityUUID(entityUUID);
         result.setItemStack(itemStack);
+        result.setTargetItemStack(targetItemStack);
         result.setSilenceOutput(silenceOutput);
         result.setNoPlayerTriggeredTheAction(noPlayerTriggeredTheAction);
         result.setBlockLocationX(blockLocationX);
