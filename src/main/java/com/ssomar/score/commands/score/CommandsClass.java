@@ -21,6 +21,7 @@ import com.ssomar.score.commands.score.clear.ClearType;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.events.loop.LoopManager;
+import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.features.custom.cooldowns.CooldownsManager;
 import com.ssomar.score.features.custom.loop.LoopFeatures;
@@ -78,7 +79,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete"};
+    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "no-translated"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -136,6 +137,10 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
         }
 
         switch (command.toLowerCase()) {
+            case "no-translated":
+                SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cNo translated text sent in your console. &7(You can send it to Ssomar in the suggestions channel on the discord).");
+                Utils.sendConsoleFlatMsg(SCore.plugin, FeatureSettingsSCore.getAllNonTranslated());
+                break;
             case "clear":
                 ClearCommand.clearCmd(SCore.plugin, sender, args);
                 break;

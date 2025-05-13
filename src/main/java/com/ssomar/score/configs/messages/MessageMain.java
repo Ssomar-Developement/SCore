@@ -94,7 +94,7 @@ public class MessageMain {
 
             InputStream flux = plugin.getClass().getResourceAsStream("/com/ssomar/" + plugin.getName().toLowerCase() + "/configs/locale/Locale_" + GeneralConfig.getInstance().getLocale() + ".yml");
             if(flux == null) {
-                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" &c(Message in jar not found");
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" &c(File in jar not found");
                 return insert;
             }
             InputStreamReader lecture = new InputStreamReader(flux, StandardCharsets.UTF_8);
@@ -104,7 +104,9 @@ public class MessageMain {
             while ((ligne = buff.readLine()) != null && isNotUpdate) {
                 if (ligne.contains(what + ":")) {
                     Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Update of &6" + what + " &7in your for the plugin > &6" + plugin.getName() + " &7in language: &6" + GeneralConfig.getInstance().getLocale());
-                    insert = ligne.split("\"")[1];
+                    String[] split = ligne.split("\"");
+                    if(split.length > 1) insert = split[1];
+                    else insert = "";
                     config.set(what, insert);
                     config.save(pdFile);
                     isNotUpdate = false;
@@ -112,11 +114,11 @@ public class MessageMain {
             }
             buff.close();
             if (isNotUpdate) {
-                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6" + what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale()+" (Message not found in jar)");
             }
         } catch (Exception e) {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cERROR LOAD MESSAGE &6"+ what + " &cfor the plugin > &6" + plugin.getName() + " &cin language: &6" + GeneralConfig.getInstance().getLocale());
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
         return insert;

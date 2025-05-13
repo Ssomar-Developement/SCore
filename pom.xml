@@ -39,6 +39,14 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>com/ssomar/score/features/lang</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/java/com/ssomar/score/features/lang/</directory>
+                <includes>
+                    <include>*.txt</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/languages/</directory>

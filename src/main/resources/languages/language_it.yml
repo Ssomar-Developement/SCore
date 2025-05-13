@@ -1,0 +1,70 @@
+editor:
+  back:
+    name: "&4&l⬅ &cIndietro"
+  creation:
+    id:
+      name: "&2&l✚ &a&lID Creazione:"
+  delete:
+    name: "&4&l✘ &cElimina"
+    normal:
+      description: "&4&lX &cClicca qui per eliminare"
+    shift:
+      left:
+        description: "&4&lX &cShift + Click sinistro per eliminare"
+      description: "&4&lX &cShift + Click per eliminare"
+    message: "&cEhi, se vuoi eliminare %object%"
+  edit:
+    description: "&a✎ Clicca qui per modificare"
+  exit:
+    name: "&4&l✘ &cEsci"
+  folder:
+    name: "&2&l✦ CARTELLA: &a"
+    description: ["", "&7Clicca qui per aprire la cartella"]
+  give:
+    shift:
+      right:
+        description: "&2✔ &aShift + click destro per darti l'oggetto"
+    receivedMessage: "&aHai ricevuto &e"
+  invalid:
+    file:
+      name: "&4&l✦ FILE NON VALIDO: &c&o"
+      description: "&7Il plugin può caricare solo file &e.yml"
+    configuration:
+      name: "&4&l✦ CONFIGURAZIONE NON VALIDA: &c&o"
+      description: "&7Modifica il file di configurazione"
+      freeLimit: "&7Assicurati anche di non aver raggiunto il limite della versione gratuita"
+  new:
+    name: "&a&l➕ &aNuovo"
+  page:
+    name: " - Pagina "
+    next:
+      name: "&dPagina successiva &5&l▶"
+    previous:
+      name: "&5&l◀ &dPagina precedente"
+  path:
+    name: "&6&l✦ &ePERCORSO:"
+    description: ["&8&oClicca qui per tornare", "&8&oalla cartella precedente"]
+  premade:
+    premium:
+      name: "&5&l✚ &dPremium predefinito %object%"
+    packs:
+      name: "&5&l✚ &d%object% dai pacchetti personalizzati"
+  premium:
+    description: "&5&l❂ &d&lSolo Premium &5&l❂"
+    requirePremiumToAddMore: "&cRICHIEDE PREMIUM: per aggiungere più di %limit% %object%, è necessaria la versione premium"
+  reset:
+    name: "&4&l✘ &cReimposta"
+    description:
+      - ""
+      - "&c&oClicca qui per reimpostare"
+      - "&c&otutte le opzioni di questa creazione"
+  save:
+    name: "&a&l✔ &aSalva"
+    description:
+      - ""
+      - "&a&oClicca qui per salvare"
+      - "&a&ola tua configurazione!"
+  title:
+    color: "&e&l"
+  currently:
+    name: "&7✦ Attualmente:"

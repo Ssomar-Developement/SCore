@@ -17,7 +17,10 @@ public enum Locale {
     DE("Deutsch"), // German
     ES("Español"), // Spanish
     //HU,
-    //ptBR,
+    PT("Português"), // Portuguese
+    HI("हिन्दी"), // Hindi
+
+    IT("Italiano"), // Italian
     //UK,
     RU("Pусский язык"), // Russian;
     ZH("中文"), // Chinese;

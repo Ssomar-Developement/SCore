@@ -1,0 +1,70 @@
+editor:
+  back:
+    name: "&4&l⬅ &cवापस"
+  creation:
+    id:
+      name: "&2&l✚ &a&lनिर्माण ID:"
+  delete:
+    name: "&4&l✘ &cहटाएं"
+    normal:
+      description: "&4&lX &cहटाने के लिए यहां क्लिक करें"
+    shift:
+      left:
+        description: "&4&lX &cशिफ्ट + बाएं क्लिक से हटाएं"
+      description: "&4&lX &cशिफ्ट + क्लिक से हटाएं"
+    message: "&cअरे, यदि आप %object% को हटाना चाहते हैं"
+  edit:
+    description: "&a✎ बदलने के लिए यहां क्लिक करें"
+  exit:
+    name: "&4&l✘ &cबाहर जाएं"
+  folder:
+    name: "&2&l✦ फ़ोल्डर: &a"
+    description: ["", "&7फ़ोल्डर खोलने के लिए यहां क्लिक करें"]
+  give:
+    shift:
+      right:
+        description: "&2✔ &aखुद को देने के लिए शिफ्ट + दायां क्लिक करें"
+    receivedMessage: "&aआपको प्राप्त हुआ &e"
+  invalid:
+    file:
+      name: "&4&l✦ अमान्य फ़ाइल: &c&o"
+      description: "&7प्लगइन केवल &e.yml &7फ़ाइलों को लोड कर सकता है"
+    configuration:
+      name: "&4&l✦ अमान्य कॉन्फ़िगरेशन: &c&o"
+      description: "&7कृपया अपनी कॉन्फ़िगरेशन फ़ाइल संपादित करें"
+      freeLimit: "&7यह भी सुनिश्चित करें कि आपने निःशुल्क संस्करण की सीमा पार नहीं की है"
+  new:
+    name: "&a&l➕ &aनया"
+  page:
+    name: " - पृष्ठ "
+    next:
+      name: "&dअगला पृष्ठ &5&l▶"
+    previous:
+      name: "&5&l◀ &dपिछला पृष्ठ"
+  path:
+    name: "&6&l✦ &eपथ:"
+    description: ["&8&oपिछले फ़ोल्डर में वापस जाने के लिए क्लिक करें", "&8&o"]
+  premade:
+    premium:
+      name: "&5&l✚ &dडिफ़ॉल्ट प्रीमियम %object%"
+    packs:
+      name: "&5&l✚ &dकस्टम पैक से %object%"
+  premium:
+    description: "&5&l❂ &d&lसिर्फ प्रीमियम के लिए &5&l❂"
+    requirePremiumToAddMore: "&cप्रीमियम आवश्यक: %limit% %object% से अधिक जोड़ने के लिए प्रीमियम संस्करण की आवश्यकता है"
+  reset:
+    name: "&4&l✘ &cरीसेट करें"
+    description:
+      - ""
+      - "&c&oरीसेट करने के लिए यहां क्लिक करें"
+      - "&c&oइस निर्माण के सभी विकल्प"
+  save:
+    name: "&a&l✔ &aसहेजें"
+    description:
+      - ""
+      - "&a&oअपनी सेटिंग सहेजने के लिए यहां क्लिक करें"
+      - "&a&o"
+  title:
+    color: "&e&l"
+  currently:
+    name: "&7✦ वर्तमान में:"

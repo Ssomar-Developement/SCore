@@ -77,7 +77,7 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
                 item.setAmount(amount);
                 this.value = Optional.of(item);
             } catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
                 errors.add("&cERROR, Couldn't load the ItemStack value of " + this.getName() + " from config, value: " + valueStr + " &7&o" + getParent().getParentInfo());
                 this.value = defaultValue;
             }

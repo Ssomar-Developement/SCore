@@ -8,6 +8,11 @@ import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     HARDNESS(getFeatureSettings("HARDNESS")),
@@ -631,6 +636,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
 
     public static FeatureSettingsInterface[] getValues() {
         Locale locale = GeneralConfig.getInstance().getLocale();
+        return getValues(locale);
+    }
+
+    public static FeatureSettingsInterface[] getValues(Locale locale) {
         switch (locale) {
             case FR:
                 return FeatureSettingsSCoreFR.values();
@@ -648,10 +657,17 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return FeatureSettingsSCoreID.values();
             case AR:
                 return FeatureSettingsSCoreAR.values();
+            case PT:
+                return FeatureSettingsSCorePT.values();
+            case HI:
+                return FeatureSettingsSCoreHI.values();
+            case IT:
+                return FeatureSettingsSCoreIT.values();
             default:
                 return FeatureSettingsSCoreEN.values();
         }
     }
+
 
     public static FeatureSettingsInterface getFeatureSettings(String identifier, @Nullable String configName, boolean requirePremium, SavingVerbosityLevel savingVerbosityLevel) {
         if (configName == null) configName = identifier;
@@ -667,7 +683,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cNo feature Translation found for setting: &6" + identifier + " &cin &6" + GeneralConfig.getInstance().getLocale().name());
 
         /* try in english */
-        values = FeatureSettingsSCoreEN.values();
+        return getEnglishFeatureSettings(identifier, configName, requirePremium, savingVerbosityLevel);
+    }
+
+    public static FeatureSettingsInterface getEnglishFeatureSettings(String identifier, @Nullable String configName, boolean requirePremium, SavingVerbosityLevel savingVerbosityLevel) {
+        if (configName == null) configName = identifier;
+        FeatureSettingsInterface[] values = FeatureSettingsSCoreEN.values();
         for (FeatureSettingsInterface value : values) {
             if (value.getIdentifier().equals(identifier)) {
                 value.setName(configName);
@@ -677,6 +698,64 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
             }
         }
         throw new IllegalArgumentException("No feature settings found for config name: " + identifier);
+    }
+
+    public static String getAllNonTranslated() {
+        StringBuilder sb = new StringBuilder();
+
+        for(Locale locale : Locale.values()) {
+            if(locale == Locale.EN) continue;
+            sb.append("For Locale: "+locale.name()+ " (" +locale.getName()+")\n");
+            int i = 0;
+            for (FeatureSettingsSCore feature : FeatureSettingsSCore.values()) {
+                FeatureSettingsInterface[] values = getValues(locale);
+                boolean found = false;
+                for (FeatureSettingsInterface value : values) {
+                    if (value.getIdentifier().equals(feature.getIdentifier())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) continue;
+                if(i == 0) {
+                    sb.append("Translations not found\n")
+                            .append("You are an expert in this language and you can help us to translate it.\n")
+                            .append("The settings you will translate are from Minecraft Plugins.\n")
+                            .append("Avoid to translate the plugin name: SCore, ExecutableItems, EI, ExecutableEvents, EE, MyFurniture, MF, CustomPiglinsTrades, CPT, ExecutableBlocks, EB, ExecutableCrafting, EC.\n")
+                            .append("The format of settings are IDENTIFIER(IDENTIFIER_STR, NAME_STR, DESCRIPTION_TAB_STR, ...)\n")
+                            .append("You have to translate only the NAME and the DESCRIPTION, the other things must be the same.\n")
+                            .append("You need to translate the following settings:\n");
+                }
+                i++;
+                sb.append(getBrutEnglishLineFromClass(feature.getIdentifier()));
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    public static String getBrutEnglishLineFromClass(String identifier){
+        // Read class file from the jar
+        StringBuilder sb = new StringBuilder();
+        try {
+            Class<?> clazz = FeatureSettingsSCoreEN.class;
+            String className = clazz.getName().replace('.', '/') + "_FLAT.txt";
+            InputStream inputStream = clazz.getClassLoader().getResourceAsStream(className);
+            if (inputStream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.trim().startsWith(identifier+"(")) {
+                        sb.append(line).append("\n");
+                    }
+                }
+                reader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     public static void reload() {
