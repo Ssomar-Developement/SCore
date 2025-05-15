@@ -45,6 +45,17 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     private double lastDamageTaken;
     private double lastDamageDealt;
 
+    private boolean init = false;
+
+    private double xInitial;
+    private double yInitial;
+    private double zInitial;
+    private float pitchInitial;
+    private float pitchPositiveInitial;
+    private float yawInitial;
+    private float yawPositiveInitial;
+    private String directionInitial;
+
     @Getter
     private Map<String, String> placeholders;
 
@@ -107,6 +118,20 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                 direction = "SE";
             }
 
+            if(!init) {
+                this.xInitial = x;
+                this.yInitial = y;
+                this.zInitial = z;
+                this.pitchInitial = pitch;
+                if (pitch < 0) pitchPositiveInitial = pitch * -1;
+                else pitchPositiveInitial = pitch;
+                this.yawInitial = yaw;
+                if (yaw < 0) yawPositiveInitial = yaw * -1;
+                else yawPositiveInitial = yaw;
+                this.directionInitial = direction;
+
+            }
+
             String slot = player.getInventory().getHeldItemSlot() + "";
             if (fixSlot != -1) slot = fixSlot + "";
 
@@ -126,12 +151,24 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                 placeholders.put("%direction%", direction);
             }
 
-            placeholders.put("%" + particle + "_world%", pLoc.getWorld().getName());
-            placeholders.put("%" + particle + "_world_lower%", pLoc.getWorld().getName().toLowerCase());
+            String world = pLoc.getWorld().getName();
+
+            placeholders.put("%" + particle + "_world%", world);
+            placeholders.put("%" + particle + "_world_lower%", world.toLowerCase());
             placeholders.put("%" + particle + "_slot%", slot);
             placeholders.put("%" + particle + "_slot_live%", player.getInventory().getHeldItemSlot() + "");
             placeholders.put("%" + particle + "_direction%", direction);
+
+            if(!init){
+                placeholders.put("%" + particle + "_world_initial%", world);
+                placeholders.put("%" + particle + "_world_lower_initial%", world.toLowerCase());
+                placeholders.put("%" + particle + "_direction_initial%", direction);
             }
+            // it means new placeholder %player_world_initial% %player_world_lower_initial% %player_direction_initial%
+
+            }
+
+            this.init = true;
         }
     }
 
@@ -191,6 +228,16 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_int%", ((int) x) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_int%", ((int) y) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_int%", ((int) z) + "", true);
+
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial%", xInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial%", yInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial%", zInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial_int%", ((int) xInitial) + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial_int%", ((int) yInitial) + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial_int%", ((int) zInitial) + "", true);
+
+            // It means new placeholder %player_x_initial% %player_y_initial% %player_z_initial% %player_x_initial_int% %player_y_initial_int% %player_z_initial_int%
+
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken%", lastDamageTaken + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_dealt%", lastDamageTaken + "", false);
@@ -201,11 +248,23 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive%", pitchPositive + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_int%", ((int) pitchPositive) + "", false);
 
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_initial%", pitchInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_initial_int%", ((int) pitchInitial) + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_initial%", pitchPositiveInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_initial_int%", ((int) pitchPositiveInitial) + "", false);
+
+            // It means new placeholder %player_pitch_initial% %player_pitch_positive_initial% %player_pitch_initial_int% %player_pitch_positive_initial_int%
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw%", yaw + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_int%", ((int) yaw) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive%", yawPositive + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_int%", ((int) yawPositive) + "", false);
 
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial%", yawInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial_int%", ((int) yawInitial) + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial%", yawPositiveInitial + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial_int%", ((int) yawPositiveInitial) + "", false);
+
+            // It means new placeholder %player_yaw_initial% %player_yaw_positive_initial% %player_yaw_initial_int% %player_yaw_positive_initial_int%
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_attack_charge%", attackCharge + "", false);
         }
 

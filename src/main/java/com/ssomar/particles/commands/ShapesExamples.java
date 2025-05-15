@@ -24,6 +24,8 @@ public class ShapesExamples {
         examples.put("magicCircles", "/score particles shape:magicCircles radius:1 rate:3 radiusRate:1 time:20");
         examples.put("eye", "/score particles shape:eye radius:2 radius2:2 extension:1 rate:100");
         examples.put("chaoticDoublePendulum", "/score particles shape:chaoticDoublePendulum radius:2 gravity:-1 length:200 length2:200 mass1:50 mass2:50 dimension3:false speed:2 time:200");
+        //examples.put("wall", "/score particles shape:wall particle:FLAME height:3 length:5 density:10 pitch:0 yaw:90 verticalOrder:up horizontalOrder:near");
+
     }
 
     public Optional<String> getExample(String shape){

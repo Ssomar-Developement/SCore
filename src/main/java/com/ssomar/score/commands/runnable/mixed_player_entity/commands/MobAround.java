@@ -113,7 +113,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                 }
             }
         };
-        SCore.schedulerHook.runLocationTask(runnable, receiver.getLocation(), 0L);
+        SCore.schedulerHook.runLocationTask(runnable, receiver != null ? receiver.getLocation() : location, 0L);
     }
 
     @Override

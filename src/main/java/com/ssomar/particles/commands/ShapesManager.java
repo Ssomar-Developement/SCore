@@ -56,6 +56,9 @@ public class ShapesManager {
         // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("atom");
         whitelistedShapes.add("meguminExplosion");
 
+        // New AI
+        //whitelistedShapes.add("wall");
+
         Method[] methods = XParticle.class.getDeclaredMethods();
         for (Method method : methods) {
             if (whitelistedShapes.contains(method.getName())) {

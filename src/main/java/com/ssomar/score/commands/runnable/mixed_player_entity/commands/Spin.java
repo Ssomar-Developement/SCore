@@ -42,6 +42,8 @@ public class Spin extends MixedCommand {
             }
         };
         task.set(SCore.schedulerHook.runRepeatingTask(runnable, 0, 1));
+
+        //PacketEventsTool.sendTest((Player) receiver);
     }
 
     @Override

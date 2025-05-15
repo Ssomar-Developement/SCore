@@ -2371,6 +2371,106 @@ public final class XParticle {
     }
 
     /**
+     * Spawns a vertical wall of particles.
+     *
+     * @param height         the height of the wall in blocks.
+     * @param length         the width of the wall in blocks.
+     * @param density        number of particles per block (higher = more dense).
+     * @param pitch          vertical angle in degrees (like player pitch).
+     * @param yaw            horizontal angle in degrees (like player yaw).
+     * @param verticalOrder  "up" or "down" — direction to build vertically.
+     * @param horizontalOrder "near" or "far" — direction to build horizontally.
+     * @param timeToDisplay    time to display the particles in ticks.
+     * @param plugin          the plugin reference for scheduling.
+     * @param display        the particle display object.
+     */
+    public static ScheduledTask  wall(Plugin plugin, double height, double length, double density, double pitch, double yaw, double offset, int timeToDisplay, String drawMode,
+                            String verticalOrder, String horizontalOrder, ParticleDisplay display) {
+        List<Vector> grid = new ArrayList<>();
+        double spacing = 1.0 / density;
+
+        Vector direction = getDirection(yaw, pitch);
+        Vector offsetVector = direction.clone().multiply(offset);
+        Vector up = new Vector(0, 1, 0);
+
+        boolean verticalUp = verticalOrder.equalsIgnoreCase("up");
+        boolean horizontalNear = horizontalOrder.equalsIgnoreCase("near");
+
+        List<Double> hList = new ArrayList<>();
+        for (double h = (verticalUp ? 0 : height);
+             verticalUp ? h <= height : h >= 0;
+             h += (verticalUp ? spacing : -spacing)) {
+            hList.add(h);
+        }
+
+        List<Double> lList = new ArrayList<>();
+        for (double l = (horizontalNear ? 0 : length);
+             horizontalNear ? l <= length : l >= 0;
+             l += (horizontalNear ? spacing : -spacing)) {
+            lList.add(l);
+        }
+
+        if (drawMode.equalsIgnoreCase("vertical")) {
+            for (double l : lList) {
+                for (double h : hList) {
+                    Vector point = direction.clone().multiply(l).add(up.clone().multiply(h)).add(offsetVector);
+                    grid.add(point);
+                }
+            }
+        } else {
+            for (double h : hList) {
+                for (double l : lList) {
+                    Vector point = direction.clone().multiply(l).add(up.clone().multiply(h)).add(offsetVector);
+                    grid.add(point);
+                }
+            }
+        }
+
+        if (timeToDisplay <= 0) {
+            for (Vector point : grid) display.spawn(point);
+            return null;
+        }
+
+        int total = grid.size();
+        int perTick = Math.max(1, total / timeToDisplay);
+        AtomicReference<ScheduledTask> task = new AtomicReference<>();
+
+        Runnable runnable = new Runnable() {
+            int index = 0;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < perTick && index < total; i++, index++) {
+                    display.spawn(grid.get(index));
+                }
+                if (index >= total) task.get().cancel();
+            }
+        };
+
+        ScheduledTask scheduled = SCore.schedulerHook.runAsyncRepeatingTask(runnable, 0L, 1L);
+        task.set(scheduled);
+        return scheduled;
+    }
+
+    /**
+     * Converts yaw and pitch into a direction vector.
+     *
+     * @param yaw   Yaw in degrees (0 = South, 90 = West, 180 = North, -90 = East)
+     * @param pitch Pitch in degrees (positive looks downward)
+     * @return Normalized direction vector
+     */
+    public static Vector getDirection(double yaw, double pitch) {
+        double yawRad = Math.toRadians(yaw);
+        double pitchRad = Math.toRadians(pitch);
+
+        double x = -Math.cos(pitchRad) * Math.sin(yawRad);
+        double y = -Math.sin(pitchRad);
+        double z = Math.cos(pitchRad) * Math.cos(yawRad);
+
+        return new Vector(x, y, z).normalize();
+    }
+
+    /**
      * Reads an Image from the given path.
      *
      * @param path the path of the image.

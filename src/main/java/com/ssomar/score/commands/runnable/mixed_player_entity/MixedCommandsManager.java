@@ -72,6 +72,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new Teleport());
         commands.add(new UnsafeTeleportOnCursor());
         commands.add(new WorldTeleport());
+        //commands.add(new SpawnEntity());
 
         if (!SCore.is1v12Less()) {
             commands.add(new EquipmentVisualReplace());
