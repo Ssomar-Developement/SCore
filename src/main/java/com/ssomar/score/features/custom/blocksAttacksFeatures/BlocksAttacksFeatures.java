@@ -1,22 +1,21 @@
-/*package com.ssomar.score.features.custom.blocksAttacksFeatures;
+package com.ssomar.score.features.custom.blocksAttacksFeatures;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
+import com.ssomar.score.features.custom.blocksAttacksFeatures.DamageReductionFeatures.group.DamageReductionGroupFeature;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
-import com.ssomar.score.features.types.BooleanFeature;
-import com.ssomar.score.features.types.DoubleFeature;
-import com.ssomar.score.features.types.IntegerFeature;
-import com.ssomar.score.features.types.SoundFeature;
+import com.ssomar.score.features.types.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.backward_compatibility.SoundUtils;
 import com.ssomar.score.utils.emums.ResetSetting;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import io.papermc.paper.datacomponent.item.Weapon;
+import io.papermc.paper.datacomponent.item.BlocksAttacks;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,19 +38,23 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
     private SoundFeature blockSound;
     private SoundFeature disableSound;
     private DoubleFeature disableCooldownScale;
+    private DamageReductionGroupFeature damageReductions;
+    private DamageTypeFeature bypassedBy;
 
     public BlocksAttacksFeatures(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.food);
+        super(parent, FeatureSettingsSCore.blockAttacksFeatures);
         reset();
     }
 
     @Override
     public void reset() {
-        enable = new BooleanFeature(this, true, FeatureSettingsSCore.enable);
+        enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         blockDelay = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.blockDelay);
-        blockSound = new SoundFeature(this, Optional.of("BLOCK_ANVIL_LAND"), FeatureSettingsSCore.blockSound);
-        disableSound = new SoundFeature(this, Optional.of("BLOCK_ANVIL_LAND"), FeatureSettingsSCore.disableSound);
+        blockSound = new SoundFeature(this, Optional.empty(), FeatureSettingsSCore.blockSound);
+        disableSound = new SoundFeature(this, Optional.empty(), FeatureSettingsSCore.disableSound);
         disableCooldownScale = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.disableCooldownScale);
+        damageReductions = new DamageReductionGroupFeature(this, false);
+        bypassedBy = new DamageTypeFeature(this, Optional.empty(), FeatureSettingsSCore.bypassedBy);
     }
 
     @Override
@@ -59,10 +62,9 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
         List<String> errors = new ArrayList<>();
         if (config.isConfigurationSection(getName())) {
             ConfigurationSection section = config.getConfigurationSection(getName());
-            errors.addAll(enable.load(plugin, section, isPremiumLoading));
-            errors.addAll(disableBlockingTime.load(plugin, section, isPremiumLoading));
-            errors.addAll(damagePerAttack.load(plugin, section, isPremiumLoading));
-
+            for(FeatureInterface feature : getFeatures()) {
+               errors.addAll(feature.load(plugin, section, isPremiumLoading));
+            }
         }
 
         return errors;
@@ -72,9 +74,9 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
-        enable.save(section);
-        disableBlockingTime.save(section);
-        damagePerAttack.save(section);
+        for(FeatureInterface feature : getFeatures()) {
+            feature.save(section);
+        }
         if (isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()) {
             config.set(getName(), null);
             return;
@@ -92,8 +94,7 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
 
     @Override
     public BlocksAttacksFeatures initItemParentEditor(GUI gui, int slot) {
-        int len = 5;
-        if (!SCore.is1v21v2Plus()) len = 6;
+        int len = 8;
         String[] finalDescription = new String[getEditorDescription().length + len];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - len] = GUI.CLICK_HERE_TO_CHANGE;
@@ -104,9 +105,17 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
         else
             finalDescription[finalDescription.length - len] = "&7Disabled: &c&l✘";
         len--;
-        finalDescription[finalDescription.length - len] = "&7Disable Blocking Time: &e" + disableBlockingTime.getValue().get();
+        finalDescription[finalDescription.length - len] = "&7Block delay: &e" + blockDelay.getValue().get();
         len--;
-        finalDescription[finalDescription.length - len] = "&7Damage Per Attack: &e" + damagePerAttack.getValue().get();
+        finalDescription[finalDescription.length - len] = "&7Block sound: &e" + blockSound.getValue().orElse(null);
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Disable sound: &e" + disableSound.getValue().orElse(null);
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Disable cooldown scale: &e" + disableCooldownScale.getValue().get();
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Damage reductions amount: &e" + damageReductions.asList().size();
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Bypassed by: &e" + bypassedBy.getValue().orElse(null);
         len--;
 
 
@@ -116,7 +125,7 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
 
     @Override
     public boolean isAvailable() {
-        return SCore.isPaperOrFork() && SCore.is1v21v5Plus();
+        return SCore.isPaperOrFork() && SCore.is1v21v5Plus() && SCore.hasClass("io.papermc.paper.datacomponent.item.BlocksAttacks") && SCore.hasMethod("io.papermc.paper.datacomponent.item.BlocksAttacks", "damageReductions"); // Because first builds of paper 1.21.5 dont have the feature;
     }
 
     @Override
@@ -139,11 +148,17 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
         if (isAvailable()) {
             if (enable.getValue()) {
                 ItemStack item = args.getItem();
-                SsomarDev.testMsg("Weapon features applyOnItem2", true);
+                SsomarDev.testMsg("blockattacks features applyOnItem2", true);
                 try {
-                    item.setData(DataComponentTypes.WEAPON, Weapon.weapon().disableBlockingForSeconds(disableBlockingTime.getValue().get()).itemDamagePerAttack(damagePerAttack.getValue().get()));
+                    item.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks()
+                            .blockSound(blockSound.getValue().isPresent() ? blockSound.getValue().get().getKey() : null)
+                            .blockDelaySeconds(blockDelay.getValue().get())
+                            .disableSound(disableSound.getValue().isPresent() ? disableSound.getValue().get().getKey() : null)
+                            .disableCooldownScale(disableCooldownScale.getValue().get().floatValue())
+                            .damageReductions(damageReductions.asList())
+                            .bypassedBy(bypassedBy.getValue().isPresent() ? bypassedBy.getValueTagKey() : null));
                 } catch (Exception e) {
-                    Utils.sendConsoleMsg(SCore.plugin, "&cError while applying the weapon features on an item");
+                    Utils.sendConsoleMsg(SCore.plugin, "&cError while applying the block attacks features on an item");
                     e.printStackTrace();
                 }
             }
@@ -154,18 +169,22 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
     public void loadFromItem(@NotNull FeatureForItemArgs args) {
         if (isAvailable()) {
             ItemStack item = args.getItem();
-            if (item.hasData(DataComponentTypes.WEAPON)) {
-                Weapon weapon = item.getData(DataComponentTypes.WEAPON);
+            if (item.hasData(DataComponentTypes.BLOCKS_ATTACKS)) {
+                BlocksAttacks blocksAttacks = item.getData(DataComponentTypes.BLOCKS_ATTACKS);
                 enable.setValue(true);
-                disableBlockingTime.setValue(Optional.of((int)weapon.disableBlockingForSeconds()));
-                damagePerAttack.setValue(Optional.of((int)weapon.itemDamagePerAttack()));
+                blockDelay.setValue(Optional.of((int) blocksAttacks.blockDelaySeconds()));
+                blockSound.setValue(Optional.ofNullable(SoundUtils.getSound(blocksAttacks.blockSound().value())));
+                disableSound.setValue(Optional.ofNullable(SoundUtils.getSound(blocksAttacks.disableSound().value())));
+                disableCooldownScale.setValue(Optional.of((double) blocksAttacks.disableCooldownScale()));
+                damageReductions.setValues(blocksAttacks.damageReductions());
+                bypassedBy.setValue(blocksAttacks.bypassedBy());
             }
         }
     }
 
     @Override
     public ResetSetting getResetSetting() {
-        return ResetSetting.WEAPON;
+        return ResetSetting.BLOCK_ATTACKS;
     }
 
     @Override
@@ -177,8 +196,12 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
     public BlocksAttacksFeatures clone(FeatureParentInterface newParent) {
         BlocksAttacksFeatures dropFeatures = new BlocksAttacksFeatures(newParent);
         dropFeatures.setEnable(enable.clone(dropFeatures));
-        dropFeatures.setDisableBlockingTime(disableBlockingTime.clone(dropFeatures));
-        dropFeatures.setDamagePerAttack(damagePerAttack.clone(dropFeatures));
+        dropFeatures.setBlockDelay(blockDelay.clone(dropFeatures));
+        dropFeatures.setBlockSound(blockSound.clone(dropFeatures));
+        dropFeatures.setDisableSound(disableSound.clone(dropFeatures));
+        dropFeatures.setDisableCooldownScale(disableCooldownScale.clone(dropFeatures));
+        dropFeatures.setDamageReductions(damageReductions.clone(dropFeatures));
+        dropFeatures.setBypassedBy(bypassedBy.clone(dropFeatures));
 
         return dropFeatures;
     }
@@ -187,8 +210,13 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
         features.add(enable);
-        features.add(disableBlockingTime);
-        features.add(damagePerAttack);
+        features.add(blockDelay);
+        features.add(blockSound);
+        features.add(disableSound);
+        features.add(disableCooldownScale);
+        features.add(damageReductions);
+        features.add(bypassedBy);
+
         return features;
     }
 
@@ -199,7 +227,10 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
 
     @Override
     public ConfigurationSection getConfigurationSection() {
-        return getParent().getConfigurationSection();
+        ConfigurationSection section = getParent().getConfigurationSection();
+        if (section.isConfigurationSection(this.getName())) {
+            return section.getConfigurationSection(this.getName());
+        } else return section.createSection(this.getName());
     }
 
     @Override
@@ -213,8 +244,13 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
             if (feature instanceof BlocksAttacksFeatures) {
                 BlocksAttacksFeatures hiders = (BlocksAttacksFeatures) feature;
                 hiders.setEnable(enable);
-                hiders.setDisableBlockingTime(disableBlockingTime);
-                hiders.setDamagePerAttack(damagePerAttack);
+                hiders.setBlockDelay(blockDelay);
+                hiders.setBlockSound(blockSound);
+                hiders.setDisableSound(disableSound);
+                hiders.setDisableCooldownScale(disableCooldownScale);
+                hiders.setDamageReductions(damageReductions);
+                hiders.setBypassedBy(bypassedBy);
+
             }
         }
     }
@@ -230,4 +266,3 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
     }
 
 }
-*/

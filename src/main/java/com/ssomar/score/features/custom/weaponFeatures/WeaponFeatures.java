@@ -43,7 +43,7 @@ public class WeaponFeatures extends FeatureWithHisOwnEditor<WeaponFeatures, Weap
 
     @Override
     public void reset() {
-        enable = new BooleanFeature(this, true, FeatureSettingsSCore.enable);
+        enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         disableBlockingTime = new IntegerFeature(this, Optional.of(0), FeatureSettingsSCore.disableBlockingTime);
         damagePerAttack = new IntegerFeature(this, Optional.of(5), FeatureSettingsSCore.damagePerAttack);
     }
@@ -86,8 +86,7 @@ public class WeaponFeatures extends FeatureWithHisOwnEditor<WeaponFeatures, Weap
 
     @Override
     public WeaponFeatures initItemParentEditor(GUI gui, int slot) {
-        int len = 5;
-        if (!SCore.is1v21v2Plus()) len = 6;
+        int len = 4;
         String[] finalDescription = new String[getEditorDescription().length + len];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - len] = GUI.CLICK_HERE_TO_CHANGE;

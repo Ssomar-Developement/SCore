@@ -387,7 +387,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-eefc80d650-1</version>
+            <version>main-5e813f9b5e-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -409,7 +409,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.21.5-R0.1-SNAPSHOT</version>
+            <version>1.21.5-R0.1-20250518.223744-89</version>
             <scope>provided</scope>
         </dependency>
 

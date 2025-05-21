@@ -6,6 +6,8 @@ import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeatur
 import com.ssomar.score.features.custom.aroundblock.group.AroundBlockGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.attributes.group.AttributesGroupFeatureEditor;
 import com.ssomar.score.features.custom.attributes.group.AttributesGroupFeatureEditorManager;
+import com.ssomar.score.features.custom.blocksAttacksFeatures.DamageReductionFeatures.group.DamageReductionGroupFeatureEditor;
+import com.ssomar.score.features.custom.blocksAttacksFeatures.DamageReductionFeatures.group.DamageReductionGroupFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.block.parent.BlockConditionsFeatureEditor;
 import com.ssomar.score.features.custom.conditions.block.parent.BlockConditionsFeatureEditorManager;
 import com.ssomar.score.features.custom.conditions.custom.parent.CustomConditionsFeatureEditor;
@@ -64,6 +66,8 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloaded;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloadedManager;
+import com.ssomar.score.features.menu_organisation.MenuGroupEditor;
+import com.ssomar.score.features.menu_organisation.MenuGroupEditorManager;
 import com.ssomar.score.hardness.hardness.HardnessEditor;
 import com.ssomar.score.hardness.hardness.HardnessEditorManager;
 import com.ssomar.score.menu.GUI;
@@ -188,7 +192,16 @@ public class NewEditorInteractionsListener implements Listener {
         }else if (holder instanceof AttributesGroupFeatureEditor) {
             AttributesGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
-        }else if (holder instanceof FireworkExplosionGroupFeatureEditor) {
+        }
+        else if(holder instanceof MenuGroupEditor){
+            MenuGroupEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof DamageReductionGroupFeatureEditor) {
+            DamageReductionGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
+            return;
+        }
+        else if (holder instanceof FireworkExplosionGroupFeatureEditor) {
             FireworkExplosionGroupFeatureEditorManager.getInstance().clicked(player, itemS, e.getClick());
             return;
         }
@@ -347,7 +360,17 @@ public class NewEditorInteractionsListener implements Listener {
         } else if (AttributesGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             AttributesGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
-        }else if (FireworkExplosionGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+        }
+        else if (MenuGroupEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            MenuGroupEditorManager.getInstance().receiveMessage(p, message);
+        }
+        else if (DamageReductionGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
+            e.setCancelled(true);
+            DamageReductionGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
+        }
+
+        else if (FireworkExplosionGroupFeatureEditorManager.getInstance().getRequestWriting().containsKey(p)) {
             e.setCancelled(true);
             FireworkExplosionGroupFeatureEditorManager.getInstance().receiveMessage(p, message);
         }

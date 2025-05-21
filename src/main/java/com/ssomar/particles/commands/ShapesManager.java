@@ -1,5 +1,10 @@
 package com.ssomar.particles.commands;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.utils.scheduler.ScheduledTask;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -7,57 +12,78 @@ public class ShapesManager {
 
     private static ShapesManager instance;
 
+    private Map<Entity, List<ScheduledTask>> runningShapes;
+
     Map<String, Shape> shapes;
 
     public ShapesManager() {
         instance = this;
         shapes = new HashMap<>();
+        runningShapes = new HashMap<>();
         init();
+
+        // Loop that clears the running shapes every 10 seconds
+        Runnable task = () -> {
+            for (Entity entity : runningShapes.keySet()) {
+                if (entity instanceof Player) {
+                    if(!((Player) entity).isOnline()){
+                        runningShapes.remove(entity);
+                        continue;
+                    }
+                    endedShapes(entity);
+                }
+                else if(entity.isDead()){
+                    runningShapes.remove(entity);
+                }
+            }
+        };
+        // Schedule the task to run every 10 seconds
+        SCore.schedulerHook.runAsyncRepeatingTask(task, 0L, 200L);
     }
 
     public void init() {
         List<String> whitelistedShapes = new ArrayList<>();
+        whitelistedShapes.add("atom"); // s  // PROBLEM DOUBLE PARTICLE
+        whitelistedShapes.add("atomic");
         whitelistedShapes.add("blackSun");
-        whitelistedShapes.add("circle");
-        whitelistedShapes.add("diamond");
-        whitelistedShapes.add("circularBeam");
-        whitelistedShapes.add("filledCircle");
-        whitelistedShapes.add("chaoticDoublePendulum");
-        whitelistedShapes.add("magicCircles");
-        whitelistedShapes.add("infinity");
-        whitelistedShapes.add("cone");
-        whitelistedShapes.add("ellipse");
         whitelistedShapes.add("blackhole");
-        whitelistedShapes.add("rainbow");
+        whitelistedShapes.add("chaoticDoublePendulum");
+        whitelistedShapes.add("circle");
+        whitelistedShapes.add("circularBeam");
+        whitelistedShapes.add("cone");
         whitelistedShapes.add("crescent");
-        whitelistedShapes.add("waveFunction");
-        whitelistedShapes.add("vortex");
-        whitelistedShapes.add("cylinder");
+        whitelistedShapes.add("cylinder"); // old , now based on circle
+        whitelistedShapes.add("diamond");
+        whitelistedShapes.add("dna"); // s
+        whitelistedShapes.add("dnaReplication");
+        whitelistedShapes.add("ellipse");
+        whitelistedShapes.add("explosionWave"); // s
+        whitelistedShapes.add("eye");
+        whitelistedShapes.add("filledCircle"); // old , now based on circle
+
+        whitelistedShapes.add("heart");
+        whitelistedShapes.add("helix");
+        whitelistedShapes.add("illuminati");
+        whitelistedShapes.add("magicCircles");
+        whitelistedShapes.add("meguminExplosion");
+        whitelistedShapes.add("polygon");
+        whitelistedShapes.add("rainbow");
+        whitelistedShapes.add("ring"); // old , now based on circle
         whitelistedShapes.add("sphere");
         whitelistedShapes.add("spikeSphere");
-        whitelistedShapes.add("ring");
+        whitelistedShapes.add("square"); // new
+        whitelistedShapes.add("star");
+        whitelistedShapes.add("tesseract");
+        whitelistedShapes.add("vortex");
+
+
+        whitelistedShapes.add("infinity");
         //whitelistedShapes.add("spread");
-        whitelistedShapes.add("heart");
-        whitelistedShapes.add("atomic");
-        whitelistedShapes.add("helix");
         // PRBLEM ARGUMENTS + INFINITE LOOP whitelistedShapes.add("lightning");
-        //whitelistedShapes.add("dna");
-        whitelistedShapes.add("dnaReplication");
         //whitelistedShapes.add("drawLine");
         // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("cloud");
-        whitelistedShapes.add("tesseract");
-        whitelistedShapes.add("mandelbrot");
-        whitelistedShapes.add("julia");
-        whitelistedShapes.add("star");
-        whitelistedShapes.add("eye");
-        whitelistedShapes.add("illuminati");
-        whitelistedShapes.add("polygon");
         //ROBLEM DOUBLE PARTICLE whitelistedShapes.add("neopaganPentagram");
-        // PROBLEM DOUBLE PARTICLE whitelistedShapes.add("atom");
-        whitelistedShapes.add("meguminExplosion");
 
-        // New AI
-        //whitelistedShapes.add("wall");
 
         Method[] methods = XParticle.class.getDeclaredMethods();
         for (Method method : methods) {
@@ -74,8 +100,15 @@ public class ShapesManager {
         /*for(Shape shape : shapes.values()){
             SsomarDev.testMsg("Shape available: " + shape.getName(), true);
         }*/
-        Shape shape = shapes.get(shapeName);
-        return Optional.ofNullable(shape);
+
+        // Get shape ingorecase
+        for (String name : shapes.keySet()) {
+            if (name.equalsIgnoreCase(shapeName)) {
+                return Optional.of(shapes.get(name));
+            }
+        }
+
+        return Optional.empty();
     }
 
     public List<String> getShapesNames(){
@@ -89,5 +122,37 @@ public class ShapesManager {
     public static ShapesManager getInstance() {
         if (instance == null) instance = new ShapesManager();
         return instance;
+    }
+
+    public void addRunningShape(Entity player, ScheduledTask task) {
+        if (!runningShapes.containsKey(player)) {
+            runningShapes.put(player, new ArrayList<>());
+        }
+        runningShapes.get(player).add(task);
+    }
+
+    public void clearRunningShapes(Entity player) {
+        if (runningShapes.containsKey(player)) {
+            for (ScheduledTask task : runningShapes.get(player)) {
+                task.cancel();
+            }
+            runningShapes.remove(player);
+        }
+    }
+
+    public void endedShapes(Entity player) {
+        if (runningShapes.containsKey(player)) {
+            List<ScheduledTask> shapesStillRunning = new ArrayList<>();
+            for (ScheduledTask task : runningShapes.get(player)) {
+                if (task != null && !task.isCancelled()) {
+                    shapesStillRunning.add(task);
+                }
+            }
+            if (!shapesStillRunning.isEmpty()) {
+                runningShapes.put(player, shapesStillRunning);
+            } else {
+                runningShapes.remove(player);
+            }
+        }
     }
 }

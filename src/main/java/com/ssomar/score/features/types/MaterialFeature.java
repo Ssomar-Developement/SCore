@@ -80,6 +80,7 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
         }
         if (GeneralConfig.getInstance().isEnableCommentsInConfig())
             config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+        else config.setComments(this.getName(), null);
 
     }
 

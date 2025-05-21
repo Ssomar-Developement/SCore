@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.score.clear;
 
+import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.player.commands.Bossbar;
@@ -28,8 +29,8 @@ public class ClearCommand {
                 } catch (Exception e) {
                     isUUID = false;
                 }
-                if(isUUID){}
-                else if (Bukkit.getPlayer(args[0]) == null) {
+                if (isUUID) {
+                } else if (Bukkit.getPlayer(args[0]) == null) {
                     sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cInvalid playername."));
                     return;
                 } else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
@@ -46,18 +47,18 @@ public class ClearCommand {
             } catch (Exception e) {
                 isUUID = false;
             }
-            if(isUUID){}
-            else if (Bukkit.getPlayer(args[0]) == null) {
+            if (isUUID) {
+            } else if (Bukkit.getPlayer(args[0]) == null) {
                 sender.sendMessage(StringConverter.coloredString("&4" + sPlugin.getNameDesign() + " &cInvalid playername."));
                 return;
             } else pUUID = Bukkit.getPlayer(args[0]).getUniqueId();
         }
 
         ClearType clearType = ClearType.ALL;
-        if(args.length >= 2){
-            try{
+        if (args.length >= 2) {
+            try {
                 clearType = ClearType.valueOf(args[1]);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -67,33 +68,36 @@ public class ClearCommand {
         if (player != null) name = player.getName();
         else name = pUUID.toString();
 
-        switch (clearType){
+        switch (clearType) {
 
             case ALL:
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
                 ActionbarHandler.getInstance().removeActionbars(player);
                 Bossbar.getInstance().clearTasks(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(all)"));
+                ShapesManager.getInstance().clearRunningShapes(player);
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name + " &7&o(all)"));
                 break;
             case DELAYED_COMMANDS:
                 CommandsHandler.getInstance().removeAllDelayedCommands(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(delayed commands)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name + " &7&o(delayed commands)"));
                 break;
             case COOLDOWNS:
                 CooldownsManager.getInstance().removeCooldownsOf(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(cooldowns)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name + " &7&o(cooldowns)"));
                 break;
             case ACTIONBARS:
                 ActionbarHandler.getInstance().removeActionbars(player);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name+" &7&o(actionbars)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name + " &7&o(actionbars)"));
                 break;
             case WHILE:
                 While.getInstance().removeWhile(pUUID);
-                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" +name+" &7&o(while)"));
+                sender.sendMessage(StringConverter.coloredString("&2" + sPlugin.getNameDesign() + " &aSuccessfully clear the user/entity: &e" + name + " &7&o(while)"));
                 break;
             case BOSSBARS:
                 Bossbar.getInstance().clearTasks(player);
+            case PARTICLES:
+                ShapesManager.getInstance().clearRunningShapes(player);
 
         }
 

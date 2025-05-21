@@ -6,5 +6,6 @@ public enum ClearType {
     COOLDOWNS,
     ACTIONBARS,
     BOSSBARS,
-    WHILE;
+    WHILE,
+    PARTICLES;
 }

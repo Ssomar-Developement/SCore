@@ -102,7 +102,7 @@ public enum FeatureSettingsSCoreIT implements FeatureSettingsInterface {
     detailedSlots("detailedSlots", "Slot Dettagliati", new String[]{"&7&oGli slot dove l'attivatore", "&7&ofunzionerà"}, Material.ARMOR_STAND),
     displayCooldownMessage("displayCooldownMessage", "Mostra Messaggio di Cooldown", new String[]{"&7&oMostra il messaggio del cooldown"}, null),
     displayNameDrop("displayNameDrop", "Mostra Nome Personalizzato", new String[]{"&7&oMostra il nome personalizzato sopra l'oggetto"}, null),
-    dropFeatures("dropFeatures", "Funzionalità Caduta", new String[]{"&7&oLe funzionalità della caduta"}, Material.ANVIL),
+    dropFeatures("dropFeatures", "Funzionalità Caduta", new String[]{"&7&oLe funzionalità della caduta"}, Material.DROPPER),
     duration("duration", "Durata", new String[]{"&7&oLa durata dell'effetto pozione", "&4⚠ &cIn tick!", "&7&o1 sec = 20 tick"}, GUI.CLOCK),
     eastValue("eastValue", "Valore Est", new String[]{"&7&oIl valore verso est"}, GUI.CLOCK),
     effects("effects", "Effetti", new String[]{"&7&oGli effetti"}, FixedMaterial.getMaterial(Arrays.asList("POTION", "REDSTONE"))),
@@ -331,7 +331,7 @@ public enum FeatureSettingsSCoreIT implements FeatureSettingsInterface {
 
     potionEffects("potionEffects", "Effetti Pozione", new String[]{"&7&oGli effetti della pozione"}, FixedMaterial.getBrewingStand()),
     potionExtended("potionExtended", "Pozione Estesa", new String[]{"&7&oPozione estesa"}, null),
-    potionSettings("potionFeatures", "Impostazioni Pozione", new String[]{"&7&oLe impostazioni della pozione"}, FixedMaterial.getBrewingStand()),
+    potionFeatures("potionFeatures", "Impostazioni Pozione", new String[]{"&7&oLe impostazioni della pozione"}, FixedMaterial.getBrewingStand()),
     potionType("potionType", "Tipo di Pozione", new String[]{"&7&oIl tipo di pozione"}, Material.POTION),
     potionUpgraded("potionUpgraded", "Pozione Potenziata", new String[]{"&7&oPozione potenziata"}, null),
     radius("radius", "Raggio", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("HEART_OF_THE_SEA", "WEB"))),
@@ -415,7 +415,6 @@ public enum FeatureSettingsSCoreIT implements FeatureSettingsInterface {
     toolRules("toolRules", "Regole Strumenti", new String[]{"&7&oLe regole degli strumenti"}, Material.DIAMOND_PICKAXE),
     toolRule("toolRule", "Regola Strumento", new String[]{"&7&oLa regola dello strumento"}, Material.DIAMOND_PICKAXE),
     miningSpeed("miningSpeed", "Velocità di Scavo", new String[]{"&7&oLa velocità di scavo dello strumento"}, GUI.CLOCK),
-    enable("enable", "Abilita", new String[]{"&7&oAbilita le funzionalità dello strumento"}, Material.LEVER),
     defaultMiningSpeed("defaultMiningSpeed", "Velocità di Scavo Predefinita", new String[]{"&7&oLa velocità di scavo predefinita dello strumento"}, GUI.CLOCK),
 
     correctForDrops("correctForDrops", "Corretto per i Drop", new String[]{"&7&oImposta se questa regola è considerata", "&7&olo strumento ottimale per i blocchi elencati", "&7&oe farà cadere gli oggetti."}, Material.LEVER),
@@ -524,7 +523,7 @@ public enum FeatureSettingsSCoreIT implements FeatureSettingsInterface {
     fireworkColor("fireworkColor", "Colore Fuoco d'Artificio", new String[]{"&7&oIl colore del fuoco d'artificio"}, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_STAR", "FIREWORK_CHARGE"))),
     recognitions("recognitions", "Riconoscimenti", new String[]{"&7&oI riconoscimenti dell'oggetto"}, Material.PAPER),
 
-    food("foodFeatures", "Funzionalità Cibo", new String[]{"&7&oFunzionalità cibo"}, Material.COOKED_BEEF),
+    foodFeatures("foodFeatures", "Funzionalità Cibo", new String[]{"&7&oFunzionalità cibo"}, Material.COOKED_BEEF),
     nutrition("nutrition", "Nutrizione", new String[]{"&7La nutrizione del cibo"}, GUI.CLOCK),
     maxFurnitureRendered("maxFurnitureRendered", "Massimo Mobili Renderizzati", new String[]{"&7&oIl massimo di mobili renderizzati"}, GUI.CLOCK),
     viewDistanceFurniture("viewDistanceFurniture", "Distanza di Visualizzazione Mobili", new String[]{"&7&oLa distanza di visualizzazione dei mobili"}, GUI.CLOCK),

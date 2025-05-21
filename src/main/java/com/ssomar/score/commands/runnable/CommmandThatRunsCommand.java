@@ -167,9 +167,6 @@ public interface CommmandThatRunsCommand {
                     conditionFeature.setPart2(ColoredStringFeature.buildNull(value));
                     conditionFeature.setComparator(ComparatorFeature.buildNull(lastComparator));
                     conditions.add(conditionFeature);
-
-                    break;
-
                 }
             }
         }

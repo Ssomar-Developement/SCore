@@ -39,7 +39,7 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
     private IntegerFeature eatSeconds;
 
     public FoodFeatures(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.food);
+        super(parent, FeatureSettingsSCore.foodFeatures);
         reset();
     }
 
@@ -72,12 +72,10 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
     public void save(ConfigurationSection config) {
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
-        nutrition.save(section);
-        saturation.save(section);
-        isMeat.save(section);
-        canAlwaysEat.save(section);
-        if (!SCore.is1v21v2Plus()) eatSeconds.save(section);
-        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+        for (FeatureInterface feature : getFeatures()) {
+            feature.save(section);
+        }
+        if (isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()) {
             config.set(getName(), null);
             return;
         }

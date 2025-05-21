@@ -879,6 +879,15 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
     }
 
+    public static boolean hasMethod(String className, String methodName) {
+        try {
+            Class.forName(className).getMethod(methodName);
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            return false;
+        }
+    }
+
     public void displayVersion() {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion()+ " &7!");
     }

@@ -22,11 +22,17 @@ public class MobAround extends BlockCommand {
         CommandSetting displayMsgIfNoPlayer = new CommandSetting("displayMsgIfNoEntity", -1, Boolean.class, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
+        CommandSetting offsetYaw = new CommandSetting("offsetYaw", -1, Double.class, 0d);
+        CommandSetting offsetPitch = new CommandSetting("offsetPitch", -1, Double.class, 0d);
+        CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
         settings.add(safeDistance);
+        settings.add(offsetYaw);
+        settings.add(offsetPitch);
+        settings.add(offsetDistance);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }

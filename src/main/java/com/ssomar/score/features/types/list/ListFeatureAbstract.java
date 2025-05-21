@@ -50,6 +50,8 @@ public abstract class ListFeatureAbstract<T, Y extends FeatureInterface<List<T>,
         List<String> forValue = new ArrayList<>();
         List<String> forBlacklistedValues = new ArrayList<>();
         for (String s : entries) {
+            // https://discord.com/channels/701066025516531753/1373125335742283819
+            if(SCore.isMohist()) s = s.replaceAll("Ã‚Â", "");
             //SsomarDev.testMsg("load: " + s, true);
             if (s.startsWith("!")) {
                 s = s.substring(1);

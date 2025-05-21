@@ -1,7 +1,6 @@
 package com.ssomar.particles.commands;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.utils.emums.CustomColor;
 import com.ssomar.score.utils.numbers.NTools;
 import com.thoughtworks.paranamer.AnnotationParanamer;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
@@ -9,12 +8,16 @@ import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 
-import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import static com.ssomar.particles.commands.ParticleDisplay.edit;
 
 public class Parameters extends ArrayList<Parameter> {
 
@@ -64,38 +67,20 @@ public class Parameters extends ArrayList<Parameter> {
             p.load(parameters);
         }
         if (requireDisplay) {
-            boolean found = false;
+            Configuration config = new MemoryConfiguration();
+            // Create a new section
+            ConfigurationSection section = config.createSection("section");
             for (String s : parameters) {
-                if (s.contains("color:")) {
-                    String colorName = s.split(":")[1];
-                    Optional<Integer> optionalInteger = NTools.getInteger(colorName);
-                    Color color = null;
-                    if (optionalInteger.isPresent()) {
-                        color = new Color(optionalInteger.get());
-                    } else {
-                        org.bukkit.Color bukkitColor = CustomColor.valueOf(colorName.toUpperCase());
-                        if (bukkitColor != null) {
-                            color = new Color(bukkitColor.getRed(), bukkitColor.getGreen(), bukkitColor.getBlue());
-                        }
-                    }
-                    if (color != null) {
-                        display = ParticleDisplay.colored(loc, color, 1);
-                        found = true;
-                        break;
-                    } else {
-                        //SsomarDev.testMsg("Color not found: " + colorName, true);
-                    }
-                    break;
-                } else if (s.contains("particle:")) {
-                    String particleName = s.split(":")[1];
-                    Particle particle = XParticle.getParticle(particleName.toUpperCase());
-                    display = ParticleDisplay.display(loc, particle);
-                    found = true;
-                    break;
+                String[] sp = s.split(":");
+                if (sp.length != 2) continue;
+                String value = sp[1];
+                Optional<Double> optNumber = NTools.getDouble(value);
+                if(optNumber.isPresent()) {
+                    section.set(sp[0], optNumber.get());
                 }
+                else section.set(sp[0], sp[1]);
             }
-            // By default its flame particle
-            if (display == null || !found) display = ParticleDisplay.display(loc, Particle.FLAME);
+            display = edit(ParticleDisplay.simple(loc, Particle.FLAME), section);
 
             if (entity != null) display.withEntity(entity);
         }

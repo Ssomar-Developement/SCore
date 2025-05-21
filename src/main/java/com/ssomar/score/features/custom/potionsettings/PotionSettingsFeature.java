@@ -47,7 +47,7 @@ public class PotionSettingsFeature extends FeatureWithHisOwnEditor<PotionSetting
     private PotionEffectGroupFeature potionEffects;
 
     public PotionSettingsFeature(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.potionSettings);
+        super(parent, FeatureSettingsSCore.potionFeatures);
         reset();
     }
 

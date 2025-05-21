@@ -1,11 +1,14 @@
 package com.ssomar.score.utils;
 
 import com.ssomar.score.SCore;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
+@Getter @Setter
 public class ToolsListMaterial {
 
     private static ToolsListMaterial instance;
@@ -16,10 +19,13 @@ public class ToolsListMaterial {
 
     private List<Material> plantWithGrowthOnlySoulSand;
 
+    private List<Material> oneUsageMaterial;
+
     public ToolsListMaterial() {
         plantWithGrowth = new ArrayList<>();
         plantWithGrowthOnlyFarmland = new ArrayList<>();
         plantWithGrowthOnlySoulSand = new ArrayList<>();
+        oneUsageMaterial = new ArrayList<>();
 
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
@@ -71,6 +77,17 @@ public class ToolsListMaterial {
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
 
+
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("ENDER_PEARL")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("EGG")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("SNOWBALL")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("SPLASH_POTION")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("LINGERING_POTION")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("BLUE_EGG")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("BROWN_EGG")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("WIND_CHARGE")));
+        addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("FIREWORK_ROCKET")));
+
     }
 
     public void addWithoutProblem(List<Material> list, Material material) {
@@ -99,22 +116,6 @@ public class ToolsListMaterial {
             }
         }
         return material;
-    }
-
-    public List<Material> getPlantWithGrowth() {
-        return plantWithGrowth;
-    }
-
-    public List<Material> getPlantWithGrowthOnlyFarmland() {
-        return plantWithGrowthOnlyFarmland;
-    }
-
-    public List<Material> getPlantWithGrowthOnlySoulSand() {
-        return plantWithGrowthOnlySoulSand;
-    }
-
-    public void setPlantWithGrowth(List<Material> plantWithGrowth) {
-        this.plantWithGrowth = plantWithGrowth;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
@@ -51,6 +52,8 @@ public class ColoredStringFeature extends FeatureAbstract<Optional<String>, Colo
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String valueStr = config.getString(this.getName(), "<<NULL>>");
+        // https://discord.com/channels/701066025516531753/1373125335742283819
+        if(SCore.isMohist()) valueStr = valueStr.replaceAll("Ã‚Â", "");
         if (valueStr.equals("<<NULL>>")) {
             if (defaultValue.isPresent()) {
                 valueStr = defaultValue.get();

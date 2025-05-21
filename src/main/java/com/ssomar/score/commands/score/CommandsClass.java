@@ -207,7 +207,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                         // No value is needed for remove.
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
-                            if(args.length > argIndex) value = args[argIndex];
+                            if (args.length > argIndex) value = args[argIndex];
                             else {
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
                                 return;
@@ -283,9 +283,9 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             } else if (modifType.equalsIgnoreCase("clear")) {
                                 final Optional<String> errorOpt;
 
-                                if(playerStr.equalsIgnoreCase("all"))
-                                    errorOpt =  variableOpt.get().clearAllValues();
-                                else  errorOpt = variableOpt.get().clearValue(optPlayer);
+                                if (playerStr.equalsIgnoreCase("all"))
+                                    errorOpt = variableOpt.get().clearAllValues();
+                                else errorOpt = variableOpt.get().clearValue(optPlayer);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
@@ -335,20 +335,23 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                 Location targetLocation = null;
 
-                for (final String arg : args)
+                for (final String arg : args) {
                     if (arg.contains("shape:"))
                         try {
                             shapeName = arg.split(":")[1];
-                        } catch (final Exception ignored) {}
+                        } catch (final Exception ignored) {
+                        }
                     else if (arg.contains("target:"))
                         try {
                             targetStr = arg.split(":")[1];
-                        } catch (final Exception ignored) {}
+                        } catch (final Exception ignored) {
+                        }
                     else if (arg.contains("location:"))
                         try {
                             locationStr = arg.split(":")[1];
-                        } catch (final Exception ignored) {}
-
+                        } catch (final Exception ignored) {
+                        }
+                }
                 if (!targetStr.isEmpty())
                     try {
                         targetEntity = Bukkit.getEntity(UUID.fromString(targetStr));
@@ -377,7 +380,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     final Shape shape = shapeOpt.get();
 
                     shape.getParameters().load(args, targetEntity, targetLocation);
-                    shape.run(shape.getParameters());
+                    shape.run(shape.getParameters(), targetEntity);
 
                     SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aShape executed!");
                 } else {
@@ -395,7 +398,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     if (arg.contains("shape:"))
                         try {
                             shapeName2 = arg.split(":")[1];
-                        } catch (final Exception ignored) {}
+                        } catch (final Exception ignored) {
+                        }
 
                 final Optional<Shape> shapeOpt2 = ShapesManager.getInstance().getShape(shapeName2);
 
@@ -606,98 +610,91 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                 break;
             case "variables-define":
-                boolean isConsole = (player == null);
-
                 try {
-                    // Duplicate Check
-                    if (args.length >= 1) {
-
-                        // Get default value, if it exists. list will not have this.
-                        String variablePath;
-                        if (args[0].contains(".")) {
-                            throw new IllegalArgumentException("Please, no \".\" in variable name.");
-                        } else {
-                            // No path specified, do as usual.
-                            variablePath = "plugins/SCore/variables/" + args[0] + ".yml";
-                        }
-                        final Variable variable = new Variable(args[0], variablePath);
-
-
-                        List<String> argList = new ArrayList<>(); // Default Value
-                        if (args.length > 4) {
-                            argList = Arrays.asList(Arrays.copyOfRange(args, 4, args.length)); // Remaining arguments as a list
-                        }
-                        String formattedArgs = String.join(" ", argList);
-
-                        // Type Check
-                        if (args[1] == null)
-                            throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
-                        switch (args[1].toLowerCase()) {
-                            case "string":
-                                variable.getType().setValue(Optional.of(VariableType.STRING));
-                                break;
-                            case "list":
-                                variable.getType().setValue(Optional.of(VariableType.LIST));
-                                break;
-                            case "number":
-                                variable.getType().setValue(Optional.of(VariableType.NUMBER));
-                                break;
-                            default:
-                                throw new IllegalArgumentException("You must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1]);
-                        }
-
-                        // Scope Check
-                        if (args[2] == null)
-                            throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
-                        if (args[2].equals("global"))
-                            variable.getForFeature().setValue(Optional.of(VariableForEnum.GLOBAL));
-                        else if (args[2].equals("player"))
-                            variable.getForFeature().setValue(Optional.of(VariableForEnum.PLAYER));
-                        else
-                            throw new IllegalArgumentException("You must pick between PLAYER or GLOBAL for the scope!");
-
-                        //Icon Check
-                        if (args[3] == null)
-                            throw new IllegalArgumentException("Command format: /score variables-define NAME TYPE SCOPE MATERIAL default values...");
-                        try {
-                            variable.getIcon().setValue(Optional.of(Material.getMaterial(args[3])));
-                        } catch (Exception n) {
-                            throw new IllegalArgumentException("Is your material \"" + args[3] + "\" a real material in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html?");
-                        }
-
-                        // For non-lists, check if default value is specified. If yes, then set. Otherwise, leave empty.
-                        if (!args[1].equalsIgnoreCase("list") && !formattedArgs.isEmpty())
-                            variable.getDefaultValue().setValue(formattedArgs);
+                    if (args.length < 3) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cCommand format: /score variables-define {var_id} {type} {for} [icon_material] [default_values...]"));
+                        return;
+                    }
+                    // Get default value, if it exists. list will not have this.
+                    String variablePath = "";
+                    if (args[0].contains(".")) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cPlease, no \".\" in variable name."));
+                        return;
+                    } else {
+                        // No path specified, do as usual.
+                        variablePath = "plugins/SCore/variables/" + args[0] + ".yml";
+                    }
+                    Optional<Variable> varOpt = VariablesManager.getInstance().getVariable(args[0]);
+                    if (varOpt.isPresent()) return;
+                    final Variable variable = new Variable(args[0], variablePath);
 
 
-                        File varFile = new File(variablePath);
-                        if (!varFile.getParentFile().exists()) {
-                            varFile.getParentFile().mkdirs();
-                        }
-                        if (!varFile.exists()) {
-                            varFile.createNewFile();
-                        }
+                    List<String> argList = new ArrayList<>(); // Default Value
+                    if (args.length > 4) {
+                        argList = Arrays.asList(Arrays.copyOfRange(args, 4, args.length)); // Remaining arguments as a list
+                    }
+                    String formattedArgs = String.join(" ", argList);
 
-
-                        // Save to disk and load into the game
-                        variable.save();
-                        VariablesManager.getInstance().addLoadedObject(variable);
-
-
-                        // Success
-                        Utils.sendConsoleMsg("[SCore] Success defining variable: " + args[0]);
-                        if (!isConsole) {
-                            player.sendMessage(StringConverter.coloredString("&2[SCore] &aSuccess defining variable: " + args[0]));
-                        }
-
+                    // Type Check
+                    switch (args[1].toLowerCase()) {
+                        case "string":
+                            variable.getType().setValue(Optional.of(VariableType.STRING));
+                            break;
+                        case "list":
+                            variable.getType().setValue(Optional.of(VariableType.LIST));
+                            break;
+                        case "number":
+                            variable.getType().setValue(Optional.of(VariableType.NUMBER));
+                            break;
+                        default:
+                            sender.sendMessage(StringConverter.coloredString("&4[SCore] &cYou must pick between STRING, LIST, OR NUMBER for the type! You picked: " + args[1]));
+                            return;
                     }
 
+                    if (args[2].equalsIgnoreCase("global"))
+                        variable.getForFeature().setValue(Optional.of(VariableForEnum.GLOBAL));
+                    else if (args[2].equalsIgnoreCase("player"))
+                        variable.getForFeature().setValue(Optional.of(VariableForEnum.PLAYER));
+                    else {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cYou must pick between PLAYER or GLOBAL for the scope!"));
+                        return;
+                    }
+
+
+                    //Icon Check
+                    if (args.length >= 4) {
+                        try {
+                            variable.getIcon().setValue(Optional.ofNullable(Material.getMaterial(args[3].toUpperCase())));
+                        } catch (Exception n) {
+                            sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid material \"" + args[3] + "\" Check https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html"));
+                            return;
+                        }
+                    }
+
+                    // For non-lists, check if default value is specified. If yes, then set. Otherwise, leave empty.
+                    if (!args[1].equalsIgnoreCase("list") && !formattedArgs.isEmpty())
+                        variable.getDefaultValue().setValue(formattedArgs);
+
+
+                    File varFile = new File(variablePath);
+                    if (!varFile.getParentFile().exists()) {
+                        varFile.getParentFile().mkdirs();
+                    }
+                    if (!varFile.exists()) {
+                        varFile.createNewFile();
+                    }
+
+
+                    // Save to disk and load into the game
+                    variable.save();
+                    VariablesManager.getInstance().addLoadedObject(variable);
+
+
+                    // Success
+                    sender.sendMessage(StringConverter.coloredString("&2[SCore] &aSuccess defining variable: " + args[0]));
 
                 } catch (Exception e) {
-                    Utils.sendConsoleMsg("[SCore] Error defining variable: " + e.getMessage());
-                    if (!isConsole) {
-                        player.sendMessage(StringConverter.coloredString("&2[SCore] &6Error defining variable: &e" + e.getMessage()));
-                    }
+                    sender.sendMessage("&4[SCore] &cError defining variable: " + e.getMessage());
                 }
                 break;
 
@@ -705,7 +702,6 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 if (args.length >= 2) {
                     if (!args[1].equalsIgnoreCase("confirm")) {
                         sender.sendMessage(StringConverter.coloredString("&4[SCore] &cTo confirm deletion, type &6/score variables-delete {varID} confirm&c."));
-
                         return;
                     }
 
@@ -771,7 +767,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                         try {
                             entityOptional = Optional.ofNullable(Bukkit.getEntity(UUID.fromString(entityName)));
-                        } catch (final Exception ignored) {}
+                        } catch (final Exception ignored) {
+                        }
                     } else
                         entityCmd.append(arg).append(" ");
 
@@ -817,7 +814,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             final double z = Double.parseDouble(loc[3]);
 
                             blockOpt = Optional.of(world.get().getBlockAt(new Location(world.get(), x, y, z)));
-                        } catch (final Exception ignored) {}
+                        } catch (final Exception ignored) {
+                        }
                     } else
                         blockCmd.append(arg).append(" ");
 
@@ -996,7 +994,13 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             arguments.add("confirm");
 
                     case "clear":
-                        if (args.length == 3) {
+                        if (args.length == 2) {
+                            // online players
+                            for (final Player p : Bukkit.getOnlinePlayers())
+                                arguments.add(p.getName());
+                            return arguments;
+                        }
+                        else if (args.length == 3) {
                             for (ClearType type : ClearType.values()) {
                                 arguments.add(type.name());
                             }

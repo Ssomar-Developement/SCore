@@ -26,8 +26,8 @@ public class Parameter<T> {
 
     public void load(List<String> parameters){
         for(String s : parameters){
-            if(s.contains(name)){
-                String[] split = s.split(":");
+            String[] split = s.split(":");
+            if(split[0].equalsIgnoreCase(name)){
                 if(split.length == 2){
                     String valueStr = split[1];
                     if(value instanceof Integer){

@@ -1,6 +1,9 @@
 package com.ssomar.particles.commands;
 
+import com.ssomar.score.utils.scheduler.ScheduledTask;
 import lombok.Getter;
+import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 
@@ -19,9 +22,10 @@ public class Shape {
         parameters.init(method);
     }
 
-    public void run(Parameters parameters){
+    public void run(Parameters parameters, @Nullable Entity targetEntity){
         try {
-            method.invoke(this, parameters.getParametersValues());
+            ScheduledTask task = (ScheduledTask) method.invoke(this, parameters.getParametersValues());
+            if(targetEntity!= null) ShapesManager.getInstance().addRunningShape(targetEntity, task);
         } catch (Exception e) {
             e.printStackTrace();
         }

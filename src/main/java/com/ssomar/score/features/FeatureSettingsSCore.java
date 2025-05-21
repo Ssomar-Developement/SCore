@@ -323,7 +323,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     potionEffectType(getFeatureSettings("potionEffectType")),
     potionEffects(getFeatureSettings("potionEffects")),
     potionExtended(getFeatureSettings("potionExtended")),
-    potionSettings(getFeatureSettings("potionSettings")),
+    potionFeatures(getFeatureSettings("potionFeatures")),
     potionType(getFeatureSettings("potionType")),
     potionUpgraded(getFeatureSettings("potionUpgraded")),
     radius(getFeatureSettings("radius")),
@@ -490,7 +490,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     armorColor(getFeatureSettings("armorColor")),
     fireworkColor(getFeatureSettings("fireworkColor")),
     recognitions(getFeatureSettings("recognitions", true, SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    food(getFeatureSettings("food")),
+    foodFeatures(getFeatureSettings("foodFeatures")),
     nutrition(getFeatureSettings("nutrition")),
     maxFurnitureRendered(getFeatureSettings("maxFurnitureRendered")),
     viewDistanceFurniture(getFeatureSettings("viewDistanceFurniture")),
@@ -626,6 +626,21 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     experience(getFeatureSettings("experience")),
     result(getFeatureSettings("result")),
     recipeType(getFeatureSettings("recipeType")),
+    damageReductions(getFeatureSettings("damageReductions")),
+    damageReduction(getFeatureSettings("damageReduction")),
+    baseDamageBlocked(getFeatureSettings("baseDamageBlocked")),
+    factorDamageBlocked(getFeatureSettings("factorDamageBlocked")),
+    horizontalBlockingAngle(getFeatureSettings("horizontalBlockingAngle")),
+    damageTypes(getFeatureSettings("damageTypes")),
+    blockAttacksFeatures(getFeatureSettings("blockAttacksFeatures")),
+    blockDelay(getFeatureSettings("blockDelay")),
+    blockSound(getFeatureSettings("blockSound")),
+    disableSound(getFeatureSettings("disableSound")),
+    disableCooldownScale(getFeatureSettings("disableCooldownScale")),
+    bypassedBy(getFeatureSettings("bypassedBy")),
+    itemTextures(getFeatureSettings("itemTextures")),
+    itemAdvancedComponents(getFeatureSettings("itemAdvancedComponents")),
+    ifGameMode(getFeatureSettings("ifGameMode", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ;
 
     private FeatureSettingsInterface settingsInterface;
@@ -703,9 +718,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     public static String getAllNonTranslated() {
         StringBuilder sb = new StringBuilder();
 
-        for(Locale locale : Locale.values()) {
-            if(locale == Locale.EN) continue;
-            sb.append("For Locale: "+locale.name()+ " (" +locale.getName()+")\n");
+        for (Locale locale : Locale.values()) {
+            if (locale == Locale.EN) continue;
+            sb.append("For Locale: " + locale.name() + " (" + locale.getName() + ")\n");
             int i = 0;
             for (FeatureSettingsSCore feature : FeatureSettingsSCore.values()) {
                 FeatureSettingsInterface[] values = getValues(locale);
@@ -717,7 +732,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                     }
                 }
                 if (found) continue;
-                if(i == 0) {
+                if (i == 0) {
                     sb.append("Translations not found\n")
                             .append("You are an expert in this language and you can help us to translate it.\n")
                             .append("The settings you will translate are from Minecraft Plugins.\n")
@@ -735,7 +750,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
         return sb.toString();
     }
 
-    public static String getBrutEnglishLineFromClass(String identifier){
+    public static String getBrutEnglishLineFromClass(String identifier) {
         // Read class file from the jar
         StringBuilder sb = new StringBuilder();
         try {
@@ -746,7 +761,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    if (line.trim().startsWith(identifier+"(")) {
+                    if (line.trim().startsWith(identifier + "(")) {
                         sb.append(line).append("\n");
                     }
                 }

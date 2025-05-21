@@ -1,5 +1,6 @@
 package com.ssomar.score.utils;
 
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.MythicMobsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,7 +21,7 @@ public class EntityBuilder {
         String entityName = entityDefinitionToBuild;
 
         // Try MythicMobs
-        entity = MythicMobsAPI.buildMythicMob(entityName, location);
+        if(Dependency.MYTHIC_MOBS.isEnabled()) entity = MythicMobsAPI.buildMythicMob(entityName, location);
         if(entity != null) return entity;
 
         // Basic entity

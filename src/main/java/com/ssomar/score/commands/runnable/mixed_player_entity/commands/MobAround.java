@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
+import com.ssomar.particles.commands.XParticle;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
@@ -38,11 +39,17 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         CommandSetting displayMsgIfNoPlayer = new CommandSetting(Arrays.asList("displayMsgIfNoEntity","DisplayMsgIfNoEntity"), -1, Boolean.class, true, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting safeDistance = new CommandSetting("safeDistance", -1, Double.class, 0d);
+        CommandSetting offsetYaw = new CommandSetting("offsetYaw", -1, Double.class, 0d);
+        CommandSetting offsetPitch = new CommandSetting("offsetPitch", -1, Double.class, 0d);
+        CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
         settings.add(safeDistance);
+        settings.add(offsetYaw);
+        settings.add(offsetPitch);
+        settings.add(offsetDistance);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -59,11 +66,20 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                     boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
                     double safeDistance = (double) sCommandToExec.getSettingValue("safeDistance");
 
+                    double offsetYaw = (double) sCommandToExec.getSettingValue("offsetYaw");
+                    double offsetPitch = (double) sCommandToExec.getSettingValue("offsetPitch");
+                    double offsetDistance = (double) sCommandToExec.getSettingValue("offsetDistance");
+
+                    Vector offset = XParticle.calculDirection(offsetYaw, offsetPitch).multiply(offsetDistance);
+
                     int startForCommand = 1;
 
                     List<Entity> entities = new ArrayList<>();
 
                     Location receiverLoc = receiver != null ? receiver.getLocation() : location;
+                    if (receiver != null) {
+                        receiverLoc = receiver.getLocation().add(offset);
+                    }
 
                     for (Entity e : receiverLoc.getWorld().getNearbyEntities(receiverLoc, distance, distance, distance)) {
                         if (e instanceof LivingEntity && !(e instanceof Player)) {

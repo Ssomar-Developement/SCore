@@ -22,15 +22,15 @@ import java.util.Optional;
 public class SpawnEntity extends MixedCommand {
 
     public SpawnEntity() {
-        CommandSetting entity = new CommandSetting("entity", 0, EntityBuilder.class, "ZOMBIE");
-        CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 1);
-        CommandSetting world = new CommandSetting("world", 1, String.class, "");
-        CommandSetting x = new CommandSetting("x", 2, Double.class, Double.MIN_VALUE);
-        CommandSetting y = new CommandSetting("y", 2, Double.class, Double.MIN_VALUE);
-        CommandSetting z = new CommandSetting("z", 2, Double.class, Double.MIN_VALUE);
-        CommandSetting yaw = new CommandSetting("yaw", 2, Double.class, Double.MIN_VALUE);
-        CommandSetting pitch = new CommandSetting("pitch", 3, Double.class, Double.MIN_VALUE);
-        CommandSetting offset = new CommandSetting("offset", 4, Double.class, 0);
+        CommandSetting entity = new CommandSetting("entity", -1, EntityBuilder.class, "ZOMBIE");
+        CommandSetting amount = new CommandSetting("amount", -1, Integer.class, 1);
+        CommandSetting world = new CommandSetting("world", -1, String.class, "");
+        CommandSetting x = new CommandSetting("x", -1, Double.class, Double.MIN_VALUE);
+        CommandSetting y = new CommandSetting("y", -1, Double.class, Double.MIN_VALUE);
+        CommandSetting z = new CommandSetting("z", -1, Double.class, Double.MIN_VALUE);
+        CommandSetting yaw = new CommandSetting("offsetYaw", -1, Double.class, Double.MIN_VALUE);
+        CommandSetting pitch = new CommandSetting("offsetPitch", -1, Double.class, Double.MIN_VALUE);
+        CommandSetting offset = new CommandSetting("offsetDistance", -1, Double.class, 0);
         List<CommandSetting> settings = getSettings();
         settings.add(world);
         settings.add(entity);
@@ -47,8 +47,8 @@ public class SpawnEntity extends MixedCommand {
     @Override
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
         int amount = (int) sCommandToExec.getSettingValue("amount");
-        double yaw = (double) sCommandToExec.getSettingValue("yaw");
-        double pitch = (double) sCommandToExec.getSettingValue("pitch");
+        double yaw = (double) sCommandToExec.getSettingValue("offsetYaw");
+        double pitch = (double) sCommandToExec.getSettingValue("offsetPitch");
 
         String worldName = (String) sCommandToExec.getSettingValue("world");
         double x = (double) sCommandToExec.getSettingValue("x");
@@ -77,8 +77,8 @@ public class SpawnEntity extends MixedCommand {
         receiverLoc.setY(y);
         receiverLoc.setZ(z);
 
-        Vector dir = XParticle.getDirection(yaw, pitch);
-        Vector offset = dir.clone().multiply((double) sCommandToExec.getSettingValue("offset"));
+        Vector dir = XParticle.calculDirection(yaw, pitch);
+        Vector offset = dir.clone().multiply((double) sCommandToExec.getSettingValue("offsetDistance"));
 
         receiverLoc.add(offset);
 
@@ -108,7 +108,7 @@ public class SpawnEntity extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "SPAWN_ENTITY entity:ZOMBIE amount:1 pitch:0 yaw:0 offset:0";
+        return "SPAWN_ENTITY entity:ZOMBIE amount:1 offsetPitch:0 offsetYaw:0 offsetDistance:0";
     }
 
     @Override

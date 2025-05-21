@@ -82,6 +82,9 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPosY(this));
         conditions.add(new IfPosZ(this));
 
+        /* Gamemode */
+        conditions.add(new IfGamemode(this));
+
 
         /* List uncolored string */
         conditions.add(new IfHasPermission(this));

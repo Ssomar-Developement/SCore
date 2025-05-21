@@ -89,6 +89,7 @@ public class BooleanFeature extends FeatureAbstract<Boolean, BooleanFeature> imp
         } else if (!noValueUsePlaceholder) config.set(this.getName(), value);
         if (GeneralConfig.getInstance().isEnableCommentsInConfig())
             config.setComments(this.getName(), StringConverter.decoloredString(Arrays.asList(getFeatureSettings().getEditorDescriptionBrut())));
+        else config.setComments(this.getName(), null);
     }
 
     public Boolean getValue(@Nullable StringPlaceholder sp) {
