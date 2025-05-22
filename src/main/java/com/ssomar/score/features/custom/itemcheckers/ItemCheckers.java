@@ -2,10 +2,7 @@ package com.ssomar.score.features.custom.itemcheckers;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
-import com.ssomar.score.features.FeatureInterface;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureSettingsSCore;
-import com.ssomar.score.features.FeatureWithHisOwnEditor;
+import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloaded;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloadedManager;
 import com.ssomar.score.features.types.BooleanFeature;
@@ -36,8 +33,8 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
     private List<ItemCheckerEnum> notFor1_18_less;
     private List<ItemCheckerEnum> notFor1_19_less;
 
-    public ItemCheckers(FeatureParentInterface parent, ItemCheckerType defaultTypeValue, Map<ItemCheckerEnum, Boolean> defaultValues) {
-        super(parent, FeatureSettingsSCore.itemCheckers);
+    public ItemCheckers(FeatureParentInterface parent, ItemCheckerType defaultTypeValue, Map<ItemCheckerEnum, Boolean> defaultValues, FeatureSettingsInterface settings) {
+        super(parent, settings);
         this.defaultValues = defaultValues;
         this.defaultTypeValue = defaultTypeValue;
         this.notFor1_11_less = new ArrayList<>();
@@ -46,6 +43,14 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
         this.notFor1_18_less = new ArrayList<>();
         this.notFor1_19_less = new ArrayList<>();
         reset();
+    }
+
+    public static Map<ItemCheckerEnum, Boolean> getDefaultValuesOnFalse() {
+        Map<ItemCheckerEnum, Boolean> defaultValues = new LinkedHashMap<>();
+        for (ItemCheckerEnum restriction : ItemCheckerEnum.values()) {
+            defaultValues.put(restriction, false);
+        }
+        return defaultValues;
     }
 
     @Override
@@ -135,8 +140,8 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
         String[] finalDescription = new String[getEditorDescription().length + 2];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        if(itemCheckerType.getValue().get() == ItemCheckerType.ITEM_MUST_BE_EXACTLY_THE_SAME) finalDescription[finalDescription.length - 1] = "&7The item must be exactly the same";
-        else finalDescription[finalDescription.length - 1] = "&7Item checkers activated: &e" + getRestrictionCount();
+        if(itemCheckerType.getValue().get() == ItemCheckerType.ITEM_MUST_BE_EXACTLY_THE_SAME) finalDescription[finalDescription.length - 1] = "&7Currently: &eThe items must be exactly the same";
+        else finalDescription[finalDescription.length - 1] = "&7Currently: &eItem checkers activated: &e" + getRestrictionCount();
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
@@ -149,7 +154,7 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
 
     @Override
     public ItemCheckers clone(FeatureParentInterface newParent) {
-        ItemCheckers restrictions = new ItemCheckers(getParent(), getDefaultTypeValue(), getDefaultValues());
+        ItemCheckers restrictions = new ItemCheckers(getParent(), getDefaultTypeValue(), getDefaultValues(), getFeatureSettings());
         restrictions.setItemCheckerType(itemCheckerType.clone(restrictions));
         Map<ItemCheckerEnum, BooleanFeature> clone = new LinkedHashMap<>();
         for (ItemCheckerEnum restriction : this.checkers.keySet()) {
@@ -189,7 +194,7 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
     @Override
     public void reload() {
         for (FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
-            if (feature instanceof ItemCheckers) {
+            if (feature instanceof ItemCheckers && feature.getFeatureSettings().getIdentifier().equalsIgnoreCase(getFeatureSettings().getIdentifier())) {
                 ItemCheckers restrictions = (ItemCheckers) feature;
                 restrictions.setItemCheckerType(itemCheckerType);
                 Map<ItemCheckerEnum, BooleanFeature> reload = new LinkedHashMap<>();

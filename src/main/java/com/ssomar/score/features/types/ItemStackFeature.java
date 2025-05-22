@@ -3,10 +3,7 @@ package com.ssomar.score.features.types;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewGUIManager;
-import com.ssomar.score.features.FeatureAbstract;
-import com.ssomar.score.features.FeatureParentInterface;
-import com.ssomar.score.features.FeatureRequireOnlyClicksInEditor;
-import com.ssomar.score.features.FeatureSettingsInterface;
+import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
@@ -35,6 +32,8 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     private Optional<ItemStack> value;
     private Optional<ItemStack> defaultValue;
     private Optional<String> placeholder;
+    private FeatureSettingsInterface featureDoubleClickOpener;
+    private String featureDoubleClickOpenerEditorMessage = "";
 
     public ItemStackFeature(FeatureParentInterface parent, Optional<ItemStack> defaultValue, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
@@ -188,6 +187,8 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
             customDescription.add("&8>> &6RIGHT CLICK: &eREMOVE ITEM");
             customDescription.add("&8>> &6SHIFT + LEFT CLICK: &eIncrement (+1)");
             customDescription.add("&8>> &6SHIFT + RIGHT CLICK: &eDecrement (-1)");
+            customDescription.add("&8>> &6MIDDLE CLICK: &eGIVE ITEM");
+            if(!getFeatureDoubleClickOpenerEditorMessage().isEmpty()) customDescription.add(featureDoubleClickOpenerEditorMessage);
         }
         customDescription.add(TM.g(Text.EDITOR_CURRENTLY_NAME));
         customDescription.add("&7&o======== EC EDITOR ========");
@@ -231,6 +232,8 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     @Override
     public ItemStackFeature clone(FeatureParentInterface newParent) {
         ItemStackFeature clone = new ItemStackFeature(newParent, defaultValue, getFeatureSettings());
+        clone.setFeatureDoubleClickOpener(featureDoubleClickOpener);
+        clone.setFeatureDoubleClickOpenerEditorMessage(featureDoubleClickOpenerEditorMessage);
         clone.setValue(value);
         clone.setPlaceholder(getPlaceholder());
         return clone;
@@ -318,6 +321,18 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
 
     @Override
     public boolean doubleClicked(Player editor, NewGUIManager manager) {
+        if(featureDoubleClickOpener != null) {
+
+            for(FeatureInterface feature : (List<FeatureInterface>) getParent().getFeatures()) {
+                if(feature.getFeatureSettings() == featureDoubleClickOpener && feature instanceof FeatureParentInterface) {
+                    FeatureParentInterface featureParent = (FeatureParentInterface) feature;
+                    getParent().reload();
+                    getParent().save();
+                    featureParent.openEditor(editor);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

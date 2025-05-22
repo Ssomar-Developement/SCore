@@ -7,10 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class GlowDropManager {
 
@@ -58,7 +55,22 @@ public class GlowDropManager {
         return Optional.empty();
     }
 
+    public static List<ChatColor> getBannedChatColorsForGlow() {
+        List<ChatColor> banned = new ArrayList<>();
+        banned.add(ChatColor.MAGIC);
+        banned.add(ChatColor.BOLD);
+        banned.add(ChatColor.STRIKETHROUGH);
+        banned.add(ChatColor.UNDERLINE);
+        banned.add(ChatColor.ITALIC);
+        return banned;
+    }
+
     public void addGlow(Entity entity, ChatColor color) {
+
+        if(getBannedChatColorsForGlow().contains(color)){
+            color = ChatColor.WHITE;
+        }
+
         //SsomarDev.testMsg("addGlow : " + entity.getType() + " " + color.name(), false);
         links.put(entity.getUniqueId(), color);
         /* if(SCore.hasTAB && entity instanceof Player){
