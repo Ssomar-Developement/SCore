@@ -418,11 +418,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 .append(parameter.getValue().getClass())
                                 .append("\n");
 
-                    parametersList.append("&7&oFor more info about this shape check the code directly: &aauthor: &eCryptoMorin &alibrary: &eXParticle\n\n");
+                    parametersList.append("&7&oFor more info about this shape check &ethe wiki\n\n");
                     SendMessage.sendMessageNoPlch(sender, parametersList.toString());
 
                     final TextComponent link = new TextComponent(StringConverter.coloredString(CenteredMessage.convertIntoCenteredMessage("&a&l[CLICK HERE]")));
-                    link.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/particles/XParticle.java"));
+                    link.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://docs.ssomar.com/tools-for-all-plugins-score/score-particles"));
 
                     sender.spigot().sendMessage(link);
                     sender.sendMessage(" ");

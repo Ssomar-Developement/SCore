@@ -292,7 +292,7 @@ public class ParticleDisplay implements Cloneable {
         Objects.requireNonNull(config, "Cannot parse ParticleDisplay from a null config section");
 
         String particleName = config.getString("particle");
-        Particle particle = particleName == null ? null : XParticle.getParticle(particleName);
+        Particle particle = particleName == null ? null : XParticle.getParticle(particleName.toUpperCase());
 
         if (particle != null) display.particle = particle;
         if (config.isSet("count")) display.withCount(config.getInt("count"));
