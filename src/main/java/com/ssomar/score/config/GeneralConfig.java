@@ -51,6 +51,8 @@ public class GeneralConfig extends Config {
 
     private boolean selfHostPackDebug;
 
+    private String selfHostPackIp;
+
     public GeneralConfig() {
         super("config.yml");
         super.setup(SCore.dataFolder, SCore.classLoader, null);
@@ -99,6 +101,7 @@ public class GeneralConfig extends Config {
         disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
         enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true) && SCore.is1v19Plus();
         selfHostPackDebug = config.getBoolean("selfHostPackDebug", false);
+        selfHostPackIp = config.getString("selfHostPackIp", "");
     }
 
     public boolean isVerbosityNormal() {

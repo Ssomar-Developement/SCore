@@ -21,29 +21,20 @@ public class HttpByteBuf {
      * HTTP/{protocolVersion} {statusCode} {statusMessage} \n
      */
     public void writeStatusLine(String protocolVersion, int statusCode, String statusMessage) {
-        inner.writeCharSequence("HTTP/" + protocolVersion + " " + statusCode + " " + statusMessage + "\n", StandardCharsets.US_ASCII);
+        inner.writeCharSequence("HTTP/" + protocolVersion + " " + statusCode + " " + statusMessage + "\r\n", StandardCharsets.US_ASCII);
     }
 
-    /**
-     * Writes an HTTP header to the buffer.
-     */
     public void writeHeader(String header, String value) {
-        inner.writeCharSequence(header + ": " + value + "\n", StandardCharsets.US_ASCII);
+        inner.writeCharSequence(header + ": " + value + "\r\n", StandardCharsets.US_ASCII);
     }
 
-    /**
-     * Writes text to the buffer.
-     */
     public void writeText(String text) {
-        inner.writeCharSequence("\n" + text, StandardCharsets.US_ASCII);
+        inner.writeCharSequence("\r\n" + text, StandardCharsets.US_ASCII);
     }
 
-    /**
-     * Writes a byte array to the buffer.
-     */
     public void writeBytes(byte[] bytes) {
-        inner.writeCharSequence("\n", StandardCharsets.US_ASCII);
-        inner.writeBytes(bytes);
+        inner.writeCharSequence("\r\n", StandardCharsets.US_ASCII); // ends headers
+        inner.writeBytes(bytes); // then writes body
     }
 
     /**

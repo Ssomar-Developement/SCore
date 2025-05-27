@@ -11,10 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.UUID;
 
 @Getter
@@ -60,33 +57,57 @@ public class PackSettings {
 
     public String getHostedPath() {
         if (hostedPath != null) return hostedPath;
-        String url = "http://" + getExternalIP() + ":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
-        if((hostedPathType == null || hostedPathType == HostedPathType.EXTERNAL) && isHttpURLReachable(url, 10000)) {
+
+        if (!GeneralConfig.getInstance().getSelfHostPackIp().isEmpty()) {
+            String url = "http://" + GeneralConfig.getInstance().getSelfHostPackIp() + ":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
             hostedPathType = HostedPathType.EXTERNAL;
             hostedPath = url;
-            Utils.sendConsoleMsg("&7Pack hosted at: &e" + url);
+            Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with self host IP)");
             return url;
         }
-        if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+
+
+        String url = "http://" + getExternalIP() + ":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
+        if ((hostedPathType == null || hostedPathType == HostedPathType.EXTERNAL) && isHttpURLReachable(url, 10000)) {
+            hostedPathType = HostedPathType.EXTERNAL;
+            hostedPath = url;
+            Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with external IP)");
+            return url;
+        }
+        if (GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+
         try {
-            url = "http://"+InetAddress.getLocalHost().getHostAddress()+":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
-            if((hostedPathType == null || hostedPathType == HostedPathType.LOCAL_IP) && isHttpURLReachable(url, 10000)) {
+            url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
+            if ((hostedPathType == null || hostedPathType == HostedPathType.LOCAL_IP) && isHttpURLReachable(url, 10000)) {
                 hostedPathType = HostedPathType.LOCAL_IP;
                 hostedPath = url;
-                Utils.sendConsoleMsg("&7Pack hosted at: &e" + url);
+                Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with local IP)");
                 return url;
             }
-        } catch (UnknownHostException e) {}
-        if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+        } catch (UnknownHostException e) {
+        }
+        if (GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+
+        try {
+            url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + Bukkit.getServer().getPort() + "/score/" + getFileName();
+            if ((hostedPathType == null || hostedPathType == HostedPathType.LOCAL_IP) && isHttpURLReachable(url, 10000)) {
+                hostedPathType = HostedPathType.LOCAL_IP;
+                hostedPath = url;
+                Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with local IP)");
+                return url;
+            }
+        } catch (UnknownHostException e) {
+        }
+        if (GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
 
         url = "http://localhost:" + Bukkit.getServer().getPort() + "/score/" + getFileName();
-        if((hostedPathType == null || hostedPathType == HostedPathType.LOCALHOST) && isHttpURLReachable(url, 10000)) {
+        if ((hostedPathType == null || hostedPathType == HostedPathType.LOCALHOST) && isHttpURLReachable(url, 10000)) {
             hostedPathType = HostedPathType.LOCALHOST;
             hostedPath = url;
-            Utils.sendConsoleMsg("&7Pack hosted at: &e" + url);
+            Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with localhost)");
             return url;
         }
-        if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
+        if (GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&cCannot connect to &6" + url);
 
         return null;
     }
@@ -95,7 +116,7 @@ public class PackSettings {
      * Check if an HTTP URL is reachable
      *
      * @param urlString The URL to check
-     * @param timeout Timeout in milliseconds
+     * @param timeout   Timeout in milliseconds
      * @return true if the URL is reachable, false otherwise
      */
     public static boolean isHttpURLReachable(String urlString, int timeout) {
@@ -107,14 +128,17 @@ public class PackSettings {
             connection.setRequestMethod("HEAD"); // Use HEAD instead of GET for efficiency
 
             int responseCode = connection.getResponseCode();
-            if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&7Debug response output: &7" + responseCode);
+            if (GeneralConfig.getInstance().isSelfHostPackDebug())
+                Utils.sendConsoleMsg("&7Debug response output: &7" + responseCode);
             return (200 <= responseCode && responseCode <= 399); // Success codes
 
         } catch (IOException e) {
-            if(e.getMessage().contains("Unexpected end of file from server")){
+            if (GeneralConfig.getInstance().isSelfHostPackDebug())
+                Utils.sendConsoleMsg("&7Debug &e" + urlString + " &7- &e" + e.getMessage());
+
+            if (e.getMessage().contains("Unexpected end of file from server")) {
                 return true;
             }
-            if(GeneralConfig.getInstance().isSelfHostPackDebug()) Utils.sendConsoleMsg("&7Debug &e" + urlString + " &7- &e" + e.getMessage());
             return false;
         }
     }
@@ -126,6 +150,17 @@ public class PackSettings {
 
     public File getFile() {
         return new File(filePath);
+    }
+
+    public static String getMinecraftServerIP() {
+        try {
+            InetSocketAddress address = new InetSocketAddress(Bukkit.getServer().getIp(), Bukkit.getServer().getPort());
+
+            return address.getAddress().getHostAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "unknown";
+        }
     }
 
     public static String getExternalIP() {

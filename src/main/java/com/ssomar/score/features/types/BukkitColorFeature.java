@@ -29,7 +29,7 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     public BukkitColorFeature(FeatureParentInterface parent, Optional<Color> defaultValue, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
         this.defaultValue = defaultValue;
-        this.value = Optional.empty();
+        this.value = Optional.of(CustomColor.getNullColor());
     }
 
     @Override
@@ -45,9 +45,9 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
                 if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
             } catch (Exception e) {
                 errors.add("&cERROR, Couldn't load the Color value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> ChatColors available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Color.html");
-                value = Optional.empty();
+                value = Optional.of(CustomColor.getNullColor());
             }
-        } else value = Optional.empty();
+        } else value = Optional.of(CustomColor.getNullColor());
         return errors;
     }
 
@@ -182,23 +182,23 @@ public class BukkitColorFeature extends FeatureAbstract<Optional<Color>, BukkitC
     public void updateColor(Color color, GUI gui) {
         ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(color);
-        if(CustomColor.getNullColor().equals(color)) value = Optional.empty();
+        //if(CustomColor.getNullColor().equals(color)) value = Optional.empty();
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore().subList(0, 2);
         boolean find = false;
         for (Color check : CustomColor.values()) {
             if (color.equals(check)) {
-                lore.add(StringConverter.coloredString("&2➤ &a" + CustomColor.getName(color)));
+                lore.add(StringConverter.coloredString("&2➤ &a" + CustomColor.getName(color), true));
                 find = true;
             } else if (find) {
                 if (lore.size() == 17) break;
-                lore.add(StringConverter.coloredString("&6✦ &e" + CustomColor.getName(check)));
+                lore.add(StringConverter.coloredString("&6✦ &e" + CustomColor.getName(check), true));
             }
         }
         for (Color check : CustomColor.values()) {
             if (lore.size() == 17) break;
             else {
-                lore.add(StringConverter.coloredString("&6✦ &e" + CustomColor.getName(check)));
+                lore.add(StringConverter.coloredString("&6✦ &e" + CustomColor.getName(check), true));
             }
         }
         meta.setLore(lore);

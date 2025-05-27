@@ -30,18 +30,18 @@ public class ParticlesPaper1194_120 {
                 float speed = particle.getParticlesSpeed().getValue().get().floatValue();
                 float offset =  particle.getParticlesOffSet().getValue().get().floatValue();
 
-                ParticleBuilder builder = new ParticleBuilder(particle.getParticlesType().getValue().get()).offset(offset, offset, offset).extra(speed).count(particle.getParticlesAmount().getValue().get().intValue());
+                final ParticleBuilder[] builder = {new ParticleBuilder(particle.getParticlesType().getValue().get()).offset(offset, offset, offset).extra(speed).count(particle.getParticlesAmount().getValue().get().intValue())};
                 if (particle.canHaveRedstoneColor()) {
                     Particle.DustOptions dO = new Particle.DustOptions(Color.RED, 1);
                     if (particle.getRedstoneColor().getValue().isPresent())
                         dO = new Particle.DustOptions(particle.getRedstoneColor().getValue().get(), 1);
-                    builder.data(dO);
+                    builder[0].data(dO);
                 } else if (particle.canHaveBlocktype()) {
                     BlockData typeData = Material.STONE.createBlockData();
                     if (particle.getBlockType() != null)
                         typeData = particle.getBlockType().getValue().get().createBlockData();
                     if (particle.getBlockType() != null)
-                        builder.data(typeData);
+                        builder[0].data(typeData);
                 }
 
                 final AtomicReference<ScheduledTask> task = new AtomicReference<>();
@@ -69,7 +69,19 @@ public class ParticlesPaper1194_120 {
                         for (float i = 1; i <= particlesAmountForVector; i++) {
                             float x = (float) i/divide;
                             Vector newVector = vector.clone().multiply(x);
-                            builder.location(projectile.getLocation().add(newVector)).spawn();
+                            try {
+                                builder[0].location(projectile.getLocation().add(newVector)).spawn();
+                            }
+                            catch (IllegalArgumentException ex) {
+                                // If the particle can't be spawned, we just ignore it
+                                // This can happen if the particle is not supported by the server version
+                                // we just spawn flame particles instead
+                                builder[0] = new ParticleBuilder(Particle.FLAME)
+                                        .offset(offset, offset, offset)
+                                        .extra(speed)
+                                        .count(particle.getParticlesAmount().getValue().get().intValue());
+                                builder[0].location(projectile.getLocation().add(newVector)).spawn();
+                            }
                         }
                     }
                 };

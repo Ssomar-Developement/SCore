@@ -18,3 +18,4 @@ disableCustomMetadataOnEntities: false # to disable the metadata fromSpawner and
 configVerbosity: "NORMAL" # "NORMAL" or "MIN" or "MAX"
 enableCommentsInConfig: true # It will add a description of each setting in comment in the yaml config file.
 selfHostPackDebug : false
+selfHostPackIp: "" # The IP of your server to self-hosted your textures pack. If you leave it empty, it will try to get your IP automatically.

@@ -20,8 +20,12 @@ public class StringConverter {
     public static final Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public static String coloredString(String s) {
+        return coloredString(s, false);
+    }
 
-        if(s.contains("NO_COLOR")) {
+    public static String coloredString(String s, boolean bypassNoColor) {
+
+        if(!bypassNoColor && s.contains("NO_COLOR")) {
             return s.replaceAll("NO_COLOR", "").trim();
         }
 
