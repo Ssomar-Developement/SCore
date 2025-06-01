@@ -27,12 +27,14 @@ public class SetBlockPos extends PlayerCommand {
         CommandSetting z = new CommandSetting("z", 2, Double.class, 0.0);
         CommandSetting material = new CommandSetting("material", 3, Material.class, Material.STONE);
         CommandSetting bypassProtection = new CommandSetting("bypassProtection", 4, Boolean.class, false);
+        CommandSetting replace = new CommandSetting("replace", -1, Boolean.class, true);
         List<CommandSetting> settings = getSettings();
         settings.add(x);
         settings.add(y);
         settings.add(z);
         settings.add(material);
         settings.add(bypassProtection);
+        settings.add(replace);
         setNewSettingsMode(true);
     }
 
@@ -44,11 +46,16 @@ public class SetBlockPos extends PlayerCommand {
         double z = (double) sCommandToExec.getSettingValue("z");
         Material material = (Material) sCommandToExec.getSettingValue("material");
         boolean bypassProtection = (boolean) sCommandToExec.getSettingValue("bypassProtection");
+        boolean replace = (boolean) sCommandToExec.getSettingValue("replace");
 
         Location loc = receiver.getLocation();
         Location blockLoc = new Location(loc.getWorld(), x, y, z);
         Block block = blockLoc.getBlock();
         UUID uuid = receiver.getUniqueId();
+
+        block = block.getWorld().getBlockAt(blockLoc);
+
+        if(!block.isEmpty() && !replace) return;
 
         if (material != null) {
             SafePlace.placeBlockWithEvent(block, material, Optional.empty(), uuid, false, !bypassProtection);
@@ -74,7 +81,7 @@ public class SetBlockPos extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "SET_BLOCK_POS x:0 y:0 z:0 material:STONE bypassProtection:false";
+        return "SET_BLOCK_POS x:0 y:0 z:0 material:STONE bypassProtection:false replace:true";
     }
 
     @Override

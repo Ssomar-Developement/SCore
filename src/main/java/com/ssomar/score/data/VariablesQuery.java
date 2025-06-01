@@ -64,9 +64,9 @@ public class VariablesQuery {
             for (Variable var : variables) {
                 pstmt.setString(1, var.getId());
                 //System.out.println("var.getId() ::: "+ var.getId());
-                pstmt.setString(2, var.getType().getValue().get().toString());
+                pstmt.setString(2, var.getType().getValue().orElse(VariableType.STRING).toString());
                 //System.out.println("var.getType().getValue().get() ::: "+ var.getType().getValue().get().toString());
-                pstmt.setString(3, var.getForFeature().getValue().get().toString());
+                pstmt.setString(3, var.getForFeature().getValue().orElse(VariableForEnum.PLAYER).toString());
                 //System.out.println("var.getForFeature().getValue().get() ::: "+ var.getForFeature().getValue().get().toString());
                 String data = transformValues(var.getValues());
                 //System.out.println("data ::: "+ data);
@@ -112,8 +112,8 @@ public class VariablesQuery {
             pstmt = conn.prepareStatement(sql);
             for (Variable command : variables) {
                 pstmt.setString(1, command.getId());
-                pstmt.setString(2, command.getType().getValue().get().toString());
-                pstmt.setString(3, command.getForFeature().getValue().get().toString());
+                pstmt.setString(2, command.getType().getValue().orElse(VariableType.STRING).toString());
+                pstmt.setString(3, command.getForFeature().getValue().orElse(VariableForEnum.PLAYER).toString());
                 String data = transformValues(command.getValues());
                 pstmt.setString(4, data);
                 pstmt.setString(5, command.getDefaultValue().getValue().orElse("NULL"));

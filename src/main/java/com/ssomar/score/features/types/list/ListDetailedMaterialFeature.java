@@ -40,7 +40,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     private static final String symbolEnd = "}";
     private static final String symbolEquals = ":";
     private static final String symbolSeparator = "\\+";
-    private static final Boolean DEBUG = false;
+    private static final Boolean DEBUG = true;
 
     private static final String symbolStartMaterialTag = "#"; // #minecraft:mineable/pickaxe
     private List<String> listOfCustomBlocksPluginSupported;
@@ -245,11 +245,19 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
             // Verif custom material tag
             if(!SCore.is1v11Less() && mat.startsWith(symbolStartMaterialTag)) {
-               mat = mat.substring(1).toLowerCase();
+                mat = mat.substring(1).toLowerCase();
+                SsomarDev.testMsg(">> verif tag: " + mat, DEBUG);
                 Tag<Material> tag = MinecraftTags.getInstance().getTag(mat);
                 if(tag != null) {
                     if(MinecraftTags.getInstance().checkIfTagged(material, tag)) return true;
+                    else {
+                        SsomarDev.testMsg(">> verif tag not found: " + mat+" for material "+material, DEBUG);
+                    }
                 }
+                else {
+                    SsomarDev.testMsg(">> verif tag not found: " + mat, DEBUG);
+                }
+
             }
             else if (MaterialWithGroups.verif(material, mat)) {
                 SsomarDev.testMsg(">> verif mat: " + mat, DEBUG);

@@ -120,6 +120,9 @@ public interface CommmandThatRunsCommand {
 
             commands = sp.replacePlaceholders(commands);
             //SsomarDev.testMsg("NEXT STEP : " + aInfo2.getStep(), true);
+            /*for (int i = 0; i < commands.size(); i++) {
+                System.out.println("DEBUGGGGG COMMANDS: " + commands.get(i));
+            }*/
             PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
             CommandsExecutor.runCommands(builder);
             cpt++;

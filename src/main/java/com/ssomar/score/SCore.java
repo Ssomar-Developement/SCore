@@ -721,7 +721,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6" + VariablesManager.getInstance().getLoadedObjects().size() + " &7variables from your MySQL Database !");
         }
 
-        Bossbar.getInstance().clearTasks();
+        if (!SCore.is1v11Less())  Bossbar.getInstance().clearTasks();
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay....");
         UsagePerDayManager.getInstance().save();

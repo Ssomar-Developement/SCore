@@ -89,7 +89,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
 
         PlaceholdersCdtType t = type.getValue().get();
 
-        SsomarDev.testMsg(" part1 base: "+part1.getValue().get()+ " sp != null "+sp, true);
+       // SsomarDev.testMsg(" part1 base: "+part1.getValue().get()+ " sp != null "+sp, true);
         if (sp != null) {
             aPart1 = sp.replacePlaceholder(part1.getValue().get(), false);
             if(t == PlaceholdersCdtType.PLAYER_TARGET || t == PlaceholdersCdtType.PLAYER_PLAYER || t == PlaceholdersCdtType.TARGET_TARGET) aPart2 = sp.replacePlaceholder(part2.getValue().get(), false);
@@ -98,6 +98,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
             aPart1 = part1.getValue().get();
             aPart2 = part2.getValue().get();
         }
+        //SsomarDev.testMsg(" part2 base: "+part2.getValue().get(), true);
 
         if (SCore.hasPlaceholderAPI) {
             //SsomarDev.testMsg("PlaceholderConditionFeature verify() hasPlaceholderAPI", true);
@@ -116,6 +117,7 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
             } else if ((PlaceholdersCdtType.TARGET_TARGET.equals(type.getValue().get()) || PlaceholdersCdtType.PLAYER_TARGET.equals(type.getValue().get())) && target != null) {
                 aPart2 = StringPlaceholder.replacePlaceholderOfPAPI(aPart2, target.getUniqueId());
             }
+            //SsomarDev.testMsg("aPart2 after papi: "+aPart2, true);
 
             /* Second time for the variables contains with papi placeholder in*/
             if (sp != null) {
@@ -128,11 +130,13 @@ public class PlaceholderConditionFeature extends FeatureWithHisOwnEditor<Placeho
                 aPart1 = StringPlaceholder.replacePlaceholderOfPAPI(aPart1, null);
                 aPart2 = StringPlaceholder.replacePlaceholderOfPAPI(aPart2, null);
             }
+            //SsomarDev.testMsg("aPart2 after papi second time: "+aPart2, true);
         }
 
         aPart1 = StringConverter.deconvertColor(aPart1);
-        SsomarDev.testMsg("aPart1: "+aPart1, true);
+        //SsomarDev.testMsg("aPart1: "+aPart1, true);
         aPart2 = StringConverter.deconvertColor(aPart2);
+        //SsomarDev.testMsg("aPart2: "+aPart2, true);
 
         // verification
         switch (t) {

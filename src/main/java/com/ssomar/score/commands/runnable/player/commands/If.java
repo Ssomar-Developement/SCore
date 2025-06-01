@@ -12,6 +12,7 @@ import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -47,13 +48,14 @@ public class If extends PlayerCommand {
         if (finalResult) {
             CommmandThatRunsCommand.runPlayerCommands(targets, args.subList(1, args.size()), aInfo);
         } else {
-            SsomarDev.testMsg("IF STOPPED", true);
+            SsomarDev.testMsg("IF STOPPED for condition > "+condition, true);
         }
     }
     
     private boolean evaluateCondition(String condition, Player receiver, StringPlaceholder sp) {
         // Remove any whitespace for easier processing
         condition = condition.replaceAll("\\s+", "");
+        condition = StringConverter.deconvertColor(condition);
     
         // Use two stacks to manage conditions and operators
         Stack<Boolean> values = new Stack<>();
@@ -89,6 +91,7 @@ public class If extends PlayerCommand {
             else {
                 StringBuilder cond = new StringBuilder();
                 while (i < condition.length() && condition.charAt(i) != '(' && condition.charAt(i) != ')' && condition.charAt(i) != '&' && condition.charAt(i) != '|') {
+                    //SsomarDev.testMsg(" IF parsing condition at index <" + i + "> <" + condition.charAt(i)+">", true);
                     cond.append(condition.charAt(i));
                     i++;
                 }
@@ -121,6 +124,8 @@ public class If extends PlayerCommand {
     private boolean evaluateSingleCondition(String condition, Player receiver, StringPlaceholder sp) {
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();
         conditionFeature.setType(PlaceholderConditionTypeFeature.buildNull(PlaceholdersCdtType.PLAYER_PLAYER));
+
+        //SsomarDev.testMsg("IF condition to evaluate: " + condition.replaceAll("§", "&"), true);
     
         boolean conditionContainsPlaceholder = condition.contains("%");
         String split = conditionContainsPlaceholder ? "%" : "";
@@ -143,9 +148,13 @@ public class If extends PlayerCommand {
             SsomarDev.testMsg("IF STOPPED because parts are invalid for condition: " + condition, true);
             return false;
         }
+
+        String part1 = parts[0].trim()+ split;
+        String part2 = parts[1].trim();
+        //SsomarDev.testMsg("IF part1: " + part1 + ", part2: " + part2, true);
     
-        conditionFeature.setPart1(ColoredStringFeature.buildNull(parts[0].trim() + split));
-        conditionFeature.setPart2(ColoredStringFeature.buildNull(parts[1].trim()));
+        conditionFeature.setPart1(ColoredStringFeature.buildNull(part1));
+        conditionFeature.setPart2(ColoredStringFeature.buildNull(part2));
     
         return conditionFeature.verify(receiver, null, sp);
     }

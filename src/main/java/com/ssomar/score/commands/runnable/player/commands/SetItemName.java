@@ -44,7 +44,7 @@ public class SetItemName extends PlayerCommand {
         StringBuilder build = new StringBuilder(name);
 
         for (String s : sCommandToExec.getOtherArgs()) {
-            build.append(s).append(" ");
+            build.append(" ").append(s);
         }
 
         itemmeta.setDisplayName(StringConverter.coloredString(build.toString()));
