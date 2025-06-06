@@ -58,6 +58,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,7 +83,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "no-translated"};
+    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -609,6 +613,83 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 }
 
                 break;
+
+
+            case "webhook":
+                // Expect: /score webhook <url> <true|false> <message...>
+                if (args.length < 3) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /score webhook <url> <true|false> <message...>");
+                    break;
+                }
+
+                String webhookUrl = args[0];
+                boolean debug;
+                try {
+                    debug = Boolean.parseBoolean(args[1]);
+                } catch (Exception ex) {
+                    sender.sendMessage(ChatColor.RED + "Second argument must be true or false.");
+                    break;
+                }
+
+                // Build the message from the remaining arguments
+                StringBuilder sb = new StringBuilder();
+                for (int i = 2; i < args.length; i++) {
+                    sb.append(args[i]);
+                    if (i < args.length - 1) sb.append(" ");
+                }
+                String rawMessage = sb.toString();
+
+                if (debug) {
+                    sender.sendMessage("Sending webhook...");
+                }
+
+                // Escape for JSON
+                String escaped = rawMessage
+                        .replace("\\", "\\\\")
+                        .replace("\"", "\\\"")
+                        .replace("\n", "\\n")
+                        .replace("\r", "");
+                String jsonPayload = "{\"content\":\"" + escaped + "\"}";
+
+                // Perform HTTP POST asynchronously
+                Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+                    boolean success = false;
+                    try {
+                        URL url = new URL(webhookUrl);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        conn.setDoOutput(true);
+
+                        byte[] body = jsonPayload.getBytes(StandardCharsets.UTF_8);
+                        conn.setFixedLengthStreamingMode(body.length);
+
+                        try (OutputStream os = conn.getOutputStream()) {
+                            os.write(body);
+                        }
+
+                        int responseCode = conn.getResponseCode();
+                        conn.disconnect();
+                        success = (responseCode >= 200 && responseCode < 300);
+                    } catch (Exception ex) {
+                        success = false;
+                    }
+
+                    if (debug) {
+                        boolean finalSuccess = success;
+                        Bukkit.getScheduler().runTask(SCore.plugin, () -> {
+                            if (finalSuccess) {
+                                sender.sendMessage("Webhook §asuccessfully sent.§r");
+                            } else {
+                                sender.sendMessage("Webhook §cunsuccessfully sent.§r");
+                            }
+                        });
+                    }
+                });
+                break;     
+                
+                
+            
             case "variables-define":
                 try {
                     if (args.length < 3) {
@@ -869,6 +950,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("variables");
                 arguments.add("variables-create");
                 arguments.add("variables-define NAME TYPE SCOPE ICON default arguments...");
+                arguments.add("webhook URL debugTrue/False");
+
                 arguments.add("variables-delete");
                 arguments.add("run-player-command");
                 arguments.add("run-entity-command");
