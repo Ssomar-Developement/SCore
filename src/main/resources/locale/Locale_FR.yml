@@ -3,7 +3,7 @@ newBalanceMsg: "&6&l[SCore] &eTransaction: &c-%amount%$ &eTa nouvelle balance: &
 newBalancePositiveMsg: "&6&l[SCore] &eTransaction: &a%amount%$ &eTa nouvelle balance: &a%balance%$"
 setActionbarOn: "&aTa barre d'action est  désormais &a&lON"
 haveActionbarOn: "&aTa barre d'action est déjà &a&lON"
-setActionbarOfft: "&cTa barre d'action est  désormais &4&lOFF"
+setActionbarOff: "&cTa barre d'action est  désormais &4&lOFF"
 haveActionbarOff: "&cTa barre d'action est déjà &4&lOFF"
 actionbarMessage: "&a&lTemps restant pour &e&l%item% &a&l: &e&l%time%"
 actionbarEnd: "&c&lDESACTIVATION DE &e&l%item%"

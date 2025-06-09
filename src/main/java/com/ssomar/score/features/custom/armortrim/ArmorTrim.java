@@ -74,6 +74,9 @@ public class ArmorTrim extends FeatureWithHisOwnEditor<ArmorTrim, ArmorTrim, Gen
     }
 
     public org.bukkit.inventory.meta.trim.ArmorTrim getArmorTrim(){
+        if(!getTrimMaterial().getValue().isPresent() || !getPattern().getValue().isPresent()) {
+            return null; // Return null if either value is not present
+        }
         org.bukkit.inventory.meta.trim.ArmorTrim armorTrim = new org.bukkit.inventory.meta.trim.ArmorTrim(this.getTrimMaterial().getValue().get(), this.getPattern().getValue().get());
         return armorTrim;
     }

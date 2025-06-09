@@ -146,6 +146,10 @@ public class ContainerContent extends ListUncoloredStringFeature implements Feat
             Inventory inv = container.getInventory();
             for (String value : this.getValues()) {
                 String[] split = value.split(";");
+                if (split.length == 0) {
+                    SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the value is not valid " + value, DEBUG);
+                    continue;
+                }
                 int slot = Integer.parseInt(split[0].split(":")[1]);
                 String itemString = value.substring(value.indexOf(";") + 1);
                 int amount = 1;

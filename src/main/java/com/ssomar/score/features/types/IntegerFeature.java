@@ -69,7 +69,7 @@ public class IntegerFeature extends FeatureAbstract<Optional<Integer>, IntegerFe
         if (placeholder.isPresent()) {
             config.set(this.getName(), placeholder.get());
         } else if (getValue().isPresent()) {
-            if(defaultValue.isPresent() && isSavingOnlyIfDiffDefault() && value.get().equals(defaultValue.get())){
+            if(defaultValue.isPresent() && isSavingOnlyIfDiffDefault() && getValue().get().equals(defaultValue.get())){
                 config.set(this.getName(), null);
                 return;
             }
