@@ -104,6 +104,8 @@ public enum Dependency {
 
     SCORE("SCore"),
 
+    MYWORLDS("MyWorlds"),
+
     WORLD_EDIT("WorldEdit");
 
     private final String name;

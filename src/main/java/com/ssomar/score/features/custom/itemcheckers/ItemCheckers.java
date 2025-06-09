@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.itemcheckers;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorReloaded;
@@ -221,6 +222,8 @@ public class ItemCheckers extends FeatureWithHisOwnEditor<ItemCheckers, ItemChec
         if(item1 == null || item2 == null) {
             return item1 == item2;
         }
+
+        SsomarDev.testMsg("Checking if items are similar: " + itemCheckerType.getValue().get(), true);
 
         if(itemCheckerType.getValue().get() == ItemCheckerType.ITEM_MUST_BE_EXACTLY_THE_SAME) {
             return item1.isSimilar(item2);
