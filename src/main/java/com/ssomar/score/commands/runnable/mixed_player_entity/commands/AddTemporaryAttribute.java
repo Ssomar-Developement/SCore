@@ -24,9 +24,9 @@ import java.util.UUID;
  * The attribute provided by this custom command does not set the value, but gives a modifier.
  */
 public class AddTemporaryAttribute extends MixedCommand  {
-    private HashMap<String, Attribute> attributeHashMap = new HashMap<>();
+    private static HashMap<String, Attribute> attributeHashMap = new HashMap<>();
 
-    {
+    static {
         attributeHashMap.put("ARMOR", Attribute.ARMOR);
         attributeHashMap.put("ARMOR_TOUGHNESS", Attribute.ARMOR_TOUGHNESS);
         attributeHashMap.put("ATTACK_DAMAGE", Attribute.ATTACK_DAMAGE);
