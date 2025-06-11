@@ -87,6 +87,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
         List<String> args = sCommandToExec.getOtherArgs();
+
         // arg0: attribute
         // arg1: amount
         // arg2: operation
@@ -133,11 +134,15 @@ public class AddTemporaryAttribute extends MixedCommand  {
             return;
         }
 
+
         AttributeInstance attrInstance = null;
 
-        if (p != null) {
-            attrInstance = p.getAttribute(attributeHashMap.get(args.get(0)));
-        } else if (entity != null) {
+        // the entity arg in the method arguments refer to the target of the command and the player arg represents the caster.
+        // if the target is a Player, cast the entity as a player.
+        if (entity instanceof Player) {
+            Player playerEntity = (Player) entity;
+            attrInstance = playerEntity.getAttribute(attributeHashMap.get(args.get(0)));
+        } else {
             LivingEntity livingEntity = (LivingEntity) entity;
             attrInstance = livingEntity.getAttribute((attributeHashMap.get(args.get(0))));
         }
