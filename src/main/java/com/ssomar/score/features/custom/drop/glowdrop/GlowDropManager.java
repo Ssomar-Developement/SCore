@@ -24,6 +24,7 @@ public class GlowDropManager {
         if (!SCore.is1v11Less()) {
             ScoreboardManager scoreboardManager = SCore.plugin.getServer().getScoreboardManager();
             for (ChatColor color : ChatColor.values()) {
+                if(getBannedChatColorsForGlow().contains(color)) continue; // Skip banned colors
                 Team team;
                 try {
                     team = scoreboardManager.getMainScoreboard().registerNewTeam("team_" + color.name());
