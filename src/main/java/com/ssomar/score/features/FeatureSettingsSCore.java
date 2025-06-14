@@ -260,6 +260,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     ifPosY(getFeatureSettings("ifPosY", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPosZ(getFeatureSettings("ifPosZ", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPowered(getFeatureSettings("ifPowered", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifSheepColor(getFeatureSettings("ifSheepColor", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifSneaking(getFeatureSettings("ifSneaking", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifSprinting(getFeatureSettings("ifSprinting", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifStunned(getFeatureSettings("ifStunned", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
