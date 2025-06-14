@@ -18,6 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+/**
+ * Attribute class used for SCore's uses in utilizing attributes. Mainly
+ * for being able to get attributes while considering backwards compatibility.
+ */
 public class AttributeUtils {
 
     private final static boolean DEBUG = true;
