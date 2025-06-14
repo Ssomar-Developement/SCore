@@ -23,6 +23,9 @@ Please make sure to have bug fixes/improvements in separated pull requests from 
 #### Guide:
 - Add new custom commands: 
     package path -> com.ssomar.score.commands.runnable
+  - Detailed explanation:
+    - For example, you want to add commands to `mixed_player_entity` commands, go to the package folder and create a new class.
+      That class file must be a child class of the package's class (For example, `mixed_player_entity` class file is MixedCommand.java)
     
 - Add new custom conditions: 
     package path -> com.ssomar.score.features.custom.conditions

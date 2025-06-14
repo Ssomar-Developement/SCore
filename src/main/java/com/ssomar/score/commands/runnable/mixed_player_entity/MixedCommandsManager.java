@@ -16,6 +16,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
 
     public MixedCommandsManager() {
         List<SCommand> commands = new ArrayList<>();
+        commands.add(new AddTemporaryAttribute());
         commands.add(new Around());
         commands.add(new AllMobs());
         commands.add(new AllPlayers());
