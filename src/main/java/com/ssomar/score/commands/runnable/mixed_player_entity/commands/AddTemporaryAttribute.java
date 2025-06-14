@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
@@ -14,8 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.xml.stream.events.Namespace;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * When used, it gives the target player/entity a given attribute for a set period of time.
@@ -56,7 +59,9 @@ public class AddTemporaryAttribute extends MixedCommand  {
         // arg3: timeinticks
 
         // invalid attribute checker
-        if (!AttributeUtils.getAttributes().containsKey(args.get(0))) {
+        Attribute attrCheck = AttributeUtils.getAttribute(args.get(0).toUpperCase());
+
+        if (attrCheck == null) {
             SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute: "+args.get(0));
             return;
         }
@@ -68,7 +73,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
             return;
         }
         // invalid operation checker
-        switch (args.get(2)) {
+        switch (args.get(2).toUpperCase()) {
             case "ADD_NUMBER": {
                 operation = Operation.ADD_NUMBER;
                 break;
@@ -102,13 +107,14 @@ public class AddTemporaryAttribute extends MixedCommand  {
         // if the target is a Player, cast the entity as a player.
         if (entity instanceof Player) {
             Player playerEntity = (Player) entity;
-            attrInstance = playerEntity.getAttribute(AttributeUtils.getAttribute(args.get(0)));
+            attrInstance = playerEntity.getAttribute(AttributeUtils.getAttribute(args.get(0).toUpperCase()));
         } else {
             LivingEntity livingEntity = (LivingEntity) entity;
-            attrInstance = livingEntity.getAttribute((AttributeUtils.getAttribute(args.get(0))));
+            attrInstance = livingEntity.getAttribute((AttributeUtils.getAttribute(args.get(0).toUpperCase())));
         }
 
-        NamespacedKey key = NamespacedKey.minecraft(args.get(0).toLowerCase());
+        // make a randomized key to allow spamming of ADD_TEMPORARY_ATTRIBUTE
+        NamespacedKey key = new NamespacedKey(SCore.plugin, "mod_" + UUID.randomUUID());
         AttributeModifier tempModifier = new AttributeModifier(key, Double.valueOf(args.get(1)), operation);
 
         attrInstance.addModifier(tempModifier);

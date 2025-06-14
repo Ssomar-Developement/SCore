@@ -32,7 +32,7 @@ public class IfSheepColor extends EntityConditionFeature<ListUncoloredStringFeat
                         String.valueOf(
                                 ((Sheep) entity).getColor()
                         )
-                ).equals(name)) {
+                ).equalsIgnoreCase(name)) {
                     notValid = false;
                     break;
                 }
