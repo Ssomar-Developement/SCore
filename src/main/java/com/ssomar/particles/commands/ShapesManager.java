@@ -24,16 +24,18 @@ public class ShapesManager {
 
         // Loop that clears the running shapes every 10 seconds
         Runnable task = () -> {
-            for (Entity entity : runningShapes.keySet()) {
+            Iterator<Entity> iterator = runningShapes.keySet().iterator();
+            while (iterator.hasNext()) {
+                Entity entity = iterator.next();
                 if (entity instanceof Player) {
                     if(!((Player) entity).isOnline()){
-                        runningShapes.remove(entity);
+                        iterator.remove();
                         continue;
                     }
                     endedShapes(entity);
                 }
                 else if(entity.isDead()){
-                    runningShapes.remove(entity);
+                    iterator.remove();
                 }
             }
         };

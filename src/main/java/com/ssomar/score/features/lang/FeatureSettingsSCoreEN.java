@@ -382,6 +382,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     ifPosY("ifPosY", "If player posY", new String[]{}, Material.ANVIL),
     ifPosZ("ifPosZ", "If player posZ", new String[]{}, Material.ANVIL),
     ifPowered("ifPowered", "If powered", new String[]{}, Material.ANVIL),
+    ifSheepColor("ifSheepColor", "If sheep color", new String[]{}, Material.ANVIL),
     ifSneaking("ifSneaking", "If sneaking", new String[]{}, null),
     ifSprinting("ifSprinting", "If sprinting", new String[]{}, null),
     ifStunned("ifStunned", "If stunned", new String[]{"&7&oBy the custom player", "&7&ocommand &eSTUN_ENABLE"}, null),

@@ -50,6 +50,12 @@ public class AttributeUtils {
         return MapUtil.sortByValue(list);
     }
 
+    /**
+     * If you want to get an attribute enum value by string, perform this method call
+     * and input the correct string value based on the switch case of this method.
+     * @param string
+     * @return
+     */
     public static Attribute getAttribute(String string) {
         string = string.replace("minecraft:", "");
         for (Map.Entry<Object, String> entry : getAttributes().entrySet()) {
