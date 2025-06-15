@@ -49,6 +49,20 @@ public class CustomColor {
             case "NO_COLOR":
                 return getNullColor();
         }
+        if (s.contains("RGB")) {
+            // RGB-<red>-<green>-<blue>
+            // sample usage: "RGB-94-84-214"
+            // go to https://www.tydac.ch/color/ and pick a color and get the RGB values
+
+            String[] customRGB = s.split("-");
+            if (customRGB.length != 4) return null; // to deny invalid entries
+            try {
+                if (Integer.parseInt(customRGB[1]) > 256 || Integer.parseInt(customRGB[2]) > 256 || Integer.parseInt(customRGB[3]) > 256) return null; // plugin freaks out if a value higher than 255 got involved
+                return Color.fromRGB(Integer.parseInt(customRGB[1]), Integer.parseInt(customRGB[2]), Integer.parseInt(customRGB[3]));
+            } catch (Exception e) {
+                return null;
+            }
+        }
         try {
             return Color.fromRGB(Integer.parseInt(s));
         } catch (NumberFormatException e) {
@@ -100,7 +114,7 @@ public class CustomColor {
         } else if (color.equals(getNullColor())) {
             return "NO_COLOR";
         }
-        return "AQUA";
+        return "RGB-"+color.getRed()+"-"+color.getGreen()+"-"+color.getBlue();
     }
 
     public static Color[] values() {
