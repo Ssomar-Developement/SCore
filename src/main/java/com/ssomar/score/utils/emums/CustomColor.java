@@ -57,7 +57,7 @@ public class CustomColor {
             String[] customRGB = s.split("-");
             if (customRGB.length != 4) return null; // to deny invalid entries
             try {
-                if (Integer.parseInt(customRGB[1]) > 256 || Integer.parseInt(customRGB[2]) > 256 || Integer.parseInt(customRGB[3]) > 256) return null; // plugin freaks out if a value higher than 255 got involved
+                if (Integer.parseInt(customRGB[1]) > 255 || Integer.parseInt(customRGB[2]) > 255 || Integer.parseInt(customRGB[3]) > 255) return null; // plugin freaks out if a value higher than 255 got involved
                 return Color.fromRGB(Integer.parseInt(customRGB[1]), Integer.parseInt(customRGB[2]), Integer.parseInt(customRGB[3]));
             } catch (Exception e) {
                 return null;
