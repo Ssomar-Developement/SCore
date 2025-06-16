@@ -40,6 +40,10 @@ public class DamageTypeFeature extends FeatureAbstract<Optional<DamageType>, Dam
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
+        if (colorStr.equals("NULL")) {
+            if (defaultValue.isPresent()) value = defaultValue;
+            return errors;
+        }
         try {
             TypedKey<DamageType> key = TypedKey.create(RegistryKey.DAMAGE_TYPE, colorStr);
             DamageType damageType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).get(key);
@@ -47,8 +51,8 @@ public class DamageTypeFeature extends FeatureAbstract<Optional<DamageType>, Dam
             FeatureReturnCheckPremium<DamageType> checkPremium = checkPremium("DamageType", damageType, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the DamageType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> Sound available: https://jd.papermc.io/paper/1.21.5/org/bukkit/damage/DamageType.html");
-            value = Optional.empty();
+            errors.add("&cERROR, Couldn't load the DamageType value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> DamageType available: https://jd.papermc.io/paper/1.21.5/org/bukkit/damage/DamageType.html");
+            if (defaultValue.isPresent()) value = defaultValue;
         }
         return errors;
     }
