@@ -152,6 +152,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v21v3 = false;
     private static boolean is1v21v4 = false;
     private static boolean is1v21v5 = false;
+    private static boolean is1v21v6 = false;
 
     private static boolean is1v22 = false;
     private static boolean is1v23 = false;
@@ -320,6 +321,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v21v5;
     }
 
+    public static boolean is1v21v6() {
+        return is1v21v6;
+    }
+
     public static boolean is1v22() {
         return is1v22;
     }
@@ -396,7 +401,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v2Plus() {
-        return is1v21v2()  || is1v21v3() || is1v21v4() || is1v21v5() || is1v22Plus();
+        return is1v21v2()  || is1v21v3() || is1v21v4Plus();
     }
 
     public static boolean is1v22Plus() {
@@ -412,7 +417,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v5Plus() {
-        return is1v21v5() || is1v22Plus();
+        return is1v21v5() || is1v21v6Plus();
+    }
+
+    public static boolean is1v21v6Plus() {
+        return is1v21v6() || is1v22Plus();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -857,6 +866,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v21v3 = Bukkit.getServer().getVersion().contains("1.21.3");
         is1v21v4 = Bukkit.getServer().getVersion().contains("1.21.4");
         is1v21v5 = Bukkit.getServer().getVersion().contains("1.21.5");
+        is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
         is1v22 = Bukkit.getServer().getVersion().contains("1.22");
         is1v23 = Bukkit.getServer().getVersion().contains("1.23");
 

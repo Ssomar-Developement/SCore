@@ -1,21 +1,15 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.SsomarDev;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInputEvent;
 
 public class TESTEVENT implements Listener {
 
 
-    /*@EventHandler
-    public void onPlayerSneak(PlayerToggleSneakEvent event){
-        if(event.isSneaking()){
-            Bukkit.getServer().getGlobalRegionScheduler().execute(
-                    SCore.plugin,
-                    () -> {
-                        // Your code to run at the player's location
-                        String testCommand = "kill @e[type=minecraft:block_display,distance=..4,tag=lox]";
-                        Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), testCommand);
-                    }
-            );
-        }
-    }*/
+    @EventHandler
+    public void onPlayerInputEvent(PlayerInputEvent event){
+        SsomarDev.testMsg("PlayerInputEvent triggered: " + event.getPlayer().getName() + " - Forward: " + event.getInput(), true);
+    }
 }

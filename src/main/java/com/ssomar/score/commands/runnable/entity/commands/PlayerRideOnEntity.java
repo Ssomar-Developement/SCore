@@ -19,6 +19,7 @@ public class PlayerRideOnEntity extends EntityCommand {
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
         if (p != null && !entity.isDead() && p.isOnline() && !p.isDead()) {
             entity.addPassenger(p);
+            //PlayerRideOnEntityManager.getInstance().addRider(p.getUniqueId());
         }
     }
 

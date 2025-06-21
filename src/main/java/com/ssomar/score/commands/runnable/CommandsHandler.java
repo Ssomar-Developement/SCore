@@ -307,11 +307,12 @@ public class CommandsHandler implements Listener {
         long time = System.currentTimeMillis() + (delay * 50);
         //System.out.println("ADD "+p.getDisplayName()+ " time: "+time);
         stopPickup.put(p, time);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.plugin, () -> {
+        Runnable runnable = () -> {
             if (stopPickup.containsKey(p) && stopPickup.get(p) == time) {
                 stopPickup.remove(p);
             }
-        }, delay);
+        };
+        SCore.schedulerHook.runEntityTask(runnable, null, p, delay);
     }
 
     public void addStopPickup(Player p, Integer delay, Material material) {
@@ -322,11 +323,12 @@ public class CommandsHandler implements Listener {
             list.add(material);
             stopPickupMaterial.put(p, list);
         }
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SCore.plugin, () -> {
-            if (stopPickupMaterial.containsKey(p)) {
+        Runnable runnable = () -> {
+            if (stopPickupMaterial.containsKey(p) && stopPickupMaterial.get(p).contains(material)) {
                 stopPickupMaterial.get(p).remove(material);
             }
-        }, delay);
+        };
+        SCore.schedulerHook.runEntityTask(runnable, null, p, delay);
     }
 
     //FAIRE AVEC LHEURE DE FIN CEST MIEUX

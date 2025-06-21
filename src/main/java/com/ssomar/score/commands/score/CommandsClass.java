@@ -652,7 +652,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 String jsonPayload = "{\"content\":\"" + escaped + "\"}";
 
                 // Perform HTTP POST asynchronously
-                Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+                Runnable sendWebhook = () -> {
                     boolean success = false;
                     try {
                         URL url = new URL(webhookUrl);
@@ -685,7 +685,9 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             }
                         });
                     }
-                });
+                };
+                SCore.schedulerHook.runAsyncTask(sendWebhook, 0);
+
                 break;     
                 
                 

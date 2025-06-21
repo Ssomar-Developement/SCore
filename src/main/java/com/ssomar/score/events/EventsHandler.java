@@ -2,6 +2,7 @@ package com.ssomar.score.events;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandsHandler;
+import com.ssomar.score.commands.runnable.entity.commands.PlayerRideOnEntityManager;
 import com.ssomar.score.commands.runnable.player.commands.openchest.OpenChestListener;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
 import com.ssomar.score.commands.runnable.player.events.*;
@@ -83,6 +84,8 @@ public class EventsHandler {
         main.getServer().getPluginManager().registerEvents(CheckIfDamageIsPosssibleListener.getInstance(), main);
 
         main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
+
+        main.getServer().getPluginManager().registerEvents(PlayerRideOnEntityManager.getInstance(), main);
 
         if(Dependency.JOBS.isInstalled())  main.getServer().getPluginManager().registerEvents(new JobsAPI(), main);
 

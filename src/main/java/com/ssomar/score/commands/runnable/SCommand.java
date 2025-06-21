@@ -242,11 +242,14 @@ public abstract class SCommand {
         ArgumentChecker ac = new ArgumentChecker();
 
         if (!arg.contains("%") || isFinalVerification) {
-            try {
-                UUID.fromString(arg.toUpperCase());
-            } catch (Exception e) {
-                ac.setValid(false);
-                ac.setError(invalidUUID + arg + " &cfor command: &e" + template);
+            // We accept null UUIDs for commands that can be used without a specific entity
+            if (!arg.equalsIgnoreCase("null")) {
+                try {
+                    UUID.fromString(arg.toUpperCase());
+                } catch (Exception e) {
+                    ac.setValid(false);
+                    ac.setError(invalidUUID + arg + " &cfor command: &e" + template);
+                }
             }
         }
 

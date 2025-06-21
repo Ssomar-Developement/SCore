@@ -37,6 +37,7 @@ public class AngryAt extends EntityCommand {
                 mob.setTarget(null);
             }
         }
+        //SsomarDev.testMsg("AngryAt command executed on entity: " + entity.getType() + " with UUID: " + uuid, true);
     }
 
     @Override

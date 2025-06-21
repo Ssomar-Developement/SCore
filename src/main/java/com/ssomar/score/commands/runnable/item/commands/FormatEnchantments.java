@@ -1,12 +1,12 @@
 package com.ssomar.score.commands.runnable.item.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.item.ItemCommand;
 import com.ssomar.score.utils.WordUtils;
 import com.ssomar.score.utils.numbers.RomanNumber;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -33,52 +33,50 @@ public class FormatEnchantments extends ItemCommand {
         if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
 
         try {
-            Bukkit.getScheduler().runTaskLater(com.ssomar.score.SCore.plugin, new Runnable() {
-                @Override
-                public void run() {
-                    ItemMeta itemMeta = item.getItemMeta();
-                    List<String> LoreCURRENT;
+            Runnable runnable = () -> {
+                ItemMeta itemMeta = item.getItemMeta();
+                List<String> LoreCURRENT;
 
-                    LoreCURRENT = itemMeta.getLore();
-                    if (LoreCURRENT == null) {
-                        LoreCURRENT = new ArrayList<>();
-                    }
-                    List<String> LoreOfEnchantmentsArtifical = new ArrayList<>();
+                LoreCURRENT = itemMeta.getLore();
+                if (LoreCURRENT == null) {
+                    LoreCURRENT = new ArrayList<>();
+                }
+                List<String> LoreOfEnchantmentsArtifical = new ArrayList<>();
 
-                    Iterator enchantments = itemMeta.getEnchants().keySet().iterator();
+                Iterator enchantments = itemMeta.getEnchants().keySet().iterator();
 
-                    while (enchantments.hasNext()) {
-                        Enchantment enchant = (Enchantment) enchantments.next();
+                while (enchantments.hasNext()) {
+                    Enchantment enchant = (Enchantment) enchantments.next();
 
-                        String line = getNameOfEnchantment(enchant.getKey().toString());
-                        int level = item.getEnchantmentLevel(enchant);
-                        if(enchant.getMaxLevel() != 1)
-                            line = line + " " + RomanNumber.toRoman(level);
+                    String line = getNameOfEnchantment(enchant.getKey().toString());
+                    int level = item.getEnchantmentLevel(enchant);
+                    if(enchant.getMaxLevel() != 1)
+                        line = line + " " + RomanNumber.toRoman(level);
 
-                        LoreOfEnchantmentsArtifical.add(line);
-                    }
+                    LoreOfEnchantmentsArtifical.add(line);
+                }
 
-                    SsomarDev.testMsg(String.valueOf(LoreOfEnchantmentsArtifical), true);
+                SsomarDev.testMsg(String.valueOf(LoreOfEnchantmentsArtifical), true);
 
-                    for (int i = 0; i < LoreCURRENT.size(); i++) {
-                        for (String enchantmentlore : LoreOfEnchantmentsArtifical) {
-                            if (LoreCURRENT.get(i).contains(enchantmentlore.split(" ")[0])) {
-                                LoreCURRENT.remove(i);
-                            }
+                for (int i = 0; i < LoreCURRENT.size(); i++) {
+                    for (String enchantmentlore : LoreOfEnchantmentsArtifical) {
+                        if (LoreCURRENT.get(i).contains(enchantmentlore.split(" ")[0])) {
+                            LoreCURRENT.remove(i);
                         }
                     }
-
-                    SsomarDev.testMsg(String.valueOf(LoreCURRENT), true);
-
-                    LoreOfEnchantmentsArtifical.addAll(LoreCURRENT);
-
-                    SsomarDev.testMsg(String.valueOf(LoreOfEnchantmentsArtifical), true);
-
-                    itemMeta.setLore(LoreOfEnchantmentsArtifical);
-                    itemMeta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
-                    item.setItemMeta(itemMeta);
                 }
-            }, 1L);
+
+                SsomarDev.testMsg(String.valueOf(LoreCURRENT), true);
+
+                LoreOfEnchantmentsArtifical.addAll(LoreCURRENT);
+
+                SsomarDev.testMsg(String.valueOf(LoreOfEnchantmentsArtifical), true);
+
+                itemMeta.setLore(LoreOfEnchantmentsArtifical);
+                itemMeta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
+                item.setItemMeta(itemMeta);
+            };
+            SCore.schedulerHook.runTask(runnable, 1L);
 
         } catch (NullPointerException e) {
             return;
