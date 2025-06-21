@@ -16,6 +16,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -91,10 +92,25 @@ public class SilkSpawner extends BlockCommand {
                 spawner_to_give.setItemMeta((ItemMeta) meta);
 
                 block.setType(Material.AIR);
-                if(p == null) block.getWorld().dropItemNaturally(block.getLocation(), spawner_to_give);
-                else p.getInventory().addItem(spawner_to_give);
+                if(p == null || getAvailableSlots(p) <= 0) block.getWorld().dropItemNaturally(block.getLocation(), spawner_to_give);
+                else {
+                    p.getInventory().addItem(spawner_to_give);
+                }
             }
         }
+    }
+
+    private int getAvailableSlots(Player player) {
+        int availableSlots = 0;
+
+        for (int i = 0; i < 36; i++) {
+            ItemStack item = player.getInventory().getItem(i);
+            if (item == null || item.getType() == Material.AIR) {
+                availableSlots++;
+            }
+        }
+
+        return availableSlots;
     }
 
     @Override
