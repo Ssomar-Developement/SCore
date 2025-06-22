@@ -85,7 +85,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
 
-        SCore.is1v21v4Plus() main.getServer().getPluginManager().registerEvents(PlayerRideOnEntityManager.getInstance(), main);
+        if(SCore.is1v21v4Plus()) main.getServer().getPluginManager().registerEvents(PlayerRideOnEntityManager.getInstance(), main);
 
         if(Dependency.JOBS.isInstalled())  main.getServer().getPluginManager().registerEvents(new JobsAPI(), main);
 
