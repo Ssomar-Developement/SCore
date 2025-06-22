@@ -9,26 +9,28 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInputEvent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerRideOnEntityManager implements Listener {
 
     private static PlayerRideOnEntityManager instance;
 
-    private List<UUID> riders;
+    private Map<UUID, Double> riders;
 
     private List<UUID> forwardRiders;
 
     public PlayerRideOnEntityManager() {
-        this.riders = new java.util.ArrayList<>();
+        this.riders = new HashMap<>();
         this.forwardRiders = new java.util.ArrayList<>();
         loopForwardRiders();
     }
 
-    public void addRider(UUID uuid) {
-        if (!riders.contains(uuid)) {
-            riders.add(uuid);
+    public void addRider(UUID uuid, double speed) {
+        if (!riders.containsKey(uuid)) {
+            riders.put(uuid, speed);
         }
     }
 
@@ -36,7 +38,7 @@ public class PlayerRideOnEntityManager implements Listener {
     public void onPlayerInputEvent(PlayerInputEvent event) {
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
-        if (riders.contains(playerUUID)) {
+        if (riders.containsKey(playerUUID)) {
             Input input = event.getInput();
             if (input.isForward() && !forwardRiders.contains(playerUUID)) forwardRiders.add(playerUUID);
             else forwardRiders.remove(playerUUID);
@@ -65,13 +67,17 @@ public class PlayerRideOnEntityManager implements Listener {
                         Entity mount = player.getVehicle();
                         if (mount != null) {
                             Location loc = player.getLocation();
-                            Location mountLoc = mount.getLocation();
+                            //Location mountLoc = mount.getLocation();
                             mount.setRotation(loc.getYaw(), loc.getPitch());
 
-                            double speed = 0.4;
+                            double speed = 0.4*riders.getOrDefault(uuid, 1.0); // Default speed is 1.0 if not set
                             double x = -Math.sin(Math.toRadians(loc.getYaw())) * speed;
                             double z = Math.cos(Math.toRadians(loc.getYaw())) * speed;
                             mount.setVelocity(mount.getVelocity().setX(x).setZ(z));
+                        }
+                        else {
+                            forwardRiders.remove(uuid);
+                            riders.remove(uuid);
                         }
                     }
                 }

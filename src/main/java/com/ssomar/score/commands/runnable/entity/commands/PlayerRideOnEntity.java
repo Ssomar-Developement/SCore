@@ -1,5 +1,7 @@
 package com.ssomar.score.commands.runnable.entity.commands;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.EntityCommand;
 import org.bukkit.ChatColor;
@@ -12,14 +14,22 @@ import java.util.List;
 public class PlayerRideOnEntity extends EntityCommand {
 
     public PlayerRideOnEntity() {
+        CommandSetting value = new CommandSetting("control", -1, Boolean.class, true);
+        CommandSetting speed = new CommandSetting("speed", -1, Double.class, 1.0);
+        List<CommandSetting> settings = getSettings();
+        settings.add(value);
+        settings.add(speed);
         setNewSettingsMode(true);
     }
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+        boolean control = (boolean) sCommandToExec.getSettingValue("control");
+        double speed = (double) sCommandToExec.getSettingValue("speed");
+
         if (p != null && !entity.isDead() && p.isOnline() && !p.isDead()) {
             entity.addPassenger(p);
-            //PlayerRideOnEntityManager.getInstance().addRider(p.getUniqueId());
+            if(SCore.is1v21v4Plus() && control) PlayerRideOnEntityManager.getInstance().addRider(p.getUniqueId(), speed);
         }
     }
 
@@ -32,7 +42,7 @@ public class PlayerRideOnEntity extends EntityCommand {
 
     @Override
     public String getTemplate() {
-        return "PLAYER_RIDE_ON_ENTITY";
+        return "PLAYER_RIDE_ON_ENTITY control:true speed:1.0";
     }
 
     @Override
