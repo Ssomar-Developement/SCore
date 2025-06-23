@@ -6,14 +6,24 @@ import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.*;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualCancel;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualReplace;
+import com.ssomar.score.commands.runnable.player.commands.DoNothing;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MixedCommandsManager extends CommandManager<SCommand> {
 
+    /**
+     * Manages SCore custom commands that works in both player-related command editors and
+     * entity-related command editors.
+     */
     private static MixedCommandsManager instance;
 
+    /**
+     * To register a new custom command, add a class instance of it
+     * to the commands List variable. Refer to its existing values
+     * as reference.
+     */
     public MixedCommandsManager() {
         List<SCommand> commands = new ArrayList<>();
         commands.add(new AddTemporaryAttribute());
@@ -43,6 +53,7 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new DamageNoKnockback());
         commands.add(DamageResistance.getInstance());
         commands.add(new Damage());
+        commands.add(new DoNothing());
         commands.add(new ForceDrop());
         commands.add(new FrontDash());
         commands.add(new GlacialFreeze());
