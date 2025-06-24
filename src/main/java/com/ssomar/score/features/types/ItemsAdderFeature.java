@@ -84,7 +84,7 @@ public class ItemsAdderFeature extends FeatureAbstract<Optional<String>, ItemsAd
                     customBlock.place(location);
                     return customBlock;
                 }
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 try {
                     SsomarDev.testMsg("placeItemsAdder is Furniture " + id, DEBUG);
                     CustomFurniture customFurniture = CustomFurniture.spawnPreciseNonSolid(id, location);

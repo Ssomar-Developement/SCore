@@ -17,27 +17,30 @@ public class ItemsAdderAPI {
 
     public static boolean breakCustomBlock(Block block, ItemStack item, boolean drop) {
         if (SCore.hasItemsAdder && block != null && !block.isEmpty()) {
-            CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
-            //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
-            if (customBlock != null) {
-                //SsomarDev.testMsg("ITEM ADDER REMOVED", true);
-                if (drop) {
-                    List<ItemStack> loots = customBlock.getLoot(item, false);
-                    for (ItemStack loot : loots) {
-                        block.getWorld().dropItemNaturally(block.getLocation(), loot);
+            // https://discord.com/channels/701066025516531753/1386807735009677493 remove for custom IA build
+            if (SCore.hasClass("dev.lone.itemsadder.api.CustomBlock")) {
+                CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
+                //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
+                if (customBlock != null) {
+                    //SsomarDev.testMsg("ITEM ADDER REMOVED", true);
+                    if (drop) {
+                        List<ItemStack> loots = customBlock.getLoot(item, false);
+                        for (ItemStack loot : loots) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), loot);
+                        }
                     }
+                    customBlock.playBreakSound();
+                    customBlock.playBreakEffect();
+                    customBlock.playBreakParticles();
+                    customBlock.remove();
+                    Runnable runnable = new Runnable() {
+                        public void run() {
+                            block.setType(org.bukkit.Material.AIR);
+                        }
+                    };
+                    SCore.schedulerHook.runTask(runnable, 1);
+                    return true;
                 }
-                customBlock.playBreakSound();
-                customBlock.playBreakEffect();
-                customBlock.playBreakParticles();
-                customBlock.remove();
-                Runnable runnable = new Runnable() {
-                    public void run() {
-                        block.setType(org.bukkit.Material.AIR);
-                    }
-                };
-                SCore.schedulerHook.runTask(runnable, 1);
-                return true;
             }
             ArmorStand armorStand;
             for (Entity e : block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5)) {
@@ -59,10 +62,13 @@ public class ItemsAdderAPI {
 
     public static Optional<String> getCustomBlockID(Block block) {
         if (SCore.hasItemsAdder && block != null && !block.isEmpty()) {
-            CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
-            //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
-            if (customBlock != null) {
-                return Optional.of(customBlock.getId());
+            // https://discord.com/channels/701066025516531753/1386807735009677493 remove for custom IA build
+            if (SCore.hasClass("dev.lone.itemsadder.api.CustomBlock")) {
+                CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
+                //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
+                if (customBlock != null) {
+                    return Optional.of(customBlock.getId());
+                }
             }
             ArmorStand armorStand;
             for (Entity e : block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5)) {
@@ -108,7 +114,7 @@ public class ItemsAdderAPI {
                 customBlock.place(location);
                 return true;
             }
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             try {
                 //SsomarDev.testMsg("placeItemsAdder is Furniture " + id, DEBUG);
                 CustomFurniture.spawnPreciseNonSolid(id, location);

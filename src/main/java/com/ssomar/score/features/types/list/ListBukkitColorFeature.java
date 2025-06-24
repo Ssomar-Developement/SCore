@@ -33,7 +33,8 @@ public class ListBukkitColorFeature extends ListFeatureAbstract<Color, ListBukki
     public List<Color> loadValues(List<String> entries, List<String> errors) {
         List<Color> val = new ArrayList<>();
         for(String s : entries) {
-            val.add(CustomColor.valueOf(s));
+            Color color = CustomColor.valueOf(s);
+            if (color != null) val.add(color);
         }
         return val;
     }
