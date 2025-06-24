@@ -208,7 +208,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>3.6.0</version>
                         <configuration>
                             <filters>
                                 <filter>
@@ -394,7 +394,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-5e813f9b5e-1</version>
+            <version>2a510fc02d</version>
             <scope>compile</scope>
         </dependency>
 
