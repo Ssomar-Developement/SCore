@@ -13,19 +13,18 @@ import java.util.List;
 public class DoNothing extends PlayerCommand {
 
     public DoNothing() {
-        CommandSetting message = new CommandSetting("message", 0, String.class, "&6Hello_world");
     }
 
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
-        names.add("DONOTHING");
+        names.add("DO_NOTHING");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "DONOTHING {text/placeholder/anything}";
+        return "DO_NOTHING {text/placeholder/anything}";
     }
 
     @Override

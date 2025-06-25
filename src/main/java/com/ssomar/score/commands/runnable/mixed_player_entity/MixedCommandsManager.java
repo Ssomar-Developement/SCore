@@ -6,7 +6,6 @@ import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.*;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualCancel;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualReplace;
-import com.ssomar.score.commands.runnable.player.commands.DoNothing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,6 @@ public class MixedCommandsManager extends CommandManager<SCommand> {
         commands.add(new DamageNoKnockback());
         commands.add(DamageResistance.getInstance());
         commands.add(new Damage());
-        commands.add(new DoNothing());
         commands.add(new ForceDrop());
         commands.add(new FrontDash());
         commands.add(new GlacialFreeze());

@@ -30,6 +30,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new SendBlankMessage());
         commands.add(new SendMessage());
         commands.add(new SendCenteredMessage());
+        commands.add(new DoNothing());
         /* SUDOOP MUST BE BEFORE SUDO */
         commands.add(new SudoOp());
         commands.add(new Sudo());
