@@ -12,9 +12,6 @@ import java.util.List;
 
 public class DoNothing extends PlayerCommand {
 
-    public DoNothing() {
-    }
-
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
