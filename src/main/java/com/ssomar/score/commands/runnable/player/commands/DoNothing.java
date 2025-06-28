@@ -10,6 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This custom command's purpose is to do nothing. Mainly used to parse CheckItem placeholders from
+ * PlaceholderAPI without worrying about console complications when used frequently.
+ */
 public class DoNothing extends PlayerCommand {
 
     @Override
