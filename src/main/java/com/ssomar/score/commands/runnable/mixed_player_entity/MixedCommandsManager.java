@@ -12,8 +12,17 @@ import java.util.List;
 
 public class MixedCommandsManager extends CommandManager<SCommand> {
 
+    /**
+     * Manages SCore custom commands that works in both player-related command editors and
+     * entity-related command editors.
+     */
     private static MixedCommandsManager instance;
 
+    /**
+     * To register a new custom command, add a class instance of it
+     * to the commands List variable. Refer to its existing values
+     * as reference.
+     */
     public MixedCommandsManager() {
         List<SCommand> commands = new ArrayList<>();
         commands.add(new AddTemporaryAttribute());
