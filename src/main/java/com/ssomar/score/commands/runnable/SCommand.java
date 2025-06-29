@@ -347,8 +347,25 @@ public abstract class SCommand {
         return ac;
     }
 
+    /**
+     * Lets SCore know the label for a custom command. <br>
+     * Example Code:
+     * <pre>
+     *
+     List&lt;String&gt; names = new ArrayList<>();
+     names.add("ADD_TEMPORARY_ATTRIBUTE");
+     return names;</pre><br>
+     * In this sample code, "ADD_TEMPORARY_ATTRIBUTE" is the label on which the user
+     * should type in the commands editor to call the functions tied to that custom command.
+     */
     public abstract List<String> getNames();
 
+    /**
+     * Lets SCore show the user what the full command format looks like
+     * when selected in the command preview list in the ingame commands editor.<br>
+     * It's a must to assign values to this to make sure users aren't lost while utilizing
+     * such custom command.
+     */
     public abstract String getTemplate();
 
     public abstract ChatColor getColor();
