@@ -68,18 +68,7 @@ public class HitscanEntities extends MixedCommand {
         if (limit > 0 && entities.size() > limit) {
             entities = entities.subList(0, limit);
         }
-
-        if (sCommandToExec.getOtherArgs().stream().anyMatch(s -> s.contains("%hitscan_target_uuid_"))) {
-            List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
-            for (int i = 0; i < entities.size(); i++) {
-                for (int j = 0; j < commands.size(); j++) {
-                    commands.set(j, commands.get(j).replace("%hitscan_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
-                }
-            }
-            CommmandThatRunsCommand.runEntityCommands(new ArrayList<>(), commands, sCommandToExec.getActionInfo());
-        } else {
-            CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
-        }
+        CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
     }
 
     public static List<Entity> runHitscan(Entity receiver, SCommandToExec sCommandToExec, boolean playerOnly){
