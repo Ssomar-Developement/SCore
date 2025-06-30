@@ -68,7 +68,30 @@ public class HitscanEntities extends MixedCommand {
         if (limit > 0 && entities.size() > limit) {
             entities = entities.subList(0, limit);
         }
-        CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+        String sort = (String) sCommandToExec.getSettingValue("sort");
+        int limit = (int) sCommandToExec.getSettingValue("limit");
+
+        if (sort.equalsIgnoreCase("NEAREST")) {
+            entities.sort((e1, e2) -> {
+                double d1 = e1.getLocation().distanceSquared(receiver.getLocation());
+                double d2 = e2.getLocation().distanceSquared(receiver.getLocation());
+                return Double.compare(d1, d2);
+            });
+        } else if (sort.equalsIgnoreCase("RANDOM")) {
+            Collections.shuffle(entities);
+        }
+
+        if (limit > 0 && entities.size() > limit) {
+            entities = entities.subList(0, limit);
+        }
+
+        List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
+        for (int i = 0; i < entities.size(); i++) {
+            for (int j = 0; j < commands.size(); j++) {
+                commands.set(j, commands.get(j).replace("%hitscan_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
+            }
+        }
+        CommmandThatRunsCommand.runEntityCommands(entities, commands, sCommandToExec.getActionInfo());
     }
 
     public static List<Entity> runHitscan(Entity receiver, SCommandToExec sCommandToExec, boolean playerOnly){
