@@ -15,6 +15,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public class HitscanEntities extends MixedCommand {
         CommandSetting yShift = new CommandSetting("yShift", -1, Double.class, 0d);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting throughEntities = new CommandSetting("throughEntities", -1, Boolean.class, true);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(range);
         settings.add(radius);
@@ -39,6 +42,8 @@ public class HitscanEntities extends MixedCommand {
         settings.add(yShift);
         settings.add(throughEntities);
         settings.add(throughBlocks);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -60,6 +65,8 @@ public class HitscanEntities extends MixedCommand {
         double yShift = (double) sCommandToExec.getSettingValue("yShift");
         boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
         boolean throughEntities = (boolean) sCommandToExec.getSettingValue("throughEntities");
+        int limit = (int) sCommandToExec.getSettingValue("limit");
+        String sort = (String) sCommandToExec.getSettingValue("sort");
 
         if (receiver instanceof LivingEntity) {
 
@@ -102,6 +109,21 @@ public class HitscanEntities extends MixedCommand {
                 }
             }
         }
+
+        if (sort.equalsIgnoreCase("NEAREST")) {
+            entities.sort((e1, e2) -> {
+                double d1 = e1.getLocation().distance(receiver.getLocation());
+                double d2 = e2.getLocation().distance(receiver.getLocation());
+                return Double.compare(d1, d2);
+            });
+        } else if (sort.equalsIgnoreCase("RANDOM")) {
+            Collections.shuffle(entities);
+        }
+
+        if (limit > 0 && entities.size() > limit) {
+            entities = entities.subList(0, limit);
+        }
+
         return entities;
     }
 
