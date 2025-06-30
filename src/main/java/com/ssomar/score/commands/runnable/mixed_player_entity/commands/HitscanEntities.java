@@ -15,6 +15,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public class HitscanEntities extends MixedCommand {
         CommandSetting yShift = new CommandSetting("yShift", -1, Double.class, 0d);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting throughEntities = new CommandSetting("throughEntities", -1, Boolean.class, true);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(range);
         settings.add(radius);
@@ -39,6 +42,8 @@ public class HitscanEntities extends MixedCommand {
         settings.add(yShift);
         settings.add(throughEntities);
         settings.add(throughBlocks);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -46,7 +51,35 @@ public class HitscanEntities extends MixedCommand {
     @Override
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
         List<Entity> entities = runHitscan(receiver, sCommandToExec, false);
-        CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+
+        String sort = (String) sCommandToExec.getSettingValue("sort");
+        int limit = (int) sCommandToExec.getSettingValue("limit");
+
+        if (sort.equalsIgnoreCase("NEAREST")) {
+            entities.sort((e1, e2) -> {
+                double d1 = e1.getLocation().distanceSquared(receiver.getLocation());
+                double d2 = e2.getLocation().distanceSquared(receiver.getLocation());
+                return Double.compare(d1, d2);
+            });
+        } else if (sort.equalsIgnoreCase("RANDOM")) {
+            Collections.shuffle(entities);
+        }
+
+        if (limit > 0 && entities.size() > limit) {
+            entities = entities.subList(0, limit);
+        }
+
+        if (sCommandToExec.getOtherArgs().stream().anyMatch(s -> s.contains("%hitscan_target_uuid_"))) {
+            List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
+            for (int i = 0; i < entities.size(); i++) {
+                for (int j = 0; j < commands.size(); j++) {
+                    commands.set(j, commands.get(j).replace("%hitscan_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
+                }
+            }
+            CommmandThatRunsCommand.runEntityCommands(new ArrayList<>(), commands, sCommandToExec.getActionInfo());
+        } else {
+            CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+        }
     }
 
     public static List<Entity> runHitscan(Entity receiver, SCommandToExec sCommandToExec, boolean playerOnly){
@@ -220,7 +253,7 @@ public class HitscanEntities extends MixedCommand {
 
     @Override
     public String getTemplate() {
-        return "HITSCAN_ENTITIES range:5 radius:0 pitch:0 yaw:0 leftRightShift:0 yShift:0 throughBlocks:true throughEntities:true COMMANDS HERE";
+        return "HITSCAN_ENTITIES range:5 radius:0 pitch:0 yaw:0 leftRightShift:0 yShift:0 throughBlocks:true throughEntities:true limit:-1 sort:NEAREST COMMANDS HERE";
     }
 
     @Override

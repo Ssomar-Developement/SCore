@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /* MOB_AROUND {distance} {Your commands here} */
@@ -42,6 +43,8 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         CommandSetting offsetYaw = new CommandSetting("offsetYaw", -1, Double.class, 0d);
         CommandSetting offsetPitch = new CommandSetting("offsetPitch", -1, Double.class, 0d);
         CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -50,6 +53,8 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         settings.add(offsetYaw);
         settings.add(offsetPitch);
         settings.add(offsetDistance);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -119,7 +124,36 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                         }
                     }
 
-                    boolean hit = CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+                    boolean hit = false;
+
+                    String sort = (String) sCommandToExec.getSettingValue("sort");
+                    int limit = (int) sCommandToExec.getSettingValue("limit");
+
+                    if (sort.equalsIgnoreCase("NEAREST")) {
+                        entities.sort((e1, e2) -> {
+                            double d1 = e1.getLocation().distanceSquared(receiverLoc);
+                            double d2 = e2.getLocation().distanceSquared(receiverLoc);
+                            return Double.compare(d1, d2);
+                        });
+                    } else if (sort.equalsIgnoreCase("RANDOM")) {
+                        Collections.shuffle(entities);
+                    }
+
+                    if (limit > 0 && entities.size() > limit) {
+                        entities = entities.subList(0, limit);
+                    }
+
+                    if (sCommandToExec.getOtherArgs().stream().anyMatch(s -> s.contains("%around_target_uuid_"))) {
+                        List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
+                        for (int i = 0; i < entities.size(); i++) {
+                            for (int j = 0; j < commands.size(); j++) {
+                                commands.set(j, commands.get(j).replace("%around_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
+                            }
+                        }
+                        hit = CommmandThatRunsCommand.runEntityCommands(new ArrayList<>(), commands, sCommandToExec.getActionInfo());
+                    } else {
+                        hit = CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
+                    }
 
                     if (!hit && displayMsgIfNoEntity && receiver instanceof Player)
                         sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
@@ -146,7 +180,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
 
     @Override
     public String getTemplate() {
-        return "MOB_AROUND distance:3 displayMsgIfNoEntity:true throughBlocks:true safeDistance:0 [conditions] COMMAND1 <+> COMMAND2 <+> ...";
+        return "MOB_AROUND distance:3 displayMsgIfNoEntity:true throughBlocks:true safeDistance:0 limit:-1 sort:NEAREST [conditions] COMMAND1 <+> COMMAND2 <+> ...";
     }
 
     @Override
