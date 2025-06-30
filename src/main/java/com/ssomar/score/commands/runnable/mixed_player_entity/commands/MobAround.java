@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /* MOB_AROUND {distance} {Your commands here} */
@@ -42,6 +43,8 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         CommandSetting offsetYaw = new CommandSetting("offsetYaw", -1, Double.class, 0d);
         CommandSetting offsetPitch = new CommandSetting("offsetPitch", -1, Double.class, 0d);
         CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -50,6 +53,8 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         settings.add(offsetYaw);
         settings.add(offsetPitch);
         settings.add(offsetDistance);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -69,6 +74,8 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                     double offsetYaw = (double) sCommandToExec.getSettingValue("offsetYaw");
                     double offsetPitch = (double) sCommandToExec.getSettingValue("offsetPitch");
                     double offsetDistance = (double) sCommandToExec.getSettingValue("offsetDistance");
+                    int limit = (int) sCommandToExec.getSettingValue("limit");
+                    String sort = (String) sCommandToExec.getSettingValue("sort");
 
                     Vector offset = XParticle.calculDirection(offsetYaw, offsetPitch).multiply(offsetDistance);
 
@@ -117,6 +124,20 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                             if (target.hasMetadata("NPC") || target.equals(receiver)) continue;
                             entities.add(target);
                         }
+                    }
+
+                    if (sort.equalsIgnoreCase("NEAREST")) {
+                        entities.sort((e1, e2) -> {
+                            double d1 = e1.getLocation().distance(receiverLoc);
+                            double d2 = e2.getLocation().distance(receiverLoc);
+                            return Double.compare(d1, d2);
+                        });
+                    } else if (sort.equalsIgnoreCase("RANDOM")) {
+                        Collections.shuffle(entities);
+                    }
+
+                    if (limit > 0 && entities.size() > limit) {
+                        entities = entities.subList(0, limit);
                     }
 
                     boolean hit = CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());

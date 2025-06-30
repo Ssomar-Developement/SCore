@@ -24,6 +24,8 @@ public class HitscanPlayers extends MixedCommand {
         CommandSetting yShift = new CommandSetting("yShift", -1, Double.class, 0d);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting throughEntities = new CommandSetting("throughEntities", -1, Boolean.class, true);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(range);
         settings.add(radius);
@@ -33,6 +35,8 @@ public class HitscanPlayers extends MixedCommand {
         settings.add(yShift);
         settings.add(throughEntities);
         settings.add(throughBlocks);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
