@@ -124,36 +124,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                         }
                     }
 
-                    boolean hit = false;
-
-                    String sort = (String) sCommandToExec.getSettingValue("sort");
-                    int limit = (int) sCommandToExec.getSettingValue("limit");
-
-                    if (sort.equalsIgnoreCase("NEAREST")) {
-                        entities.sort((e1, e2) -> {
-                            double d1 = e1.getLocation().distanceSquared(receiverLoc);
-                            double d2 = e2.getLocation().distanceSquared(receiverLoc);
-                            return Double.compare(d1, d2);
-                        });
-                    } else if (sort.equalsIgnoreCase("RANDOM")) {
-                        Collections.shuffle(entities);
-                    }
-
-                    if (limit > 0 && entities.size() > limit) {
-                        entities = entities.subList(0, limit);
-                    }
-
-                    if (sCommandToExec.getOtherArgs().stream().anyMatch(s -> s.contains("%around_target_uuid_"))) {
-                        List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
-                        for (int i = 0; i < entities.size(); i++) {
-                            for (int j = 0; j < commands.size(); j++) {
-                                commands.set(j, commands.get(j).replace("%around_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
-                            }
-                        }
-                        hit = CommmandThatRunsCommand.runEntityCommands(new ArrayList<>(), commands, sCommandToExec.getActionInfo());
-                    } else {
-                        hit = CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
-                    }
+                    boolean hit = CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
 
                     if (!hit && displayMsgIfNoEntity && receiver instanceof Player)
                         sm.sendMessage(receiver, MessageMain.getInstance().getMessage(SCore.plugin, Message.NO_ENTITY_HIT));
