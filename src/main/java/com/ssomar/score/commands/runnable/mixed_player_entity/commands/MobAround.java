@@ -147,52 +147,6 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                             commands.set(j, commands.get(j).replace("%around_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
                         }
                     }
-                    String sort = (String) sCommandToExec.getSettingValue("sort");
-                    int limit = (int) sCommandToExec.getSettingValue("limit");
-
-                    if (sort.equalsIgnoreCase("NEAREST")) {
-                        entities.sort((e1, e2) -> {
-                            double d1 = e1.getLocation().distanceSquared(receiverLoc);
-                            double d2 = e2.getLocation().distanceSquared(receiverLoc);
-                            return Double.compare(d1, d2);
-                        });
-                    } else if (sort.equalsIgnoreCase("RANDOM")) {
-                        Collections.shuffle(entities);
-                    }
-
-                    if (limit > 0 && entities.size() > limit) {
-                        entities = entities.subList(0, limit);
-                    }
-
-                    List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
-                    for (int i = 0; i < entities.size(); i++) {
-                        for (int j = 0; j < commands.size(); j++) {
-                            commands.set(j, commands.get(j).replace("%around_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
-                        }
-                    }
-                    String sort = (String) sCommandToExec.getSettingValue("sort");
-                    int limit = (int) sCommandToExec.getSettingValue("limit");
-
-                    if (sort.equalsIgnoreCase("NEAREST")) {
-                        entities.sort((e1, e2) -> {
-                            double d1 = e1.getLocation().distanceSquared(receiverLoc);
-                            double d2 = e2.getLocation().distanceSquared(receiverLoc);
-                            return Double.compare(d1, d2);
-                        });
-                    } else if (sort.equalsIgnoreCase("RANDOM")) {
-                        Collections.shuffle(entities);
-                    }
-
-                    if (limit > 0 && entities.size() > limit) {
-                        entities = entities.subList(0, limit);
-                    }
-
-                    List<String> commands = new ArrayList<>(sCommandToExec.getOtherArgs());
-                    for (int i = 0; i < entities.size(); i++) {
-                        for (int j = 0; j < commands.size(); j++) {
-                            commands.set(j, commands.get(j).replace("%around_target_uuid_" + i + "%", entities.get(i).getUniqueId().toString()));
-                        }
-                    }
                     boolean hit = CommmandThatRunsCommand.runEntityCommands(entities, commands, sCommandToExec.getActionInfo());
 
                     if (!hit && displayMsgIfNoEntity && receiver instanceof Player)
