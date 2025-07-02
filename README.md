@@ -29,3 +29,14 @@ Please make sure to have bug fixes/improvements in separated pull requests from 
     
 - Add new custom conditions: 
     package path -> com.ssomar.score.features.custom.conditions
+
+- Add new placeholders:
+  - class file path for entity placeholders: com.ssomar.score.utils.placeholders.PlayerPlaceholdersAbstract.java
+  - class file path for entity placeholders: com.ssomar.score.utils.placeholders.EntityPlaceholdersAbstract.java
+  - For activator-exclusive placeholders:
+    - Sample code: 
+    - (From com.ssomar.executableitems.listeners.player.custom.PlayerReceiveHitGlobalEvent.java)
+    - (https://github.com/Ssomar-Developement/ExecutableItems/commit/5f2b0aa2313af91e6cbfeeffef713009244569d7)
+    ```java
+    eInfo.getPlaceholders().put("%last_damage_taken_final%", String.valueOf(e.getEntityDamageEvent().getFinalDamage()));
+    ```
