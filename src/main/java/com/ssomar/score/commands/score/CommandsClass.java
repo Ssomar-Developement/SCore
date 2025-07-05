@@ -386,7 +386,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     shape.getParameters().load(args, targetEntity, targetLocation);
                     shape.run(shape.getParameters(), targetEntity);
 
-                    SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aShape executed!");
+                    SendMessage.sendMessageNoPlch(sender,MessageMain.getInstance().getMessage(SCore.plugin, Message.SHAPE_EXECUTED));
                 } else {
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid shape for the command &6/score particles&c.");
 

@@ -7,6 +7,8 @@
 
 SCore is a library for Minecraft plugins, particularly Ssomar's plugins. SCore includes many custom stuff, like custom  player/block/entity commands, custom conditions, has a variables / particles system, and efficient Class to create custom in-game editor.
 
+This is a test line added by Gemini to create a pull request.
+
 #### Requirements
 * Java 8 JDK or newer
 * Spigot / Maven knowledges
@@ -29,3 +31,7 @@ Please make sure to have bug fixes/improvements in separated pull requests from 
     
 - Add new custom conditions: 
     package path -> com.ssomar.score.features.custom.conditions
+
+- Add new placeholders:
+  - class file path for entity placeholders: com.ssomar.score.utils.placeholders.PlayerPlaceholdersAbstract.java
+  - class file path for entity placeholders: com.ssomar.score.utils.placeholders.EntityPlaceholdersAbstract.java

@@ -55,6 +55,9 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     private float yawInitial;
     private float yawPositiveInitial;
     private String directionInitial;
+    private double xVelocity;
+    private double yVelocity;
+    private double zVelocity;
 
     @Getter
     private Map<String, String> placeholders;
@@ -94,6 +97,9 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             this.z = NTools.reduceDouble(pLoc.getZ(), 2);
             this.lastDamageTaken = player.getLastDamage();
             this.pitch = pLoc.getPitch();
+            this.xVelocity = player.getVelocity().getX();
+            this.yVelocity = player.getVelocity().getY();
+            this.zVelocity = player.getVelocity().getZ();
             if (pitch < 0) pitchPositive = pitch * -1;
             else pitchPositive = pitch;
             this.yaw = pLoc.getYaw();
@@ -216,6 +222,12 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                 toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_dealt%", lastDamageDealt + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%last_damage_dealt_int%", ((int) lastDamageDealt) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%x_velocity%", String.valueOf(xVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%y_velocity%", String.valueOf(yVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%z_velocity%", String.valueOf(zVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%x_velocity_int%", String.valueOf((int) xVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%y_velocity_int%", String.valueOf((int) yVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%z_velocity_int%", String.valueOf((int) zVelocity), true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch%", pitch + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_int%", ((int) pitch) + "", true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive%", pitchPositive + "", false);
@@ -235,6 +247,13 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial_int%", ((int) xInitial) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial_int%", ((int) yInitial) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial_int%", ((int) zInitial) + "", true);
+
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity%", String.valueOf(xVelocity), false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity%", String.valueOf(yVelocity), false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity%", String.valueOf(zVelocity), false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity_int%", String.valueOf((int) xVelocity), true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity_int%", String.valueOf((int) yVelocity), true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity_int%", String.valueOf((int) zVelocity), true);
 
             // It means new placeholder %player_x_initial% %player_y_initial% %player_z_initial% %player_x_initial_int% %player_y_initial_int% %player_z_initial_int%
 

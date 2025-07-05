@@ -35,6 +35,9 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
     private float pitchPositive;
     private float yaw;
     private float yawPositive;
+    private double xVelocity;
+    private double yVelocity;
+    private double zVelocity;
 
     private String entityDirection;
     private double entityHealth;
@@ -172,6 +175,14 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_int%", ((int) x) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_int%", ((int) y) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_int%", ((int) z) + "", true);
+
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity", xVelocity + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity", yVelocity + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity", zVelocity + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity_int", ((int) xVelocity) + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity_int", ((int) yVelocity) + "", true);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity_int", ((int) zVelocity) + "", true);
+
             toReplace = toReplace.replaceAll("%" + particle + "_world%", world);
             toReplace = toReplace.replaceAll("%" + particle + "_world_lower%", world.toLowerCase());
 
