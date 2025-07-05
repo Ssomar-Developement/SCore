@@ -87,6 +87,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                     if (receiver != null) {
                         receiverLoc = receiver.getLocation().add(offset);
                     }
+                    final Location finalReceiverLoc = receiverLoc;
 
                     for (Entity e : receiverLoc.getWorld().getNearbyEntities(receiverLoc, distance, distance, distance)) {
                         if (e instanceof LivingEntity && !(e instanceof Player)) {
@@ -128,8 +129,8 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
 
                     if (sort.equalsIgnoreCase("NEAREST")) {
                         entities.sort((e1, e2) -> {
-                            double d1 = e1.getLocation().distance(receiverLoc);
-                            double d2 = e2.getLocation().distance(receiverLoc);
+                            double d1 = e1.getLocation().distance(finalReceiverLoc);
+                            double d2 = e2.getLocation().distance(finalReceiverLoc);
                             return Double.compare(d1, d2);
                         });
                     } else if (sort.equalsIgnoreCase("RANDOM")) {
