@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +30,14 @@ public class Around extends BlockCommand {
         CommandSetting distance = new CommandSetting("distance", 0, Double.class, 3d);
         CommandSetting displayMsgIfNoPlayer = new CommandSetting("affectThePlayerThatActivesTheActivator", 1, Boolean.class, true, true);
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -86,6 +91,8 @@ public class Around extends BlockCommand {
                     double distance = (double) sCommandToExec.getSettingValue("distance");
                     boolean affectThePlayerThatActivesTheActivator = (boolean) sCommandToExec.getSettingValue("affectThePlayerThatActivesTheActivator");
                     boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
+                    int limit = (int) sCommandToExec.getSettingValue("limit");
+                    String sort = (String) sCommandToExec.getSettingValue("sort");
 
                     List<Player> targets = new ArrayList<>();
                     for (Entity e : block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), distance, distance, distance)) {
@@ -122,9 +129,23 @@ public class Around extends BlockCommand {
 
                         }
                     }
+
+                    if (sort.equalsIgnoreCase("NEAREST")) {
+                        targets.sort((p1, p2) -> {
+                            double d1 = p1.getLocation().distance(block.getLocation());
+                            double d2 = p2.getLocation().distance(block.getLocation());
+                            return Double.compare(d1, d2);
+                        });
+                    } else if (sort.equalsIgnoreCase("RANDOM")) {
+                        Collections.shuffle(targets);
+                    }
+
+                    if (limit > 0 && targets.size() > limit) {
+                        targets = targets.subList(0, limit);
+                    }
+
                     CommmandThatRunsCommand.runPlayerCommands(targets, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
-                } catch (
-                        Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

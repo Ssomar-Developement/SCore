@@ -18,6 +18,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Around extends MixedCommand {
@@ -32,6 +33,8 @@ public class Around extends MixedCommand {
         CommandSetting offsetYaw = new CommandSetting("offsetYaw", -1, Double.class, 0d);
         CommandSetting offsetPitch = new CommandSetting("offsetPitch", -1, Double.class, 0d);
         CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -40,6 +43,8 @@ public class Around extends MixedCommand {
         settings.add(offsetYaw);
         settings.add(offsetPitch);
         settings.add(offsetDistance);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -56,6 +61,8 @@ public class Around extends MixedCommand {
                 double offsetYaw = (double) sCommandToExec.getSettingValue("offsetYaw");
                 double offsetPitch = (double) sCommandToExec.getSettingValue("offsetPitch");
                 double offsetDistance = (double) sCommandToExec.getSettingValue("offsetDistance");
+                int limit = (int) sCommandToExec.getSettingValue("limit");
+                String sort = (String) sCommandToExec.getSettingValue("sort");
 
                 Vector offset = XParticle.calculDirection(offsetYaw, offsetPitch).multiply(offsetDistance);
                 Location loc = receiver.getLocation().add(offset);
@@ -96,6 +103,20 @@ public class Around extends MixedCommand {
                         if (target.hasMetadata("NPC") || target.equals(receiver)) continue;
                         targets.add(target);
                     }
+                }
+
+                if (sort.equalsIgnoreCase("NEAREST")) {
+                    targets.sort((p1, p2) -> {
+                        double d1 = p1.getLocation().distance(loc);
+                        double d2 = p2.getLocation().distance(loc);
+                        return Double.compare(d1, d2);
+                    });
+                } else if (sort.equalsIgnoreCase("RANDOM")) {
+                    Collections.shuffle(targets);
+                }
+
+                if (limit > 0 && targets.size() > limit) {
+                    targets = targets.subList(0, limit);
                 }
 
                 boolean hit = CommmandThatRunsCommand.runPlayerCommands(targets, sCommandToExec.getOtherArgs(),sCommandToExec.getActionInfo());

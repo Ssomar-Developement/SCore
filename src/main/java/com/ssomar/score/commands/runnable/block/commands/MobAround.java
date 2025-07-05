@@ -25,6 +25,8 @@ public class MobAround extends BlockCommand {
         CommandSetting offsetYaw = new CommandSetting("offsetYaw", -1, Double.class, 0d);
         CommandSetting offsetPitch = new CommandSetting("offsetPitch", -1, Double.class, 0d);
         CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
+        CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
+        CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -33,6 +35,8 @@ public class MobAround extends BlockCommand {
         settings.add(offsetYaw);
         settings.add(offsetPitch);
         settings.add(offsetDistance);
+        settings.add(limit);
+        settings.add(sort);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
