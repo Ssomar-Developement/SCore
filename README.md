@@ -29,3 +29,7 @@ Please make sure to have bug fixes/improvements in separated pull requests from 
     
 - Add new custom conditions: 
     package path -> com.ssomar.score.features.custom.conditions
+
+- Add new placeholders:
+  - class file path for entity placeholders: com.ssomar.score.utils.placeholders.PlayerPlaceholdersAbstract.java
+  - class file path for entity placeholders: com.ssomar.score.utils.placeholders.EntityPlaceholdersAbstract.java
