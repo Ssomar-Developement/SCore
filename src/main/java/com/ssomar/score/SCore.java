@@ -102,6 +102,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasNexo = false;
     public static boolean hasShopGUIPlus = false;
     public static boolean hasRoseLoot = false;
+    public static boolean hasCustomFishing = false;
 
     public static boolean hasRoseStacker = false;
     public static boolean hasMMOCore = false;
@@ -723,6 +724,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasCustomCrafting = Dependency.CUSTOM_CRAFTING.hookSoftDependency();
 
         hasWorldEdit = Dependency.WORLD_EDIT.hookSoftDependency();
+
+        hasCustomFishing = Dependency.CUSTOM_FISHING.hookSoftDependency();
     }
 
     @Override

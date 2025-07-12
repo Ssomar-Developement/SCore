@@ -106,7 +106,9 @@ public enum Dependency {
 
     MYWORLDS("MyWorlds"),
 
-    WORLD_EDIT("WorldEdit");
+    WORLD_EDIT("WorldEdit"),
+
+    CUSTOM_FISHING("CustomFishing");
 
     private final String name;
 
