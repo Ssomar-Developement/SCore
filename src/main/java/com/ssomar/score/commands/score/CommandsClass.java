@@ -262,28 +262,49 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                            .toString()
+                                            .replace("%player%", optPlayer.get().getName())
+                                            .replace("%variable_name%", variableOpt.get().getId())
+                                            .replace("%variable_value%", value)
+                                    );
+
                             } else if (modifType.equalsIgnoreCase("modification")) {
                                 final Optional<String> errorOpt = variableOpt.get().modifValue(optPlayer, value);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                            .toString()
+                                            .replace("%player%", optPlayer.get().getName())
+                                            .replace("%variable_name%", variableOpt.get().getId())
+                                            .replace("%variable_value%", value)
+                                    );
                             } else if (modifType.equalsIgnoreCase("list-add")) {
                                 final Optional<String> errorOpt = variableOpt.get().addValue(optPlayer, value, indexOpt);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                            .toString()
+                                            .replace("%player%", optPlayer.get().getName())
+                                            .replace("%variable_name%", variableOpt.get().getId())
+                                            .replace("%variable_value%", value)
+                                    );
                             } else if (modifType.equalsIgnoreCase("list-remove")) {
                                 final Optional<String> errorOpt = variableOpt.get().removeValue(optPlayer, indexOpt, valueOpt);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                            .toString()
+                                            .replace("%player%", optPlayer.get().getName())
+                                            .replace("%variable_name%", variableOpt.get().getId())
+                                            .replace("%variable_value%", value)
+                                    );
                             } else if (modifType.equalsIgnoreCase("clear")) {
                                 final Optional<String> errorOpt;
 
@@ -294,7 +315,12 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                            .toString()
+                                            .replace("%player%", optPlayer.get().getName())
+                                            .replace("%variable_name%", variableOpt.get().getId())
+                                            .replace("%variable_value%", value)
+                                    );
                             }
 
                             VariablesManager.getInstance().updateLoadedMySQL(variableOpt.get().getId(), VariablesManager.MODE.EXPORT);
