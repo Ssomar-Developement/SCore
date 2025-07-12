@@ -128,7 +128,6 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                     }
 
                     if (sort.equalsIgnoreCase("NEAREST")) {
-                        Location finalReceiverLoc = receiverLoc;
                         entities.sort((e1, e2) -> {
                             double d1 = e1.getLocation().distance(finalReceiverLoc);
                             double d2 = e2.getLocation().distance(finalReceiverLoc);
