@@ -13,19 +13,26 @@ public class CheckVersionSpigot {
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
+        connection.setConnectTimeout(5000); // 5 seconds
+        connection.setReadTimeout(5000);    // 5 seconds
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuilder content = new StringBuilder();
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode != 200) {
+           return "Error: Unable to fetch last version";
         }
 
-        in.close();
-        connection.disconnect();
-
-        JSONObject jsonObject = new JSONObject(content.toString());
-        return jsonObject.getString("name");
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            JSONObject jsonObject = new JSONObject(content.toString());
+            return jsonObject.getString("name");
+        } finally {
+            connection.disconnect();
+        }
     }
 
     public static String getVersionOf(String resourceId){

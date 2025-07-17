@@ -256,34 +256,39 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         final Optional<Variable> variableOpt = VariablesManager.getInstance().getVariable(varName);
 
                         if (variableOpt.isPresent()) {
+                            String variableValueSetMsg = MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                    .replace("%player%", (optPlayer.map(OfflinePlayer::getName).orElse("null")))
+                                    .replace("%variable_name%", variableOpt.get().getId())
+                                    .replace("%variable_value%", value);
                             if (modifType.equalsIgnoreCase("set")) {
                                 final Optional<String> errorOpt = variableOpt.get().setValue(optPlayer, value);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
+
                             } else if (modifType.equalsIgnoreCase("modification")) {
                                 final Optional<String> errorOpt = variableOpt.get().modifValue(optPlayer, value);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             } else if (modifType.equalsIgnoreCase("list-add")) {
                                 final Optional<String> errorOpt = variableOpt.get().addValue(optPlayer, value, indexOpt);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             } else if (modifType.equalsIgnoreCase("list-remove")) {
                                 final Optional<String> errorOpt = variableOpt.get().removeValue(optPlayer, indexOpt, valueOpt);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             } else if (modifType.equalsIgnoreCase("clear")) {
                                 final Optional<String> errorOpt;
 
@@ -294,7 +299,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             }
 
                             VariablesManager.getInstance().updateLoadedMySQL(variableOpt.get().getId(), VariablesManager.MODE.EXPORT);
@@ -386,7 +391,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     shape.getParameters().load(args, targetEntity, targetLocation);
                     shape.run(shape.getParameters(), targetEntity);
 
-                    SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aShape executed!");
+                    SendMessage.sendMessageNoPlch(sender,MessageMain.getInstance().getMessage(SCore.plugin, Message.SHAPE_EXECUTED));
                 } else {
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid shape for the command &6/score particles&c.");
 

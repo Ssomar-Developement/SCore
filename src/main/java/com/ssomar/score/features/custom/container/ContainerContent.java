@@ -3,7 +3,7 @@ package com.ssomar.score.features.custom.container;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
-import com.ssomar.score.features.types.list.ListUncoloredStringFeature;
+import com.ssomar.score.features.types.list.ListStringFeature;
 import com.ssomar.score.utils.emums.ResetSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ContainerContent extends ListUncoloredStringFeature implements FeatureForItem, FeatureForBlock {
+public class ContainerContent extends ListStringFeature implements FeatureForItem, FeatureForBlock {
 
     private final static boolean DEBUG = true;
 

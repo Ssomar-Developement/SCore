@@ -54,7 +54,8 @@ public class DamageReductionFeature extends FeatureWithHisOwnEditor<DamageReduct
         baseDamageBlocked.setValue(Optional.of((double) damageReduction.base()));
         factorDamageBlocked.setValue(Optional.of((double) damageReduction.factor()));
         horizontalBlockingAngle.setValue(Optional.of((double) damageReduction.horizontalBlockingAngle()));
-        damageTypes.fromRegistryKeySet(damageReduction.type());
+        if(damageReduction.type() != null)
+            damageTypes.fromRegistryKeySet(damageReduction.type());
     }
 
     @Override

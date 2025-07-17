@@ -16,7 +16,8 @@ public enum Message implements MessageInterface {
     NO_ENTITY_HIT("noEntityHit"),
     DAMAGE_COMMAND_KILL("damageCommandKill"),
     VARIABLE_VALUE_SET("variableValueSet"),
-    VARIABLE_DEFAULT_VALUE_SET("variableDefaultValueSet");
+    VARIABLE_DEFAULT_VALUE_SET("variableDefaultValueSet"),
+    SHAPE_EXECUTED("shapeExecuted");
 
     private String name;
 
