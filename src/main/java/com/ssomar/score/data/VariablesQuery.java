@@ -32,9 +32,13 @@ public class VariablesQuery {
         try  {
             stmt = conn.createStatement();
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Creating table &6" + TABLE_VARIABLES_NAME + " &7if not exists...");
-            if(Database.useMySQL) stmt.execute(CREATE_TABLE_SQL);
-            else stmt.execute(CREATE_TABLE_SQLITE);
-            stmt.execute(UPDATE_TABLE);
+            if(Database.useMySQL) {
+                stmt.execute(CREATE_TABLE_SQL);
+                // Only execute UPDATE_TABLE for MySQL as it uses MySQL-specific MODIFY syntax
+                stmt.execute(UPDATE_TABLE);
+            } else {
+                stmt.execute(CREATE_TABLE_SQLITE);
+            }
         } catch (SQLException e) {
             SCore.plugin.getLogger().severe("Error while creating table " + TABLE_VARIABLES_NAME + " in database "+e.getMessage());
         }
