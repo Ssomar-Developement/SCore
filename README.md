@@ -142,6 +142,106 @@ Location: `com.ssomar.score.usedapi`
 3. Register the integration in `SCore.loadDependency()`
 4. Handle version compatibility and graceful degradation
 
+#### Adding Placeholders
+
+SCore provides an extensive placeholder system that integrates with PlaceholderAPI. You can add new placeholders in several ways:
+
+**Location**: `com.ssomar.score.utils.placeholders`
+
+##### Method 1: Extend Existing Placeholder Categories
+
+To add placeholders to existing categories (player, entity, block, etc.):
+
+1. **Modify the appropriate Abstract class** (e.g., `PlayerPlaceholdersAbstract.java`)
+2. **Add new fields** for the data you want to expose
+3. **Update the `reload*PlcHldr()` method** to populate the new fields
+4. **Update the `replacePlaceholder()` method** to handle the new placeholders
+
+Example - Adding a new player placeholder:
+
+```java
+// In PlayerPlaceholdersAbstract.java
+private int playerLevel; // Add new field
+
+// In reloadPlayerPlcHldr() method
+if (player != null) {
+    this.playerLevel = player.getLevel(); // Populate field
+    placeholders.put("%" + particle + "_level%", playerLevel + ""); // Add to map
+}
+
+// In replacePlaceholder() method
+toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_level%", playerLevel + "", true);
+```
+
+##### Method 2: Create New Placeholder Category
+
+For entirely new placeholder categories:
+
+1. **Create a new class** extending `PlaceholdersInterface`
+2. **Implement required methods**: `replacePlaceholder()`, `reload*PlcHldr()`
+3. **Add to StringPlaceholder class** for integration
+
+Example - Creating ItemPlaceholders:
+
+```java
+public class ItemPlaceholders extends PlaceholdersInterface implements Serializable {
+    private final String particle = "item";
+    private ItemStack item;
+    private String itemType;
+    private int itemAmount;
+    
+    public void setItemPlcHldr(ItemStack item) {
+        this.item = item;
+        this.reloadItemPlcHldr();
+    }
+    
+    public void reloadItemPlcHldr() {
+        if (item != null) {
+            this.itemType = item.getType().toString();
+            this.itemAmount = item.getAmount();
+        }
+    }
+    
+    public String replacePlaceholder(String s) {
+        String toReplace = s;
+        if (item != null) {
+            toReplace = toReplace.replace("%item_type%", itemType);
+            toReplace = replaceCalculPlaceholder(toReplace, "%item_amount%", itemAmount + "", true);
+        }
+        return toReplace;
+    }
+}
+```
+
+##### Method 3: Add PlaceholderAPI Integration
+
+To add placeholders accessible via PlaceholderAPI (`%SCore_*%`):
+
+1. **Modify `PlaceholderAPISCoreExpansion.java`**
+2. **Add new logic in `onRequest()` method**
+
+```java
+// In PlaceholderAPISCoreExpansion.java onRequest() method
+if (params.startsWith("myfeature_")) {
+    String featureParam = params.substring(10); // Remove "myfeature_" prefix
+    return handleMyFeaturePlaceholder(player, featureParam);
+}
+```
+
+##### Available Placeholder Categories
+
+- **Player**: `%player_*%` - Player data (health, location, name, etc.)
+- **Entity**: `%entity_*%` - Entity data (type, health, location, etc.)
+- **Block**: `%block_*%` - Block data (type, location, world, etc.)
+- **Target**: `%target_*%` - Target player/entity/block data
+- **Around**: `%around_*%` - Entities/players around a target
+- **Effect**: `%effect_*%` - Potion effect data
+- **Time**: `%time_*%` - Time formatting
+- **Projectile**: `%projectile_*%` - Projectile data
+- **Owner**: `%owner_*%` - Owner data for owned objects
+- **Variables**: `%SCore_variables_*%` - Custom variables
+- **Arithmetic**: Support for `+`, `-`, `*`, `/` operations in placeholders
+
 ### Code Style
 
 - Follow existing naming conventions
