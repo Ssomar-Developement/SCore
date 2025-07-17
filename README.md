@@ -95,6 +95,16 @@ Include SCore in your plugin's dependencies:
 
 We welcome contributions to SCore! Please follow these guidelines:
 
+### Getting Started
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Test thoroughly across different Minecraft versions
+5. Commit your changes: `git commit -m 'Add amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
+
 ### Pull Requests
 
 1. **Fork** the repository and create a feature branch
