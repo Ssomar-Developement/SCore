@@ -62,7 +62,7 @@ The compiled JAR will be located in `target/SCore-{version}.jar`
 
 ## Installation
 
-1. Download the latest release from [GitHub Releases](https://github.com/Ssomar-Developement/SCore/releases)
+1. Download the latest release from [Modrinth](https://modrinth.com/plugin/score)
 2. Place `SCore.jar` in your server's `plugins` folder
 3. Restart your server
 4. Configure the plugin using `/score` commands
