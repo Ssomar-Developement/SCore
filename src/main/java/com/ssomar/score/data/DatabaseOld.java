@@ -20,6 +20,7 @@ public class DatabaseOld {
         dataSource.setServerTimezone("UTC");
         dataSource.setUseSSL(false);
         dataSource.setAutoReconnect(true);
+        dataSource.setAllowPublicKeyRetrieval(true);
         return dataSource.getConnection();
     }
 }
