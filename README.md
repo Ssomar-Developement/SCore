@@ -157,22 +157,6 @@ To add placeholders to existing categories (player, entity, block, etc.):
 3. **Update the `reload*PlcHldr()` method** to populate the new fields
 4. **Update the `replacePlaceholder()` method** to handle the new placeholders
 
-Example - Adding a new player placeholder:
-
-```java
-// In PlayerPlaceholdersAbstract.java
-private int playerLevel; // Add new field
-
-// In reloadPlayerPlcHldr() method
-if (player != null) {
-    this.playerLevel = player.getLevel(); // Populate field
-    placeholders.put("%" + particle + "_level%", playerLevel + ""); // Add to map
-}
-
-// In replacePlaceholder() method
-toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_level%", playerLevel + "", true);
-```
-
 ##### Method 2: Create New Placeholder Category
 
 For entirely new placeholder categories:
@@ -181,52 +165,12 @@ For entirely new placeholder categories:
 2. **Implement required methods**: `replacePlaceholder()`, `reload*PlcHldr()`
 3. **Add to StringPlaceholder class** for integration
 
-Example - Creating ItemPlaceholders:
-
-```java
-public class ItemPlaceholders extends PlaceholdersInterface implements Serializable {
-    private final String particle = "item";
-    private ItemStack item;
-    private String itemType;
-    private int itemAmount;
-    
-    public void setItemPlcHldr(ItemStack item) {
-        this.item = item;
-        this.reloadItemPlcHldr();
-    }
-    
-    public void reloadItemPlcHldr() {
-        if (item != null) {
-            this.itemType = item.getType().toString();
-            this.itemAmount = item.getAmount();
-        }
-    }
-    
-    public String replacePlaceholder(String s) {
-        String toReplace = s;
-        if (item != null) {
-            toReplace = toReplace.replace("%item_type%", itemType);
-            toReplace = replaceCalculPlaceholder(toReplace, "%item_amount%", itemAmount + "", true);
-        }
-        return toReplace;
-    }
-}
-```
-
 ##### Method 3: Add PlaceholderAPI Integration
 
 To add placeholders accessible via PlaceholderAPI (`%SCore_*%`):
 
 1. **Modify `PlaceholderAPISCoreExpansion.java`**
 2. **Add new logic in `onRequest()` method**
-
-```java
-// In PlaceholderAPISCoreExpansion.java onRequest() method
-if (params.startsWith("myfeature_")) {
-    String featureParam = params.substring(10); // Remove "myfeature_" prefix
-    return handleMyFeaturePlaceholder(player, featureParam);
-}
-```
 
 ##### Available Placeholder Categories
 
@@ -257,24 +201,15 @@ if (params.startsWith("myfeature_")) {
 3. Test plugin integrations if applicable
 4. Check performance impact of changes
 
-### Submitting Issues
-
-When reporting bugs or requesting features:
-
-1. Use the appropriate issue template
-2. Provide server version, SCore version, and relevant plugin versions
-3. Include detailed reproduction steps
-4. Attach relevant logs and configuration files
-
 ## License
 
 This project is licensed under the terms specified in the repository. Please review the license file before contributing.
 
 ## Support
 
-- **GitHub Issues**: For bug reports and feature requests
-- **Discord**: Join our community server for support and discussions
-- **Documentation**: Additional documentation available in the codebase
+- **Issues / Feature request**: For bug reports and feature requests join our [Discord](https://discord.com/invite/TRmSwJaYNv)
+- **Community**: Join our [Discord](https://discord.com/invite/TRmSwJaYNv) community server for support and discussions
+- **Documentation**: Additional documentation available in the codebase or in the [Wiki](https://docs.ssomar.com)
 
 ## Related Projects
 
@@ -283,8 +218,9 @@ SCore powers several other plugins in the Ssomar ecosystem:
 - ExecutableBlocks
 - ExecutableEvents
 - CustomPiglinsTrades
-- SParkour
+- MyFurniture
+- ExecutableCrafting
 
 ---
 
-*Developed with ❤️ by Ssomar Development Team*
+*Developed with ❤️ by Ssomar and the contributors*
