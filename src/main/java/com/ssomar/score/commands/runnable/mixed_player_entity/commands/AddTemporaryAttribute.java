@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
@@ -24,6 +25,20 @@ import java.util.UUID;
  * The attribute provided by this custom command does not set the value, but gives a modifier.
  */
 public class AddTemporaryAttribute extends MixedCommand  {
+
+    public AddTemporaryAttribute() {
+
+        CommandSetting attribute = new CommandSetting("attribute", 0, String.class, "SCALE");
+        CommandSetting amount = new CommandSetting("amount", 1, Double.class, 1);
+        CommandSetting operation = new CommandSetting("operation", 2, String.class, "ADD_NUMBER");
+        CommandSetting timeinticks = new CommandSetting("timeinticks", 3, Long.class, 20);
+        List<CommandSetting> settings = getSettings();
+        settings.add(attribute);
+        settings.add(amount);
+        settings.add(operation);
+        settings.add(timeinticks);
+        setNewSettingsMode(true);
+    }
 
     @Override
     public List<String> getNames() {
@@ -49,8 +64,6 @@ public class AddTemporaryAttribute extends MixedCommand  {
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
-
         // arg0: attribute
         // arg1: amount
         // arg2: operation
@@ -58,21 +71,21 @@ public class AddTemporaryAttribute extends MixedCommand  {
         // arg3: timeinticks
 
         // invalid attribute checker
-        Attribute attrCheck = AttributeUtils.getAttribute(args.get(0).toUpperCase());
+        Attribute attrCheck = AttributeUtils.getAttribute((String) sCommandToExec.getSettingValue("attribute"));
 
         if (attrCheck == null) {
-            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute: "+args.get(0));
+            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute: "+sCommandToExec.getSettingValue("attribute"));
             return;
         }
         // invalid double checker for temp attribute amount
         try {
-            Double.parseDouble(args.get(1));
+            Double.parseDouble(sCommandToExec.getSettingValue("amount").toString());
         } catch (Exception e) {
-            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute amount: "+args.get(1));
+            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute amount: "+sCommandToExec.getSettingValue("amount").toString());
             return;
         }
         // invalid operation checker
-        switch (args.get(2).toUpperCase()) {
+        switch (sCommandToExec.getSettingValue("operation").toString().toUpperCase()) {
             case "ADD_NUMBER": {
                 operation = Operation.ADD_NUMBER;
                 break;
@@ -86,16 +99,16 @@ public class AddTemporaryAttribute extends MixedCommand  {
                 break;
             }
             default: {
-                SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute operation: "+args.get(2));
+                SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute operation: "+sCommandToExec.getSettingValue("operation").toString().toUpperCase());
                 return;
             }
 
         }
         // invalid long vlaue checker for temp attribute tick duration
         try {
-            Long.parseLong(args.get(3));
+            Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString());
         } catch (Exception e) {
-            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field tick duration: "+args.get(2));
+            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field tick duration: "+sCommandToExec.getSettingValue("timeinticks").toString());
             return;
         }
 
@@ -111,7 +124,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
 
         // make a randomized key to allow spamming of ADD_TEMPORARY_ATTRIBUTE
         NamespacedKey key = new NamespacedKey(SCore.plugin, "mod_" + UUID.randomUUID());
-        AttributeModifier tempModifier = new AttributeModifier(key, Double.valueOf(args.get(1)), operation);
+        AttributeModifier tempModifier = new AttributeModifier(key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
 
         attrInstance.addModifier(tempModifier);
 
@@ -121,7 +134,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
             public void run() {
                 finalAttrInstance.removeModifier(tempModifier);
             }
-        }.runTaskLater(SCore.plugin, Long.valueOf(args.get(3)));
+        }.runTaskLater(SCore.plugin, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
     }
 
 }
