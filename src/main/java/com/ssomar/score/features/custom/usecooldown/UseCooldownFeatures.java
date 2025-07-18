@@ -29,6 +29,7 @@ import java.util.Optional;
 @Setter
 public class UseCooldownFeatures extends FeatureWithHisOwnEditor<UseCooldownFeatures, UseCooldownFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
+    // Must be in lowercase to match the NamespacedKey format
     private UncoloredStringFeature cooldownGroup;
     private IntegerFeature vanillaUseCooldown;
 
@@ -48,6 +49,10 @@ public class UseCooldownFeatures extends FeatureWithHisOwnEditor<UseCooldownFeat
         List<String> error = new ArrayList<>();
         if (isPremiumLoading) {
             error.addAll(this.cooldownGroup.load(plugin, config, isPremiumLoading));
+            if(cooldownGroup.getValue().isPresent()) {
+                String group = cooldownGroup.getValue().get().toLowerCase();
+                cooldownGroup.setValue(Optional.of(group));
+            }
             error.addAll(this.vanillaUseCooldown.load(plugin, config, isPremiumLoading));
         }
 
@@ -145,7 +150,7 @@ public class UseCooldownFeatures extends FeatureWithHisOwnEditor<UseCooldownFeat
             UseCooldownComponent useCooldown = meta.getUseCooldown();
             boolean fixSpigotIssueVanillaUseCooldownMustBeAtLeastOne = false;
             if (cooldownGroup.getValue().isPresent()) {
-                useCooldown.setCooldownGroup(NamespacedKey.fromString(cooldownGroup.getValue().get()));
+                useCooldown.setCooldownGroup(NamespacedKey.fromString(cooldownGroup.getValue().get().toLowerCase()));
                 fixSpigotIssueVanillaUseCooldownMustBeAtLeastOne = true;
                 oneEdit = true;
             }
