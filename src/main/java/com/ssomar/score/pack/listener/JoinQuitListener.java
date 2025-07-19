@@ -21,9 +21,13 @@ public class JoinQuitListener implements Listener {
         Player p = e.getPlayer();
 
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
-        for(PackSettings pack : packs.values()) {
+        for (PackSettings pack : packs.values()) {
             Runnable runnable = () -> {
-                p.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+                try {
+                    p.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+                } catch (Exception | Error ex) {
+                    // Version not supported or error in adding resource packs
+                }
             };
             SCore.schedulerHook.runAsyncTask(runnable, 0);
         }

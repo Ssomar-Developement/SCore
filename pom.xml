@@ -394,7 +394,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-453407a3ec-1</version>
+            <version>main-ec0dc01282-1</version>
             <scope>compile</scope>
         </dependency>
 

@@ -155,6 +155,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v21v5 = false;
     private static boolean is1v21v6 = false;
     private static boolean is1v21v7 = false;
+    private static boolean is1v21v8 = false;
 
     private static boolean is1v22 = false;
     private static boolean is1v23 = false;
@@ -331,6 +332,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v21v7;
     }
 
+    public static boolean is1v21v8() {
+        return is1v21v8;
+    }
+
     public static boolean is1v22() {
         return is1v22;
     }
@@ -427,7 +432,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v6Plus() {
-        return is1v21v6() || is1v21v7() || is1v22Plus();
+        return is1v21v6() || is1v21v7() || is1v21v8() || is1v22Plus();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -849,35 +854,36 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static void initVersion() {
-        is1v8 = Bukkit.getServer().getVersion().contains("1.8");
-        is1v9 = Bukkit.getServer().getVersion().contains("1.9");
-        is1v10 = Bukkit.getServer().getVersion().contains("1.10");
-        is1v11 = Bukkit.getServer().getVersion().contains("1.11");
-        is1v12 = Bukkit.getServer().getVersion().contains("1.12");
-        is1v13 = Bukkit.getServer().getVersion().contains("1.13");
-        is1v14 = Bukkit.getServer().getVersion().contains("1.14");
-        is1v15 = Bukkit.getServer().getVersion().contains("1.15");
-        is1v16 = Bukkit.getServer().getVersion().contains("1.16");
-        is1v16v1 = Bukkit.getServer().getVersion().contains("1.16.1");
-        is1v17 = Bukkit.getServer().getVersion().contains("1.17");
-        is1v18 = Bukkit.getServer().getVersion().contains("1.18");
-        is1v19 = Bukkit.getServer().getVersion().contains("1.19");
-        is1v19v1 = Bukkit.getServer().getVersion().contains("1.19.1");
-        is1v19v4 = Bukkit.getServer().getVersion().contains("1.19.4");
-        is1v20 = Bukkit.getServer().getVersion().contains("1.20");
-        is1v20v1 = Bukkit.getServer().getVersion().contains("1.20.1");
-        is1v20v4 = Bukkit.getServer().getVersion().contains("1.20.4");
-        is1v20v5 = Bukkit.getServer().getVersion().contains("1.20.5");
-        is1v20v6 = Bukkit.getServer().getVersion().contains("1.20.6");
-        is1v21 = Bukkit.getServer().getVersion().contains("1.21");
-        is1v21v2 = Bukkit.getServer().getVersion().contains("1.21.2");
-        is1v21v3 = Bukkit.getServer().getVersion().contains("1.21.3");
-        is1v21v4 = Bukkit.getServer().getVersion().contains("1.21.4");
-        is1v21v5 = Bukkit.getServer().getVersion().contains("1.21.5");
-        is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
-        is1v21v7 = Bukkit.getServer().getVersion().contains("1.21.7");
-        is1v22 = Bukkit.getServer().getVersion().contains("1.22");
         is1v23 = Bukkit.getServer().getVersion().contains("1.23");
+        is1v22 = Bukkit.getServer().getVersion().contains("1.22");
+        is1v21v8 = Bukkit.getServer().getVersion().contains("1.21.8");
+        is1v21v7 = Bukkit.getServer().getVersion().contains("1.21.7");
+        is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
+        is1v21v5 = Bukkit.getServer().getVersion().contains("1.21.5");
+        is1v21v4 = Bukkit.getServer().getVersion().contains("1.21.4");
+        is1v21v3 = Bukkit.getServer().getVersion().contains("1.21.3");
+        is1v21v2 = Bukkit.getServer().getVersion().contains("1.21.2");
+        is1v21 = Bukkit.getServer().getVersion().contains("1.21");
+        is1v20v6 = Bukkit.getServer().getVersion().contains("1.20.6");
+        is1v20v5 = Bukkit.getServer().getVersion().contains("1.20.5");
+        is1v20v4 = Bukkit.getServer().getVersion().contains("1.20.4");
+        is1v20v1 = Bukkit.getServer().getVersion().contains("1.20.1");
+        is1v20 = Bukkit.getServer().getVersion().contains("1.20");
+        is1v19v4 = Bukkit.getServer().getVersion().contains("1.19.4");
+        is1v19v1 = Bukkit.getServer().getVersion().contains("1.19.1");
+        is1v19 = Bukkit.getServer().getVersion().contains("1.19");
+        is1v18 = Bukkit.getServer().getVersion().contains("1.18");
+        is1v17 = Bukkit.getServer().getVersion().contains("1.17");
+        is1v16v1 = Bukkit.getServer().getVersion().contains("1.16.1");
+        is1v16 = Bukkit.getServer().getVersion().contains("1.16");
+        is1v15 = Bukkit.getServer().getVersion().contains("1.15");
+        is1v14 = Bukkit.getServer().getVersion().contains("1.14");
+        is1v13 = Bukkit.getServer().getVersion().contains("1.13");
+        is1v12 = Bukkit.getServer().getVersion().contains("1.12");
+        is1v11 = Bukkit.getServer().getVersion().contains("1.11");
+        is1v10 = Bukkit.getServer().getVersion().contains("1.10");
+        is1v9 = Bukkit.getServer().getVersion().contains("1.9");
+        is1v8 = Bukkit.getServer().getVersion().contains("1.8") && !is1v21v8;
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
         isMohist = Bukkit.getServer().getName().contains("Mohist") || Bukkit.getServer().getVersion().contains("Mohist");

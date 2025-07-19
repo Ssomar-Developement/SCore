@@ -37,38 +37,46 @@ public class PackManager {
         }
 
         // copy the file to the cache folder
-        try{
+        try {
             FileUtils.copyFile(actualPackFile, cachePackFile);
             pack.setFilePath(cachePackFile.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (pack.isDeleteInitialFile()){
+        if (pack.isDeleteInitialFile()) {
             actualPackFile.delete();
         }
 
 
         packs.put(pack.getUuid(), pack);
         InjectSpigot.INSTANCE.registerInjector(pack.getInjector());
-        for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-            player.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            try {
+                player.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+            } catch (Exception | Error e) {
+                // Version not supported
+            }
         }
     }
 
     public void removePack(UUID uuid) {
         PackSettings pack = packs.get(uuid);
-        if(pack != null) {
+        if (pack != null) {
             packs.remove(uuid);
             InjectSpigot.INSTANCE.unregisterInjector(pack.getInjector());
-            for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                player.removeResourcePack(uuid);
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                try {
+                    player.removeResourcePack(uuid);
+                } catch (Exception | Error e) {
+                    // Version not supported
+                }
             }
         }
     }
 
     public static PackManager getInstance() {
-        if(instance == null) instance = new PackManager();
+        if (instance == null) instance = new PackManager();
         return instance;
     }
 }
