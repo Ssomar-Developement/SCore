@@ -1,5 +1,7 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.AddTemporaryAttribute;
 import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionManager;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import com.ssomar.score.data.Database;
@@ -10,12 +12,26 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import static com.ssomar.score.commands.runnable.mixed_player_entity.commands.AddTemporaryAttribute.tempModifiers;
 
 public class PlayerJoinListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
     public void playerReconnexion(PlayerJoinEvent e) {
+
+        // attempts to remove
+        if (tempModifiers.containsKey(e.getPlayer().getUniqueId()))  {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    AddTemporaryAttribute.attemptToRemoveModifier(e.getPlayer());
+                }
+            }.runTaskAsynchronously(SCore.plugin);
+        }
+
         Player p = e.getPlayer();
 
         if (SUDOOPManager.getInstance().getPlayersThatMustBeDeOP().contains(p.getUniqueId())) {
