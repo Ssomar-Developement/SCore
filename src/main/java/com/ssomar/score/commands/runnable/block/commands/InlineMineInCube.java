@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
@@ -167,6 +168,9 @@ public class InlineMineInCube extends BlockCommand {
 
                     //SsomarDev.testMsg("initX: " + initX + " initY: " + initY + " initZ: " + initZ, true);
 
+                    final boolean fDrop = drop;
+                    final boolean fCreateBBEvent = createBBEvent;
+
                     if (radius < 10) {
                         for (int y = initY; y < maxY + 1; y++) {
                             for (int x = initX; x < maxX + 1; x++) {
@@ -176,17 +180,24 @@ public class InlineMineInCube extends BlockCommand {
 
                                     Block toBreak = block.getWorld().getBlockAt(block.getX() + (x*multiplier) , block.getY() + (y*multiplier),  block.getZ() + (z*multiplier) );
 
-                                    DetailedBlocks whiteList;
-                                    if ((whiteList = aInfo.getDetailedBlocks()) != null) {
-                                        /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
-                                        if (!whiteList.isValid(toBreak, Optional.empty(), null, new StringPlaceholder()))
-                                            continue;
-                                    }
+                                    // Need to do that for Folia -  https://discord.com/channels/701066025516531753/1368780072252739584
+                                    BukkitRunnable runnable = new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            DetailedBlocks whiteList;
+                                            if ((whiteList = aInfo.getDetailedBlocks()) != null) {
+                                                /* I have set playerOpt on empty, otherwise if it will spam the error message if too many blocks are broken with a not valid type */
+                                                if (!whiteList.isValid(toBreak, Optional.empty(), null, new StringPlaceholder()))
+                                                    return;
+                                            }
 
-                                    if (!blackList.contains(toBreak.getType())) {
-                                        UUID pUUID = p.getUniqueId();
-                                        SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true);
-                                    }
+                                            if (!blackList.contains(toBreak.getType())) {
+                                                UUID pUUID = p.getUniqueId();
+                                                SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), fDrop, fCreateBBEvent, true);
+                                            }
+                                        }
+                                    };
+                                    SCore.schedulerHook.runLocationTask(runnable, toBreak.getLocation(), 1L);
                                 }
                             }
                         }

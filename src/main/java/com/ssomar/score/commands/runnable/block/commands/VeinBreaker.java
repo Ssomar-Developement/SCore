@@ -94,7 +94,7 @@ public class VeinBreaker extends BlockCommand {
                 }
             }
         };
-        SCore.schedulerHook.runTask(runnable3, 1L);
+        SCore.schedulerHook.runLocationTask(runnable3, block.getLocation(), 1L);
     }
 
     public List<Block> getVein(Block block, Material oldMaterial, int veinSize) {
