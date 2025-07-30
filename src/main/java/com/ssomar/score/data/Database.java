@@ -75,9 +75,11 @@ public class Database {
         }
         String urlLocal = "jdbc:sqlite:" + SCore.dataFolder + "/" + fileName;
 
-        boolean needOpenConnection;
+        boolean needOpenConnection = true;
         try {
-            needOpenConnection = conn == null || conn.isClosed();
+            if (conn != null && !conn.isClosed() && conn.isValid(2)) {
+                needOpenConnection = false;
+            }
         } catch (SQLException e) {
             needOpenConnection = true;
         }
