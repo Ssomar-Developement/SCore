@@ -237,6 +237,38 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>Special70</id>
+            <build>
+            <finalName>${project.artifactId}-${project.version}</finalName>
+            <plugins>
+                <!-- Maven AntRun Plugin to copy the JAR to a specific location -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version> <!-- Add the version for clarity -->
+                    <executions>
+                        <execution>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                          tofile="E:\Razer\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar"/>
+                                    <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                          tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.4\plugins\SCore.jar"/>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+            </build>
+
+        </profile>
     </profiles>
 
     <repositories>
