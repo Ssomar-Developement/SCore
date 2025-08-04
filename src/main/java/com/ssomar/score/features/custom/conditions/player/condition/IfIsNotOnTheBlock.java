@@ -6,10 +6,13 @@ import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 public class IfIsNotOnTheBlock extends PlayerConditionFeature<DetailedBlocks, IfIsNotOnTheBlock> {
 
@@ -27,7 +30,7 @@ public class IfIsNotOnTheBlock extends PlayerConditionFeature<DetailedBlocks, If
             Block block = pLoc.getBlock();
             Material type = block.getType();
 
-            if (getCondition().isValid(block)) {
+            if (getCondition().isValid(block, Optional.empty(), null, new StringPlaceholder())) {
                 runInvalidCondition(request);
                 return false;
             }
