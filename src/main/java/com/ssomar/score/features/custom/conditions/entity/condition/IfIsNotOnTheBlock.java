@@ -4,14 +4,18 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionRequest;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 
-public class IfIsNotOnTheBlock extends EntityConditionFeature<MaterialAndTagsGroupFeature, IfIsNotOnTheBlock> {
+import java.util.Optional;
+
+public class IfIsNotOnTheBlock extends EntityConditionFeature<DetailedBlocks, IfIsNotOnTheBlock> {
 
 
     public IfIsNotOnTheBlock(FeatureParentInterface parent) {
@@ -26,10 +30,8 @@ public class IfIsNotOnTheBlock extends EntityConditionFeature<MaterialAndTagsGro
             pLoc.subtract(0, 0.1, 0);
 
             Block block = pLoc.getBlock();
-            Material type = block.getType();
-            BlockData blockData = block.getBlockData();
 
-            if (getCondition().isValid(block)) {
+            if (!getCondition().isValid(block, Optional.empty(), null, new StringPlaceholder())) {
                 runInvalidCondition(request);
                 return false;
             }
@@ -44,12 +46,12 @@ public class IfIsNotOnTheBlock extends EntityConditionFeature<MaterialAndTagsGro
 
     @Override
     public void subReset() {
-        setCondition(new MaterialAndTagsGroupFeature(this, FeatureSettingsSCore.ifIsNotOnTheBlock, true, false, true, true));
+        setCondition(new DetailedBlocks(this, FeatureSettingsSCore.ifIsNotOnTheBlock, true, true, true));
     }
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getValue().getMaterialAndTags().size() > 0;
+        return getCondition().getBlocks().getValues().size() > 0;
     }
 
     @Override
