@@ -31,7 +31,7 @@ public class IfIsNotOnTheBlock extends EntityConditionFeature<DetailedBlocks, If
 
             Block block = pLoc.getBlock();
 
-            if (!getCondition().isValid(block, Optional.empty(), null, new StringPlaceholder())) {
+            if (getCondition().isValid(block, Optional.empty(), null, new StringPlaceholder())) {
                 runInvalidCondition(request);
                 return false;
             }
