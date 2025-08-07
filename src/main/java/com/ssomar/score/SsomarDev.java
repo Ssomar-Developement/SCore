@@ -15,7 +15,7 @@ public class SsomarDev {
             } catch (Exception ignored) {}
 
             try {
-                Bukkit.getPlayer("Special70").sendMessage(message);
+                Bukkit.getPlayer("Moccains").sendMessage(message);
             } catch (Exception ignored) {}
         }
     }

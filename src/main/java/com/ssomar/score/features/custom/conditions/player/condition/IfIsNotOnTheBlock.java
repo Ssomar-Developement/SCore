@@ -4,13 +4,17 @@ import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionFeature;
 import com.ssomar.score.features.custom.conditions.player.PlayerConditionRequest;
+import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.features.custom.materialwithgroupsandtags.group.MaterialAndTagsGroupFeature;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public class IfIsNotOnTheBlock extends PlayerConditionFeature<MaterialAndTagsGroupFeature, IfIsNotOnTheBlock> {
+import java.util.Optional;
+
+public class IfIsNotOnTheBlock extends PlayerConditionFeature<DetailedBlocks, IfIsNotOnTheBlock> {
 
     public IfIsNotOnTheBlock(FeatureParentInterface parent) {
         super(parent, FeatureSettingsSCore.ifIsNotOnTheBlock);
@@ -26,7 +30,7 @@ public class IfIsNotOnTheBlock extends PlayerConditionFeature<MaterialAndTagsGro
             Block block = pLoc.getBlock();
             Material type = block.getType();
 
-            if (getCondition().isValid(block)) {
+            if (getCondition().isValid(block, Optional.empty(), null, new StringPlaceholder())) {
                 runInvalidCondition(request);
                 return false;
             }
@@ -41,12 +45,12 @@ public class IfIsNotOnTheBlock extends PlayerConditionFeature<MaterialAndTagsGro
 
     @Override
     public void subReset() {
-        setCondition(new MaterialAndTagsGroupFeature(this, FeatureSettingsSCore.ifIsNotOnTheBlock, true, false, true, true));
+        setCondition(new DetailedBlocks(this, FeatureSettingsSCore.ifIsNotOnTheBlock, true, true, true));
     }
 
     @Override
     public boolean hasCondition() {
-        return getCondition().getMaterialAndTags().size() > 0;
+        return getCondition().getBlocks().getValues().size() > 0;
     }
 
     @Override
