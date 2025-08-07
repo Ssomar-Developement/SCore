@@ -20,9 +20,11 @@ public class AddItemlore extends PlayerCommand {
         slot.setSlot(true);
         CommandSetting text = new CommandSetting("text", 1, String.class, "New lore");
         text.setAcceptUnderScoreForLongText(true);
+        CommandSetting insertIndex = new CommandSetting("insertIndex", 2, Integer.class, -1);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(text);
+        settings.add(insertIndex);
         setNewSettingsMode(true);
     }
 
@@ -33,6 +35,7 @@ public class AddItemlore extends PlayerCommand {
         ArrayList<String> list;
 
         int slot = (int) sCommandToExec.getSettingValue("slot");
+        int insertIndex = (int) sCommandToExec.getSettingValue("insertIndex");
         String text = (String) sCommandToExec.getSettingValue("text");
 
         List<String> args = sCommandToExec.getOtherArgs();
@@ -57,7 +60,11 @@ public class AddItemlore extends PlayerCommand {
         list = (ArrayList<String>) itemmeta.getLore();
         if(list == null) list = new ArrayList<>();
         if(!message.toString().isEmpty()) {
-            list.add(StringConverter.coloredString(message.toString()));
+            if (insertIndex == -1) {
+                list.add(StringConverter.coloredString(message.toString()));
+            } else {
+                list.add(insertIndex, StringConverter.coloredString(message.toString()));
+            }
         }
         itemmeta.setLore(list);
         item.setItemMeta(itemmeta);
@@ -74,7 +81,7 @@ public class AddItemlore extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ADD_ITEM_LORE slot:-1 text:My_new_lore_line";
+        return "ADD_ITEM_LORE slot:-1 text:My_new_lore_line insertIndex:0";
     }
 
     @Override
