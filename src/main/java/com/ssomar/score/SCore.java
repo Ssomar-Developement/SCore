@@ -432,7 +432,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v6Plus() {
-        return is1v21v6() || is1v21v7() || is1v21v8() || is1v22Plus();
+        return is1v21v6() || is1v21v7Plus();
+    }
+
+    public static boolean is1v21v7Plus() {
+        return  is1v21v7() || is1v21v8() || is1v22Plus();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
