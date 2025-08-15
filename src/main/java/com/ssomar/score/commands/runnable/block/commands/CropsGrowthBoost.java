@@ -37,6 +37,10 @@ public class CropsGrowthBoost extends BlockCommand {
 
         final int[] i = {0};
 
+        //SsomarDev.testMsg("CropsGrowthBoost started with radius " + radius + ", delay " + delay + ", duration " + duration + ", chance " + finalChance, true);
+
+
+
         AtomicReference<ScheduledTask> task = new AtomicReference<>();
 
         Runnable runnable3 = new Runnable() {
@@ -54,20 +58,24 @@ public class CropsGrowthBoost extends BlockCommand {
     }
 
     public void grownAgeableBlocks(Location start, int radius, int finalChance, Player receiver) {
+        //SsomarDev.testMsg("CropsGrowthBoost: Growing crops around " + start + " with radius " + radius + " and chance " + finalChance, true);
         for (double x = start.getX() - radius; x <= start.getX() + radius; x++) {
             for (double y = start.getY() - radius; y <= start.getY() + radius; y++) {
                 for (double z = start.getZ() - radius; z <= start.getZ() + radius; z++) {
                     Location loc = new Location(start.getWorld(), x, y, z);
                     Block block = loc.getBlock();
                     BlockData data = block.getBlockData();
+                    //if(!block.getType().equals(Material.WHEAT)) continue;
+                    //SsomarDev.testMsg("CropsGrowthBoost: Checking block " + block.getType() + " at " + loc, true);
                     if (!(data instanceof Ageable)) continue;
 
                     int random = new Random().nextInt(100);
-                   // SsomarDev.testMsg(random +" " + finalChance, true);
+                    //SsomarDev.testMsg("Random "+ random +" " + finalChance, true);
                     if (random <= finalChance) {
-                        if (receiver != null && (receiver.isOp() || SafePlace.verifSafePlace(receiver.getUniqueId(), block))) {
+                        if (receiver == null || (receiver.isOp() || SafePlace.verifSafePlace(receiver.getUniqueId(), block))) {
                             Ageable ageable = (Ageable) data;
                             if (ageable.getAge() < ageable.getMaximumAge()) {
+                                //SsomarDev.testMsg("CropsGrowthBoost: Growing block " + block.getType() + " at " + loc+ " current age "+ ageable.getAge(), true);
                                 ageable.setAge(ageable.getAge() + 1);
                                 block.setBlockData(ageable);
                             }
