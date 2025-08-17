@@ -53,6 +53,8 @@ public class GeneralConfig extends Config {
 
     private String selfHostPackIp;
 
+    private String hologramsPlugin = "NONE"; // NONE, CMI, HOLOGRAPHIC_DISPLAYS, DECENT_HOLOGRAMS
+
     public GeneralConfig() {
         super("config.yml");
         super.setup(SCore.dataFolder, SCore.classLoader, null);
@@ -102,6 +104,7 @@ public class GeneralConfig extends Config {
         enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true) && SCore.is1v19Plus();
         selfHostPackDebug = config.getBoolean("selfHostPackDebug", false);
         selfHostPackIp = config.getString("selfHostPackIp", "");
+        hologramsPlugin = config.getString("hologramsPlugin", "NONE").toUpperCase();
     }
 
     public boolean isVerbosityNormal() {

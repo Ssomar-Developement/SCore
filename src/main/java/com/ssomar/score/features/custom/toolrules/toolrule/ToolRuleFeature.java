@@ -8,7 +8,7 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.DoubleFeature;
-import com.ssomar.score.features.types.list.ListMaterialFeature;
+import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import lombok.Getter;
@@ -27,7 +27,7 @@ import java.util.Optional;
 @Setter
 public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, ToolRuleFeature, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
-    private ListMaterialFeature materials;
+    private ListDetailedMaterialFeature materials;
     private DoubleFeature miningSpeed;
     private BooleanFeature correctForDrops;
     private String id;
@@ -42,7 +42,7 @@ public class ToolRuleFeature extends FeatureWithHisOwnEditor<ToolRuleFeature, To
     public void reset() {
         this.miningSpeed = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.miningSpeed);
         this.correctForDrops = new BooleanFeature(this, false, FeatureSettingsSCore.correctForDrops);
-        this.materials = new ListMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.materials);
+        this.materials = new ListDetailedMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.materials, true);
     }
 
     @Override

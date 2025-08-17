@@ -75,6 +75,20 @@ public class PackManager {
         }
     }
 
+    public void removeAllPacks() {
+        for (PackSettings pack : packs.values()) {
+            InjectSpigot.INSTANCE.unregisterInjector(pack.getInjector());
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                try {
+                    player.removeResourcePack(pack.getUuid());
+                } catch (Exception | Error e) {
+                    // Version not supported
+                }
+            }
+        }
+        packs.clear();
+    }
+
     public static PackManager getInstance() {
         if (instance == null) instance = new PackManager();
         return instance;

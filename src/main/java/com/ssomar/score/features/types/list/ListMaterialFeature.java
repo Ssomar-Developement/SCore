@@ -29,7 +29,7 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
         for (String s : entries) {
             s = StringConverter.decoloredString(s);
             try {
-                Material mat = Material.valueOf(s);
+                Material mat = Material.valueOf(s.toUpperCase());
                 value.add(mat);
             } catch (Exception e) {
                 errors.add("&cERROR, Couldn't load the Material value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> Materials available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html");
@@ -45,7 +45,7 @@ public class ListMaterialFeature extends ListFeatureAbstract<Material, ListMater
 
     @Override
     public ListMaterialFeature clone(FeatureParentInterface newParent) {
-        ListMaterialFeature clone = new ListMaterialFeature(newParent,  getDefaultValue(), getFeatureSettings());
+        ListMaterialFeature clone = new ListMaterialFeature(newParent, getDefaultValue(), getFeatureSettings());
         clone.setValues(getValues());
         clone.setBlacklistedValues(getBlacklistedValues());
         return clone;

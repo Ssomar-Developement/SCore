@@ -24,6 +24,7 @@ import com.ssomar.score.hardness.hardness.Hardness;
 import com.ssomar.score.hardness.hardness.loader.HardnessLoader;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.pack.custom.PackManager;
 import com.ssomar.score.pack.spigot.InjectSpigot;
 import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
@@ -766,6 +767,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks...");
         ScheduledTaskManager.getInstance().cancelScheduledTask();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks done !");
+
+        // Unregister all packs
+        PackManager.getInstance().removeAllPacks();
 
         try {
             Database.getInstance().connect().close();

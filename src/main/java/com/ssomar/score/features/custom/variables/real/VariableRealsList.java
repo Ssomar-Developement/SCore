@@ -121,6 +121,14 @@ public class VariableRealsList extends ArrayList<VariableReal> {
                     }
                 }
             }
+            // Verify that the variables are written in the item meta
+            for(VariableReal vR : this){
+                SsomarDev.testMsg("vR: "+vR.getConfig().getVariableName().getValue().get(), DEBUG);
+                if(!vR.readValue(item, dynamicMeta).isPresent()){
+                    SsomarDev.testMsg("vR.readValue(item, dynamicMeta) is null for "+vR.getConfig().getVariableName().getValue().get()+" so write it", DEBUG);
+                    vR.writeValue(item, dynamicMeta);
+                }
+            }
             item.setItemMeta(dynamicMeta.getMeta());
         }
         else SsomarDev.testMsg("EMPTY", DEBUG);

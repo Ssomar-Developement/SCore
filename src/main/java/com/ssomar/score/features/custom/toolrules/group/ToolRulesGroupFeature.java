@@ -11,6 +11,8 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -53,7 +55,8 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
             ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
             for (String attributeID : enchantmentsSection.getKeys(false)) {
 
-                if(attributeID.equals(enable.getName()) || attributeID.equals(defaultMiningSpeed.getName()) || attributeID.equals(damagePerBlock.getName())) continue;
+                if (attributeID.equals(enable.getName()) || attributeID.equals(defaultMiningSpeed.getName()) || attributeID.equals(damagePerBlock.getName()))
+                    continue;
 
                 if (toolRules.size() >= premiumLimit && !isPremium()) {
                     error.add("&cERROR, Couldn't load the Tool rule of " + attributeID + " from config, &7&o" + getParent().getParentInfo() + " &6>> Because it requires the premium version to have more than 2 tool rule !");
@@ -215,7 +218,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
     @Override
     public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
 
-        if(!isAvailable() || !isApplicable(args)) return;
+        if (!isAvailable() || !isApplicable(args)) return;
 
         if (getEnable().getValue()) {
             ItemMeta meta = args.getMeta();
@@ -224,7 +227,14 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
             tool.setDefaultMiningSpeed(getDefaultMiningSpeed().getValue().get().floatValue());
 
             for (ToolRuleFeature rule : getToolRules().values()) {
-                tool.addRule(rule.getMaterials().getValues(), rule.getMiningSpeed().getValue().get().floatValue(), rule.getCorrectForDrops().getValue());
+                float miningSpeed = rule.getMiningSpeed().getValue().get().floatValue();
+                boolean correctForDrops = rule.getCorrectForDrops().getValue();
+                List<Tag<Material>> tags = rule.getMaterials().asTagList();
+                // One rule per material tag
+                for (Tag<Material> tag : tags) {
+                    tool.addRule(tag, miningSpeed, correctForDrops);
+                }
+                tool.addRule(rule.getMaterials().asMaterialList(), rule.getMiningSpeed().getValue().get().floatValue(), rule.getCorrectForDrops().getValue());
             }
             meta.setTool(tool);
         }
@@ -233,7 +243,7 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
     @Override
     public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
 
-        if(!isAvailable() || !isApplicable(args)) return;
+        if (!isAvailable() || !isApplicable(args)) return;
 
         ItemMeta meta = args.getMeta();
         ToolComponent tool = meta.getTool();
@@ -244,9 +254,16 @@ public class ToolRulesGroupFeature extends FeatureWithHisOwnEditor<ToolRulesGrou
             int i = 0;
             for (ToolComponent.ToolRule toolRule : tool.getRules()) {
                 ToolRuleFeature rule = new ToolRuleFeature(this, "toolRule" + i);
-                rule.getMaterials().setValues(new ArrayList<>(toolRule.getBlocks()));
-                if(toolRule.getSpeed() != null) rule.getMiningSpeed().setValue(Optional.of((double) toolRule.getSpeed()));
-                if(toolRule.isCorrectForDrops() != null) rule.getCorrectForDrops().setValue(toolRule.isCorrectForDrops());
+                Collection<Material> materials = toolRule.getBlocks();
+                List<String> materialNames = new ArrayList<>();
+                for (Material material : materials) {
+                   materialNames.add(material.toString());
+                }
+                rule.getMaterials().setValues(materialNames);
+                if (toolRule.getSpeed() != null)
+                    rule.getMiningSpeed().setValue(Optional.of((double) toolRule.getSpeed()));
+                if (toolRule.isCorrectForDrops() != null)
+                    rule.getCorrectForDrops().setValue(toolRule.isCorrectForDrops());
                 toolRules.put(rule.getId(), rule);
                 i++;
             }

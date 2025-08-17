@@ -39,6 +39,9 @@ public class ToolRulesGroupFeatureEditor extends FeatureEditorInterface<ToolRule
             createItem(PURPLE, 1, 22, GUI.PREMIUM, false, false, "", "&d&oIt requires premium to", "&d&ohave more than " + attributesGroupFeature.getPremiumLimit() + " tool rules !");
         } else
             createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add a new tool rule");
+
+        // Save
+        createItem(GREEN, 1, 26, GUI.SAVE, false, false, "", TM.g(Text.EDITOR_SAVE_DESCRIPTION));
     }
 
     @Override

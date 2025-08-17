@@ -292,6 +292,39 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         return false;
     }
 
+    public List<Tag<Material>> asTagList(){
+        List<Tag<Material>> tags = new ArrayList<>();
+        for (String s : getValues()) {
+            String materialStr = s;
+            SsomarDev.testMsg(">> materialStr: " + materialStr, DEBUG);
+            if (!SCore.is1v11Less() && materialStr.startsWith(symbolStartMaterialTag)) {
+                materialStr = materialStr.substring(1).toLowerCase();
+                SsomarDev.testMsg(">> verif tag: " + materialStr, DEBUG);
+                Tag<Material> tag = MinecraftTags.getInstance().getTag(materialStr);
+                if(tag != null) {
+                    tags.add(tag);
+                } else {
+                    SsomarDev.testMsg(">> verif tag not found: " + materialStr, DEBUG);
+                }
+            }
+        }
+        return tags;
+    }
+
+    public List<Material> asMaterialList() {
+        List<Material> materials = new ArrayList<>();
+        for (String s : getValues()) {
+            String materialStr = s;
+            try{
+                Material mat = Material.valueOf(materialStr.toUpperCase());
+                materials.add(mat);
+            } catch (Exception e) {
+                SsomarDev.testMsg(">> verif material not found: " + materialStr, DEBUG);
+            }
+        }
+        return materials;
+    }
+
     /* Plugin name - list of ID */
     public Map<String, List<String>> extractCustomBlocksConditions(List<String> values) {
         Map<String, List<String>> conditions = new HashMap<>();

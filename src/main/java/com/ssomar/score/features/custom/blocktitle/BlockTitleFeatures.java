@@ -3,6 +3,7 @@ package com.ssomar.score.features.custom.blocktitle;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -172,6 +173,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
     public Location spawn(@NotNull Location location, StringPlaceholder sp) {
         if (!activeTitle.getValue()) return null;
 
+        String pluginToUse = GeneralConfig.getInstance().getHologramsPlugin().toUpperCase();
+
         List<String> lines = new ArrayList<>();
         for (String s : getTitle().getValues()) {
             s = StringConverter.coloredString(s);
@@ -179,14 +182,14 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
         lines = sp.replacePlaceholders(lines);
         final List<String> finalLines = lines;
-        if (SCore.hasCMI && !SCore.is1v20v4Plus()) {
+        if (SCore.hasCMI && (!SCore.is1v20v4Plus() || pluginToUse.equals("CMI"))) {
             CMIHologram holo = new CMIHologram(UUID.randomUUID().toString(), location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
             holo.setLines(lines);
             CMI.getInstance().getHologramManager().addHologram(holo);
             holo.update();
             //SsomarDev.testMsg("Hologram spawned >> "+holo.getCenterLocation());
             return holo.getLocation().getBukkitLoc();
-        } else if (SCore.hasDecentHolograms) {
+        } else if (SCore.hasDecentHolograms && (!SCore.is1v20v4Plus() || pluginToUse.equals("DECENT_HOLOGRAMS"))) {
             Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
 
             // 26/01/2023 Double creation needed required to avoid hologram not updating when we use SETEXECUTABLEBLOCK on an EB
@@ -208,7 +211,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             };
             SCore.schedulerHook.runLocationTask(runnable, loc, 1);
             return loc;
-        } else if (SCore.hasHolographicDisplays) {
+        } else if (SCore.hasHolographicDisplays && (!SCore.is1v20v4Plus() || pluginToUse.equals("HOLOGRAPHIC_DISPLAYS"))) {
             Hologram holo = HolographicDisplaysAPI.get(SCore.plugin).createHologram(location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0));
             for (String s : lines) {
                 if (s.contains("ITEM::")) {
@@ -284,7 +287,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      **/
     public Location update(@Nullable Location location, @NotNull Location objectLocation, StringPlaceholder sp) {
 
-        if(!objectLocation.isChunkLoaded()) return location;
+        if(!objectLocation.isWorldLoaded() || !objectLocation.isChunkLoaded()) return location;
 
         //System.out.println(">>>>>>>>>>>>>>>>>>>> Update title at location: " + location);
         if (!activeTitle.getValue()) {
