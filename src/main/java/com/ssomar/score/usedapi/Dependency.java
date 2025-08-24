@@ -108,7 +108,9 @@ public enum Dependency {
 
     WORLD_EDIT("WorldEdit"),
 
-    CUSTOM_FISHING("CustomFishing");
+    CUSTOM_FISHING("CustomFishing"),
+
+    FAST_ASYNC_WORLD_EDIT("FastAsyncWorldEdit");
 
     private final String name;
 

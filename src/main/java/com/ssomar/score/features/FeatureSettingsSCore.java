@@ -171,6 +171,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     ifDurability(getFeatureSettings("ifDurability", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifUseCooldown(getFeatureSettings("ifUseCooldown", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifEntityHealth(getFeatureSettings("ifEntityHealth", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifEntityInRegion(getFeatureSettings("ifEntityInRegion",SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifFlying(getFeatureSettings("ifFlying", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifFromSpawner(getFeatureSettings("ifFromSpawner", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifFrozen(getFeatureSettings("ifFrozen", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
