@@ -48,7 +48,7 @@ public class IfUseCooldown extends ItemConditionFeature<NumberConditionFeature, 
 
     @Override
     public void subReset() {
-        setCondition(new NumberConditionFeature(this, FeatureSettingsSCore.ifDurability));
+        setCondition(new NumberConditionFeature(this, FeatureSettingsSCore.ifUseCooldown));
     }
 
     @Override
