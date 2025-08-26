@@ -249,18 +249,19 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      * location is the location of the Holo
      **/
     public void remove(@NotNull Location location) {
+        String pluginToUse = GeneralConfig.getInstance().getHologramsPlugin().toUpperCase();
         //SsomarDev.testMsg("Hologram in remove >> "+location, true);
-        if (SCore.hasCMI && !SCore.is1v20v4Plus()) {
+        if (SCore.hasCMI && (!SCore.is1v20v4Plus() || pluginToUse.equals("CMI"))) {
             CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
             if (holo != null) holo.remove();
-        } else if (SCore.hasDecentHolograms) {
+        } else if (SCore.hasDecentHolograms && (!SCore.is1v20v4Plus() || pluginToUse.equals("DECENT_HOLOGRAMS"))) {
             //SsomarDev.testMsg("Hologram in remove  DecentHolograms, find the placeholder ?>> "+(DHAPI.getHologram(location.toString()) != null), true);
             eu.decentsoftware.holograms.api.holograms.Hologram hologram;
             if ((hologram = DHAPI.getHologram(getSimpleLocString(location))) != null) {
                 hologram.destroy();
                 //SsomarDev.testMsg("Hologram removed  DecentHolograms", true);
             }
-        } else if (SCore.hasHolographicDisplays) {
+        } else if (SCore.hasHolographicDisplays  && (!SCore.is1v20v4Plus() || pluginToUse.equals("HOLOGRAPHIC_DISPLAYS"))) {
             // SsomarDev.testMsg("Hologram removed >> " + location);
             for (Hologram holo : HolographicDisplaysAPI.get(SCore.plugin).getHolograms()) {
                 //SsomarDev.testMsg("Hologram location >> " + holo.getPosition().toLocation());
@@ -289,6 +290,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
         if(!objectLocation.isWorldLoaded() || !objectLocation.isChunkLoaded()) return location;
 
+        String pluginToUse = GeneralConfig.getInstance().getHologramsPlugin().toUpperCase();
+
         //System.out.println(">>>>>>>>>>>>>>>>>>>> Update title at location: " + location);
         if (!activeTitle.getValue()) {
             if (location != null) remove(location);
@@ -308,14 +311,14 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         }
         lines = sp.replacePlaceholders(lines);
 
-        if (SCore.hasCMI && !SCore.is1v20v4Plus()) {
+        if (SCore.hasCMI && (!SCore.is1v20v4Plus() || pluginToUse.equals("CMI"))) {
             CMIHologram holo = CMI.getInstance().getHologramManager().getByLoc(location);
             if (holo != null) {
                 holo.setLines(lines);
                 holo.update();
                 return location;
             } else  return  spawn(objectLocation, sp);
-        } else if (SCore.hasDecentHolograms) {
+        } else if (SCore.hasDecentHolograms && (!SCore.is1v20v4Plus() || pluginToUse.equals("DECENT_HOLOGRAMS"))) {
             eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.getHologram(location.toString());
             if (hologram != null) {
                 DHAPI.setHologramLines(hologram, lines);
@@ -323,7 +326,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             } else return spawn(objectLocation, sp);
         }
         /* not opti */
-        else if (SCore.hasHolographicDisplays) {
+        else if (SCore.hasHolographicDisplays  && (!SCore.is1v20v4Plus() || pluginToUse.equals("HOLOGRAPHIC_DISPLAYS"))) {
             remove(location);
             return spawn(objectLocation, sp);
         } else if (SCore.is1v20v4Plus()) {
