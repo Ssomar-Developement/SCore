@@ -304,6 +304,8 @@ public class CommandsHandler implements Listener {
     }
 
     public void addStopPickup(Player p, Integer delay) {
+        if (p == null) return;
+
         long time = System.currentTimeMillis() + (delay * 50);
         //System.out.println("ADD "+p.getDisplayName()+ " time: "+time);
         stopPickup.put(p, time);
@@ -316,6 +318,8 @@ public class CommandsHandler implements Listener {
     }
 
     public void addStopPickup(Player p, Integer delay, Material material) {
+        if (p == null) return;
+
         if (stopPickupMaterial.containsKey(p)) {
             stopPickupMaterial.get(p).add(material);
         } else {
