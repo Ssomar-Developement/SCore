@@ -26,8 +26,7 @@ public class IfNotEntityInRegion extends EntityConditionFeature<ListUncoloredStr
     @Override
     public boolean verifCondition(EntityConditionRequest request) {
         if (hasCondition()) {
-
-            if (SCore.hasWorldEdit || SCore.hasFastAsyncWorldEdit) {
+            if ((SCore.hasWorldEdit || SCore.hasFastAsyncWorldEdit) && SCore.hasWorldGuard) {
                 Entity entity = request.getEntity();
                 Location loc = BukkitAdapter.adapt(entity.getLocation());
                 RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -45,10 +44,10 @@ public class IfNotEntityInRegion extends EntityConditionFeature<ListUncoloredStr
                     }
                 }
             }
-            return true;
+            else return false;
 
-
-        } else return true;
+        }
+        return true;
     }
 
     @Override
