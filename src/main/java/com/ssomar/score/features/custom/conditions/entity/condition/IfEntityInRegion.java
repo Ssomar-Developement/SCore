@@ -32,7 +32,10 @@ public class IfEntityInRegion extends EntityConditionFeature<ListUncoloredString
                 RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 RegionManager regions = container.get(BukkitAdapter.adapt(entity.getWorld()));
 
-                if (regions == null) return false;
+                if (regions == null) {
+                    runInvalidCondition(request);
+                    return false;
+                }
 
                 ApplicableRegionSet set = regions.getApplicableRegions(loc.toVector().toBlockPoint());
 
@@ -43,8 +46,15 @@ public class IfEntityInRegion extends EntityConditionFeature<ListUncoloredString
                         }
                     }
                 }
+
+                // falsify the condition since the wanted region isn't detected even after iterations
+                runInvalidCondition(request);
+                return false;
             }
-            else return false;
+            else {
+                runInvalidCondition(request);
+                return false;
+            }
 
 
         }

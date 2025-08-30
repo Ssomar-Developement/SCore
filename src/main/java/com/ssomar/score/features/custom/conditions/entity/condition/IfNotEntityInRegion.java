@@ -39,12 +39,19 @@ public class IfNotEntityInRegion extends EntityConditionFeature<ListUncoloredStr
                 for (String name : getCondition().getValue(request.getSp())) {
                     for (ProtectedRegion region : set) {
                         if (region.getId().equalsIgnoreCase(name)) {
+                            runInvalidCondition(request);
                             return false;
                         }
                     }
                 }
+
+                // the unwanted region wasn't detected so return it to true
+                return true;
             }
-            else return false;
+            else {
+                runInvalidCondition(request);
+                return false;
+            }
 
         }
         return true;
