@@ -74,6 +74,7 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfNotHasTag(this));
         conditions.add(new IfSheepColor(this));
         conditions.add(new IfEntityInRegion(this));
+        conditions.add(new IfNotEntityInRegion(this));
 
         /* List Material with tags */
         conditions.add(new IfIsOnTheBlock(this));
@@ -81,6 +82,7 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
 
         /* List colored string */
         conditions.add(new IfName(this));
+
 
 
 

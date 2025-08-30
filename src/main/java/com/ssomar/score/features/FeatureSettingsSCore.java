@@ -229,6 +229,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     ifNotSwimming(getFeatureSettings("ifNotSwimming", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifNotTamed(getFeatureSettings("ifNotTamed", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifNotTargetBlock(getFeatureSettings("ifNotTargetBlock", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifNotEntityInRegion(getFeatureSettings("ifNotEntityInRegion",SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     input1(getFeatureSettings("input1")),
     input2(getFeatureSettings("input2")),
     input3(getFeatureSettings("input3")),

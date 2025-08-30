@@ -18,9 +18,9 @@ import org.bukkit.entity.Entity;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class IfEntityInRegion extends EntityConditionFeature<ListUncoloredStringFeature, IfEntityInRegion> {
-    public IfEntityInRegion(FeatureParentInterface parent) {
-        super(parent, FeatureSettingsSCore.ifEntityInRegion);
+public class IfNotEntityInRegion extends EntityConditionFeature<ListUncoloredStringFeature, IfNotEntityInRegion> {
+    public IfNotEntityInRegion(FeatureParentInterface parent) {
+        super(parent, FeatureSettingsSCore.ifNotEntityInRegion);
     }
 
     @Override
@@ -33,19 +33,19 @@ public class IfEntityInRegion extends EntityConditionFeature<ListUncoloredString
                 RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 RegionManager regions = container.get(BukkitAdapter.adapt(entity.getWorld()));
 
-                if (regions == null) return false;
+                if (regions == null) return true;
 
                 ApplicableRegionSet set = regions.getApplicableRegions(loc.toVector().toBlockPoint());
 
                 for (String name : getCondition().getValue(request.getSp())) {
                     for (ProtectedRegion region : set) {
                         if (region.getId().equalsIgnoreCase(name)) {
-                            return true;
+                            return false;
                         }
                     }
                 }
             }
-            return false;
+            return true;
 
 
         } else return true;
@@ -53,7 +53,7 @@ public class IfEntityInRegion extends EntityConditionFeature<ListUncoloredString
 
     @Override
     public void subReset() {
-        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifEntityInRegion, Optional.empty()));
+        setCondition(new ListUncoloredStringFeature(getParent(), new ArrayList<>(), FeatureSettingsSCore.ifNotEntityInRegion, Optional.empty()));
     }
 
     @Override
@@ -62,12 +62,12 @@ public class IfEntityInRegion extends EntityConditionFeature<ListUncoloredString
     }
 
     @Override
-    public IfEntityInRegion getNewInstance(FeatureParentInterface newParent) {
-        return new IfEntityInRegion(newParent);
+    public IfNotEntityInRegion getNewInstance(FeatureParentInterface newParent) {
+        return new IfNotEntityInRegion(newParent);
     }
 
     @Override
-    public IfEntityInRegion getValue() {
+    public IfNotEntityInRegion getValue() {
         return this;
     }
 }
