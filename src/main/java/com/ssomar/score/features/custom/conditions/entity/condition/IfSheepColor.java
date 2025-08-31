@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.conditions.entity.condition;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.features.custom.conditions.entity.EntityConditionFeature;
@@ -24,7 +25,10 @@ public class IfSheepColor extends EntityConditionFeature<ListUncoloredStringFeat
 
             Entity entity = request.getEntity();
             // return false automatically if entity is not sheep
-            if (!(entity instanceof Sheep)) return false;
+            if (!(entity instanceof Sheep)) {
+                runInvalidCondition(request);
+                return false;
+            }
 
             boolean notValid = true;
             for (String name : getCondition().getValue(request.getSp())) {
@@ -41,6 +45,8 @@ public class IfSheepColor extends EntityConditionFeature<ListUncoloredStringFeat
             if (notValid) {
                 runInvalidCondition(request);
                 return false;
+            } else {
+                return true;
             }
         }
 

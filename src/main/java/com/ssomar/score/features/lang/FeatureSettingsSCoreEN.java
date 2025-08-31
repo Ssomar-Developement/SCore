@@ -649,6 +649,8 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     itemTextures("itemTextures", "Item Textures", new String[]{"&7&oThe item textures"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA"))),
     itemAdvancedComponents("itemAdvancedComponents", "Item Advanced Components", new String[]{"&7&oThe item advanced components"}, Material.ARMOR_STAND),
     ifGameMode("ifGameMode", "If Game Mode", new String[]{"&7&oIf the game mode is"}, Material.ANVIL),
+    ifEntityInRegion("ifEntityInRegion", "If entity is in region", new String[]{}, Material.ANVIL),
+    ifNotEntityInRegion("ifNotEntityInRegion", "If entity is not in region", new String[]{}, Material.ANVIL)
     ;
 
 
