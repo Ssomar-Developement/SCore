@@ -77,8 +77,14 @@ public class Database {
 
         boolean needOpenConnection = true;
         try {
-            if (conn != null && !conn.isClosed() && conn.isValid(2)) {
-                needOpenConnection = false;
+            if (conn != null && !conn.isClosed()) {
+                // java.lang.AbstractMethodError: Receiver class org.sqlite.Conn does not define or inherit an implementation of the resolved method 'abstract boolean isValid(int)' of interface java.sql.Connection.
+                try{
+                    needOpenConnection = !conn.isValid(2);
+                }
+                catch (AbstractMethodError e){
+                    needOpenConnection = false;
+                }
             }
         } catch (SQLException e) {
             needOpenConnection = true;
