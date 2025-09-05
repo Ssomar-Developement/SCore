@@ -71,6 +71,12 @@ public class Launch extends PlayerCommand {
                         entity = receiver.launchProjectile(SProjectileType.getProjectilesClasses().get(projectile.getType().getValue().get().getValidNames()[0]));
                     } else entity = receiver.launchProjectile(Arrow.class);
 
+                    // for some reason, starting at 1.21.6, minecraft does a NullPointerException if projectiles like shulkerbullet does not have a target
+                    if (entity instanceof ShulkerBullet) {
+                        ShulkerBullet bullet = (ShulkerBullet) entity;
+                        bullet.setTarget(null);
+                    }
+
                     if (entity instanceof Firework) {
                         entity.remove();
                         EntityType fireworkType =  SCore.is1v20v5Plus() ? EntityType.FIREWORK_ROCKET : EntityType.valueOf("FIREWORK");
