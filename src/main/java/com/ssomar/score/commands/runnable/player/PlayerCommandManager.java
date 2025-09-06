@@ -68,6 +68,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new Leggings());
         commands.add(new CancelPickup());
         commands.add(new CloseInventory());
+        commands.add(new GiveMoney());
         commands.add(new GravityEnable());
         commands.add(new GravityDisable());
         commands.add(new OpenWorkbench());

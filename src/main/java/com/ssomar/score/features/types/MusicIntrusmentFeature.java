@@ -61,7 +61,12 @@ public class MusicIntrusmentFeature extends FeatureAbstract<Optional<MusicInstru
     @Override
     public void save(ConfigurationSection config) {
         Optional<MusicInstrument> value = getValue();
-        value.ifPresent(musicInstrument -> config.set(this.getName(), musicInstrument.getKey().getKey()));
+        config.set(this.getName(), null);
+        if(value.isPresent()) {
+            NamespacedKey key = Registry.INSTRUMENT.getKey(value.get());
+            if(key != null) config.set(this.getName(), key.getKey());
+        }
+
     }
 
     @Override

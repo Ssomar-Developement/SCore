@@ -11,6 +11,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -75,8 +76,8 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
         else
             finalDescription[finalDescription.length - 2] = "&7Enabled: &c&l✘";
 
-        if (instrument.getValue().isPresent())
-            finalDescription[finalDescription.length - 1] = "&7Instrument: &e" + instrument.getValue().get().getKey().getKey();
+        if (instrument.getValue().isPresent() && Registry.INSTRUMENT.getKey(instrument.getValue().get()) != null)
+            finalDescription[finalDescription.length - 1] = "&7Instrument: &e" + Registry.INSTRUMENT.getKey(instrument.getValue().get()).getKey();
         else
             finalDescription[finalDescription.length - 1] = "&7Instrument: &cNONE";
 
