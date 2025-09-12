@@ -280,7 +280,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     hideUnbreakable("hideUnbreakable", "Hide unbreakable", new String[]{"&7&oHide unbreakable"}, null),
     hideUsage("hideUsage", "Hide usage", new String[]{"&7&oHide usage"}, null),
     hiders("hiders", "Hiders", new String[]{"&7&oThe hiders features", "&7&oHiders to hide:", "&7&oAttributes, Enchants, ..."}, Material.ANVIL),
-    hitSound("hitSound", "Hit Sound", new String[]{"&7&oThe hit sound"}, Material.NOTE_BLOCK),
+    hitSound("hitSound", "Hit Sound", new String[]{"&7&oThe hit sound", "&cRequires Paperspigot or its forks to work"}, Material.NOTE_BLOCK),
     hopperFeatures("hopperFeatures", "Hopper Features", new String[]{"&7&oFeatures for", "hoppers, .."}, Material.HOPPER),
     icon("icon", "Icon", new String[]{}, Material.STONE),
     ifAdult("ifAdult", "If adult", new String[]{}, Material.ANVIL),
