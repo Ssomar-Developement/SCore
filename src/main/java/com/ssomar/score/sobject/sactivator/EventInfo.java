@@ -1,5 +1,6 @@
 package com.ssomar.score.sobject.sactivator;
 
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.utils.emums.DetailedClick;
 import com.ssomar.score.utils.emums.DetailedInteraction;
@@ -98,6 +99,8 @@ public class EventInfo {
 
     private boolean isFromCustomBreakCommand;
 
+    private BlockBreakEventExtension.BreakCause breakCause;
+
     private Optional<String> command;
 
     private boolean mainHand;
@@ -176,6 +179,7 @@ public class EventInfo {
         eInfo.setVelocity(velocity);
         eInfo.setBowForce(bowForce);
         eInfo.setFromCustomBreakCommand(isFromCustomBreakCommand);
+        eInfo.setBreakCause(breakCause);
         eInfo.setCommand(command);
         eInfo.setMainHand(mainHand);
         eInfo.setForceMainHand(forceMainHand);

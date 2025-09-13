@@ -18,6 +18,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 public class CommandSetting {
@@ -129,7 +131,27 @@ public class CommandSetting {
         else if(type == EntityBuilder.class){
             return new EntityBuilder(value);
         }
-        if(acceptUnderScoreForLongText && !value.contains("http")) return value.replaceAll("_", " ");
+        return replaceUnderscoresOutsideTags(value, acceptUnderScoreForLongText);
+    }
+
+    // To support minimessage color tags, ex <dark_gray>Test</dark_gray> <green>Test</green>
+    public static String replaceUnderscoresOutsideTags(String value, boolean acceptUnderScoreForLongText) {
+        if (acceptUnderScoreForLongText && value.contains("_") && !value.contains("http")) {
+            Pattern pattern = Pattern.compile("(<[^>]+>|[^<]+)");
+            Matcher matcher = pattern.matcher(value);
+
+            StringBuffer sb = new StringBuffer();
+            while (matcher.find()) {
+                String part = matcher.group();
+                if (!part.startsWith("<")) {
+                    // Outside of tags → replace underscores
+                    part = part.replace("_", " ");
+                }
+                matcher.appendReplacement(sb, Matcher.quoteReplacement(part));
+            }
+            matcher.appendTail(sb);
+            return sb.toString();
+        }
         return value;
     }
 

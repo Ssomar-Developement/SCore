@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
@@ -85,12 +86,12 @@ public class VeinBreaker extends BlockCommand {
                 List<Block> vein;
                 UUID pUUID = null;
                 if (p != null) pUUID = p.getUniqueId();
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerEvent, true);
+                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
 
                 vein = getVein(block, oldMaterial, maxVeinSize);
 
                 for (Block b : vein) {
-                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerEvent, true);
+                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
                 }
             }
         };

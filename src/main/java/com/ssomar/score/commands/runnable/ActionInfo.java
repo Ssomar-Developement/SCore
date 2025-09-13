@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.SCore;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.logging.Debugers;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
@@ -44,6 +45,7 @@ public class ActionInfo implements Serializable {
     private transient ExecutableItemObject executableItem;
 
     private boolean isEventFromCustomBreakCommand;
+    private transient BlockBreakEventExtension.BreakCause breakCause;
 
     private boolean isActionRelatedToDamageEvent;
 
@@ -96,6 +98,7 @@ public class ActionInfo implements Serializable {
         this.sp = sp;
         this.executableItem = null;
         this.isEventFromCustomBreakCommand = false;
+        this.breakCause = null;
         this.launcherUUID = null;
         this.receiverUUID = null;
         this.itemStack = null;
@@ -119,6 +122,7 @@ public class ActionInfo implements Serializable {
         ActionInfo result = new ActionInfo(this.name, this.sp);
         result.setExecutableItem(executableItem);
         result.setEventFromCustomBreakCommand(isEventFromCustomBreakCommand);
+        result.setBreakCause(breakCause);
         result.setLauncherUUID(launcherUUID);
         result.setReceiverUUID(receiverUUID);
         result.setOldBlockMaterial(oldBlockMaterial);

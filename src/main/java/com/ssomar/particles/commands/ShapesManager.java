@@ -32,7 +32,10 @@ public class ShapesManager {
                         iterator.remove();
                         continue;
                     }
-                    endedShapes(entity);
+                    // No more shapes running for this player so remove it from the map
+                    if(endedShapes(entity)){
+                        iterator.remove();
+                    }
                 }
                 else if(entity.isDead()){
                     iterator.remove();
@@ -142,19 +145,26 @@ public class ShapesManager {
         }
     }
 
-    public void endedShapes(Entity player) {
+    // Check if the tasks are still running, if not remove them from the list
+    // true -> The player has no more shapes running and can be removed from the map
+    // false -> The player still has shapes running
+    public boolean endedShapes(Entity player) {
         if (runningShapes.containsKey(player)) {
             List<ScheduledTask> shapesStillRunning = new ArrayList<>();
             for (ScheduledTask task : runningShapes.get(player)) {
+                // Check if the task is still running
                 if (task != null && !task.isCancelled()) {
                     shapesStillRunning.add(task);
                 }
             }
+            // Update the list of running shapes
             if (!shapesStillRunning.isEmpty()) {
                 runningShapes.put(player, shapesStillRunning);
-            } else {
-                runningShapes.remove(player);
+                return false;
             }
+            // If no shapes are running, remove the player from the map
+            // why no runningShapes.remove(player); -> Because it produces ConcurrentModificationException
         }
+        return true;
     }
 }

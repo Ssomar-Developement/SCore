@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,7 +37,7 @@ public class Smelt extends BlockCommand {
             event = Boolean.parseBoolean(args.get(0));
         }
         // if its from an event generated
-        if(event && aInfo.isEventFromCustomBreakCommand()) return;
+        if(event && aInfo.isEventFromCustomBreakCommand() && aInfo.getBreakCause() == BlockBreakEventExtension.BreakCause.SMELT) return;
 
         if (SafeBreak.verifSafeBreak(pUUID, block)) {
             ItemStack itemInHand = p.getInventory().getItemInMainHand();
@@ -52,7 +53,7 @@ public class Smelt extends BlockCommand {
                 amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
             }
             // BREAK
-            SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, event, false);
+            SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, event, false, BlockBreakEventExtension.BreakCause.SMELT);
 
             // Drop the smelted item
             Location dropLocation = block.getLocation();

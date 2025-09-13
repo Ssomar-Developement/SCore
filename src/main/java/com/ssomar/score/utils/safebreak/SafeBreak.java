@@ -35,7 +35,7 @@ public class SafeBreak {
     private static final boolean DEBUG = true;
 
     /* return false its verifSafeBreak is false */
-    public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak) {
+    public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak, BlockBreakEventExtension.BreakCause breakCause) {
 
         SsomarDev.testMsg("DEBUG SAFE BREAK 1", DEBUG);
         if (playerUUID == null) {
@@ -66,7 +66,7 @@ public class SafeBreak {
 
             if (generateBreakEvent) {
                 SsomarDev.testMsg("DEBUG SAFE BREAK 4", DEBUG);
-                BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true);
+                BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true, breakCause);
                 bbE.setCancelled(false);
                 /* */
                 Bukkit.getPluginManager().callEvent(bbE);
