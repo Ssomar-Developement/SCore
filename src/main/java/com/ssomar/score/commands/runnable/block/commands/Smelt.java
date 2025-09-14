@@ -64,6 +64,57 @@ public class Smelt extends BlockCommand {
     public ItemStack getSmeltedItem(Material material) {
         ItemStack result = null;
         switch (material) {
+            case STONE:
+                result = new ItemStack(Material.SMOOTH_STONE);
+                break;
+            case WHITE_TERRACOTTA:
+                result = new ItemStack(Material.WHITE_GLAZED_TERRACOTTA);
+                break;
+            case ORANGE_TERRACOTTA:
+                result = new ItemStack(Material.ORANGE_GLAZED_TERRACOTTA);
+                break;
+            case MAGENTA_TERRACOTTA:
+                result = new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA);
+                break;
+            case LIGHT_BLUE_TERRACOTTA:
+                result = new ItemStack(Material.LIGHT_BLUE_GLAZED_TERRACOTTA);
+                break;
+            case YELLOW_TERRACOTTA:
+                result = new ItemStack(Material.YELLOW_GLAZED_TERRACOTTA);
+                break;
+            case LIME_TERRACOTTA:
+                result = new ItemStack(Material.LIME_GLAZED_TERRACOTTA);
+                break;
+            case PINK_TERRACOTTA:
+                result = new ItemStack(Material.PINK_GLAZED_TERRACOTTA);
+                break;
+            case GRAY_TERRACOTTA:
+                result = new ItemStack(Material.GRAY_GLAZED_TERRACOTTA);
+                break;
+            case LIGHT_GRAY_TERRACOTTA:
+                result = new ItemStack(Material.LIGHT_GRAY_GLAZED_TERRACOTTA);
+                break;
+            case CYAN_TERRACOTTA:
+                result = new ItemStack(Material.CYAN_GLAZED_TERRACOTTA);
+                break;
+            case PURPLE_TERRACOTTA:
+                result = new ItemStack(Material.PURPLE_GLAZED_TERRACOTTA);
+                break;
+            case BLUE_TERRACOTTA:
+                result = new ItemStack(Material.BLUE_GLAZED_TERRACOTTA);
+                break;
+            case BROWN_TERRACOTTA:
+                result = new ItemStack(Material.BROWN_GLAZED_TERRACOTTA);
+                break;
+            case GREEN_TERRACOTTA:
+                result = new ItemStack(Material.GREEN_GLAZED_TERRACOTTA);
+                break;
+            case RED_TERRACOTTA:
+                result = new ItemStack(Material.RED_GLAZED_TERRACOTTA);
+                break;
+            case BLACK_TERRACOTTA:
+                result = new ItemStack(Material.BLACK_GLAZED_TERRACOTTA);
+                break;
             case ACACIA_LOG:
             case BIRCH_LOG:
             case DARK_OAK_LOG:
@@ -86,6 +137,7 @@ public class Smelt extends BlockCommand {
                 result = new ItemStack(Material.NETHER_BRICK);
                 break;
             case SAND:
+            case RED_SAND:
                 result = new ItemStack(Material.GLASS);
                 break;
             case COBBLESTONE:
@@ -97,13 +149,11 @@ public class Smelt extends BlockCommand {
             case GOLD_ORE:
             case RAW_GOLD:
             case DEEPSLATE_GOLD_ORE:
-            case RAW_GOLD_BLOCK:
                 result = new ItemStack(Material.GOLD_INGOT);
                 break;
             case IRON_ORE:
             case RAW_IRON:
             case DEEPSLATE_IRON_ORE:
-            case RAW_IRON_BLOCK:
                 result = new ItemStack(Material.IRON_INGOT);
                 break;
             case LAPIS_ORE:
@@ -133,9 +183,6 @@ public class Smelt extends BlockCommand {
                 break;
             case KELP:
                 result = new ItemStack(Material.DRIED_KELP);
-                break;
-            case RED_SAND:
-                result = new ItemStack(Material.RED_STAINED_GLASS);
                 break;
             case OBSIDIAN:
                 result = new ItemStack(Material.CRYING_OBSIDIAN);
