@@ -8,6 +8,7 @@ import com.ssomar.score.api.executableblocks.config.placed.ExecutableBlockPlaced
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,7 +32,7 @@ public class RemoveBlock extends BlockCommand {
         if (p != null) {
             uuid = p.getUniqueId();
         }
-        SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, !aInfo.isNoPlayerTriggeredTheAction());
+        SafeBreak.breakBlockWithEvent(block, uuid, aInfo.getSlot(), false, false, !aInfo.isNoPlayerTriggeredTheAction(), BlockBreakEventExtension.BreakCause.OTHER);
     }
 
     public void validBreak(Block block) {

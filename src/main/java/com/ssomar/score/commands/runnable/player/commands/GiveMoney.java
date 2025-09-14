@@ -23,6 +23,7 @@ public class GiveMoney extends PlayerCommand {
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         double regain = (double) sCommandToExec.getSettingValue("amount");
         VaultAPI api = new VaultAPI();
+        api.verifEconomy(p);
         api.addMoney(receiver, regain);
     }
 

@@ -5,6 +5,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.utils.ToolsListMaterial;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
@@ -49,7 +50,7 @@ public class FarmInCube extends BlockCommand {
                     UUID uuid = null;
                     if (p != null) uuid = p.getUniqueId();
                     //SsomarDev.testMsg(">> "+toDestroy.getType()+" >> "+toDestroy.getLocation()+ " player: "+uuid, true);
-                    if(!SafeBreak.breakBlockWithEvent(toDestroy, uuid, slot, drop, event, true)) return;
+                    if(!SafeBreak.breakBlockWithEvent(toDestroy, uuid, slot, drop, event, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE)) return;
                     if (replant) replant(toDestroy, data, bMat, p);
                 }
 
@@ -141,7 +142,7 @@ public class FarmInCube extends BlockCommand {
 
                         // Not break (PLAYER_RIGHT_CLICK) so need to break it
                         if(!block.getType().equals(Material.AIR)) {
-                            if(!SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true)) return;
+                            if(!SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE)) return;
                         }
                         block.setType(oldMaterial);
                         data = block.getState().getBlockData().clone();

@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -27,7 +28,7 @@ public class Break extends BlockCommand {
         UUID pUUID = null;
         if (p != null) pUUID = p.getUniqueId();
 
-        SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, !aInfo.isNoPlayerTriggeredTheAction());
+        SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, true, !aInfo.isNoPlayerTriggeredTheAction(), BlockBreakEventExtension.BreakCause.OTHER);
     }
 
 

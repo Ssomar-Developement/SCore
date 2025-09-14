@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
@@ -193,7 +194,7 @@ public class InlineMineInCube extends BlockCommand {
 
                                             if (!blackList.contains(toBreak.getType())) {
                                                 UUID pUUID = p.getUniqueId();
-                                                SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), fDrop, fCreateBBEvent, true);
+                                                SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), fDrop, fCreateBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
                                             }
                                         }
                                     };
