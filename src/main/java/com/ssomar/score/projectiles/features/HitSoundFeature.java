@@ -20,7 +20,7 @@ public class HitSoundFeature extends SoundFeature implements SProjectileFeatureI
 
     @Override
     public void transformTheProjectile(Entity e, Player launcher, Material materialLaunched) {
-        if (e instanceof AbstractArrow && SCore.isPaper()) {
+        if (e instanceof AbstractArrow && SCore.isPaperOrFork()) {
             AbstractArrow aA = (AbstractArrow) e;
             if (getValue().isPresent() && getValue().isPresent()) {
                 aA.setHitSound(getValue().get());
