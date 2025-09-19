@@ -38,7 +38,6 @@ public class ItemCommandManager extends CommandManager<SCommand> {
             commands.add(new AddItemAttribute());
             commands.add(new SetItemAttribute());
         }
-        commands.add(new If());
 
         /* Sort by priority */
         commands.sort((c1, c2) -> {
