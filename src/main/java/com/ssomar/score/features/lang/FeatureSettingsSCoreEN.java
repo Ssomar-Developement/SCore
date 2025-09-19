@@ -650,7 +650,8 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     itemAdvancedComponents("itemAdvancedComponents", "Item Advanced Components", new String[]{"&7&oThe item advanced components"}, Material.ARMOR_STAND),
     ifGameMode("ifGameMode", "If Game Mode", new String[]{"&7&oIf the game mode is"}, Material.ANVIL),
     ifEntityInRegion("ifEntityInRegion", "If entity is in region", new String[]{}, Material.ANVIL),
-    ifNotEntityInRegion("ifNotEntityInRegion", "If entity is not in region", new String[]{}, Material.ANVIL)
+    ifNotEntityInRegion("ifNotEntityInRegion", "If entity is not in region", new String[]{}, Material.ANVIL),
+    suspiciousBlockLoot("suspiciousBlockLoot", "Suspicious Block Loot", new String[]{"&7The loot the ExecutableBlock will have","&7when brushed.","&cREQUIRED BY PLAYER_BRUSH_BLOCK"}, Material.BRUSH)
     ;
 
 
