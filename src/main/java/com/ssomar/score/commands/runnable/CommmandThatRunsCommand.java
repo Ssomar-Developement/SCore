@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
+import com.ssomar.score.commands.runnable.item.ItemRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.MobAround;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
@@ -124,6 +125,90 @@ public interface CommmandThatRunsCommand {
                 System.out.println("DEBUGGGGG COMMANDS: " + commands.get(i));
             }*/
             PlayerRunCommandsBuilder builder = new PlayerRunCommandsBuilder(commands, aInfo2);
+            CommandsExecutor.runCommands(builder);
+            cpt++;
+        }
+        return cpt > 0;
+    }
+
+    static boolean runItemCommands(Collection<? extends org.bukkit.entity.Player> players, List<String> argsCommands, ActionInfo aInfo) {
+        int cpt = 0;
+        for (Player target : players) {
+            ActionInfo aInfo2 = aInfo.clone();
+            aInfo2.setReceiverUUID(target.getUniqueId());
+            aInfo2.setStep(aInfo.getStep() + 1);
+
+            StringPlaceholder sp = new StringPlaceholder();
+            /* Necessary to replace old system with normal placeholders for IF */
+            sp.setPlayerPlcHldr(target.getUniqueId(), aInfo.getSlot());
+            sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
+
+            /* regroup the last args that correspond to the commands */
+            StringBuilder prepareCommands = new StringBuilder();
+            for (String s : argsCommands) {
+                prepareCommands.append(s);
+                prepareCommands.append(" ");
+            }
+            prepareCommands.deleteCharAt(prepareCommands.length() - 1);
+
+            String buildCommands = prepareCommands.toString();
+            String[] tab;
+            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
+            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo)))
+                tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
+            else {
+                tab = new String[1];
+                tab[0] = buildCommands;
+            }
+            List<String> commands = new ArrayList<>();
+            boolean passToNextPlayer = false;
+            for (int m = 0; m < tab.length; m++) {
+                String s = tab[m];
+
+                s = CommmandThatRunsCommand.replaceStepParticlePlaceholder(s, aInfo);
+                if (m == 0) {
+                    //SsomarDev.testMsg("receive : s = " + s, true);
+                    /* step placeholders for around into around or mob_around */
+                    s = sp.replacePlaceholder(s);
+                    /* Replace placeholder for conditions */
+                    s = s.replaceAll("%::", "%");
+                    s = s.replaceAll("::%", "%");
+
+                    List<PlaceholderConditionFeature> conditions = extractConditions(s);
+                    s = getFirstCommandWithoutConditions(s);
+                    SsomarDev.testMsg("s: " + s + " conditions size: " + conditions.size(), true);
+                    if (!conditions.isEmpty() && SCore.hasPlaceholderAPI) {
+                        for (PlaceholderConditionFeature condition : conditions) {
+                            SsomarDev.testMsg("condition: " + condition, true);
+
+                            if (!condition.verify(target, null, sp)) {
+                                SsomarDev.testMsg("condition not verified", true);
+                                passToNextPlayer = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                while (s.startsWith(" ")) {
+                    s = s.substring(1);
+                }
+                while (s.endsWith(" ")) {
+                    s = s.substring(0, s.length() - 1);
+                }
+                if (s.startsWith("/")) s = s.substring(1);
+
+                SsomarDev.testMsg("COMMANDS: " + s, true);
+                commands.add(s);
+            }
+            if (passToNextPlayer) continue;
+
+            commands = sp.replacePlaceholders(commands);
+            //SsomarDev.testMsg("NEXT STEP : " + aInfo2.getStep(), true);
+            /*for (int i = 0; i < commands.size(); i++) {
+                System.out.println("DEBUGGGGG COMMANDS: " + commands.get(i));
+            }*/
+            ItemRunCommandsBuilder builder = new ItemRunCommandsBuilder(commands, aInfo2);
             CommandsExecutor.runCommands(builder);
             cpt++;
         }
