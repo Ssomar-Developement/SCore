@@ -58,7 +58,11 @@ public class VariablesManager extends SObjectWithFileManager<Variable> {
     }
 
     public Optional<Variable> getVariable(String s) {
-        updateLoadedMySQL(s, MODE.IMPORT);
+        return getVariable(s, false);
+    }
+
+    public Optional<Variable> getVariable(String s, boolean dontTryToImport) {
+        if(!dontTryToImport) updateLoadedMySQL(s, MODE.IMPORT);
         for (Variable item : this.getLoadedObjects()) {
             if (item.getId().equals(s)) return Optional.of(item);
         }
@@ -199,8 +203,20 @@ public class VariablesManager extends SObjectWithFileManager<Variable> {
     public void updateLoadedMySQL(String id, MODE mode){
         if(GeneralConfig.getInstance().isUseMySQL()) {
             if(mode.equals(MODE.IMPORT)) {
-                VariablesManager.getInstance().deleteObject(id);
+
+                // Get the variable
+                Optional<Variable> old = VariablesManager.getInstance().getVariable(id, true);
+
+                // Get the variable value from database
                 Optional<Variable> var = VariablesQuery.selectVariable(Database.getInstance().connect(), id);
+
+                if (old.isPresent() && var.isPresent() && old.get().equals(var.get())){
+                    return;
+                }
+
+                // Remove the old one
+                VariablesManager.getInstance().deleteObject(id);
+                // Add the new one
                 if (var.isPresent()) {
                     VariablesManager.getInstance().addLoadedObject(var.get(), false);
                     var.get().save();
