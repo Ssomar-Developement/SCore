@@ -19,12 +19,15 @@ public class ToolsListMaterial {
 
     private List<Material> plantWithGrowthOnlySoulSand;
 
+    private List<Material> plantWithGrowthOnlyJungleWood;
+
     private List<Material> oneUsageMaterial;
 
     public ToolsListMaterial() {
         plantWithGrowth = new ArrayList<>();
         plantWithGrowthOnlyFarmland = new ArrayList<>();
         plantWithGrowthOnlySoulSand = new ArrayList<>();
+        plantWithGrowthOnlyJungleWood = new ArrayList<>();
         oneUsageMaterial = new ArrayList<>();
 
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
@@ -54,6 +57,9 @@ public class ToolsListMaterial {
 
         addWithoutProblem(plantWithGrowthOnlySoulSand, FixedMaterial.getMaterial(Arrays.asList("NETHER_WART", "NETHER_WARTS")));
 
+        addWithoutProblem(plantWithGrowthOnlyJungleWood, FixedMaterial.getMaterial(Arrays.asList("COCOA_BEANS")));
+
+
         blockAndItemMaterial = new HashMap<>();
         if (SCore.is1v12Less()) {
             blockAndItemMaterial.put(Material.valueOf("CROPS"), Material.valueOf("SEEDS"));
@@ -74,8 +80,10 @@ public class ToolsListMaterial {
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("PUMPKIN")), FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_SEEDS")));
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_CROP")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("COCOA")), FixedMaterial.getMaterial(Arrays.asList("COCOA_BEANS")));
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
+
 
 
         addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("ENDER_PEARL")));

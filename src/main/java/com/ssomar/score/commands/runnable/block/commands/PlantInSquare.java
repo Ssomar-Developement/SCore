@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.SCommandToExec;
@@ -21,6 +22,7 @@ public class PlantInSquare extends BlockCommand {
 
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
+        // check command arguments if they're present
         List<String> args = sCommandToExec.getOtherArgs();
         int radius = Integer.parseInt(args.get(0));
         boolean takeFromInventory = true;
@@ -30,7 +32,9 @@ public class PlantInSquare extends BlockCommand {
         List<String> cropTypes = new ArrayList<>();
         if(args.size() > 3) cropTypes = Arrays.asList(args.get(3).toUpperCase().split(","));
 
+
         List<Material> acceptedBlocks;
+        // get the clicked block to identify what crops to plant
         Material determineMode = block.getType();
         if(determineMode == Material.FARMLAND){
             acceptedBlocks = ToolsListMaterial.getInstance().getPlantWithGrowthOnlyFarmland();
@@ -38,18 +42,20 @@ public class PlantInSquare extends BlockCommand {
         else if(determineMode == Material.SOUL_SAND){
             acceptedBlocks = ToolsListMaterial.getInstance().getPlantWithGrowthOnlySoulSand();
         }
+        else if (determineMode == Material.JUNGLE_LOG || (!SCore.is1v13Less() && determineMode == Material.JUNGLE_WOOD)) {
+            acceptedBlocks = ToolsListMaterial.getInstance().getPlantWithGrowthOnlyJungleWood();
+        }
         else {
             SsomarDev.testMsg(ChatColor.RED + "The block is not a farmland or a soul sand, its a "+block.getType(), true);
             return;
         }
 
-
+        // compute the estimate resources needed to plant
         int resourcesNeeded = (radius*2+1)* (radius*2+1);
         if(radius == 0) resourcesNeeded = 1;
 
         List<Material> validMaterial = new ArrayList<>();
         for (Material cropMaterial : acceptedBlocks) {
-
             if(cropTypes.isEmpty() || cropTypes.contains(cropMaterial.toString())) validMaterial.add(ToolsListMaterial.getInstance().getRealMaterialOfBlock(cropMaterial));
         }
 
