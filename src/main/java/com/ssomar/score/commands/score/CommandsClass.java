@@ -256,34 +256,39 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         final Optional<Variable> variableOpt = VariablesManager.getInstance().getVariable(varName);
 
                         if (variableOpt.isPresent()) {
+                            String variableValueSetMsg = MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET)
+                                    .replace("%player%", (optPlayer.map(OfflinePlayer::getName).orElse("null")))
+                                    .replace("%variable_name%", variableOpt.get().getId())
+                                    .replace("%variable_value%", value);
                             if (modifType.equalsIgnoreCase("set")) {
                                 final Optional<String> errorOpt = variableOpt.get().setValue(optPlayer, value);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
+
                             } else if (modifType.equalsIgnoreCase("modification")) {
                                 final Optional<String> errorOpt = variableOpt.get().modifValue(optPlayer, value);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             } else if (modifType.equalsIgnoreCase("list-add")) {
                                 final Optional<String> errorOpt = variableOpt.get().addValue(optPlayer, value, indexOpt);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             } else if (modifType.equalsIgnoreCase("list-remove")) {
                                 final Optional<String> errorOpt = variableOpt.get().removeValue(optPlayer, indexOpt, valueOpt);
 
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             } else if (modifType.equalsIgnoreCase("clear")) {
                                 final Optional<String> errorOpt;
 
@@ -294,7 +299,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 if (errorOpt.isPresent())
                                     sender.sendMessage(errorOpt.get());
                                 else
-                                    SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_VALUE_SET));
+                                    SendMessage.sendMessageNoPlch(sender, variableValueSetMsg);
                             }
 
                             VariablesManager.getInstance().updateLoadedMySQL(variableOpt.get().getId(), VariablesManager.MODE.EXPORT);
@@ -386,7 +391,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     shape.getParameters().load(args, targetEntity, targetLocation);
                     shape.run(shape.getParameters(), targetEntity);
 
-                    SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aShape executed!");
+                    SendMessage.sendMessageNoPlch(sender,MessageMain.getInstance().getMessage(SCore.plugin, Message.SHAPE_EXECUTED));
                 } else {
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cInvalid shape for the command &6/score particles&c.");
 
@@ -616,104 +621,122 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
 
             case "webhook": {
-                // New, clearer usage text
-                if (args.length < 3) {
-                    sender.sendMessage(ChatColor.RED + "Usage:");
-                    sender.sendMessage(ChatColor.YELLOW + "/score webhook <url> <debug:true|false> [allowed_mentions] <message...>");
-                    sender.sendMessage(ChatColor.GRAY + "allowed_mentions (optional, one of):");
-                    sender.sendMessage(ChatColor.GRAY + "  users:<id[,id,...]>");
-                    sender.sendMessage(ChatColor.GRAY + "  roles:<id[,id,...]>");
-                    sender.sendMessage(ChatColor.GRAY + "  parse:<everyone|users|roles>[,<everyone|users|roles>...]");
-                    break;
-                }
-
-                String webhookUrl = args[0];
-
-                boolean debug;
-                try {
-                    debug = Boolean.parseBoolean(args[1]);
-                } catch (Exception ex) {
-                    sender.sendMessage(ChatColor.RED + "The second argument must be a boolean: " + ChatColor.YELLOW + "true" + ChatColor.RED + " or " + ChatColor.YELLOW + "false");
-                    sender.sendMessage(ChatColor.GRAY + "Example: /score webhook https://discord.com/api/webhooks/... true Hello world");
-                    break;
-                }
-
-                // Detect optional allowed_mentions at args[2]
-                String allowedMentionsJson;
-                int messageStartIndex;
-                if (args.length >= 4 && looksLikeAllowedMentions(args[2])) {
-                    allowedMentionsJson = buildAllowedMentionsJson(args[2]);
-                    messageStartIndex = 3; // message starts after allowed_mentions
-                } else {
-                    // Backwards-compatible: no allowed_mentions token — treat args[2] as message start
-                    allowedMentionsJson = "{\"parse\":[]}";
-                    messageStartIndex = 2;
-                }
-
-                // Build the message from remaining args
-
-                StringBuilder sbMsg = new StringBuilder();
-                for (int i = messageStartIndex; i < args.length; i++) {
-                    if (i > messageStartIndex) sbMsg.append(' ');
-                    sbMsg.append(args[i]);
-                }
-                String rawMessage = sbMsg.toString();
-
-                if (debug) {
-                    sender.sendMessage(ChatColor.GRAY + "Sending webhook...");
-                }
-
-                // Escape message for JSON
-                String escaped = rawMessage
-                        .replace("\\", "\\\\")
-                        .replace("\"", "\\\"")
-                        .replace("\n", "\\n")
-                        .replace("\r", "");
-
-                // Final JSON: include content + allowed_mentions
-                String jsonPayload = "{"
-                        + "\"content\":\"" + escaped + "\","
-                        + "\"allowed_mentions\":" + allowedMentionsJson
-                        + "}";
-
-                // Send asynchronously
-                Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
-                    boolean success = false;
-                    try {
-                        URL url = new URL(webhookUrl);
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setRequestMethod("POST");
-                        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                        conn.setDoOutput(true);
-                        conn.setConnectTimeout(10000);
-                        conn.setReadTimeout(15000);
-
-                        byte[] body = jsonPayload.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-                        conn.setFixedLengthStreamingMode(body.length);
-
-                        try (OutputStream os = conn.getOutputStream()) {
-                            os.write(body);
-                        }
-
-                        int responseCode = conn.getResponseCode();
-                        conn.disconnect();
-                        success = (responseCode >= 200 && responseCode < 300);
-                    } catch (Exception ex) {
-                    }
-
-                    if (debug) {
-                        final boolean finalSuccess = success;
-                        Bukkit.getScheduler().runTask(SCore.plugin, () -> {
-                            if (finalSuccess) {
-                                sender.sendMessage(ChatColor.GREEN + "Webhook sent successfully.");
-                            } else {
-                                sender.sendMessage(ChatColor.RED + "Webhook failed to send.");
+                            // Require at least <url> and <debug>
+                            if (args.length < 3) {
+                                sender.sendMessage(ChatColor.RED + "Usage:");
+                                sender.sendMessage(ChatColor.YELLOW + "/score webhook <url> <debug:true|false> [allowed_mentions] <message...>");
+                                sender.sendMessage(ChatColor.GRAY + "allowed_mentions (optional, EXACTLY one of):");
+                                sender.sendMessage(ChatColor.GRAY + "  users:<id[,id,...]>");
+                                sender.sendMessage(ChatColor.GRAY + "  roles:<id[,id,...]>");
+                                sender.sendMessage(ChatColor.GRAY + "  parse:<everyone|users|roles>[,<everyone|users|roles>...]");
+                                sender.sendMessage(ChatColor.DARK_GRAY + "Default (if omitted): no pings (allowed_mentions.parse = []).");
+                                break;
                             }
-                        });
-                    }
-                });
-                break;
-            }    
+                        
+                            String webhookUrl = args[0];
+                        
+                            boolean debug;
+                            try {
+                                debug = Boolean.parseBoolean(args[1]);
+                            } catch (Exception ex) {
+                                sender.sendMessage(ChatColor.RED + "Invalid <debug> value.");
+                                sender.sendMessage(ChatColor.GRAY + "Expected " + ChatColor.YELLOW + "true" + ChatColor.GRAY + " or " + ChatColor.YELLOW + "false");
+                                sender.sendMessage(ChatColor.GRAY + "Example: " + ChatColor.YELLOW + "/score webhook https://discord.com/api/webhooks/... true Hello world");
+                                break;
+                            }
+                        
+                            // Detect optional allowed_mentions at args[2]; otherwise treat as message (backwards-compat)
+                            String allowedMentionsJson;
+                            int messageStartIndex;
+                            if (args.length >= 4 && looksLikeAllowedMentions(args[2])) {
+                                allowedMentionsJson = buildAllowedMentionsJson(args[2]); // passes IDs through unchanged
+                                messageStartIndex = 3;
+                            } else {
+                                // Backwards-compatible path: args[2] is part of the message
+                                allowedMentionsJson = "{\"parse\":[]}";
+                                messageStartIndex = 2;
+                            }
+                        
+                            // Must have at least some message content
+                            if (messageStartIndex >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Missing message text.");
+                                sender.sendMessage(ChatColor.GRAY + "Put your message after " + ChatColor.YELLOW + "[allowed_mentions]" + ChatColor.GRAY + " if you used it.");
+                                sender.sendMessage(ChatColor.GRAY + "Example: " + ChatColor.YELLOW + "/score webhook <url> true users:123,456 Hello there!");
+                                break;
+                            }
+                        
+                            // Join remaining args as message
+                            StringBuilder sbMsg = new StringBuilder();
+                            for (int i = messageStartIndex; i < args.length; i++) {
+                                if (i > messageStartIndex) sbMsg.append(' ');
+                                sbMsg.append(args[i]);
+                            }
+                            String rawMessage = sbMsg.toString();
+                        
+                            if (debug) {
+                                sender.sendMessage(ChatColor.GRAY + "Sending webhook...");
+                            }
+                        
+                            // Escape message for JSON
+                            String escaped = rawMessage
+                                    .replace("\\", "\\\\")
+                                    .replace("\"", "\\\"")
+                                    .replace("\n", "\\n")
+                                    .replace("\r", "");
+                        
+                            // Final JSON payload: content + allowed_mentions
+                            String jsonPayload = "{"
+                                    + "\"content\":\"" + escaped + "\","
+                                    + "\"allowed_mentions\":" + allowedMentionsJson
+                                    + "}";
+                        
+                            // Send asynchronously
+                            Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+                                boolean success;
+                                int responseCode = -1;
+                                try {
+                                    URL url = new URL(webhookUrl);
+                                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                                    conn.setRequestMethod("POST");
+                                    conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                                    conn.setDoOutput(true);
+                                    conn.setConnectTimeout(10000);
+                                    conn.setReadTimeout(15000);
+                        
+                                    byte[] body = jsonPayload.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+                                    conn.setFixedLengthStreamingMode(body.length);
+                        
+                                    try (OutputStream os = conn.getOutputStream()) {
+                                        os.write(body);
+                                    }
+                        
+                                    responseCode = conn.getResponseCode();
+                                    success = (responseCode >= 200 && responseCode < 300);
+                                    conn.disconnect();
+                                } catch (Exception ex) {
+                                    success = false;
+                                }
+                        
+                                if (debug) {
+                                    final boolean finalSuccess = success;
+                                    final int finalCode = responseCode;
+                                    Bukkit.getScheduler().runTask(SCore.plugin, () -> {
+                                        if (finalSuccess) {
+                                            sender.sendMessage(ChatColor.GREEN + "Webhook sent successfully.");
+                                        } else {
+                                            sender.sendMessage(ChatColor.RED + "Webhook failed to send.");
+                                            if (finalCode != -1) {
+                                                sender.sendMessage(ChatColor.GRAY + "HTTP status: " + ChatColor.YELLOW + finalCode);
+                                            } else {
+                                                sender.sendMessage(ChatColor.GRAY + "No HTTP response (network error or invalid URL).");
+                                            }
+                                            sender.sendMessage(ChatColor.GRAY + "Tip: Check the URL and verify the channel’s webhook is active.");
+                                        }
+                                    });
+                                }
+                            });
+                            break;
+                        }
                 
                 
             
@@ -1130,74 +1153,60 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     }
 
 
-
+    private static boolean looksLikeAllowedMentions(String token) {
+        if (token == null) return false;
+        String lower = token.toLowerCase(java.util.Locale.ROOT);
+        return lower.startsWith("users:") || lower.startsWith("roles:") || lower.startsWith("parse:");
+    }
 
     private static String buildAllowedMentionsJson(String token) {
-        // Default: no mentions at all
+        // Default: no pings at all
         final String NONE = "{\"parse\":[]}";
-
         if (token == null || token.isEmpty()) return NONE;
-
-        String lower = token.toLowerCase(java.util.Locale.ROOT);
-        // Expect one of:
-        //   users:id,id,id
-        //   roles:id,id,id
-        //   parse:everyone,users,roles
-        int idx = lower.indexOf(':');
-        if (idx <= 0 || idx == lower.length() - 1) return NONE;
-
-        String kind = lower.substring(0, idx).trim();
-        String rest = token.substring(idx + 1).trim(); // keep original case for IDs
-        if (rest.isEmpty()) return NONE;
-
-        // Split CSV, trim empties
-        String[] parts = rest.split(",");
-        java.util.List<String> items = new java.util.ArrayList<>();
-        for (String p : parts) {
-            String s = p.trim();
-            if (!s.isEmpty()) items.add(s);
-        }
-        if (items.isEmpty()) return NONE;
-
-        switch (kind) {
+    
+        // Keep original token for IDs; only use lowercase for the key prefix
+        int idx = token.indexOf(':');
+        if (idx <= 0 || idx == token.length() - 1) return NONE;
+    
+        String prefixLower = token.substring(0, idx).toLowerCase(java.util.Locale.ROOT);
+        String rest = token.substring(idx + 1); // pass-through (no sanitization)
+    
+        switch (prefixLower) {
             case "users": {
-                // Users: array of snowflake strings
+                // users:id,id,id
+                String[] ids = rest.split(",");
+                if (ids.length == 0) return NONE;
                 StringBuilder sb = new StringBuilder();
                 sb.append("{\"parse\":[],\"users\":[");
-                for (int i = 0; i < items.size(); i++) {
+                for (int i = 0; i < ids.length; i++) {
                     if (i > 0) sb.append(',');
-                    sb.append('\"').append(items.get(i)).append('\"');
+                    sb.append('\"').append(ids[i]).append('\"');
                 }
                 sb.append("]}");
                 return sb.toString();
             }
             case "roles": {
-                // Roles: array of snowflake strings
+                // roles:id,id,id
+                String[] ids = rest.split(",");
+                if (ids.length == 0) return NONE;
                 StringBuilder sb = new StringBuilder();
                 sb.append("{\"parse\":[],\"roles\":[");
-                for (int i = 0; i < items.size(); i++) {
+                for (int i = 0; i < ids.length; i++) {
                     if (i > 0) sb.append(',');
-                    sb.append('\"').append(items.get(i)).append('\"');
+                    sb.append('\"').append(ids[i]).append('\"');
                 }
                 sb.append("]}");
                 return sb.toString();
             }
             case "parse": {
-                // Parse: subset of {"everyone","users","roles"}
-                java.util.Set<String> allowed = new java.util.HashSet<>();
-                for (String v : items) {
-                    String vv = v.toLowerCase(java.util.Locale.ROOT);
-                    if (vv.equals("everyone") || vv.equals("users") || vv.equals("roles")) {
-                        allowed.add(vv);
-                    }
-                }
-                if (allowed.isEmpty()) return NONE;
+                // parse:everyone,users,roles  (pass-through; Discord ignores unknowns)
+                String[] items = rest.split(",");
+                if (items.length == 0) return NONE;
                 StringBuilder sb = new StringBuilder();
                 sb.append("{\"parse\":[");
-                int i = 0;
-                for (String v : allowed) {
-                    if (i++ > 0) sb.append(',');
-                    sb.append('\"').append(v).append('\"');
+                for (int i = 0; i < items.length; i++) {
+                    if (i > 0) sb.append(',');
+                    sb.append('\"').append(items[i]).append('\"');
                 }
                 sb.append("]}");
                 return sb.toString();
@@ -1205,17 +1214,5 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
             default:
                 return NONE;
         }
-    }
-
-    /**
-     * Returns true if the token *looks like* an allowed_mentions spec we support.
-     */
-    private static boolean looksLikeAllowedMentions(String token) {
-        if (token == null) return false;
-        String lower = token.toLowerCase(java.util.Locale.ROOT);
-        if (!(lower.startsWith("users:") || lower.startsWith("roles:") || lower.startsWith("parse:"))) return false;
-        // Require at least one item after the colon
-        int idx = lower.indexOf(':');
-        return idx >= 0 && idx < lower.length() - 1;
     }
 }
