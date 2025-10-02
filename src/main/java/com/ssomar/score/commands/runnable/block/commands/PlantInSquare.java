@@ -228,11 +228,6 @@ public class PlantInSquare extends BlockCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        if (args.size() < 1) return Optional.of(notEnoughArgs + getTemplate());
-
-        ArgumentChecker ac = checkInteger(args.get(0), isFinalVerification, getTemplate());
-        if (!ac.isValid()) return Optional.of(ac.getError());
-
         return Optional.empty();
     }
 
@@ -245,7 +240,7 @@ public class PlantInSquare extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "PLANT_IN_SQUARE radius:2 takeFromInv:false acceptEI:false cropType:WHEAT isCube:false";
+        return "PLANT_IN_SQUARE radius:{int} takeFromInv:{true/false} acceptEI:{true/false} cropType:WHEAT isCube:{true/false}";
     }
 
     @Override
