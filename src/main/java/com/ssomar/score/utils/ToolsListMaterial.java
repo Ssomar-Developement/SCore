@@ -57,7 +57,7 @@ public class ToolsListMaterial {
 
         addWithoutProblem(plantWithGrowthOnlySoulSand, FixedMaterial.getMaterial(Arrays.asList("NETHER_WART", "NETHER_WARTS")));
 
-        addWithoutProblem(plantWithGrowthOnlyJungleWood, FixedMaterial.getMaterial(Arrays.asList("COCOA_BEANS")));
+        addWithoutProblem(plantWithGrowthOnlyJungleWood, FixedMaterial.getMaterial(Arrays.asList("COCOA")));
 
 
         blockAndItemMaterial = new HashMap<>();
