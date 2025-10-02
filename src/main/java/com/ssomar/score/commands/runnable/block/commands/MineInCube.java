@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
@@ -22,6 +23,19 @@ import static org.bukkit.block.BlockFace.*;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
 public class MineInCube extends BlockCommand {
+
+    public MineInCube() {
+        CommandSetting radius = new CommandSetting("radius", 0, Integer.class, 0);
+        CommandSetting droploot = new CommandSetting("droploot", 1, Boolean.class, true);
+        CommandSetting createEvent = new CommandSetting("createEvent", 2, Boolean.class, true);
+        CommandSetting offsetBreak = new CommandSetting("offsetBreak", 3, Boolean.class, false);
+        List<CommandSetting> settings = getSettings();
+        settings.add(radius);
+        settings.add(droploot);
+        settings.add(createEvent);
+        settings.add(offsetBreak);
+        setNewSettingsMode(true);
+    }
 
     /**
      * THIS COMMAND MUST BE DELAYED OF AT LEAST 1 TICK
@@ -51,7 +65,6 @@ public class MineInCube extends BlockCommand {
      * Y 5
      * Y 6
      **/
-
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
         List<String> args = sCommandToExec.getOtherArgs();
@@ -65,15 +78,12 @@ public class MineInCube extends BlockCommand {
                 if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 try {
-                    int radius = Integer.parseInt(args.get(0));
-                    boolean drop = true;
-                    if (args.size() >= 2) drop = Boolean.parseBoolean(args.get(1));
+                    int radius = Integer.parseInt(sCommandToExec.getSettingValue("radius").toString());
+                    boolean drop = Boolean.parseBoolean(sCommandToExec.getSettingValue("droploot").toString());
 
-                    boolean createBBEvent = true;
-                    if (args.size() >= 3) createBBEvent = Boolean.parseBoolean(args.get(2));
+                    boolean createBBEvent = Boolean.parseBoolean(sCommandToExec.getSettingValue("createEvent").toString());
 
-                    boolean offset = false;
-                    if(args.size() >= 4 ) offset = Boolean.parseBoolean(args.get(3));
+                    boolean offset = Boolean.parseBoolean(sCommandToExec.getSettingValue("offsetBreak").toString());
 
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
@@ -128,7 +138,7 @@ public class MineInCube extends BlockCommand {
                                         if ((block.getY() + y + offsety) < 0) continue;
                                     }
 
-                                    Location toBreakLoc = new Location(block.getWorld(), block.getX() + x, block.getY() + y, block.getZ() + z);
+                                    //Location toBreakLoc = new Location(block.getWorld(), block.getX() + x, block.getY() + y, block.getZ() + z);
                                     Block toBreak = block.getWorld().getBlockAt(block.getX() + x+offsetx, block.getY() + y+offsety, block.getZ() + z+offsetz);
 
                                     DetailedBlocks whiteList;
