@@ -14,6 +14,7 @@ import dev.rosewood.roseloot.loot.context.LootContextParams;
 import dev.rosewood.roseloot.loot.table.LootTableTypes;
 import dev.rosewood.roseloot.manager.LootTableManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -37,18 +38,23 @@ public class SafeBreak {
     /* return false its verifSafeBreak is false */
     public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak, BlockBreakEventExtension.BreakCause breakCause) {
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1", DEBUG);
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0010] breakBlockWithEvent() trigger from SafeBreak.java", DEBUG);
         if (playerUUID == null) {
+            SsomarDev.testMsg("[#s0013] Player is null", DEBUG);
             if (breakEB(null, block, drop)) return true;
             block.breakNaturally();
             return true;
         }
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1.5", DEBUG);
+        SsomarDev.testMsg("[#s0011] Player is not null", DEBUG);
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1.6 p: "+player, DEBUG);
+        SsomarDev.testMsg("[#s0012] Safely obtained player instance : "+player, DEBUG);
 
+        // if player is
+        // - not null
+        // - is opped
+        // then continue on. else,
         if(!(player != null && player.isOp())){
             if (verifSafeBreak && !verifSafeBreak(playerUUID, block)){
                 SsomarDev.testMsg("DEBUG SAFE BREAK VERIFICATION BLOCKED ", DEBUG);
