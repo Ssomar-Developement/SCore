@@ -426,6 +426,8 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             }
         }
 
+        if(!defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent()) return false;
+        if(defaultValue.getValue().isPresent() && !obj.getDefaultValue().getValue().isPresent()) return false;
         if(!defaultValue.getValue().get().equals(obj.getDefaultValue().getValue().get())) return false;
 
         return true;
