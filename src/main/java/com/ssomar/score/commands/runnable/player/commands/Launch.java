@@ -72,10 +72,9 @@ public class Launch extends PlayerCommand {
                     } else entity = receiver.launchProjectile(Arrow.class);
 
                     // for some reason, starting at 1.21.6, minecraft does a NullPointerException if projectiles like shulkerbullet does not have a target
-
                     try {
                         Class<?> shulkerBulletClass = Class.forName("org.bukkit.entity.ShulkerBullet");
-                        if (shulkerBulletClass.isInstance(entity)) {
+                        if (shulkerBulletClass.isInstance(entity) && SCore.is1v21v6Plus()) {
                             Object bullet = shulkerBulletClass.cast(entity);
                             shulkerBulletClass.getMethod("setTarget", LivingEntity.class).invoke(bullet, (LivingEntity) null);
                         }
