@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableitems.listeners.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.listeners.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -72,15 +73,14 @@ public class Launch extends PlayerCommand {
                     } else entity = receiver.launchProjectile(Arrow.class);
 
                     // for some reason, starting at 1.21.6, minecraft does a NullPointerException if projectiles like shulkerbullet does not have a target
-
                     try {
-                        Class<?> shulkerBulletClass = Class.forName("org.bukkit.entity.ShulkerBullet");
-                        if (shulkerBulletClass.isInstance(entity)) {
-                            Object bullet = shulkerBulletClass.cast(entity);
-                            shulkerBulletClass.getMethod("setTarget", LivingEntity.class).invoke(bullet, (LivingEntity) null);
+                        if (entity instanceof ShulkerBullet && SCore.is1v21v6Plus()) {
+                            ShulkerBullet bullet = (ShulkerBullet) entity;
+                            bullet.setTarget(null);
+                            //shulkerBulletClass.getMethod("setTarget", LivingEntity.class).invoke(bullet, (LivingEntity) null);
                         }
-                    } catch (ClassNotFoundException ignored) {
-                        // ShulkerBullet doesn't exist in this version (1.8
+                    } catch (Exception e) {
+                        entity = receiver.launchProjectile(Arrow.class);
                     }
 
                     if (entity instanceof Firework) {
