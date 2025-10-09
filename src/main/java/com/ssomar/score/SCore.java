@@ -159,6 +159,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v21v7 = false;
     private static boolean is1v21v8 = false;
     private static boolean is1v21v9 = false;
+    private static boolean is1v21v10 = false;
 
     private static boolean is1v22 = false;
     private static boolean is1v23 = false;
@@ -343,6 +344,10 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v21v9;
     }
 
+    public static boolean is1v21v10() {
+        return is1v21v10;
+    }
+
     public static boolean is1v22() {
         return is1v22;
     }
@@ -443,7 +448,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v7Plus() {
-        return  is1v21v7() || is1v21v8() || is1v21v9() || is1v22Plus();
+        return  is1v21v7() || is1v21v8() || is1v21v9() || is1v21v10() || is1v22Plus();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -873,6 +878,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v23 = Bukkit.getServer().getVersion().contains("1.23");
         is1v22 = Bukkit.getServer().getVersion().contains("1.22");
         is1v21v9 = Bukkit.getServer().getVersion().contains("1.21.9");
+        is1v21v10 = Bukkit.getServer().getVersion().contains("1.21.10");
         is1v21v8 = Bukkit.getServer().getVersion().contains("1.21.8");
         is1v21v7 = Bukkit.getServer().getVersion().contains("1.21.7");
         is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
@@ -898,7 +904,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v13 = Bukkit.getServer().getVersion().contains("1.13");
         is1v12 = Bukkit.getServer().getVersion().contains("1.12");
         is1v11 = Bukkit.getServer().getVersion().contains("1.11");
-        is1v10 = Bukkit.getServer().getVersion().contains("1.10");
+        is1v10 = Bukkit.getServer().getVersion().contains("1.10") && !is1v21v10;
         is1v9 = Bukkit.getServer().getVersion().contains("1.9") && !is1v21v9;;
         is1v8 = Bukkit.getServer().getVersion().contains("1.8") && !is1v21v8;
 
