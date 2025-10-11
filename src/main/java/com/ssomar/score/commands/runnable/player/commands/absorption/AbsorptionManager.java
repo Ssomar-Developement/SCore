@@ -22,6 +22,7 @@ public class AbsorptionManager {
 
     public AbsorptionObject applyAbsorption(AbsorptionObject absorption) {
 
+        // needs further explanation since this method is empty -Special70
         if(absorption.getTask() != null) absorption.getTask().cancel();
 
         Player receiver = SCore.plugin.getServer().getPlayer(absorption.getPlayerUUID());

@@ -15,7 +15,7 @@ public class PlayerJoinListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void playerReconnexion(PlayerJoinEvent e) {
+    public void playerReconnection(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
         if (SUDOOPManager.getInstance().getPlayersThatMustBeDeOP().contains(p.getUniqueId())) {
