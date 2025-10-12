@@ -356,6 +356,11 @@
             <id>inject repo</id>
             <url>https://maven.andante.dev/releases/</url>
         </repository>
+        <repository>
+            <id>nightexpressdev</id>
+            <name>NightExpressDev Repository</name>
+            <url>https://repo.nightexpressdev.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -915,6 +920,13 @@
             <version>2.10.3</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/ProtectionStones.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.excellentclaims</groupId>
+            <artifactId>ExcellentClaims</artifactId>
+            <version>1.1.5</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
