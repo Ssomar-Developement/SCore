@@ -598,6 +598,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     updateEnchants("updateEnchants", "Update Enchants", new String[]{"&7&oUpdate the enchants of the item"}, null),
     updateHiders("updateHiders", "Update Hiders", new String[]{"&7&oUpdate the hide flags of the item"}, null),
     updateEquippable("updateEquippable", "Update Equippable", new String[]{"&7&oUpdate the equippable features of the item"}, null),
+    updateTooltipModel("updateTooltipModel", "Update Tooltip Model", new String[]{"&7&oUpdate the tooltip model of the item"}, null),
     updateLore("updateLore", "Update Lore", new String[]{"&7&oUpdate the lore of the item"}, null),
     updateMaterial("updateMaterial", "Update Material", new String[]{"&7&oUpdate the material of the item"}, null),
     updateName("updateName", "Update Name", new String[]{"&7&oUpdate the name of the item"}, null),

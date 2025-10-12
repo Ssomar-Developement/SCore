@@ -537,6 +537,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     updateArmorSettings(getFeatureSettings("updateArmorSettings", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     updateHiders(getFeatureSettings("updateHiders", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     updateEquippable(getFeatureSettings("updateEquippable", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    updateTooltipModel(getFeatureSettings("updateTooltipModel", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     brewingStandFeatures(getFeatureSettings("brewingStandFeatures", true)),
     brewingStandSpeed(getFeatureSettings("brewingStandSpeed", true)),
     boundingBoxZones(getFeatureSettings("boundingBoxZones")),
