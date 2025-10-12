@@ -86,6 +86,8 @@ public enum Dependency {
 
     PROTECTION_STONES("ProtectionStones"),
 
+    EXCELLENT_CLAIMS("ExcellentClaims"),
+
     TAB("TAB"),
 
     TERRA("Terra"),
