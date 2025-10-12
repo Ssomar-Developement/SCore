@@ -261,6 +261,9 @@ public class SafeBreak {
         if(SCore.hasProtectionStones)
             if(!ProtectionStonesAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
 
+        if(SCore.hasExcellentClaims)
+            if(!ExcellentClaimsAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
+
         return true;
     }
 

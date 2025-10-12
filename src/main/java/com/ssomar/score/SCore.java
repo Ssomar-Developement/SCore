@@ -109,6 +109,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasRoseStacker = false;
     public static boolean hasMMOCore = false;
     public static boolean hasProtectionStones = false;
+    public static boolean hasExcellentClaims = false;
 
     public static boolean hasTerra = false;
 
@@ -731,6 +732,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasMMOCore = Dependency.MMO_CORE.hookSoftDependency();
 
         hasProtectionStones = Dependency.PROTECTION_STONES.hookSoftDependency();
+
+        hasExcellentClaims = Dependency.EXCELLENT_CLAIMS.hookSoftDependency();
 
         hasTAB = Dependency.TAB.hookSoftDependency();
 
