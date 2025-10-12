@@ -81,7 +81,7 @@ public class VariablesQuery {
                 //System.out.println("var.getId() ::: "+ var.getId());
                 //System.out.println("query ::: "+ pstmt.toString());
                 pstmt.addBatch();
-                if (i % 10 == 0 || i == variables.size()) {
+                if (i % 10 == 0 || i == variables.size()-1) {
                    pstmt.executeBatch(); // Execute every 10 items.
                 }
                 i++;
