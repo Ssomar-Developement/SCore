@@ -4,9 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentclaims.api.ClaimsAPI;
+import su.nightexpress.excellentclaims.ClaimsAPI;
 import su.nightexpress.excellentclaims.api.claim.Claim;
-import su.nightexpress.excellentclaims.api.claim.ClaimManager;
+import su.nightexpress.excellentclaims.claim.ClaimManager;
 
 import java.util.UUID;
 
