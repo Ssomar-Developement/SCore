@@ -691,7 +691,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                     + "}";
                         
                             // Send asynchronously
-                            Bukkit.getScheduler().runTaskAsynchronously(SCore.plugin, () -> {
+                            Runnable sendWebhook = () -> {
                                 boolean success;
                                 int responseCode = -1;
                                 try {
@@ -702,21 +702,21 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                     conn.setDoOutput(true);
                                     conn.setConnectTimeout(10000);
                                     conn.setReadTimeout(15000);
-                        
+            
                                     byte[] body = jsonPayload.getBytes(java.nio.charset.StandardCharsets.UTF_8);
                                     conn.setFixedLengthStreamingMode(body.length);
-                        
+            
                                     try (OutputStream os = conn.getOutputStream()) {
                                         os.write(body);
                                     }
-                        
+            
                                     responseCode = conn.getResponseCode();
                                     success = (responseCode >= 200 && responseCode < 300);
                                     conn.disconnect();
                                 } catch (Exception ex) {
                                     success = false;
                                 }
-                        
+            
                                 if (debug) {
                                     final boolean finalSuccess = success;
                                     final int finalCode = responseCode;
@@ -734,7 +734,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                         }
                                     });
                                 }
-                            });
+                            };
+                            SCore.schedulerHook.runAsyncTask(sendWebhook, 0);
                             break;
                         }
                 
