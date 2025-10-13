@@ -62,6 +62,9 @@ public class SafeOpen {
         if(SCore.hasProtectionStones)
             if(!ProtectionStonesAPI.playerCanOpenClaimBlock(playerUUID, location)) return false;
 
+        if(SCore.hasExcellentClaims)
+            if(!ExcellentClaimsAPI.playerCanOpenClaimBlock(playerUUID, location)) return false;
+
         return true;
     }
 }

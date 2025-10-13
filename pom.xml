@@ -12,9 +12,7 @@
     <name>SCore</name>
 
     <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -88,8 +86,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>8</source>
+                    <target>8</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
                         <path>
@@ -355,6 +353,11 @@
         <repository>
             <id>inject repo</id>
             <url>https://maven.andante.dev/releases/</url>
+        </repository>
+        <repository>
+            <id>nightexpressdev</id>
+            <name>NightExpressDev Repository</name>
+            <url>https://repo.nightexpressdev.com/releases/</url>
         </repository>
     </repositories>
 
@@ -915,6 +918,13 @@
             <version>2.10.3</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/ProtectionStones.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.nulli0n</groupId>
+            <artifactId>ExcellentClaims-spigot</artifactId>
+            <version>fd57663fc5</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -60,6 +60,13 @@ public class IfPlayerMustBeOnHisClaim extends PlayerConditionFeature<BooleanFeat
                     return false;
                 }
             }
+
+            if(SCore.hasExcellentClaims){
+                if(!ExcellentClaimsAPI.playerIsInHisClaim(player, player.getLocation(), false)){
+                    runInvalidCondition(request);
+                    return false;
+                }
+            }
         }
         return true;
     }

@@ -129,6 +129,9 @@ public class SafePlace {
         if(SCore.hasProtectionStones)
             if(!ProtectionStonesAPI.playerCanPlaceClaimBlock(playerUUID, location)) return false;
 
+        if(SCore.hasExcellentClaims)
+            if(!ExcellentClaimsAPI.playerCanPlaceClaimBlock(playerUUID, location)) return false;
+
         return true;
     }
 }
