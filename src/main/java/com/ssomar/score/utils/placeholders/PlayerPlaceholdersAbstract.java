@@ -3,6 +3,8 @@ package com.ssomar.score.utils.placeholders;
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.PlaceholderLastDamageDealtEvent;
 import com.ssomar.score.utils.numbers.NTools;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTEntity;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -182,6 +184,11 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
         String toReplace = s;
         if (playerUUID != null) {
 
+            /* NBT Fetch placeholder */
+            if (s.contains("%nbtfetch_") && SCore.hasNBTAPI) {
+                toReplace = replaceNBTFetch(toReplace);
+            }
+
             /* here for perf */
             if(s.contains("%" + particle + "_uuid_array%")) toReplace = toReplace.replace("%" + particle + "_uuid_array%", convertedUUID(playerUUID));
 
@@ -317,5 +324,98 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             val = 16*val + d;
         }
         return val;
+    }
+
+    /**
+     * Replaces NBT fetch placeholders with actual NBT values from the player
+     * Supports dot notation for nested NBT paths
+     * Example: %nbtfetch_SelectedItem.components.minecraft:custom_data.PublicBukkitValues.executableitems:ei-id%
+     */
+    private String replaceNBTFetch(String input) {
+        String result = input;
+        Player player = Bukkit.getPlayer(playerUUID);
+
+        if (player == null) return result;
+
+        // Find all nbtfetch placeholders in the string
+        int startIndex = 0;
+        while ((startIndex = result.indexOf("%nbtfetch_", startIndex)) != -1) {
+            int endIndex = result.indexOf("%", startIndex + 10);
+            if (endIndex == -1) break;
+
+            String placeholder = result.substring(startIndex, endIndex + 1);
+            String nbtPath = result.substring(startIndex + 10, endIndex);
+
+            String nbtValue = fetchNBTValue(player, nbtPath);
+            result = result.replace(placeholder, nbtValue);
+
+            startIndex = endIndex + 1;
+        }
+
+        return result;
+    }
+
+    /**
+     * Fetches NBT value from player using dot notation path
+     * @param player The player to fetch NBT from
+     * @param path The NBT path using dot notation (e.g., "SelectedItem.components.minecraft:custom_data")
+     * @return The NBT value as a string, or "null" if not found
+     */
+    private String fetchNBTValue(Player player, String path) {
+        try {
+            NBTEntity nbtEntity = new NBTEntity(player);
+            String[] pathParts = path.split("\\.");
+
+            Object currentValue = null;
+            NBTCompound currentCompound = nbtEntity;
+
+            for (int i = 0; i < pathParts.length; i++) {
+                String part = pathParts[i];
+
+                if (currentCompound == null) {
+                    return "null";
+                }
+
+                // Check if the key exists
+                if (!currentCompound.hasTag(part)) {
+                    return "null";
+                }
+
+                // If this is the last part of the path, get the final value
+                if (i == pathParts.length - 1) {
+                    switch (currentCompound.getType(part)) {
+                        case NBTTagString:
+                            return currentCompound.getString(part);
+                        case NBTTagInt:
+                            return String.valueOf(currentCompound.getInteger(part));
+                        case NBTTagDouble:
+                            return String.valueOf(currentCompound.getDouble(part));
+                        case NBTTagFloat:
+                            return String.valueOf(currentCompound.getFloat(part));
+                        case NBTTagLong:
+                            return String.valueOf(currentCompound.getLong(part));
+                        case NBTTagShort:
+                            return String.valueOf(currentCompound.getShort(part));
+                        case NBTTagByte:
+                            return String.valueOf(currentCompound.getByte(part));
+                        case NBTTagCompound:
+                            return currentCompound.getCompound(part).toString();
+                        default:
+                            return currentCompound.toString();
+                    }
+                } else {
+                    // Navigate deeper into the NBT structure
+                    if (currentCompound.getType(part).toString().equals("NBTTagCompound")) {
+                        currentCompound = currentCompound.getCompound(part);
+                    } else {
+                        return "null";
+                    }
+                }
+            }
+
+            return "null";
+        } catch (Exception e) {
+            return "null";
+        }
     }
 }
