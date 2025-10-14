@@ -34,10 +34,13 @@ public class AbsorptionManager {
 
         long remainingTimeTiksTime = absorption.getExpiryTime() - System.currentTimeMillis();
         remainingTimeTiksTime = remainingTimeTiksTime / 50;
+
+        /* seems redundant because the conditions placed before this method call makes this scenario impossible
         if (remainingTimeTiksTime <= 0){
             absorption.setToRemove(true);
             return absorption;
         }
+         */
 
         SsomarDev.testMsg("currentAbso: "+currentabsorption+" abso to add "+absorption.getAbsorption(), true);
         receiver.setAbsorptionAmount(currentabsorption + absorption.getAbsorption());
@@ -45,7 +48,7 @@ public class AbsorptionManager {
 
         // create a unique identification for this absorption
         UUID absorptionUUID = UUID.randomUUID();
-        AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), System.currentTimeMillis()+remainingTimeTiksTime);
+        AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime());
 
         Runnable runnable3 = new Runnable() {
             @Override
@@ -54,6 +57,9 @@ public class AbsorptionManager {
                 if (!receiver.isDead()) {
                     try {
                         receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption.getAbsorption());
+                        // at the moment, each absorption custom command call will perform a total of 2 sql queries.
+                        // I just could not comprehend how bad it could get at worst so for now, it's going to stay as it is unless
+                        // reports complain about it.
                         AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), receiver.getUniqueId().toString(), absorptionUUID.toString());
                     }catch(IllegalArgumentException e){
                         //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
@@ -70,7 +76,7 @@ public class AbsorptionManager {
 
     public void onConnect(Player player) {
         SsomarDev.testMsg(ChatColor.YELLOW+"[#s0015] AbsorptionManager.onConnect() is triggered", true);
-        List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString());
+        List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString(), null);
         SsomarDev.testMsg(ChatColor.YELLOW+"[#s0016] Amount of rows retrieved: "+toRemove.size(), true);
         for(AbsorptionObject absorption : toRemove) {
             if (player.getAbsorptionAmount() > absorption.getAbsorption())

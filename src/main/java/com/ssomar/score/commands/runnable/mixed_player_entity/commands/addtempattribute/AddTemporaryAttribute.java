@@ -1,9 +1,11 @@
-package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
+package com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
+import com.ssomar.score.data.Database;
+import com.ssomar.score.data.TemporaryAttributeQuery;
 import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -71,15 +73,19 @@ public class AddTemporaryAttribute extends MixedCommand  {
         // arg3: timeinticks
 
         // invalid attribute checker
-        Attribute attrCheck = AttributeUtils.getAttribute((String) sCommandToExec.getSettingValue("attribute"));
+        Attribute attrType = AttributeUtils.getAttribute((String) sCommandToExec.getSettingValue("attribute"));
+        String attrTypeID = "";
+        double amount = 0;
+        long expiry_time = 0;
 
-        if (attrCheck == null) {
+        if (attrType == null) {
             SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute: "+sCommandToExec.getSettingValue("attribute"));
             return;
         }
+        attrTypeID = (String) sCommandToExec.getSettingValue("attribute");
         // invalid double checker for temp attribute amount
         try {
-            Double.parseDouble(sCommandToExec.getSettingValue("amount").toString());
+            amount = Double.parseDouble(sCommandToExec.getSettingValue("amount").toString());
         } catch (Exception e) {
             SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field attribute amount: "+sCommandToExec.getSettingValue("amount").toString());
             return;
@@ -104,9 +110,9 @@ public class AddTemporaryAttribute extends MixedCommand  {
             }
 
         }
-        // invalid long vlaue checker for temp attribute tick duration
+        // invalid long value checker for temp attribute tick duration
         try {
-            Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString());
+            expiry_time = System.currentTimeMillis() + (Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString())*50);
         } catch (Exception e) {
             SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field tick duration: "+sCommandToExec.getSettingValue("timeinticks").toString());
             return;
@@ -119,20 +125,31 @@ public class AddTemporaryAttribute extends MixedCommand  {
         // if the target is a Player, cast the entity as a player.
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
-            attrInstance = livingEntity.getAttribute((attrCheck));
+            attrInstance = livingEntity.getAttribute((attrType));
         }
 
         // make a randomized key to allow spamming of ADD_TEMPORARY_ATTRIBUTE
-        NamespacedKey key = new NamespacedKey(SCore.plugin, "mod_" + UUID.randomUUID());
-        AttributeModifier tempModifier = new AttributeModifier(key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(UUID.randomUUID()));
+        AttributeModifier tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
 
         attrInstance.addModifier(tempModifier);
+
+        // add to records
+        TemporaryAttributeQuery.insertToRecords(
+                Database.getInstance().connect(),
+                attr_key.toString(),
+                attrTypeID,
+                amount,
+                String.valueOf(entity.getUniqueId()),
+                expiry_time);
 
         AttributeInstance finalAttrInstance = attrInstance;
         new BukkitRunnable() {
             @Override
             public void run() {
-                finalAttrInstance.removeModifier(tempModifier);
+                if (!entity.isDead()) {
+                    finalAttrInstance.removeModifier(tempModifier);
+                }
             }
         }.runTaskLater(SCore.plugin, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
     }

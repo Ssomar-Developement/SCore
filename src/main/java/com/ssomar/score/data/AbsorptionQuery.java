@@ -77,7 +77,6 @@ public class AbsorptionQuery {
             stmt.setDouble(3, absorption_amount);
             stmt.setLong(4, expiry_time);
             stmt.execute();
-            stmt.close();
         } catch (Exception e) {
             // temp
             SCore.plugin.getLogger().warning("There was complication with the insert query for AbsorptionQuery.java");
@@ -90,16 +89,6 @@ public class AbsorptionQuery {
                 }
             }
         }
-    }
-
-    /**
-     * Overloaded method without the absorptionUUID arg
-     * @param conn
-     * @param playerUUID
-     * @return ArrayList of AbsorptionObject
-     */
-    public static ArrayList<AbsorptionObject> getAbsorptionsToRemove(Connection conn, String playerUUID) {
-        return getAbsorptionsToRemove(conn, playerUUID, null);
     }
 
     /**

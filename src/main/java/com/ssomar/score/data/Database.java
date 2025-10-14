@@ -41,6 +41,7 @@ public class Database {
         BlockCommandsQuery.createNewTable(connect());
         UsePerDayQuery.createNewTable(connect());
         AbsorptionQuery.createNewTable(connect());
+        TemporaryAttributeQuery.createNewTable(connect());
         /* Variables in DB only in MYSQL to share infos between multiple servers */
         if(GeneralConfig.getInstance().isUseMySQL()) VariablesQuery.createNewTable(connect());
     }
