@@ -25,7 +25,7 @@ public class JobsAPI implements Listener {
                 multiplier *= m;
             }
 
-            Map<CurrencyType, Double> payments  =event.getPayment();
+            Map<CurrencyType, Double> payments = event.getPayment();
             for (CurrencyType currencyType : payments.keySet()) {
                 if(currencyType.equals(CurrencyType.MONEY)) payments.put(currencyType, payments.get(currencyType) * multiplier);
             }
