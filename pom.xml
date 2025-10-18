@@ -628,6 +628,7 @@
             <systemPath>${project.basedir}/src/main/resources/Jobs5.2.2.3.jar</systemPath>
         </dependency>
 
+
         <dependency>
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblock</artifactId>
