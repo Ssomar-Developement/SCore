@@ -84,6 +84,8 @@ public enum Dependency {
 
     MMO_CORE("MMOCore"),
 
+    MCMMO("mcMMO"),
+
     PROTECTION_STONES("ProtectionStones"),
 
     EXCELLENT_CLAIMS("ExcellentClaims"),
