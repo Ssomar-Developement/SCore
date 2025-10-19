@@ -54,6 +54,8 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new XPBoostEvent(), main);
 
+        if(SCore.hasMcMMO) main.getServer().getPluginManager().registerEvents(new McMMOXPBoostEvent(), main);
+
         main.getServer().getPluginManager().registerEvents(new DisableFlyActivationEvent(), main);
 
         if(!SCore.is1v12Less()) main.getServer().getPluginManager().registerEvents(new DisableGlideActivationEvent(), main);

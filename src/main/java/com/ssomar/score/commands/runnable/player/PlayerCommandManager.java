@@ -95,6 +95,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
+        if(SCore.hasMcMMO) commands.add(McMMOXpBoost.getInstance());
         commands.add(JobsMoneyBoost.getInstance());
         commands.add(JobsXpBoost.getInstance());
         commands.add(While.getInstance());
