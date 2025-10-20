@@ -38,6 +38,8 @@ import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.profiler.PerformanceProfiler;
+import com.ssomar.score.utils.profiler.ProfilerReport;
 import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.strings.StringJoiner;
 import com.ssomar.score.variables.Variable;
@@ -83,7 +85,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
+    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "profiler", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -453,6 +455,106 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cShapes: &7" + StringJoiner.join(ShapesManager.getInstance().getShapesNames(), "&8, &7") + "&c.");
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cExample: &6/score particles-info &eshape:blackhole&c.");
+                }
+                break;
+            case "profiler":
+                if (args.length >= 1) {
+                    switch (args[0]) {
+                        case "enable":
+                            PerformanceProfiler.setEnabled(true);
+                            sender.sendMessage(StringConverter.coloredString("&2[SCore] &aPerformance profiler enabled!"));
+                            break;
+                        case "disable":
+                            PerformanceProfiler.setEnabled(false);
+                            sender.sendMessage(StringConverter.coloredString("&2[SCore] &aPerformance profiler disabled!"));
+                            break;
+                        case "reset":
+                            if (args.length >= 2) {
+                                PerformanceProfiler.reset(args[1]);
+                                sender.sendMessage(StringConverter.coloredString("&2[SCore] &aProfiler data for &e" + args[1] + " &areset!"));
+                            } else {
+                                PerformanceProfiler.resetAll();
+                                sender.sendMessage(StringConverter.coloredString("&2[SCore] &aAll profiler data reset!"));
+                            }
+                            break;
+                        case "report":
+                            if (args.length >= 2) {
+                                ProfilerReport report = PerformanceProfiler.getReport(args[1]);
+                                if (report != null) {
+                                    sender.sendMessage(StringConverter.coloredString("&2[SCore] &aProfiler Report:"));
+                                    sender.sendMessage(StringConverter.coloredString("&7" + report.toFormattedString()));
+                                } else {
+                                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cNo profiler data found for: &6" + args[1]));
+                                }
+                            } else {
+                                sender.sendMessage(StringConverter.coloredString("&4[SCore] &cUsage: /score profiler report <operation>"));
+                            }
+                            break;
+                        case "top":
+                            int count = 10;
+                            if (args.length >= 2) {
+                                try {
+                                    count = Integer.parseInt(args[1]);
+                                } catch (NumberFormatException e) {
+                                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid number: " + args[1]));
+                                    return;
+                                }
+                            }
+                            List<ProfilerReport> topSlowest = PerformanceProfiler.getTopSlowest(count);
+                            sender.sendMessage(StringConverter.coloredString("&2[SCore] &aTop " + count + " slowest operations:"));
+                            for (int i = 0; i < topSlowest.size(); i++) {
+                                ProfilerReport r = topSlowest.get(i);
+                                sender.sendMessage(StringConverter.coloredString("&7" + (i + 1) + ". &e" + r.getOperationName() + " &7- avg: &6" + String.format("%.3f", r.getAverageMs()) + "ms &7(executions: &a" + r.getExecutionCount() + "&7)"));
+                            }
+                            break;
+                        case "frequent":
+                            int freqCount = 10;
+                            if (args.length >= 2) {
+                                try {
+                                    freqCount = Integer.parseInt(args[1]);
+                                } catch (NumberFormatException e) {
+                                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid number: " + args[1]));
+                                    return;
+                                }
+                            }
+                            List<ProfilerReport> topFrequent = PerformanceProfiler.getTopFrequent(freqCount);
+                            sender.sendMessage(StringConverter.coloredString("&2[SCore] &aTop " + freqCount + " most frequent operations:"));
+                            for (int i = 0; i < topFrequent.size(); i++) {
+                                ProfilerReport r = topFrequent.get(i);
+                                sender.sendMessage(StringConverter.coloredString("&7" + (i + 1) + ". &e" + r.getOperationName() + " &7- executions: &a" + r.getExecutionCount() + " &7(avg: &6" + String.format("%.3f", r.getAverageMs()) + "ms&7)"));
+                            }
+                            break;
+                        case "all":
+                            List<ProfilerReport> allReports = PerformanceProfiler.getAllReports();
+                            if (allReports.isEmpty()) {
+                                sender.sendMessage(StringConverter.coloredString("&4[SCore] &cNo profiler data available."));
+                            } else {
+                                sender.sendMessage(StringConverter.coloredString("&2[SCore] &aAll profiler data (&e" + allReports.size() + " &aoperations):"));
+                                for (ProfilerReport r : allReports) {
+                                    sender.sendMessage(StringConverter.coloredString("&7" + r.toCompactString()));
+                                }
+                            }
+                            break;
+                        case "status":
+                            sender.sendMessage(StringConverter.coloredString("&2[SCore] &aProfiler Status:"));
+                            sender.sendMessage(StringConverter.coloredString("&7  Enabled: " + (PerformanceProfiler.isEnabled() ? "&aYes" : "&cNo")));
+                            sender.sendMessage(StringConverter.coloredString("&7  Tracked operations: &e" + PerformanceProfiler.getTrackedOperationCount()));
+                            break;
+                        default:
+                            sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid profiler command!"));
+                            sender.sendMessage(StringConverter.coloredString("&7Usage: /score profiler &8[&7enable&8|&7disable&8|&7reset&8|&7report&8|&7top&8|&7frequent&8|&7all&8|&7status&8]"));
+                            break;
+                    }
+                } else {
+                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cPerformance Profiler Commands:"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler enable &7- Enable the profiler"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler disable &7- Disable the profiler"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler reset [operation] &7- Reset profiler data"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler report <operation> &7- View detailed report"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler top [n] &7- Show top N slowest operations"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler frequent [n] &7- Show top N most frequent operations"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler all &7- Show all profiler data"));
+                    sender.sendMessage(StringConverter.coloredString("&e/score profiler status &7- Show profiler status"));
                 }
                 break;
             case "reload":
