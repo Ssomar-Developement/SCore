@@ -100,6 +100,11 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(JobsXpBoost.getInstance());
         commands.add(While.getInstance());
         commands.add(new If());
+        /* Halloween Commands */
+        commands.add(new Haunt());
+        commands.add(new PumpkinHead());
+        commands.add(new TrickOrTreat());
+        commands.add(new SpookySounds());
 
         commands.addAll(MixedCommandsManager.getInstance().getCommands());
 
