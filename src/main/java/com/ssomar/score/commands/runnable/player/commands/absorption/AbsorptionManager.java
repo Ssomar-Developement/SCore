@@ -4,6 +4,7 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.data.AbsorptionQuery;
 import com.ssomar.score.data.Database;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -55,10 +56,8 @@ public class AbsorptionManager {
                 SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " ABSORPTION: " + absorption.getAbsorption(), true);
                 if (!receiver.isDead()) {
                     try {
-                        receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption.getAbsorption());
-                        // at the moment, each absorption custom command call will perform a total of 2 sql queries.
-                        // I just could not comprehend how bad it could get at worst so for now, it's going to stay as it is unless
-                        // reports complain about it.
+                        //receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption.getAbsorption());
+                        AbsorptionManager.modifyAbsorption(receiver.getUniqueId().toString(), receiver.getAbsorptionAmount()-absorption.getAbsorption());
                     }catch(IllegalArgumentException e){
                         //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
                         //like ABSORPTION -5, if the player has ABSORPTION 5, it will work, but once it worked now the player
@@ -104,6 +103,12 @@ public class AbsorptionManager {
     public static AbsorptionManager getInstance() {
         if (instance == null) instance = new AbsorptionManager();
         return instance;
+    }
+
+    private static void modifyAbsorption(String player_uuid, double new_value) {
+        Player player = Bukkit.getPlayer(UUID.fromString(player_uuid));
+        assert player != null;
+        player.setAbsorptionAmount(new_value);
     }
 
 }

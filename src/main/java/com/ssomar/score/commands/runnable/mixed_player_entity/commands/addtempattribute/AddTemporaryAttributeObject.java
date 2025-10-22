@@ -17,11 +17,11 @@ public class AddTemporaryAttributeObject {
      * <br/><br/>
      * <b>But this fact must be properly written in the plugin's wiki just in case the edge case occurs</b>
      */
-    final String attribute_key;
-    final String attribute_type;
-    final double amount;
-    final String entity_uuid;
-    final long expiry_time;
+    private final String attribute_key;
+    private final String attribute_type;
+    private final double amount;
+    private final String entity_uuid;
+    private final long expiry_time;
     public AddTemporaryAttributeObject(String attribute_key, String attribute_type, double amount, String entity_uuid, long expiry_time ) {
         this.attribute_key = attribute_key;
         this.attribute_type = attribute_type;
