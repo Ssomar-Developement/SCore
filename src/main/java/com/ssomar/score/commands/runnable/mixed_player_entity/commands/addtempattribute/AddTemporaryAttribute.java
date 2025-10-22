@@ -148,7 +148,6 @@ public class AddTemporaryAttribute extends MixedCommand  {
             @Override
             public void run() {
                 if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
-                    SCore.plugin.getLogger().info("CONDITION WORK!!!");
                     AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
                 } else {
                     // add to deletion later
