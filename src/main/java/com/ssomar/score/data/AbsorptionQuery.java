@@ -156,5 +156,73 @@ public class AbsorptionQuery {
         return returnArray;
     }
 
+    /**
+     * Deletes a specific absorption from the database by its UUID.
+     * This is called when an absorption expires normally (task completes successfully).
+     * @param conn
+     * @param absorptionUUID the UUID of the absorption to delete
+     */
+    public static void deleteAbsorption(Connection conn, String absorptionUUID) {
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ABSORPTION_UUID+"=?;";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setString(1, absorptionUUID);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("Failed to delete absorption with UUID: " + absorptionUUID);
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets all active (non-expired) absorptions for a player.
+     * This is used when a player reconnects to reschedule their absorption tasks.
+     * @param conn
+     * @param playerUUID the player's UUID
+     * @return ArrayList of active AbsorptionObjects
+     */
+    public static ArrayList<AbsorptionObject> getActiveAbsorptions(Connection conn, String playerUUID) {
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0019] AbsorptionQuery.getActiveAbsorptions() is triggered", true);
+        ArrayList<AbsorptionObject> returnArray = new ArrayList<>();
+        long currentTimeOfExecution = System.currentTimeMillis();
+
+        PreparedStatement stmt = null;
+        ResultSet rset = null;
+        final String selectQuery = "SELECT * FROM " + TABLE_ID + " WHERE " + COL_PLAYER_UUID + "=? AND " + COL_EXPIRY_TIME + " >= ?;";
+
+        try {
+            stmt = conn.prepareStatement(selectQuery);
+            stmt.setString(1, playerUUID);
+            stmt.setLong(2, currentTimeOfExecution);
+
+            rset = stmt.executeQuery();
+
+            while (rset.next()) {
+                returnArray.add(new AbsorptionObject(
+                        UUID.fromString(rset.getString(1)),
+                        UUID.fromString(rset.getString(2)),
+                        rset.getDouble(3),
+                        rset.getLong(4)
+                ));
+            }
+
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("Failed to retrieve active absorptions for player: " + playerUUID);
+        } finally {
+            if (rset != null) try { rset.close(); } catch (Exception ignored) {}
+            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+        }
+
+        return returnArray;
+    }
+
 
 }
