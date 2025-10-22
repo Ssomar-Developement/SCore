@@ -1,17 +1,11 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.TemporaryAttributeQuery;
 import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
-import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class AddTemporaryAttributeManager {
     /**
