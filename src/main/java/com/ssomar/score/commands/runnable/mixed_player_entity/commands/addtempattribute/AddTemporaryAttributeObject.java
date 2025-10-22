@@ -9,7 +9,13 @@ import java.util.UUID;
 @Setter
 public class AddTemporaryAttributeObject {
     /**
-     * Owner of the temporary attribute
+     * Owner of the temporary attribute. The reason why the 4th constructor argument asks for entity uuid because
+     * both players and entities can receive this buff.
+     * <br/><br/>
+     * But for now, only buffs given to players are recorded to mysql because if the server suddenly restarts or crashes,
+     * there's a super high chance that undeleted buffs are negligible.
+     * <br/><br/>
+     * <b>But this fact must be properly written in the plugin's wiki just in case the edge case occurs</b>
      */
     final String attribute_key;
     final String attribute_type;

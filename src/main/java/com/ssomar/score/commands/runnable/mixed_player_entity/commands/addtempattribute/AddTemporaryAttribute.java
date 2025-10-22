@@ -112,12 +112,15 @@ public class AddTemporaryAttribute extends MixedCommand  {
         }
         // invalid long value checker for temp attribute tick duration
         try {
-            expiry_time = System.currentTimeMillis() + (Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString())*50);
+            // The reason why there's a -50 at the end because as I was doing tests, there seems to be around at worst, 30 milliseconds of early execution for the BukkitRunnable() below.
+            // How bad could that be? VERY BAD. That means there's a chance that temp attributes will fail to remove themselves
+            expiry_time = System.currentTimeMillis() + (Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString())*50) - 50;
         } catch (Exception e) {
             SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field tick duration: "+sCommandToExec.getSettingValue("timeinticks").toString());
             return;
         }
 
+        // At this point, the checks are done. All provided arguments are now valid!
 
         AttributeInstance attrInstance = null;
 
@@ -132,23 +135,30 @@ public class AddTemporaryAttribute extends MixedCommand  {
         NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(UUID.randomUUID()));
         AttributeModifier tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
 
+        assert attrInstance != null;
         attrInstance.addModifier(tempModifier);
 
-        // add to records
-        TemporaryAttributeQuery.insertToRecords(
-                Database.getInstance().connect(),
-                attr_key.toString(),
-                attrTypeID,
-                amount,
-                String.valueOf(entity.getUniqueId()),
-                expiry_time);
 
-        AttributeInstance finalAttrInstance = attrInstance;
+        String finalAttrTypeID = attrTypeID;
+        double finalAmount = amount;
+        long finalExpiry_time = expiry_time;
+
+        String finalAttrTypeID1 = attrTypeID;
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!entity.isDead()) {
-                    finalAttrInstance.removeModifier(tempModifier);
+                if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
+                    SCore.plugin.getLogger().info("CONDITION WORK!!!");
+                    AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
+                } else {
+                    // add to deletion later
+                    if (entity instanceof Player) TemporaryAttributeQuery.insertToRecords(
+                            Database.getInstance().connect(),
+                            String.valueOf(attr_key),
+                            finalAttrTypeID,
+                            finalAmount,
+                            String.valueOf(entity.getUniqueId()),
+                            finalExpiry_time);
                 }
             }
         }.runTaskLater(SCore.plugin, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));

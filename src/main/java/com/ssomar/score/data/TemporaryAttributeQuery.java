@@ -1,13 +1,12 @@
 package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttribute;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttributeObject;
 import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionObject;
 import com.ssomar.score.utils.logging.Utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class TemporaryAttributeQuery {
@@ -94,8 +93,53 @@ public class TemporaryAttributeQuery {
         }
     }
 
-    public static ArrayList<TemporaryAttributeQuery> getTemporaryAttributesToRemove(Connection conn, String entityUUID) {
-        ArrayList<TemporaryAttributeQuery> returnArray = new ArrayList<>();
+    /**
+     * If you want to get an array of expired {}
+     * @param conn
+     * @param entityUUID
+     * @return ArrayList consisting of expired temporary attributes.
+     */
+    public static ArrayList<AddTemporaryAttributeObject> getTemporaryAttributesToRemove(Connection conn, String entityUUID) {
+        ArrayList<AddTemporaryAttributeObject> returnArray = new ArrayList<>();
+
+        final long currentTime = System.currentTimeMillis();
+        final String selectQuery = "SELECT * FROM "+TABLE_ID+" WHERE "+COL_ENTITY_UUID+"=? AND "+COL_EXPIRY_TIME+"<?;";
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ENTITY_UUID+"=? AND "+COL_EXPIRY_TIME+"<?;";
+
+        PreparedStatement stmt = null;
+        ResultSet rset = null;
+        try {
+            // select query
+            stmt = conn.prepareStatement(selectQuery);
+            stmt.setString(1, entityUUID);
+            stmt.setLong(2, currentTime);
+            rset = stmt.executeQuery();
+
+            while (rset.next()) {
+                returnArray.add(
+                        new AddTemporaryAttributeObject(
+                                rset.getString(1),
+                                rset.getString(2),
+                                rset.getDouble(3),
+                                rset.getString(4),
+                                rset.getLong(5)
+                        )
+                );
+            }
+            // delete query
+
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setString(1, entityUUID);
+            stmt.setLong(2, currentTime);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("There was complication with the select/delete query for TemporaryAttributeQuery.java: "+e.getMessage());
+        } finally {
+            if (rset != null) try { stmt.close(); } catch (Exception ignored) {}
+            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+        }
+        return returnArray;
+
     }
 
 }

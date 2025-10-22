@@ -1,9 +1,11 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttributeManager;
 import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionManager;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
+import com.ssomar.score.data.TemporaryAttributeQuery;
 import com.ssomar.score.fly.FlyManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +30,8 @@ public class PlayerJoinListener implements Listener {
         }
 
         AbsorptionManager.getInstance().onConnect(p);
+        AddTemporaryAttributeManager.removeExpiredAttributes(p);
+
     }
 
 

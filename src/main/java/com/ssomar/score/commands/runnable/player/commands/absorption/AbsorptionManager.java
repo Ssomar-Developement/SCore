@@ -48,7 +48,6 @@ public class AbsorptionManager {
 
         // create a unique identification for this absorption
         UUID absorptionUUID = UUID.randomUUID();
-        AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime());
 
         Runnable runnable3 = new Runnable() {
             @Override
@@ -60,12 +59,13 @@ public class AbsorptionManager {
                         // at the moment, each absorption custom command call will perform a total of 2 sql queries.
                         // I just could not comprehend how bad it could get at worst so for now, it's going to stay as it is unless
                         // reports complain about it.
-                        AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), receiver.getUniqueId().toString(), absorptionUUID.toString());
                     }catch(IllegalArgumentException e){
                         //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
                         //like ABSORPTION -5, if the player has ABSORPTION 5, it will work, but once it worked now the player
                         //has ABSORPTION 0, if he tries again, error
                     }
+                } else {
+                    AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime());
                 }
                 //absorptionList.remove(absorption);
             }
