@@ -1,6 +1,8 @@
 package com.ssomar.score.utils.scheduler;
 
+import com.ssomar.score.SCore;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -9,10 +11,20 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class BukkitSchedulerHook implements SchedulerHook {
     private final Plugin plugin;
 
+    /**
+     * Mainly used to provide the instance (itself) a pointer to the library's plugin variable
+     * for relevant uses.
+     * @param plugin
+     */
     public BukkitSchedulerHook(Plugin plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Used to convert a {@link Runnable} instance into a {@link BukkitRunnable}
+     * @param runnable
+     * @return
+     */
     public BukkitRunnable toBukkitRunnable(Runnable runnable) {
         return new BukkitRunnable() {
             @Override
@@ -22,6 +34,12 @@ public class BukkitSchedulerHook implements SchedulerHook {
         };
     }
 
+    /**
+     * A basic non-async method for executing code at a later time
+     * @param runnable
+     * @param delay
+     * @return
+     */
     @Override
     public ScheduledTask runTask(Runnable runnable, long delay) {
 
@@ -43,6 +61,13 @@ public class BukkitSchedulerHook implements SchedulerHook {
         }
     }
 
+    /**
+     * A basic non-async method for executing code in repeat for a period of time
+     * @param runnable
+     * @param initDelay
+     * @param period
+     * @return
+     */
     @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
         return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskTimer(plugin, initDelay, period).getTaskId());
@@ -61,6 +86,16 @@ public class BukkitSchedulerHook implements SchedulerHook {
         return new BukkitScheduledTask(toBukkitRunnable(runnable).runTaskTimerAsynchronously(plugin, initDelay, period).getTaskId());
     }
 
+    /**
+     * This method is only present to allow {@link BukkitSchedulerHook} and {@link RegionisedSchedulerHook} to share
+     * the same interface ({@link SchedulerHook}).<br/>
+     * Other than that, it's no different from {@link BukkitSchedulerHook#runTask(Runnable, long)}
+     * @param runnable
+     * @param retired
+     * @param entity
+     * @param delay
+     * @return
+     */
     @Override
     public ScheduledTask runEntityTask(Runnable runnable, Runnable retired, Entity entity, long delay) {
         return runTask(runnable, delay);

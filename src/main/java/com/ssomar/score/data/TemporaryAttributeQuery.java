@@ -1,9 +1,7 @@
 package com.ssomar.score.data;
 
 import com.ssomar.score.SCore;
-import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttribute;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttributeObject;
-import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionObject;
 import com.ssomar.score.utils.logging.Utils;
 
 import java.sql.*;
@@ -63,6 +61,15 @@ public class TemporaryAttributeQuery {
         }
     }
 
+    /**
+     * Used to insert properties of a temporary attribute to the MySQL database
+     * @param conn
+     * @param attribute_key
+     * @param attribute_type
+     * @param amount
+     * @param entity_uuid
+     * @param expiry_time
+     */
     public static void insertToRecords(Connection conn,
                                        String attribute_key,
                                        String attribute_type,
@@ -95,11 +102,11 @@ public class TemporaryAttributeQuery {
 
     /**
      * If you want to get an array of expired {}
-     * @param conn
+     * @param conn Database.getInstance().connect()
      * @param entityUUID
      * @return ArrayList consisting of expired temporary attributes.
      */
-    public static ArrayList<AddTemporaryAttributeObject> getTemporaryAttributesToRemove(Connection conn, String entityUUID) {
+    public static ArrayList<AddTemporaryAttributeObject> fetchAndDeleteTemporaryAttributes(Connection conn, String entityUUID) {
         ArrayList<AddTemporaryAttributeObject> returnArray = new ArrayList<>();
 
         final long currentTime = System.currentTimeMillis();
@@ -140,6 +147,25 @@ public class TemporaryAttributeQuery {
         }
         return returnArray;
 
+    }
+
+    /**
+     * Used to simply perform a DELETE query to delete an attribute key from the database via the attribute's key value
+     * @param conn
+     * @param key_attr
+     */
+    public static void removeFromRecords(Connection conn, String key_attr) {
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ATTRIBUTE_KEY+"=?;";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setString(1, key_attr);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("There was complication with the delete operation for TemporaryAttributeQuery.java: "+e.getMessage());
+        } finally {
+            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+        }
     }
 
 }

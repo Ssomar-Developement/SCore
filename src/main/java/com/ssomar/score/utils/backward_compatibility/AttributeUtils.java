@@ -306,8 +306,8 @@ public class AttributeUtils {
      */
     public static void removeSpecificAttribute(LivingEntity entity_arg, String attribute_type, String key) {
         LivingEntity entity = entity_arg;
-        // This was written because of the tests indicating that many things break when a player relogs.
         if (entity_arg instanceof Player) {
+            // using this method was required because relogging players produce complications.
             entity = Bukkit.getPlayer(entity.getUniqueId());
         }
 

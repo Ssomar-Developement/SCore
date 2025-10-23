@@ -14,7 +14,7 @@ public class AddTemporaryAttributeManager {
      * @param player
      */
     public static void removeExpiredAttributes(Player player) {
-        ArrayList<AddTemporaryAttributeObject> tempAttrlist = TemporaryAttributeQuery.getTemporaryAttributesToRemove(Database.getInstance().connect(), String.valueOf(player.getUniqueId()));
+        ArrayList<AddTemporaryAttributeObject> tempAttrlist = TemporaryAttributeQuery.fetchAndDeleteTemporaryAttributes(Database.getInstance().connect(), String.valueOf(player.getUniqueId()));
 
         for (AddTemporaryAttributeObject tempAttr : tempAttrlist) {
             AttributeUtils.removeSpecificAttribute(player, tempAttr.getAttribute_type(), tempAttr.getAttribute_key());

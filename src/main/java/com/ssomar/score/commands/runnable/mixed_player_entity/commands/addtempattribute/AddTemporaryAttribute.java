@@ -66,6 +66,10 @@ public class AddTemporaryAttribute extends MixedCommand  {
 
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
+
+        // to prevent this custom command from working if used by nonliving entities such as arrows
+        if (!(entity instanceof LivingEntity)) return;
+
         // arg0: attribute
         // arg1: amount
         // arg2: operation
@@ -121,46 +125,43 @@ public class AddTemporaryAttribute extends MixedCommand  {
         }
 
         // At this point, the checks are done. All provided arguments are now valid!
-
-        AttributeInstance attrInstance = null;
-
-        // the entity arg in the method arguments refer to the target of the command and the player arg represents the caster.
-        // if the target is a Player, cast the entity as a player.
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
-            attrInstance = livingEntity.getAttribute((attrType));
-        }
+        LivingEntity livingEntity = (LivingEntity) entity;
+        AttributeInstance attrInstance = livingEntity.getAttribute((attrType));
 
         // make a randomized key to allow spamming of ADD_TEMPORARY_ATTRIBUTE
         NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(UUID.randomUUID()));
         AttributeModifier tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
 
         assert attrInstance != null;
+
         attrInstance.addModifier(tempModifier);
 
+        // a record must be made asap to ensure when crashes or restarts occur, expired attribute modifiers can be removed upon the player's relog
+        if (entity instanceof Player) TemporaryAttributeQuery.insertToRecords(
+                Database.getInstance().connect(),
+                String.valueOf(attr_key),
+                attrTypeID,
+                amount,
+                String.valueOf(entity.getUniqueId()),
+                expiry_time);
 
-        String finalAttrTypeID = attrTypeID;
-        double finalAmount = amount;
-        long finalExpiry_time = expiry_time;
+
 
         String finalAttrTypeID1 = attrTypeID;
-        new BukkitRunnable() {
+        Runnable runlater = new Runnable() {
             @Override
             public void run() {
                 if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
                     AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
-                } else {
-                    // add to deletion later
-                    if (entity instanceof Player) TemporaryAttributeQuery.insertToRecords(
-                            Database.getInstance().connect(),
-                            String.valueOf(attr_key),
-                            finalAttrTypeID,
-                            finalAmount,
-                            String.valueOf(entity.getUniqueId()),
-                            finalExpiry_time);
+                    if (entity instanceof Player) TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), attr_key.toString());
                 }
+                // AddTemporaryAttributeManager's method will be called upon player relog if it expires while the player is offline
             }
-        }.runTaskLater(SCore.plugin, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
+        };
+
+
+        if (!(entity instanceof Player)) SCore.schedulerHook.runEntityTask(runlater, null, entity, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
+        else SCore.schedulerHook.runTask(runlater, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
     }
 
 }

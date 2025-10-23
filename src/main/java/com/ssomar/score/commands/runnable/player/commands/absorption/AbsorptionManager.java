@@ -40,13 +40,6 @@ public class AbsorptionManager {
         long remainingTimeTiksTime = absorption.getExpiryTime() - System.currentTimeMillis();
         remainingTimeTiksTime = remainingTimeTiksTime / 50;
 
-        /* seems redundant because the conditions placed before this method call makes this scenario impossible
-        if (remainingTimeTiksTime <= 0){
-            absorption.setToRemove(true);
-            return absorption;
-        }
-         */
-
         SsomarDev.testMsg("currentAbso: "+currentabsorption+" abso to add "+absorption.getAbsorption(), true);
         receiver.setAbsorptionAmount(currentabsorption + absorption.getAbsorption());
         SsomarDev.testMsg("newAbso: "+receiver.getAbsorptionAmount(), true);
@@ -71,7 +64,7 @@ public class AbsorptionManager {
             @Override
             public void run() {
                 SsomarDev.testMsg("REMOVE receiver: "+receiver.getUniqueId()+ " ABSORPTION: " + absorption.getAbsorption(), true);
-                if (!receiver.isDead()) {
+                if (!receiver.isDead() || receiver.isOnline()) {
                     try {
                         //receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption.getAbsorption());
                         AbsorptionManager.modifyAbsorption(receiver.getUniqueId().toString(), receiver.getAbsorptionAmount()-absorption.getAbsorption());
@@ -87,16 +80,17 @@ public class AbsorptionManager {
                 //absorptionList.remove(absorption);
             }
         };
-        absorption.setTask(SCore.schedulerHook.runEntityTask(runnable3, null, receiver, remainingTimeTiksTime));
+        // we are doing runTask instead of runEntityTask because we'd want the absorption to persist even after relogs
+        absorption.setTask(SCore.schedulerHook.runTask(runnable3, remainingTimeTiksTime));
         return absorption;
     }
 
     public void onConnect(Player player) {
-        SsomarDev.testMsg(ChatColor.YELLOW+"[#s0015] AbsorptionManager.onConnect() is triggered", true);
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0015] AbsorptionManager.onConnect() is triggered", true);
 
         // Handle expired absorptions - remove them from player
-        List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString(), null);
-        SsomarDev.testMsg(ChatColor.YELLOW+"[#s0016] Amount of expired absorptions: "+toRemove.size(), true);
+        List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString());
+        SsomarDev.testMsg("[#s0016] Amount of expired absorptions: "+toRemove.size(), true);
         for(AbsorptionObject absorption : toRemove) {
             if (player.getAbsorptionAmount() > absorption.getAbsorption())
                 player.setAbsorptionAmount(player.getAbsorptionAmount() - absorption.getAbsorption());
@@ -106,33 +100,19 @@ public class AbsorptionManager {
                 player.setAbsorptionAmount(0);
             }
         }
-
-        // Handle active absorptions - reschedule their tasks
-        List<AbsorptionObject> activeAbsorptions = AbsorptionQuery.getActiveAbsorptions(Database.getInstance().connect(), player.getUniqueId().toString());
-        SsomarDev.testMsg(ChatColor.YELLOW+"[#s0020] Amount of active absorptions to reschedule: "+activeAbsorptions.size(), true);
-        for(AbsorptionObject absorption : activeAbsorptions) {
-            // Reschedule the task for this absorption (true = don't re-insert to database)
-            applyAbsorption(absorption, true);
-        }
     }
-
-    // this method is not needed anymore
-    /*
-    public void onDisconnect(Player player) {
-        List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString());
-        SCore.plugin.getLogger().info(String.valueOf(player.getAbsorptionAmount()));
-        for(AbsorptionObject absorption : toRemove) {
-            player.setAbsorptionAmount(player.getAbsorptionAmount() - absorption.getAbsorption());
-        }
-    }
-
-     */
 
     public static AbsorptionManager getInstance() {
         if (instance == null) instance = new AbsorptionManager();
         return instance;
     }
 
+    /**
+     * This method's purpose is to safely modify a player's absorption value because complications
+     * occur when a player relogs.
+     * @param player_uuid
+     * @param new_value
+     */
     private static void modifyAbsorption(String player_uuid, double new_value) {
         Player player = Bukkit.getPlayer(UUID.fromString(player_uuid));
         assert player != null;
