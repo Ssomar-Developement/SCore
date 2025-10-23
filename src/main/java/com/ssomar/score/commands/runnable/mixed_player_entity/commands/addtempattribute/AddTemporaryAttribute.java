@@ -116,9 +116,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
         }
         // invalid long value checker for temp attribute tick duration
         try {
-            // The reason why there's a -50 at the end because as I was doing tests, there seems to be around at worst, 30 milliseconds of early execution for the BukkitRunnable() below.
-            // How bad could that be? VERY BAD. That means there's a chance that temp attributes will fail to remove themselves
-            expiry_time = System.currentTimeMillis() + (Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString())*50) - 50;
+            expiry_time = System.currentTimeMillis() + (Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString())*50);
         } catch (Exception e) {
             SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Invalid Attribute argument was provided for field tick duration: "+sCommandToExec.getSettingValue("timeinticks").toString());
             return;
