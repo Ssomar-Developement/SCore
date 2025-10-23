@@ -620,80 +620,124 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 break;
 
 
-            case "webhook":
-                // Expect: /score webhook <url> <true|false> <message...>
-                if (args.length < 3) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /score webhook <url> <true|false> <message...>");
-                    break;
-                }
-
-                String webhookUrl = args[0];
-                boolean debug;
-                try {
-                    debug = Boolean.parseBoolean(args[1]);
-                } catch (Exception ex) {
-                    sender.sendMessage(ChatColor.RED + "Second argument must be true or false.");
-                    break;
-                }
-
-                // Build the message from the remaining arguments
-                StringBuilder sb = new StringBuilder();
-                for (int i = 2; i < args.length; i++) {
-                    sb.append(args[i]);
-                    if (i < args.length - 1) sb.append(" ");
-                }
-                String rawMessage = sb.toString();
-
-                if (debug) {
-                    sender.sendMessage("Sending webhook...");
-                }
-
-                // Escape for JSON
-                String escaped = rawMessage
-                        .replace("\\", "\\\\")
-                        .replace("\"", "\\\"")
-                        .replace("\n", "\\n")
-                        .replace("\r", "");
-                String jsonPayload = "{\"content\":\"" + escaped + "\"}";
-
-                // Perform HTTP POST asynchronously
-                Runnable sendWebhook = () -> {
-                    boolean success = false;
-                    try {
-                        URL url = new URL(webhookUrl);
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setRequestMethod("POST");
-                        conn.setRequestProperty("Content-Type", "application/json");
-                        conn.setDoOutput(true);
-
-                        byte[] body = jsonPayload.getBytes(StandardCharsets.UTF_8);
-                        conn.setFixedLengthStreamingMode(body.length);
-
-                        try (OutputStream os = conn.getOutputStream()) {
-                            os.write(body);
-                        }
-
-                        int responseCode = conn.getResponseCode();
-                        conn.disconnect();
-                        success = (responseCode >= 200 && responseCode < 300);
-                    } catch (Exception ex) {
-                        success = false;
-                    }
-
-                    if (debug) {
-                        boolean finalSuccess = success;
-                        Bukkit.getScheduler().runTask(SCore.plugin, () -> {
-                            if (finalSuccess) {
-                                sender.sendMessage("Webhook §asuccessfully sent.§r");
-                            } else {
-                                sender.sendMessage("Webhook §cunsuccessfully sent.§r");
+            case "webhook": {
+                            // Require at least <url> and <debug>
+                            if (args.length < 3) {
+                                sender.sendMessage(ChatColor.RED + "Usage:");
+                                sender.sendMessage(ChatColor.YELLOW + "/score webhook <url> <debug:true|false> [allowed_mentions] <message...>");
+                                sender.sendMessage(ChatColor.GRAY + "allowed_mentions (optional, EXACTLY one of):");
+                                sender.sendMessage(ChatColor.GRAY + "  users:<id[,id,...]>");
+                                sender.sendMessage(ChatColor.GRAY + "  roles:<id[,id,...]>");
+                                sender.sendMessage(ChatColor.GRAY + "  parse:<everyone|users|roles>[,<everyone|users|roles>...]");
+                                sender.sendMessage(ChatColor.DARK_GRAY + "Default (if omitted): no pings (allowed_mentions.parse = []).");
+                                break;
                             }
-                        });
-                    }
-                };
-                SCore.schedulerHook.runAsyncTask(sendWebhook, 0);
-
-                break;     
+                        
+                            String webhookUrl = args[0];
+                        
+                            boolean debug;
+                            try {
+                                debug = Boolean.parseBoolean(args[1]);
+                            } catch (Exception ex) {
+                                sender.sendMessage(ChatColor.RED + "Invalid <debug> value.");
+                                sender.sendMessage(ChatColor.GRAY + "Expected " + ChatColor.YELLOW + "true" + ChatColor.GRAY + " or " + ChatColor.YELLOW + "false");
+                                sender.sendMessage(ChatColor.GRAY + "Example: " + ChatColor.YELLOW + "/score webhook https://discord.com/api/webhooks/... true Hello world");
+                                break;
+                            }
+                        
+                            // Detect optional allowed_mentions at args[2]; otherwise treat as message (backwards-compat)
+                            String allowedMentionsJson;
+                            int messageStartIndex;
+                            if (args.length >= 4 && looksLikeAllowedMentions(args[2])) {
+                                allowedMentionsJson = buildAllowedMentionsJson(args[2]); // passes IDs through unchanged
+                                messageStartIndex = 3;
+                            } else {
+                                // Backwards-compatible path: args[2] is part of the message
+                                allowedMentionsJson = "{\"parse\":[]}";
+                                messageStartIndex = 2;
+                            }
+                        
+                            // Must have at least some message content
+                            if (messageStartIndex >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Missing message text.");
+                                sender.sendMessage(ChatColor.GRAY + "Put your message after " + ChatColor.YELLOW + "[allowed_mentions]" + ChatColor.GRAY + " if you used it.");
+                                sender.sendMessage(ChatColor.GRAY + "Example: " + ChatColor.YELLOW + "/score webhook <url> true users:123,456 Hello there!");
+                                break;
+                            }
+                        
+                            // Join remaining args as message
+                            StringBuilder sbMsg = new StringBuilder();
+                            for (int i = messageStartIndex; i < args.length; i++) {
+                                if (i > messageStartIndex) sbMsg.append(' ');
+                                sbMsg.append(args[i]);
+                            }
+                            String rawMessage = sbMsg.toString();
+                        
+                            if (debug) {
+                                sender.sendMessage(ChatColor.GRAY + "Sending webhook...");
+                            }
+                        
+                            // Escape message for JSON
+                            String escaped = rawMessage
+                                    .replace("\\", "\\\\")
+                                    .replace("\"", "\\\"")
+                                    .replace("\n", "\\n")
+                                    .replace("\r", "");
+                        
+                            // Final JSON payload: content + allowed_mentions
+                            String jsonPayload = "{"
+                                    + "\"content\":\"" + escaped + "\","
+                                    + "\"allowed_mentions\":" + allowedMentionsJson
+                                    + "}";
+                        
+                            // Send asynchronously
+                            Runnable sendWebhook = () -> {
+                                boolean success;
+                                int responseCode = -1;
+                                try {
+                                    URL url = new URL(webhookUrl);
+                                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                                    conn.setRequestMethod("POST");
+                                    conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                                    conn.setDoOutput(true);
+                                    conn.setConnectTimeout(10000);
+                                    conn.setReadTimeout(15000);
+            
+                                    byte[] body = jsonPayload.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+                                    conn.setFixedLengthStreamingMode(body.length);
+            
+                                    try (OutputStream os = conn.getOutputStream()) {
+                                        os.write(body);
+                                    }
+            
+                                    responseCode = conn.getResponseCode();
+                                    success = (responseCode >= 200 && responseCode < 300);
+                                    conn.disconnect();
+                                } catch (Exception ex) {
+                                    success = false;
+                                }
+            
+                                if (debug) {
+                                    final boolean finalSuccess = success;
+                                    final int finalCode = responseCode;
+                                    Bukkit.getScheduler().runTask(SCore.plugin, () -> {
+                                        if (finalSuccess) {
+                                            sender.sendMessage(ChatColor.GREEN + "Webhook sent successfully.");
+                                        } else {
+                                            sender.sendMessage(ChatColor.RED + "Webhook failed to send.");
+                                            if (finalCode != -1) {
+                                                sender.sendMessage(ChatColor.GRAY + "HTTP status: " + ChatColor.YELLOW + finalCode);
+                                            } else {
+                                                sender.sendMessage(ChatColor.GRAY + "No HTTP response (network error or invalid URL).");
+                                            }
+                                            sender.sendMessage(ChatColor.GRAY + "Tip: Check the URL and verify the channel’s webhook is active.");
+                                        }
+                                    });
+                                }
+                            };
+                            SCore.schedulerHook.runAsyncTask(sendWebhook, 0);
+                            break;
+                        }
                 
                 
             
@@ -1107,5 +1151,69 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
         }
 
         return null;
+    }
+
+
+    private static boolean looksLikeAllowedMentions(String token) {
+        if (token == null) return false;
+        String lower = token.toLowerCase(java.util.Locale.ROOT);
+        return lower.startsWith("users:") || lower.startsWith("roles:") || lower.startsWith("parse:");
+    }
+
+    private static String buildAllowedMentionsJson(String token) {
+        // Default: no pings at all
+        final String NONE = "{\"parse\":[]}";
+        if (token == null || token.isEmpty()) return NONE;
+    
+        // Keep original token for IDs; only use lowercase for the key prefix
+        int idx = token.indexOf(':');
+        if (idx <= 0 || idx == token.length() - 1) return NONE;
+    
+        String prefixLower = token.substring(0, idx).toLowerCase(java.util.Locale.ROOT);
+        String rest = token.substring(idx + 1); // pass-through (no sanitization)
+    
+        switch (prefixLower) {
+            case "users": {
+                // users:id,id,id
+                String[] ids = rest.split(",");
+                if (ids.length == 0) return NONE;
+                StringBuilder sb = new StringBuilder();
+                sb.append("{\"parse\":[],\"users\":[");
+                for (int i = 0; i < ids.length; i++) {
+                    if (i > 0) sb.append(',');
+                    sb.append('\"').append(ids[i]).append('\"');
+                }
+                sb.append("]}");
+                return sb.toString();
+            }
+            case "roles": {
+                // roles:id,id,id
+                String[] ids = rest.split(",");
+                if (ids.length == 0) return NONE;
+                StringBuilder sb = new StringBuilder();
+                sb.append("{\"parse\":[],\"roles\":[");
+                for (int i = 0; i < ids.length; i++) {
+                    if (i > 0) sb.append(',');
+                    sb.append('\"').append(ids[i]).append('\"');
+                }
+                sb.append("]}");
+                return sb.toString();
+            }
+            case "parse": {
+                // parse:everyone,users,roles  (pass-through; Discord ignores unknowns)
+                String[] items = rest.split(",");
+                if (items.length == 0) return NONE;
+                StringBuilder sb = new StringBuilder();
+                sb.append("{\"parse\":[");
+                for (int i = 0; i < items.length; i++) {
+                    if (i > 0) sb.append(',');
+                    sb.append('\"').append(items[i]).append('\"');
+                }
+                sb.append("]}");
+                return sb.toString();
+            }
+            default:
+                return NONE;
+        }
     }
 }

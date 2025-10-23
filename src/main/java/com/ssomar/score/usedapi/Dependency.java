@@ -58,6 +58,8 @@ public enum Dependency {
 
     JOBS("Jobs"),
 
+    MCMMO("mcMMO"),
+
     MYTHIC_MOBS("MythicMobs"),
 
     DECENT_HOLOGRAMS("DecentHolograms"),

@@ -70,6 +70,7 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPlayerMustBeOnHisIsland(this));
         conditions.add(new IfPlayerMustBeOnHisPlot(this));
         conditions.add(new IfCanBreakTargetedBlock(this));
+        conditions.add(new IfPlayerIsRiding(this));
 
         /* Number condition features */
         conditions.add(new IfCursorDistance(this));
@@ -78,6 +79,11 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPlayerLevel(this));
         conditions.add(new IfPlayerFoodLevel(this));
         conditions.add(new IfPlayerHealth(this));
+        conditions.add(new IfPlayerLastDamage(this));
+        conditions.add(new IfPlayerOxygen(this));
+        conditions.add(new IfPlayerBedSpawnLocationX(this));
+        conditions.add(new IfPlayerBedSpawnLocationY(this));
+        conditions.add(new IfPlayerBedSpawnLocationZ(this));
         conditions.add(new IfPosX(this));
         conditions.add(new IfPosY(this));
         conditions.add(new IfPosZ(this));
