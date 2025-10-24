@@ -66,6 +66,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     private static InjectSpigot injectSpigot;
 
+    /**
+     * If the value of {@link com.ssomar.score.SCore#isFolia()} is <code>true</code>, SCore will use {@link RegionisedSchedulerHook} to perform scheduled tasks.
+     * Otherwise, it will use {@link BukkitSchedulerHook}.<br/>
+     * <br/>
+     * See {@link SCore#initLibPartOfSCore(Plugin, ClassLoader)} for the logic and details of the decision.
+     */
     public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
     public static boolean hasExecutableItems = false;
@@ -182,6 +188,16 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private CommandsClass commandClass;
 
     /* The server is folia? */
+
+    /**
+     * Used for adjusting code logic for these following server types:
+     * <ul>
+     *     <li>Folia</li>
+     *     <li>Luminol</li>
+     *     <li>PaperSpigot (or its forks) 1.20+</li>
+     * </ul>
+     * @return boolean
+     */
     public static boolean isFolia() {
         return isFolia || isLuminol || isPaperOrForkFor1v20lus /* Paper include threaded region of Folia in 1.20 +*/ || hasClass("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
     }

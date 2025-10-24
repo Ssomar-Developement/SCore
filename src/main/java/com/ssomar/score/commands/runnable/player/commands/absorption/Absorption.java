@@ -36,7 +36,7 @@ public class Absorption extends PlayerCommand {
                 time = time * 50;
                 long finalTime = time+timestamp;
                 AbsorptionObject absorptionObject = new AbsorptionObject(receiver.getUniqueId(), absorption, finalTime);
-                AbsorptionManager.getInstance().addAbsorption(AbsorptionManager.getInstance().applyAbsorption(absorptionObject));
+                AbsorptionManager.getInstance().applyAbsorption(absorptionObject);
             }
         }catch(IllegalArgumentException e){
             SsomarDev.testMsg("ABSORPTION Error: "+e.getMessage(), true);

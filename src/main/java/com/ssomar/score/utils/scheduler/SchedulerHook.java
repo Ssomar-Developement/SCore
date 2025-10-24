@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.scheduler;
 
+import com.ssomar.score.SCore;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
@@ -12,6 +13,18 @@ public interface SchedulerHook {
     ScheduledTask runAsyncTask(Runnable runnable, long delay);
 
     ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period);
+
+    /**
+     * Refer to {@link SCore#schedulerHook} on what scheduler SCore will use for your server.<br/>
+     * - If it uses {@link RegionisedSchedulerHook} and the entity tied to this runnable task
+     * is dead/removed, it will retire early.<br/>
+     * - If it uses {@link BukkitSchedulerHook}, it will just execute a delayed task.
+     * @param runnable
+     * @param retired
+     * @param entity
+     * @param delay
+     * @return ScheduledTask
+     */
     ScheduledTask runEntityTask(Runnable runnable, Runnable retired, Entity entity, long delay);
 
     ScheduledTask runEntityTaskAsap(Runnable runnable, Runnable retired, Entity entity);
