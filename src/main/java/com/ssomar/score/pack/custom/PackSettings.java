@@ -63,6 +63,7 @@ public class PackSettings {
             hostedPathType = HostedPathType.EXTERNAL;
             hostedPath = url;
             Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with self host IP)");
+            logSelfHostingWarning();
             return url;
         }
 
@@ -82,6 +83,7 @@ public class PackSettings {
                 hostedPathType = HostedPathType.LOCAL_IP;
                 hostedPath = url;
                 Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with local IP)");
+                logSelfHostingWarning();
                 return url;
             }
         } catch (UnknownHostException e) {
@@ -94,6 +96,7 @@ public class PackSettings {
                 hostedPathType = HostedPathType.LOCAL_IP;
                 hostedPath = url;
                 Utils.sendConsoleMsg("&7Pack hosted at: &e" + url + " (with local IP)");
+                logSelfHostingWarning();
                 return url;
             }
         } catch (UnknownHostException e) {
@@ -178,5 +181,14 @@ public class PackSettings {
             e.printStackTrace();
         }
         return externalIP;
+    }
+
+    /**
+     * Logs a warning message about self-hosting compatibility issues
+     */
+    private void logSelfHostingWarning() {
+        Utils.sendConsoleMsg("&6WARNING: &7Self-hosting may not work on all hosting providers due to firewall/NAT restrictions.");
+        Utils.sendConsoleMsg("&7If the resource pack fails to load for players, disable self-hosting by setting &e'selfHostPack: false' &7in your config.yml");
+        Utils.sendConsoleMsg("&7and configure &e'texturesPackUrl' &7with an external hosting URL (e.g., Dropbox, GitHub Pages).");
     }
 }
