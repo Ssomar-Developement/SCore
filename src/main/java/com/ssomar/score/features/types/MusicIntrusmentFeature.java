@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
@@ -36,18 +37,14 @@ public class MusicIntrusmentFeature extends FeatureAbstract<Optional<MusicInstru
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
-        if (colorStr.equals("NULL")) {
-            if (defaultValue.isPresent()) {
-                value = defaultValue;
-            } else {
-                errors.add("&cERROR, Couldn't load the MusicInstrument value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/MusicInstrument.html");
-                value = Optional.empty();
-            }
+        String colorStr = config.getString(this.getName(), "null").toLowerCase();
+        if (colorStr.equals("null")) {
+            // if you run a give command for a goat horn without providing the instrument, it will use PONDER_GOAT_HORN
+            value = Optional.of(MusicInstrument.PONDER_GOAT_HORN);
             return errors;
         }
         try {
-            MusicInstrument attributeSlot = Registry.INSTRUMENT.get(NamespacedKey.minecraft(colorStr));
+            MusicInstrument attributeSlot = Registry.INSTRUMENT.get(NamespacedKey.minecraft(colorStr.toLowerCase()));
             value = Optional.ofNullable(attributeSlot);
             FeatureReturnCheckPremium<MusicInstrument> checkPremium = checkPremium("MusicInstrument", attributeSlot, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
