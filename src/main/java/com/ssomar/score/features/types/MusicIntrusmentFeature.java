@@ -1,6 +1,5 @@
 package com.ssomar.score.features.types;
 
-import com.ssomar.score.SCore;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.languages.messages.TM;
