@@ -1,6 +1,7 @@
 package com.ssomar.score.features.custom.Instrument;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
@@ -168,20 +169,26 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
                     bmeta.setInstrument(getInstrument().getValue().get());
                 }
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @Override
     public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
 
+        SsomarDev.testMsg("SCORE DEBUG - InstrumentFeatures.loadFromItemMeta()", true);
         if (!isAvailable() || !isApplicable(args)) return;
+
+        SsomarDev.testMsg("SCORE DEBUG - InstrumentFeatures.loadFromItemMeta() 2", true);
+
+        // By default an Instrument has a music
+        enable.setValue(true);
 
         MusicInstrumentMeta bmeta = (MusicInstrumentMeta) args.getMeta();
         if (bmeta.getInstrument() != null) {
-            enable.setValue(true);
+            SsomarDev.testMsg("SCORE DEBUG - InstrumentFeatures.loadFromItemMeta() 3", true);
             getInstrument().setValue(Optional.ofNullable(bmeta.getInstrument()));
         }
+        else SsomarDev.testMsg("SCORE DEBUG - InstrumentFeatures.loadFromItemMeta() 4 NO INSTRUMENT", true);
     }
 
     @Override
