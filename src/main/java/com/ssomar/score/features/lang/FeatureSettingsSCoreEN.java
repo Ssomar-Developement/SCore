@@ -224,7 +224,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     entityConditions("entityConditions", "Entity Conditions", new String[]{""}, Material.ANVIL),
     entityCooldownFeatures("entityCooldownFeatures", "Entity Cooldown Features", new String[]{"&7&oThe entity cooldown"}, GUI.CLOCK),
     entityType("entityType", "Entity Type", new String[]{"&7&oThe entity type"}, FixedMaterial.getMaterial(Arrays.asList("ZOMBIE_HEAD", "MONSTER_EGG"))),
-    equipModel("equipModel", "Equip Model", new String[]{"&7&oThe equip/armor model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/models/equipment/<id>"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA"))),
+    equipModel("equipModel", "Equip Model", new String[]{"&7&oThe equip/armor model", "&7&oFormat: namespace:id", "&7&oWill reference model /assets/<namespace>/models/equipment/<id>", "&7&oOr /assets/<namespace>/equipment/<id> depending of your version"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA"))),
     equippableFeatures("equippableFeatures", "Equippable Features", new String[]{"&7&oThe equippable features"}, Material.DIAMOND_CHESTPLATE),
     errorMessage("errorMessage", "Error message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK),
     errorMsg("errorMsg", "Error Message", new String[]{"&7&oThe error message"}, GUI.WRITABLE_BOOK),
