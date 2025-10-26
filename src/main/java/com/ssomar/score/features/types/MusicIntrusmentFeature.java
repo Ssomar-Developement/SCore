@@ -38,12 +38,16 @@ public class MusicIntrusmentFeature extends FeatureAbstract<Optional<MusicInstru
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "null").toLowerCase();
         if (colorStr.equals("null")) {
-            // if you run a give command for a goat horn without providing the instrument, it will use PONDER_GOAT_HORN
-            value = Optional.of(MusicInstrument.PONDER_GOAT_HORN);
-            return errors;
+            if (defaultValue.isPresent()) {
+                value = defaultValue;
+            } else {
+                errors.add("&cERROR, Couldn't load the MusicInstrument value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/MusicInstrument.html");
+                value = Optional.empty();
+                return errors;
+            }
         }
         try {
-            MusicInstrument attributeSlot = Registry.INSTRUMENT.get(NamespacedKey.minecraft(colorStr.toLowerCase()));
+            MusicInstrument attributeSlot = Registry.INSTRUMENT.get(NamespacedKey.minecraft(colorStr));
             value = Optional.ofNullable(attributeSlot);
             FeatureReturnCheckPremium<MusicInstrument> checkPremium = checkPremium("MusicInstrument", attributeSlot, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());

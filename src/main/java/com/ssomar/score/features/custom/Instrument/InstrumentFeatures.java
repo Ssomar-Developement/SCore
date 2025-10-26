@@ -11,6 +11,7 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.MusicInstrument;
 import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -37,8 +38,8 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
 
     @Override
     public void reset() {
-        this.enable = new BooleanFeature(this, true, FeatureSettingsSCore.enable);
-        this.instrument = new MusicIntrusmentFeature(this, Optional.empty(), FeatureSettingsSCore.instrument);
+        this.enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
+        this.instrument = new MusicIntrusmentFeature(this, Optional.of(MusicInstrument.PONDER_GOAT_HORN), FeatureSettingsSCore.instrument);
     }
 
     @Override
@@ -178,6 +179,7 @@ public class InstrumentFeatures extends FeatureWithHisOwnEditor<InstrumentFeatur
 
         MusicInstrumentMeta bmeta = (MusicInstrumentMeta) args.getMeta();
         if (bmeta.getInstrument() != null) {
+            enable.setValue(true);
             getInstrument().setValue(Optional.ofNullable(bmeta.getInstrument()));
         }
     }
