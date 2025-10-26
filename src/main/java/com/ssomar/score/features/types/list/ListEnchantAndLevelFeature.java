@@ -54,12 +54,23 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
             boolean error = false;
             if (s.contains(":")) {
                 decomp = s.split(":");
+                String namespaceEnchant = "";
+                String levelStr = "";
+                if (decomp.length >= 3) {
+                    namespaceEnchant = decomp[0] + ":" + decomp[1];
+                    levelStr = decomp[2];
+                    System.out.println(namespaceEnchant + " / " + levelStr);
+                }
+                else {
+                    namespaceEnchant = decomp[0];
+                    levelStr = decomp[1];
+                }
                 try {
-                    enchant = Enchantment.getByName(decomp[0]);
+                    enchant = Enchantment.getByName(namespaceEnchant);
                     if (enchant == null) {
                         error = true;
                     } else {
-                        level = Integer.parseInt(decomp[1]);
+                        level = Integer.parseInt(levelStr);
                         result.put(enchant, level);
                     }
                 } catch (Exception e) {
@@ -120,12 +131,24 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
         boolean error = false;
         if (s.contains(":")) {
             decomp = s.split(":");
+            String namespaceEnchant = "";
+            String levelStr = "";
+            if (decomp.length >= 3) {
+                namespaceEnchant = decomp[0] + ":" + decomp[1];
+                levelStr = decomp[2];
+                System.out.println(namespaceEnchant + " / " + levelStr);
+            }
+            else {
+                namespaceEnchant = decomp[0];
+                levelStr = decomp[1];
+            }
+
             try {
-                enchant = Enchantment.getByName(decomp[0]);
+                enchant = Enchantment.getByName(namespaceEnchant);
                 if (enchant == null) {
                     error = true;
                 } else {
-                    Integer.parseInt(decomp[1]);
+                    Integer.parseInt(levelStr);
                 }
             } catch (Exception e) {
                 error = true;
