@@ -135,15 +135,30 @@ public class FoodFeatures extends FeatureWithHisOwnEditor<FoodFeatures, FoodFeat
             if (getIsMeat().getValue()) {
                 ItemMeta meta = args.getMeta();
                 FoodComponent food = meta.getFood();
-                int nutrition = getNutrition().getValue().get();
+
+                // Support placeholders in nutrition field
+                int nutrition = getNutrition().getValue(
+                    args.getOwnerUUID().orElse(null),
+                    args.getStringPlaceholder().orElse(null)
+                ).orElse(getNutrition().getValue().orElse(0));
                 if (nutrition < 0) nutrition = 0;
                 food.setNutrition(nutrition);
-                int saturation = getSaturation().getValue().get();
+
+                // Support placeholders in saturation field
+                int saturation = getSaturation().getValue(
+                    args.getOwnerUUID().orElse(null),
+                    args.getStringPlaceholder().orElse(null)
+                ).orElse(getSaturation().getValue().orElse(1));
                 if (saturation < 0) saturation = 0;
                 food.setSaturation(saturation);
+
                 food.setCanAlwaysEat(getCanAlwaysEat().getValue());
                 if (!SCore.is1v21v2Plus()) {
-                    int eatSeconds = getEatSeconds().getValue().get();
+                    // Support placeholders in eatSeconds field
+                    int eatSeconds = getEatSeconds().getValue(
+                        args.getOwnerUUID().orElse(null),
+                        args.getStringPlaceholder().orElse(null)
+                    ).orElse(getEatSeconds().getValue().orElse(1));
                     if (eatSeconds <= 0) eatSeconds = 1;
                     Class<?> clazz = food.getClass();
                     try {

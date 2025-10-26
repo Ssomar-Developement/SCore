@@ -170,7 +170,12 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         if (!isAvailable() || !isApplicable(args)) return;
         if (enable.getValue()) {
             Repairable repairable = (Repairable) args.getMeta();
-            repairable.setRepairCost(repairCost.getValue().get());
+            // Support placeholders in repairCost field
+            int repairCostValue = repairCost.getValue(
+                args.getOwnerUUID().orElse(null),
+                args.getStringPlaceholder().orElse(null)
+            ).orElse(repairCost.getValue().orElse(2));
+            repairable.setRepairCost(repairCostValue);
         }
 
     }
