@@ -359,6 +359,9 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         //SsomarDev.testMsg("222222: " + s, true);
         s = replacePlaceholderOfSCore(s);
 
+        // Evaluate math expressions
+        s = PlaceholdersInterface.replaceMathExpressions(s);
+
         //SsomarDev.testMsg("333333: " + s, true);
 
         /* A second time because the variable contains can require a placeholder */
