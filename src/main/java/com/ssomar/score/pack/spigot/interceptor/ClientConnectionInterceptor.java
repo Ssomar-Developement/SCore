@@ -28,26 +28,41 @@ public class ClientConnectionInterceptor {
 
         };
 
+        final ChannelInboundHandler serverHandler = new ChannelInboundHandlerAdapter() {
+
+            @Override
+            public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+                Channel channel = (Channel) msg;
+
+                // Prepare to initialize ths channel
+                channel.pipeline().addFirst(beginInitProtocol);
+                ctx.fireChannelRead(msg);
+            }
+
+        };
+
         final List<ChannelFuture> channels = this.getChannels();
         for (final ChannelFuture channelFuture : channels) {
-            // Create a new handler instance for each channel to avoid Netty's
-            // "not a @Sharable handler" error when adding to multiple channels
-            final ChannelInboundHandler serverHandler = new ChannelInboundHandlerAdapter() {
-
-                @Override
-                public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                    Channel channel = (Channel) msg;
-
-                    // Prepare to initialize ths channel
-                    channel.pipeline().addFirst(beginInitProtocol);
-                    ctx.fireChannelRead(msg);
-                }
-
-            };
             channelFuture.channel().pipeline().addFirst(serverHandler);
         }
     }
 
+    /**
+     * Iterates over all active channels and applies the given action to each one.
+     * This method is intended for operating on existing channels without adding new handlers.
+     *
+     * @param channelConsumer The action to perform on each channel
+     */
+    public void forEachChannel(Consumer<Channel> channelConsumer) {
+        final List<ChannelFuture> channels = this.getChannels();
+        for (final ChannelFuture channelFuture : channels) {
+            try {
+                channelConsumer.accept(channelFuture.channel());
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot operate on channel " + channelFuture.channel(), e);
+            }
+        }
+    }
 
     private Method getMethodByReturnType(Class<?> clazz, Class<?> returnType) {
         return Arrays.stream(clazz.getDeclaredMethods())

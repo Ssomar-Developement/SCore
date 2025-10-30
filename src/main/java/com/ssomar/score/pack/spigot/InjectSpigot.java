@@ -34,10 +34,18 @@ public class InjectSpigot implements InjectPlatform {
             return;
         }
         try {
-            connectionInterceptor.install((channel) -> {
-                ChannelPipeline pipeline = channel.pipeline();
-                injectors.forEach(pipeline::addFirst);
-            });
+            // Only call install() once when the first injector is registered
+            if (injectors.isEmpty()) {
+                connectionInterceptor.install((channel) -> {
+                    ChannelPipeline pipeline = channel.pipeline();
+                    injectors.forEach(pipeline::addFirst);
+                });
+            } else {
+                // For subsequent injectors, just add them to existing channels
+                connectionInterceptor.forEachChannel((channel) -> {
+                    channel.pipeline().addFirst(injector);
+                });
+            }
 
             injectors.add(injector);
 
@@ -71,7 +79,7 @@ public class InjectSpigot implements InjectPlatform {
 
         if (removed && connectionInterceptor != null) {
             // Remove the injector from all active channel pipelines
-            connectionInterceptor.install((channel) -> {
+            connectionInterceptor.forEachChannel((channel) -> {
                 if (channel.pipeline().get(injector.getClass().getName()) != null) {
                     channel.pipeline().remove(injector.getClass().getName());
                 }
