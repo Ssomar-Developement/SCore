@@ -47,6 +47,22 @@ public class ClientConnectionInterceptor {
         }
     }
 
+    /**
+     * Iterates over all active channels and applies the given action to each one.
+     * This method is intended for operating on existing channels without adding new handlers.
+     *
+     * @param channelConsumer The action to perform on each channel
+     */
+    public void forEachChannel(Consumer<Channel> channelConsumer) {
+        final List<ChannelFuture> channels = this.getChannels();
+        for (final ChannelFuture channelFuture : channels) {
+            try {
+                channelConsumer.accept(channelFuture.channel());
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot operate on channel " + channelFuture.channel(), e);
+            }
+        }
+    }
 
     private Method getMethodByReturnType(Class<?> clazz, Class<?> returnType) {
         return Arrays.stream(clazz.getDeclaredMethods())

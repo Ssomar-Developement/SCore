@@ -34,10 +34,18 @@ public class InjectSpigot implements InjectPlatform {
             return;
         }
         try {
-            connectionInterceptor.install((channel) -> {
-                ChannelPipeline pipeline = channel.pipeline();
-                injectors.forEach(pipeline::addFirst);
-            });
+            // Only call install() once when the first injector is registered
+            // The handler added by install() will automatically use all injectors in the list
+            // for new client connections
+            if (injectors.isEmpty()) {
+                connectionInterceptor.install((channel) -> {
+                    ChannelPipeline pipeline = channel.pipeline();
+                    injectors.forEach(pipeline::addFirst);
+                });
+            }
+            // For subsequent injectors, we don't need to do anything extra
+            // The handler is already installed and will use the updated injectors list
+            // Note: This won't affect existing connections, only new ones
 
             injectors.add(injector);
 
@@ -57,7 +65,9 @@ public class InjectSpigot implements InjectPlatform {
     }
 
     /**
-     * Unregisters an injector and removes it from all active channels
+     * Unregisters an injector from the list so new connections won't receive it.
+     * Note: This does not affect existing client connections, which will retain
+     * the injector until they disconnect.
      *
      * @param injector The injector to unregister
      * @return true if successfully unregistered, false otherwise
@@ -69,13 +79,7 @@ public class InjectSpigot implements InjectPlatform {
 
         boolean removed = injectors.remove(injector);
 
-        if (removed && connectionInterceptor != null) {
-            // Remove the injector from all active channel pipelines
-            connectionInterceptor.install((channel) -> {
-                if (channel.pipeline().get(injector.getClass().getName()) != null) {
-                    channel.pipeline().remove(injector.getClass().getName());
-                }
-            });
+        if (removed) {
             Utils.sendConsoleMsg("Injector &e" + injector.getClass().getName() + " &7unregistered (TPack selfhosting)");
         }
 
