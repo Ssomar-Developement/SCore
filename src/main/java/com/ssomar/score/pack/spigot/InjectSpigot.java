@@ -6,12 +6,14 @@ import com.ssomar.score.pack.spigot.interceptor.ClientConnectionInterceptor;
 import com.ssomar.score.utils.logging.Utils;
 import io.netty.channel.ChannelPipeline;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class InjectSpigot implements InjectPlatform {
     public static InjectSpigot INSTANCE = new InjectSpigot();
-    private final List<Injector> injectors = new ArrayList<>();
+    // CopyOnWriteArrayList provides thread safety for concurrent reads (by Netty threads)
+    // and occasional writes (by main thread during pack load/unload)
+    private final List<Injector> injectors = new CopyOnWriteArrayList<>();
     private boolean hasInitialized = false;
 
     private ClientConnectionInterceptor connectionInterceptor = new ClientConnectionInterceptor();
@@ -59,9 +61,8 @@ public class InjectSpigot implements InjectPlatform {
     }
 
     public void unregisterAllInjectors() {
-        // Copy to avoid ConcurrentModificationException
-        List<Injector> injectorsCopy = new ArrayList<>(this.injectors);
-        injectorsCopy.forEach(this::unregisterInjector);
+        // CopyOnWriteArrayList allows safe iteration during modification
+        injectors.forEach(this::unregisterInjector);
     }
 
     /**

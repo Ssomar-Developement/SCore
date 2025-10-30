@@ -28,21 +28,23 @@ public class ClientConnectionInterceptor {
 
         };
 
-        final ChannelInboundHandler serverHandler = new ChannelInboundHandlerAdapter() {
-
-            @Override
-            public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                Channel channel = (Channel) msg;
-
-                // Prepare to initialize ths channel
-                channel.pipeline().addFirst(beginInitProtocol);
-                ctx.fireChannelRead(msg);
-            }
-
-        };
-
         final List<ChannelFuture> channels = this.getChannels();
         for (final ChannelFuture channelFuture : channels) {
+            // Create a new handler instance for each server channel to avoid Netty's
+            // "not a @Sharable handler" error when adding to multiple channels.
+            // This is required when the server binds to multiple addresses (IPv4 + IPv6, etc.)
+            final ChannelInboundHandler serverHandler = new ChannelInboundHandlerAdapter() {
+
+                @Override
+                public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+                    Channel channel = (Channel) msg;
+
+                    // Prepare to initialize ths channel
+                    channel.pipeline().addFirst(beginInitProtocol);
+                    ctx.fireChannelRead(msg);
+                }
+
+            };
             channelFuture.channel().pipeline().addFirst(serverHandler);
         }
     }
