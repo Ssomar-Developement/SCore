@@ -4,10 +4,10 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.score.features.types.list.ListDetailedMaterialFeature;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Item;
@@ -16,9 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PickupMagnet extends PlayerCommand {
@@ -56,13 +54,23 @@ public class PickupMagnet extends PlayerCommand {
         boolean playSound = (boolean) sCommandToExec.getSettingValue("sound");
         String velocityMode = (String) sCommandToExec.getSettingValue("velocityMode");
 
-        // Parse item types filter
-        Set<Material> allowedTypes = parseItemTypes(itemTypesStr);
-        Set<Material> blacklistedTypes = parseBlacklist(blacklistStr);
+        // Parse item types filter using SCore's ListDetailedMaterialFeature
+        ListDetailedMaterialFeature whitelist = new ListDetailedMaterialFeature(false); // false = for items
+        if (!itemTypesStr.isEmpty() && !itemTypesStr.equalsIgnoreCase("ALL")) {
+            List<String> whitelistEntries = Arrays.asList(itemTypesStr.split(","));
+            whitelist.load(SCore.plugin, whitelistEntries, true);
+        }
+
+        // Parse blacklist using SCore's ListDetailedMaterialFeature
+        ListDetailedMaterialFeature blacklist = new ListDetailedMaterialFeature(false); // false = for items
+        if (!blacklistStr.isEmpty()) {
+            List<String> blacklistEntries = Arrays.asList(blacklistStr.split(","));
+            blacklist.load(SCore.plugin, blacklistEntries, true);
+        }
 
         // Instant pulse mode
         if (duration == 0) {
-            pullItems(receiver, radius, speed, allowedTypes, blacklistedTypes, particleEffect, playSound, velocityMode);
+            pullItems(receiver, radius, speed, whitelist, blacklist, particleEffect, playSound, velocityMode);
             return;
         }
 
@@ -85,7 +93,7 @@ public class PickupMagnet extends PlayerCommand {
                         task.get().cancel();
                     }
                 } else {
-                    pullItems(receiver, radius, speed, allowedTypes, blacklistedTypes, particleEffect, playSound, velocityMode);
+                    pullItems(receiver, radius, speed, whitelist, blacklist, particleEffect, playSound, velocityMode);
                     ticksElapsed[0]++;
                 }
             }
@@ -94,8 +102,8 @@ public class PickupMagnet extends PlayerCommand {
         task.set(SCore.schedulerHook.runRepeatingTask(runnable, 0L, 1L));
     }
 
-    private void pullItems(Player receiver, double radius, double speed, Set<Material> allowedTypes,
-                          Set<Material> blacklistedTypes, boolean particleEffect, boolean playSound, String velocityMode) {
+    private void pullItems(Player receiver, double radius, double speed, ListDetailedMaterialFeature whitelist,
+                          ListDetailedMaterialFeature blacklist, boolean particleEffect, boolean playSound, String velocityMode) {
         Location playerLoc = receiver.getLocation().add(0, 1, 0); // Center at player's chest height
 
         boolean itemPulled = false;
@@ -106,18 +114,24 @@ public class PickupMagnet extends PlayerCommand {
                 continue;
             }
             Item item = (Item) entity;
+
             // Skip if item is too close (already being picked up naturally)
             if (item.getLocation().distance(playerLoc) < 1.0) {
                 continue;
             }
 
-            // Filter by item type
-            Material itemMaterial = item.getItemStack().getType();
-            if (!allowedTypes.isEmpty() && !allowedTypes.contains(itemMaterial)) {
-                continue;
+            // Filter by whitelist using SCore's proper validation
+            if (!whitelist.getValues().isEmpty()) {
+                if (!whitelist.verifItem(item.getItemStack())) {
+                    continue;
+                }
             }
-            if (blacklistedTypes.contains(itemMaterial)) {
-                continue;
+
+            // Filter by blacklist using SCore's proper validation
+            if (!blacklist.getValues().isEmpty()) {
+                if (blacklist.verifItem(item.getItemStack())) {
+                    continue; // Skip blacklisted items
+                }
             }
 
             // Calculate velocity vector
@@ -166,121 +180,6 @@ public class PickupMagnet extends PlayerCommand {
         }
     }
 
-    private Set<Material> parseItemTypes(String itemTypesStr) {
-        Set<Material> types = new HashSet<>();
-
-        if (itemTypesStr == null || itemTypesStr.trim().isEmpty() || itemTypesStr.equalsIgnoreCase("ALL")) {
-            return types; // Empty set means all types allowed
-        }
-
-        String[] typeNames = itemTypesStr.split(",");
-        for (String typeName : typeNames) {
-            typeName = typeName.trim().toUpperCase();
-
-            // Handle category shortcuts
-            if (typeName.equals("ORES")) {
-                types.addAll(getOres());
-            } else if (typeName.equals("WEAPONS")) {
-                types.addAll(getWeapons());
-            } else if (typeName.equals("FOOD")) {
-                types.addAll(getFood());
-            } else if (typeName.equals("TOOLS")) {
-                types.addAll(getTools());
-            } else if (typeName.equals("ARMOR")) {
-                types.addAll(getArmor());
-            } else {
-                // Try to parse as material
-                try {
-                    Material mat = Material.valueOf(typeName);
-                    types.add(mat);
-                } catch (IllegalArgumentException e) {
-                    // Invalid material name, skip it
-                }
-            }
-        }
-
-        return types;
-    }
-
-    private Set<Material> parseBlacklist(String blacklistStr) {
-        Set<Material> blacklist = new HashSet<>();
-
-        if (blacklistStr == null || blacklistStr.trim().isEmpty()) {
-            return blacklist;
-        }
-
-        String[] materials = blacklistStr.split(",");
-        for (String matName : materials) {
-            matName = matName.trim().toUpperCase();
-            try {
-                Material mat = Material.valueOf(matName);
-                blacklist.add(mat);
-            } catch (IllegalArgumentException e) {
-                // Invalid material name, skip it
-            }
-        }
-
-        return blacklist;
-    }
-
-    private Set<Material> getOres() {
-        Set<Material> ores = new HashSet<>();
-        for (Material mat : Material.values()) {
-            String name = mat.name();
-            if (name.contains("_ORE") || name.equals("ANCIENT_DEBRIS") ||
-                name.equals("RAW_IRON") || name.equals("RAW_GOLD") || name.equals("RAW_COPPER")) {
-                ores.add(mat);
-            }
-        }
-        return ores;
-    }
-
-    private Set<Material> getWeapons() {
-        Set<Material> weapons = new HashSet<>();
-        for (Material mat : Material.values()) {
-            String name = mat.name();
-            if (name.contains("_SWORD") || name.contains("_AXE") || name.equals("BOW") ||
-                name.equals("CROSSBOW") || name.equals("TRIDENT")) {
-                weapons.add(mat);
-            }
-        }
-        return weapons;
-    }
-
-    private Set<Material> getFood() {
-        Set<Material> food = new HashSet<>();
-        for (Material mat : Material.values()) {
-            if (mat.isEdible()) {
-                food.add(mat);
-            }
-        }
-        return food;
-    }
-
-    private Set<Material> getTools() {
-        Set<Material> tools = new HashSet<>();
-        for (Material mat : Material.values()) {
-            String name = mat.name();
-            if (name.contains("_PICKAXE") || name.contains("_SHOVEL") ||
-                name.contains("_HOE") || name.contains("_AXE")) {
-                tools.add(mat);
-            }
-        }
-        return tools;
-    }
-
-    private Set<Material> getArmor() {
-        Set<Material> armor = new HashSet<>();
-        for (Material mat : Material.values()) {
-            String name = mat.name();
-            if (name.contains("_HELMET") || name.contains("_CHESTPLATE") ||
-                name.contains("_LEGGINGS") || name.contains("_BOOTS")) {
-                armor.add(mat);
-            }
-        }
-        return armor;
-    }
-
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
@@ -292,7 +191,7 @@ public class PickupMagnet extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "PICKUP_MAGNET radius:5.0 duration:100 speed:0.3 itemTypes:ALL blacklist: particleEffect:true sound:false velocityMode:DIRECT";
+        return "PICKUP_MAGNET radius:5.0 duration:100 speed:0.3 itemTypes:ALL blacklist: particleEffect:true sound:false velocityMode:DIRECT (itemTypes and blacklist support: material names, material groups like ORES/LOGS/PLANKS, minecraft tags like #minecraft:swords, custom items like EXECUTABLEITEMS:item_id)";
     }
 
     @Override
