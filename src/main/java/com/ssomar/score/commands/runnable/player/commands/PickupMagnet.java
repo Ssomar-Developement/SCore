@@ -191,7 +191,7 @@ public class PickupMagnet extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "PICKUP_MAGNET radius:5.0 duration:100 speed:0.3 itemTypes:ALL blacklist: particleEffect:true sound:false velocityMode:DIRECT (itemTypes and blacklist support: material names, material groups like ORES/LOGS/PLANKS, minecraft tags like #minecraft:swords, custom items like EXECUTABLEITEMS:item_id)";
+        return "PICKUP_MAGNET radius:5.0 duration:100 speed:0.3 itemTypes:ALL blacklist: particleEffect:true sound:false velocityMode:DIRECT";
     }
 
     @Override
