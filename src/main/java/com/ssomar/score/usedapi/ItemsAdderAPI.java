@@ -24,11 +24,11 @@ public class ItemsAdderAPI {
         if (SCore.hasItemsAdder && block != null && !block.isEmpty()) {
             // https://discord.com/channels/701066025516531753/1386807735009677493 remove for custom IA build
             if (SCore.hasClass("dev.lone.itemsadder.api.CustomBlock")) {
-                SsomarDev.testMsg("[#s0004] Attempted to break ItemsAdder block", true);
+                SsomarDev.testMsg("> [#s0004] Attempted to break ItemsAdder block", true);
                 CustomBlock customBlock = CustomBlock.byAlreadyPlaced(block);
                 //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+(customBlock != null), true);
                 if (customBlock != null) {
-                    SsomarDev.testMsg("[#s0005] Custom Block is not null", true);
+                    SsomarDev.testMsg("> > [#s0005] Custom Block is not null", true);
                     //SsomarDev.testMsg("ITEM ADDER REMOVED", true);
                     if (drop) {
                         List<ItemStack> loots = customBlock.getLoot(item, false);
@@ -52,16 +52,17 @@ public class ItemsAdderAPI {
             ArmorStand armorStand;
             for (Entity e : block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5)) {
                 if (e instanceof ArmorStand) {
-                    SsomarDev.testMsg("[#s0006] Custom Block instanceof ArmorStanmd", true);
+                    SsomarDev.testMsg("> [#s0006] Custom Block instanceof ArmorStanmd", true);
                     armorStand = (ArmorStand) e;
                     //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+armorStand.getCustomName(), true);
                     if (armorStand.getCustomName() != null && armorStand.getCustomName().equals("ItemsAdder_furniture")) {
-                        SsomarDev.testMsg("[#s0007] Armorstand has a name and ArmorStand name is \"ItemsAdder_furniture\"", true);
+                        SsomarDev.testMsg("> > [#s0007] Armorstand has a name and ArmorStand name is \"ItemsAdder_furniture\"", true);
                         CustomFurniture furniture = CustomFurniture.byAlreadySpawned(armorStand);
-                        furniture.remove(drop);
+                        // this needs to be set to false because breakEB() has a method that drops the itemstack to the world properly
+                        furniture.remove(false);
                         // to patch an issue where BREAK doesn't remove the EB-ItemsAdder block
                         // its drop arg is set to false because when you use BREAK on an EB, it already drops the loot.
-                        breakEB(null, block, false);
+                        breakEB(null, block, true);
                         return true;
                     } else {
                         if (armorStand.getCustomName() == null) {

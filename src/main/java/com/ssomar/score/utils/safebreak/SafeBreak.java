@@ -38,18 +38,18 @@ public class SafeBreak {
     /* return false its verifSafeBreak is false */
     public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak, BlockBreakEventExtension.BreakCause breakCause) {
 
-        SsomarDev.testMsg(ChatColor.GOLD+"[#s0010] breakBlockWithEvent() trigger from SafeBreak.java", DEBUG);
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0010] breakBlockWithEvent() triggered : "+drop, DEBUG);
         if (playerUUID == null) {
-            SsomarDev.testMsg("[#s0013] Player is null", DEBUG);
+            SsomarDev.testMsg("> [#s0013] Player is null", DEBUG);
             if (breakEB(null, block, drop)) return true;
             block.breakNaturally();
             return true;
         }
-        SsomarDev.testMsg("[#s0011] Player is not null", DEBUG);
+        SsomarDev.testMsg("> [#s0011] Player is not null", DEBUG);
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
-        SsomarDev.testMsg("[#s0012] Safely obtained player instance : "+player, DEBUG);
+        SsomarDev.testMsg("> [#s0012] Safely obtained player instance : "+player, DEBUG);
 
         // if player is
         // - not null
@@ -63,15 +63,15 @@ public class SafeBreak {
         }
 
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 2", DEBUG);
+        SsomarDev.testMsg("> [#s0022] Player is null or is not opped", DEBUG);
         if (player != null) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
+            SsomarDev.testMsg("> > [#s0023] Player is not null", DEBUG);
             boolean canceled = false;
 
             if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) return true;
 
             if (generateBreakEvent) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK 4", DEBUG);
+                SsomarDev.testMsg("> > > [#s0024] generateBreakEvent is true", DEBUG);
                 BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true, breakCause);
                 bbE.setCancelled(false);
                 /* */
