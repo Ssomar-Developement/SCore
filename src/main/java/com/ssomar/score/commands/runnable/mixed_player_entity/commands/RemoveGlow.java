@@ -41,13 +41,14 @@ public class RemoveGlow extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("REMOVE_GLOW");
         names.add("REMOVEGLOW");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "REMOVEGLOW [color]";
+        return "REMOVE_GLOW [color]";
     }
 
     @Override
