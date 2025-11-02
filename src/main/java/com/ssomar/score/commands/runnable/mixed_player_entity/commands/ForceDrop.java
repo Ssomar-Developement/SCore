@@ -93,13 +93,14 @@ public class ForceDrop extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("FORCE_DROP");
         names.add("FORCEDROP");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "FORCEDROP {slot -1 for main_hand}";
+        return "FORCE_DROP {slot -1 for main_hand}";
     }
 
     @Override

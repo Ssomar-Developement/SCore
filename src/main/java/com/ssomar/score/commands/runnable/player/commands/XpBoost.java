@@ -67,13 +67,14 @@ public class XpBoost extends PlayerCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("XP_BOOST");
         names.add("XPBOOST");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "XPBOOST {multiplier} {timeinsecs}";
+        return "XP_BOOST {multiplier} {timeinsecs}";
     }
 
     @Override
