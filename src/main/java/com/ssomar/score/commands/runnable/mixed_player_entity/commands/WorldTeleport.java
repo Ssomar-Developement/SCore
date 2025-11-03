@@ -101,13 +101,14 @@ public class WorldTeleport extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("WORLD_TELEPORT");
         names.add("WORLDTELEPORT");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "WORLDTELEPORT {world}";
+        return "WORLD_TELEPORT {world}";
     }
 
     @Override

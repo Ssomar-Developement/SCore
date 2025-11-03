@@ -39,13 +39,14 @@ public class SetHealth extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_HEALTH");
         names.add("SETHEALTH");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETHEALTH {amount}";
+        return "SET_HEALTH {amount}";
     }
 
     @Override
