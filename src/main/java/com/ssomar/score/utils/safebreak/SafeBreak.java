@@ -95,6 +95,7 @@ public class SafeBreak {
                 }
             }
         } else {
+            SsomarDev.testMsg("> > [#s0026] Player is null", DEBUG);
             if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return true;
             if (breakEB(null, block, drop)) return true;
 

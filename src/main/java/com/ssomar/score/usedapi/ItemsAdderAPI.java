@@ -50,9 +50,10 @@ public class ItemsAdderAPI {
                 }
             }
             ArmorStand armorStand;
+            SsomarDev.testMsg("> [#s0025] Start iterating through nearby entities "+block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5).size()+"; Block: "+block.getLocation(), true);
             for (Entity e : block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5)) {
                 if (e instanceof ArmorStand) {
-                    SsomarDev.testMsg("> [#s0006] Custom Block instanceof ArmorStanmd", true);
+                    SsomarDev.testMsg("> [#s0006] Custom Block instanceof ArmorStand", true);
                     armorStand = (ArmorStand) e;
                     //SsomarDev.testMsg("ITEM ADDER DETECTED >> "+armorStand.getCustomName(), true);
                     if (armorStand.getCustomName() != null && armorStand.getCustomName().equals("ItemsAdder_furniture")) {
