@@ -601,6 +601,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Variables instance part */
         VariablesLoader.getInstance().load();
 
+        /* Custom Lists instance part */
+        com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().load();
+
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();
         }
