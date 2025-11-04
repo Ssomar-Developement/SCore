@@ -392,6 +392,16 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
         if(s.startsWith(symbolNegation)) s = s.substring(1);
         String entityTypeStr = s;
 
+        // Allow custom list references
+        if (entityTypeStr.toUpperCase().startsWith(customListPrefix)) {
+            String listName = entityTypeStr.substring(customListPrefix.length());
+            if (com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().hasEntityList(listName)) {
+                return Optional.empty();
+            } else {
+                return Optional.of("&4&l[ERROR] &cCustom entity list '" + listName + "' not found in SCore config.yml");
+            }
+        }
+
         if (s.contains(mythicMobsSymbol)) {
             return Optional.empty();
         }
@@ -434,7 +444,7 @@ public class ListDetailedEntityFeature extends FeatureAbstract<List<String>, Lis
 
     @Override
     public String getTips() {
-        return "&8Example &7&oBLAZE &8- &7&oZOMBIE{CustomName:\"My name\"} &8- &e(for MythicMob) &7&oMM-&eID";
+        return "&8Example &7&oBLAZE &8- &7&oZOMBIE{CustomName:\"My name\"} &8- &e(for MythicMob) &7&oMM-&eID &8- &e(for custom lists) &7&oSCORE:LIST_NAME";
     }
 
     @Override

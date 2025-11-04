@@ -834,6 +834,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Variables instance part */
         VariablesLoader.getInstance().reload();
 
+        /* Custom Lists instance part */
+        com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().reload();
+
         TM.getInstance().load();
 
         TM.getInstance().loadTexts();

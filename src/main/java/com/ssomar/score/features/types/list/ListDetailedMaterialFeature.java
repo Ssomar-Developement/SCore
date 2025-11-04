@@ -533,6 +533,16 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         String s = StringConverter.decoloredString(message).replace("!", "");
         String str = s;
 
+        // Allow custom list references
+        if (str.toUpperCase().startsWith(customListPrefix)) {
+            String listName = str.substring(customListPrefix.length());
+            if (com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().hasBlockList(listName)) {
+                return Optional.empty();
+            } else {
+                return Optional.of("&4&l[ERROR] &cCustom block list '" + listName + "' not found in SCore config.yml");
+            }
+        }
+
         boolean isCustomBlock = false;
         for (String customPlugin : listOfCustomBlocksPluginSupported) {
             if (str.startsWith(customPlugin)) {
@@ -581,8 +591,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     @Override
     public String getTips() {
-        if (forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
-        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword &8- &7&oEXECUTABLEITEMS:my_ei_sword";
+        if (forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block &8- &e(for custom lists) &7&oSCORE:LIST_NAME";
+        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword &8- &7&oEXECUTABLEITEMS:my_ei_sword &8- &e(for custom lists) &7&oSCORE:LIST_NAME";
     }
 
     @Override
