@@ -3,10 +3,12 @@ package com.ssomar.score.events;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttributeManager;
 import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionManager;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
 import com.ssomar.score.data.TemporaryAttributeQuery;
 import com.ssomar.score.fly.FlyManager;
+import com.ssomar.score.variables.manager.VariablesManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,6 +34,11 @@ public class PlayerJoinListener implements Listener {
         AbsorptionManager.getInstance().onConnect(p);
         AddTemporaryAttributeManager.removeExpiredAttributes(p);
 
+        // Sync variables from MySQL for the joining player
+        if (GeneralConfig.getInstance().isUseMySQL()) {
+            // This will refresh all variables from MySQL to ensure this server has the latest data
+            VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
+        }
     }
 
 

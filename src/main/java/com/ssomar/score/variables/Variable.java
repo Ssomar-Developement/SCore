@@ -1,6 +1,7 @@
 package com.ssomar.score.variables;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
@@ -16,6 +17,7 @@ import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.variables.loader.VariablesLoader;
+import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -299,6 +301,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         }
 
         this.save(false);
+        this.exportToMySQL();
 
         return Optional.empty();
     }
@@ -326,6 +329,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         }
 
         this.save(false);
+        this.exportToMySQL();
 
         return Optional.empty();
     }
@@ -359,6 +363,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         }
 
         this.save(false);
+        this.exportToMySQL();
 
         return Optional.empty();
     }
@@ -376,6 +381,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         }
 
         this.save(false);
+        this.exportToMySQL();
 
         return Optional.empty();
     }
@@ -389,6 +395,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         }
 
         this.save(false);
+        this.exportToMySQL();
 
         return Optional.empty();
     }
@@ -431,5 +438,15 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         if(defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent() && !defaultValue.getValue().get().equals(obj.getDefaultValue().getValue().get())) return false;
 
         return true;
+    }
+
+    /**
+     * Export this variable to MySQL if enabled
+     * This method is called after any modification to ensure cross-server synchronization
+     */
+    private void exportToMySQL() {
+        if (GeneralConfig.getInstance().isUseMySQL()) {
+            VariablesManager.getInstance().updateLoadedMySQL(this.getId(), VariablesManager.MODE.EXPORT);
+        }
     }
 }

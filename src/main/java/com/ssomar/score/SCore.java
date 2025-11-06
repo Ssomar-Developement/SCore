@@ -601,6 +601,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Variables instance part */
         VariablesLoader.getInstance().load();
 
+        /* Start MySQL sync task for variables if MySQL is enabled */
+        if (GeneralConfig.getInstance().isUseMySQL()) {
+            com.ssomar.score.variables.MySQLSyncTask.getInstance().start();
+        }
+
         /* Custom Lists instance part */
         com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().load();
 
@@ -782,6 +787,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         injectSpigot.unregisterAllInjectors();
 
         if (GeneralConfig.getInstance().isUseMySQL()) {
+            // Stop the MySQL sync task
+            com.ssomar.score.variables.MySQLSyncTask.getInstance().stop();
+            // Do one final sync
             VariablesManager.getInstance().updateAllLoadedMySQL(VariablesManager.MODE.IMPORT);
             Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save &6" + VariablesManager.getInstance().getLoadedObjects().size() + " &7variables from your MySQL Database !");
         }
@@ -833,6 +841,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Variables instance part */
         VariablesLoader.getInstance().reload();
+
+        /* Restart MySQL sync task for variables if MySQL is enabled */
+        if (GeneralConfig.getInstance().isUseMySQL()) {
+            com.ssomar.score.variables.MySQLSyncTask.getInstance().stop();
+            com.ssomar.score.variables.MySQLSyncTask.getInstance().start();
+        }
 
         /* Custom Lists instance part */
         com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().reload();
