@@ -84,7 +84,6 @@ public class ItemsAdderAPI {
                             SsomarDev.testMsg("> > > [#s0027] Block finally removed", true);
 
                             CustomFurniture furniture = CustomFurniture.byAlreadySpawned(armorStand);
-                            // this needs to be set to false because breakEB() has a method that drops the itemstack to the world properly
                             furniture.remove(false);
 
                             if (SCore.hasExecutableBlocks) {
