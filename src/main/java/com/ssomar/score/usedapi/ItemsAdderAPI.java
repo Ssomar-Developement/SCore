@@ -85,6 +85,9 @@ public class ItemsAdderAPI {
 
                             CustomFurniture furniture = CustomFurniture.byAlreadySpawned(armorStand);
                             furniture.remove(false);
+                            // To double-tap it. For some reason, in Paper 1.21.8, the remove() method from CustomFurniture didn't remove the furniture.
+                            // Haven't tested it in other versions but this serves as "Plan B"
+                            if (e != null) e.remove();
 
                             if (SCore.hasExecutableBlocks) {
                                 // SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
