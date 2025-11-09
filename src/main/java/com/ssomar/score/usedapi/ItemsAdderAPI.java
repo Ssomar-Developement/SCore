@@ -21,8 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ssomar.score.utils.safebreak.SafeBreak.breakEB;
-
 public class ItemsAdderAPI {
 
     /**
