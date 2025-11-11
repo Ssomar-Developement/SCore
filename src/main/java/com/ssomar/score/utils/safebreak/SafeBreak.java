@@ -68,7 +68,10 @@ public class SafeBreak {
             SsomarDev.testMsg("> > [#s0023] Player is not null", DEBUG);
             boolean canceled = false;
 
-            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) return true;
+            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) {
+                SsomarDev.testMsg("> > > [#s0030] ItemsAdder is enabled & breakCustomBlock succeeded. RETURN", true);
+                return true;
+            }
 
             if (generateBreakEvent) {
                 SsomarDev.testMsg("> > > [#s0024] generateBreakEvent is true", DEBUG);
@@ -198,7 +201,7 @@ public class SafeBreak {
        //SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
 
         if (SCore.hasExecutableBlocks) {
-           // SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
+           SsomarDev.testMsg(ChatColor.GOLD+"[#s0032] DEBUG SAFE BREAK has EB", DEBUG);
             Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
                 ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
