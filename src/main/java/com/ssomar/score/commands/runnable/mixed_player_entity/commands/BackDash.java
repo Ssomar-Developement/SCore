@@ -40,13 +40,14 @@ public class BackDash extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("BACK_DASH");
         names.add("BACKDASH");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "BACKDASH {number}";
+        return "BACK_DASH {number}";
     }
 
     @Override

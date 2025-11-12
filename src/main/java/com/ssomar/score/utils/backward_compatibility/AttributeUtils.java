@@ -5,12 +5,13 @@ import com.google.common.collect.Multimap;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.MapUtil;
-import org.bukkit.Keyed;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -58,11 +59,15 @@ public class AttributeUtils {
      */
     public static Attribute getAttribute(String string) {
         string = string.replace("minecraft:", "");
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0019] getAttribute() is triggered: "+string, true);
         for (Map.Entry<Object, String> entry : getAttributes().entrySet()) {
             if (entry.getValue().equalsIgnoreCase(string)) {
+                SsomarDev.testMsg("[#s0020] getAttributes() returns Attribute from iteration", true);
                 return (Attribute) entry.getKey();
             }
         }
+        SsomarDev.testMsg("[#s0021] getAttributes() checks switch case statement", true);
+        try {
         switch (string.toUpperCase()) {
             case "GENERIC_MAX_HEALTH":
                 return Attribute.MAX_HEALTH;
@@ -190,6 +195,15 @@ public class AttributeUtils {
                 return Attribute.SPAWN_REINFORCEMENTS;
         }
         return null;
+        } catch (NoSuchFieldError e) {
+            // The exception mentioned is triggered when attempting to return an invalid Attribute enum due to
+            // the server this plugin is loaded at not having it in its api (for example, loaded Minecraft 1.8 Server attempts to grab a 1.21 attribute)
+            //
+            // This IF statement is made to reattempt grabbing a valid attribute by inserting "GENERIC_" at the start. If adding "GENERIC_" still would
+            // not provide a valid attribute, just return null.
+            if (!string.contains("GENERIC")) return getAttribute("GENERIC_"+string);
+            else return null;
+        }
     }
 
 
@@ -293,6 +307,35 @@ public class AttributeUtils {
             }
 
             meta.addAttributeModifier(att, attModifier);
+        }
+
+    }
+
+    /**
+     * Used to properly remove a LivingEntity entity's attribute modifier
+     * @param entity_arg the LivingEntity that will have its specific attribute removed
+     * @param attribute_type the attribute type
+     * @param key the attribute modifier's key string (plugin/header key included)
+     */
+    public static void removeSpecificAttribute(LivingEntity entity_arg, String attribute_type, String key) {
+        LivingEntity entity = entity_arg;
+        if (entity_arg instanceof Player) {
+            // using this method was required because relogging players produce complications.
+            entity = Bukkit.getPlayer(entity.getUniqueId());
+        }
+
+        Attribute attribute = AttributeUtils.getAttribute(attribute_type);
+        assert attribute != null;
+        assert entity != null;
+        AttributeInstance attrInstance = entity.getAttribute(attribute);
+
+        assert attrInstance != null;
+        Collection<AttributeModifier> attributeModifiers = attrInstance.getModifiers();
+        for (AttributeModifier modifier : attributeModifiers) {
+            if (modifier.getKey().toString().equals(key)) {
+                attrInstance.removeModifier(modifier);
+                return;
+            }
         }
 
     }

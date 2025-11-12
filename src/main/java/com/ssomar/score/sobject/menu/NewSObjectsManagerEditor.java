@@ -29,6 +29,7 @@ public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstra
 
     @Override
     public boolean allClicked(NewInteractionClickedGUIManager<SObjectsEditorAbstract> i) {
+        //SsomarDev.testMsg("colored deconvert: >"+i.coloredDeconvertName+"< custom_identifier: >" + i.gui.getSubSettings().getOrDefault("custom_identifier", "<XXXXX---DEFAULT---XXXXX>")+"<", true);
         if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_FOLDER_NAME))) {
             i.gui.goToFolder(i.localizedName);
         } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PATH_NAME))) {
@@ -37,9 +38,15 @@ public class NewSObjectsManagerEditor extends NewGUIManager<SObjectsEditorAbstra
             i.gui.sendMessageCreate(i.player);
         } else if (i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PREMIUM_NAME).replace("%object%", i.gui.getManager().getObjectName())) || i.coloredDeconvertName.contains(TM.g(Text.EDITOR_PREMADE_PACKS_NAME).replace("%object%", i.gui.getManager().getObjectName()))) {
             NewDefaultObjectsEditorManager.getInstance().startEditing(i.player, new NewDefaultObjectsEditor(i.gui.getSPlugin(), (SObjectWithFileManager) i.gui.getManager(), i.gui));
-        } else if (i.coloredDeconvertName.contains(SObjectsWithFileEditor.CREATION_ID)) {
+        }
+        else if (i.coloredDeconvertName.contains(SObjectsWithFileEditor.CREATION_ID)) {
             i.gui.openEditorSObject(i.decoloredName.split(StringConverter.decoloredString(GUI.CREATION_ID))[1].trim(), i.player);
-        } else return false;
+        }
+        else if (i.coloredDeconvertName.contains(i.gui.getSubSettings().getOrDefault("custom_identifier", "<XXXXX---DEFAULT---XXXXX>"))) {
+            i.gui.openEditorSObject(i.decoloredName.split(StringConverter.decoloredString(i.gui.getSubSettings().getOrDefault("custom_identifier", "<XXXXX---DEFAULT---XXXXX>")))[1].trim(), i.player);
+            //SsomarDev.testMsg("Opening custom identifier editor for " + i.decoloredName.split(StringConverter.decoloredString(i.gui.getSubSettings().getOrDefault("custom_identifier", "<XXXXX---DEFAULT---XXXXX>")))[1].trim(), true);
+        }
+        else return false;
         return true;
     }
 

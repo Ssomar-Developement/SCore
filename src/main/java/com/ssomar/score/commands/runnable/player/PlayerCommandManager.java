@@ -74,6 +74,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new OpenWorkbench());
         commands.add(new MinecartBoost());
         commands.add(new Steal());
+        commands.add(new PickupMagnet());
         commands.add(new FormatEnchantments());
         commands.add(new AddItemEnchantment());
         commands.add(new SortInventory());
@@ -95,7 +96,9 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
+        if(SCore.hasMcMMO) commands.add(McMMOXpBoost.getInstance());
         commands.add(JobsMoneyBoost.getInstance());
+        commands.add(JobsXpBoost.getInstance());
         commands.add(While.getInstance());
         commands.add(new If());
 

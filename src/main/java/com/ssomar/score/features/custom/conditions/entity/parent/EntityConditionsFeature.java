@@ -65,9 +65,13 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         }
         conditions.add(new IfHasSaddle(this));
         conditions.add(new IfNotHasSaddle(this));
+        conditions.add(new IfEntityIsInWater(this));
+        conditions.add(new IfEntityIsInLava(this));
 
         /* Number condition features */
         conditions.add(new IfEntityHealth(this));
+        conditions.add(new IfEntityAge(this));
+        conditions.add(new IfEntityVelocity(this));
 
         /* List uncolored string */
         conditions.add(new IfHasTag(this));
@@ -75,6 +79,7 @@ public class EntityConditionsFeature extends FeatureWithHisOwnEditor<EntityCondi
         conditions.add(new IfSheepColor(this));
         conditions.add(new IfEntityInRegion(this));
         conditions.add(new IfNotEntityInRegion(this));
+        conditions.add(new IfEntityLastDamageCause(this));
 
         /* List Material with tags */
         conditions.add(new IfIsOnTheBlock(this));

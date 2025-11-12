@@ -25,7 +25,7 @@ public class ItemModelFeature extends UncoloredStringFeature implements SProject
             ItemStack item = ((ThrowableProjectile)e).getItem();
             ItemMeta meta = item.getItemMeta();
             if (SCore.is1v21v2Plus()) {
-                System.out.println("Setting item model to " + getValue().get());
+                //System.out.println("Setting item model to " + getValue().get());
                 meta.setItemModel(NamespacedKey.fromString(getValue().get()));
             }
             item.setItemMeta(meta);

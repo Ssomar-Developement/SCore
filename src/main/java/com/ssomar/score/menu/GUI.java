@@ -24,9 +24,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class GUI implements IGUI {
 
@@ -92,6 +90,9 @@ public abstract class GUI implements IGUI {
     public static Material LIGHTNING_ROD = null;
 
     @Getter
+    private Map<String, String> subSettings;
+
+    @Getter
     @Setter
     private Inventory inv;
 
@@ -106,10 +107,12 @@ public abstract class GUI implements IGUI {
     public GUI(FeatureSettingsInterface settings, int size) {
         this.settings = settings;
         initInventory("&l"+settings.getEditorName()+" Editor", size);
+        this.subSettings = new HashMap<>();
     }
 
     public GUI(String name, int size) {
         initInventory(name, size);
+        this.subSettings = new HashMap<>();
     }
 
     public void initInventory(String name, int size) {
@@ -133,6 +136,7 @@ public abstract class GUI implements IGUI {
     public GUI(Inventory inv) {
         this.inv = inv;
         if(WRITABLE_BOOK == null) init();
+        this.subSettings = new HashMap<>();
     }
 
     public static void init() {
@@ -185,6 +189,7 @@ public abstract class GUI implements IGUI {
         RESET = TM.g(Text.EDITOR_RESET_NAME);
 
         CHANGE_LANGUAGE = "&6&l\uD83D\uDD6E &e&lChange Language";
+
 
     }
 

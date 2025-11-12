@@ -68,7 +68,7 @@ public abstract class FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implemen
 
 
     public static void space(Player p) {
-        p.sendMessage("");
+       p.sendMessage("");
     }
 
     public <M> FeatureReturnCheckPremium<M> checkPremium(String featureTypeName, M value, Optional<M> defaultValue, boolean isPremiumLoading) {

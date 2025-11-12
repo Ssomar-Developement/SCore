@@ -66,6 +66,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     private static InjectSpigot injectSpigot;
 
+    /**
+     * If the value of {@link com.ssomar.score.SCore#isFolia()} is <code>true</code>, SCore will use {@link RegionisedSchedulerHook} to perform scheduled tasks.
+     * Otherwise, it will use {@link BukkitSchedulerHook}.<br/>
+     * <br/>
+     * See {@link SCore#initLibPartOfSCore(Plugin, ClassLoader)} for the logic and details of the decision.
+     */
     public static SchedulerHook schedulerHook;
     public static boolean hasPlaceholderAPI = false;
     public static boolean hasExecutableItems = false;
@@ -108,7 +114,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public static boolean hasRoseStacker = false;
     public static boolean hasMMOCore = false;
+    public static boolean hasMcMMO = false;
     public static boolean hasProtectionStones = false;
+    public static boolean hasExcellentClaims = false;
 
     public static boolean hasTerra = false;
 
@@ -158,6 +166,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v21v6 = false;
     private static boolean is1v21v7 = false;
     private static boolean is1v21v8 = false;
+    private static boolean is1v21v9 = false;
+    private static boolean is1v21v10 = false;
 
     private static boolean is1v22 = false;
     private static boolean is1v23 = false;
@@ -178,6 +188,16 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private CommandsClass commandClass;
 
     /* The server is folia? */
+
+    /**
+     * Used for adjusting code logic for these following server types:
+     * <ul>
+     *     <li>Folia</li>
+     *     <li>Luminol</li>
+     *     <li>PaperSpigot (or its forks) 1.20+</li>
+     * </ul>
+     * @return boolean
+     */
     public static boolean isFolia() {
         return isFolia || isLuminol || isPaperOrForkFor1v20lus /* Paper include threaded region of Folia in 1.20 +*/ || hasClass("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
     }
@@ -338,6 +358,14 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v21v8;
     }
 
+    public static boolean is1v21v9() {
+        return is1v21v9;
+    }
+
+    public static boolean is1v21v10() {
+        return is1v21v10;
+    }
+
     public static boolean is1v22() {
         return is1v22;
     }
@@ -438,7 +466,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v7Plus() {
-        return  is1v21v7() || is1v21v8() || is1v22Plus();
+        return  is1v21v7() || is1v21v8() || is1v21v9() || is1v21v10() || is1v22Plus();
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -572,6 +600,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Variables instance part */
         VariablesLoader.getInstance().load();
+
+        /* Custom Lists instance part */
+        com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().load();
 
         if (SCore.hasPlaceholderAPI) {
             new PlaceholderAPISCoreExpansion(this).register();
@@ -720,7 +751,11 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         hasMMOCore = Dependency.MMO_CORE.hookSoftDependency();
 
+        hasMcMMO = Dependency.MCMMO.hookSoftDependency();
+
         hasProtectionStones = Dependency.PROTECTION_STONES.hookSoftDependency();
+
+        hasExcellentClaims = Dependency.EXCELLENT_CLAIMS.hookSoftDependency();
 
         hasTAB = Dependency.TAB.hookSoftDependency();
 
@@ -799,6 +834,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         /* Variables instance part */
         VariablesLoader.getInstance().reload();
 
+        /* Custom Lists instance part */
+        com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().reload();
+
         TM.getInstance().load();
 
         TM.getInstance().loadTexts();
@@ -867,6 +905,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static void initVersion() {
         is1v23 = Bukkit.getServer().getVersion().contains("1.23");
         is1v22 = Bukkit.getServer().getVersion().contains("1.22");
+        is1v21v9 = Bukkit.getServer().getVersion().contains("1.21.9");
+        is1v21v10 = Bukkit.getServer().getVersion().contains("1.21.10");
         is1v21v8 = Bukkit.getServer().getVersion().contains("1.21.8");
         is1v21v7 = Bukkit.getServer().getVersion().contains("1.21.7");
         is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
@@ -892,8 +932,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v13 = Bukkit.getServer().getVersion().contains("1.13");
         is1v12 = Bukkit.getServer().getVersion().contains("1.12");
         is1v11 = Bukkit.getServer().getVersion().contains("1.11");
-        is1v10 = Bukkit.getServer().getVersion().contains("1.10");
-        is1v9 = Bukkit.getServer().getVersion().contains("1.9");
+        is1v10 = Bukkit.getServer().getVersion().contains("1.10") && !is1v21v10;
+        is1v9 = Bukkit.getServer().getVersion().contains("1.9") && !is1v21v9;;
         is1v8 = Bukkit.getServer().getVersion().contains("1.8") && !is1v21v8;
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
