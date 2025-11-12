@@ -23,12 +23,23 @@ public class ToolsListMaterial {
 
     private List<Material> oneUsageMaterial;
 
+    /**
+     * Contains {@link Material#JUNGLE_LOG} and {@link Material#JUNGLE_WOOD}
+     */
+    private List<Material> validJungleBlockMaterials;
+
+    /**
+     * Used to store Material enums while considering the game version of the server.<br/>
+     * Sample Scenario: You want to be able to place cocoa on all valid jungle log blocks but if you boot
+     * up your server at 1.12, only some minecraft enums are valid
+     */
     public ToolsListMaterial() {
         plantWithGrowth = new ArrayList<>();
         plantWithGrowthOnlyFarmland = new ArrayList<>();
         plantWithGrowthOnlySoulSand = new ArrayList<>();
         plantWithGrowthOnlyJungleWood = new ArrayList<>();
         oneUsageMaterial = new ArrayList<>();
+        validJungleBlockMaterials = new ArrayList<>();
 
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
@@ -59,6 +70,10 @@ public class ToolsListMaterial {
 
         addWithoutProblem(plantWithGrowthOnlyJungleWood, FixedMaterial.getMaterial(Arrays.asList("COCOA")));
 
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("JUNGLE_WOOD")));
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("JUNGLE_LOG")));
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("STRIPPED_JUNGLE_WOOD")));
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("STRIPPED_JUNGLE_LOG")));
 
         blockAndItemMaterial = new HashMap<>();
         if (SCore.is1v12Less()) {

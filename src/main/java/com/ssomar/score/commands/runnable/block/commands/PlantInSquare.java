@@ -1,9 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.executableitems.executableitems.ExecutableItemObject;
-import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
-import com.ssomar.score.commands.runnable.ArgumentChecker;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
@@ -12,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockType;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
@@ -52,7 +49,7 @@ public class PlantInSquare extends BlockCommand {
 
         // #2
         List<Material> validCropsToPlace;
-        // get the clicked block to identify what crops to plant
+        // Get the clicked block to identify what crops to plant
         Material determineMode = block.getType();
         if(determineMode == Material.FARMLAND){
             validCropsToPlace = ToolsListMaterial.getInstance().getPlantWithGrowthOnlyFarmland();
@@ -60,7 +57,7 @@ public class PlantInSquare extends BlockCommand {
         else if(determineMode == Material.SOUL_SAND){
             validCropsToPlace = ToolsListMaterial.getInstance().getPlantWithGrowthOnlySoulSand();
         }
-        else if (determineMode == Material.JUNGLE_LOG || (!SCore.is1v13Less() && determineMode == Material.JUNGLE_WOOD)) {
+        else if (ToolsListMaterial.getInstance().getValidJungleBlockMaterials().contains(determineMode)) {
             validCropsToPlace = ToolsListMaterial.getInstance().getPlantWithGrowthOnlyJungleWood();
         }
         else {
@@ -167,18 +164,22 @@ public class PlantInSquare extends BlockCommand {
     }
 
     /**
-     *
-     * @param mode The clicked block
-     * @param farm The surrounding blocks including the clicked block where the crops would be placed above
+     * @param mode The origin clicked block. This value will stay the same throughout this instance of run() execution.
+     * @param farm The target block. If your logic seeks for the details of the currently iterated block, refer to this pointer.
      * @param item The crop material
      */
     private void plant(Material mode, Block farm, ItemStack item){
-        // the else logic wants to place crops above the farm block but
+        // The else logic wants to place crops above the farm block but
         // if we want to plant cocoa, we'd want to do it differently.
         if (farm.getType() != mode) {
-            // check if the clicked block is a jungle log/wood
+            // This section of the code is reserved for cocoa planting.
+
+            // PLANT_IN_SQUARE normally doesn't do cube operations but to help your imagination to make the if statement
+            // make sense, imagine running this PLANT_IN_SQUARE at a jungle wood block, we don't want to run
+            // plantCocoa() inside the block, so we will look elsewhere in the area if there's open space to place down
+            // the cocoa plant.
             if (!farm.isEmpty()) return;
-            if ((mode == Material.JUNGLE_LOG || mode == Material.JUNGLE_WOOD) && farm.getType() == Material.AIR) {
+            if (ToolsListMaterial.getInstance().getValidJungleBlockMaterials().contains(mode) && farm.getType() == Material.AIR) {
                 plantCocoa(farm, item);
             }
         } else {
@@ -199,6 +200,12 @@ public class PlantInSquare extends BlockCommand {
         return null;
     }
 
+    /**
+     * Properly plants a cocoa plant to the world by checking if there's nearby
+     * jungle wood type blocks.
+     * @param farm
+     * @param item
+     */
     private void plantCocoa(Block farm, ItemStack item) {
         // check the surroundings of the target block because cocoa grows on the walls of jungle logs/woods
         Object[][] offsetChecks = new Object[][] {
@@ -208,10 +215,10 @@ public class PlantInSquare extends BlockCommand {
                 { 0, -1, BlockFace.NORTH }
         };
 
-        // iterate through the offsetchecks to inspect each corner then set the direction of the cocoa accordingly.
+        // iterate through the offset checks to inspect each corner then set the direction of the cocoa accordingly.
         for (Object[] offsetVal : offsetChecks) {
             Material neigborBlock = farm.getWorld().getBlockAt(farm.getX() + (int)offsetVal[0], farm.getY(), farm.getZ() + (int)offsetVal[1]).getType();
-            if (neigborBlock.equals(Material.JUNGLE_WOOD) || neigborBlock.equals(Material.JUNGLE_LOG)) {
+            if (ToolsListMaterial.getInstance().getValidJungleBlockMaterials().contains(neigborBlock)) {
                 farm.setType(Material.COCOA);
                 BlockData toPlantData = farm.getBlockData();
                 Directional toPlantDirectional = (Directional) toPlantData;
