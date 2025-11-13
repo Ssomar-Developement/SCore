@@ -1,8 +1,12 @@
 package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.math.MathExpressionEngine;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.numbers.RomanNumber;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class PlaceholdersInterface {
 
@@ -90,6 +94,43 @@ public abstract class PlaceholdersInterface {
                 } else result = result.replaceAll(placeholder, optionalTagSurroundValue+value+optionalTagEndBeforeSurround+optionalTagSurroundValue);
             }
         }
+        return result;
+    }
+
+    /**
+     * Replace math expression placeholders with their evaluated results
+     * Supports syntax: %math:expression%
+     * Examples:
+     * - %math:2+3*4% -> 14
+     * - %math:sqrt(16)% -> 4
+     * - %math:if(5>3,10,20)% -> 10
+     * - %math:min(5,max(2,8))% -> 5
+     *
+     * @param s The string containing math expressions
+     * @return The string with evaluated math expressions
+     */
+    public static String replaceMathExpressions(String s) {
+        if (s == null || !s.contains("%math:")) {
+            return s;
+        }
+
+        String result = s;
+        Pattern mathPattern = Pattern.compile("%math:([^%]+)%");
+        Matcher matcher = mathPattern.matcher(result);
+
+        while (matcher.find()) {
+            String expression = matcher.group(1);
+            try {
+                String evaluatedValue = MathExpressionEngine.evaluateAsString(expression);
+                result = result.replace("%math:" + expression + "%", evaluatedValue);
+                // Reset matcher after modification
+                matcher = mathPattern.matcher(result);
+            } catch (Exception e) {
+                Utils.sendConsoleMsg(SCore.NAME_COLOR + " &cError evaluating math expression: &6%math:" + expression + "% &c- " + e.getMessage());
+                // Leave the placeholder as is if evaluation fails
+            }
+        }
+
         return result;
     }
 }
