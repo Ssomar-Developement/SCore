@@ -19,13 +19,27 @@ public class ToolsListMaterial {
 
     private List<Material> plantWithGrowthOnlySoulSand;
 
+    private List<Material> plantWithGrowthOnlyJungleWood;
+
     private List<Material> oneUsageMaterial;
 
+    /**
+     * Contains {@link Material#JUNGLE_LOG} and {@link Material#JUNGLE_WOOD}
+     */
+    private List<Material> validJungleBlockMaterials;
+
+    /**
+     * Used to store Material enums while considering the game version of the server.<br/>
+     * Sample Scenario: You want to be able to place cocoa on all valid jungle log blocks but if you boot
+     * up your server at 1.12, only some minecraft enums are valid
+     */
     public ToolsListMaterial() {
         plantWithGrowth = new ArrayList<>();
         plantWithGrowthOnlyFarmland = new ArrayList<>();
         plantWithGrowthOnlySoulSand = new ArrayList<>();
+        plantWithGrowthOnlyJungleWood = new ArrayList<>();
         oneUsageMaterial = new ArrayList<>();
+        validJungleBlockMaterials = new ArrayList<>();
 
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
@@ -54,6 +68,13 @@ public class ToolsListMaterial {
 
         addWithoutProblem(plantWithGrowthOnlySoulSand, FixedMaterial.getMaterial(Arrays.asList("NETHER_WART", "NETHER_WARTS")));
 
+        addWithoutProblem(plantWithGrowthOnlyJungleWood, FixedMaterial.getMaterial(Arrays.asList("COCOA")));
+
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("JUNGLE_WOOD")));
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("JUNGLE_LOG")));
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("STRIPPED_JUNGLE_WOOD")));
+        addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("STRIPPED_JUNGLE_LOG")));
+
         blockAndItemMaterial = new HashMap<>();
         if (SCore.is1v12Less()) {
             blockAndItemMaterial.put(Material.valueOf("CROPS"), Material.valueOf("SEEDS"));
@@ -74,8 +95,10 @@ public class ToolsListMaterial {
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("PUMPKIN")), FixedMaterial.getMaterial(Arrays.asList("PUMPKIN_SEEDS")));
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_CROP")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("COCOA")), FixedMaterial.getMaterial(Arrays.asList("COCOA_BEANS")));
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
+
 
 
         addWithoutProblem(oneUsageMaterial, FixedMaterial.getMaterial(Arrays.asList("ENDER_PEARL")));
