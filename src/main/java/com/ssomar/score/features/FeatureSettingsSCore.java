@@ -100,6 +100,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     weaponFeatures(getFeatureSettings("weaponFeatures")),
     detailedEffects(getFeatureSettings("detailedEffects")),
     detailedItems(getFeatureSettings("detailedItems")),
+    detailedTargetItems(getFeatureSettings("detailedTargetItems")),
     detailedSlots(getFeatureSettings("detailedSlots")),
     displayCooldownMessage(getFeatureSettings("displayCooldownMessage", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     displayNameDrop(getFeatureSettings("displayNameDrop")),
