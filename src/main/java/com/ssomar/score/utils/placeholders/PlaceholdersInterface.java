@@ -1,7 +1,5 @@
 package com.ssomar.score.utils.placeholders;
 
-import com.ssomar.score.SCore;
-import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.numbers.RomanNumber;
 
 public abstract class PlaceholdersInterface {
@@ -33,7 +31,8 @@ public abstract class PlaceholdersInterface {
         if(optionalTagEndBeforeSurround == null) optionalTagEndBeforeSurround = "";
 
         if(!isNumeric(value)){
-            Utils.sendConsoleMsg(SCore.NAME_COLOR+" &cInvalid value &6"+value+" &c used in placeholder calculation. String : &6"+s);
+            // it may not be a number, example: https://discord.com/channels/701066025516531753/1311795346157994146/1437107585554583664
+            //Utils.sendConsoleMsg(SCore.NAME_COLOR+" &cInvalid value &6"+value+" &c used in placeholder calculation. String : &6"+s);
 
             while (result.contains(placeholder)) {
                 result = result.replaceAll(placeholder, optionalTagSurroundValue+value+optionalTagEndBeforeSurround+optionalTagSurroundValue);
