@@ -20,3 +20,29 @@ enableCommentsInConfig: true # It will add a description of each setting in comm
 selfHostPackDebug : false
 selfHostPackIp: "" # The IP of your server to self-hosted your textures pack. If you leave it empty, it will try to get your IP automatically.
 hologramsPlugin: "NONE" # The holograms plugin you want to use. By default None , it uses the vanilla holograms. You can use CMI, HOLOGRAPHIC_DISPLAYS or DECENT_HOLOGRAMS
+
+# Custom entity and block lists
+# Define reusable lists that can be referenced with SCORE: prefix in detailedEntities and detailedBlocks
+# Example usage in item config: detailedEntities: [SCORE:ANNOYING_MOBS, ZOMBIE]
+entityLists:
+  ANNOYING_MOBS:
+    - CAMEL
+    - STRAY
+    - DROWNED
+  HOSTILE_MOBS:
+    - ZOMBIE
+    - SKELETON
+    - CREEPER
+    - SPIDER
+
+blockLists:
+  STUPID_BLOCKS:
+    - BARRIER
+    - BEDROCK
+    - DIAMOND_ORE
+  ORES:
+    - COAL_ORE
+    - IRON_ORE
+    - GOLD_ORE
+    - DIAMOND_ORE
+    - EMERALD_ORE

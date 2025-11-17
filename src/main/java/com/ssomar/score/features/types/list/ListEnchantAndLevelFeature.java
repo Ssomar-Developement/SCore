@@ -59,7 +59,7 @@ public class ListEnchantAndLevelFeature extends FeatureAbstract<Map<Enchantment,
                 if (decomp.length >= 3) {
                     namespaceEnchant = decomp[0] + ":" + decomp[1];
                     levelStr = decomp[2];
-                    System.out.println(namespaceEnchant + " / " + levelStr);
+                    //System.out.println(namespaceEnchant + " / " + levelStr);
                 }
                 else {
                     namespaceEnchant = decomp[0];
