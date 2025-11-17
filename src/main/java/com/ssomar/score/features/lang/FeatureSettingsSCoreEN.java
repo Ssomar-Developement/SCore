@@ -181,6 +181,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     detailedEntities("detailedEntities", "Detailed Entities", new String[]{"&7&oSpecify a list of entities that", "&7&ocan be affected", "&7&oempty = all entities"}, FixedMaterial.getMaterial(Arrays.asList("ZOMBIE_HEAD", "MONSTER_EGG"))),
     detailedInventories("detailedInventories", "Detailed Inventories", new String[]{"&7&oSpecify a list of InventoryType accepted"}, GUI.WRITABLE_BOOK),
     detailedItems("detailedItems", "Detailed Items", new String[]{"&7&oMake the activator run", "&7&oonly for certain items", "&7&oempty = all items"}, FixedMaterial.getMaterial(Arrays.asList("TORCH"))),
+    detailedTargetItems("detailedTargetItems", "Detailed Target Items", new String[]{"&7&oMake the activator run", "&7&oonly for certain items", "&7&oempty = all items"}, FixedMaterial.getMaterial(Arrays.asList("TORCH"))),
     detailedMessagesContains("detailedMessagesContains", "Detailed Messages Contains", new String[]{"&7&oSpecify a list of messages accepted", "&7&o(Contains)", "&7&oempty = no command", "&7Example: &afriend"}, GUI.WRITABLE_BOOK),
     detailedMessagesEquals("detailedMessagesEquals", "Detailed Messages Equals", new String[]{"&7&oSpecify a list of messages accepted", "&7&o(Equals)", "&7&oempty = no command", "&7Example: &aHello my friend"}, GUI.WRITABLE_BOOK),
     detailedSlots("detailedSlots", "Detailed Slots", new String[]{"&7&oThe slots where the", "&7&oactivator will work"}, Material.ARMOR_STAND),
