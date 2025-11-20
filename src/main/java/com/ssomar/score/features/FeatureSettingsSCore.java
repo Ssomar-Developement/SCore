@@ -441,6 +441,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     vanillaUseCooldown(getFeatureSettings("vanillaUseCooldown")),
     typeTarget(getFeatureSettings("typeTarget")),
     detailedClick(getFeatureSettings("detailedClick")),
+    detailedInput(getFeatureSettings("detailedInput")),
     usageModification(getFeatureSettings("usageModification", true)),
     cancelEvent(getFeatureSettings("cancelEvent")),
     noActivatorRunIfTheEventIsCancelled(getFeatureSettings("noActivatorRunIfTheEventIsCancelled")),

@@ -174,6 +174,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     despawnDelay("despawnDelay", "Despawn Delay", new String[]{"&7&o-1 for vanilla despawn"}, Material.DEAD_BUSH),
     detailedBlocks("detailedBlocks", "Detailed Blocks", new String[]{"&7&oMake the activator run", "&7&oonly for certain blocks", "&7&oempty = all blocks"}, FixedMaterial.getMaterial(Arrays.asList("GRASS_BLOCK", "GRASS"))),
     detailedClick("detailedClick", "Detailed Click", new String[]{"&7&oThe specific click"}, Material.COMPASS),
+    detailedInput("detailedInput", "Detailed Input", new String[]{"&7&oThe specific input"}, Material.COMPASS),
     weaponFeatures("weaponFeatures", "Weapon Features", new String[]{"&7&oThe weapon features"}, Material.DIAMOND_SWORD),
     detailedCommands("detailedCommands", "Detailed Commands", new String[]{"&7&oSpecify a list of commands that", "&7&ocan be affected", "&7&oempty = no command", "&7Example: &agamemode creative"}, GUI.WRITABLE_BOOK),
     detailedDamageCauses("detailedDamageCauses", "Detailed DamageCauses", new String[]{"&7&oSpecify a list of damageCauses that", "&7&ocan be affected", "&7&oempty = all causes"}, Material.BONE),

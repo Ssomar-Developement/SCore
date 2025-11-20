@@ -3,6 +3,7 @@ package com.ssomar.score.sobject.sactivator;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
 import com.ssomar.score.utils.emums.DetailedClick;
+import com.ssomar.score.utils.emums.DetailedInput;
 import com.ssomar.score.utils.emums.DetailedInteraction;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,6 +84,8 @@ public class EventInfo {
     /* MISC */
     private Optional<DetailedClick> detailedClick;
 
+    private Optional<DetailedInput> detailedInput;
+
     private Optional<DetailedInteraction> detailedInteraction;
 
     private Optional<EntityDamageEvent.DamageCause> damageCause;
@@ -143,6 +146,7 @@ public class EventInfo {
         this.projectile = Optional.empty();
         this.projectileProvenance = Optional.empty();
         this.detailedClick = Optional.empty();
+        this.detailedInput = Optional.empty();
         this.detailedInteraction = Optional.empty();
         this.damageCause = Optional.empty();
         this.velocity = Optional.empty();
@@ -174,6 +178,7 @@ public class EventInfo {
         eInfo.setProjectile(projectile);
         eInfo.setProjectileProvenance(projectileProvenance);
         eInfo.setDetailedClick(detailedClick);
+        eInfo.setDetailedInput(detailedInput);
         eInfo.setDetailedInteraction(detailedInteraction);
         eInfo.setDamageCause(damageCause);
         eInfo.setVelocity(velocity);
@@ -190,6 +195,7 @@ public class EventInfo {
         eInfo.setWorld(world);
         eInfo.setInventoryType(inventoryType);
         eInfo.setPlaceholders(placeholders);
+        eInfo.setOption(option);
 
         return eInfo;
     }
