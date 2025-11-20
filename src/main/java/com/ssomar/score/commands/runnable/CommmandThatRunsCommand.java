@@ -5,6 +5,7 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.entity.EntityRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.player.PlayerRunCommandsBuilder;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.MobAround;
+import com.ssomar.score.commands.runnable.player.commands.If;
 import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.ComparatorFeature;
@@ -14,6 +15,7 @@ import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -43,9 +45,14 @@ public interface CommmandThatRunsCommand {
         return "<\\+>";
     }
 
-
-    /* True > a player has been hit
-     *  False > no player hit */
+    /**
+     * Used by commands such as {@link If}, {@link com.ssomar.score.commands.runnable.mixed_player_entity.commands.Around}, {@link com.ssomar.score.commands.runnable.mixed_player_entity.commands.Nearest} and etc.
+     * @param players
+     * @param argsCommands
+     * @param aInfo
+     * @return <code>true</code> if a player is hit<br/>
+     *         <code>false</code> if no player is hit
+     */
     static boolean runPlayerCommands(Collection<? extends org.bukkit.entity.Player> players, List<String> argsCommands, ActionInfo aInfo) {
         int cpt = 0;
         for (Player target : players) {
@@ -56,6 +63,8 @@ public interface CommmandThatRunsCommand {
             StringPlaceholder sp = new StringPlaceholder();
             /* Necessary to replace old system with normal placeholders for IF */
             sp.setPlayerPlcHldr(target.getUniqueId(), aInfo.getSlot());
+
+            // Responsible for replacing the "%around_target%" placeholder texts into
             sp.setAroundTargetPlayerPlcHldr(target.getUniqueId());
 
             /* regroup the last args that correspond to the commands */
