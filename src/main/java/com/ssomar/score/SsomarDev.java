@@ -1,6 +1,7 @@
 package com.ssomar.score;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Set;
 
@@ -14,18 +15,19 @@ public class SsomarDev {
                 Bukkit.getLogger().info("from debug >> "+message);
             } catch (Exception ignored) {}
 
-            try {
+            /*try {
                 Bukkit.getPlayer("vayk").sendMessage(message);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {}*/
 
             try {
+                Player p = Bukkit.getPlayer("Moccains");
                 Set<String> blockList = Set.of("has papi","add attributes", "Refreshing dura ?", "Food features paper", "updateVariables","VariableReal");
 
                 for (String w : blockList) {
                     if (message.contains(w)) return;
                 }
 
-                Bukkit.getPlayer("Moccains").sendMessage(message);
+                p.sendMessage(message);
             } catch (Exception ignored) {}
         }
 
