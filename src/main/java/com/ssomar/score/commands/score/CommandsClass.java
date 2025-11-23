@@ -8,6 +8,7 @@ import com.ssomar.particles.commands.Shape;
 import com.ssomar.particles.commands.ShapesExamples;
 import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommandManager;
@@ -60,6 +61,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -179,7 +181,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 }
                 break;
             case "variables":
+                // If there are arguments beyond "variables", it will deal with the arguments below.
+                // Otherwise, it will just open the SCore Variables editor.
                 if (args.length >= 1) {
+                    // Arg idx 0:
+
                     if (args[0].equalsIgnoreCase("info")) {
                         if (args.length >= 2) {
                             final Optional<Variable> var = VariablesManager.getInstance().getVariable(args[1]);
@@ -189,35 +195,69 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             else
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cVariable (&6" + args[1] + ") &cnot found!"));
                         }
-                    } else if (args[0].equalsIgnoreCase("list"))
+                    }
+
+                    else if (args[0].equalsIgnoreCase("list"))
                         sender.sendMessage(VariablesManager.getInstance().getVariableIdsListStr());
+
                     else if (args[0].equalsIgnoreCase("set")
                             || args[0].equalsIgnoreCase("modification")
                             || args[0].equalsIgnoreCase("list-add")
                             || args[0].equalsIgnoreCase("list-remove")
                             || args[0].equalsIgnoreCase("clear")) {
-                        int argIndex = 0;
 
-                        final String modifType = args[argIndex];
-                        argIndex++;
+                        // These details will start extracting the information
+                        final String modifType = args[0];
 
-                        final String forType = args[argIndex];
-                        argIndex++;
+                        final String forType = args[1];
 
-                        final String varName = args[argIndex];
-                        argIndex++;
+                        final String varName = args[2];
+
+                        // We will be checking values by going through index 3 onwards
+                        int argIndex = 3;
 
                         String value = "";
+                        StringBuilder valueBuilder = new StringBuilder();
 
                         // No value is needed for remove.
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
-                            if (args.length > argIndex) value = args[argIndex];
+                            // To get the value-to-register, it will start checking the trailing arguments.
+                            //
+                            // For reference's sake during dev, if you entered "/score variables set global example",
+                            // the value of args.length will be 3. So if you added a value to this command, the length will become 4.
+                            if (args.length > 3) {
+                                // If the value starts with the '"' symbol, it means the user wishes to register a
+                                // string that contains spaces.
+                                if (args[3].charAt(0) == '\"') {
+                                    // +1 to stop the iteration enough to safely extract the target's ign.
+                                    // If it's global, just read the rest of the thing.
+                                    while (args.length > argIndex+(forType.equals("global") ? 1 : 0)) {
+                                        valueBuilder.append(args[argIndex]).append(" ");
+                                        argIndex++;
+                                    }
+
+                                    value = valueBuilder.toString().trim().replaceAll("^\"|\"$", "");
+
+                                    // Final comments: Using the quote system while forgetting to input
+                                    // the player's name will cause the last word in this command:
+                                    //
+                                    // /score variables set global example "this aint "nope" it boss"
+                                    //
+                                    // to not be registered. But that's a concern that poses very little
+                                    // significance. If any complaints in the support chat ever appear, point them
+                                    // to the warnings in the plugin wiki's section for the /score variables cmd.
+                                } else {
+                                    // If there are no plans to put whitespaces in the value the user wants to pass, just
+                                    // get the value found at index 3.
+                                    value = args[argIndex];
+                                    argIndex++;
+                                }
+                            }
                             else {
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
                                 return;
                             }
 
-                            argIndex++;
                         }
 
                         Optional<OfflinePlayer> optPlayer = Optional.empty();
