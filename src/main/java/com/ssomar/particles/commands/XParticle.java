@@ -131,10 +131,12 @@ public final class XParticle {
      * @return a REDSTONE colored dust.
      * @since 1.0.0
      */
+    /* Commented out since it has no uses, and it's tripping an exception for 1.12
     public static Particle.DustOptions randomDust() {
         float size = randInt(5, 10) / 10f;
         return new Particle.DustOptions(randomColor(), size);
     }
+    */
 
     /**
      * Spawns an atom with orbits and a nucleus.
