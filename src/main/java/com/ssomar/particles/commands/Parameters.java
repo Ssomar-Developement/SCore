@@ -26,24 +26,20 @@ public class Parameters extends ArrayList<Parameter> {
     private ParticleDisplay display;
 
     public void init(Method method) {
-        Paranamer info = new CachingParanamer(new AnnotationParanamer(new BytecodeReadingParanamer()));
         java.lang.reflect.Parameter[] parameters = method.getParameters();
-        String[] parameterNames = info.lookupParameterNames(method);
-        int i = 0;
-        for (String parameter : parameterNames) {
+        for (java.lang.reflect.Parameter p : parameters) {
+            String parameter = p.getName();
             if (parameter.equals("plugin")) {
                 requirePlugin = true;
-                i++;
                 continue;
             }
             if (parameter.equals("display")) {
                 requireDisplay = true;
-                i++;
                 continue;
             }
-            //System.out.println("Loading parameter: " + parameter+" type: " + parameters[i].getType().getName());
+            //System.out.println("Loading parameter: " + parameter+" type: " + p.getType().getName());
             Object o = null;
-            switch (parameters[i].getType().getName()) {
+            switch (p.getType().getName()) {
                 case "int":
                     o = 0;
                     break;
@@ -58,7 +54,6 @@ public class Parameters extends ArrayList<Parameter> {
                     break;
             }
             this.add(new com.ssomar.particles.commands.Parameter(parameter, o, ""));
-            i++;
         }
     }
 
