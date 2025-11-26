@@ -231,7 +231,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                 if (args[3].charAt(0) == '\"') {
                                     // +1 to stop the iteration enough to safely extract the target's ign.
                                     // If it's global, just read the rest of the thing.
-                                    while (args.length > argIndex+(forType.equals("global") ? 1 : 0)) {
+                                    while (args.length > argIndex+(forType.equals("global") ? 0 : 1)) {
                                         valueBuilder.append(args[argIndex]).append(" ");
                                         argIndex++;
                                     }
