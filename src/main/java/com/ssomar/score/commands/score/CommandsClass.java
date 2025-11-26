@@ -220,44 +220,27 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         StringBuilder valueBuilder = new StringBuilder();
 
                         // No value is needed for remove.
+                        // this comment requires a review
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
                             // To get the value-to-register, it will start checking the trailing arguments.
                             //
                             // For reference's sake during dev, if you entered "/score variables set global example",
                             // the value of args.length will be 3. So if you added a value to this command, the length will become 4.
                             if (args.length > 3) {
-                                // If the value starts with the '"' symbol, it means the user wishes to register a
-                                // string that contains spaces.
-                                if (args[3].charAt(0) == '\"') {
-                                    // +1 to stop the iteration enough to safely extract the target's ign.
-                                    // If it's global, just read the rest of the thing.
-                                    while (args.length > argIndex+(forType.equals("global") ? 0 : 1)) {
-                                        valueBuilder.append(args[argIndex]).append(" ");
-                                        argIndex++;
-                                    }
-
-                                    value = valueBuilder.toString().trim().replaceAll("^\"|\"$", "");
-
-                                    // Final comments: Using the quote system while forgetting to input
-                                    // the player's name will cause the last word in this command:
-                                    //
-                                    // /score variables set global example "this aint "nope" it boss"
-                                    //
-                                    // to not be registered. But that's a concern that poses very little
-                                    // significance. If any complaints in the support chat ever appear, point them
-                                    // to the warnings in the plugin wiki's section for the /score variables cmd.
-                                } else {
-                                    // If there are no plans to put whitespaces in the value the user wants to pass, just
-                                    // get the value found at index 3.
-                                    value = args[argIndex];
+                                // +1 to stop the iteration enough to safely extract the target's ign.
+                                // If it's global, just read the rest of the thing.
+                                while (args.length > argIndex+(forType.equals("global") ? 0 : 1)) {
+                                    valueBuilder.append(args[argIndex]).append(" ");
                                     argIndex++;
                                 }
+
+                                value = valueBuilder.toString().trim();
+
                             }
                             else {
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
                                 return;
                             }
-
                         }
 
                         Optional<OfflinePlayer> optPlayer = Optional.empty();
