@@ -219,6 +219,17 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         String value = "";
                         StringBuilder valueBuilder = new StringBuilder();
 
+                        // To decide how far should the plugin check its trailing arguments
+                        int loopMode = 0;
+                        if (forType.equals("player"))
+                            loopMode = 1; // to make the loop not read the player name
+                        if (forType.equals("global"))
+                            loopMode = 0; // to make the loop read everything
+                        if (args[args.length - 1].contains("index:") && modifType.equals("list-add") && forType.equals("player"))
+                            loopMode = 2; // to stop extra to not read the player name and index
+                        if (args[args.length - 1].contains("index:") && modifType.equals("list-add") && forType.equals("global"))
+                            loopMode = 1; // to stop extra to not read the index
+
                         // No value is needed for remove.
                         // this comment requires a review
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
@@ -229,7 +240,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             if (args.length > 3) {
                                 // +1 to stop the iteration enough to safely extract the target's ign.
                                 // If it's global, just read the rest of the thing.
-                                while (args.length > argIndex+(forType.equals("global") ? 0 : 1)) {
+                                while (args.length > argIndex+loopMode) {
                                     valueBuilder.append(args[argIndex]).append(" ");
                                     argIndex++;
                                 }
@@ -271,7 +282,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             for (int i = argIndex; i < args.length; i++)
                                 if (args[i].contains("value:"))
                                     try {
-                                        valueOpt = Optional.of(args[i].replace("value:", ""));
+                                        valueOpt = Optional.of(String.join(" ", Arrays.copyOfRange(args, i, args.length)).replace("value:", ""));
                                     } catch (final Exception e) {
                                         sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
                                     }
