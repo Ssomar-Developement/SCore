@@ -11,6 +11,8 @@ public enum Dependency {
 
     EXECUTABLE_BLOCKS("ExecutableBlocks"),
 
+    EXECUTABLE_CRAFTING("ExecutableCrafting"),
+
     EXECUTABLE_EVENTS("ExecutableEvents"),
 
     CUSTOM_PIGLINS_TRADES("CustomPiglinsTrades"),
