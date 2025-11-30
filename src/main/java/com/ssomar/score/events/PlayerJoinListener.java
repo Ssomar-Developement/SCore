@@ -28,9 +28,9 @@ public class PlayerJoinListener implements Listener {
         if (FlyManager.getInstance().isPlayerWithFly(p)) {
             p.setAllowFlight(true);
         }
-
-        AbsorptionManager.getInstance().onConnect(p);
-        AddTemporaryAttributeManager.removeExpiredAttributes(p);
+        // turn off for now
+        //AbsorptionManager.getInstance().onConnect(p);
+        //AddTemporaryAttributeManager.removeExpiredAttributes(p);
 
     }
 
