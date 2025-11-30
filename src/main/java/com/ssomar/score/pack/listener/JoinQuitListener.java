@@ -21,6 +21,9 @@ public class JoinQuitListener implements Listener {
         Player p = e.getPlayer();
 
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
+        // For some reason when ItemsAdder is installed on the server, we need to add a delay between each resource pack addition
+        // https://discord.com/channels/701066025516531753/1443583007788105751
+        int delay = 0;
         for (PackSettings pack : packs.values()) {
             Runnable runnable = () -> {
                 try {
@@ -29,7 +32,8 @@ public class JoinQuitListener implements Listener {
                     // Version not supported or error in adding resource packs
                 }
             };
-            SCore.schedulerHook.runAsyncTask(runnable, 0);
+            SCore.schedulerHook.runAsyncTask(runnable, delay);
+            delay += 40; // at least 2 seconds between each pack addition
         }
     }
 
