@@ -21,10 +21,14 @@ public class AddItemlore extends PlayerCommand {
         CommandSetting text = new CommandSetting("text", 1, String.class, "New lore");
         text.setAcceptUnderScoreForLongText(true);
         CommandSetting insertIndex = new CommandSetting("insertIndex", -1, Integer.class, -1);
+        CommandSetting addAfter = new CommandSetting("addAfter", -1, Integer.class, -1);
+        CommandSetting parsePlaceholders = new CommandSetting("parsePlaceholders", -1, Boolean.class, true);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(text);
         settings.add(insertIndex);
+        settings.add(addAfter);
+        settings.add(parsePlaceholders);
         setNewSettingsMode(true);
     }
 
@@ -36,6 +40,8 @@ public class AddItemlore extends PlayerCommand {
 
         int slot = (int) sCommandToExec.getSettingValue("slot");
         int insertIndex = (int) sCommandToExec.getSettingValue("insertIndex");
+        int addAfter = (int) sCommandToExec.getSettingValue("addAfter");
+        boolean parsePlaceholders = (boolean) sCommandToExec.getSettingValue("parsePlaceholders");
         String text = (String) sCommandToExec.getSettingValue("text");
 
         List<String> args = sCommandToExec.getOtherArgs();
@@ -60,10 +66,28 @@ public class AddItemlore extends PlayerCommand {
         list = (ArrayList<String>) itemmeta.getLore();
         if(list == null) list = new ArrayList<>();
         if(!message.toString().isEmpty()) {
-            if (insertIndex == -1) {
-                list.add(StringConverter.coloredString(message.toString()));
+            // Process the message based on parsePlaceholders setting
+            String processedMessage = parsePlaceholders ? StringConverter.coloredString(message.toString()) : message.toString();
+
+            // Determine the insertion index
+            int finalIndex = -1;
+            if (addAfter != -1) {
+                // addAfter takes priority: add after the specified line (so at position addAfter + 1)
+                finalIndex = addAfter + 1;
+            } else if (insertIndex != -1) {
+                // Use insertIndex if addAfter is not specified
+                finalIndex = insertIndex;
+            }
+
+            // Add the lore at the appropriate position
+            if (finalIndex == -1) {
+                list.add(processedMessage);
             } else {
-                list.add(insertIndex, StringConverter.coloredString(message.toString()));
+                // Ensure the index is within bounds
+                if (finalIndex > list.size()) {
+                    finalIndex = list.size();
+                }
+                list.add(finalIndex, processedMessage);
             }
         }
         itemmeta.setLore(list);
@@ -81,7 +105,7 @@ public class AddItemlore extends PlayerCommand {
 
     @Override
     public String getTemplate() {
-        return "ADD_ITEM_LORE slot:-1 text:My_new_lore_line insertIndex:0";
+        return "ADD_ITEM_LORE slot:-1 text:My_new_lore_line insertIndex:0 addAfter:2 parsePlaceholders:true";
     }
 
     @Override
