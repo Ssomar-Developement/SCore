@@ -85,7 +85,7 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(CheckIfDamageIsPosssibleListener.getInstance(), main);
 
-        main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
+        //main.getServer().getPluginManager().registerEvents(new TESTEVENT(), main);
 
         if(SCore.is1v21v4Plus()) main.getServer().getPluginManager().registerEvents(PlayerRideOnEntityManager.getInstance(), main);
 

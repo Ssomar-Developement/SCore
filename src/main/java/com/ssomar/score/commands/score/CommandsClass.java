@@ -8,6 +8,7 @@ import com.ssomar.particles.commands.Shape;
 import com.ssomar.particles.commands.ShapesExamples;
 import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommandManager;
@@ -60,6 +61,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -179,7 +181,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 }
                 break;
             case "variables":
+                // If there are arguments beyond "variables", it will deal with the arguments below.
+                // Otherwise, it will just open the SCore Variables editor.
                 if (args.length >= 1) {
+                    // Arg idx 0:
+
                     if (args[0].equalsIgnoreCase("info")) {
                         if (args.length >= 2) {
                             final Optional<Variable> var = VariablesManager.getInstance().getVariable(args[1]);
@@ -189,35 +195,63 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             else
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cVariable (&6" + args[1] + ") &cnot found!"));
                         }
-                    } else if (args[0].equalsIgnoreCase("list"))
+                    }
+
+                    else if (args[0].equalsIgnoreCase("list"))
                         sender.sendMessage(VariablesManager.getInstance().getVariableIdsListStr());
+
                     else if (args[0].equalsIgnoreCase("set")
                             || args[0].equalsIgnoreCase("modification")
                             || args[0].equalsIgnoreCase("list-add")
                             || args[0].equalsIgnoreCase("list-remove")
                             || args[0].equalsIgnoreCase("clear")) {
-                        int argIndex = 0;
 
-                        final String modifType = args[argIndex];
-                        argIndex++;
+                        // These details will start extracting the information
+                        final String modifType = args[0].toLowerCase();
 
-                        final String forType = args[argIndex];
-                        argIndex++;
+                        final String forType = args[1].toLowerCase();
 
-                        final String varName = args[argIndex];
-                        argIndex++;
+                        final String varName = args[2];
+
+                        // We will be checking values by going through index 3 onwards
+                        int argIndex = 3;
 
                         String value = "";
+                        StringBuilder valueBuilder = new StringBuilder();
+
+                        // To decide how far should the plugin check its trailing arguments
+                        int loopMode = 0;
+                        if (forType.equals("player"))
+                            loopMode = 1; // to make the loop not read the player name
+                        if (forType.equals("global"))
+                            loopMode = 0; // to make the loop read everything
+                        if (args[args.length - 1].contains("index:") && modifType.equals("list-add") && forType.equals("player"))
+                            loopMode = 2; // to stop extra to not read the player name and index
+                        if (args[args.length - 1].contains("index:") && modifType.equals("list-add") && forType.equals("global"))
+                            loopMode = 1; // to stop extra to not read the index
 
                         // No value is needed for remove.
+                        // this comment requires a review
                         if (!args[0].equalsIgnoreCase("list-remove") && !args[0].equalsIgnoreCase("clear")) {
-                            if (args.length > argIndex) value = args[argIndex];
+                            // To get the value-to-register, it will start checking the trailing arguments.
+                            //
+                            // For reference's sake during dev, if you entered "/score variables set global example",
+                            // the value of args.length will be 3. So if you added a value to this command, the length will become 4.
+                            if (args.length > 3) {
+                                // +1 to stop the iteration enough to safely extract the target's ign.
+                                // If it's global, just read the rest of the thing.
+                                while (args.length > argIndex+loopMode) {
+                                    valueBuilder.append(args[argIndex]).append(" ");
+                                    argIndex++;
+                                }
+
+                                value = valueBuilder.toString().trim();
+
+                            }
                             else {
                                 sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
                                 return;
                             }
-
-                            argIndex++;
                         }
 
                         Optional<OfflinePlayer> optPlayer = Optional.empty();
@@ -248,7 +282,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             for (int i = argIndex; i < args.length; i++)
                                 if (args[i].contains("value:"))
                                     try {
-                                        valueOpt = Optional.of(args[i].replace("value:", ""));
+                                        valueOpt = Optional.of(String.join(" ", Arrays.copyOfRange(args, i, args.length)).replace("value:", ""));
                                     } catch (final Exception e) {
                                         sender.sendMessage(StringConverter.coloredString("&4[SCore] &cInvalid value!"));
                                     }
