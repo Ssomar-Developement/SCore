@@ -44,10 +44,12 @@ public class DropExecutableItem extends EntityCommand {
             return;
         }
 
-        // Attempt to get player instance of the provided uuid. If n    ull, it will
-        // default to the person who executed the cmd.
-        Player playerOwner = Bukkit.getPlayer(UUID.fromString(owner));
-        if (playerOwner == null) playerOwner = p;
+        Player playerOwner;
+        playerOwner = Bukkit.getPlayer(owner); // first attempt by getting player details via ign
+        if (playerOwner == null)
+            playerOwner = Bukkit.getPlayer(UUID.fromString(owner)); // second attempt by getting player details via uuid
+        if (playerOwner == null)
+            playerOwner = p; // if all fails, rely on the player details of the one who executed the cmd
 
         //SsomarDev.testMsg("DropExecutableItem.run()", DEBUG);
         if (SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id)) {
@@ -79,7 +81,7 @@ public class DropExecutableItem extends EntityCommand {
 
     @Override
     public String getTemplate() {
-        return "DROPEXECUTABLEITEM {id} {quantity}";
+        return "DROPEXECUTABLEITEM id:{id} amount:{number} owner:{ign/uuid}";
     }
 
     @Override
