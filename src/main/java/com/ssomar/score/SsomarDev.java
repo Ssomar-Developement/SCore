@@ -3,6 +3,7 @@ package com.ssomar.score;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SsomarDev {
@@ -31,6 +32,27 @@ public class SsomarDev {
             } catch (Exception ignored) {}
         }
 
+    }
+
+    /**
+     * Currently used by Special70. Do whatever you want as its mainly used for checking code flows.
+     * @param message
+     * @param groupType
+     */
+    public static void testMsg(String message, DebugMsgGroups groupType) {
+        // Add what you want to whitelist
+        Set<DebugMsgGroups> whitelist = new HashSet<>();
+        whitelist.add(DebugMsgGroups._1);
+
+        if (!whitelist.contains(groupType)) return;
+        testMsg(message, true);
+    }
+
+    /**
+     * Used to group up specific debug messages to allow the dev to enable/disable at will.
+     */
+    public enum DebugMsgGroups {
+        _1 //
     }
 
 }

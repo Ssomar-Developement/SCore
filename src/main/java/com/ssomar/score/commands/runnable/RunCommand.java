@@ -177,6 +177,8 @@ public abstract class RunCommand implements Serializable {
                 }
             }
         };
+
+        SsomarDev.testMsg("[#s_1] [-2] RunCommand.java > runCommand()", SsomarDev.DebugMsgGroups._1);
         executeRunnable(runnable);
     }
 
