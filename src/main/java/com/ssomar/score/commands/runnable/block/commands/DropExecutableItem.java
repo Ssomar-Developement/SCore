@@ -6,16 +6,14 @@ import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.utils.strings.StringSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class DropExecutableItem extends BlockCommand {
 
@@ -23,10 +21,12 @@ public class DropExecutableItem extends BlockCommand {
         CommandSetting id = new CommandSetting("id", 0, String.class, "null");
         CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 1);
         CommandSetting owner = new CommandSetting("owner", 2, String.class, null);
+        CommandSetting itemdata = new CommandSetting("itemdata", 3, String.class, null);
         List<CommandSetting> settings = getSettings();
         settings.add(id);
         settings.add(amount);
         settings.add(owner);
+        settings.add(itemdata);
         setNewSettingsMode(true);
     }
 
@@ -35,28 +35,34 @@ public class DropExecutableItem extends BlockCommand {
         String id = (String) sCommandToExec.getSettingValue("id");
         int amount = (int) sCommandToExec.getSettingValue("amount");
         String owner = (String) sCommandToExec.getSettingValue("owner");
+        
+        Map<String, Object> settings = StringSetting.getSettings((String) sCommandToExec.getSettingValue("itemdata"));
 
         if (!(SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id))) {
             SCore.plugin.getLogger().info(ChatColor.RED+"Invalid ID was provided for a DROPEXECUTABLEITEM command. Please double check your DROPEXECUTABLEITEM commands.");
             return;
         }
 
-        Player playerOwner;
-            playerOwner = Bukkit.getPlayer(owner); // first attempt by getting player details via ign
+        Optional<Player> playerOwner;
+            playerOwner = Optional.ofNullable(Bukkit.getPlayer(owner)); // first attempt by getting player details via ign
         if (playerOwner == null)
-            playerOwner = Bukkit.getPlayer(UUID.fromString(owner)); // second attempt by getting player details via uuid
+            playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); // second attempt by getting player details via uuid
         if (playerOwner == null)
-            playerOwner = p; // if all fails, rely on the player details of the one who executed the cmd
+            playerOwner = Optional.ofNullable(p); // if all fails, rely on the player details of the one who executed the cmd
 
-        if (SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id)) {
+        // Check if the target EI is a valid EI
+        if (SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id) && amount > 0) {
+
             if (amount > 0) {
                 Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+
                 if (eiOpt.isPresent()) {
                     ExecutableItemInterface ei = eiOpt.get();
-                    block.getWorld().dropItem(block.getLocation(), ei.buildItem(amount, Optional.empty(), Optional.ofNullable(playerOwner)));
+                    block.getWorld().dropItem(block.getLocation(), ei.buildItem(amount, playerOwner, settings));
                 }
             }
         }
+
     }
 
     @Override
@@ -73,7 +79,8 @@ public class DropExecutableItem extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "DROPEXECUTABLEITEM id:{id} amount:{number} owner:{ign/uuid}";
+        return "DROPEXECUTABLEITEM id:{id} amount:{number} owner:{ign/uuid} itemdata:{usage/variables/durability w/o no outer side brackets}";
+        // ex: DROPEXECUTABLEITEM id:drop_stick amount:1 owner:Special70 itemdata:Usage:50,Variables:{keg:deng}
     }
 
     @Override
