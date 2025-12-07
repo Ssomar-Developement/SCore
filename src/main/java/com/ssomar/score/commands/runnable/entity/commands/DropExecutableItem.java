@@ -24,7 +24,7 @@ public class DropExecutableItem extends EntityCommand {
         CommandSetting id = new CommandSetting("id", 0, String.class, "null");
         CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 1);
         CommandSetting owner = new CommandSetting("owner", 2, String.class, null);
-        CommandSetting itemdata = new CommandSetting("itemdata", 3, String.class, null);
+        CommandSetting itemdata = new CommandSetting("itemdata", 3, String.class, "null");
         List<CommandSetting> settings = getSettings();
         settings.add(id);
         settings.add(amount);
@@ -38,7 +38,10 @@ public class DropExecutableItem extends EntityCommand {
         String id = (String) sCommandToExec.getSettingValue("id");
         int amount = (int) sCommandToExec.getSettingValue("amount");
         String owner = (String) sCommandToExec.getSettingValue("owner");
-        Map<String, Object> settings = StringSetting.getSettings((String) sCommandToExec.getSettingValue("itemdata"));
+        String itemData = (String) sCommandToExec.getSettingValue("itemdata");
+
+        Map<String, Object> settings = new HashMap<>();
+        if (!itemData.equals("null")) StringSetting.getSettings((String) sCommandToExec.getSettingValue("itemdata"));
 
         if (!(SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id))) {
             SCore.plugin.getLogger().info(ChatColor.RED+"Invalid ID was provided for a DROPEXECUTABLEITEM command. Please double check your DROPEXECUTABLEITEM commands.");
@@ -52,13 +55,18 @@ public class DropExecutableItem extends EntityCommand {
         if (playerOwner == null)
             playerOwner = Optional.ofNullable(p); // if all fails, rely on the player details of the one who executed the cmd
 
-        if (SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id)) {
+        // Check if the target EI is a valid EI
+        if (SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id) && amount > 0) {
 
             if (amount > 0) {
                 Optional<ExecutableItemInterface> eiOpt = ExecutableItemsAPI.getExecutableItemsManager().getExecutableItem(id);
+
                 if (eiOpt.isPresent()) {
                     ExecutableItemInterface ei = eiOpt.get();
-                    entity.getWorld().dropItem(entity.getLocation(), ei.buildItem(amount, playerOwner, settings));
+                    if (!settings.isEmpty())
+                        entity.getWorld().dropItem(entity.getLocation(), ei.buildItem(amount, playerOwner, settings));
+                    else
+                        entity.getWorld().dropItem(entity.getLocation(), ei.buildItem(amount, playerOwner, settings));
                 }
             }
         }
