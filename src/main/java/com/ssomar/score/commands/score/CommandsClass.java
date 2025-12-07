@@ -207,9 +207,9 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             || args[0].equalsIgnoreCase("clear")) {
 
                         // These details will start extracting the information
-                        final String modifType = args[0];
+                        final String modifType = args[0].toLowerCase();
 
-                        final String forType = args[1];
+                        final String forType = args[1].toLowerCase();
 
                         final String varName = args[2];
 
