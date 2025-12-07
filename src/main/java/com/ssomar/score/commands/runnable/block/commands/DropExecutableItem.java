@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.commands.runnable.CommandSetting;
@@ -17,6 +18,13 @@ import java.util.*;
 
 public class DropExecutableItem extends BlockCommand {
 
+    /**
+     * Details for each argument:
+     * - id : Required
+     * - amount : Required
+     * - owner : Optional
+     * - itemdata : Optional
+     */
     public DropExecutableItem() {
         CommandSetting id = new CommandSetting("id", 0, String.class, "null");
         CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 1);
@@ -45,11 +53,13 @@ public class DropExecutableItem extends BlockCommand {
             return;
         }
 
-        Optional<Player> playerOwner;
-            playerOwner = Optional.ofNullable(Bukkit.getPlayer(owner)); // first attempt by getting player details via ign
-        if (playerOwner == null)
-            playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); // second attempt by getting player details via uuid
-        if (playerOwner == null)
+        Optional<Player> playerOwner = Optional.empty();
+        if (owner != null) {
+            try { playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); } //  attempt by getting player details via uuid
+            catch (Exception e) {}
+            finally { if (!playerOwner.isPresent()) playerOwner = Optional.ofNullable(Bukkit.getPlayer(owner)); } // attempt by getting player details via ign
+        }
+        if (!playerOwner.isPresent() || playerOwner.get() == null)
             playerOwner = Optional.ofNullable(p); // if all fails, rely on the player details of the one who executed the cmd
 
         // Check if the target EI is a valid EI
