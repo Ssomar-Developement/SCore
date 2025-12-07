@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.api.executableitems.ExecutableItemsAPI;
 import com.ssomar.score.api.executableitems.config.ExecutableItemInterface;
 import com.ssomar.score.commands.runnable.CommandSetting;
@@ -54,9 +55,9 @@ public class DropExecutableItem extends BlockCommand {
 
         Optional<Player> playerOwner = Optional.empty();
         if (owner != null) {
-            playerOwner = Optional.ofNullable(Bukkit.getPlayer(owner)); // first attempt by getting player details via ign
-            if (playerOwner == null)
-                playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); // second attempt by getting player details via uuid
+            try { playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); } //  attempt by getting player details via uuid
+            catch (Exception e) {}
+            finally { if (!playerOwner.isPresent()) playerOwner = Optional.ofNullable(Bukkit.getPlayer(owner)); } // attempt by getting player details via ign
         }
         if (!playerOwner.isPresent() || playerOwner.get() == null)
             playerOwner = Optional.ofNullable(p); // if all fails, rely on the player details of the one who executed the cmd
