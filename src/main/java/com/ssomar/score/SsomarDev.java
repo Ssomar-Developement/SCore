@@ -50,9 +50,11 @@ public class SsomarDev {
 
     /**
      * Used to group up specific debug messages to allow the dev to enable/disable at will.
+     * <br/>
+     * Details for each enum is written in SCore Documentation. Contact Special70 for further details
      */
     public enum DebugMsgGroups {
-        _1 //
+        _1
     }
 
 }

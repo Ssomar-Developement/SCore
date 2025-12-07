@@ -115,6 +115,13 @@ public class PlayerRunCommand extends RunCommand {
         } */
         SsomarDev.testMsg("[#s_1] [-1] PlayerRunCommand.java > executeRunnable() : "+receiverUUID, SsomarDev.DebugMsgGroups._1);
         Player receiver = Bukkit.getPlayer(receiverUUID);
-        SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
+        // Explanation:
+        // - Ssomar wants to use runEntityTask
+
+        if (receiver == null) {
+            SCore.schedulerHook.runTask(runnable, 0);
+        } else {
+            SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
+        }
     }
 }
