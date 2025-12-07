@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 // MUST BE SYNC -> that why runnable , Otherwise it will not run in WHILE
@@ -33,11 +34,13 @@ public class Launch extends PlayerCommand {
         CommandSetting angleRotationVertical = new CommandSetting("angleRotationVertical", 1, Double.class, 0.0);
         CommandSetting angleRotationHorizontal = new CommandSetting("angleRotationHorizontal", 2, Double.class, 0.0);
         CommandSetting velocity = new CommandSetting("velocity", -1, Double.class, 1.0);
+        CommandSetting name = new CommandSetting("name", -1, String.class, "");
         List<CommandSetting> settings = getSettings();
         settings.add(projectileType);
         settings.add(angleRotationVertical);
         settings.add(angleRotationHorizontal);
         settings.add(velocity);
+        settings.add(name);
         setNewSettingsMode(true);
     }
 
@@ -53,6 +56,7 @@ public class Launch extends PlayerCommand {
             double rotationVertical = (double) sCommandToExec.getSettingValue("angleRotationVertical");
             double rotationHorizontal = (double) sCommandToExec.getSettingValue("angleRotationHorizontal");
             double velocity = (double) sCommandToExec.getSettingValue("velocity");
+            String projName = (String) sCommandToExec.getSettingValue("name");
        // SsomarDev.testMsg("LAUNCH : "+projectileType, true);
 
             if (projectileType == null) {
@@ -163,6 +167,10 @@ public class Launch extends PlayerCommand {
                     if (SCore.hasExecutableItems) {
                         ProjectileInfo pInfo = new ProjectileInfo(receiver, entity.getUniqueId(), Optional.ofNullable(sCommandToExec.getActionInfo().getExecutableItem()), sCommandToExec.getActionInfo().getSlot(), System.currentTimeMillis());
                         ProjectilesHandler.getInstance().addProjectileInfo(pInfo);
+                    }
+
+                    if (!Objects.equals(projName, "")) {
+                        entity.setCustomName(projName);
                     }
 
                     PlayerCustomLaunchEntityEvent playerCustomLaunchProjectileEvent = new PlayerCustomLaunchEntityEvent(receiver, entity);
