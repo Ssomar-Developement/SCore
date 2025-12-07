@@ -40,10 +40,10 @@ public class SsomarDev {
         }
     }
 
-    // Used to force enable specific debug groups
+    // Used to force enable specific debug groups - let empty on GitHub
     public static Set<DebugMsgGroups> forceGroupWhitelist(){
         Set<DebugMsgGroups> whitelist = new HashSet<>();
-        whitelist.add(DebugMsgGroups._1);
+        //whitelist.add(DebugMsgGroups._1);
         return whitelist;
     }
 
