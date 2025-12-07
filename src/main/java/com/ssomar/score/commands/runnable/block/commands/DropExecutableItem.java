@@ -38,7 +38,7 @@ public class DropExecutableItem extends BlockCommand {
         String itemData = (String) sCommandToExec.getSettingValue("itemdata");
         
         Map<String, Object> settings = new HashMap<>();
-        if (!itemData.equals("null")) settings = StringSetting.getSettings((String) sCommandToExec.getSettingValue("itemdata"));
+        if (!itemData.equals("null")) settings = StringSetting.getSettings(itemData);
 
         if (!(SCore.hasExecutableItems && ExecutableItemsAPI.getExecutableItemsManager().isValidID(id))) {
             SCore.plugin.getLogger().info(ChatColor.RED+"Invalid ID was provided for a DROPEXECUTABLEITEM command. Please double check your DROPEXECUTABLEITEM commands.");
