@@ -17,6 +17,13 @@ import java.util.*;
 
 public class DropExecutableItem extends BlockCommand {
 
+    /**
+     * Details for each argument:
+     * - id : Required
+     * - amount : Required
+     * - owner : Optional
+     * - itemdata : Optional
+     */
     public DropExecutableItem() {
         CommandSetting id = new CommandSetting("id", 0, String.class, "null");
         CommandSetting amount = new CommandSetting("amount", 1, Integer.class, 1);
@@ -45,11 +52,13 @@ public class DropExecutableItem extends BlockCommand {
             return;
         }
 
-        Optional<Player> playerOwner;
+        Optional<Player> playerOwner = Optional.empty();
+        if (owner != null) {
             playerOwner = Optional.ofNullable(Bukkit.getPlayer(owner)); // first attempt by getting player details via ign
-        if (playerOwner == null)
-            playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); // second attempt by getting player details via uuid
-        if (playerOwner == null)
+            if (playerOwner == null)
+                playerOwner = Optional.ofNullable(Bukkit.getPlayer(UUID.fromString(owner))); // second attempt by getting player details via uuid
+        }
+        if (!playerOwner.isPresent() || playerOwner.get() == null)
             playerOwner = Optional.ofNullable(p); // if all fails, rely on the player details of the one who executed the cmd
 
         // Check if the target EI is a valid EI
