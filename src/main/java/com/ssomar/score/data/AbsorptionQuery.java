@@ -6,12 +6,9 @@ import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionObject;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.Score;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 public class AbsorptionQuery {
@@ -25,8 +22,8 @@ public class AbsorptionQuery {
     // create table query
     private static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_ID + " (" +
-                    COL_ABSORPTION_UUID + " TEXT NOT NULL, " +
-                    COL_PLAYER_UUID + " TEXT NOT NULL, " +
+                    COL_ABSORPTION_UUID + " VARCHAR(36) NOT NULL, " +
+                    COL_PLAYER_UUID + " VARCHAR(36) NOT NULL, " +
                     COL_ABSORPTION_AMOUNT + " DOUBLE NOT NULL, " +
                     COL_EXPIRY_TIME + " BIGINT NOT NULL, " +
                     "PRIMARY KEY (" + COL_ABSORPTION_UUID + ")" +
@@ -92,11 +89,9 @@ public class AbsorptionQuery {
     }
 
     /**
-     * This method mainly queries the mysql database and look for expired absorptions tied to the target player's
-     * uuid and then remove it.
+     * This method mainly queries the mysql database and look for expired absorptions tied to the target player's uuid
      * @param conn
      * @param playerUUID to get the player's expired absorptions
-     * @param absorptionUUID (optional) to remove a specific expired absorption
      * @return ArrayList of AbsorptionObject
      */
     public static ArrayList<AbsorptionObject> getAbsorptionsToRemove(Connection conn, String playerUUID) {
@@ -113,7 +108,6 @@ public class AbsorptionQuery {
         PreparedStatement stmt = null;
         ResultSet rset = null;
         final String selectQuery = "SELECT * FROM " + TABLE_ID + " WHERE " + COL_PLAYER_UUID + "=? AND " + COL_EXPIRY_TIME + " < ?;";
-        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_PLAYER_UUID+"=? AND "+COL_EXPIRY_TIME+" < ?;";
 
         // start querying
         try {
@@ -132,12 +126,6 @@ public class AbsorptionQuery {
                 ));
             }
 
-            // time to delete these expired absorptions
-            stmt = conn.prepareStatement(deleteQuery);
-            stmt.setString(1, playerUUID);
-            stmt.setLong(2, currentTimeOfExecution);
-            stmt.executeUpdate();
-
         } catch (Exception e) {
             return returnArray;
         } finally {
@@ -146,6 +134,40 @@ public class AbsorptionQuery {
         }
 
         return returnArray;
+    }
+
+    /**
+     * This method mainly queries the mysql database and remove the expired absorptions tied to the target player's
+     * @param conn
+     * @param playerUUID to get the player's expired absorptions
+     * @return ArrayList of AbsorptionObject
+     */
+    public static void deleteAbsorptions(Connection conn, String playerUUID) {
+        // the reason this testmsg is here is for as of this writing, I am checking why are records not getting deleted after a while in the db browser assuming the player is online during the deletion
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0018] &a &6 AbsorptionQuery.deleteAbsorptions() is triggered", true);
+
+        // the reason this variable is here is to know the exact point in time this method got executed
+        // because if the .currentTimeMillis() method is passed in the query as a temp value, it's going to create huge
+        // complications if we also want to remove these expired absorptions.
+        long currentTimeOfExecution = System.currentTimeMillis();
+
+        // prepare what queries to use
+        PreparedStatement stmt = null;
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_PLAYER_UUID+"=? AND "+COL_EXPIRY_TIME+" < ?;";
+
+        // start querying
+        try {
+            // time to delete these expired absorptions
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setString(1, playerUUID);
+            stmt.setLong(2, currentTimeOfExecution);
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            return;
+        } finally {
+            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+        }
     }
 
     /**

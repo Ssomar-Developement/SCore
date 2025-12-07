@@ -34,10 +34,10 @@ public class TemporaryAttributeQuery {
     // create table query
     private static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_ID + " (" +
-                    COL_ATTRIBUTE_KEY + " TEXT NOT NULL, " +
+                    COL_ATTRIBUTE_KEY + " VARCHAR(36) NOT NULL, " +
                     COL_ATTRIBUTE_TYPE + " TEXT NOT NULL, " +
                     COL_AMOUNT + " DOUBLE NOT NULL, " +
-                    COL_ENTITY_UUID + " TEXT NOT NULL, " +
+                    COL_ENTITY_UUID + " VARCHAR(36) NOT NULL, " +
                     COL_EXPIRY_TIME + " BIGINT NOT NULL, " +
                     "PRIMARY KEY (" + COL_ATTRIBUTE_KEY + ")" +
                     ");";
@@ -101,22 +101,20 @@ public class TemporaryAttributeQuery {
     }
 
     /**
-     * If you want to get an array of expired {}
+     * Fetches expired temporary attributes without deleting them
      * @param conn Database.getInstance().connect()
      * @param entityUUID
      * @return ArrayList consisting of expired temporary attributes.
      */
-    public static ArrayList<AddTemporaryAttributeObject> fetchAndDeleteTemporaryAttributes(Connection conn, String entityUUID) {
+    public static ArrayList<AddTemporaryAttributeObject> fetchExpiredTemporaryAttributes(Connection conn, String entityUUID) {
         ArrayList<AddTemporaryAttributeObject> returnArray = new ArrayList<>();
 
         final long currentTime = System.currentTimeMillis();
         final String selectQuery = "SELECT * FROM "+TABLE_ID+" WHERE "+COL_ENTITY_UUID+"=? AND "+COL_EXPIRY_TIME+"<?;";
-        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ENTITY_UUID+"=? AND "+COL_EXPIRY_TIME+"<?;";
 
         PreparedStatement stmt = null;
         ResultSet rset = null;
         try {
-            // select query
             stmt = conn.prepareStatement(selectQuery);
             stmt.setString(1, entityUUID);
             stmt.setLong(2, currentTime);
@@ -133,20 +131,35 @@ public class TemporaryAttributeQuery {
                         )
                 );
             }
-            // delete query
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("There was complication with the select query for TemporaryAttributeQuery.java: "+e.getMessage());
+        } finally {
+            if (rset != null) try { rset.close(); } catch (Exception ignored) {}
+            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+        }
+        return returnArray;
+    }
 
+    /**
+     * Deletes expired temporary attributes for an entity
+     * @param conn Database.getInstance().connect()
+     * @param entityUUID
+     */
+    public static void deleteExpiredTemporaryAttributes(Connection conn, String entityUUID) {
+        final long currentTime = System.currentTimeMillis();
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ENTITY_UUID+"=? AND "+COL_EXPIRY_TIME+"<?;";
+
+        PreparedStatement stmt = null;
+        try {
             stmt = conn.prepareStatement(deleteQuery);
             stmt.setString(1, entityUUID);
             stmt.setLong(2, currentTime);
             stmt.executeUpdate();
         } catch (Exception e) {
-            SCore.plugin.getLogger().warning("There was complication with the select/delete query for TemporaryAttributeQuery.java: "+e.getMessage());
+            SCore.plugin.getLogger().warning("There was complication with the delete query for TemporaryAttributeQuery.java: "+e.getMessage());
         } finally {
-            if (rset != null) try { stmt.close(); } catch (Exception ignored) {}
             if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
         }
-        return returnArray;
-
     }
 
     /**
