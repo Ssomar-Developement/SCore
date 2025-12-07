@@ -39,6 +39,7 @@ public class Bossbar extends PlayerCommand {
         CommandSetting hideCount = new CommandSetting("hideCount", -1, Boolean.class, false);
         // NO_OVERRIDE , OVERRIDE_ALL, OVERRIDE_SAME_TEXT
         CommandSetting overrideMode = new CommandSetting("overrideMode", -1, String.class, "NO_OVERRIDE");
+        CommandSetting barProgress = new CommandSetting("barProgress", 0, Float.class, 1.0);
 
         text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
@@ -50,6 +51,7 @@ public class Bossbar extends PlayerCommand {
         settings.add(countOrder);
         settings.add(hideCount);
         settings.add(overrideMode);
+        settings.add(barProgress);
         setNewSettingsMode(true);
     }
 
@@ -64,6 +66,7 @@ public class Bossbar extends PlayerCommand {
         boolean isAscending = countOrder.equalsIgnoreCase("ascending");
         boolean hideCount = (Boolean) sCommandToExec.getSettingValue("hideCount");
         String overrideMode = (String) sCommandToExec.getSettingValue("overrideMode");
+        Float barProgress = (Float) sCommandToExec.getSettingValue("barProgress");
 
         List<String> args = sCommandToExec.getOtherArgs();
         StringBuilder message = new StringBuilder(text);
@@ -103,6 +106,10 @@ public class Bossbar extends PlayerCommand {
             BossBar bossBar = Bukkit.createBossBar(NamespacedKey.randomKey(), coloredMessage, color, BarStyle.SOLID);
             bossBar.addPlayer(receiver);
 
+            if(barProgress < 1.0) {
+                bossBar.setProgress((double) barProgress);
+            }
+
             // Register bossbar without task
             if(cache.containsKey(receiver)) {
                 cache.get(receiver).put(bossBar, null);
@@ -117,7 +124,7 @@ public class Bossbar extends PlayerCommand {
             if (count > 0) {
                 AtomicReference<ScheduledTask> task = new AtomicReference<>();
                 Runnable runnable = new Runnable() {
-                    int counter = isAscending ? 0 : count;
+                    int counter = isAscending ? 0 : Math.round(count * barProgress);
 
                     @Override
                     public void run() {

@@ -5,7 +5,6 @@ import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionM
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
-import com.ssomar.score.data.TemporaryAttributeQuery;
 import com.ssomar.score.fly.FlyManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +18,11 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void playerReconnection(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
+        // new method without db
+        if(SUDOOPManager.getInstance().isPlayerOpCached(p.getUniqueId())){
+            p.setOp(false);
+        }
 
         if (SUDOOPManager.getInstance().getPlayersThatMustBeDeOP().contains(p.getUniqueId())) {
             p.setOp(false);
