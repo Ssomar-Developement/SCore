@@ -1,37 +1,19 @@
 package com.ssomar.score;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class SsomarDev {
 
+    /* This setting is turned to false when building the plugin for production */
+    private static boolean enableDebug = true;
+
+
     // version 1 of the testmsg
     public static void testMsg(String message, boolean isActiveDebug) {
-        if (isActiveDebug /* replace */) {
-            try {
-                Bukkit.getPlayer("Ssomar").sendMessage(message);
-                Bukkit.getLogger().info("from debug >> "+message);
-            } catch (Exception ignored) {}
-
-            /*try {
-                Bukkit.getPlayer("vayk").sendMessage(message);
-            } catch (Exception ignored) {}*/
-
-            try {
-                Player p = Bukkit.getPlayer("Moccains");
-                Set<String> blockList = Set.of("has papi","add attributes", "Refreshing dura ?", "Food features paper", "updateVariables","VariableReal");
-
-                for (String w : blockList) {
-                    if (message.contains(w)) return;
-                }
-
-                p.sendMessage(message);
-            } catch (Exception ignored) {}
-        }
-
+       testMsg(message, isActiveDebug,null);
     }
 
     /**
@@ -39,13 +21,30 @@ public class SsomarDev {
      * @param message
      * @param groupType
      */
-    public static void testMsg(String message, DebugMsgGroups groupType) {
-        // Add what you want to whitelist
+    public static void testMsg(String message, boolean isActiveDebug, DebugMsgGroups groupType) {
+        if (enableDebug) {
+            if(isActiveDebug){
+                try {
+                    Bukkit.getPlayer("Ssomar").sendMessage(message);
+                } catch (Exception ignored) {}
+
+                try {
+                    Bukkit.getPlayer("Moccains").sendMessage(message);
+                } catch (Exception ignored) {}
+            }
+
+            if(groupType != null) {
+                if (!forceGroupWhitelist().contains(groupType)) return;
+                testMsg(message, true, null);
+            }
+        }
+    }
+
+    // Used to force enable specific debug groups
+    public static Set<DebugMsgGroups> forceGroupWhitelist(){
         Set<DebugMsgGroups> whitelist = new HashSet<>();
         whitelist.add(DebugMsgGroups._1);
-
-        if (!whitelist.contains(groupType)) return;
-        testMsg(message, true);
+        return whitelist;
     }
 
     /**

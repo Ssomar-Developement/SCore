@@ -6,7 +6,6 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
@@ -178,7 +177,7 @@ public abstract class RunCommand implements Serializable {
             }
         };
 
-        SsomarDev.testMsg("[#s_1] [-2] RunCommand.java > runCommand()", SsomarDev.DebugMsgGroups._1);
+        SsomarDev.testMsg("[#s_1] [-2] RunCommand.java > runCommand()", false, SsomarDev.DebugMsgGroups._1);
         executeRunnable(runnable);
     }
 
