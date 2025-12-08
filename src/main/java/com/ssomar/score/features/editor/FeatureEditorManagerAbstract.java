@@ -1,12 +1,14 @@
 package com.ssomar.score.features.editor;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.editor.SaveSessionPathManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.utils.strings.StringConverter;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -81,7 +83,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public void back(NewInteractionClickedGUIManager<T> interact) {
         //Y parent = interact.gui.getParent();
         //parent.openBackEditor(interact.player);
-
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0033] BACK BUTTON IS SELECTED", true);
         Player player = interact.player;
         GUI gui = SaveSessionPathManager.getInstance().getLastBeforePlayerSessionPath(player);
         if (gui != null){
