@@ -83,7 +83,6 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public void back(NewInteractionClickedGUIManager<T> interact) {
         //Y parent = interact.gui.getParent();
         //parent.openBackEditor(interact.player);
-        SsomarDev.testMsg(ChatColor.GOLD+"[#s0033] BACK BUTTON IS SELECTED", true);
         Player player = interact.player;
         GUI gui = SaveSessionPathManager.getInstance().getLastBeforePlayerSessionPath(player);
         if (gui != null){

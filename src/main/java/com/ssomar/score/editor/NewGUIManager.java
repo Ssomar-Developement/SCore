@@ -78,7 +78,6 @@ public abstract class NewGUIManager<T extends GUI> {
     }
 
     public void clicked(ItemStack item, NewInteractionClickedGUIManager<T> interact, ClickType click) {
-        SsomarDev.testMsg(ChatColor.GOLD+"[#s0034] CLICK TRIGGERED: ", true);
         if (item != null && item.hasItemMeta()) {
             interact.cache = this.getCache();
             interact.setName(GUI.getIdentifier(item));
