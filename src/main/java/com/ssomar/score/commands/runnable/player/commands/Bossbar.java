@@ -39,7 +39,7 @@ public class Bossbar extends PlayerCommand {
         CommandSetting hideCount = new CommandSetting("hideCount", -1, Boolean.class, false);
         // NO_OVERRIDE , OVERRIDE_ALL, OVERRIDE_SAME_TEXT
         CommandSetting overrideMode = new CommandSetting("overrideMode", -1, String.class, "NO_OVERRIDE");
-        CommandSetting barProgress = new CommandSetting("barProgress", 0, Float.class, 1.0);
+        CommandSetting barProgress = new CommandSetting("barProgress", 0, Float.class, 1.0f);
 
         text.setAcceptUnderScoreForLongText(true);
         List<CommandSetting> settings = getSettings();
