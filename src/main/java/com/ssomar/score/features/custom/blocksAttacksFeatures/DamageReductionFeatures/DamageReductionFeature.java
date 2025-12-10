@@ -60,8 +60,8 @@ public class DamageReductionFeature extends FeatureWithHisOwnEditor<DamageReduct
 
     @Override
     public void reset() {
-        baseDamageBlocked = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.baseDamageBlocked);
-        factorDamageBlocked = new DoubleFeature(this, Optional.of(0.0), FeatureSettingsSCore.factorDamageBlocked);
+        baseDamageBlocked = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.baseDamageBlocked);
+        factorDamageBlocked = new DoubleFeature(this, Optional.of(1.0), FeatureSettingsSCore.factorDamageBlocked);
         horizontalBlockingAngle = new DoubleFeature(this, Optional.of(90.0), FeatureSettingsSCore.horizontalBlockingAngle);
         damageTypes = new ListDamageTypeFeature(this, new ArrayList<>(), FeatureSettingsSCore.damageTypes);
     }

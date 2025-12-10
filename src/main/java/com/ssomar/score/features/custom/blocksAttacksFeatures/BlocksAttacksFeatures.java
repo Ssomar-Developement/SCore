@@ -151,7 +151,7 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
                 SsomarDev.testMsg("blockattacks features applyOnItem2", true);
                 try {
                     item.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks()
-                            .blockSound(blockSound.getValue().isPresent() ? blockSound.getValue().get().getKey() : null)
+                    .blockSound(blockSound.getValue().isPresent() ? blockSound.getValue().get().getKey() : null)
                             .blockDelaySeconds(blockDelay.getValue().get())
                             .disableSound(disableSound.getValue().isPresent() ? disableSound.getValue().get().getKey() : null)
                             .disableCooldownScale(disableCooldownScale.getValue().get().floatValue())
