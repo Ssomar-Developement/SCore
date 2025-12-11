@@ -102,6 +102,12 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(While.getInstance());
         commands.add(new If());
 
+        /* New player utility commands */
+        commands.add(new PlayerStats());
+        commands.add(new RandomTeleport());
+        commands.add(new ServerInfo());
+        commands.add(new NearbyPlayers());
+
         commands.addAll(MixedCommandsManager.getInstance().getCommands());
 
         /* Sort by priority */
