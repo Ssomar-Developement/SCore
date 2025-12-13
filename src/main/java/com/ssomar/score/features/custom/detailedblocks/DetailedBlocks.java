@@ -42,7 +42,7 @@ public class DetailedBlocks extends FeatureWithHisOwnEditor<DetailedBlocks, Deta
 
     private boolean notSaveIfEqualsToDefaultValue;
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
 
     public DetailedBlocks(FeatureParentInterface parent, FeatureSettingsInterface featureSettings) {
         super(parent, featureSettings);
