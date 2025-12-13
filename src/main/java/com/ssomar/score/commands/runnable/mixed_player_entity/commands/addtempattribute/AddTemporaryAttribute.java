@@ -135,13 +135,24 @@ public class AddTemporaryAttribute extends MixedCommand  {
         attrInstance.addModifier(tempModifier);
 
         // a record must be made asap to ensure when crashes or restarts occur, expired attribute modifiers can be removed upon the player's relog
-        if (entity instanceof Player) TemporaryAttributeQuery.insertToRecords(
-                Database.getInstance().connect(),
-                String.valueOf(attr_key),
-                attrTypeID,
-                amount,
-                String.valueOf(entity.getUniqueId()),
-                expiry_time);
+        if (entity instanceof Player) {
+            final String finalAttrTypeID = attrTypeID;
+            final double finalAmount = amount;
+            final long finalExpiry_time = expiry_time;
+            Runnable runnableAsync = new Runnable() {
+                @Override
+                public void run() {
+                    TemporaryAttributeQuery.insertToRecords(
+                            Database.getInstance().connect(),
+                            String.valueOf(attr_key),
+                            finalAttrTypeID,
+                            finalAmount,
+                            String.valueOf(entity.getUniqueId()),
+                            finalExpiry_time);
+                }
+            };
+            SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
+        }
 
 
         String finalAttrTypeID1 = attrTypeID;
