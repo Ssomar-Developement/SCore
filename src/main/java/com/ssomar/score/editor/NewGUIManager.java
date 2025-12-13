@@ -277,8 +277,14 @@ public abstract class NewGUIManager<T extends GUI> {
         space(p);
         int line = Integer.valueOf(interact.decoloredMessage.split("edit line <")[1].split(">")[0]);
         if (line >= 0) {
-            String modification = interact.coloredDeconvertMessage.split("edit line <" + line + "> ->")[1];
-            currentWriting.get(p).set(line, modification);
+            String[] splitContent = interact.coloredDeconvertMessage.split("edit line <" + line + "> ->");
+            if (splitContent.length >= 2) {
+                String modification = splitContent[1];
+                currentWriting.get(p).set(line, modification);
+            }
+            else {
+                p.sendMessage(StringConverter.coloredString("&c&l>> &4&lEDITION &cedit line format is not valid! Correct format: &eedit line <line_number> -> your new line"));
+            }
         }
         p.sendMessage(StringConverter.coloredString("&a&l>> &2&lEDITION &aYou have edit the line: " + line + " !"));
         space(p);
