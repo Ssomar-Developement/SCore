@@ -144,7 +144,6 @@ public class AddTemporaryAttribute extends MixedCommand  {
                 expiry_time);
 
 
-
         String finalAttrTypeID1 = attrTypeID;
         Runnable runlater = new Runnable() {
             @Override
@@ -153,10 +152,8 @@ public class AddTemporaryAttribute extends MixedCommand  {
                     AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
                     if (entity instanceof Player) TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), attr_key.toString());
                 }
-                // AddTemporaryAttributeManager's method will be called upon player relog if it expires while the player is offline
             }
         };
-
 
         if (!(entity instanceof Player)) SCore.schedulerHook.runEntityTask(runlater, null, entity, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
         else SCore.schedulerHook.runTask(runlater, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));

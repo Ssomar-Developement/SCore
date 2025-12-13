@@ -76,28 +76,34 @@ public class TemporaryAttributeQuery {
                                        double amount,
                                        String entity_uuid,
                                        long expiry_time) {
-        final String insertQuery = "INSERT INTO "+TABLE_ID+" ("
-                +COL_ATTRIBUTE_KEY+","
-                +COL_ATTRIBUTE_TYPE+","
-                +COL_AMOUNT+","
-                +COL_ENTITY_UUID+","
-                +COL_EXPIRY_TIME
-                +") VALUES (?, ?, ?, ?, ?);";
+        Runnable runnableAsync = new Runnable() {
+            @Override
+            public void run() {
+                final String insertQuery = "INSERT INTO "+TABLE_ID+" ("
+                        +COL_ATTRIBUTE_KEY+","
+                        +COL_ATTRIBUTE_TYPE+","
+                        +COL_AMOUNT+","
+                        +COL_ENTITY_UUID+","
+                        +COL_EXPIRY_TIME
+                        +") VALUES (?, ?, ?, ?, ?);";
 
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(insertQuery);
-            stmt.setString(1, attribute_key);
-            stmt.setString(2, attribute_type);
-            stmt.setDouble(3, amount);
-            stmt.setString(4, entity_uuid);
-            stmt.setLong(5, expiry_time);
-            stmt.execute();
-        } catch (Exception e) {
-            SCore.plugin.getLogger().warning("There was complication with the insert query for TemporaryAttributeQuery.java: "+e.getMessage());
-        } finally {
-            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
-        }
+                PreparedStatement stmt = null;
+                try {
+                    stmt = conn.prepareStatement(insertQuery);
+                    stmt.setString(1, attribute_key);
+                    stmt.setString(2, attribute_type);
+                    stmt.setDouble(3, amount);
+                    stmt.setString(4, entity_uuid);
+                    stmt.setLong(5, expiry_time);
+                    stmt.execute();
+                } catch (Exception e) {
+                    SCore.plugin.getLogger().warning("There was complication with the insert query for TemporaryAttributeQuery.java: "+e.getMessage());
+                } finally {
+                    if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+                }
+            }
+        };
+        SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
     }
 
     /**
@@ -168,17 +174,23 @@ public class TemporaryAttributeQuery {
      * @param key_attr
      */
     public static void removeFromRecords(Connection conn, String key_attr) {
-        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ATTRIBUTE_KEY+"=?;";
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(deleteQuery);
-            stmt.setString(1, key_attr);
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            SCore.plugin.getLogger().warning("There was complication with the delete operation for TemporaryAttributeQuery.java: "+e.getMessage());
-        } finally {
-            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
-        }
+        Runnable runnableAsync = new Runnable() {
+            @Override
+            public void run() {
+                final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ATTRIBUTE_KEY+"=?;";
+                PreparedStatement stmt = null;
+                try {
+                    stmt = conn.prepareStatement(deleteQuery);
+                    stmt.setString(1, key_attr);
+                    stmt.executeUpdate();
+                } catch (Exception e) {
+                    SCore.plugin.getLogger().warning("There was complication with the delete operation for TemporaryAttributeQuery.java: "+e.getMessage());
+                } finally {
+                    if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+                }
+            }
+        };
+        SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
     }
 
 }

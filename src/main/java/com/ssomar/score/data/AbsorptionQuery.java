@@ -58,38 +58,45 @@ public class AbsorptionQuery {
      */
     public static void insertToRecords(Connection conn, UUID absorptionUUID, UUID playerUUID, double absorption_amount, long expiry_time) {
         // this testmsg call exists because as of this writing, I'm checking why are there no inserts
-        SsomarDev.testMsg(ChatColor.GOLD+"[#s0017] AbsorptionQuery.insertToRecords() is triggered", true);
-        final String insertQuery = "INSERT INTO "+TABLE_ID+" ("
-                +COL_ABSORPTION_UUID+","
-                +COL_PLAYER_UUID+","
-                +COL_ABSORPTION_AMOUNT+","
-                +COL_EXPIRY_TIME
-                +") VALUES (?, ?, ?, ?);";
+        Runnable runnableAsync = new Runnable() {
+            @Override
+            public void run() {
+                SsomarDev.testMsg(ChatColor.GOLD+"[#s0017] AbsorptionQuery.insertToRecords() is triggered", true);
+                final String insertQuery = "INSERT INTO "+TABLE_ID+" ("
+                        +COL_ABSORPTION_UUID+","
+                        +COL_PLAYER_UUID+","
+                        +COL_ABSORPTION_AMOUNT+","
+                        +COL_EXPIRY_TIME
+                        +") VALUES (?, ?, ?, ?);";
 
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(insertQuery);
-            stmt.setString(1, absorptionUUID.toString());
-            stmt.setString(2, playerUUID.toString());
-            stmt.setDouble(3, absorption_amount);
-            stmt.setLong(4, expiry_time);
-            stmt.execute();
-        } catch (Exception e) {
-            // temp
-            SCore.plugin.getLogger().warning("There was complication with the insert query for AbsorptionQuery.java");
-        } finally {
-            if (stmt != null) {
+                PreparedStatement stmt = null;
                 try {
-                    stmt.close();
+                    stmt = conn.prepareStatement(insertQuery);
+                    stmt.setString(1, absorptionUUID.toString());
+                    stmt.setString(2, playerUUID.toString());
+                    stmt.setDouble(3, absorption_amount);
+                    stmt.setLong(4, expiry_time);
+                    stmt.execute();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // temp
+                    SCore.plugin.getLogger().warning("There was complication with the insert query for AbsorptionQuery.java");
+                } finally {
+                    if (stmt != null) {
+                        try {
+                            stmt.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        }
+        };
+        SCore.schedulerHook.runAsyncTask(runnableAsync,0);
     }
 
     /**
-     * This method mainly queries the mysql database and look for expired absorptions tied to the target player's uuid
+     * This method mainly queries the mysql database and look for expired absorptions tied to the target player's uuid.<br/>
+     * CANNOT BE ASYNC
      * @param conn
      * @param playerUUID to get the player's expired absorptions
      * @return ArrayList of AbsorptionObject
@@ -177,24 +184,29 @@ public class AbsorptionQuery {
      * @param absorptionUUID the UUID of the absorption to delete
      */
     public static void deleteAbsorption(Connection conn, String absorptionUUID) {
-        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ABSORPTION_UUID+"=?;";
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(deleteQuery);
-            stmt.setString(1, absorptionUUID);
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            SCore.plugin.getLogger().warning("Failed to delete absorption with UUID: " + absorptionUUID);
-        } finally {
-            if (stmt != null) {
+        Runnable runnableAsync = new Runnable() {
+            @Override
+            public void run() {
+                final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ABSORPTION_UUID+"=?;";
+                PreparedStatement stmt = null;
                 try {
-                    stmt.close();
+                    stmt = conn.prepareStatement(deleteQuery);
+                    stmt.setString(1, absorptionUUID);
+                    stmt.executeUpdate();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    SCore.plugin.getLogger().warning("Failed to delete absorption with UUID: " + absorptionUUID);
+                } finally {
+                    if (stmt != null) {
+                        try {
+                            stmt.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        }
+        };
+        SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
     }
-
 
 }
