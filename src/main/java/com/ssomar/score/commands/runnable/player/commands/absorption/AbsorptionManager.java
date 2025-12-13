@@ -56,7 +56,8 @@ public class AbsorptionManager {
 
         // Save to database immediately so it persists across logouts (but only if not rescheduling)
         if (!isReschedule) {
-            AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime());
+            SCore.schedulerHook.runAsyncTask(() -> AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime()),0);
+
         }
 
         Runnable runnable3 = new Runnable() {
@@ -68,7 +69,7 @@ public class AbsorptionManager {
                         //receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption.getAbsorption());
                         AbsorptionManager.modifyAbsorption(receiver.getUniqueId().toString(), receiver.getAbsorptionAmount()-absorption.getAbsorption());
                         // Remove from database since the task completed successfully
-                        AbsorptionQuery.deleteAbsorption(Database.getInstance().connect(), absorptionUUID.toString());
+                        SCore.schedulerHook.runAsyncTask(()->AbsorptionQuery.deleteAbsorption(Database.getInstance().connect(), absorptionUUID.toString()),0);
                     }catch(IllegalArgumentException e){
                         //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
                         //like ABSORPTION -5, if the player has ABSORPTION 5, it will work, but once it worked now the player

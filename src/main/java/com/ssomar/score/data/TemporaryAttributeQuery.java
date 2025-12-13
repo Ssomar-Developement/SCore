@@ -98,6 +98,7 @@ public class TemporaryAttributeQuery {
         } finally {
             if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
         }
+
     }
 
     /**
