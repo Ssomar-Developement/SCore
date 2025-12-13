@@ -183,29 +183,23 @@ public class AbsorptionQuery {
      * @param absorptionUUID the UUID of the absorption to delete
      */
     public static void deleteAbsorption(Connection conn, String absorptionUUID) {
-        Runnable runnableAsync = new Runnable() {
-            @Override
-            public void run() {
-                final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ABSORPTION_UUID+"=?;";
-                PreparedStatement stmt = null;
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ABSORPTION_UUID+"=?;";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setString(1, absorptionUUID);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("Failed to delete absorption with UUID: " + absorptionUUID);
+        } finally {
+            if (stmt != null) {
                 try {
-                    stmt = conn.prepareStatement(deleteQuery);
-                    stmt.setString(1, absorptionUUID);
-                    stmt.executeUpdate();
+                    stmt.close();
                 } catch (Exception e) {
-                    SCore.plugin.getLogger().warning("Failed to delete absorption with UUID: " + absorptionUUID);
-                } finally {
-                    if (stmt != null) {
-                        try {
-                            stmt.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    e.printStackTrace();
                 }
             }
-        };
-        SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
+        }
     }
 
 }

@@ -169,23 +169,17 @@ public class TemporaryAttributeQuery {
      * @param key_attr
      */
     public static void removeFromRecords(Connection conn, String key_attr) {
-        Runnable runnableAsync = new Runnable() {
-            @Override
-            public void run() {
-                final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ATTRIBUTE_KEY+"=?;";
-                PreparedStatement stmt = null;
-                try {
-                    stmt = conn.prepareStatement(deleteQuery);
-                    stmt.setString(1, key_attr);
-                    stmt.executeUpdate();
-                } catch (Exception e) {
-                    SCore.plugin.getLogger().warning("There was complication with the delete operation for TemporaryAttributeQuery.java: "+e.getMessage());
-                } finally {
-                    if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
-                }
-            }
-        };
-        SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
+        final String deleteQuery = "DELETE FROM "+TABLE_ID+" WHERE "+COL_ATTRIBUTE_KEY+"=?;";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setString(1, key_attr);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            SCore.plugin.getLogger().warning("There was complication with the delete operation for TemporaryAttributeQuery.java: "+e.getMessage());
+        } finally {
+            if (stmt != null) try { stmt.close(); } catch (Exception ignored) {}
+        }
     }
 
 }

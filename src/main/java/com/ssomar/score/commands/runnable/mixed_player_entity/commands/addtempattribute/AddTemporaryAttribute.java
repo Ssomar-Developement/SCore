@@ -139,19 +139,14 @@ public class AddTemporaryAttribute extends MixedCommand  {
             final String finalAttrTypeID = attrTypeID;
             final double finalAmount = amount;
             final long finalExpiry_time = expiry_time;
-            Runnable runnableAsync = new Runnable() {
-                @Override
-                public void run() {
+            SCore.schedulerHook.runAsyncTask(() ->
                     TemporaryAttributeQuery.insertToRecords(
-                            Database.getInstance().connect(),
-                            String.valueOf(attr_key),
-                            finalAttrTypeID,
-                            finalAmount,
-                            String.valueOf(entity.getUniqueId()),
-                            finalExpiry_time);
-                }
-            };
-            SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
+                        Database.getInstance().connect(),
+                        String.valueOf(attr_key),
+                        finalAttrTypeID,
+                        finalAmount,
+                        String.valueOf(entity.getUniqueId()),
+                        finalExpiry_time),0);
         }
 
 
@@ -161,7 +156,11 @@ public class AddTemporaryAttribute extends MixedCommand  {
             public void run() {
                 if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
                     AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
-                    if (entity instanceof Player) TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), attr_key.toString());
+                    if (entity instanceof Player) {
+                        SCore.schedulerHook.runAsyncTask(
+                                () -> TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), attr_key.toString()), 0
+                        );
+                    }
                 }
             }
         };

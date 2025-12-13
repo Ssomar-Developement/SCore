@@ -37,9 +37,11 @@ public class AddTemporaryAttributeManager {
                         }
 
                         // Delete AFTER successful removal from player - run async in the method
-                        for (AddTemporaryAttributeObject tempAttr : tempAttrlist) {
-                            TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), tempAttr.getAttribute_key());
-                        }
+                        SCore.schedulerHook.runAsyncTask(() -> {
+                            for (AddTemporaryAttributeObject tempAttr : tempAttrlist) {
+                                TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), tempAttr.getAttribute_key());
+                            }
+                        },0);
                     }
                 };
                 SCore.schedulerHook.runTask(runnableSync, 0);
