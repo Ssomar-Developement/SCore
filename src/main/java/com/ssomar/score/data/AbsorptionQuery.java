@@ -58,40 +58,34 @@ public class AbsorptionQuery {
      */
     public static void insertToRecords(Connection conn, UUID absorptionUUID, UUID playerUUID, double absorption_amount, long expiry_time) {
         // this testmsg call exists because as of this writing, I'm checking why are there no inserts
-        Runnable runnableAsync = new Runnable() {
-            @Override
-            public void run() {
-                SsomarDev.testMsg(ChatColor.GOLD+"[#s0017] AbsorptionQuery.insertToRecords() is triggered", true);
-                final String insertQuery = "INSERT INTO "+TABLE_ID+" ("
-                        +COL_ABSORPTION_UUID+","
-                        +COL_PLAYER_UUID+","
-                        +COL_ABSORPTION_AMOUNT+","
-                        +COL_EXPIRY_TIME
-                        +") VALUES (?, ?, ?, ?);";
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0017] AbsorptionQuery.insertToRecords() is triggered", true);
+        final String insertQuery = "INSERT INTO "+TABLE_ID+" ("
+                +COL_ABSORPTION_UUID+","
+                +COL_PLAYER_UUID+","
+                +COL_ABSORPTION_AMOUNT+","
+                +COL_EXPIRY_TIME
+                +") VALUES (?, ?, ?, ?);";
 
-                PreparedStatement stmt = null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(insertQuery);
+            stmt.setString(1, absorptionUUID.toString());
+            stmt.setString(2, playerUUID.toString());
+            stmt.setDouble(3, absorption_amount);
+            stmt.setLong(4, expiry_time);
+            stmt.execute();
+        } catch (Exception e) {
+            // temp
+            SCore.plugin.getLogger().warning("There was complication with the insert query for AbsorptionQuery.java");
+        } finally {
+            if (stmt != null) {
                 try {
-                    stmt = conn.prepareStatement(insertQuery);
-                    stmt.setString(1, absorptionUUID.toString());
-                    stmt.setString(2, playerUUID.toString());
-                    stmt.setDouble(3, absorption_amount);
-                    stmt.setLong(4, expiry_time);
-                    stmt.execute();
+                    stmt.close();
                 } catch (Exception e) {
-                    // temp
-                    SCore.plugin.getLogger().warning("There was complication with the insert query for AbsorptionQuery.java");
-                } finally {
-                    if (stmt != null) {
-                        try {
-                            stmt.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    e.printStackTrace();
                 }
             }
-        };
-        SCore.schedulerHook.runAsyncTask(runnableAsync,0);
+        }
     }
 
     /**
