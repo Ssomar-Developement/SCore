@@ -89,7 +89,7 @@ public class AbsorptionQuery {
     }
 
     /**
-     * This method mainly queries the mysql database and look for expired absorptions tied to the target player's uuid
+     * This method mainly queries the mysql database and look for expired absorptions tied to the target player's uuid.
      * @param conn
      * @param playerUUID to get the player's expired absorptions
      * @return ArrayList of AbsorptionObject
@@ -195,6 +195,5 @@ public class AbsorptionQuery {
             }
         }
     }
-
 
 }
