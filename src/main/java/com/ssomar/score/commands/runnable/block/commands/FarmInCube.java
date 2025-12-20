@@ -10,12 +10,12 @@ import com.ssomar.score.utils.ToolsListMaterial;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,58 +28,59 @@ import java.util.UUID;
 /* FARMINCUBE {radius} {ActiveDrop true or false} {onlyMaxAge true or false} {replant true or false}*/
 public class FarmInCube extends BlockCommand {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
-    public static void destroyTheBlock(Block toDestroy, boolean onlyMaxAge, boolean drop, boolean replant, @Nullable Player p, boolean event, int slot) {
+    /**
+     * Process a single block for destruction and optional replanting.
+     * This method is called from the batched task to process each block.
+     */
+    private static void processBlock(Block toDestroy, boolean onlyMaxAge, boolean drop, boolean replant,
+                                     @Nullable UUID playerUuid, @Nullable Player player, boolean event, int slot,
+                                     List<Material> validMaterials) {
+        BlockData data = toDestroy.getBlockData();
+        Material bMat = toDestroy.getType();
 
+        if (onlyMaxAge && data instanceof Ageable) {
+            Ageable ageable = (Ageable) data;
+            if (ageable.getAge() != ageable.getMaximumAge()) return;
+        }
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-
-                BlockData data = toDestroy.getState().getBlockData().clone();
-                Material bMat = toDestroy.getType();
-
-                if (onlyMaxAge && data instanceof Ageable) {
-                    Ageable ageable = (Ageable) data;
-                    if (ageable.getAge() != ageable.getMaximumAge()) return;
-                }
-
-                //SsomarDev.testMsg(">> "+ToolsListMaterial.getInstance().getPlantWithGrowth().contains(bMat)+" >> "+bMat, true);
-                if (ToolsListMaterial.getInstance().getPlantWithGrowth().contains(bMat)) {
-                    UUID uuid = null;
-                    if (p != null) uuid = p.getUniqueId();
-                    //SsomarDev.testMsg(">> "+toDestroy.getType()+" >> "+toDestroy.getLocation()+ " player: "+uuid, true);
-                    if(!SafeBreak.breakBlockWithEvent(toDestroy, uuid, slot, drop, event, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE)) return;
-                    if (replant) replant(toDestroy, data, bMat, p);
-                }
-
+        if (validMaterials.contains(bMat)) {
+            // Clone data only when we need to modify it for replanting
+            BlockData dataForReplant = replant ? data.clone() : null;
+            if (!SafeBreak.breakBlockWithEvent(toDestroy, playerUuid, slot, drop, event, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE)) return;
+            if (replant && dataForReplant != null) {
+                replant(toDestroy, dataForReplant, bMat, player);
             }
-        };
-        SCore.schedulerHook.runTask(runnable, 1);
+        }
     }
 
     public static void replant(Block block, BlockData oldData, Material material, @Nullable Player player) {
+        if (!(oldData instanceof Ageable)) {
+            block.setType(Material.AIR);
+            return;
+        }
+
+        Ageable ageable = (Ageable) oldData;
+        Material required = ToolsListMaterial.getInstance().getRealMaterialOfBlock(material);
 
         boolean needReplant = false;
-        if (oldData instanceof Ageable) {
-            Ageable ageable = (Ageable) oldData;
-
-            Material required = ToolsListMaterial.getInstance().getRealMaterialOfBlock(material);
-
-            if (player != null) {
-                Inventory inv = player.getInventory();
-                if (inv.contains(required) && inv.removeItem(new ItemStack(required)).isEmpty()) needReplant = true;
-                else {
-                    block.setType(Material.AIR);
-                }
-            } else needReplant = true;
-            if (needReplant) {
-                ageable.setAge(0);
-                block.setType(material);
-                block.setBlockData(oldData);
+        if (player != null) {
+            // removeItem returns empty map if successful, no need for contains() check
+            if (player.getInventory().removeItem(new ItemStack(required)).isEmpty()) {
+                needReplant = true;
+            } else {
+                block.setType(Material.AIR);
             }
-        } else block.setType(Material.AIR);
+        } else {
+            needReplant = true;
+        }
+
+        if (needReplant) {
+            ageable.setAge(0);
+            // setBlockData will set the type implicitly, no need for setType() first
+            block.setBlockData(oldData);
+        }
     }
 
     @Override
@@ -90,7 +91,8 @@ public class FarmInCube extends BlockCommand {
 
         if (aInfo.isEventFromCustomBreakCommand()) return;
 
-        List<Material> validMaterial = ToolsListMaterial.getInstance().getPlantWithGrowth();
+        // Cache the valid materials list once
+        final List<Material> validMaterials = ToolsListMaterial.getInstance().getPlantWithGrowth();
 
         try {
             int radius = Integer.parseInt(args.get(0));
@@ -108,51 +110,74 @@ public class FarmInCube extends BlockCommand {
             if (args.size() >= 5) event = Boolean.parseBoolean(args.get(4));
 
             if (radius >= 10) radius = 9;
-            for (int y = -radius; y < radius + 1; y++) {
-                for (int x = -radius; x < radius + 1; x++) {
-                    for (int z = -radius; z < radius + 1; z++) {
 
-                        if(x == 0 && y == 0 && z == 0) continue;
+            // Cache world reference and coordinates to avoid repeated method calls
+            final World world = block.getWorld();
+            final int baseX = block.getX();
+            final int baseY = block.getY();
+            final int baseZ = block.getZ();
 
-                        Block toDestroy = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
+            // Collect all blocks to process first (filter early using cached validMaterials)
+            final List<Block> blocksToProcess = new ArrayList<>();
+            for (int y = -radius; y <= radius; y++) {
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        if (x == 0 && y == 0 && z == 0) continue;
 
-                        destroyTheBlock(toDestroy, onlyMaxAge, drop, replant, p, event, aInfo.getSlot());
+                        Block toDestroy = world.getBlockAt(baseX + x, baseY + y, baseZ + z);
+                        // Early filter: only add blocks that are valid plant materials
+                        if (validMaterials.contains(toDestroy.getType())) {
+                            blocksToProcess.add(toDestroy);
+                        }
                     }
                 }
             }
 
+            // Process all blocks in a single scheduled task instead of thousands of individual tasks
+            if (!blocksToProcess.isEmpty()) {
+                final boolean dropFinal = drop;
+                final boolean onlyMaxAgeFinal = onlyMaxAge;
+                final boolean replantFinal = replant;
+                final boolean eventFinal = event;
+                final int slot = aInfo.getSlot();
+                final UUID playerUuid = p != null ? p.getUniqueId() : null;
+
+                Runnable batchTask = () -> {
+                    for (Block toDestroy : blocksToProcess) {
+                        processBlock(toDestroy, onlyMaxAgeFinal, dropFinal, replantFinal,
+                                playerUuid, p, eventFinal, slot, validMaterials);
+                    }
+                };
+                SCore.schedulerHook.runTask(batchTask, 1);
+            }
+
             SsomarDev.testMsg("OldMaterial : " + oldMaterial.toString(), DEBUG);
-            if (validMaterial.contains(oldMaterial) && replant) {
+            if (validMaterials.contains(oldMaterial) && replant) {
                 final boolean onlyMaxAgeFinal = onlyMaxAge;
                 final boolean dropFinal = drop;
                 final boolean eventFinal = event;
-                UUID uuid = null;
-                if (p != null) uuid = p.getUniqueId();
-                final UUID uuidFinal = uuid;
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
+                final UUID uuidFinal = p != null ? p.getUniqueId() : null;
 
-                        BlockData data = block.getState().getBlockData().clone();
+                Runnable runnable = () -> {
+                    BlockData data = block.getBlockData();
 
-                        if (onlyMaxAgeFinal && data instanceof Ageable) {
-                            Ageable ageable = (Ageable) data;
-                            if (ageable.getAge() != ageable.getMaximumAge()) return;
-                        }
-
-                        // Not break (PLAYER_RIGHT_CLICK) so need to break it
-                        if(!block.getType().equals(Material.AIR)) {
-                            if(!SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE)) return;
-                        }
-                        block.setType(oldMaterial);
-                        data = block.getState().getBlockData().clone();
-                        if(aInfo.getBlockFace() != null && data instanceof Directional){
-                            Directional directional = (Directional) data;
-                            directional.setFacing(aInfo.getBlockFace());
-                            block.setBlockData(directional);
-                        }
-                        replant(block, data, oldMaterial, p);
+                    if (onlyMaxAgeFinal && data instanceof Ageable) {
+                        Ageable ageable = (Ageable) data;
+                        if (ageable.getAge() != ageable.getMaximumAge()) return;
                     }
+
+                    // Not break (PLAYER_RIGHT_CLICK) so need to break it
+                    if (!block.getType().equals(Material.AIR)) {
+                        if (!SafeBreak.breakBlockWithEvent(block, uuidFinal, aInfo.getSlot(), dropFinal, eventFinal, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE)) return;
+                    }
+                    block.setType(oldMaterial);
+                    BlockData newData = block.getBlockData();
+                    if (aInfo.getBlockFace() != null && newData instanceof Directional) {
+                        Directional directional = (Directional) newData;
+                        directional.setFacing(aInfo.getBlockFace());
+                        block.setBlockData(directional);
+                    }
+                    replant(block, block.getBlockData().clone(), oldMaterial, p);
                 };
                 SCore.schedulerHook.runLocationTask(runnable, block.getLocation(), 1);
             }
