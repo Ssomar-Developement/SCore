@@ -115,6 +115,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     cancelStoneCutter("cancel-stone-cutter", "Cancel Stone Cutter", new String[]{"&7&oThe item can't be", "&7&oplaced in stone cutter"}, FixedMaterial.getMaterial(Collections.singletonList("STONECUTTER"))),
     cancelSwapHand("cancel-swap-hand", "Cancel Swap Hand", new String[]{"&7&oThe item can't be", "&7&oswapped in the hand"}, null),
     cancelToolInteractions("cancel-tool-interactions", "Cancel Tool Interactions", new String[]{"&7&oCancel the interactions of the tool"}, null),
+    cancelSpawner("cancel-spawner", "Cancel Spawner", new String[]{"&7&oThe item can't be", "&7&oused on a spawner"}, FixedMaterial.getMaterial(Collections.singletonList("SPAWNER"))),
     charged("charged", "Charged", new String[]{""}, Material.NETHER_STAR),
     chargedProjectiles("chargedProjectiles", "Charged Projectiles", new String[]{"&7&oThe charged projectiles"}, Material.ARROW),
     chiseledBookshelfFeatures("chiseledBookshelfFeatures", "ChiseledBookshelf Features", new String[]{"&7&oFeatures for", "&7&oChiseledBookshelf"}, FixedMaterial.getMaterial(Arrays.asList("CHISELED_BOOKSHELF", "BARRIER"))),
